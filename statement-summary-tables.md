@@ -1,11 +1,12 @@
 ---
 title: Statement Summary Tables
 aliases: ['/docs-cn/dev/statement-summary-tables/','/docs-cn/dev/reference/performance/statement-summary/']
+summary: MySQL 的 `performance_schema` 提供了 `statement summary tables`，用于监控和统计 SQL 性能。TiDB 在 `information_schema` 中提供了类似功能的系统表，包括 `statements_summary`、`statements_summary_history`、`cluster_statements_summary` 和 `cluster_statements_summary_history`。这些表用于保存 SQL 监控指标聚合后的结果，帮助用户定位 SQL 问题。同时，还提供了参数配置来控制 statement summary 的功能，如清空周期、保存历史的数量等。
 ---
 
 # Statement Summary Tables
 
-针对 SQL 性能相关的问题，MySQL 在 `performance_schema` 提供了 [statement summary tables](https://dev.mysql.com/doc/refman/5.7/en/performance-schema-statement-summary-tables.html)，用来监控和统计 SQL。例如其中的一张表 `events_statements_summary_by_digest`，提供了丰富的字段，包括延迟、执行次数、扫描行数、全表扫描次数等，有助于用户定位 SQL 问题。
+针对 SQL 性能相关的问题，MySQL 在 `performance_schema` 提供了 [statement summary tables](https://dev.mysql.com/doc/refman/8.0/en/performance-schema-statement-summary-tables.html)，用来监控和统计 SQL。例如其中的一张表 `events_statements_summary_by_digest`，提供了丰富的字段，包括延迟、执行次数、扫描行数、全表扫描次数等，有助于用户定位 SQL 问题。
 
 为此，从 4.0.0-rc.1 版本开始，TiDB 在 `information_schema`（_而不是_ `performance_schema`）中提供与 `events_statements_summary_by_digest` 功能相似的系统表：
 
@@ -18,7 +19,7 @@ aliases: ['/docs-cn/dev/statement-summary-tables/','/docs-cn/dev/reference/perfo
 
 ## `statements_summary`
 
-`statements_summary` 是 `information_schema` 里的一张系统表，它把 SQL 按 SQL digest 和 plan digest 分组，统计每一组的 SQL 信息。
+`statements_summary` 是 `information_schema` 里的一张系统表，它把 SQL 按所属资源组、SQL digest 和 plan digest 分组，统计每一组的 SQL 信息。
 
 此处的 SQL digest 与 slow log 里的 SQL digest 一样，是把 SQL 规一化后算出的唯一标识符。SQL 的规一化会忽略常量、空白符、大小写的差别。即语法一致的 SQL 语句，其 digest 也相同。
 
@@ -78,7 +79,8 @@ select * from employee where id in (...) and salary between ? and ?;
 
 > **注意：**
 >
-> 在 TiDB 中，statement summary tables 中字段的时间单位是纳秒 (ns)，而 MySQL 中的时间单位是皮秒 (ps)。
+> - 在 TiDB 中，statement summary tables 中字段的时间单位是纳秒 (ns)，而 MySQL 中的时间单位是皮秒 (ps)。
+> - 从 v7.5.1 和 v7.6.0 版本开始，对于开启[资源管控](/tidb-resource-control.md)的集群，`statements_summary` 会分资源组进行聚合，即在不同资源组执行的相同语句会被收集为不同的记录。
 
 ## `statements_summary_history`
 
@@ -116,16 +118,18 @@ select * from employee where id in (...) and salary between ? and ?;
 statement summary 配置示例如下：
 
 ```sql
+set global tidb_stmt_summary_max_stmt_count = 3000;
 set global tidb_enable_stmt_summary = true;
 set global tidb_stmt_summary_refresh_interval = 1800;
 set global tidb_stmt_summary_history_size = 24;
 ```
 
-以上配置生效后，`statements_summary` 每 30 分钟清空一次，所以 `statements_summary_history` 保存最近 12 小时的历史数。`statements_summary_evicted` 保存最近 24 个发生了 evict 的时间段记录；`statements_summary_evicted` 则以 30 分钟为一个记录周期，表容量为 24 个时间段。
+以上配置生效后，`statements_summary` 每 30 分钟清空一次，`statements_summary_history` 最多保存 3000 种 SQL 种类的数据，每种类型的 SQL 保存最近出现过的 24 个时间段的数据。`statements_summary_evicted` 保存最近 24 个发生了 evict 的时间段记录；`statements_summary_evicted` 则以 30 分钟为一个记录周期，表容量为 24 个时间段。
 
 > **注意：**
 >
-> `tidb_stmt_summary_history_size`、`tidb_stmt_summary_max_stmt_count`、`tidb_stmt_summary_max_sql_length` 这些配置都影响内存占用，建议根据实际情况调整（取决于 SQL 大小、SQL 数量、机器配置）不宜设置得过大。内存大小可通过 `tidb_stmt_summary_history_size` \* `tidb_stmt_summary_max_stmt_count` \* `tidb_stmt_summary_max_sql_length` \* `3` 来进行估算。
+> - 假设某种 SQL 每分钟都出现，那 `statements_summary_history` 中会保存这种 SQL 最近 12 个小时的数据。但如果某种 SQL 只在每天 00:00 ~ 00:30 出现，则 `statements_summary_history` 中会保存这种 SQL 24 个时间段的数据，每个时间段的间隔都是 1 天，所以会有这种 SQL 最近 24 天的数据。
+> - `tidb_stmt_summary_history_size`、`tidb_stmt_summary_max_stmt_count`、`tidb_stmt_summary_max_sql_length` 这些配置都影响内存占用，建议根据实际情况调整（取决于 SQL 大小、SQL 数量、机器配置）不宜设置得过大。内存大小可通过 `tidb_stmt_summary_history_size` \* `tidb_stmt_summary_max_stmt_count` \* `tidb_stmt_summary_max_sql_length` \* `3` 来进行估算。
 
 ### 为 statement summary 设定合适的大小
 
@@ -169,7 +173,7 @@ select * from information_schema.statements_summary_evicted;
 2 row in set (0.001 sec)
 ```
 
-由上可知，对最多 59 种 SQL 发生了 evict，也就是说最少应将 statement summary 的容量增大至 59 条记录。
+由上可知，对最多 59 种 SQL 发生了 evict。此时，建议将 `statements_summary` 表的容量至少增大 59 条记录，即至少增大至 3059 条。
 
 ## 目前的限制
 
@@ -272,9 +276,11 @@ SQL 的基础信息：
 - `SAMPLE_USER`：执行这类 SQL 的用户名，多个用户名只取其中一个
 - `PLAN_DIGEST`：执行计划的 digest
 - `PLAN`：原执行计划，多条语句只取其中一条的执行计划
-- `BINARY_PLAN`：以二进制格式编码后的原执行计划，存在多条语句时，只取其中一条语句的执行计划。用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
+- `BINARY_PLAN`：以二进制格式编码后的原执行计划，存在多条语句时，只取其中一条语句的执行计划。用 [`SELECT tidb_decode_binary_plan('xxx...')`](/functions-and-operators/tidb-functions.md#tidb_decode_binary_plan) SQL 语句可以解析出具体的执行计划。
 - `PLAN_CACHE_HITS`：这类 SQL 语句命中 plan cache 的总次数
 - `PLAN_IN_CACHE`：这类 SQL 语句的上次执行是否命中了 plan cache
+- `PLAN_CACHE_UNQUALIFIED`：这类 SQL 语句没有命中 plan cache 的次数
+- `PLAN_CACHE_UNQUALIFIED_LAST_REASON`：这类 SQL 语句最后一次没有命中 plan cache 的原因
 
 执行时间相关的信息：
 
@@ -345,6 +351,16 @@ SQL 的基础信息：
 - `BACKOFF_TYPES`：遇到需要重试的错误时的所有错误类型及每种类型重试的次数，格式为 `类型:次数`。如有多种错误则用 `,` 分隔，例如 `txnLock:2,pdRPC:1`
 - `AVG_AFFECTED_ROWS`：平均影响行数
 - `PREV_SAMPLE_TEXT`：当 SQL 是 `COMMIT` 时，该字段为 `COMMIT` 的前一条语句；否则该字段为空字符串。当 SQL 是 `COMMIT` 时，按 digest 和 `prev_sample_text` 一起分组，即不同 `prev_sample_text` 的 `COMMIT` 也会分到不同的行
+
+和资源管控相关的字段：
+
+- `AVG_REQUEST_UNIT_WRITE`：执行 SQL 语句平均消耗的写 RU
+- `MAX_REQUEST_UNIT_WRITE`：执行 SQL 语句最大消耗的写 RU
+- `AVG_REQUEST_UNIT_READ`：执行 SQL 语句平均消耗的读 RU
+- `MAX_REQUEST_UNIT_READ`：执行 SQL 语句最大消耗的读 RU
+- `AVG_QUEUED_RC_TIME`：执行 SQL 语句等待可用 RU 的平均耗时
+- `MAX_QUEUED_RC_TIME`：执行 SQL 语句等待可用 RU 的最大耗时
+- `RESOURCE_GROUP`：执行 SQL 语句绑定的资源组
 
 ### `statements_summary_evicted` 字段介绍
 

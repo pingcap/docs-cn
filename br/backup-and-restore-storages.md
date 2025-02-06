@@ -19,7 +19,7 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 
 但是，这个操作不适合云端环境，如果采用了 IAM Role 方式授权，那么每个节点都有自己的角色和权限。在这种情况下，你需要设置 `--send-credentials-to-tikv=false`（或简写为 `-c=0`）来禁止发送凭证：
 
 ```bash
-./br backup full -c=0 -u pd-service:2379 --storage 's3://bucket-name/prefix'
+tiup br backup full -c=0 -u pd-service:2379 --storage 's3://bucket-name/prefix'
 ```
 
 使用 SQL 进行[备份](/sql-statements/sql-statement-backup.md)[恢复](/sql-statements/sql-statement-restore.md)时，可加上 `SEND_CREDENTIALS_TO_TIKV = FALSE` 选项：
@@ -32,57 +32,13 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
 ### 格式说明
 
-本部分介绍存储服务的 URI 格式：
+外部存储服务的 URI 格式如下：
 
 ```shell
 [scheme]://[host]/[path]?[parameters]
 ```
 
-<SimpleTab groupId="storage">
-<div label="Amazon S3" value="amazon">
-
-- `scheme`：`s3`
-- `host`：`bucket name`
-- `parameters`：
-
-    - `access-key`：访问密钥
-    - `secret-access-key`：秘密访问密钥
-    - `session-token`：会话令牌
-    - `use-accelerate-endpoint`：是否在 Amazon S3 上使用加速端点，默认为 `false`
-    - `endpoint`：Amazon S3 兼容服务自定义端点的 URL，例如 `<https://s3.example.com/>`
-    - `force-path-style`：使用路径类型 (path-style)，而不是虚拟托管类型 (virtual-hosted-style)，默认为 `true`
-    - `storage-class`：上传对象的存储类别，例如 `STANDARD`、`STANDARD_IA`
-    - `sse`：加密上传的服务端加密算法，可以设置为空、`AES256` 或 `aws:kms`
-    - `sse-kms-key-id`：如果 `sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID
-    - `acl`：上传对象的标准 ACL (Canned ACL)，例如 `private`、`authenticated-read`
-    - `role-arn`：当需要使用特定的 [IAM 角色](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles.html)来访问第三方 Amazon S3 的数据时，使用这个参数来指定 IAM 角色的对应 [Amazon Resource Name (ARN)](https://docs.aws.amazon.com/zh_cn/general/latest/gr/aws-arns-and-namespaces.html)（例如 `arn:aws:iam::888888888888:role/my-role`）。关于使用 IAM 角色访问第三方 Amazon S3 数据的场景，请参考 [AWS 相关文档介绍](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles_common-scenarios_third-party.html)。
-    - `external-id`：当需要使用特定的 [IAM 角色](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles.html)来访问第三方 Amazon S3 的数据时，可能需要同时提供正确的[外部 ID](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html) 来确保用户有权限代入该 IAM 角色。这个参数用来指定对应的外部 ID，确保成功代入 IAM 角色。外部 ID 可以是任意字符串，并且不是必须的，一般由控制 Amazon S3 数据访问的第三方来指定。如果第三方对于 IAM 角色没有要求指定外部 ID，则可以不需要提供该参数也能顺利代入对应的 IAM 角色，从而访问对应的 Amazon S3 数据。
-
-</div>
-<div label="GCS" value="gcs">
-
-- `scheme`：`gcs` 或 `gs`
-- `host`：`bucket name`
-- `parameters`：
-
-    - `credentials-file`：迁移工具节点上凭证 JSON 文件的路径
-    - `storage-class`：上传对象的存储类别，例如 `STANDARD` 或 `COLDLINE`
-    - `predefined-acl`：上传对象的预定义 ACL，例如 `private` 或 `project-private`
-
-</div>
-<div label="Azure Blob Storage" value="azure">
-
-- `scheme`：`azure` 或 `azblob`
-- `host`：`container name`
-- `parameters`：
-
-    - `account-name`：存储账户名
-    - `account-key`：访问密钥
-    - `sas-token`：共享访问签名令牌
-    - `access-tier`：上传对象的存储类别，例如 `Hot`、`Cool`、`Archive`，默认值为该存储账户的默认访问层。
-
-</div>
-</SimpleTab>
+关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 ### URI 示例
 
@@ -94,14 +50,14 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 **备份快照数据到 Amazon S3**
 
 ```shell
-./br backup full -u "${PD_IP}:2379" \
+tiup br backup full -u "${PD_IP}:2379" \
 --storage "s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
 **从 Amazon S3 恢复快照备份数据**
 
 ```shell
-./br restore full -u "${PD_IP}:2379" \
+tiup br restore full -u "${PD_IP}:2379" \
 --storage "s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
@@ -111,14 +67,14 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 **备份快照数据到 GCS**
 
 ```shell
-./br backup full --pd "${PD_IP}:2379" \
+tiup br backup full --pd "${PD_IP}:2379" \
 --storage "gcs://external/backup-20220915?credentials-file=${credentials-file-path}"
 ```
 
 **从 GCS 恢复快照备份数据**
 
 ```shell
-./br restore full --pd "${PD_IP}:2379" \
+tiup br restore full --pd "${PD_IP}:2379" \
 --storage "gcs://external/backup-20220915?credentials-file=${credentials-file-path}"
 ```
 
@@ -128,14 +84,14 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 **备份快照数据到 Azure Blob Storage**
 
 ```shell
-./br backup full -u "${PD_IP}:2379" \
+tiup br backup full -u "${PD_IP}:2379" \
 --storage "azure://external/backup-20220915?account-name=${account-name}&account-key=${account-key}"
 ```
 
 **从 Azure Blob Storage 恢复快照备份数据中 `test` 数据库**
 
 ```shell
-./br restore db --db test -u "${PD_IP}:2379" \
+tiup br restore db --db test -u "${PD_IP}:2379" \
 --storage "azure://external/backup-20220915account-name=${account-name}&account-key=${account-key}"
 ```
 
@@ -151,10 +107,14 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
 在备份之前，需要为 br 命令行工具访问 Amazon S3 中的备份目录设置相应的访问权限：
 
-- 备份时 TiKV 和 br 命令行工具需要的访问备份数据目录的最小权限：`s3:ListBucket`、`s3:PutObject` 和 `s3:AbortMultipartUpload`。
-- 恢复时 TiKV 和 br 命令行工具需要的访问备份数据目录的最小权限：`s3:ListBucket`、`s3:GetObject` 和 `s3:PutObject`。br 命令行工具会将断点信息写到备份数据目录下的 `./checkpoints` 子目录。在恢复日志备份数据时，br 命令行工具会将备份恢复集群的表 ID 映射关系写到备份数据目录下的 `./pitr_id_maps` 子目录。
+- 备份时 TiKV 和 br 命令行工具需要的访问备份数据目录的最小权限：`s3:ListBucket`、`s3:GetObject`、`s3:DeleteObject`、`s3:PutObject` 和 `s3:AbortMultipartUpload`。
+- 恢复时 TiKV 和 br 命令行工具需要的访问备份数据目录的最小权限：`s3:ListBucket` 和 `s3:GetObject`。
 
 如果你还没有创建备份数据保存目录，可以参考[创建存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的区域中创建一个 S3 存储桶。如果需要使用文件夹，可以参考[使用文件夹在 Amazon S3 控制台中组织对象](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在存储桶中创建一个文件夹。
+
+> **注意：**
+>
+> AWS 在 2024 年改变了默认行为，新创建的实例默认设置仅支持 IMDSv2，详情请参考[将 IMDSv2 设为账户中所有新实例启动的默认设置](https://aws.amazon.com/cn/about-aws/whats-new/2024/03/set-imdsv2-default-new-instance-launches/)。因此从 v8.4.0 开始，BR 支持在仅开启 IMDSv2 的 Amazon EC2 实例上获取 IAM role 权限。在使用 v8.4.0 之前版本的 BR 时，需要设置实例为同时支持 IMDSv1 和 IMDSv2。
 
 配置访问 Amazon S3 的账户可以通过以下两种方式：
 
@@ -172,7 +132,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
     为运行 TiKV 和 br 命令行工具的 EC2 实例关联一个配置了访问 S3 访问权限的 IAM role。正确设置后，br 命令行工具可以直接访问对应的 S3 中的备份目录，而不需要额外的设置。
 
     ```shell
-    br backup full --pd "${PD_IP}:2379" \
+    tiup br backup full --pd "${PD_IP}:2379" \
     --storage "s3://${host}/${path}"
     ```
 
@@ -239,7 +199,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
     - 使用 br 命令行工具将数据备份至 Azure Blob Storage：
 
         ```shell
-        ./br backup full -u "${PD_IP}:2379" \
+        tiup br backup full -u "${PD_IP}:2379" \
         --storage "azure://external/backup-20220915?account-name=${account-name}"
         ```
 
@@ -252,6 +212,16 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
 TiDB 备份恢复功能支持对备份到 Amazon S3 的数据进行 S3 服务端加密 (SSE)。S3 服务端加密也支持使用用户自行创建的 AWS KMS 密钥，详细信息请参考 [BR S3 服务端加密](/encryption-at-rest.md#br-s3-服务端加密)。
 
+### Azure Blob Storage 存储服务端加密备份数据
+
+TiDB 备份恢复功能支持对备份到 Azure Blob Storage 的数据设置 Azure 服务端加密范围 (Encryption Scope) 或提供加密密钥 (Encryption Key)，为同一存储账户的不同备份数据建立安全边界。详细信息请参考 [BR Azure Blob Storage 服务端加密](/encryption-at-rest.md#br-azure-blob-storage-服务端加密)。
+
 ## 存储服务其他功能支持
 
-TiDB 备份恢复功能从 v6.3.0 支持 AWS S3 Object Lock 功能。你可以在 AWS 中开启 [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 功能来防止备份数据写入后被修改或者删除。
+Amazon [S3 对象锁定](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/object-lock.html) 功能支持用户通过设置数据留存期，有效防止备份数据在指定时间内被意外或故意删除，提升了数据的安全性和完整性。从 v6.3.0 起，BR 为快照备份引入了对 Amazon S3 对象锁定功能的支持，为全量备份增加了额外的安全性保障。从 v8.0.0 起，PITR 也引入了对 Amazon S3 对象锁定功能的支持，无论是全量备份还是日志数据备份，都可以通过对象锁定功能提供更可靠的数据保护，进一步加强了数据备份和恢复的安全性，并满足了监管方面的需求。
+
+BR 和 PITR 将自动检测 Amazon S3 对象锁定功能的开启或关闭状态，你无需进行任何额外的操作。
+
+> **警告：**
+>
+> 如果在快照备份执行过程中或者 PITR 日志备份过程中，才开启了对象锁定功能，快照备份或者日志备份可能会失败。需要重新启动快照备份或者 PITR 日志备份任务来继续完成备份。

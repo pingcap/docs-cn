@@ -7,12 +7,6 @@ summary: 了解 TiCDC CSV Protocol 的概念和使用方法。
 
 当使用云存储服务作为下游 sink 时，你可以使用 CSV 格式将 DML 事件发送到下游云存储服务。
 
-> **警告：**
->
-> 当开启 [Old Value 功能](/ticdc/ticdc-manage-changefeed.md#输出行变更的历史值-从-v405-版本开始引入)时 (`enable-old-value = true`)，CSV 协议数据格式无法输出更新事件的旧值。
->
-> 具体原因请参考 [TiCDC 在开启 Old Value 功能后更新事件格式有何变化？](/ticdc/ticdc-faq.md#ticdc-在开启-old-value-功能后更新事件格式有何变化)
-
 ## 使用 CSV
 
 使用 CSV 时的配置样例如下所示：
@@ -29,10 +23,12 @@ protocol = "csv"
 terminator = "\n"
 
 [sink.csv]
-delimiter = ','
+delimiter = ',' # v7.6.0 以前，delimiter 仅支持设置为单个字符。从 v7.6.0 开始，支持设置为 1 - 3 个字符，例如 `$^` 或者 `|@|`。
 quote = '"'
 null = '\N'
 include-commit-ts = true
+binary-encoding-method = 'base64'
+output-old-value = false
 ```
 
 ## 数据保存的事务性约束
@@ -53,7 +49,8 @@ CSV 文件中，单行的每一列定义如下：
 - 第二列：表名。
 - 第三列：库名。
 - 第四列：`commit ts`，即原始事务的 commit ts。该列为可选配置。
-- 第五列至最后一列：变更数据的列，可为一列或多列。
+- 第五列：`is-update`，该列仅在 `output-old-value` 为 true 时存在，用于标识该行变更来自 Update 事件（值为 true），还是来自 Insert/Delete 事件（值为 false）。
+- 第六列至最后一列：变更数据的列，可为一列或多列。
 
 假设某张表 `hr.employee` 的定义如下：
 
@@ -67,7 +64,7 @@ CREATE TABLE `employee` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
-该表上的 DML 事件以 CSV 格式存储后如下所示：
+当配置中 `include-commit-ts = true` 且 `output-old-value = false` 时，该表上的 DML 事件以 CSV 格式存储后如下所示：
 
 ```
 "I","employee","hr",433305438660591626,101,"Smith","Bob","2014-06-04","New York"
@@ -75,6 +72,18 @@ CREATE TABLE `employee` (
 "D","employee","hr",433305438660591629,101,"Smith","Bob","2017-03-13","Dallas"
 "I","employee","hr",433305438660591630,102,"Alex","Alice","2017-03-14","Shanghai"
 "U","employee","hr",433305438660591630,102,"Alex","Alice","2018-06-15","Beijing"
+```
+
+当配置中 `include-commit-ts = true` 且 `output-old-value = true` 时，该表上的 DML 事件以 CSV 格式存储后如下所示：
+
+```
+"I","employee","hr",433305438660591626,false,101,"Smith","Bob","2014-06-04","New York"
+"D","employee","hr",433305438660591627,true,101,"Smith","Bob","2015-10-08","Shanghai"
+"I","employee","hr",433305438660591627,true,101,"Smith","Bob","2015-10-08","Los Angeles"
+"D","employee","hr",433305438660591629,false,101,"Smith","Bob","2017-03-13","Dallas"
+"I","employee","hr",433305438660591630,false,102,"Alex","Alice","2017-03-14","Shanghai"
+"D","employee","hr",433305438660591630,true,102,"Alex","Alice","2017-03-14","Beijing"
+"I","employee","hr",433305438660591630,true,102,"Alex","Alice","2018-06-15","Beijing"
 ```
 
 ## 数据类型映射
@@ -89,7 +98,7 @@ CREATE TABLE `employee` (
 | `TIME`                                                            | String  | `"23:59:59"`                   | 格式：`HH:mm:ss`                 |
 | `YEAR`                                                            | Integer | `1970`                         | -                             |
 | `VARCHAR`/`JSON`/`TINYTEXT`/`MEDIUMTEXT`/`LONGTEXT`/`TEXT`/`CHAR` | String  | `"test"`                       | 以 UTF-8 编码输出                  |
-| `VARBINARY`/`TINYBLOB`/`MEDIUMBLOB`/`LONGBLOB`/`BLOB`/`BINARY`    | String  | `"6Zi/5pav"`                   | 以 Base64 编码输出                 |
+| `VARBINARY`/`TINYBLOB`/`MEDIUMBLOB`/`LONGBLOB`/`BLOB`/`BINARY`    | String  | `"6Zi/5pav"` 或 `"e998bfe696af"`         | 以 Base64 或 Hex 编码输出                 |
 | `BIT`                                                             | Integer | `81`                           | -                             |
 | `DECIMAL`                                                         | String  | `"129012.1230000"`             | -                             |
 | `ENUM`                                                            | String  | `"a"`                          | -                             |

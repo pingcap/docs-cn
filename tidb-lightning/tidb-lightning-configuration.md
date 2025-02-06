@@ -31,6 +31,11 @@ file = "tidb-lightning.log"
 max-size = 128 # MB
 max-days = 28
 max-backups = 14
+
+# 是否开启诊断日志。默认为 false，即只输出和导入有关的日志，不会输出依赖的其他组件的日志。
+# 设置为 true 后，既输出和导入相关的日志，也输出依赖的其他组件的日志，并开启 GRPC debug，可用于问题诊断。
+# 该参数自 v7.3.0 开始引入。
+enable-diagnose-logs = false
 ```
 
 ### TiDB Lightning 任务配置
@@ -39,14 +44,12 @@ max-backups = 14
 ### tidb-lightning 任务配置
 
 [lightning]
-# 启动之前检查集群是否满足最低需求。
+# 启动之前检查集群是否满足最低需求，以及运行过程中检查 TiKV 的可用存储空间是否大于 10%。
 # check-requirements = true
 
 # 引擎文件的最大并行数。
 # 每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”。
-# 这两项设置控制两种引擎文件的最大并发数。
-# 这两项设置的值会影响 tikv-importer 的内存和磁盘用量。
-# 两项数值之和不能超过 tikv-importer 的 max-open-engines 的设定。
+# 这两项设置控制两种引擎文件的最大并发数。通常情况下，你可以使用默认值。
 index-concurrency = 2
 table-concurrency = 6
 
@@ -100,7 +103,7 @@ driver = "file"
 
 # dsn 是数据源名称 (data source name)，表示断点的存放位置。
 # 若 driver = "file"，则 dsn 为断点信息存放的文件路径。
-#若不设置该路径，则默认存储路径为“/tmp/CHECKPOINT_SCHEMA.pb”。
+# 若不设置该路径，则默认存储路径为“/tmp/CHECKPOINT_SCHEMA.pb”。
 # 若 driver = "mysql"，则 dsn 为“用户:密码@tcp(地址:端口)/”格式的 URL。
 # 若不设置该 URL，则默认会使用 [tidb] 部分指定的 TiDB 服务器来存储断点。
 # 为减少目标 TiDB 集群的压力，建议指定另一台兼容 MySQL 的数据库服务器来存储断点。
@@ -110,31 +113,44 @@ driver = "file"
 # 保留断点有利于进行调试，但会泄漏关于数据源的元数据。
 # keep-after-success = false
 
+[conflict]
+# 从 v7.3.0 开始引入的新版冲突数据处理策略。默认值为 ""。从 v8.0.0 开始，TiDB Lightning 优化了物理导入模式和逻辑导入模式的冲突策略。
+# - ""：在物理导入模式下，不进行冲突数据检测和处理。如果源文件存在主键或唯一键冲突的记录，后续步骤会报错。在逻辑导入模式下，"" 策略将被转换为 "error" 策略处理。
+# - "error"：检测到导入的数据存在主键或唯一键冲突的数据时，终止导入并报错。
+# - "replace"：遇到主键或唯一键冲突的数据时，保留最新的数据，覆盖旧的数据。
+#              使用物理导入模式时，冲突数据将被记录到目标 TiDB 集群中的 `lightning_task_info.conflict_view` 视图中。
+#              在 `lightning_task_info.conflict_view` 视图中，如果某行的 `is_precheck_conflict` 字段为 `0`，表示该行记录的冲突数据是通过后置冲突检测发现的；如果某行的 `is_precheck_conflict` 字段为 `1`，表示该行记录的冲突数据是通过前置冲突检测发现的。
+#              你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
+# - "ignore"：遇到主键或唯一键冲突的数据时，保留旧的数据，忽略新的数据。仅当导入模式为逻辑导入模式时可以使用该选项。
+strategy = ""
+# 控制是否开启前置冲突检测，即导入数据到 TiDB 前，先检查所需导入的数据是否存在冲突。该参数默认值为 false，表示仅开启后置冲突检测。取值为 true 时，表示同时开启前置冲突检测和后置冲突检测。仅当导入模式为物理导入模式时可以使用该参数。冲突记录数量高于 1,000,000 的场景建议配置 `precheck-conflict-before-import = true`，可以提升冲突检测的性能，反之建议关闭。
+# precheck-conflict-before-import = false
+# 控制 strategy 为 "replace" 或 "ignore" 时，能处理的冲突错误数的上限。仅在 strategy 为 "replace" 或 "ignore" 时可配置。默认为 10000。如果设置的值大于 10000，导入过程可能会出现性能下降的情况。
+# threshold = 10000
+# 控制冲突数据记录表 (`conflict_records`) 中记录的冲突数据的条数上限，默认为 10000。
+# 从 v8.1.0 开始，TiDB Lightning 会自动将 `max-record-rows` 的值设置为 `threshold` 的值，并忽略用户输入，因此无需再单独配置 `max-record-rows`。`max-record-rows` 将在未来版本中废弃。
+# 在物理导入模式下，当 strategy 为 "replace" 时会记录被覆盖的冲突记录。
+# 在逻辑导入模式下，当 strategy 为 "ignore" 时会记录被忽略写入的冲突记录，当 strategy 为 "replace" 时，不会记录冲突记录。
+# max-record-rows = 10000
+
 [tikv-importer]
 # "local"：物理导入模式（Physical Import Mode），默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
 # "tidb"：逻辑导入模式 (Logical Import Mode)。TB 级以下数据量可以采用，下游 TiDB 可正常提供服务。
 # backend = "local"
 # 是否允许启动多个 TiDB Lightning 实例（物理导入模式）并行导入数据到一个或多个目标表。默认取值为 false。
-# 注意，该参数**不是用于增量导入数据**，仅限目标表为空的场景使用。
+# 注意，该参数仅限目标表为空的场景使用。
 # 多个 TiDB Lightning 实例（物理导入模式）同时导入一张表时，此开关必须设置为 true。
 # 但前提是目标表不能存在数据，即所有的数据都只能是由 TiDB Lightning 导入。
-# incremental-import = false
-# 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
-addr = "172.16.31.10:8287"
-# 逻辑导入模式插入冲突数据时执行的操作。关于冲突检测详细信息请查阅：https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-logical-import-mode-usage#冲突数据检测
-# - replace：新数据替代已有数据
-# - ignore：保留已有数据，忽略新数据
-# - error：中止导入并报错
-# on-duplicate = "replace"
+# parallel-import = false
 
+# `duplicate-resolution` 参数从 v8.0.0 开始已被废弃，并将在未来版本中被移除。详情参考 <https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#旧版冲突检测从-v800-开始已被废弃>。
 # 物理导入模式设置是否检测和解决重复的记录（唯一键冲突）。
 # 目前支持两种解决方法：
-#  - none: 不检测重复记录。该模式是两种模式中性能最佳的，但是如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
-#  - remove：如果写入的数据 A 和 B 存在 Primary Key 或 Unique Key 冲突，
-#            则会将 A 和 B 这两条冲突数据从目标表移除，同时记录到目标 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。
-#            你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
-#            如果版本过低，则会启用 'none' 模式。
-# 默认值为 'none'。 
+#  - 'none'：不检测重复记录。
+#          如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
+#          如果 `duplicate-resolution` 设置为 'none' 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 ""。
+#  - 'remove'：如果 `duplicate-resolution` 设置为 'remove' 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 "replace" 开启新版冲突检测。
+# 默认值为 'none'。
 # duplicate-resolution = 'none'
 # 物理导入模式下，向 TiKV 发送数据时一次请求中最大 KV 数量。
 # 自 v7.2.0 开始，该参数废弃，设置后不再生效。如果希望调整一次请求中向 TiKV 发送的数据量，请使用 `send-kv-size` 参数。
@@ -191,6 +207,28 @@ addr = "172.16.31.10:8287"
 # 若两次重试之间有任何 Region 上线，该次操作不会被计为重试次数。
 # 该参数自 v7.1.0 版本开始引入。
 # region-check-backoff-limit = 1800
+
+# 物理导入模式下，用于控制本地文件排序的 I/O 区块大小。当 IOPS 成为瓶颈时，你可以调大该参数的值以缓解磁盘 IOPS，从而提升数据导入性能。
+# 该参数自 v7.6.0 版本开始引入。默认值为 "16KiB"。取值必须大于或等于 `1B`。注意，如果仅指定数字（如 `16`），则单位为 Byte 而不是 KiB。
+# block-size = "16KiB"
+
+# 在逻辑导入模式下，用于设置下游 TiDB 服务器上执行的每条 SQL 语句的最大值。
+# 该参数自 v8.0.0 版本开始引入。
+# 该参数指定了单个事务中执行的每个 INSERT 或 REPLACE 语句的 VALUES 部分的期望最大大小。
+# 该参数不是一个严格限制。实际执行的 SQL 语句长度可能会根据导入数据的具体内容而有所不同。
+# 默认值为 "96KiB"，在 TiDB Lightning 是集群中唯一的客户端时，这是导入速度的最佳值。
+# 由于 TiDB Lightning 的实现细节，该参数最大值为 96 KiB。设置更大的值将不会生效。
+# 你可以减小该值以减轻大事务对集群的压力。
+# logical-import-batch-size = "96KiB"
+
+# 在逻辑导入模式下，限制每个事务中可插入的最大行数。
+# 该参数自 v8.0.0 版本开始引入。默认值为 65536 行。
+# 当同时指定 `logical-import-batch-size` 和 `logical-import-batch-rows` 时，首先达到阈值的参数将生效。
+# 你可以减小该值以减轻大事务对集群的压力。
+# logical-import-batch-rows = 65536
+
+# 在逻辑导入模式下，该参数控制是否使用预处理语句和语句缓存来提高性能。默认值为 `false`。
+logical-import-prep-stmt = false
 
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
@@ -297,21 +335,25 @@ user = "root"
 password = ""
 # 表结构信息从 TiDB 的“status-port”获取。
 status-port = 10080
-# pd-server 的地址，填一个即可。
-pd-addr = "172.16.31.4:2379"
+# pd-server 的地址，从 v7.6.0 开始支持设置多个地址。
+pd-addr = "172.16.31.4:2379,56.78.90.12:3456"
 # tidb-lightning 引用了 TiDB 库，并生成产生一些日志。
 # 设置 TiDB 库的日志等级。
 log-level = "error"
 
-# 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。
-# 各参数定义可参阅”控制 Analyze 并发度“文档
+# 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。注意，如果将 checksum-via-sql 设置为 "true"，则会通过 TiDB 执行 ADMIN CHECKSUM TABLE <table> SQL 语句来进行 Checksum 操作。在这种情况下，以下参数设置 `distsql-scan-concurrency = 15` 和 `checksum-table-concurrency = 2` 将不会生效。
+# 各参数定义可参阅 “控制 Analyze 并发度文档” (https://docs.pingcap.com/zh/tidb/stable/statistics#%E6%8E%A7%E5%88%B6-analyze-%E5%B9%B6%E5%8F%91%E5%BA%A6)。
 build-stats-concurrency = 20
 distsql-scan-concurrency = 15
 index-serial-scan-concurrency = 20
 checksum-table-concurrency = 2
 
+# 设置其他 TiDB 会话变量
+# [tidb.session-vars]
+# tidb_enable_clustered_index = "OFF"
+
 # 解析和执行 SQL 语句的默认 SQL 模式。
-sql-mode = "ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
+sql-mode = "ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER"
 # `max-allowed-packet` 设置数据库连接允许的最大数据包大小，
 # 对应于系统参数中的 `max_allowed_packet`。 如果设置为 0，
 # 会使用下游数据库 global 级别的 `max_allowed_packet`。
@@ -350,10 +392,14 @@ max-allowed-packet = 67_108_864
 # 1. Checksum 对比失败通常表示导入异常（数据丢失或数据不一致），因此建议总是开启 Checksum。
 # 2. 考虑到与旧版本的兼容性，依然可以在本配置项设置 `true` 和 `false` 两个布尔值，其效果与 `required` 和 `off` 相同。
 checksum = "required"
+# 设置是否通过 TiDB 执行 ADMIN CHECKSUM TABLE <table> 操作。
+# 默认值为 "false"，表示通过 TiDB Lightning 下发 ADMIN CHECKSUM TABLE <table> 命令给 TiKV 执行。
+# 建议将该值设为 "true"，以便在 checksum 失败时更容易定位问题。
+# 同时，当该值为 "true" 时，如果需要调整并发，请在 TiDB 中设置 `tidb_checksum_table_concurrency` 变量 (https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_checksum_table_concurrency)。
+checksum-via-sql = "false"
 # 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作。
 # 此配置的可选配置项与 `checksum` 相同，但默认值为 "optional"。
 analyze = "optional"
-
 
 # 设置周期性后台操作。
 # 支持的单位：h（时）、m（分）、s（秒）。
@@ -366,57 +412,3 @@ log-progress = "5m"
 # 使用物理导入模式时，检查本地磁盘配额的时间间隔，默认为 60 秒。
 # check-disk-quota = "60s"
 ```
-
-## 命令行参数
-
-### `tidb-lightning`
-
-使用 `tidb-lightning` 可以对下列参数进行配置：
-
-| 参数 | 描述 | 对应配置项 |
-|:----|:----|:----|
-| --config *file* | 从 *file* 读取全局设置。如果没有指定则使用默认设置。 | |
-| -V | 输出程序的版本 | |
-| -d *directory* | 读取数据的本地目录或[外部存储 URI](/br/backup-and-restore-storages.md#uri-格式) | `mydumper.data-source-dir` |
-| -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
-| -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
-| --backend [*backend*](/tidb-lightning/tidb-lightning-overview.md) | 选择导入的模式：`local` 为物理导入模式，`tidb` 为逻辑导入模式  | `local` |
-| --log-file *file* | 日志文件路径（默认值为 `/tmp/lightning.log.{timestamp}`，设置为 '-' 表示日志输出到终端） | `lightning.log-file` |
-| --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
-| --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |
-| --pd-urls *host:port* | PD endpoint 的地址 | `tidb.pd-addr` |
-| --tidb-host *host* | TiDB Server 的 host | `tidb.host` |
-| --tidb-port *port* | TiDB Server 的端口（默认为 4000） | `tidb.port` |
-| --tidb-status *port* | TiDB Server 的状态端口的（默认为 10080） | `tidb.status-port` |
-| --tidb-user *user* | 连接到 TiDB 的用户名 | `tidb.user` |
-| --tidb-password *password* | 连接到 TiDB 的密码，可为明文或 Base64 编码 | `tidb.password` |
-| --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
-| --analyze *level* | 导入后分析表信息，可选值为 required、optional（默认值）、off | `post-restore.analyze` |
-| --checksum *level* | 导入后比较校验和，可选值为 required（默认值）、optional、off | `post-restore.checksum` |
-| --check-requirements *bool* | 开始之前检查集群版本兼容性（默认值为 true）| `lightning.check-requirements` |
-| --ca *file* | TLS 连接的 CA 证书路径 | `security.ca-path` |
-| --cert *file* | TLS 连接的证书路径 | `security.cert-path` |
-| --key *file* | TLS 连接的私钥路径 | `security.key-path` |
-| --server-mode | 在服务器模式下启动 TiDB Lightning | `lightning.server-mode` |
-
-如果同时对命令行参数和配置文件中的对应参数进行更改，命令行参数将优先生效。例如，在 `cfg.toml` 文件中，不管对日志等级做出什么修改，运行 `./tidb-lightning -L debug --config cfg.toml` 命令总是将日志级别设置为 “debug”。
-
-### `tidb-lightning-ctl`
-
-使用 `tidb-lightning-ctl` 可以对下列参数进行配置：
-
-| 参数 | 描述 |
-|:----|:----------|
-| --compact | 执行 full compact |
-| --switch-mode *mode* | 将每个 TiKV Store 切换到指定模式（normal 或 import） |
-| --fetch-mode | 打印每个 TiKV Store 的当前模式 |
-| --import-engine *uuid* | 将 TiKV Importer 上关闭的引擎文件导入到 TiKV 集群 |
-| --cleanup-engine *uuid* | 删除 TiKV Importer 上的引擎文件 |
-| --checkpoint-dump *folder* | 将当前的断点以 CSV 格式存储到文件夹中 |
-| --checkpoint-error-destroy *tablename* | 删除断点，如果报错则删除该表 |
-| --checkpoint-error-ignore *tablename* | 忽略指定表中断点的报错 |
-| --checkpoint-remove *tablename* | 无条件删除表的断点 |
-
-*tablename* 必须是`` `db`.`tbl` `` 中的限定表名（包括反引号），或关键词 `all`。
-
-此外，上表中所有 `tidb-lightning` 的参数也适用于 `tidb-lightning-ctl`。

@@ -29,16 +29,16 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 
 > **注意：**
 >
-> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。关于 Mydumper 的更多信息，请参考 [v4.0 版 Mydumper 使用文档](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview)。Mydumper 目前已经不再开发新功能，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，请切换到 Dumpling。
+> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。从 v7.5.0 开始，[Mydumper](https://docs.pingcap.com/tidb/v4.0/mydumper-overview) 废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
 
-相比 Mydumper，Dumpling 做了如下改进：
+Dumpling 具有以下优势：
 
 - 支持导出多种数据形式，包括 SQL/CSV。
 - 支持全新的 [table-filter](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md)，筛选数据更加方便。
 - 支持导出到 Amazon S3 云盘。
 - 针对 TiDB 进行了更多优化：
     - 支持配置 TiDB 单条 SQL 内存限制。
-    - 针对 TiDB v4.0.0 及更新版本，如果 Dumpling 能够直接连接到 PD，则支持自动调整 TiDB GC 时间。
+    - 针对 TiDB v4.0.0 及更新版本，如果 Dumpling 能够访问 TiDB 集群的 PD 地址以及 [`INFORMATION_SCHEMA.CLUSTER_INFO`](/information-schema/information-schema-cluster-info.md) 表，则支持自动调整 [GC](/garbage-collection-overview.md) 的 safe point 从而阻塞 GC。
     - 使用 TiDB 的隐藏列 `_tidb_rowid` 优化了单表内数据的并发导出性能。
     - 对于 TiDB 可以设置 [tidb_snapshot](/read-historical-data.md#操作流程) 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
 
@@ -55,6 +55,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 
 ### 需要的权限
 
+- PROCESS：需要该权限用于查询集群信息以获取 PD 地址，从而通过 PD 控制 GC。
 - SELECT：导出目标表时需要。
 - RELOAD：使用 consistency flush 时需要。注意，只有 TiDB 支持该权限，当上游为 RDS 或采用托管服务时，可忽略该权限。
 - LOCK TABLES：使用 consistency lock 时需要，需要导出的库表都有该权限。
@@ -69,20 +70,30 @@ Dumpling 默认导出数据格式为 SQL 文件。也可以通过设置 `--filet
 {{< copyable "shell-regular" >}}
 
 ```shell
-dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o /tmp/test -r 200000 -F256MiB
+tiup dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o /tmp/test -r 200000 -F 256MiB
 ```
 
 以上命令中：
 
 - `-h`、`-P`、`-u` 分别代表地址、端口、用户。如果需要密码验证，可以使用 `-p $YOUR_SECRET_PASSWORD` 将密码传给 Dumpling。
-- `-o`（或 `--output`）用于选择存储导出文件的目录，支持本地文件的绝对路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+- `-o`（或 `--output`）用于选择存储导出文件的目录，支持本地文件的绝对路径或[外部存储服务的 URI 格式](#存储服务的-uri-格式说明)。
 - `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大。一般不超过 64。
-- `-r` 用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用。当上游为 TiDB 且版本为 v3.0 或更新版本时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分表内并发，具体取值不影响划分算法。对上游为 MySQL 且表的主键是 int 的场景，该参数也有表内并发效果。
+- `-r` 用于开启表内并发加速导出。默认值是 `0`，表示不开启。取值大于 0 表示开启，取值是 INT 类型。当数据源为 TiDB 时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分区间，同时减少内存使用。具体取值不影响划分算法。对数据源为 MySQL 且表的主键或复合主键首列是 INT 的场景，该参数也有表内并发效果。
 - `-F` 选项用于指定单个文件的最大大小，单位为 `MiB`，可接受类似 `5GiB` 或 `8KB` 的输入。如果你想使用 TiDB Lightning 将该文件加载到 TiDB 实例中，建议将 `-F` 选项的值保持在 256 MiB 或以下。
 
 > **注意：**
 >
 > 如果导出的单表大小超过 10 GB，**强烈建议**使用 `-r` 和 `-F` 参数。
+
+#### 存储服务的 URI 格式说明
+
+本部分介绍 Amazon S3、GCS、和 Azure Blob Storage 存储服务的 URI 格式。基本格式如下：
+
+```shell
+[scheme]://[host]/[path]?[parameters]
+```
+
+关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 ### 导出为 CSV 文件
 
@@ -93,7 +104,7 @@ dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o /tmp/test -r 200000
 {{< copyable "shell-regular" >}}
 
 ```shell
-./dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test --filetype csv --sql 'select * from `test`.`sbtest1` where id < 100' -F 100MiB --output-filename-template 'test.sbtest1.{{.Index}}'
+tiup dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test --filetype csv --sql 'select * from `test`.`sbtest1` where id < 100' -F 100MiB --output-filename-template 'test.sbtest1.{{.Index}}'
 ```
 
 以上命令中：
@@ -113,6 +124,10 @@ dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o /tmp/test -r 200000
 - 该选项只能压缩单个数据与表结构文件，无法直接压缩整个文件夹生成单个压缩集合包。
 - 该选项可以节省磁盘空间，但也会导致导出速度变慢，并增加 CPU 消耗。对导出速度要求较高的场景需慎用。
 - TiDB Lightning v6.5.0 及以上版本支持直接使用 Dumpling 压缩文件作为数据源导入，无需额外配置。
+
+> **注意：**
+>
+> Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
 
 ### 输出文件格式
 
@@ -155,7 +170,7 @@ dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o /tmp/test -r 200000
 
     ```shell
     CREATE TABLE `t1` (
-      `id` int(11) DEFAULT NULL
+      `id` int DEFAULT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
     ```
 
@@ -190,12 +205,12 @@ export AWS_ACCESS_KEY_ID=${AccessKey}
 export AWS_SECRET_ACCESS_KEY=${SecretKey}
 ```
 
-Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。Dumpling 导出到 Amazon S3 的配置参数与 BR 大致相同，更多参数描述，请参考[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多参数描述，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-./dumpling -u root -P 4000 -h 127.0.0.1 -r 200000 -o "s3://${Bucket}/${Folder}"
+tiup dumpling -u root -P 4000 -h 127.0.0.1 -r 200000 -o "s3://${Bucket}/${Folder}"
 ```
 
 ### 筛选导出的数据
@@ -207,7 +222,7 @@ Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。Dumpling �
 {{< copyable "shell-regular" >}}
 
 ```shell
-./dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test --where "id < 100"
+tiup dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test --where "id < 100"
 ```
 
 上述命令将会导出各个表的 id < 100 的数据。注意 `--where` 参数无法与 `--sql` 一起使用。
@@ -219,7 +234,7 @@ Dumpling 可以通过 `--filter` 指定 table-filter 来筛选特定的库表。
 {{< copyable "shell-regular" >}}
 
 ```shell
-./dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test -r 200000 --filter "employees.*" --filter "*.WorkOrder"
+tiup dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test -r 200000 --filter "employees.*" --filter "*.WorkOrder"
 ```
 
 上述命令将会导出 `employees` 数据库的所有表，以及所有数据库中的 `WorkOrder` 表。
@@ -243,7 +258,7 @@ Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表�
 默认情况下，导出的文件会存储到 `./export-<current local time>` 目录下。常用选项如下：
 
 - `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大。
-- `-r` 选项用于指定单个文件的最大记录数，或者说，数据库中的行数。开启后 Dumpling 会开启表内并发，提高导出大表的速度。当上游为 TiDB 且版本为 v3.0 或更新版本时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分表内并发，具体取值不影响划分算法。对上游为 MySQL 且表的主键是 int 的场景，该参数也有表内并发效果。
+- `-r` 选项用于指定单个文件的最大记录数，或者说，数据库中的行数。开启后 Dumpling 会开启表内并发，提高导出大表的速度。当上游为 TiDB 且版本为 v3.0 或更新版本时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分表内并发，具体取值不影响划分算法。对上游为 MySQL 且表的主键或复合主键首列是 INT 的场景，该参数也有表内并发效果。
 - `--compress <format>` 选项可以用于压缩导出的数据，支持 `gzip`、`snappy`、`zstd` 压缩算法。压缩可以显著降低导出数据的大小，同时如果存储的写入 I/O 带宽不足，可以使用该选项来加速导出。但该选项也有副作用，由于该选项会对每个文件单独压缩，因此会增加 CPU 消耗。
 
 利用以上选项可以提高 Dumpling 的导出速度。
@@ -286,8 +301,8 @@ Dumpling 可以通过 `--snapshot` 指定导出某个 [tidb_snapshot](/read-hist
 {{< copyable "shell-regular" >}}
 
 ```shell
-./dumpling --snapshot 417773951312461825
-./dumpling --snapshot "2020-07-02 17:12:45"
+tiup dumpling --snapshot 417773951312461825
+tiup dumpling --snapshot "2020-07-02 17:12:45"
 ```
 
 即可导出 TSO 为 `417773951312461825` 或 `2020-07-02 17:12:45` 时的 TiDB 历史数据快照。
@@ -302,7 +317,7 @@ Dumpling 导出 TiDB 较大单表（超过 1 TB）时，可能会因为导出数
 
 ### 手动设置 TiDB GC 时间
 
-如果导出的 TiDB 版本为 v4.0.0 或更新版本，并且 Dumpling 可以访问 TiDB 集群的 PD 地址，Dumpling 会自动配置延长 GC 时间且不会对原集群造成影响。
+当导出的数据量少于 1 TB，导出的 TiDB 版本为 v4.0.0 或更新版本，且 Dumpling 可以访问 TiDB 集群的 PD 地址以及 [`INFORMATION_SCHEMA.CLUSTER_INFO`](/information-schema/information-schema-cluster-info.md) 表时，Dumpling 会自动调整 GC 的 safe point 从而阻塞 GC 且不会对原集群造成影响。
 
 但是，在以下场景中，Dumpling 无法自动调整 GC 时间：
 
@@ -334,7 +349,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --case-sensitive | table-filter 是否大小写敏感 | false，大小写不敏感 |
 | -h 或 --host| 连接的数据库主机的地址 | "127.0.0.1" |
 | -t 或 --threads | 备份并发线程数| 4 |
-| -r 或 --rows | 将 table 划分成 row 行数据，一般针对大表操作并发生成多个文件。当上游为 TiDB 且版本为 v3.0 或更新版本时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分表内并发，具体取值不影响划分算法。 |
+| -r 或 --rows | 用于开启表内并发加速导出。默认值是 `0`，表示不开启。取值大于 0 表示开启，取值是 INT 类型。当数据源为 TiDB 时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分区间，同时减少内存使用。具体取值不影响划分算法。对数据源为 MySQL 且表的主键或复合主键首列是 INT 的场景，该参数也有表内并发效果。 |
 | -L 或 --logfile | 日志输出地址，为空时会输出到控制台 | "" |
 | --loglevel | 日志级别 {debug,info,warn,error,dpanic,panic,fatal} | "info" |
 | --logfmt | 日志输出格式 {text,json} | "text" |
@@ -345,7 +360,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | -s 或--statement-size | 控制 `INSERT` SQL 语句的大小，单位 bytes |
 | -F 或 --filesize | 将 table 数据划分出来的文件大小，需指明单位（如 `128B`, `64KiB`, `32MiB`, `1.5GiB`） |
 | --filetype| 导出文件类型（csv/sql） | "sql" |
-| -o 或 --output | 导出本地文件的绝对路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式) | "./export-${time}" |
+| -o 或 --output | 导出本地文件的绝对路径或[外部存储服务的 URI 格式](/external-storage-uri.md) | "./export-${time}" |
 | -S 或 --sql | 根据指定的 sql 导出数据，该选项不支持并发导出 |
 | --consistency | flush: dump 前用 FTWRL <br/> snapshot: 通过 TSO 来指定 dump 某个快照时间点的 TiDB 数据 <br/> lock: 对需要 dump 的所有表执行 `lock tables read` 命令 <br/> none: 不加锁 dump，无法保证一致性 <br/> auto: 对 MySQL 使用 --consistency flush；对 TiDB 使用 --consistency snapshot | "auto" |
 | --snapshot | snapshot tso，只在 consistency=snapshot 下生效 |
@@ -357,12 +372,49 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --ca | 用于 TLS 连接的 certificate authority 文件的地址 |
 | --cert | 用于 TLS 连接的 client certificate 文件的地址 |
 | --key | 用于 TLS 连接的 client private key 文件的地址 |
-| --csv-delimiter | csv 文件中字符类型变量的定界符 | '"' |
-| --csv-separator | csv 文件中各值的分隔符，如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符| ','|
-| --csv-null-value | csv 文件空值的表示 | "\\N" |
+| --csv-delimiter | CSV 文件中字符类型变量的定界符 | '"' |
+| --csv-separator | CSV 文件中各值的分隔符，如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符| ','|
+| --csv-null-value | CSV 文件空值的表示 | "\\N" |
+| --csv-line-terminator | CSV 文件中表示行尾的换行符。将数据导出为 CSV 文件时，可以通过该选项传入所需的换行符。该选项支持 "\\r\\n" 和 "\\n"，默认值为 "\\r\\n"，和历史版本保持一致。由于 bash 中不同的引号会应用不同的转义规则，如需指定 LF 为换行符，可使用类似 `--csv-line-terminator $'\n'` 的语法。| "\\r\\n" |
+| --csv-output-dialect | 表示可以将源数据导出成数据库所需的格式存储到 CSV。该选项取值可为 `""`，`"snowflake"`、`"redshift"`、`"bigquery"`。默认值为 `""`，表示会按 UTF-8 进行编码并导出数据。如果设置为 `"snowflake"` 或 `"redshift"`，会把 Binary 数据类型转换成十六进制，但会丢失十六进制数的前缀 `0x`，例如 `0x61` 将被表示成 `61`。如果设置为 `"bigquery"`，会使用 base64 对 Binary 数据类型进行编码。在某些情况下，Binary 字符串会出现乱码。| `""` |
 | --escape-backslash | 使用反斜杠 (`\`) 来转义导出文件中的特殊字符 | true |
 | --output-filename-template | 以 [golang template](https://golang.org/pkg/text/template/#hdr-Arguments) 格式表示的数据文件名格式 <br/> 支持 `{{.DB}}`、`{{.Table}}`、`{{.Index}}` 三个参数 <br/> 分别表示数据文件的库名、表名、分块 ID | '{{.DB}}.{{.Table}}.{{.Index}}' |
 | --status-addr | Dumpling 的服务地址，包含了 Prometheus 拉取 metrics 信息及 pprof 调试的地址 | ":8281" |
 | --tidb-mem-quota-query | 单条 dumpling 命令导出 SQL 语句的内存限制，单位为 byte。对于 v4.0.10 或以上版本，若不设置该参数，默认使用 TiDB 中的 `mem-quota-query` 配置项值作为内存限制值。对于 v4.0.10 以下版本，该参数值默认为 32 GB | 34359738368 |
 | --params | 为需导出的数据库连接指定 session 变量，可接受的格式: "character_set_client=latin1,character_set_connection=latin1" |
 | -c 或 --compress | 压缩 Dumpling 导出的 CSV、SQL 数据与表结构文件为指定格式，支持 "gzip"、"snappy" 和 "zstd" 压缩算法 | "" |
+
+## 输出文件名模板
+
+`--output-filename-template` 参数用于定义输出文件的命名规则，不包括文件扩展名。它接受符合 [Go `text/template` 语法](https://golang.org/pkg/text/template/) 的字符串。
+
+模板中可定义的字段如下：
+
+* `.DB`：数据库名
+* `.Table`：表名或对象名
+* `.Index`：当一个表被拆分成多个文件时的 0 起始序号，表示正在导出的是哪一部分。例如，`{{printf "%09d" .Index}}` 表示使用 9 位数字格式化 `.Index`，并用前导 0 填充。
+
+数据库名和表名可能包含一些在文件系统中不允许使用的特殊字符，如 `/`。为了解决此问题，Dumpling 提供了 `fn` 函数来对这些特殊字符进行百分号编码：
+
+* U+0000 到 U+001F（控制字符）
+* `/`、`\`、`<`、`>`、`:`、`"`、`*`、`?`（无效的 Windows 路径字符）
+* `.`（数据库名或表名分隔符）
+* `-schema` 中的 `-`
+
+例如，使用 `--output-filename-template '{{fn .Table}}.{{printf "%09d" .Index}}'`，Dumpling 会将表 `db.tbl:normal` 写入 `tbl%3Anormal.000000000.sql`、`tbl%3Anormal.000000001.sql` 等文件中。
+
+除了输出的数据文件名，你还可以通过 `--output-filename-template` 来替换 schema 文件的文件名。下表显示了默认配置。
+
+| 名称 | 内容 |
+|------|---------|
+| data | `{{fn .DB}}.{{fn .Table}}.{{.Index}}` |
+| schema | `{{fn .DB}}-schema-create` |
+| table | `{{fn .DB}}.{{fn .Table}}-schema` |
+| event | `{{fn .DB}}.{{fn .Table}}-schema-post` |
+| function | `{{fn .DB}}.{{fn .Table}}-schema-post` |
+| procedure | `{{fn .DB}}.{{fn .Table}}-schema-post` |
+| sequence | `{{fn .DB}}.{{fn .Table}}-schema-sequence` |
+| trigger | `{{fn .DB}}.{{fn .Table}}-schema-triggers` |
+| view | `{{fn .DB}}.{{fn .Table}}-schema-view` |
+
+例如，使用 `--output-filename-template '{{define "table"}}{{fn .Table}}.$schema{{end}}{{define "data"}}{{fn .Table}}.{{printf "%09d" .Index}}{{end}}'`，Dumpling 会将表 `db.tbl:normal` 的 schema 写入名为 `tbl%3Anormal.$schema.sql` 的文件中，将数据写入 `tbl%3Anormal.000000000.sql`、`tbl%3Anormal.000000001.sql` 等文件中。

@@ -5,11 +5,17 @@ summary: 了解 TiDB Lightning 的物理导入模式。
 
 # 物理导入模式简介
 
-物理导入模式 (Physical Import Mode) 是 TiDB Lightning 支持的一种数据导入方式。物理导入模式不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。使用物理导入模式时，单个 TiDB Lightning 实例可导入的数据量为 10 TiB，理论上导入的数据量可以随着 TiDB Lightning 实例数量的增加而增加，目前已经有多个用户验证基于[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)功能可以导入的数据量达 20 TiB。
+物理导入模式 (Physical Import Mode) 是 TiDB Lightning 支持的一种数据导入方式。物理导入模式不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。使用物理导入模式时，单个 TiDB Lightning 实例可导入的数据量不超过 10 TiB，理论上导入的数据量可以随着 TiDB Lightning 实例数量的增加而增加，目前已经有多个用户验证基于[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)功能可以导入的数据量达 50 TiB。
 
 使用前请务必自行阅读[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
 
-物理导入模式对应的后端模式为 `local`。
+物理导入模式对应的后端模式为 `local`。可以在配置文件 `tidb-lightning.toml` 中修改：
+
+```toml
+[tikv-importer]
+# 导入模式配置，设为 "local" 即使用物理导入模式
+backend = "local"
+```
 
 ## 原理说明
 
@@ -61,11 +67,12 @@ summary: 了解 TiDB Lightning 的物理导入模式。
 
 - TiDB Lightning 版本 ≥ 4.0.3。
 - TiDB 集群版本 ≥ v4.0.0。
-- 如果目标 TiDB 集群是 v3.x 或以下的版本，需要使用 Importer-backend 来完成数据的导入。在这个模式下，`tidb-lightning` 需要将解析的键值对通过 gRPC 发送给 `tikv-importer` 并由 `tikv-importer` 完成数据的导入。
 
 ### 使用限制
 
 - 请勿直接使用物理导入模式向已经投入生产的 TiDB 集群导入数据，这将对在线业务产生严重影响。如需向生产集群导入数据，请参考[导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时暂停-pd-调度的范围)。
+
+- 如果你的 TiDB 生产集群上有延迟敏感型业务，并且并发较小，**不建议**使用 TiDB Lightning 物理导入模式导入数据到该集群，因为可能会影响在线业务。
 
 - 默认情况下，不应同时启动多个 TiDB Lightning 实例向同一 TiDB 集群导入数据，而应考虑使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性。
 
@@ -73,7 +80,7 @@ summary: 了解 TiDB Lightning 的物理导入模式。
 
 - 在导入数据的过程中，请勿在目标表进行 DDL 和 DML 操作，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入操作完成后再进行读写操作。
 
-- 单个 Lightning 进程导入单表不应超过 10 TB。使用并行导入时，Lightning 实例不应超过 10 个。
+- 单个 TiDB Lightning 进程导入单表不应超过 10 TiB。使用并行导入时，TiDB Lightning 实例不应超过 10 个。
 
 ### 与其他组件一同使用的注意事项
 
@@ -88,3 +95,9 @@ summary: 了解 TiDB Lightning 的物理导入模式。
 - TiDB Lightning 与 TiCDC 一起使用时需要注意：
 
     - TiCDC 无法捕获物理导入模式插入的数据。
+
+- TiDB Lightning 与 BR 一起使用时需要注意：
+
+    - BR 快照备份 TiDB Lightning 正在导入的表，会导致该表备份的数据不一致。
+    - BR 执行基于 AWS EBS 卷快照的备份，会导致 TiDB Lightning 导入数据失败。
+    - TiDB Lightning 物理导入模式导入的数据不支持[日志备份](/br/br-pitr-guide.md#开启日志备份)，因此无法通过 Point-in-time recovery (PITR) 恢复。

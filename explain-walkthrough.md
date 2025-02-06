@@ -134,13 +134,13 @@ SHOW CREATE TABLE trips\G
 *************************** 1. row ***************************
        Table: trips
 Create Table: CREATE TABLE `trips` (
-  `trip_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `duration` int(11) NOT NULL,
+  `trip_id` bigint NOT NULL AUTO_INCREMENT,
+  `duration` int NOT NULL,
   `start_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
-  `start_station_number` int(11) DEFAULT NULL,
+  `start_station_number` int DEFAULT NULL,
   `start_station` varchar(255) DEFAULT NULL,
-  `end_station_number` int(11) DEFAULT NULL,
+  `end_station_number` int DEFAULT NULL,
   `end_station` varchar(255) DEFAULT NULL,
   `bike_number` varchar(255) DEFAULT NULL,
   `member_type` varchar(255) DEFAULT NULL,
@@ -210,3 +210,55 @@ EXPLAIN ANALYZE SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 
 > **注意：**
 >
 > 以上示例另一个可用的优化方案是 [coprocessor cache](/coprocessor-cache.md)。如果你无法添加索引，可考虑开启 coprocessor cache 功能。开启后，只要算子上次执行以来 Region 未作更改，TiKV 将从缓存中返回值。这也有助于减少 `TableFullScan` 和 `Selection` 算子的大部分运算成本。
+
+## 禁止子查询提前执行
+
+在查询优化过程中，TiDB 会提前执行可以在优化阶段直接计算的子查询。例如：
+
+```sql
+CREATE TABLE t1(a int);
+INSERT INTO t1 VALUES(1);
+CREATE TABLE t2(a int);
+EXPLAIN SELECT * FROM t2 WHERE a = (SELECT a FROM t1);
+```
+
+```sql
++--------------------------+----------+-----------+---------------+--------------------------------+
+| id                       | estRows  | task      | access object | operator info                  |
++--------------------------+----------+-----------+---------------+--------------------------------+
+| TableReader_14           | 10.00    | root      |               | data:Selection_13              |
+| └─Selection_13           | 10.00    | cop[tikv] |               | eq(test.t2.a, 1)               |
+|   └─TableFullScan_12     | 10000.00 | cop[tikv] | table:t2      | keep order:false, stats:pseudo |
++--------------------------+----------+-----------+---------------+--------------------------------+
+3 rows in set (0.00 sec)
+```
+
+在上述例子中 `a = (SELECT a FROM t1)` 子查询在优化阶段就进行了计算，表达式被改写为 `t2.a=1`。这种执行方式可以在优化阶段进行更多的常量传播和常量折叠优化，但是会影响 `EXPLAIN` 语句的执行时间。当子查询本身耗时较长时，`EXPLAIN` 语句无法执行完成，可能会影响线上问题的排查。
+
+从 v7.3.0 开始，TiDB 引入 [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) 系统变量，可以控制这类子查询在 `EXPLAIN` 语句中是否禁止提前执行计算展开。该变量默认值为 `OFF`，即提前计算子查询。你可以将该变量设置为 `ON` 来禁止子查询提前执行：
+
+```sql
+SET @@tidb_opt_enable_non_eval_scalar_subquery = ON;
+EXPLAIN SELECT * FROM t2 WHERE a = (SELECT a FROM t1);
+```
+
+```sql
++---------------------------+----------+-----------+---------------+---------------------------------+
+| id                        | estRows  | task      | access object | operator info                   |
++---------------------------+----------+-----------+---------------+---------------------------------+
+| Selection_13              | 8000.00  | root      |               | eq(test.t2.a, ScalarQueryCol#5) |
+| └─TableReader_15          | 10000.00 | root      |               | data:TableFullScan_14           |
+|   └─TableFullScan_14      | 10000.00 | cop[tikv] | table:t2      | keep order:false, stats:pseudo  |
+| ScalarSubQuery_10         | N/A      | root      |               | Output: ScalarQueryCol#5        |
+| └─MaxOneRow_6             | 1.00     | root      |               |                                 |
+|   └─TableReader_9         | 1.00     | root      |               | data:TableFullScan_8            |
+|     └─TableFullScan_8     | 1.00     | cop[tikv] | table:t1      | keep order:false, stats:pseudo  |
++---------------------------+----------+-----------+---------------+---------------------------------+
+7 rows in set (0.00 sec)
+```
+
+可以看到，标量子查询在执行阶段并没有被展开，这样更便于理解该类 SQL 具体的执行过程。
+
+> **注意：**
+>
+> [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) 目前仅控制 `EXPLAIN` 语句的行为，`EXPLAIN ANALYZE` 语句仍然会将子查询提前展开。

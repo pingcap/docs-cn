@@ -16,152 +16,108 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-columns-from/','/docs-
 
 ## 语法图
 
-**ShowStmt:**
+```ebnf+diagram
+ShowColumnsFromStmt ::=
+    "SHOW" "FULL"? ("COLUMNS" | "FIELDS") ("FROM" | "IN") TableName ( ("FROM" | "IN") SchemaName)? ShowLikeOrWhere?
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+TableName ::=
+    (Identifier ".")? Identifier
 
-**ShowColumnsFilterable:**
-
-![ShowColumnsFilterable](/media/sqlgram/ShowColumnsFilterable.png)
-
-**OptFull:**
-
-![OptFull](/media/sqlgram/OptFull.png)
-
-**FieldsOrColumns:**
-
-![FieldsOrColumns](/media/sqlgram/FieldsOrColumns.png)
-
-**ShowTableAliasOpt:**
-
-![ShowTableAliasOpt](/media/sqlgram/ShowTableAliasOpt.png)
-
-**FromOrIn:**
-
-![FromOrIn](/media/sqlgram/FromOrIn.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
-
-**ShowDatabaseNameOpt:**
-
-![ShowDatabaseNameOpt](/media/sqlgram/ShowDatabaseNameOpt.png)
-
-**DBName:**
-
-![DBName](/media/sqlgram/DBName.png)
-
-**ShowLikeOrWhereOpt:**
-
-![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
-create view v1 as select 1;
+CREATE VIEW v1 AS SELECT 1;
 ```
 
 ```
 Query OK, 0 rows affected (0.11 sec)
 ```
 
-{{< copyable "sql" >}}
+```sql
+SHOW COLUMNS FROM v1;
+```
+
+```
++-------+--------+------+------+---------+-------+
+| Field | Type   | Null | Key  | Default | Extra |
++-------+--------+------+------+---------+-------+
+| 1     | bigint | YES  |      | NULL    |       |
++-------+--------+------+------+---------+-------+
+1 row in set (0.00 sec)
+```
 
 ```sql
-show columns from v1;
+DESC v1;
 ```
 
 ```
-+-------+-----------+------+------+---------+-------+
-| Field | Type      | Null | Key  | Default | Extra |
-+-------+-----------+------+------+---------+-------+
-| 1     | bigint(1) | YES  |      | NULL    |       |
++-------+--------+------+------+---------+-------+
+| Field | Type   | Null | Key  | Default | Extra |
++-------+--------+------+------+---------+-------+
+| 1     | bigint | YES  |      | NULL    |       |
++-------+--------+------+------+---------+-------+
+1 row in set (0.00 sec)
+```
+
+```sql
+DESCRIBE v1;
+```
+
+```
++-------+--------+------+------+---------+-------+
+| Field | Type   | Null | Key  | Default | Extra |
++-------+--------+------+------+---------+-------+
+| 1     | bigint | YES  |      | NULL    |       |
 +-------+-----------+------+------+---------+-------+
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
-desc v1;
+EXPLAIN v1;
 ```
 
 ```
-+-------+-----------+------+------+---------+-------+
-| Field | Type      | Null | Key  | Default | Extra |
-+-------+-----------+------+------+---------+-------+
-| 1     | bigint(1) | YES  |      | NULL    |       |
-+-------+-----------+------+------+---------+-------+
++-------+--------+------+------+---------+-------+
+| Field | Type   | Null | Key  | Default | Extra |
++-------+--------+------+------+---------+-------+
+| 1     | bigint | YES  |      | NULL    |       |
++-------+--------+------+------+---------+-------+
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
-describe v1;
+SHOW FIELDS FROM v1;
 ```
 
 ```
-+-------+-----------+------+------+---------+-------+
-| Field | Type      | Null | Key  | Default | Extra |
-+-------+-----------+------+------+---------+-------+
-| 1     | bigint(1) | YES  |      | NULL    |       |
-+-------+-----------+------+------+---------+-------+
++-------+--------+------+------+---------+-------+
+| Field | Type   | Null | Key  | Default | Extra |
++-------+--------+------+------+---------+-------+
+| 1     | bigint | YES  |      | NULL    |       |
++-------+--------+------+------+---------+-------+
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
-explain v1;
+SHOW FULL COLUMNS FROM v1
 ```
 
 ```
-+-------+-----------+------+------+---------+-------+
-| Field | Type      | Null | Key  | Default | Extra |
-+-------+-----------+------+------+---------+-------+
-| 1     | bigint(1) | YES  |      | NULL    |       |
-+-------+-----------+------+------+---------+-------+
++-------+--------+-----------+------+------+---------+-------+---------------------------------+---------+
+| Field | Type   | Collation | Null | Key  | Default | Extra | Privileges                      | Comment |
++-------+--------+-----------+------+------+---------+-------+---------------------------------+---------+
+| 1     | bigint | NULL      | YES  |      | NULL    |       | select,insert,update,references |         |
++-------+--------+-----------+------+------+---------+-------+---------------------------------+---------+
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
-show fields from v1;
-```
-
-```
-+-------+-----------+------+------+---------+-------+
-| Field | Type      | Null | Key  | Default | Extra |
-+-------+-----------+------+------+---------+-------+
-| 1     | bigint(1) | YES  |      | NULL    |       |
-+-------+-----------+------+------+---------+-------+
-1 row in set (0.00 sec)
-```
-
-{{< copyable "sql" >}}
-
-```sql
-show full columns from v1;
-```
-
-```
-+-------+-----------+-----------+------+------+---------+-------+---------------------------------+---------+
-| Field | Type      | Collation | Null | Key  | Default | Extra | Privileges                      | Comment |
-+-------+-----------+-----------+------+------+---------+-------+---------------------------------+---------+
-| 1     | bigint(1) | NULL      | YES  |      | NULL    |       | select,insert,update,references |         |
-+-------+-----------+-----------+------+------+---------+-------+---------------------------------+---------+
-1 row in set (0.00 sec)
-```
-
-{{< copyable "sql" >}}
-
-```sql
-show full columns from mysql.user;
+SHOW FULL COLUMNS FROM mysql.user;
 ```
 
 ```
@@ -212,7 +168,7 @@ show full columns from mysql.user;
 
 ## MySQL 兼容性
 
-`SHOW [FULL] COLUMNS FROM` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`SHOW [FULL] COLUMNS FROM` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
 
 ## 另请参阅
 

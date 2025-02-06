@@ -5,9 +5,13 @@ summary: 了解如何使用 MPP 模式。
 
 # 使用 MPP 模式
 
-本文档介绍 TiFlash 的 MPP 模式及其使用方法。
+本文档介绍 TiFlash 的 [Massively Parallel Processing (MPP)](/glossary.md#massively-parallel-processing-mpp) 模式及其使用方法。
 
 TiFlash 支持 MPP 模式的查询执行，即在计算中引入跨节点的数据交换（data shuffle 过程）。TiDB 默认由优化器自动选择是否使用 MPP 模式，你可以通过修改变量 [`tidb_allow_mpp`](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 和 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的值来更改选择策略。
+
+MPP 模式的工作原理见下图。
+
+![mpp-mode](/media/tiflash/tiflash-mpp.png)
 
 ## 控制是否选择 MPP 模式
 
@@ -77,19 +81,19 @@ MPP 模式目前支持的物理算法有：Broadcast Hash Join、Shuffled Hash J
 
 ```sql
 mysql> explain select count(*) from customer c join nation n on c.c_nationkey=n.n_nationkey;
-+------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
-| id                                       | estRows    | task              | access object | operator info                                                              |
-+------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
-| HashAgg_23                               | 1.00       | root              |               | funcs:count(Column#16)->Column#15                                          |
-| └─TableReader_25                         | 1.00       | root              |               | data:ExchangeSender_24                                                     |
-|   └─ExchangeSender_24                    | 1.00       | batchCop[tiflash] |               | ExchangeType: PassThrough                                                  |
-|     └─HashAgg_12                         | 1.00       | batchCop[tiflash] |               | funcs:count(1)->Column#16                                                  |
-|       └─HashJoin_17                      | 3000000.00 | batchCop[tiflash] |               | inner join, equal:[eq(tpch.nation.n_nationkey, tpch.customer.c_nationkey)] |
-|         ├─ExchangeReceiver_21(Build)     | 25.00      | batchCop[tiflash] |               |                                                                            |
-|         │ └─ExchangeSender_20            | 25.00      | batchCop[tiflash] |               | ExchangeType: Broadcast                                                    |
-|         │   └─TableFullScan_18           | 25.00      | batchCop[tiflash] | table:n       | keep order:false                                                           |
-|         └─TableFullScan_22(Probe)        | 3000000.00 | batchCop[tiflash] | table:c       | keep order:false                                                           |
-+------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
++------------------------------------------+------------+--------------+---------------+----------------------------------------------------------------------------+
+| id                                       | estRows    | task         | access object | operator info                                                              |
++------------------------------------------+------------+--------------+---------------+----------------------------------------------------------------------------+
+| HashAgg_23                               | 1.00       | root         |               | funcs:count(Column#16)->Column#15                                          |
+| └─TableReader_25                         | 1.00       | root         |               | data:ExchangeSender_24                                                     |
+|   └─ExchangeSender_24                    | 1.00       | mpp[tiflash] |               | ExchangeType: PassThrough                                                  |
+|     └─HashAgg_12                         | 1.00       | mpp[tiflash] |               | funcs:count(1)->Column#16                                                  |
+|       └─HashJoin_17                      | 3000000.00 | mpp[tiflash] |               | inner join, equal:[eq(tpch.nation.n_nationkey, tpch.customer.c_nationkey)] |
+|         ├─ExchangeReceiver_21(Build)     | 25.00      | mpp[tiflash] |               |                                                                            |
+|         │ └─ExchangeSender_20            | 25.00      | mpp[tiflash] |               | ExchangeType: Broadcast                                                    |
+|         │   └─TableFullScan_18           | 25.00      | mpp[tiflash] | table:n       | keep order:false                                                           |
+|         └─TableFullScan_22(Probe)        | 3000000.00 | mpp[tiflash] | table:c       | keep order:false                                                           |
++------------------------------------------+------------+--------------+---------------+----------------------------------------------------------------------------+
 9 rows in set (0.00 sec)
 ```
 
@@ -111,7 +115,7 @@ TiFlash 提供了 3 个全局/会话变量决定是否选择 Broadcast Hash Join
 mysql> DROP TABLE if exists test.employees;
 Query OK, 0 rows affected, 1 warning (0.00 sec)
 mysql> CREATE TABLE test.employees
-(id int(11) NOT NULL,
+(id int NOT NULL,
  fname varchar(30) DEFAULT NULL,
  lname varchar(30) DEFAULT NULL,
  hired date NOT NULL DEFAULT '1970-01-01',
@@ -128,7 +132,7 @@ Query OK, 0 rows affected (0.10 sec)
 mysql> ALTER table test.employees SET tiflash replica 1;
 Query OK, 0 rows affected (0.09 sec)
 mysql> SET tidb_partition_prune_mode=static;
-Query OK, 0 rows affected (0.00 sec)
+Query OK, 0 rows affected, 1 warning (0.00 sec)
 mysql> explain SELECT count(*) FROM test.employees;
 +----------------------------------+----------+-------------------+-------------------------------+-----------------------------------+
 | id                               | estRows  | task              | access object                 | operator info                     |

@@ -11,15 +11,26 @@ TiDB 集群增量数据包含在某个时间段的起始和结束两个快照的
 >
 > 当前该功能已经停止开发迭代，推荐你选择[日志备份与恢复功能](/br/br-pitr-guide.md)代替。
 
+## 使用限制
+
+由于增量备份的恢复依赖于备份时间点的库表快照来过滤增量 DDL，因此对于增量备份过程中删除的表，在恢复后可能仍然存在，需要手动删除。
+
+增量备份尚不支持批量重命名表的操作。如果在增量备份过程中发生了批量重命名表的操作，则有可能造成恢复失败。建议在批量重命名表后进行一次全量备份，并在恢复时使用最新的全量备份替代增量数据。
+
+从 v8.3.0 起，新增了配置参数 `--allow-pitr-from-incremental`，用于控制增量备份和后续的日志备份是否兼容。默认值为 `true`，即增量备份兼容后续的日志备份。
+
+- 当保持默认值 `true` 时，增量恢复开始前会对需要回放的 DDL 进行严格检查。该模式目前尚不支持 `ADD INDEX`、`MODIFY COLUMN`、`REORG PARTITION`。因此要想搭配使用增量备份和日志备份，需确保增量备份的过程中没有上述 DDL，否则这三个 DDL 无法被正确回放。
+- 如果整个恢复流程中只需要增量恢复而不考虑日志备份，则可以通过设置 `--allow-pitr-from-incremental` 为 `false` 来跳过增量恢复阶段的检查。
+
 ## 对集群进行增量备份
 
-使用 `br backup` 进行增量备份只需要指定**上一次的备份时间戳** `--lastbackupts`，br 命令行工具会判定需要备份 `lastbackupts` 和当前时间之间增量数据。使用 `validate` 指令获取上一次备份的时间戳，示例如下：
+使用 `tiup br backup` 进行增量备份只需要指定**上一次的备份时间戳** `--lastbackupts`，br 命令行工具会判定需要备份 `lastbackupts` 和当前时间之间增量数据。使用 `validate` 指令获取上一次备份的时间戳，示例如下：
 
 ```shell
 LAST_BACKUP_TS=`tiup br validate decode --field="end-version" --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"| tail -n1`
 ```
 
-备份 `(LAST_BACKUP_TS, current timestamp]` 之间的增量数据，以及这段时间内的 DDL：
+备份 `(LAST_BACKUP_TS, current PD timestamp]` 之间的增量数据，以及这段时间内的 DDL：
 
 ```shell
 tiup br backup full --pd "${PD_IP}:2379" \
@@ -32,7 +43,7 @@ tiup br backup full --pd "${PD_IP}:2379" \
 
 - `--lastbackupts`：上一次的备份时间戳。
 - `--ratelimit`：**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。
-- `storage`：数据备份到存储地址。增量备份数据需要与快照备份数据保存在不同的路径下，例如上例保存在全量备份数据下的 `incr` 目录中。详细参考[备份存储 URI 配置](/br/backup-and-restore-storages.md#uri-格式)。
+- `storage`：数据备份到存储地址。增量备份数据需要与快照备份数据保存在不同的路径下，例如上例保存在全量备份数据下的 `incr` 目录中。关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 ## 恢复增量备份数据
 

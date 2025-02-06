@@ -12,7 +12,7 @@ summary: 了解 DM 对常见 online DDL 工具的支持情况，使用方法和�
 ## 使用限制
 
 - DM 仅针对 gh-ost 与 pt-osc 做了特殊支持。
-- 在开启 `online-ddl` 时，增量复制对应的 checkpoint 应不处于 online DDL 执行过程中。如上游某次 online DDL 操作开始于 binlog `position-A`、结束于 `position-B`，则增量复制的起始点应早于 `position-A` 或晚于 `position-B`，否则可能出现迁移出错，具体可参考 [FAQ](/dm/dm-faq.md#设置了-online-ddl-scheme-gh-ostgh-ost-表相关的-ddl-报错该如何处理)。
+- 在开启 `online-ddl` 时，增量复制对应的 checkpoint 应不处于 online DDL 执行过程中。如上游某次 online DDL 操作开始于 binlog `position-A`、结束于 `position-B`，则增量复制的起始点应早于 `position-A` 或晚于 `position-B`，否则可能出现迁移出错，具体可参考 [FAQ](/dm/dm-faq.md#设置了-online-ddl-truegh-ost-表相关的-ddl-报错该如何处理)。
 
 ## 参数配置
 

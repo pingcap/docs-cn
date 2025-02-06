@@ -31,12 +31,6 @@ data-source-dir = "/data/my_database"
 # 导入模式配置，设为 tidb 即使用逻辑导入模式
 backend = "tidb"
 
-# 逻辑导入模式插入重复数据时执行的操作。
-# - replace：新数据替代已有数据
-# - ignore：保留已有数据，忽略新数据
-# - error：中止导入并报错
-on-duplicate = "replace"
-
 [tidb]
 # 目标集群的信息。tidb-server 的地址，填一个即可。
 host = "172.16.31.1"
@@ -53,13 +47,18 @@ TiDB Lightning 的完整配置文件可参考[完整配置及命令行参数](/t
 
 ## 冲突数据检测
 
-冲突数据，即两条或两条以上的记录存在主键或唯一键列数据重复的情况。当数据源中的记录存在冲突数据，将导致该表真实总行数和使用唯一索引查询的总行数不一致的情况。TiDB Lightning 的逻辑导入模式通过 `on-duplicate` 配置冲突数据检测的策略，TiDB Lightning 根据策略使用不同的 SQL 语句进行插入。
+冲突数据是指两条或两条以上记录中存在主键或唯一键列数据重复。TiDB Lightning 的逻辑导入模式通过 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 配置冲突数据的处理行为，使用不同的 SQL 语句进行导入。
 
-| 策略 | 冲突时默认行为 | 对应 SQL 语句 |
-|:---|:---|:---|
-| `replace` | 新数据替代旧数据 | `REPLACE INTO ...` |
-| `ignore` | 保留旧数据，忽略新数据 | `INSERT IGNORE INTO ...` |
-| `error` | 中止导入 | `INSERT INTO ...` |
+| 策略 | 冲突时默认行为                     | 对应 SQL 语句 |
+|:---|:----------------------------|:---|
+| `"replace"` | 新数据替代旧数据                    | `REPLACE INTO ...` |
+| `"ignore"` | 保留旧数据，忽略新数据                 | 如果 `conflict.threshold` 大于 `0`，则为 `INSERT INTO ...`；如果 `conflict.threshold` 为 `0`，则为 `INSERT IGNORE INTO ...` |
+| `"error"` | 遇到冲突数据时终止导入                        | `INSERT INTO ...` |
+| `""` | 会被转换为 `"error"`，遇到冲突数据时终止导入 | 无 |
+
+配置为 `"error"` 时，由冲突数据引发的错误将直接导致导入任务终止。配置为 `"replace"` 或 `"ignore"` 时，可以通过进一步配置 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 控制冲突数据的上限。默认值为 `10000`，意味着能容忍 10000 个错误。
+
+配置为 `"ignore"` 时，冲突数据可以被记录到下游的 `conflict_records` 表中，详见[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能介绍。在 v8.1.0 之前的版本中，可以通过配置 [`conflict.max-record-rows`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 控制记录上限，超出上限的冲突数据会被跳过导入而不再记录。从 v8.1.0 版本开始，需要通过 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#配置文件) 配置，因为 TiDB Lightning 会自动将 `max-record-rows` 的值设置为 `threshold` 的值，并忽略用户输入。
 
 ## 性能调优
 

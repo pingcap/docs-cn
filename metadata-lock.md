@@ -64,7 +64,7 @@ summary: 介绍 TiDB 中元数据锁的概念、原理、实现和影响。
     | `COMMIT;`                  |                                           |
     | `BEGIN;`                   |                                           |
     |                            | `ALTER TABLE t MODIFY COLUMN a CHAR(10);` |
-    | `SELECT * FROM t;` (报错 `Error 8028: Information schema is changed`) |             |
+    | `SELECT * FROM t;`（报错 `ERROR 8028 (HY000): public column a has changed`） |             |
 
 ## 元数据锁的可观测性
 

@@ -1,6 +1,7 @@
 ---
 title: PD Recover 使用文档
 aliases: ['/docs-cn/dev/pd-recover/','/docs-cn/dev/reference/tools/pd-recover/']
+summary: PD Recover 是用于恢复无法正常启动或服务的 PD 集群的工具。安装方式包括从源代码编译和下载 TiDB 工具包。恢复集群的方式有两种：从存活的 PD 节点重建和完全重建。从存活的 PD 节点重建集群需要停止所有节点，启动存活的 PD 节点，并使用 pd-recover 修复元数据。完全重建 PD 集群需要获取 Cluster ID 和已分配 ID，部署新的 PD 集群，使用 pd-recover 修复，然后重启整个集群。
 ---
 
 # PD Recover 使用文档
@@ -13,7 +14,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
 ### 从源代码编译
 
-* [Go](https://golang.org/)：PD Recover 使用了 Go 模块，请安装 Go 1.20 或以上版本。
+* [Go](https://golang.org/)：PD Recover 使用了 Go 模块，请安装 Go 1.23 或以上版本。
 * 在 [PD](https://github.com/pingcap/pd) 根目录下，运行 `make pd-recover` 命令来编译源代码并生成 `bin/pd-recover`。
 
 > **注意：**
@@ -79,7 +80,7 @@ PD Recover 的安装包位于 TiDB 离线工具包中。下载方式，请参考
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat {{/path/to}}/pd.log | grep "init cluster id"
+grep "init cluster id" {{/path/to}}/pd.log
 ```
 
 ```bash
@@ -96,7 +97,7 @@ cat {{/path/to}}/pd.log | grep "init cluster id"
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat {{/path/to}}/tidb.log | grep "init cluster id"
+grep "init cluster id" {{/path/to}}/tidb.log
 ```
 
 ```bash
@@ -111,7 +112,7 @@ cat {{/path/to}}/tidb.log | grep "init cluster id"
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat {{/path/to}}/tikv.log | grep "connect to PD cluster"
+grep "connect to PD cluster" {{/path/to}}/tikv.log
 ```
 
 ```bash
@@ -134,7 +135,7 @@ cat {{/path/to}}/tikv.log | grep "connect to PD cluster"
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat {{/path/to}}/pd*.log | grep "idAllocator allocates a new id" |  awk -F'=' '{print $2}' | awk -F']' '{print $1}' | sort -r -n | head -n 1
+grep "idAllocator allocates a new id" {{/path/to}}/pd*.log |  awk -F'=' '{print $2}' | awk -F']' '{print $1}' | sort -r -n | head -n 1
 ```
 
 ```bash
@@ -150,7 +151,7 @@ cat {{/path/to}}/pd*.log | grep "idAllocator allocates a new id" |  awk -F'=' '{
 
 ### 第 4 步：使用 pd-recover
 
-只需在一个 PD 节点上执行 `pd-recover` 即可。
+只需在一个 PD 节点上执行 `pd-recover` 即可。需要注意的是，为了避免重新分配，建议将参数 `-alloc-id` 设置为大于已分配 ID 的值。例如，从监控或者日志获得的最大已分配 ID 是 `9000`，则建议给参数 `-alloc-id` 传入 `10000` 或更大值。
 
 {{< copyable "shell-regular" >}}
 

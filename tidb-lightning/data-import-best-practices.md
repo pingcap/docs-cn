@@ -60,9 +60,9 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
     数据和索引导入完成后，会对每个表执行 [`ADMIN CHECKSUM`](/sql-statements/sql-statement-admin-checksum-table.md)，然后和 TiDB Lightning 本地的 Checksum 值做对比。当有很多表或单个表有很多行时，Checksum 阶段耗时会很长。
 
-- 执行计划
+- Analyze 操作
 
-    Checksum 通过后，会对每个表执行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)，构建最佳的执行计划。当有很多表或单个表很大时，ANALYZE 阶段耗时会很长。
+    Checksum 通过后，会对每个表执行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)，构建最佳的执行计划。当有很多表或单个表很大时，Analyze 阶段耗时会很长。
 
 - 相关 Issue
 
@@ -116,7 +116,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 ## 导入大单表的最佳实践
 
-多表导入会导致 Checksum、ANALYZE 时间的增加，甚至超过数据导入本身，但是一般不需要调整配置。如果多表中存在单个或多个大表的情况，可以把这类大表的源文件划分出来，单独进行导入。
+多表导入会导致 Checksum、Analyze 时间的增加，甚至超过数据导入本身，但是一般不需要调整配置。如果多表中存在单个或多个大表的情况，可以把这类大表的源文件划分出来，单独进行导入。
 
 本小节重点介绍大单表导入的最佳实践。大单表没有严格的定义，一般认为符合以下任一条件者即为大单表：
 
@@ -145,7 +145,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 - 调高 TiKV `raftstore.apply-pool-size`，从默认值 `2` 调整为 `4` 或 `8`。
 - 降低 TiDB Lightning `region-split-concurrency` 为 CPU 核数的一半，最低可调整为 `1`。
 
-### 关闭执行计划 `analyze`
+### 关闭 Analyze 操作
 
 当存在单个大表的情况，建议关闭 `analyze` (`analyze="off"`)。在导入结束后，再手动执行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)。
 

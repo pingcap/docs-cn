@@ -1,6 +1,7 @@
 ---
 title: 访问 TiDB Dashboard
 aliases: ['/docs-cn/dev/dashboard/dashboard-access/']
+summary: TiDB Dashboard 可通过浏览器访问，支持多 PD 实例访问。浏览器兼容性包括 Chrome、Firefox 和 Edge。登录界面可使用 root 用户或自定义 SQL 用户登录。支持简体中文和英文语言切换。可在用户页面登出当前用户。
 ---
 
 # 访问 TiDB Dashboard
@@ -36,9 +37,8 @@ TiDB Dashboard 可在常见的、更新及时的桌面浏览器中使用，具�
 访问 TiDB Dashboard 将会显示用户登录界面。 
 
 - 可使用 TiDB 的 root 用户登录。
+- 也可以使用单点登录 (Single Sign-On, SSO)。详情参见[配置 TiDB Dashboard 使用 SSO 登录](/dashboard/dashboard-session-sso.md)。
 - 如果创建了[自定义 SQL 用户](/dashboard/dashboard-user.md)，也可以使用自定义的 SQL 用户和密码登录。
-
-![登录界面](/media/dashboard/dashboard-access-login.png)
 
 如果存在以下情况，则可能会登录失败：
 

@@ -1,6 +1,7 @@
 ---
 title: TiKV 监控指标详解
 aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
+summary: TiKV 监控指标详解：TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构详见 TiDB 监控框架概述。Grafana Dashboard 分为 PD、TiDB、TiKV、Node_exporter、Overview、Performance_overview 等。对于日常运维，通过观察 TiKV-Details 面板上的指标，可以了解 TiKV 当前的状态。根据性能地图，可以检查集群的状态是否符合预期。TiKV-Details 默认的监控信息包括 Cluster、Errors、Server、gRPC、Thread CPU、PD、Raft IO、Raft process、Raft message、Raft propose、Raft admin、Local reader、Unified Read Pool、Storage、Flow Control、Scheduler 等。
 ---
 
 # TiKV 监控指标详解
@@ -68,22 +69,29 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 - Average gRPC message duration：gRPC 请求平均的执行时间
 - gRPC batch size：TiDB 与 TiKV 之间 grpc 请求的 batch 大小
 - raft message batch size：TiKV 与 TiKV 之间 raft 消息的 batch 大小
-- gRPC request sources QPS: 不同 gRPC 请求来源的速度
-- gRPC request sources duration: 不同 gRPC 请求来源的执行总时间
-- gRPC resource group QPS: 不同 resource group 的 gRPC 请求速度 
+- gRPC request sources QPS：不同 gRPC 请求来源的速度
+- gRPC request sources duration：不同 gRPC 请求来源的执行总时间
+- gRPC resource group QPS：不同 resource group 的 gRPC 请求速度
 
 ### Thread CPU
 
 - Raft store CPU：raftstore 线程的 CPU 使用率，通常应低于 80% * `raftstore.store-pool-size`
 - Async apply CPU：async apply 线程的 CPU 使用率，通常应低于 90% * `raftstore.apply-pool-size`
-- Scheduler worker CPU：scheduler worker 线程的 CPU 使用率，通常应低于 90% * `storage.scheduler-worker-pool-size`
+- Store writer CPU：async io 线程的 CPU 使用率，通常应低于 90% * `raftstore.store-io-pool-size`
 - gRPC poll CPU：gRPC 线程的 CPU 使用率，通常应低于 80% * `server.grpc-concurrency`
-- Unified read pool CPU：unified read pool 线程的 CPU 使用率
+- Scheduler worker CPU：scheduler worker 线程的 CPU 使用率，通常应低于 90% * `storage.scheduler-worker-pool-size`
 - Storage ReadPool CPU：storage read pool 线程的 CPU 使用率
-- Coprocessor CPU：coprocessor 线程的 CPU 使用率
+- Unified read pool CPU：unified read pool 线程的 CPU 使用率
 - RocksDB CPU：RocksDB 线程的 CPU 使用率
+- Coprocessor CPU：coprocessor 线程的 CPU 使用率
 - GC worker CPU：GC worker 线程的 CPU 使用率
 - BackGround worker CPU：background worker 线程的 CPU 使用率
+- Import CPU：Import 线程的 CPU 使用率
+- Backup Worker CPU：Backup 线程的 CPU 使用率
+- CDC Worker CPU：CDC Worker 线程的 CPU 使用率
+- CDC endpoint CPU：CDC endpoint 的 CPU 使用率
+- Raftlog fetch worker CPU：Async raft log fetcher worker 的 CPU 使用率
+- TSO Worker CPU: TSO Worker 线程的 CPU 使用率
 
 ### PD
 
@@ -106,16 +114,16 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 ### Raft process
 
 - Ready handled：Raft 中不同 ready 类型的 ops
-    - count: 批量处理 ready 的 ops
-    - has_ready_region: 获得 ready 的 Region 的 ops
-    - pending_region: 被检查是否获得 ready 的 Region 的 ops，v3.0.0 后废弃
-    - message: ready 内待发送 message 的 ops
-    - append: ready 内 Raft log entry 的 ops
-    - commit: ready 内 committed Raft log entry 的 ops
-    - snapshot: 携带 snapshot 的 ready 的 ops
-- 0.99 Duration of Raft store events：99% 的 raftstore 事件所花费的时间
-- Process ready duration：处理 ready 所花费的时间
-- Process ready duration per server：每个 TiKV 实例处理 ready 所花费的时间，99.99% 的情况下，应该小于 2s
+    - count：批量处理 ready 的 ops
+    - has_ready_region：获得 ready 的 Region 的 ops
+    - pending_region：被检查是否获得 ready 的 Region 的 ops，v3.0.0 后废弃
+    - message：ready 内待发送 message 的 ops
+    - append：ready 内 Raft log entry 的 ops
+    - commit：ready 内 committed Raft log entry 的 ops
+    - snapshot：携带 snapshot 的 ready 的 ops
+- Max Duration of Raft store events：raftstore 处理事件最慢一次所花费的时间
+- Replica read lock checking duration：处理 Replica Read 时检查 lock 所花费的时间
+- Peer msg length distribution：每个 TiKV 中每个 region 一次性处理 Peer 消息的个数，消息越多说明 peer 越繁忙。
 
 ![TiKV Dashboard - Raft process metrics](/media/tikv-dashboard-raft-process.png)
 
@@ -173,6 +181,21 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 - Storage async write duration：异步写所花费的时间，99% 的情况下，应该小于 1s
 
 ![TiKV Dashboard - Storage metrics](/media/tikv-dashboard-storage.png)
+
+### Flow Control
+
+- Scheduler flow：每个 TiKV 实例的 scheduler 的实时流量
+- Scheduler discard ratio：每个 TiKV 实例的 scheduler 的请求拒绝比率。如果该比例大于 0，则表明存在流控。当 Compaction pending bytes 超过阈值时，TiKV 会根据超过阈值部分的值，按比例线性增加 Scheduler discard ratio。被拒绝的请求将自动由客户端重试
+- Throttle duration：L0 文件过多并触发流控后，scheduler 执行请求的阻塞时间。如果存在统计数据，则表明存在流控
+- Scheduler throttled CF：由于达到流控阈值，触发 RocksDB 限流的 CF
+- Flow controller actions：由于达到流控阈值，触发 RocksDB 限流的原因
+- Flush/L0 flow：每个 TiKV 实例上 RocksDB 的不同 CF 的 Flush 流量和 L0 compaction 的流量
+- Flow control factors：触发 RocksDB 限流相关的因素
+- Compaction pending bytes：每个 TiKV 实例上 RocksDB 实时等待 compaction 的数据的大小
+- Txn command throttled duration：由于限流，与事务相关的命令的阻塞时间。正常情况下，该指标为 0
+- Non-txn command throttled duration：由于限流，非事务相关的命令的阻塞时间。正常情况下，该指标为 0
+
+![TiKV Dashboard - Flow Control metrics](/media/tikv-dashboard-flow-control.png)
 
 ### Scheduler
 
@@ -323,6 +346,7 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 - Bytes/Write：每次写的大小
 - Compaction flow：compaction 相关的流量
 - Compaction pending bytes：等待 compaction 的大小
+- Compaction Job Size(files)：单个 compaction 任务涉及的 SST 文件数量
 - Read amplification：每个 TiKV 实例的读放大
 - Compression ratio：每一层的压缩比
 - Number of snapshots：每个 TiKV 的 snapshot 的数量
@@ -330,6 +354,30 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 - Number files at each level：每一层的文件个数
 - Ingest SST duration seconds：ingest SST 所花费的时间
 - Stall conditions changed of each CF：每个 CF stall 的原因
+
+### Raft Engine
+
+- Operations
+    - write：Raft Engine 每秒写操作的次数
+    - read_entry：Raft Engine 每秒读 raft 日志的次数
+    - read_message：Raft Engine 每秒读 raft 元数据的次数
+- Write duration：Raft Engine 写操作的耗时，该耗时基本接近写入这些数据所包含的磁盘 IO 的 latency 之和
+- Flow
+    - write：Raft Engine 写流量
+    - rewrite append：重写 append 日志的流量
+    - rewrite rewrite：重写 rewrite 日志的流量
+- Write Duration Breakdown (99%)
+    - wal：写 Raft Engine WAL 的延迟
+    - wait：写入前等待时间
+    - apply：apply 到内存的时间
+- Bytes/Written 每次写入对应的 bytes
+- WAL Duration Breakdown (P99%)：写 WAL 内部各个阶段所花的时间
+- File Count
+    - append：Raft Engine 用于 append 数据的文件个数
+    - rewrite：Raft Engine 用于 rewrite 的文件个数（rewrite 类似于 RocksDB 的 compaction）
+- Entry Count
+    - rewrite：Raft Engine 中已经 rewrite 的记录条数
+    - append：Raft Engine 中已经 append 的记录条数
 
 ### Titan - All
 
@@ -373,6 +421,20 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 - Total pessimistic locks memory size：内存悲观锁占用内存的总大小
 - In-memory pessimistic locking result：将悲观锁仅保存到内存的结果，其中 full 表示因为超过内存限制而无法将悲观锁保存至内存的次数
 
+### Resolved-TS
+
+- Resolved-TS worker CPU：resolved-ts worker 线程的 CPU 使用率
+- Advance-TS worker CPU：advance-ts worker 线程的 CPU 使用率
+- Scan lock worker CPU：scan lock worker 线程的 CPU 使用率
+- Max gap of resolved-ts：在当前 TiKV 中，所有活跃 Region 的 resolved-ts 与当前时间的最大差值
+- Max gap of safe-ts：在当前 TiKV 中，所有活跃 Region 的 safe-ts 与当前时间的最大差值
+- Min Resolved TS Region：resolved-ts 最小的 Region 的 ID
+- Min Safe TS Region：safe-ts 最小的 Region 的 ID
+- Check Leader Duration：处理 leader 请求所花费的时间的直方图，从发送请求到接收到 leader 的响应
+- Max gap of resolved-ts in Region leaders：在当前 TiKV 中，所有活跃 Region 的 resolved-ts 与当前时间的最大差值，只包含 Region leader
+- Min Leader Resolved TS Region：resolved-ts 最小的 Region 的 ID，只包含 Region leader
+- Lock heap size：resolved-ts 模块中用于跟踪锁的堆的大小
+
 ### Memory
 
 - Allocator Stats：内存分配器的统计信息
@@ -395,6 +457,41 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 - Encryption meta files size：加密相关的元数据文件的大小
 - Encrypt/decrypt data nanos：每次加密/解密数据的耗时的直方图
 - Read/write encryption meta duration：每秒钟读写加密文件所耗费的时间
+
+### Log Backup
+
+- Handle Event Rate：处理写入事件的速度。
+- Initial Scan Generate Event Throughput：创建新的监听流时，增量扫描的速度。
+- Abnormal Checkpoint TS Lag：各个任务当前 Checkpoint TS 到现在时间的 Lag。
+- Memory Of Events：增量扫描产生的临时数据占用内存的估计值。
+- Observed Region Count：目前监听的 Region 数量。
+- Errors：可重试、非致命错误的数量及类型。
+- Fatal Errors：致命错误的数量及类型。通常致命错误会导致任务暂停。
+- Checkpoint TS of Tasks：各个任务的 Checkpoint TS。
+- Flush Duration：将缓存数据移动到外部存储的耗时的热力图。
+- Initial Scanning Duration：创建新的监听流时，增量扫描的耗时的热力图。
+- Convert Raft Event Duration：创建监听流后，转化 Raft 日志项为备份数据的耗时的热力图。
+- Command Batch Size：监听到的 Raft Command 的 Batch 大小（单个 Raft Group 内）。
+- Save to Temp File Duration：将一批备份数据（跨越数个 Task）暂存到临时文件区的耗时的热力图。
+- Write to Temp File Duration：将一批备份数据（来自某个 Task）暂存到临时文件区的耗时的热力图。
+- System Write Call Duration：将一批备份数据（来自某个 Region）写入到临时文件耗时的热力图。
+- Internal Message Type：TiKV 内部负责日志备份的 Actor 收到的消息的类型。
+- Internal Message Handling Duration (P90|P99)：消费、处理各个类型消息的速度。
+- Initial Scan RocksDB Throughput：增量扫描过程中，RocksDB 内部记录产生的读流量。
+- Initial Scan RocksDB Operation：增量扫描过程中，RocksDB 内部记录的各个操作的数量。
+- Initial Scanning Trigger Reason：触发增量扫描的原因。
+- Region Checkpoint Key Putting：向 PD 记录 Checkpoint 的操作的数量。
+
+> **注意：**
+>
+> 以下这些监控指标的数据源都是 TiDB 节点，但是对日志备份流程有一些影响。因此，为了方便查阅，将其放在了 **TiKV Details** 面板中。大部分时候 TiKV 会主动“推送”进度，但以下部分监控偶尔没有数据采样也属于正常现象。
+
+- Request Checkpoint Batch Size：日志备份协调器请求各个 TiKV 的 Checkpoint 信息时的请求攒批大小。
+- Tick Duration \[P99|P90\]：协调器内部 Tick 的耗时。
+- Region Checkpoint Failure Reason：协调器内部无法推进某个 Region Checkpoint 的原因。
+- Request Result：协调器推进 Region Checkpoint 的成功或失败的记录。
+- Get Region Operation Count：协调器向 PD 请求 Region 信息的次数。
+- Try Advance Trigger Time：协调器尝试推进 Checkpoint 的耗时。
 
 ### 面板常见参数的解释
 

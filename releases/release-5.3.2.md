@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.3.2 Release Notes
+summary: TiDB 5.3.2 发布日期为 2022 年 6 月 29 日。该版本存在 bug，建议升级至 v5.3.3。兼容性变更包括修复了 auto ID 超出范围时的问题。TiKV 提升了 Raft 客户端的效率，并修复了多个 bug。TiDB 修复了多个 bug，包括 Amazon S3 数据计算错误和网络连接问题。PD 也修复了多个 bug。TiFlash 修复了存储目录配置错误和数据不一致的问题。BR 和 TiCDC 也有多个 bug 修复。DM 和 TiDB Lightning 也有 bug 修复。
 ---
 
 # TiDB 5.3.2 Release Notes
@@ -158,6 +159,6 @@ TiDB 版本：5.3.2
 
     + TiDB Lightning
 
-        - 修复由 `auto_increment` 列的数据越界导致 local 模式导入失败的问题 [#29737](https://github.com/pingcap/tidb/issues/27937)
+        - 修复由 `auto_increment` 列的数据越界导致 local 模式导入失败的问题 [#27937](https://github.com/pingcap/tidb/issues/27937)
         - 修复前置检查中没有检查本地磁盘空间以及集群是否可用的问题 [#34213](https://github.com/pingcap/tidb/issues/34213)
         - 修复了 checksum 报错 “GC life time is shorter than transaction duration” [#32733](https://github.com/pingcap/tidb/issues/32733)

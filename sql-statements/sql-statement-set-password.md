@@ -10,9 +10,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-password/','/docs-cn/de
 
 ## 语法图
 
-**SetStmt:**
-
-![SetStmt](/media/sqlgram/SetStmt.png)
+```ebnf+diagram
+SetPasswordStmt ::=
+    "SET" "PASSWORD" ( "FOR" Username )? "=" ( stringLit | "PASSWORD" "(" stringLit ")" )
+```
 
 ## 示例
 
@@ -105,7 +106,7 @@ SHOW CREATE USER 'newuser';
 
 ## MySQL 兼容性
 
-`SET PASSWORD` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`SET PASSWORD` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
 
 ## 另请参阅
 

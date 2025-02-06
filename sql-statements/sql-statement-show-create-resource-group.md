@@ -15,6 +15,7 @@ ShowCreateResourceGroupStmt ::=
 
 ResourceGroupName ::=
     Identifier
+|   "DEFAULT"
 ```
 
 ## 示例

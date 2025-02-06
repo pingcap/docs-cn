@@ -10,19 +10,19 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-analyze-table/','/docs-cn/d
 
 当 TiDB 逐渐发现这些统计数据与预估不一致时，也会自动更新其统计数据。
 
-目前 TiDB 收集统计信息分为全量收集和增量收集两种方式，分别通过 `ANALYZE TABLE` 和 `ANALYZE INCREMENTAL TABLE` 语句来实现。关于这两种语句的详细使用方式，可参考[统计信息简介](/statistics.md)。
+目前 TiDB 收集统计信息为全量收集，通过 `ANALYZE TABLE` 语句来实现。关于该语句的详细使用方式，可参考[常规统计信息](/statistics.md)。
 
 ## 语法图
 
 ```ebnf+diagram
 AnalyzeTableStmt ::=
-    'ANALYZE' ( 'TABLE' ( TableNameList ( 'ALL COLUMNS' | 'PREDICATE COLUMNS' ) | TableName ( 'INDEX' IndexNameList? | AnalyzeColumnOption | 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList? | AnalyzeColumnOption )? )? ) | 'INCREMENTAL' 'TABLE' TableName ( 'PARTITION' PartitionNameList )? 'INDEX' IndexNameList? ) AnalyzeOptionListOpt
+    'ANALYZE' ( 'TABLE' ( TableNameList ( 'ALL COLUMNS' | 'PREDICATE COLUMNS' ) | TableName ( 'INDEX' IndexNameList? | AnalyzeColumnOption | 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList? | AnalyzeColumnOption )? )? ) ) AnalyzeOptionListOpt
 
 AnalyzeOptionListOpt ::=
 ( WITH AnalyzeOptionList )?
 
 AnalyzeOptionList ::=
-AnalyzeOption ( ',' AnlyzeOption )*
+AnalyzeOption ( ',' AnalyzeOption )*
 
 AnalyzeOption ::=
 ( NUM ( 'BUCKETS' | 'TOPN' | ( 'CMSKETCH' ( 'DEPTH' | 'WIDTH' ) ) | 'SAMPLES' ) ) | ( FLOATNUM 'SAMPLERATE' )
@@ -95,10 +95,12 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 2 rows in set (0.00 sec)
 ```
 
+当前的统计信息状态为 `pseudo`，表示统计信息不准确。
+
 {{< copyable "sql" >}}
 
 ```sql
-analyze table t1;
+ANALYZE TABLE t1;
 ```
 
 ```
@@ -121,16 +123,16 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 2 rows in set (0.00 sec)
 ```
 
+统计信息已经正确地更新和加载。
+
 ## MySQL 兼容性
 
-* `ANALYZE TABLE` 在语法上与 MySQL 类似。但 `ANALYZE TABLE` 在 TiDB 上的执行时间可能长得多，因为它的内部运行方式不同。
-
-* 在 MySQL 上不支持 `ANALYZE INCREMENTAL TABLE` 语句，它的使用可参考[增量收集文档](/statistics.md#增量收集)。
+`ANALYZE TABLE` 在语法上与 MySQL 类似。但 `ANALYZE TABLE` 在 TiDB 上的执行时间可能长得多，因为它的内部运行方式不同。
 
 TiDB 与 MySQL 在以下方面存在区别：所收集的统计信息，以及查询执行过程中统计信息是如何被使用的。虽然 TiDB 中的 `ANALYZE` 语句在语法上与 MySQL 类似，但存在以下差异：
 
 + 执行 `ANALYZE TABLE` 时，TiDB 可能不包含最近提交的更改。若对行进行了批量更改，在执行 `ANALYZE TABLE` 之前，你可能需要先执行 `sleep(1)`，这样统计信息更新才能反映这些更改。参见 [#16570](https://github.com/pingcap/tidb/issues/16570)。
-+ `ANALYZE TABLE` 在 TiDB 中的执行时间比在 MySQL 中的执行时间要长得多。但你可以通过执行 `SET GLOBAL tidb_enable_fast_analyze=1` 来启用快速分析，这样能部分抵消这种执行上的性能差异。快速分析利用了采样，会导致统计信息的准确性降低。因此快速分析仍是一项实验特性。
++ `ANALYZE TABLE` 在 TiDB 中的执行时间比在 MySQL 中的执行时间要长得多。
 
 ## 另请参阅
 

@@ -51,7 +51,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 - Panic And Critical Error：TiDB 中出现的 Panic、Critical Error 数量。
 - Time Jump Back OPS：每个 TiDB 实例上每秒操作系统时间回跳的次数。
 - Get Token Duration：每个连接获取 Token 的耗时。
-- Skip Binlog Count：TiDB 写入 Binlog 失败的数量。
+- Skip Binlog Count：TiDB 写入 Binlog 失败的数量。从 v8.4.0 开始，TiDB Binlog 已移除，该指标不再有计数。
 - Client Data Traffic：TiDB 和客户端的数据流量。
 
 ### Transaction
@@ -109,21 +109,32 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 
 ### KV Request
 
+下面的监控指标与发送给 TiKV 的请求相关。重试请求会被多次计数。
+
 - KV Request OPS：KV Request 根据 TiKV 显示执行次数
 - KV Request Duration 99 by store：根据 TiKV 显示 KV Request 执行时间
 - KV Request Duration 99 by type：根据类型显示 KV Request 的执行时间
-- Stale Read OPS：每秒执行的 Stale Read 的数量，根据结果分为 hit 和 miss 进行统计
-- Stale Read Traffic：Stale Read 消耗的流量，根据结果分为 hit 和 miss 进行统计
+- Stale Read Hit/Miss Ops
+    - **hit**：每秒成功执行 Stale Read 的请求数量
+    - **miss**：每秒尝试执行 Stale Read 但失败的请求数量
+- Stale Read Req Ops
+    - **cross-zone**：每秒尝试在远程可用区执行 Stale Read 的请求数量
+    - **local**：每秒尝试在本地可用区执行 Stale Read 的请求数量
+- Stale Read Req Traffic
+    - **cross-zone-in**：尝试在远程可用区执行 Stale Read 的请求的响应的传入流量
+    - **cross-zone-out**：尝试在远程可用区执行 Stale Read 的请求的响应的传出流量
+    - **local-in**：尝试在本地可用区执行 Stale Read 的请求的响应的传入流量
+    - **local-out**：尝试在本地可用区执行 Stale Read 的请求的响应的传出流量
 
 ### PD Client
 
 - PD Client CMD OPS：PD Client 每秒执行命令的数量
 - PD Client CMD Duration：PD Client 执行命令耗时
 - PD Client CMD Fail OPS：PD Client 每秒执行命令失败的数量
-- PD TSO OPS：TiDB 每秒从 PD 获取 TSO 的数量
+- PD TSO OPS：TiDB 每秒向 PD 发送获取 TSO 的 gRPC 请求的数量 (cmd) 和实际的 TSO 请求数量 (request)；每个 gRPC 请求包含一批 TSO 请求
 - PD TSO Wait Duration：TiDB 等待从 PD 返回 TSO 的时间
-- PD TSO RPC Duration：TiDB 从向 PD 发送获取 TSO 的请求到接收到 TSO 的耗时
-- Start TSO Wait Duration：TiDB 从向 PD 发送获取 start tso 请求开始到开始等待 tso 返回的时间
+- PD TSO RPC Duration：TiDB 从向 PD 发送获取 TSO 的 gRPC 请求到接收到 TSO gRPC 请求响应的耗时
+- Async TSO Duration：TiDB 从准备获取 TSO 到实际开始等待 TSO 返回的时间
 
 ### Schema Load
 
@@ -155,7 +166,6 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 - Store Query Feedback QPS：存储合并查询的 Feedback 信息的每秒操作数量，该操作在 TiDB 内存中进行
 - Significant Feedback：重要的 Feedback 更新统计信息的数量
 - Update Stats OPS：利用 Feedback 更新统计信息的数量
-- Fast Analyze Status 100：快速收集统计信息的状态
 
 ### Owner
 

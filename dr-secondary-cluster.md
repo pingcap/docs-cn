@@ -57,7 +57,7 @@ summary: 了解如何使用 TiCDC 构建主备集群进行容灾。
 
 关于服务器配置信息，可以参考如下文档：
 
-- [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)
+- [TiDB 软件和硬件环境需求](/hardware-and-software-requirements.md)
 - [TiCDC 软件和硬件环境推荐配置](/ticdc/deploy-ticdc.md#软件和硬件环境推荐配置)
 
 部署 TiDB 主集群和备用集群的详细过程，可以参考[部署 TiDB 集群](/production-deployment-using-tiup.md)。
@@ -296,13 +296,20 @@ TiDB 目前还没有提供 DR Dashboard，你可以通过以下 Dashboard 了解
 2. 业务写入完全停止后，查询 TiDB 集群当前最新的 TSO (`Position`)：
 
     ```sql
-    mysql> show master status;
-    +-------------+--------------------+--------------+------------------+-------------------+
-    | File        | Position           | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
-    +-------------+--------------------+--------------+------------------+-------------------+
-    | tidb-binlog | 438223974697009153 |              |                  |                   |
-    +-------------+--------------------+--------------+------------------+-------------------+
-    1 row in set (0.33 sec)
+    BEGIN; SELECT TIDB_CURRENT_TSO(); ROLLBACK;
+    ```
+
+    ```sql
+    Query OK, 0 rows affected (0.00 sec)
+
+    +--------------------+
+    | TIDB_CURRENT_TSO() |
+    +--------------------+
+    | 452654700157468673 |
+    +--------------------+
+    1 row in set (0.00 sec)
+
+    Query OK, 0 rows affected (0.00 sec)
     ```
 
 3. 轮询 Changefeed `dr-primary-to-secondary` 的同步位置时间点 TSO 直到满足 `TSO >= Position`。
@@ -410,4 +417,4 @@ storage = "s3://redo?access-key=minio&secret-access-key=miniostorage&endpoint=ht
 
 ## 常见问题处理
 
-以上任何步骤遇到问题，可以先通过 [TiDB FAQ](/faq/faq-overview.md) 查找问题的处理方法。如果问题仍不能解决，请在 TiDB 项目中提 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+以上任何步骤遇到问题，可以先通过 [TiDB FAQ](/faq/faq-overview.md) 查找问题的处理方法。如果问题仍不能解决，请尝试 [TiDB 支持资源](/support.md)。

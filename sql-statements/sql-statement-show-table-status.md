@@ -10,21 +10,16 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-table-status/','/docs-
 
 ## 语法图
 
-**ShowTableStatusStmt:**
+```ebnf+diagram
+ShowTableStmt ::=
+    "SHOW" "FULL"? "TABLES" ("FROM" Identifier | "IN" Identifier )? ShowLikeOrWhere?
 
-![ShowTableStatusStmt](/media/sqlgram/ShowTableStatusStmt.png)
-
-**FromOrIn:**
-
-![FromOrIn](/media/sqlgram/FromOrIn.png)
-
-**StatusTableName:**
-
-![StatusTableName](/media/sqlgram/StatusTableName.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
@@ -34,8 +29,6 @@ CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 Query OK, 0 rows affected (0.11 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
 ```
@@ -44,8 +37,6 @@ INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
 Query OK, 5 rows affected (0.02 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW TABLE STATUS LIKE 't1';
@@ -74,17 +65,13 @@ Max_data_length: 0
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
-analyze table t1;
+ANALYZE TABLE t1;
 ```
 
 ```
 Query OK, 0 rows affected (0.12 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW TABLE STATUS LIKE 't1';
@@ -115,7 +102,7 @@ Max_data_length: 0
 
 ## MySQL 兼容性
 
-`SHOW TABLE STATUS` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`SHOW TABLE STATUS` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
 
 ## 另请参阅
 

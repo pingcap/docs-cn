@@ -15,7 +15,7 @@ aliases: ['/zh/tidb/dev/update-data']
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+- [使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)，并[创建数据库](/develop/dev-guide-create-database.md)、[创建表](/develop/dev-guide-create-table.md)、[创建二级索引](/develop/dev-guide-create-secondary-indexes.md)
 - 若需使用 `UPDATE` 语句更新数据，需先[插入数据](/develop/dev-guide-insert-data.md)
 
@@ -110,7 +110,7 @@ INSERT INTO {table} ({columns}) VALUES ({values})
 
 ### `INSERT ON DUPLICATE KEY UPDATE` 最佳实践
 
-- 在仅有一个唯一键的表上使用 `INSERT ON DUPLICATE KEY UPDATE`。此语句在检测到任何 **_唯一键_** (包括主键) 冲突时，将更新数据。在不止匹配到一行冲突时，将只会一行数据。因此，除非能保证仅有一行冲突，否则不建议在有多个唯一键的表中使用 `INSERT ON DUPLICATE KEY UPDATE` 语句。
+- 在仅有一个唯一键的表上使用 `INSERT ON DUPLICATE KEY UPDATE`。此语句在检测到任何 **_唯一键_** (包括主键) 冲突时，将更新数据。在不止匹配到一行冲突时，将只会更新一行数据。因此，除非能保证仅有一行冲突，否则不建议在有多个唯一键的表中使用 `INSERT ON DUPLICATE KEY UPDATE` 语句。
 - 在创建或更新的场景中使用此语句。
 
 ### `INSERT ON DUPLICATE KEY UPDATE` 例子

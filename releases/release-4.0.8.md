@@ -1,5 +1,6 @@
 ---
 title: TiDB 4.0.8 Release Notes
+summary: TiDB 4.0.8 发布，新增聚合函数 `APPROX_PERCENTILE` 和 `CAST` 函数下推支持。优化了索引组合计算表达式选择率的贪心算法，记录更多的 RPC 信息，提升慢查询性能。修复了多个 BUG，如分区表可能遇到非预期 Panic、外连接时 Index Merge Join 结果不正确等。 PD 修复了 TiDB Dashboard 引起 PD panic 的错误。TiFlash 修复了多个问题，如日志信息中时间戳错误、重启后可能提示数据文件损坏等。Backup & Restore (BR) 修复了 Restore 期间可能发生的 `send on closed channel` panic 问题。
 ---
 
 # TiDB 4.0.8 Release Notes
@@ -148,7 +149,6 @@ TiDB 版本：4.0.8
 
         - 修复 owner 因更新 GC safepoint 失败而非预期退出的问题 [#979](https://github.com/pingcap/tiflow/pull/979)
         - 修复非预期的任务信息更新 [#1017](https://github.com/pingcap/tiflow/pull/1017)
-        - 修复非预期的空 Maxwell 消息 [#978](https://github.com/pingcap/tiflow/pull/978)
 
     + TiDB Lightning
 

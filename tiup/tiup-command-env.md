@@ -1,5 +1,6 @@
 ---
 title: tiup env
+summary: TiUP 提供灵活的定制化接口，使用环境变量实现。命令 `tiup env` 用于查询 TiUP 支持的用户自定义环境变量及其值。若未指定环境变量，则输出"{key}"="{value}"列表。若指定了环境变量，则按顺序输出"{value}"列表。若值为空，则代表未设置环境变量的值，TiUP 会使用默认值。
 ---
 
 # tiup env
@@ -24,5 +25,3 @@ tiup env [name1...N]
 - 若指定了 `[name1...N]`，则按顺序输出 "{value}" 列表
 
 以上输出中若 `value` 为空则代表未设置环境变量的值，此时 TiUP 会使用默认值。
-
-[<< 返回上一页 - TiUP 命令清单](/tiup/tiup-reference.md#命令清单)

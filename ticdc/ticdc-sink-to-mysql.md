@@ -21,7 +21,7 @@ cdc cli changefeed create \
 ```shell
 Create changefeed successfully!
 ID: simple-replication-task
-Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
+Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2023-11-28T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":false,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
 ```
 
 - `--server`：TiCDC 集群中任意一个 TiCDC 服务器的地址。
@@ -30,6 +30,11 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
 - `--config`：指定 changefeed 配置文件，详见：[TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
+
+> **注意：**
+>
+> TiCDC 工具只负责复制增量数据，需要使用 Dumpling/TiDB Lightning 工具或者 BR 工具进行全量数据的初始化。
+> 经过全量数据的初始化后，需要将 `start-ts` 指定为上游备份时的 TSO。例如：Dumpling 目录下 metadata 文件中的 pos 值，或者 BR 备份完成后输出日志中的 `backupTS`。
 
 ## Sink URI 配置 `mysql`/`tidb`
 
@@ -46,15 +51,15 @@ Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
 一个通用的配置样例如下所示：
 
 ```shell
---sink-uri="mysql://root:123456@127.0.0.1:3306"
+--sink-uri="mysql://root:12345678@127.0.0.1:3306"
 ```
 
 URI 中可配置的参数如下：
 
 | 参数         | 描述                                             |
 | :------------ | :------------------------------------------------ |
-| `root`        | 下游数据库的用户名。                             |
-| `123456`       | 下游数据库密码。（可采用 Base64 进行编码）                                     |
+| `root`        | 下游数据库的用户名。当同步数据到 TiDB 或其它兼容 MySQL 的数据库时，下游数据库的用户需要具备[一定的权限](#下游数据库用户所需的权限)。                             |
+| `12345678`     | 下游数据库密码。（可采用 Base64 进行编码）                                     |
 | `127.0.0.1`    | 下游数据库的 IP。                                |
 | `3306`         | 下游数据的连接端口。                                 |
 | `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）。       |
@@ -69,18 +74,43 @@ URI 中可配置的参数如下：
 若需要对 Sink URI 中的数据库密码使用 Base64 进行编码，可以参考如下命令：
 
 ```shell
-echo -n '123456' | base64   # 假设待编码的密码为 123456
+echo -n '12345678' | base64   # 假设待编码的密码为 12345678
 ```
 
 编码后的密码如下：
 
 ```shell
-MTIzNDU2
+MTIzNDU2Nzg=
 ```
 
 > **注意：**
 >
-> 当 Sink URI 中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以使用 [URI Encoder](https://meyerweb.com/eric/tools/dencoder/) 工具对 URI 进行转义。
+> 当 Sink URI 的参数中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以使用 [URI Encoder](https://www.urlencoder.org/) 工具对 URI 进行转义。
+>
+> 例如，如果连接到下游数据库的用户名为 `R&D (2)`、并要指定证书文件路径为 `/data1/R&D (2).pem` 时，需要对这些参数进行如下转义：
+>
+> ```shell
+> --sink-uri="mysql://R%26D%20%282%29:MTIzNDU2Nzg%3D@127.0.0.1:3306/?ssl-cert=/data1/R%26D%20%282%29.pem"
+> #                    ^~~ ^~~^~~ ^~~            ^~~                                  ^~~ ^~~^~~ ^~~
+> ```
+
+## 下游数据库用户所需的权限
+
+当同步数据到 TiDB 或其它兼容 MySQL 的数据库时，下游数据库的用户需要以下权限：
+
+- `Select`
+- `Index`
+- `Insert`
+- `Update`
+- `Delete`
+- `Create`
+- `Drop`
+- `Alter`
+- `Create View`
+
+如果要同步 [`RECOVER TABLE`](/sql-statements/sql-statement-recover-table.md) 到下游 TiDB，下游数据库的用户还需要有 `Super` 权限。
+
+如果下游 TiDB 集群开启了[只读模式](/system-variables.md#tidb_restricted_read_only-从-v520-版本开始引入)，下游数据库的用户还需要有 `RESTRICTED_REPLICA_WRITER_ADMIN` 权限。
 
 ## 灾难场景的最终一致性复制
 

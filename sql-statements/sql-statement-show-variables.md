@@ -10,17 +10,14 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-variables/','/docs-cn/
 
 ## 语法图
 
-**ShowStmt:**
+```ebnf+diagram
+ShowVariablesStmt ::=
+    "SHOW" ("GLOBAL" | "SESSION")? VARIABLES ShowLikeOrWhere?
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
-
-**GlobalScope:**
-
-![GlobalScope](/media/sqlgram/GlobalScope.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
 
@@ -62,7 +59,6 @@ SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_enable_cascades_planner        | 0                   |
 | tidb_enable_chunk_rpc               | 1                   |
 | tidb_enable_collect_execution_info  | 1                   |
-| tidb_enable_fast_analyze            | 0                   |
 | tidb_enable_index_merge             | 0                   |
 | tidb_enable_noop_functions          | 0                   |
 | tidb_enable_radix_join              | 0                   |
@@ -125,7 +121,7 @@ SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_replica_read                   | leader              |
 | tidb_retry_limit                    | 10                  |
 | tidb_row_format_version             | 2                   |
-| tidb_scatter_region                 | 0                   |
+| tidb_scatter_region                 |                     |
 | tidb_skip_isolation_level_check     | 0                   |
 | tidb_skip_utf8_check                | 0                   |
 | tidb_slow_log_threshold             | 300                 |
@@ -152,7 +148,7 @@ SHOW GLOBAL VARIABLES LIKE 'tidb%';
 SHOW GLOBAL VARIABLES LIKE 'time_zone%';
 ```
 
-```
+```sql
 +---------------+--------+
 | Variable_name | Value  |
 +---------------+--------+
@@ -161,9 +157,41 @@ SHOW GLOBAL VARIABLES LIKE 'time_zone%';
 1 row in set (0.00 sec)
 ```
 
+```sql
+SHOW VARIABLES WHERE Variable_name="tidb_window_concurrency";
+```
+
+```sql
++-------------------------+-------+
+| Variable_name           | Value |
++-------------------------+-------+
+| tidb_window_concurrency | -1    |
++-------------------------+-------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SHOW VARIABLES WHERE Value=300;
+```
+
+```sql
++--------------------------------+-------+
+| Variable_name                  | Value |
++--------------------------------+-------+
+| ddl_slow_threshold             | 300   |
+| delayed_insert_timeout         | 300   |
+| innodb_purge_batch_size        | 300   |
+| key_cache_age_threshold        | 300   |
+| slave_checkpoint_period        | 300   |
+| tidb_slow_log_threshold        | 300   |
+| tidb_wait_split_region_timeout | 300   |
++--------------------------------+-------+
+7 rows in set (0.00 sec)
+```
+
 ## MySQL 兼容性
 
-`SHOW [GLOBAL|SESSION] VARIABLES` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`SHOW [GLOBAL|SESSION] VARIABLES` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
 
 ## 另请参阅
 

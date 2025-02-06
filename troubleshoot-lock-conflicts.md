@@ -87,13 +87,14 @@ select `key`, count(*) as `count` from information_schema.data_lock_waits group 
 {{< copyable "sql" >}}
 
 ```sql
-select trx.* from information_schema.data_lock_waits as l left join information_schema.tidb_trx as trx on l.trx_id = trx.id where l.key = "7480000000000000415F728000000000000001"\G
+select trx.* from information_schema.data_lock_waits as l left join information_schema.cluster_tidb_trx as trx on l.trx_id = trx.id where l.key = "7480000000000000415F728000000000000001"\G
 ```
 
 示例输出：
 
 ```sql
 *************************** 1. row ***************************
+               INSTANCE: 127.0.0.1:10080
                      ID: 426831815660273668
              START_TIME: 2021-08-06 07:16:00.081000
      CURRENT_SQL_DIGEST: 06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7
@@ -107,6 +108,7 @@ CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
                      DB: test
         ALL_SQL_DIGESTS: ["0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3","06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7"]
 *************************** 2. row ***************************
+               INSTANCE: 127.0.0.1:10080
                      ID: 426831818019569665
              START_TIME: 2021-08-06 07:16:09.081000
      CURRENT_SQL_DIGEST: 06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7
@@ -157,6 +159,10 @@ CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
 上述查询中，对 `CLUSTER_TIDB_TRX` 表的 `ALL_SQL_DIGESTS` 列使用了 [`TIDB_DECODE_SQL_DIGESTS`](/functions-and-operators/tidb-functions.md#tidb_decode_sql_digests) 函数，目的是将该列（内容为一组 SQL Digest）转换为其对应的归一化 SQL 语句，便于阅读。
 
 如果当前事务的 `start_ts` 未知，可以尝试从 `TIDB_TRX` / `CLUSTER_TIDB_TRX` 表或者 [`PROCESSLIST` / `CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md) 表中的信息进行判断。
+
+### 元数据锁
+
+如果一个会话在等待 schema 更改，这可能是元数据锁引起的。更多详细信息，参见[元数据锁](/metadata-lock.md)。
 
 ## 处理乐观锁冲突问题
 
@@ -329,7 +335,7 @@ ERROR 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
 
 ### TTL manager has timed out
 
-除了有不能超出 GC 时间的限制外，悲观锁的 TTL 有上限，默认为 1 小时，所以执行时间超过 1 小时的悲观事务有可能提交失败。这个超时时间由 TiDB 参数 [performance.max-txn-ttl](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 指定。
+除了有不能超出 GC 时间的限制外，悲观锁的 TTL 有上限，默认为 1 小时，所以执行时间超过 1 小时的悲观事务有可能提交失败。这个超时时间由 TiDB 参数 [`performance.max-txn-ttl`](https://github.com/pingcap/tidb/blob/master/pkg/config/config.toml.example) 指定。
 
 可通过查看 TiDB 日志查看报错信息：
 

@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.1 RC2 Release Notes
 aliases: ['/docs-cn/dev/releases/release-2.1-rc.2/','/docs-cn/dev/releases/21rc2/']
+summary: TiDB 2.1 RC2 版本对系统稳定性、优化器、统计信息和执行引擎做了很多改进。具体包括 SQL 优化器、SQL 执行引擎、统计信息、Server、兼容性、表达式、DML、DDL、TiKV 和 PD 的新特性、功能改进和 Bug 修复。
 ---
 
 # TiDB 2.1 RC2 Release Notes

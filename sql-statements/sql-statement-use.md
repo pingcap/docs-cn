@@ -10,13 +10,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-use/','/docs-cn/dev/referen
 
 ## 语法图
 
-**UseStmt:**
+```ebnf+diagram
+UseStmt ::=
+    "USE" DBName
 
-![UseStmt](/media/sqlgram/UseStmt.png)
-
-**DBName:**
-
-![DBName](/media/sqlgram/DBName.png)
+DBName ::=
+    Identifier
+```
 
 ## 示例
 
@@ -124,7 +124,7 @@ SHOW TABLES;
 
 ## MySQL 兼容性
 
-`USE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`USE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
 
 ## 另请参阅
 

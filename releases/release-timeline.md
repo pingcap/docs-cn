@@ -5,10 +5,47 @@ summary: 了解 TiDB 的版本发布时间线。
 
 # TiDB 版本发布时间线
 
+<EmailSubscriptionWrapper />
+
 本文列出了所有已发布的 TiDB 版本，按发布时间倒序呈现。
+
+关于 TiDB 长期支持版本 (Long-Term Support, LTS) 的支持时间表，请参阅 [TiDB 版本周期支持策略](https://cn.pingcap.com/tidb-release-support-policy/)。
 
 | 版本 | 发布日期 |
 | :--- | :--- |
+| [8.5.1](/releases/release-8.5.1.md) | 2025-01-17 |
+| [7.5.5](/releases/release-7.5.5.md) | 2024-12-31 |
+| [8.1.2](/releases/release-8.1.2.md) | 2024-12-26 |
+| [8.5.0](/releases/release-8.5.0.md) | 2024-12-19 |
+| [7.1.6](/releases/release-7.1.6.md) | 2024-11-21 |
+| [8.4.0-DMR](/releases/release-8.4.0.md) | 2024-11-11 |
+| [7.5.4](/releases/release-7.5.4.md) | 2024-10-15 |
+| [6.5.11](/releases/release-6.5.11.md) | 2024-09-20 |
+| [8.1.1](/releases/release-8.1.1.md) | 2024-08-27 |
+| [8.3.0-DMR](/releases/release-8.3.0.md) | 2024-08-22 |
+| [7.5.3](/releases/release-7.5.3.md) | 2024-08-05 |
+| [8.2.0-DMR](/releases/release-8.2.0.md) | 2024-07-11 |
+| [6.5.10](/releases/release-6.5.10.md) | 2024-06-20 |
+| [7.5.2](/releases/release-7.5.2.md) | 2024-06-13 |
+| [8.1.0](/releases/release-8.1.0.md) | 2024-05-24 |
+| [7.1.5](/releases/release-7.1.5.md) | 2024-04-26 |
+| [6.5.9](/releases/release-6.5.9.md) | 2024-04-12 |
+| [8.0.0-DMR](/releases/release-8.0.0.md) | 2024-03-29 |
+| [7.1.4](/releases/release-7.1.4.md) | 2024-03-11 |
+| [7.5.1](/releases/release-7.5.1.md) | 2024-02-29 |
+| [6.5.8](/releases/release-6.5.8.md) | 2024-02-02 |
+| [7.6.0-DMR](/releases/release-7.6.0.md) | 2024-01-25 |
+| [6.5.7](/releases/release-6.5.7.md) | 2024-01-08 |
+| [7.1.3](/releases/release-7.1.3.md) | 2023-12-21 |
+| [6.5.6](/releases/release-6.5.6.md) | 2023-12-07 |
+| [7.5.0](/releases/release-7.5.0.md) | 2023-12-01 |
+| [7.1.2](/releases/release-7.1.2.md) | 2023-10-25 |
+| [7.4.0-DMR](/releases/release-7.4.0.md) | 2023-10-12 |
+| [6.5.5](/releases/release-6.5.5.md) | 2023-09-21 |
+| [6.5.4](/releases/release-6.5.4.md) | 2023-08-28 |
+| [7.3.0-DMR](/releases/release-7.3.0.md) | 2023-08-14 |
+| [7.1.1](/releases/release-7.1.1.md) | 2023-07-24 |
+| [6.1.7](/releases/release-6.1.7.md) | 2023-07-12 |
 | [7.2.0-DMR](/releases/release-7.2.0.md) | 2023-06-29 |
 | [6.5.3](/releases/release-6.5.3.md) | 2023-06-14 |
 | [7.1.0](/releases/release-7.1.0.md) | 2023-05-31 |

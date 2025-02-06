@@ -10,7 +10,7 @@ aliases: ['/zh/tidb/dev/developer-guide-overview']
 
 本手册将展示如何使用 TiDB 来快速构建一个应用，并且阐述使用 TiDB 期间可能出现的场景以及可能会遇到的问题。因此，在阅读此页面之前，建议你先行阅读 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)。
 
-此外，你还可以通过视频的形式学习免费的 [TiDB SQL 开发在线课程](https://pingcap.com/zh/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)。
+此外，你还可以通过视频的形式学习免费的 [TiDB SQL 开发在线课程](https://cn.pingcap.com/courses-catalog/category/back-end-developer/?utm_source=docs-cn-dev-guide)。
 
 ## TiDB 基础
 
@@ -46,4 +46,4 @@ TiDB 高度兼容 MySQL 协议，TiDB 支持[大多数 MySQL 的语法及特性]
 - [数据读取](/develop/dev-guide-get-data-from-single-table.md)
 - [事务](/develop/dev-guide-transaction-overview.md)
 - [优化 SQL 性能](/develop/dev-guide-optimize-sql-overview.md)
-- [示例程序](/develop/dev-guide-sample-application-spring-boot.md)
+- [示例程序](/develop/dev-guide-sample-application-java-spring-boot.md)

@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/shard-merge-best-practices/']
 
 # 分表合并数据迁移最佳实践
 
-本文阐述了使用 TiDB Data Migration（以下简称 DM）对分库分表进行合并迁移的场景中，DM 相关功能的支持和限制，旨在给出一个业务的最佳实践（使用默认的“悲观协调”模式）。
+本文阐述了使用 [TiDB Data Migration](/dm/dm-overview.md)（以下简称 DM）对分库分表进行合并迁移的场景中，DM 相关功能的支持和限制，旨在给出一个业务的最佳实践（使用默认的“悲观协调”模式）。
 
 ## 独立的数据迁移任务
 
@@ -42,8 +42,8 @@ aliases: ['/docs-cn/tidb-data-migration/dev/shard-merge-best-practices/']
 
 ```sql
 CREATE TABLE `tbl_no_pk` (
-  `auto_pk_c1` bigint(20) NOT NULL,
-  `uk_c2` bigint(20) NOT NULL,
+  `auto_pk_c1` bigint NOT NULL,
+  `uk_c2` bigint NOT NULL,
   `content_c3` text,
   PRIMARY KEY (`auto_pk_c1`),
   UNIQUE KEY `uk_c2` (`uk_c2`)
@@ -61,8 +61,8 @@ CREATE TABLE `tbl_no_pk` (
 
     ```sql
     CREATE TABLE `tbl_no_pk_2` (
-      `auto_pk_c1` bigint(20) NOT NULL,
-      `uk_c2` bigint(20) NOT NULL,
+      `auto_pk_c1` bigint NOT NULL,
+      `uk_c2` bigint NOT NULL,
       `content_c3` text,
       INDEX (`auto_pk_c1`),
       UNIQUE KEY `uk_c2` (`uk_c2`)
@@ -85,8 +85,8 @@ CREATE TABLE `tbl_no_pk` (
 
 ```sql
 CREATE TABLE `tbl_multi_pk` (
-  `auto_pk_c1` bigint(20) NOT NULL,
-  `uuid_c2` bigint(20) NOT NULL,
+  `auto_pk_c1` bigint NOT NULL,
+  `uuid_c2` bigint NOT NULL,
   `content_c3` text,
   PRIMARY KEY (`auto_pk_c1`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
@@ -104,8 +104,8 @@ CREATE TABLE `tbl_multi_pk` (
 
     ```sql
     CREATE TABLE `tbl_multi_pk_c2` (
-      `auto_pk_c1` bigint(20) NOT NULL,
-      `uuid_c2` bigint(20) NOT NULL,
+      `auto_pk_c1` bigint NOT NULL,
+      `uuid_c2` bigint NOT NULL,
       `content_c3` text,
       PRIMARY KEY (`auto_pk_c1`,`uuid_c2`)
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1
@@ -138,7 +138,7 @@ CREATE TABLE `tbl_multi_pk` (
 
 如果需要在上游删除原有的分表，推荐按以下顺序执行操作：
 
-1. 在上游删除原有的分表，并通过 [`SHOW BINLOG EVENTS`](https://dev.mysql.com/doc/refman/5.7/en/show-binlog-events.html) 获取该 `DROP TABLE` 语句在 binlog 中对应的 `End_log_pos`，记为 _Pos-M_。
+1. 在上游删除原有的分表，并通过 [`SHOW BINLOG EVENTS`](https://dev.mysql.com/doc/refman/8.0/en/show-binlog-events.html) 获取该 `DROP TABLE` 语句在 binlog 中对应的 `End_log_pos`，记为 _Pos-M_。
 2. 通过 `query-status` 获取当前 DM 已经处理完成的 binlog event 对应的 position（`syncerBinlog`），记为 _Pos-S_。
 3. 当 _Pos-S_ 比 _Pos-M_ 更大后，则说明 DM 已经处理完 `DROP TABLE` 语句，且该表在被删除前的数据都已经迁移到下游，可以进行后续操作；否则，继续等待 DM 进行数据迁移。
 4. 通过 `stop-task` 停止任务。

@@ -19,7 +19,7 @@ summary: 了解如何使用 PLAN REPLAY 命令保存和恢复集群现场信息�
 {{< copyable "sql" >}}
 
 ```sql
-PLAN REPLAYER DUMP EXPLAIN [ANALYZE] sql-statement;
+PLAN REPLAYER DUMP EXPLAIN [ANALYZE] [WITH STATS AS OF TIMESTAMP expression] sql-statement;
 ```
 
 TiDB 根据 `sql-statement` 整理出以下集群现场信息：
@@ -32,6 +32,10 @@ TiDB 根据 `sql-statement` 整理出以下集群现场信息：
 - `sql-statement` 中所包含表的统计信息
 - `EXPLAIN [ANALYZE] sql-statement` 的结果
 - 优化器进行查询优化的一些内部步骤的记录
+
+当[启用历史统计信息](/system-variables.md#tidb_enable_historical_stats)时，可以在 `PLAN REPLAYER` 语句中指定时间来获取对应时间的统计信息。该语法支持直接指定日期时间或指定时间戳。此时，TiDB 会查找指定时间之前的历史统计信息，并导出其中最新的一份。
+
+如果没有找到指定时间之前的历史统计信息，TiDB 会直接导出最新统计信息（和未指定时间时的行为一致），并且在导出的 `ZIP` 文件中的 `errors.txt` 中输出错误信息。
 
 > **注意：**
 >
@@ -48,6 +52,8 @@ insert into t values(1,1), (2, 2), (3, 3);
 analyze table t;
 
 plan replayer dump explain select * from t;
+plan replayer dump with stats as of timestamp '2023-07-17 12:00:00' explain select * from t;
+plan replayer dump with stats as of timestamp '442012134592479233' explain select * from t;
 ```
 
 `PLAN REPLAYER DUMP` 会将以上信息打包整理成 `ZIP` 文件，并返回文件标识作为执行结果。
@@ -142,16 +148,26 @@ PLAN REPLAYER LOAD 'file_name';
 PLAN REPLAYER LOAD 'plan_replayer.zip';
 ```
 
+> **注意：**
+>
+> 你需要禁止 `auto analyze`，否则导入的统计信息会被 `analyze` 覆盖。
+
+你可以通过将 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 系统变量设置为 `OFF` 来禁用 `auto analyze`。
+
+```sql
+set @@global.tidb_enable_auto_analyze = OFF;
+```
+
 导入完毕后，该 TiDB 集群就载入了所需要的表结构、统计信息等其他影响构造 Plan 所需要的信息。你可以通过以下方式查看执行计划以及验证统计信息:
 
 ```sql
 mysql> desc t;
-+-------+---------+------+------+---------+-------+
-| Field | Type    | Null | Key  | Default | Extra |
-+-------+---------+------+------+---------+-------+
-| a     | int(11) | YES  |      | NULL    |       |
-| b     | int(11) | YES  |      | NULL    |       |
-+-------+---------+------+------+---------+-------+
++-------+------+------+------+---------+-------+
+| Field | Type | Null | Key  | Default | Extra |
++-------+------+------+------+---------+-------+
+| a     | int  | YES  |      | NULL    |       |
+| b     | int  | YES  |      | NULL    |       |
++-------+------+------+------+---------+-------+
 2 rows in set (0.01 sec)
 
 mysql> explain select * from t where a = 1 or b =1;
@@ -210,7 +226,7 @@ PLAN REPLAYER CAPTURE 'sql_digest' '*';
 你可以通过以下方式查看集群中目前正在工作的 `PLAN REPLAYER CAPTURE` 的抓取任务:
 
 ```sql
-mysql> PLAN PLAYER CAPTURE 'example_sql' 'example_plan';
+mysql> PLAN REPLAYER CAPTURE 'example_sql' 'example_plan';
 Query OK, 1 row affected (0.01 sec)
 
 mysql> SELECT * FROM mysql.plan_replayer_task;
@@ -224,7 +240,7 @@ mysql> SELECT * FROM mysql.plan_replayer_task;
 
 ### 查看 `PLAN REPLAYER CAPTURE` 抓取结果
 
-当 `PLAN REPLAYER CAPTURE` 成功抓取到结果后，可以通过以下 SQL 语句查看用于下载的文件标识:
+当 `PLAN REPLAYER CAPTURE` 成功抓取到结果后，可以通过以下 SQL 语句查看用于下载的文件标识：
 
 ```sql
 mysql> SELECT * FROM mysql.plan_replayer_status;
@@ -243,6 +259,29 @@ mysql> SELECT * FROM mysql.plan_replayer_status;
 > **注意：**
 >
 > `PLAN REPLAYER CAPTURE` 的结果文件最多会在 TiDB 集群中保存一周，超时后 TiDB 会将其删除。
+
+### 移除 `PLAN REPLAYER CAPTURE` 抓取任务
+
+不再需要某个 `PLAN REPLAYER CAPTURE` 抓取任务后，你可以通过 `PLAN REPLAYER CAPTURE REMOVE` 语句将其移除。示例如下：
+
+```sql
+mysql> PLAN REPLAYER CAPTURE '077a87a576e42360c95530ccdac7a1771c4efba17619e26be50a4cfd967204a0' '4838af52c1e07fc8694761ad193d16a689b2128bc5ced9d13beb31ae27b370ce';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM mysql.plan_replayer_task;
++------------------------------------------------------------------+------------------------------------------------------------------+---------------------+
+| sql_digest                                                       | plan_digest                                                      | update_time         |
++------------------------------------------------------------------+------------------------------------------------------------------+---------------------+
+| 077a87a576e42360c95530ccdac7a1771c4efba17619e26be50a4cfd967204a0 | 4838af52c1e07fc8694761ad193d16a689b2128bc5ced9d13beb31ae27b370ce | 2024-05-21 11:26:10 |
++------------------------------------------------------------------+------------------------------------------------------------------+---------------------+
+1 row in set (0.01 sec)
+
+mysql> PLAN REPLAYER CAPTURE REMOVE '077a87a576e42360c95530ccdac7a1771c4efba17619e26be50a4cfd967204a0' '4838af52c1e07fc8694761ad193d16a689b2128bc5ced9d13beb31ae27b370ce';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM mysql.plan_replayer_task;
+Empty set (0.01 sec)
+```
 
 ## 使用 `PLAN REPLAYER CONTINUOUS CAPTURE`
 

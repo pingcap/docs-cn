@@ -1,6 +1,7 @@
 ---
 title: 数值类型
 aliases: ['/docs-cn/dev/data-type-numeric/','/docs-cn/dev/reference/sql/data-types/numeric/']
+summary: TiDB 支持 MySQL 的所有数值类型，包括整数类型、浮点类型和定点类型。整数类型包括 BIT、BOOLEAN、TINYINT、SMALLINT、MEDIUMINT、INTEGER 和 BIGINT，存储空间和取值范围各不相同。浮点类型包括 FLOAT 和 DOUBLE，存储空间分别为 4 和 8 字节。定点类型包括 DECIMAL 和 NUMERIC，可设置小数位数和小数点后位数。建议使用 DECIMAL 类型存储精确值。
 ---
 
 # 数值类型
@@ -13,9 +14,13 @@ TiDB 支持 MySQL 所有的数值类型，按照精度可以分为：
 
 ## 整数类型
 
-TiDB 支持 MySQL 所有的整数类型，包括 `INTEGER`/`INT`、`TINYINT`、`SMALLINT`、`MEDIUMINT` 以及 `BIGINT`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/integer-types.html)文档。
+TiDB 支持 MySQL 所有的整数类型，包括 `INTEGER`/`INT`、`TINYINT`、`SMALLINT`、`MEDIUMINT` 以及 `BIGINT`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/8.0/en/integer-types.html)文档。
 
 字段说明：
+
+> **警告：**
+>
+> 从 v8.5.0 开始，整数显示宽度功能已废弃（[`deprecate-integer-display-length`](/tidb-configuration-file.md#deprecate-integer-display-length) 默认为 `true`）。不建议为整数类型指定显示宽度。
 
 | 语法元素 | 说明 |
 | ---- | --------|
@@ -117,7 +122,7 @@ BIGINT[(M)] [UNSIGNED] [ZEROFILL]
 
 ## 浮点类型
 
-TiDB 支持 MySQL 所有的浮点类型，包括 `FLOAT`、`DOUBLE`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/floating-point-types.html)文档。
+TiDB 支持 MySQL 所有的浮点类型，包括 `FLOAT`、`DOUBLE`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/8.0/en/floating-point-types.html)文档。
 
 字段说明：
 
@@ -179,7 +184,7 @@ DOUBLE PRECISION [(M,D)] [UNSIGNED] [ZEROFILL], REAL[(M,D)] [UNSIGNED] [ZEROFILL
 
 ## 定点类型
 
-TiDB 支持 MySQL 所有的定点类型，包括 `DECIMAL`、`NUMERIC`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/fixed-point-types.html)文档。
+TiDB 支持 MySQL 所有的定点类型，包括 `DECIMAL`、`NUMERIC`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/8.0/en/fixed-point-types.html)文档。
 
 字段说明：
 

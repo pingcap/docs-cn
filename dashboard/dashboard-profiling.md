@@ -24,7 +24,9 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
   > ARM 环境中暂不支持对 TiKV 和 TiFlash 的 CPU 开销情况进行分析。
 
-- Heap：TiDB、PD 实例上各个内部函数的内存占用开销情况
+- Heap：TiDB、PD、TiKV 实例上各个内部函数的内存占用开销情况
+
+  > 从 v7.5 版本开始，支持获取 TiKV Heap Profile，并且需要 TiDB Dashboard 的运行环境中有 Perl 依赖，否则会报错。
 
 - Mutex：TiDB、PD 实例上各个处于等待状态的 Mutex 情况
 

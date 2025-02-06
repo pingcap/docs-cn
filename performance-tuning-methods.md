@@ -39,7 +39,7 @@ TiDB 对 SQL 的处理路径和数据库时间进行了完善的测量和记录�
 
 - 按 SQL 处理的 4 个步骤（即 get_token/parse/compile/execute）分解，判断哪个步骤消耗的时间最多。对应的分解公式为：
 
-    `DB Time = Get Token Time + Parse Time + Comiple Time + Execute Time`
+    `DB Time = Get Token Time + Parse Time + Compile Time + Execute Time`
 
 - 对于 execute 耗时，按照 TiDB 执行器本身的时间、TSO 等待时间、KV 请求时间和重试的执行时间，判断执行阶段的瓶颈。对应的分解公式为：
 
@@ -163,10 +163,10 @@ TPC-C 负载类型主要以 Update、Select 和 Insert 语句为主。总的 QPS
 
 **示例 3：OLTP 负载，使用 prepared statement 接口无法使用执行计划缓存**
 
-StmtPreare 次数 = StmtExecute 次数 = StmtClose 次数 ~= StmtFetch 次数，应用使用了 prepare > execute > fetch > close 的 loop，很多框架都会在 execute 之后调用 close，确保资源不会泄露。这会带来两个问题：
+StmtPrepare 次数 = StmtExecute 次数 = StmtClose 次数 ~= StmtFetch 次数，应用使用了 prepare > execute > fetch > close 的 loop，很多框架都会在 execute 之后调用 close，确保资源不会泄露。这会带来两个问题：
 
 - 执行每条 SQL 语句需要 4 个命令，以及 4 次网络往返。
-- Queries Using Plan Cache OPS 为 0，无法命中执行计划缓存。StmtClose 命令默认会清理缓存的执行计划，导致下一次 StmtPreare 命令需要重新生成执行计划。
+- Queries Using Plan Cache OPS 为 0，无法命中执行计划缓存。StmtClose 命令默认会清理缓存的执行计划，导致下一次 StmtPrepare 命令需要重新生成执行计划。
 
 > **注意：**
 >
@@ -209,34 +209,90 @@ StmtPrepare 每秒执行次数远大于 StmtClose，说明应用程序存在 pre
 - 每秒总的 KV 请求数据是 35.5，Cop 请求次数是每秒 9.3。
 - KV 处理时间主要来源为 `Cop-internal_stats`，说明 Cop 请求来源于内部的 analyze 操作。
 
-#### TiDB CPU，以及 TiKV CPU 和 IO 使用情况
+#### CPU 和内存使用情况
 
-在 TiDB CPU 和 TiKV CPU/IO MBps 这两个面板中，你可以观察到 TiDB 和 TiKV 的逻辑 CPU 使用率和 IO 吞吐，包含平均、最大和 delta（最大 CPU 使用率减去最小 CPU 使用率），从而用来判定 TiDB 和 TiKV 总体的 CPU 使用率。
+在 TiDB、TiKV 和 PD 的 CPU/Memory 面板中，你可以监控它们各自的逻辑 CPU 使用率和内存消耗情况，例如平均 CPU 利用率、最大 CPU 利用率、CPU 利用率差值（最大 CPU 使用率减去最小 CPU 使用率）、CPU Quota（可以使用的 CPU 核数）以及最大内存使用率。基于这些指标，你可以确定 TiDB、TiKV 和 PD 的整体资源使用情况。
 
-- 通过 `delta` 值，你可以判断 TiDB 是否存在 CPU 使用负载不均衡（通常伴随着应用连接不均衡），TiKV 是否存在热点。
-- 通过 TiDB 和 TiKV 的资源使用概览，你可以快速判断集群是否存在资源瓶颈，最需要扩容的组件是 TiDB 还是 TiKV。
+- 根据 `delta` 值，你可以判断 TiDB 或 TiKV 的 CPU 使用是否存在不均衡的情况。对于 TiDB，较高的 `delta` 值通常意味着应用程序的连接在 TiDB 实例之间分布不均衡；对于 TiKV，较高的 `delta` 值通常意味着集群中存在读写热点。
+- 通过 TiDB、TiKV 和 PD 的资源使用概览，你可以快速判断集群是否存在资源瓶颈，以及是否需要对 TiKV、TiDB 或 PD 进行扩容或者硬件配置升级。
 
-**示例 1：TiDB 资源使用率高**
+**示例 1：TiKV 资源使用率高**
 
-下图负载中，每个 TiDB 和 TiKV 配置 8 CPU。
+在以下 TPC-C 负载中，每个 TiDB 和 TiKV 配置了 16 核 CPU，PD 配置了 4 核 CPU。
 
-![TPC-C](/media/performance/tidb_high_cpu.png)
+![TPC-C](/media/performance/tpcc_cpu_memory.png)
 
-- TiDB 平均 CPU 为 575%。最大 CPU 为 643%，delta CPU 为 136%。
-- TiKV 平均 CPU 为 146%，最大 CPU 215%。delta CPU 为 118%。TiKV 的平均 IO 吞吐为 9.06 MB/s，最大 IO 吞吐为 19.7 MB/s，delta IO 吞吐为 17.1 MB/s。
+- TiDB 的平均、最大和 delta CPU 使用率分别为 761%、934% 和 322%。最大内存使用率为 6.86 GiB。
+- TiKV 的平均、最大和 delta CPU 使用率分别为 1343%、1505% 和 283%。最大内存使用率为 27.1 GiB。
+- PD 的最大 CPU 使用率为 59.1%。最大内存使用率为 221 MiB。
 
-由此可以判断，TiDB 的 CPU 消耗明显更高，并接近于 8 CPU 的瓶颈，可以考虑扩容 TiDB。
+显然，TiKV 消耗了更多的 CPU，在 TPC-C 这样的写密集场景中，这是符合预期的。建议通过扩容 TiKV 来提升性能。
 
-**示例 2：TiKV 资源使用率高**
+#### 数据流量
 
-下图 TPC-C 负载中，每个 TiDB 和 TiKV 配置 16 CPU。
+Read traffic 和 Write traffic 面板可以帮助你深入分析 TiDB 集群内部的流量模式，全面监控从客户端到数据库以及内部组件之间的数据流情况。
 
-![TPC-C](/media/performance/tpcc_cpu_io.png)
+- Read traffic （读流量）
+    - `TiDB -> Client`：从 TiDB 到客户端的出站流量统计
+    - `Rocksdb -> TiKV`：TiKV 在存储层读操作期间从 RocksDB 读取的数据流量
 
-- TiDB 平均 CPU 为 883%。最大 CPU 为 962%，delta CPU 为 153%。
-- TiKV 平均 CPU 为 1288%，最大 CPU 1360%。delta CPU 为 126%。TiKV 的平均 IO 吞吐为 130 MB/s，最大 IO 吞吐为 153 MB/s，delta IO 吞吐为 53.7 MB/s。
+- Write traffic （写流量）
+    - `Client -> TiDB`：从客户端到 TiDB 的入站流量统计
+    - `TiDB -> TiKV: general`：前台事务从 TiDB 写入到 TiKV 的速率
+    - `TiDB -> TiKV: internal`：内部事务从 TiDB 写入到 TiKV 的速率
+    - `TiKV -> Rocksdb`：从 TiKV 到 RocksDB 的写操作流量
+    - `RocksDB Compaction`：RocksDB compaction 操作产生的总读写 I/O 流量。如果 `RocksDB Compaction` 明显高于 `TiKV -> Rocksdb`，且你的平均行大小高于 512 字节，则可以进行以下配置以减少 compaction I/O 流量：启用 Titan，将 `min-blob-size` 设置为 `"512B"` 或 `"1KB"`，将 `blob-file-compression` 设置为 `"zstd"`。
 
-由此可以判断，TiKV 的 CPU 消耗更高，因为 TPC-C 是一个写密集场景，这是正常现象，可以考虑扩容 TiKV 节点提升性能。
+        ```toml
+        [rocksdb.titan]
+        enabled = true
+        [rocksdb.defaultcf.titan]
+        min-blob-size = "1KB"
+        blob-file-compression = "zstd"
+        ```
+
+**示例 1：TPC-C 负载中的读写流量**
+
+以下是 TPC-C 负载中读写流量的示例。
+
+![TPC-C](/media/performance/tpcc_read_write_traffic.png)
+
+- 读流量
+    - `TiDB -> Client`：14.2 MB/s
+    - `Rocksdb -> TiKV`：469 MB/s。注意，在提交事务之前，读操作（`SELECT` 语句）和写操作（`INSERT`、`UPDATE` 和 `DELETE` 语句）都需要从 RocksDB 读取数据到 TiKV。
+
+- 写流量
+    - `Client -> TiDB`：5.05 MB/s
+    - `TiDB -> TiKV: general`：13.1 MB/s
+    - `TiDB -> TiKV: internal`：5.07 KB/s
+    - `TiKV -> Rocksdb`：109 MB/s
+    - `RocksDB Compaction`：567 MB/s
+
+![TPC-C](/media/performance/tpcc_read_write_traffic.png)
+
+**示例 2：启用 Titan 前后的写流量**
+
+以下示例展示了启用 Titan 前后的性能变化。对于 6 KiB 数据量的插入负载，Titan 显著降低了写流量和 compaction I/O，提高了 TiKV 的整体性能和资源利用率。
+
+- 启用 Titan 前的写流量
+
+    - `Client -> TiDB`：510 MB/s
+    - `TiDB -> TiKV: general`：187 MB/s
+    - `TiDB -> TiKV: internal`：3.2 KB/s
+    - `TiKV -> Rocksdb`：753 MB/s
+    - `RocksDB Compaction`：10.6 GB/s
+
+    ![Titan 禁用](/media/performance/titan_disable.png)
+
+- 启用 Titan 后的写流量
+
+    - `Client -> TiDB`：586 MB/s
+    - `TiDB -> TiKV: general`：295 MB/s
+    - `TiDB -> TiKV: internal`：3.66 KB/s
+    - `TiKV -> Rocksdb`：1.21 GB/s
+    - `RocksDB Compaction`：4.68 MB/s
+
+    ![Titan 启用](/media/performance/titan_enable.png)
 
 ### Query 延迟分解和关键的延迟指标
 
@@ -272,7 +328,7 @@ Duration 面板包含了所有语句的 99 延迟和每种 SQL 类型的平均�
 
 - 所有 SQL 语句的平均延迟 10.8 ms，P99 延迟 84.1 ms。
 - 事务中连接空闲时间 `avg-in-txn` 为 9.4 ms。
-- 集群总的连接数为 3.7K，每个 TiDB 节点的连接数为 1.8 K。平均活跃连接数为 40.3，大部分连接处于空闲状态。`disonnnection/s` 平均为 55.8，说明应用在频繁的新建和断开连接。短连接的行为会对 TiDB 的资源和响应时间造成一定的影响。
+- 集群总的连接数为 3.7K，每个 TiDB 节点的连接数为 1.8 K。平均活跃连接数为 40.3，大部分连接处于空闲状态。`disconnection/s` 平均为 55.8，说明应用在频繁的新建和断开连接。短连接的行为会对 TiDB 的资源和响应时间造成一定的影响。
 
 **示例 2：用户响应时间的瓶颈在 TiDB 中**
 
@@ -378,15 +434,15 @@ Avg TiDB KV Request Duration 和 Avg TiKV GRPC Duration 的差值跟网络流量
 
 #### Storage Async Write Duration、Store Duration 和 Apply Duration
 
-TiKV 对于写请求的处理流程如下图
+TiKV 对于写请求的处理流程如下：
 
 - `scheduler worker` 会先处理写请求，进行事务一致性检查，并把写请求转化成键值对，发送到 `raftstore` 模块。
 - `raftstore` 为 TiKV 的共识模块，使用 Raft 共识算法，使多个 TiKV 组成的存储层可以容错。
 
-    Raftstore 分为 store 线程和 apply 线程。：
+    Raftstore 分为 Store 线程和 Apply 线程：
 
-    - store 线程负载处理 Raft 消息和新的 `proposals`。当收到新的 `proposals` 时，leader 节点的 store 线程会写入本地 Raft DB，并将消息复制到多个 follower 节点。当这个 `proposals` 在多数实例持久化成功之后，`proposals` 成功被提交。
-    - apply 线程会负载将提交的内容写入到 KV DB 中。当写操作的内容被成功的写入 KV 数据库中，apply 线程会通知外层请求写请求已经完成。
+    - Store 线程负责处理 Raft 消息和新的 `proposals`。当收到新的 `proposals` 时，leader 节点的 store 线程会写入本地 Raft DB，并将消息复制到多个 follower 节点。当这个 `proposals` 在多数实例持久化成功之后，`proposals` 成功被提交。
+    - Apply 线程负责将提交的数据写入到 KV DB 中。当写操作的数据被成功地写入 KV 数据库中时，Apply 线程会通知外层请求写请求已经完成。
 
 ![TiKV Write](/media/performance/store_apply.png)
 
@@ -404,7 +460,7 @@ avg Storage Async Write Duration  = avg Store Duration + avg Apply Duration
 
 **示例 1：同一个 OLTP 负载在 v5.3.0 和 v5.4.0 版本的对比**
 
-v5.4.0 版本，一个写密集的 OLTP 负载 QPS 比 v5.3.0 提升了 14%。应用以上公式
+应用以上公式：v5.4.0 版本中，一个写密集的 OLTP 负载 QPS 比 v5.3.0 提升了 14%。
 
 - v5.3.0：24.4 ms ~= 17.7 ms + 6.59 ms
 - v5.4.0：21.4 ms ~= 14.0 ms + 7.33 ms
@@ -477,12 +533,12 @@ v5.4.0：
 Store 线程的 Commit Log Duration 明显比 Apply Log Duration 高，并且 Append Log Duration 比 Apply Log Duration 明显的高，说明 Store 线程在 CPU 和 IO 都可能都存在瓶颈。可能降低 Commit Log Duration 和 Append Log Duration 的方式如下：
 
 - 如果 TiKV CPU 资源充足，考虑增加 Store 线程，即 `raftstore.store-pool-size`。
-- 如果 TiDB 为 v5.4.0 及之后的版本，考虑启用 [`Raft Engine`](/tikv-configuration-file.md#raft-engine)，Raft Engine 具有更轻量的执行路径，在一些场景下显著减少 IO 写入量和写入请求的长尾延迟，启用方式为设置：`raft-engine.enable: true`
+- 如果 TiDB 为 v5.4.0 及之后的版本，考虑启用 [`Raft Engine`](/tikv-configuration-file.md#raft-engine)，Raft Engine 具有更轻量的执行路径，在一些场景下显著减少 IO 写入量和写入请求的长尾延迟，启用方式为设置 `raft-engine.enable: true`。
 - 如果 TiKV CPU 资源充足，且 TiDB 为 v5.3.0 及之后的版本，考虑启用 [`StoreWriter`](/tune-tikv-thread-performance.md#tikv-线程池调优)。启用方式：`raftstore.store-io-pool-size: 1`。
 
 ## 低于 v6.1.0 的 TiDB 版本如何使用 Performance overview 面板
 
-从 v6.1.0 起，TiDB Grafana 组件默认内置了 Performance Overview 面板。Performance overview 面板兼容 TiDB v4.x 和 v5.x 版本。如果你的 TiDB 版本低于 v6.1.0，需要手动导入 [`performance_overview.json`](https://github.com/pingcap/tidb/blob/master/metrics/grafana/performance_overview.json)。
+从 v6.1.0 起，TiDB Grafana 组件默认内置了 Performance Overview 面板。Performance overview 面板兼容 TiDB v4.x 和 v5.x 版本。如果你的 TiDB 版本低于 v6.1.0，需要手动导入 [`performance_overview.json`](https://github.com/pingcap/tidb/blob/master/pkg/metrics/grafana/performance_overview.json)。
 
 导入方法如图所示：
 

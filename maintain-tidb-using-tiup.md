@@ -1,6 +1,7 @@
 ---
 title: TiUP 常见运维操作
 aliases: ['/docs-cn/dev/maintain-tidb-using-tiup/','/docs-cn/dev/how-to/maintain/tiup-operations/']
+summary: TiUP 是用于管理 TiDB 集群的工具，可以进行查看集群列表、启动、关闭、修改配置参数、查看状态等常见运维操作。操作简单方便，适合用于 TiDB 集群的管理。
 ---
 
 # TiUP 常见运维操作
@@ -19,7 +20,7 @@ tiup cluster list
 
 ## 启动集群
 
-启动集群操作会按 PD -> TiKV -> Pump -> TiDB -> TiFlash -> Drainer -> TiCDC -> Prometheus -> Grafana -> Alertmanager 的顺序启动整个 TiDB 集群所有组件：
+启动集群操作会按 PD -> TiKV -> TiDB -> TiFlash -> TiCDC -> Prometheus -> Grafana -> Alertmanager 的顺序启动整个 TiDB 集群所有组件：
 
 {{< copyable "shell-regular" >}}
 
@@ -101,7 +102,7 @@ tiup cluster display ${cluster-name}
 
     **配置项层次结构使用 `.` 表示**。
 
-    关于组件的更多配置参数说明，可参考 [tidb `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)、[tikv `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 和 [pd `config.toml.example`](https://github.com/tikv/pd/blob/master/conf/config.toml)。
+    关于组件的更多配置参数说明，可参考 [tidb `config.toml.example`](https://github.com/pingcap/tidb/blob/master/pkg/config/config.toml.example)、[tikv `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 和 [pd `config.toml.example`](https://github.com/tikv/pd/blob/master/conf/config.toml)。
 
 3. 执行 `reload` 命令滚动分发配置、重启相应组件：
 
@@ -113,7 +114,7 @@ tiup cluster display ${cluster-name}
 
 ### 示例
 
-如果要调整 tidb-server 中事务大小限制参数 `txn-total-size-limit` 为 `1G`，该参数位于 [performance](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 模块下，调整后的配置如下：
+如果要调整 tidb-server 中事务大小限制参数 `txn-total-size-limit` 为 `1G`，该参数位于 [performance](https://github.com/pingcap/tidb/blob/master/pkg/config/config.toml.example) 模块下，调整后的配置如下：
 
 ```
 server_configs:
@@ -186,7 +187,7 @@ tiup cluster rename ${cluster-name} ${new-name}
 
 ## 关闭集群
 
-关闭集群操作会按 Alertmanager -> Grafana -> Prometheus -> TiCDC -> Drainer -> TiFlash -> TiDB -> Pump -> TiKV -> PD 的顺序关闭整个 TiDB 集群所有组件（同时也会关闭监控组件）：
+关闭集群操作会按 Alertmanager -> Grafana -> Prometheus -> TiCDC -> TiFlash -> TiDB -> TiKV -> PD 的顺序关闭整个 TiDB 集群所有组件（同时也会关闭监控组件）：
 
 {{< copyable "shell-regular" >}}
 

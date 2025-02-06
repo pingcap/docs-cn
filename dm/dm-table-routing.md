@@ -38,10 +38,11 @@ routes:
     target-schema: "test"
 ```
 
-在简单任务场景下，推荐使用通配符匹配库表名，但需注意以下版本差异：
+支持正则表达式和通配符来匹配库表名，在简单任务场景下，推荐使用通配符匹配库表名，但需注意以下几点：
 
-+ 对于 v1.0.5 版及后续版本，表路由支持[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)。但注意所有版本中通配符匹配中的 `*` 符号 **只能有一个，且必须在末尾**。
-+ 对于 v1.0.5 以前的版本，表路由支持通配符，但不支持 `[...]` 与 `[!...]` 表达式。
++ 支持的通配符包括 `*`、`?` 以及 `[]`。注意通配符匹配中的 `*` 符号只能有一个，且必须在末尾。例如用 `table-pattern: "t_*"` 中的 `"t_*"` 表示 `t_` 开头的表。详情请参考[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)。
++ `table-regexp`、`schema-regexp` 和 `source-regexp` 仅支持配置正则表达式，但不能以 `~` 符号开头。
++ `schema-pattern` 和 `table-pattern` 同时支持通配符和正则表达式。正则表达式必须以 `~` 符号开头。
 
 ## 参数解释
 
@@ -111,7 +112,7 @@ routes:
 
 ```sql
 CREATE TABLE `test`.`t` (
-    a int(11) PRIMARY KEY,
+    a int PRIMARY KEY,
     c_table varchar(10) DEFAULT NULL,
     c_schema varchar(10) DEFAULT NULL,
     c_source varchar(10) DEFAULT NULL
@@ -179,7 +180,7 @@ mysql> select * from test.t;
 ```sql
 CREATE TABLE `test`.`t` (
     c_table varchar(10) DEFAULT NULL,
-    a int(11) PRIMARY KEY,
+    a int PRIMARY KEY,
     c_schema varchar(10) DEFAULT NULL,
     c_source varchar(10) DEFAULT NULL
 );
@@ -189,7 +190,7 @@ CREATE TABLE `test`.`t` (
 
 ```sql
 CREATE TABLE `test`.`t` (
-    a int(11) PRIMARY KEY,
+    a int PRIMARY KEY,
     c_table varchar(10) DEFAULT NULL,
     c_schema varchar(10) DEFAULT NULL,
 );
@@ -199,9 +200,9 @@ CREATE TABLE `test`.`t` (
 
 ```sql
 CREATE TABLE `test`.`t` (
-    a int(11) PRIMARY KEY,
+    a int PRIMARY KEY,
     c_table varchar(10) DEFAULT NULL,
-    c_schema int(11) DEFAULT NULL,
+    c_schema int DEFAULT NULL,
     c_source varchar(10) DEFAULT NULL,
 );
 ```

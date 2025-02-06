@@ -100,8 +100,9 @@ show status;
 
 ## MySQL 兼容性
 
-* `FLUSH STATUS` 语句仅用于提供 MySQL 兼容性。
+* `FLUSH STATUS` 语句与 MySQL 兼容。
 
 ## 另请参阅
 
 * [SHOW \[GLOBAL|SESSION\] STATUS](/sql-statements/sql-statement-show-status.md)
+* [服务器状态变量](/status-variables.md)

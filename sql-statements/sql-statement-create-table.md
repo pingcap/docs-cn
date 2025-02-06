@@ -45,8 +45,8 @@ ColumnOptionList ::=
 ColumnOption ::=
     'NOT'? 'NULL'
 |   'AUTO_INCREMENT'
-|   PrimaryOpt 'KEY'
-|   'UNIQUE' 'KEY'?
+|   PrimaryOpt 'KEY' ( 'GLOBAL' | 'LOCAL' )?
+|   'UNIQUE' 'KEY'? ( 'GLOBAL' | 'LOCAL' )?
 |   'DEFAULT' DefaultValueExpr
 |   'SERIAL' 'DEFAULT' 'VALUE'
 |   'ON' 'UPDATE' NowSymOptionFraction
@@ -76,6 +76,8 @@ KeyPart ::=
 IndexOption ::=
     'COMMENT' String
 |   ( 'VISIBLE' | 'INVISIBLE' )
+|   ('USING' | 'TYPE') ('BTREE' | 'RTREE' | 'HASH')
+|   ( 'GLOBAL' | 'LOCAL' )
 
 ForeignKeyDef
          ::= ( 'CONSTRAINT' Identifier )? 'FOREIGN' 'KEY'
@@ -165,18 +167,18 @@ mysql> CREATE TABLE t1 (a int);
 Query OK, 0 rows affected (0.09 sec)
 
 mysql> DESC t1;
-+-------+---------+------+------+---------+-------+
-| Field | Type    | Null | Key  | Default | Extra |
-+-------+---------+------+------+---------+-------+
-| a     | int(11) | YES  |      | NULL    |       |
-+-------+---------+------+------+---------+-------+
++-------+------+------+------+---------+-------+
+| Field | Type | Null | Key  | Default | Extra |
++-------+------+------+------+---------+-------+
+| a     | int  | YES  |      | NULL    |       |
++-------+------+------+------+---------+-------+
 1 row in set (0.00 sec)
 
 mysql> SHOW CREATE TABLE t1\G
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
-  `a` int(11) DEFAULT NULL
+  `a` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 1 row in set (0.00 sec)
 
@@ -209,15 +211,15 @@ DESC t1;
 mysql> DROP TABLE IF EXISTS t1;
 Query OK, 0 rows affected (0.22 sec)
 mysql> CREATE TABLE IF NOT EXISTS t1 (
-    ->  id BIGINT NOT NULL PRIMARY KEY auto_increment,
-    ->  b VARCHAR(200) NOT NULL
-    -> );
+          id BIGINT NOT NULL PRIMARY KEY auto_increment,
+          b VARCHAR(200) NOT NULL
+         );
 Query OK, 0 rows affected (0.08 sec)
 mysql> DESC t1;
 +-------+--------------+------+------+---------+----------------+
 | Field | Type         | Null | Key  | Default | Extra          |
 +-------+--------------+------+------+---------+----------------+
-| id    | bigint(20)   | NO   | PRI  | NULL    | auto_increment |
+| id    | bigint       | NO   | PRI  | NULL    | auto_increment |
 | b     | varchar(200) | NO   |      | NULL    |                |
 +-------+--------------+------+------+---------+----------------+
 2 rows in set (0.00 sec)
@@ -226,12 +228,14 @@ mysql> DESC t1;
 ## MySQL 兼容性
 
 * 支持除空间类型以外的所有数据类型。
-* 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
+* 为了兼容 MySQL，TiDB 在语法上支持 `HASH`、`BTREE` 和 `RTREE` 等索引类型，但会忽略它们。
+* TiDB 支持解析 `FULLTEXT` 语法，但不支持使用 `FULLTEXT` 索引。
 * 为了与 MySQL 兼容，`index_col_name` 属性支持 length 选项，最大长度默认限制为 3072 字节。此长度限制可以通过配置项 `max-index-length` 更改，具体请参阅 [TiDB 配置文件描述](/tidb-configuration-file.md#max-index-length)。
 * 为了与 MySQL 兼容，TiDB 会解析但忽略 `index_col_name` 属性的 `[ASC | DESC]` 索引排序选项。
 * `COMMENT` 属性不支持 `WITH PARSER` 选项。
 * TiDB 在单个表中默认支持 1017 列，最大可支持 4096 列。InnoDB 中相应的数量限制为 1017 列，MySQL 中的硬限制为 4096 列。详情参阅 [TiDB 使用限制](/tidb-limitations.md)。
-* 当前仅支持 Range、Hash 和 Range Columns（单列）类型的分区表，详情参阅[分区表](/partitioned-table.md)。
+* 分区表支持 `HASH`、`RANGE`、`LIST` 和 `KEY` [分区类型](/partitioned-table.md#分区类型)。对于不支持的分区类型，TiDB 会报 `Warning: Unsupported partition type %s, treat as normal table` 错误，其中 `%s` 为不支持的具体分区类型。
+* TiDB 对[分区表](/partitioned-table.md)进行了扩展。你可以指定 `GLOBAL` 索引选项将 `PRIMARY KEY` 或 `UNIQUE INDEX` 设置为[全局索引](/partitioned-table.md#全局索引)。该扩展与 MySQL 不兼容。
 
 ## 另请参阅
 

@@ -1,6 +1,7 @@
 ---
 title: 迁移使用 GH-ost/PT-osc 的源数据库
 aliases: ['/docs-cn/tidb-data-migration/dev/feature-online-ddl-scheme/','/zh/tidb-data-migration/stable/feature-online-ddl-scheme']
+summary: 使用 GH-ost/PT-osc 进行在线 DDL 工具执行 DDL 时，会产生锁表操作，阻塞数据库读写。为降低影响，可选择在线 DDL 工具 gh-ost 和 pt-osc。在 DM 迁移 MySQL 到 TiDB 时，可开启 `online-ddl` 配置，实现 DM 工具与 gh-ost 或 pt-osc 的协同。 DM 与 online DDL 工具协作细节包括 gh-ost 和 pt-osc 的实现过程，以及自定义规则配置。
 ---
 
 # 迁移使用 GH-ost/PT-osc 的源数据库
@@ -127,8 +128,8 @@ pt-osc 主要涉及的 SQL 以及 DM 的处理：
 1. 创建 `_new` 表：
 
     ```sql
-    CREATE TABLE `test`.`_test4_new` (id int(11) NOT NULL AUTO_INCREMENT,
-    date date DEFAULT NULL, account_id bigint(20) DEFAULT NULL, conversion_price decimal(20,3) DEFAULT NULL,  ocpc_matched_conversions bigint(20) DEFAULT NULL, ad_cost decimal(20,3) DEFAULT NULL,cl2 varchar(20) COLLATE utf8mb4_bin NOT NULL,cl1 varchar(20) COLLATE utf8mb4_bin NOT NULL,PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ;
+    CREATE TABLE `test`.`_test4_new` (id int NOT NULL AUTO_INCREMENT,
+    date date DEFAULT NULL, account_id bigint DEFAULT NULL, conversion_price decimal(20,3) DEFAULT NULL,  ocpc_matched_conversions bigint DEFAULT NULL, ad_cost decimal(20,3) DEFAULT NULL,cl2 varchar(20) COLLATE utf8mb4_bin NOT NULL,cl1 varchar(20) COLLATE utf8mb4_bin NOT NULL,PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ;
     ```
 
     DM: 不执行 `_test4_new` 的创建操作。根据 ghost_schema、ghost_table 以及 dm_worker 的 `server_id`，删除下游 `dm_meta.{task_name}_onlineddl` 的记录，清理内存中的相关信息。
@@ -175,20 +176,20 @@ pt-osc 主要涉及的 SQL 以及 DM 的处理：
 
     DM 执行以下两个操作:
 
-      - 把 rename 语句拆分成两个 SQL。
+    - 把 rename 语句拆分成两个 SQL。
 
-         ```sql
-         rename test.test4 to test._test4_old;
-         rename test._test4_new to test.test4;
-         ```
+        ```sql
+        rename test.test4 to test._test4_old;
+        rename test._test4_new to test.test4;
+        ```
 
-      - 不执行 `rename to _test4_old`。当要执行 `rename ghost_table to origin table` 的时候，并不执行 rename，而是把步骤 2 记录在内存中的 DDL 读取出来，然后把 ghost_table、ghost_schema 替换为 origin_table 以及对应的 schema，再执行替换后的 DDL。
+    - 不执行 `rename to _test4_old`。当要执行 `rename ghost_table to origin table` 的时候，并不执行 rename，而是把步骤 2 记录在内存中的 DDL 读取出来，然后把 ghost_table、ghost_schema 替换为 origin_table 以及对应的 schema，再执行替换后的 DDL。
 
-          ```sql
-          ALTER TABLE `test`.`_test4_new` add column c3 int;
-          --替换为
-          ALTER TABLE `test`.`test4` add column c3 int;
-          ```
+        ```sql
+        ALTER TABLE `test`.`_test4_new` add column c3 int;
+        --替换为
+        ALTER TABLE `test`.`test4` add column c3 int;
+        ```
 
 6. 删除 `_old` 表以及 online DDL 的 3 个 Trigger：
 

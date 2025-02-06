@@ -15,10 +15,10 @@ aliases: ['/zh/tidb/dev/br-log-command-line/']
 
 ## 日志备份命令行介绍
 
-你可以执行 `br log` 命令来开启和管理日志备份任务：
+你可以执行 `tiup br log` 命令来开启和管理日志备份任务：
 
 ```shell
-./br log --help
+tiup br log --help
 
 backup stream log from TiDB/TiKV cluster
 
@@ -37,22 +37,22 @@ Available Commands:
 
 各个子命令的作用如下：
 
-- `br log start`：启动一个日志备份任务
-- `br log status`：查询日志备份任务状态
-- `br log pause`：暂停日志备份任务
-- `br log resume`：重启暂停的备份任务
-- `br log stop`：停止备份任务，并删除任务元信息
-- `br log truncate`：从备份存储中清理日志备份数据
-- `br log metadata`：查询备份存储中备份数据的元信息
+- `tiup br log start`：启动一个日志备份任务
+- `tiup br log status`：查询日志备份任务状态
+- `tiup br log pause`：暂停日志备份任务
+- `tiup br log resume`：重启暂停的备份任务
+- `tiup br log stop`：停止备份任务，并删除任务元信息
+- `tiup br log truncate`：从备份存储中清理日志备份数据
+- `tiup br log metadata`：查询备份存储中备份数据的元信息
 
 ### 启动日志备份
 
-执行 `br log start` 命令，你可以在备份集群启动一个日志备份任务。该任务在 TiDB 集群持续地运行，及时地将 KV 变更日志保存到备份存储中。
+执行 `tiup br log start` 命令，你可以在备份集群启动一个日志备份任务。该任务在 TiDB 集群持续地运行，及时地将 KV 变更日志保存到备份存储中。
 
-执行 `br log start --help` 命令可获取该子命令使用介绍：
+执行 `tiup br log start --help` 命令可获取该子命令使用介绍：
 
 ```shell
-./br log start --help
+tiup br log start --help
 start a log backup task
 
 Usage:
@@ -78,23 +78,89 @@ Global Flags:
 - `task-name`：指定日志备份任务名。该名称也用于查询备份状态、暂停、重启和恢复备份任务等操作。
 - `ca`、`cert`、`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
 - `--pd`：指定备份集群的 PD 访问地址。br 命令行工具需要访问 PD，发起日志备份任务。
-- `--storage`：指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储，以上命令以 S3 为示例。详细参考[备份存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+- `--storage`：指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储，以上命令以 S3 为示例。关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 使用示例：
 
 ```shell
-./br log start --task-name=pitr --pd="${PD_IP}:2379" \
---storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+tiup br log start \
+  --task-name=pitr \
+  --pd="${PD_IP}:2379" \
+  --storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
 ```
+
+### 加密日志备份数据
+
+BR 支持在上传到备份存储之前对日志备份数据进行加密。
+
+自 TiDB v8.4.0 起，你可以在日志备份命令中传入以下参数来加密日志备份数据，类似于[快照备份加密](/br/br-snapshot-manual.md#备份数据加密)：
+
+- `--log.crypter.method`：加密算法，支持 `aes128-ctr`、`aes192-ctr` 和 `aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密
+- `--log.crypter.key`：加密密钥，十六进制字符串格式，`aes128-ctr` 对应 128 位（16 字节）密钥长度，`aes192-ctr` 为 24 字节，`aes256-ctr` 为 32 字节
+- `--log.crypter.key-file`：密钥文件，可直接将存放密钥的文件路径作为参数传入，此时 `log.crypter.key` 不需要配置
+
+示例如下：
+
+```shell
+tiup br log start \
+    --task-name=pitr-with-encryption
+    --pd ${PD_IP}:2379 \
+    --storage "s3://${BACKUP_COLLECTION_ADDR}/snapshot-${DATE}?access-key=${AWS_ACCESS_KEY}&secret-access-key=${AWS_SECRET_ACCESS_KEY}" \
+    --log.crypter.method aes128-ctr \
+    --log.crypter.key 0123456789abcdef0123456789abcdef
+```
+
+然而，在一些对安全性要求更高的场景中，你可能不希望在命令行中直接传入固定的加密密钥。为了进一步提高安全性，你可以使用基于主密钥的加密系统来管理加密密钥。该系统会使用不同的数据密钥来加密不同的日志备份文件，并且支持主密钥轮换。你可以在日志备份命令中传入以下参数来配置基于主密钥的加密：
+
+- `--master-key-crypter-method`：基于主密钥的加密算法，支持 `aes128-ctr`、`aes192-ctr` 和 `aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密
+- `--master-key`：主密钥配置，可以是基于本地磁盘的主密钥或基于云 KMS (Key Management Service) 的主密钥
+
+使用本地磁盘主密钥加密：
+
+```shell
+tiup br log start \
+    --task-name=pitr-with-encryption \
+    --pd ${PD_IP}:2379 \
+    --storage "s3://${BACKUP_COLLECTION_ADDR}/snapshot-${DATE}?access-key=${AWS_ACCESS_KEY}&secret-access-key=${AWS_SECRET_ACCESS_KEY}" \
+    --master-key-crypter-method aes128-ctr \
+    --master-key "local:///path/to/master.key"
+```
+
+使用 AWS KMS 加密：
+
+```shell
+tiup br log start \
+    --task-name=pitr-with-encryption \
+    --pd ${PD_IP}:2379 \
+    --storage "s3://${BACKUP_COLLECTION_ADDR}/snapshot-${DATE}?access-key=${AWS_ACCESS_KEY}&secret-access-key=${AWS_SECRET_ACCESS_KEY}" \
+    --master-key-crypter-method aes128-ctr \
+    --master-key "aws-kms:///${AWS_KMS_KEY_ID}?AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY}&AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}&REGION=${AWS_REGION}"
+```
+
+使用 Google Cloud KMS 加密：
+
+```shell
+tiup br log start \
+    --task-name=pitr-with-encryption \
+    --pd ${PD_IP}:2379 \
+    --storage "s3://${BACKUP_COLLECTION_ADDR}/snapshot-${DATE}?access-key=${AWS_ACCESS_KEY}&secret-access-key=${AWS_SECRET_ACCESS_KEY}" \
+    --master-key-crypter-method aes128-ctr \
+    --master-key "gcp-kms:///projects/$GCP_PROJECT_ID/locations/$GCP_LOCATION/keyRings/$GCP_KEY_RING/cryptoKeys/$GCP_KEY_NAME?AUTH=specified&CREDENTIALS=$GCP_CREDENTIALS_PATH"
+```
+
+> **注意：**
+>
+> - 密钥丢失，备份的数据将无法恢复到集群中。
+> - 加密功能需在 br 工具和 TiDB 集群都不低于 v8.4.0 的版本上使用，且加密日志备份得到的数据无法在低于 v8.4.0 版本的集群上恢复。
 
 ### 查询日志备份任务
 
-执行 `br log status` 命令，你可以查询日志备份任务状态。
+执行 `tiup br log status` 命令，你可以查询日志备份任务状态。
 
-执行 `br log status –-help` 命令可获取该子命令使用介绍：
+执行 `tiup br log status --help` 命令可获取该子命令使用介绍：
 
 ```shell
-./br log status --help
+tiup br log status --help
 get status for the log backup task
 
 Usage:
@@ -118,7 +184,7 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log status --task-name=pitr --pd="${PD_IP}:2379"
+tiup br log status --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
 命令输出如下：
@@ -146,12 +212,12 @@ checkpoint[global]: 2022-07-25 22:52:15.518 +0800; gap=2m52s
 
 ### 暂停和恢复日志备份任务
 
-执行 `br log pause` 命令，你可以暂停正在运行的日志备份任务。
+执行 `tiup br log pause` 命令，你可以暂停正在运行的日志备份任务。
 
-执行 `br log pause –help` 可获取该子命令使用介绍：
+执行 `tiup br log pause --help` 可获取该子命令使用介绍：
 
 ```shell
-./br log pause --help
+tiup br log pause --help
 pause a log backup task
 
 Usage:
@@ -177,15 +243,15 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log pause --task-name=pitr --pd="${PD_IP}:2379"
+tiup br log pause --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
-执行 `br log resume` 命令，你可以恢复被暂停的日志备份任务。
+执行 `tiup br log resume` 命令，你可以恢复被暂停的日志备份任务。
 
-执行 `br log resume --help` 命令可获取该子命令使用介绍：
+执行 `tiup br log resume --help` 命令可获取该子命令使用介绍：
 
 ```shell
-./br log resume --help
+tiup br log resume --help
 resume a log backup task
 
 Usage:
@@ -202,26 +268,26 @@ Global Flags:
  -u, --pd strings             PD address (default [127.0.0.1:2379])
 ```
 
-暂停日志备份任务超过了 24 小时后，执行 `br log resume` 会报错，提示备份数据丢失。处理方法请参考[恢复日志备份任务失败](/faq/backup-and-restore-faq.md#执行-br-log-resume-命令恢复处于暂停状态的任务时报-errbackupgcsafepointexceeded-错误该如何处理)。
+暂停日志备份任务超过了 24 小时后，执行 `tiup br log resume` 会报错，提示备份数据丢失。处理方法请参考[恢复日志备份任务失败](/faq/backup-and-restore-faq.md#执行-br-log-resume-命令恢复处于暂停状态的任务时报-errbackupgcsafepointexceeded-错误该如何处理)。
 
 使用示例：
 
 ```shell
-./br log resume --task-name=pitr --pd="${PD_IP}:2379"
+tiup br log resume --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
 ### 停止和重启日志备份任务
 
-通过执行 `br log stop` 命令，你可以停止正在进行的日志备份任务。停止的任务，可以通过 `--storage` 路径重新启动。
+通过执行 `tiup br log stop` 命令，你可以停止正在进行的日志备份任务。停止的任务，可以通过 `--storage` 路径重新启动。
 
 #### 停止日志备份任务
 
-执行 `br log stop` 命令，可以停止日志备份任务，该命令会清理备份集群中的任务元信息。
+执行 `tiup br log stop` 命令，可以停止日志备份任务，该命令会清理备份集群中的任务元信息。
 
-执行 `br log stop --help` 命令可获取该子命令使用介绍：
+执行 `tiup br log stop --help` 命令可获取该子命令使用介绍：
 
 ```shell
-./br log stop --help
+tiup br log stop --help
 stop a log backup task
 
 Usage:
@@ -240,17 +306,17 @@ Global Flags:
 
 > **注意：**
 >
-> 请谨慎使用该命令，如果你只需**暂时停止**日志备份，请使用 `br log pause` 和 `br log resume` 命令。
+> 请谨慎使用该命令，如果你只需**暂时停止**日志备份，请使用 `tiup br log pause` 和 `tiup br log resume` 命令。
 
 使用示例：
 
 ```shell
-./br log stop --task-name=pitr --pd="${PD_IP}:2379"
+tiup br log stop --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
 #### 重新启动备份任务
 
-当使用 `br log stop` 命令停止日志备份任务后，可在另一个 `--storage` 路径下重新创建一个新的日志备份任务，也可以在原来的 `--storage` 路径下执行 `br log start` 命令重新启动日志备份任务。如果是在原来的 `--storage` 路径重启任务，需要注意：
+当使用 `tiup br log stop` 命令停止日志备份任务后，可在另一个 `--storage` 路径下重新创建一个新的日志备份任务，也可以在原来的 `--storage` 路径下执行 `tiup br log start` 命令重新启动日志备份任务。如果是在原来的 `--storage` 路径重启任务，需要注意：
 
 - 重启备份任务的 `--storage` 参数需要与停止任务之前的参数相同。
 - 此时不需要填入 `--start-ts` 参数，程序将自动从上次的备份进度点开始备份数据。
@@ -258,12 +324,12 @@ Global Flags:
 
 ### 清理日志备份数据
 
-执行 `br log truncate` 命令，你可以从备份存储中删除过期或不再需要的备份日志数据。
+执行 `tiup br log truncate` 命令，你可以从备份存储中删除过期或不再需要的备份日志数据。
 
-执行 `br log truncate --help` 命令可获取该子命令使用介绍：
+执行 `tiup br log truncate --help` 命令可获取该子命令使用介绍：
 
 ```shell
-./br log truncate --help
+tiup br log truncate --help
 truncate the incremental log until sometime.
 
 Usage:
@@ -284,13 +350,13 @@ Global Flags:
 
 - `--dry-run`：运行命令，但是不删除文件。
 - `--until`：早于该参数指定时间点的日志备份数据会被删除。建议使用快照备份的时间点作为该参数值。
-- `--storage`：指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。详细参考[备份存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+- `--storage`：指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 使用示例：
 
 ```shell
-./br log truncate --until='2022-07-26 21:20:00+0800' \
-–-storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+tiup br log truncate --until='2022-07-26 21:20:00+0800' \
+--storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
 ```
 
 该子命令运行后输出以下信息：
@@ -305,12 +371,12 @@ Removing metadata... DONE; take = 24.038962ms
 
 ### 查看备份数据元信息
 
-执行 `br log metadata` 命令，你可以查看备份存储中保存的日志备份的元信息，例如最早和最近的可恢复时间点。
+执行 `tiup br log metadata` 命令，你可以查看备份存储中保存的日志备份的元信息，例如最早和最近的可恢复时间点。
 
-执行 `br log metadata –-help` 命令可获取该子命令使用介绍：
+执行 `tiup br log metadata --help` 命令可获取该子命令使用介绍：
 
 ```shell
-./br log metadata --help
+tiup br log metadata --help
 get the metadata of log backup storage
 
 Usage:
@@ -325,12 +391,12 @@ Global Flags:
 
 该命令只需要访问备份存储，不需要访问备份集群。
 
-以上示例中，`--storage` 为常用参数，它用来指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。详细参考[备份存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+以上示例中，`--storage` 为常用参数，它用来指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 使用示例：
 
 ```shell
-./br log metadata –-storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+tiup br log metadata --storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
 ```
 
 该子命令运行后输出以下信息：
@@ -341,12 +407,16 @@ Global Flags:
 
 ## 恢复到指定时间点 PITR
 
-执行 `br restore point` 命令，你可以在新集群上进行 PITR，或者只恢复日志备份数据。
+> **注意：**
+>
+> 如果 `restore point` 指定 `--full-backup-storage` 为增量备份地址，那么需要保证该备份以及之前的任意增量备份的恢复，均将参数 `--allow-pitr-from-incremental` 设置为 `true`，使增量备份兼容后续的日志备份。
 
-执行 `br restore point --help` 命令可获取该命令使用介绍：
+执行 `tiup br restore point` 命令，你可以在新集群上进行 PITR，或者只恢复日志备份数据。
+
+执行 `tiup br restore point --help` 命令可获取该命令使用介绍：
 
 ```shell
-./br restore point --help
+tiup br restore point --help
 restore data from log until specify commit timestamp
 
 Usage:
@@ -369,19 +439,19 @@ Global Flags:
 
 以上示例只展示了常用的参数，这些参数作用如下：
 
-- `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PITR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。快照备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。详细参考[备份存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+- `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PITR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。需要注意的是，第一次初始化恢复集群时，必须指定快照备份，快照备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 - `--restored-ts`：指定恢复到的时间点。如果没有指定该参数，则恢复到日志备份数据最后的可恢复时间点（备份数据的 checkpoint）。
 - `--start-ts`：指定日志备份恢复的起始时间点。如果你只恢复日志备份数据，不恢复快照备份，需要指定这个参数。
 - `ca`、`cert`、`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
 - `--pd`：指定恢复集群的 PD 访问地址。
-- `--storage`：指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。详细参考[备份存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+- `--storage`：指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 使用示例：
 
 ```shell
-./br restore point --pd="${PD_IP}:2379"
---storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
---full-backup-storage='s3://backup-101/snapshot-202205120000?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+tiup br restore point --pd="${PD_IP}:2379"
+--storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
+--full-backup-storage='s3://backup-101/snapshot-202205120000?access-key=${access-key}&secret-access-key=${secret-access-key}'
 
 Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
 *** ***["Full Restore success summary"] ****** [total-take=3.112928252s] [restore-data-size(after-compressed)=5.056kB] [Size=5056] [BackupTS=434693927394607136] [total-kv=4] [total-kv-size=290B] [average-speed=93.16B/s]
@@ -392,5 +462,34 @@ Restore KV Files <--------------------------------------------------------------
 
 > **注意：**
 >
+> - 第一次恢复集群时，必须指定全量快照数据，否则可能因为 Table ID 重写规则，导致部分新创建的表数据不正确。详情可见此 GitHub issue [#54418](https://github.com/pingcap/tidb/issues/54418)。
 > - 不支持重复恢复某段时间区间的日志，如多次重复恢复 `[t1=10, t2=20)` 区间的日志数据，可能会造成恢复后的数据不正确。
 > - 多次恢复不同时间区间的日志时，需保证恢复日志的连续性。如先后恢复 `[t1, t2)`、`[t2, t3)` 和 `[t3, t4)` 三个区间的日志可以保证正确性，而在恢复 `[t1, t2)` 后跳过 `[t2, t3)` 直接恢复 `[t3, t4)` 的区间可能导致恢复之后的数据不正确。
+
+### 恢复加密的日志备份数据
+
+要恢复加密的日志备份数据，你需要在恢复命令中传入相应的解密参数。解密参数需要与加密时使用的参数一致。如果解密算法或密钥不正确，则无法恢复数据。
+
+示例如下：
+
+```shell
+tiup br restore point --pd="${PD_IP}:2379"
+--storage='s3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}'
+--full-backup-storage='s3://backup-101/snapshot-202205120000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}'
+--crypter.method aes128-ctr
+--crypter.key 0123456789abcdef0123456789abcdef
+--log.crypter.method aes128-ctr
+--log.crypter.key 0123456789abcdef0123456789abcdef
+```
+
+如果日志备份是通过主密钥加密的，则可以使用以下命令进行解密恢复：
+
+```shell
+tiup br restore point --pd="${PD_IP}:2379"
+--storage='s3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}'
+--full-backup-storage='s3://backup-101/snapshot-202205120000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}'
+--crypter.method aes128-ctr
+--crypter.key 0123456789abcdef0123456789abcdef
+--master-key-crypter-method aes128-ctr
+--master-key "local:///path/to/master.key"
+```

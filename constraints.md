@@ -1,6 +1,7 @@
 ---
 title: 约束
 aliases: ['/docs-cn/dev/constraints/','/docs-cn/dev/reference/sql/constraints/']
+summary: TiDB 支持的约束与 MySQL 基本相同，包括非空约束和 CHECK 约束。非空约束规则与 MySQL 相同，而 CHECK 约束需要在 tidb_enable_check_constraint 设置为 ON 后才能开启。可以通过 CREATE TABLE 或 ALTER TABLE 语句添加 CHECK 约束。唯一约束和主键约束也与 MySQL 相似，但 TiDB 目前仅支持对 NONCLUSTERED 的主键进行添加和删除操作。外键约束从 v6.6.0 开始支持，可以使用 CREATE TABLE 和 ALTER TABLE 命令来添加和删除外键。
 ---
 
 # 约束
@@ -100,9 +101,9 @@ SHOW CREATE TABLE t;
 | Table | Create Table                                                                                                                                                                                                                                                                                                     |
 +-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | t     | CREATE TABLE `t` (
-  `a` int(11) DEFAULT NULL,
-  `b` int(11) DEFAULT NULL,
-  `c` int(11) DEFAULT NULL,
+  `a` int DEFAULT NULL,
+  `b` int DEFAULT NULL,
+  `c` int DEFAULT NULL,
 CONSTRAINT `c1` CHECK ((`b` > `c`)),
 CONSTRAINT `t_chk_1` CHECK ((`a` > 10)) /*!80016 NOT ENFORCED */,
 CONSTRAINT `t_chk_2` CHECK ((1 < `c`))
@@ -407,7 +408,7 @@ Query OK, 0 rows affected (0.10 sec)
 
 > **注意：**
 >
-> TiDB 从 v6.6.0 开始支持[外键约束](/foreign-key.md)。在 v6.6.0 之前，TiDB 支持创建和删除外键约束，但外键约束并不生效。升级到 v6.6.0 后，可以先删除不生效的外键后再创建外键使外键约束生效。
+> TiDB 从 v6.6.0 开始支持[外键约束](/foreign-key.md)。在 v6.6.0 之前，TiDB 支持创建和删除外键约束，但外键约束并不生效。升级到 v6.6.0 或更高版本后，可以先删除不生效的外键后再创建外键使外键约束生效。外键约束在 v8.5.0 成为正式功能。
 
 TiDB 支持创建外键约束。例如：
 

@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/','/zh/tidb/dev/pitr-troublesh
 
 ## 当误删除或误更新数据后，如何原地快速恢复？
 
-从 TiDB v6.4.0 引入了完整的 Flashback 功能，可以支持原地快速恢复 GC 时间内的数据到指定时间点。在误操作场景下，推荐使用 Flashback 来恢复数据，具体可以参考 [Flashback 集群](/sql-statements/sql-statement-flashback-to-timestamp.md) 和 [Flashback 数据库](/sql-statements/sql-statement-flashback-database.md)语法。
+从 TiDB v6.4.0 引入了完整的 Flashback 功能，可以支持原地快速恢复 GC 时间内的数据到指定时间点。在误操作场景下，推荐使用 Flashback 来恢复数据，具体可以参考 [Flashback 集群](/sql-statements/sql-statement-flashback-cluster.md) 和 [Flashback 数据库](/sql-statements/sql-statement-flashback-database.md)语法。
 
 ## 在 TiDB v5.4.0 及后续版本中，当在有负载的集群进行备份时，备份速度为什么会变得很慢？
 
@@ -31,7 +31,7 @@ TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调
 
 ## PITR 问题
 
-### [PITR 功能](/br/br-pitr-guide.md)和 [flashback 集群](/sql-statements/sql-statement-flashback-to-timestamp.md)有什么区别?
+### [PITR 功能](/br/br-pitr-guide.md)和 [flashback 集群](/sql-statements/sql-statement-flashback-cluster.md)有什么区别?
 
 从使用场景角度来看，PITR 通常用于在集群完全停止服务或数据损坏且无法使用其他方案恢复时，将集群的数据恢复到指定的时间点。使用 PITR 时，你需要通过一个新的集群来完成数据恢复。而 flashback 集群则通常用于发生误操作或其他因素导致的数据错误时，将集群的数据恢复到数据错误发生前的最近时间点。
 
@@ -43,27 +43,11 @@ TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调
 
 在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning 物理导入模式导入数据。可以选择使用 TiDB Lightning 逻辑导入模式导入数据。若确实需要使用物理导入模式，可在导入完成之后做一次快照备份操作，这样，PITR 就可以恢复到快照备份之后的时间点。
 
-### 索引加速功能为什么与 PITR 功能不兼容？
-
-Issue 链接：[#38045](https://github.com/pingcap/tidb/issues/38045)
-
-当前通过[索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)创建的索引数据无法被 PITR 备份。
-
-因此，在 PITR 恢复完成后，BR 会将通过索引加速功能创建的索引数据删除，再重新创建。如果在日志备份期间通过索引加速功能创建的索引很多或索引数据很大，建议在创建索引后进行一次全量备份。
-
 ### 集群已经恢复了网络分区故障，为什么日志备份任务进度 checkpoint 仍然不推进？
 
 Issue 链接：[#13126](https://github.com/tikv/tikv/issues/13126)
 
 在集群出现网络分区故障后，备份任务难以继续备份日志，并且在超过一定的重试时间后，任务会被置为 `ERROR` 状态。此时备份任务已经停止，需要手动执行 `br log resume` 命令来恢复日志备份任务。
-
-### 执行 PITR 恢复时遇到 `execute over region id` 报错，该如何处理？
-
-Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
-
-该场景发生在全量数据导入时开启了日志备份，并使用 PITR 恢复全量导入时间段的日志。经过测试发现，当存在长时间（24 小时）大量热点写入，且平均单台 TiKV 节点写入 OPS > 50k/s（可以通过 Grafana 中 **TiKV-Details** -> **Backup Log** -> **Handle Event Rate** 确认该数值），那么有几率会遇到这个情况。
-
-当前版本中建议在集群初始化后，进行一次有效快照备份，并且以此作为基础进行 PITR 恢复。
 
 ### 在使用 `br restore point` 命令恢复下游集群后，TiFlash 引擎数据没有恢复？
 
@@ -126,16 +110,16 @@ Error: failed to check gc safePoint, checkpoint ts 433177834291200000: GC safepo
 
 ## 功能兼容性问题
 
-### 为什么 BR 恢复的数据无法同步到 TiCDC / Drainer 的上游集群？
+### 为什么 BR 恢复的数据无法同步到 TiCDC 的上游集群？
 
 - **BR 恢复的数据无法被同步到下游**，因为恢复时 BR 直接导入 SST 文件，而下游集群目前没有办法获得上游的 SST 文件。
-- 在 4.0.3 版本之前，恢复时产生的 DDL jobs 还可能会让 TiCDC / Drainer 执行异常的 DDL。所以，如果一定要在 TiCDC / Drainer 的上游集群执行恢复，请将 BR 恢复的所有表加入 TiCDC / Drainer 的阻止名单。
+- 在 4.0.3 版本之前，恢复时产生的 DDL jobs 还可能会让 TiCDC 执行异常的 DDL。所以，如果一定要在 TiCDC 的上游集群执行恢复，请将 BR 恢复的所有表加入 TiCDC 的阻止名单。
 
-TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/tiflow/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成，Drainer 则可以通过 [`syncer.ignore-table`](/tidb-binlog/tidb-binlog-configuration-file.md#ignore-table) 完成。
+TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/tiflow/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成。
 
-### 恢复时为什么会报 `new_collations_enabled_on_first_bootstrap` 不匹配？
+### 恢复时为什么会报 `new_collation_enabled` 不匹配？
 
-从 TiDB v6.0.0 版本开始，[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置项的默认值由 `false` 改为 `true`。BR 会备份上游集群的 `new_collations_enabled_on_first_bootstrap` 配置项。当上下游集群的此项配置相同时，BR 才会将上游集群的备份数据安全地恢复到下游集群中。若上下游的该配置不相同，BR 会拒绝恢复，并报此配置项不匹配的错误。
+从 TiDB v6.0.0 版本开始，[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置项的默认值由 `false` 改为 `true`。BR 会备份上游集群的 `mysql.tidb` 表中的 `new_collation_enabled` 配置项。当上下游集群的此项配置相同时，BR 才会将上游集群的备份数据安全地恢复到下游集群中。若上下游的该配置不相同，BR 会拒绝恢复，并报此配置项不匹配的错误。
 
 如果需要将旧版本的备份数据恢复到 TiDB v6.0.0 或更新版本的 TiDB 集群中，你需要检查上下游集群中的该配置项是否相同：
 
@@ -160,13 +144,13 @@ BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)，在 v6
 
 该问题一般是因为恢复数据的时候，恢复集群的性能不足导致的。可以从恢复集群的监控或者 TiKV 日志来辅助确认。
 
-要解决这类问题，可以尝试扩大集群资源，以及调小恢复时的并发度 (concurrency)，打开限速 (ratelimit) 设置。
+要解决这类问题，可以尝试扩大集群资源，以及调小恢复时的并发度 (`tikv-max-restore-concurrency`)，打开限速 (`ratelimit`) 设置。
 
 ### 恢复备份数据时，BR 会报错 `entry too large, the max entry size is 6291456, the size of data is 7690800`
 
 你可以尝试降低并发批量建表的大小，将 `--ddl-batch-size` 设置为 `128` 或者更小的值。
 
-在 [`--ddl-batch-size`](/br/br-batch-create-table.md#使用方法) 的值大于 `1` 的情况下，使用 BR 恢复数据时，TiDB 会把执行创建表任务的 DDL job 队列写到 TiKV 上。由于 TiDB 能够一次性发送的 job message 的最大值默认为 `6 MB`（**不建议**修改此值，具体内容，参考 [txn-entry-size-limit](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 和 [raft-entry-max-size](/tikv-configuration-file.md#raft-entry-max-size)），TiDB 单次发送的所有表的 schema 大小总和也不应该超过 6 MB。因此，如果你设置的 `--ddl-batch-size` 的值过大，TiDB 单次发送的批量表的 schema 大小就会超出规定值，从而导致 BR 报 `entry too large, the max entry size is 6291456, the size of data is 7690800` 错误。
+在 [`--ddl-batch-size`](/br/br-batch-create-table.md#使用方法) 的值大于 `1` 的情况下，使用 BR 恢复数据时，TiDB 会把执行创建表任务的 DDL job 队列写到 TiKV 上。由于 TiDB 能够一次性发送的 job message 的最大值默认为 `6 MB`（**不建议**修改此值，具体内容，参考 [txn-entry-size-limit](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 和 [raft-entry-max-size](/tikv-configuration-file.md#raft-entry-max-size)），TiDB 单次发送的所有表的 schema 大小总和也不应该超过 6 MB。因此，如果你设置的 `--ddl-batch-size` 的值过大，TiDB 单次发送的批量表的 schema 大小就会超出规定值，从而导致 BR 报 `entry too large, the max entry size is 6291456, the size of data is 7690800` 错误。
 
 ### 使用 local storage 的时候，备份的文件会存在哪里？
 
@@ -293,9 +277,13 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 
 此外请注意，即使设置了 [table filter](/table-filter.md#表库过滤语法)，**BR 也不会恢复以下系统表**：
 
-- 统计信息表（`mysql.stat_*`）
+- 统计信息表（`mysql.stat_*`）(但可以恢复统计信息，详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
-- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
+- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/snap_client/systable_restore.go#L31)
+
+### 恢复的时候，报错 `cannot file rewrite rule`，该如何处理？
+
+遇到这种情况，请检查恢复集群中是否存在跟备份数据同名但表结构不一致的表。大多数情况是因为恢复集群的表缺失了索引导致。您可以尝试先删除该表，然后再次进行恢复操作。
 
 ## 备份恢复功能相关知识
 
@@ -328,3 +316,17 @@ BR v4.0.9 备份统计信息使 br 工具消耗过多内存，为保证备份过
 ### BR 会备份表的 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 信息吗？恢复出来的表会有多个 Region 吗？
 
 会，BR 会备份表的 [`SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 信息，并恢复成多个 Region。
+
+### 恢复到一半中断了，需要删除已恢复的数据重新再恢复吗？
+
+不需要。从 v7.1.0 起，BR 支持从断点恢复。如果恢复中途因为意外情况退出，直接再次启动恢复任务即可。
+
+### 恢复完成后，可以再针对某张表删除后重新恢复吗？
+
+删除某张特定的表后可以再重新进行恢复，但删除时需要使用 `DROP TABLE` 或 `TRUNCATE TABLE` 语句，不能使用 `DELETE FROM` 语句。因为 `DELETE FROM` 只是通过更新 MVCC 版本标记要删除的数据，这些数据直到 GC 后才会被真正删除。
+
+### 恢复统计信息时为什么会占用大量内存？
+
+在 v7.6.0 之前，BR 备份的统计信息数据会与库表信息存放到一起，在恢复的时候加载到内存中。因此，当备份的统计信息数据非常大时，BR 就需要占用大量的内存。
+
+从 v7.6.0 开始，备份的统计信息会单独存放在特定的文件中，当需要恢复某张表的统计信息时，才会加载对应表的统计信息到内存中来，从而可以节省内存空间。

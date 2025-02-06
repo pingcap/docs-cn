@@ -10,20 +10,18 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-privileges/','/docs-cn
 
 ## 语法图
 
-**ShowStmt:**
-
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+```ebnf+diagram
+ShowPrivilegesStmt ::=
+    "SHOW" "PRIVILEGES"
+```
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
-show privileges;
+SHOW PRIVILEGES;
 ```
 
 ```sql
-mysql> show privileges;
 +---------------------------------+---------------------------------------+-------------------------------------------------------+
 | Privilege                       | Context                               | Comment                                               |
 +---------------------------------+---------------------------------------+-------------------------------------------------------+
@@ -76,15 +74,17 @@ mysql> show privileges;
 | RESTRICTED_CONNECTION_ADMIN     | Server Admin                          |                                                       |
 | RESTRICTED_REPLICA_WRITER_ADMIN | Server Admin                          |                                                       |
 | RESOURCE_GROUP_ADMIN            | Server Admin                          |                                                       |
+| RESOURCE_GROUP_USER             | Server Admin                          |                                                       |
 +---------------------------------+---------------------------------------+-------------------------------------------------------+
-49 rows in set (0.00 sec)
+50 rows in set (0.00 sec)
 ```
 
 ## MySQL 兼容性
 
-`SHOW PRIVILEGES` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`SHOW PRIVILEGES` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
 
 ## 另请参阅
 
 * [SHOW GRANTS](/sql-statements/sql-statement-show-grants.md)
+* [权限管理](/privilege-management.md)
 * [`GRANT <privileges>`](/sql-statements/sql-statement-grant-privileges.md)

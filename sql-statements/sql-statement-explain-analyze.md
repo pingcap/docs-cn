@@ -38,10 +38,10 @@ ExplainableStmt ::=
 
 | 属性名          | 含义 |
 |:----------------|:---------------------------------|
-| actRows       | 算子实际输出的数据条数。 |
-| execution info  | 算子的实际执行信息。time 表示从进入算子到离开算子的全部 wall time，包括所有子算子操作的全部执行时间。如果该算子被父算子多次调用 (loops)，这个时间就是累积的时间。loops 是当前算子被父算子调用的次数。 |
-| memory  | 算子占用内存空间的大小。 |
-| disk  | 算子占用磁盘空间的大小。 |
+| `actRows`       | 算子实际输出的数据条数。 |
+| `execution info`  | 算子的实际执行信息。`time` 表示从进入算子到离开算子的全部 `wall time`，包括所有子算子操作的全部执行时间。如果该算子被父算子多次调用 (`loops`)，这个时间就是累积的时间。`loops` 是当前算子被父算子调用的次数。`open` 表示算子初始化所需的时间。`close` 表示从算子处理完所有数据到算子结束执行的时间。其中 `time` 统计的时间包含 `open` 和 `close` 的时间。当算子存在多并发执行情况时，`execution info` 中显示的是各个并发使用的 `wall time` 求和后的结果，此时 `time`、`open` 和 `close` 会被替换为 `total_time`, `total_open` 和 `total_close`。|
+| `memory`  | 算子占用的最大内存空间。 |
+| `disk`  | 算子占用的最大磁盘空间。 |
 
 ## 示例
 
@@ -91,7 +91,7 @@ EXPLAIN ANALYZE SELECT * FROM t1;
 +-------------------+----------+---------+-----------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------+-----------+------+
 | id                | estRows  | actRows | task      | access object | execution info                                                                                                                                                                                                                            | operator info                  | memory    | disk |
 +-------------------+----------+---------+-----------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------+-----------+------+
-| TableReader_5     | 10000.00 | 3       | root      |               | time:278.2µs, loops:2, cop_task: {num: 1, max: 437.6µs, proc_keys: 3, rpc_num: 1, rpc_time: 423.9µs, copr_cache_hit_ratio: 0.00}                                                                                                          | data:TableFullScan_4           | 251 Bytes | N/A  |
+| TableReader_5     | 10000.00 | 3       | root      |               | time:278.2µs, loops:2, cop_task: {num: 1, max: 437.6µs, proc_keys: 3, copr_cache_hit_ratio: 0.00}, rpc_info:{Cop:{num_rpc:1, total_time:423.9µs}}                                                                                         | data:TableFullScan_4           | 251 Bytes | N/A  |
 | └─TableFullScan_4 | 10000.00 | 3       | cop[tikv] | table:t1      | tikv_task:{time:0s, loops:1}, scan_detail: {total_process_keys: 3, total_process_keys_size: 111, total_keys: 4, rocksdb: {delete_skipped_count: 0, key_skipped_count: 3, block: {cache_hit_count: 0, read_count: 0, read_byte: 0 Bytes}}} | keep order:false, stats:pseudo | N/A       | N/A  |
 +-------------------+----------+---------+-----------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------+-----------+------+
 2 rows in set (0.00 sec)
@@ -99,7 +99,7 @@ EXPLAIN ANALYZE SELECT * FROM t1;
 
 ## 算子执行信息介绍
 
-`execution info` 信息除了基本的 `time` 和 `loop` 信息外，还包含算子特有的执行信息，主要包含了该算子发送 RPC 请求的耗时信息以及其他步骤的耗时。
+`execution info` 信息除了基本的 `time`、`open`、`close` 和 `loop` 信息外，还包含算子特有的执行信息，主要包含了该算子发送 RPC 请求的耗时信息以及其他步骤的耗时。
 
 ### Point_Get
 
@@ -120,15 +120,15 @@ EXPLAIN ANALYZE SELECT * FROM t1;
 `TableReader` 算子可能包含以下执行信息：
 
 ```
-cop_task: {num: 6, max: 1.07587ms, min: 844.312µs, avg: 919.601µs, p95: 1.07587ms, max_proc_keys: 16, p95_proc_keys: 16, tot_proc: 1ms, tot_wait: 1ms, rpc_num: 6, rpc_time: 5.313996ms, copr_cache_hit_ratio: 0.00}
+cop_task: {num: 6, max: 1.07587ms, min: 844.312µs, avg: 919.601µs, p95: 1.07587ms, max_proc_keys: 16, p95_proc_keys: 16, tot_proc: 1ms, tot_wait: 1ms, copr_cache_hit_ratio: 0.00}, rpc_info:{Cop:{num_rpc:6, total_time:5.313996ms}}
 ```
 
 - `cop_task`：包含 cop task 的相关信息，如：
     - `num`：cop task 的数量
     - `max`,`min`,`avg`,`p95`：所有 cop task 中执行时间的最大值，最小值，平均值和 P95 值。
     - `max_proc_keys`, `p95_proc_keys`：所有 cop task 中 tikv 扫描 kv 数据的最大值，P95 值，如果 max 和 p95 的值差距很大，说明数据分布不太均匀。
-    - `rpc_num`, `rpc_time`：向 TiKV 发送 `Cop` 类型的 RPC 请求总数量和总时间。
     - `copr_cache_hit_ratio`：cop task 请求的 Coprocessor Cache 缓存命中率。[Coprocessor Cache 配置](/tidb-configuration-file.md)。
+- `rpc_info`：按照向 TiKV 发送 RPC 请求的类型统计总数量和总时间。
 - `backoff`：包含不同类型的 backoff 以及等待总耗时。
 
 ### Insert
@@ -281,6 +281,75 @@ commit_txn: {prewrite:48.564544ms, wait_prewrite_binlog:47.821579, get_commit_ts
 - `commit`：事务 2PC 提交阶段中，`commit` 阶段的耗时。
 - `write_keys`：事务中写入 `key` 的数量。
 - `write_byte`：事务中写入 `key-value` 的总字节数量，单位是 byte。
+
+### RU (Request Unit) 消耗
+
+[Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 是资源管控对系统资源统一抽象的计量单位。执行计划顶层算子的 `execution info` 会显示 SQL 整体的 RU 消耗。
+
+```
+RU:273.842670
+```
+
+> **注意：**
+>
+> 该值仅表示本次执行的实际 RU 消耗。由于受缓存的影响（比如[下推计算结果缓存](/coprocessor-cache.md)），同一个 SQL 在每次执行时消耗的 RU 可能会不同。
+
+RU 计数可以通过 `EXPLAIN ANALYZE` 中的其他值计算得出，特别是 `execution info` 列。例如：
+
+```
+ 'executeInfo':
+     time:2.55ms,
+     loops:2,
+     RU:0.329460,
+     Get:{
+         num_rpc:1,
+         total_time:2.13ms
+     },
+     total_process_time: 231.5µs,
+     total_wait_time: 732.9µs,
+     tikv_wall_time: 995.8µs,
+     scan_detail: {
+        total_process_keys: 1,
+        total_process_keys_size: 150,
+        total_keys: 1,
+        get_snapshot_time: 691.7µs,
+        rocksdb: {
+            block: {
+                cache_hit_count: 2,
+                read_count: 1,
+                read_byte: 8.19 KB,
+                read_time: 10.3µs
+            }
+        }
+    },
+```
+
+关于基础成本信息，请参考 [`tikv/pd` 源码](https://github.com/tikv/pd/blob/aeb259335644d65a97285d7e62b38e7e43c6ddca/client/resource_group/controller/config.go#L58C19-L67)。相关计算是通过 [`model.go`](https://github.com/tikv/pd/blob/54219d649fb4c8834cd94362a63988f3c074d33e/client/resource_group/controller/model.go#L107) 完成的。
+
+如果你使用的是 TiDB v7.1，计算方法是 `pd/pd-client/model.go` 中的 `BeforeKVRequest() + AfterKVRequest()`，即总和：
+
+```
+before key/value request is processed:
+      consumption.RRU += float64(kc.ReadBaseCost) -> kv.ReadBaseCost * rpc_nums
+
+after key/value request is processed:
+      consumption.RRU += float64(kc.ReadBytesCost) * readBytes -> kc.ReadBytesCost * total_process_keys_size
+      consumption.RRU += float64(kc.CPUMsCost) * kvCPUMs -> kc.CPUMsCost * total_process_time
+```
+
+对于 writes 和 batch gets，计算方法相似，只是基础成本不同。
+
+### tiflash_wait 信息
+
+当查询涉及到 MPP task 时，执行时间将受到各类 `tiflash_wait` 时间的影响，示例如下：
+
+```
+tiflash_wait: {minTSO_wait: 425ms, pipeline_breaker_wait: 133ms, pipeline_queue_wait: 512ms}
+```
+
+- `minTSO_wait`：记录 MPP Task 等待被 [TiFlash MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)调度花费的时间。
+- `pipeline_breaker_wait`：当 TiFlash 采用 [Pipeline 执行模型](/tiflash/tiflash-pipeline-model.md)时，记录包含 pipeline breaker 算子的 pipeline 等待上游 pipeline 所有数据花费的时间。目前仅用来展示包含 `Join` 算子的 pipeline 等待所有哈希表 build 完成花费的时间。
+- `pipeline_queue_wait`：当 TiFlash 采用 [Pipeline 执行模型](/tiflash/tiflash-pipeline-model.md)时，记录 pipeline 执行过程中，在 CPU Task Thread Pool 和 IO Task Thread Pool 中等待的时间。
 
 ### 其它常见执行信息
 

@@ -43,7 +43,7 @@ ANALYZE TABLE t1, t2;
 
 ## Index Join
 
-如果预计需要连接的行数较少（一般小于 1 万行），推荐使用 Index Join 算法。这个算法与 MySQL 主要使用的 Join 算法类似。在下表的示例中，`TableReader_28(Build)` 算子首先读取表 `t1`，然后根据在 `t1` 中匹配到的每行数据，依次探查表 `t2` 中的数据：
+如果预计需要连接的行数较少（一般小于 1 万行），推荐使用 Index Join 算法。这个算法与 MySQL 主要使用的 Join 算法类似。在下表的示例中，`TableReader_29(Build)` 算子首先读取表 `t1`，然后根据在 `t1` 中匹配到的每行数据，依次探查表 `t2` 中的数据：
 
 > **注意：**
 >
@@ -66,7 +66,6 @@ EXPLAIN SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1 INNER JOIN t2 ON t1.id = t2.t1_
 |   ├─IndexRangeScan_8(Build)     | 90000.00 | cop[tikv] | table:t2, index:t1_id(t1_id) | range: decided by [eq(test.t2.t1_id, test.t1.id)], keep order:false                                                       |
 |   └─TableRowIDScan_9(Probe)     | 90000.00 | cop[tikv] | table:t2                     | keep order:false                                                                                                          |
 +---------------------------------+----------+-----------+------------------------------+---------------------------------------------------------------------------------------------------------------------------+
-
 ```
 
 Index Join 算法对内存消耗较小，但如果需要执行大量探查操作，运行速度可能会慢于其他 Join 算法。以下面这条查询语句为例：
@@ -75,7 +74,7 @@ Index Join 算法对内存消耗较小，但如果需要执行大量探查操作
 SELECT * FROM t1 INNER JOIN t2 ON t1.id=t2.t1_id WHERE t1.pad1 = 'value' and t2.pad1='value';
 ```
 
-在 Inner Join 操作中，TiDB 会先执行 Join Reorder 算法，所以不能确定会先读取 `t1` 还是 `t2`。假设 TiDB 先读取了 `t1` 来构建 Build 端，那么 TiDB 会在探查 `t2` 前先根据谓词 `t1.col = 'value'` 筛选数据，但接下来每次探查 `t2` 时都要应用谓词 `t2.col='value'`。所以对于这条语句，Index Join 算法可能不如其他 Join 算法高效。
+在 Inner Join 操作中，TiDB 会先执行 Join Reorder 算法，所以不能确定会先读取 `t1` 还是 `t2`。假设 TiDB 先读取了 `t1` 来构建 Build 端，那么 TiDB 会在探查 `t2` 前先根据谓词 `t1.pad1 = 'value'` 筛选数据，但接下来每次探查 `t2` 时都要应用谓词 `t2.pad1='value'`。所以对于这条语句，Index Join 算法可能不如其他 Join 算法高效。
 
 但如果 Build 端的数据量比 Probe 端小，且 Probe 端的数据已预先建立了索引，那么这种情况下 Index Join 算法效率更高。在下面这段查询语句中，因为 Index Join 比 Hash Join 效率低，所以 SQL 优化器选择了 Hash Join 算法：
 
@@ -170,7 +169,6 @@ EXPLAIN ANALYZE SELECT * FROM t1 INNER JOIN t2 ON t1.id = t2.t1_id WHERE t1.int_
 | └─TableReader_44(Probe)      | 90000.00 | 90000   | root      |               | time:289.2ms, loops:91, cop_task: {num: 24, max: 108.2ms, min: 252.8µs, avg: 31.3ms, p95: 106.1ms, max_proc_keys: 10687, p95_proc_keys: 9184, tot_proc: 445ms, rpc_num: 24, rpc_time: 750.4ms, copr_cache_hit_ratio: 0.62, distsql_concurrency: 15}                                                                        | data:TableFullScan_43                             | 58.6 MB | N/A     |
 |   └─TableFullScan_43         | 90000.00 | 90000   | cop[tikv] | table:t2      | tikv_task:{proc max:31ms, min:3ms, avg: 13.3ms, p80:24ms, p95:30ms, iters:181, tasks:24}, scan_detail: {total_process_keys: 69744, total_process_keys_size: 217533936, total_keys: 139497, get_snapshot_time: 730.2µs, rocksdb: {delete_skipped_count: 44208, key_skipped_count: 253431, block: {cache_hit_count: 3527}}}  | keep order:false                                  | N/A     | N/A     |
 +------------------------------+----------+---------+-----------+---------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------+---------+---------+
-
 ```
 
 > **注意：**
@@ -265,6 +263,10 @@ Hash Join 算法的性能受以下系统变量影响：
 
 * [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)（默认值：1GB）- 如果某条查询的内存消耗超出了配额，TiDB 会尝试将 Hash Join 的 Build 端移到磁盘上以节省内存。
 * [`tidb_hash_join_concurrency`](/system-variables.md#tidb_hash_join_concurrency)（默认值：`5`）- 可以并发执行的 Hash Join 任务数量。
+
+### 相关优化
+
+TiDB 提供了 Runtime Filter 功能，针对 Hash Join 进行性能优化，大幅提升 Hash Join 的执行速度。具体优化使用方式见 [Runtime Filter](/runtime-filter.md)。
 
 ## Merge Join
 

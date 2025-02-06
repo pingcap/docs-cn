@@ -1,5 +1,6 @@
 ---
 title: 分区表
+summary: 了解如何使用 TiDB 的分区表。
 aliases: ['/docs-cn/dev/partitioned-table/','/docs-cn/dev/reference/sql/partitioning/']
 ---
 
@@ -158,6 +159,23 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 Range COLUMNS 分区是 Range 分区的一种变体。你可以使用一个或者多个列作为分区键，分区列的数据类型可以是整数 (integer)、字符串（`CHAR`/`VARCHAR`），`DATE` 和 `DATETIME`。不支持使用任何表达式。
 
+和 Range 分区一样，Range COLUMNS 分区同样需要分区的范围是严格递增的。不支持下面示例中的分区定义：
+
+```sql
+CREATE TABLE t(
+    a int,
+    b datetime,
+    c varchar(8)
+) PARTITION BY RANGE COLUMNS(`c`,`b`)
+(PARTITION `p20240520A` VALUES LESS THAN ('A','2024-05-20 00:00:00'),
+ PARTITION `p20240520Z` VALUES LESS THAN ('Z','2024-05-20 00:00:00'),
+ PARTITION `p20240521A` VALUES LESS THAN ('A','2024-05-21 00:00:00'));
+```
+
+```
+Error 1493 (HY000): VALUES LESS THAN value must be strictly increasing for each partition
+```
+
 假设你想要按名字进行分区，并且能够轻松地删除旧的无效数据，那么你可以创建一个表格，如下所示：
 
 ```sql
@@ -244,7 +262,7 @@ INTERVAL (1 MONTH) FIRST PARTITION LESS THAN ('2000-01-01') LAST PARTITION LESS 
 
 ```sql
 CREATE TABLE `monthly_report_status` (
-  `report_id` int(11) NOT NULL,
+  `report_id` int NOT NULL,
   `report_status` varchar(20) NOT NULL,
   `report_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -282,19 +300,9 @@ ALTER TABLE table_name LAST PARTITION LESS THAN (<expression>)
 - INTERVAL 分区特性仅涉及 `CREATE/ALTER TABLE` 语法。元数据保持不变，因此使用该新语法创建或变更的表仍然兼容 MySQL。
 - 为保持兼容 MySQL，`SHOW CREATE TABLE` 的输出格式保持不变。
 - 遵循 INTERVAL 的存量表可以使用新的 `ALTER` 语法。不需要使用 `INTERVAL` 语法重新创建这些表。
-- 对于 `RANGE COLUMNS`，仅支持整数 (INTEGER) 类型、日期 (DATE) 和日期时间 (DATETIME) 列类型。
+- 如需使用 `INTERVAL` 语法进行 `RANGE COLUMNS` 分区，只能指定一个列为分区键，且该列的类型为整数 (`INTEGER`) 、日期 (`DATE`) 或日期时间 (`DATETIME`) 。
 
 ### List 分区
-
-在创建 List 分区表之前，需要先将 session 变量 `tidb_enable_list_partition` 的值设置为 `ON`。
-
-{{< copyable "sql" >}}
-
-```sql
-set @@session.tidb_enable_list_partition = ON
-```
-
-此外，还需保证 `tidb_enable_table_partition` 变量已开启（默认开启）。
 
 List 分区和 Range 分区有很多相似的地方。不同之处主要在于 List 分区中，对于表的每个分区中包含的所有行，按分区表达式计算的值属于给定的数据集合。每个分区定义的数据集合有任意个值，但不能有重复的值，可通过 `PARTITION ... VALUES IN (...)` 子句对值进行定义。
 
@@ -343,24 +351,82 @@ PARTITION BY LIST (store_id) (
 
 使用 `ALTER TABLE employees DROP PARTITION pEast` 也能删除所有这些行，但同时也会从表的定义中删除分区 `pEast`。那样你还需要使用 `ALTER TABLE ... ADD PARTITION` 语句来还原表的原始分区方案。
 
-与 Range 分区的情况不同，List 分区没有类似的 `MAXVALUE` 分区来存储所有不属于其他 partition 的值。分区表达式的所有期望值都应包含在 `PARTITION ... VALUES IN (...)` 子句中。如果 `INSERT` 语句要插入的值不匹配分区的列值，该语句将执行失败并报错，如下例所示：
+#### 默认的 List 分区
+
+从 v7.3.0 版本开始，你可以为 List 或者 List COLUMNS 分区表添加默认的 List 分区。默认的 List 分区作为一个后备分区，可以存储那些不匹配任何分区数据集合的行。
+
+> **注意：**
+>
+> 该功能是 TiDB 对 MySQL 语法的扩展。为 List 或 List COLUMNS 分区表添加默认分区后，该分区表的数据无法直接同步到 MySQL 中。
+
+以下面的 List 分区表为例：
 
 ```sql
-test> CREATE TABLE t (
-    ->   a INT,
-    ->   b INT
-    -> )
-    -> PARTITION BY LIST (a) (
-    ->   PARTITION p0 VALUES IN (1, 2, 3),
-    ->   PARTITION p1 VALUES IN (4, 5, 6)
-    -> );
+CREATE TABLE t (
+  a INT,
+  b INT
+)
+PARTITION BY LIST (a) (
+  PARTITION p0 VALUES IN (1, 2, 3),
+  PARTITION p1 VALUES IN (4, 5, 6)
+);
+Query OK, 0 rows affected (0.11 sec)
+```
+
+通过以下语句，你可以在该表中添加一个名为 `pDef` 的默认 List 分区：
+
+```sql
+ALTER TABLE t ADD PARTITION (PARTITION pDef DEFAULT);
+```
+
+或者
+
+```sql
+ALTER TABLE t ADD PARTITION (PARTITION pDef VALUES IN (DEFAULT));
+```
+
+此时，如果新插入该表中的值不匹配任何分区的数据集合，对应的数据会自动写入默认分区。
+
+```sql
+INSERT INTO t VALUES (7, 7);
+Query OK, 1 row affected (0.01 sec)
+```
+
+你也可以在创建 List 或 List COLUMNS 分区表时添加默认分区。例如：
+
+```sql
+CREATE TABLE employees (
+    id INT NOT NULL,
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    store_id INT
+)
+PARTITION BY LIST (store_id) (
+    PARTITION pNorth VALUES IN (1, 2, 3, 4, 5),
+    PARTITION pEast VALUES IN (6, 7, 8, 9, 10),
+    PARTITION pWest VALUES IN (11, 12, 13, 14, 15),
+    PARTITION pCentral VALUES IN (16, 17, 18, 19, 20),
+    PARTITION pDefault DEFAULT
+);
+```
+
+对于不包含默认分区的 List 或 List COLUMNS 分区表，`INSERT` 语句要插入的值需要匹配该表 `PARTITION ... VALUES IN (...)` 子句中定义的数据集合。如果要插入的值不匹配任何分区的数据集合，该语句将执行失败并报错，如下例所示：
+
+```sql
+CREATE TABLE t (
+  a INT,
+  b INT
+)
+PARTITION BY LIST (a) (
+  PARTITION p0 VALUES IN (1, 2, 3),
+  PARTITION p1 VALUES IN (4, 5, 6)
+);
 Query OK, 0 rows affected (0.11 sec)
 
-test> INSERT INTO t VALUES (7, 7);
+INSERT INTO t VALUES (7, 7);
 ERROR 1525 (HY000): Table has no partition for value 7
 ```
 
-要忽略以上类型的错误，可以通过使用 `IGNORE` 关键字。使用该关键字后，就不会插入包含不匹配分区列值的行，但是会插入任何具有匹配值的行，并且不会报错：
+要忽略以上错误，可以在 `INSERT` 语句中添加 `IGNORE` 关键字。添加该关键字后，`INSERT` 语句只会插入那些匹配分区数据集合的行，不会插入不匹配的行，并且不会报错：
 
 ```sql
 test> TRUNCATE t;
@@ -540,11 +606,11 @@ MOD(YEAR('2005-09-01'),4)
 
 ### Key 分区
 
-TiDB 从 v7.0.0 开始支持 Key 分区。在 v7.0.0 之前的版本中，创建 Key 分区表时，TiDB 会将其创建为非分区表并给出告警。 
+TiDB 从 v7.0.0 开始支持 Key 分区。在 v7.0.0 之前的版本中，创建 Key 分区表时，TiDB 会将其创建为非分区表并给出告警。
 
 Key 分区与 Hash 分区都可以保证将数据均匀地分散到一定数量的分区里面，区别是 Hash 分区只能根据一个指定的整数表达式或字段进行分区，而 Key 分区可以根据字段列表进行分区，且 Key 分区的分区字段不局限于整数类型。TiDB Key 分区表的 Hash 算法与 MySQL 不一样，因此表的数据分布也不一样。
 
-创建 Key 分区表时，你需要在 `CREATE TABLE` 后面添加 `PARTITION BY KEY (columList)`，其中 `columnList` 是字段列表，可以包含一个或多个字段。每个字段的类型可以是除 `BLOB`、`JSON`、`GEOMETRY` 之外的任意类型（请注意 TiDB 不支持 `GEOMETRY` 类型）。此外，你很可能还需要加上 `PARTITIONS num`，其中 `num` 是一个正整数，表示将表划分多少个分区；或者加上分区名的定义，例如，加上 `(PARTITION p0, PARTITION p1)` 代表将表划分为两个分区，分区名为 `p0` 和 `p1`。
+创建 Key 分区表时，你需要在 `CREATE TABLE` 后面添加 `PARTITION BY KEY (columnList)`，其中 `columnList` 是字段列表，可以包含一个或多个字段。每个字段的类型可以是除 `BLOB`、`JSON`、`GEOMETRY` 之外的任意类型（请注意 TiDB 不支持 `GEOMETRY` 类型）。此外，你很可能还需要加上 `PARTITIONS num`，其中 `num` 是一个正整数，表示将表划分多少个分区；或者加上分区名的定义，例如，加上 `(PARTITION p0, PARTITION p1)` 代表将表划分为两个分区，分区名为 `p0` 和 `p1`。
 
 下面的语句将创建一个 Key 分区表，按 `store_id` 分成 4 个分区：
 
@@ -599,11 +665,11 @@ PARTITION BY KEY(fname, store_id)
 PARTITIONS 4;
 ```
 
-目前，TiDB 不支持分区字段列表 `PARTITION BY KEY` 为空的 Key 分区表。下面的语句将创建一个非分区表，并向客户端返回 `Unsupported partition type KEY, treat as normal table` 警告。
+和 MySQL 一样，TiDB 支持分区字段列表 `PARTITION BY KEY` 为空的 Key 分区表。下面的语句将创建一个以主键 `id` 为分区键的分区表：
 
 ```sql
 CREATE TABLE employees (
-    id INT NOT NULL,
+    id INT NOT NULL PRIMARY KEY,
     fname VARCHAR(30),
     lname VARCHAR(30),
     hired DATE NOT NULL DEFAULT '1970-01-01',
@@ -616,9 +682,23 @@ PARTITION BY KEY()
 PARTITIONS 4;
 ```
 
+如果表中不存在主键但有唯一键时，使用唯一键作为分区键：
+
+```sql
+CREATE TABLE k1 (
+    id INT NOT NULL,
+    name VARCHAR(20),
+    UNIQUE KEY (id)
+)
+PARTITION BY KEY()
+PARTITIONS 2;
+```
+
+但是，如果唯一键列未被定义为 `NOT NULL`，上述语句将失败。
+
 ### TiDB 对 Linear Hash 分区的处理
 
-在 v6.4.0 之前，如果在 TiDB 上执行 [MySQL Linear Hash 分区](https://dev.mysql.com/doc/refman/5.7/en/partitioning-linear-hash.html) 的 DDL 语句，TiDB 只能创建非分区表。在这种情况下，如果你仍然想要在 TiDB 中创建分区表，你需要修改这些 DDL 语句。
+在 v6.4.0 之前，如果在 TiDB 上执行 [MySQL Linear Hash 分区](https://dev.mysql.com/doc/refman/8.0/en/partitioning-linear-hash.html) 的 DDL 语句，TiDB 只能创建非分区表。在这种情况下，如果你仍然想要在 TiDB 中创建分区表，你需要修改这些 DDL 语句。
 
 从 v6.4.0 起，TiDB 支持解析 MySQL 的 `PARTITION BY LINEAR HASH` 语法，但会忽略其中的 `LINEAR` 关键字。你可以直接在 TiDB 中执行现有的 MySQL Linear Hash 分区的 SQL 语句，而无需修改。
 
@@ -1032,7 +1112,7 @@ SHOW CREATE TABLE\G
 *************************** 1. row ***************************
        Table: example
 Create Table: CREATE TABLE `example` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `data` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -1054,6 +1134,61 @@ ALTER TABLE example TRUNCATE PARTITION p0;
 
 ```
 Query OK, 0 rows affected (0.03 sec)
+```
+
+### 将分区表转换为非分区表
+
+要将分区表转换为非分区表，你可以使用以下语句。该语句在执行时将会删除分区，复制表中的所有行，并为表在线重新创建索引。
+
+```sql
+ALTER TABLE <table_name> REMOVE PARTITIONING
+```
+
+例如，要将分区表 `members` 转换为非分区表，可以执行以下语句：
+
+```sql
+ALTER TABLE members REMOVE PARTITIONING
+```
+
+### 对现有表进行分区
+
+要对现有的非分区表进行分区或修改现有分区表的分区类型，你可以使用以下语句。该语句在执行时，将根据新的分区定义复制表中的所有行，并在线重新创建索引：
+
+```sql
+ALTER TABLE <table_name> PARTITION BY <new partition type and definitions> [UPDATE INDEXES (<index name> {GLOBAL|LOCAL}[ , <index name> {GLOBAL|LOCAL}...])]
+```
+
+示例：
+
+要将现有的 `members` 表转换为一个包含 10 个分区的 HASH 分区表，可以执行以下语句：
+
+```sql
+ALTER TABLE members PARTITION BY HASH(id) PARTITIONS 10;
+```
+
+要将现有的 `member_level` 表转换为 RANGE 分区表，可以执行以下语句：
+
+```sql
+ALTER TABLE member_level PARTITION BY RANGE(level)
+(PARTITION pLow VALUES LESS THAN (1),
+ PARTITION pMid VALUES LESS THAN (3),
+ PARTITION pHigh VALUES LESS THAN (7)
+ PARTITION pMax VALUES LESS THAN (MAXVALUE));
+```
+
+对普通表进行分区或者对分区表进行重新分区时，可以根据需要将索引更新为全局索引或普通索引：
+
+```sql
+CREATE TABLE t1 (
+    col1 INT NOT NULL,
+    col2 DATE NOT NULL,
+    col3 INT NOT NULL,
+    col4 INT NOT NULL,
+    UNIQUE KEY uidx12(col1, col2),
+    UNIQUE KEY uidx3(col3)
+);
+
+ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCAL, uidx3 GLOBAL);
 ```
 
 ## 分区裁剪
@@ -1168,6 +1303,7 @@ SELECT fname, lname, region_code, dob
 
     * [`UNIX_TIMESTAMP()`](/functions-and-operators/date-and-time-functions.md)
     * [`TO_DAYS()`](/functions-and-operators/date-and-time-functions.md)
+    * [`EXTRACT(<time unit> FROM <DATETIME/DATE/TIME column>)`](/functions-and-operators/date-and-time-functions.md)。对于 `DATE` 和 `DATETIME` 列，`YEAR` 和 `YEAR_MONTH` 时间单位被视为单调函数。对于 `TIME` 列，`HOUR`、`HOUR_MINUTE`、`HOUR_SECOND` 和 `HOUR_MICROSECOND` 被视为单调函数。请注意，`EXTRACT` 中不支持将 `WEEK` 作为分区裁剪的时间单位。
 
     例如，分区表达式是简单列的情况：
 
@@ -1326,11 +1462,19 @@ SELECT store_id, COUNT(department_id) AS c
 
 本节介绍当前 TiDB 分区表的一些约束和限制。
 
+- 不支持使用 [`ALTER TABLE ... CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 语句更改分区表的列类型。
+- 不支持使用 [`ALTER TABLE ... CACHE`](/cached-tables.md) 语句将分区表设为缓存表。
+- 与 TiDB 的[临时表](/temporary-tables.md)功能不兼容。
+- 不支持在分区表上创建[外键](/foreign-key.md)。
+- [`ORDER_INDEX(t1_name, idx1_name [, idx2_name ...])`](/optimizer-hints.md#order_indext1_name-idx1_name--idx2_name-) Hint 对分区表及其相关索引不生效，因为分区表上的索引不支持按顺序读取。
+
 ### 分区键，主键和唯一键
 
 本节讨论分区键，主键和唯一键之间的关系。一句话总结它们之间的关系要满足的规则：**分区表的每个唯一键，必须包含分区表达式中用到的所有列**。
 
-> every unique key on the table must use every column in the table's partitioning expression.
+> **注意：**
+>
+> 使用[全局索引](#全局索引)时，可以忽略该规则。
 
 这里所指的唯一也包含了主键，因为根据主键的定义，主键必须是唯一的。例如，下面这些建表语句就是无效的：
 
@@ -1410,7 +1554,7 @@ PARTITION BY HASH(col1 + col3)
 ```
 
 ```
-ERROR 1491 (HY000): A PRIMARY KEY must include all columns in the table's partitioning function
+ERROR 8264 (HY000): Global Index is needed for index 'col1', since the unique index is not including all partitioning columns, and GLOBAL is not given as IndexOption
 ```
 
 原因是 `col1` 和 `col3` 出现在分区键中，但是几个唯一键定义并没有完全包含它们，做如下修改后语句即为合法：
@@ -1508,8 +1652,6 @@ PARTITIONS 4;
 
 DDL 变更时，添加唯一索引也需要考虑到这个限制。比如创建了这样一个表：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t_no_pk (c1 INT, c2 INT)
     PARTITION BY RANGE(c1) (
@@ -1540,8 +1682,109 @@ CREATE TABLE t (a varchar(20), b blob,
 ```
 
 ```sql
-ERROR 1503 (HY000): A UNIQUE INDEX must include all columns in the table's partitioning function
+ERROR 8264 (HY000): Global Index is needed for index 'a', since the unique index is not including all partitioning columns, and GLOBAL is not given as IndexOption
 ```
+
+#### 全局索引
+
+在引入全局索引 (Global Index) 之前，TiDB 会为每个分区创建一个局部索引 (Local Index)，即一个分区对应一个局部索引。这种索引方式存在一个[使用限制](#分区键主键和唯一键)：主键和唯一键必须包含所有的分区键，以确保数据的全局唯一性。此外，当查询的数据跨越多个分区时，TiDB 需要扫描各个分区的数据才能返回结果。
+
+为解决这些问题，TiDB 从 v8.3.0 开始引入全局索引。全局索引能覆盖整个表的数据，使得主键和唯一键在不包含分区键的情况下仍能保持全局唯一性。此外，全局索引可以在一次操作中访问多个分区的索引数据，而无需对每个分区的本地索引逐一查找，显著提升了针对非分区键的查询性能。
+
+如果你需要为主键或唯一键创建全局索引，可以通过在索引定义中添加 `GLOBAL` 关键字来实现。
+
+> **注意：**
+>
+> 全局索引对分区管理有影响，执行 `DROP`、`TRUNCATE` 和 `REORGANIZE PARTITION` 操作也会触发表级别全局索引的更新，这意味着这些 DDL 操作只有在对应表的全局索引完全更新后才会返回结果。
+
+```sql
+CREATE TABLE t1 (
+    col1 INT NOT NULL,
+    col2 DATE NOT NULL,
+    col3 INT NOT NULL,
+    col4 INT NOT NULL,
+    UNIQUE KEY uidx12(col1, col2) GLOBAL,
+    UNIQUE KEY uidx3(col3)
+)
+PARTITION BY HASH(col3)
+PARTITIONS 4;
+```
+
+在上面示例中，唯一索引 `uidx12` 将成为全局索引，但 `uidx3` 仍是常规的唯一索引。
+
+请注意，**聚簇索引**不能成为全局索引，如下例所示：
+
+```sql
+CREATE TABLE t2 (
+    col1 INT NOT NULL,
+    col2 DATE NOT NULL,
+    PRIMARY KEY (col2) CLUSTERED GLOBAL
+) PARTITION BY HASH(col1) PARTITIONS 5;
+```
+
+```
+ERROR 1503 (HY000): A CLUSTERED INDEX must include all columns in the table's partitioning function
+```
+
+聚簇索引不能成为全局索引，是因为如果聚簇索引是全局索引，则表将不再分区。这是因为聚簇索引的键是分区级别的行数据的键，但全局索引是表级别的，这就造成了冲突。如果需要将主键设置为全局索引，则需要显式设置该主键为非聚簇索引，如 `PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
+
+你可以通过 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 输出中的 `GLOBAL` 索引选项来识别全局索引。
+
+```sql
+SHOW CREATE TABLE t1\G
+```
+
+```
+       Table: t1
+Create Table: CREATE TABLE `t1` (
+  `col1` int NOT NULL,
+  `col2` date NOT NULL,
+  `col3` int NOT NULL,
+  `col4` int NOT NULL,
+  UNIQUE KEY `uidx12` (`col1`,`col2`) /*T![global_index] GLOBAL */,
+  UNIQUE KEY `uidx3` (`col3`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+PARTITION BY HASH (`col3`) PARTITIONS 4
+1 row in set (0.00 sec)
+```
+
+或查询 [`INFORMATION_SCHEMA.TIDB_INDEXES`](/information-schema/information-schema-tidb-indexes.md) 表并查看输出中的 `IS_GLOBAL` 列来识别全局索引。
+
+```sql
+SELECT * FROM information_schema.tidb_indexes WHERE table_name='t1';
+```
+
+```
++--------------+------------+------------+----------+--------------+-------------+----------+---------------+------------+----------+------------+-----------+-----------+
+| TABLE_SCHEMA | TABLE_NAME | NON_UNIQUE | KEY_NAME | SEQ_IN_INDEX | COLUMN_NAME | SUB_PART | INDEX_COMMENT | Expression | INDEX_ID | IS_VISIBLE | CLUSTERED | IS_GLOBAL |
++--------------+------------+------------+----------+--------------+-------------+----------+---------------+------------+----------+------------+-----------+-----------+
+| test         | t1         |          0 | uidx12   |            1 | col1        |     NULL |               | NULL       |        1 | YES        | NO        |         1 |
+| test         | t1         |          0 | uidx12   |            2 | col2        |     NULL |               | NULL       |        1 | YES        | NO        |         1 |
+| test         | t1         |          0 | uidx3    |            1 | col3        |     NULL |               | NULL       |        2 | YES        | NO        |         0 |
++--------------+------------+------------+----------+--------------+-------------+----------+---------------+------------+----------+------------+-----------+-----------+
+3 rows in set (0.00 sec)
+```
+
+在对未分区的表进行分区，或对已分区的表进行重新分区时，可以根据需要将索引更新为全局索引或将其还原为本地索引：
+
+```sql
+ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCAL, uidx3 GLOBAL);
+```
+
+##### 全局索引的限制
+
+- 如果索引定义中未显式指定 `GLOBAL` 关键字，TiDB 将默认创建局部索引 (Local Index)。
+- `GLOBAL` 和 `LOCAL` 关键字仅适用于分区表，对非分区表没有影响。即在非分区表中，全局索引和局部索引之间没有区别。
+- 当前仅支持为唯一列创建全局索引 (Unique Global Index)。如果需要对非唯一列创建全局索引，可以通过包含主键形成复合索引。例如，如果非唯一列是 `col3` 而主键是 `col1`，可以通过执行以下 SQL 语句为 `col3` 创建全局索引：
+  
+    ```sql
+    ALTER TABLE ... ADD UNIQUE INDEX(col3, col1) GLOBAL;
+    ```
+
+- 以下 DDL 操作会触发全局索引的更新：`DROP PARTITION`、`TRUNCATE PARTITION` 和 `REORGANIZE PARTITION`。这些 DDL 需等待全局索引更新完成后才会返回结果，耗时会相应增加。尤其是在数据归档场景下，如 `DROP PARTITION` 和 `TRUNCATE PARTITION`，若没有全局索引，通常可以立即完成；但使用全局索引后，耗时会随着所需更新的索引数量的增加而增加。
+- 包含全局索引的表不支持 `EXCHANGE PARTITION`。
+- 默认情况下，分区表的主键为聚簇索引，且必须包含分区键。如果要求主键不包含分区建，可以在建表时显式指定主键为非聚簇的全局索引，例如：`PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
+- 如果在表达式列上添加了全局索引，或者一个全局索引同时也是前缀索引（如 `UNIQUE KEY idx_id_prefix (id(10)) GLOBAL`），你需要为该全局索引手动收集统计信息。
 
 ### 关于函数的分区限制
 
@@ -1576,10 +1819,6 @@ YEARWEEK()
 ### 兼容性
 
 目前 TiDB 支持 Range 分区、Range Columns 分区、List 分区、List COLUMNS 分区、Hash 分区和 Key 分区，其它的 MySQL 分区类型尚不支持。
-
-对于 Key 分区，目前不支持分区字段为空的场景。
-
-分区管理方面，只要底层实现可能会涉及数据挪动的操作，目前都暂不支持。包括且不限于：调整 Hash 分区表的分区数量，修改 Range 分区表的范围，合并分区等。
 
 对于暂不支持的分区类型，在 TiDB 中建表时会忽略分区信息，以普通表的形式创建，并且会报 Warning。
 
@@ -1675,13 +1914,9 @@ select * from t;
 5 rows in set (0.00 sec)
 ```
 
-环境变量 `tidb_enable_list_partition` 可以控制是否启用分区表功能。如果该变量设置为 `OFF`，则建表时会忽略分区信息，以普通表的方式建表。
-
-该变量仅作用于建表，已经建表之后再修改该变量无效。详见[系统变量和语法](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入)。
-
 ### 动态裁剪模式
 
-TiDB 访问分区表有两种模式，`dynamic` 和 `static`。从 v6.3.0 开始，默认使用 `dynamic` 模式。但是注意，`dynamic` 模式仅在表级别汇总统计信息（即 GlobalStats）收集完成的情况下生效。如果选择了 `dynamic` 但 GlobalStats 未收集完成，TiDB 会仍采用 `static` 模式。关于 GlobalStats 更多信息，请参考[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。
+TiDB 访问分区表有两种模式，`dynamic` 和 `static`。从 v6.3.0 开始，默认使用 `dynamic` 模式。但是注意，`dynamic` 模式仅在表级别汇总统计信息（即分区表的全局统计信息）收集完成的情况下生效。如果在全局统计信息未收集完成的情况下启用 `dynamic` 动态裁剪模式，TiDB 仍然会维持 `static` 静态裁剪的状态，直到全局统计信息收集完成。关于全局统计信息的更多信息，请参考[动态裁剪模式下的分区表统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)。
 
 {{< copyable "sql" >}}
 
@@ -1756,10 +1991,10 @@ set global tidb_partition_prune_mode = dynamic
 
 ```sql
 mysql> create table t1(id int, age int, key(id)) partition by range(id) (
-    ->     partition p0 values less than (100),
-    ->     partition p1 values less than (200),
-    ->     partition p2 values less than (300),
-    ->     partition p3 values less than (400));
+          partition p0 values less than (100),
+          partition p1 values less than (200),
+          partition p2 values less than (300),
+          partition p3 values less than (400));
 Query OK, 0 rows affected (0.01 sec)
 
 mysql> explain select * from t1 where id < 150;
@@ -1809,17 +2044,17 @@ mysql> explain select * from t1 where id < 150;
 
 ```sql
 mysql> create table t1 (id int, age int, key(id)) partition by range(id)
-    -> (partition p0 values less than (100),
-    ->  partition p1 values less than (200),
-    ->  partition p2 values less than (300),
-    ->  partition p3 values less than (400));
+          (partition p0 values less than (100),
+           partition p1 values less than (200),
+           partition p2 values less than (300),
+           partition p3 values less than (400));
 Query OK, 0 rows affected (0,08 sec)
 mysql> create table t2 (id int, code int);
 
 Query OK, 0 rows affected (0.01 sec)
 
 mysql> set @@tidb_partition_prune_mode = 'static';
-Query OK, 0 rows affected (0.00 sec)
+Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 0 and t2.id = t1.id;
 +--------------------------------+----------+-----------+------------------------+------------------------------------------------+
@@ -1882,7 +2117,7 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 
 从示例二结果可知，开启 `dynamic` 模式后，带 IndexJoin 的计划在执行查询时被选上。
 
-目前，静态和动态裁剪模式都不支持执行计划缓存。
+目前，静态裁剪模式不支持执行计划缓存，包括 Prepare 语句和非 Prepare 语句。
 
 #### 为动态裁剪模式更新所有分区表的统计信息
 
@@ -1908,12 +2143,11 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 
 2. 生成所有分区表的更新统计信息的语句：
 
-    {{< copyable "sql" >}}
-
     ```sql
-    select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;')
-        from information_schema.PARTITIONS
-        where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
+    SELECT DISTINCT CONCAT('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;')
+        FROM information_schema.PARTITIONS
+        WHERE TIDB_PARTITION_ID IS NOT NULL
+        AND TABLE_SCHEMA NOT IN ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
     ```
 
     ```
@@ -1929,12 +2163,11 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 
 3. 将批量更新语句导出到文件：
 
-    {{< copyable "sql" >}}
-
-    ```sql
-    mysql --host xxxx --port xxxx -u root -p -e "select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') \
-        from information_schema.PARTITIONS \
-        where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');" | tee gatherGlobalStats.sql
+    ```shell
+    mysql --host xxxx --port xxxx -u root -p -e "SELECT DISTINCT CONCAT('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') \
+        FROM information_schema.PARTITIONS \
+        WHERE TIDB_PARTITION_ID IS NOT NULL \
+        AND TABLE_SCHEMA NOT IN ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');" | tee gatherGlobalStats.sql
     ```
 
 4. 执行批量更新：

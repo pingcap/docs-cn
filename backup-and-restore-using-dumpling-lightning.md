@@ -7,20 +7,22 @@ summary: 了解如何使用 Dumpling 和 TiDB Lightning 备份与恢复集群数
 
 本文档介绍如何使用 Dumpling 和 TiDB Lightning 进行全量备份与恢复。
 
-在备份与恢复场景中，如果需要全量备份少量数据（例如小于 50 GB），且不要求备份速度，你可以使用 [Dumpling](/dumpling-overview.md) 从 TiDB 数据库导出数据进行备份，再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入至 TiDB 数据库实现恢复。更多备份与恢复的相关信息，参见 [TiDB 备份与恢复概述](/br/backup-and-restore-overview.md)。
+在备份与恢复场景中，如果需要全量备份少量数据（例如小于 50 GiB），且不要求备份速度，你可以使用 [Dumpling](/dumpling-overview.md) 从 TiDB 数据库导出数据进行备份，再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入至 TiDB 数据库实现恢复。
+
+如果需要备份大量数据，建议使用 [BR](/br/backup-and-restore-overview.md)。注意，Dumpling 也可以用于导出大量数据，但 BR 是更好的工具。
 
 ## 前提条件
 
-- 安装和运行 Dumpling：
+- 安装 Dumpling：
 
     ```shell
-    tiup install dumpling && tiup dumpling
+    tiup install dumpling
     ```
 
-- 安装和运行 TiDB Lightning：
+- 安装 TiDB Lightning：
 
     ```shell
-    tiup install tidb lightning && tiup tidb lightning
+    tiup install tidb-lightning
     ```
 
 - [获取 Dumpling 所需上游数据库权限](/dumpling-overview.md#从-tidbmysql-导出数据)
@@ -41,14 +43,35 @@ summary: 了解如何使用 Dumpling 和 TiDB Lightning 备份与恢复集群数
 - Dumpling 需要能够储存整个数据源的存储空间，即可以容纳要导出的所有上游表的空间。计算方式参考[目标数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#目标数据库所需空间)。
 - TiDB Lightning 导入期间，需要临时空间来存储排序键值对，磁盘空间需要至少能存储数据源的最大单表。
 
-**说明**：目前无法精确计算 Dumpling 从 TiDB 导出的数据大小，但你可以用下面 SQL 语句统计信息表的 `data_length` 字段估算数据量：
+**说明**：目前无法精确计算 Dumpling 从 TiDB 导出的数据大小，但你可以用下面 SQL 语句统计信息表的 `DATA_LENGTH` 字段估算数据量：
 
 ```sql
-/* 统计所有 schema 大小，单位 MiB，注意修改 ${schema_name} */
-SELECT table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(index_length)/1024/1024 AS index_length,SUM(data_length+index_length)/1024/1024 AS SUM FROM information_schema.tables WHERE table_schema = "${schema_name}" GROUP BY table_schema;
+-- 统计所有 schema 大小
+SELECT
+  TABLE_SCHEMA,
+  FORMAT_BYTES(SUM(DATA_LENGTH)) AS 'Data Size',
+  FORMAT_BYTES(SUM(INDEX_LENGTH)) 'Index Size'
+FROM
+  information_schema.tables
+GROUP BY
+  TABLE_SCHEMA;
 
-/* 统计最大单表，单位 MiB，注意修改 ${schema_name} */
-SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(index_length)/1024/1024 AS index_length,SUM(data_length+index_length)/1024/1024 AS SUM from information_schema.tables WHERE table_schema = "${schema_name}" GROUP BY table_name,table_schema ORDER BY SUM DESC LIMIT 5;
+-- 统计最大的 5 个单表
+SELECT
+  TABLE_NAME,
+  TABLE_SCHEMA,
+  FORMAT_BYTES(SUM(data_length)) AS 'Data Size',
+  FORMAT_BYTES(SUM(index_length)) AS 'Index Size',
+  FORMAT_BYTES(SUM(data_length+index_length)) AS 'Total Size'
+FROM
+  information_schema.tables
+GROUP BY
+  TABLE_NAME,
+  TABLE_SCHEMA
+ORDER BY
+  SUM(DATA_LENGTH+INDEX_LENGTH) DESC
+LIMIT
+  5;
 ```
 
 ### 目标 TiKV 集群的磁盘空间要求

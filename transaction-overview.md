@@ -92,9 +92,9 @@ ROLLBACK;
 
 ```sql
 mysql> CREATE TABLE t1 (
-    ->  id INT NOT NULL PRIMARY KEY auto_increment,
-    ->  pad1 VARCHAR(100)
-    -> );
+          id INT NOT NULL PRIMARY KEY auto_increment,
+          pad1 VARCHAR(100)
+         );
 Query OK, 0 rows affected (0.09 sec)
 
 mysql> SELECT @@autocommit;
@@ -132,9 +132,9 @@ COMMIT;
 
 ```sql
 mysql> CREATE TABLE t2 (
-    ->  id INT NOT NULL PRIMARY KEY auto_increment,
-    ->  pad1 VARCHAR(100)
-    -> );
+          id INT NOT NULL PRIMARY KEY auto_increment,
+          pad1 VARCHAR(100)
+         );
 Query OK, 0 rows affected (0.10 sec)
 
 mysql> SELECT @@autocommit;
@@ -296,12 +296,6 @@ TiDB 同时支持乐观事务与悲观事务，其中乐观事务是悲观事务
 TiDB 中，单个事务的总大小默认不超过 100 MB，这个默认值可以通过配置文件中的配置项 `txn-total-size-limit` 进行修改，最大支持 1 TB。单个事务的实际大小限制还取决于服务器剩余可用内存的大小，执行事务时 TiDB 进程的内存消耗相对于事务大小会存在一定程度的放大，最大可能达到提交事务大小的 2 到 3 倍以上。
 
 在 4.0 以前的版本，TiDB 限制了单个事务的键值对的总数量不超过 30 万条，从 4.0 版本起 TiDB 取消了这项限制。
-
-> **注意：**
->
-> 通常，用户会开启 TiDB Binlog 将数据向下游进行同步。某些场景下，用户会使用消息中间件来消费同步到下游的 binlog，例如 Kafka。
->
-> 以 Kafka 为例，Kafka 的单条消息处理能力的上限是 1 GB。因此，当把 `txn-total-size-limit` 设置为 1 GB 以上时，可能出现事务在 TiDB 中执行成功，但下游 Kafka 报错的情况。为避免这种情况出现，请用户根据最终消费者的限制来决定 `txn-total-size-limit` 的实际大小。例如：下游使用了 Kafka，则 `txn-total-size-limit` 不应超过 1 GB。
 
 ## 因果一致性事务
 

@@ -146,4 +146,4 @@ TiDB 支持的相关优化器 hint 详见 [Optimizer Hints](/optimizer-hints.md)
 >
 > 在 MySQL 客户端中，TiDB 可执行注释语法会被默认当成注释被清除掉。在 MySQL 客户端 5.7.7 之前的版本中，Hint 也会被默认当成注释被清除掉。推荐在启动客户端时加上 `--comments` 选项，例如 `mysql -h 127.0.0.1 -P 4000 -uroot --comments`。
 
-更多细节，请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/5.7/en/comments.html)。
+更多细节，请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/comments.html)。
