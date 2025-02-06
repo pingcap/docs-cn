@@ -14,14 +14,14 @@ summary: 了解如何使用 TiCDC 将数据同步到 Kafka。
 ```shell
 cdc cli changefeed create \
     --server=http://10.0.10.25:8300 \
-    --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1" \
+    --sink-uri="kafka://127.0.0.1:9092,127.0.0.1:9093,127.0.0.1:9094/topic-name?protocol=canal-json&kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1" \
     --changefeed-id="simple-replication-task"
 ```
 
 ```shell
 Create changefeed successfully!
 ID: simple-replication-task
-Info: {"sink-uri":"kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1","opts":{},"create-time":"2023-11-28T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":false,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
+Info: {"sink-uri":"kafka://127.0.0.1:9092,127.0.0.1:9093,127.0.0.1:9094/topic-name?protocol=canal-json&kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1","opts":{},"create-time":"2023-11-28T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":false,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
 ```
 
 - `--server`：TiCDC 集群中任意一个 TiCDC 服务器的地址。
@@ -62,8 +62,8 @@ URI 中可配置的的参数如下：
 
 | 参数               | 描述                                                         |
 | :------------------ | :------------------------------------------------------------ |
-| `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP。                                 |
-| `9092`               | 下游 Kafka 的连接端口。                                          |
+| `host`              | 下游 Kafka 对外提供服务的 IP。                                 |
+| `port`               | 下游 Kafka 的连接端口。                                          |
 | `topic-name`         | 变量，使用的 Kafka topic 名字。                                      |
 | `kafka-version`      | 下游 Kafka 版本号。该值需要与下游 Kafka 的实际版本保持一致。 |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`）。 |
