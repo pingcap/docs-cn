@@ -1,10 +1,10 @@
 ---
 title: distribute table 使用文档
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-distribute-table/','/docs-cn/dev/reference/sql/statements/distribute-table/']
 summary: TiDB 中的 distribute table 功能可以解决表中 region 分布不均衡问题。通过重新调整 table 中的 region 的分布，可以让指定 table 下的 region 按照一定的策略进行均衡。重新分配可以指定不同的存储引擎，比如 TIFLASH 和 TIKV。同时也可以指定不同的 raft role，比如 learner，leader，voter。
 ---
 
-# Distribute Table 使用文档
+# DISTRIBUTE TABLE 使用文档
+`DISTRIBUTE TABLE` 用于对指定表范围内的 region 进行重新打散调度， 使其按照表纬度进行均衡分布，防止个别 region 集中在少数的 TIFLASH 和 TIKV。
 
 ## 语法图
 
@@ -69,8 +69,6 @@ SHOW TABLE DISTRIBUTION t1;
 | db_1    |     t1     |                | 3        | TiKV       |               319 |        25986274812 |            1091 |      89405367423 |
 | db_1    |     t1     |                | 4        | TiKV       |               503 |        41039587625 |            1101 |      90482317797 |
 +---------+------------+----------------+----------+------------+-------------------+--------------------+-----------------+------------------+
-
-### Distribute Table Region
 
 
 ## 注意事项
