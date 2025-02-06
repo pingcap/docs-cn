@@ -13,7 +13,7 @@ summary: 了解 TiCDC Debezium Protocol 的概念和使用方法。
 
 Debezium 协议支持以下类型的事件：
 
-- DDL 事件：表示 DDL 变更记录。在上游 DDL 语句成功执行后，DDL 事件被发送到索引为 0 的 MQ 分区。
+- DDL 事件：表示 DDL 变更记录。在上游 DDL 语句成功执行后，DDL 事件被发送到每个 MQ (Message Queue) 分区。
 - DML 事件：表示一行数据变更记录。在行变更发生时，DML 事件被发出，包含变更后该行的相关信息。
 - WATERMARK 事件：表示一个特殊的时间点。在这个时间点之前收到的事件是完整的。仅适用于 TiDB 扩展字段，当你在 `sink-uri` 中设置 `enable-tidb-extension` 为 `true` 时生效。
 
@@ -398,7 +398,7 @@ Key 中的字段仅包含数据库名称。字段解释如下：
 | `payload.ts_ms`     | 数值 | TiCDC 生成这条信息的时间戳（毫秒级别）。 |
 | `payload.ddl`    | 字符串   | DDL 事件的 SQL 语句。               |
 | `payload.databaseName`     | 字符串   | 事件发生的数据库的名称。    |
-| `payload.source.commit_ts`     | 数值  | TiCDC 生成此消息时的 `CommitTs` 标识符。   |
+| `payload.source.commit_ts`     | 数值  | 该事件的 `CommitTs` 值。   |
 | `payload.source.db`     | 字符串   | 事件发生的数据库的名称。    |
 | `payload.source.table`     | 字符串  |  事件发生的数据表的名称。   |
 | `payload.tableChanges` | 数组 | 在 schema 变更后的整个表 schema 的结构化表示。`tableChanges` 字段包含一个数组，其中包括表中每一列的条目。由于结构化表示以 JSON 或 Avro 格式呈现数据，因此消费者可以在不通过 DDL 解析器处理的情况下轻松读取消息。 |
@@ -411,7 +411,7 @@ Key 中的字段仅包含数据库名称。字段解释如下：
 | `payload.tableChanges.table.columns.jdbcType` | 数值 | 列的 JDBC 类型。 |
 | `payload.tableChanges.table.columns.comment` | 字符串 | 列的注释。 |
 | `payload.tableChanges.table.columns.defaultValueExpression` | 字符串 | 列的默认值。 |
-| `payload.tableChanges.table.columns.enumValues` | 字符串 | 列的枚举值。格式为 `ENUM ('e1', 'e2')` 或 `SET ('e1', 'e2')`。 |
+| `payload.tableChanges.table.columns.enumValues` | 字符串 | 列的枚举值。格式为 `[ 'e1', 'e2' ]`。 |
 | `payload.tableChanges.table.columns.charsetName` | 字符串 | 列的字符集。 |
 | `payload.tableChanges.table.columns.length` | 数值 | 列的长度。 |
 | `payload.tableChanges.table.columns.scale` | 数值 | 列的精度。 |
@@ -569,7 +569,7 @@ Key 中的字段只包含主键或唯一索引列。字段解释如下：
 | `payload.ts_ms`     | 数值 | TiCDC 生成这条信息的时间戳（毫秒级别）。                                |
 | `payload.before`    | JSON   | 这条事件语句变更前的数据值。对于 `"c"` 事件，`before` 字段的值为 `null`。  |
 | `payload.after`     | JSON   | 这条事件语句变更后的数据值。对于 `"d"` 事件，`after` 字段的值为 `null`。   |
-| `payload.source.commit_ts`     | 数值  | TiCDC 生成此消息时的 `CommitTs` 标识符。                    |
+| `payload.source.commit_ts`     | 数值  | 该事件的 `CommitTs` 值。                    |
 | `payload.source.db`     | 字符串   | 事件发生的数据库的名称。                    |
 | `payload.source.table`     | 字符串  |  事件发生的数据表的名称。                   |
 | `schema.fields`     | JSON   |  `payload` 中各个字段的类型信息，包括对应行数据变更前后 schema 的信息。      |
@@ -768,7 +768,7 @@ Key 中的字段解释如下：
 |:----------|:-------|:-------------------------------------------------------------------------|
 | `payload.op`   | 字符串 | 变更事件类型。`"m"` 表示 WATERMARK 事件。                                |
 | `payload.ts_ms`     | 数值 | TiCDC 生成这条信息的时间戳（毫秒级别）。                                |
-| `payload.source.commit_ts`     | 数值  | TiCDC 生成此消息时的 `CommitTs` 标识符。     |
+| `payload.source.commit_ts`     | 数值  | 该事件的 `CommitTs` 值。                     |
 | `payload.source.db`     | 字符串   | 事件发生的数据库的名称。                    |
 | `payload.source.table`     | 字符串  |  事件发生的数据表的名称。                   |
 | `schema.fields`     | JSON   |  `payload` 中各个字段的类型信息，包括对应行数据变更前后 schema 的信息。      |
