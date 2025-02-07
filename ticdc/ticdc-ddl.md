@@ -130,7 +130,7 @@ rules = ['test.t*']
 rules = ['test.t*']
 
 matcher = ["test.t1"] # 该过滤规则只应用于 test 库中的 t1 表
-ignore-event = ["create table", "drop table", "truncate table"]
+ignore-event = ["create table", "drop table", "truncate table", "rename table"]
 ```
 
 | DDL | DDL 行为 | DML 行为 | 原因 |
@@ -140,6 +140,8 @@ ignore-event = ["create table", "drop table", "truncate table"]
 | `CREATE TABLE test.ignore (id INT, name VARCHAR(50));` | 忽略 | 忽略 | `test.ignore` 符合 Table Filter 过滤规则，因此 DDL 和 DML 事件均被忽略 |
 | `DROP TABLE test.t1;` | 忽略 | - | `test.t1` 符合 Event Filter，`DROP TABLE` 事件被忽略。该表已被删除，TiCDC 不再同步 t1 的 DML 事件 |
 | `TRUNCATE TABLE test.t1;` | 忽略 | 同步 | `test.t1` 符合 Event Filter，`TRUNCATE TABLE` 事件被忽略，但不影响 DML 事件的同步  |
+| `RENAME TABLE test.t1 TO test.t2;` | 忽略 | 同步 | `test.t1` 符合 Event Filter，`RENAME TABLE` 事件被忽略，但不影响 DML 事件的同步  |
+| `RENAME TABLE test.t1 TO test.ignore;` | 忽略 | 忽略 | `test.t1` 符合 Event Filter，`RENAME TABLE` 事件被忽略，`test.ignore` 符合 Table Filter 过滤规则，因此 DDL 和 DML 事件均被忽略  |
 
 > **注意：**
 >
