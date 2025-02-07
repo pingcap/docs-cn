@@ -15,7 +15,7 @@ Debezium 协议支持以下类型的事件：
 
 - DDL 事件：表示 DDL 变更记录。在上游 DDL 语句成功执行后，DDL 事件被发送到每个 MQ (Message Queue) 分区。
 - DML 事件：表示一行数据变更记录。在行变更发生时，DML 事件被发出，包含变更后该行的相关信息。
-- WATERMARK 事件：表示一个特殊的时间点。在这个时间点之前收到的事件是完整的。仅适用于 TiDB 扩展字段，当你在 `sink-uri` 中设置 `enable-tidb-extension` 为 `true` 时生效。
+- WATERMARK 事件：表示一个特殊的时间点。在这个时间点之前收到的事件是完整的。仅适用于 TiDB 扩展字段，当你在 `sink-uri` 中设置 [`enable-tidb-extension`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 为 `true` 时生效。
 
 使用 Debezium 消息格式时的配置样例如下所示：
 
@@ -452,7 +452,7 @@ Key 中的字段只包含主键或唯一索引列。字段解释如下：
 
 | 字段      | 类型   | 说明                                                                      |
 |:----------|:-------|:-------------------------------------------------------------------------|
-| `payload``   | JSON | 主键或唯一索引列的信息。每个字段的 key 和 value 分别为列名和当前值。  |
+| `payload`   | JSON | 主键或唯一索引列的信息。每个字段的 key 和 value 分别为列名和当前值。  |
 | `schema.fields`   | JSON   |  `payload` 中各个字段的类型信息，包括对应行数据变更前后 schema 的信息。  |
 | `schema.name`     | 字符串  |  schema 的名称，格式为 `"{cluster-name}.{schema-name}.{table-name}.Key"`。 |
 | `schema.optional` | 布尔值  | 该字段是否为选填项。值为 `true` 表示该字段为选填项。  |
@@ -790,7 +790,7 @@ TiCDC Debezium 消息中的数据格式映射基本遵循 [Debezium 的数据类
 
 - 在 TiCDC 中，BLOB、TEXT、GEOMETRY、JSON 列没有默认值。
 
-- Debezium 将 FLOAT 类型的 "5.61" 转换为 "5.610000133514404"，但 TiCDC 不会。
+- Debezium 将 FLOAT 类型的 `"5.61"` 转换为 `"5.610000133514404"`，但 TiCDC 不会。
 
 - TiCDC 在处理 FLOAT 时打印了错误的 `flen` [tidb#57060](https://github.com/pingcap/tidb/issues/57060)。
 
@@ -798,4 +798,4 @@ TiCDC Debezium 消息中的数据格式映射基本遵循 [Debezium 的数据类
 
 - Debezium 会对 ENUM 元素进行转义，但 TiCDC 不会。例如，Debezium 将 ENUM 元素 ('c', 'd', 'g,''h') 编码为 ('c','d','g,\'\'h')。
 
-- TiCDC 将 TIME 类型的默认值如 '1000-00-00 01:00:00.000' 转换为 "1000-00-00"，但 Debezium 不会。
+- TiCDC 将 TIME 类型的默认值如 `'1000-00-00 01:00:00.000'` 转换为 `"1000-00-00"`，但 Debezium 不会。
