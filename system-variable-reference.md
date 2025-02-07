@@ -1848,7 +1848,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [SET RESOURCE GROUP](/sql-statements/sql-statement-set-resource-group.md)
 - [TiKV 配置文件描述](/tikv-configuration-file.md)
 - [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md)
-- [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)
+- [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control-ru-groups.md)
 - [系统变量](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入)
 - [错误码与故障诊断](/error-codes.md)
 - [TiDB 7.4.0 Release Notes](/releases/release-7.4.0.md)
