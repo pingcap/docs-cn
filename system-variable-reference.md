@@ -3250,7 +3250,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
-- [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control-background-tasks.md)
+- [使用资源管控 (Resource Control) 管理后台任务](/tidb-resource-control-background-tasks.md)
 - [系统变量](/system-variables.md#tidb_request_source_type-从-v740-版本开始引入)
 - [TiDB 7.4.0 Release Notes](/releases/release-7.4.0.md)
 
