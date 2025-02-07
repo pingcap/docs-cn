@@ -119,7 +119,7 @@ TiDB 版本：7.6.0
 
     从 v7.6.0 开始，TiDB 支持 TiKV 周期性全量数据整理。该功能可以作为垃圾回收 (GC) 的增强，用以消除冗余的数据版本。在业务活动呈现明显的高峰和低谷的场景中，利用该功能可在系统空闲时段进行数据整理，以提升高峰期间业务处理的性能。
 
-    你可以通过配置 TiKV 配置项 [`periodic-full-compact-start-times`](/tikv-configuration-file.md#periodic-full-compact-start-times-从-v760-版本开始引入) 指定启动周期性全量数据整理的时间，并通过 [`periodic-full-compact-start-max-cpu`](/tikv-configuration-file.md#periodic-full-compact-start-max-cpu-从-v760-版本开始引入) 控制 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值。`periodic-full-compact-start-max-cpu` 默认是 10%，即为了减少对业务流量的影响，只有当 TiKV 的 CPU 利用率低于 10% 时，才会触发周期性全量数据整理。
+    你可以通过配置 TiKV 配置项 [`periodic-full-compact-start-times`](/tikv-configuration-file.md#periodic-full-compact-start-times-从-v760-版本开始引入) 指定启动周期性全量数据整理的时间，并通过 [`periodic-full-compact-start-max-cpu`](/tikv-configuration-file.md#periodic-full-compact-start-max-cpu-从-v760-版本开始引入) 控制 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值。`periodic-full-compact-start-max-cpu` 默认值是 `0.1`，即为了减少对业务流量的影响，只有当 TiKV 的 CPU 利用率低于 10% 时，才会触发周期性全量数据整理。
 
      更多信息，请参考[用户文档](/tikv-configuration-file.md#periodic-full-compact-start-times-从-v760-版本开始引入)。
 
