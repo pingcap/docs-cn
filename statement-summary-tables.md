@@ -80,7 +80,7 @@ select * from employee where id in (...) and salary between ? and ?;
 > **注意：**
 >
 > - 在 TiDB 中，statement summary tables 中字段的时间单位是纳秒 (ns)，而 MySQL 中的时间单位是皮秒 (ps)。
-> - 从 v7.5.1 和 v7.6.0 版本开始，对于开启[资源管控](/tidb-resource-control.md)的集群，`statements_summary` 会分资源组进行聚合，即在不同资源组执行的相同语句会被收集为不同的记录。
+> - 从 v7.5.1 和 v7.6.0 版本开始，对于开启[资源管控](/tidb-resource-control-ru-groups.md)的集群，`statements_summary` 会分资源组进行聚合，即在不同资源组执行的相同语句会被收集为不同的记录。
 
 ## `statements_summary_history`
 
