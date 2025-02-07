@@ -3260,7 +3260,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 - [Optimizer Hints](/optimizer-hints.md)
 - [SET RESOURCE GROUP](/sql-statements/sql-statement-set-resource-group.md)
-- [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control-ru-groups.md)
+- [使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)
 - [权限管理](/privilege-management.md)
 - [系统变量](/system-variables.md#tidb_resource_control_strict_mode-从-v820-版本开始引入)
 - [TiDB 8.2.0 Release Notes](/releases/release-8.2.0.md)
