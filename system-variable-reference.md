@@ -2407,7 +2407,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
-- [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control-ru-groups.md)
+- [使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)
 - [系统变量](/system-variables.md#tidb_last_query_info-从-v4014-版本开始引入)
 - [TiDB 7.6.0 Release Notes](/releases/release-7.6.0.md)
 - [TiDB 7.5.1 Release Notes](/releases/release-7.5.1.md)
