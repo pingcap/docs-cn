@@ -185,7 +185,7 @@ tiproxyctl traffic cancel --host 10.0.1.10 --port 3080
 
 - TiProxy 仅支持回放 TiProxy 捕获的流量文件，不支持其他文件格式，因此生产集群必须先使用 TiProxy 捕获流量。
 - TiProxy 不支持过滤 SQL 类型，DML 和 DDL 语句也会被回放，因此重新回放前需要将集群数据恢复到回放前的状态。
-- 由于 TiProxy 使用同一个用户名回放流量，因此无法测试[资源管控](/tidb-resource-control.md)和[权限管理](/privilege-management.md)。
+- 由于 TiProxy 使用同一个用户名回放流量，因此无法测试[资源管控 (Resource Control)](/tidb-resource-control-ru-groups.md) 和[权限管理](/privilege-management.md)。
 - 不支持回放 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 语句。
 
 ## 资源

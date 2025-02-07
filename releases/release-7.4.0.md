@@ -154,7 +154,7 @@ TiDB 版本：7.4.0
 
     通过配置 TiFlash 参数 `enable_resource_control`，你可以控制是否开启 TiFlash 资源管控特性。开启后，TiFlash 将根据 TiDB 的资源组配置进行资源调度管理，确保整体资源的合理分配和使用。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md)。
+    更多信息，请参考[用户文档](/tidb-resource-control-ru-groups.md)。
 
 * TiFlash 支持 Pipeline 执行模型 (GA) [#6518](https://github.com/pingcap/tiflash/issues/6518) @[SeaRise](https://github.com/SeaRise)
 
@@ -183,7 +183,7 @@ TiDB 版本：7.4.0
 
   默认情况下，被标记为后台任务的任务类型为空，此时后台任务的管理功能处于关闭状态，其行为与 TiDB v7.4.0 之前版本保持一致。你需要手动修改 `default` 资源组的后台任务类型以开启后台任务管理。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md#管理后台任务)。
+    更多信息，请参考[用户文档](/tidb-resource-control-background-tasks.md)。
 
 * 锁定统计信息成为正式功能 (GA) [#46351](https://github.com/pingcap/tidb/issues/46351) @[hi-rustin](https://github.com/Rustin170506)
 
@@ -305,7 +305,7 @@ TiDB 版本：7.4.0
 | [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) | 新增 | 该变量用于指定[全局排序](/tidb-global-sort.md)中使用的云存储的 URI。 |
 | [`tidb_opt_enable_hash_join`](/system-variables.md#tidb_opt_enable_hash_join-从-v656v712-和-v740-版本开始引入) | 新增 | 控制优化器是否会选择表的哈希连接。默认打开 (`ON`)。设置为 `OFF` 时，除非没有计划可用，否则优化器会避免选择表的哈希连接。 |
 | [`tidb_opt_objective`](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入) | 新增 | 该变量用于设置优化器优化目标。`moderate` 维持旧版本的默认行为，优化器会利用更多信息尝试生成更优的计划；`determinate` 则倾向于保守，保持执行计划稳定。 |
-| [`tidb_request_source_type`](/system-variables.md#tidb_request_source_type-从-v740-版本开始引入) | 新增 | 该变量用于显式指定当前会话的任务类型，用于[资源管控](/tidb-resource-control.md)识别并控制。如 `SET @@tidb_request_source_type = "background"`。 |
+| [`tidb_request_source_type`](/system-variables.md#tidb_request_source_type-从-v740-版本开始引入) | 新增 | 该变量用于显式指定当前会话的任务类型，用于[资源管控](/tidb-resource-control-ru-groups.md)识别并控制。如 `SET @@tidb_request_source_type = "background"`。 |
 | [`tidb_schema_version_cache_limit`](/system-variables.md#tidb_schema_version_cache_limit-从-v740-版本开始引入) | 新增 | 该变量用于限制 TiDB 实例可以缓存多少个历史版本的表结构信息。默认值为 `16`，即默认缓存 16 个历史版本的表结构信息。|
 | [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | 新增 | 该变量是一个实例级别的变量，用于控制 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)下各 TiDB 节点的服务范围。当设置 TiDB 节点的 `tidb_service_scope` 为 `background` 时，分布式执行框架将调度该节点执行任务（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）。 |
 | [`tidb_session_alias`](/system-variables.md#tidb_session_alias-从-v740-版本开始引入) | 新增 | 用来自定义当前会话相关日志中 `session_alias` 列的值。 |

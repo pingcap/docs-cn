@@ -255,7 +255,7 @@ RPC（远程过程调用）是软件组件之间的一种通信方式。在 TiDB
 
 ### Request Unit (RU)
 
-RU 是 TiDB 中资源使用的统一抽象单位，用于在[资源管控](/tidb-resource-control.md)功能中衡量资源的使用情况。
+RU 是 TiDB 中资源使用的统一抽象单位，用于在[资源管控](/tidb-resource-control-ru-groups.md)功能中衡量资源的使用情况。
 
 ### Restore
 

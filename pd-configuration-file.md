@@ -497,7 +497,7 @@ Region 同步模式相关的配置项。更多详情，请参阅[启用自适应
 
 ## controller
 
-PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关的配置项。
+PD 中内置的 [Resource Control](/tidb-resource-control-ru-groups.md) 相关的配置项。
 
 ### `degraded-mode-wait-duration`
 
@@ -507,7 +507,7 @@ PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关的配置项
 
 ### `request-unit`
 
-下面是 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 相关的配置项。
+下面是 [Request Unit (RU)](/tidb-resource-control-ru-groups.md#什么是-request-unit-ru) 相关的配置项。
 
 #### `read-base-cost`
 
