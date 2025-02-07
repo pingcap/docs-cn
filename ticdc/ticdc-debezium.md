@@ -411,7 +411,7 @@ Key 中的字段仅包含数据库名称。字段解释如下：
 | `payload.tableChanges.table.columns.jdbcType` | 数值 | 列的 JDBC 类型。 |
 | `payload.tableChanges.table.columns.comment` | 字符串 | 列的注释。 |
 | `payload.tableChanges.table.columns.defaultValueExpression` | 字符串 | 列的默认值。 |
-| `payload.tableChanges.table.columns.enumValues` | 字符串 | 列的枚举值。格式为 `[ 'e1', 'e2' ]`。 |
+| `payload.tableChanges.table.columns.enumValues` | 字符串 | 列的枚举值。格式为 `['e1', 'e2']`。 |
 | `payload.tableChanges.table.columns.charsetName` | 字符串 | 列的字符集。 |
 | `payload.tableChanges.table.columns.length` | 数值 | 列的长度。 |
 | `payload.tableChanges.table.columns.scale` | 数值 | 列的精度。 |
