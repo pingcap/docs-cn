@@ -73,11 +73,11 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     </td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tidb-resource-control#query_limit-参数说明">Runaway Queries 支持更多触发条件，并能够切换资源组</a>（从 v8.4.0 开始引入）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tidb-resource-control-runaway-queries#query_limit-参数说明">Runaway Queries 支持更多触发条件，并能够切换资源组</a>（从 v8.4.0 开始引入）</td>
     <td>Runaway Queries 提供了有效的手段来降低突发的 SQL 性能问题对系统产生的影响。v8.4.0 中新增 Coprocessor 处理的 Key 的数量 (PROCESSED_KEYS) 和 Request Unit (RU) 作为识别条件，并可以将识别到的查询置入指定资源组，对 Runaway Queries 进行更精确的识别与控制。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tidb-resource-control#background-参数说明">支持为资源管控的后台任务设置资源使用上限</a> (实验特性，从 v8.4.0 开始引入）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tidb-resource-control-background-tasks#background-参数说明">支持为资源管控的后台任务设置资源使用上限</a> (实验特性，从 v8.4.0 开始引入）</td>
     <td>为资源管控的后台任务设置百分比上限，针对不同业务系统的需求，控制后台任务的消耗，从而将后台任务的消耗限制在一个很低的水平，保证在线业务的服务质量。</td>
   </tr>
   <tr>
