@@ -19,7 +19,7 @@ TrafficStmt ::=
 
 ## 示例
 
-例如当前有 2 台 TiProxy 正在流量捕获：
+假设当前有 2 台 TiProxy 正在进行流量捕获：
 
 ```sql
 SHOW TRAFFIC JOBS
@@ -68,6 +68,6 @@ SHOW TRAFFIC JOBS
 ## 另请参阅
 
 * [TiProxy 流量回放](/tiproxy/tiproxy-traffic-replay.md)
-* [TRAFFIC CAPTURE](/sql-statements/sql-statement-traffic-capture.md)
-* [TRAFFIC REPLAY](/sql-statements/sql-statement-traffic-replay.md)
-* [SHOW TRAFFIC JOBS](/sql-statements/sql-statement-show-traffic-jobs.md)
+* [`TRAFFIC CAPTURE`](/sql-statements/sql-statement-traffic-capture.md)
+* [`TRAFFIC REPLAY`](/sql-statements/sql-statement-traffic-replay.md)
+* [`SHOW TRAFFIC JOBS`](/sql-statements/sql-statement-show-traffic-jobs.md)

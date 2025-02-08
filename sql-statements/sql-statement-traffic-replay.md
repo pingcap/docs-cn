@@ -66,6 +66,6 @@ TRAFFIC REPLAY FROM "/tmp/traffic" USER="u1" PASSWORD="123456" READONLY=true
 ## 另请参阅
 
 * [TiProxy 流量回放](/tiproxy/tiproxy-traffic-replay.md)
-* [TRAFFIC CAPTURE](/sql-statements/sql-statement-traffic-capture.md)
-* [CANCEL TRAFFIC JOBS](/sql-statements/sql-statement-cancel-traffic-jobs.md)
-* [SHOW TRAFFIC JOBS](/sql-statements/sql-statement-show-traffic-jobs.md)
+* [`TRAFFIC CAPTURE`](/sql-statements/sql-statement-traffic-capture.md)
+* [`SHOW TRAFFIC JOBS`](/sql-statements/sql-statement-show-traffic-jobs.md)
+* [`CANCEL TRAFFIC JOBS`](/sql-statements/sql-statement-cancel-traffic-jobs.md)

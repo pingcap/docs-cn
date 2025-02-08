@@ -71,6 +71,6 @@ SHOW TRAFFIC JOBS
 ## 另请参阅
 
 * [TiProxy 流量回放](/tiproxy/tiproxy-traffic-replay.md)
-* [TRAFFIC CAPTURE](/sql-statements/sql-statement-traffic-capture.md)
-* [TRAFFIC REPLAY](/sql-statements/sql-statement-traffic-replay.md)
-* [CANCEL TRAFFIC JOBS](/sql-statements/sql-statement-cancel-traffic-jobs.md)
+* [`TRAFFIC CAPTURE`](/sql-statements/sql-statement-traffic-capture.md)
+* [`TRAFFIC REPLAY`](/sql-statements/sql-statement-traffic-replay.md)
+* [`CANCEL TRAFFIC JOBS`](/sql-statements/sql-statement-cancel-traffic-jobs.md)
