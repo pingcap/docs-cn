@@ -13,7 +13,7 @@ TiDB 版本：7.5.0
 
 TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
-相比于前一个 LTS（即 7.1.0 版本），7.5.0 版本包含 [7.2.0-DMR](/releases/release-7.2.0.md)、[7.3.0-DMR](/releases/release-7.3.0.md) 和 [7.4.0-DMR](/releases/release-7.4.0.md) 中已发布的新功能、提升改进和错误修复。当你从 7.1.x 升级到 7.5.0 时，可以下载 [TiDB Release Notes PDF](https://download.pingcap.org/tidb-v7.2-to-v7.5-zh-release-notes.pdf) 查看两个 LTS 版本之间的所有 release notes。下表列出了从 7.2.0 到 7.5.0 的一些关键特性：
+相比于前一个 LTS（即 7.1.0 版本），7.5.0 版本包含 [7.2.0-DMR](/releases/release-7.2.0.md)、[7.3.0-DMR](/releases/release-7.3.0.md) 和 [7.4.0-DMR](/releases/release-7.4.0.md) 中已发布的新功能、提升改进和错误修复。当你从 7.1.x 升级到 7.5.0 时，可以下载 [TiDB Release Notes PDF](https://docs-download.pingcap.com/pdf/tidb-v7.2-to-v7.5-zh-release-notes.pdf) 查看两个 LTS 版本之间的所有 release notes。下表列出了从 7.2.0 到 7.5.0 的一些关键特性：
 
 <table>
 <thead>

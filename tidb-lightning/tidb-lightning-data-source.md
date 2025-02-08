@@ -6,7 +6,9 @@ aliases: ['/zh/tidb/dev/migrate-from-csv-using-tidb-lightning/','/docs-cn/dev/ti
 
 # TiDB Lightning 数据源
 
-TiDB Lightning 支持从多种类型的文件导入数据到 TiDB 集群。通过以下配置为 TiDB Lightning 指定数据文件所在位置。
+TiDB Lightning 支持从多种类型的文件导入数据到 TiDB 集群，包括 CSV、SQL、Parquet 文件。
+
+你可以通过以下配置为 TiDB Lightning 指定数据文件所在位置。
 
 ```toml
 [mydumper]
@@ -105,7 +107,7 @@ CSV 文件是没有表结构的。要导入 TiDB，就必须为其提供表结�
 
 ### 配置
 
-CSV 格式可在 `tidb-lightning.toml` 文件中 `[mydumper.csv]` 下配置。大部分设置项在 MySQL [`LOAD DATA`] 语句中都有对应的项目。
+CSV 格式可在 `tidb-lightning.toml` 文件中 `[mydumper.csv]` 下配置。大部分设置项在 MySQL 的 [`LOAD DATA`](https://dev.mysql.com/doc/refman/8.0/en/load-data.html) 语句中都有对应的选项。
 
 ```toml
 [mydumper.csv]
@@ -126,7 +128,7 @@ not-null = false
 null = '\N'
 # 是否解析字段内的反斜线转义符。
 backslash-escape = true
-# 是否移除以分隔符结束的行。
+# 是否将 `separator` 字段当作终止符，并移除尾部所有分隔符。
 trim-last-separator = false
 ```
 
@@ -209,7 +211,7 @@ trim-last-separator = false
 
 #### `trim-last-separator`
 
-- 将 `separator` 字段当作终止符，并移除尾部所有分隔符。
+- 是否将 `separator` 字段当作终止符，并移除尾部所有分隔符。
 
     例如有如下 CSV 文件：
 
@@ -390,7 +392,7 @@ type = '$3'
     - 直接填写期望导入的库名，例如 “db1”。所有匹配到的文件均会导入 “db1”。
 - **table**：目标表名称，值可以为：
     - 正则表达式匹配到的 group 序号，例如 “$2”。
-    - 直接填写期望导入的库名，例如“table1”。所有匹配到的文件均会导入“table1”。
+    - 直接填写期望导入的表名，例如 “table1”。所有匹配到的文件均会导入 “table1”。
 - **type**：文件类型，支持`sql`，`parquet`，`csv`，值可以为：
     - 正则表达式匹配到的 group 序号，例如 “$3”。
 - **key**：文件的序号，即前文所述`${db_name}.${table_name}.001.csv`中的`001`。

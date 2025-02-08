@@ -62,4 +62,6 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 部署日志。
 
-[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)
+## 另请参阅
+
+- [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)

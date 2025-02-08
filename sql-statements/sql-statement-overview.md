@@ -137,7 +137,7 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | SQL 语句 | 描述 |
 |----------|------|
 | [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) | 修改资源组。 |
-| [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md) | 估算并输出当前集群的 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 容量。 |
+| [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md) | 估算并输出当前集群的 [Request Unit (RU)](/tidb-resource-control-ru-groups.md#什么是-request-unit-ru) 容量。 |
 | [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) | 创建新的资源组。 |
 | [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md) | 删除资源组。 |
 | [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md) | 管理 Runaway Queries 监控列表。 |
