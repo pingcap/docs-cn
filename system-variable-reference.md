@@ -1848,7 +1848,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [SET RESOURCE GROUP](/sql-statements/sql-statement-set-resource-group.md)
 - [TiKV 配置文件描述](/tikv-configuration-file.md)
 - [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md)
-- [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)
+- [使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)
 - [系统变量](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入)
 - [错误码与故障诊断](/error-codes.md)
 - [TiDB 7.4.0 Release Notes](/releases/release-7.4.0.md)
@@ -2407,7 +2407,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
-- [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)
+- [使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)
 - [系统变量](/system-variables.md#tidb_last_query_info-从-v4014-版本开始引入)
 - [TiDB 7.6.0 Release Notes](/releases/release-7.6.0.md)
 - [TiDB 7.5.1 Release Notes](/releases/release-7.5.1.md)
@@ -3250,7 +3250,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
-- [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)
+- [使用资源管控 (Resource Control) 管理后台任务](/tidb-resource-control-background-tasks.md)
 - [系统变量](/system-variables.md#tidb_request_source_type-从-v740-版本开始引入)
 - [TiDB 7.4.0 Release Notes](/releases/release-7.4.0.md)
 
@@ -3260,7 +3260,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 - [Optimizer Hints](/optimizer-hints.md)
 - [SET RESOURCE GROUP](/sql-statements/sql-statement-set-resource-group.md)
-- [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)
+- [使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)
 - [权限管理](/privilege-management.md)
 - [系统变量](/system-variables.md#tidb_resource_control_strict_mode-从-v820-版本开始引入)
 - [TiDB 8.2.0 Release Notes](/releases/release-8.2.0.md)
@@ -4014,7 +4014,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 引用该变量的文档：
 
 - [TiDB 配置文件描述](/tidb-configuration-file.md)
-- [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)
+- [使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)
 - [系统变量](/system-variables.md#txn_scope)
 
 ### validate_password.check_user_name
