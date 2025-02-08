@@ -13,7 +13,7 @@ summary: 介绍如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群
 
 ## 准备用户并配置 SSH 互信
 1. 以 tidb 用户为例，需要依次登录到所有部署目标机器以 `root` 用户使用如下命令创建一个普通用户 `tidb`。在 no-sudo 模式下不需要为 `tidb` 用户配置 sudo 免密，即无需将 `tidb` 用户加入 `sudoers` 中。   
-    
+
     ```bash
     adduser tidb
     ```
@@ -21,35 +21,36 @@ summary: 介绍如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群
 2. 在每台部署目标机器上为 `tidb` 用户启动 `systemd user` 模式（重要步骤）
 
    1. 使用 `tidb` 用户设置 `XDG_RUNTIME_DIR` 环境变量
-       ```bash
-       mkdir -p ~/.bashrc.d
-       echo "export XDG_RUNTIME_DIR=/run/user/$(id -u)" > ~/.bashrc.d/systemd
-       source ~/.bashrc.d/systemd
-       ```
-   
-   2. 使用 `root` 用户启动 user service
-    
+      
       ```bash
-         $ systemctl start user@1000.service #1000 是 tidb 用户的 id，可以通过执行命令 id 来获取
-         $ systemctl status user@1000.service
-         user@1000.service - User Manager for UID 1000
-         Loaded: loaded (/usr/lib/systemd/system/user@.service; static; vendor preset>
-         Active: active (running) since Mon 2024-01-29 03:30:51 EST; 1min 7s ago
-         Main PID: 3328 (systemd)
-         Status: "Startup finished in 420ms."
-         Tasks: 6
-         Memory: 6.1M
-         CGroup: /user.slice/user-1000.slice/user@1000.service
-                 ├─dbus.service
-                 │ └─3442 /usr/bin/dbus-daemon --session --address=systemd: --nofork >
-                 ├─init.scope
-                 │ ├─3328 /usr/lib/systemd/systemd --user
-                 │ └─3335 (sd-pam)
-                 └─pulseaudio.service
-                   └─3358 /usr/bin/pulseaudio --daemonize=no --log-target=journal
-         ```
+      mkdir -p ~/.bashrc.d
+      echo "export XDG_RUNTIME_DIR=/run/user/$(id -u)" > ~/.bashrc.d/systemd
+      source ~/.bashrc.d/systemd
+      ```
    
-         执行`systemctl --user`，如果没有报错，说明 systemd user 模式已经正常启动。
+   3. 使用 `root` 用户启动 user service
+
+      ```shell
+      $ systemctl start user@1000.service #1000 is the id of tidb user. You can get the user id by executing id
+      $ systemctl status user@1000.service
+      user@1000.service - User Manager for UID 1000
+      Loaded: loaded (/usr/lib/systemd/system/user@.service; static; vendor preset>
+      Active: active (running) since Mon 2024-01-29 03:30:51 EST; 1min 7s ago
+      Main PID: 3328 (systemd)
+      Status: "Startup finished in 420ms."
+      Tasks: 6
+      Memory: 6.1M
+      CGroup: /user.slice/user-1000.slice/user@1000.service
+              ├─dbus.service
+              │ └─3442 /usr/bin/dbus-daemon --session --address=systemd: --nofork >
+              ├─init.scope
+              │ ├─3328 /usr/lib/systemd/systemd --user
+              │ └─3335 (sd-pam)
+              └─pulseaudio.service
+                └─3358 /usr/bin/pulseaudio --daemonize=no --log-target=journal
+      ```
+
+   执行`systemctl --user`，如果没有报错，说明 systemd user 模式已经正常启动。
 
 3. 在中控机使用 ssh-keygen 生成密钥，并将公钥复制到其他部署机器完成 SSH 互信。
 
@@ -101,58 +102,58 @@ Node            Check         Result  Message
 
 1. 安装 numactl 工具
 
-    ```shell
-      sudo yum -y install numactl
-    ```
+   ```shell
+   sudo yum -y install numactl
+   ```
    
 2. 关闭 swap
 
-    ```shell
-       swapoff -a || exit 0
-    ```
+   ```shell
+   swapoff -a || exit 0
+   ```
 
 3. 禁止透明大页
 
-    ```shell
-       echo never > /sys/kernel/mm/transparent_hugepage/enabled
-    ```
+   ```shell
+   echo never > /sys/kernel/mm/transparent_hugepage/enabled
+   ```
 
 4. 开启 irqbalance service
 
-    ```shell
-       systemctl start irqbalance
+   ```shell
+   systemctl start irqbalance
    ```
    
 5. 关闭防火墙以及关闭防火墙自启动
 
-    ```shell
-       systemctl stop firewalld.service
-       systemctl disable firewalld.service
+   ```shell
+   systemctl stop firewalld.service
+   systemctl disable firewalld.service
    ```
    
 6. 修改 sysctl 参数
 
-    ```shell
-       echo "fs.file-max = 1000000">> /etc/sysctl.conf
-       echo "net.core.somaxconn = 32768">> /etc/sysctl.conf
-       echo "net.ipv4.tcp_tw_recycle = 0">> /etc/sysctl.conf
-       echo "net.ipv4.tcp_syncookies = 0">> /etc/sysctl.conf
-       echo "vm.overcommit_memory = 1">> /etc/sysctl.conf
-       echo "vm.swappiness = 0">> /etc/sysctl.conf
-       sysctl -p
+   ```shell
+   echo "fs.file-max = 1000000">> /etc/sysctl.conf
+   echo "net.core.somaxconn = 32768">> /etc/sysctl.conf
+   echo "net.ipv4.tcp_tw_recycle = 0">> /etc/sysctl.conf
+   echo "net.ipv4.tcp_syncookies = 0">> /etc/sysctl.conf
+   echo "vm.overcommit_memory = 1">> /etc/sysctl.conf
+   echo "vm.swappiness = 0">> /etc/sysctl.conf
+   sysctl -p
    ```
    
 7. 配置 tidb 用户的 limits.conf 文件
 
-    ```shell
-       cat << EOF >>/etc/security/limits.conf
-       tidb           soft    nofile          1000000
-       tidb           hard    nofile          1000000
-       tidb           soft    stack           32768
-       tidb           hard    stack           32768
-       tidb           soft    core            unlimited
-       tidb           hard    core            unlimited
-       EOF
+   ```shell
+   cat << EOF >>/etc/security/limits.conf
+   tidb           soft    nofile          1000000
+   tidb           hard    nofile          1000000
+   tidb           soft    stack           32768
+   tidb           hard    stack           32768
+   tidb           soft    core            unlimited
+   tidb           hard    core            unlimited
+   EOF
    ```
 
 ## 部署集群
@@ -160,7 +161,7 @@ Node            Check         Result  Message
 为了使用上述步骤准备好的 `tidb` 用户而避免重新创建新的用户，执行 deploy 命令时需要加上 `--user tidb`，即：
 
 ```shell
-  tiup cluster deploy mycluster v8.1.0 topology.yaml --user tidb
+tiup cluster deploy mycluster v8.1.0 topology.yaml --user tidb
 ```
 
 启动集群
@@ -187,7 +188,7 @@ tiup cluster scale-in mycluster -N 192.168.124.27:20160
 tiup cluster upgrade mycluster v8.2.0
 ```
 
-## FAQ
+## 常见问题
 1. 启动 user@.service 时出现错误：Failed to fully start up daemon: Permission denied
 
    这可能是因为您的 `/etc/pam.d/system-auth.ued` 文件中缺少 `pam_systemd.so`。您可以使用以下命令检查 `/etc/pam.d/system-auth.ued` 文件是否已包含 `pam_systemd.so` 模块的配置。如果没有，则将 `session optional pam_systemd.so` 附加到文件末尾。
