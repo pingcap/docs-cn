@@ -796,6 +796,6 @@ TiCDC Debezium 消息中的数据格式映射基本遵循 [Debezium 的数据类
 
 - 当列的排序规则为 `utf8_unicode_ci` 且字符集为 null 时，Debezium 将 `charsetName` 转换为 `"utf8mb4"`，但 TiCDC 不会。
 
-- Debezium 会对 ENUM 元素进行转义，但 TiCDC 不会。例如，Debezium 将 ENUM 元素 ('c', 'd', 'g,''h') 编码为 ('c','d','g,\'\'h')。
+- TiCDC 将 ENUM 元素中的 `\` 视为 转义引号，但 Debezium 不会。例如，TiCDC 将 ENUM 元素 `("c,\'d','g,''h")` 编码为 `('c,'d', 'g,''h')`。
 
 - TiCDC 将 TIME 类型的默认值如 `'1000-00-00 01:00:00.000'` 转换为 `"1000-00-00"`，但 Debezium 不会。
