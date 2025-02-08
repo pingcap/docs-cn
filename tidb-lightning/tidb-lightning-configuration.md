@@ -249,10 +249,6 @@ distsql-scan-concurrency = 15
 index-serial-scan-concurrency = 20
 checksum-table-concurrency = 2
 
-# 设置其他 TiDB 会话变量
-# [tidb.session-vars]
-# tidb_enable_clustered_index = "OFF"
-
 # 解析和执行 SQL 语句的默认 SQL 模式。
 sql-mode = "ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER"
 # `max-allowed-packet` 设置数据库连接允许的最大数据包大小，
@@ -277,7 +273,15 @@ max-allowed-packet = 67_108_864
 # 此服务的私钥。默认为 `security.key-path` 的副本
 # key-path = "/path/to/lightning.key"
 
+<<<<<<< HEAD
 # 对于 Physical Import Mode，数据导入完成后，TiDB Lightning 可以自动执行 Checksum 和 Analyze 操作。
+=======
+# 设置其他 TiDB 会话变量
+# [tidb.session-vars]
+# tidb_enable_clustered_index = "OFF"
+
+# 对于物理导入模式，数据导入完成后，TiDB Lightning 可以自动执行 Checksum 和 Analyze 操作。
+>>>>>>> 139782282d (lighting: reorder tidb.session-vars (#19730))
 # 在生产环境中，建议总是开启 Checksum 和 Analyze。
 # 执行的顺序为：Checksum -> Analyze。
 # 注意：对于 Logical Import Mode, 无须执行这两个阶段，因此在实际运行时总是会直接跳过。
