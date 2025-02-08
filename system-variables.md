@@ -3715,16 +3715,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > 跳过字符检查可能会使 TiDB 检测不到应用写入的非法 UTF-8 字符，进一步导致执行 `ANALYZE` 时解码错误，以及引入其他未知的编码问题。如果应用不能保证写入字符串的合法性，不建议跳过该检查。
 
-### `tidb_slow_txn_log_threshold` <span class="version-mark">从 v7.0.0 版本开始引入</span>
-
-- 作用域：SESSION
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否 
-- 类型：无符号整数型
-- 默认值：`0`
-- 范围：`[0, 9223372036854775807]`
-- 单位：毫秒
-- 用于设置慢事务日志阈值。当事务执行时间超过该阈值时，TiDB 会在日志中记录该事务的详细信息。设置为 `0` 时，表示关闭该功能。
-
 ### `tidb_slow_log_threshold`
 
 - 作用域：GLOBAL
@@ -3740,6 +3730,16 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：SESSION
 - 默认值：""
 - 查询 `INFORMATION_SCHEMA.SLOW_QUERY` 只会解析配置文件中 `slow-query-file` 设置的慢日志文件名，默认是 "tidb-slow.log"。但如果想要解析其他的日志文件，可以通过设置 session 变量 `tidb_slow_query_file` 为具体的文件路径，然后查询 `INFORMATION_SCHEMA.SLOW_QUERY` 就会按照设置的路径去解析慢日志文件。更多详情可以参考 [SLOW_QUERY 文档](/identify-slow-queries.md)。
+
+### `tidb_slow_txn_log_threshold` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+- 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否 
+- 类型：无符号整数型
+- 默认值：`0`
+- 范围：`[0, 9223372036854775807]`
+- 单位：毫秒
+- 用于设置慢事务日志阈值。当事务执行时间超过该阈值时，TiDB 会在日志中记录该事务的详细信息。设置为 `0` 时，表示关闭该功能。
 
 ### `tidb_snapshot`
 
