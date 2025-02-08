@@ -190,7 +190,7 @@ tiup cluster upgrade mycluster v8.2.0
 ## FAQ
 1. 启动 user@.service 时出现错误：Failed to fully start up daemon: Permission denied
 
-这可能是因为您的 `/etc/pam.d/system-auth.ued` 文件中缺少 `pam_systemd.so`。您可以使用以下命令检查 `/etc/pam.d/system-auth.ued` 文件是否已包含 `pam_systemd.so` 模块的配置。如果没有，则将 `session optional pam_systemd.so` 附加到文件末尾。
+   这可能是因为您的 `/etc/pam.d/system-auth.ued` 文件中缺少 `pam_systemd.so`。您可以使用以下命令检查 `/etc/pam.d/system-auth.ued` 文件是否已包含 `pam_systemd.so` 模块的配置。如果没有，则将 `session optional pam_systemd.so` 附加到文件末尾。
 
    ```shell
    grep 'pam_systemd.so' /etc/pam.d/system-auth.ued || echo 'session     optional      pam_systemd.so' >> /etc/pam.d/system-auth.ued
