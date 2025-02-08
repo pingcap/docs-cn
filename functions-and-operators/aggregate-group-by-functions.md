@@ -63,30 +63,30 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
 
 上述聚合函数除 `GROUP_CONCAT()` 和 `APPROX_PERCENTILE()` 以外，均可作为[窗口函数](/functions-and-operators/window-functions.md)使用。
 
-+ `APPROX_COUNT_DISTINCT(expr)`
++ `APPROX_COUNT_DISTINCT(expr, [expr...])`
 
-    该函数用于返回`expr`不同值数量的估计结果。它使用`BJKST`算法并在对具有幂律分布特征的大数据集进行模拟计算的时候可以减少内存消耗。另外，当数据特征是低基维时，该函数的准确性比较高，而且对 CPU 的使用效率较高。
+    该函数的使用方法和`COUNT(DISTINCT)`几乎一样，但它返回的结果是一个估计值。它使用`BJKST`算法并在对具有幂律分布特征的大数据集进行模拟计算的时候可以减少内存消耗。另外，当数据特征是低基维时，该函数的准确性比较高，而且对 CPU 的使用效率较高。
 
     下面列出了一个使用该函数的例子：
 
     ```sql
     DROP TABLE IF EXISTS t;
-    CREATE TABLE t(a INT, b INT);
-    INSERT INTO t VALUES(1, 1), (2, 1), (2, 1), (3, 1), (5, 2), (5, 2), (6, 2), (7, 2);
+    CREATE TABLE t(a INT, b INT, c INT);
+    INSERT INTO t VALUES(1, 1, 1), (2, 1, 1), (2, 2, 1), (3, 1, 1), (5, 1, 2), (5, 1, 2), (6, 1, 2), (7, 1, 2);
     ```
 
     ```sql
-    SELECT APPROX_COUNT_DISTINCT(a) FROM t GROUP BY b;
+    SELECT APPROX_COUNT_DISTINCT(a, b) FROM t GROUP BY c;
     ```
 
     ```sql
-    +--------------------------+
-    | APPROX_COUNT_DISTINCT(a) |
-    +--------------------------+
-    |                        3 |
-    |                        3 |
-    +--------------------------+
-    1 row in set (0.00 sec)
+    +-----------------------------+
+    | approx_count_distinct(a, b) |
+    +-----------------------------+
+    |                           3 |
+    |                           4 |
+    +-----------------------------+
+    2 rows in set (0.00 sec)
     ```
 
 ## GROUP BY 修饰符
