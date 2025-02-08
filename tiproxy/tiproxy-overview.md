@@ -102,7 +102,7 @@ TiProxy 不适用于以下场景：
 
     关于 TiProxy 的配置模板，请参见 [TiProxy 配置模板](/tiproxy/tiproxy-deployment-topology.md)。
 
-    TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)。
+    关于 TiDB 集群拓扑文件中的配置项说明，请参见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)。
 
     配置示例：
 
@@ -120,7 +120,7 @@ TiProxy 不适用于以下场景：
 
 4. 配置 TiProxy 实例。
 
-    为了保证 TiProxy 的高可用，建议部署至少 2 台 TiProxy 实例，并配置虚拟 IP（[`ha.virtual-ip`](/tiproxy/tiproxy-configuration.md#virtual-ip) 和 [`ha.interface`](/tiproxy/tiproxy-configuration.md#interface)）使流量路由到可用的 TiProxy 实例上。
+    为了保证 TiProxy 的高可用，建议部署至少 2 台 TiProxy 实例，并配置虚拟 IP [`ha.virtual-ip`](/tiproxy/tiproxy-configuration.md#virtual-ip) 和 [`ha.interface`](/tiproxy/tiproxy-configuration.md#interface)，使流量路由到可用的 TiProxy 实例上。
 
     如需配置 TiProxy 配置项，请参阅 [TiProxy 配置](/tiproxy/tiproxy-configuration.md)。更多 TiProxy 部署拓扑配置参数，请参阅 [tiproxy-servers 配置参数](/tiup/tiup-cluster-topology-reference.md#tiproxy_servers)。
 
