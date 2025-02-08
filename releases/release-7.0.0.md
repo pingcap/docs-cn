@@ -346,6 +346,7 @@ TiDB 版本：7.0.0
 | [`tidb_opt_ordering_index_selectivity_threshold`](/system-variables.md#tidb_opt_ordering_index_selectivity_threshold-从-v700-版本开始引入) | 新增 | 该变量用于当 SQL 中存在 `ORDER BY` 和 `LIMIT` 子句且带有过滤条件时，控制优化器选择索引的行为。 |
 |[`tidb_pessimistic_txn_fair_locking`](/system-variables.md#tidb_pessimistic_txn_fair_locking-从-v700-版本开始引入) | 新增 | 是否对悲观锁启用加强的悲观锁唤醒模型，以降低单行冲突场景下事务的尾延迟。默认值为 `ON`，从旧版本升级到 v7.0.0 或之后版本，该变量会被设置成 `OFF`。 |
 | [`tidb_ttl_running_tasks`](/system-variables.md#tidb_ttl_running_tasks-从-v700-版本开始引入) | 新增 | 这个变量用于限制整个集群内 TTL 任务的并发量。默认值 `-1` 表示与 TiKV 节点的数量相同。 |
+| [`tidb_slow_txn_log_threshold`](/system-variables.md#tidb_slow_txn_log_threshold-从-v700-版本开始引入) | 新增 | 这个变量用于设置慢事务日志阈值。 |
 
 ### 配置文件参数
 
