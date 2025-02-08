@@ -350,7 +350,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | [`tidb_enable_foreign_key`](/system-variables.md#tidb_enable_foreign_key-从-v630-版本开始引入) | 修改 | 用于控制是否开启外键功能。默认值由 `OFF` 修改为 `ON`，表示默认开启外键功能。|
 | `tidb_enable_general_plan_cache` |  修改  |   这个变量用来控制是否开启 General Plan Cache。自 v6.6.0 起，该变量更名为 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache)。 |
 | [`tidb_enable_historical_stats`](/system-variables.md#tidb_enable_historical_stats) | 修改 | 这个变量用来控制是否开启历史统计信息。默认值由 `OFF` 修改为 `ON`，表示默认开启历史统计信息。 |
-| [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) | 修改 | 这个变量从 v6.6.0 开始生效，用来控制是否开启 [`PLAN REPLAYER CAPTURE`](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。默认值为 `ON`，代表默认开启 `PLAN REPLAYER CAPTURE`。 |
+| [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) | 修改 | 这个变量从 v6.6.0 开始生效，用来控制是否开启 [`PLAN REPLAYER CAPTURE`](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。默认值由 `OFF` 修改为 `ON`，代表默认开启 `PLAN REPLAYER CAPTURE`。 |
 | [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入从-v810-版本开始废弃) |  修改  |  默认值由 `ON` 修改为 `OFF`，表示默认关闭 TiDB 的遥测功能。 |
 |  `tidb_general_plan_cache_size` |  修改   |   这个变量用来控制 General Plan Cache 最多能够缓存的计划数量。自 v6.6.0 起，该变量更名为 [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size)。 |
 | [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) | 修改 | 新增选项 `learner`，指定 TiDB 从只读节点中读取数据的 learner 副本。 |
