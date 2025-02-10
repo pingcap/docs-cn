@@ -38,11 +38,6 @@ Downstream Adapter 作为 TiCDC 的下游数据同步适配层，负责处理用
 - Maintainer：Changefeed 任务的核心调度组件，每个 Changefeed 任务对应一个 Maintainer 实例，其职责包括调度对应 Changefeed 的所有 Dispatcher 实例，协调 Changefeed 内部的 DDL 同步进度，以及计算对应 Changefeed 的各项同步延迟。
 - Dispatcher：每个 Changefeed 任务会创建多个 Dispatcher 实例，每个 Dispatcher 实例负责单个表的同步任务，包括 DML 数据和 DDL 数据的同步。对于涉及多表的 DDL 操作，Maintainer 会协调相关表的 Dispatcher 实例，通过选举机制确定一个主 Dispatcher 来执行该 DDL 的同步。
 
-## 新特性介绍
-1. dynamic split？
-
-dynamic merge 期货卖一下？
-
 ## 使用指南
 
 TiCDC 新架构仅支持 v7.5 或者以上版本的 TiDB 集群，使用之前需要确保 TiDB 集群版本满足要求。
