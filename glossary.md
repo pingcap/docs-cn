@@ -55,7 +55,7 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 集群由一组协同工作以提供服务的节点组成。与单节点架构相比，TiDB 采用分布式集群架构，实现了更高的可用性和更强的可扩展性。
 
-在 TiDB 的分布式架构中：
+在 TiDB 数据库的分布式架构中：
 
 - TiDB 节点提供可扩展的 SQL 层以供客户端交互。
 - PD 节点提供弹性的元数据层以支持 TiDB。
@@ -147,7 +147,7 @@ Dumpling 是一款数据导出工具，用于将存储在 TiDB、MySQL 或 Maria
 
 ### Hybrid Transactional and Analytical Processing (HTAP)
 
-混合型在线事务与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 功能支持在同一数据库中同时处理 OLTP（联机事务处理）和 OLAP（联机分析处理）工作负载。在 TiDB 中，HTAP 是通过使用 TiKV 进行行存以及使用进行 TiFlash 进行列存来实现的。更多信息，请参考 [HTAP 快速上手指南](/quick-start-with-htap.md)和 [HTAP 深入探索指南](/explore-htap.md)。
+混合型在线事务与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 功能支持在同一数据库中同时处理 OLTP（联机事务处理）和 OLAP（联机分析处理）工作负载。在 TiDB 中，HTAP 是通过使用 TiKV 进行行存以及使用进行 TiFlash 进行列存来实现的。更多信息，参见 [HTAP 快速上手指南](/quick-start-with-htap.md)和 [HTAP 深入探索指南](/explore-htap.md)。
 
 ## I
 
@@ -181,9 +181,9 @@ Dumpling 是一款数据导出工具，用于将存储在 TiDB、MySQL 或 Maria
 
 ### Lock View
 
-Lock View 特性用于提供关于悲观锁的锁冲突和锁等待的更多信息，方便 DBA 通过锁视图功能来观察事务加锁情况以及排查死锁问题。
+锁视图 (Lock View) 特性用于提供关于悲观锁的锁冲突和锁等待的更多信息，方便 DBA 通过锁视图功能来观察事务加锁情况以及排查死锁问题。
 
-详情参见系统表文档 [TIDB_TRX](/information-schema/information-schema-tidb-trx.md)、[DATA_LOCK_WAITS](/information-schema/information-schema-data-lock-waits.md) 和 [DEADLOCKS](/information-schema/information-schema-deadlocks.md)。
+详情参见系统表文档 [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)、[`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md) 和 [`DEADLOCKS`](/information-schema/information-schema-deadlocks.md)。
 
 ### Long Term Support (LTS)
 
@@ -250,7 +250,7 @@ Operator Step 是 Operator 执行过程的一个步骤，一个 Operator 常常�
 
 ### PD Control (pd-ctl)
 
-PD Control (pd-ctl) 是一个命令行工具，用于与集群中的 PD (placement driver) 进行交互。你可以使用它获取集群状态信息以及修改集群。更多信息，请参见 [PD Control 使用说明](/pd-control.md)。
+PD Control (pd-ctl) 是一个命令行工具，用于与 TiDB 集群中的 PD (Placement Driver) 组件进行交互。你可以用它获取集群状态信息以及修改集群配置。详情参见 [PD Control 使用说明](/pd-control.md)。
 
 ### Pending/Down
 
@@ -333,13 +333,13 @@ Scheduler（调度器）是 PD 中生成调度的组件。PD 中每个调度器�
 
 ### Security Enhanced Mode
 
- Security Enhanced Mode（安全增强模式）用于对 TiDB 管理员进行更细粒度的权限划分。受[安全增强式 Linux](https://zh.wikipedia.org/wiki/安全增强式Linux) 等系统设计的启发，SEM 削减了拥有 `SUPER` 权限的用户的能力，转而使用 `RESTRICTED` 细粒度权限作为替代，这些权限必须被显式授予以控制特定的管理操作。
+安全增强模式 (Security Enhanced Mode, SEM) 用于对 TiDB 管理员进行更细粒度的权限划分。受[安全增强式 Linux](https://zh.wikipedia.org/wiki/安全增强式Linux) 等系统设计的启发，SEM 削减了拥有 `SUPER` 权限的用户的能力，转而使用 `RESTRICTED` 细粒度权限作为替代，这些权限必须被显式授予以控制特定的管理操作。
 
 详情参见[系统变量文档 - `tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security)。
 
 ### Stale Read
 
-Stale Read 是 TiDB 中一种读取机制，用于读取 TiDB 中存储的历史数据版本。通过 Stale Read 功能，你可以从指定时间点或时间范围内读取对应的历史数据，从而缩短存储节点之间数据同步带来的延迟。当使用 Stale Read 时，TiDB 会随机选择一个副本来读取数据，这意味着所有副本都可用于数据读取。
+Stale Read 是 TiDB 的一种读取机制，用于读取 TiDB 中存储的历史数据版本。通过 Stale Read 功能，你可以从指定时间点或时间范围内读取对应的历史数据，从而缩短存储节点之间数据同步带来的延迟。当使用 Stale Read 时，TiDB 会随机选择一个副本来读取数据，这意味着所有副本都可用于数据读取。
 
 详情参见 [Stale Read](/stale-read.md)。
 
