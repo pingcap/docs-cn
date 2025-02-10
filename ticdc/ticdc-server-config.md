@@ -30,6 +30,11 @@ summary: 了解 TiCDC 详细的命令行参数和配置文件定义。
 
 对于 `cdc server` 命令中 `config` 参数指定的配置文件说明如下。你可以在 [`pkg/cmd/util/ticdc.toml`](https://github.com/pingcap/tiflow/blob/master/pkg/cmd/util/ticdc.toml) 找到默认值的配置文件。
 
+### `newarch`
+
+- v9.0 版本引入，控制是否开启 TiCDC 新架构
+- 默认值：`false`，表示不开启 TiCDC 新架构
+
 <!-- 下面的字段的配置含义与命令行参数相同，但是命令行参数优先级更高 -->
 
 ### `addr`

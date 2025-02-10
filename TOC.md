@@ -178,6 +178,7 @@
     - [日志过滤器](/ticdc/ticdc-filter.md)
     - [DDL 同步](/ticdc/ticdc-ddl.md)
     - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
+  - [TiCDC New Arch 介绍](/ticdc/ticdc-new-arch.md)
   - 监控告警
     - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
     - [详细监控指标](/ticdc/monitor-ticdc.md)
