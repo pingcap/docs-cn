@@ -35,7 +35,7 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ### Batch Create Table
 
-批量建表 (Batch Create Table) 是在 TiDB v6.0.0 中引入的新功能，此功能默认开启。当需要恢复的数据中带有大量的表（约 50000 张）时，批量建表功能显著提升数据恢复的速度。详情参见[批量建表](/br/br-batch-create-table.md)。
+批量建表功能 (Batch Create Table) 可以通过批量创建表的方式显著提升多表同时创建的速度。例如，当使用[备份与恢复 (BR)](/br/backup-and-restore-overview.md) 工具恢复数千张表时，该功能有助于缩短整体恢复的整体时长。详情参见[批量建表](/br/br-batch-create-table.md)。
 
 ### Baseline Capturing
 
@@ -51,6 +51,18 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 缓存表 (Cached Table) 是指 TiDB 把整张表的数据加载到服务器的内存中，直接从内存中获取表数据，避免从 TiKV 获取表数据，从而提升读性能。详情参见[缓存表](/cached-tables.md)。
 
+### Cluster
+
+集群由一组协同工作以提供服务的节点组成。与单节点架构相比，TiDB 采用分布式集群架构，实现了更高的可用性和更强的可扩展性。
+
+在 TiDB 数据库的分布式架构中：
+
+- TiDB 节点提供可扩展的 SQL 层以供客户端交互。
+- PD 节点提供弹性的元数据层以支持 TiDB。
+- TiKV 节点使用 Raft 协议，为 TiDB 提供高可用、可扩展和有弹性的存储服务。
+
+详情参见 [TiDB 架构](/tidb-architecture.md)。
+
 ### Coalesce Partition
 
 Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数量的方法。详情参见[管理 Hash 分区和 Key 分区](/partitioned-table.md#管理-hash-分区和-key-分区)。
@@ -61,11 +73,15 @@ Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数�
 
 ### 公共表表达式 (CTE)
 
-公共表表达式 (Common Table Expression, CTE) 用于定义一个临时结果集，能够在 SQL 语句中通过 [`WITH`](/sql-statements/sql-statement-with.md) 子句多次引用。更多信息，请参见[公共表表达式](/develop/dev-guide-use-common-table-expression.md)。
+公共表表达式 (Common Table Expression, CTE) 用于定义一个临时结果集，能够在 SQL 语句中通过 [`WITH`](/sql-statements/sql-statement-with.md) 子句多次引用，提高 SQL 语句的可读性与执行效率。更多信息，请参见[公共表表达式](/develop/dev-guide-use-common-table-expression.md)。
 
 ### Continuous Profiling
 
-持续性能分析 (Continuous Profiling) 是从 TiDB v5.3 起引入的一种从系统调用层面解读资源开销的方法。引入该方法后，TiDB 可提供数据库源码级性能观测，通过火焰图的形式帮助研发、运维人员定位性能问题的根因。详情参见 [TiDB Dashboard 实例性能分析 - 持续分析页面](/dashboard/continuous-profiling.md)。
+持续性能分析 (Continuous Profiling) 是一种从系统调用层面解读资源开销的方法。通过持续性能分析，TiDB 可提供对性能问题的细粒度观测，帮助运维团队使用火焰图定位性能问题的根本原因。详情参见 [TiDB Dashboard 实例性能分析 - 持续分析页面](/dashboard/continuous-profiling.md)。
+
+### Coprocessor
+
+Coprocessor 是一种替 TiDB 分担计算工作负载的协处理机制。它位于存储层（TiKV 或 TiFlash），以 Region 为单位协同处理从 TiDB 下推的计算。更多信息，请参见[下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)。
 
 ## D
 
@@ -89,6 +105,10 @@ TiDB 会在开发里程碑版本 (Development Milestone Release, DMR) 中引入�
 
 容灾 (Disaster Recovery, DR) 是在未来灾难发生时恢复数据和服务的解决方案。TiDB 提供了多种容灾方案，例如备份和复制数据到备用集群。更多信息，请参见 [TiDB 容灾方案概述](/dr-solution-introduction.md)。
 
+### Dumpling
+
+Dumpling 是一款数据导出工具，用于将存储在 TiDB、MySQL 或 MariaDB 中的数据导出为 SQL 或 CSV 数据文件，也可用于逻辑全量备份或导出。Dumpling 也支持将数据导出到 Amazon S3 中。详情参见[使用 Dumpling 导出数据](/dumpling-overview.md)。
+
 ### 分布式执行框架 (DXF)
 
 分布式执行框架 (Distributed eXecution Framework, DXF) 允许 TiDB 在处理特定任务（例如创建索引或导入数据）时对这些任务进行统一调度和分布式执行。该框架旨在高效利用集群资源执行任务，控制资源使用，以减少对核心业务事务的影响。更多信息，请参见 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)。
@@ -96,6 +116,14 @@ TiDB 会在开发里程碑版本 (Development Milestone Release, DMR) 中引入�
 ### Dynamic Pruning
 
 动态裁剪 (Dynamic Pruning) 是 TiDB 访问分区表的两种模式之一。在动态裁剪模式下，TiDB 的每个算子都支持直接访问多个分区，省略 Union 操作，提高执行效率，还避免了 Union 并发管理的问题。
+
+## E
+
+### Expression index
+
+表达式索引 (expression index) 是一种特殊的索引，能将索引建立于表达式上。在创建了表达式索引后，基于表达式的查询便可以使用上索引，极大提升查询的性能。
+
+详情参见 [CREATE INDEX - 表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引)。
 
 ## G
 
@@ -113,9 +141,13 @@ TiDB 会在开发里程碑版本 (Development Milestone Release, DMR) 中引入�
 
 ## H
 
+### Hotspot
+
+热点 (Hotspot) 指 TiKV 的读写负载集中于某一个或几个 Region 或节点的现象，此时可能会造成性能瓶颈，使性能无法达到最佳。要解决热点问题，可参考 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)。
+
 ### Hybrid Transactional and Analytical Processing (HTAP)
 
-混合型在线事务与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 功能支持在同一数据库中同时处理 OLTP（联机事务处理）和 OLAP（联机分析处理）工作负载。在 TiDB 中，HTAP 是通过使用 TiKV 进行行存以及使用进行 TiFlash 进行列存来实现的。更多信息，请参见 [Gartner 网站上的 HTAP 定义](https://www.gartner.com/en/information-technology/glossary/htap-enabling-memory-computing-technologies)。
+混合型在线事务与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 功能支持在同一数据库中同时处理 OLTP（联机事务处理）和 OLAP（联机分析处理）工作负载。在 TiDB 中，HTAP 是通过使用 TiKV 进行行存以及使用进行 TiFlash 进行列存来实现的。更多信息，参见 [HTAP 快速上手指南](/quick-start-with-htap.md)和 [HTAP 深入探索指南](/explore-htap.md)。
 
 ## I
 
@@ -146,6 +178,12 @@ TiDB 会在开发里程碑版本 (Development Milestone Release, DMR) 中引入�
 ### Lightweight Directory Access Protocol (LDAP)
 
 轻量级目录访问协议 (Lightweight Directory Access Protocol, LDAP) 是一种标准化的目录信息访问方式，通常用于账户和用户数据的管理。TiDB 对 LDAP 的支持是通过 [LDAP 身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)实现的。
+
+### Lock View
+
+锁视图 (Lock View) 特性用于提供关于悲观锁的锁冲突和锁等待的更多信息，方便 DBA 通过锁视图功能来观察事务加锁情况以及排查死锁问题。
+
+详情参见系统表文档 [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)、[`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md) 和 [`DEADLOCKS`](/information-schema/information-schema-deadlocks.md)。
 
 ### Long Term Support (LTS)
 
@@ -198,11 +236,21 @@ Operator Step 是 Operator 执行过程的一个步骤，一个 Operator 常常�
 - `PromoteLearner`：将指定 Learner 提升为 Follower
 - `SplitRegion`：将指定 Region 一分为二
 
+### Optimistic transaction
+
+乐观事务是使用乐观并发控制的事务。在并发环境中，外界对数据的操作一般不会造成冲突。开启乐观事务后，TiDB 仅在事务最终提交时才会进行冲突检测。乐观事务模式适合读多写少的并发场景，能提高 TiDB 性能。
+
+更多信息，请参见 [TiDB 乐观事务模型](/optimistic-transaction.md)。
+
 ## P
 
 ### Partitioning
 
-[Partitioning](/partitioned-table.md)（分区）指通过 `RANGE`、`LIST`、`HASH` 和 `KEY` 等分区方法在物理上将一张表划分为较小的分区。
+[Partitioning](/partitioned-table.md)（分区）指通过 `RANGE`、`LIST`、`HASH` 和 `KEY` 等分区方法在物理上将一张表划分为较小的分区。这些较小的分区为分区表 (Partitioned Table)。
+
+### PD Control (pd-ctl)
+
+PD Control (pd-ctl) 是一个命令行工具，用于与 TiDB 集群中的 PD (Placement Driver) 组件进行交互。你可以用它获取集群状态信息以及修改集群配置。详情参见 [PD Control 使用说明](/pd-control.md)。
 
 ### Pending/Down
 
@@ -211,6 +259,12 @@ Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表
 ### Placement Driver (PD)
 
 PD 是 [TiDB 架构](/tidb-architecture.md) 中的核心组件之一，负责存储元数据，为事务时间戳分配[时间戳服务 (TSO)](/tso.md)，协调 TiKV 上的数据分布，并运行 [TiDB Dashboard](/dashboard/dashboard-overview.md)。更多信息，请参见 [TiDB 调度](/tidb-scheduling.md)。
+
+### Placement Rules
+
+Placement Rules 特性用于配置数据在 TiKV 集群中的放置位置。通过该功能，用户可以将表和分区指定部署至不同的地域、机房、机柜、主机。适用场景包括低成本优化数据高可用策略、保证本地的数据副本可用于本地 Stale Read 读取、遵守数据本地要求。
+
+详情参见 [Placement Rules in SQL](/placement-rules-in-sql.md)。
 
 ### Point get
 
@@ -262,6 +316,10 @@ RU 是 TiDB 中资源使用的统一抽象单位，用于在[资源管控](/tidb
 
 备份操作的逆过程，即利用保存的备份数据还原出原始数据的过程。
 
+### RocksDB
+
+[RocksDB](https://rocksdb.org/) 是一款提供键值存储与读写功能的 LSM-tree 架构引擎，由 Facebook 基于 LevelDB 开发。RocksDB 是 TiKV 的核心存储引擎。
+
 ## S
 
 ### Scheduler
@@ -273,6 +331,18 @@ Scheduler（调度器）是 PD 中生成调度的组件。PD 中每个调度器�
 - `hot-region-scheduler`：保持不同节点的读写热点 Region 均衡。
 - `evict-leader-{store-id}`：驱逐某个节点的所有 Leader。（常用于滚动升级）
 
+### Security Enhanced Mode
+
+安全增强模式 (Security Enhanced Mode, SEM) 用于对 TiDB 管理员进行更细粒度的权限划分。受[安全增强式 Linux](https://zh.wikipedia.org/wiki/安全增强式Linux) 等系统设计的启发，SEM 削减了拥有 `SUPER` 权限的用户的能力，转而使用 `RESTRICTED` 细粒度权限作为替代，这些权限必须被显式授予以控制特定的管理操作。
+
+详情参见[系统变量文档 - `tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security)。
+
+### Stale Read
+
+Stale Read 是 TiDB 的一种读取机制，用于读取 TiDB 中存储的历史数据版本。通过 Stale Read 功能，你可以从指定时间点或时间范围内读取对应的历史数据，从而缩短存储节点之间数据同步带来的延迟。当使用 Stale Read 时，TiDB 会随机选择一个副本来读取数据，这意味着所有副本都可用于数据读取。
+
+详情参见 [Stale Read](/stale-read.md)。
+
 ### Static Sorted Table / Sorted String Table (SST)
 
 SST 是 RocksDB 使用的文件存储格式。RocksDB 是 [TiKV](/storage-engine/rocksdb-overview.md) 的一种存储引擎。
@@ -283,9 +353,33 @@ PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例
 
 ## T
 
+### Temporary table
+
+临时表 (temporary table) 用于存储业务上的中间计算结果，让用户免于频繁地建表和删表等操作。数据用完后，TiDB 会自动清理并回收临时表。这种方式可以帮助你简化应用程序逻辑，减少表管理开销，并提升性能。
+
+详情参见[临时表](/temporary-tables.md)。
+
+### TiCDC
+
+[TiCDC](/ticdc/ticdc-overview.md) 是一款数据同步工具，支持将增量数据从 TiDB 复制到各种不同的下游目标系统。目前支持的下游包括 TiDB 实例、MySQL 兼容数据库、存储服务和流处理器（如 Kafka 和 Pulsar）。TiCDC 会拉取上游 TiKV 的数据变更日志，将其解析为有序的行级变更数据，然后输出到下游。更多关于 TiCDC 的概念和术语，参见 [TiCDC 术语表](/ticdc/ticdc-glossary.md)。
+
+### TiDB Lightning
+
+[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 是一款数据导入工具，用于从静态文件导入 TB 级数据到 TiDB 集群，常用于 TiDB 集群的初始化数据导入。
+
+更多关于 TiDB Lightning 的概念和术语，参见 [TiDB Lightning 术语表](/tidb-lightning/tidb-lightning-glossary.md)。
+
+### TiFlash
+
+[TiFlash](/tiflash/tiflash-overview.md) 是 TiDB HTAP 形态的关键组件，它是 TiKV 的列存扩展，在提供良好隔离性的同时，也兼顾了强一致性。列存副本通过 Raft Learner 协议异步复制 TiKV 的数据。在读取时，它通过 Raft 校对索引配合 MVCC（多版本并发控制）的方式获得 Snapshot Isolation 的一致性隔离级别。这个架构很好地解决了 HTAP 场景的隔离性以及列存同步的问题，在进行高效分析查询的同时保持实时数据的一致性。
+
 ### Timestamp Oracle (TSO)
 
 因为 TiKV 是一个分布式的储存系统，它需要一个全球性的授时服务 TSO (Timestamp Oracle)，来分配一个单调递增的时间戳。这样的功能在 TiKV 中是由 PD 提供的，在 Google 的 [Spanner](http://static.googleusercontent.com/media/research.google.com/en//archive/spanner-osdi2012.pdf) 中是由多个原子钟和 GPS 来提供的。详见 [TSO 文档](/tso.md)。
+
+### TiUP
+
+[TiUP](/tiup/tiup-overview.md) 是一款包管理工具，用于部署、升级和管理 TiDB 集群，以及管理 TiDB 集群中的各种组件，如 TiDB、PD、TiKV 等。通过使用 TiUP，你可以执行一行命令轻松运行 TiDB 中的任何组件，让管理过程更加简单。
 
 ### Top SQL
 
