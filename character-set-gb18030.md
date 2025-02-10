@@ -76,10 +76,36 @@ SHOW COLLATION WHERE CHARSET = 'gb18030';
 2 rows in set (0.00 sec)
 ```
 
-### 非法字符兼容性
+### 字符兼容性
 
-* 在系统变量 [`character_set_client`](/system-variables.md#character_set_client) 和 [`character_set_connection`](/system-variables.md#character_set_connection) 没有同时设置为 `gb18030` 的情况下，TiDB 处理非法字符的方式与 MySQL 一致。
-* 在 `character_set_client` 和 `character_set_connection` 同时设置为 `gb18030` 的情况下，TiDB 处理非法字符的方式与 MySQL 有如下区别：
+- TiDB 支持 GB18030-2022 的字符，MySQL 支持 GB18030-2005 的字符，因此部分字符的编解码结果不同。
 
-    - MySQL 处理非法 GB18030 字符集时，对读和写操作的处理方式不同。
-    - TiDB 处理非法 GB18030 字符集时，对读和写操作的处理方式相同。TiDB 在严格模式下读写非法 GB18030 字符都会报错；在非严格模式下，读写非法 GB18030 字符都会用 `?` 替换。
+- 对于非法的 GB18030 字符，比如 `0xFE39FE39`，MySQL 支持以 16 进制的方式写入数据库中，并保存为 `?`；TiDB 在严格模式下读写非法 GB18030 字符都会报错，在非严格模式下，读写非法 GB18030 字符会返回警告。
+
+### 其它
+
+* 目前 TiDB 不支持通过 `ALTER TABLE` 语句将其它字符集类型改成 `gb18030` 或者从 `gb18030` 转成其它字符集类型。
+
+* TiDB 不支持使用 `_gb18030`，比如：
+
+  ```sql
+  CREATE TABLE t(a CHAR(10) CHARSET BINARY);
+  Query OK, 0 rows affected (0.00 sec)
+  INSERT INTO t VALUES (_gb18030'啊');
+  ERROR 1115 (42000): Unsupported character introducer: 'gb18030'
+  ```
+
+* 对于 `ENUM` 和 `SET` 类型中的二进制字符，TiDB 目前都会将其作为 `utf8mb4` 字符集处理。
+
+## 组件兼容性
+
+* TiFlash、TiDB Data Migration (DM) 和 TiCDC 目前不支持 GB18030 字符集。
+
+* Dumpling 在 v9.0.0 之前不支持导出 charset=GB18030 的表，TiDB Lightning 在 v9.0.0 之前不支持导入 charset=GB18030 的表。
+
+* TiDB Backup & Restore（BR）在 v9.0.0 之前不支持备份恢复 charset=GB18030 的表。另外，任何版本的 BR 都不支持恢复 charset=GB18030 的表到 v9.0.0 之前的平凯数据库集群。
+
+## 另请参阅
+
+* [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md)
+* [字符集和排序规则](/character-set-and-collation.md)
