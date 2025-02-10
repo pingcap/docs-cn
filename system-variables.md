@@ -3734,7 +3734,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tidb_slow_txn_log_threshold` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否 
 - 类型：无符号整数型
 - 默认值：`0`
 - 范围：`[0, 9223372036854775807]`
