@@ -9,20 +9,29 @@ TiDB 从 v9.0.0 开始支持 GB18030-2022 字符集。本文档介绍 TiDB 对 G
 
 ```sql
 SHOW CHARACTER SET WHERE CHARSET = 'gb18030';
+```
+
+```
 +---------+---------------------------------+--------------------+--------+
 | Charset | Description                     | Default collation  | Maxlen |
 +---------+---------------------------------+--------------------+--------+
 | gb18030 | China National Standard GB18030 | gb18030_chinese_ci |      4 |
 +---------+---------------------------------+--------------------+--------+
 1 row in set (0.01 sec)
+```
 
+```sql
 SHOW COLLATION WHERE CHARSET = 'gb18030';
-+-------------+---------+-----+---------+----------+---------+---------------+
-| Collation   | Charset | Id  | Default | Compiled | Sortlen | Pad_attribute |
-+-------------+---------+-----+---------+----------+---------+---------------+
-| gb18030_bin | gb18030 | 249 | Yes     | Yes      |       1 | PAD SPACE     |
-+-------------+---------+-----+---------+----------+---------+---------------+
-1 row in set (0.00 sec)
+```
+
+```
++--------------------+---------+-----+---------+----------+---------+---------------+
+| Collation          | Charset | Id  | Default | Compiled | Sortlen | Pad_attribute |
++--------------------+---------+-----+---------+----------+---------+---------------+
+| gb18030_bin        | gb18030 | 249 |         | Yes      |       1 | PAD SPACE     |
+| gb18030_chinese_ci | gb18030 | 248 | Yes     | Yes      |       1 | PAD SPACE     |
++--------------------+---------+-----+---------+----------+---------+---------------+
+2 rows in set (0.001 sec)
 ```
 
 ## 与 MySQL 的兼容性
@@ -31,22 +40,33 @@ SHOW COLLATION WHERE CHARSET = 'gb18030';
 
 ### 排序规则兼容性
 
-MySQL `gb18030` 字符集的默认排序规则是 `gb18030_chinese_ci`；而 TiDB `gb18030` 字符集的默认排序规则为 `gb18030_bin`。此外，TiDB 支持的 `gb18030_bin` 与 MySQL 支持的 `gb18030_bin` 排序规则也不一致，TiDB 是将 `gb18030` 字符集转换成 `utf8mb4` 然后做二进制排序。
+MySQL 的 GB18030 字符集默认排序规则是 `gb18030_chinese_ci`。TiDB 的 GB18030 字符集的默认排序规则取决于 TiDB 配置项[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 的值：
 
-如果要使 TiDB 兼容 MySQL GB18030 字符集的排序规则，你需要在首次初始化 TiDB 集群时将 TiDB 配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 设置为 `true` 来开启[新的排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)。
+- 默认情况下，TiDB 配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 为 `true`，表示开启[新的排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)。GB18030 字符集的默认排序规则是 `gb18030_chinese_ci`。
+- 当 TiDB 配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 为 `false` 时，表示关闭新的排序规则框架，GB18030 字符集的默认排序规则是 `gb18030_bin`。
+
+另外，TiDB 支持的 `gb18030_bin` 与 MySQL 支持的 `gb18030_bin` 排序规则也不一致，TiDB 是将 GB18030 转换成 `utf8mb4`，然后再进行二进制排序。
 
 开启新的排序规则框架后，查看 GB18030 字符集对应的排序规则，可以看到 TiDB GB18030 默认排序规则已经切换为 `gb18030_chinese_ci`。
 
 ```sql
 SHOW CHARACTER SET WHERE CHARSET = 'gb18030';
+```
+
+```
 +---------+---------------------------------+--------------------+--------+
 | Charset | Description                     | Default collation  | Maxlen |
 +---------+---------------------------------+--------------------+--------+
 | gb18030 | China National Standard GB18030 | gb18030_chinese_ci |      4 |
 +---------+---------------------------------+--------------------+--------+
 1 row in set (0.01 sec)
+```
 
+```sql
 SHOW COLLATION WHERE CHARSET = 'gb18030';
+```
+
+```
 +--------------------+---------+-----+---------+----------+---------+---------------+
 | Collation          | Charset | Id  | Default | Compiled | Sortlen | Pad_attribute |
 +--------------------+---------+-----+---------+----------+---------+---------------+
