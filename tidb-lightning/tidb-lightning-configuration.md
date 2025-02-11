@@ -574,14 +574,6 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 
 <!-- 示例值：`2` -->
 
-### tidb.session-vars
-
-设置其他 TiDB 会话变量。
-
-#### `tidb_enable_clustered_index`
-
-- 示例值：`"OFF"`
-
 #### `sql-mode`
 
 - 解析和执行 SQL 语句的默认 SQL 模式。
@@ -626,6 +618,12 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 - 此服务的私钥。默认为 [`security.key-path`](#key-path) 的副本。
 
 <!-- 示例值：`"/path/to/lightning.key"` -->
+
+### tidb.session-vars
+
+设置其他 TiDB 会话变量。
+
+<!-- tidb_enable_clustered_index = "OFF" -->
 
 ### post-restore
 
