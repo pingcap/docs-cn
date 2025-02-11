@@ -105,7 +105,7 @@ server_configs:
 
 ## 注意事项
 
-1. TiCDC 老架构中，DDL 同步采用完全串行的方式，因此 DDL 的同步进度可以用 Changefeed 的 `CheckpointTs` 标识。但是在新架构中为了提高 DDL 同步效率，会尽可能并行同步不同表的 DDL，为了在下游为 MySQL 兼容数据库时准确记录各表的 DDL 同步进度，TiCDC 会在下游数据库中创建一张名为 `tidb_cdc.ddl_ts_v1` 的表，专门用于存储 Changefeed 的 DDL 同步进度信息。
+1. TiCDC 老架构中，DDL 同步采用完全串行的方式，因此 DDL 的同步进度仅需用 Changefeed 的 `CheckpointTs` 标识即可。但是在新架构中为了提高 DDL 同步效率，会尽可能并行同步不同表的 DDL，为了在下游为 MySQL 兼容数据库时准确记录各表的 DDL 同步进度，TiCDC 需要额外在下游数据库中创建一张名为 `tidb_cdc.ddl_ts_v1` 的表，专门用于存储 Changefeed 的 DDL 同步进度信息。
 
 2. 作为实验性特性，TiCDC v9.0 的新架构尚未完全实现旧架构中的所有功能，这些功能将在后续的 GA 版本中完整实现，具体包括：
     - [拆分 Update 事件](/ticdc/ticdc-split-update-behavior.md)
