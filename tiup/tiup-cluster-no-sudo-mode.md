@@ -159,9 +159,9 @@ Node            Check         Result  Message
     EOF
     ```
 
-## 部署集群
+## 部署和管理集群
 
-为了使用上述步骤准备好的 `tidb` 用户而避免重新创建新的用户，执行 `deploy` 命令时需要加上 `--user tidb`，即：
+为了使用上述步骤准备好的 `tidb` 用户而避免重新创建新的用户，执行 `deploy` 命令时需要加上 `--user tidb`，示例如下：
 
 ```shell
 tiup cluster deploy mycluster v8.1.0 topology.yaml --user tidb
