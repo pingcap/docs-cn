@@ -61,11 +61,17 @@ cdc_servers:
 ### 使用 TiUP 在原有 TiDB 集群全新部署启用新架构的 TiCDC 组件
 
 1. 参考[扩容 TiCDC 节点](/scale-tidb-using-tiup.md#扩容-ticdc-节点)在集群中扩容新的 TiCDC 节点。
+
 2. 参考下一节启用 TiCDC 新架构。
 
 ### 使用 TiUP 将原有 TiDB 集群中的 TiCDC 升级为新架构
 
 如果 TiDB 集群为 v9.0 以下版本，需要手动下载 v9.0 或者以上版本的 TiCDC 二进制文件，并 Patch 到集群中。
+
+> **注意：**
+> 
+> 升级至TiCDC新架构后，将不再支持回退至旧架构。
+
 
 1. TiCDC 二进制文件下载链接格式为 `https://tiup-mirrors.pingcap.com/${component}-${version}-${os}-${arch}.tar.gz`，例如可以用以下命令下载 Linux 系统 x86-64 架构的 TiCDC v9.0.0 版本的二进制文件（更多信息参考[tiup cluster patch](/tiup/tiup-component-cluster-patch.md)）：
 
@@ -82,6 +88,7 @@ tiup cluster patch <cluster-name> ./cdc-v9.0.0-linux-amd64.tar.gz -R cdc
 当 TiDB 集群中 TiCDC 组件版本已经升级到 v9.0 或者以上版本后，可以通过以下步骤启用 TiCDC 新架构。
 
 1. 如果集群中已经有 Changefeed，需要参考[停止同步任务](/ticdc/ticdc-manage-changefeed.md#停止同步任务) 暂停所有的 Changefeed 同步任务；
+
 2. 通过 TiUP 更新 TiCDC 配置：
 
 ```shell
@@ -99,6 +106,7 @@ server_configs:
 ## 注意事项
 
 1. TiCDC 老架构中，DDL 同步采用完全串行的方式，因此 DDL 的同步进度可以用 Changefeed 的 `CheckpointTs` 标识。但是在新架构中为了提高 DDL 同步效率，会尽可能并行同步不同表的 DDL，为了在下游为 MySQL 兼容数据库时准确记录各表的 DDL 同步进度，TiCDC 会在下游数据库中创建一张名为 `tidb_cdc.ddl_ts_v1` 的表，专门用于存储 Changefeed 的 DDL 同步进度信息。
+
 2. 作为实验性特性，TiCDC v9.0 的新架构尚未完全实现旧架构中的所有功能，这些功能将在后续的 GA 版本中完整实现，具体包括：
     - [拆分 Update 事件](/ticdc/ticdc-split-update-behavior.md)
     - [灾难场景的最终一致性复制](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制)
