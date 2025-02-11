@@ -19,7 +19,7 @@ summary: 介绍如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群
     adduser tidb
     ```
 
-2. 在每台部署目标机器上，为 `tidb` 用户启动 `systemd user` 模式（重要步骤）。
+2. 在每台部署目标机器上，为 `tidb` 用户启动 `systemd user` 模式。该步骤是必须的，请勿跳过。
 
    1. 使用 `tidb` 用户设置 `XDG_RUNTIME_DIR` 环境变量。
       
@@ -32,7 +32,7 @@ summary: 介绍如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群
    3. 使用 `root` 用户启动 user service。
 
       ```shell
-      $ systemctl start user@1000.service #1000 is the id of tidb user. You can get the user id by executing id
+      $ systemctl start user@1000.service #`1000` is the ID of the tidb user. You can get the user ID by executing the `id` command.
       $ systemctl status user@1000.service
       user@1000.service - User Manager for UID 1000
       Loaded: loaded (/usr/lib/systemd/system/user@.service; static; vendor preset>
@@ -65,9 +65,9 @@ summary: 介绍如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群
    
 2. 编辑拓扑文件。
 
-    相比以往的模式，使用 no-sudo 模式的 TiUP 需要在 `topology.yaml` 的 `global` 模块中新增一行 `systemd_mode: "user"`。该 `systemd_mode` 参数用于设置是否使用 `systemd user` 模式。如果不设置该参数，其默认值为 `system`，表示需要使用 sudo 权限。此外，no-sudo 模式无法使用 `/data` 目录作为 `deploy_dir` 和 `data_dir`，因为会有权限问题，你需要选择一个普通用户可以访问的路径。下方示例使用了相对路径，最终使用的路径为 `/home/tidb/data/tidb-deploy` 和 `/home/tidb/data/tidb-data`。
-   
-    拓扑文件的其余部分与旧版本一致。
+    相比以往的模式，使用 no-sudo 模式的 TiUP 需要在 `topology.yaml` 的 `global` 模块中新增一行 `systemd_mode: "user"`。该 `systemd_mode` 参数用于设置是否使用 `systemd user` 模式。如果不设置该参数，其默认值为 `system`，表示需要使用 sudo 权限。此外，no-sudo 模式无法使用 `/data` 目录作为 `deploy_dir` 和 `data_dir`，因为会有权限问题，你需要选择一个普通用户可以访问的路径。
+
+    以下示例使用了相对路径，最终使用的路径为 `/home/tidb/data/tidb-deploy` 和 `/home/tidb/data/tidb-data`。拓扑文件的其余部分与旧版本一致。
 
     ```yaml
     global:
@@ -101,7 +101,7 @@ Node            Check         Result  Message
 192.168.124.27  service       Fail    service firewalld is running but should be stopped
 ```
 
-由于在 no-sudo 模式下，`tidb` 用户没有 sudo 权限，执行 `tiup cluster check topology.yaml --apply --user tidb` 会因为权限不足而无法对失败的检查项进行自动修复，所以需要使用 `root` 用户在部署机器上手动执行以下操作。
+由于在 no-sudo 模式下，`tidb` 用户没有 sudo 权限，执行 `tiup cluster check topology.yaml --apply --user tidb` 会因为权限不足导致无法自动修复失败的检查项，所以需要使用 `root` 用户在部署机器上手动执行以下操作。
 
 1. 安装 numactl 工具。
 
