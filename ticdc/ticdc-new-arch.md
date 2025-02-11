@@ -110,6 +110,7 @@ server_configs:
 2. 作为实验性特性，TiCDC v9.0 的新架构尚未完全实现旧架构中的所有功能，这些功能将在后续的 GA 版本中完整实现，具体包括：
     - [拆分 Update 事件](/ticdc/ticdc-split-update-behavior.md)
     - [灾难场景的最终一致性复制](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制)
+    - 拆分大事务
     - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
     - [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
     - [TiCDC Debezium Protocol](/ticdc/ticdc-debezium.md)
