@@ -161,8 +161,7 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 #### `dsn`
 
 - 数据源名称 (data source name)，表示断点的存放位置。
-- 若 `driver = "file"`，则 `dsn` 为断点信息存放的文件路径。
-- 若不设置该路径，则默认存储路径为 `/tmp/CHECKPOINT_SCHEMA.pb`。
+- 若 `driver = "file"`，则 `dsn` 为断点信息存放的文件路径。若不设置该路径，则默认存储路径为 `/tmp/CHECKPOINT_SCHEMA.pb`。
 - 若 `driver = "mysql"`，则 `dsn` 为 `username:password@tcp(host:port)/` 格式的 URL。
 - 若不设置该 URL，则默认会使用 `[tidb]` 部分指定的 TiDB 服务器来存储断点。
 - 为减少目标 TiDB 集群的压力，建议指定另一台兼容 MySQL 的数据库服务器来存储断点。
@@ -498,7 +497,8 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 #### `pattern`
 
 - 解析 AWS Aurora parquet 文件所需的表达式。
-- 示例值：`'(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'`
+
+<!-- 示例值：`'(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'` -->
 
 #### `schema`
 
@@ -547,7 +547,8 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 #### `log-level`
 
 - 设置 TiDB 库的日志等级。TiDB Lightning 引用了 TiDB 库，并生成日志。
-- 示例值：`"error"`
+
+<!-- 示例值：`"error"` -->
 
 #### `build-stats-concurrency`
 
@@ -565,7 +566,8 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 #### `index-serial-scan-concurrency`
 
 - 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。详情参考[控制 `ANALYZE` 并发度](/statistics.md#控制-analyze-并发度)。
-- 示例值：`20`
+
+<!-- 示例值：`20` -->
 
 #### `checksum-table-concurrency`
 
