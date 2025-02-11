@@ -75,7 +75,7 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 
 #### `table-concurrency`
 
-- 数据引擎的最大并行数。每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”。`index-concurrency` 和 `table-concurrency` 这两项设置控制两种引擎文件的最大并发数。通常情况下，你可以使用默认值。
+- 数据引擎的最大并行数。每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”。`index-concurrency` 和 `table-concurrency` 这两项设置控制两种引擎文件的最大并发数。通常情况下使用默认值。
 
 <!-- 示例值：`6` -->
 
@@ -230,7 +230,7 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 
 #### `parallel-import`
 
-- 是否允许启动多个 TiDB Lightning 实例（物理导入模式）并行导入数据到一个或多个目标表。该参数仅限目标表为空的场景使用。
+- 是否允许启动多个 TiDB Lightning 实例（物理导入模式）[并行导入数据](/tidb-lightning/tidb-lightning-distributed-import.md)到一个或多个目标表。该参数仅限目标表为空的场景使用。
 - 默认值：`false`
 - 可选值：`true`、`false`
 - 多个 TiDB Lightning 实例（物理导入模式）同时导入一张表时，此开关必须设置为 `true`。但前提是目标表不能存在数据，即所有的数据都只能是由 TiDB Lightning 导入。
@@ -368,8 +368,8 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 #### `batch-import-ratio`
 
 - 引擎文件需按顺序导入。由于并行处理，多个数据引擎几乎同时被导入，这样形成的处理队列会造成资源浪费。因此，为了合理分配资源，TiDB Lightning 稍微增大了前几个区块的大小。
-- 该参数用于设置在完全并发下，“导入”和“写入”过程的持续时间比。该值可以通过计算 1 GiB 大小的单张表的（导入时长/写入时长）得到。你可以在日志文件中查看精确的时间。
-- 如果“导入“更快，区块大小的差异就会更小。比值为 `0` 表示区块大小相同。
+- 该参数用于设置在完全并发下，导入和写入过程的持续时间比。该值可以通过计算 1 GiB 大小的单张表的（导入时长/写入时长）得到。你可以在日志文件中查看精确的时间。
+- 如果导入更快，区块大小的差异就会更小。比值为 `0` 表示区块大小相同。
 - 取值范围：`[0, 1)`
 
 <!-- 示例值：`0.75` -->
@@ -597,7 +597,6 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 
 #### `tls`
 
-
 - SQL 连接是否使用 TLS。
 - 可选值：
     * `""`：如果填充了 [`[tidb.security]`](#tidbsecurity) 部分，则强制使用 TLS（与 `"cluster"` 情况相同），否则与 `"false"` 情况相同
@@ -640,9 +639,9 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 - 配置是否在导入完成后对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 操作来验证数据的完整性。
 - 默认值：`"required"`，从 v4.0.8 开始，默认值由 `"true"` 改为 `"required"`
 - 可选值：
-    - `"required"`：在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出
-    - `"optional"`：在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条 WARN 日志并忽略错误
-    - `"off"`：导入结束后不执行 CHECKSUM 检查
+    - `"required"`：在导入完成后执行 Checksum 检查，如果 Checksum 检查失败，则会报错退出
+    - `"optional"`：在导入完成后执行 Checksum 检查，如果报错，会输出一条 WARN 日志并忽略错误
+    - `"off"`：导入结束后不执行 Checksum 检查
 - Checksum 对比失败通常表示导入异常（数据丢失或数据不一致），因此建议总是开启 Checksum。
 - 考虑到与旧版本的兼容性，依然可以在本配置项设置 `true` 和 `false` 两个布尔值，其效果与 `required` 和 `off` 相同。
 
@@ -653,11 +652,11 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 - 可选值：
     - `"false"`：表示通过 TiDB Lightning 下发 `ADMIN CHECKSUM TABLE <table>` 命令给 TiKV 执行。
     - `"true"`：当该值为 `"true"` 时，如果要调整并发，需要在 TiDB 中设置 [`tidb_checksum_table_concurrency`](/system-variables.md#tidb_checksum_table_concurrency) 系统变量。
-- 建议将该值设为 `"true"`，以便在执行 CHECKSUM 失败时更容易定位问题。
+- 建议将该值设为 `"true"`，以便在执行 Checksum 失败时更容易定位问题。
 
 #### `analyze`
 
-- 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作。
+- 配置是否在 Checksum 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作。
 - 默认值：`"optional"`
 - 可选值：`"required"`、`"optional"`、`"off"`
 
