@@ -69,15 +69,17 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 #### `path`
 
 - TiFlash 数据的存储路径。如果有多个目录，以英文逗号分隔。
-- 从 v4.0.9 版本开始，不推荐使用 `path` 及 `path_realtime_mode` 参数。推荐使用 `storage` 下的配置项代替，这样在多盘部署的场景下能更好地利用节点性能。
-- 从 v5.2.0 版本开始，如果要使用配置项 `storage.io_rate_limit`，需要同时将 TiFlash 的数据存储路径设置为 `storage.main.dir`。
-- 当 `storage` 配置项存在的情况下，`path` 和 `path_realtime_mode` 两个配置会被忽略。
+- 从 v4.0.9 版本开始，不推荐使用 [`path`](#path) 及 [`path_realtime_mode`](#path_realtime_mode) 参数。推荐使用 [`storage`](#storage-从-v409-版本开始引入) 下的配置项代替，这样在多盘部署的场景下能更好地利用节点性能。
+- 从 v5.2.0 版本开始，如果要使用配置项 [`storage.io_rate_limit`](#storageio_rate_limit-从-v520-版本开始引入)，需要同时将 TiFlash 的数据存储路径设置为 [`storage.main.dir`](#dir)。
+- 当 `storage` 配置项存在的情况下，[`path`](#path) 及 [`path_realtime_mode`](#path_realtime_mode) 两个配置会被忽略。
 
 <!-- 示例值：`"/tidb-data/tiflash-9000"` 或 `"/ssd0/tidb-data/tiflash,/ssd1/tidb-data/tiflash,/ssd2/tidb-data/tiflash"` -->
 
 #### `path_realtime_mode`
 
 - 如果设为 `true`，且 `path` 配置了多个目录，表示在第一个目录存放最新数据，在其他目录存放较旧的数据。
+- 从 v4.0.9 版本开始，不推荐使用 [`path`](#path) 及 [`path_realtime_mode`](#path_realtime_mode) 参数。推荐使用 [`storage`](#storage-从-v409-版本开始引入) 下的配置项代替，这样在多盘部署的场景下能更好地利用节点性能。
+- 当 `storage` 配置项存在的情况下，[`path`](#path) 及 [`path_realtime_mode`](#path_realtime_mode) 两个配置会被忽略。
 - 默认值：`false`
 
 #### `tmp_path`
@@ -113,7 +115,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 ##### `capacity`
 
-- `storage.main.dir` 存储目录列表中每个目录的最大可用容量。
+- [`storage.main.dir`](#dir) 存储目录列表中每个目录的最大可用容量。
 - 在未定义配置项，或者列表中全为 `0` 时，会使用目录所在的硬盘容量。
 - 以 byte 为单位。目前不支持如 "10GB" 的设置。
 - `capacity` 列表的长度应当与 `dir` 列表长度保持一致。
@@ -125,13 +127,13 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 ##### `dir`
 
 - 用于存储最新的数据，大约占总数据量的 10% 以内，需要较高的 IOPS。
-- 默认情况该项可留空。在未配置或者为空列表的情况下，会使用 `storage.main.dir` 的值。
+- 默认情况该项可留空。在未配置或者为空列表的情况下，会使用 [`storage.main.dir`](#dir) 的值。
 
 <!-- 示例值：`[]` -->
 
 ##### `capacity`
 
-- `storage.latest.dir` 存储目录列表中，每个目录的最大可用容量。
+- [`storage.main.dir`](#dir) 存储目录列表中，每个目录的最大可用容量。
 
 <!-- 示例值：`[10737418240, 10737418240]` -->
 
@@ -150,7 +152,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 - I/O 限流功能限制下的读流量总带宽。
 - 分别用 `max_read_bytes_per_sec` 和 `max_write_bytes_per_sec` 两个配置项控制读写带宽限制，适用于一些读写带宽限制分开计算的云盘，例如 Google Cloud 上的 persistent disk。
-- 当 `max_bytes_per_sec` 配置不为 `0` 时，优先使用 `max_bytes_per_sec`。
+- 当 `max_bytes_per_sec` 配置不为 `0` 时，优先使用 [`max_bytes_per_sec`](#max_bytes_per_sec)。
 
 <!-- 示例值：`0` -->
 
@@ -158,7 +160,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 - I/O 限流功能限制下的写流量总带宽。
 - 分别用 `max_read_bytes_per_sec` 和 `max_write_bytes_per_sec` 两个配置项控制读写带宽限制，适用于一些读写带宽限制分开计算的云盘，例如 Google Cloud 上的 persistent disk。
-- 当 `max_bytes_per_sec` 配置不为 `0` 时，优先使用 `max_bytes_per_sec`。
+- 当 `max_bytes_per_sec` 配置不为 `0` 时，优先使用 [`max_bytes_per_sec`](#max_bytes_per_sec)。
 
 <!-- 示例值：`0` -->
 
@@ -319,7 +321,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 #### logger
 
-以下参数只对 `tiflash.log`、`tiflash_error.log` 生效。TiFlash Proxy 的日志参数配置需要在 `tiflash-learner.toml` 中指定。
+以下参数只对 `tiflash.log`、`tiflash_error.log` 生效。TiFlash Proxy 的日志参数配置需要在 [`tiflash-learner.toml`](#配置文件-tiflash-learnertoml) 中指定。
 
 ##### `level`
 
@@ -377,7 +379,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 ##### `max_threads`
 
 - `max_threads` 指的是执行一个 MMP Task 的内部线程并发度。当值为 `0` 时，TiFlash 执行 MMP Task 的线程并发度为 CPU 核数。
-- 该参数只有在系统变量 `tidb_max_tiflash_threads` 设置为 `-1` 时才会生效。
+- 该参数只有在系统变量 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) 设置为 `-1` 时才会生效。
 - 默认值：`0`
 
 ##### `max_memory_usage`
@@ -492,7 +494,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 ##### `ca_path`
 
-- 包含可信 SSL CA 列表的文件路径。如果你设置了该值，`cert_path` 和 `key_path` 中的路径也需要填写。
+- 包含可信 SSL CA 列表的文件路径。如果你设置了该值，[`cert_path`](#cert_path) 和 [`key_path`](#key_path) 中的路径也需要填写。
 
 <!-- 示例值：`"/path/to/ca.pem"` -->
 
@@ -512,7 +514,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 `tiflash-learner.toml` 中的功能参数和 TiKV 基本一致，可以参照 [TiKV 配置](/tikv-configuration-file.md)来进行配置。下面只列了常用的部分参数。需要注意的是：
 
-- 相对于 TiKV，TiFlash Proxy 新增了 `raftstore.snap-handle-pool-size` 参数。
+- 相对于 TiKV，TiFlash Proxy 新增了 [`raftstore.snap-handle-pool-size`](#snap-handle-pool-size-从-v400-版本开始引入) 参数。
 - `key` 为 `engine` 的 `label` 是保留项，不可手动配置。
 
 #### log
