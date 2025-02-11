@@ -13,7 +13,7 @@ summary: 介绍如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群
 
 ## 准备用户并配置 SSH 互信
 
-1. 以`tidb` 用户为例，你需要依次登录到所有部署目标机器，并以 `root` 用户使用如下命令创建一个普通用户 `tidb`。在 no-sudo 模式下不需要为 `tidb` 用户配置 sudo 免密，即无需将 `tidb` 用户加入 `sudoers` 中。
+1. 以 `tidb` 用户为例，你需要依次登录到所有的部署目标机器，并以 `root` 用户使用如下命令创建一个普通用户 `tidb`。在 no-sudo 模式下，不需要为 `tidb` 用户配置 sudo 免密，即无需将 `tidb` 用户加入 `sudoers` 中。
 
     ```bash
     adduser tidb
@@ -32,7 +32,7 @@ summary: 介绍如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群
     2. 使用 `root` 用户启动 user service。
 
         ```shell
-        $ systemctl start user@1000.service #`1000` is the ID of the tidb user. You can get the user ID by executing the `id` command.
+        $ systemctl start user@1000.service # `1000` is the ID of the `tidb` user. You can get the user ID by executing the `id` command.
         $ systemctl status user@1000.service
         user@1000.service - User Manager for UID 1000
         Loaded: loaded (/usr/lib/systemd/system/user@.service; static; vendor preset>
@@ -53,7 +53,7 @@ summary: 介绍如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群
 
     执行 `systemctl --user`。如果没有报错，说明 `systemd user` 模式已经正常启动。
 
-3. 在中控机使用 ssh-keygen 生成密钥，并将公钥复制到其他部署机器完成 SSH 互信。
+3. 在中控机使用 ssh-keygen 生成密钥，并将公钥复制到其他部署机器，完成 SSH 互信。
 
 ## 准备部署拓扑文件
 
@@ -65,9 +65,9 @@ summary: 介绍如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群
    
 2. 编辑拓扑文件。
 
-    相比以往的模式，使用 no-sudo 模式的 TiUP 需要在 `topology.yaml` 的 `global` 模块中新增一行 `systemd_mode: "user"`。该 `systemd_mode` 参数用于设置是否使用 `systemd user` 模式。如果不设置该参数，其默认值为 `system`，表示需要使用 sudo 权限。此外，no-sudo 模式无法使用 `/data` 目录作为 `deploy_dir` 和 `data_dir`，因为会有权限问题，你需要选择一个普通用户可以访问的路径。
-
-    以下示例使用了相对路径，最终使用的路径为 `/home/tidb/data/tidb-deploy` 和 `/home/tidb/data/tidb-data`。拓扑文件的其余部分与旧版本一致。
+    相比以往的模式，使用 no-sudo 模式的 TiUP 时，需要在 `topology.yaml` 的 `global` 模块中新增一行 `systemd_mode: "user"`。该 `systemd_mode` 参数用于设置是否使用 `systemd user` 模式。如果不设置该参数，其默认值为 `system`，表示需要使用 sudo 权限。
+    
+    此外，由于 no-sudo 模式下，普通用户 `tidb` 没有权限使用 `/data` 目录作为 `deploy_dir` 和 `data_dir`，因此，你需要选择一个普通用户可以访问的路径。以下示例使用了相对路径，最终使用的路径为 `/home/tidb/data/tidb-deploy` 和 `/home/tidb/data/tidb-data`。拓扑文件的其余部分与旧版本一致。
 
     ```yaml
     global:
@@ -82,7 +82,7 @@ summary: 介绍如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群
    
 ## 手动修复检查项
 
-执行 `tiup cluster check topology.yaml --user tidb` 会有一些失败的检查项。以下是一个示例：
+执行 `tiup cluster check topology.yaml --user tidb` 会产生失败的检查项。示例如下：
 
 ```bash
 Node            Check         Result  Message
@@ -101,7 +101,7 @@ Node            Check         Result  Message
 192.168.124.27  service       Fail    service firewalld is running but should be stopped
 ```
 
-由于在 no-sudo 模式下，`tidb` 用户没有 sudo 权限，执行 `tiup cluster check topology.yaml --apply --user tidb` 会因为权限不足导致无法自动修复失败的检查项，所以需要使用 `root` 用户在部署机器上手动执行以下操作。
+由于在 no-sudo 模式下，`tidb` 用户没有 sudo 权限，执行 `tiup cluster check topology.yaml --apply --user tidb` 会导致无法自动修复失败的检查项，因此你需要使用 `root` 用户在部署机器上手动执行以下操作。
 
 1. 安装 numactl 工具。
 
@@ -121,7 +121,7 @@ Node            Check         Result  Message
     echo never > /sys/kernel/mm/transparent_hugepage/enabled
     ```
 
-4. 开启 irqbalance service。
+4. 开启 `irqbalance` service。
 
     ```shell
     systemctl start irqbalance
@@ -146,7 +146,7 @@ Node            Check         Result  Message
     sysctl -p
     ```
    
-7. 配置 tidb 用户的 limits.conf 文件。
+7. 配置 `tidb` 用户的 `limits.conf` 文件。
 
     ```shell
     cat << EOF >>/etc/security/limits.conf
@@ -161,7 +161,7 @@ Node            Check         Result  Message
 
 ## 部署集群
 
-为了使用上述步骤准备好的 `tidb` 用户而避免重新创建新的用户，执行 deploy 命令时需要加上 `--user tidb`，即：
+为了使用上述步骤准备好的 `tidb` 用户而避免重新创建新的用户，执行 `deploy` 命令时需要加上 `--user tidb`，即：
 
 ```shell
 tiup cluster deploy mycluster v8.1.0 topology.yaml --user tidb
