@@ -16,10 +16,8 @@ summary: 了解如何使用 PLAN REPLAY 命令保存和恢复集群现场信息�
 
 你可以使用 `PLAN REPLAYER` 来保存 TiDB 集群的现场信息。导出接口如下：
 
-{{< copyable "sql" >}}
-
 ```sql
-PLAN REPLAYER DUMP EXPLAIN [ANALYZE] [WITH STATS AS OF TIMESTAMP expression] sql-statement;
+PLAN REPLAYER DUMP [WITH STATS AS OF TIMESTAMP expression] EXPLAIN [ANALYZE] sql-statement;
 ```
 
 TiDB 根据 `sql-statement` 整理出以下集群现场信息：
@@ -162,12 +160,12 @@ set @@global.tidb_enable_auto_analyze = OFF;
 
 ```sql
 mysql> desc t;
-+-------+---------+------+------+---------+-------+
-| Field | Type    | Null | Key  | Default | Extra |
-+-------+---------+------+------+---------+-------+
-| a     | int(11) | YES  |      | NULL    |       |
-| b     | int(11) | YES  |      | NULL    |       |
-+-------+---------+------+------+---------+-------+
++-------+------+------+------+---------+-------+
+| Field | Type | Null | Key  | Default | Extra |
++-------+------+------+------+---------+-------+
+| a     | int  | YES  |      | NULL    |       |
+| b     | int  | YES  |      | NULL    |       |
++-------+------+------+------+---------+-------+
 2 rows in set (0.01 sec)
 
 mysql> explain select * from t where a = 1 or b =1;

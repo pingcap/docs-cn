@@ -48,7 +48,8 @@ tiup br backup full \
 
 > **注意：**
 >
-> BR 工具已支持自适应 GC，会自动将 `backupTS`（默认是最新的 PD timestamp）注册到 PD 的 `safePoint`，保证 TiDB 的 GC Safe Point 在备份期间不会向前移动，即可避免手动设置 GC。
+> - 从 v8.5.0 起，在进行全量备份时，BR 工具默认不计算表级别的 checksum (`--checksum=false`) 以提升备份性能。
+> - BR 工具已支持自适应 GC，会自动将 `backupTS`（默认是最新的 PD timestamp）注册到 PD 的 `safePoint`，保证 TiDB 的 GC Safe Point 在备份期间不会向前移动，即可避免手动设置 GC。
 
 备份期间终端会显示进度条，效果如下。当进度条达到 100% 时，表示备份完成。
 

@@ -262,7 +262,7 @@ INTERVAL (1 MONTH) FIRST PARTITION LESS THAN ('2000-01-01') LAST PARTITION LESS 
 
 ```sql
 CREATE TABLE `monthly_report_status` (
-  `report_id` int(11) NOT NULL,
+  `report_id` int NOT NULL,
   `report_status` varchar(20) NOT NULL,
   `report_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -1112,7 +1112,7 @@ SHOW CREATE TABLE\G
 *************************** 1. row ***************************
        Table: example
 Create Table: CREATE TABLE `example` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `data` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -1737,10 +1737,10 @@ SHOW CREATE TABLE t1\G
 ```
        Table: t1
 Create Table: CREATE TABLE `t1` (
-  `col1` int(11) NOT NULL,
+  `col1` int NOT NULL,
   `col2` date NOT NULL,
-  `col3` int(11) NOT NULL,
-  `col4` int(11) NOT NULL,
+  `col3` int NOT NULL,
+  `col4` int NOT NULL,
   UNIQUE KEY `uidx12` (`col1`,`col2`) /*T![global_index] GLOBAL */,
   UNIQUE KEY `uidx3` (`col3`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -1775,7 +1775,14 @@ ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCA
 
 - 如果索引定义中未显式指定 `GLOBAL` 关键字，TiDB 将默认创建局部索引 (Local Index)。
 - `GLOBAL` 和 `LOCAL` 关键字仅适用于分区表，对非分区表没有影响。即在非分区表中，全局索引和局部索引之间没有区别。
-- DDL 操作如 `ADD PARTITION`、`DROP PARTITION`、`TRUNCATE PARTITION`、`REORGANIZE PARTITION`、`SPLIT PARTITION` 和 `EXCHANGE PARTITION` 等也会触发对全局索引的更新，这些 DDL 的执行结果将在全局索引更新完成后才会返回。因此，这可能会延迟一些通常需要快速完成的 DDL 的操作，如数据归档操作（`EXCHANGE PARTITION`、`TRUNCATE PARTITION` 和 `DROP PARTITION`）。而如果没有全局索引，这些 DDL 操作可以立即执行完成。
+- 当前仅支持为唯一列创建全局索引 (Unique Global Index)。如果需要对非唯一列创建全局索引，可以通过包含主键形成复合索引。例如，如果非唯一列是 `col3` 而主键是 `col1`，可以通过执行以下 SQL 语句为 `col3` 创建全局索引：
+  
+    ```sql
+    ALTER TABLE ... ADD UNIQUE INDEX(col3, col1) GLOBAL;
+    ```
+
+- 以下 DDL 操作会触发全局索引的更新：`DROP PARTITION`、`TRUNCATE PARTITION` 和 `REORGANIZE PARTITION`。这些 DDL 需等待全局索引更新完成后才会返回结果，耗时会相应增加。尤其是在数据归档场景下，如 `DROP PARTITION` 和 `TRUNCATE PARTITION`，若没有全局索引，通常可以立即完成；但使用全局索引后，耗时会随着所需更新的索引数量的增加而增加。
+- 包含全局索引的表不支持 `EXCHANGE PARTITION`。
 - 默认情况下，分区表的主键为聚簇索引，且必须包含分区键。如果要求主键不包含分区建，可以在建表时显式指定主键为非聚簇的全局索引，例如：`PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
 - 如果在表达式列上添加了全局索引，或者一个全局索引同时也是前缀索引（如 `UNIQUE KEY idx_id_prefix (id(10)) GLOBAL`），你需要为该全局索引手动收集统计信息。
 
@@ -1812,8 +1819,6 @@ YEARWEEK()
 ### 兼容性
 
 目前 TiDB 支持 Range 分区、Range Columns 分区、List 分区、List COLUMNS 分区、Hash 分区和 Key 分区，其它的 MySQL 分区类型尚不支持。
-
-分区管理方面，只要底层实现可能会涉及数据挪动的操作，目前都暂不支持。包括且不限于：调整 Hash 分区表的分区数量，修改 Range 分区表的范围，合并分区等。
 
 对于暂不支持的分区类型，在 TiDB 中建表时会忽略分区信息，以普通表的形式创建，并且会报 Warning。
 

@@ -14,7 +14,7 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 ```
 
 - `<cluster-name>` 表示新集群的名字，不能和现有集群同名
-- `<version>` 为要部署的 TiDB 集群版本号，如 `v8.4.0`
+- `<version>` 为要部署的 TiDB 集群版本号，如 `v8.5.0`
 - `<topology.yaml>` 为事先编写好的[拓扑文件](/tiup/tiup-cluster-topology-reference.md)
 
 ## 选项
@@ -62,4 +62,6 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 部署日志。
 
-[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)
+## 另请参阅
+
+- [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)

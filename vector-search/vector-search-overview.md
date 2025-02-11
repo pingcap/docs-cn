@@ -27,7 +27,7 @@ TiDB 向量搜索提供了一种高级的语义搜索功能，可以在文档、
 
 向量嵌入在机器学习中至关重要，是语义相似性搜索的基础。
 
-TiDB 专门引入了[向量数据类型](/vector-search-data-types.md)以及[向量搜索索引](/vector-search-index.md)，用于优化向量嵌入的存储和检索，增强其在人工智能领域的应用。你可以使用向量类型在 TiDB 中存储向量嵌入，并执行向量搜索查询，找到语义上最相关的数据。
+TiDB 专门引入了[向量数据类型](/vector-search/vector-search-data-types.md)以及[向量搜索索引](/vector-search/vector-search-index.md)，用于优化向量嵌入的存储和检索，增强其在人工智能领域的应用。你可以使用向量类型在 TiDB 中存储向量嵌入，并执行向量搜索查询，找到语义上最相关的数据。
 
 ### 嵌入模型
 
@@ -41,7 +41,7 @@ TiDB 专门引入了[向量数据类型](/vector-search-data-types.md)以及[向
 
 在你将原始数据转换为向量并存储在 TiDB 中后，你的应用程序就可以开始利用这些向量来执行向量搜索查询，找到与用户查询语义或上下文最相关的数据。
 
-TiDB 向量搜索 (Vector Search) 通过使用[距离函数](/vector-search-functions-and-operators.md)来计算给定向量与数据库中存储的向量之间的距离，从而识别前 k 个近邻（KNN）向量。其中，与给定向量距离最小的向量即代表最相似的数据。
+TiDB 向量搜索 (Vector Search) 通过使用[距离函数](/vector-search/vector-search-functions-and-operators.md)来计算给定向量与数据库中存储的向量之间的距离，从而识别前 k 个近邻（KNN）向量。其中，与给定向量距离最小的向量即代表最相似的数据。
 
 ![The Schematic TiDB Vector Search](/media/vector-search/embedding-search.png)
 
@@ -68,5 +68,5 @@ TiDB 作为一款关系型数据库，在引入了向量搜索功能后，支持
 
 要开始使用 TiDB 向量搜索，请参阅以下文档：
 
-- [使用 Python 开始向量搜索](/vector-search-get-started-using-python.md)
-- [使用 SQL 开始向量搜索](/vector-search-get-started-using-sql.md)
+- [使用 Python 开始向量搜索](/vector-search/vector-search-get-started-using-python.md)
+- [使用 SQL 开始向量搜索](/vector-search/vector-search-get-started-using-sql.md)

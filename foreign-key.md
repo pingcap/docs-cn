@@ -151,8 +151,8 @@ mysql> SHOW CREATE TABLE child\G
 *************************** 1. row ***************************
        Table: child
 Create Table: CREATE TABLE `child` (
-  `id` int(11) DEFAULT NULL,
-  `pid` int(11) DEFAULT NULL,
+  `id` int DEFAULT NULL,
+  `pid` int DEFAULT NULL,
   KEY `idx_pid` (`pid`),
   CONSTRAINT `fk_1` FOREIGN KEY (`pid`) REFERENCES `test`.`parent` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -190,8 +190,8 @@ mysql> SHOW CREATE TABLE child\G
 *************************** 1. row ***************************
        Table: child
 Create Table: CREATE TABLE `child` (
-  `id` int(11) DEFAULT NULL,
-  `pid` int(11) DEFAULT NULL,
+  `id` int DEFAULT NULL,
+  `pid` int DEFAULT NULL,
   KEY `idx_pid` (`pid`),
   CONSTRAINT `fk_1` FOREIGN KEY (`pid`) REFERENCES `test`.`parent` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -292,8 +292,8 @@ mysql> SHOW CREATE TABLE child\G
 ***************************[ 1. row ]***************************
 Table        | child
 Create Table | CREATE TABLE `child` (
-  `id` int(11) DEFAULT NULL,
-  `pid` int(11) DEFAULT NULL,
+  `id` int DEFAULT NULL,
+  `pid` int DEFAULT NULL,
   KEY `idx_pid` (`pid`),
   CONSTRAINT `fk_1` FOREIGN KEY (`pid`) REFERENCES `test`.`parent` (`id`) ON DELETE CASCADE /* FOREIGN KEY INVALID */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -334,8 +334,8 @@ SHOW CREATE TABLE child;
 | Table | Create Table                                                |
 +-------+-------------------------------------------------------------+
 | child | CREATE TABLE `child` (                                      |
-|       |   `id` int(11) DEFAULT NULL,                                |
-|       |   `pid` int(11) DEFAULT NULL                                |
+|       |   `id` int DEFAULT NULL,                                |
+|       |   `pid` int DEFAULT NULL                                |
 |       | ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
 +-------+-------------------------------------------------------------+
 ```

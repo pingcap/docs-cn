@@ -61,7 +61,12 @@ TiProxy 不适用于以下场景：
 
 ## 安装和使用
 
-本节介绍使用 TiUP 部署和变更 TiProxy 的步骤。使用 TiDB Operator 部署的方式请参阅 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tiproxy) 文档。
+本节介绍使用 TiUP 部署和变更 TiProxy 的步骤。
+
+其他部署方式，请参考以下文档：
+
+- 使用 TiDB Operator 部署 TiProxy，请参见 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tiproxy) 文档。
+- 使用 TiUP 本地快速部署 TiProxy，请参见[部署 TiProxy](/tiup/tiup-playground.md#部署-tiproxy)。
 
 ### 部署 TiProxy
 
@@ -83,15 +88,10 @@ TiProxy 不适用于以下场景：
       tidb:
         security.session-token-signing-cert: "/var/sess/cert.pem"
         security.session-token-signing-key: "/var/sess/key.pem"
-        security.ssl-ca: "/var/ssl/ca.pem"
-        security.ssl-cert: "/var/ssl/cert.pem"
-        security.ssl-key: "/var/ssl/key.pem"
         graceful-wait-before-shutdown: 15
     ```
 
-3. 配置 TiProxy 实例。
-
-    为了保证 TiProxy 的高可用，建议部署至少 2 台 TiProxy 实例，并配置虚拟 IP（[`ha.virtual-ip`](/tiproxy/tiproxy-configuration.md#virtual-ip) 和 [`ha.interface`](/tiproxy/tiproxy-configuration.md#interface)）使流量路由到可用的 TiProxy 实例上。
+3. 定义 TiProxy 实例。
 
     选择 TiProxy 的机型和实例数时需要考虑以下因素：
 
@@ -100,27 +100,44 @@ TiProxy 不适用于以下场景：
 
     建议在拓扑配置里指定 TiProxy 的版本号，这样通过 [`tiup cluster upgrade`](/tiup/tiup-component-cluster-upgrade.md) 升级 TiDB 集群时不会升级 TiProxy，否则升级 TiProxy 会导致客户端连接断开。
 
-    如需配置 TiProxy 配置项，请参阅 [TiProxy 配置](/tiproxy/tiproxy-configuration.md)。
+    关于 TiProxy 的配置模板，请参见 [TiProxy 配置模板](/tiproxy/tiproxy-deployment-topology.md)。
+
+    关于 TiDB 集群拓扑文件中的配置项说明，请参见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)。
 
     配置示例：
 
     ```yaml
     component_versions:
       tiproxy: "v1.2.0"
+    tiproxy_servers:
+      - host: 10.0.1.11
+        port: 6000
+        status_port: 3080
+      - host: 10.0.1.12
+        port: 6000
+        status_port: 3080
+    ```
+
+4. 配置 TiProxy 实例。
+
+    为了保证 TiProxy 的高可用，建议部署至少 2 台 TiProxy 实例，并配置虚拟 IP [`ha.virtual-ip`](/tiproxy/tiproxy-configuration.md#virtual-ip) 和 [`ha.interface`](/tiproxy/tiproxy-configuration.md#interface)，使流量路由到可用的 TiProxy 实例上。
+
+    如需配置 TiProxy 配置项，请参阅 [TiProxy 配置](/tiproxy/tiproxy-configuration.md)。更多 TiProxy 部署拓扑配置参数，请参阅 [tiproxy-servers 配置参数](/tiup/tiup-cluster-topology-reference.md#tiproxy_servers)。
+
+    配置示例：
+
+    ```yaml
     server_configs:
       tiproxy:
-        security.server-tls.ca: "/var/ssl/ca.pem"
-        security.server-tls.cert: "/var/ssl/cert.pem"
-        security.server-tls.key: "/var/ssl/key.pem"
         ha.virtual-ip: "10.0.1.10/24"
         ha.interface: "eth0"
     ```
 
-4. 启动集群。
+5. 启动集群。
 
     使用 TiUP 启动集群的方式请参阅 [TiUP](/tiup/tiup-documentation-guide.md) 文档。
 
-5. 连接到 TiProxy。
+6. 连接到 TiProxy。
 
     部署集群之后，集群同时暴露了 TiDB server 的端口和 TiProxy 端口。客户端应当连接到 TiProxy 的端口，不再连接 TiDB server 的端口。
 

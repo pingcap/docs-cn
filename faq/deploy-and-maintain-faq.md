@@ -12,11 +12,11 @@ aliases: ['/docs-cn/dev/faq/deploy-and-maintain-faq/']
 
 ### TiDB 支持哪些操作系统？
 
-关于 TiDB 支持的操作系统，参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)。
+关于 TiDB 支持的操作系统，参见[操作系统及平台要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
 
 ### TiDB 对开发、测试、生产环境的服务器硬件配置有什么要求？
 
-TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台。对于开发、测试、生产环境的服务器硬件配置，参见 [TiDB 软件和硬件环境建议配置 - 服务器建议配置](/hardware-and-software-requirements.md#服务器建议配置)。
+TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台。对于开发、测试、生产环境的服务器硬件配置，参见[服务器配置要求](/hardware-and-software-requirements.md#服务器配置要求)。
 
 ### 两块网卡的目的是？万兆的目的是？
 
@@ -49,30 +49,6 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 ### 有一部分监控信息显示不出来？
 
 查看访问监控的机器时间跟集群内机器的时间差，如果比较大，更正时间后即可显示正常。
-
-### supervise/svc/svstat 服务具体起什么作用？
-
-- supervise 守护进程
-- svc 启停服务
-- svstat 查看进程状态
-
-### inventory.ini 变量参数解读
-
-| **变量** | **含义** |
-| --- | --- |
-| cluster_name | 集群名称，可调整 |
-| tidb_version | TiDB 版本 |
-| deployment_method | 部署方式，默认为 binary，可选 docker |
-| process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
-| timezone | 修改部署目标机器时区，默认为 Asia/Shanghai，可调整，与 set_timezone 变量结合使用 |
-| set_timezone | 默认为 True，即修改部署目标机器时区，关闭可修改为 False |
-| enable_elk | 目前不支持，请忽略 |
-| enable_firewalld | 开启防火墙，默认不开启 |
-| enable_ntpd | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
-| machine_benchmark | 检测部署目标机器磁盘 IOPS，默认为 True，请勿关闭 |
-| set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
-| enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志 |
-| deploy_without_tidb | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 inventory.ini 文件中 tidb_servers 主机组 IP 设置为空。 |
 
 ### 如何单独记录 TiDB 中的慢查询日志，如何定位慢查询 SQL？
 

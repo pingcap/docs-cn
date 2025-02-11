@@ -14,7 +14,7 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 ```
 
 - `<cluster-name>` 为要操作的集群名字，如果忘记集群名字可通过[集群列表](/tiup/tiup-component-cluster-list.md)查看。
-- `<version>` 为要升级到的目标版本，例如 `v8.4.0`。目前仅允许升级到比当前集群更高的版本，不允许升级到比当前集群更低的版本，即不允许降级。同时也不允许升级成 nightly 版本。
+- `<version>` 为要升级到的目标版本，例如 `v8.5.0`。目前仅允许升级到比当前集群更高的版本，不允许升级到比当前集群更低的版本，即不允许降级。同时也不允许升级成 nightly 版本。
 
 ## 选项
 
@@ -144,4 +144,6 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 
 升级服务的日志。
 
-[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)
+## 另请参阅
+
+- [使用 TiUP 升级 TiDB 集群](/upgrade-tidb-using-tiup.md)
