@@ -21,35 +21,35 @@ summary: 介绍如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群
 
 2. 在每台部署目标机器上，为 `tidb` 用户启动 `systemd user` 模式。该步骤是必须的，请勿跳过。
 
-   1. 使用 `tidb` 用户设置 `XDG_RUNTIME_DIR` 环境变量。
+    1. 使用 `tidb` 用户设置 `XDG_RUNTIME_DIR` 环境变量。
       
-      ```bash
-      mkdir -p ~/.bashrc.d
-      echo "export XDG_RUNTIME_DIR=/run/user/$(id -u)" > ~/.bashrc.d/systemd
-      source ~/.bashrc.d/systemd
-      ```
+        ```bash
+        mkdir -p ~/.bashrc.d
+        echo "export XDG_RUNTIME_DIR=/run/user/$(id -u)" > ~/.bashrc.d/systemd
+        source ~/.bashrc.d/systemd
+        ```
    
-   3. 使用 `root` 用户启动 user service。
+    2. 使用 `root` 用户启动 user service。
 
-      ```shell
-      $ systemctl start user@1000.service #`1000` is the ID of the tidb user. You can get the user ID by executing the `id` command.
-      $ systemctl status user@1000.service
-      user@1000.service - User Manager for UID 1000
-      Loaded: loaded (/usr/lib/systemd/system/user@.service; static; vendor preset>
-      Active: active (running) since Mon 2024-01-29 03:30:51 EST; 1min 7s ago
-      Main PID: 3328 (systemd)
-      Status: "Startup finished in 420ms."
-      Tasks: 6
-      Memory: 6.1M
-      CGroup: /user.slice/user-1000.slice/user@1000.service
-              ├─dbus.service
-              │ └─3442 /usr/bin/dbus-daemon --session --address=systemd: --nofork >
-              ├─init.scope
-              │ ├─3328 /usr/lib/systemd/systemd --user
-              │ └─3335 (sd-pam)
-              └─pulseaudio.service
+        ```shell
+        $ systemctl start user@1000.service #`1000` is the ID of the tidb user. You can get the user ID by executing the `id` command.
+        $ systemctl status user@1000.service
+        user@1000.service - User Manager for UID 1000
+        Loaded: loaded (/usr/lib/systemd/system/user@.service; static; vendor preset>
+        Active: active (running) since Mon 2024-01-29 03:30:51 EST; 1min 7s ago
+        Main PID: 3328 (systemd)
+        Status: "Startup finished in 420ms."
+        Tasks: 6
+        Memory: 6.1M
+        CGroup: /user.slice/user-1000.slice/user@1000.service
+                ├─dbus.service
+                │ └─3442 /usr/bin/dbus-daemon --session --address=systemd: --nofork >
+                ├─init.scope
+                │ ├─3328 /usr/lib/systemd/systemd --user
+                │ └─3335 (sd-pam)
+                └─pulseaudio.service
                 └─3358 /usr/bin/pulseaudio --daemonize=no --log-target=journal
-      ```
+        ```
 
     执行 `systemctl --user`。如果没有报错，说明 `systemd user` 模式已经正常启动。
 
@@ -59,9 +59,9 @@ summary: 介绍如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群
 
 1. 执行以下 TiUP 命令生成拓扑文件。
 
-   ```bash
-   tiup cluster template > topology.yaml
-   ```
+    ```bash
+    tiup cluster template > topology.yaml
+    ```
    
 2. 编辑拓扑文件。
 
