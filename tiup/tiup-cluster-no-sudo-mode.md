@@ -48,7 +48,7 @@ summary: 介绍如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群
                 │ ├─3328 /usr/lib/systemd/systemd --user
                 │ └─3335 (sd-pam)
                 └─pulseaudio.service
-                └─3358 /usr/bin/pulseaudio --daemonize=no --log-target=journal
+                  └─3358 /usr/bin/pulseaudio --daemonize=no --log-target=journal
         ```
 
     执行 `systemctl --user`。如果没有报错，说明 `systemd user` 模式已经正常启动。
