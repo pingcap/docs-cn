@@ -7,7 +7,7 @@ on:
     paths:
       - media/**
 jobs:
-  run:
+  upload:
     name: Upload media files
     runs-on: ubuntu-latest
     steps:
@@ -52,7 +52,7 @@ jobs:
             --endpoint cos.ap-beijing.myqcloud.com
 
   cdn-refresh:
-    needs: build
+    needs: upload
     runs-on: ubuntu-latest
     name: Refresh CDN Cache
     env:
