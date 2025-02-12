@@ -131,7 +131,7 @@ CREATE TABLE `bookshop`.`users` (
 
 ## 选择聚簇索引
 
-[聚簇索引](/clustered-indexes.md) (clustered index) 是 TiDB 从 v5.0 开始支持的特性，用于控制含有主键的表数据的存储方式。通过使用聚簇索引，TiDB 可以更好地组织数据表，从而提高某些查询的性能。有些数据库管理系统也将聚簇索引称为“索引组织表” (index-organized tables)。
+[聚簇索引](/clustered-indexes.md) (clustered index) 是 TiDB 从 v5.0 开始支持的特性，用于控制含有主键的表数据的存储方式。通过使用聚簇索引，TiDB 可以更好地组织数据表，从而提高某些查询的性能。有些数据库管理系统将聚簇索引表称为“索引组织表” (index-organized tables)。
 
 目前 TiDB 中 **_含有主键_** 的表分为以下两类：
 
