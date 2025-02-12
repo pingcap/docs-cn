@@ -63,8 +63,6 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
     1 row in set (0.00 sec)
     ```
 
-上述聚合函数除 `GROUP_CONCAT()` 和 `APPROX_PERCENTILE()` 以外，均可作为[窗口函数](/functions-and-operators/window-functions.md)使用。
-
 + `APPROX_COUNT_DISTINCT(expr, [expr...])`
 
     该函数的功能与 `COUNT(DISTINCT)` 相似，用于统计不同值的数量，但返回的是一个近似值。它采用 `BJKST` 算法，在处理具有幂律分布特征的大规模数据集时，可以显著降低内存消耗。此外，对于低基数（low cardinality）的数据，该函数的结果准确性较高，同时对 CPU 的使用效率也较优。
@@ -90,6 +88,8 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
     +-----------------------------+
     2 rows in set (0.00 sec)
     ```
+
+上述聚合函数除 `GROUP_CONCAT()`、 `APPROX_PERCENTILE()` 和 `APPROX_COUNT_DISTINCT` 以外，均可作为[窗口函数](/functions-and-operators/window-functions.md)使用。
 
 ## GROUP BY 修饰符
 
