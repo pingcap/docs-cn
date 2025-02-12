@@ -80,7 +80,7 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
     SELECT APPROX_COUNT_DISTINCT(a, b) FROM t GROUP BY c;
     ```
 
-    ```sql
+    ```
     +-----------------------------+
     | approx_count_distinct(a, b) |
     +-----------------------------+
