@@ -34,3 +34,42 @@ jobs:
       #    printf "%s\n" ${{ secrets.AWS_ACCESS_KEY }} ${{ secrets.AWS_SECRET_KEY }} ${{ secrets.AWS_REGION }} "json" | aws configure
       - name: Upload
         run: cloud-assets-utils verify-and-sync -qiniu true -qiniu-bucket ${{ secrets.QINIU_BUCKET_NAME }} media -replace-first-path-to images/docs-cn -cdn-refresh https://download.pingcap.com/
+
+      - name: Install coscli
+        run: |
+          wget https://cosbrowser.cloud.tencent.com/software/coscli/coscli-linux-amd64
+          mv coscli-linux-amd64 coscli
+          chmod 755 coscli
+
+      - name: Upload to COS
+        run: |
+          ./coscli sync media/ cos://${{ secrets.TENCENTCLOUD_BUCKET_ID }}/media/images/docs-cn \
+            --init-skip \
+            --recursive \
+            --routines 16 \
+            --secret-id ${{ secrets.TENCENTCLOUD_SECRET_ID }} \
+            --secret-key ${{ secrets.TENCENTCLOUD_SECRET_KEY }} \
+            --endpoint cos.ap-beijing.myqcloud.com
+
+  cdn-refresh:
+    needs: build
+    runs-on: ubuntu-latest
+    name: Refresh CDN Cache
+    env:
+      TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+      TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: 'x64'
+
+      - name: Install Tencent Cloud CLI
+        run: pipx install tccli
+
+      - name: Purge production CDN cache
+        run: tccli cdn PurgePathCache --Paths '["https://docs-download.pingcap.com/media/images/docs-cn/"]' --FlushType delete
