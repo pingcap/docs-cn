@@ -328,7 +328,9 @@ mysql root@127.0.0.1:test> show create table test;
 
 TiCDC 提供至少一次的数据同步保证，当下游有重复数据时，会引起写冲突。为了避免该问题，TiCDC 会将 `INSERT` 和 `UPDATE` 语句转成 `REPLACE INTO` 语句。该行为由 `safe-mode` 参数来控制。
 
-在 v6.1.3 版本之前，`safe-mode` 默认为 `true`，即所有的 `INSERT` 和 `UPDATE` 语句都转成 `REPLACE INTO` 语句。在 v6.1.3 及之后版本，系统能自动判断下游是否存在重复数据，`safe-mode` 默认更改为 `false`，当系统判断下游无重复数据时，会直接同步 `INSERT` 和 `UPDATE` 语句。
+在 v6.1.3 版本之前，`safe-mode` 的默认值为 `true`，即所有的 `INSERT` 和 `UPDATE` 语句都转成 `REPLACE INTO` 语句。
+
+在 v6.1.3 及之后版本，`safe-mode` 的默认值更改为 `false`，而且 TiCDC 能自动判断下游是否存在重复数据。当 TiCDC 判断下游无重复数据时，会直接同步 `INSERT` 和 `UPDATE` 语句；否则，TiCDC 会将 `INSERT` 和 `UPDATE` 语句都转成 `REPLACE INTO` 语句再进行同步。
 
 ## 数据同步下游的 Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要哪些权限？
 
