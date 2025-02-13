@@ -140,8 +140,4 @@ DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/bl
 
 <video src="https://docs-download.pingcap.com/media/videos/docs-cn/Lesson20_dm_part02.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson20.png"></video>
 
-<<<<<<< HEAD
-<video src="https://download.pingcap.com/docs-cn/Lesson20_part03.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson20.png"></video>
-=======
 <video src="https://docs-download.pingcap.com/media/videos/docs-cn/Lesson20_part03.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson20.png"></video> 
->>>>>>> 813caf3d9b (v5.4-v6.1: update video resource links to point to new locations (#19803))
