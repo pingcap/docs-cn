@@ -98,15 +98,15 @@ PITR 的流程如下：
 .
 ├── v1
 │   ├── backupmeta
-│   │   ├── {resolved_ts}-{uuid}.meta
-│   │   └── <repeating>...
+│   │   ├── ...
+│   │   └── {resolved_ts}-{uuid}.meta
 │   ├── global_checkpoint
 │   │   └── {store_id}.ts
 │   └── {date}
 │       └── {hour}
 │           └── {store_id}
-│               ├── {min_ts}-{uuid}.log
-│               └── <repeating>...
+│               ├── ...
+│               └── {min_ts}-{uuid}.log
 └── v1_stream_truncate_safepoint.txt
 ```
 
