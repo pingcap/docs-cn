@@ -13,7 +13,11 @@ title: TiCDC 简介
 
 要快速了解 TiCDC 的基本原理和使用方法，建议先观看下面的培训视频（时长 33 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
+<<<<<<< HEAD
 <video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+22.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+22.png"></video>
+=======
+<video src="https://docs-download.pingcap.com/media/videos/docs-cn%2FLesson22_ticdc.mp4" width="100%" height="100%" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+22.png"></video>
+>>>>>>> 813caf3d9b (v5.4-v6.1: update video resource links to point to new locations (#19803))
 
 ## TiCDC 架构
 
