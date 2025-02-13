@@ -24,7 +24,7 @@ summary: 了解子查询相关的优化。
 对于这种情况，可以将 `ALL` 或者 `ANY` 用 `MAX` 以及 `MIN` 来代替。不过由于在表为空时，`MAX(EXPR)` 以及 `MIN(EXPR)` 的结果会为 `NULL`，其表现形式和 `EXPR` 是有 `NULL` 值的结果一样。以及外部表达式结果为 `NULL` 时也会影响表达式的最终结果，因此这里完整的改写会是如下的形式：
 
 - `t.id < all(select s.id from s)` 会被改写为 `t.id < min(s.id) and if(sum(s.id is null) != 0, null, true)`。
-- `t.id < any (select s.id from s)` 会被改写为 `t.id < max(s.id) or if(sum(s.id is null) != 0, null, false)`。
+- `t.id > any (select s.id from s)` 会被改写为 `t.id > max(s.id) or if(sum(s.id is null) != 0, null, false)`。
 
 ## `... != ANY (SELECT ... FROM ...)`
 
