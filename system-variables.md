@@ -687,7 +687,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 默认值：`UNSPECIFIED`
-- 可选值：`UNSPECIFIED`，`0`，`1`，`2`, `3`
+- 可选值：`UNSPECIFIED`，`0`，`1`，`2`，`3`
 - 该变量用于指定不同版本的 MPP 执行计划。指定后，TiDB 会选择指定版本的 MPP 执行计划。该变量值含义如下：
     - `UNSPECIFIED`：表示未指定，此时 TiDB 自动选择最新版本 `3`。
     - `0`：兼容所有 TiDB 集群版本，MPP 版本大于 `0` 的新特性均不会生效。
