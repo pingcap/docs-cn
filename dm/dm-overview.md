@@ -86,8 +86,8 @@ DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/bl
 
 要快速了解 DM 的原理架构、适用场景，建议先观看下面的培训视频。注意本视频只作为学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson20_dm_part01.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson20.png"></video>
+<video src="https://docs-download.pingcap.com/media/videos/docs-cn%2FLesson20_dm_part01.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson20.png"></video>
 
-<video src="https://download.pingcap.com/docs-cn/Lesson20_dm_part02.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson20.png"></video>
+<video src="https://docs-download.pingcap.com/media/videos/docs-cn/Lesson20_dm_part02.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson20.png"></video>
 
-<video src="https://download.pingcap.com/docs-cn/Lesson20_part03.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson20.png"></video>
+<video src="https://docs-download.pingcap.com/media/videos/docs-cn/Lesson20_part03.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson20.png"></video>
