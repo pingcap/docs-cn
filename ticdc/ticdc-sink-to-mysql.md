@@ -66,7 +66,7 @@ URI 中可配置的参数如下：
 | `cache-prep-stmts` | 向下游执行 SQL 时是否使用 prepared statement 并且开启客户端的 prepared statement 缓存（可选，默认值为 `true`）。 |
 | `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`，最大值为 `2048`）。 |
 | `max-multi-update-row`  | 开启批量写入时，向下游执行 update rows SQL 的 batch 大小，总是小于 `max-txn-row`（可选，默认值为 `40`，最大值为 `256`）。|
-| `max-multi-update-row-size` | 开启批量写入时，向下游执行 update rows SQL 的 size 大小，如果超过这个 size，每个 row 会作为独立的SQL（可选，默认值为 `1024`，最大值为 `8192`）|
+| `max-multi-update-row-size` | 开启批量写入时，向下游执行 update rows SQL 的 size 大小，如果超过这个 size，每个 row 会作为独立的 SQL（可选，默认值为 `1024`，最大值为 `8192`）|
 | `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选）。 |
 | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选）。 |
 | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选）。 |
@@ -77,7 +77,7 @@ URI 中可配置的参数如下：
 | `write-timeout` | go-sql-driver 参数，[I/O 写入超时](https://pkg.go.dev/github.com/go-sql-driver/mysql#readme-writetimeout)（可选，默认值为 `2m`）|
 | `timeout` | go-sql-driver 参数，[建立连接的超时时间](https://pkg.go.dev/github.com/go-sql-driver/mysql#readme-timeout)，即拨号超时（可选，默认值为 `2m`）|
 | `safe-mode` | 将所有的 `INSERT` 和 `UPDATE` 语句转成 `REPLACE INTO` 语句（可选，默认值为 `false`）|
-| `tidb-txn-mode` | 设置环境变量[tidb_txn_mode](https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_txn_mode)（可选，默认值为 `optimistic`） |
+| `tidb-txn-mode` | 设置环境变量 [`tidb_txn_mode`](/system-variables.md#tidb_txn_mode)（可选，默认值为 `optimistic`） |
 
 若需要对 Sink URI 中的数据库密码使用 Base64 进行编码，可以参考如下命令：
 
