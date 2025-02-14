@@ -51,7 +51,15 @@ summary: 介绍如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群
                   └─3358 /usr/bin/pulseaudio --daemonize=no --log-target=journal
         ```
 
-    执行 `systemctl --user`。如果没有报错，说明 `systemd user` 模式已经正常启动。
+        执行 `systemctl --user`。如果没有报错，说明 `systemd user` 模式已经正常启动。
+
+    3. 使用 `root` 用户执行以下命令，为systemd用户实例启用驻留。
+
+        ```bash
+        loginctl enable-linger tidb
+        ```
+
+        您可以阅读 systemd 文档 [systemd 用户实例的自动启动](https://wiki.archlinux.org/title/Systemd/User#Automatic_start-up_of_systemd_user_instances)进行参考。
 
 3. 在中控机使用 ssh-keygen 生成密钥，并将公钥复制到其他部署机器，完成 SSH 互信。
 
