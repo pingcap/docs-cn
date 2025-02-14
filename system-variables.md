@@ -869,6 +869,17 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 默认值：（随系统）
 - 该变量显示首次引导启动 TiDB 时的系统时区。另请参阅 [`time_zone`](#time_zone)。
 
+### `tidb_accelerate_user_creation_update` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 当系统中创建的 SQL 用户数量过多(比如10万以上)之后，创建用户/修改密码/设置权限等一些操作会受到比较严重的性能影响。原因是每次用户更新会涉及重新加载全部用户数据，这样的场景下建议将该变量设置为 `ON`。
+    * `0` 或 `OFF`：修改用户相关的操作会导致重新加载全部用户数据到内存，性能较差。
+    * `1` 或 `ON`：修改用户只会更新当前活跃的用户，性能更优。
+
 ### `tidb_adaptive_closest_read_threshold` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
