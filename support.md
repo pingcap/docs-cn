@@ -18,4 +18,4 @@ summary: 在使用 TiDB 时遇到问题，如何获取支持。
 
 + 了解 TiDB 的实现和设计
 
-    - [TiDB Internals 论坛](https://internals.tidb.io/)
+    - 查看 GitHub 上的 [Discussions](https://github.com/orgs/pingcap/discussions)
