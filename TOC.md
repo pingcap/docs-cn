@@ -496,6 +496,7 @@
     - TiUP 组件文档
       - [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
       - [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
+      - [使用 no-sudo 模式部署运维生产集群](/tiup/tiup-cluster-no-sudo-mode.md)
       - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   - [TiDB Operator](/tidb-operator-overview.md)
