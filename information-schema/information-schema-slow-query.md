@@ -15,92 +15,100 @@ DESC slow_query;
 输出结果示例如下：
 
 ```sql
-+-------------------------------+---------------------+------+------+---------+-------+
-| Field                         | Type                | Null | Key  | Default | Extra |
-+-------------------------------+---------------------+------+------+---------+-------+
-| Time                          | timestamp(6)        | NO   | PRI  | NULL    |       |
-| Txn_start_ts                  | bigint(20) unsigned | YES  |      | NULL    |       |
-| User                          | varchar(64)         | YES  |      | NULL    |       |
-| Host                          | varchar(64)         | YES  |      | NULL    |       |
-| Conn_ID                       | bigint(20) unsigned | YES  |      | NULL    |       |
-| Session_alias                 | varchar(64)         | YES  |      | NULL    |       |
-| Exec_retry_count              | bigint(20) unsigned | YES  |      | NULL    |       |
-| Exec_retry_time               | double              | YES  |      | NULL    |       |
-| Query_time                    | double              | YES  |      | NULL    |       |
-| Parse_time                    | double              | YES  |      | NULL    |       |
-| Compile_time                  | double              | YES  |      | NULL    |       |
-| Rewrite_time                  | double              | YES  |      | NULL    |       |
-| Preproc_subqueries            | bigint(20) unsigned | YES  |      | NULL    |       |
-| Preproc_subqueries_time       | double              | YES  |      | NULL    |       |
-| Optimize_time                 | double              | YES  |      | NULL    |       |
-| Wait_TS                       | double              | YES  |      | NULL    |       |
-| Prewrite_time                 | double              | YES  |      | NULL    |       |
-| Wait_prewrite_binlog_time     | double              | YES  |      | NULL    |       |
-| Commit_time                   | double              | YES  |      | NULL    |       |
-| Get_commit_ts_time            | double              | YES  |      | NULL    |       |
-| Commit_backoff_time           | double              | YES  |      | NULL    |       |
-| Backoff_types                 | varchar(64)         | YES  |      | NULL    |       |
-| Resolve_lock_time             | double              | YES  |      | NULL    |       |
-| Local_latch_wait_time         | double              | YES  |      | NULL    |       |
-| Write_keys                    | bigint(22)          | YES  |      | NULL    |       |
-| Write_size                    | bigint(22)          | YES  |      | NULL    |       |
-| Prewrite_region               | bigint(22)          | YES  |      | NULL    |       |
-| Txn_retry                     | bigint(22)          | YES  |      | NULL    |       |
-| Cop_time                      | double              | YES  |      | NULL    |       |
-| Process_time                  | double              | YES  |      | NULL    |       |
-| Wait_time                     | double              | YES  |      | NULL    |       |
-| Backoff_time                  | double              | YES  |      | NULL    |       |
-| LockKeys_time                 | double              | YES  |      | NULL    |       |
-| Request_count                 | bigint(20) unsigned | YES  |      | NULL    |       |
-| Total_keys                    | bigint(20) unsigned | YES  |      | NULL    |       |
-| Process_keys                  | bigint(20) unsigned | YES  |      | NULL    |       |
-| Rocksdb_delete_skipped_count  | bigint(20) unsigned | YES  |      | NULL    |       |
-| Rocksdb_key_skipped_count     | bigint(20) unsigned | YES  |      | NULL    |       |
-| Rocksdb_block_cache_hit_count | bigint(20) unsigned | YES  |      | NULL    |       |
-| Rocksdb_block_read_count      | bigint(20) unsigned | YES  |      | NULL    |       |
-| Rocksdb_block_read_byte       | bigint(20) unsigned | YES  |      | NULL    |       |
-| DB                            | varchar(64)         | YES  |      | NULL    |       |
-| Index_names                   | varchar(100)        | YES  |      | NULL    |       |
-| Is_internal                   | tinyint(1)          | YES  |      | NULL    |       |
-| Digest                        | varchar(64)         | YES  |      | NULL    |       |
-| Stats                         | varchar(512)        | YES  |      | NULL    |       |
-| Cop_proc_avg                  | double              | YES  |      | NULL    |       |
-| Cop_proc_p90                  | double              | YES  |      | NULL    |       |
-| Cop_proc_max                  | double              | YES  |      | NULL    |       |
-| Cop_proc_addr                 | varchar(64)         | YES  |      | NULL    |       |
-| Cop_wait_avg                  | double              | YES  |      | NULL    |       |
-| Cop_wait_p90                  | double              | YES  |      | NULL    |       |
-| Cop_wait_max                  | double              | YES  |      | NULL    |       |
-| Cop_wait_addr                 | varchar(64)         | YES  |      | NULL    |       |
-| Mem_max                       | bigint(20)          | YES  |      | NULL    |       |
-| Disk_max                      | bigint(20)          | YES  |      | NULL    |       |
-| KV_total                      | double              | YES  |      | NULL    |       |
-| PD_total                      | double              | YES  |      | NULL    |       |
-| Backoff_total                 | double              | YES  |      | NULL    |       |
-| Write_sql_response_total      | double              | YES  |      | NULL    |       |
-| Result_rows                   | bigint(22)          | YES  |      | NULL    |       |
-| Warnings                      | longtext            | YES  |      | NULL    |       |
-| Backoff_Detail                | varchar(4096)       | YES  |      | NULL    |       |
-| Prepared                      | tinyint(1)          | YES  |      | NULL    |       |
-| Succ                          | tinyint(1)          | YES  |      | NULL    |       |
-| IsExplicitTxn                 | tinyint(1)          | YES  |      | NULL    |       |
-| IsWriteCacheTable             | tinyint(1)          | YES  |      | NULL    |       |
-| Plan_from_cache               | tinyint(1)          | YES  |      | NULL    |       |
-| Plan_from_binding             | tinyint(1)          | YES  |      | NULL    |       |
-| Has_more_results              | tinyint(1)          | YES  |      | NULL    |       |
-| Resource_group                | varchar(64)         | YES  |      | NULL    |       |
-| Request_unit_read             | double              | YES  |      | NULL    |       |
-| Request_unit_write            | double              | YES  |      | NULL    |       |
-| Time_queued_by_rc             | double              | YES  |      | NULL    |       |
-| Tidb_cpu_time                 | double              | YES  |      | NULL    |       |
-| Tikv_cpu_time                 | double              | YES  |      | NULL    |       |
-| Plan                          | longtext            | YES  |      | NULL    |       |
-| Plan_digest                   | varchar(128)        | YES  |      | NULL    |       |
-| Binary_plan                   | longtext            | YES  |      | NULL    |       |
-| Prev_stmt                     | longtext            | YES  |      | NULL    |       |
-| Query                         | longtext            | YES  |      | NULL    |       |
-+-------------------------------+---------------------+------+------+---------+-------+
-79 rows in set (0.00 sec)
++--------------------------------------------+-----------------+------+------+---------+-------+
+| Field                                      | Type            | Null | Key  | Default | Extra |
++--------------------------------------------+-----------------+------+------+---------+-------+
+| Time                                       | timestamp(6)    | NO   | PRI  | NULL    |       |
+| Txn_start_ts                               | bigint unsigned | YES  |      | NULL    |       |
+| User                                       | varchar(64)     | YES  |      | NULL    |       |
+| Host                                       | varchar(64)     | YES  |      | NULL    |       |
+| Conn_ID                                    | bigint unsigned | YES  |      | NULL    |       |
+| Session_alias                              | varchar(64)     | YES  |      | NULL    |       |
+| Exec_retry_count                           | bigint unsigned | YES  |      | NULL    |       |
+| Exec_retry_time                            | double          | YES  |      | NULL    |       |
+| Query_time                                 | double          | YES  |      | NULL    |       |
+| Parse_time                                 | double          | YES  |      | NULL    |       |
+| Compile_time                               | double          | YES  |      | NULL    |       |
+| Rewrite_time                               | double          | YES  |      | NULL    |       |
+| Preproc_subqueries                         | bigint unsigned | YES  |      | NULL    |       |
+| Preproc_subqueries_time                    | double          | YES  |      | NULL    |       |
+| Optimize_time                              | double          | YES  |      | NULL    |       |
+| Wait_TS                                    | double          | YES  |      | NULL    |       |
+| Prewrite_time                              | double          | YES  |      | NULL    |       |
+| Wait_prewrite_binlog_time                  | double          | YES  |      | NULL    |       |
+| Commit_time                                | double          | YES  |      | NULL    |       |
+| Get_commit_ts_time                         | double          | YES  |      | NULL    |       |
+| Commit_backoff_time                        | double          | YES  |      | NULL    |       |
+| Backoff_types                              | varchar(64)     | YES  |      | NULL    |       |
+| Resolve_lock_time                          | double          | YES  |      | NULL    |       |
+| Local_latch_wait_time                      | double          | YES  |      | NULL    |       |
+| Write_keys                                 | bigint          | YES  |      | NULL    |       |
+| Write_size                                 | bigint          | YES  |      | NULL    |       |
+| Prewrite_region                            | bigint          | YES  |      | NULL    |       |
+| Txn_retry                                  | bigint          | YES  |      | NULL    |       |
+| Cop_time                                   | double          | YES  |      | NULL    |       |
+| Process_time                               | double          | YES  |      | NULL    |       |
+| Wait_time                                  | double          | YES  |      | NULL    |       |
+| Backoff_time                               | double          | YES  |      | NULL    |       |
+| LockKeys_time                              | double          | YES  |      | NULL    |       |
+| Request_count                              | bigint unsigned | YES  |      | NULL    |       |
+| Total_keys                                 | bigint unsigned | YES  |      | NULL    |       |
+| Process_keys                               | bigint unsigned | YES  |      | NULL    |       |
+| Rocksdb_delete_skipped_count               | bigint unsigned | YES  |      | NULL    |       |
+| Rocksdb_key_skipped_count                  | bigint unsigned | YES  |      | NULL    |       |
+| Rocksdb_block_cache_hit_count              | bigint unsigned | YES  |      | NULL    |       |
+| Rocksdb_block_read_count                   | bigint unsigned | YES  |      | NULL    |       |
+| Rocksdb_block_read_byte                    | bigint unsigned | YES  |      | NULL    |       |
+| DB                                         | varchar(64)     | YES  |      | NULL    |       |
+| Index_names                                | varchar(100)    | YES  |      | NULL    |       |
+| Is_internal                                | tinyint(1)      | YES  |      | NULL    |       |
+| Digest                                     | varchar(64)     | YES  |      | NULL    |       |
+| Stats                                      | varchar(512)    | YES  |      | NULL    |       |
+| Cop_proc_avg                               | double          | YES  |      | NULL    |       |
+| Cop_proc_p90                               | double          | YES  |      | NULL    |       |
+| Cop_proc_max                               | double          | YES  |      | NULL    |       |
+| Cop_proc_addr                              | varchar(64)     | YES  |      | NULL    |       |
+| Cop_wait_avg                               | double          | YES  |      | NULL    |       |
+| Cop_wait_p90                               | double          | YES  |      | NULL    |       |
+| Cop_wait_max                               | double          | YES  |      | NULL    |       |
+| Cop_wait_addr                              | varchar(64)     | YES  |      | NULL    |       |
+| Mem_max                                    | bigint          | YES  |      | NULL    |       |
+| Disk_max                                   | bigint          | YES  |      | NULL    |       |
+| KV_total                                   | double          | YES  |      | NULL    |       |
+| PD_total                                   | double          | YES  |      | NULL    |       |
+| Backoff_total                              | double          | YES  |      | NULL    |       |
+| Unpacked_bytes_sent_tikv_total             | bigint          | YES  |      | NULL    |       |
+| Unpacked_bytes_received_tikv_total         | bigint          | YES  |      | NULL    |       |
+| Unpacked_bytes_sent_tikv_cross_zone        | bigint          | YES  |      | NULL    |       |
+| Unpacked_bytes_received_tikv_cross_zone    | bigint          | YES  |      | NULL    |       |
+| Unpacked_bytes_sent_tiflash_total          | bigint          | YES  |      | NULL    |       |
+| Unpacked_bytes_received_tiflash_total      | bigint          | YES  |      | NULL    |       |
+| Unpacked_bytes_sent_tiflash_cross_zone     | bigint          | YES  |      | NULL    |       |
+| Unpacked_bytes_received_tiflash_cross_zone | bigint          | YES  |      | NULL    |       |
+| Write_sql_response_total                   | double          | YES  |      | NULL    |       |
+| Result_rows                                | bigint          | YES  |      | NULL    |       |
+| Warnings                                   | longtext        | YES  |      | NULL    |       |
+| Backoff_Detail                             | varchar(4096)   | YES  |      | NULL    |       |
+| Prepared                                   | tinyint(1)      | YES  |      | NULL    |       |
+| Succ                                       | tinyint(1)      | YES  |      | NULL    |       |
+| IsExplicitTxn                              | tinyint(1)      | YES  |      | NULL    |       |
+| IsWriteCacheTable                          | tinyint(1)      | YES  |      | NULL    |       |
+| Plan_from_cache                            | tinyint(1)      | YES  |      | NULL    |       |
+| Plan_from_binding                          | tinyint(1)      | YES  |      | NULL    |       |
+| Has_more_results                           | tinyint(1)      | YES  |      | NULL    |       |
+| Resource_group                             | varchar(64)     | YES  |      | NULL    |       |
+| Request_unit_read                          | double          | YES  |      | NULL    |       |
+| Request_unit_write                         | double          | YES  |      | NULL    |       |
+| Time_queued_by_rc                          | double          | YES  |      | NULL    |       |
+| Tidb_cpu_time                              | double          | YES  |      | NULL    |       |
+| Tikv_cpu_time                              | double          | YES  |      | NULL    |       |
+| Plan                                       | longtext        | YES  |      | NULL    |       |
+| Plan_digest                                | varchar(128)    | YES  |      | NULL    |       |
+| Binary_plan                                | longtext        | YES  |      | NULL    |       |
+| Prev_stmt                                  | longtext        | YES  |      | NULL    |       |
+| Query                                      | longtext        | YES  |      | NULL    |       |
++--------------------------------------------+-----------------+------+------+---------+-------+
+89 rows in set (0.00 sec)
 ```
 
 ## CLUSTER_SLOW_QUERY table
@@ -114,93 +122,101 @@ DESC CLUSTER_SLOW_QUERY;
 输出结果示例如下：
 
 ```sql
-+-------------------------------+---------------------+------+------+---------+-------+
-| Field                         | Type                | Null | Key  | Default | Extra |
-+-------------------------------+---------------------+------+------+---------+-------+
-| INSTANCE                      | varchar(64)         | YES  |      | NULL    |       |
-| Time                          | timestamp(6)        | NO   | PRI  | NULL    |       |
-| Txn_start_ts                  | bigint(20) unsigned | YES  |      | NULL    |       |
-| User                          | varchar(64)         | YES  |      | NULL    |       |
-| Host                          | varchar(64)         | YES  |      | NULL    |       |
-| Conn_ID                       | bigint(20) unsigned | YES  |      | NULL    |       |
-| Session_alias                 | varchar(64)         | YES  |      | NULL    |       |
-| Exec_retry_count              | bigint(20) unsigned | YES  |      | NULL    |       |
-| Exec_retry_time               | double              | YES  |      | NULL    |       |
-| Query_time                    | double              | YES  |      | NULL    |       |
-| Parse_time                    | double              | YES  |      | NULL    |       |
-| Compile_time                  | double              | YES  |      | NULL    |       |
-| Rewrite_time                  | double              | YES  |      | NULL    |       |
-| Preproc_subqueries            | bigint(20) unsigned | YES  |      | NULL    |       |
-| Preproc_subqueries_time       | double              | YES  |      | NULL    |       |
-| Optimize_time                 | double              | YES  |      | NULL    |       |
-| Wait_TS                       | double              | YES  |      | NULL    |       |
-| Prewrite_time                 | double              | YES  |      | NULL    |       |
-| Wait_prewrite_binlog_time     | double              | YES  |      | NULL    |       |
-| Commit_time                   | double              | YES  |      | NULL    |       |
-| Get_commit_ts_time            | double              | YES  |      | NULL    |       |
-| Commit_backoff_time           | double              | YES  |      | NULL    |       |
-| Backoff_types                 | varchar(64)         | YES  |      | NULL    |       |
-| Resolve_lock_time             | double              | YES  |      | NULL    |       |
-| Local_latch_wait_time         | double              | YES  |      | NULL    |       |
-| Write_keys                    | bigint(22)          | YES  |      | NULL    |       |
-| Write_size                    | bigint(22)          | YES  |      | NULL    |       |
-| Prewrite_region               | bigint(22)          | YES  |      | NULL    |       |
-| Txn_retry                     | bigint(22)          | YES  |      | NULL    |       |
-| Cop_time                      | double              | YES  |      | NULL    |       |
-| Process_time                  | double              | YES  |      | NULL    |       |
-| Wait_time                     | double              | YES  |      | NULL    |       |
-| Backoff_time                  | double              | YES  |      | NULL    |       |
-| LockKeys_time                 | double              | YES  |      | NULL    |       |
-| Request_count                 | bigint(20) unsigned | YES  |      | NULL    |       |
-| Total_keys                    | bigint(20) unsigned | YES  |      | NULL    |       |
-| Process_keys                  | bigint(20) unsigned | YES  |      | NULL    |       |
-| Rocksdb_delete_skipped_count  | bigint(20) unsigned | YES  |      | NULL    |       |
-| Rocksdb_key_skipped_count     | bigint(20) unsigned | YES  |      | NULL    |       |
-| Rocksdb_block_cache_hit_count | bigint(20) unsigned | YES  |      | NULL    |       |
-| Rocksdb_block_read_count      | bigint(20) unsigned | YES  |      | NULL    |       |
-| Rocksdb_block_read_byte       | bigint(20) unsigned | YES  |      | NULL    |       |
-| DB                            | varchar(64)         | YES  |      | NULL    |       |
-| Index_names                   | varchar(100)        | YES  |      | NULL    |       |
-| Is_internal                   | tinyint(1)          | YES  |      | NULL    |       |
-| Digest                        | varchar(64)         | YES  |      | NULL    |       |
-| Stats                         | varchar(512)        | YES  |      | NULL    |       |
-| Cop_proc_avg                  | double              | YES  |      | NULL    |       |
-| Cop_proc_p90                  | double              | YES  |      | NULL    |       |
-| Cop_proc_max                  | double              | YES  |      | NULL    |       |
-| Cop_proc_addr                 | varchar(64)         | YES  |      | NULL    |       |
-| Cop_wait_avg                  | double              | YES  |      | NULL    |       |
-| Cop_wait_p90                  | double              | YES  |      | NULL    |       |
-| Cop_wait_max                  | double              | YES  |      | NULL    |       |
-| Cop_wait_addr                 | varchar(64)         | YES  |      | NULL    |       |
-| Mem_max                       | bigint(20)          | YES  |      | NULL    |       |
-| Disk_max                      | bigint(20)          | YES  |      | NULL    |       |
-| KV_total                      | double              | YES  |      | NULL    |       |
-| PD_total                      | double              | YES  |      | NULL    |       |
-| Backoff_total                 | double              | YES  |      | NULL    |       |
-| Write_sql_response_total      | double              | YES  |      | NULL    |       |
-| Result_rows                   | bigint(22)          | YES  |      | NULL    |       |
-| Warnings                      | longtext            | YES  |      | NULL    |       |
-| Backoff_Detail                | varchar(4096)       | YES  |      | NULL    |       |
-| Prepared                      | tinyint(1)          | YES  |      | NULL    |       |
-| Succ                          | tinyint(1)          | YES  |      | NULL    |       |
-| IsExplicitTxn                 | tinyint(1)          | YES  |      | NULL    |       |
-| IsWriteCacheTable             | tinyint(1)          | YES  |      | NULL    |       |
-| Plan_from_cache               | tinyint(1)          | YES  |      | NULL    |       |
-| Plan_from_binding             | tinyint(1)          | YES  |      | NULL    |       |
-| Has_more_results              | tinyint(1)          | YES  |      | NULL    |       |
-| Resource_group                | varchar(64)         | YES  |      | NULL    |       |
-| Request_unit_read             | double              | YES  |      | NULL    |       |
-| Request_unit_write            | double              | YES  |      | NULL    |       |
-| Time_queued_by_rc             | double              | YES  |      | NULL    |       |
-| Tidb_cpu_time                 | double              | YES  |      | NULL    |       |
-| Tikv_cpu_time                 | double              | YES  |      | NULL    |       |
-| Plan                          | longtext            | YES  |      | NULL    |       |
-| Plan_digest                   | varchar(128)        | YES  |      | NULL    |       |
-| Binary_plan                   | longtext            | YES  |      | NULL    |       |
-| Prev_stmt                     | longtext            | YES  |      | NULL    |       |
-| Query                         | longtext            | YES  |      | NULL    |       |
-+-------------------------------+---------------------+------+------+---------+-------+
-80 rows in set (0.00 sec)
++--------------------------------------------+-----------------+------+------+---------+-------+
+| Field                                      | Type            | Null | Key  | Default | Extra |
++--------------------------------------------+-----------------+------+------+---------+-------+
+| INSTANCE                                   | varchar(64)     | YES  |      | NULL    |       |
+| Time                                       | timestamp(6)    | NO   | PRI  | NULL    |       |
+| Txn_start_ts                               | bigint unsigned | YES  |      | NULL    |       |
+| User                                       | varchar(64)     | YES  |      | NULL    |       |
+| Host                                       | varchar(64)     | YES  |      | NULL    |       |
+| Conn_ID                                    | bigint unsigned | YES  |      | NULL    |       |
+| Session_alias                              | varchar(64)     | YES  |      | NULL    |       |
+| Exec_retry_count                           | bigint unsigned | YES  |      | NULL    |       |
+| Exec_retry_time                            | double          | YES  |      | NULL    |       |
+| Query_time                                 | double          | YES  |      | NULL    |       |
+| Parse_time                                 | double          | YES  |      | NULL    |       |
+| Compile_time                               | double          | YES  |      | NULL    |       |
+| Rewrite_time                               | double          | YES  |      | NULL    |       |
+| Preproc_subqueries                         | bigint unsigned | YES  |      | NULL    |       |
+| Preproc_subqueries_time                    | double          | YES  |      | NULL    |       |
+| Optimize_time                              | double          | YES  |      | NULL    |       |
+| Wait_TS                                    | double          | YES  |      | NULL    |       |
+| Prewrite_time                              | double          | YES  |      | NULL    |       |
+| Wait_prewrite_binlog_time                  | double          | YES  |      | NULL    |       |
+| Commit_time                                | double          | YES  |      | NULL    |       |
+| Get_commit_ts_time                         | double          | YES  |      | NULL    |       |
+| Commit_backoff_time                        | double          | YES  |      | NULL    |       |
+| Backoff_types                              | varchar(64)     | YES  |      | NULL    |       |
+| Resolve_lock_time                          | double          | YES  |      | NULL    |       |
+| Local_latch_wait_time                      | double          | YES  |      | NULL    |       |
+| Write_keys                                 | bigint          | YES  |      | NULL    |       |
+| Write_size                                 | bigint          | YES  |      | NULL    |       |
+| Prewrite_region                            | bigint          | YES  |      | NULL    |       |
+| Txn_retry                                  | bigint          | YES  |      | NULL    |       |
+| Cop_time                                   | double          | YES  |      | NULL    |       |
+| Process_time                               | double          | YES  |      | NULL    |       |
+| Wait_time                                  | double          | YES  |      | NULL    |       |
+| Backoff_time                               | double          | YES  |      | NULL    |       |
+| LockKeys_time                              | double          | YES  |      | NULL    |       |
+| Request_count                              | bigint unsigned | YES  |      | NULL    |       |
+| Total_keys                                 | bigint unsigned | YES  |      | NULL    |       |
+| Process_keys                               | bigint unsigned | YES  |      | NULL    |       |
+| Rocksdb_delete_skipped_count               | bigint unsigned | YES  |      | NULL    |       |
+| Rocksdb_key_skipped_count                  | bigint unsigned | YES  |      | NULL    |       |
+| Rocksdb_block_cache_hit_count              | bigint unsigned | YES  |      | NULL    |       |
+| Rocksdb_block_read_count                   | bigint unsigned | YES  |      | NULL    |       |
+| Rocksdb_block_read_byte                    | bigint unsigned | YES  |      | NULL    |       |
+| DB                                         | varchar(64)     | YES  |      | NULL    |       |
+| Index_names                                | varchar(100)    | YES  |      | NULL    |       |
+| Is_internal                                | tinyint(1)      | YES  |      | NULL    |       |
+| Digest                                     | varchar(64)     | YES  |      | NULL    |       |
+| Stats                                      | varchar(512)    | YES  |      | NULL    |       |
+| Cop_proc_avg                               | double          | YES  |      | NULL    |       |
+| Cop_proc_p90                               | double          | YES  |      | NULL    |       |
+| Cop_proc_max                               | double          | YES  |      | NULL    |       |
+| Cop_proc_addr                              | varchar(64)     | YES  |      | NULL    |       |
+| Cop_wait_avg                               | double          | YES  |      | NULL    |       |
+| Cop_wait_p90                               | double          | YES  |      | NULL    |       |
+| Cop_wait_max                               | double          | YES  |      | NULL    |       |
+| Cop_wait_addr                              | varchar(64)     | YES  |      | NULL    |       |
+| Mem_max                                    | bigint          | YES  |      | NULL    |       |
+| Disk_max                                   | bigint          | YES  |      | NULL    |       |
+| KV_total                                   | double          | YES  |      | NULL    |       |
+| PD_total                                   | double          | YES  |      | NULL    |       |
+| Backoff_total                              | double          | YES  |      | NULL    |       |
+| Unpacked_bytes_sent_tikv_total             | bigint          | YES  |      | NULL    |       |
+| Unpacked_bytes_received_tikv_total         | bigint          | YES  |      | NULL    |       |
+| Unpacked_bytes_sent_tikv_cross_zone        | bigint          | YES  |      | NULL    |       |
+| Unpacked_bytes_received_tikv_cross_zone    | bigint          | YES  |      | NULL    |       |
+| Unpacked_bytes_sent_tiflash_total          | bigint          | YES  |      | NULL    |       |
+| Unpacked_bytes_received_tiflash_total      | bigint          | YES  |      | NULL    |       |
+| Unpacked_bytes_sent_tiflash_cross_zone     | bigint          | YES  |      | NULL    |       |
+| Unpacked_bytes_received_tiflash_cross_zone | bigint          | YES  |      | NULL    |       |
+| Write_sql_response_total                   | double          | YES  |      | NULL    |       |
+| Result_rows                                | bigint          | YES  |      | NULL    |       |
+| Warnings                                   | longtext        | YES  |      | NULL    |       |
+| Backoff_Detail                             | varchar(4096)   | YES  |      | NULL    |       |
+| Prepared                                   | tinyint(1)      | YES  |      | NULL    |       |
+| Succ                                       | tinyint(1)      | YES  |      | NULL    |       |
+| IsExplicitTxn                              | tinyint(1)      | YES  |      | NULL    |       |
+| IsWriteCacheTable                          | tinyint(1)      | YES  |      | NULL    |       |
+| Plan_from_cache                            | tinyint(1)      | YES  |      | NULL    |       |
+| Plan_from_binding                          | tinyint(1)      | YES  |      | NULL    |       |
+| Has_more_results                           | tinyint(1)      | YES  |      | NULL    |       |
+| Resource_group                             | varchar(64)     | YES  |      | NULL    |       |
+| Request_unit_read                          | double          | YES  |      | NULL    |       |
+| Request_unit_write                         | double          | YES  |      | NULL    |       |
+| Time_queued_by_rc                          | double          | YES  |      | NULL    |       |
+| Tidb_cpu_time                              | double          | YES  |      | NULL    |       |
+| Tikv_cpu_time                              | double          | YES  |      | NULL    |       |
+| Plan                                       | longtext        | YES  |      | NULL    |       |
+| Plan_digest                                | varchar(128)    | YES  |      | NULL    |       |
+| Binary_plan                                | longtext        | YES  |      | NULL    |       |
+| Prev_stmt                                  | longtext        | YES  |      | NULL    |       |
+| Query                                      | longtext        | YES  |      | NULL    |       |
++--------------------------------------------+-----------------+------+------+---------+-------+
+90 rows in set (0.00 sec)
 ```
 
 查询集群系统表时，TiDB 也会将相关计算下推给其他节点执行，而不是把所有节点的数据都取回来，可以查看执行计划，如下：
