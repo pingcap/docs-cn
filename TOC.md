@@ -178,10 +178,11 @@
     - [日志过滤器](/ticdc/ticdc-filter.md)
     - [DDL 同步](/ticdc/ticdc-ddl.md)
     - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
-  - [TiCDC New Arch 介绍](/ticdc/ticdc-new-arch.md)
+  - [TiCDC 新架构介绍](/ticdc/ticdc-new-arch.md)
   - 监控告警
     - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
     - [详细监控指标](/ticdc/monitor-ticdc.md)
+    - [TiCDC 新架构监控指标](/ticdc/ticdc-new-arch-monitor.md)
     - [报警规则](/ticdc/ticdc-alert-rules.md)
   - 数据集成场景
     - [数据集成概述](/integration-overview.md)
