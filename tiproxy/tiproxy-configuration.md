@@ -129,6 +129,13 @@ TiProxy 负载均衡策略的配置。
 + 可选值：`resource`、`location`、`connection`
 + 指定负载均衡策略。各个可选值的含义请参阅 [TiProxy 负载均衡策略](/tiproxy/tiproxy-load-balance.md#负载均衡策略配置)。
 
+### `enable-traffic-replay`
+
++ 默认值：`true`
++ 支持热加载：是
++ 可选值：`true`、`false`
++ 指定是否开启[流量回放](/tiproxy/tiproxy-traffic-replay.md)功能。如果为 `false`，则在流量捕获和流量回放时会报错。
+
 ### ha
 
 TiProxy 的高可用配置。
@@ -232,6 +239,7 @@ TLS 对象字段：
 + `ca`：指定 CA
 + `cert`：指定证书
 + `key`：指定私钥
++ `cert-allowed-cn`：当其他组件通过 TLS 连接 TiProxy 时，TiProxy 可通过校验调用者证书中的 `Common Name` 以防止非法访问者访问。该配置项指定了合法的调用者的 `Common Name` 列表。设置了该配置项后，该 TLS 对象必须要开启 TLS，否则该配置项不生效。关于组件间认证调用者身份的详细信息，请参见[认证组件调用者身份](/enable-tls-between-components.md#认证组件调用者身份)。
 + `auto-certs`：主要用于测试。如果没有指定证书或密钥，则会生成证书。
 + `skip-ca`：在客户端对象上跳过使用 CA 验证证书，或在服务器对象上跳过服务器端验证。
 + `min-tls-version`：设置最低 TLS 版本。可选值：`1.0`、`1.1`、`1.2` 和 `1.3`。默认为 `1.2`，代表支持 TLSv1.2 及以上版本。
@@ -244,18 +252,12 @@ TLS 对象字段：
 
 - 必须设置 `ca` 或 `skip-ca` 来跳过验证服务器证书。
 - 可选：可以设置 `cert` 或 `key` 来通过服务器端客户端验证。
-- 无用字段：`auto-certs`。
+- 无用字段：`cert-allowed-cn`，`auto-certs`，`rsa-key-size`，`autocert-expire-duration`。
 
 对服务器 TLS 对象：
 
 - 设置 `cert`、`key` 或 `auto-certs` 后支持 TLS 连接，否则不支持 TLS 连接。
 - 可选：如果 `ca` 不为空，则启用服务器端的客户端验证。客户端必须提供证书。如果 `skip-ca` 为 `true` 且 `ca` 不为空，则服务器仅在客户端提供证书时才验证客户端证书。
-
-#### `cert-allowed-cn`
-
-+ 默认值：`""`
-+ 支持热加载：是
-+ 当其他组件通过 TLS 连接 TiProxy 的 [HTTP 状态端口](#api)时，TiProxy 可通过校验调用者证书中的 `Common Name` 以防止非法访问者访问。该配置项指定了合法的调用者的 `Common Name` 列表。设置了该配置项后，`server-http-tls` 必须要开启 TLS，否则该配置项不生效。关于组件间认证调用者身份的详细信息，请参见[认证组件调用者身份](/enable-tls-between-components.md#认证组件调用者身份)。
 
 #### `cluster-tls`
 

@@ -205,7 +205,8 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert-allowed-cn = ["tiproxy", "tidb", "test-client", "prometheus"]
+        [server-http-tls]
+        cert-allowed-cn = ["tiproxy", "tidb", "test-client", "prometheus"]
     ```
 
 ## 证书重新加载
