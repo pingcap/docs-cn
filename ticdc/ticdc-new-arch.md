@@ -56,6 +56,8 @@ cdc_servers:
       newarch: true
 ```
 
+NOTE: 在使用 TiCDC 老架构时，请勿在配置文件中添加 `newarch` 配置项。`newarch` 仅用于新架构，不添加 `newarch` 配置项默认使用老架构。如果在 TiCDC 老架构的配置文件中添加 newarch，可能会导致解析失败。
+
 其他详细操作，请参考[使用 TiUP 部署包含 TiCDC 组件的全新 TiDB 集群](/ticdc/deploy-ticdc.md#使用-tiup-部署包含-ticdc-组件的全新-tidb-集群)
 
 ### 使用 TiUP 在原有 TiDB 集群全新部署启用新架构的 TiCDC 组件
