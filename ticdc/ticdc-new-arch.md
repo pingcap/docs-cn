@@ -17,9 +17,9 @@ TiCDC 新架构通过重新设计核心组件和优化数据处理流程，显�
 
 ![TiCDC New Architecture](/media/ticdc/ticdc-new-architecture-1.jpg)
 
-TiCDC 新架构由 Log Service 和 Downstream Adapter 两大核心组件构成。其中，Log Service 作为核心数据服务层，主要负责实时拉取上游 TiDB 集群的行变更和 DDL 变更等信息，并将其持久化存储在本地。同时，它还负责响应 Downstream Adapter 的数据请求，定时将 DML 和 DDL 数据合并排序并推送给相关同步任务。Downstream Adapter 作为下游数据同步适配层，主要负责处理用户发起的 Changefeed 运维操作，调度生成相关同步任务，从 Log Service 获取数据并同步至下游系统。
+TiCDC 新架构由 Log Service 和 Downstream Adapter 两大核心组件构成。其中，Log Service 作为核心数据服务层，主要负责实时拉取上游 TiDB 集群的行变更和 DDL 变更等信息，并将其持久化存储在本地。同时，它还负责响应 Downstream Adapter 的数据请求，定时将 DML 和 DDL 数据合并排序并推送至 Downstream Adapter。Downstream Adapter 作为下游数据同步适配层，主要负责处理用户发起的 Changefeed 运维操作，调度生成相关同步任务，从 Log Service 获取数据并同步至下游系统。
 
-TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分，显著提升了系统的可扩展性、可靠性和灵活性。Log Service 作为有状态组件，专注于数据的获取、排序和存储，通过与 Changefeed 业务逻辑的解耦，实现了数据在多个 Changefeed 间的共享，有效提高了资源利用率，降低了系统开销。 Downstream Adapter 作为无状态组件，采用轻量级调度机制，支持任务在不同实例间的快速迁移，并根据负载变化灵活调整同步任务的拆分与合并，确保在各种场景下都能实现低延迟的数据同步。此外，这种架构设计为后续演进提供了更大的灵活性。Log Service 和 Downstream Adapter 可以部署在不同的进程中，使得系统能够根据各模块的负载特征进行独立扩容，避免资源浪费，进一步提升资源利用率。
+TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分，显著提升了系统的可扩展性、可靠性和灵活性。Log Service 作为有状态组件，专注于数据的获取、排序和存储，通过与 Changefeed 业务逻辑的解耦，实现了数据在多个 Changefeed 间的共享，有效提高了资源利用率，降低了系统开销。 Downstream Adapter 作为无状态组件，采用轻量级调度机制，支持任务在不同实例间的快速迁移，并根据负载变化灵活调整同步任务的拆分与合并，确保在各种场景下都能实现低延迟的数据同步。此外，这种架构设计为后续演进提供了更大的灵活性，Log Service 和 Downstream Adapter 可以部署在不同的进程中，使得系统能够根据负载特征进行独立扩容，避免资源浪费，进一步提升资源利用率。
 
 ## 使用指南
 
