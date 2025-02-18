@@ -255,6 +255,16 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 - `resolved-ts` 代表当前 Processor 中已经排序数据的最大 TSO。
 - `checkpoint-ts` 代表当前 Processor 已经成功写入下游的事务的最大 TSO。
 
+## 安全机制
+
+从 v9.0.0 开始，TiCDC 新增安全机制，防止用户误将同一个 TiDB 集群同时作为上游和下游进行数据同步。
+
+在创建、更新、恢复 changefeed 时，TiCDC 会自动检查上游和下游 TiDB 集群是否相同。这一检查基于 **Cluster ID**（v9.0.0 新增的 TiDB 系统值，用户可通过在 TiDB 中执行 `SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME = 'cluster_id';` 来查看）进行验证，Cluster ID 是 TiDB 集群的唯一标识。TiCDC 通过 PD 获取上游 Cluster ID，并通过 TiDB 的 `mysql.tidb` 系统表查询下游 Cluster ID。如果两者匹配，TiCDC 将拒绝创建 changefeed，从而避免循环复制或数据异常。
+
+对于非 TiDB 作为下游的情况，例如 MySQL，TiCDC 会自动跳过此检查，确保兼容性。而对于早期版本的 TiDB，如果无法获取 Cluster ID，TiCDC 仍然允许创建 changefeed，不影响已有功能。
+
+该功能确保数据同步过程更加安全，防止因误配置导致的潜在问题。用户无需额外配置，该检查将在操作 changefeed 时自动执行。
+
 ## 同步启用了 TiDB 新的 Collation 框架的表
 
 从 v4.0.15、v5.0.4、v5.1.1 和 v5.2.0 开始，TiCDC 支持同步启用了 TiDB [新的 Collation 框架](/character-set-and-collation.md#新框架下的排序规则支持)的表。
