@@ -308,7 +308,7 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
     Error: [CDC:ErrSameUpstreamDownstream]TiCDC does not support updating a changefeed with the same TiDB cluster as both the source and the target for the changefeed.
     ```
 
-这些错误信息表明 TiCDC 已阻止了不合理的 changefeed 配置，确保数据同步不会回环复制到自身。如果遇到此类报错，请检查 `sink-uri` 是否正确指向了一个不同的下游集群。
+这类错误信息中都包含错误码 `CDC:ErrSameUpstreamDownstream`，表明你正在操作的 changefeed 的上下游属于同一个集群，如果遇到此类报错，请检查 changefeed 的 `sink-uri` 参数是否正确。
 
 ## 同步启用了 TiDB 新的 Collation 框架的表
 
