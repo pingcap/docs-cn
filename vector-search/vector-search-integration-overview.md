@@ -40,32 +40,9 @@ TiDB 向量搜索支持存储高达 16383 维的向量，可适应大多数嵌�
 
 下表列出了支持的 ORM 库和相应的使用教程：
 
-<table>
-  <tr>
-    <th>语言</th>
-    <th>ORM/客户端</th>
-    <th>安装说明</th>
-    <th>教程</th>
-  </tr>
-  <tr>
-    <td rowspan="4">Python</td>
-    <td>TiDB Vector Client</td>
-    <td><code>pip install tidb-vector[client]</code></td>
-    <td><a href="/vector-search-get-started-using-python.md">使用 Python 开始向量搜索</a></td>
-  </tr>
-  <tr>
-    <td>SQLAlchemy</td>
-    <td><code>pip install tidb-vector</code></td>
-    <td><a href="/vector-search-integrate-with-sqlalchemy.md">在 SQLAlchemy 中使用 TiDB 向量搜索</a></td>
-  </tr>
-  <tr>
-    <td>peewee</td>
-    <td><code>pip install tidb-vector</code></td>
-    <td><a href="/vector-search-integrate-with-peewee.md">在 peewee 中使用 TiDB 向量搜索</a></td>
-  </tr>
-  <tr>
-    <td>Django</td>
-    <td><code>pip install django-tidb[vector]</code></td>
-    <td><a href="/vector-search-integrate-with-django-orm.md">在 Django 中使用 TiDB 向量搜索</a></td>
-  </tr>
-</table>
+| 语言 | ORM/客户端 | 安装说明 | 教程 |
+|----------|--------------------|-----------------------------------|----------|
+| Python   | TiDB Vector Client | `pip install tidb-vector[client]` | [使用 Python 开始向量搜索](/vector-search/vector-search-get-started-using-python.md) |
+| Python   | SQLAlchemy         | `pip install tidb-vector`         | [在 SQLAlchemy 中使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-sqlalchemy.md)
+| Python   | peewee             | `pip install tidb-vector`         | [在 peewee 中使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-peewee.md) |
+| Python   | Django             | `pip install django-tidb[vector]` | [在 Django 中使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-django-orm.md)
