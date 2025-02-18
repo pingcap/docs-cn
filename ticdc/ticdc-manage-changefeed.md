@@ -262,7 +262,7 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 在执行创建、更新或恢复 changefeed 操作时，TiCDC 会自动对上游和下游的 TiDB 集群进行检查。一旦发现上下游集群相同，TiCDC 会拒绝创建 changefeed，以此防止出现循环复制问题以及数据异常情况。
 这一检查基于 **Cluster ID**（v9.0.0 新增的 TiDB 系统值，用户可通过在 TiDB 中执行 `SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME = 'cluster_id';` 来查看）进行验证，Cluster ID 是 TiDB 集群的唯一标识。
 
-对于非 TiDB 作为下游的情况，例如 MySQL，TiCDC 会自动跳过此检查，确保兼容性。而对于早期版本的 TiDB，如果无法获取 Cluster ID，TiCDC 仍然允许创建 changefeed，不影响已有功能。
+对于非 TiDB 作为下游的情况，例如 MySQL和 Kafka 等，TiCDC 会自动跳过此检查，确保兼容性。而针对早期版本的 TiDB，若系统无法获取 Cluster ID，TiCDC 仍然允许用户创建 changefeed，从而不影响已有功能的使用。不过，在这种情况下，由于缺乏 Cluster ID 这一关键信息用于检查，需要用户自行仔细确认配置无误，以避免可能出现的异常情况。
 
 该功能确保数据同步过程更加安全，防止因误配置导致的潜在问题。用户无需额外配置，该检查将在操作 changefeed 时自动执行。
 
