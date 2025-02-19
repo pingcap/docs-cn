@@ -203,7 +203,7 @@ tiup cluster upgrade mycluster v8.2.0
 
 ### 启动 user@.service 时出现以下错误：`Trying to run as user instance, but $XDG_RUNTIME_DIR is not set.`
 
-该错误的原因可能是因为 `/etc/pam.d/system-auth.ued` 文件中缺少 `pam_systemd.so`。
+该错误的原因可能是 `/etc/pam.d/system-auth.ued` 文件中缺少 `pam_systemd.so`。
 
 要解决该问题，你可以使用以下命令检查 `/etc/pam.d/system-auth.ued` 文件是否已包含 `pam_systemd.so` 模块的配置。如果没有，则将 `session optional pam_systemd.so` 附加到文件末尾。
 
