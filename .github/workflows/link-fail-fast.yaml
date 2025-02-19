@@ -19,9 +19,9 @@ jobs:
 
       - name: Link Checker
         if: ${{ steps.changed-files.outputs.all_changed_files }}
-        uses: lycheeverse/lychee-action@v1.6.1
+        uses: lycheeverse/lychee-action@v2.3.0
         with:
           fail: true
-          args: -E --exclude-mail -i -n -t 45 -- '${{ steps.changed-files.outputs.all_changed_files }}'
+          args: --root-dir $(pwd) -E -i -n -t 45 -- '${{ steps.changed-files.outputs.all_changed_files }}'
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
