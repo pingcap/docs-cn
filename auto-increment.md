@@ -426,7 +426,7 @@ INSERT INTO t VALUES (); -- Returns ID 30001
 
 > **注意：**
 >
-> `AUTO_ID_CACHE 1` 的行为和性能在不同 TiDB 版本中有所演进：
+> `AUTO_ID_CACHE 1` 的行为和性能在不同 TiDB 版本中的演进如下：
 >
 > - v6.4.0 之前：每次 ID 分配需通过 TiKV 事务完成，会影响性能。
 > - v6.4.0 起：引入集中式分配服务，ID 分配转为内存操作，性能显著提升。
