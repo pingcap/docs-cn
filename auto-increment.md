@@ -409,7 +409,7 @@ INSERT INTO t VALUES (); -- Returns ID 3
 INSERT INTO t VALUES (); -- Might return ID 5
 ```
 
-而使用默认缓存（`AUTO_ID_CACHE 0`）时可能出现较大间隙：
+相比之下，使用默认缓存（`AUTO_ID_CACHE 0`）时可能出现较大间隙：
 
 ```sql
 INSERT INTO t VALUES (); -- Returns ID 1
