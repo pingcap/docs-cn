@@ -149,15 +149,15 @@ SELECT * FROM tiproxy_traffic_replay.fail LIMIT 1\G
 
 ```
 *************************** 1. row ***************************
-    replay_start_time: 2024-10-17 13:05:03
-            cmd_type: StmtExecute
-                digest: 89c5c505772b8b7e8d5d1eb49f4d47ed914daa2663ed24a85f762daa3cdff43c
+  replay_start_time: 2024-10-17 13:05:03
+           cmd_type: StmtExecute
+             digest: 89c5c505772b8b7e8d5d1eb49f4d47ed914daa2663ed24a85f762daa3cdff43c
         sample_stmt: INSERT INTO new_order (no_o_id, no_d_id, no_w_id) VALUES (?, ?, ?) params=[3077 6 1]
-        sample_err_msg: ERROR 1062 (23000): Duplicate entry '1-6-3077' for key 'new_order.PRIMARY'
-        sample_conn_id: 1356
+     sample_err_msg: ERROR 1062 (23000): Duplicate entry '1-6-3077' for key 'new_order.PRIMARY'
+     sample_conn_id: 1356
 sample_capture_time: 2024-10-17 12:59:15
-    sample_replay_time: 2024-10-17 13:05:05
-                count: 4
+ sample_replay_time: 2024-10-17 13:05:05
+              count: 4
 ```
 
 `other_errors` 表存储其他未预期错误，例如网络错误、连接数据库错误。字段说明如下：
@@ -176,11 +176,11 @@ SELECT * FROM tiproxy_traffic_replay.other_errors LIMIT 1\G
 
 ```
 *************************** 1. row ***************************
-    replay_start_time: 2024-10-17 12:57:35
-            err_type: failed to read the connection: EOF
+ replay_start_time: 2024-10-17 12:57:35
+          err_type: failed to read the connection: EOF
     sample_err_msg: this is an error from the backend connection: failed to read the connection: EOF
 sample_replay_time: 2024-10-17 12:57:39
-                count: 1
+             count: 1
 ```
 
 > **注意：**
@@ -299,7 +299,7 @@ tiproxyctl traffic cancel --host 10.0.1.10 --port 3080
 
 - TiProxy 仅支持回放 TiProxy 捕获的流量文件，不支持其他文件格式，因此生产集群必须先使用 TiProxy 捕获流量。
 - 不支持回放 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 语句。
-- 为安全原因，以下语句和命令不会被捕获和回放：
+- 为安全原因，以下语句不会被捕获和回放：
 
     - `CREATE USER` 语句
     - `ALTER USER` 语句
