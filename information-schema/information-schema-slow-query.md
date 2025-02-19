@@ -100,7 +100,7 @@ DESC slow_query;
 | Prev_stmt                     | longtext            | YES  |      | NULL    |       |
 | Query                         | longtext            | YES  |      | NULL    |       |
 +-------------------------------+---------------------+------+------+---------+-------+
-79 rows in set (0.00 sec)
+81 rows in set (0.00 sec)
 ```
 
 ## CLUSTER_SLOW_QUERY table
@@ -200,7 +200,7 @@ DESC CLUSTER_SLOW_QUERY;
 | Prev_stmt                     | longtext            | YES  |      | NULL    |       |
 | Query                         | longtext            | YES  |      | NULL    |       |
 +-------------------------------+---------------------+------+------+---------+-------+
-80 rows in set (0.00 sec)
+82 rows in set (0.00 sec)
 ```
 
 查询集群系统表时，TiDB 也会将相关计算下推给其他节点执行，而不是把所有节点的数据都取回来，可以查看执行计划，如下：
