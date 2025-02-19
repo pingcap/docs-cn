@@ -267,48 +267,21 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 
 ### 可能的错误示例
 
-如果 TiCDC 检测到上游和下游是同一个 TiDB 集群，执行创建、更新或恢复 changefeed 操作时会报错。以下是一些典型的错误信息示例：
+如果 TiCDC 检测到上游和下游是同一个 TiDB 集群，执行创建、更新或恢复 changefeed 操作时会报错。以下是一个典型的错误信息示例：
 
-1. 若使用 CLI 命令创建 Changefeed 时，上下游为同一个集群
+若使用 CLI 命令创建 Changefeed 时，上下游为同一个集群：
 
-    ```
-    cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:@127.0.0.1:8300/" --changefeed-id="create-cmd"
-    ```
+```
+cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:@127.0.0.1:8300/" --changefeed-id="create-cmd"
+```
 
-    错误信息：
+则会出现报错信息：
 
-    ```
-    Error: [CDC:ErrSameUpstreamDownstream]TiCDC does not support creating a changefeed with the same TiDB cluster as both the source and the target for the changefeed.
-    ```
+```
+Error: [CDC:ErrSameUpstreamDownstream]TiCDC does not support creating a changefeed with the same TiDB cluster as both the source and the target for the changefeed.
+```
 
-2. 若使用 Open API V2 创建 Changefeed 时，上下游为同一个集群
-
-    ```
-    curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2/changefeeds -d '{"changefeed_id":"create-v2","sink_uri":"mysql://root:@127.0.0.1:4000/"}'
-    ```
-
-    错误信息：
-
-    ```
-    {
-        "error_msg": "[CDC:ErrSameUpstreamDownstream]TiCDC does not support creating a changefeed with the same TiDB cluster as both the source and the target for the changefeed.",
-        "error_code": "CDC:ErrSameUpstreamDownstream"
-    }
-    ```
-
-3. 若使用 CLI 更新 Changefeed 后，上下游为同一个集群
-
-    ```
-    cdc cli changefeed update --changefeed-id update-cmd --sink-uri="mysql://root:@127.0.0.1:4000/"
-    ```
-
-    错误信息：
-
-    ```
-    Error: [CDC:ErrSameUpstreamDownstream]TiCDC does not support updating a changefeed with the same TiDB cluster as both the source and the target for the changefeed.
-    ```
-
-这类错误信息中都包含错误码 `CDC:ErrSameUpstreamDownstream`，表明你正在操作的 changefeed 的上下游属于同一个集群，如果遇到此类报错，请检查 changefeed 的 `sink-uri` 参数是否正确。
+此类错误的信息中都会包含错误码 `CDC:ErrSameUpstreamDownstream`，表明你正在操作的 changefeed 的上下游属于同一个集群，如果遇到此类报错，请检查 changefeed 的 `sink-uri` 参数是否正确。
 
 ## 同步启用了 TiDB 新的 Collation 框架的表
 
