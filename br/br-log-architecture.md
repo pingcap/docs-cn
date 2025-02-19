@@ -107,7 +107,7 @@ PITR 的流程如下：
 │           └── {store_id}
 │               ├── ...
 │               └── {min_ts}-{uuid}.log
-└── v1_stream_truncate_safepoint.txt
+├── v1_stream_truncate_safepoint.txt
 ```
 
 其中：
@@ -143,5 +143,5 @@ PITR 的流程如下：
 │               ├── ...
 │               ├── 435214495848857605-7bf65e92-8c43-427e-b81e-f0050bd40be0.log
 │               └── 435214574492057604-80d3b15e-3d9f-4b0c-b133-87ed3f6b2697.log
-└── v1_stream_truncate_safepoint.txt
+├── v1_stream_truncate_safepoint.txt
 ```
