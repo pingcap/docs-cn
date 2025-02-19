@@ -68,7 +68,7 @@ if __name__ == "__main__":
     local_file = sys.argv[1]
     remote_name = sys.argv[2]
     print(local_file, remote_name)
-    upload_to_aws(local_file, remote_name)
+    #upload_to_aws(local_file, remote_name)
     upload_to_qiniu(local_file, remote_name)
 
     print("https://download.pingcap.org/{}".format(remote_name))

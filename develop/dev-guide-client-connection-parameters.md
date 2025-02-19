@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/client-connection-parameters']
 
 # 客户端连接参数
 
-<!--TODO: 针对 TiDB 适配的 [MySQL 5.7 Client Options](https://dev.mysql.com/doc/refman/5.7/en/mysql-command-options.html) 需逐个检验命令行参数是否符合预期。-->
+<!--TODO: 针对 TiDB 适配的 [MySQL 5.7 Client Options](https://dev.mysql.com/doc/refman/8.0/en/mysql-command-options.html) 需逐个检验命令行参数是否符合预期。-->
 
 |            参数名称            |                                       描述                                        | 是否符合预期 | 验证版本 |
 | :----------------------------: | :-------------------------------------------------------------------------------: | :----------: | :------: |

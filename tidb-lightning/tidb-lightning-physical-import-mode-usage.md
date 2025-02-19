@@ -1,15 +1,17 @@
 ---
-title: 使用 Physical Import Mode
-summary: 了解如何使用 TiDB Lightning 的 Physical Import Mode。
+title: 使用物理导入模式
+summary: 了解如何使用 TiDB Lightning 的物理导入模式。
 ---
 
-# 使用 Physical Import Mode
+# 使用物理导入模式
 
-本文档介绍如何编写 [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md) 的配置文件，如何进行性能调优、使用磁盘资源配额等内容。
+本文档介绍如何编写[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md) 的配置文件，如何进行性能调优、使用磁盘资源配额等内容。
+
+使用物理导入模式有一些限制，使用前请务必阅读[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
 
 ## 配置及使用
 
-可以通过以下配置文件使用 Physical Import Mode 执行数据导入：
+可以通过以下配置文件使用物理导入模式执行数据导入：
 
 ```toml
 [lightning]
@@ -24,21 +26,43 @@ max-backups = 14
 check-requirements = true
 
 [mydumper]
-# 本地源数据目录或外部存储 URL
+# 本地源数据目录或外部存储 URI。关于外部存储 URI 详情可参考 https://docs.pingcap.com/zh/tidb/v6.6/backup-and-restore-storages#uri-%E6%A0%BC%E5%BC%8F。
 data-source-dir = "/data/my_database"
 
+[conflict]
+# 从 v7.3.0 开始引入的新版冲突数据处理策略。默认值为 ""。从 v8.0.0 开始，TiDB Lightning 优化了物理导入模式和逻辑导入模式的冲突策略。
+# - ""：不进行冲突数据检测和处理。如果源文件存在主键或唯一键冲突的记录，后续步骤会报错
+# - "error"：检测到导入的数据存在主键或唯一键冲突的数据时，终止导入并报错
+# - "replace"：遇到主键或唯一键冲突的数据时，保留最新的数据，覆盖旧的数据。
+#              冲突数据将被记录到目标 TiDB 集群中的 `lightning_task_info.conflict_view` 视图中。
+#              在 `lightning_task_info.conflict_view` 视图中，如果某行的 `is_precheck_conflict` 字段为 `0`，表示该行记录的冲突数据是通过后置冲突检测发现的；如果某行的 `is_precheck_conflict` 字段为 `1`，表示该行记录的冲突数据是通过前置冲突检测发现的。
+#              你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
+strategy = ""
+# 控制是否开启前置冲突检测，即导入数据到 TiDB 前，先检查所需导入的数据是否存在冲突。该参数默认值为 false，表示仅开启后置冲突检测。取值为 true 时，表示同时开启前置冲突检测和后置冲突检测。冲突记录数量高于 1,000,000 的场景建议配置 `precheck-conflict-before-import = true`，可以提升冲突检测的性能，反之建议关闭。
+# precheck-conflict-before-import = false
+# threshold = 10000
+# 从 v8.1.0 开始，TiDB Lightning 会自动将 `max-record-rows` 的值设置为 `threshold` 的值，并忽略用户输入，因此无需再单独配置 `max-record-rows`。`max-record-rows` 将在未来版本中废弃。
+# max-record-rows = 10000
+
 [tikv-importer]
-# 导入模式配置，设为 local 即使用 Physical Import Mode
+# 导入模式配置，设为 local 即使用物理导入模式
 backend = "local"
 
 # 冲突数据处理方式
-duplicate-resolution = 'remove'
+# `duplicate-resolution` 参数从 v8.0.0 开始已被废弃，并将在未来版本中被移除。详情参考 <https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#旧版冲突检测从-v800-开始已被废弃>。
+# 如果 `duplicate-resolution` 设置为 'none' 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 ""。
+# 如果 `duplicate-resolution` 设置为 'remove' 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 "replace" 开启新版冲突检测。
+duplicate-resolution = 'none'
 
 # 本地进行 KV 排序的路径。
 sorted-kv-dir = "./some-dir"
 
 # 限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小，默认为 0，表示不限制。
 # store-write-bwlimit = "128MiB"
+
+# 物理导入模式是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。如果设置为 `true`，即 TiDB Lightning 会导完数据后，再使用 add index 的 SQL 来添加索引。
+# 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。
+# add-index-by-sql = false
 
 [tidb]
 # 目标集群的信息。tidb-server 的地址，填一个即可。
@@ -49,8 +73,8 @@ user = "root"
 password = ""
 # 必须配置。表结构信息从 TiDB 的“status-port”获取。
 status-port = 10080
-# 必须配置。pd-server 的地址，填一个即可。
-pd-addr = "172.16.31.4:2379"
+# 必须配置。pd-server 的地址。从 v7.6.0 开始支持设置多个地址。
+pd-addr = "172.16.31.4:2379,56.78.90.12:3456"
 # tidb-lightning 引用了 TiDB 库，并生成产生一些日志。
 # 设置 TiDB 库的日志等级。
 log-level = "error"
@@ -76,36 +100,69 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 
 ## 冲突数据检测
 
-冲突数据，即两条或两条以上的记录存在 PK/UK 列数据重复的情况。当数据源中的记录存在冲突数据，将导致该表真实总行数和使用唯一索引查询的总行数不一致的情况。冲突数据检测支持三种策略：
+冲突数据是指两条或两条以上记录中存在主键或唯一键列数据重复。当数据源中的记录存在冲突数据，如果没有启用冲突数据检测功能，将导致该表的实际总行数与使用唯一索引查询的总行数不一致。
 
-- record: 仅将冲突记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用 'none' 模式。
-- remove: 推荐方式。记录所有的冲突记录，和 'record' 模式相似。但是会删除所有的冲突记录，以确保目的 TiDB 中的数据状态保持一致。
-- none: 关闭冲突数据检测。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
+冲突数据检测采用新版冲突检测 (`conflict`) 模式。旧版冲突检测 (`tikv-importer.duplicate-resolution`) 模式从 v8.0.0 开始已被废弃。`tikv-importer.duplicate-resolution` 参数将在未来版本中被移除。
 
-在 v5.3 版本之前，Lightning 不具备冲突数据检测特性，若存在冲突数据将导致导入过程最后的 checksum 环节失败；开启冲突检测特性的情况下，无论 `record` 还是 `remove` 策略，只要检测到冲突数据，Lightning 都会跳过最后的 checksum 环节（因为必定失败）。
+### 新版冲突检测
+
+具体配置及含义如下：
+
+| 配置 | 冲突时默认行为                                        | 类比 SQL 语句 |
+|:---|:-----------------------------------------------|:---|
+| `"replace"` | 保留最新的数据，覆盖旧的数据 | `REPLACE INTO ...` |
+| `"error"` | 终止导入并报错                                        | `INSERT INTO ...` |
+| `""` | 不进行冲突检查和处理，但如果存在有主键和唯一键冲突的数据，会在后续步骤 checksum 时报错          | 无 |
+
+> **注意：**
+>
+> 由于 TiDB Lightning 内部并发处理以及实现限制，物理导入模式下的冲突检测效果不会与 SQL 语句完全一致。
+
+配置为 `"error"` 时，遇到冲突数据时，TiDB Lightning 会报错并退出。配置为 `"replace"` 时，冲突数据被视作[冲突错误 (Conflict error)](/tidb-lightning/tidb-lightning-error-resolution.md#冲突错误-conflict-error)。配置了大于 `0` 的 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 后，TiDB Lightning 可以容忍一定数目的冲突错误，默认值为 `9223372036854775807`，意味着几乎能容忍全部错误。详见[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能介绍。
+
+新版冲突检测具有如下的限制：
+
+- 在导入之前，前置冲突检测会先读取全部数据并编码，以检测潜在的冲突数据。检测过程中会使用 `tikv-importer.sorted-kv-dir` 存储临时文件。检测完成后，会保留检查结果至导入阶段以供读取。因此，这将带来额外的耗时、磁盘空间占用以及数据读取 API 请求开销。
+- 新版冲突检测只能在单节点完成，不适用于并行导入以及开启了 `disk-quota` 参数的场景。
+
+新版冲突检测通过 `precheck-conflict-before-import` 配置项控制是否开启前置冲突检测。在原数据冲突数据较多的情况下，前置和后置冲突检测的总耗时相比旧版更少。因此，建议在已知数据的冲突数据比例大于或等于 1%、且本地磁盘空间充足的单节点导入任务中开启前置冲突检测。
+
+### 旧版冲突检测（从 v8.0.0 开始已被废弃）
+
+从 v8.0.0 起，旧版冲突检测 (`tikv-importer.duplicate-resolution`) 已被废弃。`tikv-importer.duplicate-resolution` 参数将在未来版本中被移除。如果 `tikv-importer.duplicate-resolution` 为 `remove` 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 `"replace"` 开启新版冲突检测。需要注意 `tikv-importer.duplicate-resolution` 不能与 `conflict.strategy` 同时配置，否则将报错。
+
+- 在 v7.3.0 到 v7.6.0 之间的版本中，当配置 `tikv-importer.duplicate-resolution` 不为空时，TiDB Lightning 会开启旧版冲突检测。
+- 在 v7.2.0 及之前的版本中，TiDB Lightning 仅支持旧版冲突检测。
+
+旧版冲突数据检测支持两种策略：
+
+- `remove`：推荐方式。记录并删除所有的冲突记录，以确保目的 TiDB 中的数据状态保持一致。
+- `none`：关闭冲突数据检测。该模式是两种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
+
+在 v5.3 之前，TiDB Lightning 不具备冲突数据检测特性，若存在冲突数据将导致导入过程最后的 Checksum 环节失败。开启冲突检测特性的情况下，只要检测到冲突数据，TiDB Lightning 都会跳过最后的 Checksum 环节（因为必定失败）。
 
 假设一张表 `order_line` 的表结构如下：
 
 ```sql
 CREATE TABLE IF NOT EXISTS `order_line` (
-  `ol_o_id` int(11) NOT NULL,
-  `ol_d_id` int(11) NOT NULL,
-  `ol_w_id` int(11) NOT NULL,
-  `ol_number` int(11) NOT NULL,
-  `ol_i_id` int(11) NOT NULL,
-  `ol_supply_w_id` int(11) DEFAULT NULL,
+  `ol_o_id` int NOT NULL,
+  `ol_d_id` int NOT NULL,
+  `ol_w_id` int NOT NULL,
+  `ol_number` int NOT NULL,
+  `ol_i_id` int NOT NULL,
+  `ol_supply_w_id` int DEFAULT NULL,
   `ol_delivery_d` datetime DEFAULT NULL,
-  `ol_quantity` int(11) DEFAULT NULL,
+  `ol_quantity` int DEFAULT NULL,
   `ol_amount` decimal(6,2) DEFAULT NULL,
   `ol_dist_info` char(24) DEFAULT NULL,
   PRIMARY KEY (`ol_w_id`,`ol_d_id`,`ol_o_id`,`ol_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 ```
 
-若在导入过程中检测到冲突数据，则可以查询 `lightning_task_info.conflict_error_v1` 表得到以下内容：
+若在导入过程中检测到冲突数据，则可以查询 `lightning_task_info.conflict_error_v3` 表得到以下内容：
 
 ```sql
-mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 limit 10;
+mysql> select table_name,index_name,key_data,row_data from conflict_error_v3 limit 10;
 +---------------------+------------+----------+-----------------------------------------------------------------------------+
 |  table_name         | index_name | key_data | row_data                                                                    |
 +---------------------+------------+----------+-----------------------------------------------------------------------------+
@@ -126,9 +183,11 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 lim
 
 根据上述信息人工甄别需要保留的重复数据，手动插回原表即可。
 
-## 导入时限制调度范围从集群降低到表级别
+## 导入时暂停 PD 调度的范围
 
 自 TiDB Lightning v6.2.0 版本起，TiDB Lightning 提供机制控制导入数据过程对在线业务的影响。TiDB Lightning 不会暂停全局的调度，而是只暂停目标表数据范围所在 region 的调度，降低了对在线业务的影响。
+
+自 TiDB v7.1.0 版本起，你可以通过 TiDB Lightning 的参数 [`pause-pd-scheduler-scope`](/tidb-lightning/tidb-lightning-configuration.md) 来控制暂停调度的范围。默认为 `"table"`，即只暂停目标表数据所在 Region 的调度。当集群没有业务流量时，建议设置为 `"global"` 以减少来自调度器对导入的干扰。
 
 > **注意：**
 >
@@ -146,10 +205,6 @@ store-write-bwlimit = "128MiB"
 [tidb]
 # 使用更小的并发以降低计算 checksum 和执行 analyze 对事务延迟的影响。
 distsql-scan-concurrency = 3
-
-[cron]
-# 避免将 TiKV 切换到 import 模式。
-switch-mode = '0'
 ```
 
 在测试中用 TPCC 测试模拟在线业务，同时用 TiDB Lightning 向 TiDB 集群导入数据，测试导入数据对 TPCC 测试结果的影响。测试结果如下：
@@ -164,20 +219,20 @@ switch-mode = '0'
 
 表格中的百分比含义为 TiDB Lightning 导入对 TPCC 结果的影响大小。对于 TPM，数值表示 TPM 下降的百分比；对于延迟 P99、P90、AVG，数值表示延迟上升的百分比。
 
-测试结果表明，TPCC 并发越小，TiDB Lightning 导入对 TPCC 结果影响越大。当 TPCC 并发达到 64 或以上时，Lightning 导入对 TPCC 结果无显著影响。
+测试结果表明，TPCC 并发越小，TiDB Lightning 导入对 TPCC 结果影响越大。当 TPCC 并发达到 64 或以上时，TiDB Lightning 导入对 TPCC 结果无显著影响。
 
-因此，如果你的 TiDB 生产集群上有延迟敏感型业务，并且并发较小，**强烈建议**不使用 TiDB Lightning 导入数据到该集群，这会给在线业务带来较大影响。
+因此，如果你的 TiDB 生产集群上有延迟敏感型业务，并且并发较小，**强烈建议**不要使用 TiDB Lightning 导入数据到该集群，否则会给在线业务带来较大影响。
 
 ## 性能调优
 
-**提高 Lightning Physical Import Mode 导入性能最直接有效的方法：**
+**提高 Lightning 物理导入模式导入性能最直接有效的方法：**
 
 - **升级 Lightning 所在节点的硬件，尤其重要的是 CPU 和 sorted-key-dir 所在存储设备的性能。**
 - **使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性实现水平扩展。**
 
-当然，Lightning 也提供了部分并发相关配置以影响 Physical Import Mode 的导入性能。但是从长期实践的经验总结来看，以下四个配置项一般保持默认值即可，调整其数值并不会带来显著的性能提升，可作为了解内容阅读。
+当然，Lightning 也提供了部分并发相关配置以影响物理导入模式的导入性能。但是从长期实践的经验总结来看，以下四个配置项一般保持默认值即可，调整其数值并不会带来显著的性能提升，可作为了解内容阅读。
 
-```
+```toml
 [lightning]
 # 引擎文件的最大并行数。
 # 每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”。

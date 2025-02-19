@@ -21,6 +21,8 @@ TiDB Lightning 支持读取 CSV 格式的文件，以及其他定界符格式，
 - 包含整张表数据的 CSV 文件，需命名为 `${db_name}.${table_name}.csv`。
 - 如果一张表分布于多个 CSV 文件，这些 CSV 文件命名需加上文件编号的后缀，如 `${db_name}.${table_name}.003.csv`。数字部分不需要连续，但必须递增，并且需要用零填充数字部分，保证后缀为同样长度。
 
+TiDB Lightning 将递归地寻找该目录下及其子目录内的所有 `.csv` 文件。
+
 ## 第 2 步：创建目标表结构
 
 CSV 文件自身未包含表结构信息。要将 CSV 数据导入 TiDB，就必须为数据提供表结构。可以通过以下任一方法创建表结构：
@@ -61,6 +63,8 @@ data-source-dir = "${data-path}" # 本地或 S3 路径，例如：'s3://my-bucke
 separator = ','
 # 引用定界符，可以为零或多个字符。
 delimiter = '"'
+# 行结束符。默认将 \r、\n、\r\n 都作为行结束符处理。
+# terminator = "\r\n"
 # CSV 文件是否包含表头。
 # 如果为 true，则 lightning 会使用首行内容解析字段的对应关系。
 header = true
@@ -102,6 +106,8 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 - delimiter 为空；
 - 每个字段不包含 CR (\\r）或 LF（\\n）。
 
+严格格式 `strict-format` 的 CSV 文件需要显式指定行结束符 `terminator`。
+
 如果你确认满足条件，可按如下配置开启 `strict-format` 模式以加快导入速度。
 
 ```toml
@@ -129,7 +135,7 @@ nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
 
 > **注意：**
 >
-> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning  正常退出，不代表任务完成。
+> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning 正常退出，不代表任务完成。
 
 如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 

@@ -13,7 +13,7 @@ summary: 了解 TiDB 的自动调节备份功能，在集群资源占用率较�
 
 如果你希望减少备份对集群的影响，那么，你可以开启自动调节功能。开启该功能后，备份功能会在不过度影响集群的前提下，以最快的速度进行数据备份。
 
-或者，你也可以使用 TiKV 配置项 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) 或参数 `--ratelimit` 进行备份限速。
+或者，你也可以使用 TiKV 配置项 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) 或参数 `--ratelimit` 进行备份限速。设置 `--ratelimit` 后，为了避免任务数过多导致限速失效，br 的 `concurrency` 参数会自动调整为 1。
 
 ## 使用方法
 

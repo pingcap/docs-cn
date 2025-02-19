@@ -1,26 +1,38 @@
-name: Flush PDF
+name: Flush All PDF
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * 0" # auto flush pdf on sunday
 
 jobs:
   flush-pdf:
     name: Flush PDF
     runs-on: ubuntu-latest
+    env:
+      TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+      TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
     steps:
-      - name: install qiniu qshell
-        uses: foxundermoon/setup-qshell@v5
+      - name: Set up Python environment
+        uses: actions/setup-python@v5
         with:
-          version: '2.6.2'
+          python-version: '3.12'
+          architecture: 'x64'
+
+      - name: Install Tencent Cloud CLI
+        run: pip3 install tccli
 
       - name: Download PDF list
         run: |
           curl https://raw.githubusercontent.com/pingcap/docs-cn/master/resources/cdnfresh.txt --output cdnfresh.txt
           cat cdnfresh.txt
 
-      - name: refresh url
+      - name: Refresh URLs
         run: |
-          qshell account ${{ secrets.QINIU_ACCESS_KEY }} ${{ secrets.QINIU_SECRET_KEY }} tidb
-          qshell cdnrefresh -i cdnfresh.txt
+          cat cdnfresh.txt | jq -nR '[inputs | select(length>0)]' | tee cdnfresh.json
+          tccli cdn PurgeUrlsCache --Urls "$(cat cdnfresh.json)" | tee result.json
+          task_id="$(cat result.json | jq .TaskId)"
+          if [ -z "${task_id}" ]; then
+            echo "Unable to find TaskId, CDN refresh might fail"
+            exit 1
+          fi

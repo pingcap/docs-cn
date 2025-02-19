@@ -1,6 +1,7 @@
 ---
 title: DM-worker 简介
 aliases: ['/docs-cn/tidb-data-migration/dev/dm-worker-intro/']
+summary: DM-worker 是 DM (Data Migration) 的一个组件，负责执行数据迁移任务。主要功能包括注册为 MySQL 或 MariaDB 服务器的 slave，读取 binlog event 并持久化保存在本地，支持迁移一个 MySQL 或 MariaDB 实例的数据到多个 TiDB 实例，以及支持迁移多个 MySQL 或 MariaDB 实例的数据到一个 TiDB 实例。处理单元包括 Relay log、dump、load 和 Binlog replication/sync。上游数据库用户需具有 SELECT、RELOAD、REPLICATION SLAVE 和 REPLICATION CLIENT 权限，下游数据库用户需具有 SELECT、INSERT、UPDATE、DELETE、CREATE、DROP 和 INDEX 权限。处理单元所需的最小权限根据具体情况可能会改变。
 ---
 
 # DM-worker 简介
@@ -22,7 +23,7 @@ DM-worker 任务包含如下多个逻辑处理单元。
 
 Relay log 持久化保存从上游 MySQL 或 MariaDB 读取的 binlog，并对 binlog replication 处理单元提供读取 binlog event 的功能。
 
-其原理和功能与 MySQL relay log 类似，详见 [MySQL Relay Log](https://dev.mysql.com/doc/refman/5.7/en/replica-logs-relaylog.html)。
+其原理和功能与 MySQL relay log 类似，详见 [MySQL Relay Log](https://dev.mysql.com/doc/refman/8.0/en/replica-logs-relaylog.html)。
 
 ### dump 处理单元
 
@@ -56,11 +57,11 @@ Binlog replication/sync 处理单元读取上游 MySQL/MariaDB 的 binlog event 
 {{< copyable "sql" >}}
 
 ```sql
-GRANT RELOAD,REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'your_user'@'your_wildcard_of_host'
+GRANT RELOAD,REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'your_user'@'your_wildcard_of_host';
 GRANT SELECT ON db1.* TO 'your_user'@'your_wildcard_of_host';
 ```
 
-如果还要迁移其他数据库的数据到 TiDB, 请确保已赋予这些库跟 `db1` 一样的权限。
+如果还要迁移其他数据库的数据到 TiDB，请确保已赋予这些库跟 `db1` 一样的权限。
 
 ### 下游数据库用户权限
 
@@ -83,6 +84,7 @@ GRANT SELECT ON db1.* TO 'your_user'@'your_wildcard_of_host';
 
 ```sql
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX  ON db.table TO 'your_user'@'your_wildcard_of_host';
+GRANT ALL ON dm_meta.* TO 'your_user'@'your_wildcard_of_host';
 ```
 
 ### 处理单元所需的最小权限

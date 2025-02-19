@@ -16,15 +16,13 @@ TiDB 从 5.1 版本开始支持 ANSI SQL 99 标准的 CTE 及其递归的写法�
 
 ## 基本使用
 
-公共表表达式 (CTE) 是一个临时的中间结果集，能够在 SQL 语句中引用多次，提高 SQL 语句的可读性与执行效率。在 TiDB 中可以通过 `WITH` 语句使用公共表表达式。
+公共表表达式 (CTE) 是一个临时的中间结果集，能够在 SQL 语句中引用多次，提高 SQL 语句的可读性与执行效率。在 TiDB 中可以通过 [`WITH`](/sql-statements/sql-statement-with.md) 语句使用公共表表达式。
 
 公共表表达式可以分为非递归和递归两种类型。
 
 ### 非递归的 CTE
 
 非递归的 CTE 使用如下语法进行定义：
-
-{{< copyable "sql" >}}
 
 ```sql
 WITH <query_name> AS (
@@ -39,8 +37,6 @@ SELECT ... FROM <query_name>;
 <div label="SQL">
 
 在 SQL 中，可以将[临时表](/develop/dev-guide-use-temporary-tables.md)小节当中的例子改为以下 SQL 语句：
-
-{{< copyable "sql" >}}
 
 ```sql
 WITH top_50_eldest_authors_cte AS (
@@ -118,8 +114,6 @@ public List<Author> getTop50EldestAuthorInfoByCTE() throws SQLException {
 
 这时，可以发现名为 “Ray Macejkovic” 的作者写了 4 本书，继续通过 CTE 查询来了解这 4 本书的销量和评分：
 
-{{< copyable "sql" >}}
-
 ```sql
 WITH books_authored_by_rm AS (
     SELECT *
@@ -181,8 +175,6 @@ FROM
 
 递归的公共表表达式可以使用如下语法进行定义：
 
-{{< copyable "sql" >}}
-
 ```sql
 WITH RECURSIVE <query_name> AS (
     <query_definition>
@@ -191,8 +183,6 @@ SELECT ... FROM <query_name>;
 ```
 
 比较经典的例子是通过递归的 CTE 生成一组[斐波那契数](https://zh.wikipedia.org/wiki/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0)：
-
-{{< copyable "sql" >}}
 
 ```sql
 WITH RECURSIVE fibonacci (n, fib_n, next_fib_n) AS

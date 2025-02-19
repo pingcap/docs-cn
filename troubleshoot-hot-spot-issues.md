@@ -1,6 +1,7 @@
 ---
 title: TiDB 热点问题处理
 aliases: ['/docs-cn/dev/troubleshoot-hot-spot-issues/']
+summary: TiDB 热点问题处理：介绍定位和解决读写热点问题，包括常见热点场景、确定存在热点问题的方法、使用 TiDB Dashboard 定位热点表、使用 SHARD_ROW_ID_BITS 处理热点表、使用 AUTO_RANDOM 处理自增主键热点表、小表热点的优化、打散读热点。
 ---
 
 # TiDB 热点问题处理
@@ -44,7 +45,7 @@ Value: null
 
 从 TiDB 编码规则可知，同一个表的数据会在以表 ID 开头为前缀的一个 range 中，数据的顺序按照 RowID 的值顺序排列。在表 insert 的过程中如果 RowID 的值是递增的，则插入的行只能在末端追加。当 Region 达到一定的大小之后会进行分裂，分裂之后还是只能在 range 范围的末端追加，永远只能在一个 Region 上进行 insert 操作，形成热点。
 
-常见的 increment 类型自增主键就是顺序递增的，默认情况下，在主键为整数型时，会用主键值当做 RowID ，此时 RowID 为顺序递增，在大量 insert 时形成表的写入热点。
+常见的 increment 类型自增主键就是顺序递增的，默认情况下，在主键为整数型时，会用主键值当做 RowID，此时 RowID 为顺序递增，在大量 insert 时形成表的写入热点。
 
 同时，TiDB 中 RowID 默认也按照自增的方式顺序递增，主键不为整数类型时，同样会遇到写入热点的问题。
 
@@ -82,9 +83,9 @@ Value: null
 
 ## 使用 SHARD_ROW_ID_BITS 处理热点表
 
-对于主键非整数或没有主键的表或者是联合主键，TiDB 会使用一个隐式的自增 RowID，大量 INSERT 时会把数据集中写入单个 Region，造成写入热点。
+对于非聚簇索引主键或没有主键的表，TiDB 会使用一个隐式的自增 RowID，大量 `INSERT` 时会把数据集中写入单个 Region，造成写入热点。
 
-通过设置 `SHARD_ROW_ID_BITS`，可以把 RowID 打散写入多个不同的 Region，缓解写入热点问题。
+通过设置 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md)，可以把 RowID 打散写入多个不同的 Region，缓解写入热点问题。
 
 ```
 SHARD_ROW_ID_BITS = 4 表示 16 个分片
@@ -171,3 +172,11 @@ TiDB 的 Coprocessor Cache 功能支持下推计算结果缓存。开启该功�
 
 + [TiDB 高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)
 + [Split Region 使用文档](/sql-statements/sql-statement-split-region.md)
+
+## 打散读热点
+
+在读热点场景中，热点 TiKV 无法及时处理读请求，导致读请求排队。但是，此时并非所有 TiKV 资源都已耗尽。为了降低延迟，TiDB v7.1.0 引入了负载自适应副本读取功能，允许从其他 TiKV 节点读取副本，而无需在热点 TiKV 节点排队等待。你可以通过 [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold-从-v700-版本开始引入) 系统变量控制读请求的排队长度。当 leader 节点的预估排队时间超过该阈值时，TiDB 会优先从 follower 节点读取数据。在读热点的情况下，与不打散读热点相比，该功能可提高读取吞吐量 70%～200%。
+
+## 使用 TiKV MVCC 内存引擎缓解因多版本导致的读热点
+
+在 GC 历史版本数据的保留时间过长、频繁更新或删除时，可能会因扫描大量 MVCC 版本而导致读热点。针对这类热点，可通过开启 [TiKV MVCC 内存引擎](/tikv-in-memory-engine.md)功能缓解。

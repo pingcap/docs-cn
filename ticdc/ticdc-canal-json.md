@@ -20,7 +20,7 @@ Event 分为三类：
 使用 `Canal-JSON` 时的配置样例如下所示：
 
 ```shell
-cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-canal-json" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=canal-json"
+cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-canal-json" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=canal-json"
 ```
 
 ## TiDB 扩展字段
@@ -33,7 +33,7 @@ Canal-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 C
 配置样例如下所示：
 
 ```shell
-cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-canal-json-enable-tidb-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=canal-json&enable-tidb-extension=true"
+cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-canal-json-enable-tidb-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=canal-json&enable-tidb-extension=true"
 ```
 
 ## Message 格式定义
@@ -60,7 +60,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
     "data": null,
     "old": null,
     "_tidb": {     // TiDB 的扩展字段
-        "commitTs": 163963309467037594
+        "commitTs": 429918007904436226  // TiDB TSO 时间戳
     }
 }
 ```
@@ -129,7 +129,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
     ],
     "old": null,
     "_tidb": {     // TiDB 的扩展字段
-        "commitTs": 163963314122145239
+        "commitTs": 429918007904436226  // TiDB TSO 时间戳
     }
 }
 ```
@@ -158,7 +158,7 @@ WATERMARK Event 的示例如下：
     "data": null,
     "old": null,
     "_tidb": {     // TiDB 的扩展字段
-        "watermarkTs": 429918007904436226
+        "watermarkTs": 429918007904436226  // TiDB TSO 时间戳
     }
 }
 ```
@@ -254,14 +254,60 @@ TiCDC 涉及的 Java SQL Type 及其 Code 映射关系如下表所示。
 
 想要了解 Java SQL Type 的更多信息，请参考 [Java SQL Class Types](https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html)。
 
+## Binary 和 Blob 类型
+
+TiCDC 在编码[二进制类型](/data-type-string.md#binary-类型)的数据为 Canal-JSON 格式时，会按照以下规则将每个字节转换为其字符表示形式：
+
+- 可打印字符：使用 ISO/IEC 8859-1 字符编码表示。
+- 不可打印字符和某些在 HTML 中具有特殊含义的字符：使用其 UTF-8 转义序列表示。
+
+下表列出了具体的表示信息：
+
+| 字符类型             | 值范围     | 字符表示形式                        |
+|:---------------------|:-----------|:------------------------------------|
+| 控制字符             | `[0, 31]`    | UTF-8 转义（如 `\u0000` 到 `\u001F`） |
+| 水平制表符           | `[9]`        | `\t`                                |
+| 换行符               | `[10]`       | `\n`                                |
+| 回车符               | `[13]`       | `\r`                                |
+| 可打印字符           | `[32, 127]`  | 字符本身（如 `A`）                    |
+| `&` 符号             | `[38]`       | `\u0026`                            |
+| `<` 号               | `[60]`       | `\u0038`                            |
+| `>` 号               | `[62]`       | `\u003E`                            |
+| 扩展控制字符         | `[128, 159]` | 字符本身                            |
+| ISO 8859-1 (Latin-1) 字符 | `[160, 255]` | 字符本身                            |
+
+### 编码示例
+
+例如，对于存储在 `VARBINARY` 类型的 `c_varbinary` 列中的 16 个字节 `[5 7 10 15 36 50 43 99 120 60 38 255 254 45 55 70]`，其在 Canal-JSON 的 `Update` 事件中的编码如下：
+
+```json
+{
+    ...
+    "data": [
+        {
+            ...
+            "c_varbinary": "\u0005\u0007\n\u000f$2+cx\u003c\u0026ÿþ-7F"
+        }
+    ]
+    ...
+}
+```
+
 ## TiCDC Canal-JSON 和 Canal 官方实现对比
 
 TiCDC 对 Canal-JSON 数据格式的实现，包括 `Update` 类型事件和 `mysqlType` 字段，和官方有些许不同。主要差异见下表。
 
-| 差异点            | TiCDC                  | Canal                                |
-|:----------------|:-------------------------|:-------------------------------------|
-| `Update` 类型事件 | `old` 字段包含所有列数据 | `old` 字段仅包含被修改的列数据          |
-| `mysqlType` 字段  | 对于含有参数的类型，没有类型参数信息         | 对于含有参数的类型，会包含完整的参数信息 |
+| 差异点            | TiCDC                                                                        | Canal                                |
+|:----------------|:-----------------------------------------------------------------------------|:-------------------------------------|
+| `Update` 类型事件 | `old` 字段默认包含所有列的数据。当 sink 参数 `only_output_updated_columns` 设置为 `true` 时，`old` 字段仅包含被修改的列数据 | `old` 字段仅包含被修改的列数据          |
+| `mysqlType` 字段  | 对于含有参数的类型，没有类型参数信息                                                           | 对于含有参数的类型，会包含完整的参数信息 |
+
+### 兼容 Canal 官方实现
+
+自 v6.5.6、v7.1.3 和 v7.6.0 开始，TiCDC Canal-JSON 支持兼容 Canal 官方输出的内容格式。在创建 changefeed 时，你可以在 `sink-uri` 中设置 `content-compatible=true` 以开启兼容模式。在该模式下，TiCDC 输出兼容官方实现的 Canal-JSON 格式数据。具体改动包括：
+
+* `mysqlType` 字段包含每个类型的具体参数。
+* `Update` 类型事件只输出被修改的列数据。
 
 ### `Update` 类型事件
 

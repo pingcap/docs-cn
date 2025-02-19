@@ -95,34 +95,42 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 | 2.5.x            | 5.x, 4.x        | 3.0.x, 3.1.x               | 2.12     |
 | 3.0.x            | 5.x, 4.x        | 3.0.x, 3.1.x, 3.2.x        | 2.12     |
 | 3.1.x            | 6.x, 5.x, 4.x   | 3.0.x, 3.1.x, 3.2.x, 3.3.x | 2.12     |
+| 3.2.x            | 6.x, 5.x, 4.x   | 3.0.x, 3.1.x, 3.2.x, 3.3.x | 2.12     |
+
+推荐使用 TiSpark 的最新稳定版本，包括 2.4.4、2.5.3、3.0.3、3.1.7 和 3.2.3。
+
+> **Note:**
+>
+> TiSpark 不保证与 TiDB v7.0.0 及之后版本兼容。
+> TiSpark 不保证与 Spark v3.4.0 及之后版本兼容。
 
 ## 获取 TiSpark jar 包
 
 你能用以下方式获取 jar 包：
 
-- 从 [maven 中央仓库](https://search.maven.org/)获取，你可以搜索 [![Maven Search](https://img.shields.io/badge/com.pingcap/tispark-green.svg)](http://search.maven.org/#search%7Cga%7C1%7Cpingcap) 。
+- 从 [maven 中央仓库](https://search.maven.org/)获取，你可以搜索 [`pingcap`](http://search.maven.org/#search%7Cga%7C1%7Cpingcap) 关键词。
 - 从 [TiSpark releases](https://github.com/pingcap/tispark/releases) 获取。
 - 通过以下步骤从源码构建：
 
-  1. 下载 TiSpark 源码：
-  
-      ```
-      git clone https://github.com/pingcap/tispark.git
-      cd tisapark
-      ```
-  
-  2. 在 TiSpark 根目录运行如下命令：
-  
-      ```
-      // add -Dmaven.test.skip=true to skip the tests
-      mvn clean install -Dmaven.test.skip=true
-      // or you can add properties to specify spark version
-      mvn clean install -Dmaven.test.skip=true -Pspark3.2.1
-      ```
+1. 下载 TiSpark 源码：
 
-  > **注意：**
-  >
-  > 目前，你只能使用 java8 构架 TiSpark。运行 `mvn -version` 来检查 java 版本。
+    ```
+    git clone https://github.com/pingcap/tispark.git
+    cd tisapark
+    ```
+
+2. 在 TiSpark 根目录运行如下命令：
+
+    ```
+    // add -Dmaven.test.skip=true to skip the tests
+    mvn clean install -Dmaven.test.skip=true
+    // or you can add properties to specify spark version
+    mvn clean install -Dmaven.test.skip=true -Pspark3.2.1
+    ```
+
+> **注意：**
+>
+> 目前，你只能使用 java8 构架 TiSpark。运行 `mvn -version` 来检查 java 版本。
 
 ### TiSpark jar 包的 artifact ID
 
@@ -132,7 +140,7 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 |--------------------------------| -------------------------------------------------- |
 | 2.4.x-\${scala_version}, 2.5.0 | tispark-assembly                                   |
 | 2.5.1                          | tispark-assembly-\${spark_version}                  |
-| 3.0.x, 3.1.x                   | tispark-assembly-\${spark_version}-\${scala_version} |
+| 3.0.x, 3.1.x, 3.2.x            | tispark-assembly-\${spark_version}-\${scala_version} |
 
 ## 快速开始
 
@@ -144,9 +152,9 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 
 ```
 spark.sql.extensions  org.apache.spark.sql.TiExtensions
-spark.tispark.pd.addresses  ${your_pd_adress}
+spark.tispark.pd.addresses  ${your_pd_address}
 spark.sql.catalog.tidb_catalog  org.apache.spark.sql.catalyst.catalog.TiCatalog
-spark.sql.catalog.tidb_catalog.pd.addresses  ${your_pd_adress}
+spark.sql.catalog.tidb_catalog.pd.addresses  ${your_pd_address}
 ```
 
 启动 spark-shell：
@@ -197,7 +205,7 @@ customerDF.write
 
 详见 [Data Source API User Guide](https://github.com/pingcap/tispark/blob/master/docs/features/datasource_api_userguide.md)。
 
-在 TiSpark 3.1 之后，你还能通过 Spark SQL 写入 TiSpark 3.1。详见 [Insert SQL](https://github.com/pingcap/tispark/blob/master/docs/features/insert_sql_userguide.md)。
+TiSpark 3.1 及之后版本支持通过 Spark SQL 写入数据到 TiKV。详见 [Insert SQL](https://github.com/pingcap/tispark/blob/master/docs/features/insert_sql_userguide.md)。
 
 ### 通过 JDBC 数据源写入数据
 
@@ -294,6 +302,8 @@ spark.sql("select t1.id,t2.id from spark_catalog.default.t t1 left join tidb_cat
 | `spark.tispark.tikv.conn_recycle_time`          | `60s`            | 清理 TiKV 失效连接的时间间隔。默认时间为 `60s`。当重载证书开启时此配置才会生效。                                                                                                                                                                                                                                         |
 | `spark.tispark.host_mapping`                    |                  | 路由映射配置。用于配置公有 IP 地址和私有 IP 地址的映射。当 TiDB 在私有网络上运行时，你可以将一系列内部 IP 地址映射到公网 IP 地址以便 Spark 集群访问。其格式为 `{Intranet IP1}:{Public IP1};{Intranet IP2}:{Public IP2}`，例如 `192.168.0.2:8.8.8.8;192.168.0.3:9.9.9.9`。                                                                                  |
 | `spark.tispark.new_collation_enable`            |                  | 当 TiDB 开启 [new collation](https://docs.pingcap.com/tidb/stable/character-set-and-collation#new-framework-for-collations)，推荐将此配置设为`true`。当 TiDB 关闭 `new collation`，推荐将此配置设置为 `false`。在未配置的情况下，TiSpark 会依据 TiDB 版本自动配置 `new collation`。其规则为：当 TiDB 版本大于等于 v6.0.0 时为 `true`；否则为 `false`。 |
+| `spark.tispark.replica_read`                   | `leader`         | 读取副本的类型。可选值为 `leader`、`follower`、`learner`。可以同时指定多个类型，TiSpark 会根据顺序选择。  |
+| `spark.tispark.replica_read.label`             |                  | 目标 TiKV 节点的标签。格式为 `label_x=value_x,label_y=value_y`，各项之间为“逻辑与”的关系。 |
 
 ### TLS 配置
 
@@ -338,7 +348,7 @@ spark.tispark.jdbc.client_cert_password                        jdbc_clientstore_
 ```
 
 - 对于如何开启 TiDB TLS，请参考 [Enable TLS between TiDB Clients and Servers](/enable-tls-between-clients-and-servers.md)。
-- 对于如何生成 JAVA key store，请参考 [Connecting Securely Using SSL](https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-using-ssl.html)。
+- 对于如何生成 JAVA key store，请参考 [Connecting Securely Using SSL](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-using-ssl.html)。
 
 ### 时区配置
 
@@ -432,7 +442,6 @@ spark.sql.tidb.password $your_tidb_server_password
 - [历史读](https://github.com/pingcap/tispark/blob/master/docs/features/stale_read.md)
 - [TiSpark with multiple catalogs](https://github.com/pingcap/tispark/wiki/TiSpark-with-multiple-catalogs)
 - [TiSpark TLS](#tls-配置)
-- [TiSpark 遥测](https://github.com/pingcap/tispark/blob/master/docs/features/telemetry.md)
 - [TiSpark 执行计划](https://github.com/pingcap/tispark/blob/master/docs/features/query_execution_plan_in_TiSpark.md)
 
 ## 统计信息
@@ -442,7 +451,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 - 选择代价最低的索引访问
 - 估算数据大小以决定是否进行广播优化
 
-如果你希望 TiSpark 使用统计信息支持，需要确保所涉及的表已经被分析。参考[统计信息简介](/statistics.md)了解如何进行表分析。
+如果你希望 TiSpark 使用统计信息支持，需要确保所涉及的表已经被分析。参考[常规统计信息](/statistics.md)了解如何进行表分析。
 
 从 TiSpark 2.0 开始，统计信息将会默认被读取。
 

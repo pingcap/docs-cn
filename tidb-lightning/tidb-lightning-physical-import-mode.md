@@ -1,22 +1,33 @@
 ---
-title: Physical Import Mode
-summary: 了解 TiDB Lightning 的 Physical Import Mode。
+title: 物理导入模式
+summary: 了解 TiDB Lightning 的物理导入模式。
 ---
 
-# Physical Import Mode 简介
+# 物理导入模式简介
 
-Physical Import Mode 是 TiDB Lightning 支持的一种数据导入方式。Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。Physical Import Mode 适合导入最高 100 TB 数据量，使用前请务必自行阅读[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
+物理导入模式 (Physical Import Mode) 是 TiDB Lightning 支持的一种数据导入方式。物理导入模式不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。使用物理导入模式时，单个 TiDB Lightning 实例可导入的数据量不超过 10 TiB，理论上导入的数据量可以随着 TiDB Lightning 实例数量的增加而增加，目前已经有多个用户验证基于[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)功能可以导入的数据量达 50 TiB。
 
-Physical Import Mode 对应的后端模式为 `local`。
+使用前请务必自行阅读[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
+
+物理导入模式对应的后端模式为 `local`。可以在配置文件 `tidb-lightning.toml` 中修改：
+
+```toml
+[tikv-importer]
+# 导入模式配置，设为 "local" 即使用物理导入模式
+backend = "local"
+```
 
 ## 原理说明
 
-1. 在导入数据之前，`tidb-lightning` 会自动将 TiKV 节点切换为“导入模式” (import mode)，优化写入效率并停止自动压缩。`tidb-lightning` 会根据 TiDB 集群的版本决定是否停止全局调度。
+1. 在导入数据之前，`tidb-lightning` 会自动将 TiKV 节点切换为“导入模式” (import mode)，优化写入效率并停止自动压缩。以下为各版本的 TiDB Lightning 决定暂停调度的策略：
 
-    - 当 TiDB 集群版本 >= v6.1.0 且 TiDB Lightning 版本 >= v6.2.0 时，`tidb-lightning` 在向 TiKV 导入数据时，只会暂停目标表数据范围所在 region 的调度，并在目标表导入完成后恢复调度。
-    - 当 TiDB 集群版本 < v6.1.0 或 TiDB Lightning 版本 < v6.2.0 时，`tidb-lightning` 会暂停全局调度。
+    - 自 v7.1.0 开始，你可以通过 [`pause-pd-scheduler-scope`](/tidb-lightning/tidb-lightning-configuration.md) 来控制是否暂停全局调度。
+    - v6.2.0 ~ v7.0.0 版本的 TiDB Lightning 会根据 TiDB 集群的版本决定是否暂停全局调度。当 TiDB 集群版本 >= v6.1.0，只会暂停目标表数据范围所在 Region 的调度，并在目标表导入完成后恢复调度。其他版本则会暂停全局调度。
+    - 当 TiDB Lightning 版本 < v6.2.0 时，`tidb-lightning` 会暂停全局调度。
 
 2. `tidb-lightning` 在目标数据库建立表结构，并获取其元数据。
+
+    如果将 `add-index-by-sql` 设置为 `true`，`tidb-lightning` 会使用 SQL 接口添加索引，并且会在导入数据前移除目标表的所有次级索引。默认值为 `false`，和历史版本保持一致。
 
 3. 每张表都会被分割为多个连续的**区块**，这样来自大表 (200 GB+) 的数据就可以多个并发导入。
 
@@ -26,7 +37,9 @@ Physical Import Mode 对应的后端模式为 `local`。
 
     引擎文件包含两种：**数据引擎**与**索引引擎**，各自又对应两种键值对：行数据和次级索引。通常行数据在数据源里是完全有序的，而次级索引是无序的。因此，数据引擎文件在对应区块写入完成后会被立即上传，而所有的索引引擎文件只有在整张表所有区块编码完成后才会执行导入。
 
-6. 整张表相关联的所有引擎文件完成导入后，`tidb-lightning` 会对比本地数据源及下游集群的校验和 (checksum)，确保导入的数据无损，然后让 TiDB 分析 (`ANALYZE`) 这些新增的数据，以优化日后的操作。同时，`tidb-lightning` 调整 `AUTO_INCREMENT` 值防止之后新增数据时发生冲突。
+    注意当 `tidb-lightning` 使用 SQL 接口添加索引时（即 `add-index-by-sql` 设置为 `true`），索引引擎将不会写入数据，因为此时目标表的次级索引已经在第 2 步中被移除。
+
+6. 整张表相关联的所有引擎文件完成导入后，`tidb-lightning` 会对比本地数据源及下游集群的校验和 (checksum)，确保导入的数据无损，然后添加在第 2 步中被移除的次级索引或让 TiDB 分析 (`ANALYZE`) 这些新增的数据，以优化日后的操作。同时，`tidb-lightning` 调整 `AUTO_INCREMENT` 值防止之后新增数据时发生冲突。
 
     表的自增 ID 是通过行数的**上界**估计值得到的，与表的数据文件总大小成正比。因此，最后的自增 ID 通常比实际行数大得多。这属于正常现象，因为在 TiDB 中自增 ID [不一定是连续分配的](/mysql-compatibility.md#自增-id)。
 
@@ -54,17 +67,20 @@ Physical Import Mode 对应的后端模式为 `local`。
 
 - TiDB Lightning 版本 ≥ 4.0.3。
 - TiDB 集群版本 ≥ v4.0.0。
-- 如果目标 TiDB 集群是 v3.x 或以下的版本，需要使用 Importer-backend 来完成数据的导入。在这个模式下，`tidb-lightning` 需要将解析的键值对通过 gRPC 发送给 `tikv-importer` 并由 `tikv-importer` 完成数据的导入。
 
 ### 使用限制
 
-- 请勿直接使用 Physical Import Mode 向已经投入生产的 TiDB 集群导入数据，这将对在线业务产生严重影响。如需向生产集群导入数据，请参考[导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时限制调度范围从集群降低到表级别)。
+- 请勿直接使用物理导入模式向已经投入生产的 TiDB 集群导入数据，这将对在线业务产生严重影响。如需向生产集群导入数据，请参考[导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时暂停-pd-调度的范围)。
+
+- 如果你的 TiDB 生产集群上有延迟敏感型业务，并且并发较小，**不建议**使用 TiDB Lightning 物理导入模式导入数据到该集群，因为可能会影响在线业务。
 
 - 默认情况下，不应同时启动多个 TiDB Lightning 实例向同一 TiDB 集群导入数据，而应考虑使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性。
 
-- 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，即不可同时使用 Physical Import Mode 和 Logical Import Mode 导入同一 TiDB 集群。
+- 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，即不可同时使用物理导入模式和逻辑导入模式导入同一 TiDB 集群。
 
-- 单个 Lightning 进程导入单表不应超过 10TB，使用并行导入 Lightning 实例不应超过 10 个。
+- 在导入数据的过程中，请勿在目标表进行 DDL 和 DML 操作，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入操作完成后再进行读写操作。
+
+- 单个 TiDB Lightning 进程导入单表不应超过 10 TiB。使用并行导入时，TiDB Lightning 实例不应超过 10 个。
 
 ### 与其他组件一同使用的注意事项
 
@@ -78,4 +94,10 @@ Physical Import Mode 对应的后端模式为 `local`。
 
 - TiDB Lightning 与 TiCDC 一起使用时需要注意：
 
-    - TiCDC 无法捕获 Physical Import Mode 插入的数据。
+    - TiCDC 无法捕获物理导入模式插入的数据。
+
+- TiDB Lightning 与 BR 一起使用时需要注意：
+
+    - BR 快照备份 TiDB Lightning 正在导入的表，会导致该表备份的数据不一致。
+    - BR 执行基于 AWS EBS 卷快照的备份，会导致 TiDB Lightning 导入数据失败。
+    - TiDB Lightning 物理导入模式导入的数据不支持[日志备份](/br/br-pitr-guide.md#开启日志备份)，因此无法通过 Point-in-time recovery (PITR) 恢复。

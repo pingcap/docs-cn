@@ -13,7 +13,7 @@ summary: 了解单个区域两个可用区自适应同步模式部署方式。
 
 TiDB 通常采用多 AZ 部署方案保证集群高可用和容灾能力。多 AZ 部署方案包括单区域多 AZ 部署模式、双区域多 AZ 部署模式等多种部署模式。本文介绍单区域双 AZ 部署方案，即在同一区域部署两个 AZ，成本更低，同样能满足高可用和容灾要求。该部署方案采用自适应同步模式，即 Data Replication Auto Synchronous，简称 DR Auto-Sync。
 
-单区域双 AZ 部署方案下，两个 AZ 通常位于同一个城市或两个相邻城市（例如北京和廊坊）， 相距 50 km 以内，AZ 间的网络连接延迟小于 1.5 ms，带宽大于 10 Gbps。
+单区域双 AZ 部署方案下，两个 AZ 通常位于同一个城市或两个相邻城市（例如北京和廊坊），相距 50 km 以内，AZ 间的网络连接延迟小于 1.5 ms，带宽大于 10 Gbps。
 
 ## 部署架构
 
@@ -123,7 +123,7 @@ cat rule.json
       },
       {
         "group_id": "pd",
-        "id": "az-west",
+        "id": "az-west-1",
         "start_key": "",
         "end_key": "",
         "role": "follower",
@@ -145,7 +145,7 @@ cat rule.json
       },
       {
         "group_id": "pd",
-        "id": "az-west",
+        "id": "az-west-2",
         "start_key": "",
         "end_key": "",
         "role": "learner",
@@ -220,6 +220,8 @@ cat default.json
     primary-replicas = 3
     dr-replicas = 2
     wait-store-timeout = "1m"
+    wait-recover-timeout = "0s"
+    pause-region-split = false
     ```
 
 + 方法二：如果已经部署了集群，则使用 pd-ctl 命令修改 PD 的配置。
@@ -242,6 +244,8 @@ cat default.json
 + `primary-replicas` 是主 AZ 上 Voter 副本的数量。
 + `dr-replicas` 是从 AZ 上 Voter 副本的数量。
 + `wait-store-timeout` 是当出现网络隔离或者故障时，切换到异步复制模式的等待时间。如果超过这个时间还没恢复，则自动切换到异步复制模式。默认时间为 60 秒。
++ `wait-recover-timeout` 是当网络恢复后，切换回 `sync-recover` 状态的等待时间。默认为 0 秒。
++ `pause-region-split` 用于控制在 `async_wait` 和 `async` 状态下是否暂停 Region 的 split 操作。暂停 Region split 可以防止在 `sync-recover` 状态同步数据时从属 AZ 出现短暂的部分数据缺失。默认为 `false`。
 
 如果需要检查当前集群的复制状态，可以通过以下 API 获取：
 
@@ -285,7 +289,7 @@ curl http://pd_ip:pd_port/pd/api/v1/replication_mode/status
 
 当处于同步复制状态的集群发生了灾难，可进行 `RPO = 0` 的数据恢复：
 
-- 如果主 AZ 发生故障，丢失了大多数 Voter 副本，但是从 AZ 有完整的数据，可在从 AZ 恢复数据。此时需要人工介入，通过专业工具恢复（恢复方式请联系 TiDB 团队）。
+- 如果主 AZ 发生故障，丢失了大多数 Voter 副本，但是从 AZ 有完整的数据，可在从 AZ 恢复数据。此时需要人工介入，通过专业工具恢复。如需获取支持，请联系 [PingCAP 服务与支持](https://cn.pingcap.com/support/)。
 
 - 如果从 AZ 发生故障，丢失了少数 Voter 副本，能自动切换成 async 异步复制模式。
 

@@ -3,6 +3,7 @@ title: TiDB 产品文档
 aliases: ['/docs-cn/dev/','/docs-cn/','/docs-cn/stable/']
 hide_sidebar: true
 hide_commit: true
+summary: TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库。产品文档包括了 TiDB 简介、功能概览、TiFlash、快速上手 TiDB、HTAP、开发者手册概览、软硬件环境需求、使用 TiUP 部署 TiDB、数据迁移概览、运维、监控、调优、工具、TiDB 路线图、配置文件参数、命令行参数、TiDB Control、系统变量、发布历史、常见问题。
 ---
 
 <LearningPathContainer platform="tidb" title="TiDB" subTitle="TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库。您可以在这里查看概念介绍、操作指南、应用开发、参考等产品文档。">
@@ -11,7 +12,7 @@ hide_commit: true
 
 [TiDB 简介](https://docs.pingcap.com/zh/tidb/dev/overview)
 
-[基本功能](https://docs.pingcap.com/zh/tidb/dev/basic-features)
+[功能概览](https://docs.pingcap.com/zh/tidb/dev/basic-features)
 
 [TiFlash](https://docs.pingcap.com/zh/tidb/dev/tiflash-overview)
 
@@ -43,7 +44,7 @@ hide_commit: true
 
 [使用 TiUP 部署 TiDB（推荐）](https://docs.pingcap.com/zh/tidb/dev/production-deployment-using-tiup)
 
-[在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb/dev/tidb-in-kubernetes)
+[在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
 
 </LearningPath>
 
@@ -63,9 +64,7 @@ hide_commit: true
 
 [扩容集群](https://docs.pingcap.com/zh/tidb/dev/scale-tidb-using-tiup)
 
-[备份数据](https://docs.pingcap.com/zh/tidb/dev/br-usage-backup)
-
-[恢复数据](https://docs.pingcap.com/zh/tidb/dev/br-usage-restore)
+[备份与恢复](https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-overview)
 
 [日常巡检](https://docs.pingcap.com/zh/tidb/dev/daily-check)
 
@@ -103,27 +102,31 @@ hide_commit: true
 
 [TiUP](https://docs.pingcap.com/zh/tidb/dev/tiup-overview)
 
-[Dumpling](https://docs.pingcap.com/zh/tidb/dev/dumpling-overview)
+[TiDB Operator](https://docs.pingcap.com/zh/tidb/dev/tidb-operator-overview)
+
+[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb/dev/dm-overview)
 
 [TiDB Lightning](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-overview)
 
-[Data Migration](https://docs.pingcap.com/zh/tidb/dev/dm-overview)
-
-[Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-overview)
+[Dumpling](https://docs.pingcap.com/zh/tidb/dev/dumpling-overview)
 
 [TiCDC](https://docs.pingcap.com/zh/tidb/dev/ticdc-overview)
 
+[Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-overview)
+
 [PingCAP Clinic](https://docs.pingcap.com/zh/tidb/dev/clinic-introduction)
-
-[TiUniManager](https://docs.pingcap.com/zh/tidb/dev/tiunimanager-overview)
-
-[TiDB Operator](https://docs.pingcap.com/zh/tidb/dev/tidb-operator-overview)
-
-[TiSpark](https://docs.pingcap.com/zh/tidb/dev/tispark-overview)
 
 </LearningPath>
 
 <LearningPath label="参考" icon="cloud-dev">
+
+[TiDB 路线图](https://docs.pingcap.com/zh/tidb/dev/tidb-roadmap)
+
+[TiDB 配置文件参数](https://docs.pingcap.com/zh/tidb/dev/tidb-configuration-file)
+
+[TiDB 命令行参数](https://docs.pingcap.com/zh/tidb/dev/command-line-flags-for-tidb-configuration)
+
+[TiDB Control](https://docs.pingcap.com/zh/tidb/dev/tidb-control)
 
 [系统变量](https://docs.pingcap.com/zh/tidb/dev/system-variables)
 

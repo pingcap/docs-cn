@@ -1,5 +1,6 @@
 ---
 title: tiup mirror publish
+summary: tiup mirror publish 命令用于发布新组件或已有组件的新版本。只有有权限的组件管理员才可以发布组件。命令语法为 tiup mirror publish <comp-name> <version> <tarball> <entry> [flags]。其中各参数含义为组件名、版本号、tarball 包路径、组件可执行文件位置。命令还包含选项 -k, --key, --arch, --os, --desc, --hide。成功时无输出，无权限时会有相应错误提示。
 ---
 
 # tiup mirror publish
@@ -71,5 +72,3 @@ tiup mirror publish <comp-name> <version> <tarball> <entry> [flags]
 - 若该组件管理员无权修改目标组件：
     - 若使用远程镜像：`Error: The server refused, make sure you have access to this component`
     - 若使用本地镜像：`Error: the signature is not correct`
-
-[<< 返回上一页 - TiUP Mirror 命令清单](/tiup/tiup-command-mirror.md#命令清单)

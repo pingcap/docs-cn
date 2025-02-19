@@ -55,8 +55,6 @@ AZ1 的 rac1 机架中，一台服务器部署了 TiDB 和 PD 服务，另外两
 
 机架 rac3 上部署了 TiDB Server、中控及监控服务器。TiDB Server 用于日常管理维护和备份。中控和监控服务器上部署了 Prometheus、Grafana 以及恢复工具。
 
-另可增加备份服务器，其上部署 Drainer，Drainer 以输出 file 文件的方式将 binlog 数据保存到指定位置，实现增量备份的目的。
-
 ## 配置
 
 ### 示例
@@ -113,8 +111,8 @@ tikv_servers:
   - host: 10.63.10.34
     config:
       server.labels: { az: "3", replication zone: "5", rack: "5", host: "34" }
-      raftstore.raft-min-election-timeout-ticks: 1000
-      raftstore.raft-max-election-timeout-ticks: 1200
+      raftstore.raft-min-election-timeout-ticks: 50
+      raftstore.raft-max-election-timeout-ticks: 60
 
 monitoring_servers:
   - host: 10.63.10.60
@@ -171,14 +169,18 @@ tikv_servers:
     server.grpc-compression-type: gzip
     ```
 
-- 优化跨区域 AZ3 的TiKV 节点网络，修改 TiKV 的如下参数，拉长跨区域副本参与选举的时间，避免跨区域 TiKV 中的副本参与 Raft 选举。
+- 优化跨区域 AZ3 的 TiKV 节点网络，修改 TiKV 的如下参数，拉长跨区域副本参与选举的时间，避免跨区域 TiKV 中的副本参与 Raft 选举。
 
     ```
-    raftstore.raft-min-election-timeout-ticks: 1000
-    raftstore.raft-max-election-timeout-ticks: 1200
+    raftstore.raft-min-election-timeout-ticks: 50
+    raftstore.raft-max-election-timeout-ticks: 60
     ```
 
-- 调度设置。在集群启动后，通过 `tiup ctl:<cluster-version> pd` 工具进行调度策略修改。修改 TiKV Raft 副本数按照安装时规划好的副本数进行设置，在本例中为 5 副本。
+> **注意:**
+>
+> 通过 `raftstore.raft-min-election-timeout-ticks` 和 `raftstore.raft-max-election-timeout-ticks` 为 TiKV 节点配置较大的 election timeout tick 可以大幅降低该节点上的 Region 成为 Leader 的概率。但在发生灾难的场景中，如果部分 TiKV 节点宕机，而其它存活的 TiKV 节点 Raft 日志落后，此时只有这个配置了较大的 election timeout tick 的 TiKV 节点上的 Region 能成为 Leader。由于此 TiKV 节点上的 Region 需要至少等待 `raftstore.raft-min-election-timeout-ticks` 设置的时间后才能发起选举，因此尽量避免将此配置值设置得过大，以免在这种场景下影响集群的可用性。
+
+- 调度设置。在集群启动后，通过 `tiup ctl:v<CLUSTER_VERSION> pd` 工具进行调度策略修改。修改 TiKV Raft 副本数按照安装时规划好的副本数进行设置，在本例中为 5 副本。
 
     ```
     config set max-replicas 5
@@ -194,7 +196,7 @@ tikv_servers:
     >
     > TiDB 5.2 及以上版本默认不支持 `label-property` 配置。若要设置副本策略，请使用 [Placement Rules](/configure-placement-rules.md)。
 
-- 设置 PD 的优先级，为了避免出现跨区域 AZ 的 PD 成为 Leader，可以将本区域 AZ 的 PD 优先级调高（数字越大，优先级越高），将跨区域的 PD 优先级调低。
+- 设置 PD 的优先级，为了避免出现跨区域 AZ 的 PD 成为 Leader，可以将本区域 AZ 的 PD 优先级调高（数字越大，优先级越高），将跨区域的 PD 优先级调低。在可用的 PD 节点中，优先级数值最大的节点会直接当选 leader。
 
     ```
     member leader_priority PD-10 5

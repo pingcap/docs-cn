@@ -1,5 +1,6 @@
 ---
 title: What's New in TiDB 5.0
+summary: TiDB 5.0 版本新增了许多功能和优化，包括 MPP 架构、聚簇索引、异步提交事务、Raft Joint Consensus 算法等。此外，还优化了系统变量、配置文件参数、性能、稳定性和数据迁移功能。TiUP 工具也进行了多项优化，包括部署操作逻辑、升级稳定性、升级时长和运维功能。遥测方面新增了集群使用指标的收集。
 ---
 
 # What's New in TiDB 5.0
@@ -38,7 +39,7 @@ TiDB 版本：5.0.0
 + 临时表的语法兼容性受到 [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) 系统变量的控制：当 `tidb_enable_noop_functions` 为 `OFF` 时，`CREATE TEMPORARY TABLE` 语法将会报错。
 + 新增 [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入)、[`tidb_gc_enable`](/system-variables.md#tidb_gc_enable-从-v50-版本开始引入)、[`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)、[`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-从-v50-版本开始引入)、[`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) 系统变量，用于直接通过系统变量调整垃圾回收相关参数。
 + 系统变量 [`enable-joint-consensus`](/pd-configuration-file.md#enable-joint-consensus-从-v50-版本开始引入) 默认值由 `false` 改成 `true`，默认开启 Joint consensus 功能。
-+ 系统变量 [`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) 的值由数字 0 或者 1 变更成 ON 或者 OFF。
++ 系统变量 `tidb_enable_amend_pessimistic_txn` 的值由数字 0 或者 1 变更成 ON 或者 OFF。
 + 系统变量 [`tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入) 默认值由 OFF 改成 INT_ONLY 且含义有如下变化：
     + ON：开启聚簇索引，支持添加或者删除非聚簇索引。
     + OFF：关闭聚簇索引，支持添加或者删除非聚簇索引。
@@ -106,11 +107,11 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 
 ### 事务
 
-[用户文档](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)，[#18005](https://github.com/pingcap/tidb/issues/18005)
+[#18005](https://github.com/pingcap/tidb/issues/18005)
 
 悲观事务模式下，如果事务所涉及到的表存在并发的 DDL 操作或者 SCHEMA VERSION 变更，系统自动将该事务的 SCHEMA VERSION 更新到最新版本，以此确保事务会提交成功，避免事务因并发的 DDL 操作或者 SCHEMA VERSION 变更而中断时客户端收到 `Information schema is changed` 的错误信息。
 
-系统默认关闭此功能，你可以通过修改 [`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) 系统变量开启此功能，此功能从 4.0.7 版本开始提供，5.0 版本主要修复了以下问题：
+系统默认关闭此功能，你可以通过修改 `tidb_enable_amend_pessimistic_txn` 系统变量开启此功能，此功能从 4.0.7 版本开始提供，5.0 版本主要修复了以下问题：
 
 + TiDB Binlog 在执行 Add column 操作的兼容性问题
 + 与唯一索引一起使用时存在的数据不一致性的问题
@@ -171,7 +172,7 @@ TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查�
 
 DBA、数据库应用开发者在设计表结构时或者分析业务数据的行为时，如果发现有部分列经常分组排序、返回某范围的数据、返回少量不同的值的数据、有主键列及业务数据不会有读写热点时，建议选择聚簇索引。
 
-聚簇索引 (Clustered Index)，部分数据库管理系统也叫索引组织表，是一种和表的数据相关联的存储结构。创建聚簇索引时可指定包含表中的一列或多列作为索引的键值。这些键存储在一个结构中，使 TiDB 能够快速有效地找到与键值相关联的行，提升查询和写入数据的性能。
+聚簇索引 (Clustered Index) 是一种和表的数据相关联的存储结构。有些数据库管理系统将聚簇索引表称为“索引组织表”。创建聚簇索引时可指定包含表中的一列或多列作为索引的键值。这些键存储在一个结构中，使 TiDB 能够快速有效地找到与键值相关联的行，提升查询和写入数据的性能。
 
 开启聚簇索引功能后，TiDB 性能在一些场景下会有较大幅度的提升。例如，TPC-C tpmC 的性能提升了 39%。聚簇索引主要在以下场景会有性能提升：
 

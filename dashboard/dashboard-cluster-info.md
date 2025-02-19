@@ -12,11 +12,9 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-cluster-info/']
 
 可以通过以下两种方法访问集群信息页面：
 
-- 登录后，左侧导航条点击**集群信息** (Cluster Info)：
+* 登录 TiDB Dashboard 后，在左侧导航栏中点击**集群信息** (Cluster Info)。
 
-  ![访问](/media/dashboard/dashboard-cluster-info-access-v650.png)
-
-- 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/cluster_info/instance>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
+* 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/cluster_info/instance>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
 
 ## 实例列表
 
@@ -35,17 +33,22 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-cluster-info/']
 - Git 哈希值 (Git Hash)：实例二进制对应的 Git 哈希值
 - 部署路径 (Deployment Directory)：实例二进制文件所在目录路径
 
-实例的运行状态有：
+### 实例运行状态 (Status)
+
+实例可能处于如下任一运行状态：
 
 - 在线 (Up)：实例正常运行。
 - 离线 (Down) 或无法访问 (Unreachable)：实例未启动或对应主机存在网络问题。
 - 已缩容下线 (Tombstone)：实例上的数据已被完整迁出并缩容完毕。仅 TiKV 或 TiFlash 实例存在该状态。
-- 下线中 (Offline)：实例上的数据正在被迁出并缩容。仅 TiKV 或 TiFlash 实例存在该状态。
+- 下线中 (Leaving)：实例上的数据正在被迁出并缩容。仅 TiKV 或 TiFlash 实例存在该状态。
 - 未知 (Unknown)：未知的实例运行状态。
 
 > **注意：**
 >
-> 表格中部分列仅在实例处于在线状态时能显示。
+> - TiDB Dashboard 显示的 `Leaving`、PD API 返回的 `Offline` 以及 TiUP 显示的 `Pending Offline` 这三个状态的含义相同。
+> - 表格中部分列仅在实例处于在线状态 (Up) 时能显示。
+
+实例运行状态来自于 PD 的调度信息。更详细的描述请参考 [TiDB 数据库的调度 -- 信息收集](/tidb-scheduling.md#信息收集)。
 
 ## 主机列表
 
@@ -82,4 +85,4 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-cluster-info/']
 - 文件系统 (File System)：主机上运行实例所在磁盘的文件系统类型
 - 磁盘容量 (Disk Capacity)：主机上运行实例所在磁盘的总空间大小
 - 磁盘使用率 (Disk Usage)：主机上运行实例所在磁盘的空间使用率
-- 实例 (Instance)：主机上运行的示例
+- 实例 (Instance)：主机上运行的实例

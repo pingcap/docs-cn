@@ -19,7 +19,7 @@ cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://ro
 ```shell
 Create changefeed successfully!
 ID: simple-replication-task
-Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-replication-task","sink_uri":"mysql://root:xxxxx@127.0.0.1:4000/?time-zone=","create_time":"2022-12-19T15:05:46.679218+08:00","start_ts":438156275634929669,"engine":"unified","config":{"case_sensitive":true,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":true,"bdr_mode":false,"sync_point_interval":30000000000,"sync_point_retention":3600000000000,"filter":{"rules":["test.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storag
+Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-replication-task","sink_uri":"mysql://root:xxxxx@127.0.0.1:4000/?time-zone=","create_time":"2024-12-05T15:05:46.679218+08:00","start_ts":438156275634929669,"engine":"unified","config":{"case_sensitive":false,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":true,"bdr_mode":false,"sync_point_interval":30000000000,"sync_point_retention":3600000000000,"filter":{"rules":["test.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v8.5.0"}
 ```
 
 ## 查询同步任务列表
@@ -82,7 +82,7 @@ cdc cli changefeed query --server=http://10.0.10.25:8300 --changefeed-id=simple-
 ```shell
 {
   "info": {
-    "sink-uri": "mysql://127.0.0.1:3306/?max-txn-row=20\u0026worker-number=4",
+    "sink-uri": "mysql://127.0.0.1:3306/?max-txn-row=20\u0026worker-count=4",
     "opts": {},
     "create-time": "2020-08-27T10:33:41.687983832+08:00",
     "start-ts": 419036036249681921,
@@ -91,8 +91,7 @@ cdc cli changefeed query --server=http://10.0.10.25:8300 --changefeed-id=simple-
     "sort-engine": "unified",
     "sort-dir": ".",
     "config": {
-      "case-sensitive": true,
-      "enable-old-value": false,
+      "case-sensitive": false,
       "filter": {
         "rules": [
           "*.*"
@@ -193,11 +192,11 @@ cdc cli changefeed remove --server=http://10.0.10.25:8300 --changefeed-id simple
 
 ## 更新同步任务配置
 
-TiCDC 从 4.0.4 开始支持非动态修改同步任务配置，修改 changefeed 配置需要按照 `暂停任务 -> 修改配置 -> 恢复任务` 的流程。
+TiCDC 支持非动态修改同步任务配置，修改 changefeed 配置需要按照 `暂停任务 -> 修改配置 -> 恢复任务` 的流程。
 
 ```shell
 cdc cli changefeed pause -c test-cf --server=http://10.0.10.25:8300
-cdc cli changefeed update -c test-cf --server=http://10.0.10.25:8300 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+cdc cli changefeed update -c test-cf --server=http://10.0.10.25:8300 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-count=8" --config=changefeed.toml
 cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 ```
 
@@ -205,7 +204,6 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 
 - changefeed 的 `sink-uri`
 - changefeed 配置文件及文件内所有配置
-- changefeed 是否使用文件排序和排序目录
 - changefeed 的 `target-ts`
 
 ## 管理同步子任务处理单元 (`processor`)
@@ -257,18 +255,6 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 - `resolved-ts` 代表当前 Processor 中已经排序数据的最大 TSO。
 - `checkpoint-ts` 代表当前 Processor 已经成功写入下游的事务的最大 TSO。
 
-## 输出行变更的历史值 <span class="version-mark">从 v4.0.5 版本开始引入</span>
-
-默认配置下，同步任务输出的 TiCDC Open Protocol 行变更数据只包含变更后的值，不包含变更前行的值，因此该输出数据不满足 TiCDC Open Protocol 的消费端使用行变更历史值的需求。
-
-从 v4.0.5 开始，TiCDC 支持输出行变更数据的历史值。若要开启该特性，需要在 changefeed 的配置文件的根级别指定以下配置：
-
-```toml
-enable-old-value = true
-```
-
-从 v5.0 开始默认启用该特性，开启该特性后 TiCDC Open Protocol 的输出格式参考 [TiCDC 开放数据协议 - Row Changed Event](/ticdc/ticdc-open-protocol.md#row-changed-event)。
-
 ## 同步启用了 TiDB 新的 Collation 框架的表
 
 从 v4.0.15、v5.0.4、v5.1.1 和 v5.2.0 开始，TiCDC 支持同步启用了 TiDB [新的 Collation 框架](/character-set-and-collation.md#新框架下的排序规则支持)的表。
@@ -278,13 +264,12 @@ enable-old-value = true
 从 v4.0.8 开始，TiCDC 支持通过修改任务配置来同步没有有效索引的表。若要开启该特性，需要在 `changefeed` 配置文件的根级别进行如下指定：
 
 ```toml
-enable-old-value = true
 force-replicate = true
 ```
 
 > **警告：**
 >
-> 对于没有有效索引的表，`INSERT` 和 `REPLACE` 等操作不具备可重入性，因此会有数据冗余的风险。TiCDC 在同步过程中只保证数据至少分发一次，因此开启该特性同步没有有效索引的表，一定会导致数据冗余出现。如果不能接受数据冗余，建议增加有效索引，譬如增加具有 `AUTO RANDOM` 属性的主键列。
+> 在开启 `force-replicate` 之后，不保证数据一致性。对于没有有效索引的表，`INSERT` 和 `REPLACE` 等操作不具备可重入性，因此会有数据冗余的风险。TiCDC 在同步过程中只保证数据至少分发一次，因此开启该特性同步没有有效索引的表，一定会导致数据冗余出现。如果不能接受数据冗余，建议增加有效索引，譬如增加具有 `AUTO RANDOM` 属性的主键列。
 
 ## Unified Sorter 功能
 

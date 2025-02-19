@@ -1,5 +1,6 @@
 ---
 title: tiup cluster patch
+summary: tiup cluster patch 命令用于在集群运行过程中动态替换某个服务的二进制文件。它会上传替换的二进制包到目标机器，并通过 API 下线节点，停止目标服务，解压替换二进制包，最后启动目标服务。在使用命令前需要准备二进制包，包括确定组件名、版本、操作系统和平台，下载组件包，创建临时打包目录，解压原二进制包，复制要替换的文件到临时目录，最后打包所有文件。命令还包括一些选项，如 --overwrite、--transfer-timeout、-N、-R、--offline 等。
 ---
 
 # tiup cluster patch
@@ -7,7 +8,7 @@ title: tiup cluster patch
 在集群运行过程中，如果需要动态替换某个服务的二进制文件（即替换过程中保持集群可用），那么可以使用 `tiup cluster patch` 命令，它会完成以下几件事情：
 
 - 将用于替换的二进制包上传到目标机器
-- 如果目标服务是 TiKV、TiFlash 或者 TiDB Binlog 之类的存储服务，则先通过 API 下线节点
+- 如果目标服务是 TiKV 或者 TiFlash 之类的存储服务，则先通过 API 下线节点
 - 停止目标服务
 - 解压二进制包，替换服务
 - 启动目标服务
@@ -19,15 +20,50 @@ tiup cluster patch <cluster-name> <package-path> [flags]
 ```
 
 - `<cluster-name>` 代表要操作的集群名
-- `<package-path>` 为用于替换的二进制包，其打包方式如下：
-    - 确定当前要替换的组件名称 `${component}` (tidb, tikv, pd...) 以及其版本 `${version}` (v4.0.0, v4.0.1 ...)，以及其运行的平台 `${os}` (linux) 和 `${arch}` (amd64, arm64)
-    - 下载当前的组件包：`wget https://tiup-mirrors.pingcap.com/${component}-${version}-${os}-${arch}.tar.gz -O /tmp/${component}-${version}-${os}-${arch}.tar.gz`
-    - 建立临时打包目录：`mkdir -p /tmp/package && cd /tmp/package`
-    - 解压原来的二进制包：`tar xf /tmp/${component}-${version}-${os}-${arch}.tar.gz`
-    - 查看临时打包目录中的文件结构：`find .`
-    - 将要替换的二进制文件或配置文件复制到临时目录的对应位置
-    - 重新打包 `tar czf /tmp/${component}-hotfix-${os}-${arch}.tar.gz *`
-    - 通过以上步骤之后，`/tmp/${component}-hotfix-${os}-${arch}.tar.gz` 就可以用于 patch 命令了
+- `<package-path>` 为用于替换的二进制包路径
+
+### 准备二进制包
+
+在运行 `tiup cluster patch` 命令之前，你需要打包所需的二进制文件。请按照以下步骤操作：
+
+1. 确定以下变量的值：
+
+    - `${component}`：需要替换的组件名（例如 `tidb`、`tikv`、`pd`）。
+    - `${version}`：组件的版本（例如 `v8.5.0`、`v7.5.4`）。
+    - `${os}`：操作系统 (`linux`)。
+    - `${arch}`：组件运行的平台 (`amd64`、`arm64`)。
+2. 下载当前的组件包：
+
+    ```shell
+    wget https://tiup-mirrors.pingcap.com/${component}-${version}-${os}-${arch}.tar.gz -O /tmp/${component}-${version}-${os}-${arch}.tar.gz
+    ```
+
+3. 创建临时打包目录：
+
+    ```shell
+    mkdir -p /tmp/package && cd /tmp/package
+    ```
+
+4. 解压原来的二进制包：
+
+    ```shell
+    tar xf /tmp/${component}-${version}-${os}-${arch}.tar.gz
+    ```
+
+5. 查看临时打包目录中的文件结构：
+
+    ```shell
+    find .
+    ```
+
+6. 将要替换的二进制文件或配置文件复制到临时目录的对应位置。
+7. 将临时目录中的所有文件打包：
+
+    ```shell
+    tar czf /tmp/${component}-hotfix-${os}-${arch}.tar.gz *
+    ```
+
+完成上述步骤后，你可以在 `tiup cluster patch` 命令中使用 `/tmp/${component}-hotfix-${os}-${arch}.tar.gz` 作为 `<package-path>`。
 
 ## 选项
 
@@ -37,7 +73,7 @@ tiup cluster patch <cluster-name> <package-path> [flags]
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### --transfer-timeout（uint，默认 300）
+### --transfer-timeout（uint，默认 600）
 
 在重启 PD 或 TiKV 时，会先将被重启节点的 leader 迁移到其他节点，迁移过程会需要一定时间，可以通过设置 `--transfer-timeout` 设置最长等待时间（单位为秒），超时之后会跳过等待直接重启服务。
 
@@ -77,4 +113,6 @@ tiup cluster patch <cluster-name> <package-path> [flags]
 
 tiup-cluster 的执行日志。
 
-[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)
+## 另请参阅
+
+- [TiUP 常见运维操作](/maintain-tidb-using-tiup.md)

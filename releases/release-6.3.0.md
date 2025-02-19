@@ -1,5 +1,6 @@
 ---
 title: TiDB 6.3.0 Release Notes
+summary: 了解 TiDB 6.3.0 版本的新功能、兼容性变更、改进提升，以及错误修复。
 ---
 
 # TiDB 6.3.0 Release Notes
@@ -7,6 +8,10 @@ title: TiDB 6.3.0 Release Notes
 发版日期：2022 年 9 月 30 日
 
 TiDB 版本：6.3.0-DMR
+
+> **注意：**
+>
+> TiDB 6.3.0-DMR 的用户文档已[归档](https://docs-archive.pingcap.com/zh/tidb/v6.3)。如无特殊需求，建议使用 TiDB 数据库的[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.3/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.3.0-DMR#version-list)
 
@@ -82,7 +87,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiFlash 调整 FastScan 功能使用方式（实验特性）[#5252](https://github.com/pingcap/tiflash/issues/5252) @[hongyunyan](https://github.com/hongyunyan)
 
-    TiFlash 从 v6.2.0 版本开始引入的快速扫描功能 (FastScan)，性能上符合预期，但是使用方式上不够灵活。因此，TiFlash 在 v6.3.0 版本[调整 FastScan 功能的使用方式](/develop/dev-guide-use-fastscan.md)：废弃了 `ALTER TABLE ...SET TiFLASH MODE ...` 语法启用方式，改为使用系统变量 [`tiflash_fastscan`](/system-variables.md#tiflash_fastscan-从-v630-版本开始引入) 进行控制。
+    TiFlash 从 v6.2.0 版本开始引入的快速扫描功能 (FastScan)，性能上符合预期，但是使用方式上不够灵活。因此，TiFlash 在 v6.3.0 版本[调整 FastScan 功能的使用方式](/tiflash/use-fastscan.md)：废弃了 `ALTER TABLE ...SET TiFLASH MODE ...` 语法启用方式，改为使用系统变量 [`tiflash_fastscan`](/system-variables.md#tiflash_fastscan-从-v630-版本开始引入) 进行控制。
 
     从 v6.2.0 版本升级到 v6.3.0 版本时，在 v6.2.0 版本的 FastScan 设置将失效，但不影响数据的正常读取。你需要重新使用变量方式设置 FastScan。从 v6.2.0 及更早版本升级到 v6.3.0 时，所有会话默认不开启 FastScan 功能，而是保持一致性的数据扫描功能。
 
@@ -140,15 +145,15 @@ TiDB 版本：6.3.0-DMR
 
     正式支持对在线 TiKV 节点[关闭 Titan 引擎](/storage-engine/titan-configuration.md#关闭-titan)。
 
-* 缺少 GlobalStats 时自动选择分区静态剪裁 [#37535](https://github.com/pingcap/tidb/issues/37535) @[Yisaer](https://github.com/Yisaer)
+* 缺少全局统计信息时自动选择分区静态剪裁 [#37535](https://github.com/pingcap/tidb/issues/37535) @[Yisaer](https://github.com/Yisaer)
 
-    当启用分区[动态剪裁](/partitioned-table.md#动态裁剪模式)时，优化器依赖 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 进行执行计划的选择。在 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 收集完成前，使用 pseudo 统计信息可能会造成性能回退。在 v6.3.0 版本中，如果在 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 收集未完成的情况下打开动态分区裁剪开关，TiDB 会维持静态分区剪裁的状态，直到 GlobalStats 收集完成。该方式确保在切换分区剪裁策略时系统性能保持稳定。
+    当启用分区[动态裁剪](/partitioned-table.md#动态裁剪模式)时，优化器依赖[全局统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)进行执行计划的选择。在[全局统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)收集完成前，使用 pseudo 统计信息可能会造成性能回退。在 v6.3.0 版本中，如果在[全局统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)未收集完成的情况下启用 `dynamic` 动态裁剪模式，TiDB 仍然会维持 `static` 静态裁剪的状态，直到全局统计信息收集完成。该方式确保在切换分区裁剪策略时系统性能保持稳定。
 
 ### 易用性
 
 * 解决基于 SQL 的数据放置规则功能和构建 TiFlash 副本功能的冲突 [#37171](https://github.com/pingcap/tidb/issues/37171) @[lcwangchao](https://github.com/lcwangchao)
 
-    TiDB 在 v6.0.0 版本提供基于 SQL 的数据放置规则功能，但是由于实现机制问题，该功能和构建 TiFlash 副本功能有冲突。v6.3.0 版本进行改进优化，[解决了这两个功能的冲突](/placement-rules-in-sql.md#使用限制)，使这两个功能更加方便易用。
+    TiDB 在 v6.0.0 版本提供[基于 SQL 的数据放置规则](/placement-rules-in-sql.md)功能，但是由于实现机制问题，该功能和构建 TiFlash 副本功能有冲突。v6.3.0 版本进行改进优化，解决了这两个功能的冲突，使这两个功能更加方便易用。
 
 ### MySQL 兼容性
 
@@ -170,7 +175,7 @@ TiDB 版本：6.3.0-DMR
 
 * PITR 支持 [GCS 和 Azure Blob Storage](/br/backup-and-restore-storages.md) 作为备份存储 @[joccau](https://github.com/joccau)
 
-    部署在 GCP 或者 Azure 上的用户，将 TiDB 集群升级至 v6.3.0 就可以使用 PITR 功能。
+    部署在 Google Cloud 或者 Azure 上的用户，将 TiDB 集群升级至 v6.3.0 就可以使用 PITR 功能。
 
 * BR 支持 AWS S3 Object Lock [#13442](https://github.com/tikv/tikv/issues/13442) @[3pointer](https://github.com/3pointer)
 
@@ -192,7 +197,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiCDC 支持维护上下游数据一致性快照 (Sync point) [#6977](https://github.com/pingcap/tiflow/issues/6977) @[asddongmen](https://github.com/asddongmen)
 
-    在灾备复制场景下，TiCDC 支持[周期性地维护一个下游数据快照](/sync-diff-inspector/upstream-downstream-diff.md#tidb-主从集群的数据校验)，使得该下游快照能与上游数据的快照保持一致。借助此能力，TiCDC 能更好地匹配读写分离应用场景，帮助用户降本增效。
+    在灾备复制场景下，TiCDC 支持[周期性地维护一个下游数据快照](/ticdc/ticdc-upstream-downstream-check.md)，使得该下游快照能与上游数据的快照保持一致。借助此能力，TiCDC 能更好地匹配读写分离应用场景，帮助用户降本增效。
 
 * TiCDC 支持平滑升级 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus) @[3AceShowHand](https://github.com/3AceShowHand)
 
@@ -213,14 +218,14 @@ TiDB 版本：6.3.0-DMR
 | [`tidb_ddl_flashback_concurrency`](/system-variables.md#tidb_ddl_flashback_concurrency-从-v630-版本开始引入) | 新增 | 用于控制 `flashback cluster` 的并发数。在 v6.3.0，该变量控制的功能尚未完全生效，请保留默认值。  |
 | [`tidb_enable_exchange_partition`](/system-variables.md#tidb_enable_exchange_partition) | 废弃 | 用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#分区管理) 特性。自 v6.3.0 开始，其取值将固定为默认值 `ON`，即默认开启 `exchange partitions with tables`。  |
 | [`tidb_enable_foreign_key`](/system-variables.md#tidb_enable_foreign_key-从-v630-版本开始引入) | 新增 |  用于控制是否开启 `FOREIGN KEY` 特性。在 v6.3.0，该变量控制的功能尚未完全生效，请保留默认值。 |
-| [`tidb_enable_general_plan_cache`](/system-variables.md#tidb_enable_general_plan_cache-从-v630-版本开始引入) | 新增 |  用于控制是否开启 General Plan Cache。在 v6.3.0，该变量控制的功能尚未完全生效，请保留默认值。 |
+| `tidb_enable_general_plan_cache` | 新增 |  用于控制是否开启 General Plan Cache。在 v6.3.0，该变量控制的功能尚未完全生效，请保留默认值。 |
 | [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-从-v630-版本开始引入)|  新增 | 用于设置是否开启[元数据锁](/metadata-lock.md)特性。 |
 | [`tidb_enable_null_aware_anti_join`](/system-variables.md#tidb_enable_null_aware_anti_join-从-v630-版本开始引入) | 新增 |  用于控制 TiDB 对特殊集合算子 `NOT IN` 和 `!= ALL` 引导的子查询产生的 Anti Join 是否采用 Null-Aware Hash Join 的执行方式。|
 | [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) | 修改 | 用于控制优化器在统计信息过期时的行为。 默认值由 `ON` 改为 `OFF`，即使统计信息过期，优化器也仍会使用该表上的统计信息。  |
 | [`tidb_enable_rate_limit_action`](/system-variables.md#tidb_enable_rate_limit_action) | 修改 | 用于控制是否为读数据的算子开启动态内存控制功能。打开该变量可能会导致内存不受 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 控制，而加剧 OOM 风险，故将默认值由 `ON` 调整为 `OFF`。 |
 | [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) | 新增 |  用于控制写 SQL 中的读取是否会下推到 TiFlash。在 v6.3.0，该变量控制的功能尚未完全生效，请保留默认值。 |
 | [`tidb_enable_unsafe_substitute`](/system-variables.md#tidb_enable_unsafe_substitute-从-v630-版本开始引入) | 新增 | 用于控制是否对生成列中表达式替换使用不安全的替换方式。 |
-| [`tidb_general_plan_cache_size`](/system-variables.md#tidb_general_plan_cache_size-从-v630-版本开始引入) | 新增 | 用于控制 General Plan Cache 最多能够缓存的计划数量。在 v6.3.0，该变量控制的功能尚未完全生效，请保留默认值。 |
+| `tidb_general_plan_cache_size` | 新增 | 用于控制 General Plan Cache 最多能够缓存的计划数量。在 v6.3.0，该变量控制的功能尚未完全生效，请保留默认值。 |
 | [`tidb_last_plan_replayer_token`](/system-variables.md#tidb_last_plan_replayer_token-从-v630-版本开始引入) | 新增 | 只读变量，用于获取当前会话中最后一个 `PLAN REPLAYER DUMP` 的结果。 |
 | [`tidb_max_paging_size`](/system-variables.md#tidb_max_paging_size-从-v630-版本开始引入) | 新增 | 用来设置 coprocessor 协议中 paging size 的最大的行数。 |
 | [`tidb_opt_force_inline_cte`](/system-variables.md#tidb_opt_force_inline_cte-从-v630-版本开始引入) | 新增 | 用于控制是否强制开启 inline CTE。默认值为 `OFF`，即默认不强制开启 inline CTE。 |
@@ -253,8 +258,8 @@ TiDB 版本：6.3.0-DMR
 
 * 日志备份支持 GCS 和 Azure Blob Storage 作为备份存储。
 * 日志备份功能兼容分区交换 (Exchange Partition) DDL。
-* 不再支持通过 `ALTER TABLE ...SET TiFLASH MODE ...` 语法启用或禁用 [FastScan](/develop/dev-guide-use-fastscan.md) 功能。从 v6.2.0 版本升级到 v6.3.0 版本时，在 v6.2.0 版本的 FastScan 设置将失效，但不影响数据的正常读取。你需要重新使用变量方式设置 FastScan。从 v6.2.0 及更早版本升级到 v6.3.0 时，所有会话默认不开启 FastScan 功能，而是保持一致性的数据扫描功能。
-* 在 Linux AMD64 架构的硬件平台下部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `cat /proc/cpuinfo | grep avx2` 有输出。通过使用 AVX2 指令集，TiFlash 的向量化引擎能提供更好的性能。
+* 不再支持通过 `ALTER TABLE ...SET TiFLASH MODE ...` 语法启用或禁用 [FastScan](/tiflash/use-fastscan.md) 功能。从 v6.2.0 版本升级到 v6.3.0 版本时，在 v6.2.0 版本的 FastScan 设置将失效，但不影响数据的正常读取。你需要重新使用变量方式设置 FastScan。从 v6.2.0 及更早版本升级到 v6.3.0 时，所有会话默认不开启 FastScan 功能，而是保持一致性的数据扫描功能。
+* 在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `grep avx2 /proc/cpuinfo` 有输出。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。确保命令 `grep 'crc32' /proc/cpuinfo | grep 'asimd'` 有输出。通过使用向量扩展指令集，TiFlash 的向量化引擎能提供更好的性能。
 * TiDB 支持的最小 HAProxy 版本为 v1.5。使用 v1.5 到 v2.1 之间的 HAProxy 时，需要在 `mysql-check` 中配置 `post-41`。建议使用 HAProxy v2.2 或更高版本。
 
 ## 废弃功能
@@ -310,8 +315,8 @@ TiDB 版本：6.3.0-DMR
         - 提升上游 TiDB 引入并行 DDL 框架后 TiCDC 的兼容性 [#6506](https://github.com/pingcap/tiflow/issues/6506) @[lance6716](https://github.com/lance6716)
         - 支持在 MySL sink 出错时将 DML 语句的 `start ts` 输出到日志文件 [#6460](https://github.com/pingcap/tiflow/issues/6460) @[overvenus](https://github.com/overvenus)
         - 优化 API `api/v1/health`，使其返回的 TiCDC 集群健康状态更准确 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus)
-        - 采用异步的模式实现 MQ sink 和 MySQL sink，提升 sink 的吞吐能力 [#5928](https://github.com/pingcap/tiflow/issues/5928) @[hicqu](https://github.com/hicqu) @[hi-rustin](https://github.com/hi-rustin)
-        - 删除已经废弃了的 pulsar sink [#7087](https://github.com/pingcap/tiflow/issues/7087) @[hi-rustin](https://github.com/hi-rustin)
+        - 采用异步的模式实现 MQ sink 和 MySQL sink，提升 sink 的吞吐能力 [#5928](https://github.com/pingcap/tiflow/issues/5928) @[hicqu](https://github.com/hicqu) @[hi-rustin](https://github.com/Rustin170506)
+        - 删除已经废弃了的 pulsar sink [#7087](https://github.com/pingcap/tiflow/issues/7087) @[hi-rustin](https://github.com/Rustin170506)
         - 忽略掉与 changefeed 不相关的 DDL 语句以提升同步性能 [#6447](https://github.com/pingcap/tiflow/issues/6447) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Data Migration (DM)
@@ -327,9 +332,9 @@ TiDB 版本：6.3.0-DMR
 
 + TiDB
 
-    - 修复权限检查跳过 `PREAPRE` 语句的问题 [#35784](https://github.com/pingcap/tidb/issues/35784) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复权限检查跳过 `PREPARE` 语句的问题 [#35784](https://github.com/pingcap/tidb/issues/35784) @[lcwangchao](https://github.com/lcwangchao)
     - 修复系统变量 `tidb_enable_noop_variable` 能够设置为 `WARN` 的问题 [#36647](https://github.com/pingcap/tidb/issues/36647) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复存在表达式索引定义时，`INFORMAITON_SCHEMA.COLUMNS` 表的 `ORDINAL_POSITION` 列可能不正确的问题 [#31200](https://github.com/pingcap/tidb/issues/31200) @[bb7133](https://github.com/bb7133)
+    - 修复存在表达式索引定义时，`INFORMATION_SCHEMA.COLUMNS` 表的 `ORDINAL_POSITION` 列可能不正确的问题 [#31200](https://github.com/pingcap/tidb/issues/31200) @[bb7133](https://github.com/bb7133)
     - 修复时间戳大于 `MAXINT32` 时 TiDB 不报错的问题  [#31585](https://github.com/pingcap/tidb/issues/31585) @[bb7133](https://github.com/bb7133)
     - 修复使用企业版插件时无法启动 TiDB server 的问题 [#37319](https://github.com/pingcap/tidb/issues/37319) @[xhebox](https://github.com/xhebox)
     - 修复 `SHOW CREATE PLACEMENT POLICY` 输出结果不正确的问题 [#37526](https://github.com/pingcap/tidb/issues/37526) @[xhebox](https://github.com/xhebox)

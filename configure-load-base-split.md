@@ -25,15 +25,15 @@ Load Base Split 是 TiKV 在 4.0 版本引入的特性，旨在解决 Region 访
 
 Load Base Split 会基于统计信息自动拆分 Region。通过统计信息识别出读流量或 CPU 使用率在 10s 内持续超过阈值的 Region，并在合适的位置将这些 Region 拆分。在选择拆分的位置时，会尽可能平衡拆分后两个 Region 的访问量，并尽量避免跨 Region 的访问。
 
-Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeChecker` 会跳过 hot Region ，另一方面 PD 也会针对心跳信息中的 `QPS`去进行判断，避免 Merge 两个 `QPS` 很高的 Region。
+Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeChecker` 会跳过 hot Region，另一方面 PD 也会针对心跳信息中的 `QPS`去进行判断，避免 Merge 两个 `QPS` 很高的 Region。
 
 ## 使用方法
 
 目前的 Load Base Split 的控制参数如下：
 
-- `split.qps-threshold`：表明一个 Region 被识别为热点的 QPS 阈值，默认为每秒 `3000` QPS。
-- `split.byte-threshold`：自 v5.0 引入，表明一个 Region 被识别为热点的流量阈值，单位为 Byte，默认为每秒 `30 MiB` 流量。
-- `split.region-cpu-overload-threshold-ratio`：自 v6.2.0 引入，表明一个 Region 被识别为热点的 CPU 使用率（占读线程池 CPU 时间的百分比）阈值，默认为 `0.25`。
+- [`split.qps-threshold`](/tikv-configuration-file.md#qps-threshold)：表明一个 Region 被识别为热点的 QPS 阈值。当 [`region-split-size`](/tikv-configuration-file.md#region-split-size) 小于 4 GB 时，默认为每秒 `3000` QPS。当 `region-split-size` 大于或等于 4 GB 时，默认值为每秒 `7000` QPS。
+- [`split.byte-threshold`](/tikv-configuration-file.md#byte-threshold-从-v50-版本开始引入)：自 v5.0 引入，表明一个 Region 被识别为热点的流量阈值，单位为 Byte。当 `region-split-size` 小于 4 GB 时，默认值为每秒 `30 MiB` 流量。当 `region-split-size` 大于或等于 4 GB 时，默认值为每秒 `100 MiB` 流量。
+- [`split.region-cpu-overload-threshold-ratio`](/tikv-configuration-file.md#region-cpu-overload-threshold-ratio-从-v620-版本开始引入)：自 v6.2.0 引入，表明一个 Region 被识别为热点的 CPU 使用率（占读线程池 CPU 时间的百分比）阈值。当 `region-split-size` 小于 4 GB 时，默认值为 `0.25`。当 `region-split-size` 大于或等于 4 GB 时，默认值为 `0.75`。
 
 如果连续 10s 内，某个 Region 每秒的各类读请求之和超过了 `split.qps-threshold`、流量超过了 `split.byte-threshold`，或 CPU 使用率在 Unified Read Pool 内的占比超过了 `split.region-cpu-overload-threshold-ratio`，那么就会尝试对此 Region 进行拆分。
 

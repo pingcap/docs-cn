@@ -1,5 +1,6 @@
 ---
 title: TiDB 6.0.0 Release Notes
+summary: 了解 TiDB 6.0.0 版本的新功能、兼容性变更、改进提升，以及错误修复。
 ---
 
 # TiDB 6.0.0 Release Notes
@@ -7,6 +8,10 @@ title: TiDB 6.0.0 Release Notes
 发版日期：2022 年 4 月 7 日
 
 TiDB 版本：6.0.0-DMR
+
+> **注意：**
+>
+> TiDB 6.0.0-DMR 的用户文档已[归档](https://docs-archive.pingcap.com/zh/tidb/v6.0)。如无特殊需求，建议使用 TiDB 数据库的[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
 
 在 6.0.0-DMR 版本中，你可以获得以下关键特性：
 
@@ -67,7 +72,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     Top SQL 是一个面向运维人员及应用开发者的一体化、自助的数据库性能观测和诊断功能，集成于 TiDB Dashboard 图形化界面，在 TiDB v6.0.0 正式发布。
 
-    与现有 TiDB Dashboard 中各个面向数据库专家的诊断功能不同的是，Top SQL 完全面向非专家：你不需要观察几千张监控图表寻找相关性，也不需要理解诸如 Raft Snapsnot、RocksDB、MVCC、TSO 等 TiDB 内部机制，仅需要知道常见的数据库概念，如索引、锁冲突、执行计划等，就可以通过 Top SQL 快速分析数据库负载情况，并提升应用程序的性能。
+    与现有 TiDB Dashboard 中各个面向数据库专家的诊断功能不同的是，Top SQL 完全面向非专家：你不需要观察几千张监控图表寻找相关性，也不需要理解诸如 Raft Snapshot、RocksDB、MVCC、TSO 等 TiDB 内部机制，仅需要知道常见的数据库概念，如索引、锁冲突、执行计划等，就可以通过 Top SQL 快速分析数据库负载情况，并提升应用程序的性能。
 
     Top SQL 功能功能默认关闭。启用后，通过 Top SQL 提供的各个 TiDB 或 TiKV 节点实时 CPU 负载情况，你可以直观了解各节点的高 CPU 负载来自哪些 SQL 语句，从而快速分析诸如数据库热点和负载陡升等问题。例如，你可以通过 Top SQL 分析某个 TiKV 节点上正在消耗 90% CPU 负载的 SQL 查询语句的具体内容及执行情况。
 
@@ -109,7 +114,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     TiDB 是原生计算存储分离架构，算子下推可以在存储层过滤无效数据，大大减少 TiDB 与 TiKV 的数据传输，提升查询效率。TiDB 在 v6.0.0 支持更多的表达式和 `BIT` 数据类型下推至 TiKV，以提升运算该类内容时的查询效率。
 
-    [用户文档](/functions-and-operators/expressions-pushed-down.md#加入黑名单)，[#30738](https://github.com/pingcap/tidb/issues/30738)
+    [用户文档](/functions-and-operators/expressions-pushed-down.md)，[#30738](https://github.com/pingcap/tidb/issues/30738)
 
 - 热点索引优化
 
@@ -260,7 +265,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
 - 企业级数据库管理平台 TiDB Enterprise Manager
 
-    TiDB Enterprise Manager 是一款以 TiDB 数据库为核心的企业级数据库管理平台，帮助用户在私有部署 (on-premises) 或公有云环境中管理 TiDB 集群。
+    TiDB Enterprise Manager 是一款以 TiDB 数据库为核心的企业级数据库管理平台，帮助用户在本地部署环境或公有云环境中管理 TiDB 集群。
 
     TiDB Enterprise Manager 不仅为 TiDB 集群提供全生命周期的可视化管理，也同时一站式提供 TiDB 数据库的参数管理、数据库版本升级、克隆集群、主备集群切换、数据导入导出、数据同步、数据备份恢复服务，能有效提高 TiDB 集群运维效率，降低企业运维成本。
 
@@ -485,7 +490,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
         - 支持放置规则 (placement rules) [#4846)](https://github.com/pingcap/tiflow/issues/4846)
         - 同步处理 HTTP API [#1710](https://github.com/pingcap/tiflow/issues/1710)
         - 为 changefeed 重启操作添加指数退避机制 [#3329](https://github.com/pingcap/tiflow/issues/3329)
-        - 设置 MySQL sink 的默认隔离级别为 Read Committed，以减少MySQL 中的死锁 [#3589](https://github.com/pingcap/tiflow/issues/3589)
+        - 设置 MySQL sink 的默认隔离级别为 Read Committed，以减少 MySQL 中的死锁 [#3589](https://github.com/pingcap/tiflow/issues/3589)
         - 在创建 changefeed 时验证参数合法，优化报错信息 [#1716](https://github.com/pingcap/tiflow/issues/1716) [#1718](https://github.com/pingcap/tiflow/issues/1718) [#1719](https://github.com/pingcap/tiflow/issues/1719) [#4472](https://github.com/pingcap/tiflow/issues/4472)
         - 暴露 Kafka producer 配置参数，使之在 TiCDC 中可配置 [#4385](https://github.com/pingcap/tiflow/issues/4385)
 

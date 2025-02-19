@@ -1,5 +1,6 @@
 ---
 title: TiDB 6.1.0 Release Notes
+summary: 了解 TiDB 6.1.0 版本的新功能、兼容性变更、改进提升，以及错误修复。
 ---
 
 # TiDB 6.1.0 Release Notes
@@ -58,11 +59,17 @@ TiDB 版本：6.1.0
 
 ### 性能
 
-* 支持自定义 Region 大小（实验特性）
+* 支持自定义 Region 大小
 
-    设置更大的 Region 可以有效减少 Region 数量，降低 Region 管理成本，提升集群性能和稳定性。该特性引入 bucket 概念，即将每个 Region 划分为更小的区间 bucket。使用 bucket 作为并发查询单位能够优化 Region 调大时的查询性能，动态调整热点 Region 的大小来保证热点调度效率和负载均衡。该特性目前属于实验特性，不建议在生产环境使用。
+    从 v6.1.0 起，你可以通过 [`coprocessor.region-split-size`](/tikv-configuration-file.md#region-split-size) 设置更大的 Region 从而有效减少 Region 数量，降低 Region 管理成本，提升集群性能和稳定性。
 
-    [用户文档](/tune-region-performance.md)，[#11515](https://github.com/tikv/tikv/issues/11515)
+    [用户文档](/tune-region-performance.md#使用-region-split-size-调整-region-大小)，[#11515](https://github.com/tikv/tikv/issues/11515)
+
+* 支持使用 bucket 增加并发（实验特性）
+
+    当 Region 调大以后，为了进一步提高查询的并发度，TiDB 引入 bucket 概念，即将每个 Region 划分为更小的区间 bucket。使用 bucket 作为并发查询单位能够优化 Region 调大时的查询性能，动态调整热点 Region 的大小来保证热点调度效率和负载均衡。该特性目前属于实验特性，不建议在生产环境使用。
+
+    [用户文档](/tune-region-performance.md#使用-region-split-size-调整-region-大小)，[#11515](https://github.com/tikv/tikv/issues/11515)
 
 * Raft Engine 存储引擎 GA
 
@@ -155,7 +162,7 @@ TiDB 版本：6.1.0
 
     支持通过 `enable-global-kill` 配置项（默认开启）设置全局 kill 开关。
 
-    在 TiDB v6.1.0 之前，当某个特定操作占用大量资源引发集群稳定性问题时，你需要先登陆到对应的 TiDB 节点，然后运行 `kill [TiDB] id` 命令终止对应的连接及操作。在 TiDB 节点多的情况下，这种方式使用不便，并且容易误操作。从 v6.1.0 起，当开启 `enable-global-kill` 配置项时，你可以在任意 TiDB 节点运行 kill 命令终止指定的连接及操作，而无需担心客户端和 TiDB 中间有代理时错误地终止其他查询或会话。目前 TiDB 暂时不支持用 Ctrl+C 终止查询或会话。
+    在 TiDB v6.1.0 之前，当某个特定操作占用大量资源引发集群稳定性问题时，你需要先登录到对应的 TiDB 节点，然后运行 `kill [TiDB] id` 命令终止对应的连接及操作。在 TiDB 节点多的情况下，这种方式使用不便，并且容易误操作。从 v6.1.0 起，当开启 `enable-global-kill` 配置项时，你可以在任意 TiDB 节点运行 kill 命令终止指定的连接及操作，而无需担心客户端和 TiDB 中间有代理时错误地终止其他查询或会话。目前 TiDB 暂时不支持用 Ctrl+C 终止查询或会话。
 
     [用户文档](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入)，[#8854](https://github.com/pingcap/tidb/issues/8854)
 
@@ -424,5 +431,5 @@ TiDB 版本：6.1.0
         - 修复前置检查中没有检查本地磁盘空间以及集群是否可用的问题 [#34213](https://github.com/pingcap/tidb/issues/34213)
         - 修复 schema 路由错误的问题 [#33381](https://github.com/pingcap/tidb/issues/33381)
         - 修复 TiDB Lightning panic 时 PD 配置未正确恢复的问题 [#31733](https://github.com/pingcap/tidb/issues/31733)
-        - 修复由 `auto_increment` 列的数据越界导致 local 模式导入失败的问题 [#29737](https://github.com/pingcap/tidb/issues/27937)
+        - 修复由 `auto_increment` 列的数据越界导致 local 模式导入失败的问题 [#27937](https://github.com/pingcap/tidb/issues/27937)
         - 修复 `auto_random`、`auto_increment` 列为空时 local 模式导入失败的问题 [#34208](https://github.com/pingcap/tidb/issues/34208)

@@ -1,11 +1,12 @@
 ---
 title: TiDB Dashboard 常见问题
 aliases: ['/docs-cn/dev/dashboard/dashboard-faq/']
+summary: TiDB Dashboard 常见问题汇总，包括访问、界面功能方面的常见问题与解决办法。若无法解决，请获取官方或社区支持。
 ---
 
 # TiDB Dashboard 常见问题
 
-本文汇总了使用 TiDB Dashboard 过程中的常见问题与解决办法。若无法找到对应问题，或者根据指引操作后问题仍然存在，请联系 PingCAP 技术支持获取帮助。
+本文汇总了使用 TiDB Dashboard 过程中的常见问题与解决办法。若无法找到对应问题，或者根据指引操作后问题仍然存在，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
 
 ## 访问
 
@@ -35,20 +36,20 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
 
 1. 升级 TiUP、TiUP Cluster：
 
-   ```bash
-   tiup update --self
-   tiup update cluster --force
-   ```
+    ```bash
+    tiup update --self
+    tiup update cluster --force
+    ```
 
 2. 升级后，部署包含监控节点的新集群时，应当能正常显示监控。
 
 3. 升级后，对于现有集群，可通过再次启动集群的方法汇报监控地址（将 `CLUSTER_NAME` 替换为实际集群名称）：
 
-   ```bash
-   tiup cluster start CLUSTER_NAME
-   ```
+    ```bash
+    tiup cluster start CLUSTER_NAME
+    ```
 
-   即使集群已经启动，请仍然执行该命令。该命令不会影响集群上正常的业务，但会刷新并上报监控地址，从而能让监控在 TiDB Dashboard 中正常显示。
+    即使集群已经启动，请仍然执行该命令。该命令不会影响集群上正常的业务，但会刷新并上报监控地址，从而能让监控在 TiDB Dashboard 中正常显示。
 
 ### 慢查询页面显示 `invalid connection` 错误
 
@@ -115,7 +116,7 @@ NgMonitoring 是 TiDB v5.4.0 及以上集群中内置的高级监控组件，用
         tiup cluster reload ${cluster-name} --role prometheus
         ```
 
-如果执行完上述步骤后依然提示 NgMonitoring 未启动，请联系 PingCAP 技术支持获取帮助。
+如果执行完上述步骤后依然提示 NgMonitoring 未启动，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
 
 </details>
 

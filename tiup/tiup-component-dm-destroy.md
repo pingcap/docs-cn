@@ -1,5 +1,6 @@
 ---
 title: tiup dm destroy
+summary: tiup dm destroy 命令用于销毁集群，包括停止集群、删除日志目录、部署目录和数据目录。语法为 tiup dm destroy <cluster-name>。选项 -h, --help 用于输出帮助信息。输出为 tiup-dm 的执行日志。
 ---
 
 # tiup dm destroy
@@ -29,5 +30,3 @@ tiup dm destroy <cluster-name> [flags]
 ## 输出
 
 tiup-dm 的执行日志。
-
-[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)

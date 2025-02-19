@@ -6,11 +6,13 @@ aliases: ['/zh/tidb/dev/migrate-from-csv-using-tidb-lightning/','/docs-cn/dev/ti
 
 # TiDB Lightning 数据源
 
-TiDB Lightning 支持从多种类型的文件导入数据到 TiDB 集群。通过以下配置为 TiDB Lightning 指定数据文件所在位置。
+TiDB Lightning 支持从多种类型的文件导入数据到 TiDB 集群，包括 CSV、SQL、Parquet 文件。
+
+你可以通过以下配置为 TiDB Lightning 指定数据文件所在位置。
 
 ```toml
 [mydumper]
-# 本地源数据目录或 S3 等外部存储 URL
+# 本地源数据目录或 S3 等外部存储 URI。关于外部存储 URI 详情可参考 https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-storages#uri-格式。
 data-source-dir = "/data/my_database"
 ```
 
@@ -22,9 +24,77 @@ TiDB Lightning 运行时将查找 `data-source-dir` 中所有符合命令规则�
 |Schema 文件|包含 `CREATE DATABASE` DDL 语句的文件|`${db_name}-schema-create.sql`|
 |数据文件|包含整张表的数据文件，该文件会被导入 `${db_name}.${table_name}` 表 | <code>\${db_name}.\${table_name}.\${csv\|sql\|parquet}</code>|
 |数据文件| 如果一个表分布于多个数据文件，这些文件命名需加上文件编号的后缀 | <code>\${db_name}.\${table_name}.001.\${csv\|sql\|parquet}</code> |
-|压缩文件| 上述所有类型文件如带压缩文件名后缀，如 `gzip`、`snappy` 或 `zstd`，TiDB Lightning 会流式解压后进行导入 | <code>\${db_name}.\${table_name}.\${csv\|sql\|parquet}.{compress}</code> |
+|压缩文件| 上述所有类型文件如带压缩文件名后缀，如 `gzip`、`snappy` 或 `zstd`，TiDB Lightning 会流式解压后进行导入。注意 Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。 | <code>\${db_name}.\${table_name}.\${csv\|sql\|parquet}.{compress}</code> |
 
 TiDB Lightning 尽量并行处理数据，由于文件必须顺序读取，所以数据处理协程是文件级别的并发（通过 `region-concurrency` 配置控制）。因此导入大文件时性能比较差。通常建议单个文件尺寸为 256MiB，以获得最好的性能。
+
+## 表库重命名
+
+TiDB Lightning 运行时会按照数据文件的命名规则将数据导入到相应的数据库和表。如果数据库名或表名发生了变化，你可以先重命名文件，然后再导入，或者使用正则表达式在线替换对象名称。
+
+### 批量重命名文件
+
+如果你使用的是 Red Hat Linux 或基于 Red Hat 的 Linux 发行版，可以使用 `rename` 命令对 `data-source-dir` 目录下的文件进行批量重命名。例如：
+
+```shell
+rename srcdb. tgtdb. *.sql
+```
+
+修改了文件中的数据库名后，建议删除 `data-source-dir` 目录下包含 `CREATE DATABASE` DDL 语句的 `${db_name}-schema-create.sql` 文件。如果修改的是表名，还需要修改包含 `CREATE TABLE` DDL 语句的 `${db_name}.${table_name}-schema.sql` 文件中的表名。
+
+### 使用正则表达式在线替换名称
+
+要使用正则表达式在线替换名称，你需要在 `[[mydumper.files]]` 配置中使用 `pattern` 匹配文件名，将 `schema` 和 `table` 换成目标名。具体配置请参考[自定义文件匹配](#自定义文件匹配)。
+
+下面是使用正则表达式在线替换名称的示例。其中：
+
+- 数据文件 `pattern` 的匹配规则是 `'^({schema_regrex})\.({table_regrex})\.({file_serial_regrex})\.(csv|parquet|sql)'`。
+- `schema` 可以指定为 `'$1'`，代表第一个正则表达式 `schema_regrex` 取值不变；`schema` 也可以指定为一个字符串，如 `'tgtdb'`，代表固定的目标数据库名。
+- `table` 可以指定为 `'$2'`，代表第二个正则表达式 `table_regrex` 取值不变；`table` 也可以指定为一个字符串，如 `'t1'`，代表固定的目标表名。
+- `type` 可以指定为 `'$3'`，代表数据文件类型；`type` 可以指定为 `"table-schema"`（代表 `schema.sql` 文件） 或 `"schema-schema"`（代表 `schema-create.sql` 文件）。
+
+```toml
+[mydumper]
+data-source-dir = "/some-subdir/some-database/"
+[[mydumper.files]]
+pattern = '^(srcdb)\.(.*?)-schema-create\.sql'
+schema = 'tgtdb'
+type = "schema-schema"
+[[mydumper.files]]
+pattern = '^(srcdb)\.(.*?)-schema\.sql'
+schema = 'tgtdb'
+table = '$2'
+type = "table-schema"
+[[mydumper.files]]
+pattern = '^(srcdb)\.(.*?)\.(?:[0-9]+)\.(csv|parquet|sql)'
+schema = 'tgtdb'
+table = '$2'
+type = '$3'
+```
+
+如果是使用 `gzip` 方式备份的数据文件，需要对应地配置压缩格式。数据文件 `pattern` 的匹配规则是 `'^({schema_regrex})\.({table_regrex})\.({file_serial_regrex})\.(csv|parquet|sql)\.(gz)'`。`compression` 可以指定为 `'$4'` 代表是压缩文件格式。示例如下：
+
+```toml
+[mydumper]
+data-source-dir = "/some-subdir/some-database/"
+[[mydumper.files]]
+pattern = '^(srcdb)\.(.*?)-schema-create\.(sql)\.(gz)'
+schema = 'tgtdb'
+type = "schema-schema"
+compression = '$4'
+[[mydumper.files]]
+pattern = '^(srcdb)\.(.*?)-schema\.(sql)\.(gz)'
+schema = 'tgtdb'
+table = '$2'
+type = "table-schema"
+compression = '$4'
+[[mydumper.files]]
+pattern = '^(srcdb)\.(.*?)\.(?:[0-9]+)\.(sql)\.(gz)'
+schema = 'tgtdb'
+table = '$2'
+type = '$3'
+compression = '$4'
+```
 
 ## CSV
 
@@ -37,7 +107,7 @@ CSV 文件是没有表结构的。要导入 TiDB，就必须为其提供表结�
 
 ### 配置
 
-CSV 格式可在 `tidb-lightning.toml` 文件中 `[mydumper.csv]` 下配置。大部分设置项在 MySQL [`LOAD DATA`] 语句中都有对应的项目。
+CSV 格式可在 `tidb-lightning.toml` 文件中 `[mydumper.csv]` 下配置。大部分设置项在 MySQL 的 [`LOAD DATA`](https://dev.mysql.com/doc/refman/8.0/en/load-data.html) 语句中都有对应的选项。
 
 ```toml
 [mydumper.csv]
@@ -58,7 +128,7 @@ not-null = false
 null = '\N'
 # 是否解析字段内的反斜线转义符。
 backslash-escape = true
-# 是否移除以分隔符结束的行。
+# 是否将 `separator` 字段当作终止符，并移除尾部所有分隔符。
 trim-last-separator = false
 ```
 
@@ -88,12 +158,10 @@ trim-last-separator = false
 - 如果 `delimiter` 为空，所有字段都会被取消引用。
 - 常用值：
 
-    * `'"'` 使用双引号引用字段，和 [RFC 4180] 一致。
+    * `'"'` 使用双引号引用字段，和 [RFC 4180](https://tools.ietf.org/html/rfc4180) 一致。
     * `''` 不引用
 
 - 对应 LOAD DATA 语句中的 `FIELDS ENCLOSED BY` 项。
-
-参考 [RFC 4180](https://tools.ietf.org/html/rfc4180)。
 
 #### `terminator`
 
@@ -143,7 +211,7 @@ trim-last-separator = false
 
 #### `trim-last-separator`
 
-- 将 `separator` 字段当作终止符，并移除尾部所有分隔符。
+- 是否将 `separator` 字段当作终止符，并移除尾部所有分隔符。
 
     例如有如下 CSV 文件：
 
@@ -269,12 +337,12 @@ TiDB Lightning 在处理 SQL 文件时，由于无法对单个文件进行快速
 
 ## Parquet
 
-TiDB Lightning 目前仅支持由 Amazon Aurora 或者 Hive 导出快照生成的 Parquet 文件。要识别其在 S3 的文件组织形式，需要使用如下配置匹配到所有的数据文件：
+TiDB Lightning 目前仅支持由 Amazon Aurora、Hive 或 Snowflake 导出快照生成的 Parquet 文件。要识别其在 S3 的文件组织形式，需要使用如下配置匹配到所有的数据文件：
 
 ```
 [[mydumper.files]]
 # 解析 AWS Aurora parquet 文件所需的表达式
-pattern = '(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
+pattern = '(?i)^(?:[^/]*/)*([a-z0-9\-_]+).([a-z0-9\-_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
 schema = '$1'
 table = '$2'
 type = '$3'
@@ -293,7 +361,8 @@ TiDB Lightning 目前支持由 Dumpling 导出的压缩文件或满足符合上�
 > - 由于 TiDB Lightning 无法对单个大压缩文件进行并发解压，因此压缩文件的大小会直接影响导入速度。建议压缩数据文件解压后的源文件大小不超过 256 MiB。
 > - TiDB Lightning 仅支持导入各自独立压缩的数据文件，不支持导入多个数据文件组成的单个压缩文件集合包。
 > - TiDB Lightning 不支持二次压缩的 `parquet` 文件，例如 `db.table.parquet.snappy`。如需压缩 `parquet` 文件，你可以配置 `parquet` 文件数据存储的压缩格式。
-> - TiDB v6.4.0 及之后版本的 TiDB Lightning 支持后缀为压缩算法 `gzip`、`snappy` 、`zstd`，以及后缀名 `.bak` 的数据文件。其他后缀名会报错。你需要提前修改文件名，或将该类文件移出导入数据目录来避免此类错误。
+> - TiDB v6.4.0 及之后版本的 TiDB Lightning 支持后缀为压缩算法 `gzip`、`snappy`、`zstd` 的数据文件。其他后缀名会报错。你可以将不支持的文件移出导入数据目录来避免此类错误。
+> Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
 
 ## 自定义文件匹配
 
@@ -305,14 +374,14 @@ TiDB Lightning 仅识别符合命名要求的数据文件，但在某些情况�
 
 通常 `data-source-dir` 会被配置为`S3://some-bucket/some-subdir/some-database/` 以导入 `some-database` 库。
 
-根据上述 Parquet 文件的路径，你可以编写正则表达式 `(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$`，得到的 match group 中 index=1 的内容为 `some-database` ，index=2 的内容为 `some-table`，index=3 的内容为 `parquet`。
+根据上述 Parquet 文件的路径，你可以编写正则表达式 `(?i)^(?:[^/]*/)*([a-z0-9\-_]+).([a-z0-9\-_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$`，得到的 match group 中 index=1 的内容为 `some-database`，index=2 的内容为 `some-table`，index=3 的内容为 `parquet`。
 
 根据上述正则表达式及相应的 index 编写配置文件，TiDB Lightning 即可识别非默认命名规则的文件，最终实际配置如下：
 
 ```
 [[mydumper.files]]
 # 解析 AWS Aurora parquet 文件所需的表达式
-pattern = '(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
+pattern = '(?i)^(?:[^/]*/)*([a-z0-9\-_]+).([a-z0-9\-_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
 schema = '$1'
 table = '$2'
 type = '$3'
@@ -323,11 +392,50 @@ type = '$3'
     - 直接填写期望导入的库名，例如 “db1”。所有匹配到的文件均会导入 “db1”。
 - **table**：目标表名称，值可以为：
     - 正则表达式匹配到的 group 序号，例如 “$2”。
-    - 直接填写期望导入的库名，例如“table1”。所有匹配到的文件均会导入“table1”。
+    - 直接填写期望导入的表名，例如 “table1”。所有匹配到的文件均会导入 “table1”。
 - **type**：文件类型，支持`sql`，`parquet`，`csv`，值可以为：
     - 正则表达式匹配到的 group 序号，例如 “$3”。
 - **key**：文件的序号，即前文所述`${db_name}.${table_name}.001.csv`中的`001`。
     - 正则表达式匹配到的 group 序号，例如 “$4”。
+
+## 从 Amazon S3 导入数据
+
+如下为从 Amazon S3 导入数据的示例，更多配置参数描述，可参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
+
+* 使用本地已设置的权限访问 S3：
+
+    ```bash
+    tiup tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/sql-backup'
+    ```
+
+* 使用路径类型的请求模式：
+
+    ```bash
+    tiup tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
+    ```
+
+* 使用 AWS IAM 角色的 ARN 来访问 S3 数据：
+
+    ```bash
+    tiup tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?role-arn=arn:aws:iam::888888888888:role/my-role'
+    ```
+
+* 使用 AWS IAM 用户密钥来访问 S3 数据：
+
+    ```bash
+    tiup tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?access_key={my_access_key}&secret_access_key={my_secret_access_key}'
+    ```
+
+* 使用 AWS IAM 角色的密钥以及会话令牌来访问 S3 数据：
+
+    ```bash
+    tiup tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+        -d 's3://my-bucket/test-data?access_key={my_access_key}&secret_access_key={my_secret_access_key}&session-token={my_session_token}'
+    ```
 
 ## 更多
 

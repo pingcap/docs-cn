@@ -1,6 +1,7 @@
 ---
 title: 如何对 TiDB 进行 TPC-C 测试
 aliases: ['/docs-cn/dev/benchmark/benchmark-tidb-using-tpcc/','/docs-cn/dev/benchmark/how-to-run-tpcc/']
+summary: 本文介绍了如何对 TiDB 进行 TPC-C 测试。TPC-C 是一个对 OLTP 系统进行测试的规范，使用商品销售模型对系统进行测试，包含五类事务：NewOrder、Payment、OrderStatus、Delivery、StockLevel。测试使用 tpmC 值衡量系统最大有效吞吐量，以 NewOrder Transaction 为准。使用 go-tpc 进行测试实现，通过 TiUP 命令下载测试程序。测试包括数据导入、运行测试和清理测试数据。
 ---
 
 # 如何对 TiDB 进行 TPC-C 测试
@@ -37,7 +38,7 @@ tiup install bench
 
 关于 TiUP Bench 组件的详细用法可参考 [TiUP Bench](/tiup/tiup-bench.md)。
 
-假设已部署 TiDB 集群，其中 TiDB 节点部署在 172.16.5.140、 172.16.5.141 实例上，端口都为 4000 ，可按如下步骤进行 TPC-C 测试。
+假设已部署 TiDB 集群，其中 TiDB 节点部署在 172.16.5.140、 172.16.5.141 实例上，端口都为 4000，可按如下步骤进行 TPC-C 测试。
 
 ## 导入数据
 

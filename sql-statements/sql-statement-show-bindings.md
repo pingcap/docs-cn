@@ -10,29 +10,16 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-bindings/']
 
 ## 语法图
 
-**ShowStmt:**
+```ebnf+diagram
+ShowBindingsStmt ::=
+    "SHOW" ("GLOBAL" | "SESSION")? "BINDINGS" ShowLikeOrWhere?
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
-
-**GlobalScope:**
-
-![GlobalScope](/media/sqlgram/GlobalScope.png)
-
-**ShowLikeOrWhereOpt**
-
-![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 语法说明
-
-{{< copyable "sql" >}}
-
-```sql
-SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhereOpt];
-```
 
 该语句会输出 GLOBAL 或者 SESSION 作用域内的执行计划绑定，在不指定作用域时默认作用域为 SESSION。目前 `SHOW BINDINGS` 会输出 8 列，具体如下：
 
@@ -50,15 +37,13 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhereOpt];
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t1 (
-    ->  id INT NOT NULL PRIMARY KEY auto_increment,
-    ->  b INT NOT NULL,
-    ->  pad VARBINARY(255),
-    ->  INDEX(b)
-    -> );
+    id INT NOT NULL PRIMARY KEY auto_increment,
+    b INT NOT NULL,
+    pad VARBINARY(255),
+    INDEX(b)
+   );
 Query OK, 0 rows affected (0.07 sec)
 
 INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM dual;
@@ -111,9 +96,9 @@ EXPLAIN ANALYZE SELECT * FROM t1 WHERE b = 123;
 3 rows in set (0.02 sec)
 
 CREATE SESSION BINDING FOR
-    ->  SELECT * FROM t1 WHERE b = 123
-    -> USING
-    ->  SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
+    SELECT * FROM t1 WHERE b = 123
+   USING
+    SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
 Query OK, 0 rows affected (0.00 sec)
 
 EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;

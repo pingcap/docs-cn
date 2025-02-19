@@ -5,7 +5,7 @@ summary: TiDB 数据库中 SHOW PLACEMENT 的使用概况。
 
 # SHOW PLACEMENT
 
-`SHOW PLACEMENT` 汇总了所有放置策略 (placement policy) ，并用统一的形式呈现相关信息。
+`SHOW PLACEMENT` 汇总了所有放置策略 (placement policy)，并用统一的形式呈现相关信息。
 
 本语句返回结果中的 `Scheduling_State` 列标识了 Placement Driver (PD) 在当前对象上的调度进度，有以下可能结果：
 
@@ -17,12 +17,10 @@ summary: TiDB 数据库中 SHOW PLACEMENT 的使用概况。
 
 ```ebnf+diagram
 ShowStmt ::=
-    "PLACEMENT"
+    "SHOW" "PLACEMENT" ShowLikeOrWhere?
 ```
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1" FOLLOWERS=4;

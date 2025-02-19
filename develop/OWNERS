@@ -1,0 +1,10 @@
+# See the OWNERS docs at https://go.k8s.io/owners
+# For adding new member to approvers/reviewers, please add them to corresponding team in the `/OWNERS_ALIASES` file.
+approvers:
+  - sig-develop-docs-approvers
+
+reviewers:
+  - sig-develop-docs-reviewers
+  
+labels:
+  - area/develop  

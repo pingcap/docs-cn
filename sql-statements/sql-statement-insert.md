@@ -42,6 +42,10 @@ OnDuplicateKeyUpdate ::=
     ( 'ON' 'DUPLICATE' 'KEY' 'UPDATE' AssignmentList )?
 ```
 
+> **注意：**
+>
+> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PriorityOpt` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
+
 ## 示例
 
 {{< copyable "sql" >}}
@@ -159,7 +163,7 @@ SELECT * FROM t2;
 
 ## MySQL 兼容性
 
-`INSERT` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`INSERT` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
 
 ## 另请参阅
 

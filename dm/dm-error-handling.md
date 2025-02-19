@@ -68,7 +68,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/error-handling/','/docs-cn/tidb-data
 
     DM 根据错误的严重程度和必要性来选择是否输出错误堆栈。错误堆栈记录了错误发生时完整的堆栈调用信息。如果用户通过错误基本信息和错误 message 描述不能完全诊断出错误发生的原因，可以通过错误堆栈进一步跟进出错时代码的运行路径。
 
-可在 DM 代码仓库 [已发布的错误码](https://github.com/pingcap/dm/blob/master/_utils/terror_gen/errors_release.txt) 中查询完整的错误码列表。
+可在 DM 代码仓库[已发布的错误码](https://github.com/pingcap/tiflow/blob/master/dm/_utils/terror_gen/errors_release.txt) 中查询完整的错误码列表。
 
 ## DM 故障诊断
 
@@ -76,9 +76,9 @@ aliases: ['/docs-cn/tidb-data-migration/dev/error-handling/','/docs-cn/tidb-data
 
 1. 执行 `query-status` 命令查看任务运行状态以及相关错误输出。
 
-2. 查看与该错误相关的日志文件。日志文件位于 DM-master、DM-worker 部署节点上，通过 [DM 错误系统](#dm-错误系统) 获取错误的关键信息，然后查看 [常见故障处理方法](#常见故障处理方法)以寻找相应的解决方案。
+2. 查看与该错误相关的日志文件。日志文件位于 DM-master、DM-worker 部署节点上，通过 [DM 错误系统](#dm-错误系统) 获取错误的关键信息，然后查看[常见故障处理方法](#常见故障处理方法)以寻找相应的解决方案。
 
-3. 如果该错误还没有相应的解决方案，并且你无法通过查询日志或监控指标自行解决此问题，你可以联系相关技术支持人员。
+3. 如果该错误还没有相应的解决方案，并且你无法通过查询日志或监控指标自行解决此问题，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
 
 4. 一般情况下，错误处理完成后，只需使用 dmctl 重启任务即可。
 
@@ -103,7 +103,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/error-handling/','/docs-cn/tidb-data
 | `code=20010` | 处理任务配置时，解密数据库的密码出错                             |  检查任务配置中提供的下游数据库密码是否有[使用 dmctl 正确加密](/dm/dm-manage-source.md#加密数据库密码) |
 | `code=26002` | 任务检查创建数据库连接失败。更详细的错误信息可通过错误 message 获取。错误 message 中包含操作数据库所返回的错误码和错误信息。 |  检查 DM-master 所在的机器是否有权限访问上游 |
 | `code=32001` | dump 处理单元异常                                            | 如果报错 `msg` 包含 `mydumper: argument list too long.`，则需要用户根据 block-allow-list，在 `task.yaml` 的 dump 处理单元的 `extra-args` 参数中手动加上 `--regex` 正则表达式设置要导出的库表。例如，如果要导出所有库中表名字为 `hello` 的表，可加上 `--regex '.*\\.hello$'`，如果要导出所有表，可加上 `--regex '.*'`。 |
-| `code=38008` | DM 组件间的 gRPC 通信出错                                      |  检查 `class`， 定位错误发生在哪些组件的交互环节，根据错误 message 判断是哪类通信错误。如果是 gRPC 建立连接出错，可检查通信服务端是否运行正常。 |
+| `code=38008` | DM 组件间的 gRPC 通信出错                                      |  检查 `class`，定位错误发生在哪些组件的交互环节，根据错误 message 判断是哪类通信错误。如果是 gRPC 建立连接出错，可检查通信服务端是否运行正常。 |
 
 ### 迁移任务中断并包含 `invalid connection` 错误
 

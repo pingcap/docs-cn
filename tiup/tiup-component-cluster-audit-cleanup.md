@@ -1,5 +1,6 @@
 ---
 title: tiup cluster audit cleanup
+summary: tiup cluster audit cleanup 命令用于清理 tiup cluster 产生的执行日志。--retain-days 选项用于设置执行日志保留天数，默认值为 60 天。-h, --help 选项用于输出帮助信息。执行命令后会输出 "clean audit log successfully"。
 ---
 
 # tiup cluster audit cleanup
@@ -33,5 +34,3 @@ tiup cluster audit cleanup [flags]
 ```shell
 clean audit log successfully
 ```
-
-[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

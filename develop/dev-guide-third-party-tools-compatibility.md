@@ -13,11 +13,12 @@ summary: 介绍在测试中发现的 TiDB 与第三方工具的兼容性问题�
 > - 触发器
 > - 事件
 > - 自定义函数
-> - 外键约束
 > - 空间类型的函数、数据类型和索引
 > - `XA` 语法
 >
 > 这些不支持的功能不兼容将被视为预期行为，不再重复叙述。关于更多 TiDB 与 MySQL 的兼容性对比，你可以查看[与 MySQL 兼容性对比](/mysql-compatibility.md)。
+
+本文列举的兼容性问题是在一些 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)中发现的。
 
 ## 通用
 
@@ -87,7 +88,7 @@ MySQL Connector/J 的排序规则保存在客户端内，通过获取的服务�
 
 **描述**
 
-TiDB 中 无法使用 `NO_BACKSLASH_ESCAPES` 参数从而不进行 `\` 字符的转义。已提 [issue](https://github.com/pingcap/tidb/issues/35302)。
+TiDB 中无法使用 `NO_BACKSLASH_ESCAPES` 参数从而不进行 `\` 字符的转义。已提 [issue](https://github.com/pingcap/tidb/issues/35302)。
 
 **规避方法**
 
@@ -110,7 +111,7 @@ TiDB 在通讯协议中未设置 `SERVER_QUERY_NO_GOOD_INDEX_USED` 与 `SERVER_Q
 
 **描述**
 
-TiDB 不支持 [enablePacketDebug](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-connp-props-debugging-profiling.html) 参数，这是一个 MySQL Connector/J 用于调试的参数，将保留数据包的 Buffer。这将导致连接的**意外关闭**，**请勿**打开。
+TiDB 不支持 [enablePacketDebug](https://dev.mysql.com/doc/connector-j/en/connector-j-connp-props-debugging-profiling.html) 参数，这是一个 MySQL Connector/J 用于调试的参数，将保留数据包的 Buffer。这将导致连接的**意外关闭**，**请勿**打开。
 
 **规避方法**
 
@@ -132,44 +133,46 @@ TiDB 暂不支持 `UpdatableResultSet`，即请勿指定 `ResultSet.CONCUR_UPDAT
 
 **描述**
 
-`useLocalTransactionState` 和 `rewriteBatchedStatements` 两参数同时开启时，将导致事务无法提交。你可以使用[代码](https://github.com/Icemap/tidb-java-gitpod/tree/reproduction-local-transaction-state-txn-error)复现。
+在使用 8.0.32 或以下版本的 MySQL Connector/J 时，同时开启 `useLocalTransactionState` 和 `rewriteBatchedStatements` 参数将导致事务无法提交。你可以使用[代码](https://github.com/Icemap/tidb-java-gitpod/tree/reproduction-local-transaction-state-txn-error)复现。
 
 **规避方法**
 
 > **注意：**
 >
-> 已向 MySQL JDBC 报告此 Bug，可关注此 [Bug Report](https://bugs.mysql.com/bug.php?id=108643) 进行最新消息的跟踪。
+> `maxPerformance` 配置中包含多个参数，其中包括 `useLocalSessionState` 参数。要查看当前 MySQL Connector/J  中 `maxPerformance` 包含的具体参数，可参考 MySQL Connector/J [8.0 版本](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties) 或 [5.1 版本](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties) 的配置文件。在使用 `maxPerformance` 时，请关闭 `useLocalTransactionState`，即 `useConfigs=maxPerformance&useLocalTransactionState=false`。
 
-请勿开启 `useLocalTransactionState`，这有可能导致事务无法提交或回滚。
+MySQL Connector/J 已在 8.0.33 版本修复此问题。请使用 8.0.33 或更高版本。基于稳定性和性能考量，并结合到 8.0.x 版本已经停止更新，强烈建议升级 MySQL Connector/J 到[最新的 GA 版本](https://dev.mysql.com/downloads/connector/j/)。
 
 ### Connector 无法兼容 5.7.5 版本以下的服务端
 
 **描述**
 
-MySQL Connector/J 8.0.29 在与 5.7.5 版本以下的 MySQL 服务端，或使用 5.7.5 版本以下 MySQL 服务端协议的数据库（如 TiDB 6.3.0 版本以下）同时使用时，将在某些情况下导致数据库连接的挂起。关于更多细节信息，可查看此 [Bug Report](https://bugs.mysql.com/bug.php?id=106252)。
+8.0.31 及以下版本 MySQL Connector/J，在与 5.7.5 版本以下的 MySQL 服务端，或使用 5.7.5 版本以下 MySQL 服务端协议的数据库（如 TiDB 6.3.0 版本以下）同时使用时，将在某些情况下导致数据库连接的挂起。关于更多细节信息，可查看此 [Bug Report](https://bugs.mysql.com/bug.php?id=106252)。
 
 **规避方法**
 
-这是一个已知的问题，截至 2022 年 10 月 12 日，MySQL Connector/J 未合并修复代码。
+MySQL Connector/J 已在 8.0.32 版本修复此问题。请使用 8.0.32 或更高版本。基于稳定性和性能考量，并结合到 8.0.x 版本已经停止更新，强烈建议升级 MySQL Connector/J 到[最新的 GA 版本](https://dev.mysql.com/downloads/connector/j/)。
 
-TiDB 对其进行了两个维度的修复：
+TiDB 也对其进行了两个维度的修复：
 
 - 客户端方面：**pingcap/mysql-connector-j** 中修复了该 Bug，你可以使用 [pingcap/mysql-connector-j](https://github.com/pingcap/mysql-connector-j) 替换官方的 MySQL Connector/J。
 - 服务端方面：TiDB v6.3.0 修复了此兼容性问题，你可以升级服务端至 v6.3.0 或以上版本。
 
 ## 与 Sequelize 的兼容性
 
-本小节描述的兼容性信息基于 [Sequelize v6.21.4](https://www.npmjs.com/package/sequelize/v/6.21.4) 测试。
+本小节描述的兼容性信息基于 [Sequelize v6.32.1](https://www.npmjs.com/package/sequelize/v/6.32.1) 测试。
 
 根据测试结果，TiDB 支持绝大部分 Sequelize 功能（[使用 `MySQL` 作为方言](https://sequelize.org/docs/v6/other-topics/dialect-specific-things/#mysql)），不支持的功能有：
 
-- 不支持与外键约束相关的功能（包括多对多关联）。
 - [不支持 `GEOMETRY`](https://github.com/pingcap/tidb/issues/6347) 相关。
 - 不支持修改整数主键。
 - 不支持 `PROCEDURE` 相关。
 - 不支持 `READ-UNCOMMITTED` 和 `SERIALIZABLE` [隔离级别](/system-variables.md#transaction_isolation)。
 - 默认不允许修改列的 `AUTO_INCREMENT` 属性。
 - 不支持 `FULLTEXT`、`HASH` 和 `SPATIAL` 索引。
+- 不支持 `sequelize.queryInterface.showIndex(Model.tableName);`。
+- 不支持 `sequelize.options.databaseVersion`。
+- 不支持使用 [`queryInterface.addColumn`](https://sequelize.org/api/v6/class/src/dialects/abstract/query-interface.js~queryinterface#instance-method-addColumn) 添加外键引用。
 
 ### 不支持修改整数主键
 

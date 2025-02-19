@@ -72,7 +72,7 @@ tiup dm patch <cluster-name> <package-path> [flags]
 
 ## 在线应用 Hotfix 示例
 
-以下将在使用 TiUP 部署的 DM 环境中演示如何应用 `v5.4.0-hotfix` 到 `v5.4.0`集群，其他部署方式可能需要调整部分操作。
+以下将在使用 TiUP 部署的 DM 环境中演示如何应用 `v5.3.0-hotfix` 到 `v5.3.0`集群，其他部署方式可能需要调整部分操作。
 
 > **注意：**
 >
@@ -210,5 +210,3 @@ Go Version: go version go1.16.4 linux/amd64
     172.16.100.21:9090  prometheus           172.16.100.21  9090       linux/x86_64  Up         /home/tidb/dm/data/prometheus-9090    /home/tidb/dm/deploy/prometheus-9090
     Total nodes: 5
     ```
-
-[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)

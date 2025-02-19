@@ -59,11 +59,13 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 3.1.2 TiDB DDL job 卡住不动/执行很慢（通过 `admin show ddl jobs` 可以查看 DDL 进度）：
 
-    - 原因 1：与外部组件 (PD/TiKV) 的网络问题。
+    - 原因 1：TiDB 在 v6.3.0 中引入[元数据锁](/metadata-lock.md)，并在 v6.5.0 及之后的版本默认打开。如果 DDL 涉及的表与当前未提交事务涉及的表存在交集，则会阻塞 DDL 操作，直到事务提交或者回滚。
 
-    - 原因 2：早期版本（v3.0.8 之前）TiDB 内部自身负载很重（高并发下可能产生了很多协程）。
+    - 原因 2：与外部组件 (PD/TiKV) 的网络问题。
 
-    - 原因 3：早期版本（v2.1.15 & v3.0.0-rc1 之前）PD 实例删除 TiDB key 无效的问题，会导致每次 DDL 变更都需要等 2 个 lease（很慢）。
+    - 原因 3：早期版本（v3.0.8 之前）TiDB 内部自身负载很重（高并发下可能产生了很多协程）。
+
+    - 原因 4：早期版本（v2.1.15 & v3.0.0-rc1 之前）PD 实例删除 TiDB key 无效的问题，会导致每次 DDL 变更都需要等 2 个 lease（很慢）。
 
     - 其他未知原因，请[上报 bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md)。
 
@@ -220,15 +222,13 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
 通过查看监控：**Grafana** -> **TiKV** -> **errors** 确认具体 busy 原因。`server is busy` 是 TiKV 自身的流控机制，TiKV 通过这种方式告知 `tidb/ti-client` 当前 TiKV 的压力过大，稍后再尝试。
 
-- 4.3.1 TiKV RocksDB 出现 `write stall`。一个 TiKV 包含两个 RocksDB 实例，一个用于存储 Raft 日志，位于 `data/raft`。另一个用于存储真正的数据，位于 `data/db`。通过 `grep "Stalling" RocksDB` 日志查看 stall 的具体原因，RocksDB 日志是 LOG 开头的文件，LOG 为当前日志。
+- 4.3.1 TiKV RocksDB 出现 `write stall`。一个 TiKV 包含两个 RocksDB 实例，一个用于存储 Raft 日志，位于 `data/raft`。另一个用于存储真正的数据，位于 `data/db`。通过 `grep "Stalling" RocksDB` 日志可以查看 stall 的具体原因，RocksDB 日志是 `LOG` 开头的文件，`LOG` 为当前日志。`write stall` 是一个 RocksDB 原生内建的性能降级机制。当 RocksDB 发生 `write stall` 时，系统的整体性能会急剧下降。在 v5.2.0 之前，当发生 `write stall` 时，TiDB 通过直接给客户端返回 `ServerIsBusy` 错误来阻挡所有的写请求，但这容易导致 QPS 性能急剧下降。自 v5.2.0 起，TiKV 引入了新的流控机制，通过前置在调度层实现动态延迟写请求来抑制写入，以替代之前遇到 `write stall` 时就给客户端返回 `server is busy` 来抑制写入的机制。新的流控机制默认配置开启，TiKV 会自动关闭 `KvDB` 和 `RaftDB` (memtable 除外) 的 `write stall` 机制。但是，当 pending 的请求量超过一定阈值时，流控机制仍然会生效，开始拒绝部分或所有的写入请求，并返回客户端 `server is busy` 报错，表现如下。详细的说明和阈值可参考[流控配置说明](/tikv-configuration-file.md#storageflow-control)。
 
-    - `level0 sst` 太多导致 stall，可以添加参数 `[rocksdb] max-sub-compactions = 2`（或者 `3`），加快 level0 sst 往下 compact 的速度。该参数的意思是将从 level0 到 level1 的 compaction 任务最多切成 `max-sub-compactions` 个子任务交给多线程并发执行，见案例 [case-815](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case815.md)。
+    - 如果 pending compaction bytes 太多触发 `server is busy` 报错，可以通过调大 [`soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit) 和 [`hard-pending-compaction-bytes-limit`](/tikv-configuration-file.md#hard-pending-compaction-bytes-limit) 参数的值来缓解。
 
-    - `pending compaction bytes` 太多导致 stall，磁盘 I/O 能力在业务高峰跟不上写入，可以通过调大对应 Column Family (CF) 的 `soft-pending-compaction-bytes-limit` 和 `hard-pending-compaction-bytes-limit` 参数来缓解：
+        - 如果 pending compaction bytes 达到 `soft-pending-compaction-bytes-limit` 参数的值（默认为 `192GiB`），流控就会开始拒绝一部分的写请求（通过给客户端返回 `ServerIsBusy`）。此时，可以调大该参数的值，例如，`[storage.flow-control] soft-pending-compaction-bytes-limit = "384GiB"`。
 
-        - 如果 `pending compaction bytes` 达到该阈值，RocksDB 会放慢写入速度。默认值 64GB，`[rocksdb.defaultcf] soft-pending-compaction-bytes-limit = "128GB"`。
-
-        - 如果 `pending compaction bytes` 达到该阈值，RocksDB 会 stop 写入，通常不太可能触发该情况，因为在达到 `soft-pending-compaction-bytes-limit` 的阈值之后会放慢写入速度。默认值 256GB，`hard-pending-compaction-bytes-limit = "512GB"`<!--见案例 [case-275](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case275.md) -->。
+        - 如果 pending compaction bytes 达到 `hard-pending-compaction-bytes-limit` 参数的值（默认为 `1024GiB`），流控就会开始拒绝所有的写请求（通过给客户端返回 `ServerIsBusy`）。通常不太可能触发该情况，因为在达到 `soft-pending-compaction-bytes-limit` 的阈值之后，流控机制就会介入而放慢写入速度。如果触发，可以调大该参数的值，例如，`[storage.flow-control] hard-pending-compaction-bytes-limit = "2048GiB"`。
 
         - 如果磁盘 IO 能力持续跟不上写入，建议扩容。如果磁盘的吞吐达到了上限（例如 SATA SSD 的吞吐相对 NVME SSD 会低很多）导致 write stall，但是 CPU 资源又比较充足，可以尝试采用压缩率更高的压缩算法来缓解磁盘的压力，用 CPU 资源换磁盘资源。
 
@@ -305,7 +305,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
     - TiKV 磁盘使用 `80%` 容量，PD 不会进行补副本操作，miss peer 数量上升，需要扩容 TiKV，见案例 [case-801](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case801.md)。
 
-    - 下线 TiKV，有 Region 长时间迁移不走。v3.0.4 版本已经修复改问题，见 [#5526](https://github.com/tikv/tikv/pull/5526) 和案例 [case-870](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case870.md)。
+    - 下线 TiKV，有 Region 长时间迁移不走。v3.0.4 版本已经修复该问题，见 [#5526](https://github.com/tikv/tikv/pull/5526) 和案例 [case-870](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case870.md)。
 
 - 5.1.3 Balance 问题：
 
@@ -357,81 +357,11 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
 ## 6. 生态 Tools 问题
 
-### 6.1 TiDB Binlog 问题
+### 6.1 DM 问题
 
-- 6.1.1 TiDB Binlog 是将 TiDB 的修改同步给下游 TiDB 或者 MySQL 的工具，见 [TiDB Binlog on GitHub](https://github.com/pingcap/tidb-binlog)。
+- 6.1.1 TiDB Data Migration (DM) 是能将 MySQL/MariaDB 的数据迁移到 TiDB 的迁移工具，详情见 [DM 简介](/dm/dm-overview.md)。
 
-- 6.1.2 Pump/Drainer Status 中 Update Time 正常更新，日志中也没有异常，但下游没有数据写入。
-
-    - TiDB 配置中没有开启 binlog，需要修改 TiDB 配置 `[binlog]`。
-
-- 6.1.3 Drainer 中的 sarama 报 `EOF` 错误。
-
-    - Drainer 使用的 Kafka 客户端版本和 Kafka 版本不匹配，需要修改配置 `[syncer.to] kafka-version` 来解决。
-
-- 6.1.4 Drainer 写 Kafka 失败然后 panic，Kafka 报 `Message was too large` 错误。
-
-    - binlog 数据太大，造成写 Kafka 的单条消息太大，需要修改 Kafka 的下列配置来解决：
-
-        ```conf
-        message.max.bytes=1073741824
-        replica.fetch.max.bytes=1073741824
-        fetch.message.max.bytes=1073741824
-        ```
-
-        见案例 [case-789](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case789.md)。
-
-- 6.1.5 上下游数据不一致
-
-    - 部分 TiDB 节点没有开启 binlog。v3.0.6 及之后的版本可以通过访问 <http://127.0.0.1:10080/info/all> 接口可以检查所有节点的 binlog 状态。之前的版本可以通过查看配置文件来确认是否开启了 binlog。
-
-    - 部分 TiDB 节点进入 ignore binlog 状态。v3.0.6 及之后的版本可以通过访问 <http://127.0.0.1:10080/info/all> 接口可以检查所有节点的 binlog 状态。之前的版本需要看 TiDB 的日志中是否有 ignore binlog 关键字来确认是该问题。
-
-    - 上下游 Timestamp 列的值不一致：
-
-        - 时区问题，需要确保 Drainer 和上下游数据库时区一致，Drainer 通过 `/etc/localtime` 获取时区，不支持 `TZ` 环境变量，见案例 [case-826](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case826.md)。
-
-        - TiDB 中 Timestamp 的默认值为 `null`，MySQL 5.7 中 Timestamp 默认值为当前时间（MySQL 8 无此问题），因此当上游写入 `null` 的 Timestamp 且下游是 MySQL 5.7 时，Timestamp 列数据不一致。在开启 binlog 前，在上游执行 `set @@global.explicit_defaults_for_timestamp=on;` 可解决此问题。
-
-    - 其他情况[需报 bug](https://github.com/pingcap/tidb-binlog/issues/new?labels=bug&template=bug-report.md)。
-
-- 6.1.6 同步慢
-
-    - 下游是 TiDB/MySQL，上游频繁进行 DDL 操作，见案例 [case-1023](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1023.md)。
-
-    - 下游是 TiDB/MySQL，需要同步的表中存在没有主键且没有唯一索引的表，这种情况会导致 binlog 性能下降，建议加主键或唯一索引。
-
-    - 下游输出到文件，检查目标磁盘/网络盘是否慢。
-
-    - 其他情况[需报 bug](https://github.com/pingcap/tidb-binlog/issues/new?labels=bug&template=bug-report.md)。
-
-- 6.1.7 Pump 无法写 binlog，报 `no space left on device` 错误。
-
-    - 本地磁盘空间不足，Pump 无法正常写 binlog 数据。需要清理磁盘空间，然后重启 Pump。
-
-- 6.1.8 Pump 启动时报错 `fail to notify all living drainer`。
-
-    - Pump 启动时需要通知所有 Online 状态的 Drainer，如果通知失败则会打印该错误日志。
-
-    - 可以使用 binlogctl 工具查看所有 Drainer 的状态是否有异常，保证 Online 状态的 Drainer 都在正常工作。如果某个 Drainer 的状态和实际运行情况不一致，则使用 binlogctl 修改状态，然后再重启 Pump。见案例 [fail-to-notify-all-living-drainer](/tidb-binlog/handle-tidb-binlog-errors.md#pump-启动时报错-fail-to-notify-all-living-drainer)。
-
-- 6.1.9 Drainer 报错 `gen update sqls failed: table xxx: row data is corruption []`。
-
-    - 触发条件：上游做 Drop Column DDL 的时候同时在做这张表的 DML。已经在 v3.0.6 修复，见 [case-820](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case820.md)。
-
-- 6.1.10 Drainer 同步卡住，进程活跃但 checkpoint 不更新。
-
-    - 已知 bug 在 v3.0.4 修复，见案例 [case-741](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case741.md)。
-
-- 6.1.11 任何组件 `panic`。
-
-    - [需报 bug](https://github.com/pingcap/tidb-binlog/issues/new?labels=bug&template=bug-report.md)。
-
-### 6.2 DM 问题
-
-- 6.2.1 TiDB Data Migration (DM) 是能将 MySQL/MariaDB 的数据迁移到 TiDB 的迁移工具，详情见 [DM on GitHub](https://github.com/pingcap/dm/)。
-
-- 6.2.2 执行 `query-status` 或查看日志时出现 `Access denied for user 'root'@'172.31.43.27' (using password: YES)`。
+- 6.1.2 执行 `query-status` 或查看日志时出现 `Access denied for user 'root'@'172.31.43.27' (using password: YES)`。
 
     - 在所有 DM 配置文件中，数据库相关的密码都必须使用经 dmctl 加密后的密文（若数据库密码为空，则无需加密）。在 v1.0.6 及以后的版本可使用明文密码。
 
@@ -439,7 +369,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
     - 同一套 DM 集群，混合部署不同版本的 DM-worker/DM-master/dmctl，见案例 [AskTUG-1049](https://asktug.com/t/dm1-0-0-ga-access-denied-for-user/1049/5)。
 
-- 6.2.3 DM 同步任务中断并包含 `driver: bad connection` 错误。
+- 6.1.3 DM 同步任务中断并包含 `driver: bad connection` 错误。
 
     - 发生 `driver: bad connection` 错误时，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启等）且当前请求的数据暂时未能发送到 TiDB。
 
@@ -447,7 +377,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
         - 1.0.0 GA 版本，增加对此类错误的自动重试机制，见 [#265](https://github.com/pingcap/dm/pull/265)。
 
-- 6.2.4 同步任务中断并包含 `invalid connection` 错误。
+- 6.1.4 同步任务中断并包含 `invalid connection` 错误。
 
     - 发生 `invalid connection` 错误时，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启、TiKV busy 等）且当前请求已有部分数据发送到了 TiDB。由于 DM 中存在同步任务并发向下游复制数据的特性，因此在任务中断时可能同时包含多个错误（可通过 `query-status` 或 `query-error` 查询当前错误）：
 
@@ -455,7 +385,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
         - 如果 DM 由于版本问题（v1.0.0-rc.1 后引入自动重试）等未自动进行重试或自动重试未能成功，则可尝试先使用 `stop-task` 停止任务，然后再使用 `start-task` 重启任务。
 
-- 6.2.5 Relay 处理单元报错 `event from * in * diff from passed-in event *` 或同步任务中断并包含 `get binlog error ERROR 1236 (HY000)`、`binlog checksum mismatch, data may be corrupted` 等 binlog 获取或解析失败错误。
+- 6.1.5 Relay 处理单元报错 `event from * in * diff from passed-in event *` 或同步任务中断并包含 `get binlog error ERROR 1236 (HY000)`、`binlog checksum mismatch, data may be corrupted` 等 binlog 获取或解析失败错误。
 
     - 在 DM 进行 relay log 拉取与增量同步过程中，如果遇到了上游超过 4 GB 的 binlog 文件，就可能出现这两个错误。原因是 DM 在写 relay log 时需要依据 binlog position 及文件大小对 event 进行验证，且需要保存同步的 binlog position 信息作为 checkpoint。但是 MySQL binlog position 官方定义使用 uint32 存储，所以超过 4 GB 部分的 binlog position 的 offset 值会溢出，进而出现上面的错误。
 
@@ -463,7 +393,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
         - 对于 binlog replication 处理单元，可通过官网步骤进行[手动处理](/dm/dm-error-handling.md)。
 
-- 6.2.6 DM 同步中断，日志报错 `ERROR 1236 (HY000) The slave is connecting using CHANGE MASTER TO MASTER_AUTO_POSITION = 1, but the master has purged binary logs containing GTIDs that the slave requires.`。
+- 6.1.6 DM 同步中断，日志报错 `ERROR 1236 (HY000) The slave is connecting using CHANGE MASTER TO MASTER_AUTO_POSITION = 1, but the master has purged binary logs containing GTIDs that the slave requires.`。
 
     - 检查 master 的 binlog 是否被 purge。
 
@@ -473,15 +403,15 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
         - relay.meta 中记录的 binlog event 不完整触发 recover 流程后记录错误的 GTID 信息，该问题可能会在 1.0.2 之前的版本遇到，已在 1.0.2 版本修复。<!-- 见案例 [case-764](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case764.md)。-->
 
-- 6.2.7 DM 同步报错 `Error 1366: incorrect utf8 value eda0bdedb29d(\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd)`。
+- 6.1.7 DM 同步报错 `Error 1366: incorrect utf8 value eda0bdedb29d(\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd)`。
 
     - 该值 MySQL 8.0 和 TiDB 都不能写入成功，但是 MySQL 5.7 可以写入成功。可以开启 TiDB 动态参数 `tidb_skip_utf8_check` 参数，跳过数据格式检查。
 
-### 6.3 TiDB Lightning 问题
+### 6.2 TiDB Lightning 问题
 
-- 6.3.1 TiDB Lightning 是快速的全量数据导入工具，见 [TiDB Lightning on GitHub](https://github.com/pingcap/tidb-lightning)。
+- 6.2.1 TiDB Lightning 是快速的全量数据导入工具，见 [TiDB Lightning on GitHub](https://github.com/pingcap/tidb/tree/master/lightning)。
 
-- 6.3.2 导入速度太慢。
+- 6.2.2 导入速度太慢。
 
     - `region-concurrency` 设定太高，线程间争用资源反而减低了效率。排查方法如下：
 
@@ -489,42 +419,36 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
         - 如果 TiDB Lightning 与其他服务（如 TiKV Importer）共用一台服务器，必需手动将 `region-concurrency` 设为该服务器 CPU 数量的 `75%`；
         - 如果 CPU 设有限额（例如从 Kubernetes 指定的上限），TiDB Lightning 可能无法自动判断出来，此时亦需要手动调整 `region-concurrency`。
 
-    - 表结构太复杂。每条索引都会额外增加 KV 对，如果有 N 条索引，实际导入的大小就差不多是 [Mydumper](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview) 文件的 N+1 倍。如果索引不太重要，可以考虑先从 schema 去掉，待导入完成后再使用 `CREATE INDEX` 加回去。
+    - 表结构太复杂。每条索引都会额外增加 KV 对，如果有 N 条索引，实际导入的大小就差不多是 [Dumpling](/dumpling-overview.md) 文件的 N+1 倍。如果索引不太重要，可以考虑先从 schema 去掉，待导入完成后再使用 `CREATE INDEX` 加回去。
 
     - TiDB Lightning 版本太旧。尝试使用最新的版本，可能会有改善。
 
-- 6.3.3 `checksum failed: checksum mismatched remote vs local`
+- 6.2.3 `checksum failed: checksum mismatched remote vs local`
 
     - 原因 1：这张表可能本身已有数据，影响最终结果。
 
     - 原因 2：如果目标数据库的校验和全是 0，表示没有发生任何导入，有可能是集群太忙无法接收任何数据。
 
-    - 原因 3：如果数据源是由机器生成而不是从 [Mydumper](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview) 备份的，需确保数据符合表的限制。例如：
+    - 原因 3：如果数据源是由机器生成而不是从 [Dumpling](/dumpling-overview.md) 备份的，需确保数据符合表的限制。例如：
 
         - 自增 (AUTO_INCREMENT) 的列需要为正数，不能为 0。
         - 单一键和主键 (UNIQUE and PRIMARY KEYs) 不能有重复的值。
 
     - 解决办法：参考[官网步骤处理](/tidb-lightning/troubleshoot-tidb-lightning.md#checksum-failed-checksum-mismatched-remote-vs-local)。
 
-- 6.3.4 `Checkpoint for … has invalid status:(错误码)`
+- 6.2.4 `Checkpoint for … has invalid status:(错误码)`
 
     - 原因：断点续传已启用。TiDB Lightning 或 TiKV Importer 之前发生了异常退出。为了防止数据意外损坏，TiDB Lightning 在错误解决以前不会启动。错误码是小于 25 的整数，可能的取值是 0、3、6、9、12、14、15、17、18、20、21。整数越大，表示异常退出所发生的步骤在导入流程中越晚。
 
     - 解决办法：参考[官网步骤](/tidb-lightning/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status错误码)处理。
 
-- 6.3.5 `ResourceTemporarilyUnavailable("Too many open engines …: 8")`
-
-    - 原因：并行打开的引擎文件 (engine files) 超出 tikv-importer 里的限制。这可能由配置错误引起。即使配置没问题，如果 tidb-lightning 曾经异常退出，也有可能令引擎文件残留在打开的状态，占据可用的数量。
-
-    - 解决办法：参考[官网步骤处理](/tidb-lightning/troubleshoot-tidb-lightning.md#resourcetemporarilyunavailabletoo-many-open-engines--)。
-
-- 6.3.6 `cannot guess encoding for input file, please convert to UTF-8 manually`
+- 6.2.5 `cannot guess encoding for input file, please convert to UTF-8 manually`
 
     - 原因：TiDB Lightning 只支持 UTF-8 和 GB-18030 编码的表架构。此错误代表数据源不是这里任一个编码。也有可能是文件中混合了不同的编码，例如在不同的环境运行过 `ALTER TABLE`，使表架构同时出现 UTF-8 和 GB-18030 的字符。
 
     - 解决办法：参考[官网步骤](/tidb-lightning/troubleshoot-tidb-lightning.md#cannot-guess-encoding-for-input-file-please-convert-to-utf-8-manually)处理。
 
-- 6.3.7 `[sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 0 45 0 0}'`
+- 6.2.6 `[sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 0 45 0 0}'`
 
     - 原因：一个 timestamp 类型的时间戳记录了不存在的时间值。时间值不存在是由于夏令时切换或超出支持的范围（1970 年 1 月 1 日至 2038 年 1 月 19 日）。
 

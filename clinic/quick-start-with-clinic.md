@@ -7,7 +7,7 @@ summary: 了解如何使用 PingCAP Clinic 诊断服务快速采集、上传、�
 
 本指南介绍如何使用 PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）快速采集、上传、查看集群诊断数据。
 
-PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Server 云服务平台（以下简称为 Clinic Server）组成。关于 Diag 和 Clinic Server 的详细介绍，请参考 [PingCAP Clinic 诊断服务简介](/clinic/clinic-introduction.md)。
+PingCAP Clinic 由 [Diag 诊断客户端](https://github.com/pingcap/diag)（以下简称为 Diag）和 Clinic Server 云服务平台（以下简称为 Clinic Server）组成。关于 Diag 和 Clinic Server 的详细介绍，请参考 [PingCAP Clinic 诊断服务简介](/clinic/clinic-introduction.md)。
 
 ## 使用场景
 
@@ -16,7 +16,7 @@ PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Serv
 
 > **注意：**
 >
-> - 本文档提供的采集和上传数据的方式**仅**适用于使用 [TiUP 部署](/production-deployment-using-tiup.md)的集群。如需查看适用于使用 Operator 部署的集群，请参阅 [在 TiDB Operator 部署环境使用 PingCAP Clinic](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/clinic-user-guide)。
+> - 本文档提供的采集和上传数据的方式**仅**适用于使用 [TiUP 部署](/production-deployment-using-tiup.md)的集群。如需查看适用于使用 Operator 部署的集群，请参阅[在 TiDB Operator 部署环境使用 PingCAP Clinic](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/clinic-user-guide)。
 > - 通过 PingCAP Clinic 采集和上传的数据**仅**用于定位和诊断集群问题。
 
 ## 准备工作
@@ -34,13 +34,13 @@ PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Serv
     <SimpleTab groupId="clinicServer">
     <div label="Clinic Server 中国区" value="clinic-cn">
 
-    登录 [Clinic Server 中国区](https://clinic.pingcap.com.cn)，选择 **Sign in with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
+    登录 [Clinic Server 中国区](https://clinic.pingcap.com.cn)，选择 **Continue with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。如果你尚未注册 AskTUG 账号，可以在该界面进行注册。
 
     </div>
 
     <div label="Clinic Server 美国区" value="clinic-us">
 
-    登录 [Clinic Server 美国区](https://clinic.pingcap.com)，选择 **Sign in with TiDB Account** 进入 TiDB Cloud Account 的登录界面。如果你尚未注册 TiDB Cloud 帐号，可以在该界面进行注册。
+    登录 [Clinic Server 美国区](https://clinic.pingcap.com)，选择 **Continue with TiDB Account** 进入 TiDB Cloud Account 的登录界面。如果你尚未注册 TiDB Cloud 账号，可以在该界面进行注册。
 
     > **注意：**
     >

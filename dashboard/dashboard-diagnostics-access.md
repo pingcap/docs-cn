@@ -1,6 +1,7 @@
 ---
 title: TiDB Dashboard 集群诊断页面
 aliases: ['/docs-cn/dev/dashboard/dashboard-diagnostics-access/']
+summary: TiDB Dashboard 集群诊断页面是用于诊断集群问题并生成诊断报告的工具。可以通过 TiDB Dashboard 或浏览器访问诊断页面。生成诊断报告的步骤包括设置时间范围和长度，然后点击开始。还可以生成对比报告来比较异常时间段和正常时间段的情况。已生成的报告会显示在主页列表中，可随时查看。
 ---
 
 # TiDB Dashboard 集群诊断页面
@@ -15,11 +16,11 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-diagnostics-access/']
 
 可以通过以下两种方法访问集群诊断页面：
 
-* 登录后，左侧导航条点击**集群诊断** (Cluster Diagnostics)：
+* 登录 TiDB Dashboard 后，在左侧导航栏中点击**集群诊断** (Cluster Diagnostics)。
 
     ![访问](/media/dashboard/dashboard-diagnostics-access-v650.png)
 
-* 在浏览器中访问 [http://127.0.0.1:2379/dashboard/#/diagnose](http://127.0.0.1:2379/dashboard/#/diagnose)（将 `127.0.0.1:2379` 替换为任意实际 PD 地址和端口）。
+* 在浏览器中访问 [http://127.0.0.1:2379/dashboard/#/diagnose](http://127.0.0.1:2379/dashboard/#/diagnose)（将 `127.0.0.1:2379` 替换为你的实际 PD 地址和端口）。
 
 ## 生成诊断报告
 

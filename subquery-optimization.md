@@ -25,7 +25,7 @@ aliases: ['/docs-cn/dev/subquery-optimization/']
 对于这种情况，可以将 `ALL` 或者 `ANY` 用 `MAX` 以及 `MIN` 来代替。不过由于在表为空时，`MAX(EXPR)` 以及 `MIN(EXPR)` 的结果会为 `NULL`，其表现形式和 `EXPR` 是有 `NULL` 值的结果一样。以及外部表达式结果为 `NULL` 时也会影响表达式的最终结果，因此这里完整的改写会是如下的形式：
 
 - `t.id < all(select s.id from s)` 会被改写为 `t.id < min(s.id) and if(sum(s.id is null) != 0, null, true)`。
-- `t.id < any (select s.id from s)` 会被改写为 `t.id < max(s.id) or if(sum(s.id is null) != 0, null, false)`。
+- `t.id > any (select s.id from s)` 会被改写为 `t.id > max(s.id) or if(sum(s.id is null) != 0, null, false)`。
 
 ## `... != ANY (SELECT ... FROM ...)`
 
@@ -62,7 +62,7 @@ explain select * from t1 where t1.a in (select t2.a from t2);
 +------------------------------+---------+-----------+------------------------+----------------------------------------------------------------------------+
 ```
 
-这个改写会在 `IN` 子查询相对较小，而外部查询相对较大时产生更好的执行性能。因为不经过改写的情况下，我们无法使用以 t2 为驱动表的 `index join`。同时这里的弊端便是，当改写删成的聚合无法被自动消去且 `t2` 表比较大时，反而会影响查询的性能。目前 TiDB 中使用 [tidb\_opt\_insubq\_to\_join\_and\_agg](/system-variables.md#tidb_opt_insubq_to_join_and_agg) 变量来控制这个优化的打开与否。当遇到不合适这个优化的情况可以手动关闭。
+这个改写会在 `IN` 子查询相对较小，而外部查询相对较大时产生更好的执行性能。因为不经过改写的情况下，我们无法使用以 t2 为驱动表的 `index join`。同时这里的弊端便是，当改写生成的聚合无法被自动消去且 `t2` 表比较大时，反而会影响查询的性能。目前 TiDB 中使用 [tidb\_opt\_insubq\_to\_join\_and\_agg](/system-variables.md#tidb_opt_insubq_to_join_and_agg) 变量来控制这个优化的打开与否。当遇到不合适这个优化的情况可以手动关闭。
 
 ## `EXISTS` 子查询以及 `... >/>=/</<=/=/!= (SELECT ... FROM ...)`
 
@@ -82,7 +82,7 @@ explain select * from t1 where exists (select * from t2);
 | id                     | estRows  | task      | access object | operator info                  |
 +------------------------+----------+-----------+---------------+--------------------------------+
 | TableReader_12         | 10000.00 | root      |               | data:TableFullScan_11          |
-| └─TableFullScan_11     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo |
+| └─TableFullScan_11     | 10000.00 | cop[tikv] | table:t1      | keep order:false, stats:pseudo |
 +------------------------+----------+-----------+---------------+--------------------------------+
 ```
 

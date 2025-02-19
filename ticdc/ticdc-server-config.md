@@ -23,45 +23,154 @@ summary: 了解 TiCDC 详细的命令行参数和配置文件定义。
 - `cert`：TiCDC 创建 TLS 连接时使用的证书文件路径，PEM 格式，可选。
 - `cert-allowed-cn`：TiCDC 创建 TLS 连接时使用的通用名称文件路径，可选。
 - `key`：TiCDC 创建 TLS 连接时使用的证书密钥文件路径，PEM 格式，可选。
-- `tz`：TiCDC 服务使用的时区。TiCDC 在内部转换 `TIMESTAMP` 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。（注意如果同时指定 `tz` 参数和 `sink-uri` 中的 `time-zone` 参数，TiCDC 进程内部使用 `tz` 指定的时区，sink 向下游执行时使用 `time-zone` 指定的时区）
+- `tz`：TiCDC 服务使用的时区。TiCDC 在内部转换 `TIMESTAMP` 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。（注意如果同时指定 `tz` 参数和 `sink-uri` 中的 `time-zone` 参数，TiCDC 进程内部使用 `tz` 指定的时区，sink 向下游执行时使用 `time-zone` 指定的时区，请保持二者一致。）
 - `cluster-id`：TiCDC 集群的 ID。可选，默认值为 `default`。`cluster-id` 是 TiCDC 集群的唯一标识，拥有相同 `cluster-id` 的 TiCDC 节点同属一个集群。长度最大为 128，需要符合正则表达式 `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`，且不能是以下值：`owner`，`capture`，`task`，`changefeed`，`job`，`meta`。
 
 ## `cdc server` 配置文件说明
 
-对于 `cdc server` 命令中 config 参数指定的配置文件说明如下：
+对于 `cdc server` 命令中 `config` 参数指定的配置文件说明如下。你可以在 [`pkg/cmd/util/ticdc.toml`](https://github.com/pingcap/tiflow/blob/master/pkg/cmd/util/ticdc.toml) 找到默认值的配置文件。
 
-```yaml
-addr = "127.0.0.1:8300"
-advertise-addr = ""
-log-file = ""
-log-level = "info"
-data-dir = ""
-gc-ttl = 86400 # 24 h
-tz = "System"
-cluster-id = "default"
+<!-- 下面的字段的配置含义与命令行参数相同，但是命令行参数优先级更高 -->
 
-[security]
-  ca-path = ""
-  cert-path = ""
-  key-path = ""
+### `addr`
 
+- 示例值：`"127.0.0.1:8300"`
 
-capture-session-ttl = 10 # 10s
-owner-flush-interval = 50000000 # 50 ms
-processor-flush-interval = 50000000 # 50 ms
-per-table-memory-quota = 10485760 # 10 MiB
+### `advertise-addr`
 
-[log]
-  error-output = "stderr"
-  [log.file]
-    max-size = 300 # 300 MiB
-    max-days = 0
-    max-backups = 0
+- 示例值：`""`
 
+### `log-file`
 
-# [kv-client]
-#   worker-concurrent = 8
-#   worker-pool-size = 0
-#   region-scan-limit = 40
-#   region-retry-duration = 60000000000
-```
+- 示例值：`""`
+
+### `log-level`
+
+- 示例值：`"info"`
+
+### `data-dir`
+
+- 示例值：`""`
+
+### `gc-ttl`
+
+- 示例值：`86400` (24h)
+
+### `tz`
+
+- 示例值：`"System"`
+
+### `cluster-id`
+
+- 示例值：`"default"`
+
+### `gc-tuner-memory-threshold`
+
+- 控制 GOGC Tuner 自动调节的最大内存阈值。设置较小的阈值会提高 GC 频率；设置较大的阈值会降低 GC 频率并使 TiCDC 进程占用更多的内存资源；超过阈值后 GOGC Tuner 会停止工作。
+- 默认值：`0`，表示禁用 GOGC Tuner
+- 单位：Byte
+
+### security
+
+#### `ca-path`
+
+- 示例值：`""`
+
+#### `cert-path`
+
+- 示例值：`""`
+
+#### `key-path`
+
+- 示例值：`""`
+
+#### `mtls`
+
+- 控制是否开启 TLS 客户端鉴权。
+- 默认值：`false`
+
+#### `client-user-required`
+
+- 控制是否使用用户名和密码进行客户端鉴权。
+- 默认值：`false`
+
+#### `client-allowed-user`
+
+- 指定可用于客户端鉴权的用户名，列表中不存在的用户的鉴权请求将被直接拒绝。
+- 默认值：`null`
+
+<!-- 示例值：`["username_1", "username_2"]` -->
+
+### `capture-session-ttl`
+
+- TiCDC 与 etcd 服务间的 session 时长。可选。
+- 默认值：`10`
+- 单位：秒
+
+### `owner-flush-interval`
+
+- TiCDC 集群中的 owner 模块尝试推进同步任务进度的周期，默认值为 `50000000` 纳秒（即 50 毫秒）。可选。
+- 该参数有两种配置方式：只指定数字（例如，配置为 `40000000` 表示 40000000 纳秒，即 40 毫秒），或同时指定数字和单位（例如，直接配置为 `40ms`）。
+- 默认值：`50000000`，即 50 毫秒
+
+### `processor-flush-interval`
+
+- TiCDC 集群中的 processor 模块尝试推进同步任务进度的周期，默认值为 `50000000` 纳秒（即 50 毫秒）。可选。
+- 该参数配置方式与 `owner-flush-interval` 相同。
+- 默认值：`50000000`，即 50 毫秒
+
+### log
+
+#### `error-output`
+
+- 用于指定 zap log 模块内部的错误日志的输出位置。可选。
+- 默认值：`"stderr"`
+
+#### log.file
+
+##### `max-size`
+
+- 单个日志文件的最大文件大小。可选。
+- 默认值：`300`
+- 单位：MiB
+
+##### `max-days`
+
+- 日志文件最长保留天数。可选。
+- 默认值：`0`，代表永不删除
+
+##### `max-backups`
+
+- 日志文件的保留个数。可选。
+- 默认值：`0`，代表保留所有日志文件
+
+### sorter
+
+#### `cache-size-in-mb`
+
+- Sorter 模块给默认启动的 8 个 pebble DB 共享的 pebble block cache 的大小。
+- 默认值：`128`
+- 单位：MiB
+
+#### `sorter-dir`
+
+- Sorter 文件相对于 `data-dir` 的目录。可选。
+- 默认值：`"/tmp/sorter"`
+
+### kv-client
+
+#### `worker-concurrent`
+
+- 单个 Region worker 中可使用的线程数量。可选。 
+- 默认值：`8`
+
+#### `worker-pool-size`
+
+- TiCDC 中共享线程池中线程的数量，主要用于处理 KV 事件。可选。
+- 默认值：`0`，表示默认为 CPU 核数的 2 倍
+
+#### `region-retry-duration`
+
+- Region 连接重试时间，默认值为 `60000000000` 纳秒（即 1 分钟）。可选。
+- 该参数有两种配置方式：只指定数字（例如，配置为 `50000000` 表示 50000000 纳秒，即 50 毫秒），或同时指定数字和单位（例如，直接配置为 `50ms`）。
+- 默认值：`60000000000`，即 1 分钟

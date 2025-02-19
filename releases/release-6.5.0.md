@@ -1,5 +1,6 @@
 ---
 title: TiDB 6.5.0 Release Notes
+summary: 了解 TiDB 6.5.0 版本的新功能、兼容性变更、改进提升，以及错误修复。
 ---
 
 # TiDB 6.5.0 Release Notes
@@ -8,22 +9,29 @@ title: TiDB 6.5.0 Release Notes
 
 TiDB 版本：6.5.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.5.0#version-list)
 
-TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
+TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
-相比于前一个 LTS (即 6.1.0 版本)，6.5.0 版本包含 [6.2.0-DMR](/releases/release-6.2.0.md)、[6.3.0-DMR](/releases/release-6.3.0.md)、[6.4.0-DMR](/releases/release-6.4.0.md) 中已发布的新功能、提升改进和错误修复，并引入了以下关键特性：
+与 TiDB [6.4.0-DMR](/releases/release-6.4.0.md) 相比，TiDB 6.5.0 引入了以下关键特性：
+
+> **Tip:**
+>
+> 与前一个 LTS（即 6.1.0 版本）相比，TiDB 6.5.0 还引入了 [6.2.0-DMR](/releases/release-6.2.0.md)、[6.3.0-DMR](/releases/release-6.3.0.md)、[6.4.0-DMR](/releases/release-6.4.0.md) 中已发布的新功能、提升改进和错误修复。
+>
+> - 要了解 6.1.0 LTS 和 6.5.0 LTS 之间的完整变更，除了参阅当前页面的 release notes，还需参阅 [6.2.0-DMR release notes](/releases/release-6.2.0.md)、[6.3.0-DMR release notes](/releases/release-6.3.0.md)、[6.4.0-DMR release notes](/releases/release-6.4.0.md)。
+> - 要快速对比 6.1.0 LTS 和 6.5.0 LTS 的关键特性，可以查看 [TiDB 功能概览](/basic-features.md)中的 `v6.1` 和 `v6.5` 列。
 
 - [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)特性 GA，添加索引的性能约提升为 v6.1.0 的 10 倍。
 - TiDB 全局内存控制特性 GA，通过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 即可管理全局内存阈值。
 - 支持高性能、全局单调递增的 [`AUTO_INCREMENT` 列属性](/auto-increment.md#mysql-兼容模式) GA，兼容 MySQL。
-- [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 特性新增对 TiCDC 和 PITR 的兼容性支持，该特性已 GA。
+- [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-cluster.md) 特性新增对 TiCDC 和 PITR 的兼容性支持，该特性已 GA。
 - 优化器引入的更精准的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2) GA，同时优化器增强索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能对 `AND` 连接的表达式的支持。
 - 支持下推 `JSON_EXTRACT()` 函数至 TiFlash。
 - 支持[密码管理](/password-management.md)策略，满足密码合规审计需求。
 - TiDB Lightning 和 Dumpling 支持[导入](/tidb-lightning/tidb-lightning-data-source.md)和[导出](/dumpling-overview.md#通过并发提高-dumpling-的导出效率)压缩格式文件。
 - TiDB Data Migration (DM) 的[增量数据校验](/dm/dm-continuous-data-validation.md)特性 GA。
-- TiDB 快照备份支持断点续传，此外 [PITR](/br/br-pitr-guide.md#进行-pitr) 的恢复性能提升了 50%，一般场景下 RPO 降低到 5 分钟。
+- TiDB 快照备份支持断点续传，此外 [PITR](/br/br-pitr-guide.md#进行-pitr) 的恢复性能提升了 50%，通用场景下 RPO 降低到 5 分钟。
 - TiCDC [同步数据到 Kafka](/replicate-data-to-kafka.md)，吞吐从 4000 行每秒提升到 35000 行每秒，复制延迟降低到 2 秒。
 - 提供行级别 [Time to live (TTL)](/time-to-live.md) 管理数据生命周期（实验特性）。
 - TiCDC 支持 Amazon S3、Azure Blob Storage、NFS 的[对象存储](/ticdc/ticdc-sink-to-cloud-storage.md)（实验特性）。
@@ -34,7 +42,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * TiDB 添加索引的性能约提升为原来的 10 倍 (GA) [#35983](https://github.com/pingcap/tidb/issues/35983) @[benjamin2037](https://github.com/benjamin2037) @[tangenta](https://github.com/tangenta)
 
-    TiDB v6.3.0 引入了[添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)作为实验特性，提升了添加索引回填过程的速度。该功能在 v6.5.0 正式 GA 并默认打开，预期大表添加索引的性能提升约为原来的 10 倍。添加索引加速适用于单条 SQL 语句串行添加索引的场景，在多条 SQL 并行添加索引时仅对其中一条添加索引的 SQL 语句生效。
+    TiDB v6.3.0 引入了[添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)作为实验特性，提升了添加索引回填过程的速度。该功能在 v6.5.0 正式 GA 并默认打开，预期大表添加索引的性能约提升为 v6.1.0 的 10 倍。添加索引加速适用于单条 SQL 语句串行添加索引的场景，在多条 SQL 并行添加索引时仅对其中一条添加索引的 SQL 语句生效。
 
 * 提供轻量级元数据锁，提升 DDL 变更过程 DML 的成功率 (GA) [#37275](https://github.com/pingcap/tidb/issues/37275) @[wjhuang2016](https://github.com/wjhuang2016)
 
@@ -44,9 +52,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令将集群快速回退到特定的时间点 (GA) [#37197](https://github.com/pingcap/tidb/issues/37197) [#13303](https://github.com/tikv/tikv/issues/13303) @[Defined2014](https://github.com/Defined2014) @[bb7133](https://github.com/bb7133) @[JmPotato](https://github.com/JmPotato) @[Connor1996](https://github.com/Connor1996) @[HuSharp](https://github.com/HuSharp) @[CalvinNeo](https://github.com/CalvinNeo)
 
-    TiDB v6.4.0 引入了 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 语句作为实验特性，支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。该功能在 v6.5.0 新增对 TiCDC 和 PITR 的兼容性支持并正式 GA，适用于快速撤消 DML 误操作、支持集群分钟级别的快速回退、支持在时间线上多次回退以确定特定数据更改发生的时间。
+    TiDB v6.4.0 引入了 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-cluster.md) 语句作为实验特性，支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。该功能在 v6.5.0 新增对 TiCDC 和 PITR 的兼容性支持并正式 GA，适用于快速撤消 DML 误操作、支持集群分钟级别的快速回退、支持在时间线上多次回退以确定特定数据更改发生的时间。
 
-    更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)。
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-cluster.md)。
 
 * 完整支持包含 `INSERT`、`REPLACE`、`UPDATE` 和 `DELETE` 的非事务 DML 语句 [#33485](https://github.com/pingcap/tidb/issues/33485) @[ekexium](https://github.com/ekexium)
 
@@ -141,9 +149,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * 索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能支持 `AND` 连接的表达式 [#39333](https://github.com/pingcap/tidb/issues/39333) @[guo-shaoge](https://github.com/guo-shaoge) @[time-and-fate](https://github.com/time-and-fate) @[hailanwhu](https://github.com/hailanwhu)
 
-    在 v6.5.0 前，TiDB 只支持对 `OR` 连接词的过滤条件使用索引合并特性。自 v6.5.0 起，TiDB 支持对于在 `WHERE` 子句中使用 `AND` 连接的过滤条件使用索引合并特性。TiDB 的索引合并至此可以覆盖更多普遍的查询过滤条件组合，不再限定于并集（`OR`）关系。v6.5.0 仅支持优化器自动选择 `OR` 条件下的索引合并。要开启对于 `AND` 连接的索引合并，你需要使用 [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) Hint。
+    在 v6.5.0 前，TiDB 只支持对 `OR` 连接词的过滤条件使用索引合并特性。自 v6.5.0 起，TiDB 支持对于在 `WHERE` 子句中使用 `AND` 连接的过滤条件使用索引合并特性。TiDB 的索引合并至此可以覆盖更多普遍的查询过滤条件组合，不再限定于并集 (`OR`) 关系。v6.5.0 仅支持优化器自动选择 `OR` 条件下的索引合并。要开启对于 `AND` 连接的索引合并，你需要使用 [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) Hint。
 
-    关于索引合并功能的更多信息，请参阅 [v5.4.0 Release Notes](/releases/release-5.4.0.md#性能)，以及优化器相关的[用户文档](/explain-index-merge.md)
+    关于索引合并功能的更多信息，请参阅 [v5.4.0 Release Notes](/releases/release-5.4.0.md#性能)，以及优化器相关的[用户文档](/explain-index-merge.md)。
 
 * 新增支持下推以下 JSON 函数至 TiFlash [#39458](https://github.com/pingcap/tidb/issues/39458) @[yibin87](https://github.com/yibin87)
 
@@ -183,7 +191,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ### 稳定性
 
-* TiDB 全局内存控制成为正式功能（GA）[#37816](https://github.com/pingcap/tidb/issues/37816) @[wshwsh12](https://github.com/wshwsh12)
+* TiDB 全局内存控制成为正式功能 (GA) [#37816](https://github.com/pingcap/tidb/issues/37816) @[wshwsh12](https://github.com/wshwsh12)
 
     TiDB v6.4.0 引入了全局内存控制作为实验特性。自 v6.5.0 起，全局内存控制成为正式功能，能够跟踪到 TiDB 中主要的内存消耗。当全局内存消耗达到 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 所定义的阈值时，TiDB 会尝试 GC 或取消 SQL 操作等方法限制内存使用，保证 TiDB 的稳定性。
 
@@ -267,13 +275,15 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 * TiCDC 支持在线更新 TLS 证书 [tiflow#7908](https://github.com/pingcap/tiflow/issues/7908) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
-    为确保系统数据安全，用户会对系统使用的证书设置相应的过期策略，经过固定的时间后会将系统使用的证书更换成新证书。TiCDC v6.5.0 支持在线更新 TLS 证书，在不影响同步的任务的前提下，TiCDC 会自动检测和更新证书，无需用户手动操作，满足用户对证书更新的需求。
+    为确保系统数据安全，用户会对系统使用的证书设置相应的过期策略，经过固定的时间后会将系统使用的证书更换成新证书。TiCDC v6.5.0 支持在线更新 TLS 证书，在不影响同步任务的前提下，TiCDC 会自动检测和更新证书，无需用户手动操作，满足用户对证书更新的需求。
 
-* TiCDC 性能提升 [#7540](https://github.com/pingcap/tiflow/issues/7540) [#7478](https://github.com/pingcap/tiflow/issues/7478) [#7532](https://github.com/pingcap/tiflow/issues/7532) @[sdojjy](https://github.com/sdojjy) [@3AceShowHand](https://github.com/3AceShowHand)
+* TiCDC 性能提升 [#7540](https://github.com/pingcap/tiflow/issues/7540) [#7478](https://github.com/pingcap/tiflow/issues/7478) [#7532](https://github.com/pingcap/tiflow/issues/7532) @[sdojjy](https://github.com/sdojjy) @[3AceShowHand](https://github.com/3AceShowHand)
 
-    在 TiDB 场景测试验证中，TiCDC 的性能得到了比较大提升。
+    在 TiDB 场景测试验证中，TiCDC 的性能得到了比较大的提升。
 
-    单台 TiCDC 节点能处理的最大行变更吞吐可以达到 30K rows/s，同步延迟降低到 10s。即使在常规的 TiKV/TiCDC 滚动升级场景，同步延迟也小于 30s；在容灾场景测试中，打开 TiCDC redo log 和 Syncpoint 后，吞吐从 4000 行每秒提升到 35000 行每秒，容灾复制延迟可以保持在 2s。
+    在同步到 Kafka 的场景中，单台 TiCDC 节点能处理的最大行变更吞吐可以达到 30K rows/s，同步延迟降低到 10s。即使在常规的 TiKV/TiCDC 滚动升级场景，同步延迟也小于 30s。
+    
+    在容灾场景测试中，打开 TiCDC redo log 和 Syncpoint 后，吞吐从 4000 行每秒提升到 35000 行每秒，容灾复制延迟可以保持在 2s。
 
 ### 备份和恢复
 
@@ -281,9 +291,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
     TiDB 快照备份功能支持断点续传。当 BR 遇到可恢复的错误时会进行重试，但是超过固定重试次数之后会备份退出。断点续传功能允许对持续更长时间的可恢复故障进行重试恢复，比如几十分钟的网络故障。
 
-    需要注意的是，如果你没有在 BR 退出后一个小时内完成故障恢复，那么还未备份的快照数据可能会被 GC 机制回收，而造成备份失败。更多信息，请参考[用户文档](/br/br-checkpoint.md)。
+    需要注意的是，如果你没有在 BR 退出后一个小时内完成故障恢复，那么还未备份的快照数据可能会被 GC 机制回收，从而造成备份失败。更多信息，请参考[用户文档](/br/br-checkpoint-backup.md#确保在-gc-前重试)。
 
-* PITR 性能大幅提升 [@joccau](https://github.com/joccau)
+* PITR 性能大幅提升 @[joccau](https://github.com/joccau)
 
   PITR 恢复的日志恢复阶段，单台 TiKV 的恢复速度可以达到 9 MiB/s，提升了 50%，并且恢复速度可扩展，有效地降低容灾场景的 RTO 指标；容灾场景的 RPO 优化到 5 分钟，在常规的集群运维，如滚动升级，单 TiKV 故障等场景下，可以达到 RPO = 5 min 的目标。
 
@@ -299,7 +309,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 | 变量名  | 修改类型                      | 描述 |
 |--------|------------------------------|------|
-|[`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)| 废弃 | 从 v6.5.0 开始，该变量被废弃，TiDB 会默认使用[元数据锁](/metadata-lock.md)机制解决 `Information schema is changed` 报错的问题。|
+|`tidb_enable_amend_pessimistic_txn` | 废弃 | 从 v6.5.0 起，该变量被废弃，TiDB 会默认使用[元数据锁](/metadata-lock.md)机制解决 `Information schema is changed` 报错的问题。|
 | [`tidb_enable_outer_join_reorder`](/system-variables.md#tidb_enable_outer_join_reorder-从-v610-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `OFF` 修改为 `ON`，表示默认启用 Outer Join 的 [Join Reorder 算法](/join-reorder.md)。|
 | [`tidb_cost_model_version`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `1` 修改为 `2`，表示默认使用 Cost Model Version 2 进行索引选择和算子选择。 |
 | [`tidb_enable_gc_aware_memory_track`](/system-variables.md#tidb_enable_gc_aware_memory_track) |  修改 | 该变量默认值由 `ON` 修改为 `OFF`。由于在测试中发现 GC-Aware memory track 不准确，导致 Analyze 追踪到的内存过大的情况，因此先关闭内存追踪。在 Golang 1.19 下，GC-Aware memory track 追踪的内存对整体内存的影响变小。|
@@ -315,6 +325,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 | [`password_reuse_interval`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) | 新增 | 基于经过时间限制的密码重用策略，不允许用户重复使用最近设置天数内使用过的密码。默认值为 `0`，表示禁用基于密码更改时间内的密码重用策略。 |
 | [`tidb_auto_build_stats_concurrency`](/system-variables.md#tidb_auto_build_stats_concurrency-从-v650-版本开始引入) | 新增 | 该变量用于设置执行统计信息自动更新的并发度，默认值为 `1`。 |
 | [`tidb_cdc_write_source`](/system-variables.md#tidb_cdc_write_source-从-v650-版本开始引入) | 新增 | 当变量非 `0` 时，该 SESSION 写入的数据将被视为是由 TiCDC 写入的。这个变量仅由 TiCDC 设置，任何时候都不应该手动调整该变量。 |
+| [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) | 新增 | 在 v6.5.0，该变量控制的功能尚未完全生效，请保留默认值。 |
 | [`tidb_index_merge_intersection_concurrency`](/system-variables.md#tidb_index_merge_intersection_concurrency-从-v650-版本开始引入) | 新增 | 这个变量用来设置索引合并进行交集操作时的最大并发度，仅在以动态裁剪模式访问分区表时有效。 |
 | [`tidb_source_id`](/system-variables.md#tidb_source_id-从-v650-版本开始引入) | 新增 | 设置在[双向复制](/ticdc/ticdc-bidirectional-replication.md)系统内不同集群的 ID。|
 | [`tidb_sysproc_scan_concurrency`](/system-variables.md#tidb_sysproc_scan_concurrency-从-v650-版本开始引入) | 新增 | 该变量用于设置 TiDB 执行内部 SQL 语句（例如统计信息自动更新）时 scan 操作的并发度，默认值为 `1`。 |
@@ -322,7 +333,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 | [`tidb_ttl_delete_rate_limit`](/system-variables.md#tidb_ttl_delete_rate_limit-从-v650-版本开始引入) | 新增 | 这个变量用于限制在 TTL 任务中单个节点每秒允许 `DELETE` 语句执行的最大次数。当此变量设置为 `0` 时，则表示不做限制。|
 | [`tidb_ttl_delete_worker_count`](/system-variables.md#tidb_ttl_delete_worker_count-从-v650-版本开始引入) | 新增 | 这个变量用于设置每个 TiDB 节点上 TTL 删除任务的最大并发数。|
 | [`tidb_ttl_job_enable`](/system-variables.md#tidb_ttl_job_enable-从-v650-版本开始引入) | 新增 | 这个变量用于控制是否启动 TTL 后台清理任务。如果设置为 `OFF`，所有具有 TTL 属性的表会自动停止清理过期数据。|
-| [`tidb_ttl_job_run_interval`](/system-variables.md#tidb_ttl_job_run_interval-从-v650-版本开始引入) | 新增 | 这个变量用于控制 TTL 后台清理任务的调度周期。比如，如果当前值设置成了 `1h0m0s`，则代表每张设置了 TTL 属性的表会每小时清理一次过期数据。|
+| `tidb_ttl_job_run_interval` | 新增 | 这个变量用于控制 TTL 后台清理任务的调度周期。比如，如果当前值设置成了 `1h0m0s`，则代表每张设置了 TTL 属性的表会每小时清理一次过期数据。|
 | [`tidb_ttl_job_schedule_window_start_time`](/system-variables.md#tidb_ttl_job_schedule_window_start_time-从-v650-版本开始引入) | 新增 | 这个变量用于控制 TTL 后台清理任务的调度窗口的起始时间。请谨慎调整此参数，过小的窗口有可能会造成过期数据的清理无法完成。|
 | [`tidb_ttl_job_schedule_window_end_time`](/system-variables.md#tidb_ttl_job_schedule_window_end_time-从-v650-版本开始引入) | 新增 | 这个变量用于控制 TTL 后台清理任务的调度窗口的结束时间。请谨慎调整此参数，过小的窗口有可能会造成过期数据的清理无法完成。|
 | [`tidb_ttl_scan_batch_size`](/system-variables.md#tidb_ttl_scan_batch_size-从-v650-版本开始引入) | 新增 | 这个变量用于设置 TTL 任务中用来扫描过期数据的每个 `SELECT` 语句的 `LIMIT` 的值。|
@@ -342,8 +353,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 | -------- | -------- | -------- | -------- |
 | TiDB | [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) | 废弃 | 自 v6.5.0 起，该配置项被废弃。请使用 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 系统变量进行设置。 |
 | TiDB | [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password-从-v650-版本开始引入) | 新增 | 该配置用于控制 TiDB 服务端是否直接断开密码已过期用户的连接，默认值为 `true`，表示 TiDB 服务端将直接断开密码已过期用户的连接。 |
-| TiKV | `raw-min-ts-outlier-threshold` | 删除 | 从 v6.4.0，该配置项被废弃。从 v6.5.0，该配置项被删除。 |
-| TiKV | [`cdc.min-ts-interval`](/tikv-configuration-file.md#min-ts-interval) | 修改 | 为了降低 CDC 延迟，该配置的默认值从 `1s` 修改为 `200ms`。 |
+| TiKV | `raw-min-ts-outlier-threshold` | 删除 | 从 v6.4.0 起，该配置项被废弃。从 v6.5.0 起，该配置项被删除。 |
+| TiKV | [`raft-engine.bytes-per-sync`](/tikv-configuration-file.md#bytes-per-sync-2) | 废弃 | 从 v6.5.0 起，Raft Engine 在写入日志时不会缓存而是直接落盘，因此该配置项被废弃，且不再生效。 |
+| TiKV | [`cdc.min-ts-interval`](/tikv-configuration-file.md#min-ts-interval) | 修改 | 为了降低 CDC 延迟，该配置的默认值从 `"1s"` 修改为 `"200ms"`。 |
 | TiKV | [`memory-use-ratio`](/tikv-configuration-file.md#memory-use-ratio-从-v650-版本开始引入) | 新增 | 表示 PITR 日志恢复功能中可用内存与系统总内存的占比。 |
 | TiCDC | [`sink.terminator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 `\r\n` 作为换行符。 |
 | TiCDC | [`sink.date-separator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month`、`day`。默认值为 `none`，即不使用日期分隔。|
@@ -360,7 +372,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Releases, LTS)。
 
 ## 废弃功能
 
-v6.5.0 开始废弃 v4.0.7 版本引入的 [`AMEND TRANSACTION`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) 机制，并使用[元数据锁](/metadata-lock.md)替代。
+从 v6.5.0 起，废弃 v4.0.7 版本引入的 `AMEND TRANSACTION` 机制，并使用[元数据锁](/metadata-lock.md)替代。
 
 ## 改进提升
 
@@ -384,8 +396,8 @@ v6.5.0 开始废弃 v4.0.7 版本引入的 [`AMEND TRANSACTION`](/system-variabl
     - 故障恢复时通知 TiKV 唤醒休眠的 Region 以减少等待时间 [#13648](https://github.com/tikv/tikv/issues/13648) @[LykxSassinator](https://github.com/LykxSassinator)
     - 通过代码优化减少内存申请的大小 [#13827](https://github.com/tikv/tikv/issues/13827) @[BusyJay](https://github.com/BusyJay)
     - 引入 Raft extension 以提升代码可扩展性 [#13827](https://github.com/tikv/tikv/issues/13827) @[BusyJay](https://github.com/BusyJay)
-    - tikv-ctl 支持查询某个 key 范围中包含哪些 Region [#13760](https://github.com/tikv/tikv/issues/13760) [@HuSharp](https://github.com/HuSharp)
-    - 改进持续对特定行只加锁但不更新的情况下的读写性能 [#13694](https://github.com/tikv/tikv/issues/13694) [@sticnarf](https://github.com/sticnarf)
+    - tikv-ctl 支持查询某个 key 范围中包含哪些 Region [#13760](https://github.com/tikv/tikv/issues/13760) @[HuSharp](https://github.com/HuSharp)
+    - 改进持续对特定行只加锁但不更新的情况下的读写性能 [#13694](https://github.com/tikv/tikv/issues/13694) @[sticnarf](https://github.com/sticnarf)
 
 + PD
 
@@ -463,7 +475,7 @@ v6.5.0 开始废弃 v4.0.7 版本引入的 [`AMEND TRANSACTION`](/system-variabl
     + Backup & Restore (BR)
 
         - 修复 BR 删除日志备份数据时，会删除不应被删除的数据的问题 [#38939](https://github.com/pingcap/tidb/issues/38939) @[Leavrth](https://github.com/Leavrth)
-        - 修复数据库或数据表中使用旧的排序规则框架时，数据恢复失败的问题[#39150](https://github.com/pingcap/tidb/issues/39150) @[MoCuishle28](https://github.com/MoCuishle28)
+        - 修复数据库或数据表中使用旧的排序规则框架时，数据恢复失败的问题 [#39150](https://github.com/pingcap/tidb/issues/39150) @[MoCuishle28](https://github.com/MoCuishle28)
         - 修复阿里云和华为云与 S3 存储不完全兼容导致的备份失败问题 [#39545](https://github.com/pingcap/tidb/issues/39545) @[3pointer](https://github.com/3pointer)
 
     + TiCDC

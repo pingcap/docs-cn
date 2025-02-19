@@ -5,9 +5,13 @@ summary: 了解如何使用 MPP 模式。
 
 # 使用 MPP 模式
 
-本文档介绍 TiFlash 的 MPP 模式及其使用方法。
+本文档介绍 TiFlash 的 [Massively Parallel Processing (MPP)](/glossary.md#massively-parallel-processing-mpp) 模式及其使用方法。
 
 TiFlash 支持 MPP 模式的查询执行，即在计算中引入跨节点的数据交换（data shuffle 过程）。TiDB 默认由优化器自动选择是否使用 MPP 模式，你可以通过修改变量 [`tidb_allow_mpp`](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 和 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的值来更改选择策略。
+
+MPP 模式的工作原理见下图。
+
+![mpp-mode](/media/tiflash/tiflash-mpp.png)
 
 ## 控制是否选择 MPP 模式
 
@@ -77,28 +81,29 @@ MPP 模式目前支持的物理算法有：Broadcast Hash Join、Shuffled Hash J
 
 ```sql
 mysql> explain select count(*) from customer c join nation n on c.c_nationkey=n.n_nationkey;
-+------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
-| id                                       | estRows    | task              | access object | operator info                                                              |
-+------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
-| HashAgg_23                               | 1.00       | root              |               | funcs:count(Column#16)->Column#15                                          |
-| └─TableReader_25                         | 1.00       | root              |               | data:ExchangeSender_24                                                     |
-|   └─ExchangeSender_24                    | 1.00       | batchCop[tiflash] |               | ExchangeType: PassThrough                                                  |
-|     └─HashAgg_12                         | 1.00       | batchCop[tiflash] |               | funcs:count(1)->Column#16                                                  |
-|       └─HashJoin_17                      | 3000000.00 | batchCop[tiflash] |               | inner join, equal:[eq(tpch.nation.n_nationkey, tpch.customer.c_nationkey)] |
-|         ├─ExchangeReceiver_21(Build)     | 25.00      | batchCop[tiflash] |               |                                                                            |
-|         │ └─ExchangeSender_20            | 25.00      | batchCop[tiflash] |               | ExchangeType: Broadcast                                                    |
-|         │   └─TableFullScan_18           | 25.00      | batchCop[tiflash] | table:n       | keep order:false                                                           |
-|         └─TableFullScan_22(Probe)        | 3000000.00 | batchCop[tiflash] | table:c       | keep order:false                                                           |
-+------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
++------------------------------------------+------------+--------------+---------------+----------------------------------------------------------------------------+
+| id                                       | estRows    | task         | access object | operator info                                                              |
++------------------------------------------+------------+--------------+---------------+----------------------------------------------------------------------------+
+| HashAgg_23                               | 1.00       | root         |               | funcs:count(Column#16)->Column#15                                          |
+| └─TableReader_25                         | 1.00       | root         |               | data:ExchangeSender_24                                                     |
+|   └─ExchangeSender_24                    | 1.00       | mpp[tiflash] |               | ExchangeType: PassThrough                                                  |
+|     └─HashAgg_12                         | 1.00       | mpp[tiflash] |               | funcs:count(1)->Column#16                                                  |
+|       └─HashJoin_17                      | 3000000.00 | mpp[tiflash] |               | inner join, equal:[eq(tpch.nation.n_nationkey, tpch.customer.c_nationkey)] |
+|         ├─ExchangeReceiver_21(Build)     | 25.00      | mpp[tiflash] |               |                                                                            |
+|         │ └─ExchangeSender_20            | 25.00      | mpp[tiflash] |               | ExchangeType: Broadcast                                                    |
+|         │   └─TableFullScan_18           | 25.00      | mpp[tiflash] | table:n       | keep order:false                                                           |
+|         └─TableFullScan_22(Probe)        | 3000000.00 | mpp[tiflash] | table:c       | keep order:false                                                           |
++------------------------------------------+------------+--------------+---------------+----------------------------------------------------------------------------+
 9 rows in set (0.00 sec)
 ```
 
 在执行计划中，出现了 `ExchangeReceiver` 和 `ExchangeSender` 算子。该执行计划表示 `nation` 表读取完毕后，经过 `ExchangeSender` 算子广播到各个节点中，与 `customer` 表先后进行 `HashJoin` 和 `HashAgg` 操作，再将结果返回至 TiDB 中。
 
-TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join，分别为：
+TiFlash 提供了 3 个全局/会话变量决定是否选择 Broadcast Hash Join，分别为：
 
-- [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为 bytes。如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+- [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_size-从-v50-版本开始引入)，单位为 bytes。如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 - [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+- [`tidb_prefer_broadcast_join_by_exchange_data_size`](/system-variables.md#tidb_prefer_broadcast_join_by_exchange_data_size-从-v710-版本开始引入)，控制是否使用最小网络数据交换策略。使用该策略时，TiDB 会估算 Broadcast Hash Join 和 Shuffled Hash Join 两种算法所需进行网络交换的数据量，并选择网络交换数据量较小的算法。该功能开启后，[`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_size-从-v50-版本开始引入) 和 [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入) 将不再生效。
 
 ## MPP 模式访问分区表
 
@@ -110,7 +115,7 @@ TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join
 mysql> DROP TABLE if exists test.employees;
 Query OK, 0 rows affected, 1 warning (0.00 sec)
 mysql> CREATE TABLE test.employees
-(id int(11) NOT NULL,
+(id int NOT NULL,
  fname varchar(30) DEFAULT NULL,
  lname varchar(30) DEFAULT NULL,
  hired date NOT NULL DEFAULT '1970-01-01',
@@ -127,7 +132,7 @@ Query OK, 0 rows affected (0.10 sec)
 mysql> ALTER table test.employees SET tiflash replica 1;
 Query OK, 0 rows affected (0.09 sec)
 mysql> SET tidb_partition_prune_mode=static;
-Query OK, 0 rows affected (0.00 sec)
+Query OK, 0 rows affected, 1 warning (0.00 sec)
 mysql> explain SELECT count(*) FROM test.employees;
 +----------------------------------+----------+-------------------+-------------------------------+-----------------------------------+
 | id                               | estRows  | task              | access object                 | operator info                     |

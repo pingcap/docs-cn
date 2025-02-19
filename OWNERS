@@ -1,0 +1,35 @@
+# See the OWNERS docs at https://go.k8s.io/owners
+approvers:
+  - breezewish
+  - csuzhangxc
+  - hfxsd
+  - Icemap
+  - jackysp
+  - kissmydb
+  - lance6716
+  - lilin90
+  - Oreoxmt
+  - overvenus
+  - qiancai
+  - tangenta
+reviewers:
+  - 3pointer
+  - amyangfei
+  - anotherrachel
+  - aylei
+  - crazycs520
+  - dveeden
+  - ericsyh
+  - glkappe
+  - GMHDBJD
+  - Joyinqin
+  - junlan-zhang
+  - KanShiori
+  - lucklove
+  - lysu
+  - ngaut
+  - superlzs0476
+  - tiancaiamao
+  - weekface
+  - Yisaer
+  - zimulala

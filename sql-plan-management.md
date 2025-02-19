@@ -1,5 +1,6 @@
 ---
 title: 执行计划管理 (SPM)
+summary: 介绍 TiDB 的执行计划管理 (SQL Plan Management) 功能。
 aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performance/execution-plan-bind/','/docs-cn/dev/execution-plan-binding/']
 ---
 
@@ -11,6 +12,10 @@ aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performanc
 
 执行计划绑定是 SPM 的基础。在[优化器 Hints](/optimizer-hints.md) 中介绍了可以通过 Hint 的方式选择指定的执行计划，但有时需要在不修改 SQL 语句的情况下干预执行计划的选择。执行计划绑定功能使得可以在不修改 SQL 语句的情况下选择指定的执行计划。
 
+> **注意：**
+>
+> 要使用执行计划绑定，你需要拥有 `SUPER` 权限。如果在使用过程中系统提示权限不足，可参考[权限管理](/privilege-management.md)补充所需权限。
+
 ### 创建绑定
 
 你可以根据 SQL 或者历史执行计划为指定的 SQL 语句创建绑定。
@@ -20,51 +25,51 @@ aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performanc
 {{< copyable "sql" >}}
 
 ```sql
-CREATE [GLOBAL | SESSION] BINDING FOR BindableStmt USING BindableStmt;
+CREATE [GLOBAL | SESSION] BINDING [FOR BindableStmt] USING BindableStmt;
 ```
 
-该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前，如下 SQL 类型 (BindableStmt) 可创建执行计划绑定：`SELECT`、`DELETE`、`UPDATE` 和带有 `SELECT` 子查询的 `INSERT`/`REPLACE`。
+该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前，可创建执行计划绑定的 SQL 语句类型 (BindableStmt) 包括：`SELECT`、`DELETE`、`UPDATE` 和带有 `SELECT` 子查询的 `INSERT`/`REPLACE`。使用示例如下：
+
+```sql
+CREATE GLOBAL BINDING USING SELECT /*+ use_index(orders, orders_book_id_idx) */ * FROM orders;
+CREATE GLOBAL BINDING FOR SELECT * FROM orders USING SELECT /*+ use_index(orders, orders_book_id_idx) */ * FROM orders;
+```
 
 > **注意：**
 >
 > 绑定的优先级高于手工添加的 Hint，即在有绑定的时候执行带有 Hint 的语句时，该语句中控制优化器行为的 Hint 不会生效，但是其他类别的 Hint 仍然能够生效。
 
-其中，有两类特定的语法由于语法冲突不能创建执行计划绑定，例如：
+其中，有两类特定的语法由于语法冲突不能创建执行计划绑定，创建时会报语法错误，例如：
 
 ```sql
 -- 类型一：使用 `JOIN` 关键字但不通过 `USING` 关键字指定关联列的笛卡尔积
 CREATE GLOBAL BINDING for
-    SELECT * FROM t t1 JOIN t t2
+    SELECT * FROM orders o1 JOIN orders o2
 USING
-    SELECT * FROM t t1 JOIN t t2;
+    SELECT * FROM orders o1 JOIN orders o2;
 
 -- 类型二：包含了 `USING` 关键字的 `delete` 语句
 CREATE GLOBAL BINDING for
-    delete FROM t1 USING t1 JOIN t2 ON t1.a = t2.a
+    DELETE FROM users USING users JOIN orders ON users.id = orders.user_id
 USING
-    delete FROM t1 USING t1 JOIN t2 ON t1.a = t2.a;
+    DELETE FROM users USING users JOIN orders ON users.id = orders.user_id;
 ```
 
 可以通过等价的 SQL 改写绕过这个语法冲突的问题。例如，上述两个例子可以改写为：
 
 ```sql
--- 类型一的第一种改写：为 `JOIN` 关键字添加 `USING` 子句
-CREATE GLOBAL BINDING for
-    SELECT * FROM t t1 JOIN t t2 USING (a)
-USING
-    SELECT * FROM t t1 JOIN t t2 USING (a);
 
--- 类型一的第二种改写：去掉 `JOIN` 关键字
+-- 类型一的改写：去掉 `JOIN` 关键字，用逗号代替
 CREATE GLOBAL BINDING for
-    SELECT * FROM t t1, t t2
+    SELECT * FROM orders o1, orders o2
 USING
-    SELECT * FROM t t1, t t2;
+    SELECT * FROM orders o1, orders o2;
 
--- 类型二的改写：去掉 `delete` 语句中的 `USING` 关键字
+-- 类型二的改写：去掉 `DELETE` 语句中的 `USING` 关键字
 CREATE GLOBAL BINDING for
-    delete t1 FROM t1 JOIN t2 ON t1.a = t2.a
+    DELETE users FROM users JOIN orders ON users.id = orders.user_id
 USING
-    delete t1 FROM t1 JOIN t2 ON t1.a = t2.a;
+    DELETE users FROM users JOIN orders ON users.id = orders.user_id;
 ```
 
 > **注意：**
@@ -76,15 +81,15 @@ USING
 ```sql
 -- Hint 能生效的用法
 CREATE GLOBAL BINDING for
-    INSERT INTO t1 SELECT * FROM t2 WHERE a > 1 AND b = 1
+    INSERT INTO orders SELECT * FROM pre_orders WHERE status = 'VALID' AND created <= (NOW() - INTERVAL 1 HOUR)
 USING
-    INSERT INTO t1 SELECT /*+ use_index(@sel_1 t2, a) */ * FROM t2 WHERE a > 1 AND b = 1;
+    INSERT INTO orders SELECT /*+ use_index(@sel_1 pre_orders, idx_created) */ * FROM pre_orders WHERE status = 'VALID' AND created <= (NOW() - INTERVAL 1 HOUR);
 
 -- Hint 不能生效的用法
 CREATE GLOBAL BINDING for
-    INSERT INTO t1 SELECT * FROM t2 WHERE a > 1 AND b = 1
+    INSERT INTO orders SELECT * FROM pre_orders WHERE status = 'VALID' AND created <= (NOW() - INTERVAL 1 HOUR)
 USING
-    INSERT /*+ use_index(@sel_1 t2, a) */ INTO t1 SELECT * FROM t2 WHERE a > 1 AND b = 1;
+    INSERT /*+ use_index(@sel_1 pre_orders, idx_created) */ INTO orders SELECT * FROM pre_orders WHERE status = 'VALID' AND created <= (NOW() - INTERVAL 1 HOUR);
 ```
 
 如果在创建执行计划绑定时不指定作用域，隐式作用域 SESSION 会被使用。TiDB 优化器会将被绑定的 SQL 进行“标准化”处理，然后存储到系统表中。在处理 SQL 查询时，只要“标准化”后的 SQL 和系统表中某个被绑定的 SQL 语句一致，并且系统变量 [`tidb_use_plan_baselines`](/system-variables.md#tidb_use_plan_baselines-从-v40-版本开始引入) 的值为 `on`（其默认值为 `on`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。
@@ -92,30 +97,72 @@ USING
 `标准化`：把 SQL 中的常量变成变量参数，对空格和换行符等做标准化处理，并对查询引用到的表显式指定数据库。例如：
 
 ```sql
-SELECT * FROM t WHERE a >    1
+SELECT * FROM users WHERE balance >    100
 -- 以上语句标准化后如下：
-SELECT * FROM test . t WHERE a > ?
+SELECT * FROM bookshop . users WHERE balance > ?
 ```
 
 > **注意：**
 >
-> 在进行标准化的时候，被逗号 `,` 连接起来的多个常量会被标准化为 `...` 而不是 `?`。
+> 在进行标准化的时候，`IN` 表达式中的 `?` 会被标准化为 `...`。
 >
 > 例如：
 >
 > ```sql
-> SELECT * FROM t limit 10
-> SELECT * FROM t limit 10, 20
-> SELECT * FROM t WHERE a IN (1)
-> SELECT * FROM t WHERE a IN (1,2,3)
+> SELECT * FROM books WHERE type IN ('Novel')
+> SELECT * FROM books WHERE type IN ('Novel','Life','Education')
 > -- 以上语句标准化后如下：
-> SELECT * FROM test . t limit ?
-> SELECT * FROM test . t limit ...
-> SELECT * FROM test . t WHERE a IN ( ? )
-> SELECT * FROM test . t WHERE a IN ( ... )
+> SELECT * FROM bookshop . books WHERE type IN ( ... )
+> SELECT * FROM bookshop . books WHERE type IN ( ... )
 > ```
 >
-> 因此包含单个常量的 SQL 语句和包含被逗号连接起来多个常量的 SQL 语句，在被绑定时会被 TiDB 视作不同的 SQL 语句，需要分别创建绑定。
+> 不同长度的 `IN` 表达式被标准化后，会被识别为同一条语句，因此只需要创建一条绑定，对这些表达式同时生效。
+>
+> 例如：
+>
+> ```sql
+> CREATE TABLE t (a INT, KEY(a));
+> CREATE BINDING FOR SELECT * FROM t WHERE a IN (?) USING SELECT /*+ use_index(t, idx_a) */ * FROM t WHERE a in (?);
+> 
+> SELECT * FROM t WHERE a IN (1);
+> SELECT @@LAST_PLAN_FROM_BINDING;
+> +--------------------------+
+> | @@LAST_PLAN_FROM_BINDING |
+> +--------------------------+
+> |                        1 |
+> +--------------------------+
+>
+> SELECT * FROM t WHERE a IN (1, 2, 3);
+> SELECT @@LAST_PLAN_FROM_BINDING;
+> +--------------------------+
+> | @@LAST_PLAN_FROM_BINDING |
+> +--------------------------+
+> |                        1 |
+> +--------------------------+
+> ```
+> 
+> 在 v7.4.0 之前版本的 TiDB 集群中创建的绑定可能会包含 `IN (?)`，在升级到 v7.4.0 或更高版本后，这些绑定会被统一修改为 `IN (...)`。
+> 
+> 例如：
+>
+> ```sql
+> -- 在 v7.3.0 集群上创建绑定
+> mysql> CREATE GLOBAL BINDING FOR SELECT * FROM t WHERE a IN (1) USING SELECT /*+ use_index(t, idx_a) */ * FROM t WHERE a IN (1);
+> mysql> SHOW GLOBAL BINDINGS;
+> +-----------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+> | Original_sql                                  | Bind_sql                                                               | Default_db | Status  | Create_time             | Update_time             | Charset | Collation          | Source | Sql_digest                                                       | Plan_digest |
+> +-----------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+> | select * from `test` . `t` where `a` in ( ? ) | SELECT /*+ use_index(`t` `idx_a`)*/ * FROM `test`.`t` WHERE `a` IN (1) | test       | enabled | 2024-09-03 15:39:02.695 | 2024-09-03 15:39:02.695 | utf8mb4 | utf8mb4_general_ci | manual | 8b9c4e6ab8fad5ba29b034311dcbfc8a8ce57dde2e2d5d5b65313b90ebcdebf7 |             |
+> +-----------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+> 
+> -- 升级到 v7.4.0 或更高的版本后
+> mysql> SHOW GLOBAL BINDINGS;
+> +-------------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+> | Original_sql                                    | Bind_sql                                                               | Default_db | Status  | Create_time             | Update_time             | Charset | Collation          | Source | Sql_digest                                                       | Plan_digest |
+> +-------------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+> | select * from `test` . `t` where `a` in ( ... ) | SELECT /*+ use_index(`t` `idx_a`)*/ * FROM `test`.`t` WHERE `a` IN (1) | test       | enabled | 2024-09-03 15:35:59.861 | 2024-09-03 15:35:59.861 | utf8mb4 | utf8mb4_general_ci | manual | da38bf216db4a53e1a1e01c79ffa42306419442ad7238480bb7ac510723c8bdf |             |
+> +-------------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+> ```
 
 值得注意的是，如果一条 SQL 语句在 GLOBAL 和 SESSION 作用域内都有与之绑定的执行计划，因为优化器在遇到 SESSION 绑定时会忽略 GLOBAL 绑定的执行计划，该语句在 SESSION 作用域内绑定的执行计划会屏蔽掉语句在 GLOBAL 作用域内绑定的执行计划。
 
@@ -171,36 +218,32 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 
 #### 根据历史执行计划创建绑定
 
-如需将 SQL 语句的执行计划固定为之前使用过的执行计划，可以使用 `plan_digest` 为该 SQL 语句绑定一个历史的执行计划。相比于使用 SQL 创建绑定的方式，此方式更加简便。
+如需将 SQL 语句的执行计划固定为之前使用过的执行计划，可以使用 Plan Digest 为该 SQL 语句绑定一个历史的执行计划。相比于使用 SQL 创建绑定的方式，此方式更加简便，并且支持一次为多个语句绑定执行计划。详细说明和更多示例参见 [`CREATE [GLOBAL|SESSION] BINDING`](/sql-statements/sql-statement-create-binding.md)。
 
-> **警告：**
->
-> 根据历史执行计划创建绑定目前为实验特性，存在未知风险，请勿在生产环境中使用。
-
-目前，根据历史执行计划创建绑定有一些限制：
+以下为根据历史执行计划创建绑定的注意事项：
 
 - 该功能是根据历史的执行计划生成 hint 而实现的绑定，历史的执行计划来源是 [Statement Summary Tables](/statement-summary-tables.md)，因此在使用此功能之前需开启系统变量 [`tidb_enable_stmt_summary`](/system-variables.md#tidb_enable_stmt_summary-从-v304-版本开始引入)。
-- 目前，该功能仅支持根据当前实例中的 `statements_summary` 和 `statements_summary_history` 表中的执行计划生成绑定。如果发现有 `can't find any plans` 的情况，请尝试连接集群中其他 TiDB 节点重试。
-- 对于带有子查询的查询、访问 TiFlash 的查询、3 张表或更多表进行 Join 的查询，目前还不支持通过历史执行计划进行绑定。
+- 对于包含子查询的查询、访问 TiFlash 的查询、3 张表或更多表进行 Join 的查询，自动生成的 hint 不够完备，可能导致无法完全固定住计划，对于这类情况在创建时会产生告警。
+- 原执行计划对应 SQL 语句中的 hint 也会被应用在创建的绑定中，如执行 `SELECT /*+ max_execution_time(1000) */ * FROM t` 后，使用其 Plan Digest 创建的绑定中会带上 `max_execution_time(1000)`。
 
-使用方式:
+使用方式：
 
 ```sql
-CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
+CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST StringLiteralOrUserVariableList;
 ```
 
-该语句使用 `plan_digest` 为 SQL 语句绑定执行计划，在不指定作用域时默认作用域为 SESSION。所创建绑定的适用 SQL、优先级、作用域、生效条件等与[根据 SQL 创建绑定](#根据-sql-创建绑定)相同。
+该语句使用 Plan Digest 为 SQL 语句绑定执行计划，在不指定作用域时默认作用域为 SESSION。所创建绑定的适用 SQL、优先级、作用域、生效条件等与[根据 SQL 创建绑定](#根据-sql-创建绑定)相同。
 
-使用此绑定方式时，你需要先从 `statements_summary` 中找到需要绑定的执行计划对应的 `plan_digest`，再通过 `plan_digest` 创建绑定。具体步骤如下：
+使用此绑定方式时，你需要先从 `statements_summary` 中找到需要绑定的执行计划对应的 Plan Digest，再通过 Plan Digest 创建绑定。具体步骤如下：
 
-1. 从 `Statement Summary Tables` 的记录中查找执行计划对应的 `plan_digest`。
+1. 从 `Statement Summary Tables` 的记录中查找执行计划对应的 Plan Digest。
 
-    例如:
+    例如：
 
     ```sql
-    CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
-    SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1;
-    SELECT * FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1'\G;
+    CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY idx_a(a));
+    SELECT /*+ IGNORE_INDEX(t, idx_a) */ * FROM t WHERE a = 1;
+    SELECT * FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'SELECT /*+ IGNORE_INDEX(t, idx_a) */ * FROM t WHERE a = 1'\G
     ```
 
     以下为 `statements_summary` 部分查询结果：
@@ -218,9 +261,9 @@ CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
           BINARY_PLAN: 6QOYCuQDCg1UYWJsZVJlYWRlcl83Ev8BCgtTZWxlY3Rpb25fNhKOAQoPBSJQRnVsbFNjYW5fNSEBAAAAOA0/QSkAAQHwW4jDQDgCQAJKCwoJCgR0ZXN0EgF0Uh5rZWVwIG9yZGVyOmZhbHNlLCBzdGF0czpwc2V1ZG9qInRpa3ZfdGFzazp7dGltZTo1NjAuOMK1cywgbG9vcHM6MH1w////CQMEAXgJCBD///8BIQFzCDhVQw19BAAkBX0QUg9lcSgBfCAudC5hLCAxKWrmYQAYHOi0gc6hBB1hJAFAAVIQZGF0YTo9GgRaFAW4HDQuMDVtcywgCbYcMWKEAWNvcF8F2agge251bTogMSwgbWF4OiA1OTguNsK1cywgcHJvY19rZXlzOiAwLCBycGNfBSkAMgkMBVcQIDYwOS4pEPBDY29wcl9jYWNoZV9oaXRfcmF0aW86IDAuMDAsIGRpc3RzcWxfY29uY3VycmVuY3k6IDE1fXCwAXj///////////8BGAE=
     ```
 
-    可以看到执行计划对应的 `plan_digest` 为 `4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb`。
+    可以看到执行计划对应的 Plan Digest 为 `4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb`。
 
-2. 使用 `plan_digest` 创建绑定。
+2. 使用 Plan Digest 创建绑定。
 
     ```sql
     CREATE BINDING FROM HISTORY USING PLAN DIGEST '4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb';
@@ -229,13 +272,13 @@ CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
 创建完毕后可以[查看绑定](#查看绑定)，验证绑定是否生效。
 
 ```sql
-SHOW BINDINGS\G;
+SHOW BINDINGS\G
 ```
 
 ```
 *************************** 1. row ***************************
 Original_sql: select * from `test` . `t` where `a` = ?
-    Bind_sql: SELECT /*+ use_index(@`sel_1` `test`.`t` ) ignore_index(`t` `a`)*/ * FROM `test`.`t` WHERE `a` = 1
+    Bind_sql: SELECT /*+ use_index(@`sel_1` `test`.`t` ) ignore_index(`t` `idx_a`)*/ * FROM `test`.`t` WHERE `a` = 1
        ...........
   Sql_digest: 6909a1bbce5f64ade0a532d7058dd77b6ad5d5068aee22a531304280de48349f
  Plan_digest:
@@ -261,7 +304,7 @@ SELECT @@LAST_PLAN_FROM_BINDING;
 
 ### 删除绑定
 
-你可以根据 SQL 语句或者 `sql_digest` 删除绑定。
+你可以根据 SQL 语句或者 SQL Digest 删除绑定。
 
 #### 根据 SQL 语句删除绑定
 
@@ -287,21 +330,23 @@ explain SELECT * FROM t1,t2 WHERE t1.id = t2.id;
 
 在这里 SESSION 作用域内被删除掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 `SELECT` 语句添加 `sm_join(t1, t2)` hint，`explain` 给出的执行计划中最上层节点并不被 hint 固定为 MergeJoin，而是由优化器经过代价估算后自主进行选择。
 
-#### 根据 `sql_digest` 删除绑定
+#### 根据 SQL Digest 删除绑定
 
-除了可以根据 SQL 语句删除对应的绑定以外，也可以根据 `sql_digest` 删除绑定：
+你既可以根据 SQL 语句删除对应的绑定，也可以根据 SQL Digest 删除绑定。详细说明和更多示例参见 [`DROP [GLOBAL|SESSION] BINDING`](/sql-statements/sql-statement-drop-binding.md)。
 
 ```sql
-DROP [GLOBAL | SESSION] BINDING FOR SQL DIGEST 'sql_digest';
+DROP [GLOBAL | SESSION] BINDING FOR SQL DIGEST StringLiteralOrUserVariableList;
 ```
 
-该语句用于在 GLOBAL 或者 SESSION 作用域内删除 `sql_digest` 对应的的执行计划绑定，在不指定作用域时默认作用域为 SESSION。你可以通过[查看绑定](#查看绑定)语句获取 `sql_digest`。
+该语句用于在 GLOBAL 或者 SESSION 作用域内删除 SQL Digest 对应的的执行计划绑定，在不指定作用域时默认作用域为 SESSION。你可以通过[查看绑定](#查看绑定)语句获取 SQL Digest。
 
 > **注意：**
 >
 > 执行 `DROP GLOBAL BINDING` 会删除当前 tidb-server 实例缓存中的绑定，并将系统表中对应行的状态修改为 'deleted'。该语句不会直接删除系统表中的记录，因为其他 tidb-server 实例需要读取系统表中的 'deleted' 状态来删除其缓存中对应的绑定。对于这些系统表中状态为 'deleted' 的记录，后台线程每隔 100 个 `bind-info-lease`（默认值为 `3s`，合计 `300s`）会触发一次对 `update_time` 在 10 个 `bind-info-lease` 以前的绑定（确保所有 tidb-server 实例已经读取过这个 'deleted' 状态并更新完缓存）的回收清除操作。
 
 ### 变更绑定状态
+
+#### 根据 SQL 语句变更绑定状态
 
 {{< copyable "sql" >}}
 
@@ -312,6 +357,16 @@ SET BINDING [ENABLED | DISABLED] FOR BindableStmt;
 该语句可以在 GLOBAL 作用域内变更指定执行计划的绑定状态，默认作用域为 GLOBAL，该作用域不可更改。
 
 使用时，只能将 `Disabled` 的绑定改为 `Enabled` 状态，或将 `Enabled` 的绑定改为 `Disabled` 状态。如果没有可以改变状态的绑定，则会输出一条内容为 `There are no bindings can be set the status. Please check the SQL text` 的警告。需要注意的是，当绑定被设置成 `Disabled` 状态时，查询语句不会使用该绑定。
+
+#### 根据 `sql_digest` 变更绑定状态
+
+除了可以根据 SQL 语句变更对应的绑定状态以外，也可以根据 `sql_digest` 变更绑定状态：
+
+```sql
+SET BINDING [ENABLED | DISABLED] FOR SQL DIGEST 'sql_digest';
+```
+
+使用 `sql_digest` 所能变更的绑定状态和生效情况与[根据 SQL 语句变更绑定状态](#根据-sql-语句变更绑定状态)相同。如果没有可以改变状态的绑定，则会输出一条内容为 `can't find any binding for 'sql_digest'` 的警告。
 
 ### 查看绑定
 
@@ -417,9 +472,172 @@ SHOW binding_cache status;
 1 row in set (0.00 sec)
 ```
 
+## 利用 Statement Summary 表获取需要绑定的查询
+
+[Statement Summary](/statement-summary-tables.md) 的表中存放了近期的 SQL 相关的执行信息，如延迟、执行次数、对应计划等。你可以通过查询 Statement Summary 表得到符合条件查询的 `plan_digest`，然后[根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)。
+
+以下示例查找过去两周执行次数超过 10 次、执行计划不稳定且未被绑定的 `SELECT` 语句，并按照执行次数排序，将执行次数前 100 的查询绑定到对应的查询延迟最低的计划上。
+
+```sql
+WITH stmts AS (                                                -- Gets all information
+  SELECT * FROM INFORMATION_SCHEMA.CLUSTER_STATEMENTS_SUMMARY
+  UNION ALL
+  SELECT * FROM INFORMATION_SCHEMA.CLUSTER_STATEMENTS_SUMMARY_HISTORY 
+),
+best_plans AS (
+  SELECT plan_digest, `digest`, avg_latency, 
+  CONCAT('create global binding from history using plan digest "', plan_digest, '"') as binding_stmt 
+  FROM stmts t1
+  WHERE avg_latency = (SELECT min(avg_latency) FROM stmts t2   -- The plan with the lowest query latency
+                       WHERE t2.`digest` = t1.`digest`)
+)
+
+SELECT any_value(digest_text) as query, 
+       SUM(exec_count) as exec_count, 
+       plan_hint, binding_stmt
+FROM stmts, best_plans
+WHERE stmts.`digest` = best_plans.`digest`
+  AND summary_begin_time > DATE_SUB(NOW(), interval 14 day)    -- Executed in the past 2 weeks
+  AND stmt_type = 'Select'                                     -- Only consider select statements
+  AND schema_name NOT IN ('INFORMATION_SCHEMA', 'mysql')       -- Not an internal query
+  AND plan_in_binding = 0                                      -- No binding yet
+GROUP BY stmts.`digest`
+  HAVING COUNT(DISTINCT(stmts.plan_digest)) > 1                -- This query is unstable. It has more than 1 plan.
+         AND SUM(exec_count) > 10                              -- High-frequency, and has been executed more than 10 times.
+ORDER BY SUM(exec_count) DESC LIMIT 100;                       -- Top 100 high-frequency queries.
+```
+
+通过一些过滤条件得到满足条件的查询，然后直接运行 `binding_stmt` 列对应的语句即可创建相应的绑定。
+
+```
++---------------------------------------------+------------+-----------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------+
+| query                                       | exec_count | plan_hint                                                                   | binding_stmt                                                                                                            |
++---------------------------------------------+------------+-----------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------+
+| select * from `t` where `a` = ? and `b` = ? |        401 | use_index(@`sel_1` `test`.`t` `a`), no_order_index(@`sel_1` `test`.`t` `a`) | create global binding from history using plan digest "0d6e97fb1191bbd08dddefa7bd007ec0c422b1416b152662768f43e64a9958a6" |
+| select * from `t` where `b` = ? and `c` = ? |        104 | use_index(@`sel_1` `test`.`t` `b`), no_order_index(@`sel_1` `test`.`t` `b`) | create global binding from history using plan digest "80c2aa0aa7e6d3205755823aa8c6165092c8521fb74c06a9204b8d35fc037dd9" |
++---------------------------------------------+------------+-----------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------+
+```
+
+## 跨数据库绑定执行计划 (Cross-DB Binding)
+
+在创建绑定的 SQL 语句中，TiDB 支持使用通配符 `*` 表示数据库，实现跨数据库绑定。该功能自 v7.6.0 开始引入。要使用跨数据库绑定，首先需要开启 [`tidb_opt_enable_fuzzy_binding`](/system-variables.md#tidb_opt_enable_fuzzy_binding-从-v760-版本开始引入) 系统变量。
+
+当数据按数据库 (schema/db) 分类存储，同时各数据库具有相同的对象定义并且运行相似的业务逻辑时，跨数据库执行计划绑定能显著简化执行计划的固定过程。以下是一些常见的使用场景：
+
+* 用户在 TiDB 上运行 SaaS 或 PaaS 类服务，每个租户的数据存储于独立的数据库中，以便数据维护和管理。 
+* 用户在单一实例中进行分库操作，并在迁移到 TiDB 后保留了原有的数据库结构，即将原实例中的数据按数据库分类存储。 
+
+在这些场景中，跨数据库绑定能有效缓解由于用户数据和负载的不均衡及其快速变化所引发的 SQL 性能问题。SaaS 服务商可以通过跨数据库绑定，固定大数据量用户业务已验证的执行计划，从而避免因小数据量用户业务快速增长引起的潜在性能问题。
+
+使用跨数据库绑定，只需要在创建绑定的 SQL 语句中将数据库名用 `*` 表示，例如：
+
+```sql
+CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, idx_a) */ * FROM t; -- 创建 GLOBAL 作用域的普通绑定
+CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, idx_a) */ * FROM *.t; -- 创建 GLOBAL 作用域的跨数据库绑定
+SHOW GLOBAL BINDINGS;
+```
+
+输出结果示例如下：
+
+```sql
++----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+--------------+-----------------+--------+------------------------------------------------------------------+-------------+
+| Original_sql               | Bind_sql                                              | Default_db | Status  | Create_time             | Update_time             | Charset | Collation       | Source | Sql_digest                                                       | Plan_digest |
++----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+--------------+-----------------+--------+------------------------------------------------------------------+-------------+
+| select * from `test` . `t` | SELECT /*+ use_index(`t` `idx_a`)*/ * FROM `test`.`t` | test       | enabled | 2023-12-29 14:19:01.332 | 2023-12-29 14:19:01.332 | utf8    | utf8_general_ci | manual | 8b193b00413fdb910d39073e0d494c96ebf24d1e30b131ecdd553883d0e29b42 |             |
+| select * from `*` . `t`    | SELECT /*+ use_index(`t` `idx_a`)*/ * FROM `*`.`t`    |            | enabled | 2023-12-29 14:19:02.232 | 2023-12-29 14:19:02.232 | utf8    | utf8_general_ci | manual | 8b193b00413fdb910d39073e0d494c96ebf24d1e30b131ecdd553883d0e29b42 |             |
++----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+--------------+-----------------+--------+------------------------------------------------------------------+-------------+
+```
+
+在 `SHOW GLOBAL BINDINGS` 的输出结果中，跨数据库绑定的 `Default_db` 为空，且 `Original_sql` 和 `Bind_sql` 字段中的数据库名通过 `*` 表示。这条绑定会对所有 `select * from t` 查询生效，而不限于特定数据库。
+
+对于相同的查询，跨数据绑定与普通绑定可以同时存在，TiDB 匹配的优先级从高到低依次为：SESSION 级别的普通绑定 > SESSION 级别的跨数据库绑定 > GLOBAL 级别的普通绑定 > GLOBAL 级别的跨数据库绑定。
+
+除了创建绑定的 SQL 语句不同，跨数据库绑定的删除和状态变更语句与普通绑定相同。下面是一个详细的使用示例。
+
+1. 创建数据库 `db1` 和 `db2`，并在每个数据库中创建两张表：
+  
+    ```sql
+    CREATE DATABASE db1;
+    CREATE TABLE db1.t1 (a INT, KEY(a));
+    CREATE TABLE db1.t2 (a INT, KEY(a));
+    CREATE DATABASE db2;
+    CREATE TABLE db2.t1 (a INT, KEY(a));
+    CREATE TABLE db2.t2 (a INT, KEY(a));
+    ```
+
+2. 开启跨数据库绑定功能：
+
+    ```sql
+    SET tidb_opt_enable_fuzzy_binding=1;
+    ```
+
+3. 创建跨数据库绑定：
+
+    ```sql
+    CREATE GLOBAL BINDING USING SELECT /*+ use_index(t1, idx_a), use_index(t2, idx_a) */ * FROM *.t1, *.t2;
+    ```
+
+4. 执行查询并查看是否使用了绑定：
+
+    ```sql
+    SELECT * FROM db1.t1, db1.t2;
+    SELECT @@LAST_PLAN_FROM_BINDING;
+    +--------------------------+
+    | @@LAST_PLAN_FROM_BINDING |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+    
+    SELECT * FROM db2.t1, db2.t2;
+    SELECT @@LAST_PLAN_FROM_BINDING;
+    +--------------------------+
+    | @@LAST_PLAN_FROM_BINDING |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+    
+    SELECT * FROM db1.t1, db2.t2;
+    SELECT @@LAST_PLAN_FROM_BINDING;
+    +--------------------------+
+    | @@LAST_PLAN_FROM_BINDING |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+
+    USE db1;
+    SELECT * FROM t1, db2.t2;
+    SELECT @@LAST_PLAN_FROM_BINDING;
+    +--------------------------+
+    | @@LAST_PLAN_FROM_BINDING |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+    ```
+
+5. 查看绑定：
+
+    ```sql
+    SHOW GLOBAL BINDINGS;
+    +----------------------------------------------+------------------------------------------------------------------------------------------+------------+-----------------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+    | Original_sql                                 | Bind_sql                                                                                         | Default_db | Status  | Create_time             | Update_time             | Charset | Collation          | Source | Sql_digest                                                       | Plan_digest |
+    +----------------------------------------------+------------------------------------------------------------------------------------------+------------+-----------------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+    | select * from ( `*` . `t1` ) join `*` . `t2` | SELECT /*+ use_index(`t1` `idx_a`) use_index(`t2` `idx_a`)*/ * FROM (`*` . `t1`) JOIN `*` . `t2` |            | enabled | 2023-12-29 14:22:28.144 | 2023-12-29 14:22:28.144 | utf8    | utf8_general_ci    | manual | ea8720583e80644b58877663eafb3579700e5f918a748be222c5b741a696daf4 |             |
+    +----------------------------------------------+------------------------------------------------------------------------------------------+------------+-----------------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+    ```
+
+6. 删除绑定：
+
+    ```sql
+    DROP GLOBAL BINDING FOR SQL DIGEST 'ea8720583e80644b58877663eafb3579700e5f918a748be222c5b741a696daf4';
+    SHOW GLOBAL BINDINGS;
+    Empty set (0.00 sec)
+    ```
+
 ## 自动捕获绑定 (Baseline Capturing)
 
 自动绑定会对符合捕获条件的查询进行捕获，为符合条件的查询生成相应的绑定。通常用于[升级时的计划回退防护](#升级时的计划回退防护)。
+
+Plan Baseline 是一组被允许用于 SQL 语句优化器的可接受计划。在典型的应用场景中，TiDB 仅在验证计划性能良好后才将其添加到 Baseline 中。这些计划包含优化器重新生成执行计划所需的所有信息（例如，SQL 计划标识符、提示集、绑定值、优化器环境）。 
 
 ### 使用方式
 
@@ -542,7 +760,7 @@ SET GLOBAL tidb_evolve_plan_baselines = ON;
 >
 > - 自动演进功能目前为实验特性，存在未知风险，不建议在生产环境中使用。
 >
-> - 此变量开关已强制关闭，直到自动演进成为正式功能 GA (Generally Available)。如果你尝试打开开关，会产生报错。如果你已经在生产环境中使用了此功能，请尽快将它禁用。如发现 binding 状态不如预期，请与 PingCAP 的技术支持联系获取相关支持。
+> - 此变量开关已强制关闭，直到自动演进成为正式功能 GA (Generally Available)。如果你尝试打开开关，会产生报错。如果你已经在生产环境中使用了此功能，请尽快将它禁用。如发现 binding 状态不如预期，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
 
 在打开自动演进功能后，如果优化器选出的最优执行计划不在之前绑定的执行计划之中，会将其记录为待验证的执行计划。每隔 `bind-info-lease`（默认值为 `3s`），会选出一个待验证的执行计划，将其和已经绑定的执行计划中代价最小的比较实际运行时间。如果待验证的运行时间更优的话（目前判断标准是运行时间小于等于已绑定执行计划运行时间的 2/3），会将其标记为可使用的绑定。以下示例描述上述过程。
 

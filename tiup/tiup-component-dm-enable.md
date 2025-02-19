@@ -1,5 +1,6 @@
 ---
 title: tiup dm enable
+summary: tiup dm enable 命令用于设置集群服务在机器重启后的自启动。命令语法为 tiup dm enable <cluster-name>，其中 cluster-name 为要启用自启的集群。选项包括 -N, --node 和 -R, --role，分别用于指定要开启自启的节点和角色。若不指定选项，默认开启所有节点和角色的自启。执行日志将作为输出。
 ---
 
 # tiup dm enable
@@ -43,5 +44,3 @@ tiup dm enable <cluster-name> [flags]
 ## 输出
 
 tiup-dm 的执行日志。
-
-[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)

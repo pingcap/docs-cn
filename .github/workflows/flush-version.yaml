@@ -1,0 +1,69 @@
+name: Flush PDF by Version
+
+on:
+  # manual flush pdf for specified version
+  workflow_dispatch:
+    inputs:
+      type:
+        required: true
+        type: choice
+        options: ['tidb', 'tidb cloud', 'tidb operator']
+        default: 'tidb'
+        description: "the type"
+      version:
+        required: false
+        type: string
+        description: "the version, e.g. v6.5 or dev"
+      # lang:
+      #   required: false
+      #   type: choice
+      #   options: ['en', 'zh']
+      #   description: "The language"
+
+jobs:
+  flush-pdf:
+    name: Flush PDF by Version
+    runs-on: ubuntu-latest
+    env:
+      TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+      TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
+      CDN_BASE_URL: "https://docs-download.pingcap.com/pdf"
+    steps:
+      - name: Set up Python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: 'x64'
+
+      - name: Install Tencent Cloud CLI
+        run: pip3 install tccli
+
+      - name: Print PDF to a file (tidb)
+        if: ${{ inputs.type == 'tidb' }}
+        run: |
+          echo "${CDN_BASE_URL}/tidb-${{inputs.version}}-en-manual.pdf" >> links.txt
+          echo "${CDN_BASE_URL}/tidb-${{inputs.version}}-zh-manual.pdf" >> links.txt
+          cat links.txt
+
+      - name: Print PDF to a file (tidb cloud)
+        if: ${{ inputs.type == 'tidb cloud' }}
+        run: |
+          echo "${CDN_BASE_URL}/tidbcloud-en-manual.pdf" > links.txt
+          cat links.txt
+
+      - name: Print PDF to a file (tidb operator)
+        if: ${{ inputs.type == 'tidb operator' }}
+        run: |
+          echo "${CDN_BASE_URL}/tidb-in-kubernetes-${{inputs.version}}-en-manual.pdf" >> links.txt
+          echo "${CDN_BASE_URL}/tidb-in-kubernetes-${{inputs.version}}-zh-manual.pdf" >> links.txt
+          cat links.txt
+
+      - name: Refresh URLs
+        run: |
+          cat links.txt | jq -nR '[inputs | select(length>0)]' | tee links.json
+          tccli cdn PurgeUrlsCache --Urls "$(cat links.json)" | tee result.json
+          task_id="$(cat result.json | jq .TaskId)"
+          if [ -z "${task_id}" ]; then
+            echo "Unable to find TaskId, CDN refresh might fail"
+            exit 1
+          fi

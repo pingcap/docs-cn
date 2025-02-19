@@ -106,7 +106,7 @@ DETAILS   | max duration of 172.16.5.40:20151 tikv rocksdb-write-duration was to
 
 * 第一行表示 TiDB 的 `log.slow-threshold` 配置值为 `0`，可能会影响性能。
 * 第二行表示集群中有 2 个不同的 TiDB 版本
-* 第三、四行表示 TiKV 的写入延迟太大，期望时间是不超过 0.1s, 但实际值远超预期。
+* 第三、四行表示 TiKV 的写入延迟太大，期望时间是不超过 0.1s，但实际值远超预期。
 
 诊断集群在时间段 "2020-03-26 00:03:00", "2020-03-26 00:08:00" 的问题。指定时间范围需要使用 `/*+ time_range() */` 的 SQL Hint，参考下面的查询示例：
 
@@ -140,7 +140,7 @@ DETAILS   | max duration of 172.16.5.40:10089 tidb get-token-duration is too slo
 上面的诊断结果发现了以下问题：
 
 * 第一行表示 172.16.5.40:4009 TiDB 实例在 `2020/03/26 00:05:45.670` 发生了重启。
-* 第二行表示 172.16.5.40:10089 TiDB 实例的最大的 `get-token-duration` 时间为 0.234s, 期望时间是小于 0.001s。
+* 第二行表示 172.16.5.40:10089 TiDB 实例的最大的 `get-token-duration` 时间为 0.234s，期望时间是小于 0.001s。
 
 也可以指定条件，比如只查询 `critical` 严重级别的诊断结果：
 
@@ -259,8 +259,7 @@ DETAILS   | the cluster has 2 different tidb versions, execute the sql to see mo
     |  组件  | 错误名字 | 相关监控表 | 错误说明 |
     |  ----  | ----  |  ----  |  ----  |
     | TiDB | panic-count | tidb_panic_count_total_count | TiDB 出现 panic 错误 |
-    | TiDB | binlog-error | tidb_binlog_error_total_count | TiDB 写 binlog 时出现的错误 |
-    | TiKV | critical-error | tikv_critical_error_total_coun | TiKV 的 critical error |
+    | TiKV | critical-error | tikv_critical_error_total_count | TiKV 的 critical error |
     | TiKV | scheduler-is-busy       | tikv_scheduler_is_busy_total_count | TiKV 的 scheduler 太忙，会导致 TiKV 临时不可用 |
     | TiKV | coprocessor-is-busy | tikv_coprocessor_is_busy_total_count | TiKV 的 coprocessor 太忙 |
     | TiKV | channel-is-full | tikv_channel_full_total_count | TiKV 出现 channel full 的错误 |

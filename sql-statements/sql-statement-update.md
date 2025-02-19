@@ -10,29 +10,26 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-update/','/docs-cn/dev/refe
 
 ## 语法图
 
-**UpdateStmt:**
+```ebnf+diagram
+UpdateStmt ::=
+    "UPDATE" UpdateOption
+(   TableRef "SET" Assignment ("," Assignment)* WhereClause? OrderBy? Limit?
+|   TableRefs "SET" Assignment ("," Assignment)* WhereClause?
+)
 
-![UpdateStmt](/media/sqlgram/UpdateStmt.png)
+UpdateOption ::=
+    OptimizerHints? ("LOW_PRIORITY" | "HIGH_PRIORITY" | "DELAYED")? "IGNORE"?
 
-**PriorityOpt:**
+TableRef ::=
+    ( TableFactor | JoinTable )
 
-![PriorityOpt](/media/sqlgram/PriorityOpt.png)
+TableRefs ::=
+    EscapedTableRef ("," EscapedTableRef)*
+```
 
-**TableRef:**
-
-![TableRef](/media/sqlgram/TableRef.png)
-
-**TableRefs:**
-
-![TableRefs](/media/sqlgram/TableRefs.png)
-
-**AssignmentList:**
-
-![AssignmentList](/media/sqlgram/AssignmentList.png)
-
-**WhereClauseOptional:**
-
-![WhereClauseOptional](/media/sqlgram/WhereClauseOptional.png)
+> **注意：**
+>
+> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`LOW_PRIORITY` 或 `HIGH_PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
 
 ## 示例
 

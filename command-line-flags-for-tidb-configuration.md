@@ -1,6 +1,7 @@
 ---
 title: TiDB 配置参数
 aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/dev/reference/configuration/tidb-server/configuration/']
+summary: TiDB 配置参数包括启动参数和环境变量。启动参数包括 advertise-address、config、config-check、config-strict、cors 等。其中默认端口为 4000 和 10080。其他参数包括 log-file、metrics-addr、metrics-interval 等。注意配置文件的有效性和安全模式下的启动。
 ---
 
 # TiDB 配置参数
@@ -9,7 +10,7 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 
 要快速了解 TiDB 的参数体系与参数作用域，建议先观看下面的培训视频（时长 17 分钟）。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson10_config.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+10.png"></video>
+<video src="https://docs-download.pingcap.com/media/videos/docs-cn%2FLesson10_config.mp4" width="600px" height="450px" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson10.png"></video>
 
 本文将详细介绍 TiDB 的命令行启动参数。TiDB 的默认端口为 4000（客户端请求）与 10080（状态报告）。
 
@@ -46,10 +47,20 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 + 默认："0.0.0.0"
 + 0.0.0.0 默认会监听所有的网卡地址。如果有多块网卡，可以指定对外提供服务的网卡，如 192.168.100.113
 
-## `--enable-binlog`
+## `--initialize-insecure`
 
-+ 是否产生 TiDB Binlog
-+ 默认：false
+- 在不安全模式下启动 tidb-server
+- 默认：true
+
+## `--initialize-secure`
+
+- 在安全模式下启动 tidb-server
+- 默认：false
+
+## `--initialize-sql-file`
+
+- 用于指定 TiDB 集群初次启动时执行的 SQL 脚本。参考[配置项 `initialize-sql-file`](/tidb-configuration-file.md#initialize-sql-file-从-v660-版本开始引入)
+- 默认：""
 
 ## `-L`
 
@@ -67,6 +78,12 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 + Log 文件
 + 默认：""
 + 如果未设置该参数，log 会默认输出到 "stderr"；如果设置了该参数，log 会输出到对应的文件中。
+
+## `--log-general`
+
++ [General Log](/system-variables.md#tidb_general_log) 文件名
++ 默认：""
++ 如果未设置该参数，general log 会默认输出到 [`--log-file`](#--log-file) 指定的文件中。
 
 ## `--log-slow-query`
 
@@ -105,15 +122,20 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 + 允许使用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)连接 TiDB 的代理服务器地址列表。
 + 默认：""
 + 通常情况下，通过反向代理使用 TiDB 时，TiDB 会将反向代理服务器的 IP 地址视为客户端 IP 地址。对于支持 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)的反向代理（如 HAProxy），开启 PROXY 协议后能让反向代理透传客户端真实的 IP 地址给 TiDB。
-+ 配置该参数后，TiDB 将允许配置的源 IP 地址使用 PROXY 协议连接到 TiDB，且拒绝这些源 IP 地址使用非 PROXY 协议连接。若该参数为空，则任何源 IP 地址都不能使用 PROXY 协议连接到 TiDB。地址可以使用 IP 地址格式 (192.168.1.50) 或者 CIDR 格式 (192.168.1.0/24)，并可用 `,` 分隔多个地址，或用 `*` 代表所有 IP 地址。
++ 配置该参数后，TiDB 将允许配置的源 IP 地址使用 PROXY 协议连接到 TiDB，且拒绝这些源 IP 地址使用非 PROXY 协议连接。其他地址可以使用非 PROXY 协议连接到 TiDB。若该参数为空，则任何源 IP 地址都不能使用 PROXY 协议连接到 TiDB。地址可以使用 IP 地址格式 (192.168.1.50) 或者 CIDR 格式 (192.168.1.0/24)，并可用 `,` 分隔多个地址，或用 `*` 代表所有 IP 地址。
 
 > **警告：**
 >
-> 需谨慎使用 `*` 符号，因为它可能引入安全风险，允许来自任何 IP 的客户端自行汇报其 IP 地址。另外，它可能会导致部分直接连接 TiDB 的内部组件无法使用，例如 TiDB Dashboard。
+> 需谨慎使用 `*` 符号，因为它可能引入安全风险，允许来自任何 IP 的客户端自行汇报其 IP 地址。另外，当 [`--proxy-protocol-fallbackable`](#--proxy-protocol-fallbackable) 设置为 `true` 以外的值时，使用 `*` 可能会导致部分直接连接 TiDB 的内部组件无法使用，例如 TiDB Dashboard。
 
 > **注意：**
 >
 > 如果使用 AWS 的 Network Load Balancer (NLB) 并开启 PROXY 协议，需要设置 NLB 的 `target group` 属性：将 `proxy_protocol_v2.client_to_server.header_place` 设为 `on_first_ack`。同时向 AWS 的 Support 提工单开通此功能的支持。注意，AWS NLB 在开启 PROXY 协议后，客户端将无法获取服务器端的握手报文，因此报文会一直阻塞到客户端超时。这是因为，NLB 默认只在客户端发送数据之后才会发送 PROXY 的报文，而在客户端发送数据包之前，服务器端发送的任何数据包都会在内网被丢弃。
+
+## `--proxy-protocol-fallbackable`
+
++ 用于控制是否启用 PROXY 协议回退模式。如果设置为 `true`，TiDB 可以接受属于 `--proxy-protocol-networks` 的客户端使用非 PROXY 协议规范或者没有发送 PROXY 协议头的客户端连接。默认情况下，TiDB 仅接受属于 `--proxy-protocol-networks` 的客户端发送 PROXY 协议头的客户端连接。
++ 默认：`false`
 
 ## `--proxy-protocol-header-timeout`
 
@@ -166,6 +188,16 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 + 默认："unistore"
 + 可以选择 "unistore"（本地存储引擎）或者 "tikv"（分布式存储引擎）
 
+## `--temp-dir`
+
+- TiDB 用于存放临时文件的目录
+- 默认："/tmp/tidb"
+
+## `--tidb-service-scope`
+
++ 用于设置当前 TiDB 实例 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 的初始值。
++ 默认：`""`
+
 ## `--token-limit`
 
 + TiDB 中同时允许运行的 Session 数量，用于流量控制
@@ -191,6 +223,12 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 
 + 设置 TiDB server CPU 亲和性，以 "," 逗号分隔，例如 "1,2,3"
 + 默认：""
+
+## `--redact`
+
++ 设置 TiDB server 是否在使用子命令 `collect-log` 时脱敏日志文件。
++ 默认：false
++ 取值为 `true` 时为脱敏操作，所有被标记符号 `‹ ›` 包裹的字段会被替换为 `?`。取值为 `false` 时为还原操作，所有标记符号会被去除。具体使用方法为：执行 `./tidb-server --redact=xxx collect-log <input> <output>` 将 `<input>` 指向的 TiDB server 日志文件进行脱敏或者还原，并输出到 `<output>`。更多详情，请参考系统变量 [`tidb_redact_log`](/system-variables.md#tidb_redact_log)。
 
 ## `--repair-mode`
 

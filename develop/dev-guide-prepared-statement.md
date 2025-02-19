@@ -19,8 +19,6 @@ aliases: ['/zh/tidb/dev/prepared-statement']
 
 ### 创建预处理语句
 
-{{< copyable "sql" >}}
-
 ```sql
 PREPARE {prepared_statement_name} FROM '{prepared_statement_sql}';
 ```
@@ -36,8 +34,6 @@ PREPARE {prepared_statement_name} FROM '{prepared_statement_sql}';
 
 预处理语句仅可使用用户变量作为参数，因此，需先使用 [SET 语句](/sql-statements/sql-statement-set-variable.md) 设置变量后，供 [EXECUTE 语句](/sql-statements/sql-statement-execute.md) 调用预处理语句。
 
-{{< copyable "sql" >}}
-
 ```sql
 SET @{parameter_name} = {parameter_value};
 EXECUTE {prepared_statement_name} USING @{parameter_name};
@@ -52,8 +48,6 @@ EXECUTE {prepared_statement_name} USING @{parameter_name};
 你可查看 [EXECUTE 语句](/sql-statements/sql-statement-execute.md) 获得更多信息。
 
 ### 删除预处理语句
-
-{{< copyable "sql" >}}
 
 ```sql
 DEALLOCATE PREPARE {prepared_statement_name};
@@ -89,8 +83,6 @@ PREPARE `books_query` FROM 'SELECT * FROM `books` WHERE `id` = ?';
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 SET @id = 1;
 ```
@@ -100,8 +92,6 @@ SET @id = 1;
 ```
 Query OK, 0 rows affected (0.04 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 EXECUTE `books_query` USING @id;
@@ -168,8 +158,6 @@ PREPARE `books_insert` FROM 'INSERT INTO `books` (`title`, `type`, `stock`, `pri
 Query OK, 0 rows affected (0.03 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 SET @title = 'TiDB Developer Guide';
 SET @type = 'Science & Technology';
@@ -183,8 +171,6 @@ SET @published_at = NOW();
 ```
 Query OK, 0 rows affected (0.04 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 EXECUTE `books_insert` USING @title, @type, @stock, @price, @published_at;
@@ -228,7 +214,7 @@ try (Connection connection = ds.getConnection()) {
 | `prepStmtCacheSqlLimit` |  预处理语句最大大小（默认 256 字符）  |  预处理语句大于 256 字符时   | 按实际预处理语句大小配置 |
 |   `prepStmtCacheSize`   | 预处理语句最大缓存数量 （默认 25 条） |  预处理语句数量大于 25 条时  | 按实际预处理语句数量配置 |
 
-在此处给出一个较为的通用场景的 JDBC 连接字符串配置，以 Host: `127.0.0.1`，Port: `4000`，用户: `root`，密码: 空 ，默认数据库: `test`为例：
+在此处给出一个较为的通用场景的 JDBC 连接字符串配置，以 Host: `127.0.0.1`，Port: `4000`，用户: `root`，密码: 空，默认数据库: `test`为例：
 
 ```
 jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPrepStmts=true&prepStmtCacheSqlLimit=2048&prepStmtCacheSize=256&rewriteBatchedStatements=true&allowMultiQueries=true
@@ -238,9 +224,9 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 
 有关 Java 的完整示例，可参阅：
 
-- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 JDBC](/develop/dev-guide-sample-application-java.md#第-2-步获取代码)。
-- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 Hibernate](/develop/dev-guide-sample-application-java.md#第-2-步获取代码)。
-- [Build the TiDB Application using Spring Boot](/develop/dev-guide-sample-application-spring-boot.md)。
+- [TiDB 和 JDBC 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java-jdbc.md)
+- [TiDB 和 Hibernate 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java-hibernate.md)
+- [使用 Spring Boot 构建 TiDB 应用程序](/develop/dev-guide-sample-application-java-spring-boot.md)
 
 </div>
 

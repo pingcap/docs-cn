@@ -5,13 +5,11 @@ summary: 了解如何构建 TiFlash 副本。
 
 # 构建 TiFlash 副本
 
-本文档介绍如何按表和库构建 TiFlash副本，以及如何设置可用区来调度副本。
+本文档介绍如何按表和库构建 TiFlash 副本，以及如何设置可用区来调度副本。
 
 ## 按表构建 TiFlash 副本
 
 TiFlash 接入 TiKV 集群后，默认不会开始同步数据。可通过 MySQL 客户端向 TiDB 发送 DDL 命令来为特定的表建立 TiFlash 副本：
-
-{{< copyable "sql" >}}
 
 ```sql
 ALTER TABLE table_name SET TIFLASH REPLICA count;
@@ -24,8 +22,6 @@ ALTER TABLE table_name SET TIFLASH REPLICA count;
 对于相同表的多次 DDL 命令，仅保证最后一次能生效。例如下面给出的操作 `tpch50` 表的两条 DDL 命令中，只有第二条删除副本的命令能生效：
 
 为表建立 2 个副本：
-
-{{< copyable "sql" >}}
 
 ```sql
 ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 2;
@@ -49,9 +45,9 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0;
     CREATE TABLE table_name like t;
     ```
 
-* 如果集群版本 \< v4.0.6，若先对表创建 TiFlash 副本，再使用 TiDB Lightning 导入数据，会导致数据导入失败。需要在使用 TiDB Lightning 成功导入数据至表后，再对相应的表创建 TiFlash 副本。
+* 如果集群版本 < v4.0.6，若先对表创建 TiFlash 副本，再使用 TiDB Lightning 导入数据，会导致数据导入失败。需要在使用 TiDB Lightning 成功导入数据至表后，再对相应的表创建 TiFlash 副本。
 
-* 如果集群版本以及 TiDB Lightning 版本均 \>= v4.0.6，无论一个表是否已经创建 TiFlash 副本，你均可以使用 TiDB Lightning 导入数据至该表。但注意此情况会导致 TiDB Lightning 导入数据耗费的时间延长，具体取决于 TiDB Lightning 部署机器的网卡带宽、TiFlash 节点的 CPU 及磁盘负载、TiFlash 副本数等因素。
+* 如果集群版本以及 TiDB Lightning 版本均 >= v4.0.6，无论一个表是否已经创建 TiFlash 副本，你均可以使用 TiDB Lightning 导入数据至该表。但注意此情况会导致 TiDB Lightning 导入数据耗费的时间延长，具体取决于 TiDB Lightning 部署机器的网卡带宽、TiFlash 节点的 CPU 及磁盘负载、TiFlash 副本数等因素。
 
 * 不推荐同步 1000 张以上的表，这会降低 PD 的调度性能。这个限制将在后续版本去除。
 
@@ -60,8 +56,6 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0;
 ### 查看表同步进度
 
 可通过如下 SQL 语句查看特定表（通过 WHERE 语句指定，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>';
@@ -76,8 +70,6 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
 类似于按表构建 TiFlash 副本的方式，你可以在 MySQL 客户端向 TiDB 发送 DDL 命令来为指定数据库中的所有表建立 TiFlash 副本：
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER DATABASE db_name SET TIFLASH REPLICA count;
 ```
@@ -88,15 +80,11 @@ ALTER DATABASE db_name SET TIFLASH REPLICA count;
 
 执行以下命令可以为 `tpch50` 库中的所有表建立 2 个 TiFlash 副本。
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER DATABASE `tpch50` SET TIFLASH REPLICA 2;
 ```
 
 执行以下命令可以删除为 `tpch50` 库建立的 TiFlash 副本：
-
-{{< copyable "sql" >}}
 
 ```sql
 ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0;
@@ -111,21 +99,19 @@ ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0;
 >     - 在命令执行到结束期间，如果在该库下创建表，则**可能**会对这些新增表创建 TiFlash 副本。
 >     - 在命令执行到结束期间，如果为该库下的表添加索引，则该命令可能陷入等待，直到添加索引完成。
 >
+> - 该命令执行结束后，在该库中新建的表不会自动创建 TiFlash 副本。
+>
 > - 该命令会跳过系统表、视图、临时表以及包含了 TiFlash 不支持字符集的表。
 
 ### 查看库同步进度
 
 类似于按表构建，按库构建 TiFlash 副本的命令执行成功，不代表所有表都已同步完成。可以执行下面的 SQL 语句检查数据库中所有已设置 TiFlash Replica 表的同步进度：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>';
 ```
 
 可以执行下面的 SQL 语句检查数据库中尚未设置 TiFlash Replica 的表名：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>" and TABLE_NAME not in (SELECT TABLE_NAME FROM information_schema.tiflash_replica where TABLE_SCHEMA = "<db_name>");
@@ -137,50 +123,50 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
 1. 通过 [SQL 语句在线修改配置](/dynamic-config.md)，临时调高各个 TiKV 及 TiFlash 实例的数据快照写入速度：
 
-   ```sql
-   -- 这两个参数默认值都为 100MiB，即用于副本同步的快照最大占用的磁盘带宽不超过 100MiB/s。
-   SET CONFIG tikv `server.snap-max-write-bytes-per-sec` = '300MiB';
-   SET CONFIG tiflash `raftstore-proxy.server.snap-max-write-bytes-per-sec` = '300MiB';
-   ```
+    ```sql
+    -- 这两个参数默认值都为 100MiB，即用于副本同步的快照最大占用的磁盘带宽不超过 100MiB/s。
+    SET CONFIG tikv `server.snap-io-max-bytes-per-sec` = '300MiB';
+    SET CONFIG tiflash `raftstore-proxy.server.snap-io-max-bytes-per-sec` = '300MiB';
+    ```
 
-   以上 SQL 语句执行后，配置修改立即生效，无需重启集群。但由于副本同步速度还受到 PD 副本速度控制，因此当前你还无法观察到副本同步速度提升。
+    以上 SQL 语句执行后，配置修改立即生效，无需重启集群。但由于副本同步速度还受到 PD 副本速度控制，因此当前你还无法观察到副本同步速度提升。
 
 2. 使用 [PD Control](/pd-control.md) 逐步放开新增副本速度限制：
 
-   TiFlash 默认新增副本速度是 30（每分钟大约 30 个 Region 将会新增 TiFlash 副本）。执行以下命令将调整所有 TiFlash 实例的新增副本速度到 60，即原来的 2 倍速度：
+    TiFlash 默认新增副本速度是 30（每分钟大约 30 个 Region 将会新增 TiFlash 副本）。执行以下命令将调整所有 TiFlash 实例的新增副本速度到 60，即原来的 2 倍速度：
 
-   ```shell
-   tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
-   ```
+    ```shell
+    tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
+    ```
 
-   > 上述命令中，需要将 `<CLUSTER_VERSION>` 替换为该集群版本，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
-   >
-   > ```shell
-   > tiup ctl:v6.1.1 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer
-   > ```
+    > 上述命令中，需要将 `v<CLUSTER_VERSION>` 替换为该集群版本，例如 `v8.5.0`，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
+    >
+    > ```shell
+    > tiup ctl:v8.5.0 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer
+    > ```
 
-   执行完毕后，几分钟内，你将观察到 TiFlash 节点的 CPU 及磁盘 IO 资源占用显著提升，TiFlash 将更快地创建副本。同时，TiKV 节点的 CPU 及磁盘 IO 资源占用也将有所上升。
+    执行完毕后，几分钟内，你将观察到 TiFlash 节点的 CPU 及磁盘 IO 资源占用显著提升，TiFlash 将更快地创建副本。同时，TiKV 节点的 CPU 及磁盘 IO 资源占用也将有所上升。
 
-   如果此时 TiKV 及 TiFlash 节点的资源仍有富余，且线上业务的延迟没有显著上升，则可以考虑进一步放开调度速度，例如将新增副本的速度增加为原来的 3 倍：
+    如果此时 TiKV 及 TiFlash 节点的资源仍有富余，且线上业务的延迟没有显著上升，则可以考虑进一步放开调度速度，例如将新增副本的速度增加为原来的 3 倍：
 
-   ```shell
-   tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 90 add-peer
-   ```
+    ```shell
+    tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 90 add-peer
+    ```
 
 3. 在副本同步完毕后，恢复到默认配置，减少在线业务受到的影响。
 
-   执行以下 PD Control 命令可恢复默认的新增副本速度：
+    执行以下 PD Control 命令可恢复默认的新增副本速度：
 
-   ```shell
-   tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 30 add-peer
-   ```
+    ```shell
+    tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 30 add-peer
+    ```
 
-   执行以下 SQL 语句可恢复默认的数据快照写入速度：
+    执行以下 SQL 语句可恢复默认的数据快照写入速度：
 
-   ```sql
-   SET CONFIG tikv `server.snap-max-write-bytes-per-sec` = '100MiB';
-   SET CONFIG tiflash `raftstore-proxy.server.snap-max-write-bytes-per-sec` = '100MiB';
-   ```
+    ```sql
+    SET CONFIG tikv `server.snap-io-max-bytes-per-sec` = '100MiB';
+    SET CONFIG tiflash `raftstore-proxy.server.snap-io-max-bytes-per-sec` = '100MiB';
+    ```
 
 ## 设置可用区
 
@@ -264,3 +250,5 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
     ```
 
 关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
+
+TiFlash 支持设置不同区域的副本选择策略，具体请参考变量 [`tiflash_replica_read`](/system-variables.md#tiflash_replica_read-从-v730-版本开始引入)。

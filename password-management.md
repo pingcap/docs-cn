@@ -29,7 +29,7 @@ summary: 了解 TiDB 的用户密码管理机制。
 密码复杂度策略支持以下功能：
 
 - 对采用明文方式设置用户密码的 SQL 语句（包括 `CREATE USER`、`ALTER USER`、`SET PASSWORD` ），系统会根据密码复杂度策略检查该密码，如果该密码不符合要求，则拒绝该密码。
-- 可以使用 SQL 函数 [`VALIDATE_PASSWORD_STRENGTH()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_validate-password-strength) 评估给定密码的强度。
+- 可以使用 SQL 函数 [`VALIDATE_PASSWORD_STRENGTH()`](/functions-and-operators/encryption-and-compression-functions.md#validate_password_strength) 评估给定密码的强度。
 
 > **注意：**
 >
@@ -131,13 +131,13 @@ ERROR 1819 (HY000): Require Password Length: 8
 
 ### 密码强度评估函数
 
-使用 `VALIDATE_PASSWORD_STRENGTH()` 函数评估给定密码的强度，该函数接受一个密码参数，并返回一个从 0（弱）到 100（强）的整数。
+使用 [`VALIDATE_PASSWORD_STRENGTH()`](/functions-and-operators/encryption-and-compression-functions.md#validate_password_strength) 函数评估给定密码的强度，该函数接受一个密码参数，并返回一个从 0（弱）到 100（强）的整数。
 
 > **注意：**
 >
 > 密码强度是基于当前已配置的密码复杂度策略进行评估的，密码复杂度配置改变后，同一个密码的评估结果可能与之前不同。
 
-`VALIDATE_PASSWORD_STRENGTH()` 函数使用示例如下：
+[`VALIDATE_PASSWORD_STRENGTH()`](/functions-and-operators/encryption-and-compression-functions.md#validate_password_strength) 函数使用示例如下：
 
 ```sql
 SELECT VALIDATE_PASSWORD_STRENGTH('weak');
@@ -345,7 +345,7 @@ ALTER USER 'test'@'localhost'
 >
 > - 如果多次设置密码重用策略，则最后一次设置的值生效。
 > - `PASSWORD HISTORY` 和 `PASSWORD REUSE INTERVAL` 选项的默认值为 0，表示禁用该项重用策略。
-> - 在修改用户名时， TiDB 会将 `mysql.password_history` 系统表中原用户名的历史密码记录迁移到新用户名的记录中。
+> - 在修改用户名时，TiDB 会将 `mysql.password_history` 系统表中原用户名的历史密码记录迁移到新用户名的记录中。
 
 ## 密码连续错误限制登录策略
 

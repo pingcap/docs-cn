@@ -1,5 +1,6 @@
 ---
 title: tiup cluster display
+summary: tiup cluster display 命令用于查看集群中每个组件的运行状态。可以通过指定选项来展示特定信息，如节点的 CPU 和内存使用情况，节点的 uptime 信息等。输出包括集群名称、版本、SSH 客户端类型、Dashboard 地址以及节点的 ID、角色、主机 IP、端口号、操作系统和机器架构、服务状态、数据目录和部署目录。节点服务状态包括在线、离线、已缩容下线、下线中和未知。详细状态含义可参考相关文档。
 ---
 
 # tiup cluster display
@@ -80,4 +81,22 @@ tiup cluster display <cluster-name> [flags]
     - Data Dir：服务的数据目录，`-` 表示没有数据目录
     - Deploy Dir：服务的部署目录
 
-[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)
+### 节点服务的状态 (Status)
+
+节点服务可能处于如下任一状态：
+
+- 在线 (Up)：节点服务正常运行。
+- 离线 (Down) 或无法访问 (Unreachable)：节点服务未启动或对应主机存在网络问题。
+- 已缩容下线 (Tombstone)：节点服务上的数据已被完整迁出并缩容完毕。仅 TiKV 或 TiFlash 存在该状态。
+- 下线中 (Pending Offline)：节点服务上的数据正在被迁出并缩容。仅 TiKV 或 TiFlash 存在该状态。
+- 未知 (Unknown)：未知的节点服务运行状态。
+
+> **注意：**
+>
+> TiUP 显示的 `Pending Offline`、PD API 返回的 `Offline` 以及 TiDB Dashboard 显示的 `Leaving` 这三个状态的含义相同。
+
+节点服务状态来自于 PD 的调度信息。更详细的描述请参考 [TiDB 数据库的调度 -- 信息收集](/tidb-scheduling.md#信息收集)。
+
+## 另请参阅
+
+- [TiUP 常见运维操作](/maintain-tidb-using-tiup.md)

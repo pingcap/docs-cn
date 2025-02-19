@@ -9,21 +9,10 @@ summary: TiDB 数据库中 SET DEFAULT ROLE 的使用概况。
 
 ## 语法图
 
-**SetDefaultRoleStmt:**
-
-![SetDefaultRoleStmt](/media/sqlgram/SetDefaultRoleStmt.png)
-
-**SetDefaultRoleOpt:**
-
-![SetDefaultRoleOpt](/media/sqlgram/SetDefaultRoleOpt.png)
-
-**RolenameList:**
-
-![RolenameList](/media/sqlgram/RolenameList.png)
-
-**UsernameList:**
-
-![UsernameList](/media/sqlgram/UsernameList.png)
+```ebnf+diagram
+SetDefaultRoleStmt ::=
+    "SET" "DEFAULT" "ROLE" ( "NONE" | "ALL" | Rolename ("," Rolename)* ) "TO" Username ("," Username)*
+```
 
 ## 示例
 
@@ -141,7 +130,7 @@ ERROR 3530 (HY000): `analyticsteam`@`%` is is not granted to jennifer@%
 
 ## MySQL 兼容性
 
-`SET DEFAULT ROLE` 语句与 MySQL 8.0 的角色功能完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`SET DEFAULT ROLE` 语句与 MySQL 8.0 的角色功能完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
 
 ## 另请参阅
 

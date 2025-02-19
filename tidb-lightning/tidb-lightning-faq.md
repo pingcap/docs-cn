@@ -1,6 +1,7 @@
 ---
 title: TiDB Lightning 常见问题
 aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-faq/','/docs-cn/dev/faq/tidb-lightning/']
+summary: TiDB Lightning 常见问题的摘要：TiDB Lightning 对TiDB/TiKV/PD 的最低版本要求，支持导入多个库，对下游数据库的账号权限要求，导数据过程中某个表报错不会影响其他表，正确重启 TiDB Lightning 的步骤，校验导入数据的正确性方法，支持的数据源格式，禁止导入不合规数据的方法，结束 tidb-lightning 进程的操作，使用千兆网卡的建议，TiDB Lightning 预留空间的原因，清除与 TiDB Lightning 相关的中间数据的步骤，获取 TiDB Lightning 运行时的 goroutine 信息的方法，TiDB Lightning 不兼容 Placement Rules in SQL 的原因，使用 TiDB Lightning 和 Dumpling 复制 schema 的步骤。
 ---
 
 # TiDB Lightning 常见问题
@@ -9,7 +10,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-faq/','/docs-cn/dev/faq/ti
 
 ## TiDB Lightning 对 TiDB/TiKV/PD 的最低版本要求是多少？
 
-TiDB Lightning 的版本应与集群相同。如果使用 Local-backend 模式，最低版本要求为 4.0.0。如果使用 Importer-backend 或 TiDB-backend 模式 最低版本要求是 2.0.9，但建议使用最新的稳定版本 3.0。
+TiDB Lightning 的版本应与集群相同。如果使用 Local-backend 模式，最低版本要求为 4.0.0。如果使用 Importer-backend 或 TiDB-backend 模式最低版本要求是 2.0.9，但建议使用最新的稳定版本 3.0。
 
 ## TiDB Lightning 支持导入多个库吗？
 
@@ -25,27 +26,8 @@ TiDB Lightning 的版本应与集群相同。如果使用 Local-backend 模式�
 
 ## 如何正确重启 TiDB Lightning？
 
-如果使用 Importer-backend，根据 `tikv-importer` 的状态，重启 TiDB Lightning 的基本顺序如下：
-
-如果 `tikv-importer` 仍在运行：
-
 1. [结束 `tidb-lightning` 进程](#如何正确结束-tidb-lightning-进程)。
-2. 执行修改操作（如修复数据源、更改设置、更换硬件等）。
-3. 如果上面的修改操作更改了任何表，你还需要[清除对应的断点](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-remove)。
-4. 重启 `tidb-lightning`。
-
-如果 `tikv-importer` 需要重启：
-
-1. [结束 `tidb-lightning` 进程](#如何正确结束-tidb-lightning-进程)。
-2. [结束 `tikv-importer` 进程](#如何正确结束-tikv-importer-进程)。
-3. 执行修改操作（如修复数据源、更改设置、更换硬件等）。
-4. 重启 `tikv-importer`。
-5. 重启 `tidb-lightning` 并等待，**直到程序因校验和错误（如果有的话）而失败**。
-    * 重启 `tikv-importer` 将清除所有仍在写入的引擎文件，但是 `tidb-lightning` 并不会感知到该操作。从 v3.0 开始，最简单的方法是让 `tidb-lightning` 继续，然后再重试。
-6. [清除失败的表及断点](/tidb-lightning/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status错误码)。
-7. 再次重启 `tidb-lightning`。
-
-如果使用 Local-backend 和 TiDB-backend，操作和 Importer-backend 的 `tikv-importer` 仍在运行时相同。
+2. 启动一个新的 `tidb-lightning` 任务：执行之前的启动命令，例如 `nohup tiup tidb-lightning -config tidb-lightning.toml`。
 
 ## 如何校验导入的数据的正确性？
 
@@ -72,33 +54,27 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 
 目前，TiDB Lightning 支持：
 
-- 导入 [Dumpling](/dumpling-overview.md)、CSV 或 [Amazon Aurora Parquet](/migrate-aurora-to-tidb.md) 输出格式的数据源。
-- 从本地盘或 [Amazon S3 云盘](/br/external-storage.md)读取数据。
+- 导入 [Dumpling](/dumpling-overview.md)、CSV、[Amazon Aurora Parquet](/migrate-aurora-to-tidb.md)、Apache Hive Parquet、Snowflake Parquet 输出格式的数据源。
+- 从本地盘或 Amazon S3 云盘读取数据。
 
 ## 我已经在下游创建好库和表了，TiDB Lightning 可以忽略建库建表操作吗？
 
 自 v5.1 起，TiDB Lightning 可以自动识别下游的库和表。如果你使用低于 v5.1 的 TiDB Lightning，需在配置文档中的 `[mydumper]` 部分将 `no-schema` 设置为 `true` 即可。`no-schema=true` 会默认下游已经创建好所需的数据库和表，如果没有创建，会报错。
 
-## 有些不合法的数据，能否通过关掉严格 SQL 模式 (Strict SQL Mode) 来导入？
+## 如何禁止导入不合规的数据？
 
-可以。TiDB Lightning 默认的 [`sql_mode`](https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html) 为 `"STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"`。
+可以通过开启严格 SQL 模式 (Strict SQL Mode) 来实现。
 
-这个设置不允许一些非法的数值，例如 `1970-00-00` 这样的日期。可以修改配置文件 `[tidb]` 下的 `sql-mode` 值。
+TiDB Lightning 默认的 [`sql_mode`](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html) 为 `"ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER"`，允许导入某些不合规的数值，例如 `1970-00-00` 这样的日期。
+
+如果要禁止导入不合规的数据，需要修改配置文件 `[tidb]` 下的 `sql-mode` 值为 `"STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"`。
 
 ```toml
 ...
 [tidb]
-sql-mode = ""
+sql-mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"
 ...
 ```
-
-## 可以启用一个 `tikv-importer`，同时有多个 `tidb-lightning` 进程导入数据吗？
-
-只要每个 TiDB Lightning 操作的表互不相同就可以。
-
-## 如何正确结束 `tikv-importer` 进程？
-
-手动部署：如果 `tikv-importer` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。否则，可通过 `ps aux | grep tikv-importer` 获取进程 ID，然后通过 `kill «pid»` 结束进程。
 
 ## 如何正确结束 `tidb-lightning` 进程？
 
@@ -110,7 +86,7 @@ sql-mode = ""
 
 使用 TiDB Lightning 的 SST Mode 建议配置万兆网卡。
 
-千兆网卡的总带宽只有 120 MB/s，而且需要与整个 TiKV 集群共享。在使用 TiDB Lightning Physical Import Mode 导入时，极易用尽所有带宽，继而因 PD 无法联络集群使集群断连。
+千兆网卡的总带宽只有 120 MB/s，而且需要与整个 TiKV 集群共享。在使用 TiDB Lightning 物理导入模式导入时，极易用尽所有带宽，继而因 PD 无法联络集群使集群断连。
 
 ## 为什么 TiDB Lightning 需要在 TiKV 集群预留这么多空间？
 
@@ -118,10 +94,6 @@ sql-mode = ""
 
 - 索引会占据额外的空间
 - RocksDB 的空间放大效应
-
-## TiDB Lightning 使用过程中是否可以重启 TiKV Importer？
-
-不能，TiKV Importer 会在内存中存储一些引擎文件，重启后，`tidb-lightning` 会因连接失败而停止。此时，你需要[清除失败的断点](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy)，因为这些 TiKV Importer 特有的信息丢失了。你可以在之后[重启 TiDB Lightning](#如何正确重启-tidb-lightning)。
 
 ## 如何清除所有与 TiDB Lightning 相关的中间数据？
 
@@ -135,7 +107,7 @@ sql-mode = ""
 
     如果出于某些原因而无法运行该命令，你可以尝试手动删除 `/tmp/tidb_lightning_checkpoint.pb` 文件。
 
-2. 如果使用 Local-backend，删除配置中 `sorted-kv-dir` 对应的目录；如果使用 Importer-backend，删除 `tikv-importer` 所在机器上的整个 `import` 文件目录。
+2. 如果使用 Local-backend，删除配置中 `sorted-kv-dir` 对应的目录。
 
 3. 如果需要的话，删除 TiDB 集群上创建的所有表和库。
 
@@ -204,3 +176,48 @@ CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east" REGIONS="us-east,us-west";
 2. 为 TiKV 和 PD 配置必要的 label。
 3. 创建放置规则策略，并将策略应用到目标表上。
 4. 使用 TiDB Lightning 导入数据到目标表。
+
+## 如何使用 TiDB Lightning 和 Dumpling 复制 schema？
+
+如果你想要将一个 schema 的定义和表数据复制到一个新的 schema 中，可以按照以下步骤进行操作。通过下面的示例，你可以了解如何将 `test` schema 复制到一个名为 `test2` 的新 schema 中。
+
+1. 创建原 schema 的备份，使用 `-B test` 来选定需要的 schema。
+
+    ```
+    tiup dumpling -B test -o /tmp/bck1
+    ```
+
+2. 创建 `/tmp/tidb-lightning.toml` 文件，内容如下：
+
+    ```toml
+    [tidb]
+    host = "127.0.0.1"
+    port = 4000
+    user = "root"
+
+    [tikv-importer]
+    backend = "tidb"
+
+    [mydumper]
+    data-source-dir = "/tmp/bck1"
+
+    [[mydumper.files]]
+    pattern = '^[a-z]*\.(.*)\.[0-9]*\.sql$'
+    schema = 'test2'
+    table = '$1'
+    type = 'sql'
+
+    [[mydumper.files]]
+    pattern = '^[a-z]*\.(.*)\-schema\.sql$'
+    schema = 'test2'
+    table = '$1'
+    type = 'table-schema'
+    ```
+
+    在上述配置文件中，如要使用一个和原始备份中不同的 schema 名称，设置 `schema = 'test2'`。文件名用于确定表的名称。
+
+3. 使用上述配置文件运行导入。
+
+    ```
+    tiup tidb-lightning -config /tmp/tidb-lightning.toml
+    ```

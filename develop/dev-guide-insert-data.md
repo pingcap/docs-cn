@@ -14,7 +14,7 @@ aliases: ['/zh/tidb/dev/insert-data']
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)，并[创建数据库](/develop/dev-guide-create-database.md)、[创建表](/develop/dev-guide-create-table.md)、[创建二级索引](/develop/dev-guide-create-secondary-indexes.md)。
 
 ## 插入行
@@ -98,8 +98,6 @@ try (Connection connection = ds.getConnection()) {
 
 MySQL JDBC Driver 还提供了一个集成配置项：`useConfigs`。当它配置为 `maxPerformance` 时，相当于配置了一组配置，以 `mysql:mysql-connector-java:8.0.28` 为例，`useConfigs=maxPerformance` 包含：
 
-{{< copyable "" >}}
-
 ```properties
 cachePrepStmts=true
 cacheCallableStmts=true
@@ -112,11 +110,9 @@ connectionAttributes=none
 useInformationSchema=true
 ```
 
-你可以自行查看 `mysql-connector-java-{version}.jar!/com/mysql/cj/configurations/maxPerformance.properties` 来获得对应版本MySQL JDBC Driver 的 `useConfigs=maxPerformance` 包含配置。
+你可以自行查看 `mysql-connector-java-{version}.jar!/com/mysql/cj/configurations/maxPerformance.properties` 来获得对应版本 MySQL JDBC Driver 的 `useConfigs=maxPerformance` 包含配置。
 
-在此处给出一个较为的通用场景的 JDBC 连接字符串配置，以 Host: `127.0.0.1`，Port: `4000`，用户名: `root`，密码: 空 ，默认数据库: `test`为例：
-
-{{< copyable "" >}}
+在此处给出一个较为的通用场景的 JDBC 连接字符串配置，以 Host: `127.0.0.1`，Port: `4000`，用户名: `root`，密码: 空，默认数据库: `test`为例：
 
 ```
 jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPrepStmts=true&prepStmtCacheSqlLimit=2048&prepStmtCacheSize=256&rewriteBatchedStatements=true&allowMultiQueries=true
@@ -124,9 +120,9 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 
 有关 Java 的完整示例，可参阅：
 
-- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 JDBC](/develop/dev-guide-sample-application-java.md#第-2-步获取代码)
-- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 Hibernate](/develop/dev-guide-sample-application-java.md#第-2-步获取代码)
-- [Build the TiDB Application using Spring Boot](/develop/dev-guide-sample-application-spring-boot.md)
+- [TiDB 和 JDBC 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java-jdbc.md)
+- [TiDB 和 Hibernate 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java-hibernate.md)
+- [使用 Spring Boot 构建 TiDB 应用程序](/develop/dev-guide-sample-application-java-spring-boot.md)
 
 </div>
 
@@ -202,8 +198,8 @@ func buildBulkInsertSQL(amount int) string {
 
 有关 Golang 的完整示例，可参阅：
 
-- [TiDB 和 Golang 的简单 CRUD 应用程序 - 使用 go-sql-driver/mysql](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)
-- [TiDB 和 Golang 的简单 CRUD 应用程序 - 使用 GORM](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)
+- [使用 Go-MySQL-Driver 连接到 TiDB](/develop/dev-guide-sample-application-golang-sql-driver.md)
+- [使用 GORM 连接到 TiDB](/develop/dev-guide-sample-application-golang-gorm.md)
 
 </div>
 
@@ -232,11 +228,12 @@ with get_connection(autocommit=True) as connection:
 
 有关 Python 的完整示例，可参阅：
 
-- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 PyMySQL](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
-- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysqlclient](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
-- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysql-connector-python](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
-- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 SQLAlchemy](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
-- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 peewee](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
+- [使用 PyMySQL 连接到 TiDB](/develop/dev-guide-sample-application-python-pymysql.md)
+- [使用 mysqlclient 连接到 TiDB](/develop/dev-guide-sample-application-python-mysqlclient.md)
+- [使用 MySQL Connector/Python 连接到 TiDB](/develop/dev-guide-sample-application-python-mysql-connector.md)
+- [使用 SQLAlchemy 连接到 TiDB](/develop/dev-guide-sample-application-python-sqlalchemy.md)
+- [使用 Django 连接到 TiDB](/develop/dev-guide-sample-application-python-django.md)
+- [使用 peewee 连接到 TiDB](/develop/dev-guide-sample-application-python-peewee.md)
 
 </div>
 
@@ -247,7 +244,7 @@ with get_connection(autocommit=True) as connection:
 如果你需要快速地将大量数据导入 TiDB 集群，最好的方式并不是使用 `INSERT` 语句，这并不是最高效的方法，而且需要你自行处理异常等问题。推荐使用 PingCAP 提供的一系列工具进行数据迁移：
 
 - 数据导出工具：[Dumpling](/dumpling-overview.md)。可以导出 MySQL 或 TiDB 的数据到本地或 Amazon S3 中。
-- 数据导入工具：[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)。可以导入 `Dumpling` 导出的数据、CSV 文件，或者 [Amazon Aurora 生成的 Apache Parquet 文件](/migrate-aurora-to-tidb.md)。同时支持在本地盘或 [Amazon S3 云盘](/br/external-storage.md)读取数据。
+- 数据导入工具：[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)。可以导入 `Dumpling` 导出的数据、CSV 文件，或者 [Amazon Aurora 生成的 Apache Parquet 文件](/migrate-aurora-to-tidb.md)。同时支持在本地盘或 Amazon S3 云盘读取数据。
 - 数据同步工具：[TiDB Data Migration](/dm/dm-overview.md)。可同步 MySQL、MariaDB、Amazon Aurora 数据库到 TiDB 中。且支持分库分表数据库的迁移。
 - 数据备份恢复工具：[Backup & Restore (BR)](/br/backup-and-restore-overview.md)。相对于 `Dumpling`，BR 更适合**_大数据量_**的场景。
 
@@ -262,8 +259,6 @@ with get_connection(autocommit=True) as connection:
 在插入的表主键为 `AUTO_RANDOM` 时，这时默认情况下，不能指定主键。例如 [bookshop](/develop/dev-guide-bookshop-schema-design.md) 数据库中，可以看到 [users 表](/develop/dev-guide-bookshop-schema-design.md#users-表) 的 `id` 字段含有 `AUTO_RANDOM` 属性。
 
 此时，不可使用类似以下 SQL 进行插入：
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO `bookshop`.`users` (`id`, `balance`, `nickname`) VALUES (1, 0.00, 'nicky');

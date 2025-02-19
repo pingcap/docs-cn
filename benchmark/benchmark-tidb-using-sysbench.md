@@ -1,6 +1,7 @@
 ---
 title: 如何用 Sysbench 测试 TiDB
 aliases: ['/docs-cn/dev/benchmark/benchmark-tidb-using-sysbench/','/docs-cn/dev/benchmark/how-to-run-sysbench/']
+summary: 使用 Sysbench 1.0 或更新版本测试 TiDB 性能。调整 TiDB 和 TiKV 的日志级别以提高性能。配置 RocksDB 的 block cache 以充分利用内存。调整 Sysbench 配置文件并导入数据。进行数据预热和统计信息收集。执行 Point select、Update index 和 Read-only 测试命令。解决可能出现的性能问题。
 ---
 
 # 如何用 Sysbench 测试 TiDB
@@ -19,7 +20,11 @@ server_configs:
     log.level: "error"
 ```
 
-同时，推荐启用 [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入)，并保证 `--db-ps-mode` 没有设置为 `disabled`，这样 Sysbench 就可以使用预处理语句。关于 SQL 执行计划缓存的功能及监控，请参考[执行计划缓存](/sql-prepared-plan-cache.md)。
+同时，推荐启用 [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入)，并保证 `--db-ps-mode` 设置为 `auto`，这样 Sysbench 就可以使用预处理语句。关于 SQL 执行计划缓存的功能及监控，请参考[执行计划缓存](/sql-prepared-plan-cache.md)。
+
+> **注意：**
+>
+> 不同版本 Sysbench 的 `db-ps-mode` 参数默认值可能会不同，建议在命令中显式指定。
 
 ### TiKV 配置
 
@@ -135,7 +140,7 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 数据预热可将磁盘中的数据载入内存的 block cache 中，预热后的数据对系统整体的性能有较大的改善，建议在每次重启集群后进行一次数据预热。
 
 ```bash
-sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 warmup
+sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 prewarm
 ```
 
 ### Point select 测试命令
@@ -143,7 +148,7 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 {{< copyable "shell-regular" >}}
 
 ```bash
-sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 run
+sysbench --config-file=config oltp_point_select --tables=32 --table-size=10000000 --db-ps-mode=auto --rand-type=uniform run
 ```
 
 ### Update index 测试命令
@@ -151,7 +156,7 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 {{< copyable "shell-regular" >}}
 
 ```bash
-sysbench --config-file=config oltp_update_index --tables=32 --table-size=10000000 run
+sysbench --config-file=config oltp_update_index --tables=32 --table-size=10000000 --db-ps-mode=auto --rand-type=uniform run
 ```
 
 ### Read-only 测试命令
@@ -159,7 +164,7 @@ sysbench --config-file=config oltp_update_index --tables=32 --table-size=1000000
 {{< copyable "shell-regular" >}}
 
 ```bash
-sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 run
+sysbench --config-file=config oltp_read_only --tables=32 --table-size=10000000 --db-ps-mode=auto --rand-type=uniform run
 ```
 
 ## 常见问题

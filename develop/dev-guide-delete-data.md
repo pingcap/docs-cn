@@ -12,15 +12,13 @@ aliases: ['/zh/tidb/dev/delete-data']
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)，并[创建数据库](/develop/dev-guide-create-database.md)、[创建表](/develop/dev-guide-create-table.md)、[创建二级索引](/develop/dev-guide-create-secondary-indexes.md)。
 - 需先[插入数据](/develop/dev-guide-insert-data.md)才可删除。
 
 ## SQL 语法
 
 在 SQL 中，`DELETE` 语句一般为以下形式：
-
-{{< copyable "sql" >}}
 
 ```sql
 DELETE FROM {table} WHERE {filter}
@@ -40,14 +38,12 @@ DELETE FROM {table} WHERE {filter}
 - 始终在删除语句中指定 `WHERE` 子句。如果 `DELETE` 没有 `WHERE` 子句，TiDB 将删除这个表内的**_所有行_**。
 - 需要删除大量行(数万或更多)的时候，使用[批量删除](#批量删除)，这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit)（默认为 100MB）。
 - 如果你需要删除表内的所有数据，请勿使用 `DELETE` 语句，而应该使用 [TRUNCATE](/sql-statements/sql-statement-truncate.md) 语句。
-- 查看 [性能注意事项](#性能注意事项)。
+- 查看[性能注意事项](#性能注意事项)。
 - 在需要大批量删除数据的场景下，[非事务批量删除](#非事务批量删除)对性能的提升十分明显。但与之相对的，这将丢失删除的事务性，因此**无法**进行回滚，请务必正确进行操作选择。
 
 ## 例子
 
 假设在开发中发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/dev-guide-bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。此时，可使用 `SELECT` 语句查看需删除的数据条数：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT COUNT(*) FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` <= "2022-04-15 00:15:00";
@@ -182,7 +178,7 @@ GC 的具体实现方案和细节此处不再展开，请参考 [GC 机制简介
 
 ### 更新统计信息
 
-TiDB 使用[统计信息](/statistics.md)来决定索引的选择，因此，在大批量的数据删除之后，很有可能会导致索引选择不准确的情况发生。你可以使用[手动收集](/statistics.md#手动收集)的办法，更新统计信息。用以给 TiDB 优化器以更准确的统计信息来提供 SQL 性能优化。
+TiDB 使用[常规统计信息](/statistics.md)来决定索引的选择，因此，在大批量的数据删除之后，很有可能会导致索引选择不准确的情况发生。你可以使用[手动收集](/statistics.md#手动收集)的办法，更新统计信息。用以给 TiDB 优化器以更准确的统计信息来提供 SQL 性能优化。
 
 ## 批量删除
 
@@ -204,8 +200,6 @@ TiDB 使用[统计信息](/statistics.md)来决定索引的选择，因此，在
 <div label="Java" value="java">
 
 在 Java 中，批量删除程序类似于以下内容：
-
-{{< copyable "" >}}
 
 ```java
 package com.pingcap.bulkDelete;
@@ -273,8 +267,6 @@ public class BatchDeleteExample
 <div label="Golang" value="golang">
 
 在 Golang 中，批量删除程序类似于以下内容：
-
-{{< copyable "" >}}
 
 ```go
 package main
@@ -378,8 +370,6 @@ with connection:
 ### 非事务批量删除 SQL 语法
 
 非事务批量删除的 SQL 语法如下：
-
-{{< copyable "sql" >}}
 
 ```sql
 BATCH ON {shard_column} LIMIT {batch_size} {delete_statement};

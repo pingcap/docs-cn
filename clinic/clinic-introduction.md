@@ -9,7 +9,7 @@ PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）是 PingCAP 为 T
 
 PingCAP Clinic 服务提供以下两个组件进行集群诊断：
 
-- Diag 诊断客户端：部署在集群侧的工具，用于采集集群的诊断数据 (collect)、上传诊断数据到 Clinic Server、对集群进行本地快速健康检查 (check)。如需了解 Diag 工具可采集的详细的数据列表，请参阅 [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。
+- [Diag 诊断客户端](https://github.com/pingcap/diag)：部署在集群侧的开源工具，用于采集集群的诊断数据 (collect)、上传诊断数据到 Clinic Server、对集群进行本地快速健康检查 (check)。如需了解 Diag 工具可采集的详细的数据列表，请参阅 [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。
 
     > **注意：**
     >
@@ -23,7 +23,7 @@ PingCAP Clinic 服务提供以下两个组件进行集群诊断：
 
 - 远程定位集群问题
 
-    当集群出现无法快速修复的问题时，可以求助社区论坛或者联系 PingCAP 技术支持。当申请远程协助时，你需要先保存问题现场的各种诊断数据，然后将其转发给相关技术人员。此时，你可以使用 Diag 诊断客户端，对诊断数据进行一键采集，快速收集完整的诊断数据，替代复杂的手动数据采集操作。随后，你可以将其诊断数据上传到 Clinic Server，供 PingCAP 技术人员查看。Clinic Server 为诊断数据提供了安全的存储，并支持在线诊断，提升了技术人员进行问题定位的效率。
+    当集群出现无法快速修复的问题时，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。当申请远程协助时，你需要先保存问题现场的各种诊断数据，然后将其转发给相关技术人员。此时，你可以使用 Diag 诊断客户端，对诊断数据进行一键采集，快速收集完整的诊断数据，替代复杂的手动数据采集操作。随后，你可以将其诊断数据上传到 Clinic Server，供 PingCAP 技术人员查看。Clinic Server 为诊断数据提供了安全的存储，并支持在线诊断，提升了技术人员进行问题定位的效率。
 
 - 快速检查集群状态
 
@@ -56,8 +56,8 @@ PingCAP Clinic 服务提供以下两个组件进行集群诊断：
 
 > **注意：**
 >
-> - Clinic Server 诊断服务在 2022 年 7 月 15 日至 2023 年 7 月 14 日期间提供免费服务。后续如需收取相关费用，PingCAP Clinic 运营团队将在 2023 年 7 月 14 日前通过邮件通知用户。
-> - 如果需要调整使用限制，可以联系 PingCAP 技术支持。
+> - Clinic Server 诊断服务在 2022 年 7 月 15 日至 2025 年 4 月 15 日期间提供免费服务。后续如需收取相关费用，PingCAP Clinic 运营团队将在 2025 年 4 月 15 日前通过邮件通知用户。
+> - 如果需要调整使用限制，可以[联系 PingCAP 技术支持](/support.md)。
 
 | 诊断服务类型| 使用限制 |
 | :------ | :------ |

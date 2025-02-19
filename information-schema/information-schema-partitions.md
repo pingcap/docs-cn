@@ -1,18 +1,18 @@
 ---
 title: PARTITIONS
-summary: 了解 information_schema 表 `PARTITIONS`。
+summary: 了解 INFORMATION_SCHEMA 表 `PARTITIONS`。
 ---
 
 # PARTITIONS
 
-`PARTITIONS` 表提供有关分区表的信息。
-
-{{< copyable "sql" >}}
+`PARTITIONS` 表提供有关[分区表](/partitioned-table.md)的信息。
 
 ```sql
-USE information_schema;
-DESC partitions;
+USE INFORMATION_SCHEMA;
+DESC PARTITIONS;
 ```
+
+输出结果如下：
 
 ```sql
 +-------------------------------+--------------+------+------+---------+-------+
@@ -27,9 +27,9 @@ DESC partitions;
 | SUBPARTITION_ORDINAL_POSITION | bigint(21)   | YES  |      | NULL    |       |
 | PARTITION_METHOD              | varchar(18)  | YES  |      | NULL    |       |
 | SUBPARTITION_METHOD           | varchar(12)  | YES  |      | NULL    |       |
-| PARTITION_EXPRESSION          | longblob     | YES  |      | NULL    |       |
-| SUBPARTITION_EXPRESSION       | longblob     | YES  |      | NULL    |       |
-| PARTITION_DESCRIPTION         | longblob     | YES  |      | NULL    |       |
+| PARTITION_EXPRESSION          | longtext     | YES  |      | NULL    |       |
+| SUBPARTITION_EXPRESSION       | longtext     | YES  |      | NULL    |       |
+| PARTITION_DESCRIPTION         | longtext     | YES  |      | NULL    |       |
 | TABLE_ROWS                    | bigint(21)   | YES  |      | NULL    |       |
 | AVG_ROW_LENGTH                | bigint(21)   | YES  |      | NULL    |       |
 | DATA_LENGTH                   | bigint(21)   | YES  |      | NULL    |       |
@@ -43,16 +43,18 @@ DESC partitions;
 | PARTITION_COMMENT             | varchar(80)  | YES  |      | NULL    |       |
 | NODEGROUP                     | varchar(12)  | YES  |      | NULL    |       |
 | TABLESPACE_NAME               | varchar(64)  | YES  |      | NULL    |       |
+| TIDB_PARTITION_ID             | bigint(21)   | YES  |      | NULL    |       |
+| TIDB_PLACEMENT_POLICY_NAME    | varchar(64)  | YES  |      | NULL    |       |
 +-------------------------------+--------------+------+------+---------+-------+
-25 rows in set (0.00 sec)
+27 rows in set (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE test.t1 (id INT NOT NULL PRIMARY KEY) PARTITION BY HASH (id) PARTITIONS 2;
-SELECT * FROM partitions WHERE table_schema='test' AND table_name='t1'\G
+SELECT * FROM PARTITIONS WHERE table_schema='test' AND table_name='t1'\G
 ```
+
+输出结果如下：
 
 ```sql
 *************************** 1. row ***************************
@@ -67,20 +69,22 @@ SUBPARTITION_ORDINAL_POSITION: NULL
           SUBPARTITION_METHOD: NULL
          PARTITION_EXPRESSION: `id`
       SUBPARTITION_EXPRESSION: NULL
-        PARTITION_DESCRIPTION: 
+        PARTITION_DESCRIPTION:
                    TABLE_ROWS: 0
                AVG_ROW_LENGTH: 0
                   DATA_LENGTH: 0
               MAX_DATA_LENGTH: 0
                  INDEX_LENGTH: 0
                     DATA_FREE: 0
-                  CREATE_TIME: 2020-07-06 16:35:28
+                  CREATE_TIME: 2022-12-14 06:09:33
                   UPDATE_TIME: NULL
                    CHECK_TIME: NULL
                      CHECKSUM: NULL
-            PARTITION_COMMENT: 
+            PARTITION_COMMENT:
                     NODEGROUP: NULL
               TABLESPACE_NAME: NULL
+            TIDB_PARTITION_ID: 89
+   TIDB_PLACEMENT_POLICY_NAME: NULL
 *************************** 2. row ***************************
                 TABLE_CATALOG: def
                  TABLE_SCHEMA: test
@@ -93,19 +97,25 @@ SUBPARTITION_ORDINAL_POSITION: NULL
           SUBPARTITION_METHOD: NULL
          PARTITION_EXPRESSION: `id`
       SUBPARTITION_EXPRESSION: NULL
-        PARTITION_DESCRIPTION: 
+        PARTITION_DESCRIPTION:
                    TABLE_ROWS: 0
                AVG_ROW_LENGTH: 0
                   DATA_LENGTH: 0
               MAX_DATA_LENGTH: 0
                  INDEX_LENGTH: 0
                     DATA_FREE: 0
-                  CREATE_TIME: 2020-07-06 16:35:28
+                  CREATE_TIME: 2022-12-14 06:09:33
                   UPDATE_TIME: NULL
                    CHECK_TIME: NULL
                      CHECKSUM: NULL
-            PARTITION_COMMENT: 
+            PARTITION_COMMENT:
                     NODEGROUP: NULL
               TABLESPACE_NAME: NULL
+            TIDB_PARTITION_ID: 90
+   TIDB_PLACEMENT_POLICY_NAME: NULL
 2 rows in set (0.00 sec)
 ```
+
+## 另请参阅
+
+- [用 EXPLAIN 查看分区查询的执行计划](/explain-partitions.md)

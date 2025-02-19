@@ -38,27 +38,36 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 ### 第 1 步：指定无法恢复的节点
 
-使用 PD Control 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show) 命令，指定已确定无法恢复的 TiKV 节点，并触发自动恢复。
-
-{{< copyable "shell-regular" >}}
+使用 PD Control 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show) 命令，指定**所有**已确定无法恢复的 TiKV 和 TiFlash 节点，并用逗号隔开，以触发自动恢复。
 
 ```bash
 pd-ctl -u <pd_addr> unsafe remove-failed-stores <store_id1,store_id2,...>
 ```
 
-命令输出 `Success` 表示向 PD 注册任务成功。但仅表示请求已被接受，并不代表恢复成功。恢复任务在后台进行，具体进度使用 [`show`](#第-2-步查看进度等待结束) 查看。命令输出 `Failed` 表示注册任务失败，可能的错误有：
+> **注意：**
+>
+> - 请确保在该命令中一次性指定**所有**已确定无法恢复的 TiKV 节点和 TiFlash 节点，如果有部分无法恢复的节点被遗漏，恢复可能会被阻塞。
+> - 如果在短时间内 (如一天时间内)，已经运行过一次 Online Unsafe Recovery，请仍确保该命令后续的执行仍然带有之前已经处理过的 TiKV 和 TiFlash 节点。
+
+可通过 `--timeout <seconds>` 指定可允许执行恢复的最长时间。若未指定，默认为 5 分钟。当超时后，恢复中断报错。
+
+该命令输出 `Success` 表示向 PD 注册任务成功。但仅表示请求已被接受，并不代表恢复成功。恢复任务在后台进行，具体进度使用 [`show`](#第-2-步查看进度等待结束) 查看。
+
+该命令输出 `Failed` 表示注册任务失败，可能的错误有：
 
 - `unsafe recovery is running`：已经有正在进行的恢复任务
 - `invalid input store x doesn't exist`：指定的 store ID 不存在
 - `invalid input store x is up and connected`：指定的 store ID 仍然是健康的状态，不应该进行恢复
 
-可通过 `--timeout <seconds>` 指定可允许执行恢复的最长时间。若未指定，默认为 5 分钟。当超时后，恢复中断报错。
+若 PD 进行过灾难性恢复 [`pd-recover`](/pd-recover.md) 等类似操作，丢失了无法恢复的 TiKV 节点的 store 信息，因此无法确定要传入的 store ID 时，可使用 `--auto-detect` 模式。在该模式下，PD 会自动清理那些没有注册过的 TiKV 节点（或曾经注册过但已经被强制删除的 TiKV 节点）上的副本。
 
-若 PD 进行过灾难性恢复 [`pd-recover`](/pd-recover.md) 操作，丢失了无法恢复的 TiKV 节点的 store 信息，因此无法确定要传的 store ID 时，可指定 `--auto-detect` 参数允许传入一个空的 store ID 列表。在该模式下，所有未在 PD store 列表中的 store ID 均被认为无法恢复，进行移除。
+```bash
+pd-ctl -u <pd_addr> unsafe remove-failed-stores --auto-detect
+```
 
 > **注意：**
 >
-> - 由于此命令需要收集来自所有 Peer 的信息，可能会造成 PD 短时间内有明显的内存使用量上涨（10 万个 Peer 预计使用约 500 MiB 内存）。
+> - Unsafe Recovery 需要收集来自所有 Peer 的信息，可能会造成 PD 短时间内有明显的内存使用量上涨（10 万个 Peer 预计使用约 500 MiB 内存）。
 > - 若执行过程中 PD 发生重启，则恢复中断，需重新触发命令。
 > - 一旦执行，所指定的节点将被设为 Tombstone 状态，不再允许启动。
 > - 执行过程中，所有调度以及 split/merge 都会被暂停，待恢复成功或失败后自动恢复。
@@ -145,6 +154,12 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输�
 }
 ```
 
+得到受影响的 table id 后，可以使用 `INFORMATION_SCHEMA.TABLES` 来查看受影响的表名。
+
+```sql
+SELECT TABLE_SCHEMA, TABLE_NAME, TIDB_TABLE_ID FROM INFORMATION_SCHEMA.TABLES WHERE TIDB_TABLE_ID IN (64, 27);
+```
+
 > **注意：**
 >
 > - 恢复操作把一些 failed Voter 变成了 failed Learner，之后还需要 PD 调度经过一些时间将这些 failed Learner 移除。
@@ -161,11 +176,35 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输�
 
 ### 第 3 步：检查数据索引一致性（RawKV 不需要）
 
-执行完成后，可能会导致数据索引不一致。请使用 SQL 的 [`ADMIN CHECK`](/sql-statements/sql-statement-admin-check-table-index.md)、`ADMIN RECOVER`、`ADMIN CLEANUP` 命令对受影响的表（从 `"Unsafe recovery finished"` 输出的 `"Affected table ids"` 可知）进行数据索引的一致性检查及恢复。
-
 > **注意：**
 >
 > 数据可以读写并不代表没有数据丢失。
+
+执行完成后，数据和索引可能会不一致。请使用 [`ADMIN CHECK`](/sql-statements/sql-statement-admin-check-table-index.md) 对受影响的表进行数据索引的一致性检查。
+
+```sql
+ADMIN CHECK TABLE table_name;
+```
+
+若结果有不一致的索引，可以通过重命名旧索引、创建新索引，然后再删除旧索引的步骤来修复数据索引不一致的问题。
+
+1. 重命名旧索引：
+
+    ```sql
+    ALTER TABLE table_name RENAME INDEX index_name TO index_name_lame_duck;
+    ```
+
+2. 创建新索引：
+
+    ```sql
+    ALTER TABLE table_name ADD INDEX index_name (column_name);
+    ```
+
+3. 删除旧索引：
+
+    ```sql
+    ALTER TABLE table_name DROP INDEX index_name_lame_duck;
+    ```
 
 ### 第 4 步：移除无法恢复的节点（可选）
 
@@ -173,7 +212,7 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输�
 <div label="通过 TiUP 部署的节点">
 
 1. 缩容无法恢复的节点：
-   
+
     {{< copyable "shell-regular" >}}
 
     ```bash

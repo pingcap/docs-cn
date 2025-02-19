@@ -1,5 +1,6 @@
 ---
 title: tiup cluster reload
+summary: tiup cluster reload 命令用于在修改集群配置后重新加载配置，使其生效。命令会将配置发布到远端机器，并按顺序重启服务，重启过程中集群可用。可选参数包括 --force（忽略错误强制 reload）、--transfer-timeout（设置最长等待时间）、--ignore-config-check（跳过配置检查）、-N, --node（指定要重启的节点）、-R, --role（指定要重启的角色）、--skip-restart（仅刷新配置不重启节点）、-h, --help（输出帮助信息）。执行日志会输出到 tiup-cluster。
 ---
 
 # tiup cluster reload
@@ -22,7 +23,7 @@ tiup cluster reload <cluster-name> [flags]
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-### --transfer-timeout（uint，默认 300）
+### --transfer-timeout（uint，默认 600）
 
 在重启 PD 或 TiKV 时，会先将被重启节点的 leader 迁移到其他节点，迁移过程会需要一定时间，可以通过设置 `--transfer-timeout` 设置最长等待时间（单位为秒），超时之后会跳过等待直接重启服务。
 
@@ -71,8 +72,30 @@ tiup cluster reload <cluster-name> [flags]
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
+#### --pre-restart-script
+
+> **警告：**
+>
+> 该选项目前为实验特性，不建议在生产环境中使用。
+
+- 在重新加载配置前运行该脚本。
+- 数据类型：`STRINGS`
+- 该选项指定节点在重新加载配置前要运行的脚本的路径。当 `--skip-restart` 为 `true`，该选项不生效。
+
+### --post-restart-script
+
+> **警告：**
+>
+> 该选项目前为实验特性，不建议在生产环境中使用。
+
+- 在重新加载配置后运行该脚本。
+- 数据类型：`STRINGS`
+- 该选项指定节点在重新加载配置后要运行的脚本的路径。当 `--skip-restart` 为 `true`，该选项不生效。
+
 ## 输出
 
 tiup-cluster 的执行日志。
 
-[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)
+## 另请参阅
+
+- [TiUP 常见运维操作](/maintain-tidb-using-tiup.md)

@@ -1,5 +1,6 @@
 ---
 title: tiup cluster check
+summary: TiUP Cluster 提供了 `check` 子命令，用于检查集群的硬件和软件环境是否满足正常运行条件。检查包括操作系统版本、CPU 支持、系统时间、内核参数、磁盘挂载参数等。用户可以通过指定选项来启用 CPU 核心数、内存大小和磁盘性能测试的检查。检查结果将以表格形式输出，包括目标节点、检查项、检查结果和结果描述。
 ---
 
 # tiup cluster check
@@ -10,7 +11,7 @@ title: tiup cluster check
 
 ### 操作系统版本
 
-检查部署机操作系统发行版和版本：目前仅支持部署在 CentOS 7 的操作系统上，之后随兼容性改进可能支持更多系统版本。
+检查部署机操作系统发行版和版本。关于 TiDB 支持的操作系统版本列表，请参考[操作系统及平台要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
 
 ### CPU EPOLLEXCLUSIVE
 
@@ -18,7 +19,7 @@ title: tiup cluster check
 
 ### numactl
 
-检查部署机是否安装 numactl，若用户配置绑核，则必须安装 numactl。
+检查部署机是否安装 `numactl`，若用户配置绑核，则必须安装 `numactl`。
 
 ### 系统时间
 
@@ -51,6 +52,16 @@ title: tiup cluster check
 
 检查部署机是否启用透明大页：建议禁用透明大页。
 
+要检查 THP 是否启用，可以运行以下命令：
+
+```bash
+cat /sys/kernel/mm/transparent_hugepage/enabled
+```
+
+如果结果不是 `never`，你可以使用 `grubby --update-kernel=ALL --args="transparent_hugepage=never"` 修改。
+
+要更改当前运行的配置，你可以选择重启系统，或者运行 `echo never > /sys/kernel/mm/transparent_hugepage/enabled`。
+
 ### 系统限制
 
 检查 /etc/security/limits.conf 中各项 limit 值：
@@ -65,7 +76,7 @@ title: tiup cluster check
 
 ### SELinux
 
-检查 SELinux 是否启用：建议用户禁用 SELinux。
+检查 SELinux 是否启用。请务必禁用 SELinux。
 
 ### 防火墙
 
@@ -121,7 +132,9 @@ title: tiup cluster check
 tiup cluster check <topology.yml | cluster-name> [flags]
 ```
 
-若集群尚未部署，需要传递将用于部署集群的 [topology.yml](/tiup/tiup-cluster-topology-reference.md) 文件，tiup-cluster 会根据该文件的内容连接到对应机器去检查。若集群已经部署，则可以使用集群的名字 `<cluster-name>` 作为检查对象。
+- 若集群尚未部署，需要传递将用于部署集群的 [topology.yml](/tiup/tiup-cluster-topology-reference.md) 文件，tiup-cluster 会根据该文件的内容连接到对应机器去检查。
+- 若集群已经部署，则可以使用集群的名字 `<cluster-name>` 作为检查对象。
+- 如果需要检查已部署集群的扩容拓扑文件，可以将 `<scale-out.yml>` 和 `<cluster-name>` 作为检查对象。
 
 > **注意：**
 >
@@ -143,17 +156,34 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
+> **注意：**
+>
+> `tiup cluster check` 也支持修复已部署集群的扩容拓扑文件，命令格式：
+>
+>```shell
+> tiup cluster check <cluster-name> scale-out.yml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+>```
+
 ### --cluster
 
-tiup-cluster 支持对未部署的集群进行检查，也支持对已部署的集群进行检查，命令格式：
+- 对已部署的集群进行检查。
+- 数据类型：`BOOLEAN`
+- 默认值：`false`
+- 在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
+- 命令格式：
 
-```shell
-tiup cluster check <topology.yml | cluster-name> [flags]
-```
+    ```shell
+    tiup cluster check <topology.yml | cluster-name> --cluster [flags]
+    ```
 
-若选择的格式为 `tiup cluster check <cluster-name>` 则必须加上该选项：`tiup cluster check <cluster-name> --cluster`。
-
-该选项的数据类型为 `BOOLEAN`。该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
+> **注意：**
+>
+> - 若选择的格式为 `tiup cluster check <cluster-name>`，则必须加上该选项：`tiup cluster check <cluster-name> --cluster`。
+> - `tiup cluster check` 也支持检查已部署集群的扩容拓扑文件，命令格式：
+>
+>    ```shell
+>     tiup cluster check <cluster-name> scale-out.yml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+>    ```
 
 ### -N, --node
 
@@ -231,5 +261,3 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 - Check：检查项
 - Result：检查结果（Pass/Warn/Fail）
 - Message：结果描述
-
-[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

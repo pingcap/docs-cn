@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-user/','/docs-cn/dev/
 
 ```ebnf+diagram
 AlterUserStmt ::=
-    'ALTER' 'USER' IfExists (UserSpecList RequireClauseOpt ConnectionOptions PasswordOption LockOption AttributeOption | 'USER' '(' ')' 'IDENTIFIED' 'BY' AuthString)
+    'ALTER' 'USER' IfExists (UserSpecList RequireClauseOpt ConnectionOptions PasswordOption LockOption AttributeOption | 'USER' '(' ')' 'IDENTIFIED' 'BY' AuthString) ResourceGroupNameOption
 
 UserSpecList ::=
     UserSpec ( ',' UserSpec )*
@@ -20,17 +20,29 @@ UserSpecList ::=
 UserSpec ::=
     Username AuthOption
 
+RequireClauseOpt ::=
+    ( 'REQUIRE' 'NONE' | 'REQUIRE' 'SSL' | 'REQUIRE' 'X509' | 'REQUIRE' RequireList )?
+
+RequireList ::=
+    ( "ISSUER" stringLit | "SUBJECT" stringLit | "CIPHER" stringLit | "SAN" stringLit | "TOKEN_ISSUER" stringLit )*
+
 Username ::=
     StringName ('@' StringName | singleAtIdentifier)? | 'CURRENT_USER' OptionalBraces
 
 AuthOption ::=
     ( 'IDENTIFIED' ( 'BY' ( AuthString | 'PASSWORD' HashString ) | 'WITH' StringName ( 'BY' AuthString | 'AS' HashString )? ) )?
 
-PasswordOption ::= ( 'PASSWORD' 'EXPIRE' ( 'DEFAULT' | 'NEVER' | 'INTERVAL' 'N' 'DAY' )? | 'PASSWORD' 'HISTORY' ( 'DEFAULT' | 'N' ) ｜ 'PASSWORD' 'REUSE' 'INTERVAL' ( 'DEFAULT' | 'N' 'DAY' ) | 'FAILED_LOGIN_ATTEMPTS' 'N' | 'PASSWORD_LOCK_TIME' ( 'N' | 'UNBOUNDED' ) )?
+PasswordOption ::= ( 'PASSWORD' 'EXPIRE' ( 'DEFAULT' | 'NEVER' | 'INTERVAL' N 'DAY' )? | 'PASSWORD' 'HISTORY' ( 'DEFAULT' | N ) | 'PASSWORD' 'REUSE' 'INTERVAL' ( 'DEFAULT' | N 'DAY' ) | 'FAILED_LOGIN_ATTEMPTS' N | 'PASSWORD_LOCK_TIME' ( N | 'UNBOUNDED' ) )*
 
 LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
 
 AttributeOption ::= ( 'COMMENT' CommentString | 'ATTRIBUTE' AttributeString )?
+
+ResourceGroupNameOption::= ( 'RESOURCE' 'GROUP' Identifier)?
+
+RequireClauseOpt ::= ('REQUIRE' ('NONE' | 'SSL' | 'X509' | RequireListElement ('AND'? RequireListElement)*))?
+
+RequireListElement ::= 'ISSUER' Issuer | 'SUBJECT' Subject | 'CIPHER' Cipher | 'SAN' SAN | 'TOKEN_ISSUER' TokenIssuer
 ```
 
 ## 示例
@@ -60,7 +72,9 @@ SHOW CREATE USER 'newuser';
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+### 修改用户基本信息
+
+修改用户 `newuser` 的密码：
 
 ```sql
 ALTER USER 'newuser' IDENTIFIED BY 'newnewpassword';
@@ -85,7 +99,7 @@ SHOW CREATE USER 'newuser';
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+锁定用户 `newuser`：
 
 ```sql
 ALTER USER 'newuser' ACCOUNT LOCK;
@@ -163,9 +177,53 @@ ALTER USER 'newuser' PASSWORD REUSE INTERVAL 90 DAY;
 Query OK, 0 rows affected (0.02 sec)
 ```
 
+### 修改用户绑定的资源组
+
+通过 `ALTER USER ... RESOURCE GROUP` 修改用户 `newuser` 的资源组到 `rg1`：
+
+```sql
+ALTER USER 'newuser' RESOURCE GROUP rg1;
+```
+
+```
+Query OK, 0 rows affected (0.02 sec)
+```
+
+查看当前用户绑定的资源组：
+
+```sql
+SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") FROM mysql.user WHERE user = "newuser";
+```
+
+```
++---------+---------------------------------------------------+
+| USER    | JSON_EXTRACT(User_attributes, "$.resource_group") |
++---------+---------------------------------------------------+
+| newuser | "rg1"                                             |
++---------+---------------------------------------------------+
+1 row in set (0.02 sec)
+```
+
+取消用户绑定的资源组，即将用户绑定到 `default` 资源组。
+
+```sql
+ALTER USER 'newuser' RESOURCE GROUP `default`;
+SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") FROM mysql.user WHERE user = "newuser";
+```
+
+```
++---------+---------------------------------------------------+
+| USER    | JSON_EXTRACT(User_attributes, "$.resource_group") |
++---------+---------------------------------------------------+
+| newuser | "default"                                         |
++---------+---------------------------------------------------+
+1 row in set (0.02 sec)
+```
+
 ## 另请参阅
 
-* [Security Compatibility with MySQL](/security-compatibility-with-mysql.md)
+* [TiDB 用户账户管理](/user-account-management.md)
+* [TiDB 与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
 * [CREATE USER](/sql-statements/sql-statement-create-user.md)
 * [DROP USER](/sql-statements/sql-statement-drop-user.md)
 * [SHOW CREATE USER](/sql-statements/sql-statement-show-create-user.md)

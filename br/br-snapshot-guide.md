@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/br-usage-backup/','/zh/tidb/dev/br-usage-restore/','/zh/
 
 # TiDB 快照备份与恢复使用指南
 
-本文介绍如何使用 br 命令行工具进行 TiDB 快照备份和恢复。使用前，请先[安装 br 命令行工具](/br/br-use-overview.md#部署和使用-br) 。
+本文介绍如何使用 br 命令行工具进行 TiDB 快照备份和恢复。使用前，请先[安装 br 命令行工具](/br/br-use-overview.md#部署和使用-br)。
 
 快照备份是集群全量备份的一种实现。它基于 TiDB 的[多版本并发控制 (MVCC)](/tidb-storage.md#mvcc) 实现，将指定快照包含的所有数据备份到目标存储中。备份下来的数据大小约等于集群（压缩后的）单副本数据大小。备份完成之后，你可以在一个空集群或不存在数据冲突（相同 schema 或 table）的集群执行快照备份恢复，将集群恢复到快照备份时的数据状态，同时恢复功能会依据集群副本设置恢复出多副本。
 
@@ -17,19 +17,24 @@ aliases: ['/zh/tidb/dev/br-usage-backup/','/zh/tidb/dev/br-usage-restore/','/zh/
 
 ## 对集群进行快照备份
 
-使用 `br backup full` 可以进行一次快照备份。该命令的详细使用帮助可以通过执行 `br backup full --help` 查看。
+> **注意：**
+>
+> - 以下场景采用 Amazon S3 Access key 和 Secret key 授权方式来进行模拟。如果使用 IAM Role 授权，需要设置 `--send-credentials-to-tikv` 为 `false`。
+> - 如果使用不同存储或者其他授权方式，请参考[备份存储](/br/backup-and-restore-storages.md)来进行参数调整。
+
+使用 `tiup br backup full` 可以进行一次快照备份。该命令的详细使用帮助可以通过执行 `tiup br backup full --help` 查看。
 
 ```shell
 tiup br backup full --pd "${PD_IP}:2379" \
-    --backupts '2022-09-08 13:30:00' \
+    --backupts '2022-09-08 13:30:00 +08:00' \
     --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
 ```
 
 以上命令中：
 
-- `--backupts`：快照对应的物理时间点，格式可以是 [TSO](/glossary.md#tso) 或者时间戳，例如 `400036290571534337` 或者 `2018-05-11 01:42:23`。如果该快照的数据被垃圾回收 (GC) 了，那么 `br backup` 命令会报错并退出。如果你没有指定该参数，那么 br 会选取备份开始的时间点所对应的快照。
-- `--storage`：数据备份到的存储地址。快照备份支持以 Amazon S3、Google Cloud Storage、Azure Blob Storage 为备份存储，以上命令以 Amazon S3 为示例。详细存储地址格式请参考[备份存储 URL 配置](/br/backup-and-restore-storages.md#url-格式)。
+- `--backupts`：快照对应的物理时间点，格式可以是 [TSO](/tso.md) 或者时间戳，例如 `400036290571534337` 或者 `2018-05-11 01:42:23 +08:00`。如果该快照的数据被垃圾回收 (GC) 了，那么 `tiup br backup` 命令会报错并退出。使用日期方式备份时，建议同时指定时区，否则 br 默认使用本地时间构造时间戳，可能导致备份时间点错误。如果你没有指定该参数，那么 br 会选取备份开始的时间点所对应的快照。
+- `--storage`：数据备份到的存储地址。快照备份支持以 Amazon S3、Google Cloud Storage、Azure Blob Storage 为备份存储，以上命令以 Amazon S3 为示例。详细存储地址格式请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 - `--ratelimit`：**每个 TiKV** 备份数据的速度上限，单位为 MiB/s。
 
 在快照备份过程中，终端会显示备份进度条。在备份完成后，会输出备份耗时、速度、备份数据大小等信息。
@@ -57,7 +62,15 @@ tiup br validate decode --field="end-version" \
 
 ## 恢复快照备份数据
 
-如果你需要恢复备份的快照数据，则可以使用 `br restore full`。该命令的详细使用帮助可以通过执行 `br restore full --help` 查看。
+> **注意：**
+>
+> - 在 BR v7.5.0 及之前版本中，每个 TiKV 节点的快照恢复速度约为 100 MiB/s。
+> - 从 BR v7.6.0 开始，为了解决大规模 Region 场景下可能出现的恢复瓶颈问题，BR 支持通过粗粒度打散 Region 的算法加速恢复（实验特性）。可以通过指定命令行参数 `--granularity="coarse-grained"` 来启用此功能。
+> - 从 BR v8.0.0 开始，通过粗粒度打散 Region 算法进行快照恢复的功能正式 GA，并默认启用。通过采用粗粒度打散 Region 算法、批量创建库表、降低 SST 文件下载和 Ingest 操作之间的相互影响、加速表统计信息恢复等改进措施，快照恢复的速度有大幅提升。在实际案例中，快照恢复的 SST 文件下载速度最高提升约 10 倍，单个 TiKV 节点的数据恢复速度稳定在 1.2 GiB/s，端到端的恢复速度大约提升 1.5 到 3 倍，并且能够在 1 小时内完成对 100 TiB 数据的恢复。
+> - 从 BR v8.2.0 开始，命令行参数 `--granularity` 被废弃，粗粒度打散 Region 算法默认启用。
+> - 从 BR v8.3.0 开始，快照恢复增加了对 TiKV 和 TiFlash 可用磁盘空间的检查，包括在开始阶段会根据需要恢复的 SST 文件大小检查 TiKV 和 TiFlash 是否有足够的磁盘空间，以及在 TiKV（v8.3.0 或之后的版本）下载每个 SST 文件前会检查 TiKV 是否有足够的磁盘空间。如果任一阶段检测到可用空间不足，恢复任务会报错失败。你可以通过设置 `--check-requirements=false` 来选择跳过恢复任务开始阶段的检查，但 TiKV 在下载 SST 文件前的磁盘空间检查无法跳过。
+
+如果你需要恢复备份的快照数据，则可以使用 `tiup br restore full`。该命令的详细使用帮助可以通过执行 `tiup br restore full --help` 查看。
 
 将[上文备份的快照数据](#对集群进行快照备份)恢复到目标集群：
 
@@ -79,10 +92,11 @@ br 命令行工具支持只恢复备份数据中指定库、表的部分数据�
 
 **恢复单个数据库的数据**
 
-要将备份数据中的某个数据库恢复到集群中，可以使用 `br restore db` 命令。以下示例只恢复 `test` 库的数据：
+要将备份数据中的某个数据库恢复到集群中，可以使用 `tiup br restore db` 命令。以下示例只恢复 `test` 库的数据：
 
 ```shell
-tiup br restore db --pd "${PD_IP}:2379" \
+tiup br restore db \
+--pd "${PD_IP}:2379" \
 --db "test" \
 --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
@@ -91,7 +105,7 @@ tiup br restore db --pd "${PD_IP}:2379" \
 
 **恢复单张表的数据**
 
-要将备份数据中的某张数据表恢复到集群中，可以使用 `br restore table` 命令。以下示例只恢复 `test.usertable` 表的数据：
+要将备份数据中的某张数据表恢复到集群中，可以使用 `tiup br restore table` 命令。以下示例只恢复 `test.usertable` 表的数据：
 
 ```shell
 tiup br restore table --pd "${PD_IP}:2379" \
@@ -104,17 +118,20 @@ tiup br restore table --pd "${PD_IP}:2379" \
 
 **使用表库过滤功能恢复部分数据**
 
-要通过复杂的过滤条件恢复多个表，可以使用 `br restore full` 命令，并用 `--filter` 或 `-f` 指定[表库过滤](/table-filter.md)的条件。以下示例恢复符合 `db*.tbl*` 条件的表的数据：
+要通过复杂的过滤条件恢复多个表，可以使用 `tiup br restore full` 命令，并用 `--filter` 或 `-f` 指定[表库过滤](/table-filter.md)的条件。以下示例恢复符合 `db*.tbl*` 条件的表的数据：
 
 ```shell
-tiup br restore full --pd "${PD_IP}:2379" \
+tiup br restore full \
+--pd "${PD_IP}:2379" \
 --filter 'db*.tbl*' \
 --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
 ### 恢复 `mysql` 数据库下的表
 
-自 `br` v5.1.0 开始，快照备份会备份 **mysql schema 下的系统表数据**，而不会默认恢复这些数据。自 `br` v6.2.0 开始，在设置 `--with-sys-table` 下，恢复数据时将同时恢复**部分系统表相关数据**。
+- `br` v5.1.0 开始，快照备份时默认自动备份 **mysql schema 下的系统表数据**，但恢复数据时默认不恢复系统表数据。
+- `br` v6.2.0 开始，增加恢复参数 `--with-sys-table` 支持恢复数据的同时恢复**部分系统表相关数据**。
+- `br` v7.6.0 开始，恢复参数 `--with-sys-table` 默认开启，即默认支持恢复数据的同时恢复**部分系统表相关数据**。
 
 **可恢复的部分系统表**：
 
@@ -128,22 +145,42 @@ tiup br restore full --pd "${PD_IP}:2379" \
 | mysql.role_edges                 |
 | mysql.tables_priv                |
 | mysql.user                       |
+| mysql.bind_info                  |
 +----------------------------------+
 ```
 
 **不能恢复以下系统表**：
 
-- 统计信息表 (`mysql.stat_*`)
+- 统计信息表 (`mysql.stat_*`) (但可以恢复统计信息，详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))
 - 系统变量表 (`mysql.tidb`、`mysql.global_variables`)
-- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
+- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/snap_client/systable_restore.go#L31)
 
-当恢复系统权限相关数据的时候，请注意：
+```
++-----------------------------------------------------+
+| capture_plan_baselines_blacklist                    |
+| column_stats_usage                                  |
+| gc_delete_range                                     |
+| gc_delete_range_done                                |
+| global_variables                                    |
+| stats_buckets                                       |
+| stats_extended                                      |
+| stats_feedback                                      |
+| stats_fm_sketch                                     |
+| stats_histograms                                    |
+| stats_history                                       |
+| stats_meta                                          |
+| stats_meta_history                                  |
+| stats_table_locked                                  |
+| stats_top_n                                         |
+| tidb                                                |
++-----------------------------------------------------+
+```
 
-- BR 不会恢复 `user` 为 `cloud_admin` 并且 `host` 为 `'%'` 的用户数据，该用户是 TiDB Cloud 预留用户。请不要在你的环境中创建 `cloud_admin` 的用户或者角色，因为依赖 `cloud_admin` 的用户的权限将不能被完整恢复。
-- 在恢复数据前 BR 会检查目标集群的系统表是否跟备份数据中的系统表兼容。这里的兼容是指满足以下所有条件：
-    - 目标集群需要存在备份中的系统权限表。
-    - 目标集群系统权限表**列数**需要与备份数据中一致，列的顺序可以有差异。
-    - 目标集群系统权限表的列需要与备份数据兼容。如果为带长度类型（包括整型、字符串等类型），前者长度需大于或等于后者，如果为 `ENUM` 类型，则应该为后者超集。
+当恢复系统权限相关数据的时候，请注意：在恢复数据前 BR 会检查目标集群的系统表是否跟备份数据中的系统表兼容。这里的兼容是指满足以下所有条件：
+
+- 目标集群需要存在备份中的系统权限表。
+- 目标集群系统权限表**列数**需要与备份数据中一致，列的顺序可以有差异。
+- 目标集群系统权限表的列需要与备份数据兼容。如果为带长度类型（包括整型、字符串等类型），前者长度需大于或等于后者，如果为 `ENUM` 类型，则应该为后者超集。
 
 ## 性能与影响
 
@@ -160,7 +197,7 @@ TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，�
 
 你可以通过如下方案手动控制备份对集群性能带来的影响。但是，这两种方案在减少备份对集群的影响的同时，也会降低备份任务的速度。
 
-- 使用 `--ratelimit` 参数对备份任务进行限速。请注意，这个参数限制的是**把备份文件存储到外部存储**的速度。计算备份文件的大小时，请以备份日志中的 `backup data size(after compressed)` 为准。
+- 使用 `--ratelimit` 参数对备份任务进行限速。请注意，这个参数限制的是**把备份文件存储到外部存储**的速度。计算备份文件的大小时，请以备份日志中的 `backup data size(after compressed)` 为准。设置 `--ratelimit` 后，为了避免任务数过多导致限速失效，br 的 `concurrency` 参数会自动调整为 1。
 - 调节 TiKV 配置项 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1)，限制备份任务使用的工作线程数量。内部测试数据表明，当备份的线程数量不大于 `8`、集群总 CPU 利用率不超过 60% 时，备份任务对集群（无论读写负载）几乎没有影响。
 
 通过限制备份的线程数量可以降低备份对集群性能的影响，但是这会影响到备份的性能，以上的多次备份测试结果显示，单 TiKV 存储节点上备份速度和备份线程数量呈正比。在线程数量较少的时候，备份速度约为 20 MiB/线程数。例如，单 TiKV 节点 5 个备份线程可达到 100 MiB/s 的备份速度。
@@ -169,6 +206,13 @@ TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，�
 
 - TiDB 恢复的时候会尽可能打满 TiKV CPU、磁盘 IO、网络带宽等资源，所以推荐在空的集群上执行备份数据的恢复，避免对正在运行的业务产生影响。
 - 备份数据的恢复速度与集群配置、部署、运行的业务都有比较大的关系。在内部多场景仿真测试中，单 TiKV 存储节点上备份数据恢复速度能够达到 100 MiB/s。在不同用户场景下，快照恢复的性能和影响应以实际测试结论为准。
+- BR 提供了粗粒度的 Region 打散算法，用于提升大规模 Region 场景下的 Region 恢复速度。在这个方式下每个 TiKV 节点会得到均匀稳定的下载任务，从而充分利用每个 TiKV 节点的所有资源实现并行快速恢复。在实际案例中，大规模 Region 场景下，集群快照恢复速度最高提升约 3 倍。
+- 从 v8.0.0 起，`br` 命令行工具新增 `--tikv-max-restore-concurrency` 参数，用于控制每个 TiKV 节点的最大 download 和 ingest 文件数量。此外，通过调整此参数，可以控制作业队列的最大长度（作业队列的最大长度 = 32 \* TiKV 节点数量 \* `--tikv-max-restore-concurrency`），进而控制 BR 节点的内存消耗。
+
+    通常情况下，`--tikv-max-restore-concurrency` 会根据集群配置自动调整，无需手动设置。如果通过 Grafana 中的 **TiKV-Details** > **Backup & Import** > **Import RPC count** 监控指标发现 download 文件数量长时间接近于 0，而 ingest 文件数量一直处于上限时，说明 ingest 文件任务存在堆积，并且作业队列已达到最大长度。此时，可以采取以下措施来缓解任务堆积问题：
+
+    - 设置 `--ratelimit` 参数来限制下载速度，以确保 ingest 文件任务有足够的资源。例如，当任意 TiKV 节点的硬盘吞吐量为 `x MiB/s` 且下载备份文件的网络带宽大于 `x/2 MiB/s`，可以设置参数 `--ratelimit x/2`。如果任意 TiKV 节点的硬盘吞吐量为 `x MiB/s` 且下载备份文件的网络带宽小于或等于 `x/2 MiB/s`，可以不设置参数 `--ratelimit`。
+    - 调高 `--tikv-max-restore-concurrency` 来增加作业队列的最大长度。
 
 ## 探索更多
 

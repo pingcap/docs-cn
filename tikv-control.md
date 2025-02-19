@@ -1,6 +1,7 @@
 ---
 title: TiKV Control 使用说明
 aliases: ['/docs-cn/dev/tikv-control/','/docs-cn/dev/reference/tools/tikv-control/']
+summary: TiKV Control（tikv-ctl）是 TiKV 的命令行工具，用于管理 TiKV 集群。它的安装目录在 `~/.tiup/components/ctl/{VERSION}/` 目录下。通过 TiUP 使用 TiKV Control，可以调用 `tikv-ctl` 工具。通用参数包括远程模式和本地模式，以及两个简单的命令 `--to-hex` 和 `--to-escaped`。其他子命令包括查看 Raft 状态机的信息、查看 Region 的大小、扫描查看给定范围的 MVCC、查看给定 key 的 MVCC、扫描 raw key、打印某个 key 的值、打印 Region 的 properties 信息、手动 compact 单个 TiKV 的数据、手动 compact 整个 TiKV 集群的数据、设置一个 Region 副本为 tombstone 状态、向 TiKV 发出 consistency-check 请求、Dump snapshot 元文件、打印 Raft 状态机出错的 Region、动态修改 TiKV 的配置、强制 Region 从多副本失败状态恢复服务、恢复损坏的 MVCC 数据、Ldb 命令、打印加密元数据、打印损坏的 SST 文件信息、获取一个 Region 的 RegionReadProgress 状态。
 ---
 
 # TiKV Control 使用说明
@@ -18,7 +19,7 @@ TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管�
 `tikv-ctl` 也集成在了 `tiup` 命令中。执行以下命令，即可调用 `tikv-ctl` 工具：
 
 ```shell
-tiup ctl:<cluster-version> tikv
+tiup ctl:v<CLUSTER_VERSION> tikv
 ```
 
 ```
@@ -44,18 +45,18 @@ FLAGS:
     -V, --version                 Prints version information
 
 OPTIONS:
-        --ca-path <ca_path>              Set the CA certificate path
-        --cert-path <cert_path>          Set the certificate path
-        --config <config>                Set the config for rocksdb
-        --db <db>                        Set the rocksdb path
+        --ca-path <ca-path>              Set the CA certificate path
+        --cert-path <cert-path>          Set the certificate path
+        --config <config>                TiKV config path, by default it's <deploy-dir>/conf/tikv.toml
+        --data-dir <data-dir>            TiKV data directory path, check <deploy-dir>/scripts/run.sh to get it
         --decode <decode>                Decode a key in escaped format
         --encode <encode>                Encode a key in escaped format
         --to-hex <escaped-to-hex>        Convert an escaped key to hex key
         --to-escaped <hex-to-escaped>    Convert a hex key to escaped key
         --host <host>                    Set the remote host
-        --key-path <key_path>            Set the private key path
+        --key-path <key-path>            Set the private key path
+        --log-level <log-level>          Set the log level [default:warn]
         --pd <pd>                        Set the address of pd
-        --raftdb <raftdb>                Set the raft rocksdb path
 
 SUBCOMMANDS:
     bad-regions           Get all regions with corrupt raft
@@ -87,7 +88,7 @@ SUBCOMMANDS:
     unsafe-recover        Unsafely recover the cluster when the majority replicas are failed
 ```
 
-你可以在 `tiup ctl:<cluster-version> tikv` 后面再接上相应的参数与子命令。
+你可以在 `tiup ctl:v<CLUSTER_VERSION> tikv` 后面再接上相应的参数与子命令。
 
 ## 通用参数
 
@@ -113,7 +114,12 @@ tikv-ctl 提供以下两种运行模式：
     store:"127.0.0.1:20160" compact db:KV cf:default range:([], []) success!
     ```
 
-- **本地模式**。通过 `--data-dir` 选项来指定本地 TiKV 数据的目录路径。在此模式下，需要停止正在运行的 TiKV 实例。
+- **本地模式**：
+
+    - 通过 `--data-dir` 选项来指定本地 TiKV 数据的目录路径。
+    - 通过 `--config` 选项来指定本地 TiKV 配置文件到路径。
+
+  在此模式下，需要停止正在运行的 TiKV 实例。
 
 以下如无特殊说明，所有命令都同时支持这两种模式。
 
@@ -305,28 +311,36 @@ middle_key_by_approximate_size:
 
 ### 手动 compact 单个 TiKV 的数据
 
-`compact` 命令可以对单个 TiKV 进行手动 compact。如果指定 `--from` 和 `--to` 选项，那么它们的参数也是 escaped raw key 形式的。
+`compact` 命令可以对单个 TiKV 进行手动 compact。
 
-- `--host` 参数可以指定要 compact 的 TiKV。
-- `-d` 参数可以指定要 compact 的 RocksDB，有 `kv` 和 `raft` 参数值可以选。
-- `--data-dir` 参数指定本地 TiKV 数据的目录路径。
-- `--threads` 参数可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
-- `--bottommost` 参数可以指定 compact 是否包括最下层的文件。可选值为 `default`、`skip` 和 `force`，默认为 `default`。
+- `--from` 和 `--to` 选项以 escaped raw key 形式指定 compact 的范围。如果没有设置，表示 compact 整个 TiKV。
+- `--region` 选项指定 compact Region 的范围。如果设置，则 `--from` 和 `--to` 选项会被忽略。
+- `-c` 选项指定 column family 名称，默认值为 `default`，可选值为 `default`、`lock` 和 `write`。
+- `-d` 选项指定要 compact 的 RocksDB，默认值为 `kv`，可选值为 `kv` 和 `raft`。
+- `--threads` 选项可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
+- `--bottommost` 选项可以指定 compact 是否包括最下层的文件。可选值为 `default`、`skip` 和 `force`，默认为 `default`。
     - `default` 表示只有开启了 Compaction Filter 时 compact 才会包括最下层文件。
     - `skip` 表示 compact 不包括最下层文件。
     - `force` 表示 compact 总是包括最下层文件。
 
-```shell
-tikv-ctl --data-dir /path/to/tikv compact -d kv
-```
+- 在本地模式 compact data，执行如下命令：
 
-```
-success!
-```
+    ```shell
+    tikv-ctl --data-dir /path/to/tikv compact -d kv
+    ```
+
+- 在远程模式 compact data，执行如下命令：
+
+    ```shell
+    tikv-ctl --host ip:port compact -d kv
+    ```
 
 ### 手动 compact 整个 TiKV 集群的数据
 
-`compact-cluster` 命令可以对整个 TiKV 集群进行手动 compact。该命令参数的含义和使用与 `compact` 命令一样。
+`compact-cluster` 命令可以对整个 TiKV 集群进行手动 compact。该命令参数的含义和使用与 `compact` 命令一样，唯一的区别如下：
+
+- 使用 `compact-cluster` 命令时，通过 `--pd` 指定 PD 所在的地址，以便 `tikv-ctl` 可以找到集群中的所有 TiKV 节点作为 compact 目标。
+- 使用 `compact` 命令时，通过 `--data-dir` 或者 `--host` 指定单个 TiKV 作为 compact 目标。
 
 ### 设置一个 Region 副本为 tombstone 状态
 
@@ -487,7 +501,7 @@ success
 ### 强制 Region 从多副本失败状态恢复服务（弃用）
 
 > **警告：**
-> 
+>
 > 不推荐使用该功能，恢复需求可通过 `pd-ctl` 的 Online Unsafe Recovery 功能实现。它提供了一键式自动恢复的能力，无需停止服务等额外操作，具体使用方式请参考 [Online Unsafe Recovery 使用文档](/online-unsafe-recovery.md)。
 
 `unsafe-recover remove-fail-stores` 命令可以将故障机器从指定 Region 的 peer 列表中移除。运行命令之前，需要目标 TiKV 先停掉服务以便释放文件锁。
@@ -581,7 +595,7 @@ tikv-ctl --config=./conf.toml encryption-meta dump-file --path=/path/to/tikv/dat
 /path/to/tikv/data/db/CURRENT: key_id: 9291156302549018620 iv: E3C2FDBF63FC03BFC28F265D7E78283F method: Aes128Ctr
 ```
 
-使用 `encryption-meta dump-key` 打印数据加密密钥。使用本命令的时候，除了在 TiKV 配置文件中指定 TiKV 的数据目录以外，还需要指定当前的主加密密钥。请参阅[静态加密](https://docs.pingcap.com/tidb/v4.0/encryption-at-rest)文档关于配置 TiKV 主加密密钥的说明。使用本命令时 `security.encryption.previous-master-key` 配置项不生效，即使配置文件中使用了该配置，本命令也不会触发更换主加密密钥。
+使用 `encryption-meta dump-key` 打印数据加密密钥。使用本命令的时候，除了在 TiKV 配置文件中指定 TiKV 的数据目录以外，还需要指定当前的主加密密钥。请参阅[静态加密](/encryption-at-rest.md)文档关于配置 TiKV 主加密密钥的说明。使用本命令时 `security.encryption.previous-master-key` 配置项不生效，即使配置文件中使用了该配置，本命令也不会触发更换主加密密钥。
 
 ```
 # conf.toml
@@ -642,9 +656,9 @@ sst meta:
 it isn't easy to handle local data, start key:0101
 overlap region:
 RegionInfo { region: id: 4 end_key: 7480000000000000FF0500000000000000F8 region_epoch { conf_ver: 1 version: 2 } peers { id: 5 store_id: 1 }, leader: Some(id: 5 store_id: 1) }
-suggested operations:
-tikv-ctl ldb --db=data/tikv-21107/db unsafe_remove_sst_file "data/tikv-21107/db/000014.sst"
-tikv-ctl --db=data/tikv-21107/db tombstone -r 4 --pd <endpoint>
+refer operations:
+tikv-ctl ldb --db=/path/to/tikv/db unsafe_remove_sst_file 000014
+tikv-ctl --data-dir=/path/to/tikv tombstone -r 4 --pd <endpoint>
 --------------------------------------------------------
 corruption analysis has completed
 ```
@@ -654,3 +668,40 @@ corruption analysis has completed
 + 在 `sst meta` 输出部分，`14` 表示 SST 文件号，`552997` 表示文件大小，紧随其后的是最小和最大的序列号 (seq) 等其它元信息。
 + `overlap region` 部分为损坏 SST 文件所在 Region 的信息。该信息是从 PD 组件获取的。
 + `suggested operations` 部分为你清理损坏的 SST 文件提供建议操作。你可以参考这些建议的命令，清理文件，并重新启动该 TiKV 实例。
+
+### 获取一个 Region 的 `RegionReadProgress` 状态
+
+从 v6.5.4 和 v7.3.0 开始，TiKV 引入 `get-region-read-progress` 子命令，用于获取 resolver 和 `RegionReadProgress` 的最新状态。你需要指定一个 Region ID 和一个 TiKV，这可以从 Grafana（`Min Resolved TS Region` 和 `Min Safe TS Region`）或 `DataIsNotReady` 日志中获得。
+
+- `--log`（可选）：如果指定，TiKV 会在 `INFO` 日志级别下记录该 TiKV 中 Region 的 resolver 中最小的锁 `start_ts`。该选项有助于提前识别可能阻塞 resolved-ts 的锁。
+
+- `--min-start-ts`（可选）：如果指定，TiKV 会在日志中过滤掉 `start_ts` 小于该值的锁。你可以使用该选项指定一个感兴趣的事务，以便在日志中记录。默认值为 `0`，表示不过滤。
+
+下面是一个使用示例：
+
+```
+./tikv-ctl --host 127.0.0.1:20160 get-region-read-progress -r 14 --log --min-start-ts 0
+```
+
+输出结果如下：
+
+```
+Region read progress:
+    exist: true,
+    safe_ts: 0,
+    applied_index: 92,
+    pending front item (oldest) ts: 0,
+    pending front item (oldest) applied index: 0,
+    pending back item (latest) ts: 0,
+    pending back item (latest) applied index: 0,
+    paused: false,
+Resolver:
+    exist: true,
+    resolved_ts: 0,
+    tracked index: 92,
+    number of locks: 0,
+    number of transactions: 0,
+    stopped: false,
+```
+
+该子命令有助于诊断与 Stale Read 和 safe-ts 相关的问题。详情请参阅[理解 TiKV 中的 Stale Read 和 safe-ts](/troubleshoot-stale-read.md)。

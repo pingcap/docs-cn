@@ -8,108 +8,130 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 本文档介绍如何从 Amazon Aurora 迁移数据到 TiDB，迁移过程采用 [DB snapshot](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Backups.html)，可以节约大量的空间和时间成本。整个迁移包含两个过程：
 
-- 使用 Lightning 导入全量数据到 TiDB
+- 使用 TiDB Lightning 导入全量数据到 TiDB
 - 使用 DM 持续增量同步到 TiDB（可选）
 
 ## 前提条件
 
-- [安装 Dumpling 和 Lightning](/migration-tools.md)。
-- [获取 Dumpling 所需 上游数据库权限](/dumpling-overview.md#需要的权限)。
-- [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
+- [安装 Dumpling 和 TiDB Lightning](/migration-tools.md)。如果你要在目标端手动创建相应的表，则无需安装 Dumpling。
+- [获取 Dumpling 所需上游数据库权限](/dumpling-overview.md#需要的权限)。
+- [获取 TiDB Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
 
 ## 导入全量数据到 TiDB
 
-### 第 1 步：导出 Aurora 快照文件到 Amazon S3
+### 第 1 步：导出和导入 schema 文件
 
-1. 在 Aurora 上，执行以下命令，查询并记录当前 binlog 位置：
+如果你已经提前手动在目标库创建好了相应的表，则可以跳过本节内容。
+
+#### 1.1 导出 schema 文件
+
+因为 Amazon Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 TiDB Lightning 在下游创建 schema。
+
+运行以下命令时，建议使用 `--filter` 参数仅导出所需表的 schema。命令中所用参数描述，请参考 [Dumpling 主要选项表](/dumpling-overview.md#dumpling-主要选项表)。
+
+```shell
+export AWS_ACCESS_KEY_ID=${access_key}
+export AWS_SECRET_ACCESS_KEY=${secret_key}
+tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12],mydb.*' --consistency none --no-data --output 's3://my-bucket/schema-backup'
+```
+
+记录上面命令中导出的 schema 的 URI，例如 's3://my-bucket/schema-backup'，后续导入 schema 时要用到。
+
+为了获取 Amazon S3 的访问权限，可以将该 Amazon S3 的 Secret Access Key 和 Access Key 作为环境变量传入 Dumpling 或 TiDB Lightning。另外，Dumpling 或 TiDB Lightning 也可以通过 `~/.aws/credentials` 读取凭证文件。使用凭证文件可以让这台机器上所有的 Dumpling 或 TiDB Lightning 任务无需再次传入相关 Secret Access Key 和 Access Key。
+
+#### 1.2 编写用于导入 schema 文件的 TiDB Lightning 配置文件
+
+新建 `tidb-lightning-schema.toml` 文件，将以下内容复制到文件中并替换对应的内容。
+
+```toml
+[tidb]
+
+# 目标 TiDB 集群信息。
+host = ${host}
+port = ${port}
+user = "${user_name}"
+password = "${password}"
+status-port = ${status-port}  # TiDB 的“状态端口”，通常为 10080
+pd-addr = "${ip}:${port}"     # 集群 PD 的地址，port 通常为 2379
+
+[tikv-importer]
+# 采用默认的物理导入模式 ("local")。注意该模式在导入期间下游 TiDB 无法对外提供服务。
+# 关于后端模式更多信息，请参阅：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview
+backend = "local"
+
+# 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。
+# 建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能。
+sorted-kv-dir = "${path}"
+
+[mydumper]
+# 设置从 Amazon Aurora 导出的 schema 文件的地址
+data-source-dir = "s3://my-bucket/schema-backup"
+```
+
+如果需要在 TiDB 开启 TLS，请参考 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
+
+#### 1.3 导入 schema 文件
+
+使用 TiDB Lightning 导入 schema 到下游的 TiDB。
+
+```shell
+export AWS_ACCESS_KEY_ID=${access_key}
+export AWS_SECRET_ACCESS_KEY=${secret_access_key}
+nohup tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
+```
+
+### 第 2 步：导出和导入 Amazon Aurora 快照文件
+
+本节介绍如何导出和导入 Amazon Aurora 快照文件。
+
+#### 2.1 导出 Amazon Aurora 快照文件到 Amazon S3
+
+1. 获取 Amazon Aurora binlog 的名称及位置以便于后续的增量迁移。在 Amazon Aurora 上，执行 `SHOW MASTER STATUS` 并记录当前 binlog 位置：
 
     ```sql
-    mysql> SHOW MASTER STATUS;
+    SHOW MASTER STATUS;
     ```
 
     你将得到类似以下的输出，请记录 binlog 名称和位置，供后续步骤使用：
 
     ```
-    +------------------+----------+--------------+------------------+-------------------+
-    | File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
-    +------------------+----------+--------------+------------------+-------------------+
-    | mysql-bin.000002 |    52806 |              |                  |                   |
-    +------------------+----------+--------------+------------------+-------------------+
+    +----------------------------+----------+--------------+------------------+-------------------+
+    | File                       | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
+    +----------------------------+----------+--------------+------------------+-------------------+
+    | mysql-bin-changelog.018128 |    52806 |              |                  |                   |
+    +----------------------------+----------+--------------+------------------+-------------------+
     1 row in set (0.012 sec)
     ```
 
-2. 导出 Aurora 快照文件。具体方式请参考 Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html).
+2. 导出 Amazon Aurora 快照文件。具体方式请参考 Amazon Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html)。请注意，执行 `SHOW MASTER STATUS` 命令和导出 Amazon Aurora 快照文件的时间间隔建议不要超过 5 分钟，否则记录的 binlog 位置过旧可能导致增量同步时产生数据冲突。
 
-请注意，上述两步的时间间隔建议不要超过 5 分钟，否则记录的 binlog 位置过旧可能导致增量同步时产生数据冲突。
+#### 2.2 编写用于导入快照文件的 TiDB Lightning 配置文件
 
-完成上述两步后，你需要准备好以下信息：
-
-- 创建快照点时，Aurora binlog 的名称及位置。
-- 快照文件的 S3 路径，以及具有访问权限的 SecretKey 和 AccessKey。
-
-### 第 2 步：导出 schema
-
-因为 Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 Lightning 在下游创建 schema。你也可以跳过此步骤，并以手动方式在下游自行创建 schema。
-
-运行以下命令，建议使用 `--filter` 参数仅导出所需表的 schema：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12]' --no-data --output 's3://my-bucket/schema-backup' --filter "mydb.*"
-```
-
-命令中所用参数描述如下。如需更多信息可参考 [Dumpling overview](/dumpling-overview.md)。
-
-|参数               |说明|
-|-                  |-|
-|-u 或 --user       |Aurora MySQL 数据库的用户|
-|-p 或 --password   |MySQL 数据库的用户密码|
-|-P 或 --port       |MySQL 数据库的端口|
-|-h 或 --host       |MySQL 数据库的 IP 地址|
-|-t 或 --thread     |导出的线程数|
-|-o 或 --output     |存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md)|
-|-r 或 --row        |单个文件的最大行数|
-|-F                 |指定单个文件的最大大小，单位为 MiB, 建议值 256 MiB|
-|-B 或 --database   |导出指定数据库|
-|-T 或 --tables-list |导出指定数据表|
-|-d 或 --no-data    |不导出数据，仅导出 schema|
-|-f 或 --filter     |导出能匹配模式的表，不可用 -T 一起使用，语法可参考[table filter](/table-filter.md)|
-
-### 第 3 步：编写 Lightning 配置文件
-
-根据以下内容创建 `tidb-lightning.toml` 配置文件：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-vim tidb-lightning.toml
-```
-
-{{< copyable "" >}}
+新建 `tidb-lightning-data.toml` 文件，将以下内容复制到文件中并替换对应的内容。
 
 ```toml
 [tidb]
 
-# 目标 TiDB 集群信息.
-host = ${host}                # 例如：172.16.32.1
-port = ${port}                # 例如：4000
-user = "${user_name}"         # 例如："root"
-password = "${password}"      # 例如："rootroot"
-status-port = ${status-port}  # 表结构信息在从 TiDB 的“状态端口”获取例如：10080
-pd-addr = "${ip}:${port}"     # 集群 PD 的地址，lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
+# 目标 TiDB 集群信息。
+host = ${host}
+port = ${port}
+user = "${user_name}"
+password = "${password}"
+status-port = ${status-port}  # TiDB 的“状态端口”，通常为 10080
+pd-addr = "${ip}:${port}"     # 集群 PD 的地址，port 通常为 2379
 
 [tikv-importer]
-# "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
+# 采用默认的物理导入模式 ("local")。注意该模式在导入期间下游 TiDB 无法对外提供服务。
+# 关于后端模式更多信息请参阅：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview
 backend = "local"
 
-# 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小，建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能。
+# 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。
+# 建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能。
 sorted-kv-dir = "${path}"
 
 [mydumper]
-# 快照文件的地址
-data-source-dir = "${s3_path}"  # eg: s3://my-bucket/sql-backup
+# 设置从 Amazon Aurora 导出的快照文件的地址
+data-source-dir = "s3://my-bucket/sql-backup"
 
 [[mydumper.files]]
 # 解析 parquet 文件所需的表达式
@@ -119,41 +141,29 @@ table = '$2'
 type = '$3'
 ```
 
-如果需要在 TiDB 开启 TLS ，请参考 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
+如果需要在 TiDB 开启 TLS，请参考 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
 
-### 第 4 步：导入全量数据到 TiDB
+#### 2.3 导入全量数据到 TiDB
 
-1. 使用 Lightning 在下游 TiDB 建表:
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup tidb-lightning -config tidb-lightning.toml -d 's3://my-bucket/schema-backup'
-    ```
-
-2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具，如：
-
-    将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
-
-    {{< copyable "shell-regular" >}}
+1. 使用 TiDB Lightning 导入 Aurora Snapshot 的数据到 TiDB。 
 
     ```shell
     export AWS_ACCESS_KEY_ID=${access_key}
-    export AWS_SECRET_ACCESS_KEY=${secret_key}
-    nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
+    export AWS_SECRET_ACCESS_KEY=${secret_access_key}
+    nohup tiup tidb-lightning -config tidb-lightning-data.toml > nohup.out 2>&1 &
     ```
 
-3. 导入开始后，可以采用以下任意方式查看进度：
+2. 导入开始后，可以采用以下任意方式查看进度：
 
     - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
     - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
     - 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
 
-4. 导入完毕后，TiDB Lightning 会自动退出。查看 `tidb-lightning.log` 日志末尾是否有 `the whole procedure completed` 信息，如果有，表示导入成功。如果没有，则表示导入遇到了问题，可根据日志中的 error 提示解决遇到的问题。
+3. 导入完毕后，TiDB Lightning 会自动退出。查看 `tidb-lightning.log` 日志末尾是否有 `the whole procedure completed` 信息，如果有，表示导入成功。如果没有，则表示导入遇到了问题，可根据日志中的 error 提示解决遇到的问题。
 
 > **注意：**
 >
-> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning  正常退出，不代表任务完成。
+> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning 正常退出，不代表任务完成。
 
 如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
@@ -166,9 +176,7 @@ type = '$3'
 
 ### 第 1 步：创建数据源
 
-1. 新建 `source1.yaml` 文件, 写入以下内容：
-
-    {{< copyable "" >}}
+1. 新建 `source1.yaml` 文件，写入以下内容：
 
     ```yaml
     # 唯一命名，不可重复。
@@ -186,8 +194,6 @@ type = '$3'
 
 2. 在终端中执行下面的命令，使用 `tiup dmctl` 将数据源配置加载到 DM 集群中:
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
     ```
@@ -201,7 +207,7 @@ type = '$3'
 
 ### 第 2 步：创建迁移任务
 
-新建 `task1.yaml` 文件, 写入以下内容：
+新建 `task1.yaml` 文件，写入以下内容：
 
 {{< copyable "" >}}
 
@@ -233,7 +239,7 @@ mysql-instances:
     block-allow-list: "listA"           # 引入上面黑白名单配置。
 #    syncer-config-name: "global"        # syncer 配置的名称
     meta:                               # `task-mode` 为 `incremental` 且下游数据库的 `checkpoint` 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 `checkpoint` 为准。如果 `meta` 项和下游数据库的 `checkpoint` 都不存在，则从上游当前最新的 binlog 位置开始迁移。
-      binlog-name: "mysql-bin.000004"   # “Step 1. 导出 Aurora 快照文件到 Amazon S3” 中记录的日志位置，当上游存在主从切换时，必须使用 gtid。
+      binlog-name: "mysql-bin.000004"   # “Step 1. 导出 Amazon Aurora 快照文件到 Amazon S3” 中记录的日志位置，当上游存在主从切换时，必须使用 gtid。
       binlog-pos: 109227
       # binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"
 
@@ -250,15 +256,11 @@ mysql-instances:
 
 在你启动数据迁移任务之前，建议使用 `check-task` 命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tiup dmctl --master-addr ${advertise-addr} check-task task.yaml
 ```
 
 使用 `tiup dmctl` 执行以下命令启动数据迁移任务。
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
@@ -276,8 +278,6 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 ### 第 4 步：查看任务状态
 
 如需了解 DM 集群中是否存在正在运行的迁移任务及任务状态等信息，可使用 `tiup dmctl` 执行 `query-status` 命令进行查询：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}

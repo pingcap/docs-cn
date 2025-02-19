@@ -55,6 +55,10 @@ PrivLevel ::=
 
 UserSpecList ::=
     UserSpec ( ',' UserSpec )*
+
+RequireClauseOpt ::= ('REQUIRE' ('NONE' | 'SSL' | 'X509' | RequireListElement ('AND'? RequireListElement)*))?
+
+RequireListElement ::= 'ISSUER' Issuer | 'SUBJECT' Subject | 'CIPHER' Cipher | 'SAN' SAN | 'TOKEN_ISSUER' TokenIssuer
 ```
 
 ## 示例
@@ -100,6 +104,7 @@ SHOW GRANTS FOR 'newuser';
 * 与 MySQL 类似，`USAGE` 权限表示登录 TiDB 服务器的能力。
 * 目前不支持列级权限。
 * 与 MySQL 类似，不存在 `NO_AUTO_CREATE_USER` sql 模式时，`GRANT` 语句将在用户不存在时自动创建一个空密码的新用户。删除此 sql-mode（默认情况下已启用）会带来安全风险。
+* `GRANT <privileges>` 语句执行成功后，在 TiDB 中语句执行的结果会在当前连接立即生效，而 [MySQL 中部分权限的结果需要等到之后的连接才生效](https://dev.mysql.com/doc/refman/8.0/en/privilege-changes.html)。见 [TiDB #39356](https://github.com/pingcap/tidb/issues/39356)。
 
 ## 另请参阅
 

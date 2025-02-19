@@ -1,5 +1,6 @@
 ---
 title: Optimizer Hints
+summary: 介绍 TiDB 中 Optimizer Hints 的语法和不同生效范围的 Hint 的使用方法。
 aliases: ['/docs-cn/dev/optimizer-hints/','/docs-cn/dev/reference/performance/optimizer-hints/']
 ---
 
@@ -7,13 +8,11 @@ aliases: ['/docs-cn/dev/optimizer-hints/','/docs-cn/dev/reference/performance/op
 
 TiDB 支持 Optimizer Hints 语法，它基于 MySQL 5.7 中介绍的类似 comment 的语法，例如 `/*+ HINT_NAME(t1, t2) */`。当 TiDB 优化器选择的不是最优查询计划时，建议使用 Optimizer Hints。
 
-> **注意：**
->
-> MySQL 命令行客户端在 5.7.7 版本之前默认清除了 Optimizer Hints。如果需要在这些早期版本的客户端中使用 `Hint` 语法，需要在启动客户端时加上 `--comments` 选项，例如 `mysql -h 127.0.0.1 -P 4000 -uroot --comments`。
+如果遇到 Hint 无法生效的情况，请参考[常见 Hint 不生效问题排查](#常见-hint-不生效问题排查)。
 
 ## 语法
 
-Optimizer Hints 不区分大小写，通过 `/*+ ... */` 注释的形式跟在 `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面。`INSERT` 关键字后不支持 Optimizer Hints。
+Optimizer Hints 不区分大小写，通过 `/*+ ... */` 注释的形式跟在 `SELECT`、`INSERT`、`UPDATE` 或 `DELETE` 关键字的后面。
 
 多个不同的 Hint 之间需用逗号隔开，例如：
 
@@ -91,25 +90,63 @@ SELECT /*+ MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 >
 > `MERGE_JOIN` 的别名是 `TIDB_SMJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，但推荐使用 `MERGE_JOIN`。
 
+### NO_MERGE_JOIN(t1_name [, tl_name ...])
+
+`NO_MERGE_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Sort Merge Join 算法。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ NO_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
 ### INL_JOIN(t1_name [, tl_name ...])
+
+> **注意：**
+>
+> 部分情况下 `INL_JOIN` Hint 可能无法生效，详情请参阅 [`INL_JOIN` Hint 不生效](#inl_join-hint-不生效)。
 
 `INL_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Index Nested Loop Join 算法。这个算法可能会在某些场景更快，消耗更少系统资源，有的场景会更慢，消耗更多系统资源。对于外表经过 WHERE 条件过滤后结果集较小（小于 1 万行）的场景，可以尝试使用。例如：
 
 {{< copyable "sql" >}}
 
 ```sql
-SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id AND t2.id = t3.id;
 ```
 
-`INL_JOIN()` 中的参数是建立查询计划时内表的候选表，比如 `INL_JOIN(t1)` 只会考虑使用 t1 作为内表构建查询计划。表如果指定了别名，就只能使用表的别名作为 `INL_JOIN()` 的参数；如果没有指定别名，则用表的本名作为其参数。比如在 `SELECT /*+ INL_JOIN(t1) */ * FROM t t1, t t2 WHERE t1.a = t2.b;` 中，`INL_JOIN()` 的参数只能使用 t 的别名 t1 或 t2，不能用 t。
+在上面的 SQL 中，`INL_JOIN(t1, t2)` 会提示优化器对 `t1` 和 `t2` 使用 Index Nested Loop Join 算法。注意它并不是指 `t1` 和 `t2` 之间使用 Index Nested Loop Join 算法，而是 `t1` 和 `t2` 分别与其他表 (`t3`) 之间使用 Index Nested Loop Join 算法。
+
+`INL_JOIN()` 中的参数是建立查询计划时内表的候选表，比如 `INL_JOIN(t1)` 只会考虑使用 `t1` 作为内表构建查询计划。表如果指定了别名，就只能使用表的别名作为 `INL_JOIN()` 的参数；如果没有指定别名，则用表的本名作为其参数。比如在 `SELECT /*+ INL_JOIN(t1) */ * FROM t t1, t t2 WHERE t1.a = t2.b;` 中，`INL_JOIN()` 的参数只能使用 `t` 的别名 `t1` 或 `t2`，不能用 `t`。
 
 > **注意：**
 >
 > `INL_JOIN` 的别名是 `TIDB_INLJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，但推荐使用 `INL_JOIN`。
 
+### NO_INDEX_JOIN(t1_name [, tl_name ...])
+
+`NO_INDEX_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Index Nested Loop Join 算法。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ NO_INDEX_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
 ### INL_HASH_JOIN
 
 `INL_HASH_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Hash Join 算法。该算法与 Index Nested Loop Join 使用条件完全一样，两者的区别是 `INL_JOIN` 会在连接的内表上建哈希表，而 `INL_HASH_JOIN` 会在连接的外表上建哈希表，后者对于内存的使用是有固定上限的，而前者使用的内存使用取决于内表匹配到的行数。
+
+### NO_INDEX_HASH_JOIN(t1_name [, tl_name ...])
+
+`NO_INDEX_HASH_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Index Nested Loop Hash Join 算法。
+
+### INL_MERGE_JOIN
+
+`INL_MERGE_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Merge Join 算法，该算法与 Index Nested Loop Join 使用条件完全一样。
+
+### NO_INDEX_MERGE_JOIN(t1_name [, tl_name ...])
+
+`NO_INDEX_MERGE_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Index Nested Loop Merge Join 算法。
 
 ### HASH_JOIN(t1_name [, tl_name ...])
 
@@ -124,6 +161,16 @@ SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 > **注意：**
 >
 > `HASH_JOIN` 的别名是 `TIDB_HJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，推荐使用 `HASH_JOIN`。
+
+### NO_HASH_JOIN(t1_name [, tl_name ...])
+
+`NO_HASH_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Hash Join 算法。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ NO_HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
 
 ### HASH_JOIN_BUILD(t1_name [, tl_name ...])
 
@@ -190,6 +237,32 @@ EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 FROM t
 ```
 
 在上述例子中可以看到，在使用了 Hint 之后，TiDB 可以选择由表 `t1` 作为驱动表的 IndexJoin 的执行方式。
+
+### SHUFFLE_JOIN(t1_name [, tl_name ...])
+
+`SHUFFLE_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Shuffle Join 算法，该 Hint 只在 MPP 模式下生效。例如：
+
+```sql
+SELECT /*+ SHUFFLE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
+> **注意：**
+>
+> - 使用该 Hint 前，需要保证当前 TiDB 集群能够支持在查询中使用 TiFlash MPP 模式，具体细节见文档[使用 TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
+> - 该 Hint 能与 [`HASH_JOIN_BUILD` Hint](#hash_join_buildt1_name--tl_name-) 和 [`HASH_JOIN_PROBE` Hint](#hash_join_probet1_name--tl_name-) 组合使用，达到控制 Shuffle Join 算法的 Build 端和 Probe 端的作用。
+
+### BROADCAST_JOIN(t1_name [, tl_name ...])
+
+`BROADCAST_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Broadcast Join 算法，该 Hint 只在 MPP 模式下生效。例如：
+
+```sql
+SELECT /*+ BROADCAST_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
+> **注意：**
+>
+> - 使用该 Hint 前，需要保证当前 TiDB 集群能够支持在查询中使用 TiFlash MPP 模式，具体细节见文档[使用 TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
+> - 该 Hint 能与 [`HASH_JOIN_BUILD` Hint](#hash_join_buildt1_name--tl_name-) 和 [`HASH_JOIN_PROBE` Hint](#hash_join_probet1_name--tl_name-) 组合使用，达到控制 Broadcast Join 算法的 Build 端和 Probe 端的作用。
 
 ### NO_DECORRELATE()
 
@@ -277,6 +350,30 @@ SELECT /*+ HASH_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
 SELECT /*+ STREAM_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
 ```
 
+### MPP_1PHASE_AGG()
+
+`MPP_1PHASE_AGG()` 提示优化器对指定查询块中所有聚合函数使用一阶段聚合算法，该 Hint 只在 MPP 模式下生效。例如：
+
+```sql
+SELECT /*+ MPP_1PHASE_AGG() */ COUNT(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
+```
+
+> **注意：**
+>
+> 使用该 Hint 前，需要保证当前 TiDB 集群能够支持在查询中使用 TiFlash MPP 模式，具体细节见文档[使用 TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
+
+### MPP_2PHASE_AGG()
+
+`MPP_2PHASE_AGG()` 提示优化器对指定查询块中所有聚合函数使用二阶段聚合算法，该 Hint 只在 MPP 模式下生效。例如：
+
+```sql
+SELECT /*+ MPP_2PHASE_AGG() */ COUNT(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
+```
+
+> **注意：**
+>
+> 使用该 Hint 前，需要保证当前 TiDB 集群能够支持在查询中使用 TiFlash MPP 模式，具体细节见文档[使用 TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
+
 ### USE_INDEX(t1_name, idx1_name [, idx2_name ...])
 
 `USE_INDEX(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引。
@@ -322,6 +419,64 @@ SELECT * FROM t force index(idx1);
 SELECT /*+ IGNORE_INDEX(t1, idx1, idx2) */ * FROM t t1;
 ```
 
+### ORDER_INDEX(t1_name, idx1_name [, idx2_name ...])
+
+`ORDER_INDEX(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并且按顺序读取指定的索引。
+
+> **警告：**
+>
+> 这个 hint 有可能会导致 SQL 语句报错，建议先进行测试。如果测试时发生报错，请移除该 Hint。如果测试时运行正常，则可以继续使用。
+
+此 hint 通常应用在下面这种场景中：
+
+```sql
+CREATE TABLE t(a INT, b INT, key(a), key(b));
+EXPLAIN SELECT /*+ ORDER_INDEX(t, a) */ a FROM t ORDER BY a LIMIT 10;
+```
+
+```sql
++----------------------------+---------+-----------+---------------------+-------------------------------+
+| id                         | estRows | task      | access object       | operator info                 |
++----------------------------+---------+-----------+---------------------+-------------------------------+
+| Limit_10                   | 10.00   | root      |                     | offset:0, count:10            |
+| └─IndexReader_14           | 10.00   | root      |                     | index:Limit_13                |
+|   └─Limit_13               | 10.00   | cop[tikv] |                     | offset:0, count:10            |
+|     └─IndexFullScan_12     | 10.00   | cop[tikv] | table:t, index:a(a) | keep order:true, stats:pseudo |
++----------------------------+---------+-----------+---------------------+-------------------------------+
+```
+
+优化器对该查询会生成两类计划：`Limit + IndexScan(keep order: true)` 和 `TopN + IndexScan(keep order: false)`，当使用了 `ORDER_INDEX` Hint，优化器会选择前一种按照顺序读取索引的计划。
+
+> **注意：**
+>
+> - 如果查询本身并不需要按顺序读取索引，即在不使用 Hint 的前提下，优化器在任何情况下都不会生成按顺序读取索引的计划。此时，如果指定了 `ORDER_INDEX` Hint，会出现报错 `Can't find a proper physical plan for this query`，此时应考虑移除对应的 `ORDER_INDEX` Hint。
+>
+> - 分区表上的索引无法支持按顺序读取，所以不应该对分区表及其相关的索引使用 `ORDER_INDEX` Hint。
+
+### NO_ORDER_INDEX(t1_name, idx1_name [, idx2_name ...])
+
+`NO_ORDER_INDEX(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并且不按顺序读取指定的索引。通常应用在下面这种场景中:
+
+以下示例中查询语句的效果等价于 `SELECT * FROM t t1 use index(idx1, idx2);`：
+
+```sql
+CREATE TABLE t(a INT, b INT, key(a), key(b));
+EXPLAIN SELECT /*+ NO_ORDER_INDEX(t, a) */ a FROM t ORDER BY a LIMIT 10;
+```
+
+```sql
++----------------------------+----------+-----------+---------------------+--------------------------------+
+| id                         | estRows  | task      | access object       | operator info                  |
++----------------------------+----------+-----------+---------------------+--------------------------------+
+| TopN_7                     | 10.00    | root      |                     | test.t.a, offset:0, count:10   |
+| └─IndexReader_14           | 10.00    | root      |                     | index:TopN_13                  |
+|   └─TopN_13                | 10.00    | cop[tikv] |                     | test.t.a, offset:0, count:10   |
+|     └─IndexFullScan_12     | 10000.00 | cop[tikv] | table:t, index:a(a) | keep order:false, stats:pseudo |
++----------------------------+----------+-----------+---------------------+--------------------------------+
+```
+
+和 `ORDER_INDEX` Hint 的示例相同，优化器对该查询会生成两类计划：`Limit + IndexScan(keep order: true)` 和 `TopN + IndexScan(keep order: false)`，当使用了 `NO_ORDER_INDEX` Hint，优化器会选择后一种不按照顺序读取索引的计划。
+
 ### AGG_TO_COP()
 
 `AGG_TO_COP()` 提示优化器将指定查询块中的聚合函数下推到 coprocessor。如果优化器没有下推某些适合下推的聚合函数，建议尝试使用。例如：
@@ -351,10 +506,6 @@ SELECT /*+ LIMIT_TO_COP() */ * FROM t WHERE a = 1 AND b > 10 ORDER BY c LIMIT 1;
 ```sql
 SELECT /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a FROM t t1, t t2 WHERE t1.a = t2.a;
 ```
-
-> **注意：**
->
-> 如果需要提示优化器使用的表不在同一个数据库内，需要显式指定数据库名。例如 `SELECT /*+ READ_FROM_STORAGE(TIFLASH[test1.t1,test2.t2]) */ t1.a FROM test1.t t1, test2.t t2 WHERE t1.a = t2.a;`。
 
 ### USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])
 
@@ -396,7 +547,6 @@ SELECT /*+ LEADING(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = 
 + 优化器无法按照 `LEADING` hint 指定的顺序进行表连接
 + 已经存在 `straight_join()` hint
 + 查询语句中包含 outer join 且同时指定了包含笛卡尔积的情况
-+ 和选择 join 算法的 hint（即 `MERGE_JOIN`、`INL_JOIN`、`INL_HASH_JOIN`、`HASH_JOIN`）同时使用时
 
 当出现了上述失效的情况，会输出 warning 警告。
 
@@ -424,7 +574,7 @@ SHOW WARNINGS;
 
 ### MERGE()
 
-在含有[公共表表达式](/develop/dev-guide-use-common-table-expression.md)的查询中使用 `MERGE()` hint，可关闭对当前子查询的物化过程，并将内部查询的内联展开到外部查询。该 hint 适用于非递归的公共表表达式查询，在某些场景下，使用该 hint 会比默认分配一块临时空间的语句执行效率更高。例如将外部查询的条件下推或在嵌套的 CTE 查询中： 
+在含有[公共表表达式](/develop/dev-guide-use-common-table-expression.md)的查询中使用 `MERGE()` hint，可关闭对当前子查询的物化过程，并将内部查询的内联展开到外部查询。该 hint 适用于非递归的公共表表达式查询，在某些场景下，使用该 hint 会比默认分配一块临时空间的语句执行效率更高。例如将外部查询的条件下推或在嵌套的 CTE 查询中：
 
 {{< copyable "sql" >}}
 
@@ -439,10 +589,10 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 > **注意：**
 >
 > `MERGE()` 只适用于简单的 CTE 查询，在以下情况下无法使用该 hint：
-> 
+>
 > - [递归的 CTE 查询](/develop/dev-guide-use-common-table-expression.md#递归的-cte)
 > - 子查询中有无法进行内联展开的部分，例如聚合算子、窗口函数以及 `DINSTINCT` 等
-> 
+>
 > 当 CTE 引用次数过多时，查询性能可能低于默认的物化方式。
 
 ## 全局生效的 Hint
@@ -640,6 +790,39 @@ SELECT /*+ READ_CONSISTENT_REPLICA() */ * FROM t;
 prepare stmt FROM 'SELECT  /*+ IGNORE_PLAN_CACHE() */ * FROM t WHERE t.id = ?';
 ```
 
+### SET_VAR(VAR_NAME=VAR_VALUE)
+
+`SET_VAR(VAR_NAME=VAR_VALUE)` 允许在语句执行期间以 Hint 形式临时修改会话级系统变量的值。当语句执行完成后，系统变量将在当前会话中自动恢复为原始值。通过这个 Hint 可以修改一部分与优化器、执行器相关的系统变量行为。支持通过 `SET_VAR(VAR_NAME=VAR_VALUE)` Hint 修改的系统变量请查看[系统变量](/system-variables.md)。
+
+> **警告：**
+>
+> - 强烈建议不要利用此 Hint 修改没有明确支持的变量，这可能会引发不可预知的行为。
+> - 注意不要把 `SET_VAR` 写在子查询中，否则可能会不生效。详情请参考 [`SET_VAR` 写在子查询中不生效](#set_var-写在子查询中不生效)。
+
+下面是一个使用示例：
+
+```sql
+SELECT /*+ SET_VAR(MAX_EXECUTION_TIME=1234) */ @@MAX_EXECUTION_TIME;
+SELECT @@MAX_EXECUTION_TIME;
+```
+
+执行上述 SQL，第一个查询返回的结果是 Hint 中设置的 `1234`，而不是变量 `MAX_EXECUTION_TIME` 的默认值。第二个查询会返回变量的默认值。
+
+```sql
++----------------------+
+| @@MAX_EXECUTION_TIME |
++----------------------+
+|                 1234 |
++----------------------+
+1 row in set (0.00 sec)
++----------------------+
+| @@MAX_EXECUTION_TIME |
++----------------------+
+|                    0 |
++----------------------+
+1 row in set (0.00 sec)
+```
+
 ### STRAIGHT_JOIN()
 
 `STRAIGHT_JOIN()` 提示优化器在生成表连接顺序时按照表名在 `FROM` 子句中出现的顺序进行连接。
@@ -674,3 +857,291 @@ SELECT /*+ NTH_PLAN(3) */ count(*) from t where a > 5;
 > **注意：**
 >
 > `NTH_PLAN(N)` 主要用于测试用途，并且在未来不保证其兼容性，请谨慎使用。
+
+### RESOURCE_GROUP(resource_group_name)
+
+`RESOURCE_GROUP(resource_group_name)` 用于[使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)。此 Hint 将临时使用指定的资源组执行当前的语句。如果指定的资源组不存在，则该 Hint 将被忽略。
+
+示例：
+
+```sql
+SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
+```
+
+> **注意：**
+>
+> 自 v8.2.0 版本开始，TiDB 为此 Hint 引入权限控制。当系统变量 [`tidb_resource_control_strict_mode`](/system-variables.md#tidb_resource_control_strict_mode-从-v820-版本开始引入) 设置为 `ON` 时，你需要有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 权限才能使用此 Hint。如果没有所需权限，则此 Hint 会被忽略，同时 TiDB 会返回 warning，你可以在查询结束后通过 `SHOW WARNINGS;` 命令查看具体信息。
+
+## 常见 Hint 不生效问题排查
+
+### MySQL 命令行客户端清除 Hint 导致不生效
+
+MySQL 命令行客户端在 5.7.7 版本之前默认清除了 Optimizer Hints。如果需要在这些早期版本的客户端中使用 Hint 语法，需要在启动客户端时加上 `--comments` 选项。例如 `mysql -h 127.0.0.1 -P 4000 -uroot --comments`。
+
+### 创建连接时不指定库名导致 Hint 不生效
+
+如果创建连接时未指定数据库名，则可能出现 Hint 失效的情况。例如：
+
+使用 `mysql -h127.0.0.1 -P4000 -uroot` 命令连接数据库时，未使用 `-D` 参数指定数据库名。然后执行下面的 SQL 语句：
+
+```sql
+SELECT /*+ use_index(t, a) */ a FROM test.t;
+SHOW WARNINGS;
+```
+
+由于无法识别表 `t` 对应的数据库名，因此 `use_index(t, a)` Hint 无法生效。
+
+```sql
++---------+------+----------------------------------------------------------------------+
+| Level   | Code | Message                                                              |
++---------+------+----------------------------------------------------------------------+
+| Warning | 1815 | use_index(.t, a) is inapplicable, check whether the table(.t) exists |
++---------+------+----------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+### 跨库查询不指定库名导致 Hint 不生效
+
+对于跨库查询中需要访问的表，需要显式地指定数据库名，否则可能出现 Hint 失效的情况。例如执行下面跨库查询的 SQL 语句：
+
+```sql
+USE test1;
+CREATE TABLE t1(a INT, KEY(a));
+USE test2;
+CREATE TABLE t2(a INT, KEY(a));
+SELECT /*+ use_index(t1, a) */ * FROM test1.t1, t2;
+SHOW WARNINGS;
+```
+
+由于 `t1` 不在当前数据库 `test2` 下，因此 `use_index(t1, a)` Hint 无法被正确地识别。
+
+```sql
++---------+------+----------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                          |
++---------+------+----------------------------------------------------------------------------------+
+| Warning | 1815 | use_index(test2.t1, a) is inapplicable, check whether the table(test2.t1) exists |
++---------+------+----------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+此时，需要显式地指定库名，即将 `use_index(t1, a)` 修改为 `use_index(test1.t1, a)`。
+
+### Hint 位置不正确导致不生效
+
+如果没有按照 Optimizer Hints 语法将 Hint 正确地放在指定关键字的后面，它将无法生效。例如：
+
+```sql
+SELECT * /*+ use_index(t, a) */ FROM t;
+SHOW WARNINGS;
+```
+
+Warning 信息如下：
+
+```sql
++---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                                                                                                                                                 |
++---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Warning | 1064 | You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use [parser:8066]Optimizer hint can only be followed by certain keywords like SELECT, INSERT, etc. |
++---------+------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+```
+
+在上面的示例中，你需要将 Hint 直接放在 `SELECT` 关键字之后。具体的语法规则参见 [Hint 语法](#语法)部分。
+
+### `INL_JOIN` Hint 不生效
+
+#### 关联表的列上使用内置函数导致 `INL_JOIN` Hint 不生效
+
+在某些情况下，如果在关联表的列上使用了内置函数，优化器可能无法选择 `IndexJoin` 计划，导致 `INL_JOIN` Hint 也无法生效。
+
+例如，以下查询在关联表的列 `tname` 上使用了内置函数 `substr`：
+
+```sql
+CREATE TABLE t1 (id varchar(10) primary key, tname varchar(10));
+CREATE TABLE t2 (id varchar(10) primary key, tname varchar(10));
+EXPLAIN SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id=t2.id and SUBSTR(t1.tname,1,2)=SUBSTR(t2.tname,1,2);
+```
+
+查询计划输出结果如下：
+
+```sql
++------------------------------+----------+-----------+---------------+-----------------------------------------------------------------------+
+| id                           | estRows  | task      | access object | operator info                                                         |
++------------------------------+----------+-----------+---------------+-----------------------------------------------------------------------+
+| HashJoin_12                  | 12500.00 | root      |               | inner join, equal:[eq(test.t1.id, test.t2.id) eq(Column#5, Column#6)] |
+| ├─Projection_17(Build)       | 10000.00 | root      |               | test.t2.id, test.t2.tname, substr(test.t2.tname, 1, 2)->Column#6      |
+| │ └─TableReader_19           | 10000.00 | root      |               | data:TableFullScan_18                                                 |
+| │   └─TableFullScan_18       | 10000.00 | cop[tikv] | table:t2      | keep order:false, stats:pseudo                                        |
+| └─Projection_14(Probe)       | 10000.00 | root      |               | test.t1.id, test.t1.tname, substr(test.t1.tname, 1, 2)->Column#5      |
+|   └─TableReader_16           | 10000.00 | root      |               | data:TableFullScan_15                                                 |
+|     └─TableFullScan_15       | 10000.00 | cop[tikv] | table:t1      | keep order:false, stats:pseudo                                        |
++------------------------------+----------+-----------+---------------+-----------------------------------------------------------------------+
+7 rows in set, 1 warning (0.01 sec)
+```
+
+```sql
+SHOW WARNINGS;
+```
+
+```
++---------+------+------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                            |
++---------+------+------------------------------------------------------------------------------------+
+| Warning | 1815 | Optimizer Hint /*+ INL_JOIN(t1, t2) */ or /*+ TIDB_INLJ(t1, t2) */ is inapplicable |
++---------+------+------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+从该示例中可以看到，`INL_JOIN` Hint 没有生效。该问题的根本原因是优化器限制导致无法使用 `Projection` 或者 `Selection` 算子作为 `IndexJoin` 的探测 (Probe) 端。
+
+从 TiDB v8.0.0 起，你通过设置 [`tidb_enable_inl_join_inner_multi_pattern`](/system-variables.md#tidb_enable_inl_join_inner_multi_pattern-从-v700-版本开始引入) 为 `ON` 来避免该问题。
+
+```sql
+SET @@tidb_enable_inl_join_inner_multi_pattern=ON;
+Query OK, 0 rows affected (0.00 sec)
+
+EXPLAIN SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id=t2.id AND SUBSTR(t1.tname,1,2)=SUBSTR(t2.tname,1,2);
++------------------------------+--------------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| id                           | estRows      | task      | access object | operator info                                                                                                                              |
++------------------------------+--------------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| IndexJoin_18                 | 12500.00     | root      |               | inner join, inner:Projection_14, outer key:test.t1.id, inner key:test.t2.id, equal cond:eq(Column#5, Column#6), eq(test.t1.id, test.t2.id) |
+| ├─Projection_32(Build)       | 10000.00     | root      |               | test.t1.id, test.t1.tname, substr(test.t1.tname, 1, 2)->Column#5                                                                           |
+| │ └─TableReader_34           | 10000.00     | root      |               | data:TableFullScan_33                                                                                                                      |
+| │   └─TableFullScan_33       | 10000.00     | cop[tikv] | table:t1      | keep order:false, stats:pseudo                                                                                                             |
+| └─Projection_14(Probe)       | 100000000.00 | root      |               | test.t2.id, test.t2.tname, substr(test.t2.tname, 1, 2)->Column#6                                                                           |
+|   └─TableReader_13           | 10000.00     | root      |               | data:TableRangeScan_12                                                                                                                     |
+|     └─TableRangeScan_12      | 10000.00     | cop[tikv] | table:t2      | range: decided by [eq(test.t2.id, test.t1.id)], keep order:false, stats:pseudo                                                             |
++------------------------------+--------------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+7 rows in set (0.00 sec)
+```
+
+#### 排序规则不兼容导致 `INL_JOIN` Hint、`INL_HASH_JOIN` Hint、`INL_MERGE_JOIN` Hint 不生效
+
+如果两个表的 Join key 的排序规则不能兼容，将无法使用 IndexJoin 来执行查询。此时 [`INL_JOIN` Hint](#inl_joint1_name--tl_name-)、[`INL_HASH_JOIN` Hint](#inl_hash_join)、[`INL_MERGE_JOIN` Hint](#inl_merge_join) 将无法生效。例如：
+
+```sql
+CREATE TABLE t1 (k varchar(8), key(k)) COLLATE=utf8mb4_general_ci;
+CREATE TABLE t2 (k varchar(8), key(k)) COLLATE=utf8mb4_bin;
+EXPLAIN SELECT /*+ tidb_inlj(t1) */ * FROM t1, t2 WHERE t1.k=t2.k;
+```
+
+查询计划输出结果如下：
+
+```sql
++-----------------------------+----------+-----------+----------------------+----------------------------------------------+
+| id                          | estRows  | task      | access object        | operator info                                |
++-----------------------------+----------+-----------+----------------------+----------------------------------------------+
+| HashJoin_19                 | 12487.50 | root      |                      | inner join, equal:[eq(test.t1.k, test.t2.k)] |
+| ├─IndexReader_24(Build)     | 9990.00  | root      |                      | index:IndexFullScan_23                       |
+| │ └─IndexFullScan_23        | 9990.00  | cop[tikv] | table:t2, index:k(k) | keep order:false, stats:pseudo               |
+| └─IndexReader_22(Probe)     | 9990.00  | root      |                      | index:IndexFullScan_21                       |
+|   └─IndexFullScan_21        | 9990.00  | cop[tikv] | table:t1, index:k(k) | keep order:false, stats:pseudo               |
++-----------------------------+----------+-----------+----------------------+----------------------------------------------+
+5 rows in set, 1 warning (0.00 sec)
+```
+
+上面的 SQL 语句中 `t1.k` 和 `t2.k` 的排序规则不能相互兼容（分别为 `utf8mb4_general_ci` 和 `utf8mb4_bin`），导致 IndexJoin 无法适用。因此 `INL_JOIN` 或 `TIDB_INLJ` Hint 也无法生效。
+
+```sql
+SHOW WARNINGS;
++---------+------+----------------------------------------------------------------------------+
+| Level   | Code | Message                                                                    |
++---------+------+----------------------------------------------------------------------------+
+| Warning | 1815 | Optimizer Hint /*+ INL_JOIN(t1) */ or /*+ TIDB_INLJ(t1) */ is inapplicable |
++---------+------+----------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+#### 连接顺序导致 `INL_JOIN` Hint 不生效
+
+[`INL_JOIN(t1, t2)`](#inl_joint1_name--tl_name-) 或 `TIDB_INLJ(t1, t2)` 的语义是让 `t1` 和 `t2` 作为 `IndexJoin` 的内表与其他表进行连接，而不是直接将 `t1` 和 `t2` 进行 `IndexJoin` 连接。例如：
+
+```sql
+EXPLAIN SELECT /*+ inl_join(t1, t3) */ * FROM t1, t2, t3 WHERE t1.id = t2.id AND t2.id = t3.id AND t1.id = t3.id;
++---------------------------------+----------+-----------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                              | estRows  | task      | access object | operator info                                                                                                                                                           |
++---------------------------------+----------+-----------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| IndexJoin_16                    | 15625.00 | root      |               | inner join, inner:TableReader_13, outer key:test.t2.id, test.t1.id, inner key:test.t3.id, test.t3.id, equal cond:eq(test.t1.id, test.t3.id), eq(test.t2.id, test.t3.id) |
+| ├─IndexJoin_34(Build)           | 12500.00 | root      |               | inner join, inner:TableReader_31, outer key:test.t2.id, inner key:test.t1.id, equal cond:eq(test.t2.id, test.t1.id)                                                     |
+| │ ├─TableReader_40(Build)       | 10000.00 | root      |               | data:TableFullScan_39                                                                                                                                                   |
+| │ │ └─TableFullScan_39          | 10000.00 | cop[tikv] | table:t2      | keep order:false, stats:pseudo                                                                                                                                          |
+| │ └─TableReader_31(Probe)       | 10000.00 | root      |               | data:TableRangeScan_30                                                                                                                                                  |
+| │   └─TableRangeScan_30         | 10000.00 | cop[tikv] | table:t1      | range: decided by [test.t2.id], keep order:false, stats:pseudo                                                                                                          |
+| └─TableReader_13(Probe)         | 12500.00 | root      |               | data:TableRangeScan_12                                                                                                                                                  |
+|   └─TableRangeScan_12           | 12500.00 | cop[tikv] | table:t3      | range: decided by [test.t2.id test.t1.id], keep order:false, stats:pseudo                                                                                               |
++---------------------------------+----------+-----------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+```
+
+在上面例子中，`t1` 和 `t3` 并没有直接被一个 `IndexJoin` 连接起来。
+
+如果想要直接使用 `IndexJoin` 来连接 `t1` 和 `t3`，需要先使用 [`LEADING` Hint](#leadingt1_name--tl_name-) 指定 `t1` 和 `t3` 的连接顺序，然后再配合使用 `INL_JOIN`。例如：
+
+```sql
+EXPLAIN SELECT /*+ leading(t1, t3), inl_join(t3) */ * FROM t1, t2, t3 WHERE t1.id = t2.id AND t2.id = t3.id AND t1.id = t3.id;
++---------------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------------------------------+
+| id                              | estRows  | task      | access object | operator info                                                                                                       |
++---------------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------------------------------+
+| Projection_12                   | 15625.00 | root      |               | test.t1.id, test.t1.name, test.t2.id, test.t2.name, test.t3.id, test.t3.name                                        |
+| └─HashJoin_21                   | 15625.00 | root      |               | inner join, equal:[eq(test.t1.id, test.t2.id) eq(test.t3.id, test.t2.id)]                                           |
+|   ├─TableReader_36(Build)       | 10000.00 | root      |               | data:TableFullScan_35                                                                                               |
+|   │ └─TableFullScan_35          | 10000.00 | cop[tikv] | table:t2      | keep order:false, stats:pseudo                                                                                      |
+|   └─IndexJoin_28(Probe)         | 12500.00 | root      |               | inner join, inner:TableReader_25, outer key:test.t1.id, inner key:test.t3.id, equal cond:eq(test.t1.id, test.t3.id) |
+|     ├─TableReader_34(Build)     | 10000.00 | root      |               | data:TableFullScan_33                                                                                               |
+|     │ └─TableFullScan_33        | 10000.00 | cop[tikv] | table:t1      | keep order:false, stats:pseudo                                                                                      |
+|     └─TableReader_25(Probe)     | 10000.00 | root      |               | data:TableRangeScan_24                                                                                              |
+|       └─TableRangeScan_24       | 10000.00 | cop[tikv] | table:t3      | range: decided by [test.t1.id], keep order:false, stats:pseudo                                                      |
++---------------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------------------------------+
+9 rows in set (0.01 sec)
+```
+
+### 使用 Hint 导致错误 `Can't find a proper physical plan for this query`
+
+在下面几种情况下，可能会出现 `Can't find a proper physical plan for this query` 错误：
+
+- 查询本身并不需要按顺序读取索引，即在不使用 Hint 的前提下，优化器在任何情况下都不会生成按顺序读取索引的计划。此时，如果指定了 `ORDER_INDEX` Hint，会出现此报错，此时应考虑移除对应的 `ORDER_INDEX` Hint。
+- 查询使用了 `NO_JOIN` 相关的 Hint 排除了所有可能的 Join 方式。
+
+```sql
+CREATE TABLE t1 (a INT);
+CREATE TABLE t2 (a INT);
+EXPLAIN SELECT /*+ NO_HASH_JOIN(t1), NO_MERGE_JOIN(t1) */ * FROM t1, t2 WHERE t1.a=t2.a;
+ERROR 1815 (HY000): Internal : Can't find a proper physical plan for this query
+```
+
+- 系统变量 [`tidb_opt_enable_hash_join`](/system-variables.md#tidb_opt_enable_hash_join-从-v656v712-和-v740-版本开始引入) 设置为 `OFF`，而且其他 Join 方式也都被排除了。
+
+```sql
+CREATE TABLE t1 (a INT);
+CREATE TABLE t2 (a INT);
+set tidb_opt_enable_hash_join=off;
+EXPLAIN SELECT /*+ NO_MERGE_JOIN(t1) */ * FROM t1, t2 WHERE t1.a=t2.a;
+ERROR 1815 (HY000): Internal : Can't find a proper physical plan for this query
+```
+
+### `SET_VAR` 写在子查询中不生效
+
+`SET_VAR` 用来设置当前语句的系统变量，不要写在子查询中。如果写在子查询中，由于子查询会被特殊处理，可能导致 `SET_VAR` 无法生效。
+
+下面示例把 `SET_VAR` 写在了子查询中，所以没有生效。
+
+```sql
+mysql> SELECT @@MAX_EXECUTION_TIME, a FROM (SELECT /*+ SET_VAR(MAX_EXECUTION_TIME=123) */ 1 as a) t;
++----------------------+---+
+| @@MAX_EXECUTION_TIME | a |
++----------------------+---+
+|                    0 | 1 |
++----------------------+---+
+1 row in set (0.00 sec)
+```
+
+下面示例没有把 SET_VAR 写在子查询中，所以可以生效。
+
+```sql
+mysql> SELECT /*+ SET_VAR(MAX_EXECUTION_TIME=123) */ @@MAX_EXECUTION_TIME, a FROM (SELECT 1 as a) t;
++----------------------+---+
+| @@MAX_EXECUTION_TIME | a |
++----------------------+---+
+|                  123 | 1 |
++----------------------+---+
+1 row in set (0.00 sec)
+```

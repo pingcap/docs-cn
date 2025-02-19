@@ -40,8 +40,8 @@ SHOW CREATE TABLE t1;
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `c1` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `c1` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `col1` (`c1`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -68,8 +68,8 @@ SHOW CREATE TABLE t1;
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `c1` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `c1` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `c1` (`c1`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -78,12 +78,12 @@ Create Table: CREATE TABLE `t1` (
 
 ## MySQL 兼容性
 
-`RENAME INDEX` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`RENAME INDEX` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
 
 ## 另请参阅
 
 * [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)
 * [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
-* [SHOW INDEX](/sql-statements/sql-statement-show-index.md)
+* [SHOW INDEXES](/sql-statements/sql-statement-show-indexes.md)
 * [ALTER INDEX](/sql-statements/sql-statement-alter-index.md)

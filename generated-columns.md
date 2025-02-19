@@ -1,13 +1,10 @@
 ---
 title: 生成列
 aliases: ['/docs-cn/dev/generated-columns/','/docs-cn/dev/reference/sql/generated-columns/']
+summary: 生成列是由列定义中的表达式计算得到的值。它包括存储生成列和虚拟生成列，存储生成列会将计算得到的值存储起来，而虚拟生成列不会存储其值。生成列可以用于从 JSON 数据类型中解出数据，并为该数据建立索引。在 INSERT 和 UPDATE 语句中，会检查生成列计算得到的值是否满足生成列的定义。生成列的局限性包括不能增加存储生成列，不能转换存储生成列为普通列，不能修改存储生成列的生成列表达式，以及不支持所有的 JSON 函数。
 ---
 
 # 生成列
-
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
 
 本文介绍生成列的概念以及用法。
 
@@ -23,7 +20,7 @@ aliases: ['/docs-cn/dev/generated-columns/','/docs-cn/dev/reference/sql/generate
 
 生成列的主要的作用之一：从 JSON 数据类型中解出数据，并为该数据建立索引。
 
-MySQL 5.7 及 TiDB 都不能直接为 JSON 类型的列添加索引，即不支持在如下表结构中的 `address_info` 上建立索引：
+MySQL 8.0 及 TiDB 都不能直接为 JSON 类型的列添加索引，即不支持在如下表结构中的 `address_info` 上建立索引：
 
 {{< copyable "sql" >}}
 
@@ -162,4 +159,5 @@ desc select a+1 from t where a+1=3;
 - 不能通过 `ALTER TABLE` 将存储生成列转换为普通列，也不能将普通列转换成存储生成列；
 - 不能通过 `ALTER TABLE` 修改存储生成列的生成列表达式；
 - 并未支持所有的 [JSON 函数](/functions-and-operators/json-functions.md)；
+- 不支持使用 [`NULLIF()` 函数](/functions-and-operators/control-flow-functions.md#nullif)，可以使用 [`CASE` 函数](/functions-and-operators/control-flow-functions.md#case)代替；
 - 目前仅当生成列是虚拟生成列时索引生成列替换规则有效，暂不支持将表达式替换为存储生成列，但仍然可以通过直接使用该生成列本身来使用索引。

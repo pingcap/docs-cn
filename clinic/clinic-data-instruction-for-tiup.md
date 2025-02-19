@@ -16,7 +16,7 @@ Clinic Server 是部署在云端的云服务，根据数据存储的位置不同
 
 ## TiDB 集群
 
-本节列出了 Diag 在使用 TiUP 部署的 TiDB 集群中能够采集的诊断数据类型。
+本节列出了 [Diag](https://github.com/pingcap/diag) 在使用 TiUP 部署的 TiDB 集群中能够采集的诊断数据类型。
 
 ### TiDB 集群信息
 
@@ -52,8 +52,8 @@ Clinic Server 是部署在云端的云服务，根据数据存储的位置不同
 | Error 日志 | `pd_stderr.log` | `--include=log` |
 | 配置文件 | `pd.toml` | `--include=config` |
 | 实时配置 | `config.json` | `--include=config` |
-| `tiup ctl:<cluster-version> pd -u http://${pd IP}:${PORT} store` 的输出结果 | `store.json` | `--include=config` |
-| `tiup ctl:<cluster-version> pd -u http://${pd IP}:${PORT} config placement-rules show` 的输出结果 | `placement-rule.json` | `--include=config` |
+| `tiup ctl:v<CLUSTER_VERSION> pd -u http://${pd IP}:${PORT} store` 的输出结果 | `store.json` | `--include=config` |
+| `tiup ctl:v<CLUSTER_VERSION> pd -u http://${pd IP}:${PORT} config placement-rules show` 的输出结果 | `placement-rule.json` | `--include=config` |
 
 ### TiFlash 诊断数据
 
@@ -84,7 +84,7 @@ Clinic Server 是部署在云端的云服务，根据数据存储的位置不同
 
 | 诊断数据类型 | 输出文件 | PingCAP Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 获取 TiDB 系统变量（默认不采集，采集需要额外提供数据库帐号） | `mysql.tidb.csv` | `--include=db_vars`（默认不采集） |
+| 获取 TiDB 系统变量（默认不采集，采集需要额外提供数据库账号） | `mysql.tidb.csv` | `--include=db_vars`（默认不采集） |
 | | `global_variables.csv` | `--include=db_vars`（默认不采集）|
 
 ### 集群节点的系统信息
@@ -112,7 +112,7 @@ Clinic Server 是部署在云端的云服务，根据数据存储的位置不同
 
 | 诊断数据类型 | 输出文件 | PingCAP Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 日志 | `m-master.log` | `--include=log` |
+| 日志 | `dm-master.log` | `--include=log` |
 | Error 日志 | `dm-master_stderr.log` | `--include=log` |
 | 配置文件 | `dm-master.toml` | `--include=config` |
 

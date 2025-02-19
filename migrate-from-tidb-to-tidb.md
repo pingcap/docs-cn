@@ -111,8 +111,8 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 > **注意：**
 >
+> - `BACKUP` 和 `RESTORE` 语句目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 > - 在生产集群中，关闭 GC 机制和备份操作会一定程度上降低集群的读性能，建议在业务低峰期进行备份，并设置合适的 `RATE_LIMIT` 限制备份操作对线上业务的影响。
->
 > - 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/backup-and-restore-overview.md#使用须知)。本文假设上下游集群版本相同。
 
 1. 关闭 GC。
@@ -143,6 +143,10 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
     +-------------------------+
     1 row in set (0.00 sec)
     ```
+
+    > **注意：**
+    >
+    > TiCDC 的 `gc-ttl` 默认为 24 小时。如果备份恢复耗时过长，默认的 `gc-ttl` 可能无法满足需求，从而导致后续的[增量同步任务](#第-3-步迁移增量数据)运行失败。为了避免这种情况，请在启动 TiCDC server 时根据实际需求调整 `gc-ttl` 的值。更多信息，请参考 [TiCDC 的 `gc-ttl` 是什么](/ticdc/ticdc-faq.md#ticdc-的-gc-ttl-是什么)。
 
 2. 备份数据。
 
@@ -225,12 +229,12 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
     在上游集群中，执行以下命令创建从上游到下游集群的同步链路：
 
     ```shell
-    tiup cdc cli changefeed create --pd=http://172.16.6.122:2379 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="upstream-to-downstream" --start-ts="431434047157698561"
+    tiup cdc cli changefeed create --server=http://172.16.6.122:8300 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="upstream-to-downstream" --start-ts="431434047157698561"
     ```
 
     以上命令中：
 
-    - `--pd`：实际的上游集群的地址
+    - `--server`：TiCDC 集群中任意一个节点的地址
     - `--sink-uri`：同步任务下游的地址
     - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 ^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$
     - `--start-ts`：TiCDC 同步的起点，需要设置为实际的备份时间点，也就是[第 2 步：迁移全量数据](/migrate-from-tidb-to-mysql.md#第-2-步迁移全量数据)中 “备份数据” 提到的 BackupTS
@@ -274,7 +278,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
     ```shell
     # 停止旧集群到新集群的 changefeed
-    tiup cdc cli changefeed pause -c "upstream-to-downstream" --pd=http://172.16.6.122:2379
+    tiup cdc cli changefeed pause -c "upstream-to-downstream" --server=http://172.16.6.122:8300
 
     # 查看 changefeed 状态
     tiup cdc cli changefeed list
@@ -297,7 +301,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 2. 创建下游到上游集群的 changefeed。由于此时上下游数据是一致的，且没有新数据写入，因此可以不指定 start-ts，默认为当前时间：
 
     ```shell
-    tiup cdc cli changefeed create --pd=http://172.16.6.125:2379 --sink-uri="mysql://root:@172.16.6.122:4000" --changefeed-id="downstream -to-upstream"
+    tiup cdc cli changefeed create --server=http://172.16.6.125:8300 --sink-uri="mysql://root:@172.16.6.122:4000" --changefeed-id="downstream -to-upstream"
     ```
 
 3. 将写业务迁移到下游集群，观察一段时间后，等新集群表现稳定，便可以弃用原集群。

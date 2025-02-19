@@ -8,6 +8,55 @@ aliases: ['/docs-cn/dev/faq/sql-faq/']
 
 本文档介绍 TiDB 中常见的 SQL 操作问题。
 
+## TiDB 是否支持二级键？
+
+支持。你可以在具有唯一[二级索引](/develop/dev-guide-create-secondary-indexes.md)的非主键列上设置 [`NOT NULL` 约束](/constraints.md#非空约束)。在这种情况下，该列用作二级键。
+
+## TiDB 在对大表执行 DDL 操作时，性能表现如何？
+
+TiDB 在对大表执行 DDL 操作时，一般不会有什么问题。TiDB 支持在线 DDL 操作，且这些 DDL 操作不会阻塞 DML 操作。
+
+对于添加列、删除列或删除索引等 DDL 操作，TiDB 可以快速完成这些操作。
+
+对于添加索引等 DDL 操作，TiDB 需要进行回填 (backfill) 操作，这个过程需要较长的时间（取决于表的大小）和额外的资源消耗。对在线业务的影响可调节。TiDB 可以通过多线程进行 backfill，资源消耗可通过以下系统变量进行设置：
+
+- [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt)
+- [`tidb_ddl_reorg_priority`](/system-variables.md#tidb_ddl_reorg_priority)
+- [`tidb_ddl_error_count_limit`](/system-variables.md#tidb_ddl_error_count_limit)
+- [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size)
+
+## 如何选择正确的查询计划？是否需要使用优化器提示？还是可以使用提示？
+
+TiDB 包含一个基于成本的优化器。在大多数情况下，优化器会为你选择最优的查询计划。如果优化器工作欠佳，你可以使用[优化器提示](/optimizer-hints.md)来干预优化器。
+
+另外，你还可以使用[执行计划绑定](/sql-plan-management.md#执行计划绑定-sql-binding)来为特定的 SQL 语句固定查询计划。
+
+## 如何阻止特定的 SQL 语句执行（或者将某个 SQL 语句加入黑名单）？
+
+对于 v7.5.0 及以上版本，你可以使用 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md) 语句将特定的 SQL 查询加入黑名单。具体使用方法参见[管理资源消耗超出预期的查询 (Runaway Queries)](/tidb-resource-control-runaway-queries.md#query-watch-语句说明)。
+
+对于 v7.5.0 之前版本，你可以使用 [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) Hint 来创建 [SQL 绑定](/sql-plan-management.md#执行计划绑定-sql-binding)，将特定语句的执行时间限制为一个较小的值（例如 1ms）。这样，语句就会在超过限制时自动终止。
+
+例如，要阻止执行 `SELECT * FROM t1, t2 WHERE t1.id = t2.id`，可以使用以下 SQL 绑定将语句的执行时间限制为 1ms：
+
+```sql
+CREATE GLOBAL BINDING for
+    SELECT * FROM t1, t2 WHERE t1.id = t2.id
+USING
+    SELECT /*+ MAX_EXECUTION_TIME(1) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
+> **注意：**
+>
+> `MAX_EXECUTION_TIME` 的精度大约为 100ms。在 TiDB 终止 SQL 语句之前，TiKV 中的任务可能已经开始执行。为了减少这种情况下 TiKV 的资源消耗，建议将系统变量 [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-从-v540-版本开始引入) 的值设置为 `ON`。
+
+删除该 SQL 绑定可以移除限制。
+
+```sql
+DROP GLOBAL BINDING for
+    SELECT * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
 ## TiDB 对哪些 MySQL variables 兼容？
 
 详细可参考[系统变量](/system-variables.md)。
@@ -74,9 +123,11 @@ MySQL 中，返回结果的顺序可能较为固定，因为查询是通过单�
 3 rows in set (0.00 sec)
 ```
 
+在 TiDB 中，你还可以使用系统变量 [`tidb_enable_ordered_result_mode`](/system-variables.md#tidb_enable_ordered_result_mode) 来指定是否对最终的输出结果进行自动排序。
+
 ## TiDB 是否支持 `SELECT FOR UPDATE`？
 
-支持。当 TiDB 使用悲观锁（自 TiDB v3.0 起默认使用）时，TiDB 中 `SELECT FOR UPDATE` 的行为与 MySQL 中的基本一致。
+支持。当 TiDB 使用悲观锁（自 TiDB v3.0.8 起默认使用）时，TiDB 中 `SELECT FOR UPDATE` 的行为与 MySQL 中的基本一致。
 
 当 TiDB 使用乐观锁时，`SELECT FOR UPDATE` 不会在事务启动时对数据加锁，而是在提交事务时检查冲突。如果检查出冲突，会回滚待提交的事务。
 
@@ -84,7 +135,7 @@ MySQL 中，返回结果的顺序可能较为固定，因为查询是通过单�
 
 ## TiDB 的 codec 能保证 UTF8 的字符串是 memcomparable 的吗？我们的 key 需要支持 UTF8，有什么编码建议吗？
 
-TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 memcomparable 格式的。
+TiDB 的默认字符集是 `utf8mb4`，字符串是 memcomparable 格式。关于字符集的更多信息，参见[字符集和排序规则](/character-set-and-collation.md)。
 
 ## 一个事务中的语句数量最大是多少？
 
@@ -103,7 +154,7 @@ TiDB 支持在会话或全局作用域上修改 [`sql_mode`](/system-variables.m
 - 对全局作用域变量的修改，设置后将作用于集群中的其它服务器，并且重启后更改依然有效。因此，你无需在每台 TiDB 服务器上都更改 `sql_mode` 的值。
 - 对会话作用域变量的修改，设置后只影响当前会话，重启后更改消失。
 
-## 用 Sqoop 批量写入 TiDB 数据，虽然配置了 `--batch` 选项，但还是会遇到 `java.sql.BatchUpdateExecption:statement count 5001 exceeds the transaction limitation` 的错误，该如何解决？
+## 用 Sqoop 批量写入 TiDB 数据，虽然配置了 `--batch` 选项，但还是会遇到 `java.sql.BatchUpdateException:statement count 5001 exceeds the transaction limitation` 的错误，该如何解决？
 
 问题原因：在 Sqoop 中，`--batch` 是指每个批次提交 100 条 statement，但是默认每个 statement 包含 100 条 SQL 语句，所以此时 100 * 100 = 10000 条 SQL 语句，超出了 TiDB 的事务限制 5000 条。
 
@@ -134,7 +185,7 @@ TiDB 支持在会话或全局作用域上修改 [`sql_mode`](/system-variables.m
 
 ## 删除数据后查询速度为何会变慢？
 
-删除大量数据后，会有很多无用的 key 存在，影响查询效率。要解决该问题，可以尝试开启 [Region Merge](/best-practices/massive-regions-best-practices.md#方法五开启-region-merge) 功能，具体看参考[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)中的删除数据部分。
+删除大量数据后，会有很多无用的 key 存在，影响查询效率。要解决该问题，可以尝试开启 [Region Merge](/best-practices/massive-regions-best-practices.md#方法五开启-region-merge) 功能，具体可参考[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)中的删除数据部分。
 
 ## 对数据做删除操作之后，空间回收比较慢，如何处理？
 
@@ -152,40 +203,73 @@ TiDB 中的 `SHOW PROCESSLIST` 与 MySQL 中的 `SHOW PROCESSLIST` 显示内容�
 
 TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语句的优先级。优先级包括：
 
-- HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
-- LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
+- `HIGH_PRIORITY`：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
+- `LOW_PRIORITY`：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
+- `DELAYED`：该语句为正常优先级语句，TiDB 不强制改变这条语句的优先级，与 `tidb_force_priority` 设置为 `NO_PRIORITY` 相同
+
+> **注意：**
+>
+> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
 
 以上两种参数可以结合 TiDB 的 DML 语言进行使用，使用方法举例如下：
 
 1. 通过在数据库中写 SQL 的方式来调整优先级：
 
-    {{< copyable "sql" >}}
-
     ```sql
-    select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
-    insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
-    delete HIGH_PRIORITY | LOW_PRIORITY from table_name;
-    update HIGH_PRIORITY | LOW_PRIORITY table_reference set assignment_list where where_condition;
-    replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
+    SELECT HIGH_PRIORITY | LOW_PRIORITY | DELAYED COUNT(*) FROM table_name;
+    INSERT HIGH_PRIORITY | LOW_PRIORITY | DELAYED INTO table_name insert_values;
+    DELETE HIGH_PRIORITY | LOW_PRIORITY | DELAYED FROM table_name;
+    UPDATE HIGH_PRIORITY | LOW_PRIORITY | DELAYED table_reference SET assignment_list WHERE where_condition;
+    REPLACE HIGH_PRIORITY | LOW_PRIORITY | DELAYED INTO table_name;
     ```
 
-2. 全表扫会自动调整为低优先级，analyze 也是默认低优先级。
+2. 全表扫会自动调整为低优先级，[`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 也是默认低优先级。
 
-## 在 TiDB 中 auto analyze 的触发策略是怎样的？
+## 在 TiDB 中 `auto analyze` 的触发策略是怎样的？
 
-触发策略：如果一张新表达到 1000 条记录，并且在 1 分钟内没有写入，会自动触发。
+当一张表或分区表的单个分区达到 1000 条记录，且表或分区的（修改数/当前总行数）比例大于 [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) 的时候，会自动触发 [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 语句。
 
-当表的（修改数/当前总行数）比例大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启触发 auto analyze。为了保险起见，在开启 auto analyze 的时候，`tidb_auto_analyze_ratio` 的最小值为 0.3。但是该变量值不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
+`tidb_auto_analyze_ratio` 的默认值为 `0.5`，即默认开启触发 `auto analyze`。注意该变量值不建议大于等于 [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio)（默认值为 `0.8`），否则优化器可能会使用 pseudo 统计信息。TiDB 从 v5.3.0 开始引入 [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) 变量，当设置为 `OFF` 时，即使统计信息过期也不会使用 pseudo 统计信息。
 
-你可以用系统变量 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 关闭 auto analyze。
+你可以用系统变量 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 关闭 `auto analyze`。
 
 ## 可以使用 Optimizer Hints 控制优化器行为吗？
 
 在 TiDB 中，你可以用多种方法控制查询优化器的默认行为，包括使用 [Optimizer Hints](/optimizer-hints.md) 和 [SQL 执行计划管理 (SPM)](/sql-plan-management.md)。基本用法同 MySQL 中的一致，还包含若干 TiDB 特有的用法，例如：`select column_name from table_name use index（index_name）where where_condition;`。
 
-## 触发 Information schema is changed 错误的原因？
+## DDL 执行
 
-TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，遇到正在执行中的 DDL 操作就可能会报 `Information schema is changed` 的错误。
+本节列出了 DDL 语句执行的相关问题。DDL 执行原理的详细说明，参见 [TiDB 中 DDL 执行原理及最佳实践](/ddl-introduction.md)。
+
+### 各类 DDL 操作的预估耗时是多长？
+
+假设 DDL 操作没有被阻塞，各个 TiDB server 能够正常更新 Schema 版本，DDL Owner 节点正常运行。在此情况下，各类 DDL 操作的预估耗时如下：
+
+| DDL 操作类型                                                                                                                                                                    | 预估耗时                   |
+|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----------------------|
+| Reorg DDL：例如 `ADD INDEX`、`MODIFY COLUMN`（Reorg 类型的数据更改）                                                                                                                      | 取决于数据量、系统负载以及 DDL 参数的设置 |
+| General DDL（除 Reorg DDL 外的 DDL 类型）：例如 `CREATE DATABASE`、`CREATE TABLE`、`DROP DATABASE`、`DROP TABLE`、`TRUNCATE TABLE`、`ALTER TABLE ADD`、`ALTER TABLE DROP`、`MODIFY COLUMN`（只更改元数据）、`DROP INDEX` | 1 秒左右                   |
+
+> **注意：**
+>
+> 以上为各类操作的预估耗时，请以实际操作耗时为准。
+
+## 执行 DDL 会慢的可能原因
+
+- 在一个用户会话中，DDL 语句之前有非 auto-commit 的 DML 语句，并且该 DML 语句的提交操作比较慢，会导致 DDL 语句执行慢。即执行 DDL 语句前，会先提交之前没有提交的 DML 语句。
+- 多个 DDL 语句一起执行的时候，后面的几个 DDL 语句可能会比较慢，因为可能需要排队等待。排队场景包括：
+    - 同一类型 DDL 语句需要排队（例如 `CREATE TABLE` 和 `CREATE DATABASE` 都是 General DDL，两个操作同时执行时，需要排队）。自 TiDB v6.2.0 起，支持并行 DDL 语句，但为了避免 DDL 使用过多 TiDB 的计算资源，也有并发度限制，因此会有一定的排队情况。
+    - 对同一张表上执行的 DDL 操作存在依赖关系，后面的 DDL 语句需要等待前面的 DDL 操作完成。
+- 在集群正常启动后，第一个 DDL 操作的执行时间可能会比较久，可能是因为 DDL 模块在进行 DDL Owner 的选举。
+
+- 终止 TiDB 时，TiDB 不能与 PD 正常通信（包括停电的情况），或者用 `kill -9` 命令终止 TiDB 导致 TiDB 没有及时从 PD 清理注册数据。
+- 集群中某个 TiDB 与 PD 或者 TiKV 之间发生通信问题，即 TiDB 不能及时获取最新版本信息。
+
+### 触发 Information schema is changed 错误的原因？
+
+TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schema` 版本来处理该 SQL 语句，而且 TiDB 支持在线异步变更 DDL。那么，在执行 DML 的时候可能有 DDL 语句也在执行，而你需要确保每个 SQL 语句在同一个 `schema` 上执行。所以当执行 DML 时，如果遇到正在执行中的 DDL 操作，TiDB 可能会报 `Information schema is changed` 的错误。
+
+从 v6.4.0 开始，TiDB 实现了[元数据锁机制](/metadata-lock.md)，可以让 DML 语句的执行和 DDL Schema 变更协同进行，可以避免大部分 `Information schema is changed` 错误的发生。
 
 报错的可能原因如下：
 
@@ -202,18 +286,44 @@ TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语�
 > + 对于每个 DDL 操作，`schema` 版本变更的数量与对应 `schema state` 变更的次数一致。
 > + 不同的 DDL 操作版本变更次数不一样。例如，`create table` 操作会有 1 次 `schema` 版本变更；`add column` 操作有 4 次 `schema` 版本变更。
 
-## 触发 Information schema is out of date 错误的原因？
+### 触发 Information schema is out of date 错误的原因？
 
 当执行 DML 时，TiDB 超过一个 DDL lease 时间（默认 45s）没能加载到最新的 schema 就可能会报 `Information schema is out of date` 的错误。遇到此错的可能原因如下：
 
 - 执行此 DML 的 TiDB 被 kill 后准备退出，且此 DML 对应的事务执行时间超过一个 DDL lease，在事务提交时会报这个错误。
 - TiDB 在执行此 DML 时，有一段时间内连不上 PD 或者 TiKV，导致 TiDB 超过一个 DDL lease 时间没有 load schema，或者导致 TiDB 断开与 PD 之间带 keep alive 设置的连接。
 
-## 高并发情况下执行 DDL 时报错的原因？
+### 高并发情况下执行 DDL 时报错的原因？
 
 高并发场景下执行 DDL 语句（比如批量建表）时，极少部分的 DDL 语句可能会由于并发执行时 key 冲突而执行失败。
 
 并发执行 DDL 语句时，建议将 DDL 语句数量保持在 20 以下，否则你需要在应用端重试失败的 DDL 语句。
+
+### DDL 执行被阻塞的原因
+
+在 TiDB v6.2.0 前，TiDB 按照 DDL 语句类型将 DDL 分配到两个先入先出的队列中，即 Reorg DDL 进入 Reorg 队列中，General DDL 进入 general 队列中。由于先入先出以及同一张表上的 DDL 语句需要串行执行，多个 DDL 语句在执行过程中可能会出现阻塞的问题。
+
+例如对于以下 DDL 语句：
+
+- DDL 1：`CREATE INDEX idx on t(a int);`
+- DDL 2：`ALTER TABLE t ADD COLUMN b int;`
+- DDL 3：`CREATE TABLE t1(a int);`
+
+由于队列先入先出的限制，DDL 3 需要等待 DDL 2 执行。同时又因为同一张表上的 DDL 语句需要串行执行，DDL 2 需要等待 DDL 1 执行。因此，DDL 3 需要等待 DDL 1 先执行完，即使它们操作在不同的表上。
+
+在 TiDB v6.2.0 及之后的版本中，TiDB DDL 模块采用了并发框架。在并发的框架下，不再有同一个队列先进先出的问题，而是从所有 DDL 任务中选出可以执行的 DDL 来执行。并且对 Reorg worker 的数量进行了扩充，大概为节点 `CPU/4`，这使得在并发框架中 TiDB 可以同时为多张表建索引。
+
+无论是新集群还是从旧版本升级的集群，在 TiDB v6.2 及以上版本中，TiDB 都会自动使用并发框架，用户无需进行调整。
+
+### 定位 DDL 执行卡住的问题
+
+1. 先排除 DDL 语句通常执行慢的可能原因。
+2. 使用以下任一方法找出 DDL owner 节点：
+    + 通过 `curl http://{TiDBIP}:10080/info/all` 获取当前集群的 Owner
+    + 通过监控 **DDL** > **DDL META OPM** 查看某个时间段的 Owner
+
+- 如果 Owner 不存在，尝试手动触发 Owner 选举：`curl -X POST http://{TiDBIP}:10080/ddl/owner/resign`。
+- 如果 Owner 存在，导出 Goroutine 堆栈并检查可能卡住的地方。
 
 ## SQL 优化
 
@@ -223,7 +333,7 @@ TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语�
 
 ### 统计信息收集
 
-详细解读[统计信息](/statistics.md)。
+详细解读[常规统计信息](/statistics.md)。
 
 ### Count 如何加速？
 
@@ -264,7 +374,7 @@ RUNNING_JOBS: ID:121, Type:add index, State:running, SchemaState:write reorganiz
 
 ### TiDB 是否支持基于 COST 的优化 (CBO)？如果支持，实现到什么程度？
 
-是的，TiDB 基于成本的优化器 (CBO) 对代价模型、统计信息进行持续优化。除此之外，TiDB 还支持 hash join、soft-merge join 等 join 算法。
+是的，TiDB 基于成本的优化器 (CBO) 对代价模型、统计信息进行持续优化。除此之外，TiDB 还支持 hash join、sort-merge join 等 join 算法。
 
 ### 如何确定某张表是否需要做 analyze ？
 
@@ -288,9 +398,17 @@ ID 没什么规律，只要是唯一就行。不过在生成执行计划时，�
 
 详情参考 [TiDB 配置参数](/command-line-flags-for-tidb-configuration.md)。
 
-### 如何打散热点
+### 如何避免热点问题并实现负载均衡？TiDB 中是否有热分区或热范围问题？
 
-TiDB 中以 Region 分片来管理数据库，通常来讲，TiDB 的热点指的是 Region 的读写访问热点。而 TiDB 中对于非整数主键或没有主键的表，可以通过设置 `SHARD_ROW_ID_BITS` 属性来适度分解 Region 分片，以达到打散 Region 热点的效果。详情可参考 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 中的介绍。
+要了解热点问题的场景，请参考[常见热点问题](/troubleshoot-hot-spot-issues.md#常见热点场景)。TiDB 的以下特性旨在帮助解决热点问题：
+
+- [`SHARD_ROW_ID_BITS`](/troubleshoot-hot-spot-issues.md#使用-shard_row_id_bits-处理热点表) 属性。设置该属性后，行 ID 会被打散并写入多个 Region，以缓解写入热点问题。
+- [`AUTO_RANDOM`](/troubleshoot-hot-spot-issues.md#使用-auto_random-处理自增主键热点表) 属性，用于解决自增主键带来的热点问题。
+- [Coprocessor Cache](/coprocessor-cache.md)，针对小表的读热点问题。
+- [Load Base Split](/configure-load-base-split.md)，针对因 Region 访问不均衡（例如小表全表扫）而导致的热点问题。
+- [缓存表](/cached-tables.md)，针对被频繁访问但更新较少的小热点表。
+
+如果你遇到因热点引起的性能问题，可参考[处理热点问题](/troubleshoot-hot-spot-issues.md)。
 
 ### TiKV 性能参数调优
 

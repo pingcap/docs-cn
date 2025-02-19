@@ -1,6 +1,7 @@
 ---
 title: TiDB 产品常见问题
 aliases: ['/docs-cn/dev/faq/tidb-faq/','/docs-cn/dev/faq/tidb/']
+summary: TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库，支持在线事务处理与在线分析处理，具备水平扩容、高可用、实时 HTAP、云原生的特性。TiDB 不是基于 MySQL 开发的，而是由 PingCAP 团队完全自主开发的产品。TiDB 易用性很高，支持绝大部分 MySQL 8.0 的语法，但不支持触发器、存储过程、自定义函数等。TiDB 支持分布式事务，兼容 MySQL Client/Driver 的编程语言，支持其他存储引擎，如 TiKV、UniStore 和 MockTiKV。获取 TiDB 知识的途径包括官方文档、官方博客、AskTUG 社区论坛和 PingCAP Education。用户名长度限制为 32 个字符，最大列数为 1017，单行大小不超过 6MB。TiDB 不支持 XA，但支持对列存储引擎的高并发 INSERT 或 UPDATE 操作。
 ---
 
 # TiDB 产品常见问题
@@ -9,7 +10,7 @@ aliases: ['/docs-cn/dev/faq/tidb-faq/','/docs-cn/dev/faq/tidb/']
 
 ### 1.1.1 TiDB 是什么？
 
-[TiDB](https://github.com/pingcap/tidb) 是 [PingCAP](https://pingcap.com/about-cn/) 公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 的融合型分布式数据库产品，具备水平扩容或者缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 5.7 协议和 MySQL 生态等重要特性。目标是为用户提供一站式 OLTP (Online Transactional Processing)、OLAP (Online Analytical Processing)、HTAP 解决方案。TiDB 适合高可用、强一致要求较高、数据规模较大等各种应用场景。更多详细信息，请参阅 [TiDB 简介](/overview.md)。
+[TiDB](https://github.com/pingcap/tidb) 是 [PingCAP](https://pingcap.com/about-cn/) 公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 的融合型分布式数据库产品，具备水平扩容或者缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等重要特性。目标是为用户提供一站式 OLTP (Online Transactional Processing)、OLAP (Online Analytical Processing)、HTAP 解决方案。TiDB 适合高可用、强一致要求较高、数据规模较大等各种应用场景。更多详细信息，请参阅 [TiDB 简介](/overview.md)。
 
 ### 1.1.2 TiDB 整体架构
 
@@ -31,7 +32,7 @@ TiDB 使用起来很简单，可以将 TiDB 集群当成 MySQL 来用。你可�
 
 ### 1.1.6 TiDB 和 MySQL 兼容性如何？
 
-TiDB 支持绝大部分 MySQL 5.7 的语法，但目前还不支持触发器、存储过程、自定义函数、外键约束等。详情参见[与 MySQL 兼容性对比](/mysql-compatibility.md)。
+TiDB 支持绝大部分 MySQL 8.0 的语法，但目前还不支持触发器、存储过程、自定义函数等。详情参见[与 MySQL 兼容性对比](/mysql-compatibility.md)。
 
 ### 1.1.7 TiDB 支持分布式事务吗？
 
@@ -81,13 +82,29 @@ Usage of ./bin/tidb-server:
 
 在 TiDB 中，用户名最长为 32 个字符。
 
-### 1.1.12 TiDB 是否支持 XA？
+### 1.1.12 TiDB 中列数和行大小的限制是多少？
 
-虽然 TiDB 的 JDBC 驱动用的就是 MySQL JDBC (Connector/J)，但是当使用 Atomikos 的时候，数据源要配置成类似这样的配置：`type="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"`。MySQL JDBC XADataSource 连接 TiDB 的模式目前是不支持的。MySQL JDBC 中配置好的 XADataSource 模式，只对 MySQL 数据库起作用（DML 去修改 redo 等）。
+- TiDB 中默认的最大列数为 1017。你可以调整这个限制，最大可调整到 4096 列。
+- TiDB 中默认单行大小不超过 6 MB。你可以调整这个限制，最大可调整到 120 MB。
+
+更多信息，请参考 [TiDB 限制](/tidb-limitations.md)。
+
+### 1.1.13 TiDB 是否支持 XA？
+
+虽然 TiDB 的 JDBC 驱动用的就是 MySQL Connector/J，但是当使用 Atomikos 的时候，数据源要配置成类似这样的配置：`type="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"`。MySQL JDBC XADataSource 连接 TiDB 的模式目前是不支持的。MySQL JDBC 中配置好的 XADataSource 模式，只对 MySQL 数据库起作用（DML 去修改 redo 等）。
 
 Atomikos 配好两个数据源后，JDBC 驱动都要设置成 XA 模式，然后 Atomikos 在操作 TM 和 RM (DB) 的时候，会通过数据源的配置，发起带有 XA 指令到 JDBC 层。JDBC 层 XA 模式启用的情况下，会对 InnoDB（如果是 MySQL 的话）下发操作一连串 XA 逻辑的动作，包括 DML 去变更 redo log 等，就是两阶段递交的那些操作。TiDB 目前的引擎版本中，没有对上层应用层 JTA/XA 的支持，不解析这些 Atomikos 发过来的 XA 类型的操作。
 
 MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiDB 本身就通过 Google 的 Percolator 事务模型支持分布式事务，性能稳定性比 XA 要高出很多，所以不会也不需要支持 XA。
+
+### 1.1.14 TiDB 如何在不影响性能的情况下支持对列存储引擎 (TiFlash) 的高并发 `INSERT` 或 `UPDATE` 操作？
+
+- [TiFlash](/tiflash/tiflash-overview.md) 引入了 DeltaTree 这种特殊结构来处理列存引擎的修改。
+- TiFlash 作为 Raft Group 中的 Learner 角色，不参与 log commit 选举，也不会写入数据。这意味着 DML 操作不需要等待 TiFlash 的确认，所以 TiFlash 不会影响 OLTP 的性能。另外，TiFlash 和 TiKV 分开部署在不同的实例上，不会相互影响。
+
+### 1.1.15 TiFlash 提供什么样的一致性保证？
+
+TiFlash 默认保持数据强一致性。Raft Learner 流程会更新数据。此外 TSO 检查可以确保查询中的数据与事务完全一致。更多信息，请参考[异步复制](/tiflash/tiflash-overview.md#异步复制)和[一致性](/tiflash/tiflash-overview.md#一致性)。
 
 ## 1.2 TiDB 原理
 

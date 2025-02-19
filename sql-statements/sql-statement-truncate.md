@@ -12,17 +12,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-truncate/','/docs-cn/dev/re
 
 ## 语法图
 
-**TruncateTableStmt:**
+```ebnf+diagram
+TruncateTableStmt ::=
+    "TRUNCATE" ( "TABLE" )? TableName
 
-![TruncateTableStmt](/media/sqlgram/TruncateTableStmt.png)
-
-**OptTable:**
-
-![OptTable](/media/sqlgram/OptTable.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
+TableName ::=
+    (Identifier ".")? Identifier
+```
 
 ## 示例
 
@@ -109,7 +105,7 @@ Query OK, 0 rows affected (0.11 sec)
 
 ## MySQL 兼容性
 
-`TRUNCATE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`TRUNCATE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
 
 ## 另请参阅
 

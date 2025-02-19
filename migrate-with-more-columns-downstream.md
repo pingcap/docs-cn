@@ -36,7 +36,7 @@ DM 同步上游的 binlog 时，会尝试使用下游当前的表结构来解析
 ```sql
 # 上游表结构
 CREATE TABLE `messages` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   PRIMARY KEY (`id`)
 )
 ```
@@ -46,7 +46,7 @@ CREATE TABLE `messages` (
 ```sql
 # 下游表结构
 CREATE TABLE `messages` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `message` varchar(255) DEFAULT NULL, # 下游比上游多出的列。
   PRIMARY KEY (`id`)
 )
@@ -61,7 +61,7 @@ CREATE TABLE `messages` (
     ```sql
     # 上游表结构
     CREATE TABLE `messages` (
-    `id` int(11) NOT NULL,
+    `id` int NOT NULL,
     PRIMARY KEY (`id`)
     )
     ```
@@ -107,5 +107,5 @@ CREATE TABLE `messages` (
     {{< copyable "shell-regular" >}}
 
     ```
-    tiup dmctl --master-addr ${advertise-addr} query-status resume-task ${task-name}
+    tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
     ```

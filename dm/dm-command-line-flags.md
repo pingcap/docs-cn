@@ -76,6 +76,12 @@ aliases: ['/docs-cn/tidb-data-migration/dev/command-line-flags/']
 - 默认值为 `"http://127.0.0.1:8291"`
 - 必选参数
 
+### `--secret-key-path`
+
+- 自定义加解密密钥路径
+- 默认值为 `""`
+- 可选参数
+
 ## DM-worker
 
 ### `--advertise-addr`
@@ -133,15 +139,3 @@ aliases: ['/docs-cn/tidb-data-migration/dev/command-line-flags/']
 - dmctl 要连接的集群的任意 DM-master 节点的 `{advertise-addr}`
 - 默认值为 `""`
 - 需要与 DM-master 交互时为必选参数
-
-### `--encrypt`
-
-- 将明文数据库密码加密成密文
-- 默认值为 `""`
-- 指定该参数时，仅用于加密明文而不会与 DM-master 交互
-
-### `--decrypt`
-
-- 将使用 dmctl 加密过的密文解密为明文
-- 默认值为 `""`
-- 指定该参数时，仅用于解密密文而不会与 DM-master 交互

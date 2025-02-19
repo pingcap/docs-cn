@@ -1,5 +1,6 @@
 ---
 title: tiup cluster rename
+summary: tiup cluster rename 命令用于更改部署集群后的集群名。如果要更改集群名，可以使用 tiup cluster rename <old-cluster-name> <new-cluster-name> 命令。注意：如果配置了 grafana_servers 的 dashboard_dir 字段，需要更新本地 dashboards 目录中的 *.json 文件的 datasource 字段的值，并执行 tiup cluster reload -R grafana 命令。执行日志将输出到 tiup-cluster。
 ---
 
 # tiup cluster rename
@@ -34,4 +35,6 @@ tiup cluster rename <old-cluster-name> <new-cluster-name> [flags]
 
 tiup-cluster 的执行日志。
 
-[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)
+## 另请参阅
+
+- [TiUP 常见运维操作](/maintain-tidb-using-tiup.md)

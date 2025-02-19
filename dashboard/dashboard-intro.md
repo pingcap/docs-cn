@@ -1,6 +1,7 @@
 ---
 title: TiDB Dashboard 介绍
 aliases: ['/docs-cn/dev/dashboard/dashboard-intro/']
+summary: TiDB Dashboard 是 TiDB 4.0 版本后提供的图形化界面，用于监控和诊断集群。它内置于 TiDB 的 PD 组件中，无需独立部署。可以查看集群整体运行概况、组件及主机运行状态、集群读写流量分布、SQL 查询的执行信息、耗时较长的 SQL 语句执行信息、诊断集群问题并生成报告、查询所有组件日志、预估资源管控容量、收集分析各个组件的性能数据。
 ---
 
 # TiDB Dashboard 介绍
@@ -59,12 +60,14 @@ TiDB Dashboard 在 GitHub 上[开源](https://github.com/pingcap-incubator/tidb-
 
 参阅[日志搜索页面](/dashboard/dashboard-log-search.md)了解详情。
 
+## 预估资源管控容量
+
+为使用[资源管控 (Resource Control)](/tidb-resource-control-ru-groups.md) 特性实现资源隔离，集群管理员可以定义资源组 (Resource Group)，通过资源组限定配额。
+
+在进行资源规划之前，你需要了解集群的整体容量。参阅[资源管控页面](/dashboard/dashboard-resource-manager.md)了解详情。
+
 ## 收集分析各个组件的性能数据
 
 高级调试功能：无需第三方工具，在线地对各个组件进行性能分析，剖析组件实例在分析时间段内执行的各种内部操作及比例。
 
 参阅[实例性能分析页面](/dashboard/dashboard-profiling.md)了解详情。
-
-> **注意：**
->
-> TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
