@@ -51,7 +51,7 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
                   └─3358 /usr/bin/pulseaudio --daemonize=no --log-target=journal
         ```
 
-    3. 执行 `systemctl --user`。如果没有报错，说明 `systemd` user 模式已经正常启动。
+    3. 执行 `systemctl --user`。如果没有报错，说明 `systemd user` 模式已正常启动。
 
 3. 使用 `root` 用户执行以下命令，为 systemd 用户 `tidb` 启用驻留。
 
@@ -73,7 +73,7 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
    
 2. 编辑拓扑文件。
 
-    相比以往的模式，使用 no-sudo 模式的 TiUP 时，需要在 `topology.yaml` 的 `global` 模块中新增一行 `systemd_mode: "user"`。该 `systemd_mode` 参数用于设置是否使用 `systemd user` 模式。如果不设置该参数，其默认值为 `system`，表示需要使用 sudo 权限。
+    相比以往的模式，使用 no-sudo 模式的 TiUP 时，需要在 `topology.yaml` 的 `global` 模块中新增一行 `systemd_mode: "user"`。`systemd_mode` 参数用于设置是否使用 `systemd user` 模式。如果不设置该参数，其默认值为 `system`，表示需要使用 sudo 权限。
     
     此外，由于 no-sudo 模式下，普通用户 `tidb` 没有权限使用 `/data` 目录作为 `deploy_dir` 和 `data_dir`，因此，你需要选择一个普通用户可以访问的路径。以下示例使用了相对路径，最终使用的路径为 `/home/tidb/data/tidb-deploy` 和 `/home/tidb/data/tidb-data`。拓扑文件的其余部分与旧版本一致。
 
