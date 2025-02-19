@@ -27,6 +27,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 
 ## Driver
 
+<<<<<<< HEAD
 <table>
    <thead>
       <tr>
@@ -182,6 +183,31 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
       </tr>
    </tbody>
 </table>
+=======
+| 编程语言 | 驱动 | 最新已测试版本 | 支持等级 | TiDB 适配器 | 教程 |
+|----------|--------|-----------------------|---------------|--------------|----------|
+| Go | [go-sql-driver/mysql](https://github.com/go-sql-driver/mysql) | v1.6.0 | Full | N/A | [使用 Go-MySQL-Driver 连接到 TiDB](/develop/dev-guide-sample-application-golang-sql-driver.md) |
+| Java | [MySQL Connector/J](https://dev.mysql.com/downloads/connector/j/) | 8.0 | Full | [pingcap/mysql-connector-j](/develop/dev-guide-choose-driver-or-orm.md#java-drivers) <br/> [pingcap/tidb-loadbalance](/develop/dev-guide-choose-driver-or-orm.md#java-客户端负载均衡) | [使用 JDBC 连接到 TiDB](/develop/dev-guide-sample-application-java-jdbc.md) |
+
+## ORM
+
+| 编程语言 | ORM 框架 | 最新已测试版本 | 支持等级 | TiDB 适配器 | 教程 |
+|-------------------------|-------------------------------------------|-----------------------|-------------|--------------|----------|
+| Go                      | [gorm](https://github.com/go-gorm/gorm)   | v1.23.5               | Full      | N/A           | [使用 GORM 连接到 TiDB](/develop/dev-guide-sample-application-golang-gorm.md) |
+| Go                      | [beego](https://github.com/beego/beego)   | v2.0.3                | Full      | N/A           | N/A |
+| Go                      | [upper/db](https://github.com/upper/db)   | v4.5.2                | Full      | N/A           | N/A |
+| Go                      | [xorm](https://gitea.com/xorm/xorm)       | v1.3.1                | Full      | N/A           | N/A |
+| Java                    | [Hibernate](https://hibernate.org/orm/)   | 6.1.0.Final           | Full      | N/A           | [使用 Hibernate 连接到 TiDB](/develop/dev-guide-sample-application-java-hibernate.md) |
+| Java                    | [MyBatis](https://mybatis.org/mybatis-3/) | v3.5.10               | Full      | N/A           | [使用 MyBatis 连接到 TiDB](/develop/dev-guide-sample-application-java-mybatis.md) |
+| Java                    | [Spring Data JPA](https://spring.io/projects/spring-data-jpa/) | 2.7.2 | Full | N/A           | [使用 Spring Boot 连接到 TiDB](/develop/dev-guide-sample-application-java-spring-boot.md) |
+| Java                    | [jOOQ](https://github.com/jOOQ/jOOQ)      | v3.16.7 (Open Source) | Full      | N/A           | N/A |
+| Ruby                    | [Active Record](https://guides.rubyonrails.org/active_record_basics.html) | v7.0 | Full | N/A | [使用 Rails 框架和 ActiveRecord ORM 连接到 TiDB](/develop/dev-guide-sample-application-ruby-rails.md) |
+| JavaScript / TypeScript | [Sequelize](https://sequelize.org/)       | v6.20.1               | Full      | N/A           | [使用 Sequelize 连接到 TiDB](/develop/dev-guide-sample-application-nodejs-sequelize.md) |
+| JavaScript / Typescript | [Prisma](https://www.prisma.io/)          | 4.16.2                | Full      | N/A           | [使用 Prisma 连接到 TiDB](/develop/dev-guide-sample-application-nodejs-prisma.md) |
+| JavaScript / Typescript | [TypeORM](https://typeorm.io/)            | v0.3.17               | Full      | N/A           | [使用 TypeORM 连接到 TiDB](/develop/dev-guide-sample-application-nodejs-typeorm.md) |
+| Python                  | [Django](https://www.djangoproject.com/)  | v4.2                  | Full      | [django-tidb](https://github.com/pingcap/django-tidb) | [使用 Django 连接到 TiDB](/develop/dev-guide-sample-application-python-django.md) |
+| Python                  | [SQLAlchemy](https://www.sqlalchemy.org/) | v1.4.37               | Full      | N/A           | [使用 SQLAlchemy 连接到 TiDB](/develop/dev-guide-sample-application-python-sqlalchemy.md) |
+>>>>>>> 6c95503717 (CI: Update LinkChecker URL excludes (#19850))
 
 ## GUI
 

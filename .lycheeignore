@@ -25,7 +25,10 @@ https://dev\.mysql\.com/doc/dev/mysql-server/.*
 https://dev\.mysql\.com/downloads/.*
 https://bugs\.mysql\.com/bug\.php.*
 https://www\.mysql\.com/products/.*
+<<<<<<< HEAD
 https://help\.openai\.com/en/articles/.*
+=======
+>>>>>>> 6c95503717 (CI: Update LinkChecker URL excludes (#19850))
 https://platform\.openai\.com/docs/.*
 https://openai\.com/.*
 https://jwt\.io/
@@ -33,5 +36,9 @@ https://typeorm\.io/.*
 https://dash\.cloudflare\.com/.*
 https://centminmod\.com/mydumper\.html
 https://learn\.pingcap\.com/learner/
+<<<<<<< HEAD
 https://zhuanlan\.zhihu\.com/p/
 https://developers\.redhat\.com/blog/2021/01/05/building-red-hat-enterprise-linux-9-for-the-x86-64-v2-microarchitecture-level
+=======
+https://zhuanlan\.zhihu\.com/p/
+>>>>>>> 6c95503717 (CI: Update LinkChecker URL excludes (#19850))
