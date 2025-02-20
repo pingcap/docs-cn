@@ -286,7 +286,7 @@ cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://roo
 Error: [CDC:ErrSameUpstreamDownstream]TiCDC does not support creating a changefeed with the same TiDB cluster as both the source and the target for the changefeed.
 ```
 
-此类错误的信息中都会包含错误码 `CDC:ErrSameUpstreamDownstream`，表明你正在操作的 changefeed 的上下游属于同一个集群，如果遇到此类报错，请检查 changefeed 的 `sink-uri` 参数是否正确。
+此错误信息包含错误码 `CDC:ErrSameUpstreamDownstream`，表示 TiCDC 检测到上下游属于同一集群。如果遇到此类报错，请检查当前同步任务的 `sink-uri` 参数是否配置正确。
 
 ## 同步启用了 TiDB 新的 Collation 框架的表
 
