@@ -19,7 +19,7 @@ TableName ::=
 
 ## 示例
 
-显示当前表 `t1` 的 Region 分布情况:
+显示当前表 `t1` 的 Region 分布情况：
 
 ```sql
 SHOW TABLE DISTRIBUTION t1;

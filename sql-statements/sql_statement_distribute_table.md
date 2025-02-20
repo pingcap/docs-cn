@@ -119,5 +119,6 @@ SHOW TABLE DISTRIBUTION t1;
 
 ## 另请参阅
 
+- [`SHOW DISTRIBUTION JOBS`](/sql-statements/sql-statement-show-distribution-jobs.md)
 - [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql_statement-show-table-distribution.md)
 - [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md)
