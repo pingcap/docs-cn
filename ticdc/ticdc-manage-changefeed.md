@@ -270,7 +270,7 @@ SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME = 'cluster_id';
 - 对于非 TiDB 集群作为下游的情况（例如 MySQL、Kafka 等），TiCDC 会跳过此检查，以确保兼容性。
 - 对于 v9.0.0 之前版本的 TiDB，系统无法获取 `cluster_id`，TiCDC 仍然允许用户创建数据同步任务，以避免影响现有功能。在这种情况下，由于缺少 `cluster_id`，你需要自行核实配置，确保没有配置错误，从而避免可能的异常情况。
 
-### 可能的错误示例
+### 检查报错的示例
 
 如果 TiCDC 检测到上游和下游是同一个 TiDB 集群，执行创建、更新或恢复 changefeed 操作时会报错。以下是一个典型的错误信息示例：
 
