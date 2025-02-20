@@ -265,6 +265,11 @@ delta_index_cache_size = 0
     ## 从 v6.4.0 引入，用于 MinTSO 调度器，表示一个 TiFlash 实例中最多可同时运行的查询数量，默认值为 0，即两倍的 vCPU 数量。关于 MinTSO 调度器，详见 https://docs.pingcap.com/zh/tidb/dev/tiflash-mintso-scheduler
     task_scheduler_active_set_soft_limit = 0
 
+    ## 从 v9.1.0 引入，如果该配置为 true，TiFlash 的 HashAgg 会使用 magic hash 而非默认的 CRC32。
+    ## magic hash 的结果更加均匀，可以减少哈希冲突，但代价是计算速度比 CRC32 更慢。
+    ## 作为调优手段，推荐在 GroupBy key 的 NDV 很高时打开该配置。
+    hashagg_use_magic_hash = false
+
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
     ## 从 v5.0 引入，控制是否开启日志脱敏。可选值为 `true`、`false`、`"on"`、`"off"` 和 `"marker"`。其中，`"on"`、`"off"` 和 `"marker"` 从 v8.2.0 开始支持。
