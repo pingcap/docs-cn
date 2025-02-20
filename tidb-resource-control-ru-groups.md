@@ -1,6 +1,7 @@
 ---
 title: 使用资源管控 (Resource Control) 实现资源组限制和流控
 summary: 介绍如何通过资源管控能力来实现对应用资源消耗的控制和有效调度。
+aliases: ['/zh/tidb/dev/tidb-resource-control/']
 ---
 
 # 使用资源管控 (Resource Control) 实现资源组限制和流控
