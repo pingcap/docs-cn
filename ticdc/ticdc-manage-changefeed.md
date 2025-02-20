@@ -272,9 +272,9 @@ SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME = 'cluster_id';
 
 ### 检查报错的示例
 
-如果 TiCDC 检测到上游和下游是同一个 TiDB 集群，执行创建、更新或恢复 changefeed 操作时会报错。以下是一个典型的错误信息示例：
+在执行创建、更新或恢复数据同步任务时，如果 TiCDC 检测到上下游 TiDB 集群的 `cluster_id` 相同，会进行报错。以下是一个典型的示例：
 
-若使用 CLI 命令创建 Changefeed 时，上下游为同一个集群：
+若使用 CLI 命令创建数据同步任务时，上下游为同一个集群：
 
 ```
 cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:@127.0.0.1:8300/" --changefeed-id="create-cmd"
