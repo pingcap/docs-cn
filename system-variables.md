@@ -3224,6 +3224,17 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[100, 16384]`
 - 这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
 
+### `tidb_max_dist_task_nodes` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`-1`
+- 范围：`-1` 或 `[1, 128]`
+- 该变量定义了分布式框架任务可使用的最大 TiDB 节点数上限。默认值为 `-1`，表示自动模式。在此模式下，系统将自动选择合适的节点数量。
+- 若 `@@tidb_service_scope` 非空，则仅允许配置了相同 `@@tidb_service_scope` 的 TiDB 实例执行分布式框架子任务。系统会从符合条件的实例中，通过轮询或负载均衡策略选择 TiDB 节点执行子任务。若符合条件的实例数少于 `@@tidb_max_dist_task_nodes`，任务仍可正常执行，此时将使用所有可用实例。实际使用的节点数取决于系统可用资源及策略，但不会超过此变量设定的值。
+
 ### `tidb_max_paging_size` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
