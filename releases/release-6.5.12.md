@@ -159,6 +159,13 @@ TiDB 版本：6.5.12
 
     + TiCDC
 
+        - 修复 TiCDC 在 "rename table" 中使用错误的 table name 进行过滤的问题 [#11946](https://github.com/pingcap/tiflow/issues/11946) @[wk989898](https://github.com/wk989898)
+        - 修复 Avro 协议中 TiCDC 在处理 `default NULL` SQL 报错的问题 [#11994](https://github.com/pingcap/tiflow/issues/11994) @[wk989898](https://github.com/wk989898)
+        - 修复在 PD 缩容后 TiCDC 无法正确连接 PD 的问题 [#12004](https://github.com/pingcap/tiflow/issues/12004) @[lidezhu](https://github.com/lidezhu)
+        - 修复 Changefeed 停止或者删除后 Initial Scan 没有正确取消的问题 [#11638](https://github.com/pingcap/tiflow/issues/11638) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复将一个新加的列的默认值从 `NOT NULL` 修改为 `NULL` 之后默认值错误的问题 [#12037](https://github.com/pingcap/tiflow/issues/12037) @[wk989898](https://github.com/wk989898)
+        - 修复使用 `--overwrite-checkpoint-ts` 参数执行 pause 命令可能会导致 Changefeed 卡住的问题 [#12055](https://github.com/pingcap/tiflow/issues/12055) @[hongyunyan](https://github.com/hongyunyan)
+        - 修复 TiCDC 同步 `create table/databse if not exists` SQL 可能会 panic 的问题 [#11839](https://github.com/pingcap/tiflow/issues/11839) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-7.5.5.md > 错误修复> Tools> TiCDC - 修复同步 `TRUNCATE TABLE` DDL 并且该表没有有效索引时，TiCDC 可能会报错的问题 [#11765](https://github.com/pingcap/tiflow/issues/11765) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-7.5.5.md > 错误修复> Tools> TiCDC - 修复 TiDB DDL owner 变更导致 DDL 任务的 schema 版本出现非递增时，TiCDC 错误丢弃 DDL 任务的问题 [#11714](https://github.com/pingcap/tiflow/issues/11714) @[wlwilliamx](https://github.com/wlwilliamx)
         - (dup): release-8.5.1.md > 错误修复> Tools> TiCDC - 修复在集群扩容出新的 TiKV 节点后 Changefeed 可能会卡住的问题 [#11766](https://github.com/pingcap/tiflow/issues/11766) @[lidezhu](https://github.com/lidezhu)
