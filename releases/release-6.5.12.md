@@ -116,12 +116,12 @@ TiDB 版本：6.5.12
 
 + PD <!--tw@qiancai: 6 notes-->
 
-    - 修复 TSO 分配时的内存泄漏问题 [#9004](https://github.com/tikv/pd/issues/9004) @[rleungx](https://github.com/rleungx)
-    - 修复设置 EnableTSOFollowerProxy 可能不生效的问题 [#8947](https://github.com/tikv/pd/issues/8947) @[JmPotato](https://github.com/JmPotato)
-    - 修复一个潜在的 panic 问题 [#8915](https://github.com/tikv/pd/issues/8915) @[bufferflies](https://github.com/bufferflies)
-    - 修复一个长时间运行集群中的内存泄漏问题 [#9047](https://github.com/tikv/pd/issues/9047) @[bufferflies](https://github.com/bufferflies)
-    - 修复当某 PD 不是 leader 时，仍有可能生成 tso 的问题 [#9051](https://github.com/tikv/pd/issues/9051) @[rleungx](https://github.com/rleungx)
-    - 修复 PD leader 切换过程中 region syncer 不能及时退出的问题 [#9017](https://github.com/tikv/pd/issues/9017) @[rleungx](https://github.com/rleungx)
+    - 修复 TSO 分配过程中可能出现的内存泄漏问题 [#9004](https://github.com/tikv/pd/issues/9004) @[rleungx](https://github.com/rleungx)
+    - 修复设置 `tidb_enable_tso_follower_proxy` 系统变量可能不生效的问题 [#8947](https://github.com/tikv/pd/issues/8947) @[JmPotato](https://github.com/JmPotato)
+    - 修复一个可能导致 PD panic 的潜在问题 [#8915](https://github.com/tikv/pd/issues/8915) @[bufferflies](https://github.com/bufferflies)
+    - 修复长期运行的集群中可能出现内存泄漏的问题 [#9047](https://github.com/tikv/pd/issues/9047) @[bufferflies](https://github.com/bufferflies)
+    - 修复当某个 PD 节点不是 Leader 时，仍可能生成 TSO 的问题 [#9051](https://github.com/tikv/pd/issues/9051) @[rleungx](https://github.com/rleungx)
+    - 修复 PD Leader 切换过程中，Region syncer 未能及时退出的问题 [#9017](https://github.com/tikv/pd/issues/9017) @[rleungx](https://github.com/rleungx)
     - (dup): release-7.5.5.md > 错误修复> PD - 修复创建 `evict-leader-scheduler` 或 `grant-leader-scheduler` 遇到错误时，未能将错误信息返回到 pd-ctl 的问题 [#8759](https://github.com/tikv/pd/issues/8759) @[okJiang](https://github.com/okJiang)
     - (dup): release-7.5.5.md > 错误修复> PD - 修复热点缓存中可能存在的内存泄露问题 [#8698](https://github.com/tikv/pd/issues/8698) @[lhy1024](https://github.com/lhy1024)
     - (dup): release-7.5.4.md > 错误修复> PD - 修复存在大量 Region 时，无法请求 PD 的 Region API 的问题 [#55872](https://github.com/pingcap/tidb/issues/55872) @[rleungx](https://github.com/rleungx)
@@ -140,8 +140,8 @@ TiDB 版本：6.5.12
     - (dup): release-7.5.5.md > 错误修复> TiFlash - 修复当 `SUBSTRING()` 函数的第二个参数为负数时，可能返回错误结果的问题 [#9604](https://github.com/pingcap/tiflash/issues/9604) @[guo-shaoge](https://github.com/guo-shaoge)
     - (dup): release-7.5.5.md > 错误修复> TiFlash - 修复当 `LPAD()` 和 `RPAD()` 函数在某些情况下返回错误结果的问题 [#9465](https://github.com/pingcap/tiflash/issues/9465) @[guo-shaoge](https://github.com/guo-shaoge)
     - (dup): release-7.1.6.md > 错误修复> TiFlash - 修复对大表执行 `DROP TABLE` 可能导致 TiFlash OOM 的问题 [#9437](https://github.com/pingcap/tiflash/issues/9437) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复因获取 CPU 数量时出现零除错误而导致 TiFlash 启动失败的问题 [#9212](https://github.com/pingcap/tiflash/issues/9212) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复在大量导入数据后，TiFlash 可能持续维持在较高内存占用的问题 [#9812](https://github.com/pingcap/tiflash/issues/9812) @[CalvinNeo](https://github.com/CalvinNeo)
+    - 修复获取 CPU 数量时因出现零除错误而导致 TiFlash 启动失败的问题 [#9212](https://github.com/pingcap/tiflash/issues/9212) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复在导入大量数据后，TiFlash 可能持续维持较高内存占用的问题 [#9812](https://github.com/pingcap/tiflash/issues/9812) @[CalvinNeo](https://github.com/CalvinNeo)
 
 + Tools
 
