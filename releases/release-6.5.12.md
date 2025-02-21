@@ -18,7 +18,7 @@ TiDB 版本：6.5.12
 
 ## 改进提升
 
-+ TiDB
++ TiDB <!--tw@hfxsd: 1 note-->
 
     - 增强了读时间戳的合法性检测 [#57786](https://github.com/pingcap/tidb/issues/57786) @[MyonKeminta](https://github.com/MyonKeminta)
 
@@ -32,7 +32,7 @@ TiDB 版本：6.5.12
 
 + Tools
 
-    + Backup & Restore (BR)
+    + Backup & Restore (BR) <!--tw@qiancai: 2 notes-->
 
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - 对于全量恢复，添加了对目标集群是否是空集群的检查 [#35744](https://github.com/pingcap/tidb/issues/35744) @[3pointer](https://github.com/3pointer)
@@ -45,13 +45,13 @@ TiDB 版本：6.5.12
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
-    + TiDB Lightning
+    + TiDB Lightning <!--tw@Oreoxmt: 1 note-->
 
         - 解析 CSV 文件时，检查行宽防止 OOM [#58590](https://github.com/pingcap/tidb/issues/58590) @[D3Hunter](https://github.com/D3Hunter)
 
 ## 错误修复
 
-+ TiDB
++ TiDB <!--tw@lilin90: the following 9 notes-->
 
     - (dup): release-7.5.5.md > 错误修复> TiDB - 修复使用 `NATURAL JOIN` 或者 `USING` 子句之后，再使用子查询可能会报错的问题 [#53766](https://github.com/pingcap/tidb/issues/53766) @[dash12653](https://github.com/dash12653)
     - (dup): release-7.1.6.md > 错误修复> TiDB - 修复由于 `CAST` 函数不支持显式设置字符集导致报错的问题 [#55677](https://github.com/pingcap/tidb/issues/55677) @[Defined2014](https://github.com/Defined2014)
@@ -89,7 +89,7 @@ TiDB 版本：6.5.12
     - 修复当某些项的值为空时，查询慢日志可能失败的问题 [#58147](https://github.com/pingcap/tidb/issues/58147) @[yibin87](https://github.com/yibin87)
     - 修复 `RADIANS` 函数计算顺序错误的问题 [#57671](https://github.com/pingcap/tidb/issues/57671) @[gengliqi](https://github.com/gengliqi)
     - 修复 `BIT` 列默认值错误的问题 [#57301](https://github.com/pingcap/tidb/issues/57301) @[YangKeao](https://github.com/YangKeao)
-    - 修复无法为带别名的多表删除进行 binding 的问题 [#56726](https://github.com/pingcap/tidb/issues/56726) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复无法为带别名的多表删除进行 binding 的问题 [#56726](https://github.com/pingcap/tidb/issues/56726) @[hawkingrei](https://github.com/hawkingrei) <!--tw@hfxsd: the following 9 notes-->
     - 修复如果 CTE 包含 orderby/limit/distinct 子句并且被另外一个 CTE 的 recursive part 引用时可以出现的 inline 错误 [#56603](https://github.com/pingcap/tidb/issues/56603) @[elsa0520](https://github.com/elsa0520)
     - 修复部分情况下统计信息同步加载超时处理不正确的问题 [#57710](https://github.com/pingcap/tidb/issues/57710) @[hawkingrei](https://github.com/hawkingrei)
     - 修复在CTE中解析数据库名时，可能得到错误的数据库名的问题 [#54582](https://github.com/pingcap/tidb/issues/54582) @[hawkingrei](https://github.com/hawkingrei)
@@ -100,7 +100,7 @@ TiDB 版本：6.5.12
     - 修复虚拟生成列依赖包含 ON UPDATE 属性的列时，更新行记录出现的数据索引不一致问题 [#56829](https://github.com/pingcap/tidb/issues/56829) @[joechenrh](https://github.com/joechenrh)
     - 修复系统表 INFORMATION_SCHEMA.TABLES 返回结果不正确的问题 [#57345](https://github.com/pingcap/tidb/issues/57345) @[tangenta](https://github.com/tangenta)
 
-+ TiKV
++ TiKV <!--tw@Oreoxmt: 6 notes-->
 
     - 修复 Follower Read 可能出现的 stale read 问题 [#17018](https://github.com/tikv/tikv/issues/17018) @[glorv](https://github.com/glorv)
     - 修复销毁 Peer 时可能出现的 TiKV panic 的问题 [#18005](https://github.com/tikv/tikv/issues/18005) @[glorv](https://github.com/glorv)
@@ -114,7 +114,7 @@ TiDB 版本：6.5.12
     - (dup): release-8.5.0.md > 错误修复> TiKV - 修复 Region Split 后可能无法快速选出 Leader 的问题 [#17602](https://github.com/tikv/tikv/issues/17602) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-8.5.1.md > 错误修复> TiKV - 修复处理 GBK/GB18030 编码的数据时可能出现编码失败的问题 [#17618](https://github.com/tikv/tikv/issues/17618) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
-+ PD
++ PD <!--tw@qiancai: 6 notes-->
 
     - 修复 TSO 分配时的内存泄漏问题 [#9004](https://github.com/tikv/pd/issues/9004) @[rleungx](https://github.com/rleungx)
     - 修复设置 EnableTSOFollowerProxy 可能不生效的问题 [#8947](https://github.com/tikv/pd/issues/8947) @[JmPotato](https://github.com/JmPotato)
@@ -133,7 +133,7 @@ TiDB 版本：6.5.12
     - (dup): release-7.1.6.md > 错误修复> PD - 修复 Region 统计中的内存泄露问题 [#8710](https://github.com/tikv/pd/issues/8710) @[rleungx](https://github.com/rleungx)
     - (dup): release-7.5.5.md > 错误修复> PD - 修复 etcd Leader 切换时 PD 不能快速重新选举的问题 [#8823](https://github.com/tikv/pd/issues/8823) @[rleungx](https://github.com/rleungx)
 
-+ TiFlash
++ TiFlash <!--tw@qiancai: 2 notes-->
 
     - (dup): release-7.1.6.md > 错误修复> TiFlash - 修复 `SUBSTRING()` 函数不支持部分整数类型的 `pos` 和 `len` 参数导致查询报错的问题 [#9473](https://github.com/pingcap/tiflash/issues/9473) @[gengliqi](https://github.com/gengliqi)
     - (dup): release-7.1.6.md > 错误修复> TiFlash - 修复一些 TiFlash 不支持的 JSON 函数被错误地下推到 TiFlash 的问题 [#9444](https://github.com/pingcap/tiflash/issues/9444) @[windtalker](https://github.com/windtalker)
@@ -145,7 +145,7 @@ TiDB 版本：6.5.12
 
 + Tools
 
-    + Backup & Restore (BR)
+    + Backup & Restore (BR) <!--tw@Oreoxmt: 3 notes-->
 
         - 修复了 BR 向 TiKV 发送请求时收到 rpcClient is idle 错误导致恢复失败的问题 [#58845](https://github.com/pingcap/tidb/issues/58845) @[Tristan1900](https://github.com/Tristan1900)
         - 修复了 br log status --json 时缺少 task status 的问题 [#57959](https://github.com/pingcap/tidb/issues/57959) @[Leavrth](https://github.com/Leavrth)
@@ -172,7 +172,7 @@ TiDB 版本：6.5.12
         - (dup): release-7.5.5.md > 错误修复> Tools> TiDB Data Migration (DM) - 修复当密码长度超过 19 个字符时无法连接 MySQL 8.0 的问题 [#11603](https://github.com/pingcap/tiflow/issues/11603) @[fishiu](https://github.com/fishiu)
         - (dup): release-7.5.5.md > 错误修复> Tools> TiDB Data Migration (DM) - 修复当同时配置 TLS 和 `shard-mode` 时，`start-task` 会在前置检查中报错的问题 [#11842](https://github.com/pingcap/tiflow/issues/11842) @[sunxiaoguang](https://github.com/sunxiaoguang)
 
-    + TiDB Lightning
+    + TiDB Lightning <!--tw@lilin90: 2 notes-->
 
         - 修复了日志没有正确脱敏的问题 [#59086](https://github.com/pingcap/tidb/issues/59086) @[GMHDBJD](https://github.com/GMHDBJD)
         - 修复了编码阶段因缓存导致的性能回退的问题 [#56705](https://github.com/pingcap/tidb/issues/56705) @[OliverS929](https://github.com/OliverS929)
