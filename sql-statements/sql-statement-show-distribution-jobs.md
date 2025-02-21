@@ -39,5 +39,5 @@ SHOW DISTRIBUTION JOBS;
 
 ## 另请参阅
 
-- [`DISTRIBUTE TABLE`](/sql-statements/sql_statement-distribute-table.md)
-- [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql_statement-show-table-distribution.md)
+- [`DISTRIBUTE TABLE`](/sql-statements/sql-statement-distribute-table.md)
+- [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql-statement-show-table-distribution.md)

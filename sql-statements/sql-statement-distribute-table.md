@@ -92,7 +92,7 @@ SHOW DISTRIBUTION JOBS;
 +---------+------------+------------+-----------------+------------+-----------+----------+-------------+---------------+
 ```
 
-执行 [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql_statement-show-table-distribution.md) 语句查看表 `t1` 的 Region 分布情况：
+执行 [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql-statement-show-table-distribution.md) 语句查看表 `t1` 的 Region 分布情况：
 
 ```sql
 SHOW TABLE DISTRIBUTION t1;
@@ -120,5 +120,5 @@ SHOW TABLE DISTRIBUTION t1;
 ## 另请参阅
 
 - [`SHOW DISTRIBUTION JOBS`](/sql-statements/sql-statement-show-distribution-jobs.md)
-- [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql_statement-show-table-distribution.md)
+- [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql-statement-show-table-distribution.md)
 - [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md)

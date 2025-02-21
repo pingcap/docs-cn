@@ -42,5 +42,5 @@ SHOW TABLE DISTRIBUTION t1;
 
 ## 另请参阅
 
-- [`DISTRIBUTE TABLE`](/sql-statements/sql_statement-distribute-table.md)
+- [`DISTRIBUTE TABLE`](/sql-statements/sql-statement-distribute-table.md)
 - [`SHOW DISTRIBUTION JOBS`](/sql-statements/sql-statement-show-distribution-jobs.md)
