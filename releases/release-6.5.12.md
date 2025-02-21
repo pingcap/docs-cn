@@ -129,6 +129,9 @@ TiDB 版本：6.5.12
     - 修复 TiDB 启动时由于非法 binding 数据可能导致 panic 的问题 [#58016](https://github.com/pingcap/tidb/issues/58016) @[qw4990](https://github.com/qw4990)
     - 修复当代价估算在某些极端情况下估算出 INF/NaN 非法值的问题，以及该问题发生时 join reorder 可能结果出错的问题。 [#56704](https://github.com/pingcap/tidb/issues/56704) @[winoros](https://github.com/winoros)
     - 修复手动 load 统计信息时 null 可能导致加载失败的问题 [#53966](https://github.com/pingcap/tidb/issues/53966) @[King-Dylan](https://github.com/King-Dylan)
+    - 修复创建两个相同名称的视图而不报错的问题 [#58769](https://github.com/pingcap/tidb/issues/58769) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复虚拟生成列依赖包含 ON UPDATE 属性的列时，更新行记录出现的数据索引不一致问题 [#56829](https://github.com/pingcap/tidb/issues/56829) @[joechenrh](https://github.com/joechenrh)
+    - 修复系统表 INFORMATION_SCHEMA.TABLES 返回结果不正确的问题 [#57345](https://github.com/pingcap/tidb/issues/57345) @[tangenta](https://github.com/tangenta)
 
 + TiKV
 
@@ -212,8 +215,8 @@ TiDB 版本：6.5.12
 
     + TiDB Lightning
 
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复了日志没有正确脱敏的问题 [#59086](https://github.com/pingcap/tidb/issues/59086) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复了编码阶段因缓存导致的性能回退的问题 [#56705](https://github.com/pingcap/tidb/issues/56705) @[OliverS929](https://github.com/OliverS929)
         - (dup): release-7.5.5.md > 错误修复> Tools> TiDB Lightning - 修复在高并发场景下，从云存储导入数据时性能下降的问题 [#57413](https://github.com/pingcap/tidb/issues/57413) @[xuanyu66](https://github.com/xuanyu66)
         - (dup): release-7.5.5.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 在更新任务元数据时遇到 `Lock wait timeout` 错误未自动重试的问题 [#53042](https://github.com/pingcap/tidb/issues/53042) @[guoshouyan](https://github.com/guoshouyan)
         - (dup): release-7.5.5.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 因 TiKV 发送的消息过大而接收失败的问题 [#56114](https://github.com/pingcap/tidb/issues/56114) @[fishiu](https://github.com/fishiu)
