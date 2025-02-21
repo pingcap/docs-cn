@@ -209,9 +209,12 @@ tiproxyctl traffic replay --host 10.0.1.10 --port 3080 --username="u1" --passwor
 - `end_time`：如果该任务已结束，该列为结束时间，否则为空
 - `duration`：捕获流量的时长
 - `output`：捕获输出的流量文件的路径
+- `encryption_method`：捕获时流量文件的加密方式
+- `compress`：捕获时是否压缩流量文件
 - `input`：回放读取流量文件的路径
 - `username`：回放使用的数据库用户名
 - `speed`：回放的速率的倍数
+- `read_only`：回放时是否仅回放只读 SQL 语句
 - `progress`：该任务的完成百分比
 - `status`：该任务当前的状态，`running` 表示正在运行，`done` 表示正常完成，`canceled` 表示任务失败
 - `err`：如果该任务失败，该列为失败的原因，否则为空。例如 `manually stopped` 表示用户执行 `CANCEL TRAFFIC JOBS` 手动取消任务
