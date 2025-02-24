@@ -787,7 +787,7 @@ opentracing.reporter 相关的设置。
 
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
-本部分介绍 Coprocessor Cache 相关的配置项。
+本部分介绍 [Coprocessor Cache](/coprocessor-cache.md) 相关的配置项。
 
 ### `capacity-mb`
 
