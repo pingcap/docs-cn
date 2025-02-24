@@ -668,6 +668,17 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 在 `SESSION` 作用域下，该变量为只读变量。
 - 该变量的行为与 MySQL 兼容。
 
+### `max_user_connections` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`0`
+- 取值范围：`[0, 100000]`
+- 该变量表示 TiDB 中一个用户允许登陆一个 tidb-server instance 的最大连接数目，用于资源控制。
+- 默认情况下，该变量值为 0 表示不限制用户的登录连接数。当本变量的值大于 0 且用户连接数到达此值时，TiDB 服务端将会拒绝此用户的连接。
+
 ### `mpp_exchange_compression_mode` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
