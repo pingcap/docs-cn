@@ -45,6 +45,7 @@ TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 
 * `HANDLER` 语句
 * `CREATE TABLESPACE` 语句
 * "Session Tracker: 将 GTID 上下文信息添加到 OK 包中"
+* JOIN 的 ON 子句的子查询 [#11414](https://github.com/pingcap/tidb/issues/11414)
 
 ## 与 MySQL 有差异的特性详细说明
 
