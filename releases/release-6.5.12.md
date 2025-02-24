@@ -81,15 +81,15 @@ TiDB 版本：6.5.12
     - (dup): release-7.5.5.md > 错误修复> TiDB - 修复如果 CTE 包含 `ORDER BY`、`LIMIT`、`SELECT DISTINCT` 子句，并且被另外一个 CTE 的递归部分所引用时，可能被错误地 inline 导致执行报错的问题 [#56603](https://github.com/pingcap/tidb/issues/56603) @[elsa0520](https://github.com/elsa0520)
     - (dup): release-7.5.5.md > 错误修复> TiDB - 修复在 CTE 中解析数据库名时，返回错误的数据库名的问题 [#54582](https://github.com/pingcap/tidb/issues/54582) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-7.5.5.md > 错误修复> TiDB - 修复 `UPDATE` 语句更新 `ENUM` 类型的值时更新错误的问题 [#56832](https://github.com/pingcap/tidb/issues/56832) @[xhebox](https://github.com/xhebox)
-    - 修复了某些情况下在新增 `DATE` 类型的列后执行 UPDATE 语句报错 "Incorrect date value: '0000-00-00'" 的问题 [#59047](https://github.com/pingcap/tidb/issues/59047) @[mjonss](https://github.com/mjonss)
-    - 修复了在 prepare 协议中客户端使用非 UTF8 相关字符集报错的问题 [#58870](https://github.com/pingcap/tidb/issues/58870) @[xhebox](https://github.com/xhebox)
-    - 修复了某些情况下查询临时表仍然会产生 TiKV 请求的问题 [#58875](https://github.com/pingcap/tidb/issues/58875) @[tiancaiamao](https://github.com/tiancaiamao)
-    - 修复了 ONLY_FULL_GROUP_BY 设置对于视图中的语句不起作用的问题 [#53175](https://github.com/pingcap/tidb/issues/53175) @[mjonss](https://github.com/mjonss)
-    - 修复了查询分区表时 `IN` 条件中的值类型不匹配时转换错误导致查询结果出错的问题 [#54746](https://github.com/pingcap/tidb/issues/54746) @[mjonss](https://github.com/mjonss)
+    - 修复某些情况下在新增 `DATE` 类型的列后执行 `UPDATE` 语句报错 `Incorrect date value: '0000-00-00'` 的问题 [#59047](https://github.com/pingcap/tidb/issues/59047) @[mjonss](https://github.com/mjonss)
+    - 修复在 Prepare 协议中，客户端使用非 UTF8 相关字符集报错的问题 [#58870](https://github.com/pingcap/tidb/issues/58870) @[xhebox](https://github.com/xhebox)
+    - 修复某些情况下查询临时表会产生 TiKV 请求的问题 [#58875](https://github.com/pingcap/tidb/issues/58875) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复 `ONLY_FULL_GROUP_BY` 设置对于视图中的语句不生效的问题 [#53175](https://github.com/pingcap/tidb/issues/53175) @[mjonss](https://github.com/mjonss)
+    - 修复查询分区表时，`IN` 条件中的值类型不匹配且转换错误，导致查询结果出错的问题 [#54746](https://github.com/pingcap/tidb/issues/54746) @[mjonss](https://github.com/mjonss)
     - 修复当某些项的值为空时，查询慢日志可能失败的问题 [#58147](https://github.com/pingcap/tidb/issues/58147) @[yibin87](https://github.com/yibin87)
     - 修复 `RADIANS` 函数计算顺序错误的问题 [#57671](https://github.com/pingcap/tidb/issues/57671) @[gengliqi](https://github.com/gengliqi)
     - 修复 `BIT` 列默认值错误的问题 [#57301](https://github.com/pingcap/tidb/issues/57301) @[YangKeao](https://github.com/YangKeao)
-    - 修复无法为带别名的多表删除进行 binding 的问题 [#56726](https://github.com/pingcap/tidb/issues/56726) @[hawkingrei](https://github.com/hawkingrei) <!--tw@hfxsd: the following 9 notes-->
+    - 修复无法为带别名的多表删除进行绑定的问题 [#56726](https://github.com/pingcap/tidb/issues/56726) @[hawkingrei](https://github.com/hawkingrei) <!--tw@hfxsd: the following 9 notes-->
     - 修复如果 CTE 包含 `ORDER BY`、`LIMIT`、或 `SELECT DISTINCT` 子句并且被另外一个 CTE 的递归部分引用，可能出现内联 (Inline) 错误 [#56603](https://github.com/pingcap/tidb/issues/56603) @[elsa0520](https://github.com/elsa0520)
     - 修复统计信息同步加载超时可能处理不正确的问题 [#57710](https://github.com/pingcap/tidb/issues/57710) @[hawkingrei](https://github.com/hawkingrei)
     - 修复在 CTE 中解析数据库名时，可能得到错误的数据库名的问题 [#54582](https://github.com/pingcap/tidb/issues/54582) @[hawkingrei](https://github.com/hawkingrei)
@@ -181,8 +181,8 @@ TiDB 版本：6.5.12
 
     + TiDB Lightning <!--tw@lilin90: 2 notes-->
 
-        - 修复了日志没有正确脱敏的问题 [#59086](https://github.com/pingcap/tidb/issues/59086) @[GMHDBJD](https://github.com/GMHDBJD)
-        - 修复了编码阶段因缓存导致的性能回退的问题 [#56705](https://github.com/pingcap/tidb/issues/56705) @[OliverS929](https://github.com/OliverS929)
+        - 修复日志没有正确脱敏的问题 [#59086](https://github.com/pingcap/tidb/issues/59086) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复编码阶段因缓存导致的性能回退问题 [#56705](https://github.com/pingcap/tidb/issues/56705) @[OliverS929](https://github.com/OliverS929)
         - (dup): release-7.5.5.md > 错误修复> Tools> TiDB Lightning - 修复在高并发场景下，从云存储导入数据时性能下降的问题 [#57413](https://github.com/pingcap/tidb/issues/57413) @[xuanyu66](https://github.com/xuanyu66)
         - (dup): release-7.5.5.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 在更新任务元数据时遇到 `Lock wait timeout` 错误未自动重试的问题 [#53042](https://github.com/pingcap/tidb/issues/53042) @[guoshouyan](https://github.com/guoshouyan)
         - (dup): release-7.5.5.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 因 TiKV 发送的消息过大而接收失败的问题 [#56114](https://github.com/pingcap/tidb/issues/56114) @[fishiu](https://github.com/fishiu)
