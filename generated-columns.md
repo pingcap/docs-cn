@@ -161,3 +161,8 @@ desc select a+1 from t where a+1=3;
 - 并未支持所有的 [JSON 函数](/functions-and-operators/json-functions.md)；
 - 不支持使用 [`NULLIF()` 函数](/functions-and-operators/control-flow-functions.md#nullif)，可以使用 [`CASE` 函数](/functions-and-operators/control-flow-functions.md#case)代替；
 - 目前仅当生成列是虚拟生成列时索引生成列替换规则有效，暂不支持将表达式替换为存储生成列，但仍然可以通过直接使用该生成列本身来使用索引。
+- 生成列定义中不能使用以下函数和表达式，如果使用 TiDB 会返回错误：
+
+    - 非确定性函数和表达式，例如 `RAND`、`UUID` 和 `CURRENT_TIMESTAMP`。
+    - 依赖于会话特定或全局状态的函数，例如 `CONNECTION_ID` 和 `CURRENT_USER`。
+    - 影响系统状态或执行系统交互的函数，例如 `GET_LOCK`、`RELEASE_LOCK` 和 `SLEEP`。
