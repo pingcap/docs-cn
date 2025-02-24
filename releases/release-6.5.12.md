@@ -182,7 +182,7 @@ TiDB 版本：6.5.12
     + TiDB Lightning <!--tw@lilin90: 2 notes-->
 
         - 修复日志没有正确脱敏的问题 [#59086](https://github.com/pingcap/tidb/issues/59086) @[GMHDBJD](https://github.com/GMHDBJD)
-        - 修复编码阶段因缓存导致的性能回退问题 [#56705](https://github.com/pingcap/tidb/issues/56705) @[OliverS929](https://github.com/OliverS929)
+        - 修复编码阶段因未缓存导致的性能回退问题 [#56705](https://github.com/pingcap/tidb/issues/56705) @[OliverS929](https://github.com/OliverS929)
         - (dup): release-7.5.5.md > 错误修复> Tools> TiDB Lightning - 修复在高并发场景下，从云存储导入数据时性能下降的问题 [#57413](https://github.com/pingcap/tidb/issues/57413) @[xuanyu66](https://github.com/xuanyu66)
         - (dup): release-7.5.5.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 在更新任务元数据时遇到 `Lock wait timeout` 错误未自动重试的问题 [#53042](https://github.com/pingcap/tidb/issues/53042) @[guoshouyan](https://github.com/guoshouyan)
         - (dup): release-7.5.5.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 因 TiKV 发送的消息过大而接收失败的问题 [#56114](https://github.com/pingcap/tidb/issues/56114) @[fishiu](https://github.com/fishiu)
