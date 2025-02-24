@@ -47,6 +47,7 @@ TiDB 高度兼容 MySQL 协议，以及 MySQL 5.7 和 MySQL 8.0 常用的功能�
 * 降序索引 [#2519](https://github.com/pingcap/tidb/issues/2519)
 * `SKIP LOCKED` 语法 [#18207](https://github.com/pingcap/tidb/issues/18207)
 * 横向派生表 [#40328](https://github.com/pingcap/tidb/issues/40328)
+* JOIN 的 ON 子句的子查询 [#11414](https://github.com/pingcap/tidb/issues/11414)
 
 ## 与 MySQL 有差异的特性详细说明
 
