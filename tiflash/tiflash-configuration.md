@@ -295,7 +295,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 ##### `advertise-status-addr`
 
 - 外部访问 status-addr 的地址，不填则默认使用 `status-addr` 的值。
-- 当集群部署在多个节点时，需要保证 `advertise-addr` 的地址可以从其他节点连接。 <!-- TODO: `advertise-addr` or `advertise-status-addr`)
+- 当集群部署在多个节点时，需要保证 `advertise-status-addr` 的地址可以从其他节点连接。
 
 ##### `engine-addr`
 
