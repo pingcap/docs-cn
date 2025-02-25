@@ -147,7 +147,7 @@ TiDB 版本：6.5.12
     + Backup & Restore (BR) <!--tw@Oreoxmt: 3 notes-->
 
         - 修复 BR 向 TiKV 发送请求时收到 `rpcClient is idle` 错误导致恢复失败的问题 [#58845](https://github.com/pingcap/tidb/issues/58845) @[Tristan1900](https://github.com/Tristan1900)
-        - 修复使用 `br log status --json` 查询日志备份任务时缺少任务状态 `status` 字段的问题 [#57959](https://github.com/pingcap/tidb/issues/57959) @[Leavrth](https://github.com/Leavrth)
+        - 修复使用 `br log status --json` 查询日志备份任务时，返回结果中缺少任务状态 `status` 字段的问题 [#57959](https://github.com/pingcap/tidb/issues/57959) @[Leavrth](https://github.com/Leavrth)
         - 修复日志备份时 PD Leader I/O 延迟可能导致 checkpoint 延迟增加的问题 [#58574](https://github.com/pingcap/tidb/issues/58574) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-8.5.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复通过 `tiup br restore` 命令进行库表级别恢复时，遗漏检查目标集群中表是否已存在，可能会覆盖已有表的问题 [#58168](https://github.com/pingcap/tidb/issues/58168) @[RidRisR](https://github.com/RidRisR)
         - (dup): release-8.5.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复日志备份在 advancer owner 切换时可能会异常进入暂停状态的问题 [#58031](https://github.com/pingcap/tidb/issues/58031) @[3pointer](https://github.com/3pointer)
