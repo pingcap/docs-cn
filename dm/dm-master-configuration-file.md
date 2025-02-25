@@ -55,7 +55,7 @@ secret-key-path = "/path/to/secret/key"
 
 #### `log-file`
 
-- 日志文件，如果不配置，日志会输出到标准输出中。
+- 日志文件。如果不配置，日志会输出到标准输出中。
 
 #### `master-addr`
 
