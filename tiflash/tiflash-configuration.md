@@ -261,14 +261,14 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - 当 TiFlash 缓存的 Region 行数或者大小超过 `compact_log_min_rows` 或 `compact_log_min_bytes` 任一阈值时，TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行落盘。
 - 建议保持默认值。
 
-<!-- 示例值：`40960` (40k) -->
+<!-- 示例值：`40960` -->
 
 ##### `compact_log_min_bytes` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 当 TiFlash 缓存的 Region 行数或者大小超过 `compact_log_min_rows` 或 `compact_log_min_bytes` 任一阈值时，TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行落盘。
 - 建议保持默认值。
 
-<!-- 示例值：`33554432` (32MB) -->
+<!-- 示例值：`33554432` -->
 
 ##### `disaggregated_mode`
 
