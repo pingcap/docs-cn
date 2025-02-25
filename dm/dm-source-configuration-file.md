@@ -80,7 +80,7 @@ from:
 #### `relay-binlog-name`
 
 - 拉取上游 binlog 的起始文件名，例如 `"mysql-bin.000002"`。
-- 该配置在 [`enable-gtid`](#enable-gtid) 为 `false` 的情况下生效。如果不配置该项，DM-worker 将从正在同步的最早的 binlog 文件开始拉取.一般情况下不需要手动配置。
+- 该配置在 [`enable-gtid`](#enable-gtid) 为 `false` 的情况下生效。如果不配置该项，DM-worker 将从正在同步的最早的 binlog 文件开始拉取，一般情况下不需要手动配置。
 
 #### `relay-binlog-gtid`
 
