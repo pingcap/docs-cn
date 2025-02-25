@@ -38,7 +38,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 #### `listen_host`
 
-- TiFlash TCP/HTTP 等辅助服务的监听 host。建议配置成 0.0.0.0，即监听本机所有 IP 地址。
+- TiFlash TCP/HTTP 等辅助服务的监听 host。建议配置成 `"0.0.0.0"`，即监听本机所有 IP 地址。
 
 <!-- 示例值：`"0.0.0.0"` -->
 
@@ -53,13 +53,13 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 - 数据块元信息的内存 cache 大小限制，通常不需要修改。
 
-<!-- 示例值：`1073741824` -->
+- 默认值：`1073741824`
 
 #### `minmax_index_cache_size`
 
 - 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改。
 
-<!-- 示例值：`1073741824` -->
+- 默认值：`1073741824`
 
 #### `delta_index_cache_size`
 
@@ -109,13 +109,14 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 ##### `dir`
 
-- 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
+- 用于存储主要的数据，例如 `[ "/tidb-data/tiflash-9000" ]` 或 `[ "/ssd0/tidb-data/tiflash", "/ssd1/tidb-data/tiflash" ]`。
+- 该目录列表中的数据占总数据的 90% 以上。
 
 <!-- 示例值：`[ "/tidb-data/tiflash-9000" ]` 或 `[ "/ssd0/tidb-data/tiflash", "/ssd1/tidb-data/tiflash" ]` -->
 
 ##### `capacity`
 
-- [`storage.main.dir`](#dir) 存储目录列表中每个目录的最大可用容量。
+- [`storage.main.dir`](#dir) 存储目录列表中每个目录的最大可用容量。例如 `[10737418240, 10737418240]`。
 - 在未定义配置项，或者列表中全为 `0` 时，会使用目录所在的硬盘容量。
 - 以 byte 为单位。目前不支持如 "10GB" 的设置。
 - `capacity` 列表的长度应当与 `dir` 列表长度保持一致。
@@ -133,7 +134,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 ##### `capacity`
 
-- [`storage.main.dir`](#dir) 存储目录列表中，每个目录的最大可用容量。
+- [`storage.latest.dir`](#dir) 存储目录列表中，每个目录的最大可用容量。
 
 <!-- 示例值：`[10737418240, 10737418240]` -->
 
@@ -154,7 +155,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - 分别用 `max_read_bytes_per_sec` 和 `max_write_bytes_per_sec` 两个配置项控制读写带宽限制，适用于一些读写带宽限制分开计算的云盘，例如 Google Cloud 上的 persistent disk。
 - 当 `max_bytes_per_sec` 配置不为 `0` 时，优先使用 [`max_bytes_per_sec`](#max_bytes_per_sec)。
 
-<!-- 示例值：`0` -->
+- 默认值：`0`
 
 ##### `max_write_bytes_per_sec`
 
@@ -162,7 +163,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - 分别用 `max_read_bytes_per_sec` 和 `max_write_bytes_per_sec` 两个配置项控制读写带宽限制，适用于一些读写带宽限制分开计算的云盘，例如 Google Cloud 上的 persistent disk。
 - 当 `max_bytes_per_sec` 配置不为 `0` 时，优先使用 [`max_bytes_per_sec`](#max_bytes_per_sec)。
 
-<!-- 示例值：`0` -->
+- 默认值：`0`
 
 ##### `foreground_write_weight`
 
@@ -202,6 +203,8 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 <!-- 示例值：`5` -->
 
+- 默认值：`5`
+
 #### storage.s3
 
 下面的配置只针对存算分离模式生效，详细请参考 [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md)。
@@ -230,7 +233,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 ##### `dir`
 
-- TiFlash Compute Node 的本地数据缓存目录。
+- 存算分离模式下，TiFlash Compute Node 的本地数据缓存目录。
 
 <!-- 示例值：`"/data1/tiflash/cache"` -->
 
@@ -271,7 +274,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 ##### `disaggregated_mode`
 
 - 该配置只针对存算分离模式生效，详细请参考 [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md)。
-- 可选值：`tiflash_write`、`tiflash_compute`
+- 可选值：`"tiflash_write"`、`"tiflash_compute"`
 
 #### flash.proxy
 
@@ -355,9 +358,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 ##### `pd_addr`
 
-- PD 服务地址。多个地址以逗号隔开。
-
-<!-- 示例值：`"10.0.1.11:2379,10.0.1.12:2379,10.0.1.13:2379"` -->
+- PD 的地址。当指定多个地址时，需要用逗号 `,` 分隔。例如 `"10.0.1.11:2379,10.0.1.12:2379,10.0.1.13:2379"`。
 
 #### status
 
@@ -578,7 +579,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 - 数据文件的加密方法。选择 `"plaintext"` 以外的值则表示启用加密功能。此时必须指定主密钥。
 - 默认值：`"plaintext"`，即默认不开启加密功能。
-- 可选值：`"aes128-ctr"`、`"aes192-ctr"`、`"aes256-ctr"`、`"sm4-ctr"`（仅 v6.4.0 及之后版本）和 `"plaintext"`
+- 可选值：`"aes128-ctr"`、`"aes192-ctr"`、`"aes256-ctr"`、`"sm4-ctr"` 和 `"plaintext"`。其中，`"sm4-ctr"` 从 v6.4.0 开始支持。
 
 ##### `data-key-rotation-period`
 
