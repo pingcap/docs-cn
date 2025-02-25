@@ -482,7 +482,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - 若设置为 `false` 或 `"off"`，即对用户日志不做处理。
 - 若设置为 `true` 或 `"on"`，日志中的用户数据会以 `?` 代替显示。
 - 若设置为 `"marker"`，日志中的用户数据会被标记符号 `‹ ›` 包裹。用户数据中的 `‹` 会转义成 `‹‹`，`›` 会转义成 `››`。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理。
-- 注意，tiflash-learner 对应的安全配置选项为 `security.redact-info-log`，需要在 tiflash-learner.toml 中另外设置。
+- 注意，tiflash-learner 对应的安全配置选项为 `security.redact-info-log`，需要在 [`tiflash-learner.toml`](#配置文件-tiflash-learnertoml) 中另外设置。
 
 ##### `ca_path`
 
@@ -558,7 +558,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 ##### `redact-info-log` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 控制是否开启日志脱敏。
-- 默认值为 `false`
+- 默认值：`false`
 - 可选值：`true`、`false`、`"on"`、`"off"` 和 `"marker"`。其中，`"on"`、`"off"` 和 `"marker"` 从 v8.3.0 开始支持。
 - 若设置为 `false` 或 `"off"`，即对用户日志不做处理。
 - 若设置为 `true` 或 `"on"`，日志中的用户数据会以 `?` 代替显示。
