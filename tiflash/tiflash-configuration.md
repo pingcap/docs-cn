@@ -93,12 +93,12 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - DTFile 储存文件格式
 - 默认值：`7`
 - 可选值：`2`、`3`、`4`、`5`、`6`、`7`
-  - `format_version = 2`：v6.0.0 以前版本的默认文件格式
-  - `format_version = 3`：v6.0.0 及 v6.1.x 版本的默认文件格式，具有更完善的检验功能
-  - `format_version = 4`：v6.2.0 ~ v7.3.0 的默认文件格式，优化了写放大问题，同时减少了后台线程消耗
-  - `format_version = 5`：v7.4.0 ~ v8.3.0 的默认文件格式（从 v7.3.0 开始引入），该格式可以合并小文件从而减少了物理文件数量
-  - `format_version = 6`：从 v8.4.0 开始引入，部分支持了向量索引的构建与存储
-  - `format_version = 7`：v8.4.0 及以后版本的默认文件格式（从 v8.4.0 开始引入），该格式用于支持向量索引的构建与存储
+    - `format_version = 2`：v6.0.0 以前版本的默认文件格式
+    - `format_version = 3`：v6.0.0 及 v6.1.x 版本的默认文件格式，具有更完善的检验功能
+    - `format_version = 4`：v6.2.0 ~ v7.3.0 的默认文件格式，优化了写放大问题，同时减少了后台线程消耗
+    - `format_version = 5`：v7.4.0 ~ v8.3.0 的默认文件格式（从 v7.3.0 开始引入），该格式可以合并小文件从而减少了物理文件数量
+    - `format_version = 6`：从 v8.4.0 开始引入，部分支持了向量索引的构建与存储
+    - `format_version = 7`：v8.4.0 及以后版本的默认文件格式（从 v8.4.0 开始引入），该格式用于支持向量索引的构建与存储
 
 #### storage.main
 
@@ -271,7 +271,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 ##### `advertise-addr`
 
-- 外部访问 addr 的地址，不填则默认使用 `addr` 的值
+- 外部访问 addr 的地址，不填则默认使用 `addr` 的值。
 - 当集群部署在多个节点时，需要保证 `advertise-addr` 的地址可以从其他节点连接。
 
 ##### `status-addr`
@@ -462,7 +462,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 ##### `task_scheduler_active_set_soft_limit` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
--用于 MinTSO 调度器，表示一个 TiFlash 实例中最多可同时运行的查询数量。关于 MinTSO 调度器，详见 [TiFlash MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)。
+- 用于 MinTSO 调度器，表示一个 TiFlash 实例中最多可同时运行的查询数量。关于 MinTSO 调度器，详见 [TiFlash MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)。
 - 默认值：`0`，即两倍的 vCPU 数量
 
 #### security <span class="version-mark">从 v4.0.5 版本开始引入</span>
