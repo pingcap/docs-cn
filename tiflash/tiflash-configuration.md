@@ -39,8 +39,6 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 - TiFlash TCP/HTTP 等辅助服务的监听 host。建议配置成 `"0.0.0.0"`，即监听本机所有 IP 地址。
 
-<!-- 示例值：`"0.0.0.0"` -->
-
 #### `tcp_port`
 
 - TiFlash TCP 服务的端口。TCP 服务为内部测试接口，默认使用 9000 端口。
@@ -51,13 +49,11 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 #### `mark_cache_size`
 
 - 数据块元信息的内存 cache 大小限制，通常不需要修改。
-
 - 默认值：`1073741824`
 
 #### `minmax_index_cache_size`
 
 - 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改。
-
 - 默认值：`1073741824`
 
 #### `delta_index_cache_size`
@@ -111,16 +107,12 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - 用于存储主要的数据，例如 `[ "/tidb-data/tiflash-9000" ]` 或 `[ "/ssd0/tidb-data/tiflash", "/ssd1/tidb-data/tiflash" ]`。
 - 该目录列表中的数据占总数据的 90% 以上。
 
-<!-- 示例值：`[ "/tidb-data/tiflash-9000" ]` 或 `[ "/ssd0/tidb-data/tiflash", "/ssd1/tidb-data/tiflash" ]` -->
-
 ##### `capacity`
 
 - [`storage.main.dir`](#dir) 存储目录列表中每个目录的最大可用容量。例如 `[10737418240, 10737418240]`。
 - 在未定义配置项，或者列表中全为 `0` 时，会使用目录所在的硬盘容量。
 - 以 byte 为单位。目前不支持如 "10GB" 的设置。
 - `capacity` 列表的长度应当与 `dir` 列表长度保持一致。
-
-<!-- 示例值：`[10737418240, 10737418240]` -->
 
 #### storage.latest
 
@@ -153,7 +145,6 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - I/O 限流功能限制下的读流量总带宽。
 - 分别用 `max_read_bytes_per_sec` 和 `max_write_bytes_per_sec` 两个配置项控制读写带宽限制，适用于一些读写带宽限制分开计算的云盘，例如 Google Cloud 上的 persistent disk。
 - 当 `max_bytes_per_sec` 配置不为 `0` 时，优先使用 [`max_bytes_per_sec`](#max_bytes_per_sec)。
-
 - 默认值：`0`
 
 ##### `max_write_bytes_per_sec`
@@ -161,7 +152,6 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - I/O 限流功能限制下的写流量总带宽。
 - 分别用 `max_read_bytes_per_sec` 和 `max_write_bytes_per_sec` 两个配置项控制读写带宽限制，适用于一些读写带宽限制分开计算的云盘，例如 Google Cloud 上的 persistent disk。
 - 当 `max_bytes_per_sec` 配置不为 `0` 时，优先使用 [`max_bytes_per_sec`](#max_bytes_per_sec)。
-
 - 默认值：`0`
 
 ##### `foreground_write_weight`
@@ -198,11 +188,8 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 - TiFlash 支持根据当前的 I/O 负载情况自动调整各种 I/O 类型的限流带宽，有可能会超过设置的权重。
 - `auto_tune_sec` 表示自动调整的执行间隔，单位为秒。设为 `0` 表示关闭自动调整。
-- 单位：秒
-
-<!-- 示例值：`5` -->
-
 - 默认值：`5`
+- 单位：秒
 
 #### storage.s3
 
@@ -475,7 +462,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 ##### `task_scheduler_active_set_soft_limit` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
--用于 MinTSO 调度器，表示一个 TiFlash 实例中最多可同时运行的查询数量。关于 MinTSO 调度器，详见 https://docs.pingcap.com/zh/tidb/dev/tiflash-mintso-scheduler
+-用于 MinTSO 调度器，表示一个 TiFlash 实例中最多可同时运行的查询数量。关于 MinTSO 调度器，详见 [TiFlash MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)。
 - 默认值：`0`，即两倍的 vCPU 数量
 
 #### security <span class="version-mark">从 v4.0.5 版本开始引入</span>
@@ -555,7 +542,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 <!-- 示例值：`4` -->
 
-##### `snap-handle-pool-size`  <span class="version-mark">从 v4.0.0 版本开始引入</span>
+##### `snap-handle-pool-size` <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
 - 控制处理 snapshot 的线程数。设为 `0` 则关闭多线程优化。
 - TiFlash Proxy 特有参数，从 v4.0.0 版本开始引入。
@@ -563,7 +550,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 #### security
 
-##### `redact-info-log`  <span class="version-mark">从 v5.0 版本开始引入</span>
+##### `redact-info-log` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 控制是否开启日志脱敏。
 - 默认值为 `false`
