@@ -47,7 +47,7 @@ TiDB 版本：6.5.12
 
     + TiDB Lightning <!--tw@Oreoxmt: 1 note-->
 
-        - 解析 CSV 文件时，检查行宽防止 OOM [#58590](https://github.com/pingcap/tidb/issues/58590) @[D3Hunter](https://github.com/D3Hunter)
+        - 在解析 CSV 文件时，新增行宽检查以防止 OOM 问题 [#58590](https://github.com/pingcap/tidb/issues/58590) @[D3Hunter](https://github.com/D3Hunter)
 
 ## 错误修复
 
@@ -102,12 +102,12 @@ TiDB 版本：6.5.12
 
 + TiKV <!--tw@Oreoxmt: 6 notes-->
 
-    - 修复 Follower Read 可能出现的 stale read 问题 [#17018](https://github.com/tikv/tikv/issues/17018) @[glorv](https://github.com/glorv)
-    - 修复销毁 Peer 时可能出现的 TiKV panic 的问题 [#18005](https://github.com/tikv/tikv/issues/18005) @[glorv](https://github.com/glorv)
+    - 修复 Follower Read 可能读取到过期数据的问题 [#17018](https://github.com/tikv/tikv/issues/17018) @[glorv](https://github.com/glorv)
+    - 修复销毁 Peer 时可能出现的 TiKV panic 问题 [#18005](https://github.com/tikv/tikv/issues/18005) @[glorv](https://github.com/glorv)
     - 修复时钟回退导致 RocksDB 流控异常，进而引发性能抖动的问题 [#17995](https://github.com/tikv/tikv/issues/17995) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 修复磁盘卡住可能导致无法迁移 Leader，进而引发性能抖动的问题 [#17363](https://github.com/tikv/tikv/issues/17363) @[hhwyt](https://github.com/hhwyt)
-    - 修复了在仅启用 1PC 而未启用 Async Commit 时可能读不到最新写入数据的问题 [#18117](https://github.com/tikv/tikv/issues/18117) @[zyguan](https://github.com/zyguan)
-    - 修复了 GC Worker 负载过高时可能出现的死锁问题 [#18214](https://github.com/tikv/tikv/issues/18214) @[zyguan](https://github.com/zyguan)
+    - 修复磁盘卡住可能导致 Leader 无法迁移，进而引发性能抖动的问题 [#17363](https://github.com/tikv/tikv/issues/17363) @[hhwyt](https://github.com/hhwyt)
+    - 修复在仅启用一阶段提交 (1PC) 而未启用异步提交 (Async Commit) 时，可能无法读取最新写入数据的问题 [#18117](https://github.com/tikv/tikv/issues/18117) @[zyguan](https://github.com/zyguan)
+    - 修复 GC Worker 负载过高时可能出现的死锁问题 [#18214](https://github.com/tikv/tikv/issues/18214) @[zyguan](https://github.com/zyguan)
     - (dup): release-7.5.4.md > 错误修复> TiKV - 修复 Grafana 上 TiKV 面板的 **Storage async write duration** 监控指标不准确的问题 [#17579](https://github.com/tikv/tikv/issues/17579) @[overvenus](https://github.com/overvenus)
     - (dup): release-7.5.5.md > 错误修复> TiKV - 修复使用 `RADIANS()` 或 `DEGREES()` 函数时可能导致 TiKV panic 的问题 [#17852](https://github.com/tikv/tikv/issues/17852) @[gengliqi](https://github.com/gengliqi)
     - (dup): release-7.5.5.md > 错误修复> TiKV - 修复 TiKV 处理 destroyed peer 时可能遇到的 panic 的问题 [#17840](https://github.com/tikv/tikv/issues/17840) @[glorv](https://github.com/glorv))
@@ -147,9 +147,9 @@ TiDB 版本：6.5.12
 
     + Backup & Restore (BR) <!--tw@Oreoxmt: 3 notes-->
 
-        - 修复了 BR 向 TiKV 发送请求时收到 rpcClient is idle 错误导致恢复失败的问题 [#58845](https://github.com/pingcap/tidb/issues/58845) @[Tristan1900](https://github.com/Tristan1900)
-        - 修复了 br log status --json 时缺少 task status 的问题 [#57959](https://github.com/pingcap/tidb/issues/57959) @[Leavrth](https://github.com/Leavrth)
-        - 修复了 log backup 时 pd leader io 延迟造成的 checkpoint 延迟增大的问题 [#58574](https://github.com/pingcap/tidb/issues/58574) @[[YuJuncen](https://github.com/YuJuncen)]
+        - 修复 BR 向 TiKV 发送请求时收到 `rpcClient is idle` 错误导致恢复失败的问题 [#58845](https://github.com/pingcap/tidb/issues/58845) @[Tristan1900](https://github.com/Tristan1900)
+        - 修复使用 `br log status --json` 查询日志备份任务时缺少任务状态 `status` 字段的问题 [#57959](https://github.com/pingcap/tidb/issues/57959) @[Leavrth](https://github.com/Leavrth)
+        - 修复日志备份时 PD Leader I/O 延迟可能导致 checkpoint 延迟增加的问题 [#58574](https://github.com/pingcap/tidb/issues/58574) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-8.5.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复通过 `tiup br restore` 命令进行库表级别恢复时，遗漏检查目标集群中表是否已存在，可能会覆盖已有表的问题 [#58168](https://github.com/pingcap/tidb/issues/58168) @[RidRisR](https://github.com/RidRisR)
         - (dup): release-8.5.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复日志备份在 advancer owner 切换时可能会异常进入暂停状态的问题 [#58031](https://github.com/pingcap/tidb/issues/58031) @[3pointer](https://github.com/3pointer)
         - (dup): release-7.5.5.md > 错误修复> Tools> Backup & Restore (BR) - 修复日志备份不能及时解决残留锁导致 Checkpoint 无法推进的问题 [#57134](https://github.com/pingcap/tidb/issues/57134) @[3pointer](https://github.com/3pointer)
