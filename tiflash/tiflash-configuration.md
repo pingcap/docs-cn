@@ -220,7 +220,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 ##### `dir`
 
-- 存算分离模式下，TiFlash Compute Node 的本地数据缓存目录。
+- 存算分离架构下，TiFlash Compute Node 的本地数据缓存目录。
 
 <!-- 示例值：`"/data1/tiflash/cache"` -->
 
@@ -412,6 +412,11 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - 指定 TiFlash 执行来自 TiDB 的 `ALTER TABLE ... COMPACT` 请求时，能同时并行处理的请求数量。
 - 如果这个值没有设置或设为了 `0`，则会采用默认值 (`1`)。
 - 默认值：`1`
+
+##### `enable_elastic_threadpool` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+- 是否启用弹性线程池，这项功能可以显著提高 TiFlash 在高并发场景的 CPU 利用率。
+- 默认值：`true`
 
 ##### `dt_compression_method`
 
