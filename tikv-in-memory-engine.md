@@ -32,7 +32,7 @@ TiKV MVCC 内存引擎在内存中缓存最近写入的 MVCC 版本，并实现�
 
 ## 使用方式
 
-如果要开启 TiKV MVCC 内存引擎 (IME) 功能，需要调整 TiKV 配置并重启 TiKV。以下是配置说明：
+如果要开启 TiKV MVCC 内存引擎 (IME) 功能，需要调整 [TiKV 配置](/tikv-configuration-file.md#in-memory-engine-从-v850-版本开始引入)并重启 TiKV。以下是配置说明：
 
 ```toml
 [in-memory-engine]
@@ -132,3 +132,31 @@ LIMIT 5;
 +----------------------------+-----+-------------------+--------------+------------+-----------------------------------+--------------------+--------------------+--------------------+
 5 rows in set (1.26 sec)
 ```
+
+### 如何判断 TiKV MVCC 内存引擎是否开启？
+
+你可以使用 [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md) 语句查看 TiKV 配置。如果 `in-memory-engine.enable` 的值为 `true`，表示 TiKV MVCC 内存引擎已经开启。
+
+```sql
+SHOW CONFIG WHERE Type='tikv' AND Name LIKE 'in-memory-engine\.%';
+```
+
+```
++------+-----------------+-----------------------------------------------+---------+
+| Type | Instance        | Name                                          | Value   |
++------+-----------------+-----------------------------------------------+---------+
+| tikv | 127.0.0.1:20160 | in-memory-engine.capacity                     | 5GiB    |
+| tikv | 127.0.0.1:20160 | in-memory-engine.cross-check-interval         | 0s      |
+| tikv | 127.0.0.1:20160 | in-memory-engine.enable                       | true    |
+| tikv | 127.0.0.1:20160 | in-memory-engine.evict-threshold              | 4920MiB |
+| tikv | 127.0.0.1:20160 | in-memory-engine.gc-run-interval              | 3m      |
+| tikv | 127.0.0.1:20160 | in-memory-engine.load-evict-interval          | 5m      |
+| tikv | 127.0.0.1:20160 | in-memory-engine.mvcc-amplification-threshold | 10      |
+| tikv | 127.0.0.1:20160 | in-memory-engine.stop-load-threshold          | 4208MiB |
++------+-----------------+-----------------------------------------------+---------+
+8 rows in set (0.00 sec)
+```
+
+### 如何监控 TiKV MVCC 内存引擎？
+
+你可以查看 **TiKV-Details** 面板中的 [**In Memory Engine**](/grafana-tikv-dashboard.md#in-memory-engine) 部分。

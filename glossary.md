@@ -372,6 +372,10 @@ PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例
 
 [TiFlash](/tiflash/tiflash-overview.md) 是 TiDB HTAP 形态的关键组件，它是 TiKV 的列存扩展，在提供良好隔离性的同时，也兼顾了强一致性。列存副本通过 Raft Learner 协议异步复制 TiKV 的数据。在读取时，它通过 Raft 校对索引配合 MVCC（多版本并发控制）的方式获得 Snapshot Isolation 的一致性隔离级别。这个架构很好地解决了 HTAP 场景的隔离性以及列存同步的问题，在进行高效分析查询的同时保持实时数据的一致性。
 
+### TiKV MVCC 内存引擎 (In-Memory Engine, IME)
+
+[TiKV MVCC 内存引擎 (IME)](/tikv-in-memory-engine.md) 在内存中缓存最近写入的 MVCC 版本，并实现独立于 TiDB 的 MVCC GC 机制，以加速涉及大量 MVCC 历史版本的查询。
+
 ### Timestamp Oracle (TSO)
 
 因为 TiKV 是一个分布式的储存系统，它需要一个全球性的授时服务 TSO (Timestamp Oracle)，来分配一个单调递增的时间戳。这样的功能在 TiKV 中是由 PD 提供的，在 Google 的 [Spanner](http://static.googleusercontent.com/media/research.google.com/en//archive/spanner-osdi2012.pdf) 中是由多个原子钟和 GPS 来提供的。详见 [TSO 文档](/tso.md)。
