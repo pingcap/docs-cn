@@ -159,35 +159,35 @@ I/O 限流功能相关配置。
 <!-- 下面的参数用于控制不同 I/O 流量类型分配到的带宽权重，一般不需要调整。以下默认配置表示每一种流量将获得 25 / (25 + 25 + 25 + 25) = 25% 的权重。-->
 
 - TiFlash 内部将 I/O 请求分成 4 种类型：前台写、后台写、前台读、后台读。`foreground_write_weight` 用于控制前台写 I/O 流量类型分配到的带宽权重，一般不需要调整。
-- I/O 限流初始化时，TiFlash 会根据下面的权重 (weight) 比例分配带宽。
+- I/O 限流初始化时，TiFlash 会根据 `foreground_write_weight`、[`background_write_weight`](/tiflash/tiflash-configuration.md#background_write_weight)、[`foreground_read_weight`](/tiflash/tiflash-configuration.md#foreground_read_weight)、[`background_read_weight`](/tiflash/tiflash-configuration.md#background_read_weight) 的比例值分配这 4 种请求的带宽。
 - 如果将 weight 配置为 `0`，则对应的 I/O 操作不会被限流。
 - 默认值：`25`，代表分配到 25% 的带宽比例。
 
 ##### `background_write_weight`
 
 - TiFlash 内部将 I/O 请求分成 4 种类型：前台写、后台写、前台读、后台读。`background_write_weight` 用于控制后台写 I/O 流量类型分配到的带宽权重，一般不需要调整。
-- I/O 限流初始化时，TiFlash 会根据下面的权重 (weight) 比例分配带宽。
+- I/O 限流初始化时，TiFlash 会根据 [`foreground_write_weight`](/tiflash/tiflash-configuration.md#foreground_write_weight)、`background_write_weight`、[`foreground_read_weight`](/tiflash/tiflash-configuration.md#foreground_read_weight)、[`background_read_weight`](/tiflash/tiflash-configuration.md#background_read_weight) 的比例值分配这 4 种请求的带宽。
 - 如果将 weight 配置为 `0`，则对应的 I/O 操作不会被限流。
 - 默认值：`25`，代表分配到 25% 的带宽比例。
 
 ##### `foreground_read_weight`
 
 - TiFlash 内部将 I/O 请求分成 4 种类型：前台写、后台写、前台读、后台读。`foreground_read_weight` 用于控制前台读 I/O 流量类型分配到的带宽权重，一般不需要调整。
-- I/O 限流初始化时，TiFlash 会根据下面的权重 (weight) 比例分配带宽。
+- I/O 限流初始化时，TiFlash 会根据 [`foreground_write_weight`](/tiflash/tiflash-configuration.md#foreground_write_weight)、[`background_write_weight`](/tiflash/tiflash-configuration.md#background_write_weight)、`foreground_read_weight`、[`background_read_weight`](/tiflash/tiflash-configuration.md#background_read_weight) 的比例值分配这 4 种请求的带宽。
 - 如果将 weight 配置为 `0`，则对应的 I/O 操作不会被限流。
 - 默认值：`25`，代表分配到 25% 的带宽比例。
 
 ##### `background_read_weight`
 
 - TiFlash 内部将 I/O 请求分成 4 种类型：前台写、后台写、前台读、后台读。`background_read_weight` 用于控制后台读 I/O 流量类型分配到的带宽权重，一般不需要调整。
-- I/O 限流初始化时，TiFlash 会根据下面的权重 (weight) 比例分配带宽。
+- I/O 限流初始化时，TiFlash 会根据 [`foreground_write_weight`](/tiflash/tiflash-configuration.md#foreground_write_weight)、[`background_write_weight`](/tiflash/tiflash-configuration.md#background_write_weight)、[`foreground_read_weight`](/tiflash/tiflash-configuration.md#foreground_read_weight)、`background_read_weight` 的比例值分配这 4 种请求的带宽。
 - 如果将 weight 配置为 `0`，则对应的 I/O 操作不会被限流。
 - 默认值：`25`，代表分配到 25% 的带宽比例。
 
 ##### `auto_tune_sec`
 
 - TiFlash 支持根据当前的 I/O 负载情况自动调整各种 I/O 类型的限流带宽，有可能会超过设置的权重。
-- `auto_tune_sec` 表示自动调整的执行间隔，单位为秒。设为 `0` 表示关闭自动调整。
+- `auto_tune_sec` 表示自动调整的执行间隔。设为 `0` 表示关闭自动调整。
 - 默认值：`5`
 - 单位：秒
 
@@ -197,7 +197,7 @@ I/O 限流功能相关配置。
 
 ##### `endpoint`
 
-- S3 的 endpoint 地址。
+- S3 的 endpoint 地址。例如，`http://s3.{region}.amazonaws.com`。
 
 ##### `bucket`
 
@@ -205,7 +205,7 @@ I/O 限流功能相关配置。
 
 ##### `root`
 
-- S3 bucket 中存储数据的根目录。
+- S3 bucket 中存储数据的根目录。例如，`/cluster1_data`。
 
 ##### `access_key_id`
 
@@ -310,7 +310,7 @@ I/O 限流功能相关配置。
 
 #### logger
 
-以下参数只对 `tiflash.log`、`tiflash_error.log` 生效。TiFlash Proxy 的日志参数配置需要在 [`tiflash-learner.toml`](#配置文件-tiflash-learnertoml) 中指定。
+以下参数只对 TiFlash 日志和 TiFlash 错误日志生效。TiFlash Proxy 的日志参数配置需要在 [`tiflash-learner.toml`](#配置文件-tiflash-learnertoml) 中指定。
 
 ##### `level`
 
@@ -326,7 +326,7 @@ I/O 限流功能相关配置。
 
 ##### `errorlog`
 
-- TiFlash 错误日志。对于 `"warn"`、`"error"` 级别的日志，会额外输出到该日志文件中。
+- TiFlash 错误日志。对于 `"warn"` 或 `"error"` 级别的日志，会额外输出到该日志文件中。
 
 <!-- 示例值：`"/tidb-deploy/tiflash-9000/log/tiflash_error.log"` -->
 
@@ -344,7 +344,8 @@ I/O 限流功能相关配置。
 
 ##### `pd_addr`
 
-- PD 的地址。当指定多个地址时，需要用逗号 `,` 分隔。例如 `"10.0.1.11:2379,10.0.1.12:2379,10.0.1.13:2379"`。
+- PD 的地址。
+- 当指定多个地址时，需要用逗号 `,` 分隔。例如 `"10.0.1.11:2379,10.0.1.12:2379,10.0.1.13:2379"`。
 
 #### status
 
@@ -372,7 +373,7 @@ I/O 限流功能相关配置。
 ##### `max_memory_usage`
 
 - 单次查询过程中，节点对中间数据的内存限制。
-- 设置为整数时，单位为 byte，比如 `34359738368` 表示 32 GiB 的内存限制，`0` 表示无限制。
+- 设置为整数时，单位为 byte，比如 `34359738368` 表示 32 GiB 的内存限制。
 - 设置为 `[0.0, 1.0)` 之间的浮点数时，指节点总内存的比值，比如 `0.8` 表示总内存的 80%，`0.0` 表示无限制。
 - 当查询试图申请超过限制的内存时，查询终止执行并且报错。
 - 默认值：`0`，表示不限制
@@ -392,7 +393,8 @@ I/O 限流功能相关配置。
 
 ##### `cop_pool_handle_limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
-- 表示 TiFlash Coprocessor 最多同时处理的 cop 请求数量，包括正在执行的 cop 请求与正在排队等待的 cop 请求。如果请求数量超过了该配置指定的值，则会返回 `TiFlash Server is Busy` 的错误。`-1` 表示无限制。`0` 表示使用默认值，即 `10 * cop_pool_size`。
+- 表示 TiFlash Coprocessor 最多同时处理的 cop 请求数量，包括正在执行的 cop 请求与正在排队等待的 cop 请求。如果请求数量超过了该配置指定的值，则会返回 `TiFlash Server is Busy` 的错误。
+- 设置为 `-1` 表示无限制。设置为 `0` 表示使用默认值，即 `10 * cop_pool_size`。
 
 ##### `cop_pool_max_queued_seconds` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -409,7 +411,7 @@ I/O 限流功能相关配置。
 ##### `manual_compact_pool_size` <span class="version-mark">从 v6.1 版本开始引入</span>
 
 - 指定 TiFlash 执行来自 TiDB 的 `ALTER TABLE ... COMPACT` 请求时，能同时并行处理的请求数量。
-- 如果这个值没有设置或设为了 `0`，则会采用默认值 (`1`)。
+- 如果设为 `0` 或不设置，则会采用默认值 (`1`)。
 - 默认值：`1`
 
 ##### `enable_elastic_threadpool` <span class="version-mark">从 v5.4.0 版本开始引入</span>
@@ -419,7 +421,7 @@ I/O 限流功能相关配置。
 
 ##### `dt_compression_method`
 
-- TiFlash 存储引擎的压缩算法，支持 LZ4、zstd 和 LZ4HC，大小写不敏感。默认使用 LZ4 算法。
+- TiFlash 存储引擎的压缩算法。
 - 默认值：`LZ4`
 - 可选值：`LZ4`、`zstd`、`LZ4HC`，大小写不敏感
 
@@ -438,22 +440,22 @@ I/O 限流功能相关配置。
 
 ##### `max_bytes_before_external_group_by` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
-- 表示带 `group by key` 的 HashAggregation 算子在触发 spill 之前的最大可用内存，超过该阈值之后 HashAggregation 会采用 spill to disk 的方式来减小内存使用。
+- 表示带 `GROUP BY` key 的 Hash Aggregation 算子在触发 spill 之前的最大可用内存，超过该阈值之后 Hash Aggregation 会采用[数据落盘](/tiflash/tiflash-spill-disk.md)的方式来减小内存使用。
 - 默认值：`0`，表示内存使用无限制，即不会触发 spill
 
 ##### `max_bytes_before_external_sort` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
-- 表示 sort/topN 算子在触发 spill 之前的最大可用内存，超过该阈值之后 sort/TopN 会采用 spill to disk 的方式来减小内存使用。
+- 表示 sort/topN 算子在触发 spill 之前的最大可用内存，超过该阈值之后 sort/TopN 会采用[数据落盘](/tiflash/tiflash-spill-disk.md)的方式来减小内存使用。
 - 默认值：`0`，表示内存使用无限制，即不会触发 spill
 
 ##### `max_bytes_before_external_join` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
-- 表示带等值 join 条件的 HashJoin 算子在触发 spill 之前的最大可用内存，超过该阈值之后 HashJoin 算子会采用 spill to disk 的方式来减小内存使用。
+- 表示带等值 join 条件的 Hash Join 算子在触发 spill 之前的最大可用内存，超过该阈值之后 HashJoin 算子会采用[数据落盘](/tiflash/tiflash-spill-disk.md)的方式来减小内存使用。
 - 默认值：`0`，表示内存使用无限制，即不会触发 spill
 
 ##### `enable_resource_control` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
-- 表示是否开启 TiFlash 资源管控功能。当设置为 `true` 时，TiFlash 会使用 Pipeline Model 执行模型。
+- 表示是否开启 TiFlash 资源管控功能。当设置为 `true` 时，TiFlash 会使用 [Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)。
 
 ##### `task_scheduler_thread_soft_limit` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
@@ -472,7 +474,7 @@ I/O 限流功能相关配置。
 
 #### security <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
-安全相关配置，从 v4.0.5 开始生效。
+安全相关配置。
 
 ##### `redact_info_log` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -549,8 +551,7 @@ I/O 限流功能相关配置。
 
 ##### `snap-handle-pool-size` <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
-- 控制处理 snapshot 的线程数。设为 `0` 则关闭多线程优化。
-- TiFlash Proxy 特有参数，从 v4.0.0 版本开始引入。
+- TiFlash Proxy 特有参数，控制处理 snapshot 的线程数。设为 `0` 则关闭多线程优化。
 - 默认值：`2`
 
 #### security
