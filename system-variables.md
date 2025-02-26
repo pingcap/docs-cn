@@ -1072,8 +1072,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`128`。对于 TiDB v7.6.0 之前的版本，默认值为 `1`。
-- 范围：`[1, 1024]`
+- 默认值：`8192`。TiDB v7.6.0 之前，默认值为 `1`；v7.6.0 ~ v8.1.x，默认值为 `128`；从 v8.2.0 开始，默认值变更为 `8192`。
+- 范围：`[1, 8192]`。对于 v8.2.0 之前的版本，范围为 `[1, 1024]`。
 - 用于设置 TiDB [自动 analyze](/statistics.md#自动更新) 分区表（即自动收集分区表上的统计信息）时，每次同时 analyze 分区的个数。
 - 若该变量值小于分区表的分区数，则 TiDB 会分多批自动 analyze 该分区表的所有分区。若该变量值大于等于分区表的分区数，则 TiDB 会同时 analyze 该分区表的所有分区。
 - 若分区表个数远大于该变量值，且自动 analyze 花费时间较长，可调大该参数的值以减少耗时。
