@@ -175,10 +175,16 @@ Query OK, 1 row affected (0.02 sec)
 
 ```sql
 CREATE USER 'newuser10'@'%' WITH MAX_USER_CONNECTIONS 3;
+SELECT USER, HOST, MAX_USER_CONNECTIONS FROM MYSQL.USER WHERE USER='newuser10';
 ```
 
 ```
-Query OK, 1 row affected (0.02 sec)
++-----------+------+----------------------+
+| user      | host | max_user_connections |
++-----------+------+----------------------+
+| newuser10 | %    |                    3 |
++-----------+------+----------------------+
+1 row in set (0.01 sec)
 ```
 
 创建一个使用资源组 `rg1` 的用户：
