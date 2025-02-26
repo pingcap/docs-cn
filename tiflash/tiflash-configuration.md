@@ -38,7 +38,8 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 #### `listen_host`
 
-- TiFlash TCP/HTTP 等辅助服务的监听 host。建议配置成 `"0.0.0.0"`，即监听本机所有 IP 地址。
+- TiFlash TCP/HTTP 等辅助服务的监听 host。
+- 建议配置成 `"0.0.0.0"`，即监听本机所有 IP 地址。
 
 #### `tcp_port`
 
@@ -65,29 +66,29 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 #### `path`
 
 - TiFlash 数据的存储路径。如果有多个目录，以英文逗号分隔。
-- 从 v4.0.9 版本开始，不推荐使用 [`path`](#path) 及 [`path_realtime_mode`](#path_realtime_mode) 参数。推荐使用 [`storage`](#storage-从-v409-版本开始引入) 下的配置项代替，这样在多盘部署的场景下能更好地利用节点性能。
+- 从 v4.0.9 版本开始，不推荐使用 `path` 及 [`path_realtime_mode`](#path_realtime_mode) 参数。推荐使用 [`storage`](#storage-从-v409-版本开始引入) 下的配置项代替，这样在多盘部署的场景下能更好地利用节点性能。
 - 从 v5.2.0 版本开始，如果要使用配置项 [`storage.io_rate_limit`](#storageio_rate_limit-从-v520-版本开始引入)，需要同时将 TiFlash 的数据存储路径设置为 [`storage.main.dir`](#dir)。
-- 当 `storage` 配置项存在的情况下，[`path`](#path) 及 [`path_realtime_mode`](#path_realtime_mode) 两个配置会被忽略。
+- 当 `storage` 配置项存在的情况下，`path` 及 [`path_realtime_mode`](#path_realtime_mode) 两个配置会被忽略。
 
 <!-- 示例值：`"/tidb-data/tiflash-9000"` 或 `"/ssd0/tidb-data/tiflash,/ssd1/tidb-data/tiflash,/ssd2/tidb-data/tiflash"` -->
 
 #### `path_realtime_mode`
 
 - 如果设为 `true`，且 `path` 配置了多个目录，表示在第一个目录存放最新数据，在其他目录存放较旧的数据。
-- 从 v4.0.9 版本开始，不推荐使用 [`path`](#path) 及 [`path_realtime_mode`](#path_realtime_mode) 参数。推荐使用 [`storage`](#storage-从-v409-版本开始引入) 下的配置项代替，这样在多盘部署的场景下能更好地利用节点性能。
-- 当 `storage` 配置项存在的情况下，[`path`](#path) 及 [`path_realtime_mode`](#path_realtime_mode) 两个配置会被忽略。
+- 从 v4.0.9 版本开始，不推荐使用 [`path`](#path) 及 `path_realtime_mode` 参数。推荐使用 [`storage`](#storage-从-v409-版本开始引入) 下的配置项代替，这样在多盘部署的场景下能更好地利用节点性能。
+- 当 `storage` 配置项存在的情况下，[`path`](#path) 及 `path_realtime_mode` 两个配置会被忽略。
 - 默认值：`false`
 
 #### `tmp_path`
 
 - TiFlash 临时文件的存放路径。
-- 默认使用 \[`path` 或者 `storage.latest.dir` 的第一个目录\] + "/tmp"
+- 默认使用 \[[`path`](#path) 或者 [`storage.latest.dir`](#dir-1) 的第一个目录\] + "/tmp"
 
 <!-- 示例值：`"/tidb-data/tiflash-9000/tmp"` -->
 
 #### storage <span class="version-mark">从 v4.0.9 版本开始引入</span>
 
-存储路径相关配置，从 v4.0.9 开始生效。
+存储路径相关配置。
 
 ##### `format_version`
 
@@ -105,39 +106,38 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 ##### `dir`
 
-- 用于存储主要的数据，例如 `[ "/tidb-data/tiflash-9000" ]` 或 `[ "/ssd0/tidb-data/tiflash", "/ssd1/tidb-data/tiflash" ]`。
+- 用于存储主要数据的路径，例如 `[ "/tidb-data/tiflash-9000" ]` 或 `[ "/ssd0/tidb-data/tiflash", "/ssd1/tidb-data/tiflash" ]`。
 - 该目录列表中的数据占总数据的 90% 以上。
 
 ##### `capacity`
 
 - [`storage.main.dir`](#dir) 存储目录列表中每个目录的最大可用容量。例如 `[10737418240, 10737418240]`。
-- 在未定义配置项，或者列表中全为 `0` 时，会使用目录所在的硬盘容量。
-- 以 byte 为单位。目前不支持如 "10GB" 的设置。
-- `capacity` 列表的长度应当与 `dir` 列表长度保持一致。
+- 在该配置项未配置或者列表中全为 `0` 时，会使用目录所在的硬盘容量。
+- - 单位：Byte。目前不支持如 `"10GB"` 的设置。
+- `capacity` 列表的长度应当与 [`storage.main.dir`](#dir) 列表长度保持一致。
 
 #### storage.latest
 
 ##### `dir`
 
 - 用于存储最新的数据，大约占总数据量的 10% 以内，需要较高的 IOPS。
-- 默认情况该项可留空。在未配置或者为空列表的情况下，会使用 [`storage.main.dir`](#dir) 的值。
+- 默认情况该项可留空，即 `[ ]`。在未配置或者为空列表的情况下，会使用 [`storage.main.dir`](#dir) 的值。
 
 <!-- 示例值：`[]` -->
 
 ##### `capacity`
 
-- [`storage.latest.dir`](#dir) 存储目录列表中，每个目录的最大可用容量。
+- [`storage.latest.dir`](#dir-1) 存储目录列表中，每个目录的最大可用容量。
 
 <!-- 示例值：`[10737418240, 10737418240]` -->
 
 #### storage.io_rate_limit <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
-`storage.io_rate_limit` 相关配置从 v5.2.0 开始引入。
+I/O 限流功能相关配置。
 
 ##### `max_bytes_per_sec`
 
-- 该配置项是 I/O 限流功能的开关，默认关闭。TiFlash 的 I/O 限流功能适用于磁盘带宽较小且磁盘带宽大小明确的云盘场景。
-- I/O 限流功能限制下的读写流量总带宽。
+-  I/O 限流功能限制下的读写流量总带宽。该配置项是 I/O 限流功能的开关，默认关闭。TiFlash 的 I/O 限流功能适用于磁盘带宽较小且磁盘带宽大小明确的云盘场景。
 - 默认值：`0`，即默认关闭 I/O 限流功能
 - 单位：Byte
 
@@ -162,28 +162,28 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - TiFlash 内部将 I/O 请求分成 4 种类型：前台写、后台写、前台读、后台读。`foreground_write_weight` 用于控制前台写 I/O 流量类型分配到的带宽权重，一般不需要调整。
 - I/O 限流初始化时，TiFlash 会根据下面的权重 (weight) 比例分配带宽。
 - 如果将 weight 配置为 `0`，则对应的 I/O 操作不会被限流。
-- 默认值：`25`
+- 默认值：`25`，代表分配到 25% 的带宽比例。
 
 ##### `background_write_weight`
 
 - TiFlash 内部将 I/O 请求分成 4 种类型：前台写、后台写、前台读、后台读。`background_write_weight` 用于控制后台写 I/O 流量类型分配到的带宽权重，一般不需要调整。
 - I/O 限流初始化时，TiFlash 会根据下面的权重 (weight) 比例分配带宽。
 - 如果将 weight 配置为 `0`，则对应的 I/O 操作不会被限流。
-- 默认值：`25`
+- 默认值：`25`，代表分配到 25% 的带宽比例。
 
 ##### `foreground_read_weight`
 
 - TiFlash 内部将 I/O 请求分成 4 种类型：前台写、后台写、前台读、后台读。`foreground_read_weight` 用于控制前台读 I/O 流量类型分配到的带宽权重，一般不需要调整。
 - I/O 限流初始化时，TiFlash 会根据下面的权重 (weight) 比例分配带宽。
 - 如果将 weight 配置为 `0`，则对应的 I/O 操作不会被限流。
-- 默认值：`25`
+- 默认值：`25`，代表分配到 25% 的带宽比例。
 
 ##### `background_read_weight`
 
 - TiFlash 内部将 I/O 请求分成 4 种类型：前台写、后台写、前台读、后台读。`background_read_weight` 用于控制后台读 I/O 流量类型分配到的带宽权重，一般不需要调整。
 - I/O 限流初始化时，TiFlash 会根据下面的权重 (weight) 比例分配带宽。
 - 如果将 weight 配置为 `0`，则对应的 I/O 操作不会被限流。
-- 默认值：`25`
+- 默认值：`25`，代表分配到 25% 的带宽比例。
 
 ##### `auto_tune_sec`
 
