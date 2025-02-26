@@ -241,22 +241,19 @@ I/O 限流功能相关配置。
 - 在当前 Raft 状态机推进的 applied_index 和上次落盘时的 applied_index 的差值高于 `compact_log_min_gap` 时，TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行数据落盘。
 - 调大该差值可能降低 TiFlash 的落盘频率，从而减少随机写场景下的读延迟，但会增大内存开销。调小该差值可能提升 TiFlash 的落盘频率，从而缓解 TiFlash 内存压力。但无论如何，在目前阶段，TiFlash 的落盘频率不会高于 TiKV，即使设置该差值为 `0`。
 - 建议保持默认值。
-
-<!-- 示例值：`200` -->
+- 默认值：`200`
 
 ##### `compact_log_min_rows` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 当 TiFlash 缓存的 Region 行数或者大小超过 `compact_log_min_rows` 或 `compact_log_min_bytes` 任一阈值时，TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行落盘。
 - 建议保持默认值。
-
-<!-- 示例值：`40960` -->
+- 默认值：`40960`
 
 ##### `compact_log_min_bytes` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 当 TiFlash 缓存的 Region 行数或者大小超过 `compact_log_min_rows` 或 `compact_log_min_bytes` 任一阈值时，TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行落盘。
 - 建议保持默认值。
-
-<!-- 示例值：`33554432` -->
+- 默认值：`33554432`
 
 ##### `disaggregated_mode`
 
@@ -399,8 +396,7 @@ I/O 限流功能相关配置。
 
 - 表示 TiFlash 中 cop 请求排队的最长时间。如果一个 cop 请求在请求队列中等待的时间超过该配置指定的值，则会返回 `TiFlash Server is Busy` 的错误。
 - 配置为一个小于等于 `0` 的值时表示无限制。
-
-<!-- 示例值：`15` -->
+- 默认值：`15`
 
 ##### `batch_cop_pool_size` <span class="version-mark">从 v5.0 版本开始引入</span>
 
