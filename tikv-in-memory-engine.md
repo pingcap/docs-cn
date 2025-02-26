@@ -135,7 +135,7 @@ LIMIT 5;
 
 ### 如何判断 TiKV MVCC 内存引擎是否开启？
 
-你可以使用 [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md) 语句查看 TiKV 配置：
+你可以使用 [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md) 语句查看 TiKV 配置。如果 `in-memory-engine.enable` 的值为 `true`，表示 TiKV MVCC 内存引擎已经开启。
 
 ```sql
 SHOW CONFIG WHERE Type='tikv' AND Name LIKE 'in-memory-engine\.%';
@@ -159,4 +159,4 @@ SHOW CONFIG WHERE Type='tikv' AND Name LIKE 'in-memory-engine\.%';
 
 ### 如何监控 TiKV MVCC 内存引擎？
 
-你可以查看 [TiKV-Details 面板](/grafana-tikv-dashboard.md) 的 **In Memory Engine** 部分。
+你可以查看 TiKV-Details 面板中的 [**In Memory Engine**](/grafana-tikv-dashboard.md#in-memory-engine) 部分。
