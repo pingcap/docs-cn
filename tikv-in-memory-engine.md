@@ -159,4 +159,4 @@ SHOW CONFIG WHERE Type='tikv' AND Name LIKE 'in-memory-engine\.%';
 
 ### 如何监控 TiKV MVCC 内存引擎？
 
-你可以查看 TiKV-Details 面板中的 [**In Memory Engine**](/grafana-tikv-dashboard.md#in-memory-engine) 部分。
+你可以查看 **TiKV-Details** 面板中的 [**In Memory Engine**](/grafana-tikv-dashboard.md#in-memory-engine) 部分。
