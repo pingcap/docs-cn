@@ -355,8 +355,6 @@ I/O 限流功能相关配置。
 - Prometheus 拉取 metrics 信息的端口。
 - 默认值：`8234`
 
-#### profiles
-
 #### profiles.default
 
 ##### `dt_enable_logical_split`
