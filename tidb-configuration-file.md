@@ -603,13 +603,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `enable-stats-cache-mem-quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-+ 用于控制 TiDB 是否开启统计信息缓存的内存上限。该配置项仅在 [`lite-init-stats`](#lite-init-stats-从-v710-版本开始引入) 为 `false` 时生效。
-+ 默认值：在 v8.2.0 之前版本中为 `false`，在 v8.2.0 及之后版本中为 `true`。
++ 用于控制 TiDB 是否开启统计信息缓存的内存上限。
++ 默认值：true
 
 ### `concurrently-init-stats` <span class="version-mark">从 v8.1.0 和 v7.5.2 版本开始引入</span>
 
-+ 用于控制 TiDB 启动时是否并发初始化统计信息。
-+ 默认值：`false`
++ 用于控制 TiDB 启动时是否并发初始化统计信息。该配置项仅在 [`lite-init-stats`](#lite-init-stats-从-v710-版本开始引入) 为 `false` 时生效。
++ 默认值：在 v8.2.0 之前版本中为 `false`，在 v8.2.0 及之后版本中为 `true`。
 
 ### `lite-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
