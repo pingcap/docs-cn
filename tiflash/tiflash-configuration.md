@@ -113,7 +113,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 - [`storage.main.dir`](#dir) 存储目录列表中每个目录的最大可用容量。例如 `[10737418240, 10737418240]`。
 - 在该配置项未配置或者列表中全为 `0` 时，会使用目录所在的硬盘容量。
-- - 单位：Byte。目前不支持如 `"10GB"` 的设置。
+- 单位：Byte。目前不支持如 `"10GB"` 的设置。
 - `capacity` 列表的长度应当与 [`storage.main.dir`](#dir) 列表长度保持一致。
 
 #### storage.latest
