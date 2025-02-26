@@ -604,14 +604,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `concurrently-init-stats` <span class="version-mark">从 v8.1.0 和 v7.5.2 版本开始引入</span>
 
-+ 用于控制 TiDB 启动时是否并发初始化统计信息。
-+ 默认值：`false`
++ 用于控制 TiDB 启动时是否并发初始化统计信息。该配置项仅在 [`lite-init-stats`](#lite-init-stats-从-v710-版本开始引入) 为 `false` 时生效。
++ 默认值：在 v8.2.0 之前版本中为 `false`，在 v8.2.0 及之后版本中为 `true`。
 
 ### `lite-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 + 用于控制 TiDB 启动时是否采用轻量级的统计信息初始化。
 + 默认值：在 v7.2.0 之前版本中为 `false`，在 v7.2.0 及之后的版本中为 `true`。
-+ 当 `lite-init-stats` 为 `true` 时，统计信息初始化时列和索引的直方图、TopN、Count-Min Sketch 均不会加载到内存中。当 `lite-init-stats` 为 `false` 时，统计信息初始化时索引和主键的直方图、TopN、Count-Min Sketch 会被加载到内存中，非主键列的直方图、TopN、Count-Min Sketch 不会加载到内存中。当优化器需要某一索引或者列的直方图、TopN、Count-Min Sketch 时，这些统计信息会被同步或异步加载到内存中（由 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) 控制）。
++ 当 `lite-init-stats` 为 `true` 时，统计信息初始化时列和索引的直方图、TopN、Count-Min Sketch 均不会加载到内存中。当 `lite-init-stats` 为 `false` 时，统计信息初始化时索引的直方图、TopN、Count-Min Sketch 会被加载到内存中，主键和列的直方图、TopN、Count-Min Sketch 不会加载到内存中。当优化器需要某一主键或列的直方图、TopN、Count-Min Sketch 时，这些统计信息会被同步或异步加载到内存中（由 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) 控制）。
 + 将 `lite-init-stats` 设置为 true，可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。详情请参考[统计信息的加载](/statistics.md#加载统计信息)。
 
 ### `force-init-stats` <span class="version-mark">从 v6.5.7 和 v7.1.0 版本开始引入</span>
