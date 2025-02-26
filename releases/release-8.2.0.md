@@ -185,6 +185,7 @@ TiDB 版本：8.2.0
 
 | 配置文件           | 配置项                | 修改类型 | 描述                                 |
 |----------------|--------------------|------|------------------------------------|
+| TiDB | [`concurrently-init-stats`](/tidb-configuration-file.md#concurrently-init-stats-从-v810-和-v752-版本开始引入) | 修改 | 默认值从 `false` 修改为 `true`，以缩短统计信息初始化的时间。该配置项仅在 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 为 `false` 时生效。 |
 | TiDB | [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) | 修改 | 默认值从 `5` 修改为 `0`，最小值从 `1` 修改为 `0`。`0` 为自动模式，根据服务器情况，自动调节并发度。 |
 | TiDB | [`token-limit`](/tidb-configuration-file.md#token-limit) | 修改 | 最大值从 `18446744073709551615`（64 位平台）和 `4294967295`（32 位平台）修改为 `1048576`，代表同时执行请求的 session 个数最多可以设置为 `1048576`，避免设置过大导致 TiDB Server OOM。|
 | TiKV | [`max-apply-unpersisted-log-limit`](/tikv-configuration-file.md#max-apply-unpersisted-log-limit-从-v810-版本开始引入) | 修改 | 默认值从 `0` 修改为 `1024`，代表允许 apply 已经 `commit` 但尚未持久化的 Raft 日志的最大数量为 1024，用于降低 TiKV 节点上因 I/O 抖动导致的长尾延迟。 |
