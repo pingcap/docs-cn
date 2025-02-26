@@ -433,10 +433,10 @@ summary: TiKV 监控指标详解：TiUP 部署 TiDB 集群时，一键部署监�
 - 99% In-memory engine prepare for write duration per server：内存引擎每秒准备写操作的 99% 耗时
 - Iterator operations：不同类型的 iterator 操作的数量
 - Seek duration：seek 操作的耗时
-- Oldest Auto GC SafePoint：内存引擎缓存的 Region 中，最早的自动 GC safe point
-- Newest Auto GC SafePoint：内存引擎缓存的 Region 中，最新的自动 GC safe point
-- Auto GC SafePoint Gap：内存引擎缓存的 Region 中，最新的自动 GC safe point 和最早的自动 GC safe point 之间的时间差
-- Auto GC SafePoint Gap With TiKV：TiKV 的自动 GC safe point 和内存引擎缓存的 Region 中最早的自动 GC safe point 之间的时间差
+- Oldest Auto GC SafePoint：内存引擎缓存的 Region 中，最早的自动 GC safepoint
+- Newest Auto GC SafePoint：内存引擎缓存的 Region 中，最新的自动 GC safepoint
+- Auto GC SafePoint Gap：内存引擎缓存的 Region 中，最新的自动 GC safepoint 和最早的自动 GC safepoint 之间的时间差
+- Auto GC SafePoint Gap With TiKV：TiKV 的自动 GC safepoint 和内存引擎缓存的 Region 中最早的自动 GC safepoint 之间的时间差
 
 ### Pessimistic Locking
 
