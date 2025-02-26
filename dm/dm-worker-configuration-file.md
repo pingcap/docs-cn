@@ -38,18 +38,60 @@ cert-allowed-cn = ["dm"]
 
 ### Global 配置
 
-| 配置项        | 说明                                    |
-| :------------ | :--------------------------------------- |
-| `name`   | 标识一个 DM-worker。   |
-| `log-level` | 日志级别：debug、info、warn、error、fatal。默认为 info。   |
-| `log-file`   | 日志文件，如果不配置日志会输出到标准输出中。   |
-| `worker-addr` | DM-worker 服务的地址，可以省略 IP 信息，例如：":8262"。|
-| `advertise-addr` | DM-worker 向外界宣告的地址。 |
-| `join` | 对应一个或多个 DM-master 配置中的 [`master-addr`](/dm/dm-master-configuration-file.md#global-配置)。 |
-| `keepalive-ttl` | 当绑定的上游数据源没有启用 relay log 时，DM-worker 向 DM-master 保持存活的周期，单位为秒。默认是 60 秒。 |
-| `relay-keepalive-ttl` | 当绑定的上游数据源启用 relay log 时，DM-worker 向 DM-master 保持存活的周期，单位为秒。默认是 1800 秒。在版本 2.0.2 新增。 |
-| `relay-dir` | 当绑定的上游数据源启用 relay log 时，DM-worker 将 relay log 保存在该路径下。该配置优先级比上游数据源配置更高。在版本 5.4.0 新增。 |
-| `ssl-ca` | DM-worker 组件用于与其它组件连接的 SSL CA 证书所在的路径  |
-| `ssl-cert` | DM-worker 组件用于与其它组件连接的 PEM 格式的 X509 证书所在的路径 |
-| `ssl-key` | DM-worker 组件用于与其它组件连接的 PEM 格式的 X509 密钥所在的路径  |
-| `cert-allowed-cn` | 证书检查 Common Name 列表 |
+#### `name`
+
+- 标识一个 DM-worker。
+
+#### `log-level`
+
+- 日志级别。
+- 默认值：`info`
+- 可选值：`debug`、`info`、`warn`、`error`、`fatal`
+
+#### `log-file`
+
+- 日志文件。如果不配置，日志会输出到标准输出中。
+
+#### `worker-addr`
+
+- DM-worker 服务的地址，可以省略 IP 信息，例如：`":8262"`。
+
+#### `advertise-addr`
+
+- DM-worker 向外界宣告的地址。
+
+#### `join`
+
+- 对应一个或多个 DM-master 配置中的 [`master-addr`](/dm/dm-master-configuration-file.md#global-配置)。
+
+#### `keepalive-ttl`
+
+- 当绑定的上游数据源没有启用 relay log 时，DM-worker 向 DM-master 保持存活的周期。
+- 默认值：`60`
+- 单位：秒
+
+#### `relay-keepalive-ttl` <span class="version-mark">从 v2.0.2 版本开始引入</span>
+
+- 当绑定的上游数据源启用 relay log 时，DM-worker 向 DM-master 保持存活的周期。
+- 默认值：`1800`
+- 单位：秒
+
+#### `relay-dir` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+- 当绑定的上游数据源启用 relay log 时，DM-worker 将 relay log 保存在该路径下。该配置优先级比上游数据源配置更高。
+
+#### `ssl-ca`
+
+- DM-worker 组件用于与其它组件连接的 SSL CA 证书所在的路径。
+
+#### `ssl-cert`
+
+- DM-worker 组件用于与其它组件连接的 PEM 格式的 X509 证书所在的路径。
+
+#### `ssl-key`
+
+- DM-worker 组件用于与其它组件连接的 PEM 格式的 X509 密钥所在的路径。
+
+#### `cert-allowed-cn`
+
+- 证书检查 Common Name 列表。
