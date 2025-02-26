@@ -132,7 +132,8 @@ pd_servers:
 
 > **注意：**
 >
-> 该操作仅需在扩容 PD 节点时执行，扩容 TiDB 或 TiKV 节点时无需执行。
+> - 刷新集群配置仅适用于扩容 PD 节点，扩容 TiDB 或 TiKV 节点时无需执行此操作。
+> - 如果你使用的是 TiUP v1.15.0 或之后版本，请跳过该操作；如果你使用的是 TiUP v1.15.0 之前的版本，则需要执行以下步骤。
 
 1. 更新集群配置：
 
@@ -141,10 +142,6 @@ pd_servers:
     ```
 
 2. 更新 Prometheus 配置并重启：
-
-    > **注意：**
-    >
-    > 如果你使用的是 TiUP v1.15.0 及之后版本，请跳过此步骤；如果你使用的 TiUP 版本早于 v1.15.0，则需要执行以下命令来更新 Prometheus 配置并重启。
 
     ```shell
     tiup cluster reload <cluster-name> -R prometheus
@@ -353,7 +350,8 @@ tiup cluster scale-in <cluster-name> --node 10.0.1.5:20160
 
 > **注意：**
 >
-> 该操作仅需在缩容 PD 节点时执行，缩容 TiDB 或 TiKV 节点时无需执行。
+> - 刷新集群配置仅适用于缩容 PD 节点，缩容 TiDB 或 TiKV 节点时无需执行此操作。
+> - 如果你使用的是 TiUP v1.15.0 或之后版本，请跳过该操作；如果你使用的是 TiUP v1.15.0 之前的版本，则需要执行以下步骤。
 
 1. 更新集群配置：
 
@@ -362,10 +360,6 @@ tiup cluster scale-in <cluster-name> --node 10.0.1.5:20160
     ```
 
 2. 更新 Prometheus 配置并重启：
-
-    > **注意：**
-    >
-    > 如果你使用的是 TiUP v1.15.0 及之后版本，请跳过此步骤；如果你使用的 TiUP 版本早于 v1.15.0，则需要执行以下命令来更新 Prometheus 配置并重启。
 
     ```shell
     tiup cluster reload <cluster-name> -R prometheus
