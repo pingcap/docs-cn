@@ -13,7 +13,7 @@ TiDB 版本：7.5.5
 
 ## 兼容性变更
 
-- 新增系统变量 [`tidb_ddl_reorg_max_write_speed`](https://docs.pingcap.com/zh/tidb/v7.5/system-variables#tidb_ddl_reorg_max_write_speed-从-v755-版本开始引入)，用于限制加索引时 ingest 阶段速度的上限 [#57156](https://github.com/pingcap/tidb/issues/57156) @[CbcWestwolf](https://github.com/CbcWestwolf)
+- 新增系统变量 [`tidb_ddl_reorg_max_write_speed`](https://docs.pingcap.com/zh/tidb/v7.5/system-variables#tidb_ddl_reorg_max_write_speed-从-v6512-和-v755-版本开始引入)，用于限制加索引时 ingest 阶段速度的上限 [#57156](https://github.com/pingcap/tidb/issues/57156) @[CbcWestwolf](https://github.com/CbcWestwolf)
 - TiKV 配置项 [`raft-client-queue-size`](/tikv-configuration-file.md#raft-client-queue-size) 默认值从 `8192` 修改为 `16384` [#17101](https://github.com/tikv/tikv/issues/17101) @[Connor1996](https://github.com/Connor1996)
 
 ## 改进提升
