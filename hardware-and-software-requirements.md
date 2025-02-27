@@ -27,6 +27,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
     |  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
     | 麒麟欧拉版 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
     | 统信操作系统 (UOS) V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+    | openEuler 22.03 LTS SP3/SP4（从 v6.5.12 开始支持）          |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 
     > **注意：**
     >
