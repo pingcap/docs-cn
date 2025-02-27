@@ -81,7 +81,6 @@ TiDB 版本：6.5.12
     - 修复当某些项的值为空时，查询慢日志可能失败的问题 [#58147](https://github.com/pingcap/tidb/issues/58147) @[yibin87](https://github.com/yibin87)
     - 修复 `RADIANS()` 函数计算顺序错误的问题 [#57671](https://github.com/pingcap/tidb/issues/57671) @[gengliqi](https://github.com/gengliqi)
     - 修复 `BIT` 列默认值错误的问题 [#57301](https://github.com/pingcap/tidb/issues/57301) @[YangKeao](https://github.com/YangKeao)
-    - 修复无法为带别名的多表删除进行绑定的问题 [#56726](https://github.com/pingcap/tidb/issues/56726) @[hawkingrei](https://github.com/hawkingrei)
     - 修复如果 CTE 包含 `ORDER BY`、`LIMIT` 或 `SELECT DISTINCT` 子句并且被另外一个 CTE 的递归部分引用，可能出现内联 (Inline) 错误 [#56603](https://github.com/pingcap/tidb/issues/56603) @[elsa0520](https://github.com/elsa0520)
     - 修复统计信息同步加载超时可能处理不正确的问题 [#57710](https://github.com/pingcap/tidb/issues/57710) @[hawkingrei](https://github.com/hawkingrei)
     - 修复在 CTE 中解析数据库名时，可能得到错误的数据库名的问题 [#54582](https://github.com/pingcap/tidb/issues/54582) @[hawkingrei](https://github.com/hawkingrei)
