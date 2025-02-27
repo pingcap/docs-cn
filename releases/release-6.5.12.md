@@ -13,7 +13,7 @@ TiDB 版本：6.5.12
 
 ## 兼容性变更
 
-- 兼容 openEuler 22.03 LTS SP3/SP4 操作系统。详情请参考[操作系统及平台要求](https://docs.pingcap.com/zh/tidb/v6.5/hardware-and-software-requirements#操作系统及平台要求)。
+- 支持 openEuler 22.03 LTS SP3/SP4 操作系统。详情请参考[操作系统及平台要求](https://docs.pingcap.com/zh/tidb/v6.5/hardware-and-software-requirements#操作系统及平台要求)。
 - 通过 [TiDB HTTP API](https://github.com/pingcap/tidb/blob/release-6.5/docs/tidb_http_api.md) 获取 DDL 历史任务时，默认获取任务数量的上限为 2048，以避免历史任务数量过多导致 OOM 的问题 [#55711](https://github.com/pingcap/tidb/issues/55711) @[joccau](https://github.com/joccau)
 - 新增系统变量 [`tidb_ddl_reorg_max_write_speed`](https://docs.pingcap.com/zh/tidb/v6.5/system-variables#tidb_ddl_reorg_max_write_speed-从-v6512-版本开始引入)，用于限制加索引时 ingest 阶段速度的上限 [#57156](https://github.com/pingcap/tidb/issues/57156) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
