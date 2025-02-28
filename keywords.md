@@ -48,6 +48,7 @@ Query OK, 0 rows affected (0.08 sec)
 ```
 
 TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/information-schema/information-schema-keywords.md) 表，可以用于查询 TiDB 中所有的关键字。
+variable tidb_enable_window_function可以控制R-Window中的关键词是否在语法树中生效，如果tidb_enable_window_function设置为OFF，则R-Window中的单词将不再作为关键词。 
 
 ## 关键字列表
 
