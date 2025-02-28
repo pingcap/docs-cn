@@ -185,12 +185,12 @@ Query OK, 0 rows affected (0.02 sec)
 
 ```sql
 ALTER USER 'newuser' WITH MAX_USER_CONNECTIONS 3;
-SELECT USER, HOST, MAX_USER_CONNECTIONS FROM MYSQL.USER WHERE USER='newuser';
+SELECT User, Host, max_user_connections FROM mysql.user WHERE User='newuser';
 ```
 
 ```
 +---------+------+----------------------+
-| USER    | HOST | MAX_USER_CONNECTIONS |
+| User    | Host | max_user_connections |
 +---------+------+----------------------+
 | newuser | %    |                    3 |
 +---------+------+----------------------+
