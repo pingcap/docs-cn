@@ -258,7 +258,7 @@ build_hash_table:{concurrency:5, time:2.25s, fetch:1.06s, max_partition:1.06s, t
 - `probe`: 读取下游算子数据并进行 probe 的执行信息：
     - `time`：总耗时
     - `fetch_and_wait`：读取下游数据和等待上游接受数据的总耗时。
-    - `max_worker_time`：worker 中最长的执行时间。
+    - `max_worker_time`：worker 中最长的执行时间，worker 的执行时间包括从下游读取数据的时间、进行 probe 的时间以及等待上游接受数据的时间
     - `total_worker_time`：所有 worker 执行时间的累加耗时。
     - `max_probe`：worker 中最长的 probe 执行时间。
     - `total_probe`：所有 worker 的 probe 执行时间的累加耗时。
