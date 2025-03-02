@@ -79,23 +79,27 @@ NOTE: 在使用 TiCDC 老架构时，请勿在配置文件中添加 `newarch` �
 
 ### 使用 TiUP 将原有 TiDB 集群中的 TiCDC 升级为新架构
 
-如果 TiDB 集群为 v9.0 以下版本，需要手动下载 v9.0 或者以上版本的 TiCDC 二进制文件，并 Patch 到集群中。
+如果 TiDB 集群为 v9.0.0 之前版本，请通过以下方式将集群中 TiCDC 组件版本升级到 v9.0.0 或者以上版本，然后再启用新架构：
 
 > **注意：**
 > 
 > 升级至TiCDC新架构后，将不再支持回退至旧架构。
 
-1. TiCDC 二进制文件下载链接格式为 `https://tiup-mirrors.pingcap.com/${component}-${version}-${os}-${arch}.tar.gz`，例如可以用以下命令下载 Linux 系统 x86-64 架构的 TiCDC v9.0.0 版本的二进制文件（更多信息参考[tiup cluster patch](/tiup/tiup-component-cluster-patch.md)）：
+1. 下载 v9.0.0 或者以上版本的 TiCDC 二进制文件。
 
-```shell
-wget https://tiup-mirrors.pingcap.com/cdc-v9.0.0-linux-amd64.tar.gz
-```
+    该文件下载链接格式为 `https://tiup-mirrors.pingcap.com/cdc-${version}-${os}-${arch}.tar.gz`，其中，{version} 为 TiCDC 版本号，${os} 为你的操作系统，{arch} 为组件运行的平台（`amd64` 或 `arm64`）。
 
-2. 将下载的 TiCDC 二进制文件 Patch 到集群中：
+    例如，可以使用以下命令下载 Linux 系统 x86-64 架构的 TiCDC v9.0.0 的二进制文件：
 
-```shell
-tiup cluster patch <cluster-name> ./cdc-v9.0.0-linux-amd64.tar.gz -R cdc
-```
+   ```shell
+   wget https://tiup-mirrors.pingcap.com/cdc-v9.0.0-linux-amd64.tar.gz
+   ```
+
+2. 将下载的 TiCDC 二进制文件 Patch 到你的 TiDB 集群中：
+
+    ```shell
+    tiup cluster patch <cluster-name> ./cdc-v9.0.0-linux-amd64.tar.gz -R cdc
+    ```
 
 当 TiDB 集群中 TiCDC 组件版本已经升级到 v9.0 或者以上版本后，可以通过以下步骤启用 TiCDC 新架构。
 
