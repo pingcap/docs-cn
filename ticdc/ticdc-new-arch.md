@@ -101,7 +101,7 @@ NOTE: 在使用 TiCDC 老架构时，请勿在配置文件中添加 `newarch` �
     tiup cluster patch <cluster-name> ./cdc-v9.0.0-linux-amd64.tar.gz -R cdc
     ```
 
-当 TiDB 集群中 TiCDC 组件版本已经升级到 v9.0 或者以上版本后，可以通过以下步骤启用 TiCDC 新架构。
+当 TiDB 集群中 TiCDC 组件版本已经升级到 v9.0.0 或者以上版本后，可以通过以下步骤启用 TiCDC 新架构。
 
 1. 如果集群中已经有 Changefeed，需要参考[停止同步任务](/ticdc/ticdc-manage-changefeed.md#停止同步任务) 暂停所有的 Changefeed 同步任务；
 
