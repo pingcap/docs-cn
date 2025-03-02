@@ -30,11 +30,11 @@ summary: 了解 TiCDC 详细的命令行参数和配置文件定义。
 
 对于 `cdc server` 命令中 `config` 参数指定的配置文件说明如下。你可以在 [`pkg/cmd/util/ticdc.toml`](https://github.com/pingcap/tiflow/blob/master/pkg/cmd/util/ticdc.toml) 找到默认值的配置文件。
 
-### `newarch`
+### `newarch` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- v9.0 版本引入，控制是否开启 TiCDC 新架构
-- 当设置为 `true`，表示开启 TiCDC 新架构
-- 默认值为不设置，表示使用老架构。`newarch` 仅用于新架构，如果在 TiCDC 老架构的配置文件中添加 newarch，可能会导致解析失败。
+- 控制是否开启 [TiCDC 新架构](/ticdc/ticdc-new-arch.md)
+- 当设置为 `true` 时，表示开启 TiCDC 新架构
+- 默认值为不设置，表示使用老架构。`newarch` 仅用于新架构，如果在 TiCDC 老架构的配置文件中添加 `newarch`，可能会导致解析失败。
 
 <!-- 下面的字段的配置含义与命令行参数相同，但是命令行参数优先级更高 -->
 
