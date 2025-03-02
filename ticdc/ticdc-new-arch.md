@@ -49,7 +49,7 @@ TiCDC 老架构采用 Timer Driven 模式来驱动系统的处理逻辑。该模
 
 ![TiCDC New Architecture](/media/ticdc/ticdc-new-arch-2.jpg)
 
-## 使用指南
+## 部署指南
 
 TiCDC 新架构仅支持 v7.5 或者以上版本的 TiDB 集群，使用之前需要确保 TiDB 集群版本满足要求。
 
@@ -114,6 +114,24 @@ server_configs:
 ```
 
 3. 参考[恢复同步任务](/ticdc/ticdc-manage-changefeed.md#恢复同步任务)恢复所有的 Changefeed 同步任务；
+
+## 使用指南
+
+在部署完新架构的节点之后，即可使用相应的命令进行操作。新架构的命令与旧架构保持一致，无需额外学习新的命令格式，也无需对之前的使用到的命令做出任何改变。
+
+例如，要在新架构的 TiCDC 节点中创建同步任务，可执行以下命令：
+
+```
+cdc cli changefeed create cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" 
+```
+
+若需查询特定同步任务的信息，可执行：
+
+```
+cdc cli changefeed query -s --server=http://127.0.0.1:8300 --changefeed-id=simple-replication-task
+```
+
+更多命令的使用方法和细节，可以参考[管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)。
 
 ## 注意事项
 
