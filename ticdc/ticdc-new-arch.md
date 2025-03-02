@@ -9,21 +9,21 @@ summary: 介绍 TiCDC 新架构的主要特性，架构特点，升级部署指�
 
 TiCDC 新架构通过重新设计核心组件和优化数据处理流程，显著提升了实时数据同步的性能、扩展性和稳定性，同时降低了资源成本。新架构的主要优势包括：
 
-1. 更高的单节点性能：单节点最高支持 50 万张表的同步任务；宽表场景下最高同步流量可达 200MiB/s。
-
-2. 更强的扩展能力：集群同步能力接近线性扩展，单集群预计可扩展至 100 个节点以上，支持超 1万个 Changefeed；单个 Changefeed 可支持百万级表的同步任务。
-
-3. 更高的稳定性：在高流量、频繁 DDL 操作及集群扩缩容等场景下，Changefeed 延迟更小且更稳定；通过资源隔离和优先级调度，减少多 Changefeed 任务间的相互干扰。
-
-4. 更低的资源成本：改进资源利用率，减少冗余开销，典型场景下 CPU、内存等资源利用效率提升最多一个数量级。
+- **更高的单节点性能**：单节点最高可支持 50 万张表的同步任务，宽表场景下的同步流量最高可达 200MiB/s。
+- **更强的扩展能力**：集群同步能力接近线性扩展，单集群可扩展至超过 100 个节点，支持超 1 万个 Changefeed；单个 Changefeed 可支持百万级表的同步任务。
+- **更高的稳定性**：在高流量、频繁 DDL 操作及集群扩缩容等场景下，Changefeed 的延迟更低且更加稳定。通过资源隔离和优先级调度，减少了多个 Changefeed 任务之间的相互干扰。
+- **更低的资源成本**：通过改进资源利用率，减少冗余开销，在典型场景下，CPU、内存等资源的利用效率提升最多一个数量级。
 
 ## 架构设计
 
 ![TiCDC New Architecture](/media/ticdc/ticdc-new-arch-1.jpg)
 
-TiCDC 新架构由 Log Service 和 Downstream Adapter 两大核心组件构成。其中，Log Service 作为核心数据服务层，主要负责实时拉取上游 TiDB 集群的行变更和 DDL 变更等信息，并将其持久化存储在本地。同时，它还负责响应 Downstream Adapter 的数据请求，定时将 DML 和 DDL 数据合并排序并推送至 Downstream Adapter。Downstream Adapter 作为下游数据同步适配层，主要负责处理用户发起的 Changefeed 运维操作，调度生成相关同步任务，从 Log Service 获取数据并同步至下游系统。
+TiCDC 新架构由 Log Service 和 Downstream Adapter 两大核心组件构成。
 
-TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分，显著提升了系统的可扩展性、可靠性和灵活性。Log Service 作为有状态组件，专注于数据的获取、排序和存储，通过与 Changefeed 业务逻辑的解耦，实现了数据在多个 Changefeed 间的共享，有效提高了资源利用率，降低了系统开销。 Downstream Adapter 作为无状态组件，采用轻量级调度机制，支持任务在不同实例间的快速迁移，并根据负载变化灵活调整同步任务的拆分与合并，确保在各种场景下都能实现低延迟的数据同步。此外，这种架构设计为后续演进提供了更大的灵活性，Log Service 和 Downstream Adapter 可以部署在不同的进程中，使得系统能够根据负载特征进行独立扩容，避免资源浪费，进一步提升资源利用率。
+- Log Service：作为核心数据服务层，Log Service 负责实时拉取上游 TiDB 集群的行变更和 DDL 变更等信息，并将变更数据临时存储在本地磁盘上。此外，它还负责响应 Downstream Adapter 的数据请求，定时将 DML 和 DDL 数据合并排序并推送至 Downstream Adapter。
+- Downstream Adapter：作为下游数据同步适配层，Downstream Adapter 负责处理用户发起的 Changefeed 运维操作，调度生成相关同步任务，从 Log Service 获取数据并同步至下游系统。
+
+TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分，显著提升了系统的可扩展性、可靠性和灵活性。Log Service 作为有状态组件，专注于数据的获取、排序和存储，通过与 Changefeed 业务逻辑的解耦，实现了数据在多个 Changefeed 间的共享，有效提高了资源利用率，降低了系统开销。 Downstream Adapter 作为无状态组件，采用轻量级调度机制，支持任务在不同实例间的快速迁移，并根据负载变化灵活调整同步任务的拆分与合并，确保在各种场景下都能实现低延迟的数据同步。
 
 ## 新老架构对比
 
@@ -79,25 +79,29 @@ NOTE: 在使用 TiCDC 老架构时，请勿在配置文件中添加 `newarch` �
 
 ### 使用 TiUP 将原有 TiDB 集群中的 TiCDC 升级为新架构
 
-如果 TiDB 集群为 v9.0 以下版本，需要手动下载 v9.0 或者以上版本的 TiCDC 二进制文件，并 Patch 到集群中。
+如果 TiDB 集群为 v9.0.0 之前版本，请通过以下方式将集群中 TiCDC 组件版本升级到 v9.0.0 或者以上版本，然后再启用新架构：
 
 > **注意：**
 > 
 > 升级至TiCDC新架构后，将不再支持回退至旧架构。
 
-1. TiCDC 二进制文件下载链接格式为 `https://tiup-mirrors.pingcap.com/${component}-${version}-${os}-${arch}.tar.gz`，例如可以用以下命令下载 Linux 系统 x86-64 架构的 TiCDC v9.0.0 版本的二进制文件（更多信息参考[tiup cluster patch](/tiup/tiup-component-cluster-patch.md)）：
+1. 下载 v9.0.0 或者以上版本的 TiCDC 二进制文件。
 
-```shell
-wget https://tiup-mirrors.pingcap.com/cdc-v9.0.0-linux-amd64.tar.gz
-```
+    该文件下载链接格式为 `https://tiup-mirrors.pingcap.com/cdc-${version}-${os}-${arch}.tar.gz`，其中，{version} 为 TiCDC 版本号，${os} 为你的操作系统，{arch} 为组件运行的平台（`amd64` 或 `arm64`）。
 
-2. 将下载的 TiCDC 二进制文件 Patch 到集群中：
+    例如，可以使用以下命令下载 Linux 系统 x86-64 架构的 TiCDC v9.0.0 的二进制文件：
 
-```shell
-tiup cluster patch <cluster-name> ./cdc-v9.0.0-linux-amd64.tar.gz -R cdc
-```
+   ```shell
+   wget https://tiup-mirrors.pingcap.com/cdc-v9.0.0-linux-amd64.tar.gz
+   ```
 
-当 TiDB 集群中 TiCDC 组件版本已经升级到 v9.0 或者以上版本后，可以通过以下步骤启用 TiCDC 新架构。
+2. 将下载的 TiCDC 二进制文件 Patch 到你的 TiDB 集群中：
+
+    ```shell
+    tiup cluster patch <cluster-name> ./cdc-v9.0.0-linux-amd64.tar.gz -R cdc
+    ```
+
+当 TiDB 集群中 TiCDC 组件版本已经升级到 v9.0.0 或者以上版本后，可以通过以下步骤启用 TiCDC 新架构。
 
 1. 如果集群中已经有 Changefeed，需要参考[停止同步任务](/ticdc/ticdc-manage-changefeed.md#停止同步任务) 暂停所有的 Changefeed 同步任务；
 
@@ -135,9 +139,10 @@ cdc cli changefeed query -s --server=http://127.0.0.1:8300 --changefeed-id=simpl
 
 ## 注意事项
 
-1. TiCDC 老架构中，DDL 同步采用完全串行的方式，因此 DDL 的同步进度仅需用 Changefeed 的 `CheckpointTs` 标识即可。但是在新架构中为了提高 DDL 同步效率，会尽可能并行同步不同表的 DDL，为了在下游为 MySQL 兼容数据库时准确记录各表的 DDL 同步进度，TiCDC 需要额外在下游数据库中创建一张名为 `tidb_cdc.ddl_ts_v1` 的表，专门用于存储 Changefeed 的 DDL 同步进度信息。
+- 在 TiCDC 的老架构中，DDL 的同步是完全串行进行的，因此同步进度仅需通过 Changefeed 的 `CheckpointTs` 来标识。然而，在新架构中，为了提高 DDL 同步效率，TiCDC 会尽可能并行同步不同表的 DDL 变更。为了在下游 MySQL 兼容数据库中准确记录各表的 DDL 同步进度，TiCDC 新架构会在下游数据库中创建一张名为 `tidb_cdc.ddl_ts_v1` 的表，专门用于存储 Changefeed 的 DDL 同步进度信息。
 
-2. 作为实验性特性，TiCDC v9.0 的新架构尚未完全实现旧架构中的所有功能，这些功能将在后续的 GA 版本中完整实现，具体包括：
+- 作为实验性特性，TiCDC v9.0 的新架构尚未完全实现旧架构中的所有功能，这些功能将在后续的 GA 版本中完整实现，具体包括：
+
     - [拆分 Update 事件](/ticdc/ticdc-split-update-behavior.md)
     - [灾难场景的最终一致性复制](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制)
     - 拆分大事务
