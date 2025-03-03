@@ -518,11 +518,15 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 
 ### CANCEL TAFFIC JOBS
 
-取消捕获任务，需要拥有 `SUPER` 或者 `TRAFFIC_CAPTURE_ADMIN` 权限。取消回放任务，需要拥有 `SUPER` 或者 `TRAFFIC_REPLAY_ADMIN` 权限。
+取消捕获任务，需要拥有 `SUPER` 或者 `TRAFFIC_CAPTURE_ADMIN` 权限。
+
+取消回放任务，需要拥有 `SUPER` 或者 `TRAFFIC_REPLAY_ADMIN` 权限。
 
 ### SHOW TRAFFIC JOBS
 
-查看捕获任务，需要拥有 `SUPER` 或者 `TRAFFIC_CAPTURE_ADMIN` 权限。查看回放任务，需要拥有 `SUPER` 或者 `TRAFFIC_REPLAY_ADMIN` 权限。
+查看捕获任务，需要拥有 `SUPER` 或者 `TRAFFIC_CAPTURE_ADMIN` 权限。
+
+查看回放任务，需要拥有 `SUPER` 或者 `TRAFFIC_REPLAY_ADMIN` 权限。
 
 ## 权限系统的实现
 
