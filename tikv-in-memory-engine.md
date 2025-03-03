@@ -37,6 +37,7 @@ TiKV MVCC 内存引擎在内存中缓存最近写入的 MVCC 版本，并实现�
 ```toml
 [in-memory-engine]
 # 该参数为内存引擎功能的开关，默认为 false，调整为 true 即可开启。
+# 建议 TiKV 节点至少有 8 GiB 内存，推荐 32 GiB 或更多内存以获得更佳性能。如果 TiKV 可用内存太小，即使该配置项设置为 `true`，内存引擎也不会开启。此时，可以在 TiKV 日志中查看 "in-memory engine is disabled because" 相关的信息进行判断。
 enable = false
 
 # 该参数控制内存引擎可使用的内存大小。默认值为系统内存的 10%，同时最大值为 5 GiB，
