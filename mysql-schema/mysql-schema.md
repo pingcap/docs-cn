@@ -61,8 +61,8 @@ summary: 了解 TiDB 系统表。
 
 ## PLAN REPLAYER 相关系统表
 
-* `plan_replayer_status` 用户注册的 [PLAN REPLAYER CAPTURE](/sql-plan-replayer.md#使用-plan-replayer-capture-功能) 抓取任务
-* `plan_replayer_task` [PLAN REPLAYER CAPTURE](/sql-plan-replayer.md#使用-plan-replayer-capture-功能) 抓取结果
+* `plan_replayer_status` 存储用户注册的 [`PLAN REPLAYER CAPTURE`](/sql-plan-replayer.md#使用-plan-replayer-capture-功能) 抓取任务
+* `plan_replayer_task` 存储 [`PLAN REPLAYER CAPTURE`](/sql-plan-replayer.md#使用-plan-replayer-capture-功能) 抓取结果
 
 ## GC Worker 相关系统表
 
