@@ -68,10 +68,10 @@ Gl8KEWh0dHA6Ly9taW5pbzo5MDAwEgl1cy1lYXN0LTEaBWFzdHJvIh50cGNjLTEwMDAtaW5jci13aXRo
 
 #### 第 2 步：执行日志压缩
 
-有了存储的 Base64 之后，你可以执行以下命令通过 `tikv-ctl` 发起压缩：
+有了存储的 Base64 之后，你可以执行以下命令通过 `tikv-ctl` 发起压缩，注意 `tikv-ctl` 默认日志等级为 `warning`，启用 `--log-level info` 来获得更多信息：
 
 ```shell
-tikv-ctl compact-log-backup \
+tikv-ctl --log-level info compact-log-backup \
     --from "<start-tso>" --until "<end-tso>" \
     -s 'bAsE64==' -N 8
 ```
@@ -98,3 +98,7 @@ echo $(( $(date --date '2004-05-06 15:02:01Z' +%s%3N) << 18 ))
 > ```shell
 > echo $(( $(gdate --date '2004-05-06 15:02:01Z' +%s%3N) << 18 ))
 > ```
+
+### 使用限制
+
+目前不支持压缩启用了 Local Encryption 的备份档案。
