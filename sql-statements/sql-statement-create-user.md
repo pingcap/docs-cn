@@ -198,7 +198,7 @@ SELECT USER, HOST, USER_ATTRIBUTES FROM MYSQL.USER WHERE USER='newuser11';
 +-----------+------+---------------------------------------------------+
 | USER      | HOST | USER_ATTRIBUTES                                   |
 +-----------+------+---------------------------------------------------+
-| newuser11  | %    | {"resource_group": "rg1"} |
+| newuser11 | %    | {"resource_group": "rg1"} |
 +-----------+------+---------------------------------------------------+
 1 rows in set (0.00 sec)
 ```
