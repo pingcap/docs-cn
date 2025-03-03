@@ -175,7 +175,7 @@ Query OK, 1 row affected (0.02 sec)
 
 ```sql
 CREATE USER 'newuser10'@'%' WITH MAX_USER_CONNECTIONS 3;
-SELECT USER, HOST, MAX_USER_CONNECTIONS FROM MYSQL.USER WHERE USER='newuser10';
+SELECT User, Host, max_user_connections FROM mysql.user WHERE User='newuser10';
 ```
 
 ```
