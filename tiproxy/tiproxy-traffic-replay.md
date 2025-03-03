@@ -11,7 +11,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
 从 TiProxy v1.3.0 开始，你可以使用 TiProxy 捕获 TiDB 生产集群中的访问流量，并在测试集群中按照指定的速率回放这些流量。通过该功能，你可以在测试环境中重现生产集群的实际工作负载，从而验证所有 SQL 的执行结果和性能表现。
 
-<img src="https://download.pingcap.com/images/docs-cn/tiproxy/tiproxy-traffic-replay.png" alt="TiProxy 流量回放" width="800" />
+<img src="https://docs-download.pingcap.com/media/images/docs-cn/tiproxy/tiproxy-traffic-replay.png" alt="TiProxy 流量回放" width="800" />
 
 ## 使用场景
 
