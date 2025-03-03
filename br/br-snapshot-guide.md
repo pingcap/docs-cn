@@ -129,7 +129,7 @@ tiup br restore full \
 
 ### 恢复 `mysql` 数据库下的表
 
-在使用[快照备份](/br/br-snapshot-guide.md)功能备份集群时，BR 会将系统表备份为库名带有 `__TiDB_BR_Temporary_` 前缀的表。例如，`mysql.user` 表会被备份为 `__TiDB_BR_Temporary_mysql.user`。因此，在执行快照恢复时，BR 会首先恢复这些带有 `__TiDB_BR_Temporary_` 前缀的系统表，以避免与恢复集群中现有的系统表数据发生冲突。在恢复系统表时，BR 会通过 `REPLACE INTO` 语句将数据从带有 `__TiDB_BR_Temporary_` 前缀的表数据写入对应的系统表。
+在使用快照备份功能备份集群时，BR 会将系统表备份为库名带有 `__TiDB_BR_Temporary_` 前缀的表。例如，`mysql.user` 表会被备份为 `__TiDB_BR_Temporary_mysql.user`。因此，在执行快照恢复时，BR 会首先恢复这些带有 `__TiDB_BR_Temporary_` 前缀的系统表，以避免与恢复集群中现有的系统表数据发生冲突。在恢复系统表时，BR 会通过 `REPLACE INTO` 语句将数据从带有 `__TiDB_BR_Temporary_` 前缀的表数据写入对应的系统表。
 
 - `br` v5.1.0 开始，快照备份时默认自动备份 **mysql schema 下的系统表数据**，但恢复数据时默认不恢复系统表数据。
 - `br` v6.2.0 开始，增加恢复参数 `--with-sys-table` 支持恢复数据的同时恢复**部分系统表相关数据**。
