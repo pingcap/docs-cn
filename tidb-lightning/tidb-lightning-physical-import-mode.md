@@ -74,7 +74,7 @@ backend = "local"
 
 - 如果你的 TiDB 生产集群上有延迟敏感型业务，并且并发较小，**不建议**使用 TiDB Lightning 物理导入模式导入数据到该集群，因为可能会影响在线业务。
 
-- 默认情况下，不应同时启动多个 TiDB Lightning 实例向同一 TiDB 集群导入数据，而应考虑使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性。
+- 如果要同时启动多个 TiDB Lightning 实例向同一 TiDB 集群导入数据，请启用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)。
 
 - 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，即不可同时使用物理导入模式和逻辑导入模式导入同一 TiDB 集群。
 
