@@ -3049,7 +3049,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：""
 - 这是一个只读变量。用于在 TiDB 内部查询上一条 DML 语句的事务信息。查询的事务信息包括：
-    - `txn_scope`：事务的作用域，可能为 `global` 或 `local`。
     - `start_ts`：事务开始的时间戳。
     - `for_update_ts`：先前执行的 DML 语句的 `for_update_ts` 信息。这是 TiDB 用于测试的内部术语。通常，你可以忽略此信息。
     - `error`：错误消息（如果有）。
@@ -5462,15 +5461,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：""
 - 在 Stale Read 场景下，该会话变量用于帮助记录 Stable Read TS 值。
-- 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
-
-### `txn_scope`
-
-- 作用域：SESSION
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`global`
-- 可选值：`global` 和 `local`
-- 该变量用于设置当前会话下事务为全局事务（设为 `global`）还是局部事务（设为 `local`）。
 - 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
 
 ### `validate_password.check_user_name` <span class="version-mark">从 v6.5.0 版本开始引入</span>
