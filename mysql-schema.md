@@ -33,6 +33,8 @@ summary: 了解 TiDB 系统表。
 * `stats_extended` 扩展统计信息，比如列之间的顺序相关性
 * `stats_feedback` 统计信息的查询反馈
 * `stats_fm_sketch` 统计信息列的直方图 FMSketch 分布
+* `stats_meta_history` 历史统计信息中的元信息部分
+* `stats_history` 历史统计信息中的其它部分
 * `analyze_options` 各个表默认的 `analyze` 参数
 * `column_stats_usage` 列统计信息的使用情况
 * `schema_index_usage` 索引的使用情况
@@ -55,3 +57,4 @@ summary: 了解 TiDB 系统表。
 * `expr_pushdown_blacklist` 表达式下推的黑名单
 * `opt_rule_blacklist` 逻辑优化规则的黑名单
 * `table_cache_meta` 缓存表的信息
+* `advisory_locks` 存储[锁函数](/functions-and-operators/locking-functions.md)相关的信息
