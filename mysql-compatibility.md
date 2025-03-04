@@ -48,6 +48,7 @@ TiDB 高度兼容 MySQL 协议，以及 MySQL 5.7 和 MySQL 8.0 常用的功能�
 * 降序索引 [#2519](https://github.com/pingcap/tidb/issues/2519)
 * `SKIP LOCKED` 语法 [#18207](https://github.com/pingcap/tidb/issues/18207)
 * 横向派生表 [#40328](https://github.com/pingcap/tidb/issues/40328)
+* JOIN 的 ON 子句的子查询 [#11414](https://github.com/pingcap/tidb/issues/11414)
 
 ## 与 MySQL 有差异的特性详细说明
 
@@ -99,7 +100,7 @@ mysql> SELECT _tidb_rowid, id FROM t;
 
 ### Performance schema
 
-TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控指标。因此，TiDB 的 Performance schema 表返回空结果。
+TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控指标。因此，TiDB 的大多数 [performance schema 表](/performance-schema/performance-schema.md)返回空结果。
 
 ### 查询计划
 

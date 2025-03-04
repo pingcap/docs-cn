@@ -18,7 +18,7 @@ summary: 本文介绍 TiDB 的向量数据类型。
 
 与使用 [`JSON`](/data-type-json.md) 类型相比，使用向量类型具有以下优势：
 
-- 支持向量索引。可以通过构建[向量搜索索引](/vector-search-index.md)加速查询。
+- 支持向量索引。可以通过构建[向量搜索索引](/vector-search/vector-search-index.md)加速查询。
 - 可指定维度。指定一个固定维度后，不符合维度的数据将被阻止写入到表中。
 - 存储格式更优。向量数据类型针对向量数据进行了特别优化，在空间利用和性能效率上都优于 `JSON` 类型。
 
@@ -57,9 +57,9 @@ ERROR 1105 (HY000): Invalid vector text: [5, ]
 ERROR 1105 (HY000): vector has 2 dimensions, does not fit VECTOR(3)
 ```
 
-关于向量数据类型支持的所有函数和操作符，可参阅[向量函数与操作符](/vector-search-functions-and-operators.md)。
+关于向量数据类型支持的所有函数和操作符，可参阅[向量函数与操作符](/vector-search/vector-search-functions-and-operators.md)。
 
-关于向量搜索索引的更多信息，可参阅[向量搜索索引](/vector-search-index.md)。
+关于向量搜索索引的更多信息，可参阅[向量搜索索引](/vector-search/vector-search-index.md)。
 
 ## 混合存储不同维度的向量
 
@@ -75,11 +75,11 @@ INSERT INTO vector_table VALUES (1, '[0.3, 0.5, -0.1]'); -- 插入一个 3 维�
 INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 插入一个 2 维向量
 ```
 
-需要注意的是，存储了不同维度向量的列不支持构建[向量搜索索引](/vector-search-index.md)，因为只有维度相同的向量之间才能计算向量距离。
+需要注意的是，存储了不同维度向量的列不支持构建[向量搜索索引](/vector-search/vector-search-index.md)，因为只有维度相同的向量之间才能计算向量距离。
 
 ## 比较
 
-向量数据支持[比较运算符](/vector-search-functions-and-operators.md#扩展的内置函数和运算符)，例如 `=`、`!=`、`<`、`>`、`<=` 和 `>=` 等。关于向量数据类型支持的所有函数和操作符，可参阅[向量函数与操作符](/vector-search-functions-and-operators.md)。
+向量数据支持[比较运算符](/vector-search/vector-search-functions-and-operators.md#扩展的内置函数和运算符)，例如 `=`、`!=`、`<`、`>`、`<=` 和 `>=` 等。关于向量数据类型支持的所有函数和操作符，可参阅[向量函数与操作符](/vector-search/vector-search-functions-and-operators.md)。
 
 比较向量数据类型时，TiDB 会以向量中的各个元素为单位进行依次比较，如：
 
@@ -223,7 +223,7 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 1 row in set (0.01 sec)
 ```
 
-如需了解其他转换函数，请参阅[向量函数和操作符](/vector-search-functions-and-operators.md)。
+如需了解其他转换函数，请参阅[向量函数和操作符](/vector-search/vector-search-functions-and-operators.md)。
 
 ### 向量与其他数据类型之间的转换
 
@@ -233,7 +233,7 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 
 ## 使用限制
 
-有关向量类型的限制，请参阅[向量搜索限制](/vector-search-limitations.md)以及[向量搜索索引的使用限制](/vector-search-index.md#使用限制)。
+有关向量类型的限制，请参阅[向量搜索限制](/vector-search/vector-search-limitations.md)以及[向量搜索索引的使用限制](/vector-search/vector-search-index.md#使用限制)。
 
 ## MySQL 兼容性
 
@@ -241,5 +241,5 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 
 ## 另请参阅
 
-- [向量函数和操作符](/vector-search-functions-and-operators.md)
-- [向量搜索索引](/vector-search-index.md)
+- [向量函数和操作符](/vector-search/vector-search-functions-and-operators.md)
+- [向量搜索索引](/vector-search/vector-search-index.md)

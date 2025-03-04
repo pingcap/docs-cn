@@ -40,6 +40,7 @@ summary: 介绍通过 TiUP 部署或扩容 TiDB 集群时提供的拓扑文件�
 
 - `user`：以什么用户来启动部署的集群，默认值："tidb"，如果 `<user>` 字段指定的用户在目标机器上不存在，会自动尝试创建
 - `group`：自动创建用户时指定用户所属的用户组，默认和 `<user>` 字段值相同，若指定的组不存在，则自动创建
+- `systemd_mode`：部署集群过程中在目标机器上使用的 `systemd` 模式，默认值为 `system`。若设置为 `user`，则表示在目标机器上不使用 sudo 权限，即使用 [TiUP no-sudo 模式](/tiup/tiup-cluster-no-sudo-mode.md)。
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，默认值：22
 - `enable_tls`：是否对集群启用 TLS。启用之后，组件之间、客户端与组件之间都必须使用生成的 TLS 证书进行连接，默认值：false
 - `listen_host`：默认使用的监听 IP。如果为空，每个实例会根据其 `host` 字段是否包含 `:` 来自动设置为 `::` 或 `0.0.0.0`。tiup-cluster v1.14.0 引入该配置
@@ -296,7 +297,7 @@ tikv_servers:
 
 - `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 global 区块中的 `ssh_port`
-- `tcp_port`：TiFlash TCP 服务的端口，默认 9000
+- `tcp_port`：TiFlash TCP 服务的端口，用于执行内部测试，默认 9000。自 TiUP v1.12.5 起，如果部署的集群版本 >= v7.1.0，则该配置项不生效
 - `flash_service_port`：TiFlash 提供服务的端口，TiDB 通过该端口从 TiFlash 读数据，默认 3930
 - `metrics_port`：TiFlash 的状态端口，用于输出 metric 数据，默认 8234
 - `flash_proxy_port`：内置 TiKV 的端口，默认 20170
@@ -316,7 +317,6 @@ tikv_servers:
 
 - `host`
 - `tcp_port`
-- `http_port`
 - `flash_service_port`
 - `flash_proxy_port`
 - `flash_proxy_status_port`
@@ -342,8 +342,8 @@ tiflash_servers:
 - `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略。
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`。
 - `port`：TiProxy SQL 服务的监听端口，默认值：`6000`。
+- `status_port`：TiProxy 状态服务的监听端口，用于外部通过 HTTP 请求查看 TiProxy 服务的状态，默认值：`3080`。
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成。
-- `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成。
 - `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 `"0,1"`。
 - `config`：该字段配置规则和 `server_configs` 里的 `tiproxy` 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 `tiproxy` 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器。
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`。
@@ -354,7 +354,6 @@ tiflash_servers:
 - `host`
 - `port`
 - `deploy_dir`
-- `data_dir`
 - `arch`
 - `os`
 
@@ -363,8 +362,18 @@ tiflash_servers:
 ```yaml
 tiproxy_servers:
   - host: 10.0.1.21
+    port: 6000
+    status_port: 3080
+    config:
+      labels: { zone: "zone1" }
   - host: 10.0.1.22
+    port: 6000
+    status_port: 3080
+    config:
+      labels: { zone: "zone2" }
 ```
+
+关于更多配置示例，请参见 [TiProxy 部署拓扑](/tiproxy/tiproxy-deployment-topology.md)。
 
 ### `kvcdc_servers`
 

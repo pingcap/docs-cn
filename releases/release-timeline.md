@@ -9,8 +9,13 @@ summary: 了解 TiDB 的版本发布时间线。
 
 本文列出了所有已发布的 TiDB 版本，按发布时间倒序呈现。
 
+关于 TiDB 长期支持版本 (Long-Term Support, LTS) 的支持时间表，请参阅 [TiDB 版本周期支持策略](https://cn.pingcap.com/tidb-release-support-policy/)。
+
 | 版本 | 发布日期 |
 | :--- | :--- |
+| [6.5.12](/releases/release-6.5.12.md) | 2025-02-27 |
+| [8.5.1](/releases/release-8.5.1.md) | 2025-01-17 |
+| [7.5.5](/releases/release-7.5.5.md) | 2024-12-31 |
 | [8.1.2](/releases/release-8.1.2.md) | 2024-12-26 |
 | [8.5.0](/releases/release-8.5.0.md) | 2024-12-19 |
 | [7.1.6](/releases/release-7.1.6.md) | 2024-11-21 |

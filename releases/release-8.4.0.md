@@ -150,13 +150,13 @@ TiDB 版本：8.4.0
 
     可以观测 [Statement Summary Tables](/statement-summary-tables.md) 中的几个对应字段 (`RESOURCE_GROUP`、`MAX_REQUEST_UNIT_WRITE`、`MAX_REQUEST_UNIT_READ`、`MAX_PROCESSED_KEYS`)，根据历史执行情况决定条件值的大小。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
+    更多信息，请参考[用户文档](/tidb-resource-control-runaway-queries.md#管理资源消耗超出预期的查询-runaway-queries)。
 
 * 超出预期的查询 (Runaway Queries) 支持切换资源组 [#54434](https://github.com/pingcap/tidb/issues/54434) @[JmPotato](https://github.com/JmPotato)
 
-    v8.4.0 新增支持将 Runaway Queries 切换到指定资源组。在降低优先级 (COOLDOWN) 仍旧无法有效降低资源消耗的情况下，你可以创建一个[资源组 (Resource Group)](/tidb-resource-control.md#创建资源组)并限制其资源上限，通过配置参数 `SWITCH_GROUP` 指定将识别到的查询切换到该资源组中，会话的后续查询仍在原资源组中执行。切换资源组的行为能够更精确地限制资源使用，对 Runaway Queries 的资源消耗做更加严格的控制。
+    v8.4.0 新增支持将 Runaway Queries 切换到指定资源组。在降低优先级 (COOLDOWN) 仍旧无法有效降低资源消耗的情况下，你可以创建一个[资源组 (Resource Group)](/tidb-resource-control-ru-groups.md#创建资源组)并限制其资源上限，通过配置参数 `SWITCH_GROUP` 指定将识别到的查询切换到该资源组中，会话的后续查询仍在原资源组中执行。切换资源组的行为能够更精确地限制资源使用，对 Runaway Queries 的资源消耗做更加严格的控制。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md#query_limit-参数说明)。
+    更多信息，请参考[用户文档](/tidb-resource-control-runaway-queries.md#query_limit-参数说明)。
 
 * 支持使用系统变量 `tidb_scatter_region` 设置集群级别的 Region 打散策略 [#55184](https://github.com/pingcap/tidb/issues/55184) @[D3Hunter](https://github.com/D3Hunter)
 
@@ -170,7 +170,7 @@ TiDB 版本：8.4.0
 
     TiDB 资源管控能够识别并降低后台任务的运行优先级。在部分场景下，即使有空闲资源，用户也希望后台任务消耗能够控制在很低的水平。从 v8.4.0 开始，你可以使用参数 `UTILIZATION_LIMIT` 为资源管控的后台任务设置最大可以使用的资源百分比，每个节点把所有后台任务的使用量控制在这个百分比以下。该功能可以让你精细控制后台任务的资源占用，进一步提升集群稳定性。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md#管理后台任务)。
+    更多信息，请参考[用户文档](/tidb-resource-control-background-tasks.md)。
 
 * 优化资源组资源分配策略 [#50831](https://github.com/pingcap/tidb/issues/50831) @[nolouch](https://github.com/nolouch)
 
@@ -200,13 +200,13 @@ TiDB 版本：8.4.0
 
     向量搜索是一种基于数据语义的搜索方法，可以提供更相关的搜索结果。作为 AI 和大语言模型 (LLM) 的核心功能之一，向量搜索可用于检索增强生成 (Retrieval-Augmented Generation, RAG)、语义搜索、推荐系统等多种场景。
 
-    从 v8.4.0 开始，TiDB 支持[向量数据类型](/vector-search-data-types.md)和[向量搜索索引](/vector-search-index.md)，具备强大的向量搜索能力。TiDB 的向量数据类型最多可支持 16383 维度，并支持多种[距离函数](/vector-search-functions-and-operators.md#向量函数)，包括 L2 距离（欧式距离）、余弦距离、负内积和 L1 距离（曼哈顿距离）。
+    从 v8.4.0 开始，TiDB 支持[向量数据类型](/vector-search/vector-search-data-types.md)和[向量搜索索引](/vector-search/vector-search-index.md)，具备强大的向量搜索能力。TiDB 的向量数据类型最多可支持 16383 维度，并支持多种[距离函数](/vector-search/vector-search-functions-and-operators.md#向量函数)，包括 L2 距离（欧式距离）、余弦距离、负内积和 L1 距离（曼哈顿距离）。
 
     在使用时，你只需要创建包含向量数据类型的表，并插入向量数据，即可执行向量搜索查询，也可进行向量数据与传统关系数据的混合查询。
 
-    此外，你可以创建并利用[向量搜索索引](/vector-search-index.md)来提升向量搜索的性能。需要注意的是，TiDB 的向量搜索索引依赖于 TiFlash。在使用向量搜索索引之前，需要确保 TiDB 集群中已部署 TiFlash 节点。
+    此外，你可以创建并利用[向量搜索索引](/vector-search/vector-search-index.md)来提升向量搜索的性能。需要注意的是，TiDB 的向量搜索索引依赖于 TiFlash。在使用向量搜索索引之前，需要确保 TiDB 集群中已部署 TiFlash 节点。
 
-    更多信息，请参考[用户文档](/vector-search-overview.md)。
+    更多信息，请参考[用户文档](/vector-search/vector-search-overview.md)。
 
 ### 数据库管理
 
@@ -327,7 +327,7 @@ TiDB 版本：8.4.0
 | BR | [`--master-key`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据的主密钥，可以是基于本地磁盘的主密钥或基于云 KMS (Key Management Service) 的主密钥。|
 | BR | [`--master-key-crypter-method`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据基于主密钥的加密算法，支持 `aes128-ctr`、`aes192-ctr` 和 `aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密。 |
 
-## 离线包变更
+### 离线包变更
 
 从 v8.4.0 开始，`TiDB-community-toolkit` [二进制软件包](/binary-package.md)中移除了以下内容：
 
@@ -336,11 +336,11 @@ TiDB 版本：8.4.0
 - `binlogctl`
 - `arbiter`
 
-## 操作系统支持变更
+### 操作系统支持变更
 
 升级 TiDB 前，请务必确保你的操作系统版本符合[操作系统及平台要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
 
-- 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS Linux 7 的上游支持已于 2024 年 6 月 30 日终止。从 v8.4.0 版本开始，TiDB 已结束对 CentOS 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。如果将运行在 CentOS 7 上的 TiDB 集群升级到 v8.4.0 或之后版本，将导致集群不可用。
+- 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS Linux 7 的上游支持已于 2024 年 6 月 30 日终止。因此，在 v8.4.0 版本中，TiDB 移除了对 CentOS 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。如果将运行在 CentOS 7 上的 TiDB 集群升级到 v8.4.0 版本，将导致集群不可用。
 - 根据 [Red Hat Enterprise Linux Life Cycle](https://access.redhat.com/support/policy/updates/errata/#Life_Cycle_Dates)，Red Hat Enterprise Linux 7 的 Maintenance Support 已于 2024 年 6 月 30 日终止。从 v8.4.0 版本开始，TiDB 已结束对 Red Hat Enterprise Linux 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。如果将运行在 Red Hat Enterprise Linux 7 上的 TiDB 集群升级到 v8.4.0 或之后版本，将导致集群不可用。
 
 ## 移除功能
@@ -371,7 +371,7 @@ TiDB 版本：8.4.0
     - 优化扫描大量数据时构造 BatchCop Task 的效率 [#55915](https://github.com/pingcap/tidb/issues/55915) [#55413](https://github.com/pingcap/tidb/issues/55413) @[wshwsh12](https://github.com/wshwsh12)
     - 优化事务的缓存，以降低事务中的写操作延时与 TiDB CPU 使用 [#55287](https://github.com/pingcap/tidb/issues/55287) @[you06](https://github.com/you06)
     - 优化系统变量 `tidb_dml_type` 为 `"bulk"` 时 DML 语句的执行性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium)
-    - 支持使用 [Optimizer Fix Control 47400](/optimizer-fix-controls.md#47400-从-v840-版本开始引入) 控制优化器是否将 `estRows` 的最小值限制为 `1`，与 Oracle 和 DB2 等数据库的行为保持一致 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell)
+    - 支持使用 [Optimizer Fix Control 47400](/optimizer-fix-controls.md#47400-从-v840-版本开始引入) 控制优化器是否将 `estRows` 的最小值限制为 `1`，与 Oracle 和 Db2 等数据库的行为保持一致 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell)
     - 为日志表 [`mysql.tidb_runaway_queries`](/mysql-schema/mysql-schema.md#runaway-queries-相关系统表) 增加写入控制，降低大量并发写入引发的开销 [#54434](https://github.com/pingcap/tidb/issues/54434) @[HuSharp](https://github.com/HuSharp)
     - 当内表上有 `Selection`、`Projection` 或 `Aggregation` 算子时默认支持 Index Join [#47233](https://github.com/pingcap/tidb/issues/47233) @[winoros](https://github.com/winoros)
     - 在某些场景下减少 `DELETE` 操作从 TiKV 获取的列信息数量，降低 `DELETE` 操作的资源开销 [#38911](https://github.com/pingcap/tidb/issues/38911) @[winoros](https://github.com/winoros)

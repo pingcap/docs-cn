@@ -81,6 +81,8 @@ Value 数据格式默认与 Key 数据格式相同，但是 Value 的 `fields` �
 > - 对于 Delete 事件，只编码 Key 部分，Value 部分为空。
 > - 对于 Insert 事件，编码所有列数据到 Value 部分。
 > - 对于 Update 事件，只编码更新后的所有列数据到 Value 部分。
+>
+> Avro 协议不会对 Update 和 Delete 事件的旧值进行编码。此外，为了与大多数依赖 `null` 记录来识别删除 (`delete.on.null`) 的 Confluent sink 连接器兼容，即使开启 `enable-tidb-extension` 选项，Delete 事件也不包含 TiDB 扩展字段信息，如 `_tidb_commit_ts`。如果你需要这些功能，请考虑使用其他协议，例如 Canal-JSON 或 Debezium。
 
 ## TiDB 扩展字段
 

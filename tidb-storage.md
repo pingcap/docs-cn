@@ -12,14 +12,14 @@ aliases: ['/docs-cn/dev/tidb-storage/']
 
 ## Key-Value Pairs（键值对）
 
-作为保存数据的系统，首先要决定的是数据的存储模型，也就是数据以什么样的形式保存下来。TiKV 的选择是 Key-Value 模型，并且提供有序遍历方法。
+作为数据保存系统，首先要决定数据的存储模型，即数据的保存形式。TiKV 选择使用 Key-Value 模型，并提供有序遍历方法。
 
 TiKV 数据存储的两个关键点：
 
-1. 这是一个巨大的 Map（可以类比一下 C++ 的 std::map），也就是存储的是 Key-Value Pairs（键值对）
-2. 这个 Map 中的 Key-Value pair 按照 Key 的二进制顺序有序，也就是可以 Seek 到某一个 Key 的位置，然后不断地调用 Next 方法以递增的顺序获取比这个 Key 大的 Key-Value。
+- TiKV 实现了一个巨大的 Map（类似于 C++ 的 std::map），用于存储 Key-Value Pairs（键值对）。
+- Map 中的键值对按照键的二进制顺序排序，可以通过 Seek 方法定位某个键，然后使用 Next 方法以递增顺序获取更大的键值对。
 
-注意，本文所说的 **TiKV 的 KV 存储模型和 SQL 中的 Table 无关**。本文不讨论 SQL 中的任何概念，专注于讨论如何实现 TiKV 这样一个高性能、高可靠性、分布式的 Key-Value 存储。
+注意，TiKV 的 KV 存储模型与 SQL 中的表无关。本文不讨论 SQL 概念，专注于 TiKV 的高性能、高可靠性和分布式键值存储的实现。
 
 ## 本地存储 (RocksDB)
 
@@ -43,26 +43,27 @@ TiKV 利用 Raft 来做数据复制，每个数据变更都会落地为一条 Ra
 
 ## Region
 
-首先，为了便于理解，在此节，假设所有的数据都只有一个副本。前面提到，TiKV 可以看做是一个巨大的有序的 KV Map，那么为了实现存储的水平扩展，数据将被分散在多台机器上。对于一个 KV 系统，将数据分散在多台机器上有两种比较典型的方案：
+为了便于理解，假设所有的数据都只有一个副本。可以将 TiKV 看作一个巨大而有序的 KV Map，为了实现存储的水平扩展，数据将被分散在多台机器上。对于一个 KV 系统，将数据分散在多台机器上有两种比较典型的方案：
 
 * Hash：按照 Key 做 Hash，根据 Hash 值选择对应的存储节点。
 * Range：按照 Key 分 Range，某一段连续的 Key 都保存在一个存储节点上。
 
-TiKV 选择了第二种方式，将整个 Key-Value 空间分成很多段，每一段是一系列连续的 Key，将每一段叫做一个 Region，可以用 [StartKey，EndKey) 这样一个左闭右开区间来描述。每个 Region 中保存的数据量默认维持在 256 MiB 左右（可以通过配置修改）。
+TiKV 选择了第二种方式，将整个 Key-Value 空间分成很多段，每一段是一系列连续的 Key，将每一段叫做一个 Region，可以用 `[StartKey，EndKey)` 这样一个左闭右开区间来描述。每个 Region 中保存的数据量默认维持在 256 MiB 左右（可以通过配置修改）。
 
 ![Region in TiDB](/media/tidb-storage-2.png)
 
 注意，这里的 Region 还是和 SQL 中的表没什么关系。 这里的讨论依然不涉及 SQL，只和 KV 有关。
 
-将数据划分成 Region 后，TiKV 将会做两件重要的事情：
+将数据划分成 Region 后，TiKV 执行两项重要操作：
 
-* 以 Region 为单位，将数据分散在集群中所有的节点上，并且尽量保证每个节点上服务的 Region 数量差不多。
-* 以 Region 为单位做 Raft 的复制和成员管理。
+- 按 Region 将数据分散到集群中的所有节点，并尽量保证每个节点上的 Region 数量大致相同。
+- 以 Region 为单位进行 Raft 的复制和成员管理。
 
-这两点非常重要：
+以下两点非常关键：
 
-* 先看第一点，数据按照 Key 切分成很多 Region，每个 Region 的数据只会保存在一个节点上面（暂不考虑多副本）。TiDB 系统会有一个组件 (PD) 来负责将 Region 尽可能均匀的散布在集群中所有的节点上，这样一方面实现了存储容量的水平扩展（增加新的节点后，会自动将其他节点上的 Region 调度过来），另一方面也实现了负载均衡（不会出现某个节点有很多数据，其他节点上没什么数据的情况）。同时为了保证上层客户端能够访问所需要的数据，系统中也会有一个组件 (PD) 记录 Region 在节点上面的分布情况，也就是通过任意一个 Key 就能查询到这个 Key 在哪个 Region 中，以及这个 Region 目前在哪个节点上（即 Key 的位置路由信息）。至于负责这两项重要工作的组件 (PD)，会在后续介绍。
-* 对于第二点，TiKV 是以 Region 为单位做数据的复制，也就是一个 Region 的数据会保存多个副本，TiKV 将每一个副本叫做一个 Replica。Replica 之间是通过 Raft 来保持数据的一致，一个 Region 的多个 Replica 会保存在不同的节点上，构成一个 Raft Group。其中一个 Replica 会作为这个 Group 的 Leader，其他的 Replica 作为 Follower。默认情况下，所有的读和写都是通过 Leader 进行，读操作在 Leader 上即可完成，而写操作再由 Leader 复制给 Follower。
+- 数据按 Key 切分成多个 Region，每个 Region 的数据仅保存在一个节点上（暂不考虑多副本）。TiDB 系统中的 [PD 组件](/tidb-architecture.md)负责将 Region 尽可能均匀地分布在集群节点上，实现存储容量的水平扩展（增加新节点后，会自动调度其他节点上的 Region）和负载均衡（避免某节点存储过多数据而其他节点存储较少）。为了确保上层客户端能访问所需数据，PD 组件会记录 Region 的分布情况，可通过任意 Key 查询其所在的 Region 及其对应的节点（即 Key 的位置路由信息）。
+
+- TiKV 以 Region 为单位进行数据复制，一个 Region 的数据会保存多个副本，称为 Replica。Replica 之间通过 Raft 保持数据一致性，构成一个 Raft Group，其中一个 Replica 作为 Leader，其他作为 Follower。默认情况下，所有读写操作均通过 Leader 进行，读操作在 Leader 上即可完成，而写操作由 Leader 复制给 Follower。
 
 大家理解了 Region 之后，应该可以理解下面这张图：
 
@@ -104,4 +105,4 @@ KeyN_Version1 -> Value
 
 ## 分布式 ACID 事务
 
-TiKV 的事务采用的是 Google 在 BigTable 中使用的事务模型：[Percolator](https://research.google.com/pubs/pub36726.html)，TiKV 根据这篇论文实现，并做了大量的优化。详细介绍参见[事务概览](/transaction-overview.md)。
+TiKV 的事务采用的是 Google 在 BigTable 中使用的事务模型：[Percolator](https://research.google/pubs/large-scale-incremental-processing-using-distributed-transactions-and-notifications/)，TiKV 根据这篇论文实现，并做了大量的优化。详细介绍参见[事务概览](/transaction-overview.md)。

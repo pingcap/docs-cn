@@ -26,7 +26,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
     [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
     ```
 
-    URI 中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以在 [URI Encoder](https://www.urlencoder.org/) 中对 URI 进行转义。
+    URI 的参数包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以在 [URI Encoder](https://www.urlencoder.org/) 中对 URI 进行转义。
 
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
@@ -46,6 +46,11 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 - 指定配置文件中涉及的库名、表名是否为大小写敏感。自 v6.5.6、v7.1.3 和 v7.5.0 起，默认值由 `true` 改为 `false`。
 - 该配置会同时影响 filter 和 sink 相关配置。
 - 默认值：`false`
+
+### `force-replicate`
+
+- 指定是否强制[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
+- 默认值: `false`
 
 ### `enable-sync-point` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
@@ -243,7 +248,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 - 是否使用 partition 作为分隔字符串。
 - 该参数只有当下游为存储服务时，才会生效
 - 默认值：`true`，即一张表中各个 partition 的数据会分不同的目录来存储
-- 建议保持该配置项为 `true` 以避免下游分区表可能丢数据的问题 [#8581](https://github.com/pingcap/tiflow/issues/8581)。使用示例详见[数据变更记录](/ticdc/ticdc-sink-to-cloud-storage.md#数据变更记录)。
+- 注意：后续版本中该配置项将会被废弃，并强制设置成 `true`。建议保持该配置项为默认值，以避免下游分区表可能丢数据的问题。详情请参见 [Issue #11979](https://github.com/pingcap/tiflow/issues/11979)。使用示例详见[数据变更记录](/ticdc/ticdc-sink-to-cloud-storage.md#数据变更记录)。
 
 #### `debezium-disable-schema`
 
@@ -381,13 +386,13 @@ consistent 中的字段用于配置 Changefeed 的数据一致性。详细信息
 - 控制 redo 模块中上传文件 worker 的数量。
 - 默认值：`8`
 
-#### `compression`
+#### `compression` <span class="version-mark">从 v6.5.6、v7.1.3、v7.5.1 和 v7.6.0 版本开始引入</span>
 
 - redo log 文件的压缩行为。
 - 默认值：`""`，表示不进行压缩
 - 可选值：`""`、`"lz4"`
 
-#### `flush-concurrency`
+#### `flush-concurrency` <span class="version-mark">从 v6.5.6、v7.1.3、v7.5.1 和 v7.6.0 版本开始引入</span>
 
 - redo log 上传单个文件的并发数。
 - 默认值：`1`，表示禁用并发

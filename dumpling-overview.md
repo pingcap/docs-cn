@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/
 
 要快速了解 Dumpling 的基本功能，建议先观看下面的培训视频（时长 28 分钟）。注意本视频只作为功能介绍、学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson18_dumpling.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson18.png"></video>
+<video src="https://docs-download.pingcap.com/media/videos/docs-cn%2FLesson18_dumpling.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson18.png"></video>
 
 你可以通过下列任意方式获取 Dumpling：
 
@@ -78,7 +78,7 @@ tiup dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o /tmp/test -r 2
 - `-h`、`-P`、`-u` 分别代表地址、端口、用户。如果需要密码验证，可以使用 `-p $YOUR_SECRET_PASSWORD` 将密码传给 Dumpling。
 - `-o`（或 `--output`）用于选择存储导出文件的目录，支持本地文件的绝对路径或[外部存储服务的 URI 格式](#存储服务的-uri-格式说明)。
 - `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大。一般不超过 64。
-- `-r` 用于开启表内并发加速导出。默认值是 `0`，表示不开启。取值大于 0 表示开启，取值是 INT 类型。当数据源为 TiDB 时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分区间，同时减少内存使用。具体取值不影响划分算法。对数据源为 MySQL 且表的主键是 INT 的场景，该参数也有表内并发效果。
+- `-r` 用于开启表内并发加速导出。默认值是 `0`，表示不开启。取值大于 0 表示开启，取值是 INT 类型。当数据源为 TiDB 时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分区间，同时减少内存使用。具体取值不影响划分算法。对数据源为 MySQL 且表的主键或复合主键首列是 INT 的场景，该参数也有表内并发效果。
 - `-F` 选项用于指定单个文件的最大大小，单位为 `MiB`，可接受类似 `5GiB` 或 `8KB` 的输入。如果你想使用 TiDB Lightning 将该文件加载到 TiDB 实例中，建议将 `-F` 选项的值保持在 256 MiB 或以下。
 
 > **注意：**
@@ -258,7 +258,7 @@ Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表�
 默认情况下，导出的文件会存储到 `./export-<current local time>` 目录下。常用选项如下：
 
 - `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大。
-- `-r` 选项用于指定单个文件的最大记录数，或者说，数据库中的行数。开启后 Dumpling 会开启表内并发，提高导出大表的速度。当上游为 TiDB 且版本为 v3.0 或更新版本时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分表内并发，具体取值不影响划分算法。对上游为 MySQL 且表的主键是 int 的场景，该参数也有表内并发效果。
+- `-r` 选项用于指定单个文件的最大记录数，或者说，数据库中的行数。开启后 Dumpling 会开启表内并发，提高导出大表的速度。当上游为 TiDB 且版本为 v3.0 或更新版本时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分表内并发，具体取值不影响划分算法。对上游为 MySQL 且表的主键或复合主键首列是 INT 的场景，该参数也有表内并发效果。
 - `--compress <format>` 选项可以用于压缩导出的数据，支持 `gzip`、`snappy`、`zstd` 压缩算法。压缩可以显著降低导出数据的大小，同时如果存储的写入 I/O 带宽不足，可以使用该选项来加速导出。但该选项也有副作用，由于该选项会对每个文件单独压缩，因此会增加 CPU 消耗。
 
 利用以上选项可以提高 Dumpling 的导出速度。
@@ -349,7 +349,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --case-sensitive | table-filter 是否大小写敏感 | false，大小写不敏感 |
 | -h 或 --host| 连接的数据库主机的地址 | "127.0.0.1" |
 | -t 或 --threads | 备份并发线程数| 4 |
-| -r 或 --rows | 用于开启表内并发加速导出。默认值是 `0`，表示不开启。取值大于 0 表示开启，取值是 INT 类型。当数据源为 TiDB 时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分区间，同时减少内存使用。具体取值不影响划分算法。对数据源为 MySQL 且表的主键是 INT 的场景，该参数也有表内并发效果。 |
+| -r 或 --rows | 用于开启表内并发加速导出。默认值是 `0`，表示不开启。取值大于 0 表示开启，取值是 INT 类型。当数据源为 TiDB 时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分区间，同时减少内存使用。具体取值不影响划分算法。对数据源为 MySQL 且表的主键或复合主键首列是 INT 的场景，该参数也有表内并发效果。 |
 | -L 或 --logfile | 日志输出地址，为空时会输出到控制台 | "" |
 | --loglevel | 日志级别 {debug,info,warn,error,dpanic,panic,fatal} | "info" |
 | --logfmt | 日志输出格式 {text,json} | "text" |
@@ -383,3 +383,38 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --tidb-mem-quota-query | 单条 dumpling 命令导出 SQL 语句的内存限制，单位为 byte。对于 v4.0.10 或以上版本，若不设置该参数，默认使用 TiDB 中的 `mem-quota-query` 配置项值作为内存限制值。对于 v4.0.10 以下版本，该参数值默认为 32 GB | 34359738368 |
 | --params | 为需导出的数据库连接指定 session 变量，可接受的格式: "character_set_client=latin1,character_set_connection=latin1" |
 | -c 或 --compress | 压缩 Dumpling 导出的 CSV、SQL 数据与表结构文件为指定格式，支持 "gzip"、"snappy" 和 "zstd" 压缩算法 | "" |
+
+## 输出文件名模板
+
+`--output-filename-template` 参数用于定义输出文件的命名规则，不包括文件扩展名。它接受符合 [Go `text/template` 语法](https://golang.org/pkg/text/template/) 的字符串。
+
+模板中可定义的字段如下：
+
+* `.DB`：数据库名
+* `.Table`：表名或对象名
+* `.Index`：当一个表被拆分成多个文件时的 0 起始序号，表示正在导出的是哪一部分。例如，`{{printf "%09d" .Index}}` 表示使用 9 位数字格式化 `.Index`，并用前导 0 填充。
+
+数据库名和表名可能包含一些在文件系统中不允许使用的特殊字符，如 `/`。为了解决此问题，Dumpling 提供了 `fn` 函数来对这些特殊字符进行百分号编码：
+
+* U+0000 到 U+001F（控制字符）
+* `/`、`\`、`<`、`>`、`:`、`"`、`*`、`?`（无效的 Windows 路径字符）
+* `.`（数据库名或表名分隔符）
+* `-schema` 中的 `-`
+
+例如，使用 `--output-filename-template '{{fn .Table}}.{{printf "%09d" .Index}}'`，Dumpling 会将表 `db.tbl:normal` 写入 `tbl%3Anormal.000000000.sql`、`tbl%3Anormal.000000001.sql` 等文件中。
+
+除了输出的数据文件名，你还可以通过 `--output-filename-template` 来替换 schema 文件的文件名。下表显示了默认配置。
+
+| 名称 | 内容 |
+|------|---------|
+| data | `{{fn .DB}}.{{fn .Table}}.{{.Index}}` |
+| schema | `{{fn .DB}}-schema-create` |
+| table | `{{fn .DB}}.{{fn .Table}}-schema` |
+| event | `{{fn .DB}}.{{fn .Table}}-schema-post` |
+| function | `{{fn .DB}}.{{fn .Table}}-schema-post` |
+| procedure | `{{fn .DB}}.{{fn .Table}}-schema-post` |
+| sequence | `{{fn .DB}}.{{fn .Table}}-schema-sequence` |
+| trigger | `{{fn .DB}}.{{fn .Table}}-schema-triggers` |
+| view | `{{fn .DB}}.{{fn .Table}}-schema-view` |
+
+例如，使用 `--output-filename-template '{{define "table"}}{{fn .Table}}.$schema{{end}}{{define "data"}}{{fn .Table}}.{{printf "%09d" .Index}}{{end}}'`，Dumpling 会将表 `db.tbl:normal` 的 schema 写入名为 `tbl%3Anormal.$schema.sql` 的文件中，将数据写入 `tbl%3Anormal.000000000.sql`、`tbl%3Anormal.000000001.sql` 等文件中。

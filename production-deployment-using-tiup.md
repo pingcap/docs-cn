@@ -27,11 +27,13 @@ TiUP 还支持部署 TiDB、TiFlash、TiCDC 以及监控系统。本指南介绍
 
 ### 在线部署
 
+> **注意：**
+>
+> 如果 TiUP 环境会转变为离线，请参考[离线部署](#离线部署)方式进行部署，否则无法正常使用 TiUP。
+
 以普通用户身份登录中控机。以 `tidb` 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：
 
 1. 执行如下命令安装 TiUP 工具：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
@@ -41,31 +43,23 @@ TiUP 还支持部署 TiDB、TiFlash、TiCDC 以及监控系统。本指南介绍
 
     1. 重新声明全局环境变量：
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         source .bash_profile
         ```
 
     2. 确认 TiUP 工具是否安装：
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         which tiup
         ```
 
-3. 安装 TiUP cluster 组件：
-
-    {{< copyable "shell-regular" >}}
+3. 安装 TiUP 集群组件：
 
     ```shell
     tiup cluster
     ```
 
-4. 如果已经安装，则更新 TiUP cluster 组件至最新版本：
-
-    {{< copyable "shell-regular" >}}
+4. 如果已经安装，则更新 TiUP 集群组件至最新版本：
 
     ```shell
     tiup update --self && tiup update cluster
@@ -73,9 +67,7 @@ TiUP 还支持部署 TiDB、TiFlash、TiCDC 以及监控系统。本指南介绍
 
     预期输出 `“Updated successfully!”` 字样。
 
-5. 验证当前 TiUP cluster 版本信息。执行如下命令查看 TiUP cluster 组件版本：
-
-    {{< copyable "shell-regular" >}}
+5. 验证当前 TiUP 集群版本信息。执行如下命令查看 TiUP 集群组件版本：
 
     ```shell
     tiup --binary cluster
@@ -91,11 +83,9 @@ TiUP 还支持部署 TiDB、TiFlash、TiCDC 以及监控系统。本指南介绍
 
 方式二：使用 `tiup mirror clone` 命令手动打包离线组件包。步骤如下：
 
-1. 在在线环境中安装 TiUP 包管理器工具
+1. 在在线环境中安装 TiUP 包管理器工具。
 
     1. 执行如下命令安装 TiUP 工具：
-
-        {{< copyable "shell-regular" >}}
 
         ```shell
         curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
@@ -103,25 +93,19 @@ TiUP 还支持部署 TiDB、TiFlash、TiCDC 以及监控系统。本指南介绍
 
     2. 重新声明全局环境变量：
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         source .bash_profile
         ```
 
     3. 确认 TiUP 工具是否安装：
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         which tiup
         ```
 
-2. 使用 TiUP 制作离线镜像
+2. 使用 TiUP 制作离线镜像。
 
     1. 在一台和外网相通的机器上拉取需要的组件：
-
-        {{< copyable "shell-regular" >}}
 
         ```bash
         tiup mirror clone tidb-community-server-${version}-linux-amd64 ${version} --os=linux --arch=amd64
@@ -131,21 +115,17 @@ TiUP 还支持部署 TiDB、TiFlash、TiCDC 以及监控系统。本指南介绍
 
     2. 通过 tar 命令将该组件包打包然后发送到隔离环境的中控机：
 
-        {{< copyable "shell-regular" >}}
-
         ```bash
         tar czvf tidb-community-server-${version}-linux-amd64.tar.gz tidb-community-server-${version}-linux-amd64
         ```
 
         此时，`tidb-community-server-${version}-linux-amd64.tar.gz` 就是一个独立的离线环境包。
 
-3. 自定义制作的离线镜像，或调整已有离线镜像中的内容
+3. 自定义制作的离线镜像，或调整已有离线镜像中的内容。
 
     如果从官网下载的离线镜像不满足你的具体需求，或者希望对已有的离线镜像内容进行调整，例如增加某个组件的新版本等，可以采取以下步骤进行操作：
 
     1. 在制作离线镜像时，可通过参数指定具体的组件和版本等信息，获得不完整的离线镜像。例如，要制作一个只包括 v1.12.3 版本 TiUP 和 TiUP Cluster 的离线镜像，可执行如下命令：
-
-        {{< copyable "shell-regular" >}}
 
         ```bash
         tiup mirror clone tiup-custom-mirror-v1.12.3 --tiup v1.12.3 --cluster v1.12.3
@@ -157,8 +137,6 @@ TiUP 还支持部署 TiDB、TiFlash、TiCDC 以及监控系统。本指南介绍
 
     3. 在隔离环境的中控机上，查看当前使用的离线镜像路径。较新版本的 TiUP 可以直接通过命令获取当前的镜像地址：
 
-        {{< copyable "shell-regular" >}}
-
         ```bash
         tiup mirror show
         ```
@@ -169,15 +147,11 @@ TiUP 还支持部署 TiDB、TiFlash、TiCDC 以及监控系统。本指南介绍
 
         首先将当前离线镜像中的 `keys` 目录复制到 `$HOME/.tiup` 目录中：
 
-        {{< copyable "shell-regular" >}}
-
         ```bash
         cp -r ${base_mirror}/keys $HOME/.tiup/
         ```
 
         然后使用 TiUP 命令将不完整的离线镜像合并到当前使用的镜像中：
-
-        {{< copyable "shell-regular" >}}
 
         ```bash
         tiup mirror merge tiup-custom-mirror-v1.12.3
@@ -188,8 +162,6 @@ TiUP 还支持部署 TiDB、TiFlash、TiCDC 以及监控系统。本指南介绍
 #### 部署离线环境 TiUP 组件
 
 将离线包发送到目标集群的中控机后，执行以下命令安装 TiUP 组件：
-
-{{< copyable "shell-regular" >}}
 
 ```bash
 tar xzvf tidb-community-server-${version}-linux-amd64.tar.gz && \
@@ -205,8 +177,6 @@ source /home/tidb/.bash_profile
 
 执行以下命令合并离线组件到 server 目录下。
 
-{{< copyable "shell-regular" >}}
-
 ```bash
 tar xf tidb-community-toolkit-${version}-linux-amd64.tar.gz
 ls -ld tidb-community-server-${version}-linux-amd64 tidb-community-toolkit-${version}-linux-amd64
@@ -221,8 +191,6 @@ tiup mirror merge ../tidb-community-toolkit-${version}-linux-amd64
 
 执行如下命令，生成集群初始化配置文件：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tiup cluster template > topology.yaml
 ```
@@ -231,23 +199,17 @@ tiup cluster template > topology.yaml
 
 - 混合部署场景：单台机器部署多个实例，详情参见[混合部署拓扑架构](/hybrid-deployment-topology.md)。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup cluster template --full > topology.yaml
     ```
 
 - 跨机房部署场景：跨机房部署 TiDB 集群，详情参见[跨机房部署拓扑架构](/geo-distributed-deployment-topology.md)。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup cluster template --multi-dc > topology.yaml
     ```
 
-执行 vi topology.yaml，查看配置文件的内容：
-
-{{< copyable "shell-regular" >}}
+执行 `vi topology.yaml`，查看配置文件的内容：
 
 ```shell
 global:
@@ -276,7 +238,7 @@ alertmanager_servers:
   - host: 10.0.1.4
 ```
 
-下表列出了常用的 7 种场景，请根据链接中的拓扑说明以及配置文件模板配置`topology.yaml`。如果有其他组合场景的需求，请根据多个模板自行调整。
+下表列出了常用的 6 种场景，请根据链接中的拓扑说明以及配置文件模板配置 `topology.yaml`。如果有其他组合场景的需求，请根据多个模板自行调整。
 
 | 场景 | 配置任务 | 配置文件模板 | 拓扑说明 |
 | :-- | :-- | :-- | :-- |
@@ -290,11 +252,8 @@ alertmanager_servers:
 > **注意：**
 >
 > - 对于需要全局生效的参数，请在配置文件中 `server_configs` 的对应组件下配置。
->
 > - 对于需要某个节点生效的参数，请在具体节点的 `config` 中配置。
->
 > - 配置的层次结构使用 `.` 表示。如：`log.slow-threshold`。更多格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml)。
->
 > - 如果需要指定在目标机创建的用户组名，可以参考[这个例子](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml#L7)。
 
 更多参数说明，请参考：
@@ -308,25 +267,22 @@ alertmanager_servers:
 
 > **注意：**
 >
-> 通过 TiUP 进行集群部署可以使用密钥或者交互密码方式来进行安全认证：
+> 通过 TiUP 部署集群时用于初始化的用户（通过 `--user` 指定），可以使用密钥或者交互密码的方式进行安全认证：
 >
-> - 如果是密钥方式，可以通过 -i 或者 --identity_file 来指定密钥的路径。
->
-> - 如果是密码方式，可以通过 -p 进入密码交互窗口。
->
+> - 如果使用密钥方式，可以通过 `-i` 或者 `--identity_file` 指定密钥的路径。
+> - 如果使用密码方式，可以通过 `-p` 进入密码交互窗口。
 > - 如果已经配置免密登录目标机，则不需填写认证。
 >
-> 一般情况下 TiUP 会在目标机器上创建 topology.yaml 中约定的用户和组，以下情况例外：
+> TiUP 用于实际执行相关进程的用户和组（通过 `topology.yaml` 指定，默认值为 `tidb`），一般情况下会在目标机器上自动创建，但以下情况例外：
 >
 > - `topology.yaml` 中设置的用户名在目标机器上已存在。
+> - 在命令行上使用了参数 `--skip-create-user` 明确指定跳过创建用户的步骤。
 >
-> - 在命令行上使用了参数 --skip-create-user 明确指定跳过创建用户的步骤。
+> 无论 `topology.yaml` 中约定的用户和组是否被自动创建，TiUP 都会自动生成一对 ssh key，并为每台机器的该用户设置免密登录。在此后的操作中都会使用这个用户和 ssh key 去管理机器，而用于初始化的用户和密码在部属完成后不再被使用。
 
 执行部署命令前，先使用 `check` 及 `check --apply` 命令检查和自动修复集群存在的潜在风险：
 
 1. 检查集群存在的潜在风险：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     tiup cluster check ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
@@ -334,15 +290,11 @@ alertmanager_servers:
 
 2. 自动修复集群存在的潜在风险：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup cluster check ./topology.yaml --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
     ```
 
 3. 部署 TiDB 集群：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     tiup cluster deploy tidb-test v8.5.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
@@ -354,13 +306,11 @@ alertmanager_servers:
 - `v8.5.0` 为部署的集群版本，可以通过执行 `tiup list tidb` 来查看 TiUP 支持的最新可用版本。
 - 初始化配置文件为 `topology.yaml`。
 - `--user root` 表示通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
-- [-i] 及 [-p] 为可选项，如果已经配置免密登录目标机，则不需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码。
+- [-i] 及 [-p] 为可选项，如果已经配置免密登录目标机，则不需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 `--user` 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码。
 
 预期日志结尾输出 ```Deployed cluster `tidb-test` successfully``` 关键词，表示部署成功。
 
 ## 第 5 步：查看 TiUP 管理的集群情况
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tiup cluster list
@@ -371,8 +321,6 @@ TiUP 支持管理多个 TiDB 集群，该命令会输出当前通过 TiUP cluste
 ## 第 6 步：检查部署的 TiDB 集群情况
 
 例如，执行如下命令检查 `tidb-test` 集群情况：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tiup cluster display tidb-test
@@ -389,20 +337,15 @@ tiup cluster display tidb-test
 > **注意：**
 >
 > - 使用安全启动方式后，不能通过无密码的 root 用户登录数据库，你需要记录命令行返回的密码进行后续操作。
->
 > - 该自动生成的密码只会返回一次，如果没有记录或者忘记该密码，请参照[忘记 root 密码](/user-account-management.md#忘记-root-密码)修改密码。
 
 方式一：安全启动
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tiup cluster start tidb-test --init
 ```
 
 预期结果如下，表示启动成功。
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 Started cluster `tidb-test` successfully.
@@ -414,8 +357,6 @@ The generated password can NOT be got again in future.
 
 方式二：普通启动
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tiup cluster start tidb-test
 ```
@@ -423,8 +364,6 @@ tiup cluster start tidb-test
 预期结果输出 ```Started cluster `tidb-test` successfully```，表示启动成功。使用普通启动方式后，可通过无密码的 root 用户登录数据库。
 
 ## 第 8 步：验证集群运行状态
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tiup cluster display tidb-test

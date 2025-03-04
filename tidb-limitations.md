@@ -57,12 +57,18 @@ summary: TiDB 中的使用限制包括标识符长度限制、数据库、表、
 |:----------|:----------|
 | Size       | 默认为 6 MiB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 配置项调至 120 MiB |
 
+## 索引的限制
+
+索引的最大长度为 3072 字节，相当于使用 4 字节 UTF-8 编码时的 768 个字符。
+
+你可以通过 [`max-index-length`](/tidb-configuration-file.md#max-index-length) 配置项调整此限制。
+
 ## 数据类型限制
 
 | 类型       | 最大限制   |
 |:----------|:----------|
-| CHAR       | 256 字符      |
-| BINARY     | 256 字节      |
+| CHAR       | 255 字符      |
+| BINARY     | 255 字节      |
 | VARBINARY  | 65535 字节    |
 | VARCHAR    | 16383 字符    |
 | TEXT       | 默认为 6291456 字节（即 6 MiB），可调至 125829120 字节（即 120 MiB）      |

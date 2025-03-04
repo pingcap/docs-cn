@@ -219,7 +219,8 @@ ADMIN SHOW DDL JOB QUERIES LIMIT 3 OFFSET 4;  # Retrieve rows 5-7
 ## 另请参阅
 
 * [DDL 语句的执行原理及最佳实践](/ddl-introduction.md)
-* [ADMIN CANCEL DDL](/sql-statements/sql-statement-admin-cancel-ddl.md)
-* [ADMIN PAUSE DDL](/sql-statements/sql-statement-admin-pause-ddl.md)
-* [ADMIN RESUME DDL](/sql-statements/sql-statement-admin-resume-ddl.md)
-* [INFORMATION_SCHEMA.DDL_JOBS](/information-schema/information-schema-ddl-jobs.md)
+* [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md)
+* [`ADMIN PAUSE DDL`](/sql-statements/sql-statement-admin-pause-ddl.md)
+* [`ADMIN RESUME DDL`](/sql-statements/sql-statement-admin-resume-ddl.md)
+* [`ADMIN ALTER DDL`](/sql-statements/sql-statement-admin-alter-ddl.md)
+* [`INFORMATION_SCHEMA.DDL_JOBS`](/information-schema/information-schema-ddl-jobs.md)

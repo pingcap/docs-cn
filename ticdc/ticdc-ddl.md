@@ -11,38 +11,51 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 
 目前 TiCDC 在同步 DDL 时使用白名单策略，只有在白名单中的 DDL 操作才会被同步到下游系统，不在白名单中的 DDL 操作将不会被 TiCDC 同步。
 
-以下为 TiCDC 支持同步的 DDL 的列表。
+此外，TiCDC 会根据表中是否具有[有效索引](/ticdc/ticdc-overview.md#有效索引)以及配置项 [`force-replicate`](/ticdc/ticdc-changefeed-config.md#force-replicate) 是否为 `true` 来决定是否将 DDL 同步到下游。当 `force-replicate=true` 时，同步任务会尝试强制[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
 
-- create database
-- drop database
-- create table 
-- drop table 
-- add column 
-- drop column
-- create index / add index 
-- drop index 
-- truncate table 
-- modify column 
-- rename table 
-- alter column default value
-- alter table comment 
-- rename index 
-- add partition
-- drop partition 
-- truncate partition 
-- create view 
-- drop view 
-- alter table character set 
-- alter database character set
-- recover table 
-- add primary key 
-- drop primary key 
-- rebase auto id
-- alter table index visibility 
-- exchange partition 
-- reorganize partition 
-- alter table ttl 
-- alter table remove ttl
+以下为 TiCDC 支持同步的 DDL 的列表。该表中出现的缩写字母含义如下：
+
+- Y：在该条件下可以同步到下游。
+- N：在该条件下不会同步到下游。
+
+> **注意：** 
+>
+> - 当上游表不存在有效索引，且未配置 `force-replicate=true` 时，该表不会被同步，但是之后在该表上创建有效索引的 DDL (`CREATE INDEX`、`ADD INDEX` 和 `ADD PRIMARY KEY`）会被同步，下游表和上游表结构可能产生不一致从而导致后续数据同步失败。
+> - 删除最后一个有效索引的 DDL（`DROP INDEX` 和 `DROP PRIMARY KEY`）不会被同步，并且导致后续数据同步失败。
+
+| DDL | 存在有效索引 | 无有效索引且 `force-replicate` 为默认值 `false`  | 无有效索引且 `force-replicate` 为 `true` |
+|---|:---:|:---:| :---: |
+| `CREATE DATABASE` | Y | Y | Y |
+| `DROP DATABASE` | Y | Y | Y |
+| `ALTER DATABASE CHARACTER SET` | Y | Y | Y |
+| `CREATE INDEX` | Y | Y | Y |
+| `ADD INDEX` | Y | Y | Y |
+| `DROP INDEX` | Y | N | Y |
+| `ADD PRIMARY KEY` | Y | Y | Y |
+| `DROP PRIMARY KEY` | Y | N | Y |
+| `CREATE TABLE` | Y | N | Y |
+| `DROP TABLE` | Y | N | Y |
+| `ADD COLUMN` | Y | N | Y |
+| `DROP COLUMN` | Y | N | Y |
+| `TRUNCATE TABLE` | Y | N | Y |
+| `MODIFY COLUMN` | Y | N | Y |
+| `RENAME TABLE` | Y | N | Y |
+| `ALTER COLUMN DEFAULT VALUE` | Y | N | Y |
+| `ALTER TABLE COMMENT` | Y | N | Y |
+| `RENAME INDEX` | Y | N | Y |
+| `ADD PARTITION` | Y | N | Y |
+| `DROP PARTITION` | Y | N | Y |
+| `TRUNCATE PARTITION` | Y | N | Y |
+| `CREATE VIEW` | Y | N | Y |
+| `DROP VIEW` | Y | N | Y |
+| `ALTER TABLE CHARACTER SET` | Y | N | Y |
+| `RECOVER TABLE` | Y | N | Y |
+| `REBASE AUTO ID` | Y | N | Y |
+| `ALTER TABLE INDEX VISIBILITY` | Y | N | Y |
+| `EXCHANGE PARTITION` | Y | N | Y |
+| `REORGANIZE PARTITION` | Y | N | Y |
+| `ALTER TABLE TTL` | Y | N | Y |
+| `ALTER TABLE REMOVE TTL` | Y | N | Y |
 
 ## DDL 同步注意事项
 
@@ -117,7 +130,7 @@ rules = ['test.t*']
 rules = ['test.t*']
 
 matcher = ["test.t1"] # 该过滤规则只应用于 test 库中的 t1 表
-ignore-event = ["create table", "drop table", "truncate table"]
+ignore-event = ["create table", "drop table", "truncate table", "rename table"]
 ```
 
 | DDL | DDL 行为 | DML 行为 | 原因 |
@@ -127,6 +140,8 @@ ignore-event = ["create table", "drop table", "truncate table"]
 | `CREATE TABLE test.ignore (id INT, name VARCHAR(50));` | 忽略 | 忽略 | `test.ignore` 符合 Table Filter 过滤规则，因此 DDL 和 DML 事件均被忽略 |
 | `DROP TABLE test.t1;` | 忽略 | - | `test.t1` 符合 Event Filter，`DROP TABLE` 事件被忽略。该表已被删除，TiCDC 不再同步 t1 的 DML 事件 |
 | `TRUNCATE TABLE test.t1;` | 忽略 | 同步 | `test.t1` 符合 Event Filter，`TRUNCATE TABLE` 事件被忽略，但不影响 DML 事件的同步  |
+| `RENAME TABLE test.t1 TO test.t2;` | 忽略 | 同步 | `test.t1` 符合 Event Filter，`RENAME TABLE` 事件被忽略，但不影响 DML 事件的同步  |
+| `RENAME TABLE test.t1 TO test.ignore;` | 忽略 | 忽略 | `test.t1` 符合 Event Filter，`RENAME TABLE` 事件被忽略，`test.ignore` 符合 Table Filter 过滤规则，因此 DDL 和 DML 事件均被忽略  |
 
 > **注意：**
 >

@@ -15,7 +15,7 @@ TiDB 版本：8.1.0
 
 TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
-相比于前一个 LTS（即 7.5.0 版本），8.1.0 版本包含 [7.6.0-DMR](/releases/release-7.6.0.md) 和 [8.0.0-DMR](/releases/release-8.0.0.md) 中已发布的新功能、提升改进和错误修复。当你从 7.5.x 升级到 8.1.0 时，可以下载 [TiDB Release Notes PDF](https://download.pingcap.org/tidb-v7.6-to-v8.1-zh-release-notes.pdf) 查看两个 LTS 版本之间的所有 Release Notes。下表列出了从 7.6.0 到 8.1.0 的一些关键特性：
+相比于前一个 LTS（即 7.5.0 版本），8.1.0 版本包含 [7.6.0-DMR](/releases/release-7.6.0.md) 和 [8.0.0-DMR](/releases/release-8.0.0.md) 中已发布的新功能、提升改进和错误修复。当你从 7.5.x 升级到 8.1.0 时，可以下载 [TiDB Release Notes PDF](https://docs-download.pingcap.com/pdf/tidb-v7.6-to-v8.1-zh-release-notes.pdf) 查看两个 LTS 版本之间的所有 Release Notes。下表列出了从 7.6.0 到 8.1.0 的一些关键特性：
 
 <table>
 <thead>
@@ -103,7 +103,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     对资源消耗超出预期的查询的自动管理能力为用户提供了有效的手段，在根本原因被定位之前，该功能可以快速缓解查询问题对整体性能的影响，从而提升数据库的稳定性。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
+    更多信息，请参考[用户文档](/tidb-resource-control-runaway-queries.md#管理资源消耗超出预期的查询-runaway-queries)。
 
 ### SQL 功能
 

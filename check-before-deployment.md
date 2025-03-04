@@ -22,8 +22,6 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
 1. 查看数据盘。
 
-    {{< copyable "shell-root" >}}
-
     ```bash
     fdisk -l
     ```
@@ -33,8 +31,6 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
     ```
 
 2. 创建分区。
-
-    {{< copyable "shell-root" >}}
 
     ```bash
     parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 -1
@@ -53,8 +49,6 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
 3. 格式化文件系统。
 
-    {{< copyable "shell-root" >}}
-
     ```bash
     mkfs.ext4 /dev/nvme0n1p1
     ```
@@ -62,8 +56,6 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 4. 查看数据盘分区 UUID。
 
     本例中 `nvme0n1p1` 的 UUID 为 `c51eb23b-195c-4061-92a9-3fad812cc12f`。
-
-    {{< copyable "shell-root" >}}
 
     ```bash
     lsblk -f
@@ -82,8 +74,6 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
 5. 编辑 `/etc/fstab` 文件，添加 `nodelalloc` 挂载参数。
 
-    {{< copyable "shell-root" >}}
-
     ```bash
     vi /etc/fstab
     ```
@@ -94,8 +84,6 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
 6. 挂载数据盘。
 
-    {{< copyable "shell-root" >}}
-
     ```bash
     mkdir /data1 && \
     systemctl daemon-reload && \
@@ -103,8 +91,6 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
     ```
 
 7. 执行以下命令，如果文件系统为 ext4，并且挂载参数中包含 `nodelalloc`，则表示已生效。
-
-    {{< copyable "shell-root" >}}
 
     ```bash
     mount -t ext4
@@ -116,7 +102,7 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
 ## 检测及关闭系统 swap
 
-TiDB 运行需要有足够的内存。如果想保持性能稳定，则建议永久关闭系统 swap，但可能在内存偏小时触发 OOM 问题；如果想避免此类 OOM 问题，则可只将 swap 优先级调低，但不做永久关闭。
+TiDB 需要充足的内存来运行。如果 TiDB 使用的内存被换出 (swapped out) 然后再换入 (swapped back in)，这可能会导致延迟激增。如果您想保持稳定的性能，建议永久禁用系统 swap，但可能在内存偏小时触发 OOM 问题。如果想避免此类 OOM 问题，则可只将 swap 优先级调低，但不做永久关闭。
 
 - 开启并使用 swap 可能会引入性能抖动问题，对于低延迟、稳定性要求高的数据库服务，建议永久关闭操作系统层 swap。要永久关闭 swap，可使用以下方法：
 
@@ -125,8 +111,8 @@ TiDB 运行需要有足够的内存。如果想保持性能稳定，则建议永
 
         ```bash
         echo "vm.swappiness = 0">> /etc/sysctl.conf
-        swapoff -a
         sysctl -p
+        swapoff -a && swapon -a
         ```
 
 - 如果主机内存偏小，关闭系统 swap 可能会更容易触发 OOM 问题，可参考以如下方法将 swap 优先级调低，但不做永久关闭：
@@ -172,8 +158,6 @@ TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运
 
 1. 检查防火墙状态（以 CentOS Linux release 7.7.1908 (Core) 为例）
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     sudo firewall-cmd --state
     sudo systemctl status firewalld.service
@@ -181,23 +165,17 @@ TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运
 
 2. 关闭防火墙服务
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     sudo systemctl stop firewalld.service
     ```
 
 3. 关闭防火墙自动启动服务
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     sudo systemctl disable firewalld.service
     ```
 
 4. 检查防火墙状态
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     sudo systemctl status firewalld.service
@@ -211,8 +189,6 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
 
 1. 执行以下命令，如果输出 `running` 表示 NTP 服务正在运行：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     sudo systemctl status ntpd.service
     ```
@@ -224,8 +200,6 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
     ```
 
     - 若返回报错信息 `Unit ntpd.service could not be found.`，请尝试执行以下命令，以查看与 NTP 进行时钟同步所使用的系统配置是 `chronyd` 还是 `ntpd`：
-
-        {{< copyable "shell-regular" >}}
 
         ```bash
         sudo systemctl status chronyd.service
@@ -246,8 +220,6 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
     > **注意：**
     >
     > Ubuntu 系统需安装 `ntpstat` 软件包。
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     ntpstat
@@ -278,8 +250,6 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
     > **注意：**
     >
     > 该操作仅适用于使用 Chrony 的系统，不适用于使用 NTPd 的系统。
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     chronyc tracking
@@ -317,8 +287,6 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
 
 如果要使 NTP 服务尽快开始同步，执行以下命令。可以将 `pool.ntp.org` 替换为你的 NTP 服务器：
 
-{{< copyable "shell-regular" >}}
-
 ```bash
 sudo systemctl stop ntpd.service && \
 sudo ntpdate pool.ntp.org && \
@@ -326,8 +294,6 @@ sudo systemctl start ntpd.service
 ```
 
 如果要在 CentOS 7 系统上手动安装 NTP 服务，可执行以下命令：
-
-{{< copyable "shell-regular" >}}
 
 ```bash
 sudo yum install ntp ntpdate && \
@@ -350,8 +316,6 @@ sudo systemctl enable ntpd.service
 采用如下步骤检查操作系统的当前配置，并配置系统优化参数：
 
 1. 执行以下命令查看透明大页的开启状态。
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     cat /sys/kernel/mm/transparent_hugepage/enabled
@@ -399,8 +363,6 @@ sudo systemctl enable ntpd.service
 
 3. 执行以下命令查看磁盘的唯一标识 `ID_SERIAL`。
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     udevadm info --name=/dev/sdb | grep ID_SERIAL
     ```
@@ -416,8 +378,6 @@ sudo systemctl enable ntpd.service
     > - 已经使用 `noop` 或者 `none` 调度器的设备不需要记录标识，无需配置 udev 规则和 tuned 策略中的相关内容。
 
 4. 执行以下命令查看 cpufreq 模块选用的节能策略。
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     cpupower frequency-info --policy
@@ -438,8 +398,6 @@ sudo systemctl enable ntpd.service
     + 方法一：使用 tuned（推荐）
 
         1. 执行 `tuned-adm list` 命令查看当前操作系统的 tuned 策略。
-
-            {{< copyable "shell-regular" >}}
 
             ```bash
             tuned-adm list
@@ -463,8 +421,6 @@ sudo systemctl enable ntpd.service
             `Current active profile: balanced` 表示当前操作系统的 tuned 策略使用 balanced，建议在当前策略的基础上添加操作系统优化配置。
 
         2. 创建新的 tuned 策略。
-
-            {{< copyable "shell-regular" >}}
 
             ```bash
             mkdir /etc/tuned/balanced-tidb-optimal/
@@ -494,8 +450,6 @@ sudo systemctl enable ntpd.service
             >
             > 如果已经使用 `noop` 或 `none` I/O 调度器，则无需在 tuned 策略中配置调度器相关的内容，可以跳过此步骤。
 
-            {{< copyable "shell-regular" >}}
-
             ```bash
             tuned-adm profile balanced-tidb-optimal
             ```
@@ -508,8 +462,6 @@ sudo systemctl enable ntpd.service
             >
             > 需安装 `grubby` 软件包。
 
-            {{< copyable "shell-regular" >}}
-
             ```bash
             grubby --default-kernel
             ```
@@ -520,19 +472,15 @@ sudo systemctl enable ntpd.service
 
         2. 执行 `grubby --update-kernel` 命令修改内核配置。
 
-            {{< copyable "shell-regular" >}}
-
             ```bash
             grubby --args="transparent_hugepage=never" --update-kernel `grubby --default-kernel`
             ```
 
             > **注意：**
             >
-            > 你也可以在 `--update-kernel` 后指定实际的版本号，例如：`--update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64`。
+            > 你也可以在 `--update-kernel` 后指定实际的版本号，例如：`--update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64` 或 `ALL`。
 
         3. 执行 `grubby --info` 命令查看修改后的默认内核配置。
-
-            {{< copyable "shell-regular" >}}
 
             ```bash
             grubby --info /boot/vmlinuz-3.10.0-957.el7.x86_64
@@ -553,16 +501,12 @@ sudo systemctl enable ntpd.service
 
         4. 修改当前的内核配置立即关闭透明大页。
 
-            {{< copyable "shell-regular" >}}
-
             ```bash
             echo never > /sys/kernel/mm/transparent_hugepage/enabled
             echo never > /sys/kernel/mm/transparent_hugepage/defrag
             ```
 
         5. 配置 udev 脚本应用 IO 调度器策略。
-
-            {{< copyable "shell-regular" >}}
 
             ```bash
             vi /etc/udev/rules.d/60-tidb-schedulers.rules
@@ -580,16 +524,12 @@ sudo systemctl enable ntpd.service
             >
             > 对于已经使用 `noop` 或 `none` I/O 调度器的设备，无需配置 udev 规则，可以跳过此步骤。
 
-            {{< copyable "shell-regular" >}}
-
             ```bash
             udevadm control --reload-rules
             udevadm trigger --type=devices --action=change
             ```
 
         7. 创建 CPU 节能策略配置服务。
-
-            {{< copyable "shell-regular" >}}
 
             ```bash
             cat  >> /etc/systemd/system/cpupower.service << EOF
@@ -605,8 +545,6 @@ sudo systemctl enable ntpd.service
 
         8. 应用 CPU 节能策略配置服务。
 
-            {{< copyable "shell-regular" >}}
-
             ```bash
             systemctl daemon-reload
             systemctl enable cpupower.service
@@ -614,8 +552,6 @@ sudo systemctl enable ntpd.service
             ```
 
 6. 执行以下命令验证透明大页的状态。
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     cat /sys/kernel/mm/transparent_hugepage/enabled
@@ -627,8 +563,6 @@ sudo systemctl enable ntpd.service
 
 7. 执行以下命令验证数据目录所在磁盘的 I/O 调度器。
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     cat /sys/block/sd[bc]/queue/scheduler
     ```
@@ -639,8 +573,6 @@ sudo systemctl enable ntpd.service
     ```
 
 8. 执行以下命令查看 cpufreq 模块选用的节能策略。
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     cpupower frequency-info --policy
@@ -654,29 +586,27 @@ sudo systemctl enable ntpd.service
 
 9. 执行以下命令修改 sysctl 参数。
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     echo "fs.file-max = 1000000">> /etc/sysctl.conf
     echo "net.core.somaxconn = 32768">> /etc/sysctl.conf
-    echo "net.ipv4.tcp_tw_recycle = 0">> /etc/sysctl.conf
     echo "net.ipv4.tcp_syncookies = 0">> /etc/sysctl.conf
     echo "vm.overcommit_memory = 1">> /etc/sysctl.conf
     echo "vm.min_free_kbytes = 1048576">> /etc/sysctl.conf
     sysctl -p
     ```
 
+    > **警告：**
+    >
+    > 不建议在内存小于 16 GiB 的系统上调大 `vm.min_free_kbytes` 的值，否则可能导致系统不稳定或启动失败。
+
     > **注意：**
     >
     > - `vm.min_free_kbytes` 是 Linux 内核的一个参数，用于控制系统预留的最小空闲内存量，单位为 KiB。
     > - `vm.min_free_kbytes` 的设置会影响内存回收机制。设置得过大，会导致可用内存变少，设置得过小，可能会导致内存的申请速度超过后台的回收速度，进而导致内存回收并引起内存分配延迟。
     > - 建议将 `vm.min_free_kbytes` 最小设置为 `1048576` KiB（即 1 GiB）。如果[安装了 NUMA](/check-before-deployment.md#安装-numactl-工具)，建议设置为 `NUMA 节点个数 * 1048576` KiB。
-    > - 对于内存小于 16 GiB 的小规格服务器，保持 `vm.min_free_kbytes` 的默认值即可。
-    > - `tcp_tw_recycle` 从 Linux 4.12 内核版本开始移除，在使用高版本内核时无需配置该项。
+    > - 对于运行 Linux 内核 4.11 或更早版本的系统，建议将 `net.ipv4.tcp_tw_recycle` 设置为 `0`。
 
 10. 执行以下命令配置用户的 limits.conf 文件。
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     cat << EOF >>/etc/security/limits.conf
@@ -693,16 +623,12 @@ sudo systemctl enable ntpd.service
 
 1. 以 `root` 用户依次登录到部署目标机器创建 `tidb` 用户并设置登录密码。
 
-    {{< copyable "shell-root" >}}
-
     ```bash
     useradd tidb && \
     passwd tidb
     ```
 
 2. 执行以下命令，将 `tidb ALL=(ALL) NOPASSWD: ALL` 添加到文件末尾，即配置好 sudo 免密码。
-
-    {{< copyable "shell-root" >}}
 
     ```bash
     visudo
@@ -714,16 +640,12 @@ sudo systemctl enable ntpd.service
 
 3. 以 `tidb` 用户登录到中控机，执行以下命令。将 `10.0.1.1` 替换成你的部署目标机器 IP，按提示输入部署目标机器 `tidb` 用户密码，执行成功后即创建好 SSH 互信，其他机器同理。新建的 `tidb` 用户下没有 `.ssh` 目录，需要执行生成 rsa 密钥的命令来生成 `.ssh` 目录。如果要在中控机上部署 TiDB 组件，需要为中控机和中控机自身配置互信。
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     ssh-keygen -t rsa
     ssh-copy-id -i ~/.ssh/id_rsa.pub 10.0.1.1
     ```
 
 4. 以 `tidb` 用户登录中控机，通过 `ssh` 的方式登录目标机器 IP。如果不需要输入密码并登录成功，即表示 SSH 互信配置成功。
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     ssh 10.0.1.1
@@ -734,8 +656,6 @@ sudo systemctl enable ntpd.service
     ```
 
 5. 以 `tidb` 用户登录到部署目标机器后，执行以下命令，不需要输入密码并切换到 `root` 用户，表示 `tidb` 用户 sudo 免密码配置成功。
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     sudo -su root
@@ -780,4 +700,8 @@ sudo yum -y install numactl
 
 ## 关闭 SELinux
 
-使用 [getenforce(8)](https://linux.die.net/man/8/getenforce) 工具检查是否已禁用 SELinux 或设置为宽容模式 (Permissive)。处于强制模式 (Enforcing) 的 SELinux 可能会导致部署失败。有关禁用 SELinux 的说明，请参阅操作系统的文档。
+SELinux 必须关闭或设置为 `permissive` 模式。你可以使用 [getenforce(8)](https://linux.die.net/man/8/getenforce) 工具来检查 SELinux 的当前状态。
+
+如果 SELinux 未关闭，请打开 `/etc/selinux/config` 文件，找到以 `SELINUX=` 开头的行，并将其修改为 `SELINUX=disabled`。修改完成后，你需要重启系统，因为从 `enforcing` 或 `permissive` 切换到 `disabled` 模式只有在重启后才会生效。
+
+在某些系统（如 Ubuntu）上，`/etc/selinux/config` 文件可能不存在，且 getenforce 工具可能未安装。在这种情况下，可以跳过此检查步骤。

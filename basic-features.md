@@ -26,7 +26,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [日期和时间类型](/data-type-date-and-time.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [字符串类型](/data-type-string.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [JSON 类型](/data-type-json.md) |  Y |  Y |  Y  | Y | Y | E | E | E | E | E |
-| [向量数据类型](/vector-search-data-types.md) |  E |  N |  N  | N | N | N | N | N | N | N |
+| [向量数据类型](/vector-search/vector-search-data-types.md) |  E |  N |  N  | N | N | N | N | N | N | N |
 | [控制流程函数](/functions-and-operators/control-flow-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [字符串函数](/functions-and-operators/string-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [数值函数与操作符](/functions-and-operators/numeric-functions-and-operators.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
@@ -34,7 +34,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [位函数和操作符](/functions-and-operators/bit-functions-and-operators.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [Cast 函数和操作符](/functions-and-operators/cast-functions-and-operators.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [加密和压缩函数](/functions-and-operators/encryption-and-compression-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
-| [向量函数和操作符](/vector-search-functions-and-operators.md) |  E |  N |  N  | N | N | N | N | N | N | N |
+| [向量函数和操作符](/vector-search/vector-search-functions-and-operators.md) |  E |  N |  N  | N | N | N | N | N | N | N |
 | [信息函数](/functions-and-operators/information-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [JSON 函数](/functions-and-operators/json-functions.md) |  Y |  Y |  Y  | Y | Y | E | E | E | E | E |
 | [聚合函数](/functions-and-operators/aggregate-group-by-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
@@ -65,7 +65,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [外键约束](/foreign-key.md) | Y |  E |  E  | E | N | N | N | N | N | N |
 | [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md) | Y |  Y |  Y  | Y | N | N | N | N | N | N |
 | [全局索引 (Global Index)](/partitioned-table.md#全局索引) | Y |  N | N  | N | N | N | N | N | N | N |
-| [向量索引](/vector-search-index.md) |  E |  N |  N  | N | N | N | N | N | N | N |
+| [向量索引](/vector-search/vector-search-index.md) |  E |  N |  N  | N | N | N | N | N | N | N |
 
 ## SQL 语句
 
@@ -96,7 +96,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 | 高级 SQL 功能 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| [向量搜索](/vector-search-overview.md) |  E |  N |  N  | N | N | N | N | N | N | N |
+| [向量搜索](/vector-search/vector-search-overview.md) |  E |  N |  N  | N | N | N | N | N | N | N |
 | [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md) | Y |  Y  |  Y  | Y | Y | Y | Y | Y | E | E |
 | [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md) | Y |  Y  |  Y  | E | N | N | N | N | N | N |
 | [实例级执行计划缓存](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) | E |  N  |  N  | N | N | N | N | N | N | N |
@@ -256,9 +256,9 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [全局内存控制](/configure-memory-usage.md#如何配置-tidb-server-实例使用内存的阈值) | Y | Y | Y | Y | Y | N | N | N | N | N |
 | [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) | E | E | E| E | E | N | N | N | N | N |
 | [Green GC](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) | E | E | E | E | E | E | E | E | E | E |
-| [资源管控 (Resource Control)](/tidb-resource-control.md) | Y | Y | Y | Y | N | N | N | N | N | N |
-| [Runaway Queries 自动管理](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries) | Y | Y | E | N | N | N | N | N | N | N |
-| [后台任务资源管控](/tidb-resource-control.md#管理后台任务) | E | E | E | N | N | N | N | N | N | N |
+| [资源管控 (Resource Control)](/tidb-resource-control-ru-groups.md) | Y | Y | Y | Y | N | N | N | N | N | N |
+| [Runaway Queries 自动管理](/tidb-resource-control-runaway-queries.md) | Y | Y | E | N | N | N | N | N | N | N |
+| [后台任务资源管控](/tidb-resource-control-background-tasks.md) | E | E | E | N | N | N | N | N | N | N |
 | [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md) | Y | Y | Y | E | N | N | N | N | N | N |
 | [选择执行分布式执行框架任务的 TiDB 节点](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | Y | Y | Y | N | N | N | N | N | N | N |
 | 通过系统变量 [`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v530-版本开始引入) 控制 PD Follower Proxy 功能 | Y | Y | Y | Y | Y | Y | Y | Y | N | N |
