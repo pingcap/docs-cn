@@ -107,5 +107,5 @@ summary: 了解 TiDB 系统表。
 * `expr_pushdown_blacklist` 表达式下推的黑名单
 * `opt_rule_blacklist` 逻辑优化规则的黑名单
 * `tidb_import_jobs` 记录 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 任务信息
-* `tidb_timers` 存储了内部定时器的相关元信息
-* `advisory_locks` 存储了[锁函数](/functions-and-operators/locking-functions.md)相关的信息
+* `tidb_timers` 存储内部定时器的相关元信息
+* `advisory_locks` 存储[锁函数](/functions-and-operators/locking-functions.md)相关的信息
