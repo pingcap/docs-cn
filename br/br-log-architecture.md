@@ -110,11 +110,11 @@ PITR 的流程如下：
 └── v1_stream_truncate_safepoint.txt
 ```
 
-备份文件目录结构的解释如下：
+备份文件目录结构的说明如下：
 
 - `backupmeta`：备份的元数据。文件名中的 `resolved_ts` 指备份的进度，表示该 TSO 之前的数据已被完整备份。但是需注意，该 TSO 仅反映部分分片的进度。
 - `global_checkpoint`：备份的全局进度。它记录了可以被 `br restore point` 恢复到的最晚时间点。
-- `{date}/{hour}`：对应日期的备份数据。注意在清理存储的时候，需使用 `br log truncate`，不能手动删除数据。这是因为 metadata 会指向这里的数据，手动删除它们会导致恢复失败或恢复后数据不一致等问题。
+- `{date}/{hour}`：对应日期和小时的备份数据。注意在清理存储的时候，需使用 `br log truncate`，不能手动删除数据。这是因为 metadata 会指向这里的数据，手动删除它们会导致恢复失败或恢复后数据不一致等问题。
 
 具体示例如下：
 
