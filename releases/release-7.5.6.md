@@ -102,6 +102,9 @@ TiDB 版本：7.5.6
     - (dup): release-6.5.12.md > 错误修复> TiDB - 修复查询 `cluster_slow_query` 表时，使用 `ORDER BY` 可能导致结果乱序的问题 [#51723](https://github.com/pingcap/tidb/issues/51723) @[Defined2014](https://github.com/Defined2014)
     - (dup): release-6.5.12.md > 错误修复> TiDB - 修复虚拟生成列依赖包含 `ON UPDATE` 属性的列时，更新行的数据与其索引数据不一致问题 [#56829](https://github.com/pingcap/tidb/issues/56829) @[joechenrh](https://github.com/joechenrh)
     - (dup): release-8.5.1.md > 错误修复> TiDB - 修复 TiDB 丢失心跳时，TTL 任务无法被取消的问题 [#57784](https://github.com/pingcap/tidb/issues/57784) @[YangKeao](https://github.com/YangKeao)
+    - 当参数为 Enum/Bit/Set 类型时不再将函数 Conv 下推至 TiKV [#51877](https://github.com/pingcap/tidb/issues/51877) @[yibin87](https://github.com/yibin87)
+    - 修复在集群中存在存算分离架构 TiFlash 节点时，执行 `ALTER TABLE ... PLACEMENT POLICY ...` 之后，Region peer 可能会被意外地添加到 TiFlash Compute 节点的问题 [#58633](https://github.com/pingcap/tidb/issues/58633) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复了ddl owner 变更时候作业状态被覆盖的问题 [#52747](https://github.com/pingcap/tidb/issues/52747) @[D3Hunter](https://github.com/D3Hunter)
 
 + TiKV
 
@@ -114,7 +117,10 @@ TiDB 版本：7.5.6
     - (dup): release-6.5.12.md > 错误修复> TiKV - 修复 GC Worker 负载过高时可能出现的死锁问题 [#18214](https://github.com/tikv/tikv/issues/18214) @[zyguan](https://github.com/zyguan)
     - (dup): release-6.5.12.md > 错误修复> TiKV - 修复磁盘卡住可能导致 Leader 无法迁移，进而引发性能抖动的问题 [#17363](https://github.com/tikv/tikv/issues/17363) @[hhwyt](https://github.com/hhwyt)
     - (dup): release-6.5.12.md > 错误修复> TiKV - 修复处理 GBK/GB18030 编码的数据时可能出现编码失败的问题 [#17618](https://github.com/tikv/tikv/issues/17618) @[CbcWestwolf](https://github.com/CbcWestwolf)
-
+    - 修复了 CDC 链接在遇到异常时发生的潜在性泄漏的问题  [#18245](https://github.com/tikv/tikv/issues/18245) @[wlwilliamx](https://github.com/wlwilliamx)
+    - 修复了 Region 合并时可能性的 raft index 匹配异常从而导致 TiKV 异常退出的问题 [#18129](https://github.com/tikv/tikv/issues/18129) @[glorv](https://github.com/glorv)
+    - 修复了 resolved-ts 潜在性的监控和日志展示异常的问题 [#17989](https://github.com/tikv/tikv/issues/17989) @[ekexium](https://github.com/ekexium)
+  
 + PD
 
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
@@ -131,6 +137,11 @@ TiDB 版本：7.5.6
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-8.5.1.md > 错误修复> TiFlash - 修复 TiFlash 在内存占用较低的情况下，可能意外拒绝处理 Raft 消息的问题 [#9745](https://github.com/pingcap/tiflash/issues/9745) @[CalvinNeo](https://github.com/CalvinNeo)
     - (dup): release-6.5.12.md > 错误修复> TiFlash - 修复在导入大量数据后，TiFlash 可能持续占用较高内存的问题 [#9812](https://github.com/pingcap/tiflash/issues/9812) @[CalvinNeo](https://github.com/CalvinNeo)
+    - 修复在分区表上执行 `ALTER TABLE ... RENAME COLUMN`后，查询可能报错的问题 [#9787](https://github.com/pingcap/tiflash/issues/9787) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 修复在一些情况下 TiFlash 意外退出时无法打印错误堆栈的问题 [#9902](https://github.com/pingcap/tiflash/issues/9902) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复在 `profiles.default.init_thread_count_scale` 设置为 0 的情况下，TiFlash 启动可能会阻塞的问题 [#9906](https://github.com/pingcap/tiflash/issues/9906) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复在查询涉及虚拟列并且触发远程读时，可能会报 "Not found column" 的错误 [#9561](https://github.com/pingcap/tiflash/issues/9561) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复在存算分离架构下，TiFlash Compute Node 可能被意外选为添加 Region peer 目标节点的问题 [#9750](https://github.com/pingcap/tiflash/issues/9750) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
 
