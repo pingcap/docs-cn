@@ -47,6 +47,9 @@ summary: 了解 TiDB 系统表。
 * `stats_extended` 扩展统计信息，比如列之间的顺序相关性
 * `stats_feedback` 统计信息的查询反馈
 * `stats_fm_sketch` 统计信息列的直方图 FMSketch 分布
+* `stats_table_locked` 被锁定的统计信息
+* `stats_meta_history` 历史统计信息中的元信息部分
+* `stats_history` 历史统计信息中的其它部分
 * `analyze_options` 各个表默认的 `analyze` 参数
 * `column_stats_usage` 列统计信息的使用情况
 * `analyze_jobs` 正在执行的统计信息收集任务以及过去 7 天内的历史任务记录
@@ -55,6 +58,11 @@ summary: 了解 TiDB 系统表。
 
 * `bind_info` 执行计划的绑定信息
 * `capture_plan_baselines_blacklist` 关于自动绑定执行计划对象的黑名单
+
+## PLAN REPLAYER 相关系统表
+
+* `plan_replayer_status` 存储用户注册的 [`PLAN REPLAYER CAPTURE`](/sql-plan-replayer.md#使用-plan-replayer-capture-功能) 抓取任务
+* `plan_replayer_task` 存储 [`PLAN REPLAYER CAPTURE`](/sql-plan-replayer.md#使用-plan-replayer-capture-功能) 抓取结果
 
 ## GC Worker 相关系统表
 
@@ -106,4 +114,5 @@ summary: 了解 TiDB 系统表。
 * `expr_pushdown_blacklist` 表达式下推的黑名单
 * `opt_rule_blacklist` 逻辑优化规则的黑名单
 * `tidb_import_jobs` 记录 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 任务信息
-* `tidb_timers` 存储了内部定时器的相关元信息
+* `tidb_timers` 存储内部定时器的相关元信息
+* `advisory_locks` 存储[锁函数](/functions-and-operators/locking-functions.md)相关的信息
