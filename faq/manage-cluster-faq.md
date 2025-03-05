@@ -334,7 +334,7 @@ Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 
 
 ### TiKV 是否有类似 MySQL 的 `innodb_flush_log_trx_commit` 参数，来保证提交数据不丢失？
 
-TiKV 没有类似的参数，但是 TiKV 上的每次提交都会强制落盘到 raft-log (TiKV 单机的存储引擎目前使用两个 RocksDB 实例，其中一个存储 raft-log)。如果 TiKV 发生 crash，可以通过 raft-log 恢复 KV 数据。
+TiKV 没有类似的参数，但是 TiKV 上的每次提交都会强制落盘到 Raft 日志 (TiKV 单机的存储引擎目前使用两个 RocksDB 实例，其中一个存储 Raft 日志)。如果 TiKV 发生 crash，KV 的数据将会根据 Raft 日志自动恢复。
 
 ### 对 WAL 存储有什么推荐的硬件配置，例如 SSD，RAID 级别，RAID 卡 cache 策略，NUMA 设置，文件系统选择，操作系统的 IO 调度策略等？
 
@@ -344,7 +344,7 @@ WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD
 
 通过使用 [Raft 一致性算法](https://raft.github.io/)，数据在各 TiKV 节点间复制为多副本，以确保某个节点挂掉时数据的安全性。只有当数据已写入超过 50% 的副本时，应用才返回 ACK（三副本中的两副本）。
 
-理论上两个节点也可能同时发生故障，因此从 v5.0 版本开始，写入 TiKV 的数据会默认落盘，即每次提交都会强制落盘到 raft-log。如果发生 crash，你可以通过 raft-log 恢复 KV 数据。
+理论上两个节点也可能同时发生故障，因此从 v5.0 版本开始，写入 TiKV 的数据会默认落盘，即每次提交都会强制落盘到 Raft 日志。如果 TiKV 发生 crash，KV 的数据将会根据 Raft 日志自动恢复。
 
 此外，也可以考虑在 Raft group 中使用五个副本而非三个。这将允许两个副本同时发生故障，而仍然能保证数据安全性。
 
