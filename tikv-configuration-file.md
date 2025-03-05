@@ -218,6 +218,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：60s
 + 最小值：1s
 
+### end-point-memory-quota <span class="version-mark">从 v8.2.0 版本开始引入</span>
+
+* TiKV Coproccessor 请求可以使用的内存上限，超过该值后后续的 Coprocessor 请求将被拒绝并报错（server is busy）。
+* 默认值：系统总内存大小的 45%（如果超过 500MB，则默认值为 500MB）。
+
 ### `snap-io-max-bytes-per-sec`
 
 + 处理 snapshot 时最大允许使用的磁盘带宽。
@@ -501,6 +506,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 >
 > - 由于 API V1 和 API V2 底层存储格式不同，因此**仅当** TiKV 中只有 TiDB 数据时，可以平滑启用或关闭 API V2。其他情况下，需要新建集群，并使用 [TiKV Backup & Restore](https://tikv.org/docs/latest/concepts/explore-tikv-features/backup-restore-cn/) 工具进行数据迁移。
 > - 启用 API V2 后，**不能**将 TiKV 集群回退到 v6.1.0 之前的版本，否则可能导致数据损坏。
+
+## txn-status-cache-capacity <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
++ 设置 TiKV 内的事务状态 cache 的容量。不建议用户随意修改。
++ 默认值：5120000
 
 ## storage.block-cache
 
@@ -1047,6 +1057,43 @@ raftstore 相关的配置项。
 
 + 控制 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值。
 + 默认值：`0.1`，表示全量数据整理进程的最大 CPU 使用率为 10%。
+
+### follower-read-max-log-gap <span class="version-mark">从 v7.4.0 版本开始引入</span>
+
++ follower 处理读请求时允许的最大日志落后数目，超出则拒绝读请求。
++ 默认值：100
+
+### inspect-cpu-util-thd <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
++ TiKV 进行慢节点检测时判定节点 CPU 是否处于繁忙状态的阈值。范围 [0%, 100%]。
++ 默认值：40%
+
+### inspect-kvdb-interval <span class="version-mark">从 v8.1.2 版本开始引入</span>
+
++ TiKV 进行慢节点检测时检查 KV 盘的间隔和超时时间。如果 KVDB 和 RaftDB 使用相同的挂载路径，该值将被覆盖为 0（不检
+测）。
++ 默认值：2s
+
+### min-pending-apply-region-count <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
++ TiKV 启动服务时，处于忙于应用 Raft 日志状态的 Region 的最大个数。只有当忙于应用 Raft 日志的 Region 数量低于该值
+时，Raftstore 才能接受 leader 迁移，以减少滚动重启期间的可用性下降。
++ 默认值：10
+
+### request-voter-replicated-index-interval <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
++ 控制 Witness 节点定期从投票节点获取已复制的 Raft 日志位置的时间间隔。
++ 默认值：5分钟
+
+### slow-trend-unsensitive-cause <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
++ TiKV 采用 SlowTrend 检测算法时，延时检测的敏感性。值越高表示敏感度越低。
++ 默认值：10
+
+### slow-trend-unsensitive-result <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
++ TiKV 采用 SlowStrend 检测算法时，QPS 侧检测的敏感性。值越高表示敏感度越低。
++ 默认值：0.5
 
 ## coprocessor
 
@@ -2026,6 +2073,12 @@ Raft Engine 相关的配置项。
 
 + 控制 Raft Engine 是否自动生成空的日志文件用于日志回收。该配置项启用时，Raft Engine 将在初始化时自动填充一批空日志文件用于日志回收，保证日志回收在初始化后立即生效。
 + 默认值：`false`
+
+### `compression-level` <span class="version-mark">从 v7.4.0 版本开始引入</span>
+
++ 设置 raft-engine 在写 raft log 文件时所采用的 lz4 压缩算法的压缩效率，范围 [1, 16]，越低压缩速率越高，但压缩率越低。
+
++ 默认值：1
 
 ## security
 
