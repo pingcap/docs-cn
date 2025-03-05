@@ -4241,8 +4241,8 @@ SHOW WARNINGS;
   - `"standard"`：默认的资源使用策略。
   - `"conservative"`：Pipelined DML 使用更少的资源，但执行速度更慢。
   - `"custom{option1=value1,option2=value2,...}"` 格式：自定义资源使用策略。可以只指定需要的子项。例如 `"custom{concurrency=8,write_throttle_ratio=0.5}"`。注意需要用双引号包括该值。支持的自定义项包括：
-    - `concurrency`：flush 操作的并发度，影响 Pipelined DML 的执行速度和资源使用。
-    - `resolve_concurrency`：异步 resolve lock 操作的并发度。不影响 Pipelined DML 执行速度，只影响资源使用。
+    - `concurrency`：flush 操作的并发度，影响 Pipelined DML 的执行速度和资源使用。取值范围为`[1,8192]`。
+    - `resolve_concurrency`：异步 resolve lock 操作的并发度。不影响 Pipelined DML 执行速度，只影响资源使用。取值范围为`[1,8192]`。
     - `write_throttle_ratio`：通过主动 throttle 降低资源使用，该值指定了 throttle 时间在总时间中的占比，0 代表不进行 throttle。取值范围为 `[0,1)`
 
 ### `tidb_placement_mode` <span class="version-mark">从 v6.0.0 版本开始引入</span>
