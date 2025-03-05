@@ -205,19 +205,19 @@ tiproxyctl traffic replay --host 10.0.1.10 --port 3080 --username="u1" --passwor
 `tiproxyctl traffic show` 用于显示历史的捕获和回放任务。它输出的是一个对象的数组，每一个对象表示一个任务。每个任务有以下字段：
 
 - `type`：表示任务类型，`capture` 代表流量捕获任务，`replay` 代表流量回放任务
+- `status`：该任务当前的状态，`running` 表示正在运行，`done` 表示正常完成，`canceled` 表示任务失败
 - `start_time`：该任务的开始时间
 - `end_time`：如果该任务已结束，该列为结束时间，否则为空
-- `duration`：捕获流量的时长
+- `progress`：该任务的完成百分比
+- `error`：如果该任务失败，该列为失败的原因，否则为空。例如 `manually stopped` 表示用户执行 `CANCEL TRAFFIC JOBS` 手动取消任务
 - `output`：捕获输出的流量文件的路径
-- `encryption_method`：捕获时流量文件的加密方式
+- `duration`：捕获流量的时长
 - `compress`：捕获时是否压缩流量文件
+- `encryption_method`：捕获时流量文件的加密方式
 - `input`：回放读取流量文件的路径
 - `username`：回放使用的数据库用户名
 - `speed`：回放的速率的倍数
 - `read_only`：回放时是否仅回放只读 SQL 语句
-- `progress`：该任务的完成百分比
-- `status`：该任务当前的状态，`running` 表示正在运行，`done` 表示正常完成，`canceled` 表示任务失败
-- `error`：如果该任务失败，该列为失败的原因，否则为空。例如 `manually stopped` 表示用户执行 `CANCEL TRAFFIC JOBS` 手动取消任务
 
 输出示例：
 
@@ -225,30 +225,31 @@ tiproxyctl traffic replay --host 10.0.1.10 --port 3080 --username="u1" --passwor
 [
   {
     "type": "capture",
+    "status": "done",
     "start_time": "2024-09-01T14:30:40.99096+08:00",
     "end_time": "2024-09-01T16:30:40.99096+08:00",
-    "duration": "2h",
-    "output": "/tmp/traffic",
     "progress": "100%",
-    "status": "done"
+    "output": "/tmp/traffic",
+    "duration": "2h",
+    "compress": true
   },
   {
     "type": "capture",
+    "status": "canceled",
     "start_time": "2024-09-02T18:30:40.99096+08:00",
     "end_time": "2024-09-02T19:00:40.99096+08:00",
-    "duration": "2h",
-    "output": "/tmp/traffic",
     "progress": "25%",
-    "status": "canceled",
-    "error": "manually stopped"
+    "error": "manually stopped",
+    "output": "/tmp/traffic",
+    "duration": "2h"
   },
   {
     "type": "capture",
+    "status": "running",
     "start_time": "2024-09-03T13:31:40.99096+08:00",
-    "duration": "2h",
-    "output": "/tmp/traffic",
     "progress": "45%",
-    "status": "running"
+    "output": "/tmp/traffic",
+    "duration": "2h"
   }
 ]
 ```
