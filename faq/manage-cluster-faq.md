@@ -334,7 +334,7 @@ Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 
 
 ### TiKV 是否有类似 MySQL 的 `innodb_flush_log_trx_commit` 参数，来保证提交数据不丢失？
 
-TiKV 没有类似的参数，但是 TiKV 上的每次提交都会强制落盘到 Raft 日志 (TiKV 单机的存储引擎目前使用两个 RocksDB 实例，其中一个存储 Raft 日志)。如果 TiKV 发生 crash，KV 的数据将会根据 Raft 日志自动恢复。
+TiKV 没有类似的参数，但是 TiKV 上的每次提交都会强制落盘到 Raft 日志 (TiKV 使用 [Raft Engine](/glossary.md#raft-engine) 存储 Raft 日志，在提交时会强制刷盘)。如果 TiKV 发生 crash，KV 的数据将会根据 Raft 日志自动恢复。
 
 ### 对 WAL 存储有什么推荐的硬件配置，例如 SSD，RAID 级别，RAID 卡 cache 策略，NUMA 设置，文件系统选择，操作系统的 IO 调度策略等？
 
