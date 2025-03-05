@@ -120,7 +120,7 @@ cdc_servers:
 例如，要在新架构的 TiCDC 节点中创建同步任务，可执行以下命令：
 
 ```
-cdc cli changefeed create cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" 
+cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" 
 ```
 
 若需查询特定同步任务的信息，可执行：
