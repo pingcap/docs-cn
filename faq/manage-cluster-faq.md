@@ -334,23 +334,19 @@ Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 
 
 ### TiKV 是否有类似 MySQL 的 `innodb_flush_log_trx_commit` 参数，来保证提交数据不丢失？
 
-是的。TiKV 单机的存储引擎目前使用两个 RocksDB 实例，其中一个存储 raft-log。TiKV 有个 sync-log 参数，在 true 的情况下，每次提交都会强制刷盘到 raft-log，如果发生 crash 后，通过 raft-log 进行 KV 数据的恢复。
+TiKV 没有类似的参数，但是 TiKV 上的每次提交都会强制落盘到 raft-log (TiKV 单机的存储引擎目前使用两个 RocksDB 实例，其中一个存储 raft-log)。如果 TiKV 发生 crash，可以通过 raft-log 恢复 KV 数据。
 
 ### 对 WAL 存储有什么推荐的硬件配置，例如 SSD，RAID 级别，RAID 卡 cache 策略，NUMA 设置，文件系统选择，操作系统的 IO 调度策略等？
 
 WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD。RAID 如果允许的话，最好是 RAID 10，RAID 卡 cache、操作系统 I/O 调度目前没有针对性的最佳实践，Linux 7 以上默认配置即可。NUMA 没有特别建议，NUMA 内存分配策略可以尝试使用 `interleave = all`，文件系统建议 ext4。
 
-### 在最严格的 `sync-log = true` 数据可用模式下，写入性能如何？
+### 是否可以利用 TiKV 的 Raft + 多副本达到完全的数据可靠？
 
-一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](/benchmark/v3.0-performance-benchmarking-with-sysbench.md)。
+通过使用 [Raft 一致性算法](https://raft.github.io/)，数据在各 TiKV 节点间复制为多副本，以确保某个节点挂掉时数据的安全性。只有当数据已写入超过 50% 的副本时，应用才返回 ACK（三副本中的两副本）。
 
-### 是否可以利用 TiKV 的 Raft + 多副本达到完全的数据可靠，单机存储引擎是否需要最严格模式？
+理论上两个节点也可能同时发生故障，因此从 v5.0 版本开始，写入 TiKV 的数据会默认落盘，即每次提交都会强制落盘到 raft-log。如果发生 crash，你可以通过 raft-log 恢复 KV 数据。
 
-通过使用 [Raft 一致性算法](https://raft.github.io/)，数据在各 TiKV 节点间复制为多副本，以确保某个节点挂掉时数据的安全性。只有当数据已写入超过 50% 的副本时，应用才返回 ACK（三副本中的两副本）。但理论上两个节点也可能同时发生故障，所以除非是对性能要求高于数据安全的场景，一般都强烈推荐开启 `sync-log`。
-
-另外，还有一种 `sync-log` 的替代方案，即在 Raft group 中用五个副本而非三个。这将允许两个副本同时发生故障，而仍然能保证数据安全性。
-
-对于单机存储引擎也同样推荐打开 `sync-log` 模式。否则如果节点宕机可能会丢失最后一次写入数据。
+此外，也可以考虑在 Raft group 中使用五个副本而非三个。这将允许两个副本同时发生故障，而仍然能保证数据安全性。
 
 ### 使用 Raft 协议，数据写入会有多次网络的 roundtrip，实际写入延迟如何？
 
