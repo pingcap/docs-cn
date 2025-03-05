@@ -4229,6 +4229,22 @@ SHOW WARNINGS;
 > - 该选项目前仅对需要上锁单个 key 的语句有效。如果一个语句需要对多行同时上锁，则该选项不会对此类语句生效。
 > - 该功能从 v6.6.0 版本引入。在 v6.6.0 版本中，该功能由变量 [`tidb_pessimistic_txn_aggressive_locking`](https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_pessimistic_txn_aggressive_locking-%E4%BB%8E-v660-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 控制，默认关闭。
 
+### `tidb_pipelined_dml_resource_policy`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串型
+- 默认值：`standard`
+- 可选值：`standard`，`conservative`，`custom{...}`
+- 该变量指定了 Pipelined DML 使用资源的策略。它仅在 [`tidb_dml_type`](#tidb_dml_type-从-v800-版本开始引入) 是`bulk`时生效。各选项含义如下：
+  - `standard`：默认的资源使用策略。
+  - `conservative`：Pipelined DML 使用更少的资源，但执行速度更慢。
+  - `custom{option1=value1,option2=value2,...}` 格式：自定义资源使用策略。可以只指定需要的子项。例如 `custom{concurrency=8,write_throttle_ratio=0.5}`。支持的自定义项包括
+    - `concurrency`：flush 操作的并发度，影响 Pipelined DML 的执行速度和资源使用。
+    - `resolve_concurrency`：异步 resolve lock 操作的并发度。不影响 Pipelined DML 执行速度，只影响资源使用。
+    - `write_throttle_ratio`：取值范围为 `[0,1)`。通过主动 throttle 降低资源使用，该值指定了 throttle 时间在总时间中的占比，0 代表不进行 throttle。
+
 ### `tidb_placement_mode` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
