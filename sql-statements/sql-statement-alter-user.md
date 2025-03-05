@@ -180,8 +180,7 @@ ALTER USER 'newuser' PASSWORD REUSE INTERVAL 90 DAY;
 Query OK, 0 rows affected (0.02 sec)
 ```
 
-
-通过 `ALTER USER ... WITH MAX_USER_CONNECTIONS N` 修改用户 `newuser` 允许登陆的最大连接数：
+通过 `ALTER USER ... WITH MAX_USER_CONNECTIONS N` 修改用户 `newuser` 允许登录的最大连接数：
 
 ```sql
 ALTER USER 'newuser' WITH MAX_USER_CONNECTIONS 3;
