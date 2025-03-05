@@ -5,14 +5,12 @@ summary: 介绍 TiCDC 新架构的主要特性，架构特点，升级部署指�
 
 # TiCDC 新架构介绍
 
-## 概述
-
 TiCDC 新架构通过重新设计核心组件和优化数据处理流程，显著提升了实时数据同步的性能、扩展性和稳定性，同时降低了资源成本。新架构的主要优势包括：
 
 - **更高的单节点性能**：单节点最高可支持 50 万张表的同步任务，宽表场景下的同步流量最高可达 200MiB/s。
 - **更强的扩展能力**：集群同步能力接近线性扩展，单集群可扩展至超过 100 个节点，支持超 1 万个 Changefeed；单个 Changefeed 可支持百万级表的同步任务。
 - **更高的稳定性**：在高流量、频繁 DDL 操作及集群扩缩容等场景下，Changefeed 的延迟更低且更加稳定。通过资源隔离和优先级调度，减少了多个 Changefeed 任务之间的相互干扰。
-- **更低的资源成本**：通过改进资源利用率，减少冗余开销，在典型场景下，CPU、内存等资源的利用效率提升最多一个数量级。
+- **更低的资源成本**：通过改进资源利用率，减少冗余开销，在典型场景下，CPU 和内存等资源的利用效率提升高达一个数量级。
 
 ## 架构设计
 
@@ -49,7 +47,7 @@ TiCDC 新架构仅支持 v7.5 或者以上版本的 TiDB 集群，使用之前�
 
 ### 使用 TiUP 部署启用新架构 TiCDC 的全新 TiDB 集群
 
-在使用 TiUP 部署 v9.0 或者以上版本的全新 TiDB 集群时，支持同时部署启用新架构的 TiCDC 组件。你需要在 TiUP 启动 TiDB 集群时的配置文件中加入 TiCDC 组件相关的部分并启用新架构，以下是一个示例：
+在使用 TiUP 部署 v9.0.0 或者以上版本的全新 TiDB 集群时，支持同时部署启用新架构的 TiCDC 组件。你需要在 TiUP 启动 TiDB 集群时的配置文件中加入 TiCDC 组件相关的部分并启用新架构，以下是一个示例：
 
 ```shell
 cdc_servers:
@@ -61,9 +59,11 @@ cdc_servers:
       newarch: true
 ```
 
-NOTE: 在使用 TiCDC 老架构时，请勿在配置文件中添加 `newarch` 配置项。`newarch` 仅用于新架构，不添加 `newarch` 配置项默认使用老架构。如果在 TiCDC 老架构的配置文件中添加 newarch，可能会导致解析失败。
+> **注意：**
+> 
+> `newarch`  配置项仅用于新架构，不添加 `newarch` 配置项则默认使用老架构。在使用 TiCDC 老架构时，请勿在配置文件中添加 `newarch` 配置项，否则可能会导致解析失败。
 
-其他详细操作，请参考[使用 TiUP 部署包含 TiCDC 组件的全新 TiDB 集群](/ticdc/deploy-ticdc.md#使用-tiup-部署包含-ticdc-组件的全新-tidb-集群)
+其他详细操作，请参考[使用 TiUP 部署包含 TiCDC 组件的全新 TiDB 集群](/ticdc/deploy-ticdc.md#使用-tiup-部署包含-ticdc-组件的全新-tidb-集群)。
 
 ### 使用 TiUP 在原有 TiDB 集群全新部署启用新架构的 TiCDC 组件
 
@@ -77,7 +77,7 @@ NOTE: 在使用 TiCDC 老架构时，请勿在配置文件中添加 `newarch` �
 
 > **注意：**
 > 
-> 升级至TiCDC新架构后，将不再支持回退至旧架构。
+> 升级至 TiCDC 新架构后，将不再支持回退至旧架构。
 
 1. 下载 v9.0.0 或者以上版本的 TiCDC 二进制文件。
 
@@ -101,21 +101,21 @@ NOTE: 在使用 TiCDC 老架构时，请勿在配置文件中添加 `newarch` �
 
 2. 通过 TiUP 更新 TiCDC 配置：
 
-```shell
-tiup cluster edit-config <cluster-name>
-```
+    ```shell
+    tiup cluster edit-config <cluster-name>
+    ```
 
-```shell
-server_configs:
-  cdc:
-    newarch: true
-```
+    ```shell
+    server_configs:
+      cdc:
+        newarch: true
+    ```
 
 3. 参考[恢复同步任务](/ticdc/ticdc-manage-changefeed.md#恢复同步任务)恢复所有的 Changefeed 同步任务；
 
 ## 使用指南
 
-在部署完新架构的节点之后，即可使用相应的命令进行操作。新架构的命令与旧架构保持一致，无需额外学习新的命令格式，也无需对之前的使用到的命令做出任何改变。
+在 TiCDC 新架构的节点部署完成后，即可使用相应的命令进行操作。新架构沿用了旧架构的 TiCDC 使用方式，因此无需额外学习新的命令，也无需修改旧架构中使用到的命令。
 
 例如，要在新架构的 TiCDC 节点中创建同步任务，可执行以下命令：
 
