@@ -1,5 +1,6 @@
 ---
 title: TiDB Sysbench 性能对比测试报告 - v6.0.0 对比 v5.4.0
+aliases: ['/zh/tidb/dev/benchmark-sysbench-v6.0.0-vs-v5.4.0/','/zh/tidb/stable/benchmark-sysbench-v6.0.0-vs-v5.4.0/']
 ---
 
 # TiDB Sysbench 性能对比测试报告 - v6.0.0 对比 v5.4.0
