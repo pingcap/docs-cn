@@ -1070,14 +1070,12 @@ raftstore 相关的配置项。
 
 ### inspect-kvdb-interval <span class="version-mark">从 v8.1.2 版本开始引入</span>
 
-+ TiKV 进行慢节点检测时检查 KV 盘的间隔和超时时间。如果 KVDB 和 RaftDB 使用相同的挂载路径，该值将被覆盖为 0（不检
-测）。
++ TiKV 进行慢节点检测时检查 KV 盘的间隔和超时时间。如果 KVDB 和 RaftDB 使用相同的挂载路径，该值将被覆盖为 0（不检测）。
 + 默认值：2s
 
 ### min-pending-apply-region-count <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
-+ TiKV 启动服务时，处于忙于应用 Raft 日志状态的 Region 的最大个数。只有当忙于应用 Raft 日志的 Region 数量低于该值
-时，Raftstore 才能接受 leader 迁移，以减少滚动重启期间的可用性下降。
++ TiKV 启动服务时，处于忙于应用 Raft 日志状态的 Region 的最大个数。只有当忙于应用 Raft 日志的 Region 数量低于该值时，Raftstore 才能接受 leader 迁移，以减少滚动重启期间的可用性下降。
 + 默认值：10
 
 ### request-voter-replicated-index-interval <span class="version-mark">从 v6.6.0 版本开始引入</span>
