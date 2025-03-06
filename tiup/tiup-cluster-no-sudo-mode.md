@@ -24,7 +24,7 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
     1. 使用 `tidb` 用户设置 `XDG_RUNTIME_DIR` 环境变量。
       
         ```bash
-        sudo -iu tidb  # This is to switch to the tidb user
+        sudo -iu tidb  # Switch to the tidb user
         mkdir -p ~/.bashrc.d
         echo "export XDG_RUNTIME_DIR=/run/user/$(id -u)" > ~/.bashrc.d/systemd
         source ~/.bashrc.d/systemd
@@ -64,11 +64,10 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
 
     更多详情，参见 [systemd 用户实例的自动启动](https://wiki.archlinux.org/title/Systemd/User#Automatic_start-up_of_systemd_user_instances)。
 
-4. 在中控机上使用 `ssh-keygen` 生成密钥，并将公钥复制到其他部署机器，完成 SSH 互信。如果已为 `tidb` 用户设置密码，可以使用 `ssh-copy-id` 将公钥复制到目标机器。若使用其他方法，请确保检查 `/home/tidb/.ssh/authorized_keys` 文件的权限。
+4. 在中控机上使用 `ssh-keygen` 生成密钥：
 
     ```shell
     ssh-keygen
-    ssh-copy-id tidb@host
     ```
 
     将 `host` 替换为目标机器的主机名，并在集群中的每台机器上运行 `ssh-copy-id` 命令。
