@@ -16,8 +16,8 @@ TiDB 版本：7.5.6
 + TiDB <!--tw@lilin90: 2 notes-->
 
     - (dup): release-7.1.6.md > 改进提升> TiDB - 当某个统计信息完全由 TopN 构成，且对应表的统计信息中修改行数不为 0 时，对于未命中 TopN 的等值条件，估算结果从 0 调整为 1 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell)
-    - 增强读时间戳的合法性检测 [#57786](https://github.com/pingcap/tidb/issues/57786) @[MyonKeminta](https://github.com/MyonKeminta)
-    - 修改 TTL GC 和相关的统计信息收集任务只在 owner 节点进行从而降低开销 [#59357](https://github.com/pingcap/tidb/issues/59357) @[lcwangchao](https://github.com/lcwangchao)
+    - 增强时间戳合法性检查 [#57786](https://github.com/pingcap/tidb/issues/57786) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修改 TTL GC 和相关的统计信息收集任务只在 owner 节点进行，从而降低开销 [#59357](https://github.com/pingcap/tidb/issues/59357) @[lcwangchao](https://github.com/lcwangchao)
 
 + TiKV
 
@@ -62,14 +62,14 @@ TiDB 版本：7.5.6
     - (dup): release-6.5.12.md > 错误修复> TiDB - 修复查询 `cluster_slow_query` 表时，使用 `ORDER BY` 可能导致结果乱序的问题 [#51723](https://github.com/pingcap/tidb/issues/51723) @[Defined2014](https://github.com/Defined2014)
     - (dup): release-6.5.12.md > 错误修复> TiDB - 修复虚拟生成列依赖包含 `ON UPDATE` 属性的列时，更新行的数据与其索引数据不一致问题 [#56829](https://github.com/pingcap/tidb/issues/56829) @[joechenrh](https://github.com/joechenrh)
     - (dup): release-8.5.1.md > 错误修复> TiDB - 修复 TiDB 丢失心跳时，TTL 任务无法被取消的问题 [#57784](https://github.com/pingcap/tidb/issues/57784) @[YangKeao](https://github.com/YangKeao)
-    - 当参数为 Enum/Bit/Set 类型时不再将函数 Conv 下推至 TiKV [#51877](https://github.com/pingcap/tidb/issues/51877) @[yibin87](https://github.com/yibin87)
+    - 当参数为 `Enum`、`Bit`、或 `Set` 类型时，不再将 `Conv()` 函数下推至 TiKV [#51877](https://github.com/pingcap/tidb/issues/51877) @[yibin87](https://github.com/yibin87)
     - 修复当集群中存在存算分离架构 TiFlash 节点时，执行 `ALTER TABLE ... PLACEMENT POLICY ...` 之后，Region peer 可能会被意外地添加到 TiFlash Compute 节点的问题 [#58633](https://github.com/pingcap/tidb/issues/58633) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复了 ddl owner 变更时候作业状态被覆盖的问题 [#52747](https://github.com/pingcap/tidb/issues/52747) @[D3Hunter](https://github.com/D3Hunter)
-    - 修复了 hash 类型分区表在查询 `is null` 条件时 panic 的问题 [#58374](https://github.com/pingcap/tidb/issues/58374) @[Defined2014](https://github.com/Defined2014/) <!--tw@hfxsd: the following 4 notes-->
-    - 修复了在查询包含生成列的分区表时报错的问题 [#58475] (https://github.com/pingcap/tidb/issues/58475) @[joechenrh](https://github.com/joechenrh)
-    - 修复了 TTL 任务可能被忽略或处理多次的问题 [#59347](https://github.com/pingcap/tidb/issues/59347) @[YangKeao](https://github.com/YangKeao)
-    - 修复了 exchange partition 错误判断导致执行失败的问题 [#59534](https://github.com/pingcap/tidb/issues/59534) @[mjonss](https://github.com/mjonss)
-    - 修复了 `tidb_audit_log` 变量设置多级相对路径时导致 log 目录出错的问题 [#58971](https://github.com/pingcap/tidb/issues/58971) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复 DDL owner 变更时，作业状态被覆盖的问题 [#52747](https://github.com/pingcap/tidb/issues/52747) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复 Hash 类型分区表在查询 `is null` 条件时 panic 的问题 [#58374](https://github.com/pingcap/tidb/issues/58374) @[Defined2014](https://github.com/Defined2014/) <!--tw@hfxsd: the following 4 notes-->
+    - 修复在查询包含生成列的分区表时报错的问题 [#58475] (https://github.com/pingcap/tidb/issues/58475) @[joechenrh](https://github.com/joechenrh)
+    - 修复 TTL 任务可能被忽略或处理多次的问题 [#59347](https://github.com/pingcap/tidb/issues/59347) @[YangKeao](https://github.com/YangKeao)
+    - 修复 exchange partition 错误判断导致执行失败的问题 [#59534](https://github.com/pingcap/tidb/issues/59534) @[mjonss](https://github.com/mjonss)
+    - 修复 `tidb_audit_log` 变量设置多级相对路径，导致日志目录出错的问题 [#58971](https://github.com/pingcap/tidb/issues/58971) @[lcwangchao](https://github.com/lcwangchao)
 
 + TiKV <!--tw@qiancai: 3 notes-->
 
@@ -117,7 +117,7 @@ TiDB 版本：7.5.6
 
     + TiCDC <!--tw@hfxsd: 1 note-->
 
-        - 修复较多小表场景启用 CDC 可能引起 TiKV 重启的问题 [#18142](https://github.com/tikv/tikv/issues/18142) @[hicqu](https://github.com/hicqu)
+        - 修复在较多小表场景中启用 TiCDC 可能导致 TiKV 重启的问题 [#18142](https://github.com/tikv/tikv/issues/18142) @[hicqu](https://github.com/hicqu)
         - (dup): release-6.5.12.md > 错误修复> Tools> TiCDC - 修复当上游将一个新增的列的默认值从 `NOT NULL` 修改为 `NULL` 后，下游默认值错误的问题 [#12037](https://github.com/pingcap/tiflow/issues/12037) @[wk989898](https://github.com/wk989898)
         - (dup): release-6.5.12.md > 错误修复> Tools> TiCDC - 修复由于 Sarama 客户端乱序重发消息导致 Kafka 消息乱序的问题 [#11935](https://github.com/pingcap/tiflow/issues/11935) @[3AceShowHand](https://github.com/3AceShowHand)
         - (dup): release-6.5.12.md > 错误修复> Tools> TiCDC - 修复 TiCDC 在 `RENAME TABLE` 操作中使用了错误的表名进行过滤的问题 [#11946](https://github.com/pingcap/tiflow/issues/11946) @[wk989898](https://github.com/wk989898)
