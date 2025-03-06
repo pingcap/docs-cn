@@ -69,13 +69,22 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
     ```shell
     ssh-keygen
     ```
+5. 将公钥复制到其他部署机器，完成 SSH 互信。
 
-    将 `host` 替换为目标机器的主机名，并在集群中的每台机器上运行 `ssh-copy-id` 命令。
+    - 如果你已为 `tidb` 用户设置了密码，可以使用 `ssh-copy-id` 命令将公钥复制到目标机器。
 
-    ```
-    chown -R tidb:tidb /home/tidb/.ssh/authorized_keys
-    chmod 600 /home/tidb/.ssh/authorized_keys
-    ```
+        ```shell
+        ssh-copy-id tidb@host
+        ```
+
+        将 `host` 替换为目标机器的主机名，并在集群中的每台机器上运行 `ssh-copy-id` 命令。
+
+    - 如果你使用其他方法复制公钥，复制完成后请检查 `/home/tidb/.ssh/authorized_keys` 文件的权限。
+
+        ```shell
+        chown -R tidb:tidb /home/tidb/.ssh/authorized_keys
+        chmod 600 /home/tidb/.ssh/authorized_keys
+        ```
 
 ## 准备部署拓扑文件
 
@@ -89,7 +98,7 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
 
     相比常规模式，使用 no-sudo 模式的 TiUP 时，需要在 `topology.yaml` 的 `global` 模块中新增一行 `systemd_mode: "user"`。`systemd_mode` 参数用于设置是否使用 `systemd user` 模式。如果不设置该参数，其默认值为 `system`，表示需要使用 sudo 权限。
     
-    此外，由于 no-sudo 模式下，普通用户 `tidb` 没有权限使用 `/data` 目录作为 `deploy_dir` 和 `data_dir`，因此，你需要选择一个普通用户可以访问的路径。以下示例使用了相对路径，最终使用的路径为 `/home/tidb/data/tidb-deploy` 和 `/home/tidb/data/tidb-data`。拓扑文件的其余部分与常规模式一致。另一种方法是使用 `root` 用户创建目录，然后使用 `chown` 将所有权更改为 `tidb:tidb`。
+    此外，由于 no-sudo 模式下，普通用户 `tidb` 没有权限使用 `/data` 目录作为 `deploy_dir` 和 `data_dir`，因此，你需要选择一个普通用户可以访问的路径。以下示例使用了相对路径，实际使用的路径为 `/home/tidb/data/tidb-deploy` 和 `/home/tidb/data/tidb-data`。拓扑文件的其余部分与常规模式一致。另一种方法是使用 `root` 用户创建目录，然后使用 `chown` 将所有权更改为 `tidb:tidb`。
 
     ```yaml
     global:
@@ -136,12 +145,12 @@ Node            Check         Result  Message
 为了使用上述步骤准备好的 `tidb` 用户而避免重新创建新的用户，执行 `deploy` 命令时需要加上 `--user tidb`，示例如下：
 
 ```shell
-tiup cluster deploy mycluster v8.1.0 topology.yaml --user tidb
+tiup cluster deploy mycluster v8.5.0 topology.yaml --user tidb
 ```
 
 > **注意：**
 >
-> 你需要将上述命令中的 `v8.1.0` 替换为要部署的 TiDB 版本，并将 `mycluster` 替换为你想要为集群指定的名称。
+> 你需要将上述命令中的 `v8.5.0` 替换为要部署的 TiDB 版本，并将 `mycluster` 替换为你想要为集群指定的名称。
 
 启动集群：
 
