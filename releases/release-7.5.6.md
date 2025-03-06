@@ -5,7 +5,7 @@ summary: 了解 TiDB 7.5.6 版本的兼容性变更、改进提升，以及错�
 
 # TiDB 7.5.6 Release Notes
 
-发版日期：2024 年 x 月 x 日
+发版日期：2025 年 x 月 x 日
 
 TiDB 版本：7.5.6
 
@@ -70,6 +70,7 @@ TiDB 版本：7.5.6
     - 修复 TTL 任务可能被忽略或处理多次的问题 [#59347](https://github.com/pingcap/tidb/issues/59347) @[YangKeao](https://github.com/YangKeao)
     - 修复 exchange partition 错误判断导致执行失败的问题 [#59534](https://github.com/pingcap/tidb/issues/59534) @[mjonss](https://github.com/mjonss)
     - 修复 `tidb_audit_log` 变量设置多级相对路径，导致日志目录出错的问题 [#58971](https://github.com/pingcap/tidb/issues/58971) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复 Join 的等值条件两边数据类型不同，可能导致 TiFlash 产生错误结果 [#59877](https://github.com/pingcap/tidb/issues/59877) @[yibin87](https://github.com/yibin87)
 
 + TiKV <!--tw@qiancai: 3 notes-->
 
@@ -82,7 +83,7 @@ TiDB 版本：7.5.6
     - (dup): release-6.5.12.md > 错误修复> TiKV - 修复处理 GBK/GB18030 编码的数据时可能出现编码失败的问题 [#17618](https://github.com/tikv/tikv/issues/17618) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 修复 CDC 连接在遇到异常时可能发生资源泄漏的问题 [#18245](https://github.com/tikv/tikv/issues/18245) @[wlwilliamx](https://github.com/wlwilliamx)
     - 修复 Region 合并时可能因 Raft index 匹配异常而导致 TiKV 异常退出的问题 [#18129](https://github.com/tikv/tikv/issues/18129) @[glorv](https://github.com/glorv)
-    - 修复 Resolved-TS 监控和日志展示可能异常的问题 [#17989](https://github.com/tikv/tikv/issues/17989) @[ekexium](https://github.com/ekexium)m)
+    - 修复 Resolved-TS 监控和日志可能显示异常的问题 [#17989](https://github.com/tikv/tikv/issues/17989) @[ekexium](https://github.com/ekexium)
   
 + PD <!--tw@qiancai: 3 notes-->
 
