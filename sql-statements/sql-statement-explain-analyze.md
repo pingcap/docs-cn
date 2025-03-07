@@ -248,7 +248,7 @@ build_hash_table:{total:146.071334ms, fetch:110.338509ms, build:35.732825ms}, pr
 build_hash_table:{concurrency:5, time:2.25s, fetch:1.06s, max_partition:1.06s, total_partition:5.27s, max_build:124ms, total_build:439.5ms}, probe:{concurrency:5, time:13s, fetch_and_wait:3.03s, max_worker_time:13s, total_worker_time:1m4.5s, max_probe:9.93s, total_probe:49.4s, probe_collision:59818971}, spill:{round:1, spilled_partition_num_per_round:[5/8], total_spill_GiB_per_round:[1.64], build_spill_row_table_GiB_per_round:[0.50], build_spill_hash_table_per_round:[0.12]}
 ```
 
-- `build_hash_table`: 读取下游算子数据并构造 hash table 的执行信息：
+- `build_hash_table`：读取下游算子数据并构造 hash table 的执行信息。
     - `time`：构建 hash table 的总耗时。
     - `fetch`：从下游读取数据的总耗时。
     - `max_partition`：row table builder 中耗时最长的 builder 的执行时间。
