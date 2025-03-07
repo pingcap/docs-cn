@@ -11,6 +11,10 @@ TiDB 版本：7.5.6
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v7.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v7.5.6#version-list)
 
+## 兼容性变更
+
+- 支持 openEuler 22.03 LTS SP3/SP4 操作系统。详情请参考[操作系统及平台要求](https://docs.pingcap.com/zh/tidb/v7.5/hardware-and-software-requirements#操作系统及平台要求)。
+
 ## 改进提升
 
 + TiDB <!--tw@lilin90: 2 notes-->
