@@ -201,7 +201,7 @@ inner:{total:4.429220003s, concurrency:5, task:17, construct:96.207725ms, fetch:
 
 ### HashJoin
 
-TiDB 目前有 HashJoinV1 和 HashJoinV2 两个版本。我们将分别对这两个版本的`explain analyze`进行说明。
+HashJoin 算子有 HashJoinV1 和 HashJoinV2 两个版本，可以通过系统变量 [`tidb_hash_join_version`](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) 指定所需的版本。以下将分别对这两个版本的执行过程进行说明。
 
 #### HashJoinV1
 
