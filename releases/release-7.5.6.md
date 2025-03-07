@@ -21,7 +21,7 @@ TiDB 版本：7.5.6
 
     - (dup): release-7.1.6.md > 改进提升> TiDB - 当某个统计信息完全由 TopN 构成，且对应表的统计信息中修改行数不为 0 时，对于未命中 TopN 的等值条件，估算结果从 0 调整为 1 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell)
     - 增强时间戳合法性检查 [#57786](https://github.com/pingcap/tidb/issues/57786) @[MyonKeminta](https://github.com/MyonKeminta)
-    - 修改 TTL GC 和相关的统计信息收集任务只在 owner 节点进行，从而降低开销 [#59357](https://github.com/pingcap/tidb/issues/59357) @[lcwangchao](https://github.com/lcwangchao)
+    - 将 TTL 表的 GC 及相关统计信息收集任务限定在 owner 节点执行，从而降低开销 [#59357](https://github.com/pingcap/tidb/issues/59357) @[lcwangchao](https://github.com/lcwangchao)
 
 + TiKV
 
@@ -66,7 +66,7 @@ TiDB 版本：7.5.6
     - (dup): release-6.5.12.md > 错误修复> TiDB - 修复查询 `cluster_slow_query` 表时，使用 `ORDER BY` 可能导致结果乱序的问题 [#51723](https://github.com/pingcap/tidb/issues/51723) @[Defined2014](https://github.com/Defined2014)
     - (dup): release-6.5.12.md > 错误修复> TiDB - 修复虚拟生成列依赖包含 `ON UPDATE` 属性的列时，更新行的数据与其索引数据不一致问题 [#56829](https://github.com/pingcap/tidb/issues/56829) @[joechenrh](https://github.com/joechenrh)
     - (dup): release-8.5.1.md > 错误修复> TiDB - 修复 TiDB 丢失心跳时，TTL 任务无法被取消的问题 [#57784](https://github.com/pingcap/tidb/issues/57784) @[YangKeao](https://github.com/YangKeao)
-    - 当参数为 `Enum`、`Bit`、或 `Set` 类型时，不再将 `Conv()` 函数下推至 TiKV [#51877](https://github.com/pingcap/tidb/issues/51877) @[yibin87](https://github.com/yibin87)
+    - 当参数为 `Enum`、`Bit` 或 `Set` 类型时，不再将 `Conv()` 函数下推至 TiKV [#51877](https://github.com/pingcap/tidb/issues/51877) @[yibin87](https://github.com/yibin87)
     - 修复当集群中存在存算分离架构 TiFlash 节点时，执行 `ALTER TABLE ... PLACEMENT POLICY ...` 之后，Region peer 可能会被意外地添加到 TiFlash Compute 节点的问题 [#58633](https://github.com/pingcap/tidb/issues/58633) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复 DDL owner 变更时，作业状态被覆盖的问题 [#52747](https://github.com/pingcap/tidb/issues/52747) @[D3Hunter](https://github.com/D3Hunter)
     - 修复 Hash 类型分区表在查询 `is null` 条件时 panic 的问题 [#58374](https://github.com/pingcap/tidb/issues/58374) @[Defined2014](https://github.com/Defined2014/) <!--tw@hfxsd: the following 4 notes-->
@@ -74,7 +74,7 @@ TiDB 版本：7.5.6
     - 修复 TTL 任务可能被忽略或处理多次的问题 [#59347](https://github.com/pingcap/tidb/issues/59347) @[YangKeao](https://github.com/YangKeao)
     - 修复 exchange partition 错误判断导致执行失败的问题 [#59534](https://github.com/pingcap/tidb/issues/59534) @[mjonss](https://github.com/mjonss)
     - 修复 `tidb_audit_log` 变量设置多级相对路径，导致日志目录出错的问题 [#58971](https://github.com/pingcap/tidb/issues/58971) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复 Join 的等值条件两边数据类型不同，可能导致 TiFlash 产生错误结果 [#59877](https://github.com/pingcap/tidb/issues/59877) @[yibin87](https://github.com/yibin87)
+    - 修复 Join 的等值条件两边数据类型不同，可能导致 TiFlash 产生错误结果的问题 [#59877](https://github.com/pingcap/tidb/issues/59877) @[yibin87](https://github.com/yibin87)
 
 + TiKV <!--tw@qiancai: 3 notes-->
 
