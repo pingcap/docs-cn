@@ -232,7 +232,7 @@ build_hash_table:{total:146.071334ms, fetch:110.338509ms, build:35.732825ms}, pr
 
 #### HashJoinV2
 
-`HashJoin` 算子在 build 端有一个 fetcher，N 个 row table builder 和 N 个 hash table builder。在 probe 端有一个 fetcher 和 N 个 worker，其具体执行逻辑如下：
+`HashJoin` 算子在 build 端包含一个 fetcher、N 个 row table builder 和 N 个 hash table builder，在 probe 端包含一个 fetcher 和 N 个 worker。具体执行逻辑如下：
 
 1. build 端的 fetcher 读取下游算子数据，将数据派发给 row table builder
 2. row table builder 接收 chunk，将数据分为多个 partition，然后构造 row table
