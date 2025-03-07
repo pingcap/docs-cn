@@ -55,7 +55,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0;
 
 > **注意：**
 >
-> 目前，使用 TiCDC 同步表到下游 TiDB 集群时，不会自动为表创建 TiFlash 副本。
+> 目前，使用 TiCDC 同步表到下游 TiDB 集群时，不支持为表创建 TiFlash 副本。
 
 ### 查看表同步进度
 
