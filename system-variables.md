@@ -570,7 +570,6 @@ mysql> SELECT * FROM t1;
 - 作用域：SESSION
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
-- 默认值：`OFF`
 - 该变量用来显示上一条执行的语句所使用的执行计划是否来自 binding 的[执行计划](/sql-plan-management.md)。
 
 ### `last_plan_from_cache` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -578,14 +577,13 @@ mysql> SELECT * FROM t1;
 - 作用域：SESSION
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
-- 默认值：`OFF`
 - 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
 
 ### `last_sql_use_alloc` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：SESSION
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`OFF`
+- 类型：布尔型
 - 这个变量是一个只读变量，用来显示上一个语句是否使用了缓存的 Chunk 对象 (Chunk allocation)。
 
 ### `license`
