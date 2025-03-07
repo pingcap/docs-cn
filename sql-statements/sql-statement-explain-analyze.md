@@ -249,8 +249,8 @@ build_hash_table:{concurrency:5, time:2.25s, fetch:1.06s, max_partition:1.06s, t
 ```
 
 - `build_hash_table`: 读取下游算子数据并构造 hash table 的执行信息：
-    - `time`：总耗时。
-    - `fetch`：读取下游数据的总耗时。
+    - `time`：构建 hash table 的总耗时。
+    - `fetch`：从下游读取数据的总耗时。
     - `max_partition`：row table builder 中耗时最长的 builder 的执行时间。
     - `total_partition`：所有 row table builder 执行时间的累加耗时。
     - `max_build`：hash table builder 中耗时最长的 builder 的执行时间。
