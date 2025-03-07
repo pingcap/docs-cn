@@ -234,12 +234,12 @@ build_hash_table:{total:146.071334ms, fetch:110.338509ms, build:35.732825ms}, pr
 
 `HashJoin` 算子在 build 端包含一个 fetcher、N 个 row table builder 和 N 个 hash table builder，在 probe 端包含一个 fetcher 和 N 个 worker。具体执行逻辑如下：
 
-1. build 端的 fetcher 读取下游算子数据，将数据派发给 row table builder
-2. row table builder 接收 chunk，将数据分为多个 partition，然后构造 row table
-3. 等待第 2 步的 row table 构造完成
-4. hash table builder 根据 row table 构造 hash table
-5. probe 端的 fetcher 读取下游算子数据，将数据派发给 worker
-6. worker 接收数据，拿数据查询 hash table 并构造结果，最后将结果通过 result channel 发送出去
+1. build 端的 fetcher 读取下游算子的数据，并将数据分发给各个 row table builder。
+2. row table builder 接收数据 chunk，将数据 chunk 划分为多个 partition，然后构造 row table。
+3. 等待 row table 构造完成。
+4. hash table builder 根据 row table 构造 hash table。
+5. probe 端的 fetcher 读取下游算子的数据，将数据派发给 worker。
+6. worker 接收数据，使用数据查询 hash table 并构造最终结果，然后将结果发送给 result channel。
 7. `HashJoin` 的主线程从 result channel 中接收 join 结果。
 
 `HashJoin` 算子包含以下执行信息：
