@@ -1183,7 +1183,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 - [ADMIN ALTER DDL JOBS](/sql-statements/sql-statement-admin-alter-ddl.md)
 - [ADMIN SHOW DDL [JOBS|JOB QUERIES]](/sql-statements/sql-statement-admin-show-ddl.md)
-- [系统变量](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v755-和-v850-版本开始引入)
+- [系统变量](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v6512v755-和-v850-版本开始引入)
 - [TiDB 8.5.0 Release Notes](/releases/release-8.5.0.md)
 - [TiDB 7.5.5 Release Notes](/releases/release-7.5.5.md)
 
