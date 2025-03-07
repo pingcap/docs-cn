@@ -264,11 +264,11 @@ build_hash_table:{concurrency:5, time:2.25s, fetch:1.06s, max_partition:1.06s, t
     - `total_probe`：所有 worker 的 probe 执行时间的累加耗时。
     - `probe_collision`：probe 过程中产生的冲突次数。
 - `spill`：spill 过程中的执行信息。
-    - `round`：spill 轮数。
-    - `spilled_partition_num_per_round`：每一轮中有被 spill 的 partition 数量。x/y 中，x 表示被 spill 的 partition 数量，y 表示 partition 总数量。
-    - `total_spill_GiB_per_round`：每一轮 spill 中写入磁盘的数据量。
-    - `build_spill_row_table_GiB_per_round`：每一轮 spill 中 build 端写入磁盘的数据量。
-    - `build_spill_hash_table_per_round`：每一轮 spill 中的 hash table 数据量。
+    - `round`：spill 的轮数。
+    - `spilled_partition_num_per_round`：每一轮中被 spill 的 partition 数量。格式为 `x/y`，其中 `x` 表示被 spill 的 partition 数量，`y` 表示 partition 总数量。
+    - `total_spill_GiB_per_round`：每一轮 spill 中写入磁盘的数据总量。
+    - `build_spill_row_table_GiB_per_round`：每一轮 spill 中 build 端写入磁盘的 row table 数据量。
+    - `build_spill_hash_table_per_round`：每一轮 spill 中 build 端写入磁盘的 hash table 数据量。
 
 ### TableFullScan (TiFlash)
 
