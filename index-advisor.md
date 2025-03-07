@@ -86,7 +86,7 @@ RECOMMEND INDEX RUN;
 
 在这个示例中，索引推荐功能识别出了适用于整个工作负载的最佳索引，而不仅仅是针对单个查询。工作负载数据来源于 TiDB 系统表 `INFORMATION_SCHEMA.STATEMENTS_SUMMARY`。
 
-该系统表可能包含数万到数十万条查询，这可能会影响索引推荐功能的性能。为解决这个问题，索引推荐功能优先考虑执行频率最高的查询，因为这些查询对整体工作负载性能的影响更大。默认情况下，索引推荐功能选择前 1,000 条查询，你可以使用 [`max_num_query`](#recommend-index-选项) 参数调整此值。
+工作负载中可能包含数万到数十万条查询，为了提高推荐索引的效率，此功能优先考虑执行频率最高的查询，因为这些查询对整体工作负载性能的影响更大。默认情况下，索引推荐功能选择前 1,000 条查询，你可以使用 [`max_num_query`](#recommend-index-选项) 参数调整此值。
 
 `RECOMMEND INDEX` 语句的结果存储在 `mysql.index_advisor_results` 表中。你可以查询此表以查看推荐的索引。以下示例为执行前两个 `RECOMMEND INDEX` 语句后此系统表的内容：
 
@@ -113,9 +113,9 @@ RECOMMEND INDEX SHOW OPTION;
 可用选项：
 
 - `timeout`：指定运行 `RECOMMEND INDEX` 命令的最长允许时间。
-- `max_num_index`：指定 `RECOMMEND INDEX` 结果中包含的最大索引数量。
+- `max_num_index`：指定 `RECOMMEND INDEX` 最多推荐的索引数量。
 - `max_index_columns`：指定结果中多列索引允许的最大列数。
-- `max_num_query`：指定从语句摘要工作负载中选择的最大查询数量。
+- `max_num_query`：指定每次索引推荐最多从工作负载中考虑的查询数据量。
 
 要检查当前的选项设置，执行 `RECOMMEND INDEX SHOW OPTION` 语句：
 
