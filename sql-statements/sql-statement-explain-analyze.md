@@ -256,9 +256,9 @@ build_hash_table:{concurrency:5, time:2.25s, fetch:1.06s, max_partition:1.06s, t
     - `max_build`：hash table builder 中耗时最长的 builder 的执行时间。
     - `total_build`：所有 hash table builder 执行时间的累加耗时。
 - `probe`：读取下游算子数据并进行 probe 的执行信息。
-    - `time`：总耗时
-    - `fetch_and_wait`：读取下游数据和等待上游接受数据的总耗时。
-    - `max_worker_time`：worker 中最长的执行时间，worker 的执行时间包括从下游读取数据的时间、进行 probe 的时间以及等待上游接受数据的时间
+    - `time`：probe 端操作的总耗时。
+    - `fetch_and_wait`：从下游读取数据并等待上游接受数据的总耗时。
+    - `max_worker_time`：worker 中最长的执行时间，包括从下游读取数据、进行 probe 端操作以及等待上游接受数据的时间。
     - `total_worker_time`：所有 worker 执行时间的累加耗时。
     - `max_probe`：worker 中最长的 probe 执行时间。
     - `total_probe`：所有 worker 的 probe 执行时间的累加耗时。
