@@ -323,6 +323,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) |  修改 | 该变量默认值由 `0` 修改为 `80%`，因为 TiDB 全局内存控制特性 GA，该调整默认开启 TiDB 实例的内存限制，并将默认的内存限制设为总内存的 80%。|
 | [`default_password_lifetime`](/system-variables.md#default_password_lifetime-从-v650-版本开始引入) | 新增 | 用于设置全局自动密码过期策略，要求用户定期修改密码。默认值为 `0`，表示禁用全局自动密码过期策略。 |
 | [`disconnect_on_expired_password`](/system-variables.md#disconnect_on_expired_password-从-v650-版本开始引入) | 新增 | 该变量是一个只读变量，用来显示 TiDB 是否会直接断开密码已过期用户的连接。 |
+| [`tidb_store_batch_size`](/system-variables.md#tidb_store_batch_size) | 新增 | 该变量默认关闭，其控制的功能尚未稳定，不建议在生产环境中修改该变量值。 |
 | [`password_history`](/system-variables.md#password_history-从-v650-版本开始引入) | 新增 | 基于密码更改次数的密码重用策略，不允许用户重复使用最近设置次数内使用过的密码。默认值为 `0`，表示禁用基于密码更改次数的密码重用策略。 |
 | [`password_reuse_interval`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) | 新增 | 基于经过时间限制的密码重用策略，不允许用户重复使用最近设置天数内使用过的密码。默认值为 `0`，表示禁用基于密码更改时间内的密码重用策略。 |
 | [`tidb_auto_build_stats_concurrency`](/system-variables.md#tidb_auto_build_stats_concurrency-从-v650-版本开始引入) | 新增 | 该变量用于设置执行统计信息自动更新的并发度，默认值为 `1`。 |
