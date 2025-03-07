@@ -386,11 +386,11 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 
 ### TiDB Sysbench 基准测试结果如何？
 
-很多用户在接触 TiDB 时都习惯做一个基准测试，或者将 TiDB 与 MySQL 进行对比测试。官方也曾进行过类似的测试，我们发现尽管不同的测试数据之间存在一定的偏差，但整体结论和方向大致一致。由于 TiDB 和 MySQL 在架构上的差异非常大，许多方面都很难找到完全对等的基准点。
+很多用户在接触 TiDB 时都习惯做一个基准测试，或者将 TiDB 与 MySQL 进行对比测试。官方也曾进行过类似的测试，发现尽管不同的测试数据之间存在一定的偏差，但整体结论和方向大致一致。由于 TiDB 和 MySQL 在架构上的差异非常大，许多方面都很难找到完全对等的基准点。
 
-因此，用户无需过于纠结于这类基准测试，可以更多关注 TiDB 在使用场景上的区别。
+因此，无需纠结于这类基准测试，可以更多关注 TiDB 在使用场景上的区别。
 
-如需了解 TiDB v8.5.0 的性能表现，可以参考 TiDB Cloud Dedicated 集群的[性能测试报告](https://docs.pingcap.com/tidbcloud/v8.5-performance-highlights)（英文版）。
+如需了解 TiDB v8.5 的性能表现，可以参考 TiDB Cloud Dedicated 集群的[性能测试报告](https://docs.pingcap.com/tidbcloud/v8.5-performance-highlights)（英文版）。
 
 ### TiDB 集群容量 QPS 与节点数之间关系如何，和 MySQL 对比如何？
 
