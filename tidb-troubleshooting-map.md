@@ -197,11 +197,9 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
 ### 4.1 TiKV panic 启动不了
 
-- 4.1.1 `sync-log = false`，机器断电之后出现 `unexpected raft log index: last_index X < applied_index Y` 错误。符合预期，需通过 `tikv-ctl` 工具恢复 Region。
+- 4.1.1 虚拟机部署 TiKV，`kill` 虚拟机或物理机断电，出现 `entries[X, Y] is unavailable from storage` 错误。符合预期，虚拟机的 fsync 不可靠，需通过 `tikv-ctl` 工具恢复 Region。
 
-- 4.1.2 虚拟机部署 TiKV，`kill` 虚拟机或物理机断电，出现 `entries[X, Y] is unavailable from storage` 错误。符合预期，虚拟机的 fsync 不可靠，需通过 `tikv-ctl` 工具恢复 Region。
-
-- 4.1.3 其他原因（非预期，[需报 bug](https://github.com/tikv/tikv/issues/new?template=bug-report.md)）。
+- 4.1.2 其他原因（非预期，[需报 bug](https://github.com/tikv/tikv/issues/new?template=bug-report.md)）。
 
 ### 4.2 TiKV OOM
 
