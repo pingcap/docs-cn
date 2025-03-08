@@ -136,7 +136,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 
 | 选项名 | 支持的数据源以及格式 | 描述 |
 |:---|:---|:---|
-| `CHARACTER_SET='<string>'` | CSV | 指定数据文件的字符集，默认为 `utf8mb4`。目前支持的字符集包括 `binary`、`utf8`、`utf8mb4`、`gb18030`、`gbk`、`latin1` 和 `ascii`。 |
+| `CHARACTER_SET='<string>'` | CSV | 指定数据文件的字符集，默认为 `utf8mb4`。目前支持的字符集包括 `binary`、`utf8`、`utf8mb4`、`gb18030`、`gbk`、`gb18030`、`latin1` 和 `ascii`。 |
 | `FIELDS_TERMINATED_BY='<string>'` | CSV | 指定字段分隔符，默认为 `,`。 |
 | `FIELDS_ENCLOSED_BY='<char>'` | CSV | 指定字段的定界符，默认为 `"`。 |
 | `FIELDS_ESCAPED_BY='<char>'` | CSV | 指定字段的转义符，默认为 `\`。 |
