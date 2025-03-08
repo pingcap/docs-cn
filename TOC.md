@@ -232,17 +232,17 @@
     - 架构设计
       - [架构概述](/br/backup-and-restore-design.md)
       - [快照备份与恢复架构](/br/br-snapshot-architecture.md)
-      - [日志备份与 PITR 架构](/br/br-log-architecture.md)
-    - 使用 BR 进行备份与恢复
+      - [PITR 架构](/br/br-log-architecture.md)
+    - 基本功能
       - [使用概述](/br/br-use-overview.md)
       - [快照备份与恢复](/br/br-snapshot-guide.md)
-      - [日志备份与 PITR](/br/br-pitr-guide.md)
+      - [恢复到任意时间点(PITR)](/br/br-pitr-guide.md)
       - [实践示例](/br/backup-and-restore-use-cases.md)
-      - [备份存储](/br/backup-and-restore-storages.md)
-    - br cli 命令手册
+      - [备份数据存储](/br/backup-and-restore-storages.md)
+    - 命令手册
       - [命令概述](/br/use-br-command-line-tool.md)
       - [快照备份与恢复命令手册](/br/br-snapshot-manual.md)
-      - [日志备份与 PITR 命令手册](/br/br-pitr-manual.md)
+      - [PITR 命令手册](/br/br-pitr-manual.md)
     - 参考指南
       - BR 特性
         - [自动调节](/br/br-auto-tune.md)
