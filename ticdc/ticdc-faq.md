@@ -290,13 +290,7 @@ etcd 采用多版本并发控制（MVCC）机制存储数据，且 PD 默认的 
 
 在 v6.0.0 之前，TiCDC 使用 PD 内部的 etcd 来存储和更新 changefeed 内部所有表的元数据。因此，TiCDC 占用的 PD 存储空间与 changefeed 所同步的表的数量成正比。当同步表数量较多时，etcd 的存储空间会被更快耗尽，更易出现 `etcdserver: mvcc: database space exceeded` 错误。
 
-**TiCDC 在特定版本的问题​**
-
-在 v4.0.5、v4.0.6、v4.0.7 这三个版本中，TiCDC 存在元数据写入频繁的问题。若 1 小时内有 1000 张表创建或调度，产生的大量元数据版本会快速占用 etcd 的存储空间，从而引发上述错误。
-
-**解决方法**
-
-出现这种错误后需要清理 etcd 存储空间，参考 [etcd maintenance space-quota](https://etcd.io/docs/v3.4.0/op-guide/maintenance/#space-quota)。
+出现这种错误后，需要参考 [etcd maintenance space-quota](https://etcd.io/docs/v3.4.0/op-guide/maintenance/#space-quota) 清理 etcd 存储空间。
 
 从 v6.0.0 起，TiCDC 对元数据存储机制进行了优化，可有效避免因上述原因导致的 etcd 存储空间问题。如果你的 TiCDC 版本低于 v6.0.0，建议升级到 v6.0.0 或以后版本。
 
