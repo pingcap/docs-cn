@@ -69,7 +69,8 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
     ```shell
     ssh-keygen
     ```
-5. 将公钥复制到其他部署机器，完成 SSH 互信。
+
+5. 将公钥复制到集群中的其它机器，完成 SSH 互信。
 
     - 如果你已为 `tidb` 用户设置了密码，可以使用 `ssh-copy-id` 命令将公钥复制到目标机器。
 
@@ -77,7 +78,7 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
         ssh-copy-id tidb@host
         ```
 
-        将 `host` 替换为目标机器的主机名，并在集群中的每台机器上运行 `ssh-copy-id` 命令。
+        将 `host` 替换为目标机器的主机名，并在集群中的其它每台机器上运行 `ssh-copy-id` 命令。
 
     - 如果你使用其他方法复制公钥，复制完成后请检查 `/home/tidb/.ssh/authorized_keys` 文件的权限。
 
@@ -115,7 +116,7 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
 
 > **注意：**
 >
-> 如果使用最小化安装，请确保已安装 `tar` 包。否则，`tiup cluster check` 命令将会失败。
+> 如果使用最小化安装，请确保已安装 `tar` 包。否则，`tiup cluster check` 命令将会执行失败。
 
 执行 `tiup cluster check topology.yaml --user tidb` 会产生失败的检查项。示例如下：
 
@@ -136,9 +137,9 @@ Node            Check         Result  Message
 192.168.124.27  service       Fail    service firewalld is running but should be stopped
 ```
 
-由于在 no-sudo 模式下，`tidb` 用户没有 sudo 权限，执行 `tiup cluster check topology.yaml --apply --user tidb` 会导致无法自动修复失败的检查项。你需要使用 `root` 用户在部署机器上手动修复。
+由于在 no-sudo 模式下，`tidb` 用户没有 sudo 权限，执行 `tiup cluster check topology.yaml --apply --user tidb` 会导致无法自动修复失败的检查项。你需要使用 `root` 用户在目标部署机器上手动修复。
 
-有关更多信息，请参阅 [TiDB 环境与系统配置检查](/check-before-deployment.md)。请注意，你需要跳过文档中的[手动配置 SSH 互信及 sudo 免密码](/check-before-deployment.md#手动配置-ssh-互信及-sudo-免密码)步骤。
+更多信息，请参阅 [TiDB 环境与系统配置检查](/check-before-deployment.md)。请注意，你需要跳过文档中的[手动配置 SSH 互信及 sudo 免密码](/check-before-deployment.md#手动配置-ssh-互信及-sudo-免密码)步骤。
 
 ## 部署和管理集群
 
