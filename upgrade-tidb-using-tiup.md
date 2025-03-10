@@ -29,10 +29,10 @@ summary: TiUP 可用于将 TiDB 4.0 版本及更高版本升级至 TiDB 8.0。�
 ## 1. 升级兼容性说明
 
 - TiDB 目前暂不支持版本降级或升级后回退。
-- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 v7.5.6 版本。
+- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs-archive.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 v7.5.6 版本。
 - 若要将 v3.0 之前的版本升级至 v7.5.6 版本：
-    1. 首先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)。
-    2. 然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入。
+    1. 首先[通过 TiDB Ansible 升级到 3.0 版本](https://docs-archive.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)。
+    2. 然后按照 [4.0 版本文档的说明](https://docs-archive.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入。
     3. 将集群升级至 v4.0 版本。
     4. 按本文档说明将集群升级到 v7.5.6 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
