@@ -28,16 +28,14 @@ summary: 介绍如何升级 TiDB 集群监控组件 Prometheus、Grafana 和 Ale
 
 ### 第 2 步：下载 TiDB 官方 Prometheus 安装包
 
-1. 在 [TiDB 官网下载页面](https://cn.pingcap.com/product/#SelectProduct)下载 `TiDB-community-server` 软件包，并解压。
+1. 在 [TiDB 官网下载页面](https://cn.pingcap.com/product-community/)下载 `TiDB-community-server` 软件包，并解压。
 2. 在解压文件中，找到 `prometheus-v{version}-linux-{arch}.tar.gz`，并解压。
 
     ```bash
     tar -xzf prometheus-v{version}-linux-{arch}.tar.gz
     ```
 
-    > **说明：**
-    >
-    > 链接中的 `{version}` 表示 TiDB 的版本号，`{arch}` 表示系统的架构，可以是 `amd64` 或 `arm64`。例如，`amd64` 架构下 v7.5.6 的下载链接为 https://download.pingcap.org/tidb-community-toolkit-v7.5.6-linux-amd64.tar.gz。
+    `{version}` 表示 TiDB 的版本号，`{arch}` 表示系统的架构，可以是 `amd64` 或 `arm64`（取决于你下载 `TiDB-community-server` 软件包时选择的架构）。例如，`amd64` 架构下 v7.5.6 的 Prometheus 安装包名为 `prometheus-v7.5.6-linux-amd64.tar.gz`。
 
 ### 第 3 步：构造新的适用于 TiUP 的 Prometheus 组件包
 
@@ -72,16 +70,14 @@ tiup cluster patch <cluster-name> prometheus-v{new-version}.tar.gz -R prometheus
 
 ### 第 2 步：下载 TiDB 官方 Grafana 安装包
 
-1. 在 [TiDB 官网下载页面](https://cn.pingcap.com/product/#SelectProduct)下载 `TiDB-community-server` 软件包，并解压。
+1. 在 [TiDB 官网下载页面](https://cn.pingcap.com/product-community/)下载 `TiDB-community-server` 软件包，并解压。
 2. 在解压文件中，找到 `grafana-v{version}-linux-{arch}.tar.gz`，并解压。
 
     ```bash
     tar -xzf grafana-v{version}-linux-{arch}.tar.gz
     ```
     
-    > **说明：**
-    >
-    > 链接中的 `{version}` 表示 TiDB 的版本号，`{arch}` 表示系统的架构，可以是 `amd64` 或 `arm64`。例如，`amd64` 架构下 v7.5.6 的下载链接为 https://download.pingcap.org/tidb-community-toolkit-v7.5.6-linux-amd64.tar.gz。
+    `{version}` 表示 TiDB 的版本号，`{arch}` 表示系统的架构，可以是 `amd64` 或 `arm64`（取决于你下载 `TiDB-community-server` 软件包时选择的架构）。例如，`amd64` 架构下 v7.5.6 的 Grafana 安装包名为 `grafana-v7.5.6-linux-amd64.tar.gz`。
 
 ### 第 3 步：构造新的适用于 TiUP 的 Grafana 组件包
 
