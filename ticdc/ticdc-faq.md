@@ -291,9 +291,7 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 
 etcd 采用多版本并发控制（MVCC）机制存储数据，且 PD 默认的 compaction 间隔为 1 小时。这意味着在 1 小时内，etcd 会保留所有数据的多个版本，直至进行压缩操作。
 
-**v6.0.0 之前版本的问题**
-
-在 v6.0.0 之前，TiCDC 会使用 PD 内部的 etcd 来存储和更新 changefeed 内部所有表的元数据。因此，TiCDC 占用的 PD 存储空间与 changefeed 所同步的表的数量成正比。当同步表数量较多时，etcd 的存储空间会被更快耗尽，更易出现 `etcdserver: mvcc: database space exceeded` 错误。
+在 v6.0.0 之前，TiCDC 使用 PD 内部的 etcd 来存储和更新 changefeed 内部所有表的元数据。因此，TiCDC 占用的 PD 存储空间与 changefeed 所同步的表的数量成正比。当同步表数量较多时，etcd 的存储空间会被更快耗尽，更易出现 `etcdserver: mvcc: database space exceeded` 错误。
 
 **TiCDC 在特定版本的问题​**
 
