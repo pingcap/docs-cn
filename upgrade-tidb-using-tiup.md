@@ -48,7 +48,7 @@ summary: TiUP 可用于将 TiDB 4.0 版本及更高版本升级至 TiDB 8.0。�
 
 查阅 TiDB release notes 中的兼容性变更。如果有任何变更影响到了你的升级，请采取相应的措施。
 
-以下为从 v7.5.0 升级至当前版本 (v7.5.5) 所需兼容性变更信息。如果从 v7.4.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 [release notes](/releases/release-notes.md) 中提到的兼容性变更信息。
+以下为从 v7.5.0 升级至当前版本 (v7.5.6) 所需兼容性变更信息。如果从 v7.4.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 [release notes](/releases/release-notes.md) 中提到的兼容性变更信息。
 
 - TiDB v7.5.0 release notes 中的[兼容性变更](/releases/release-7.5.0.md#兼容性变更)
 - TiDB v7.5.1 release notes 中的[兼容性变更](/releases/release-7.5.1.md#兼容性变更)
