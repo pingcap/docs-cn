@@ -33,7 +33,6 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - 目前单个 `IMPORT INTO` 任务支持导入 10 TiB 以内的数据。启用[全局排序](/tidb-global-sort.md)后，单个 `IMPORT INTO` 任务支持导入 40 TiB 以内的数据。
 - 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
 - 每个集群上最多同时有 16 个 `IMPORT INTO` 任务（参考 [TiDB 分布式执行框架使用限制](/tidb-distributed-execution-framework.md#使用限制)）在运行，当集群没有足够资源或者达到任务数量上限时，新提交的导入任务会排队等待执行。
-- 当使用[全局排序](/tidb-global-sort.md)导入数据时，`THREAD` 选项值需要大于或等于 `8`。
 - 当使用[全局排序](/tidb-global-sort.md)导入数据时，单行数据的总长度不能超过 32 MiB。
 - 未开启 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)时创建的所有 `IMPORT INTO` 任务会直接在提交任务的节点上运行，后续即使开启了分布式执行框架，这些任务也不会被调度到其它 TiDB 节点上执行。开启分布式执行框架后，新创建的 `IMPORT INTO` 任务如果导入的是 S3 或 GCS 中的数据，则会自动调度或者 failover 到其它 TiDB 节点执行。
 
