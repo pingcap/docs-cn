@@ -287,7 +287,7 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 
 ## TiCDC 占用多少 PD 的存储空间？
 
-在使用 TiCDC 的过程中，可能会遇到 `etcdserver: mvcc: database space exceeded` 错误，这主要与 TiCDC 使用 PD 内部的 etcd 来存储元数据的机制相关。
+在使用 TiCDC 的过程中，你可能会遇到 `etcdserver: mvcc: database space exceeded` 错误，该错误主要与 TiCDC 使用 PD 内部的 etcd 来存储元数据的机制相关。
 
 etcd 采用多版本并发控制（MVCC）机制存储数据，且 PD 默认的 compaction 间隔为 1 小时。这意味着在 1 小时内，etcd 会保留所有数据的多个版本，直至进行压缩操作。
 
