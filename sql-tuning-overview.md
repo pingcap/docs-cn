@@ -15,3 +15,4 @@ SQL 性能优化的过程，可以理解为 GPS 导航的过程。你提供地�
 - [理解 TiDB 执行计划](/explain-overview.md)介绍如何使用 `EXPLAIN` 语句来理解 TiDB 是如何执行某个查询的。
 - [SQL 优化流程概览](/sql-optimization-concepts.md)介绍 TiDB 可以使用的几种优化，以提高查询性能。
 - [控制执行计划](/control-execution-plan.md)介绍如何控制执行计划的生成。TiDB 的执行计划非最优时，建议控制执行计划。
+- [索引推荐 (Index Advisor)](/index-advisor.md) 介绍如何让 TiDB 根据你的工作负载自动推荐索引。
