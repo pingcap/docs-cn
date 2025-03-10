@@ -259,7 +259,7 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 
 从 v9.0.0 开始，TiCDC 新增安全机制，防止用户误将同一个 TiDB 集群同时作为上游和下游进行数据同步，避免由此引发的循环复制及数据异常问题。
 
-在执行创建、更新或恢复数据同步任务时，TiCDC 会自动检查上下游 TiDB 集群的 `cluster_id` 是否相同。一旦发现上下游集群 `cluster_id` 相同，TiCDC 会拒绝执行该任务。`cluster_id` 是 TiDB 集群的唯一标识 （从 v9.0.0 开始引入），可通过执行以下 SQL 语句查看：
+在执行创建、更新或恢复数据同步任务时，TiCDC 会自动检查上下游 TiDB 集群的 `cluster_id` 是否相同。一旦发现上下游集群 `cluster_id` 相同，TiCDC 会拒绝执行该任务。`cluster_id` 是 TiDB 集群的唯一标识（从 v9.0.0 开始引入），可通过执行以下 SQL 语句查看：
 
 ```sql
 SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME = 'cluster_id';
