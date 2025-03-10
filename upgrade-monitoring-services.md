@@ -28,20 +28,22 @@ summary: 介绍如何升级 TiDB 集群监控组件 Prometheus、Grafana 和 Ale
 
 ### 第 2 步：下载 TiDB 官方 Prometheus 安装包
 
-1. 在 [TiDB 官网下载页面](https://cn.pingcap.com/product/#SelectProduct)下载 `TiDB-community-server` 软件包，并解压。
-2. 在解压文件中，找到 `prometheus-v{version}-linux-amd64.tar.gz`，并解压。
+1. 在 [TiDB 官网下载页面](https://cn.pingcap.com/product-community/)下载 `TiDB-community-server` 软件包，并解压。
+2. 在解压文件中，找到 `prometheus-v{version}-linux-{arch}.tar.gz`，并解压。
 
     ```bash
-    tar -xzf prometheus-v{version}-linux-amd64.tar.gz
+    tar -xzf prometheus-v{version}-linux-{arch}.tar.gz
     ```
+
+    `{version}` 表示 TiDB 的版本号，`{arch}` 表示系统的架构，可以是 `amd64` 或 `arm64`（取决于你下载 `TiDB-community-server` 软件包时选择的架构）。例如，`amd64` 架构下 v7.5.6 的 Prometheus 安装包名为 `prometheus-v7.5.6-linux-amd64.tar.gz`。
 
 ### 第 3 步：构造新的适用于 TiUP 的 Prometheus 组件包
 
-1. 复制第 1 步中解压的文件，替换第 2 步解压后的 `./prometheus-v{version}-linux-amd64/prometheus` 目录下的对应文件。
-2. 重新压缩替换文件后的 `./prometheus-v{version}-linux-amd64` 目录，并将新的压缩包命名为 `prometheus-v{new-version}.tar.gz`。其中，`{new-version}` 可以由你自行指定。
+1. 复制第 1 步中解压的文件，替换第 2 步解压后的 `./prometheus-v{version}-linux-{arch}/prometheus` 目录下的对应文件。
+2. 重新压缩替换文件后的 `./prometheus-v{version}-linux-{arch}` 目录，并将新的压缩包命名为 `prometheus-v{new-version}.tar.gz`。其中，`{new-version}` 可以由你自行指定。
 
     ```bash
-    cd prometheus-v{version}-linux-amd64
+    cd prometheus-v{version}-linux-{arch}
     tar -zcvf ../prometheus-v{new-version}.tar.gz ./
     ```
 
@@ -68,20 +70,22 @@ tiup cluster patch <cluster-name> prometheus-v{new-version}.tar.gz -R prometheus
 
 ### 第 2 步：下载 TiDB 官方 Grafana 安装包
 
-1. 在 [TiDB 官网下载页面](https://cn.pingcap.com/product/#SelectProduct)下载 `TiDB-community-server` 软件包，并解压。
-2. 在解压文件中，找到 `grafana-v{version}-linux-amd64.tar.gz`，并解压。
+1. 在 [TiDB 官网下载页面](https://cn.pingcap.com/product-community/)下载 `TiDB-community-server` 软件包，并解压。
+2. 在解压文件中，找到 `grafana-v{version}-linux-{arch}.tar.gz`，并解压。
 
     ```bash
-    tar -xzf grafana-v{version}-linux-amd64.tar.gz
+    tar -xzf grafana-v{version}-linux-{arch}.tar.gz
     ```
+    
+    `{version}` 表示 TiDB 的版本号，`{arch}` 表示系统的架构，可以是 `amd64` 或 `arm64`（取决于你下载 `TiDB-community-server` 软件包时选择的架构）。例如，`amd64` 架构下 v7.5.6 的 Grafana 安装包名为 `grafana-v7.5.6-linux-amd64.tar.gz`。
 
 ### 第 3 步：构造新的适用于 TiUP 的 Grafana 组件包
 
-1. 复制第 1 步中解压的文件，替换第 2 步解压后的 `./grafana-v{version}-linux-amd64/` 目录下的对应文件。
-2. 重新压缩替换文件后的 `./grafana-v{version}-linux-amd64` 目录，并将新的压缩包命名为 `grafana-v{new-version}.tar.gz`。其中，`{new-version}` 可以由你自行指定。
+1. 复制第 1 步中解压的文件，替换第 2 步解压后的 `./grafana-v{version}-linux-{arch}/` 目录下的对应文件。
+2. 重新压缩替换文件后的 `./grafana-v{version}-linux-{arch}` 目录，并将新的压缩包命名为 `grafana-v{new-version}.tar.gz`。其中，`{new-version}` 可以由你自行指定。
 
     ```bash
-    cd grafana-v{version}-linux-amd64
+    cd grafana-v{version}-linux-{arch}
     tar -zcvf ../grafana-v{new-version}.tar.gz ./
     ```
 
@@ -108,7 +112,7 @@ TiDB 安装包中直接使用了 Alertmanager 官方组件包，因此升级 Ale
 执行以下命令升级 Alertmanager：
 
 ```bash
-tiup cluster patch <cluster-name> alertmanager-v{new-version}-linux-amd64.tar.gz -R alertmanager --overwrite
+tiup cluster patch <cluster-name> alertmanager-v{new-version}-linux-{arch}.tar.gz -R alertmanager --overwrite
 ```
 
 升级完成后，可以打开 Alertmanager 主页（地址通常是 `http://<Alertmanager-server-host-name>:9093`），点击顶部导航菜单中的 **Status**，然后查看 Alertmanager 的版本信息，确认升级成功。

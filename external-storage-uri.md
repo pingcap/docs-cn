@@ -39,7 +39,7 @@ s3://external/testfolder?access-key=${access-key}&secret-access-key=${secret-acc
 以下是用于 TiCDC `sink-uri` 的 Amazon S3 URI 示例：
 
 ```shell
-tiup cdc:v7.5.5 cli changefeed create \
+tiup cdc:v7.5.6 cli changefeed create \
     --server=http://172.16.201.18:8300 \
     --sink-uri="s3://cdc?endpoint=http://10.240.0.38:9000&access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --changefeed-id="cdcTest" \
