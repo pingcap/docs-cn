@@ -301,8 +301,7 @@ etcd 采用多版本并发控制（MVCC）机制存储数据，且 PD 默认的 
 
 出现这种错误后需要清理 etcd 存储空间，参考 [etcd maintenance space-quota](https://etcd.io/docs/v3.4.0/op-guide/maintenance/#space-quota)。
 
-**v6.0.0 及以后版本的优化**
-如果您的 TiCDC 版本小于 v6.0.0，建议升级到 v6.0.0 及以后版本。新版本对元数据存储机制进行了优化，可有效避免因上述原因导致的 etcd 存储空间问题。
+从 v6.0.0 起，TiCDC 对元数据存储机制进行了优化，可有效避免因上述原因导致的 etcd 存储空间问题。如果你的 TiCDC 版本低于 v6.0.0，建议升级到 v6.0.0 或以后版本。
 
 ## TiCDC 支持同步大事务吗？有什么风险吗？
 
