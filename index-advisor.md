@@ -5,7 +5,7 @@ summary: 了解如何使用 TiDB 索引推荐 (Index Advisor) 功能优化查询
 
 # 索引推荐 (Index Advisor)
 
-从 v8.5.0 开始，TiDB 引入索引推荐 (Index Advisor) 功能，通过推荐能提高查询性能的索引来帮助优化工作负载。你可以使用 `RECOMMEND INDEX` SQL 语句为单个查询或整个工作负载生成索引建议。为了避免物理创建索引大量消耗资源，TiDB 支持[虚拟索引 (Hypothetical indexes)](#虚拟索引-hypothetical-indexes)，让被评估的索引仅存在于逻辑层面而不会被实际物化。
+从 v8.5.0 开始，TiDB 引入索引推荐 (Index Advisor) 功能，通过推荐能提高查询性能的索引来帮助优化工作负载。你可以使用 `RECOMMEND INDEX` SQL 语句为单个查询或整个工作负载生成索引建议。为了避免实际创建索引所消耗的大量资源，TiDB 支持[虚拟索引 (Hypothetical indexes)](#虚拟索引-hypothetical-indexes)，让被评估的索引仅存在于逻辑层面而不会被实际物化。
 
 索引推荐功能通过分析查询语句，从 `WHERE`、`GROUP BY` 和 `ORDER BY` 等子句中识别可索引的列。然后，它会生成索引候选项并使用虚拟索引估算其性能收益。TiDB 采用遗传搜索算法，从单列索引开始逐步探索多列索引组合，利用假设分析评估潜在索引对优化器计划成本的影响。当索引能够降低总体查询成本时，索引推荐功能会推荐这些索引。
 
@@ -16,7 +16,7 @@ summary: 了解如何使用 TiDB 索引推荐 (Index Advisor) 功能优化查询
 TiDB 提供 `RECOMMEND INDEX` SQL 语句用于索引推荐任务。使用 `RUN` 子命令，可以分析历史工作负载并将推荐结果保存到系统表中。使用 `FOR` 选项，可以为特定 SQL 语句生成索引建议，即使该语句未执行过。你还可以使用[其他选项](#recommend-index-选项)进行高级控制。语法如下：
 
 ```sql
-RECOMMEND INDEX RUN [ FOR <SQL> ] [<Options>] 
+RECOMMEND INDEX RUN [ FOR <SQL> ] [<Options>]
 ```
 
 ### 为单个查询推荐索引
@@ -110,7 +110,7 @@ RECOMMEND INDEX SET <option> = <value>;
 RECOMMEND INDEX SHOW OPTION;
 ```
 
-可用选项：
+以下是可用的选项：
 
 - `timeout`：指定运行 `RECOMMEND INDEX` 命令的最长允许时间。
 - `max_num_index`：指定 `RECOMMEND INDEX` 最多推荐的索引数量。
