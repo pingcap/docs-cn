@@ -370,8 +370,8 @@ SQL 的基础信息：
 - `SUM_UNPACKED_BYTES_RECEIVED_TIKV_CROSS_ZONE`：SQL 语句从跨可用区 TiKV 接收的字节数
 - `SUM_UNPACKED_BYTES_SENT_TIFLASH_TOTAL`：SQL 语句向 TiFlash 发送的总字节数（包含 TiFlash 节点之间发送的字节数）
 - `SUM_UNPACKED_BYTES_RECEIVED_TIFLASH_TOTAL`：SQL 语句从 TiFlash 接收的总字节数（包含 TiFlash 节点之间接收的字节数）
-- `SUM_UNPACKED_BYTES_SENT_TIFLASH_CROSS_ZONE`：SQL 语句向跨可用区 TiFlash 发送的字节数（包含 TiFlash 节点之间发送的跨可用区字节数）
-- `SUM_UNPACKED_BYTES_RECEIVED_TIFLASH_CROSS_ZONE`：SQL 语句从跨可用区 TiFlash 接收的字节数（包含 TiFlash 节点之间接收的跨可用区字节数）
+- `SUM_UNPACKED_BYTES_SENT_TIFLASH_CROSS_ZONE`：SQL 语句向跨可用区 TiFlash 发送的字节数（包含 TiFlash 节点之间跨可用区发送的字节数）
+- `SUM_UNPACKED_BYTES_RECEIVED_TIFLASH_CROSS_ZONE`：SQL 语句从跨可用区 TiFlash 接收的字节数（包含 TiFlash 节点之间跨可用区接收的字节数）
 
 ### `statements_summary_evicted` 字段介绍
 
