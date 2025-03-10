@@ -37,7 +37,7 @@ summary: 介绍如何升级 TiDB 集群监控组件 Prometheus、Grafana 和 Ale
 
     > **说明：**
     >
-    > 链接中的 `{version`} 表示 TiDB 的版本号，`{arch}` 表示系统的架构，可以是 `amd64` 或 `arm64`。例如，`amd64` 架构下 v7.5.6 的下载链接为 https://download.pingcap.org/tidb-community-toolkit-v7.5.6-linux-amd64.tar.gz。
+    > 链接中的 `{version}` 表示 TiDB 的版本号，`{arch}` 表示系统的架构，可以是 `amd64` 或 `arm64`。例如，`amd64` 架构下 v7.5.6 的下载链接为 https://download.pingcap.org/tidb-community-toolkit-v7.5.6-linux-amd64.tar.gz。
 
 ### 第 3 步：构造新的适用于 TiUP 的 Prometheus 组件包
 
@@ -81,7 +81,7 @@ tiup cluster patch <cluster-name> prometheus-v{new-version}.tar.gz -R prometheus
     
     > **说明：**
     >
-    > 链接中的 `{version`} 表示 TiDB 的版本号，`{arch}` 表示系统的架构，可以是 `amd64` 或 `arm64`。例如，`amd64` 架构下 v7.5.6 的下载链接为 https://download.pingcap.org/tidb-community-toolkit-v7.5.6-linux-amd64.tar.gz。
+    > 链接中的 `{version}` 表示 TiDB 的版本号，`{arch}` 表示系统的架构，可以是 `amd64` 或 `arm64`。例如，`amd64` 架构下 v7.5.6 的下载链接为 https://download.pingcap.org/tidb-community-toolkit-v7.5.6-linux-amd64.tar.gz。
 
 ### 第 3 步：构造新的适用于 TiUP 的 Grafana 组件包
 
