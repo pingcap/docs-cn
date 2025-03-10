@@ -255,6 +255,39 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 - `resolved-ts` 代表当前 Processor 中已经排序数据的最大 TSO。
 - `checkpoint-ts` 代表当前 Processor 已经成功写入下游的事务的最大 TSO。
 
+## 安全机制
+
+从 v9.0.0 开始，TiCDC 新增安全机制，防止用户误将同一个 TiDB 集群同时作为上游和下游进行数据同步，避免由此引发的循环复制及数据异常问题。
+
+在执行创建、更新或恢复数据同步任务时，TiCDC 会自动检查上下游 TiDB 集群的 `cluster_id` 是否相同。一旦发现上下游集群 `cluster_id` 相同，TiCDC 会拒绝执行该任务。`cluster_id` 是 TiDB 集群的唯一标识（从 v9.0.0 开始引入），可通过执行以下 SQL 语句查看：
+
+```sql
+SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME = 'cluster_id';
+```
+
+### 兼容性
+
+- 如果下游不是 TiDB 集群（例如 MySQL、Kafka 等），TiCDC 会跳过此检查，以确保兼容性。
+- 对于 v9.0.0 之前版本的 TiDB，系统无法获取 `cluster_id`，TiCDC 仍然允许用户创建数据同步任务，以避免影响现有功能。在这种情况下，由于缺少 `cluster_id`，你需要自行核实配置，确保没有配置错误，从而避免可能的异常情况。
+
+### 检查报错的示例
+
+在执行创建、更新或恢复数据同步任务时，如果 TiCDC 检测到上下游 TiDB 集群的 `cluster_id` 相同，会进行报错。以下是一个典型的示例：
+
+若使用 CLI 命令创建数据同步任务时，上下游为同一个集群：
+
+```
+cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:@127.0.0.1:8300/" --changefeed-id="create-cmd"
+```
+
+则会出现报错信息：
+
+```
+Error: [CDC:ErrSameUpstreamDownstream]TiCDC does not support creating a changefeed with the same TiDB cluster as both the source and the target for the changefeed.
+```
+
+此错误信息包含错误码 `CDC:ErrSameUpstreamDownstream`，表示 TiCDC 检测到上下游属于同一集群。如果遇到此类报错，请检查当前同步任务的 `sink-uri` 参数是否配置正确。
+
 ## 同步启用了 TiDB 新的 Collation 框架的表
 
 从 v4.0.15、v5.0.4、v5.1.1 和 v5.2.0 开始，TiCDC 支持同步启用了 TiDB [新的 Collation 框架](/character-set-and-collation.md#新框架下的排序规则支持)的表。
