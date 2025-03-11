@@ -12,18 +12,18 @@ summary: 了解如何通过压缩日志备份为 SST 格式来提升按时间点
 传统日志备份以一种高度非结构化的方式存储写入操作，可能导致以下问题：
 
 - 恢复性能下降：无序数据需通过 Raft 协议逐条写入集群。
-- 写放大效应：重复写入操作增加存储压力。
+- 写放大：所有写入必须从 LSM Tree 的 L0 开始被逐级别 compact 到底层。
 - 全量备份依赖：需频繁执行全量备份以控制恢复数据量，对业务有一定影响。
 
-从 v9.0.0 开始，压缩日志备份功能提供了离线重组能力，可将日志备份的非结构化数据转换为结构化的 SST 文件，从而实现以下改进：
+从 v9.0.0 开始，压缩日志备份功能提供了离线压缩能力，可将日志备份的非结构化数据转换为结构化的 SST 文件，从而实现以下改进：
 
-- 提升恢复性能：结构化数据支持高效批量写入。
-- 优化存储空间：减少冗余数据存储。
-- 延长全量备份间隔：降低对业务的影响。
+- SST 可以被快速导入集群，从而提升恢复性能。
+- 压缩过程中消除重复记录，从而减少空间消耗。
+- 在确保 RTO 的前提下允许用户设置更长的全量备份间隔，从而降低对业务的影响。
 
 ## 使用限制
 
-- 压缩日志备份并不是全量备份的替代方案，需与定期全量备份配合使用。为了保证能进行 PITR，日志备份的压缩过程会保留 MVCC 数据，长期不进行全量备份将导致存储膨胀和恢复问题。
+- 压缩日志备份并不是全量备份的替代方案，需与定期全量备份配合使用。为了保证能进行 PITR，日志备份的压缩过程会保留所有 MVCC 版本，长期不进行全量备份将导致存储膨胀并且可能在未来恢复时遇到问题。
 - 目前不支持压缩启用了 Local Encryption 的备份。
 
 ## 使用方法
@@ -55,7 +55,7 @@ br operator base64ify --storage "s3://your/log/backup/storage/here" --load-creds
 
 ```text
 Credientials are encoded to the base64 string. DON'T share this with untrusted people!
-Gl8KEWh0dHA6Ly9taW5pbzo5MDAwEgl1cy1lYXN0LTEaBWFzdHJvIh50cGNjLTEwMDAtaW5jci13aXRoLWJvdW5kYXJpZXNCCm1pbmlvYWRtaW5KCm1pbmlvYWRtaW5QAQ==
+sOmEBaSE64TeXts==
 ```
 
 #### 第 2 步：执行日志压缩
