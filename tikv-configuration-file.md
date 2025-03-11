@@ -221,8 +221,8 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### end-point-memory-quota <span class="version-mark">从 v8.2.0 版本开始引入</span>
 
-* TiKV Coproccessor 请求可以使用的内存上限，超过该值后后续的 Coprocessor 请求将被拒绝并报错（server is busy）。
-* 默认值：系统总内存大小的 45%（如果超过 500MB，则默认值为 500MB）。
+* TiKV Coprocessor 请求可以使用的内存上限，超过该值后后续的 Coprocessor 请求将被拒绝并报错（server is busy）。
+* 默认值：系统总内存大小的 45%（如果超过 500MiB，则默认值为 500MiB）。
 
 ### `snap-io-max-bytes-per-sec`
 
@@ -2085,7 +2085,7 @@ Raft Engine 相关的配置项。
 
 ### `compression-level` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
-+ 设置 raft-engine 在写 raft log 文件时所采用的 lz4 压缩算法的压缩效率，范围 [1, 16]，越低压缩速率越高，但压缩率越低。
++ 设置 raft-engine 在写 raft log 文件时所采用的 lz4 压缩算法的压缩效率，范围 [1, 16]，值越低表示压缩速率越高，但压缩率越低。
 
 + 默认值：1
 
