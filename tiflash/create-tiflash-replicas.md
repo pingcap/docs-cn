@@ -55,7 +55,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0;
 
 > **注意：**
 >
-> 目前，使用 TiCDC 同步表到下游 TiDB 集群时，不支持为表创建 TiFlash 副本。
+> TiCDC 不会同步添加或移除 TiFlash 副本的 DDL，即 `ALTER TABLE table_name SET TIFLASH REPLICA count`。
 
 ### 查看表同步进度
 
