@@ -438,3 +438,49 @@ TiDB 有事务超时的机制，当事务运行超过 [`max-txn-ttl`](/tidb-conf
 > **注意：**
 >
 > 当同步存储生成列到 Kafka 或存储服务后，再将其写回 MySQL 时，可能会遇到 `Error 3105 (HY000): The value specified for generated column 'xx' in table 'xxx' is not allowed` 错误。为避免该错误，你可以使用 [Open Protocol](/ticdc/ticdc-open-protocol.md) 进行同步。该协议的输出包含[列的 flag 值](/ticdc/ticdc-open-protocol.md#列标志位)，可以区分是否为生成列。
+
+## 当频繁出现 `ErrMySQLDuplicateEntry` 错误时，如何解决？
+
+在使用 TiCDC 将数据复制到 TiDB 或 MySQL 时，如果以上游特定模式执行 SQL ，可能会遇到如下错误：
+
+`CDC:ErrMySQLDuplicateEntryCDC`
+
+具体来说，TiDB 会将同一事务内对同一行的 `DELETE + INSERT` 操作提交为一个 `UPDATE` 行变更。当 TiCDC 向下游以 UPDATE 的形式进行同步时，尝试交换唯一键值的 UPDATE 操作会出现冲突。
+
+考虑以下表：
+
+```sql
+CREATE TABLE data_table (
+    id BIGINT(20) NOT NULL PRIMARY KEY,
+    value BINARY(16) NOT NULL,
+    UNIQUE KEY value_index (value)
+) CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+```
+
+如果上游事务尝试交换两行的 `value` 字段：
+
+```sql
+DELETE FROM data_table WHERE id = 1;
+DELETE FROM data_table WHERE id = 2;
+INSERT INTO data_table (id, value) VALUES (1, 'v3');
+INSERT INTO data_table (id, value) VALUES (2, 'v1');
+```
+
+TiDB 在内部实际上会产生两条 UPDATE 行变更，这些行变更被 TiCDC 捕捉到之后，会被翻译成两条 UPDATE 语句向下游同步：
+
+```sql
+UPDATE data_table SET value = 'v3' WHERE id = 1;
+UPDATE data_table SET value = 'v1' WHERE id = 2;
+```
+
+如果在执行第二个更新时，表中仍然存在`v1`，会破坏唯一键约束，从而导致 `ErrMySQLDuplicateEntry` 错误。
+
+为防止此问题，可以通过在 `sink-uri` 配置中设置 `safe-mode=true` 参数，在TiCDC中启用安全模式。这样，TiCDC 就会把 UPDATE 操作拆分为 `DELETE + INSERT` 进行执行，这样就能避免错误。
+
+按如下方式修改TiCDC的 sink URI：
+
+```
+mysql://user:password@host:port/?safe-mode=true
+```
+
+如果你频繁遇到上述错误，那么可以考虑启用 safe-mode 以解决问题。
