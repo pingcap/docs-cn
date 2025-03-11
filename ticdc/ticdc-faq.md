@@ -465,7 +465,7 @@ CREATE TABLE data_table (
 ) CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 ```
 
-如果上游事务尝试交换两行的 `value` 字段：
+如果上游事务尝试交换该表中两行的 `value` 字段：
 
 ```sql
 DELETE FROM data_table WHERE id = 1;
