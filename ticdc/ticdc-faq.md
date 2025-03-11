@@ -466,7 +466,7 @@ INSERT INTO data_table (id, value) VALUES (1, 'v3');
 INSERT INTO data_table (id, value) VALUES (2, 'v1');
 ```
 
-TiDB 内部实际上会产生两条 UPDATE 行变更，这些行变更被 TiCDC 捕捉到之后，会被翻译成两条 UPDATE 语句向下游同步：
+TiDB 内部将会产生两条 `UPDATE` 行变更，因此 TiCDC 会将其转化成两条 `UPDATE` 语句同步到下游：
 
 ```sql
 UPDATE data_table SET value = 'v3' WHERE id = 1;
