@@ -449,7 +449,7 @@ TiDB 有事务超时的机制，当事务运行超过 [`max-txn-ttl`](/tidb-conf
 
 ## 当频繁出现 `ErrMySQLDuplicateEntry` 错误时，如何解决？
 
-在使用 TiCDC 将数据复制到 TiDB 或 MySQL 时，如果以上游特定模式执行 SQL ，可能会遇到如下错误：
+使用 TiCDC 将数据同步到 TiDB 或 MySQL 时，如果上游以特定模式执行 SQL ，可能会遇到如下错误：
 
 `CDC:ErrMySQLDuplicateEntryCDC`
 
@@ -474,7 +474,7 @@ INSERT INTO data_table (id, value) VALUES (1, 'v3');
 INSERT INTO data_table (id, value) VALUES (2, 'v1');
 ```
 
-TiDB 在内部实际上会产生两条 UPDATE 行变更，这些行变更被 TiCDC 捕捉到之后，会被翻译成两条 UPDATE 语句向下游同步：
+TiDB 内部实际上会产生两条 UPDATE 行变更，这些行变更被 TiCDC 捕捉到之后，会被翻译成两条 UPDATE 语句向下游同步：
 
 ```sql
 UPDATE data_table SET value = 'v3' WHERE id = 1;
