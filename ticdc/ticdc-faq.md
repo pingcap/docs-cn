@@ -508,7 +508,7 @@ UPDATE t SET a="3" WHERE a="2";
 >
 > 当同步存储生成列到 Kafka 或存储服务后，再将其写回 MySQL 时，可能会遇到 `Error 3105 (HY000): The value specified for generated column 'xx' in table 'xxx' is not allowed` 错误。为避免该错误，你可以使用 [Open Protocol](/ticdc/ticdc-open-protocol.md) 进行同步。该协议的输出包含[列的 flag 值](/ticdc/ticdc-open-protocol.md#列标志位)，可以区分是否为生成列。
 
-## 当频繁出现 `ErrMySQLDuplicateEntry` 错误时，如何解决？
+## 当频繁出现 `CDC:ErrMySQLDuplicateEntryCDC` 错误时，如何解决？
 
 使用 TiCDC 将数据同步到 TiDB 或 MySQL 时，如果上游以特定模式执行 SQL ，可能会遇到如下错误：
 
