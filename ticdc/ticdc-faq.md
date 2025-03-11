@@ -516,7 +516,7 @@ UPDATE t SET a="3" WHERE a="2";
 
 出现该错误的原因：TiDB 会将同一事务内对同一行的 `DELETE + INSERT` 操作提交为一个 `UPDATE` 行变更，当 TiCDC 以 UPDATE 的形式向下游同步数据时，尝试交换唯一键值的 `UPDATE` 操作可能会出现冲突。
 
-考虑以下表：
+以下表为例：
 
 ```sql
 CREATE TABLE data_table (
