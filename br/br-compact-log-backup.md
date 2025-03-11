@@ -49,7 +49,7 @@ br operator base64ify --storage "s3://your/log/backup/storage/here" --load-creds
 > **注意：**
 >
 > - 如果执行以上命令时带了 `--load-cerds` 这个选项，编码出来的 Base64 中会包含从 BR 当前环境中加载的密钥信息，请注意安全保护和权限管控。
-> - 此处的 storage 应该和日志备份任务的 `log status` 命令输出的 storage 相同。
+> - 此处的 `--storage` 值应该和日志备份任务的 `log status` 命令输出的 storage 相同。
 
 命令输出示例如下：
 
