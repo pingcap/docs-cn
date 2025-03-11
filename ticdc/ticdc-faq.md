@@ -482,5 +482,4 @@ UPDATE data_table SET value = 'v1' WHERE id = 2;
 ```
 mysql://user:password@host:port/?safe-mode=true
 ```
-
-如果你频繁遇到上述错误，那么可以考虑启用 safe-mode 以解决问题。
+在安全模式下，TiCDC 会将 `UPDATE` 操作拆分为 `DELETE + INSERT` 进行执行，从而避免唯一键冲突错误。
