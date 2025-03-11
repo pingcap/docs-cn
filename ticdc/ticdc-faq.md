@@ -542,7 +542,7 @@ UPDATE data_table SET value = 'v3' WHERE id = 1;
 UPDATE data_table SET value = 'v1' WHERE id = 2;
 ```
 
-如果在执行第二个更新时，表中仍然存在`v1`，会破坏唯一键约束，从而导致 `ErrMySQLDuplicateEntry` 错误。
+在执行第二条 `UPDATE` 语句时，如果下游的表中仍然存在 `v1`，会破坏 `value` 列的唯一键约束，从而导致 `CDC:ErrMySQLDuplicateEntryCDC` 错误。
 
 为防止此问题，可以通过在 `sink-uri` 配置中设置 `safe-mode=true` 参数，在TiCDC中启用安全模式。这样，TiCDC 就会把 UPDATE 操作拆分为 `DELETE + INSERT` 进行执行，这样就能避免错误。
 
