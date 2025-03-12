@@ -724,6 +724,19 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
     - 集群 Region 数量较多，PD leader 由于处理心跳和调度任务的开销大，导致 CPU 资源紧张。
     - 集群中 TiDB 实例数量较多，Region 信息请求并发量较大，PD leader CPU 压力大。
 
+### `tidb_enable_batch_query_region` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> Batch Query Region 目前为实验特性，还处于开发测试阶段，不建议在生产环境中使用。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用于控制是否开启 Batch Query Region 的特性。当该值为 `OFF` 时，TiDB 默认使用常规的 Unary gRPC 请求向 PD 获取 Region 信息。当该值为 `ON` 时，TiDB 在获取 Region 信息时会将请求通过 gRPC Stream 的方式攒批发送，从而减轻 PD leader 在处理大量 Region 请求时的 CPU 压力。
+
 ### `plugin_dir`
 
 - 作用域：GLOBAL
