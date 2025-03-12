@@ -44,7 +44,7 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 | [TiDB DM (Data Migration)](/dm/dm-overview.md)  | `dm-worker-{version}-linux-{arch}.tar.gz` <br/>`dm-master-{version}-linux-{arch}.tar.gz` <br/>`dmctl-{version}-linux-{arch}.tar.gz`  |
 | [TiCDC](/ticdc/ticdc-overview.md)  | `cdc-{version}-linux-{arch}.tar.gz`  |
 | [Backup & Restore (BR)](/br/backup-and-restore-overview.md)  | `br-{version}-linux-{arch}.tar.gz`  |
-| [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)  | TiDB v9.0.0 及以上版本：包含在 TiUP 和 `tiflow-{version}-linux-{arch}.tar.gz` 中<br/>TiDB v9.0.0 之前的版本：TiDB 工具包中的 `sync_diff_inspector` |
+| [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)  | TiDB v9.0.0 及以上版本：`tiflow-{version}-linux-{arch}.tar.gz`<br/>TiDB v9.0.0 之前的版本：`sync_diff_inspector` |
 | [PD Recover](/pd-recover.md)  | `pd-recover-{version}-linux-{arch}.tar.gz` |
 
 > **注意：**
