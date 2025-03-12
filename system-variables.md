@@ -1829,6 +1829,23 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`OFF`
 - 该变量控制是否启用废弃的 batch-dml 特性。启用该变量后，部分语句可能会被拆分为多个事务执行，这是非原子性的，使用时需谨慎。使用 batch-dml 时，必须确保正在操作的数据没有并发操作。要使该变量生效，还需要为 `tidb_batch_dml_size` 指定一个正值，并启用 `tidb_batch_insert` 和 `tidb_batch_delete` 中的至少一个。
 
+### `tidb_enable_batch_query_region` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用于控制是否开启 Batch Query Region 特性。TiDB 在访问数据时，需要向 PD 查询 Region 路由信息以更新本地的 Region Cache，其中点查询类请求 `GetRegion`（按 Key 查询所在 Region）、`GetPrevRegion`（按 Key 查询前一个相邻 Region）和 `GetRegionByID`（按 Region ID 查询）原本均为独立的 Unary gRPC 请求，该特性攒批的对象就是这三类请求。
+    - 当该值为 `OFF` 时，TiDB 将每个 Region 信息点查询作为一次独立的 Unary gRPC 请求逐个发送给 PD。
+    - 当该值为 `ON` 时，TiDB 会将同一时间内并发的 Region 信息点查询通过 QueryRegion gRPC Stream 攒批后合并发送给 PD，由 PD 批量处理并返回结果。与 TSO 请求的攒批机制类似，该方式能够显著减少 gRPC 请求的数量，从而降低 PD leader 处理大量 Region 信息请求时的 CPU 开销。
+- 该变量不影响 `BatchScanRegions` 等扫描类请求：`BatchScanRegions` 虽然同样能将多个 Key 范围的查询合并到一个请求中，但它本身是一个独立的 Unary gRPC 请求，不经过 QueryRegion 的攒批链路。
+- 该变量修改后即时在全集群生效，无需重启 TiDB，因此开启和关停都可以动态控制：开启后，TiDB 切换为上述攒批模式获取 Region 信息；关闭后，TiDB 恢复为逐个发送 Unary gRPC 请求的方式。
+- 适合开启 Batch Query Region 的场景：
+    - 集群 Region 数量较多，TiDB 查询并发量大，Region Cache 未命中或失效后会产生大量并发的 Region 信息查询请求，导致 PD leader CPU 压力大。
+    - 集群中 Region 分裂、合并或 Leader 迁移等变更频繁，TiDB 因 Region Cache 大量失效并集中重试，产生 Region 信息查询风暴。
+- 该变量与 [`pd_enable_follower_handle_region`](#pd_enable_follower_handle_region-从-v760-版本开始引入) 的优化方向互补：前者通过攒批减少发送到 PD 的请求数量，后者通过 PD follower 分担请求来分散单点负载，两者可以同时开启。
+
 ### `tidb_enable_binding_usage` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
 - 作用域: GLOBAL
