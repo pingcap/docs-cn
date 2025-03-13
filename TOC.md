@@ -237,6 +237,7 @@
       - [使用概述](/br/br-use-overview.md)
       - [快照备份与恢复](/br/br-snapshot-guide.md)
       - [日志备份与 PITR](/br/br-pitr-guide.md)
+      - [压缩日志备份](/br/br-compact-log-backup.md)
       - [实践示例](/br/backup-and-restore-use-cases.md)
       - [备份存储](/br/backup-and-restore-storages.md)
     - br cli 命令手册
@@ -496,6 +497,7 @@
     - TiUP 组件文档
       - [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
       - [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
+      - [使用 no-sudo 模式部署运维生产集群](/tiup/tiup-cluster-no-sudo-mode.md)
       - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   - [TiDB Operator](/tidb-operator-overview.md)
@@ -1127,6 +1129,7 @@
   - v6.6
     - [6.6.0-DMR](/releases/release-6.6.0.md)
   - v6.5
+    - [6.5.12](/releases/release-6.5.12.md)
     - [6.5.11](/releases/release-6.5.11.md)
     - [6.5.10](/releases/release-6.5.10.md)
     - [6.5.9](/releases/release-6.5.9.md)

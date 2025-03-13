@@ -58,7 +58,7 @@ TiDB Lightning 的完整配置文件可参考[完整配置及命令行参数](/t
 
 配置为 `"error"` 时，由冲突数据引发的错误将直接导致导入任务终止。配置为 `"replace"` 或 `"ignore"` 时，可以通过进一步配置 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 控制冲突数据的上限。默认值为 `10000`，意味着能容忍 10000 个错误。
 
-配置为 `"ignore"` 时，冲突数据可以被记录到下游的 `conflict_records` 表中，详见[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能介绍。在 v8.1.0 之前的版本中，可以通过配置 [`conflict.max-record-rows`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 控制记录上限，超出上限的冲突数据会被跳过导入而不再记录。从 v8.1.0 版本开始，需要通过 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#配置文件) 配置，因为 TiDB Lightning 会自动将 `max-record-rows` 的值设置为 `threshold` 的值，并忽略用户输入。
+配置为 `"ignore"` 时，冲突数据可以被记录到下游的 `conflict_records` 表中，详见[可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)功能介绍。在 v8.1.0 之前的版本中，可以通过配置 [`conflict.max-record-rows`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 控制记录上限，超出上限的冲突数据会被跳过导入而不再记录。从 v8.1.0 版本开始，需要通过 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#threshold) 配置，因为 TiDB Lightning 会自动将 `max-record-rows` 的值设置为 `threshold` 的值，并忽略用户输入。
 
 ## 性能调优
 

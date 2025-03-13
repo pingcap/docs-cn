@@ -2517,6 +2517,8 @@ TiKV MVCC 内存引擎 (In-Memory Engine) 在 TiKV 存储层相关的配置项�
 
 + 是否开启内存引擎以加速多版本查询。关于内存引擎的详细信息，参见 [TiKV MVCC 内存引擎](/tikv-in-memory-engine.md)。
 + 默认值：false（即关闭内存引擎）
++ 建议 TiKV 节点至少配置 8 GiB 内存，推荐配置 32 GiB 或更多内存以获得更佳性能。
++ 如果 TiKV 可用内存过低，即使将该配置项设置为 `true`，内存引擎也不会被启用。此时，你可以在 TiKV 的日志文件中查找与 `"in-memory engine is disabled because"` 相关的日志信息，以判断为何内存引擎未能启用。
 
 ### `capacity` <span class="version-mark">从 v8.5.0 版本开始引入</span>
 
