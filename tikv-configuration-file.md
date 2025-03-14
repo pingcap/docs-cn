@@ -221,7 +221,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### end-point-memory-quota <span class="version-mark">从 v8.2.0 版本开始引入</span>
 
 * TiKV Coprocessor 请求可以使用的内存上限，超过该值后后续的 Coprocessor 请求将被拒绝并报错（server is busy）。
-* 默认值：系统总内存大小的 45%（如果超过 500MiB，则默认值为 500MiB）。
+* 默认值：系统总内存大小的 45%。如果超过 500 MiB，则默认值为 500 MiB。
 
 ### `snap-io-max-bytes-per-sec`
 
@@ -509,7 +509,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ## txn-status-cache-capacity <span class="version-mark">从 v7.6.0 版本开始引入</span>
 
-+ 设置 TiKV 内的事务状态 cache 的容量。不建议用户随意修改。
++ 设置 TiKV 内的事务状态 cache 的容量。不建议修改该参数。
 + 默认值：5120000
 
 ## storage.block-cache
@@ -1058,37 +1058,38 @@ raftstore 相关的配置项。
 + 控制 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值。
 + 默认值：`0.1`，表示全量数据整理进程的最大 CPU 使用率为 10%。
 
-### follower-read-max-log-gap <span class="version-mark">从 v7.4.0 版本开始引入</span>
+### `follower-read-max-log-gap` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
 + follower 处理读请求时允许的最大日志落后数目，超出则拒绝读请求。
 + 默认值：100
 
-### inspect-cpu-util-thd <span class="version-mark">从 v7.6.0 版本开始引入</span>
+### `inspect-cpu-util-thd` <span class="version-mark">从 v7.6.0 版本开始引入</span>
 
-+ TiKV 进行慢节点检测时判定节点 CPU 是否处于繁忙状态的阈值。范围 [0%, 100%]。
++ TiKV 进行慢节点检测时判定节点 CPU 是否处于繁忙状态的阈值。
++ 取值范围：`[0%, 100%]`
 + 默认值：40%
 
-### inspect-kvdb-interval <span class="version-mark">从 v8.1.2 版本开始引入</span>
+### `inspect-kvdb-interval` <span class="version-mark">从 v8.1.2 版本开始引入</span>
 
 + TiKV 进行慢节点检测时检查 KV 盘的间隔和超时时间。如果 KVDB 和 RaftDB 使用相同的挂载路径，该值将被覆盖为 0（不检测）。
 + 默认值：2s
 
-### min-pending-apply-region-count <span class="version-mark">从 v8.0.0 版本开始引入</span>
+### `min-pending-apply-region-count` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
 + TiKV 启动服务时，处于忙于应用 Raft 日志状态的 Region 的最大个数。只有当忙于应用 Raft 日志的 Region 数量低于该值时，Raftstore 才能接受 leader 迁移，以减少滚动重启期间的可用性下降。
 + 默认值：10
 
-### request-voter-replicated-index-interval <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### `request-voter-replicated-index-interval` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 + 控制 Witness 节点定期从投票节点获取已复制的 Raft 日志位置的时间间隔。
 + 默认值：5分钟
 
-### slow-trend-unsensitive-cause <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### `slow-trend-unsensitive-cause` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 + TiKV 采用 SlowTrend 检测算法时，延时检测的敏感性。值越高表示敏感度越低。
 + 默认值：10
 
-### slow-trend-unsensitive-result <span class="version-mark">从 v6.6.0 版本开始引入</span>
+### `slow-trend-unsensitive-result` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 + TiKV 采用 SlowStrend 检测算法时，QPS 侧检测的敏感性。值越高表示敏感度越低。
 + 默认值：0.5
@@ -1393,10 +1394,10 @@ RocksDB 相关的配置项。
     + `true`：在 MANIFEST 文件中记录 WAL 文件的信息，并在启动时验证 WAL 文件的完整性。
     + `false`：不在 MANIFEST 文件中记录 WAL 文件的信息，而且不在启动时验证 WAL 文件的完整性。
 
-### enable-multi-batch-write <span class="version-mark">从 v6.2.0 版本开始引入</span>
+### `enable-multi-batch-write` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 + 开启 RocksDB 写入优化，将 WriteBatch 中的内容并发写入到 memtable 中，缩短写入耗时。
-+ 默认值：无，但在默认情况下会自动开启，除非手动设置成 false 或者开启 `rocksdb.enable-pipelined-write` 或 `rocksdb.enable-unordered-write`。
++ 默认值：无，但在默认情况下会自动开启，除非手动设置成 `false` 或者开启 `rocksdb.enable-pipelined-write` 或 `rocksdb.enable-unordered-write`。
 
 ## rocksdb.titan
 
@@ -2084,8 +2085,7 @@ Raft Engine 相关的配置项。
 
 ### `compression-level` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
-+ 设置 raft-engine 在写 raft log 文件时所采用的 lz4 压缩算法的压缩效率，范围 [1, 16]，值越低表示压缩速率越高，但压缩率越低。
-
++ 设置 raft-engine 在写 raft log 文件时所采用的 lz4 压缩算法的压缩效率，范围 `[1, 16]`，值越低表示压缩速率越高，但压缩率越低。
 + 默认值：1
 
 ## security
