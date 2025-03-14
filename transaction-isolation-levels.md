@@ -81,6 +81,28 @@ MySQL 可重复读隔离级别在更新时并不检验当前版本是否可见�
 
 MySQL 的 Read Committed 隔离级别大部分符合一致性读特性，但其中存在某些特例，如半一致性读 ([semi-consistent read](https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html))，TiDB 没有兼容这个特殊行为。
 
+## 查看和修改事务隔离级别
+
+你可以通过以下方式查看和修改事务隔离级别。
+
+查看当前会话的事务隔离级别：
+
+```sql
+SHOW VARIABLES LIKE 'transaction_isolation';
+```
+
+修改当前会话的事务隔离级别：
+
+```sql
+SET SESSION transaction_isolation = 'READ-COMMITTED';
+```
+
+关于事务隔离级别的配置和使用说明，请参考：
+
+- [系统变量 `transaction_isolation`](/system-variables.md#transaction_isolation)
+- [事务模式](/pessimistic-transaction.md#隔离级别)
+- [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
+  
 ## 更多阅读
 
 - [TiDB 的乐观事务模型](https://pingcap.com/blog-cn/best-practice-optimistic-transaction/)
