@@ -1519,11 +1519,12 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：整数型
+- 类型：字符串（整数+单位）
 - 默认值：`0`
-- 范围：`[0, 1125899906842624]`（即最大可设置为 1 PiB）
+- 范围：`[0, 1PiB]`
+- 单位：KiB|MiB|GiB|TiB
 - 这个变量用于限制每个 TiKV 节点写入的带宽，仅在开启添加索引加速功能时生效（由变量 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。在数据量特别大的情况下（如数十亿行数据），降低加索引时写入 TiKV 节点的带宽可以有效减少对业务负载的影响。
-- 默认值 `0` 表示不限制写入带宽。默认单位为字节每秒，也可以通过 `'1GiB'`、`'256MiB'` 等格式设置该变量。
+- 默认值 `0` 表示不限制写入带宽。默认单位为字节每秒，可以通过 `'1GiB'`、`'256MiB'` 等格式设置该变量，也可以通过不带单位的字节数设置该变量（比如 67108864 表示 `64MiB`）。
 
 ### `tidb_ddl_reorg_worker_cnt`
 
