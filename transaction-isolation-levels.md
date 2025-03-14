@@ -83,21 +83,26 @@ MySQL 的 Read Committed 隔离级别大部分符合一致性读特性，但其�
 
 ## 查看和修改事务隔离级别
 
-你可以通过以下方式查看和修改事务隔离级别：
+你可以通过以下方式查看和修改事务隔离级别。
+
+查看当前会话的事务隔离级别：
 
 ```sql
--- 查看当前会话的事务隔离级别
 SHOW VARIABLES LIKE 'transaction_isolation';
+```
 
--- 修改当前会话的事务隔离级别
+修改当前会话的事务隔离级别：
+
+```
 SET SESSION transaction_isolation = 'READ-COMMITTED';
 ```
 
-更多关于事务隔离级别的配置和使用说明，请参考：
-- [系统变量](/system-variables.md#transaction_isolation)
-- [事务模式](/pessimistic-transaction.md#隔离级别)
-- [SET TRANSACTION](/sql-statements/sql-statement-set-transaction.md)
+关于事务隔离级别的配置和使用说明，请参考：
 
+- [系统变量 `transaction_isolation`](/system-variables.md#transaction_isolation)
+- [事务模式](/pessimistic-transaction.md#隔离级别)
+- [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
+  
 ## 更多阅读
 
 - [TiDB 的乐观事务模型](https://pingcap.com/blog-cn/best-practice-optimistic-transaction/)
