@@ -93,7 +93,7 @@ SHOW VARIABLES LIKE 'transaction_isolation';
 
 修改当前会话的事务隔离级别：
 
-```
+```sql
 SET SESSION transaction_isolation = 'READ-COMMITTED';
 ```
 
