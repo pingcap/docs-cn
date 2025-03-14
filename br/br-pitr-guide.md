@@ -58,7 +58,7 @@ checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 - `speed(est.)`: Log Backup 目前的流量。这个值是取最近的数秒内的采样估算而成。如需更加精确的流量统计，你可以前往监控面板 `tikv-details` 下的 `Log Backup` 处查看。
 - `checkpoint[global]`: Log Backup 目前的进度。你可以使用 PiTR 恢复到这个时间戳前的时间点。
 
-如果 Log Backup 遇到了麻烦而被迫暂停，会出现额外的字段来展示情况，例如：
+如果 Log Backup 作业暂停，·`log status` 输出会有额外的字段来展示暂停的细节，例如：
 
 ```
 ● Total 1 Tasks.
