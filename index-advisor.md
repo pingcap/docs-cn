@@ -190,9 +190,9 @@ WHERE last_access_time IS NOT NULL AND percentage_access_0 + percentage_access_0
 
 虚拟索引 (Hypothetical indexes, Hypo indexes) 是通过 SQL 注释而非 `CREATE INDEX` 语句创建的，类似于 [Optimizer Hints](/optimizer-hints.md)。使用虚拟索引，你可以在不实际创建索引的情况下轻量级地测试索引对查询性能的效果。
 
-例如，`/*+ HYPO_INDEX(t, idx_ab, a, b) */` 注释指示查询规划器在表 `t` 上为列 `a` 和 `b` 创建名为 `idx_ab` 的虚拟索引。优化器会生成该索引的元数据，但不会实际创建索引。在查询优化过程中，如果适用，优化器会考虑该虚拟索引，而不会产生实际创建索引的开销。
+例如，`/*+ HYPO_INDEX(t, idx_ab, a, b) */` 注释指示查询规划器在表 `t` 上为列 `a` 和 `b` 创建一个名为 `idx_ab` 的虚拟索引。优化器会生成该索引的元数据，但不会实际创建索引。在查询优化过程中，如果适用，优化器会考虑该虚拟索引，而不会产生实际创建索引的开销。
 
-`RECOMMEND INDEX` 使用虚拟索引进行假设分析，以评估不同索引的潜在收益。你也可以直接使用虚拟索引来实验索引设计，然后再决定是否创建它们。
+`RECOMMEND INDEX` 使用虚拟索引进行假设分析，以评估不同索引的潜在收益。你也可以直接使用虚拟索引来尝试索引设计，然后再决定是否创建它们。
 
 以下示例展示了使用虚拟索引的查询：
 
