@@ -12,6 +12,10 @@ TiCDC 新架构通过重新设计核心组件和优化数据处理流程，显�
 - **更高的稳定性**：在高流量、频繁 DDL 操作及集群扩缩容等场景下，Changefeed 的延迟更低且更加稳定。通过资源隔离和优先级调度，减少了多个 Changefeed 任务之间的相互干扰。
 - **更低的资源成本**：通过改进资源利用率，减少冗余开销，在典型场景下，CPU 和内存等资源的利用效率提升高达一个数量级。
 
+> **警告：**
+>
+> TiCDC 新架构目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 ## 架构设计
 
 ![TiCDC New Architecture](/media/ticdc/ticdc-new-arch-1.jpg)
