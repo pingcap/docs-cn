@@ -11,7 +11,7 @@ TiDB 支持与 MySQL 5.7 类似的安全特性，同时 TiDB 还支持 MySQL 8.0
 ## 不支持的安全功能特性
 
 - 不支持列级别权限设置。
-- 不支持权限属性 `max_questions`，`max_updated` 以及 `max_user_connections`。
+- 不支持权限属性 `max_questions`、`max_updated`。
 - 不支持密码修改验证策略，修改密码时需要验证当前密码。
 - 不支持双密码策略。
 - 不支持随机密码生成策略。
