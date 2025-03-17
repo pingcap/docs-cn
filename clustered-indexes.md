@@ -141,7 +141,7 @@ mysql> SELECT TIDB_PK_TYPE FROM information_schema.tables WHERE table_schema = '
 目前 TiDB 的聚簇索引具有以下几类限制：
 
 - 明确不支持且没有支持计划的使用限制：
-    - 不支持与 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 一起使用；[`PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 在聚簇索引表上不生效。
+    - 不支持与 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 一起使用；[`PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 在非 [`AUTO_RANDOM`](/auto-random.md) 的聚簇索引表上不生效。
     - 不支持对聚簇索引表进行降级。如需降级，请使用逻辑备份工具迁移数据。
 - 尚未支持，但未来有计划支持的使用限制：
     - 尚未支持通过 `ALTER TABLE` 语句增加、删除、修改聚簇索引。
