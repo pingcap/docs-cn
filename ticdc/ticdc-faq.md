@@ -567,4 +567,5 @@ UPDATE data_table SET value = 'v1' WHERE id = 2;
 ```
 mysql://user:password@host:port/?safe-mode=true
 ```
+
 在安全模式下，TiCDC 会将 `UPDATE` 操作拆分为 `DELETE + INSERT` 进行执行，从而避免唯一键冲突错误。
