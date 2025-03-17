@@ -1011,12 +1011,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-<<<<<<< HEAD
-- 类型：整数型
-=======
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：字符串
->>>>>>> 8d853cedda (sys var: clarify the description of tidb_ddl_reorg_max_write_speed (#20042))
 - 默认值：`0`
 - 范围：`[0, 1PiB]`
 - 这个变量用于限制每个 TiKV 节点写入的带宽，仅在开启添加索引加速功能时生效（由变量 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。在数据量特别大的情况下（如数十亿行数据），降低加索引时写入 TiKV 节点的带宽可以有效减少对业务负载的影响。
