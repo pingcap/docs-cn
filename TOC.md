@@ -182,7 +182,6 @@
   - 监控告警
     - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
     - [详细监控指标](/ticdc/monitor-ticdc.md)
-    - [TiCDC 新架构监控指标](/ticdc/ticdc-new-arch-monitor.md)
     - [报警规则](/ticdc/ticdc-alert-rules.md)
   - 数据集成场景
     - [数据集成概述](/integration-overview.md)
