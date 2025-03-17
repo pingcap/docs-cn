@@ -5,7 +5,7 @@ summary: 介绍 TiDB 数据库中 DISTRIBUTE TABLE 的使用概况。
 
 # DISTRIBUTE TABLE
 
-`DISTRIBUTE TABLE` 语句用于对指定表的 Region 进行重新打散和调度，以实现表维度的均衡分布。执行该语句可以防止个别 Region 集中在少数 TiFlash 或 TiKV 节点上，从而解决表中 Region 分布不均衡的问题。
+`DISTRIBUTE TABLE` 语句用于对指定表的 Region 进行重新打散和调度，以实现表级别的均衡分布。执行该语句可以防止个别 Region 集中在少数 TiFlash 或 TiKV 节点上，从而解决表中 Region 分布不均衡的问题。
 
 ## 语法图
 
