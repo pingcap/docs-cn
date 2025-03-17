@@ -2829,7 +2829,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：枚举型
 - 默认值：`optimized`。在 v9.0.0 之前，默认值为 `legacy`。
 - 可选值：`legacy`、`optimized`
-- 控制 TiDB 是否使用 Hash Join 算子的优化版。该变量设置为 `optimized` 时，TiDB 在执行 Hash Join 算子时将使用其优化版，以提升 Hash Join 性能。
+- 控制 TiDB 是否使用 [Hash Join 算子的优化版](/sql-statements/sql-statement-explain-analyze.md#hashjoinv2)。该变量设置为 `optimized` 时，TiDB 在执行 Hash Join 算子时将使用其优化版，以提升 Hash Join 性能。
 
 > **注意：**
 >
