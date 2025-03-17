@@ -1011,11 +1011,19 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
+<<<<<<< HEAD
 - 类型：整数型
+=======
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串
+>>>>>>> 8d853cedda (sys var: clarify the description of tidb_ddl_reorg_max_write_speed (#20042))
 - 默认值：`0`
-- 范围：`[0, 1125899906842624]`（即最大可设置为 1 PiB）
+- 范围：`[0, 1PiB]`
 - 这个变量用于限制每个 TiKV 节点写入的带宽，仅在开启添加索引加速功能时生效（由变量 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。在数据量特别大的情况下（如数十亿行数据），降低加索引时写入 TiKV 节点的带宽可以有效减少对业务负载的影响。
-- 默认值 `0` 表示不限制写入带宽。默认单位为字节每秒，也可以通过 `'1GiB'`、`'256MiB'` 等格式设置该变量。
+- 默认值 `0` 表示不限制写入带宽。
+- 该变量可设置为带单位的格式或不带单位的格式。
+    - 当该变量值不带单位时，默认单位为字节每秒。例如 `67108864` 表示 `64MiB` 每秒。
+    - 当该变量值带单位时，支持的单位包括 KiB、MiB、GiB、TiB。例如，`'1GiB'` 表示 1 GiB 每秒， `'256MiB'` 表示 256 MiB 每秒。
 
 ### `tidb_ddl_reorg_worker_cnt`
 
@@ -1025,6 +1033,22 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 范围：`[1, 256]`
 - 单位：线程
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的并发度。
+<<<<<<< HEAD
+=======
+- 从 v8.3.0 版本开始，该参数支持 SESSION 级别的设置，因此修改 GLOBAL 级别的参数值不会影响当前正在运行的 DDL，而只会对新建 SESSION 中提交的 DDL 生效。
+
+### `tidb_enable_fast_create_table` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`。在 v8.5.0 之前，默认值为 `OFF`。
+- 这个变量用于控制是否开启 [TiDB 加速建表](/accelerated-table-creation.md)。
+- 从 TiDB v8.0.0 开始，支持使用 `tidb_enable_fast_create_table` 加速建表 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md)。
+- 该变量是由 v7.6.0 中引入的 [`tidb_ddl_version`](https://docs-archive.pingcap.com/zh/tidb/v7.6/system-variables#tidb_ddl_version-从-v760-版本开始引入) 更名而来。从 v8.0.0 开始，`tidb_ddl_version` 不再生效。
+- 从 TiDB v8.5.0 开始，新创建的集群默认开启 TiDB 加速建表功能，即 `tidb_enable_fast_create_table` 默认值为 `ON`。如果从 v8.4.0 及之前版本的集群升级至 v8.5.0 及之后的版本，`tidb_enable_fast_create_table` 的默认值不发生变化。
+>>>>>>> 8d853cedda (sys var: clarify the description of tidb_ddl_reorg_max_write_speed (#20042))
 
 ### `tidb_default_string_match_selectivity` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -2826,7 +2850,27 @@ SHOW WARNINGS;
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`ON`
+<<<<<<< HEAD
 - 这个变量用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
+=======
+- 这个变量用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#持久化-analyze-配置)特性。
+
+### `tidb_pessimistic_txn_fair_locking` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 是否对悲观锁启用加强的悲观锁唤醒模型。该模型可严格控制悲观锁单点冲突场景下事务的唤醒顺序，避免无效唤醒，大大降低原有唤醒机制中的随机性对事务延迟带来的不确定性。如果业务场景中遇到了单点悲观锁冲突频繁的情况（如高频更新同一行数据等），并进而引起语句重试频繁、尾延迟高，甚至偶尔发生 `pessimistic lock retry limit reached` 错误，可以尝试开启该变量来解决问题。
+- 对于从 v7.0.0 以前的版本升级到 v7.0.0 或更新版本的 TiDB 集群，该选项默认关闭。
+
+> **注意：**
+>
+> - 视具体业务场景的不同，启用该选项可能对存在频繁锁冲突的事务造成一定程度的吞吐下降（平均延迟上升）。
+> - 该选项目前仅对需要上锁单个 key 的语句有效。如果一个语句需要对多行同时上锁，则该选项不会对此类语句生效。
+> - 该功能从 v6.6.0 版本引入。在 v6.6.0 版本中，该功能由变量 [`tidb_pessimistic_txn_aggressive_locking`](https://docs-archive.pingcap.com/zh/tidb/v6.6/system-variables#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) 控制，默认关闭。
+>>>>>>> 8d853cedda (sys var: clarify the description of tidb_ddl_reorg_max_write_speed (#20042))
 
 ### `tidb_placement_mode` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
