@@ -34,14 +34,14 @@ tiup br backup full --pd "${PD_IP}:2379" \
 - `--backupts`：快照对应的物理时间点，格式可以是 [TSO](/tso.md) 或者时间戳，例如 `400036290571534337` 或者 `2018-05-11 01:42:23 +08:00`。如果该快照的数据被垃圾回收 (GC) 了，那么 `tiup br backup` 命令会报错并退出。使用日期方式备份时，建议同时指定时区，否则 br 默认使用本地时间构造时间戳，可能导致备份时间点错误。如果你没有指定该参数，那么 br 会选取备份开始的时间点所对应的快照。
 - `--storage`：数据备份到的存储地址。快照备份支持以 Amazon S3、Google Cloud Storage、Azure Blob Storage 为备份存储，以上命令以 Amazon S3 为示例。详细存储地址格式请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
-在快照备份过程中，终端会显示备份进度条。在备份完成后，会输出备份耗时、速度、备份数据大小等信息。其中： 
+在快照备份过程中，终端会显示备份进度条。在备份完成后，会输出备份耗时、速度、备份数据大小等信息。其中：
 
 - `total-ranges`：备份的文件总数量
 - `ranges-succeed`：备份成功的文件数量
 - `ranges-failed`：备份失败的文件数量
 - `backup-total-ranges`：备份的表（包括分区表）与索引的数量
-- `write-CF-files`：备份文件中含有 `write CF` 数据的 SST 数量
-- `default-CF-files`：备份文件中含有 `default CF` 数据的 SST 数量
+- `write-CF-files`：备份文件中含有 `write CF` 数据的 SST 文件数量
+- `default-CF-files`：备份文件中含有 `default CF` 数据的 SST 文件数量
 
 ```shell
 Full Backup <-------------------------------------------------------------------------------> 100.00%
@@ -90,9 +90,9 @@ tiup br restore full --pd "${PD_IP}:2379" \
 - `ranges-failed`：恢复失败的文件数量
 - `merge-ranges`：合并数据范围的耗时
 - `split-region`：切分和打散 Region 的耗时
-- `restore-files`： TiKV 恢复 SST 的耗时
-- `write-CF-files`：恢复文件中含有 `write CF` 数据的 SST 数量
-- `default-CF-files`：恢复文件中含有 `default CF` 数据的 SST 数量
+- `restore-files`： TiKV 恢复 SST 文件的耗时
+- `write-CF-files`：恢复文件中含有 `write CF` 数据的 SST 文件数量
+- `default-CF-files`：恢复文件中含有 `default CF` 数据的 SST 文件数量
 - `split-keys`：生成的用于切分 Region 的 key 数量
 
 ```shell
