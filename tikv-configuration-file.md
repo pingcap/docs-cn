@@ -561,7 +561,7 @@ I/O rate limiter 相关的配置项。
 + 可选值：`"read-only"`，`"write-only"`，`"all-io"`
 + 默认值：`"write-only"`
 
-## `storage.max-ts`
+## storage.max-ts
 
 `max-ts` 相关的配置项。
 
@@ -586,7 +586,7 @@ I/O rate limiter 相关的配置项。
 + 定义当读写请求使用的 TS 超过 TiKV 缓存的 PD TSO 时，所允许的最长超出时间。
 + 如果某个读写请求使用的 TS 超过了 TiKV 缓存的 PD TSO + `max-drift`，TiKV 会将其视为非法的 `max-ts` 更新请求，并根据 [`action-on-invalid-update`](#action-on-invalid-update) 的配置进行处理。
 + 默认值：`"60s"`
-+ 建议设置为 [`cache-sync-interval`](#cache-sync-interval) 的 3 倍以上。
++ 建议设置为 [`cache-sync-interval`](#cache-sync-interval-从-v900-版本开始引入) 的 3 倍以上。
 
 ## pd
 
