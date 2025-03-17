@@ -37,14 +37,14 @@ tiup br backup full --pd "${PD_IP}:2379" \
 - `--storage`：数据备份到的存储地址。快照备份支持以 Amazon S3、Google Cloud Storage、Azure Blob Storage 为备份存储，以上命令以 Amazon S3 为示例。详细存储地址格式请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 - `--ratelimit`：**每个 TiKV** 备份数据的速度上限，单位为 MiB/s。
 
-在快照备份过程中，终端会显示备份进度条。在备份完成后，会输出备份耗时、速度、备份数据大小等信息。其中： 
+在快照备份过程中，终端会显示备份进度条。在备份完成后，会输出备份耗时、速度、备份数据大小等信息。其中：
 
 - `total-ranges`：备份的文件总数量
 - `ranges-succeed`：备份成功的文件数量
 - `ranges-failed`：备份失败的文件数量
 - `backup-total-ranges`：备份的表（包括分区表）与索引的数量
-- `write-CF-files`：备份文件中含有 `write CF` 数据的 SST 数量
-- `default-CF-files`：备份文件中含有 `default CF` 数据的 SST 数量
+- `write-CF-files`：备份文件中含有 `write CF` 数据的 SST 文件数量
+- `default-CF-files`：备份文件中含有 `default CF` 数据的 SST 文件数量
 
 ```shell
 Full Backup <-------------------------------------------------------------------------------> 100.00%
@@ -93,9 +93,9 @@ tiup br restore full --pd "${PD_IP}:2379" \
 - `ranges-failed`：恢复失败的文件数量
 - `merge-ranges`：合并数据范围的耗时
 - `split-region`：切分和打散 Region 的耗时
-- `restore-files`： TiKV 恢复 SST 的耗时
-- `write-CF-files`：恢复文件中含有 `write CF` 数据的 SST 数量
-- `default-CF-files`：恢复文件中含有 `default CF` 数据的 SST 数量
+- `restore-files`： TiKV 恢复 SST 文件的耗时
+- `write-CF-files`：恢复文件中含有 `write CF` 数据的 SST 文件数量
+- `default-CF-files`：恢复文件中含有 `default CF` 数据的 SST 文件数量
 - `split-keys`：生成的用于切分 Region 的 key 数量
 
 ```shell
