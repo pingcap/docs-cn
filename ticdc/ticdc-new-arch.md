@@ -69,21 +69,17 @@ cdc_servers:
 
 其他详细操作，请参考[使用 TiUP 部署包含 TiCDC 组件的全新 TiDB 集群](/ticdc/deploy-ticdc.md#使用-tiup-部署包含-ticdc-组件的全新-tidb-集群)。
 
-### 使用 TiUP 在原有 TiDB 集群全新部署启用新架构的 TiCDC 组件
+### 使用 TiUP 在原有 TiDB 集群中部署启用新架构的 TiCDC 组件
 
-1. 参考[扩容 TiCDC 节点](/scale-tidb-using-tiup.md#扩容-ticdc-节点)在集群中扩容新的 TiCDC 节点。
+1. 如果你的 TiDB 集群中尚无 TiCDC 节点，参考[扩容 TiCDC 节点](/scale-tidb-using-tiup.md#扩容-ticdc-节点)在集群中扩容新的 TiCDC 节点，否则跳过该步骤。
 
-2. 参考下一节启用 TiCDC 新架构。
-
-### 使用 TiUP 将原有 TiDB 集群中的 TiCDC 升级为新架构
-
-如果 TiDB 集群为 v9.0.0 之前版本，请通过以下方式将集群中 TiCDC 组件版本升级到 v9.0.0 或者以上版本，然后再启用新架构：
+2. 如果你的 TiDB 集群版本为 v9.0.0 之前版本，需要按照以下方式手动下载 9.0.0 版本的 TiCDC 离线包，并将将下载的 TiCDC 二进制文件 Patch 到你的 TiDB 集群，否则跳过该步骤。
 
 > **注意：**
 > 
 > 升级至 TiCDC 新架构后，将不再支持回退至旧架构。
 
-1. 下载 v9.0.0 或者以上版本的 TiCDC 二进制文件。
+- 下载 v9.0.0 或者以上版本的 TiCDC 二进制文件。
 
     该文件下载链接格式为 `https://tiup-mirrors.pingcap.com/cdc-${version}-${os}-${arch}.tar.gz`，其中，{version} 为 TiCDC 版本号，${os} 为你的操作系统，{arch} 为组件运行的平台（`amd64` 或 `arm64`）。
 
@@ -93,17 +89,15 @@ cdc_servers:
    wget https://tiup-mirrors.pingcap.com/cdc-v9.0.0-linux-amd64.tar.gz
    ```
 
-2. 将下载的 TiCDC 二进制文件 Patch 到你的 TiDB 集群中：
+- 将下载的 TiCDC 二进制文件 Patch 到你的 TiDB 集群中：
 
     ```shell
     tiup cluster patch <cluster-name> ./cdc-v9.0.0-linux-amd64.tar.gz -R cdc
     ```
 
-当 TiDB 集群中 TiCDC 组件版本已经升级到 v9.0.0 或者以上版本后，可以通过以下步骤启用 TiCDC 新架构。
+3. 如果集群中已经有 Changefeed，需要参考[停止同步任务](/ticdc/ticdc-manage-changefeed.md#停止同步任务) 暂停所有的 Changefeed 同步任务；
 
-1. 如果集群中已经有 Changefeed，需要参考[停止同步任务](/ticdc/ticdc-manage-changefeed.md#停止同步任务) 暂停所有的 Changefeed 同步任务；
-
-2. 通过 TiUP 更新 TiCDC 配置：
+4. 通过 TiUP 更新 TiCDC 配置：
 
     ```shell
     tiup cluster edit-config <cluster-name>
@@ -115,7 +109,7 @@ cdc_servers:
         newarch: true
     ```
 
-3. 参考[恢复同步任务](/ticdc/ticdc-manage-changefeed.md#恢复同步任务)恢复所有的 Changefeed 同步任务；
+5. 参考[恢复同步任务](/ticdc/ticdc-manage-changefeed.md#恢复同步任务)恢复所有的 Changefeed 同步任务；
 
 ## 使用指南
 
