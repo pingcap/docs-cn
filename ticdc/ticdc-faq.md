@@ -483,7 +483,7 @@ UPDATE data_table SET value = 'v1' WHERE id = 2;
 
 在执行第二条 `UPDATE` 语句时，如果下游的表中仍然存在 `v1`，会破坏 `value` 列的唯一键约束，从而导致 `CDC:ErrMySQLDuplicateEntryCDC` 错误。
 
-如果你频繁遇到 `CDC:ErrMySQLDuplicateEntryCDC` 错误，可以在 `sink-uri` 配置中设置 `safe-mode=true` 参数启用 TiCDC 安全模式：
+如果你频繁遇到 `CDC:ErrMySQLDuplicateEntryCDC` 错误，可以在 [`sink-uri`](/ticdc/ticdc-sink-to-mysql.md#sink-uri-配置-mysqltidb) 配置中设置 `safe-mode=true` 参数启用 TiCDC 安全模式：
 
 ```
 mysql://user:password@host:port/?safe-mode=true
