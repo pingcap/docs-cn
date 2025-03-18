@@ -182,6 +182,8 @@ TiDB 版本：9.0.0
 * TiDB 在 v5.1 引入了系统变量 [`tidb_partition_prune_mode`](/system-variables.md#tidb_partition_prune_mode-从-v51-版本开始引入)，用于设置是否开启分区表动态裁剪模式。从 v8.5.0 开始，将该变量设置为 `static` 或 `static-only` 时会产生警告。在未来版本中，该系统变量将被废弃。
 * TiDB Lightning 参数 [`conflict.max-record-rows`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 计划在未来版本中废弃，并在后续版本中删除。该参数将由 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 替代，即记录的冲突记录数和单个导入任务允许出现的冲突记录数的上限数保持一致。
 * 从 v6.3.0 开始，分区表默认使用[动态裁剪模式](/partitioned-table.md#动态裁剪模式)，相比静态裁剪模式，动态裁剪模式支持 IndexJoin、Plan Cache 等特性，性能表现更好。在未来版本中，静态裁剪模式将被废弃。
+* 配置项 [`concurrently-init-stats`](/tidb-configuration-file.md#concurrently-init-stats-从-v810-和-v752-版本开始引入) 用于控制初始化统计信息缓存的并发模式，并从 v8.2 开始默认启用。计划在后续版本中仅支持并发模式，因此该配置项将被移除。
+* 算子 `indexMergeJoin` 是表连接的一种方式，目前已经被其他连接方式取代，`indexMergeJoin` 计划在未来版本废弃。对应的系统变量[`tidb_enable_index_merge_join`](/system-variables.md#tidb_enable_index_merge_join) 也将被一同废弃。
 
 ## 改进提升
 
