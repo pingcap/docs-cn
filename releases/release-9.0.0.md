@@ -47,6 +47,20 @@ TiDB 版本：9.0.0
 ### SQL 功能
 
 
+### 数据库管理
+
+
+### 可观测性
+
+* SQL 跨可用区流量观测 [#57543](https://github.com/pingcap/tidb/issues/57543) @[nolouch](https://github.com/nolouch) @[yibin87](https://github.com/yibin87)
+
+    跨可用区 (Avaiable Zone) 部署能够提升集群的容灾能力。在云服务环境中，这种部署方式会产生额外的网络流量费用，例如亚马逊 AWS 会对跨区域和跨可用区的流量计费。对于运行在云服务上的 TiDB 集群来说，更精确监控和分析网络流量变得尤为重要。
+
+    自 v9.0.0 开始，TiDB 会记录 SQL 处理的网络流量，并区分跨可用区的流量。相关记录写入 [Statements 日志](/statement-summary-tables.md) 和 [慢日志](/identify-slow-queries.md)。这个特性主要用于协助用户跟踪 TiDB 集群内部的主要数据传输，分析跨区域的流量产生的原因，从而更好地理解和控制相关成本。
+    
+    需要注意的是，当前版本只观测 **查询在集群内** (TiDB, TiKV, TiFlash) 之间产生的网络传输，不包括 DML 和 DDL；另外，所记录的流量数据为解包后的流量，和实际物理流量会有差异。并不能作为网络计费的依据。
+
+    更多信息，请参考[用户文档]()。
 
 ### 安全
 
