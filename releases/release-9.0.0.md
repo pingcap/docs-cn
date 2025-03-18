@@ -132,8 +132,10 @@ TiDB 版本：9.0.0
 | 变量名  | 修改类型    | 描述 |
 |--------|------------------------------|------|
 | MAX_USER_CONNECTIONS | 新增 | 用于限制单个用户对单个 TiDB 节点可建立的连接数，避免单个用户消耗过多的 [token](tidb-configuration-file/#token-limit) 导致其他用户提交的请求得不到及时响应的问题 |
-|  |  |  |
-|  |  |  |
+| [`tidb_workload_repository_dest`](/system-variables.md#tidb_workload_repository_dest)| 新增 | 这变量用户设置 [Workload Repository](/workloadrepo.md) 的写入目标。 默认为空，不启用。 设置为 `table` 写入 TiKV 。|
+| [`tidb_workload_repository_snapshot_interval`](/system-variables.md#tidb_workload_repository_snapshot_interval) | 新增 | 设置 [Workload Repository](/workloadrepo.md) 统一快照的时间间隔。 |
+| [`tidb_workload_repository_active_sampling_interval`](/system-variables.md#tidb_workload_repository_active_sampling_interval) | 新增 | 设置 [Workload Repository](/workloadrepo.md) 快速时间快照的间隔。 |
+| [`tidb_workload_repository_retention_days`](/system-variables.md#tidb_workload_repository_retention_days) | 新增 | 设置 [Workload Repository](/workloadrepo.md) 中数据保存的天数。 |
 |  |  |  |
 
 
