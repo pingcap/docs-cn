@@ -10,7 +10,7 @@ summary: 本文介绍如何下载 TiDB 工具包。TiDB 工具包包含常用工
 
 ## TiDB 工具包下载
 
-TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具 Dumpling、数据导入工具 TiDB Lightning、备份恢复工具 BR。
+TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具 Dumpling、数据导入工具 TiDB Lightning、备份恢复工具 BR、数据一致性检查工具 sync-diff-inspector。
 
 > **建议：**
 >
