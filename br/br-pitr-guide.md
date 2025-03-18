@@ -81,7 +81,7 @@ pause-operator-pid: 64618
 
 如果错误发生在 TiKV 处，你可能还会额外看到 TiKV 上报的错误：
 
-- `error[store=*]`: 在 TiKV 处发生的错误代码。
+- `error[store=*]`: 在 TiKV 处发生的错误的错误代码。
 - `error-happen-at[store=*]`：在 TiKV 处发生错误的时间。
 - `error-message[store=*]`：在 TiKV 处发生错误时附带的消息。
 
