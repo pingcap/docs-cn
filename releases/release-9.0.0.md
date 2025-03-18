@@ -113,6 +113,14 @@ TiDB 版本：9.0.0
 
     更多信息，请参考[用户文档]()。
 
+* 优化 `execution info` 中指标显示 [#56232](https://github.com/pingcap/tidb/issues/56232) @[yibin87](https://github.com/yibin87)
+
+    [EXPLAIN ANALYZE](/sql-statements/sql-statement-explain-analyze.md) 会执行的 SQL 语句，并在 `execution info` 中记录执行过程的细节，同样的信息在[慢日志](/identify-slow-queries.md)中也会被捕捉。这些信息对分析和理解 SQL 的时间花费有至关重要的作用。
+
+    TiDB 在 v9.0.0 中对 `execution info` 的输出重新做了梳理和优化，使每个指标的表达更加准确。比如，`time` 表示算子执行的时钟时间，`loops` 是当前算子被父算子调用的次数，`total_time` 代表所有并发的累加时间。帮助使用者更加准确地理解 SQL 语句的执行过程，做出有针对性的优化策略。
+
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-explain-analyze.md)。
+
 ### 安全
 
 
