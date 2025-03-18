@@ -49,6 +49,13 @@ TiDB 版本：9.0.0
 
 ### 数据库管理
 
+* TiDB 索引推荐 [#12303](https://github.com/pingcap/tidb/issues/12303) @[qw4990](https://github.com/qw4990)
+
+    索引设计在数据库性能优化中扮演非常重要的作用。自 v9.0.0 起，TiDB 在内核中加入了索引推荐。索引推荐能够分析高频查询的模式并推荐最佳索引策略，协助用户快速实现数据库性能调优，同时降低技术团队的学习门槛。
+
+    通过 [`RECOMMEND INDEX`](/index-advisor.md) 语法，用户可以选择为某条 SQL 语句生成索引推荐，也可以自动读取历史负载中的高频 SQL 语句，做批量索引推荐。推荐结果保存在 `mysql.index_advisor_results` 中，可在后续随时查看。
+
+    更多信息，请参考[用户文档](/index-advisor.md)。
 
 ### 可观测性
 
