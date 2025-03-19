@@ -43,6 +43,46 @@ TiDB 版本：9.0.0
 
 更多信息，请参考[用户文档]( )。
 
+* 新增支持下推以下函数到 TiFlash [#59317](https://github.com/pingcap/tidb/issues/59317) @[guo-shaoge](https://github.com/guo-shaoge)  **tw@Oreoxmt**    <!--1918-->
+
+    * `TRUNCATE`
+
+  更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
+
+* 新增支持下推包含以下聚集函数的窗口函数到 TiFlash [#7376](https://github.com/pingcap/tiflash/issues/7376) @[xzhangxian1008](https://github.com/xzhangxian1008)  **tw@Oreoxmt**    <!--1382-->
+
+    * `MAX`
+    * `MIN`
+    * `COUNT`
+    * `SUM`
+    * `AVG`
+
+  更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
+
+* 支持下推以下日期函数到 TiKV [#59365](https://github.com/pingcap/tidb/issues/59365) @[gengliqi](https://github.com/gengliqi) **tw@Oreoxmt**  <!--1837-->
+
+    * `FROM_UNIXTIME()`
+    * `TIMESTAMPDIFF()`
+    * `UNIX_TIMESTAMP()`
+
+  更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
+
+
+* TiFlash 支持新的存储格式以提升字符串类型扫描效率 [#9673](https://github.com/pingcap/tiflash/issues/9673) @[JinheLin](https://github.com/JinheLin) **tw@qiancai**  <!--2066-->
+
+    v9.0.0 版本之前，TiFlash 存储字符串类型数据的格式在扫描时需要逐行读取，对于长度较小的字符串数值扫描效率不高。在 v9.0.0 版本，TiFlash 支持新的存储格式，对长度小于64字节的字符串数据改进了存储格式，提升了扫描效率，同时不会影响其他的数据存储和扫描效率。将 TiFlash 配置文件中的 `format_version` 设置为 8，可以在新的数据写入时，使用新的存储格式，同时不影响已有数据。
+
+    建议用户在升级前阅读 [TiFlash 升级帮助](/tiflash-upgrade-guide.md)。
+
+    更多信息，请参考[用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)。
+
+### 高可用
+
+* TiProxy 支持流量回放功能正式发布 [#642](https://github.com/pingcap/tiproxy/issues/642) @[djshow832](https://github.com/djshow832)   **tw@hfxsd**    <!--2062-->
+
+    v1.3.0 开始，TiProxy 以实验特性发布流量回放功能。在 v1.4.0 版本，TiProxy 正式发布流量回放功能。TiProxy 提供专有的 SQL 命令进行流量捕获和流量回放功能。用户可以更加方便的捕获 TiDB 生产集群中的访问流量，并在测试集群中按照指定的速率回放这些流量，完成业务验证。
+
+  更多信息，请参考[用户文档](/tiproxy/tiproxy-traffic-replay.md)。
 
 ### 稳定性
 引入了系统变量 MAX_USER_CONNECTIONS，用于限制不同用户可以建立的连接数 [#59203](https://github.com/pingcap/tidb/issues/59203) @[joccau](https://github.com/joccau) **tw@hfxsd**   <!--2017-->
