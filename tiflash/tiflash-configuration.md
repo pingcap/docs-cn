@@ -268,8 +268,6 @@ delta_index_cache_size = 0
     store-pool-size = 4
     ## 控制处理 snapshot 的线程数，默认为 2。设为 0 则关闭多线程优化
     snap-handle-pool-size = 2
-    ## 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 "4ms"，设为 "0ms" 则关闭该优化。
-    store-batch-retry-recv-timeout = "4ms"
 
 [security]
     ## 从 v5.0 引入，控制是否开启日志脱敏
