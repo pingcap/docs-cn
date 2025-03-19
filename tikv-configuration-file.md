@@ -471,7 +471,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 可选值：
     + `1`：使用 API V1。不对客户端传入的数据进行编码，而是原样存储。在 v6.1.0 之前的版本，TiKV 都使用 API V1。
     + `2`：使用 API V2：
-        + 数据采用[多版本并发控制 (MVCC)](/glossary.md#multi-version-concurrency-control-mvcc) 方式存储，其中时间戳由 tikv-server 从 PD 获取（即 TSO）。
+        + 数据采用多版本并发控制 (MVCC) 方式存储，其中时间戳由 tikv-server 从 PD 获取（即 TSO）。
         + 数据根据使用方式划分范围，支持单一集群 TiDB、事务 KV、RawKV 应用共存。
         + 需要同时设置 `storage.enable-ttl = true`。由于 API V2 支持 TTL 特性，因此强制要求打开 [`enable-ttl`](#enable-ttl) 以避免这个参数出现歧义。
         + 启用 API V2 后需要在集群中额外部署至少一个 tidb-server 以回收过期数据。该 tidb-server 可同时提供数据库读写服务。可以部署多个 tidb-server 以保证高可用。
