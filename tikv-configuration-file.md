@@ -381,7 +381,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 > **警告：**
 >
 > - 你**只能**在部署新的 TiKV 集群时将 `enable-ttl` 的值设置为 `true` 或 `false`，**不能**在已有的 TiKV 集群中修改该配置项的值。由于该配置项为 `true` 和 `false` 的 TiKV 集群所存储的数据格式不相同，如果你在已有的 TiKV 集群中修改该配置项的值，会造成不同格式的数据存储在同一个集群，导致重启对应的 TiKV 集群时 TiKV 报 "can't enable ttl on a non-ttl instance" 错误。
-> - 你**只能**在 TiKV 集群中使用 `enable-ttl`，**不能**在有 TiDB 节点的集群中使用该配置项（即在此类集群中把 `enable-ttl` 设置为 `true`），否则会导致数据损坏、TiDB 集群升级失败等严重后果。
+> - 你**只能**在 TiKV 集群中使用 `enable-ttl`。只有在配置了 `storage.api-version = 2` 的情况下，才能在有 TiDB 节点的集群中使用该配置项（即在此类集群中把 `enable-ttl` 设置为 `true`），否则会导致数据损坏、TiDB 集群升级失败等严重后果。
 
 + TTL 即 Time to live。数据超过 TTL 时间后会被自动删除。用户需在客户端写入请求中指定 TTL。不指定 TTL 即表明相应数据不会被自动删除。
 + 默认值：false
@@ -406,7 +406,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
     + `1`：使用 API V1。不对客户端传入的数据进行编码，而是原样存储。在 v6.1.0 之前的版本，TiKV 都使用 API V1。
     + `2`：使用 API V2：
         + 数据采用 MVCC（Multi Version Concurrency Control）方式存储，其中时间戳由 tikv-server 从 PD 获取（即 TSO）。
-        + 需要同时设置 `storage.enable-ttl = true`。由于 API V2 支持 TTL 特性，因此强制要求打开 `enable-ttl` 以避免这个参数出现歧义。
+        + 需要同时设置 `storage.enable-ttl = true`。由于 API V2 支持 TTL 特性，因此强制要求打开 [`enable-ttl`](#enable-ttl) 以避免这个参数出现歧义。
         + 启用 API V2 后需要在集群中额外部署至少一个 tidb-server 以回收过期数据。注意该 tidb-server 不可提供读写服务。可以部署多个 tidb-server 以保证高可用。
         + 需要客户端的支持。请参考对应客户端的 API V2 使用说明。
 + 默认值：1
