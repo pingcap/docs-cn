@@ -5,11 +5,11 @@ summary: TiDB 数据库中 TRAFFIC REPLAY 的使用概况。
 
 # TRAFFIC REPLAY
 
-TiDB v9.0.0 引入了 `TRAFFIC REPLAY` 语法，用于向集群中所有 TiProxy 实例发送请求，让 TiProxy 从流量文件回放流量到 TiDB。
+TiDB v9.0.0 引入了 `TRAFFIC REPLAY` 语法，用于向集群中所有 [TiProxy](/tiproxy/tiproxy-overview.md) 实例发送请求，让 TiProxy 从流量文件回放流量到 TiDB。
 
 回放流量需要当前用户具有 `SUPER` 或 [`TRAFFIC_REPLAY_ADMIN`](/privilege-management.md#动态权限) 权限。
 
-`TRAFFIC REPLAY` 有以下选项：
+`TRAFFIC REPLAY` 支持以下选项：
 
 - `USER`：（必填）指定回放时使用的 TiDB 用户名。
 - `PASSWORD`：（可选）指定以上用户名的密码，默认为空字符串 `""`。
@@ -38,25 +38,25 @@ TrafficReplayOpt ::=
 从 TiProxy 实例的本地 `/tmp/traffic` 目录回放流量，使用 TiDB 用户 `u1` 回放，其密码为 `"123456"`：
 
 ```sql
-TRAFFIC REPLAY FROM "/tmp/traffic" USER="u1" PASSWORD="123456"
+TRAFFIC REPLAY FROM "/tmp/traffic" USER="u1" PASSWORD="123456";
 ```
 
 从存放在 S3 的流量文件回放流量：
 
 ```sql
-TRAFFIC REPLAY FROM "s3://external/traffic?access-key=${access-key}&secret-access-key=${secret-access-key}" USER="u1" PASSWORD="123456"
+TRAFFIC REPLAY FROM "s3://external/traffic?access-key=${access-key}&secret-access-key=${secret-access-key}" USER="u1" PASSWORD="123456";
 ```
 
 2 倍速回放流量：
 
 ```sql
-TRAFFIC REPLAY FROM "/tmp/traffic" USER="u1" PASSWORD="123456" SPEED=2
+TRAFFIC REPLAY FROM "/tmp/traffic" USER="u1" PASSWORD="123456" SPEED=2;
 ```
 
 仅回放只读语句，不回放写入语句：
 
 ```sql
-TRAFFIC REPLAY FROM "/tmp/traffic" USER="u1" PASSWORD="123456" READONLY=true
+TRAFFIC REPLAY FROM "/tmp/traffic" USER="u1" PASSWORD="123456" READONLY=true;
 ```
 
 ## MySQL 兼容性

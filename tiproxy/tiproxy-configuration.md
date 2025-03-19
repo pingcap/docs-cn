@@ -252,7 +252,7 @@ TLS 对象字段：
 
 - 必须设置 `ca` 或 `skip-ca` 来跳过验证服务器证书。
 - 可选：可以设置 `cert` 或 `key` 来通过服务器端客户端验证。
-- 无用字段：`cert-allowed-cn`，`auto-certs`，`rsa-key-size`，`autocert-expire-duration`。
+- 无用字段：`cert-allowed-cn`、`auto-certs`、`rsa-key-size`、`autocert-expire-duration`。
 
 对服务器 TLS 对象：
 

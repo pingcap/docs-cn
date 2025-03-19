@@ -5,13 +5,13 @@ summary: TiDB 数据库中 SHOW TRAFFIC JOBS 的使用概况。
 
 # SHOW TRAFFIC JOBS
 
-TiDB v9.0.0 引入了 `SHOW TRAFFIC JOBS` 语法，用于查看集群中所有 TiProxy 的流量捕获或回放任务。每行代表一台 TiProxy 实例的一个任务。每台 TiProxy 实例最多保存最近的 10 条任务。
+TiDB v9.0.0 引入了 `SHOW TRAFFIC JOBS` 语法，用于查看集群中所有 [TiProxy](/tiproxy/tiproxy-overview.md) 的流量捕获或回放任务。输出结果中，每行代表一台 TiProxy 实例的一个任务。每台 TiProxy 实例最多保存最近的 10 个任务。
 
-当前用户拥有的权限不同，执行该语句显示结果也不同。
+执行该语句的结果取决于当前用户的权限：
 
-- 如果用户有 [`TRAFFIC_CAPTURE_ADMIN`](/privilege-management.md#动态权限) 权限，执行该语句显示流量捕获任务。
-- 如果用户有 [`TRAFFIC_REPLAY_ADMIN`](/privilege-management.md#动态权限) 权限，执行该语句显示流量回放任务。
-- 如果用户有 `SUPER` 权限或同时具有上述两种权限，执行该语句同时显示流量捕获和流量回放任务。
+- 具有 [`TRAFFIC_CAPTURE_ADMIN`](/privilege-management.md#动态权限) 权限的用户可查看流量捕获任务。
+- 具有 [`TRAFFIC_REPLAY_ADMIN`](/privilege-management.md#动态权限) 权限的用户可查看流量回放任务。
+- 具有 `SUPER` 权限或同时拥有上述两种权限的用户可同时查看流量捕获和流量回放任务。
 
 `SHOW TRAFFIC JOBS` 返回以下列：
 
@@ -38,7 +38,7 @@ TrafficStmt ::=
 查看流量捕获或回放任务：
 
 ```sql
-SHOW TRAFFIC JOBS
+SHOW TRAFFIC JOBS;
 ```
 
 下面输出示例表示有 2 台 TiProxy 正在捕获流量，进度都为 45%：
