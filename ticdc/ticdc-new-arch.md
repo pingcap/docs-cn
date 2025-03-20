@@ -18,7 +18,7 @@ TiCDC 新架构通过重新设计核心组件和优化数据处理流程，显�
 
 ## 架构设计
 
-![TiCDC New Architecture](/media/ticdc/ticdc-new-arch-1.jpg)
+![TiCDC New Architecture](/media/ticdc/ticdc-new-arch-1.png)
 
 TiCDC 新架构由 Log Service 和 Downstream Adapter 两大核心组件构成。
 
@@ -43,7 +43,7 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 | **扩展能力**              | 受限于 CPU 数量，扩展性差                | 通过多线程消费和事件队列，可扩展性强     |
 | **Changefeed 干扰问题**   | 中央控制节点（Owner）会造成 Changefeed 之间的干扰 | 事件驱动模式避免了 Changefeed 之间的干扰 |
 
-![TiCDC New Architecture](/media/ticdc/ticdc-new-arch-2.jpg)
+![TiCDC New Architecture](/media/ticdc/ticdc-new-arch-2.png)
 
 ## 使用限制
 
