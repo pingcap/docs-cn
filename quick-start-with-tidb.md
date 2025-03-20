@@ -303,7 +303,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 部署主机软件和环境要求如下：
 
 - 部署需要使用部署主机的 root 用户及密码
-- 部署主机[关闭防火墙](/check-before-deployment.md#检测及关闭目标部署机器的防火墙)或者开放 TiDB 集群的节点间所需端口
+- 部署主机[关闭防火墙](/check-before-deployment.md#检测目标部署机器的防火墙)或者开放 TiDB 集群的节点间所需端口
 - 目前 TiUP Cluster 支持在 x86_64（AMD64）和 ARM 架构上部署 TiDB 集群
     - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
     - 在 ARM 架构下，建议使用 CentOS 7.6 (1810) 版本 Linux 操作系统
