@@ -1067,7 +1067,7 @@ raftstore 相关的配置项。
 ### `inspect-cpu-util-thd` <span class="version-mark">从 v7.6.0 版本开始引入</span>
 
 + TiKV 进行慢节点检测时判定节点 CPU 是否处于繁忙状态的阈值。
-+ 取值范围：`[0%, 100%]`
++ 取值范围：`[0, 1]`
 + 默认值：0.4（即 40%）
 
 ### `inspect-kvdb-interval` <span class="version-mark">从 v8.1.2 版本开始引入</span>
@@ -1083,7 +1083,7 @@ raftstore 相关的配置项。
 ### `request-voter-replicated-index-interval` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 + 控制 Witness 节点定期从投票节点获取已复制的 Raft 日志位置的时间间隔。
-+ 默认值：5m
++ 默认值：5m （即 5 分钟）。
 
 ### `slow-trend-unsensitive-cause` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
