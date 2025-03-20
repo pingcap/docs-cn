@@ -55,7 +55,7 @@ checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 - `start`: Log Backup 的起始时间戳。
 - `end`: Log Backup 的结束时间戳，目前这个字段并不会生效。
 - `storage`: Log Backup 的外部存储的 URI。
-- `speed(est.)`: Log Backup 目前的流量。这个值是取最近的数秒内的采样估算而成。如需更加精确的流量统计，你可以前往监控面板 `tikv-details` 下的 `Log Backup` 处查看。
+- `speed(est.)`: Log Backup 目前的流量。这个值是取最近的数秒内的采样估算而成。如需更加精确的流量统计，你可以通过 Grafana 的 `tikv-details` 监控面板中的 `Log Backup` 行查看。
 - `checkpoint[global]`: Log Backup 目前的进度。你可以使用 PiTR 恢复到这个时间戳前的时间点。
 
 如果 Log Backup 作业暂停，`log status` 会输出额外的字段来展示暂停的细节，例如：
