@@ -1082,7 +1082,7 @@ raftstore 相关的配置项。
 ### `request-voter-replicated-index-interval` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 + 控制 Witness 节点定期从投票节点获取已复制的 Raft 日志位置的时间间隔。
-+ 默认值：5分钟
++ 默认值：5m
 
 ### `slow-trend-unsensitive-cause` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
