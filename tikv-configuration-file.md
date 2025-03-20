@@ -218,9 +218,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：60s
 + 最小值：1s
 
-### end-point-memory-quota <span class="version-mark">从 v8.2.0 版本开始引入</span>
+### `end-point-memory-quota` <span class="version-mark">从 v8.2.0 版本开始引入</span>
 
-* TiKV Coprocessor 请求可以使用的内存上限，超过该值后后续的 Coprocessor 请求将被拒绝并报错 "server is busy"。
+* TiKV Coprocessor 请求可以使用的内存上限。超过该值后，后续的 Coprocessor 请求将被拒绝，并报错 "server is busy"。
 * 默认值：系统总内存大小的 45%。如果超过 500 MiB，则默认值为 500 MiB。
 
 ### `snap-io-max-bytes-per-sec`
@@ -507,7 +507,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 > - 由于 API V1 和 API V2 底层存储格式不同，因此**仅当** TiKV 中只有 TiDB 数据时，可以平滑启用或关闭 API V2。其他情况下，需要新建集群，并使用 [TiKV Backup & Restore](https://tikv.org/docs/latest/concepts/explore-tikv-features/backup-restore-cn/) 工具进行数据迁移。
 > - 启用 API V2 后，**不能**将 TiKV 集群回退到 v6.1.0 之前的版本，否则可能导致数据损坏。
 
-## txn-status-cache-capacity <span class="version-mark">从 v7.6.0 版本开始引入</span>
+## `txn-status-cache-capacity` <span class="version-mark">从 v7.6.0 版本开始引入</span>
 
 + 设置 TiKV 内的事务状态 cache 的容量。不建议修改该参数。
 + 默认值：5120000
@@ -1091,7 +1091,7 @@ raftstore 相关的配置项。
 
 ### `slow-trend-unsensitive-result` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
-+ TiKV 采用 SlowStrend 检测算法时，QPS 侧检测的敏感性。值越高表示敏感度越低。
++ TiKV 采用 SlowTrend 检测算法时，QPS 侧检测的敏感性。值越高表示敏感度越低。
 + 默认值：0.5
 
 ## coprocessor
@@ -2085,7 +2085,8 @@ Raft Engine 相关的配置项。
 
 ### `compression-level` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
-+ 设置 raft-engine 在写 raft log 文件时所采用的 lz4 压缩算法的压缩效率，范围 `[1, 16]`，值越低表示压缩速率越高，但压缩率越低。
++ 设置 Raft Engine 在写 Raft 日志文件时所采用的 lz4 压缩算法的压缩效率。值越低表示压缩速率越高，但压缩率越低。
++ 取值范围：`[1, 16]`
 + 默认值：1
 
 ## security
