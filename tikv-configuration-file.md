@@ -1071,7 +1071,7 @@ raftstore 相关的配置项。
 
 + TiKV 进行慢节点检测时判定节点 CPU 是否处于繁忙状态的阈值。
 + 取值范围：`[0%, 100%]`
-+ 默认值：40%
++ 默认值：0.4（即 40%）
 
 ### `inspect-kvdb-interval` <span class="version-mark">从 v8.1.2 版本开始引入</span>
 
