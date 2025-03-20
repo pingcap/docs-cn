@@ -45,6 +45,23 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 
 ![TiCDC New Architecture](/media/ticdc/ticdc-new-arch-2.jpg)
 
+## 使用限制
+
+作为实验性特性，TiCDC v9.0 的新架构尚未完全实现旧架构中的所有功能，这些功能将在后续的 GA 版本中完整实现，具体包括：
+
+- [拆分 Update 事件](/ticdc/ticdc-split-update-behavior.md)
+- [灾难场景的最终一致性复制](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制)
+- 拆分大事务
+- [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
+- [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
+- [TiCDC Debezium Protocol](/ticdc/ticdc-debezium.md)
+- [TiCDC Simple Protocol](/ticdc/ticdc-simple-protocol.md)
+- [Event Filter 事件过滤器](/ticdc/ticdc-filter.md#event-filter-事件过滤器-从-v620-版本开始引入)
+- [TiCDC 单行数据正确性校验](/ticdc/ticdc-integrity-check.md)
+- [TiCDC 双向复制](/ticdc/ticdc-bidirectional-replication.md)
+- [同步数据到 Pulsar](/ticdc/ticdc-sink-to-pulsar.md)
+- [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
+
 ## 部署指南
 
 TiCDC 新架构仅支持 v7.5.0 或者以上版本的 TiDB 集群，使用之前需要确保 TiDB 集群版本满足要求。
@@ -141,18 +158,3 @@ TiCDC 新架构监控面板已集成到 Grafana 面板中，其名称为 TiCDC-N
 ## 注意事项
 
 - 在 TiCDC 的老架构中，DDL 的同步是完全串行进行的，因此同步进度仅需通过 Changefeed 的 `CheckpointTs` 来标识。然而，在新架构中，为了提高 DDL 同步效率，TiCDC 会尽可能并行同步不同表的 DDL 变更。为了在下游 MySQL 兼容数据库中准确记录各表的 DDL 同步进度，TiCDC 新架构会在下游数据库中创建一张名为 `tidb_cdc.ddl_ts_v1` 的表，专门用于存储 Changefeed 的 DDL 同步进度信息。
-
-- 作为实验性特性，TiCDC v9.0 的新架构尚未完全实现旧架构中的所有功能，这些功能将在后续的 GA 版本中完整实现，具体包括：
-
-    - [拆分 Update 事件](/ticdc/ticdc-split-update-behavior.md)
-    - [灾难场景的最终一致性复制](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制)
-    - 拆分大事务
-    - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
-    - [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
-    - [TiCDC Debezium Protocol](/ticdc/ticdc-debezium.md)
-    - [TiCDC Simple Protocol](/ticdc/ticdc-simple-protocol.md)
-    - [Event Filter 事件过滤器](/ticdc/ticdc-filter.md#event-filter-事件过滤器-从-v620-版本开始引入)
-    - [TiCDC 单行数据正确性校验](/ticdc/ticdc-integrity-check.md)
-    - [TiCDC 双向复制](/ticdc/ticdc-bidirectional-replication.md)
-    - [同步数据到 Pulsar](/ticdc/ticdc-sink-to-pulsar.md)
-    - [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
