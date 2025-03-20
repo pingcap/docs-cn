@@ -378,6 +378,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + ssl 私钥文件路径，用于用 tls 连接 TiKV/PD
 + 默认值：""
 
+### `cluster-verify-cn`
+
++ 客户端提供的证书中，可接受的 X.509 通用名称列表。仅当提供的通用名称与列表中的条目之一完全匹配时，才会允许其请求。
++ 默认值：[]，表示禁用客户端证书 CN 检查。
+
 ### `spilled-file-encryption-method`
 
 + 内存落盘文件的加密方式。
@@ -413,13 +418,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `session-token-signing-cert` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-+ 证书文件路径，用于 [TiProxy](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-overview) 的会话迁移。
++ 证书文件路径，用于 [TiProxy](https://docs.pingcap.com/zh/tidb/stable/tiproxy-overview) 的会话迁移。
 + 默认值：""
 + 空值将导致 TiProxy 会话迁移失败。要启用会话迁移，所有的 TiDB 节点必须设置相同的证书和密钥。因此你应该在每个 TiDB 节点上存储相同的证书和密钥。
 
 ### `session-token-signing-key` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-+ 密钥文件路径，用于 [TiProxy](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-overview) 的会话迁移。
++ 密钥文件路径，用于 [TiProxy](https://docs.pingcap.com/zh/tidb/stable/tiproxy-overview) 的会话迁移。
 + 默认值：""
 + 参阅 [`session-token-signing-cert`](#session-token-signing-cert-从-v640-版本开始引入) 的描述。
 
