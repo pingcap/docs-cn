@@ -31,7 +31,11 @@ summary: 介绍 TiDB 在 SaaS 多租户场景最佳实践。
 ### 统计信息收集
 
 从 TiDB v8.4.0 开始，TiDB 引入了 [tidb_auto_analyze_concurrency](/system-variables.md#tidb_auto_analyze_concurrency-从-v840-版本开始引入) 系统变量用来控制单个自动统计信息收集任务内部的并发度。多表场景下，你可以按需提升该并发度，以提高自动分析的吞吐量。随着并发值的增加，自动分析的吞吐量和 TiDB Owner 节点的 CPU 使用率会线性增加。在实际测试中，使用并发值 16，可以在一分钟内自动分析 320 张表（每张表有 1 万行数据、4 列和 1 个索引），消耗 TiDB Owner 节点一个 CPU 核心资源。
-
+  - [tidb_auto_build_stats_concurrency](/system-variables/#tidb_auto_build_stats_concurrency-从-v650-版本开始引入) 和 [tidb_build_sampling_stats_concurrency](system-variables/#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入) 影响 TiDB 统计信息的构建并发度，其乘积决定实际并发度，需根据场景调整：
+    - 分区表多：优先提高 tidb_auto_build_stats_concurrency。
+    - 列较多：优先提高 tidb_build_sampling_stats_concurrency。
+    - 并发限制：两者乘积不应超过 CPU 核心数，避免过度占用资源。
+    - TiDB v8.5 或更高版本：还需考虑 [tidb_auto_analyze_concurrency](/system-variables/#tidb_auto_analyze_concurrency-从-v840-版本开始引入)，三者乘积不超过 CPU 核心数。
 ### 系统表查询
 
 在系统表的查询中添加 TABLE_SCHEMA 和 TABLE_NAME 或 TIDB_TABLE_ID 等条件，避免扫描集群中大量的数据库和表信息，从而提高查询速度并减少资源消耗。例如在 300 万表的场景下，执行 `select count(*) from information_schema.tables` 消耗约 8GB 内存；执行 `select count(*) from information_schema.views` 需要约 20 分钟。
