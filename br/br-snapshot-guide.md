@@ -148,6 +148,8 @@ tiup br restore full \
 
 ### 恢复 `mysql` 数据库下的表
 
+在使用快照备份功能备份集群时，BR 会将系统表备份为库名带有 `__TiDB_BR_Temporary_` 前缀的表。例如，`mysql.user` 表会被备份为 `__TiDB_BR_Temporary_mysql.user`。因此，在执行快照恢复时，BR 会首先恢复这些带有 `__TiDB_BR_Temporary_` 前缀的表，避免与目标集群中现有的系统表数据发生冲突。在恢复系统表时，BR 会通过 `REPLACE INTO` 语句将数据从带有 `__TiDB_BR_Temporary_` 前缀的表写入对应的系统表。
+
 - `br` v5.1.0 开始，快照备份时默认自动备份 **mysql schema 下的系统表数据**，但恢复数据时默认不恢复系统表数据。
 - `br` v6.2.0 开始，增加恢复参数 `--with-sys-table` 支持恢复数据的同时恢复**部分系统表相关数据**。
 - `br` v7.6.0 开始，恢复参数 `--with-sys-table` 默认开启，即默认支持恢复数据的同时恢复**部分系统表相关数据**。
@@ -172,15 +174,24 @@ tiup br restore full \
 
 - 统计信息表 (`mysql.stat_*`) (但可以恢复统计信息，详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))
 - 系统变量表 (`mysql.tidb`、`mysql.global_variables`)
-- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/snap_client/systable_restore.go#L31)
+- 其他系统表
 
 ```
 +-----------------------------------------------------+
+| advisory_locks                                      |
+| analyze_jobs                                        |
+| analyze_options                                     |
 | capture_plan_baselines_blacklist                    |
 | column_stats_usage                                  |
+| dist_framework_meta                                 |
 | gc_delete_range                                     |
 | gc_delete_range_done                                |
 | global_variables                                    |
+| help_topic                                          |
+| index_advisor_results                               |
+| plan_replayer_status                                |
+| plan_replayer_task                                  |
+| request_unit_by_group                               |
 | stats_buckets                                       |
 | stats_extended                                      |
 | stats_feedback                                      |
@@ -191,7 +202,27 @@ tiup br restore full \
 | stats_meta_history                                  |
 | stats_table_locked                                  |
 | stats_top_n                                         |
+| table_cache_meta                                    |
 | tidb                                                |
+| tidb_background_subtask                             |
+| tidb_background_subtask_history                     |
+| tidb_ddl_history                                    |
+| tidb_ddl_job                                        |
+| tidb_ddl_notifier                                   |
+| tidb_ddl_reorg                                      |
+| tidb_global_task                                    |
+| tidb_global_task_history                            |
+| tidb_import_jobs                                    |
+| tidb_mdl_info                                       |
+| tidb_mdl_view                                       |
+| tidb_pitr_id_map                                    |
+| tidb_runaway_queries                                |
+| tidb_runaway_watch                                  |
+| tidb_runaway_watch_done                             |
+| tidb_timers                                         |
+| tidb_ttl_job_history                                |
+| tidb_ttl_table_status                               |
+| tidb_ttl_task                                       |
 +-----------------------------------------------------+
 ```
 
