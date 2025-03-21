@@ -35,21 +35,21 @@ TiDB 版本：9.0.0
 ### 可扩展性
 
 
-
 ### 性能
-在几十万甚至上百万用户数的场景下，创建用户,修改用户信息的性能提升了 77 倍  [#55563](https://github.com/pingcap/tidb/issues/55563) @[tiancaiamao](https://github.com/tiancaiamao)  **tw@hfxsd**    <!--1941-->
 
-之前的版本，当集群的用户数超过 20 万时，创建修改用户的性能 QPS 会降低到 1。在一些 SaaS 场景，如果需要创建百万个用户，以及定期批量修改用户的密码信息，需要 2 天甚至更久的时间，对于一些 SaaS 业务是不可接受的。v9.0 对这部分 DCL 的性能进行了优化，创建 200万用户仅需 37 分钟，大大提升了 DCL 语句的执行性能，提升了 TiDB 在此类 SaaS 场景的用户体验。
+* 在几十万甚至上百万用户数的场景下，创建用户,修改用户信息的性能提升了 77 倍  [#55563](https://github.com/pingcap/tidb/issues/55563) @[tiancaiamao](https://github.com/tiancaiamao)  **tw@hfxsd**<!--1941-->
 
-更多信息，请参考[用户文档]( )。
+    之前的版本，当集群的用户数超过 20 万时，创建修改用户的性能 QPS 会降低到 1。在一些 SaaS 场景，如果需要创建百万个用户，以及定期批量修改用户的密码信息，需要 2 天甚至更久的时间，对于一些 SaaS 业务是不可接受的。v9.0 对这部分 DCL 的性能进行了优化，创建 200万用户仅需 37 分钟，大大提升了 DCL 语句的执行性能，提升了 TiDB 在此类 SaaS 场景的用户体验。
 
-* 新增支持下推以下函数到 TiFlash [#59317](https://github.com/pingcap/tidb/issues/59317) @[guo-shaoge](https://github.com/guo-shaoge)  **tw@Oreoxmt**    <!--1918-->
+    更多信息，请参考[用户文档]( )。
+
+* 新增支持下推以下函数到 TiFlash [#59317](https://github.com/pingcap/tidb/issues/59317) @[guo-shaoge](https://github.com/guo-shaoge)  **tw@Oreoxmt**<!--1918-->
 
     * `TRUNCATE`
 
-  更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
+    更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
-* 新增支持下推包含以下聚集函数的窗口函数到 TiFlash [#7376](https://github.com/pingcap/tiflash/issues/7376) @[xzhangxian1008](https://github.com/xzhangxian1008)  **tw@Oreoxmt**    <!--1382-->
+* 新增支持下推包含以下聚集函数的窗口函数到 TiFlash [#7376](https://github.com/pingcap/tiflash/issues/7376) @[xzhangxian1008](https://github.com/xzhangxian1008)  **tw@Oreoxmt**<!--1382-->
 
     * `MAX`
     * `MIN`
@@ -59,7 +59,7 @@ TiDB 版本：9.0.0
 
   更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
-* 支持下推以下日期函数到 TiKV [#59365](https://github.com/pingcap/tidb/issues/59365) @[gengliqi](https://github.com/gengliqi) **tw@Oreoxmt**  <!--1837-->
+* 支持下推以下日期函数到 TiKV [#59365](https://github.com/pingcap/tidb/issues/59365) @[gengliqi](https://github.com/gengliqi) **tw@Oreoxmt**<!--1837-->
 
     * `FROM_UNIXTIME()`
     * `TIMESTAMPDIFF()`
@@ -67,8 +67,7 @@ TiDB 版本：9.0.0
 
   更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
 
-
-* TiFlash 支持新的存储格式以提升字符串类型扫描效率 [#9673](https://github.com/pingcap/tiflash/issues/9673) @[JinheLin](https://github.com/JinheLin) **tw@qiancai**  <!--2066-->
+* TiFlash 支持新的存储格式以提升字符串类型扫描效率 [#9673](https://github.com/pingcap/tiflash/issues/9673) @[JinheLin](https://github.com/JinheLin) **tw@qiancai**<!--2066-->
 
     v9.0.0 版本之前，TiFlash 存储字符串类型数据的格式在扫描时需要逐行读取，对于长度较小的字符串数值扫描效率不高。在 v9.0.0 版本，TiFlash 支持新的存储格式，对长度小于64字节的字符串数据改进了存储格式，提升了扫描效率，同时不会影响其他的数据存储和扫描效率。将 TiFlash 配置文件中的 `format_version` 设置为 8，可以在新的数据写入时，使用新的存储格式，同时不影响已有数据。
 
@@ -78,26 +77,28 @@ TiDB 版本：9.0.0
 
 ### 高可用
 
-* TiProxy 支持流量回放功能正式发布 [#642](https://github.com/pingcap/tiproxy/issues/642) @[djshow832](https://github.com/djshow832)   **tw@hfxsd**    <!--2062-->
+* TiProxy 支持流量回放功能正式发布 [#642](https://github.com/pingcap/tiproxy/issues/642) @[djshow832](https://github.com/djshow832)   **tw@hfxsd**<!--2062-->
 
     v1.3.0 开始，TiProxy 以实验特性发布流量回放功能。在 v1.4.0 版本，TiProxy 正式发布流量回放功能。TiProxy 提供专有的 SQL 命令进行流量捕获和流量回放功能。用户可以更加方便的捕获 TiDB 生产集群中的访问流量，并在测试集群中按照指定的速率回放这些流量，完成业务验证。
 
-  更多信息，请参考[用户文档](/tiproxy/tiproxy-traffic-replay.md)。
+    更多信息，请参考[用户文档](/tiproxy/tiproxy-traffic-replay.md)。
 
 ### 稳定性
-引入了系统变量 MAX_USER_CONNECTIONS，用于限制不同用户可以建立的连接数 [#59203](https://github.com/pingcap/tidb/issues/59203) @[joccau](https://github.com/joccau) **tw@hfxsd**   <!--2017-->
 
-从 v9.0 版本开始，用户可通过设置系统变量 MAX_USER_CONNECTIONS ，来限制单个用户对单个 TiDB 节点可建立的连接数，避免单个用户消耗过多的 [token](tidb-configuration-file/#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 
+* 引入了系统变量 `MAX_USER_CONNECTIONS`，用于限制不同用户可以建立的连接数 [#59203](https://github.com/pingcap/tidb/issues/59203) @[joccau](https://github.com/joccau) **tw@hfxsd**<!--2017-->
 
-更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/dev/partitioned-table/#全局索引/)。
+    从 v9.0 版本开始，用户可通过设置系统变量 `MAX_USER_CONNECTIONS` ，来限制单个用户对单个 TiDB 节点可建立的连接数，避免单个用户消耗过多的 [token](tidb-configuration-file/#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 
+
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/dev/partitioned-table/#全局索引/)。
 
 
 ### SQL 功能
-支持对分区表的非唯一列创建全局索引  [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014) @[mjonss](https://github.com/mjonss) **tw@qiancai**  <!--2057-->
 
-从 v8.3 版本开始，用户可以在分区表创建全局索引来提升查询性能，但是全局索引仅支持对唯一的列创建。从 v9.0 开始，解除了该限制，用户可以对分区表非唯一的列创建全局索引，提升了全局索引的易用性。
+* 支持对分区表的非唯一列创建全局索引  [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014) @[mjonss](https://github.com/mjonss) **tw@qiancai**<!--2057-->
 
-更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/dev/partitioned-table/#全局索引/)。
+    从 v8.3 版本开始，用户可以在分区表创建全局索引来提升查询性能，但是全局索引仅支持对唯一的列创建。从 v9.0 开始，解除了该限制，用户可以对分区表非唯一的列创建全局索引，提升了全局索引的易用性。
+
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/dev/partitioned-table/#全局索引/)。
 
 ### 数据库管理
 
