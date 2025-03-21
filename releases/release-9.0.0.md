@@ -102,7 +102,7 @@ TiDB 版本：9.0.0
 
 ### 数据库管理
 
-* TiDB 索引推荐 [#12303](https://github.com/pingcap/tidb/issues/12303) @[qw4990](https://github.com/qw4990)
+* TiDB 索引推荐 [#12303](https://github.com/pingcap/tidb/issues/12303) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt**<!--2081-->
 
     索引设计在数据库性能优化中扮演非常重要的作用。自 v9.0.0 起，TiDB 在内核中加入了索引推荐。索引推荐能够分析高频查询的模式并推荐最佳索引策略，协助用户快速实现数据库性能调优，同时降低技术团队的学习门槛。
 
@@ -112,7 +112,7 @@ TiDB 版本：9.0.0
 
 ### 可观测性
 
-* TiDB Workload Repository [#58247](https://github.com/pingcap/tidb/issues/58247) @[xhebox](https://github.com/xhebox) @[henrybw](https://github.com/henrybw) @[wddevries](https://github.com/wddevries)
+* TiDB Workload Repository [#58247](https://github.com/pingcap/tidb/issues/58247) @[xhebox](https://github.com/xhebox) @[henrybw](https://github.com/henrybw) @[wddevries](https://github.com/wddevries) **tw@lilin90**<!--1953-->
 
     很多高频更新的负载指标和状态信息被维护在实例的内存中，这些历史负载数据可以作为数据库的一部分持久化下来。主要用于以下目的：
     
@@ -144,7 +144,7 @@ TiDB 版本：9.0.0
 
     更多信息，请参考[用户文档](/workloadrepo.md)。
 
-* SQL 跨可用区流量观测 [#57543](https://github.com/pingcap/tidb/issues/57543) @[nolouch](https://github.com/nolouch) @[yibin87](https://github.com/yibin87)
+* SQL 跨可用区流量观测 [#57543](https://github.com/pingcap/tidb/issues/57543) @[nolouch](https://github.com/nolouch) @[yibin87](https://github.com/yibin87) **tw@Oreoxmt**<!--2021-->
 
     跨可用区 (Avaiable Zone) 部署能够提升集群的容灾能力。在云服务环境中，这种部署方式会产生额外的网络流量费用，例如亚马逊 AWS 会对跨区域和跨可用区的流量计费。对于运行在云服务上的 TiDB 集群来说，更精确监控和分析网络流量变得尤为重要。
 
@@ -154,7 +154,7 @@ TiDB 版本：9.0.0
 
     更多信息，请参考[用户文档]()。
 
-* 优化 `execution info` 中指标显示 [#56232](https://github.com/pingcap/tidb/issues/56232) @[yibin87](https://github.com/yibin87)
+* 优化 `execution info` 中指标显示 [#56232](https://github.com/pingcap/tidb/issues/56232) @[yibin87](https://github.com/yibin87) **tw@hfxsd**<!--1697-->
 
     [EXPLAIN ANALYZE](/sql-statements/sql-statement-explain-analyze.md) 会执行的 SQL 语句，并在 `execution info` 中记录执行过程的细节，同样的信息在[慢日志](/identify-slow-queries.md)中也会被捕捉。这些信息对分析和理解 SQL 的时间花费有至关重要的作用。
 
