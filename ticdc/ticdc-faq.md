@@ -282,9 +282,17 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 
 更多信息请参考 [Open protocol Row Changed Event 格式定义](/ticdc/ticdc-open-protocol.md#row-changed-event)。
 
-## TiCDC 占用多少 PD 的存储空间
+## TiCDC 占用多少 PD 的存储空间？
 
-TiCDC 使用 PD 内部的 etcd 来存储元数据并定期更新。因为 etcd 的多版本并发控制 (MVCC) 以及 PD 默认的 compaction 间隔是 1 小时，TiCDC 占用的 PD 存储空间与 1 小时内元数据的版本数量成正比。在 v4.0.5、v4.0.6、v4.0.7 三个版本中 TiCDC 存在元数据写入频繁的问题，如果 1 小时内有 1000 张表创建或调度，就会用尽 etcd 的存储空间，出现 `etcdserver: mvcc: database space exceeded` 错误。出现这种错误后需要清理 etcd 存储空间，参考 [etcd maintenance space-quota](https://etcd.io/docs/v3.4.0/op-guide/maintenance/#space-quota)。如果你的 TiCDC 版本为 v4.0.5、v4.0.6 或 v4.0.7，建议升级到 v4.0.9 及以后版本。
+在使用 TiCDC 的过程中，你可能会遇到 `etcdserver: mvcc: database space exceeded` 错误，该错误主要与 TiCDC 使用 PD 内部的 etcd 来存储元数据的机制相关。
+
+etcd 采用多版本并发控制 (Multi-Version Concurrency Control, MVCC) 机制存储数据，且 PD 默认的 compaction 间隔为 1 小时。这意味着在 1 小时内，etcd 会保留所有数据的多个版本，直至进行压缩操作。
+
+在 v6.0.0 之前，TiCDC 使用 PD 内部的 etcd 来存储和更新 changefeed 内部所有表的元数据。因此，TiCDC 占用的 PD 存储空间与 changefeed 所同步的表的数量成正比。当同步表数量较多时，etcd 的存储空间会被更快耗尽，更易出现 `etcdserver: mvcc: database space exceeded` 错误。
+
+出现这种错误后，需要参考 [etcd maintenance space-quota](https://etcd.io/docs/v3.4.0/op-guide/maintenance/#space-quota) 清理 etcd 存储空间。
+
+从 v6.0.0 起，TiCDC 对元数据存储机制进行了优化，可有效避免因上述原因导致的 etcd 存储空间问题。如果你的 TiCDC 版本低于 v6.0.0，建议升级到 v6.0.0 或更高版本。
 
 ## TiCDC 支持同步大事务吗？有什么风险吗？
 
