@@ -37,12 +37,19 @@ tiup br backup full --pd "${PD_IP}:2379" \
 - `--storage`：数据备份到的存储地址。快照备份支持以 Amazon S3、Google Cloud Storage、Azure Blob Storage 为备份存储，以上命令以 Amazon S3 为示例。详细存储地址格式请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 - `--ratelimit`：**每个 TiKV** 备份数据的速度上限，单位为 MiB/s。
 
-在快照备份过程中，终端会显示备份进度条。在备份完成后，会输出备份耗时、速度、备份数据大小等信息。
+在快照备份过程中，终端会显示备份进度条。在备份完成后，会输出备份耗时、速度、备份数据大小等信息。其中：
+
+- `total-ranges`：备份的文件总数量
+- `ranges-succeed`：备份成功的文件数量
+- `ranges-failed`：备份失败的文件数量
+- `backup-total-ranges`：备份的表（包括分区表）与索引的数量
+- `write-CF-files`：备份文件中含有 `write CF` 数据的 SST 文件数量
+- `default-CF-files`：备份文件中含有 `default CF` 数据的 SST 文件数量
 
 ```shell
 Full Backup <-------------------------------------------------------------------------------> 100.00%
 Checksum <----------------------------------------------------------------------------------> 100.00%
-*** ["Full Backup success summary"] *** [backup-checksum=3.597416ms] [backup-fast-checksum=2.36975ms] *** [total-take=4.715509333s] [BackupTS=435844546560000000] [total-kv=1131] [total-kv-size=250kB] [average-speed=53.02kB/s] [backup-data-size(after-compressed)=71.33kB] [Size=71330]
+*** ["Full Backup success summary"] *** [total-ranges=20] [ranges-succeed=20] [ranges-failed=0] [backup-checksum=3.597416ms] [backup-fast-checksum=2.36975ms] [backup-total-ranges=11] [backup-total-regions=10] [write-CF-files=14] [default-CF-files=6] [total-take=4.715509333s] [BackupTS=435844546560000000] [total-kv=1131] [total-kv-size=250kB] [average-speed=53.02kB/s] [backup-data-size(after-compressed)=71.33kB] [Size=71330]
 ```
 
 ## 查询快照备份的时间点信息
@@ -79,11 +86,23 @@ tiup br restore full --pd "${PD_IP}:2379" \
 --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
-在恢复快照备份数据过程中，终端会显示恢复进度条。在完成恢复后，会输出恢复耗时、速度、恢复数据大小等信息。
+在恢复快照备份数据过程中，终端会显示恢复进度条。在完成恢复后，会输出恢复耗时、速度、恢复数据大小等信息。其中：
+
+- `total-ranges`：恢复的文件总数量
+- `ranges-succeed`：恢复成功的文件数量
+- `ranges-failed`：恢复失败的文件数量
+- `merge-ranges`：合并数据范围的耗时
+- `split-region`：切分和打散 Region 的耗时
+- `restore-files`： TiKV 恢复 SST 文件的耗时
+- `write-CF-files`：恢复文件中含有 `write CF` 数据的 SST 文件数量
+- `default-CF-files`：恢复文件中含有 `default CF` 数据的 SST 文件数量
+- `split-keys`：生成的用于切分 Region 的 key 数量
 
 ```shell
-Full Restore <------------------------------------------------------------------------------> 100.00%
-*** ["Full Restore success summary"] *** [total-take=4.344617542s] [total-kv=5] [total-kv-size=327B] [average-speed=75.27B/s] [restore-data-size(after-compressed)=4.813kB] [Size=4813] [BackupTS=435844901803917314]
+Split&Scatter Region <--------------------------------------------------------------------> 100.00%
+Download&Ingest SST <---------------------------------------------------------------------> 100.00%
+Restore Pipeline <------------------------------------------------------------------------> 100.00%
+*** ["Full Restore success summary"] [total-ranges=20] [ranges-succeed=20] [ranges-failed=0] [merge-ranges=7.546971ms] [split-region=343.594072ms] [restore-files=1.57662s] [default-CF-files=6] [write-CF-files=14] [split-keys=9] [total-take=4.344617542s] [total-kv=5] [total-kv-size=327B] [average-speed=75.27B/s] [restore-data-size(after-compressed)=4.813kB] [Size=4813] [BackupTS=435844901803917314]
 ```
 
 ### 恢复备份数据中指定库表的数据
