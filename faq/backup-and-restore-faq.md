@@ -279,7 +279,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 
 - 统计信息表（`mysql.stat_*`）(但可以恢复统计信息，详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
-- 其他系统表（详细参考[不能恢复系统表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)）
+- 其他系统表（详细参考[恢复 `mysql` 数据库下的表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)）
 
 ### 恢复的时候，报错 `cannot file rewrite rule`，该如何处理？
 
