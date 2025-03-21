@@ -14,7 +14,7 @@ summary: 介绍 TiCDC 新架构的主要特性，架构特点，升级部署指�
 
 > **警告：**
 >
-> TiCDC 新架构目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+> TiCDC 新架构目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 ## 架构设计
 
