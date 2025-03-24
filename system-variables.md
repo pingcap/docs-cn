@@ -874,8 +874,8 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 当系统中创建的 SQL 用户数量过多（例如超过 10 万），执行创建用户、修改密码、设置权限等操作时，性能可能显著下降。这是因为每次执行这些操作时，系统会触发所有用户数据的重新加载。
-- 为优化性能，建议在用户数量较多的场景下，将相关变量设置为 `ON`。
+- 当 TiDB 中的 SQL 用户数量过多（例如超过 10 万） 时，执行创建用户、修改密码、设置权限等操作可能导致 TiDB 性能显著下降。这是因为每次执行这些操作时，系统默认会触发所有用户数据的重新加载。
+- 为优化性能，在用户数量较多的场景下，建议将该变量设置为 `ON`。
 - `OFF` 或 `0`：每次执行创建用户、修改密码、设置权限等操作时，系统都会重新加载全部用户数据到内存中。在用户数量较多的场景下，此设置可能导致性能显著下降。
 - `ON` 或 `1`：TiDB 将采用更高效的用户数据加载策略：
     - 创建用户或对**未登录用户**执行修改密码、设置权限等操作时，TiDB **不会**重新加载全部用户数据到内存中。
@@ -1561,7 +1561,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`ON`。在 v8.5.0 之前，默认值为 `OFF`。
 - 这个变量用于控制是否开启 [TiDB 加速建表](/accelerated-table-creation.md)。
 - 从 TiDB v8.0.0 开始，支持使用 `tidb_enable_fast_create_table` 加速建表 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md)。
-- 该变量是由 v7.6.0 中引入的 [`tidb_ddl_version`](https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_ddl_version-从-v760-版本开始引入) 更名而来。从 v8.0.0 开始，`tidb_ddl_version` 不再生效。
+- 该变量是由 v7.6.0 中引入的 [`tidb_ddl_version`](https://docs-archive.pingcap.com/zh/tidb/v7.6/system-variables#tidb_ddl_version-从-v760-版本开始引入) 更名而来。从 v8.0.0 开始，`tidb_ddl_version` 不再生效。
 - 从 TiDB v8.5.0 开始，新创建的集群默认开启 TiDB 加速建表功能，即 `tidb_enable_fast_create_table` 默认值为 `ON`。如果从 v8.4.0 及之前版本的集群升级至 v8.5.0 及之后的版本，`tidb_enable_fast_create_table` 的默认值不发生变化。
 
 ### `tidb_default_string_match_selectivity` <span class="version-mark">从 v6.2.0 版本开始引入</span>
@@ -4240,7 +4240,7 @@ SHOW WARNINGS;
 >
 > - 视具体业务场景的不同，启用该选项可能对存在频繁锁冲突的事务造成一定程度的吞吐下降（平均延迟上升）。
 > - 该选项目前仅对需要上锁单个 key 的语句有效。如果一个语句需要对多行同时上锁，则该选项不会对此类语句生效。
-> - 该功能从 v6.6.0 版本引入。在 v6.6.0 版本中，该功能由变量 [`tidb_pessimistic_txn_aggressive_locking`](https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) 控制，默认关闭。
+> - 该功能从 v6.6.0 版本引入。在 v6.6.0 版本中，该功能由变量 [`tidb_pessimistic_txn_aggressive_locking`](https://docs-archive.pingcap.com/zh/tidb/v6.6/system-variables#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) 控制，默认关闭。
 
 ### `tidb_placement_mode` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
