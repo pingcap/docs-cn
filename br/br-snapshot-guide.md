@@ -37,12 +37,19 @@ tiup br backup full --pd "${PD_IP}:2379" \
 - `--storage`：数据备份到的存储地址。快照备份支持以 Amazon S3、Google Cloud Storage、Azure Blob Storage 为备份存储，以上命令以 Amazon S3 为示例。详细存储地址格式请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 - `--ratelimit`：**每个 TiKV** 备份数据的速度上限，单位为 MiB/s。
 
-在快照备份过程中，终端会显示备份进度条。在备份完成后，会输出备份耗时、速度、备份数据大小等信息。
+在快照备份过程中，终端会显示备份进度条。在备份完成后，会输出备份耗时、速度、备份数据大小等信息。其中：
+
+- `total-ranges`：备份的文件总数量
+- `ranges-succeed`：备份成功的文件数量
+- `ranges-failed`：备份失败的文件数量
+- `backup-total-ranges`：备份的表（包括分区表）与索引的数量
+- `write-CF-files`：备份文件中含有 `write CF` 数据的 SST 文件数量
+- `default-CF-files`：备份文件中含有 `default CF` 数据的 SST 文件数量
 
 ```shell
 Full Backup <-------------------------------------------------------------------------------> 100.00%
 Checksum <----------------------------------------------------------------------------------> 100.00%
-*** ["Full Backup success summary"] *** [backup-checksum=3.597416ms] [backup-fast-checksum=2.36975ms] *** [total-take=4.715509333s] [BackupTS=435844546560000000] [total-kv=1131] [total-kv-size=250kB] [average-speed=53.02kB/s] [backup-data-size(after-compressed)=71.33kB] [Size=71330]
+*** ["Full Backup success summary"] *** [total-ranges=20] [ranges-succeed=20] [ranges-failed=0] [backup-checksum=3.597416ms] [backup-fast-checksum=2.36975ms] [backup-total-ranges=11] [backup-total-regions=10] [write-CF-files=14] [default-CF-files=6] [total-take=4.715509333s] [BackupTS=435844546560000000] [total-kv=1131] [total-kv-size=250kB] [average-speed=53.02kB/s] [backup-data-size(after-compressed)=71.33kB] [Size=71330]
 ```
 
 ## 查询快照备份的时间点信息
@@ -79,11 +86,23 @@ tiup br restore full --pd "${PD_IP}:2379" \
 --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
-在恢复快照备份数据过程中，终端会显示恢复进度条。在完成恢复后，会输出恢复耗时、速度、恢复数据大小等信息。
+在恢复快照备份数据过程中，终端会显示恢复进度条。在完成恢复后，会输出恢复耗时、速度、恢复数据大小等信息。其中：
+
+- `total-ranges`：恢复的文件总数量
+- `ranges-succeed`：恢复成功的文件数量
+- `ranges-failed`：恢复失败的文件数量
+- `merge-ranges`：合并数据范围的耗时
+- `split-region`：切分和打散 Region 的耗时
+- `restore-files`： TiKV 恢复 SST 文件的耗时
+- `write-CF-files`：恢复文件中含有 `write CF` 数据的 SST 文件数量
+- `default-CF-files`：恢复文件中含有 `default CF` 数据的 SST 文件数量
+- `split-keys`：生成的用于切分 Region 的 key 数量
 
 ```shell
-Full Restore <------------------------------------------------------------------------------> 100.00%
-*** ["Full Restore success summary"] *** [total-take=4.344617542s] [total-kv=5] [total-kv-size=327B] [average-speed=75.27B/s] [restore-data-size(after-compressed)=4.813kB] [Size=4813] [BackupTS=435844901803917314]
+Split&Scatter Region <--------------------------------------------------------------------> 100.00%
+Download&Ingest SST <---------------------------------------------------------------------> 100.00%
+Restore Pipeline <------------------------------------------------------------------------> 100.00%
+*** ["Full Restore success summary"] [total-ranges=20] [ranges-succeed=20] [ranges-failed=0] [merge-ranges=7.546971ms] [split-region=343.594072ms] [restore-files=1.57662s] [default-CF-files=6] [write-CF-files=14] [split-keys=9] [total-take=4.344617542s] [total-kv=5] [total-kv-size=327B] [average-speed=75.27B/s] [restore-data-size(after-compressed)=4.813kB] [Size=4813] [BackupTS=435844901803917314]
 ```
 
 ### 恢复备份数据中指定库表的数据
@@ -129,6 +148,8 @@ tiup br restore full \
 
 ### 恢复 `mysql` 数据库下的表
 
+在使用快照备份功能备份集群时，BR 会将系统表备份为库名带有 `__TiDB_BR_Temporary_` 前缀的表。例如，`mysql.user` 表会被备份为 `__TiDB_BR_Temporary_mysql.user`。因此，在执行快照恢复时，BR 会首先恢复这些带有 `__TiDB_BR_Temporary_` 前缀的表，避免与目标集群中现有的系统表数据发生冲突。在恢复系统表时，BR 会通过 `REPLACE INTO` 语句将数据从带有 `__TiDB_BR_Temporary_` 前缀的表写入对应的系统表。
+
 - `br` v5.1.0 开始，快照备份时默认自动备份 **mysql schema 下的系统表数据**，但恢复数据时默认不恢复系统表数据。
 - `br` v6.2.0 开始，增加恢复参数 `--with-sys-table` 支持恢复数据的同时恢复**部分系统表相关数据**。
 - `br` v7.6.0 开始，恢复参数 `--with-sys-table` 默认开启，即默认支持恢复数据的同时恢复**部分系统表相关数据**。
@@ -153,15 +174,24 @@ tiup br restore full \
 
 - 统计信息表 (`mysql.stat_*`) (但可以恢复统计信息，详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))
 - 系统变量表 (`mysql.tidb`、`mysql.global_variables`)
-- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/snap_client/systable_restore.go#L31)
+- 其他系统表
 
 ```
 +-----------------------------------------------------+
+| advisory_locks                                      |
+| analyze_jobs                                        |
+| analyze_options                                     |
 | capture_plan_baselines_blacklist                    |
 | column_stats_usage                                  |
+| dist_framework_meta                                 |
 | gc_delete_range                                     |
 | gc_delete_range_done                                |
 | global_variables                                    |
+| help_topic                                          |
+| index_advisor_results                               |
+| plan_replayer_status                                |
+| plan_replayer_task                                  |
+| request_unit_by_group                               |
 | stats_buckets                                       |
 | stats_extended                                      |
 | stats_feedback                                      |
@@ -172,7 +202,27 @@ tiup br restore full \
 | stats_meta_history                                  |
 | stats_table_locked                                  |
 | stats_top_n                                         |
+| table_cache_meta                                    |
 | tidb                                                |
+| tidb_background_subtask                             |
+| tidb_background_subtask_history                     |
+| tidb_ddl_history                                    |
+| tidb_ddl_job                                        |
+| tidb_ddl_notifier                                   |
+| tidb_ddl_reorg                                      |
+| tidb_global_task                                    |
+| tidb_global_task_history                            |
+| tidb_import_jobs                                    |
+| tidb_mdl_info                                       |
+| tidb_mdl_view                                       |
+| tidb_pitr_id_map                                    |
+| tidb_runaway_queries                                |
+| tidb_runaway_watch                                  |
+| tidb_runaway_watch_done                             |
+| tidb_timers                                         |
+| tidb_ttl_job_history                                |
+| tidb_ttl_table_status                               |
+| tidb_ttl_task                                       |
 +-----------------------------------------------------+
 ```
 
