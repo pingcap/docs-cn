@@ -1935,12 +1935,6 @@ Raft Engine 相关的配置项。
 + 控制 Raft Engine 是否自动生成空的日志文件用于日志回收。该配置项启用时，Raft Engine 将在初始化时自动填充一批空日志文件用于日志回收，保证日志回收在初始化后立即生效。
 + 默认值：`false`
 
-### `compression-level` <span class="version-mark">从 v7.4.0 版本开始引入</span>
-
-+ 设置 Raft Engine 在写 Raft 日志文件时所采用的 lz4 压缩算法的压缩效率。值越低表示压缩速率越高，但压缩率越低。
-+ 取值范围：`[1, 16]`
-+ 默认值：1
-
 ## security
 
 安全相关配置项。
