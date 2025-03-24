@@ -467,7 +467,6 @@ I/O 限流功能相关配置。
 - 用于 MinTSO 调度器，表示一个 TiFlash 实例中最多可同时运行的查询数量。关于 MinTSO 调度器，详见 [TiFlash MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)。
 - 默认值：`0`，即两倍的 CPU 逻辑核数
 
-
 ##### `hashagg_use_magic_hash` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
 - 用于控制 TiFlash 使用哪种哈希函数进行聚合操作，如果该配置为 true，TiFlash 的 HashAgg 会使用 magic hash 而非默认的 CRC32。
