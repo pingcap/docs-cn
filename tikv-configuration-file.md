@@ -1010,32 +1010,6 @@ raftstore 相关的配置项。
 + 最小值：0
 + 单位：秒
 
-<<<<<<< HEAD
-=======
-### `evict-cache-on-memory-ratio` <span class="version-mark">从 v7.5.0 版本开始引入</span>
-
-+ 当 TiKV 的内存使用超过系统可用内存的 90%，并且 Raft 缓存条目占用的内存超过已使用内存 * `evict-cache-on-memory-ratio` 时，TiKV 会逐出 Raft 缓存条目。
-+ 设置为 `0` 表示禁用该功能。
-+ 默认值：0.1
-+ 最小值：0
-
-### `periodic-full-compact-start-times` <span class="version-mark">从 v7.6.0 版本开始引入</span>
-
-> **警告：**
->
-> 周期性全量数据整理目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
-+ 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。你可以在数组中指定一个或多个时间计划。例如：
-    + `periodic-full-compact-start-times = ["03:00", "23:00"]` 表示 TiKV 基于 TiKV 节点的本地时区，在每天凌晨 3 点和晚上 11 点进行全量数据整理。
-    + `periodic-full-compact-start-times = ["03:00 +0000", "23:00 +0000"]` 表示 TiKV 在每天 UTC 时间的凌晨 3 点和晚上 11 点进行全量数据整理。
-    + `periodic-full-compact-start-times = ["03:00 +0800", "23:00 +0800"]` 表示 TiKV 在每天 UTC+08:00 时间的凌晨 3 点和晚上 11 点进行全量数据整理。
-+ 默认值：`[]`，表示默认情况下禁用周期性全量数据整理。
-
-### `periodic-full-compact-start-max-cpu` <span class="version-mark">从 v7.6.0 版本开始引入</span>
-
-+ 控制 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值。
-+ 默认值：`0.1`，表示全量数据整理进程的最大 CPU 使用率为 10%。
-
 ### `follower-read-max-log-gap` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
 + follower 处理读请求时允许的最大日志落后数目，超出则拒绝读请求。
