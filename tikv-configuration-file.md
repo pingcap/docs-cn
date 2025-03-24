@@ -1025,7 +1025,6 @@ raftstore 相关的配置项。
 + TiKV 采用 SlowTrend 检测算法时，QPS 侧检测的敏感性。值越高表示敏感度越低。
 + 默认值：0.5
 
->>>>>>> 3ecb21bce7 (tikv: add missing tikv configs (#19999))
 ## coprocessor
 
 Coprocessor 相关的配置项。
