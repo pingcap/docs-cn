@@ -1086,7 +1086,7 @@ raftstore 相关的配置项。
 ### `request-voter-replicated-index-interval` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 + 控制 Witness 节点定期从投票节点获取已复制的 Raft 日志位置的时间间隔。
-+ 默认值：5m （即 5 分钟）。
++ 默认值：5m（即 5 分钟）。
 
 ### `slow-trend-unsensitive-cause` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
@@ -1400,7 +1400,7 @@ RocksDB 相关的配置项。
 
 ### `enable-multi-batch-write` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
-+ 开启 RocksDB 写入优化，将 WriteBatch 中的内容并发写入到 memtable 中，缩短写入耗时。
++ 控制是否开启 RocksDB 写入优化，将 WriteBatch 中的内容并发写入到 memtable 中，缩短写入耗时。
 + 默认值：无，但在默认情况下会自动开启，除非手动设置成 `false` 或者开启 `rocksdb.enable-pipelined-write` 或 `rocksdb.enable-unordered-write`。
 
 ## rocksdb.titan
