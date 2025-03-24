@@ -1010,6 +1010,21 @@ raftstore 相关的配置项。
 + 最小值：0
 + 单位：秒
 
+### `request-voter-replicated-index-interval` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
++ 控制 Witness 节点定期从投票节点获取已复制的 Raft 日志位置的时间间隔。
++ 默认值：5m（即 5 分钟）。
+
+### `slow-trend-unsensitive-cause` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
++ TiKV 采用 SlowTrend 检测算法时，延时检测的敏感性。值越高表示敏感度越低。
++ 默认值：10
+
+### `slow-trend-unsensitive-result` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
++ TiKV 采用 SlowTrend 检测算法时，QPS 侧检测的敏感性。值越高表示敏感度越低。
++ 默认值：0.5
+
 ## coprocessor
 
 Coprocessor 相关的配置项。
@@ -1301,6 +1316,11 @@ RocksDB 相关的配置项。
     + `true`：在 MANIFEST 文件中记录 WAL 文件的信息，并在启动时验证 WAL 文件的完整性。
     + `false`：不在 MANIFEST 文件中记录 WAL 文件的信息，而且不在启动时验证 WAL 文件的完整性。
 
+### `enable-multi-batch-write` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 控制是否开启 RocksDB 写入优化，将 WriteBatch 中的内容并发写入到 memtable 中，缩短写入耗时。
++ 默认值：无，但在默认情况下会自动开启，除非手动设置成 `false` 或者开启 `rocksdb.enable-pipelined-write` 或 `rocksdb.enable-unordered-write`。
+
 ## rocksdb.titan
 
 Titan 相关的配置项。
@@ -1326,7 +1346,7 @@ Titan 相关的配置项。
 + 默认值：4
 + 最小值：1
 
-## rocksdb.defaultcf | rocksdb.writecf | rocksdb.lockcf
+## rocksdb.defaultcf | rocksdb.writecf | rocksdb.lockcf | rocksdb.raftcf
 
 rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
@@ -1574,6 +1594,11 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + 设置周期性 compaction 的时间。更新时间超过此值的 SST 文件将被选中进行 compaction，并被重新写入这些 SST 文件所在的层级。
 + 默认值：`"0s"`，表示默认不触发此 compaction。
 + 单位：s(second)|h(hour)|d(day)
+
+### `max-compactions` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
++ 最大 compaction 任务并发数。0 表示不限制。
++ 默认值：0
 
 ## rocksdb.defaultcf.titan
 
