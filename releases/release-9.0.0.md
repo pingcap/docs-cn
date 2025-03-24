@@ -43,11 +43,11 @@ TiDB 版本：9.0.0
 
     更多信息，请参考[用户文档]( )。
 
-* 新增支持下推以下函数到 TiFlash [#59317](https://github.com/pingcap/tidb/issues/59317) @[guo-shaoge](https://github.com/guo-shaoge)  **tw@Oreoxmt**<!--1918-->
+* 新增支持下推以下函数到 TiFlash [#59317](https://github.com/pingcap/tidb/issues/59317) @[guo-shaoge](https://github.com/guo-shaoge) **tw@Oreoxmt** <!--1918-->
 
-    * `TRUNCATE`
+    * `TRUNCATE()`
 
-    更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
+  更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
 * 新增支持下推包含以下聚集函数的窗口函数到 TiFlash [#7376](https://github.com/pingcap/tiflash/issues/7376) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai**<!--1382-->
 
@@ -59,7 +59,7 @@ TiDB 版本：9.0.0
 
   更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
-* 支持下推以下日期函数到 TiKV [#59365](https://github.com/pingcap/tidb/issues/59365) @[gengliqi](https://github.com/gengliqi) **tw@Oreoxmt**<!--1837-->
+* 支持下推以下日期函数到 TiKV [#59365](https://github.com/pingcap/tidb/issues/59365) @[gengliqi](https://github.com/gengliqi) **tw@Oreoxmt** <!--1837-->
 
     * `FROM_UNIXTIME()`
     * `TIMESTAMPDIFF()`
