@@ -502,11 +502,6 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 > - 由于 API V1 和 API V2 底层存储格式不同，因此**仅当** TiKV 中只有 TiDB 数据时，可以平滑启用或关闭 API V2。其他情况下，需要新建集群，并使用 [TiKV Backup & Restore](https://tikv.org/docs/latest/concepts/explore-tikv-features/backup-restore-cn/) 工具进行数据迁移。
 > - 启用 API V2 后，**不能**将 TiKV 集群回退到 v6.1.0 之前的版本，否则可能导致数据损坏。
 
-## `txn-status-cache-capacity` <span class="version-mark">从 v7.6.0 版本开始引入</span>
-
-+ 设置 TiKV 内的事务状态 cache 的容量。不建议修改该参数。
-+ 默认值：5120000
-
 ## storage.block-cache
 
 RocksDB 多个 CF 之间共享 block cache 的配置选项。
