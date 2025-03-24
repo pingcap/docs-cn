@@ -100,7 +100,7 @@ SELECT @@tidb_last_txn_info;
 ## 相关配置
 
 - 系统变量 [`tidb_dml_type`](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) 用于控制是否在会话级别启用 Pipelined DML。
-- 系统变量 [`tidb_pipelined_dml_resource_policy`](/system-variables.md#tidb_pipelined_dml_resource_policy) 用于控制 Pipelined DML 的资源使用策略。当出现以下资源竞争情况时，可以考虑将其调整为 `conservative` 来降低 Pipelined DML 对集群的影响：
+- 系统变量 [`tidb_pipelined_dml_resource_policy`](/system-variables.md#tidb_pipelined_dml_resource_policy-从-v900-版本开始引入) 用于控制 Pipelined DML 的资源使用策略。当出现以下资源竞争情况时，可以考虑将其调整为 `conservative` 来降低 Pipelined DML 对集群性能的影响：
     - TiKV 节点出现写入热点，TiKV 负载过高
     - OLTP 业务的请求延迟显著上升
     - 集群写入吞吐量明显下降
