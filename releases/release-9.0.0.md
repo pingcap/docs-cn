@@ -37,11 +37,11 @@ TiDB 版本：9.0.0
 
 ### 性能
 
-* 在几十万甚至上百万用户数的场景下，创建用户,修改用户信息的性能提升了 77 倍  [#55563](https://github.com/pingcap/tidb/issues/55563) @[tiancaiamao](https://github.com/tiancaiamao)  **tw@hfxsd**<!--1941-->
+* 在几十万甚至上百万用户数的场景下，创建用户、修改用户信息的性能提升了 77 倍 [#55563](https://github.com/pingcap/tidb/issues/55563) @[tiancaiamao](https://github.com/tiancaiamao)  **tw@hfxsd**<!--1941-->
 
     之前的版本，当集群的用户数超过 20 万时，创建修改用户的性能 QPS 会降低到 1。在一些 SaaS 场景，如果需要创建百万个用户，以及定期批量修改用户的密码信息，需要 2 天甚至更久的时间，对于一些 SaaS 业务是不可接受的。v9.0 对这部分 DCL 的性能进行了优化，创建 200万用户仅需 37 分钟，大大提升了 DCL 语句的执行性能，提升了 TiDB 在此类 SaaS 场景的用户体验。
 
-    更多信息，请参考[用户文档]( )。
+    更多信息，请参考[用户文档](/system-variables.md/#tidb_accelerate_user_creation_update-从-v900-版本开始引入)。
 
 * 新增支持下推以下函数到 TiFlash [#59317](https://github.com/pingcap/tidb/issues/59317) @[guo-shaoge](https://github.com/guo-shaoge) **tw@Oreoxmt** <!--1918-->
 
@@ -89,7 +89,7 @@ TiDB 版本：9.0.0
 
     从 v9.0 版本开始，用户可通过设置系统变量 `MAX_USER_CONNECTIONS` ，来限制单个用户对单个 TiDB 节点可建立的连接数，避免单个用户消耗过多的 [token](tidb-configuration-file/#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/dev/partitioned-table/#全局索引/)。
+    更多信息，请参考[用户文档](/system-variables.md/#max_user_connections-从-v900-版本开始引入)。
 
 
 ### SQL 功能
