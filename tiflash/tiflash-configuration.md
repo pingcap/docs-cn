@@ -469,8 +469,10 @@ I/O 限流功能相关配置。
 
 ##### `hashagg_use_magic_hash` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 用于控制 TiFlash 使用哪种哈希函数进行聚合操作，如果该配置为 true，TiFlash 的 HashAgg 会使用 magic hash 而非默认的 CRC32。
-- magic hash 的结果更加均匀，可以减少哈希冲突，但代价是计算速度比 CRC32 更慢。作为调优手段，推荐在 GroupBy key 的 NDV 很高时打开该配置。
+- 控制 TiFlash 在进行聚合操作时使用的哈希函数。如果设置为 `true`，TiFlash 的 HashAgg 将使用 magic hash 而非默认的 CRC32。
+- magic hash 生成的哈希值分布更加均匀，能够用减少哈希冲突，但其计算速度比 CRC32 慢。建议在 `GROUPBY` 键的 NDV (number of distinct values) 较高时启用该配置，以优化性能。
+- 默认值：`false`
+- 可选值：`true`、`false`
 
 #### security <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
