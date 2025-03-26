@@ -51,7 +51,7 @@ TiDB 版本：9.0.0
 
   更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
-* 新增支持下推包含以下聚集函数的窗口函数到 TiFlash [#7376](https://github.com/pingcap/tiflash/issues/7376) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai**<!--1382-->
+* 新增支持下推包含以下聚合函数的窗口函数到 TiFlash [#7376](https://github.com/pingcap/tiflash/issues/7376) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai**<!--1382-->
 
     * `MAX`
     * `MIN`
@@ -71,7 +71,7 @@ TiDB 版本：9.0.0
 
 * TiFlash 支持新的存储格式以提升字符串类型扫描效率 [#9673](https://github.com/pingcap/tiflash/issues/9673) @[JinheLin](https://github.com/JinheLin) **tw@qiancai**<!--2066-->
 
-    v9.0.0 版本之前，TiFlash 存储字符串类型数据的格式在扫描时需要逐行读取，对于长度较小的字符串数值扫描效率不高。在 v9.0.0 版本，TiFlash 支持新的存储格式，对长度小于64字节的字符串数据改进了存储格式，提升了扫描效率，同时不会影响其他的数据存储和扫描效率。将 TiFlash 配置文件中的 `format_version` 设置为 8，可以在新的数据写入时，使用新的存储格式，同时不影响已有数据。
+    在 v9.0.0 版本之前，TiFlash 存储字符串类型数据的格式在扫描时需要逐行读取，因此对于长度较小的字符串数据，扫描效率不高。在 v9.0.0 中，TiFlash 引入了新的存储格式，针对长度小于 64 字节的字符串数据的存储进行了优化，提升了扫描效率，且不会影响其他数据的存储和扫描性能。如需启用新的存储格式，你可以在 TiFlash 配置文件中将 `format_version` 设置为 8。配置生效后，新写入 TiFlash 的数据将采用新的存储格式，而现有数据的存储格式则不受影响。
 
     建议用户在升级前阅读 [TiFlash 升级帮助](/tiflash-upgrade-guide.md)。
 
@@ -96,11 +96,11 @@ TiDB 版本：9.0.0
 
 ### SQL 功能
 
-* 支持对分区表的非唯一列创建全局索引  [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014) @[mjonss](https://github.com/mjonss) **tw@qiancai**<!--2057-->
+* 支持对分区表的非唯一列创建全局索引 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014) @[mjonss](https://github.com/mjonss) **tw@qiancai**<!--2057-->
 
-    从 v8.3 版本开始，用户可以在分区表创建全局索引来提升查询性能，但是全局索引仅支持对唯一的列创建。从 v9.0 开始，解除了该限制，用户可以对分区表非唯一的列创建全局索引，提升了全局索引的易用性。
+    从 v8.3.0 开始，TiDB 支持用户在分区表的唯一列上创建全局索引以提高查询性能，但不支持在非唯一列上创建全局索引。从 v9.0 版本起，TiDB 取消了这一限制，允许用户在分区表的非唯一列上创建全局索引，提升了全局索引的易用性。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/dev/partitioned-table/#全局索引/)。
+    更多信息，请参考[全局索引](/partitioned-table.md#全局索引)。
 
 ### 数据库管理
 
