@@ -344,7 +344,7 @@ middle_key_by_approximate_size:
 
 ### 设置一个 Region 副本为 tombstone 状态
 
-`tombstone` 命令常用于没有开启 sync-log，因为机器掉电导致 Raft 状态机丢失部分写入的情况。它可以在一个 TiKV 实例上将一些 Region 的副本设置为 Tombstone 状态，从而在重启时跳过这些 Region，避免因为这些 Region 的副本的 Raft 状态机损坏而无法启动服务。这些 Region 应该在其他 TiKV 上有足够多的健康的副本以便能够继续通过 Raft 机制进行读写。
+`tombstone` 命令常用于因为机器掉电导致 Raft 状态机丢失部分写入的情况。它可以在一个 TiKV 实例上将一些 Region 的副本设置为 Tombstone 状态，从而在重启时跳过这些 Region，避免因为这些 Region 的副本的 Raft 状态机损坏而无法启动服务。这些 Region 应该在其他 TiKV 上有足够多的健康的副本以便能够继续通过 Raft 机制进行读写。
 
 一般情况下，可以先在 PD 上将 Region 的副本通过 `remove-peer` 命令删除掉：
 
@@ -466,14 +466,6 @@ success
 
 ```shell
 tikv-ctl --host ip:port modify-tikv-config -n raftdb.defaultcf.disable-auto-compactions -v true
-```
-
-```
-success
-```
-
-```shell
-tikv-ctl --host ip:port modify-tikv-config -n raftstore.sync-log -v false
 ```
 
 ```
