@@ -731,8 +731,10 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
-- 默认值：`OFF`
-- 这个变量用于控制是否开启 Active PD Follower 特性（目前该特性只适用于处理获取 Region 信息的相关请求）。当该值为 `OFF` 时，TiDB 仅从 PD leader 获取 Region 信息。当该值为 `ON` 时，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，因此 PD follower 也可以处理 Region 信息请求，从而减轻 PD leader 的 CPU 压力。
+- 默认值：`ON`。在 v9.0.0 之前，默认值为 `OFF`。
+- 这个变量用于控制是否开启 [Active PD Follower 特性](/tune-region-performance.md#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力)，目前该特性只适用于处理获取 Region 信息的相关请求。
+    - 当该值为 `OFF` 时，TiDB 仅从 PD leader 获取 Region 信息。
+    - 当该值为 `ON` 时，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，因此 PD follower 也可以处理 Region 信息请求，从而减轻 PD leader 的 CPU 压力。从 v9.0.0 开始，当该变量值为 `ON` 时，TiDB Lightning 的 Region 信息请求也会被均匀发送到所有 PD 节点。
 - 适合开启 Active PD Follower 的场景：
     - 集群 Region 数量较多，PD leader 由于处理心跳和调度任务的开销大，导致 CPU 资源紧张。
     - 集群中 TiDB 实例数量较多，Region 信息请求并发量较大，PD leader CPU 压力大。
