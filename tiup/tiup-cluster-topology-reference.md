@@ -40,6 +40,7 @@ summary: 介绍通过 TiUP 部署或扩容 TiDB 集群时提供的拓扑文件�
 
 - `user`：以什么用户来启动部署的集群，默认值："tidb"，如果 `<user>` 字段指定的用户在目标机器上不存在，会自动尝试创建
 - `group`：自动创建用户时指定用户所属的用户组，默认和 `<user>` 字段值相同，若指定的组不存在，则自动创建
+- `systemd_mode`：部署集群过程中在目标机器上使用的 `systemd` 模式，默认值为 `system`。若设置为 `user`，则表示在目标机器上不使用 sudo 权限，即使用 [TiUP no-sudo 模式](/tiup/tiup-cluster-no-sudo-mode.md)。
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，默认值：22
 - `enable_tls`：是否对集群启用 TLS。启用之后，组件之间、客户端与组件之间都必须使用生成的 TLS 证书进行连接，默认值：false
 - `listen_host`：默认使用的监听 IP。如果为空，每个实例会根据其 `host` 字段是否包含 `:` 来自动设置为 `::` 或 `0.0.0.0`。tiup-cluster v1.14.0 引入该配置

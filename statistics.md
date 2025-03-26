@@ -443,7 +443,7 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 开启同步加载统计信息特性后，你可以进一步配置该特性：
 
 - 通过修改系统变量 [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) 的值控制 SQL 优化等待超时后 TiDB 的行为。该变量默认值为 `ON`，表示超时后 SQL 优化过程不会使用任何列上的直方图、TopN 或 CMSketch。当该变量设置为 `OFF` 时，表示超时后 SQL 执行失败。
-- 通过修改 TiDB 配置项 [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) 的值控制统计信息同步加载可以并发处理的最大列数。该配置项的默认值为 `5`。
+- 通过修改 TiDB 配置项 [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) 的值控制统计信息同步加载可以并发处理的最大列数。从 v8.2.0 起，该配置项的默认值为 `0`，表示根据服务器情况自动调节并发度。
 - 通过修改 TiDB 配置项 [`stats-load-queue-size`](/tidb-configuration-file.md#stats-load-queue-size-从-v540-版本开始引入) 的值设置统计信息同步加载最多可以缓存多少列的请求。该配置项的默认值为 `1000`。
 
 在 TiDB 启动阶段，初始统计信息加载完成之前执行的 SQL 可能有不合理的执行计划，从而影响性能。为了避免这种情况，从 v7.1.0 开始，TiDB 引入了配置参数 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入)。你可以使用该配置参数控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。该配置参数从 v7.2.0 起默认开启。

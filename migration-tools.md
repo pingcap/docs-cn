@@ -34,7 +34,7 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 | **上游** | MySQL，TiDB |
 | **下游（输出文件）** | SQL，CSV |
 | **主要优势** | <ul><li>支持全新的 table-filter，筛选数据更加方便</li><li>支持导出到 Amazon S3 云盘</li></ul> |
-| **使用限制** | <ul><li>如果导出后计划往非 TiDB 的数据库恢复，建议使用 Dumpling。</li><li>如果导出后计划往另一个 TiDB 恢复，建议使用 [BR](/br/backup-and-restore-overview.md)。 </li></ul> |
+| **使用建议** | <ul><li>如果导出后计划往非 TiDB 的数据库恢复，建议使用 Dumpling。</li><li>如果导出后计划往另一个 TiDB 恢复，建议使用 [BR](/br/backup-and-restore-overview.md)。 </li></ul> |
 
 ## [TiCDC](/ticdc/ticdc-overview.md)
 
