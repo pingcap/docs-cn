@@ -144,15 +144,15 @@ TiDB 版本：9.0.0
 
     更多信息，请参考[用户文档](/workloadrepo.md)。
 
-* SQL 跨可用区流量观测 [#57543](https://github.com/pingcap/tidb/issues/57543) @[nolouch](https://github.com/nolouch) @[yibin87](https://github.com/yibin87) **tw@Oreoxmt**<!--2021-->
+* SQL 跨可用区流量观测 [#57543](https://github.com/pingcap/tidb/issues/57543) @[nolouch](https://github.com/nolouch) @[yibin87](https://github.com/yibin87) **tw@Oreoxmt** <!--2021-->
 
-    跨可用区 (Avaiable Zone) 部署能够提升集群的容灾能力。在云服务环境中，这种部署方式会产生额外的网络流量费用，例如亚马逊 AWS 会对跨区域和跨可用区的流量计费。对于运行在云服务上的 TiDB 集群来说，更精确监控和分析网络流量变得尤为重要。
+    跨可用区 (Availability Zone, AZ) 部署可以增强 TiDB 集群的容灾能力。然而，在云服务环境中，这种部署方式会产生额外的网络流量费用，例如 AWS 对跨区域和跨可用区的流量进行计费。因此，对于运行在云服务上的 TiDB 集群，更精确地监控和分析网络流量对于成本控制至关重要。
 
-    自 v9.0.0 开始，TiDB 会记录 SQL 处理的网络流量，并区分跨可用区的流量。相关记录写入 [Statements 日志](/statement-summary-tables.md) 和 [慢日志](/identify-slow-queries.md)。这个特性主要用于协助用户跟踪 TiDB 集群内部的主要数据传输，分析跨区域的流量产生的原因，从而更好地理解和控制相关成本。
+    从 v9.0.0 开始，TiDB 记录 SQL 处理过程中产生的网络流量，并区分跨可用区的流量。相关数据会写入 [`statements_summary` 表](/statement-summary-tables.md)和[慢查询日志](/identify-slow-queries.md)。该功能有助于用户跟踪 TiDB 集群内部的主要数据传输路径，分析跨可用区流量的来源，从而更好地理解和控制相关成本。
     
-    需要注意的是，当前版本只观测 **查询在集群内** (TiDB, TiKV, TiFlash) 之间产生的网络传输，不包括 DML 和 DDL；另外，所记录的流量数据为解包后的流量，和实际物理流量会有差异。并不能作为网络计费的依据。
+    需要注意的是，当前版本仅监测 SQL 查询在**集群内部**（TiDB、TiKV 和 TiFlash）之间的网络传输，不包括 DML 和 DDL。另外，记录的流量数据为解包后的流量，与实际物理流量存在差异，因此不能直接作为网络计费的依据。
 
-    更多信息，请参考[用户文档]()。
+    更多信息，请参考[用户文档](/statement-summary-tables.md#statements_summary-字段介绍)。
 
 * 优化 `execution info` 中指标显示 [#56232](https://github.com/pingcap/tidb/issues/56232) @[yibin87](https://github.com/yibin87) **tw@hfxsd**<!--1697-->
 
