@@ -34,6 +34,7 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
     * `tidb_server_version` 用于记录 TiDB 在初始化时的版本信息，注意该值为只读，不可修改。
     * `system_tz` 用于记录 TiDB 的系统时区
     * `new_collation_enabled` 用于记录 TiDB 是否开启了[新排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)，注意该值为只读，不可修改。
+    * `cluster_id` 用于记录 TiDB 集群的唯一标识，注意该值为只读，不可修改。
 
 ## 服务端帮助信息系统表
 

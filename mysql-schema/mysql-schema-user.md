@@ -63,8 +63,9 @@ DESC mysql.user;
 | Password_expired       | enum('N','Y')     | NO   |      | N                 |       |
 | Password_last_changed  | timestamp         | YES  |      | CURRENT_TIMESTAMP |       |
 | Password_lifetime      | smallint unsigned | YES  |      | NULL              |       |
+| max_user_connections   | int unsigned      | NO   |      | 0                 |       |
 +------------------------+-------------------+------+------+-------------------+-------+
-44 rows in set (0.00 sec)
+45 rows in set (0.00 sec)
 ```
 
 `mysql.user` 表包含多个字段，可分为三组：
