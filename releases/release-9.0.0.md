@@ -209,6 +209,9 @@ TiDB 版本：9.0.0
 |  |  | |  |
 |  |  |  | |
 
+### 离线包变更
+
+从 v9.0.0 开始，[sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 工具在 `TiDB-community-toolkit` [二进制软件包](/binary-package.md)中的离线包位置从 `sync_diff_inspector` 变更为 `tiflow-{version}-linux-{arch}.tar.gz`。
 
 ### 操作系统支持变更
 
