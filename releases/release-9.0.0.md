@@ -39,7 +39,9 @@ TiDB 版本：9.0.0
 
 * 在几十万甚至上百万用户数的场景下，创建用户、修改用户信息的性能提升了 77 倍 [#55563](https://github.com/pingcap/tidb/issues/55563) @[tiancaiamao](https://github.com/tiancaiamao)  **tw@hfxsd**<!--1941-->
 
-    之前的版本，当集群的用户数超过 20 万时，创建修改用户的性能 QPS 会降低到 1。在一些 SaaS 场景，如果需要创建百万个用户，以及定期批量修改用户的密码信息，需要 2 天甚至更久的时间，对于一些 SaaS 业务是不可接受的。v9.0 对这部分 DCL 的性能进行了优化，创建 200万用户仅需 37 分钟，大大提升了 DCL 语句的执行性能，提升了 TiDB 在此类 SaaS 场景的用户体验。
+    之前的版本，当集群的用户数超过 20 万时，创建和修改用户的性能 QPS 会降低到 1。在一些 SaaS 场景，如果需要创建百万个用户，以及定期批量修改用户的密码信息，需要 2 天甚至更久的时间，对于一些 SaaS 业务是不可接受的。
+    
+    v9.0.0 对这部分 DCL 的性能进行了优化，创建 200 万用户仅需 37 分钟，大大提升了 DCL 语句的执行性能，提升了 TiDB 在此类 SaaS 场景的用户体验。
 
     更多信息，请参考[用户文档](/system-variables.md/#tidb_accelerate_user_creation_update-从-v900-版本开始引入)。
 
@@ -77,17 +79,17 @@ TiDB 版本：9.0.0
 
 ### 高可用
 
-* TiProxy 支持流量回放功能正式发布 [#642](https://github.com/pingcap/tiproxy/issues/642) @[djshow832](https://github.com/djshow832)   **tw@hfxsd**<!--2062-->
+* TiProxy 支持流量回放功能正式发布 (GA) [#642](https://github.com/pingcap/tiproxy/issues/642) @[djshow832](https://github.com/djshow832)   **tw@hfxsd**<!--2062-->
 
-    v1.3.0 开始，TiProxy 以实验特性发布流量回放功能。在 v1.4.0 版本，TiProxy 正式发布流量回放功能。TiProxy 提供专有的 SQL 命令进行流量捕获和流量回放功能。用户可以更加方便的捕获 TiDB 生产集群中的访问流量，并在测试集群中按照指定的速率回放这些流量，完成业务验证。
+    TiProxy v1.3.0 将流量回放功能作为实验特性发布。在 TiProxy v1.4.0 版本，流量回放功能正式发布 (GA)。TiProxy 提供专有的 SQL 命令进行流量捕获和流量回放功能。你可以更加方便地捕获 TiDB 生产集群中的访问流量，并在测试集群中按照指定的速率回放这些流量，完成业务验证。
 
     更多信息，请参考[用户文档](/tiproxy/tiproxy-traffic-replay.md)。
 
 ### 稳定性
 
-* 引入了系统变量 `MAX_USER_CONNECTIONS`，用于限制不同用户可以建立的连接数 [#59203](https://github.com/pingcap/tidb/issues/59203) @[joccau](https://github.com/joccau) **tw@hfxsd**<!--2017-->
+* 新增系统变量 `MAX_USER_CONNECTIONS`，用于限制不同用户可以建立的连接数 [#59203](https://github.com/pingcap/tidb/issues/59203) @[joccau](https://github.com/joccau) **tw@hfxsd**<!--2017-->
 
-    从 v9.0 版本开始，用户可通过设置系统变量 `MAX_USER_CONNECTIONS` ，来限制单个用户对单个 TiDB 节点可建立的连接数，避免单个用户消耗过多的 [token](tidb-configuration-file/#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 
+    从 v9.0.0 版本开始，你可通过设置系统变量 `MAX_USER_CONNECTIONS` ，来限制单个用户对单个 TiDB 节点可建立的连接数，避免由于单个用户消耗过多的 [token](/tidb-configuration-file.md/#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 
 
     更多信息，请参考[用户文档](/system-variables.md/#max_user_connections-从-v900-版本开始引入)。
 
@@ -154,11 +156,11 @@ TiDB 版本：9.0.0
 
     更多信息，请参考[用户文档](/statement-summary-tables.md#statements_summary-字段介绍)。
 
-* 优化 `execution info` 中指标显示 [#56232](https://github.com/pingcap/tidb/issues/56232) @[yibin87](https://github.com/yibin87) **tw@hfxsd**<!--1697-->
+* 优化 `EXPLAIN ANALYZE` 输出结果中的 `execution info` 的信息 [#56232](https://github.com/pingcap/tidb/issues/56232) @[yibin87](https://github.com/yibin87) **tw@hfxsd**<!--1697-->
 
-    [EXPLAIN ANALYZE](/sql-statements/sql-statement-explain-analyze.md) 会执行的 SQL 语句，并在 `execution info` 中记录执行过程的细节，同样的信息在[慢日志](/identify-slow-queries.md)中也会被捕捉。这些信息对分析和理解 SQL 的时间花费有至关重要的作用。
+    [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 可以执行的 SQL 语句，并在 `execution info` 中记录执行过程的细节，同样的信息在[慢日志](/identify-slow-queries.md)中也会被捕捉。这些信息对分析和理解 SQL 的时间花费有至关重要的作用。
 
-    TiDB 在 v9.0.0 中对 `execution info` 的输出重新做了梳理和优化，使每个指标的表达更加准确。比如，`time` 表示算子执行的时钟时间，`loops` 是当前算子被父算子调用的次数，`total_time` 代表所有并发的累加时间。帮助使用者更加准确地理解 SQL 语句的执行过程，做出有针对性的优化策略。
+    在 v9.0.0 优化了 `execution info` 的输出结果，使每个指标的表达更加准确。比如，`time` 表示算子执行的时钟时间，`loops` 是当前算子被父算子调用的次数，`total_time` 代表所有并发的累加时间。这些优化可以帮助你更准确地理解 SQL 语句的执行过程，做出有针对性的优化策略。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-explain-analyze.md)。
 
