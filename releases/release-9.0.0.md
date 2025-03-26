@@ -164,7 +164,21 @@ TiDB 版本：9.0.0
 
 ### 安全
 
+### 数据迁移
 
+* 将 sync-diff-inspector 从 `pingcap/tidb-tools` 迁移至 `pingcap/tiflow` 代码仓库 [#11672](https://github.com/pingcap/tiflow/issues/11672) @[joechenrh](https://github.com/joechenrh) **tw@Oreoxmt** <!--2070-->
+
+    从 v9.0.0 开始，sync-diff-inspector 工具从 [`pingcap/tidb-tools`](https://github.com/pingcap/tidb-tools) GitHub 代码仓库迁移至 [`pingcap/tiflow`](https://github.com/pingcap/tiflow)。该变更将数据同步和迁移工具（[DM](/dm/dm-overview.md)、[TiCDC](/ticdc/ticdc-overview.md) 和 sync-diff-inspector）统一到同一个代码仓库中。
+
+    对于 TiDB v9.0.0 及之后版本，你可以使用以下方法之一安装 sync-diff-inspector：
+
+    - TiUP：执行 `tiup install sync-diff-inspector`
+    - Docker 镜像：执行 `docker pull pingcap/sync-diff-inspector:latest`
+    - 二进制包：下载 [TiDB 工具包](/download-ecosystem-tools.md)
+
+  [`pingcap/tidb-tools`](https://github.com/pingcap/tidb-tools) 代码仓库现已归档。如果你之前通过 `tidb-tools` 安装 sync-diff-inspector，请改用 TiUP、Docker 镜像或 TiDB 工具包。
+
+    更多信息，请参考[用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)。
 
 ## 兼容性变更
 
