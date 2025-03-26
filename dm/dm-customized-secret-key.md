@@ -9,7 +9,7 @@ summary: 介绍如何自定义密钥，用于加密和解密 DM（Data Migration
 
 ## 使用方式
 
-1. 创建一个自定义的密钥文件，文件内容必须为长度为 64 个字符的十六进制的 AES-256 密钥。
+1. 创建一个自定义的密钥文件，文件内容必须为长度为 64 个字符的十六进制的 AES-256 密钥。一种生成该秘钥的方式是对随机内容计算 SHA256 校验和，比如 `head -n 256 /dev/urandom | sha256sum`。
 2. 在 DM-master [启动参数](/dm/dm-command-line-flags.md)或[配置文件](/dm/dm-master-configuration-file.md) 中，设置 `secret-key-path` 为你自定义的密钥文件的路径。
 
 ## 从低于 v8.0.0 的版本升级
@@ -29,8 +29,8 @@ summary: 介绍如何自定义密钥，用于加密和解密 DM（Data Migration
 
     > **注意：**
     >
-    >  - 请确保所有 DM-master 节点更新为相同的密钥配置。
-    >  - 在密钥更新期间，请不要创建新的[数据源配置文件](/dm/dm-source-configuration-file.md)和[迁移任务配置文件](/dm/task-configuration-file-full.md)。
+    > - 请确保所有 DM-master 节点更新为相同的密钥配置。
+    > - 在密钥更新期间，请不要创建新的[数据源配置文件](/dm/dm-source-configuration-file.md)和[迁移任务配置文件](/dm/task-configuration-file-full.md)。
 
 2. 滚动重启 DM-master。
 3. 使用 `tiup dmctl encrypt`（dmctl 版本需 >= v8.0.0）加密的密码用于创建[数据源配置文件](/dm/dm-source-configuration-file.md)和[迁移任务配置文件](/dm/task-configuration-file-full.md)。

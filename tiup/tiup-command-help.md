@@ -22,5 +22,3 @@ tiup help [command]
 ## 输出
 
 `[command]` 或 TiUP 的帮助信息。
-
-[<< 返回上一页 - TiUP 命令清单](/tiup/tiup-reference.md#命令清单)

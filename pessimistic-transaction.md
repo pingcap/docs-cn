@@ -186,7 +186,7 @@ set config tikv pessimistic-txn.pipelined='false';
 
 TiKV 在 v6.0.0 中引入了内存悲观锁功能。开启内存悲观锁功能后，悲观锁通常只会被存储在 Region leader 的内存中，而不会将锁持久化到磁盘，也不会通过 Raft 协议将锁同步到其他副本，因此可以大大降低悲观事务加锁的开销，提升悲观事务的吞吐并降低延迟。
 
-当内存悲观锁占用的内存达到 Region 或节点的阈值时，加悲观锁会回退为使用 [pipelined 加锁流程](#pipelined-加锁流程)。当 Region 发生合并或 leader 迁移时，为避免悲观锁丢失，TiKV 会将内存悲观锁写入磁盘并同步到其他副本。
+当内存悲观锁占用的内存达到 [Region](/tikv-configuration-file.md#in-memory-peer-size-limit-从-v840-版本开始引入) 或 [TiKV 节点](/tikv-configuration-file.md#in-memory-instance-size-limit-从-v840-版本开始引入)的阈值时，加悲观锁会回退为使用 [pipelined 加锁流程](#pipelined-加锁流程)。当 Region 发生合并或 leader 迁移时，为避免悲观锁丢失，TiKV 会将内存悲观锁写入磁盘并同步到其他副本。
 
 内存悲观锁实现了和 [pipelined 加锁](#pipelined-加锁流程)类似的表现，即集群无异常时不影响加锁表现，但当 TiKV 出现网络隔离或者节点宕机时，事务加的悲观锁可能丢失。
 
@@ -205,4 +205,19 @@ in-memory = false
 
 ```sql
 set config tikv pessimistic-txn.in-memory='false';
+```
+
+从 v8.4.0 开始，你可以通过 [`pessimistic-txn.in-memory-peer-size-limit`](/tikv-configuration-file.md#in-memory-peer-size-limit-从-v840-版本开始引入) 或 [`pessimistic-txn.in-memory-instance-size-limit`](/tikv-configuration-file.md#in-memory-instance-size-limit-从-v840-版本开始引入) 配置项修改 Region 或 TiKV 节点内存悲观锁的内存使用上限：
+
+```toml
+[pessimistic-txn]
+in-memory-peer-size-limit = "512KiB"
+in-memory-instance-size-limit = "100MiB"
+```
+
+也可通过[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)功能动态调整：
+
+```sql
+SET CONFIG tikv `pessimistic-txn.in-memory-peer-size-limit`="512KiB";
+SET CONFIG tikv `pessimistic-txn.in-memory-instance-size-limit`="100MiB";
 ```

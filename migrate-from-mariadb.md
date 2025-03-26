@@ -192,25 +192,25 @@ TiDB 不支持 MariaDB 中常用的 `latin1_swedish_ci` 排序规则。
 SHOW COLLATION;
 ```
 
-```sql
-+--------------------+---------+-----+---------+----------+---------+
-| Collation          | Charset | Id  | Default | Compiled | Sortlen |
-+--------------------+---------+-----+---------+----------+---------+
-| ascii_bin          | ascii   |  65 | Yes     | Yes      |       1 |
-| binary             | binary  |  63 | Yes     | Yes      |       1 |
-| gbk_bin            | gbk     |  87 |         | Yes      |       1 |
-| gbk_chinese_ci     | gbk     |  28 | Yes     | Yes      |       1 |
-| latin1_bin         | latin1  |  47 | Yes     | Yes      |       1 |
-| utf8_bin           | utf8    |  83 | Yes     | Yes      |       1 |
-| utf8_general_ci    | utf8    |  33 |         | Yes      |       1 |
-| utf8_unicode_ci    | utf8    | 192 |         | Yes      |       1 |
-| utf8mb4_0900_ai_ci | utf8mb4 | 255 |         | Yes      |       1 |
-| utf8mb4_0900_bin   | utf8mb4 | 309 |         | Yes      |       1 |
-| utf8mb4_bin        | utf8mb4 |  46 | Yes     | Yes      |       1 |
-| utf8mb4_general_ci | utf8mb4 |  45 |         | Yes      |       1 |
-| utf8mb4_unicode_ci | utf8mb4 | 224 |         | Yes      |       1 |
-+--------------------+---------+-----+---------+----------+---------+
-13 rows in set (0.0012 sec)
+```
++--------------------+---------+-----+---------+----------+---------+---------------+
+| Collation          | Charset | Id  | Default | Compiled | Sortlen | Pad_attribute |
++--------------------+---------+-----+---------+----------+---------+---------------+
+| ascii_bin          | ascii   |  65 | Yes     | Yes      |       1 | PAD SPACE     |
+| binary             | binary  |  63 | Yes     | Yes      |       1 | NO PAD        |
+| gbk_bin            | gbk     |  87 |         | Yes      |       1 | PAD SPACE     |
+| gbk_chinese_ci     | gbk     |  28 | Yes     | Yes      |       1 | PAD SPACE     |
+| latin1_bin         | latin1  |  47 | Yes     | Yes      |       1 | PAD SPACE     |
+| utf8_bin           | utf8    |  83 | Yes     | Yes      |       1 | PAD SPACE     |
+| utf8_general_ci    | utf8    |  33 |         | Yes      |       1 | PAD SPACE     |
+| utf8_unicode_ci    | utf8    | 192 |         | Yes      |       8 | PAD SPACE     |
+| utf8mb4_0900_ai_ci | utf8mb4 | 255 |         | Yes      |       0 | NO PAD        |
+| utf8mb4_0900_bin   | utf8mb4 | 309 |         | Yes      |       1 | NO PAD        |
+| utf8mb4_bin        | utf8mb4 |  46 | Yes     | Yes      |       1 | PAD SPACE     |
+| utf8mb4_general_ci | utf8mb4 |  45 |         | Yes      |       1 | PAD SPACE     |
+| utf8mb4_unicode_ci | utf8mb4 | 224 |         | Yes      |       8 | PAD SPACE     |
++--------------------+---------+-----+---------+----------+---------+---------------+
+13 rows in set (0.00 sec)
 ```
 
 执行下列语句检查当前表的列使用的排序规则：

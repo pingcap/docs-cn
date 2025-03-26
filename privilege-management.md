@@ -434,7 +434,7 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 
 `SHOW GRANTS` 需要拥有对 `mysql` 数据库的 `SELECT` 权限。如果是使用 `SHOW GRANTS` 查看当前用户权限，则不需要任何权限。
 
-`SHOW PROCESSLIST` 需要 `SUPER` 权限来显示属于其他用户的连接。
+`SHOW PROCESSLIST` 需要 `PROCESS` 权限来显示属于其他用户的连接。
 
 `SHOW IMPORT JOB` 需要 `SUPER` 权限来显示属于其他用户的任务，否则只能看到当前用户创建的任务。
 

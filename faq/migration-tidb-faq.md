@@ -11,7 +11,6 @@ aliases: ['/docs-cn/dev/faq/migration-tidb-faq/']
 如果要查看迁移相关工具的常见问题，请参考以下链接：
 
 - [备份与恢复常见问题](/faq/backup-and-restore-faq.md)
-- [TiDB Binlog 常见问题](/tidb-binlog/tidb-binlog-faq.md)
 - [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)
 - [Data Migration 常见问题](/dm/dm-faq.md)
 - [TiCDC 常见问题](/ticdc/ticdc-faq.md)
@@ -82,9 +81,9 @@ iperf Done.
 - 参考 [MySQL 使用 mysqldump 导出某个表的部分数据](https://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出。
 - 使用 MySQL client 将 select 的结果输出到一个文件。
 
-### 如何从 DB2、Oracle 数据库迁移到 TiDB？
+### 如何从 Db2、Oracle 数据库迁移到 TiDB？
 
-DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
+Db2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 - 使用 Oracle 官方迁移工具，如 OGG、Gateway（透明网关）、CDC (Change Data Capture)。
 - 自研数据导出导入程序实现。

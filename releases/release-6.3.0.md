@@ -145,9 +145,9 @@ TiDB 版本：6.3.0-DMR
 
     正式支持对在线 TiKV 节点[关闭 Titan 引擎](/storage-engine/titan-configuration.md#关闭-titan)。
 
-* 缺少 GlobalStats 时自动选择分区静态剪裁 [#37535](https://github.com/pingcap/tidb/issues/37535) @[Yisaer](https://github.com/Yisaer)
+* 缺少全局统计信息时自动选择分区静态剪裁 [#37535](https://github.com/pingcap/tidb/issues/37535) @[Yisaer](https://github.com/Yisaer)
 
-    当启用分区[动态剪裁](/partitioned-table.md#动态裁剪模式)时，优化器依赖 [GlobalStats](/statistics.md#收集动态裁剪模式下的分区表统计信息) 进行执行计划的选择。在 [GlobalStats](/statistics.md#收集动态裁剪模式下的分区表统计信息) 收集完成前，使用 pseudo 统计信息可能会造成性能回退。在 v6.3.0 版本中，如果在 [GlobalStats](/statistics.md#收集动态裁剪模式下的分区表统计信息) 收集未完成的情况下打开动态分区裁剪开关，TiDB 会维持静态分区剪裁的状态，直到 GlobalStats 收集完成。该方式确保在切换分区剪裁策略时系统性能保持稳定。
+    当启用分区[动态裁剪](/partitioned-table.md#动态裁剪模式)时，优化器依赖[全局统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)进行执行计划的选择。在[全局统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)收集完成前，使用 pseudo 统计信息可能会造成性能回退。在 v6.3.0 版本中，如果在[全局统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)未收集完成的情况下启用 `dynamic` 动态裁剪模式，TiDB 仍然会维持 `static` 静态裁剪的状态，直到全局统计信息收集完成。该方式确保在切换分区裁剪策略时系统性能保持稳定。
 
 ### 易用性
 

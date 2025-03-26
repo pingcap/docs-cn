@@ -105,8 +105,8 @@ Region merge 指的是为了避免删除数据后大量小甚至空的 Region �
 
 具体来说，当某个新分裂出来的 Region 存在的时间超过配置项 [`split-merge-interval`](/pd-configuration-file.md#split-merge-interval) 的值（默认 1h）后，如果同时满足以下情况，该 Region 会触发 Region merge 调度：
 
-- 该 Region 大小小于配置项 [`max-merge-region-size`](/pd-configuration-file.md#max-merge-region-size) 的值（默认 20 MiB）
-- 该 Region 中 key 的数量小于配置项 [`max-merge-region-keys`](/pd-configuration-file.md#max-merge-region-keys) 的值（默认 200000）
+- 该 Region 大小小于配置项 [`max-merge-region-size`](/pd-configuration-file.md#max-merge-region-size) 的值。从 v8.4.0 开始，该配置项的默认值从 20 MiB 调整为 54 MiB。该变更仅对新集群生效，已有集群不受影响。
+- 该 Region 中 key 的数量小于配置项 [`max-merge-region-keys`](/pd-configuration-file.md#max-merge-region-keys) 的值。从 v8.4.0 开始，该配置项的默认值从 200000 调整为 540000。该变更仅对新集群生效，已有集群不受影响。
 
 ## 查询调度状态
 

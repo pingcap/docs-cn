@@ -29,7 +29,6 @@ Grafana 是一个开源的 metric 分析及可视化系统。TiDB 使用 Grafana
 ![Grafana monitored_groups](/media/grafana_monitored_groups.png)
 
 - {TiDB_Cluster_name}-Backup-Restore：备份恢复相关的监控项。
-- {TiDB_Cluster_name}-Binlog：TiDB Binlog 相关的监控项。
 - {TiDB_Cluster_name}-Blackbox_exporter：网络探活相关监控项。
 - {TiDB_Cluster_name}-Disk-Performance：磁盘性能相关监控项。
 - {TiDB_Cluster_name}-Kafka-Overview：Kafka 相关监控项。
@@ -55,4 +54,4 @@ Grafana 是一个开源的 metric 分析及可视化系统。TiDB 使用 Grafana
 
 要快速了解 TiDB 监控与报警系统的体系、该系统背后的数据流转方式、系统管理方法、系统使用方法和常用监控指标，建议观看下面的培训视频（时长 29 分钟）。注意本视频只作为学习参考，具体的[监控指标与相关报警规则](/alert-rules.md#tidb-报警规则)，请以文档内容为准。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson13_monitor.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson13.png"></video>
+<video src="https://docs-download.pingcap.com/media/videos/docs-cn%2FLesson13_monitor.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson13.png"></video>

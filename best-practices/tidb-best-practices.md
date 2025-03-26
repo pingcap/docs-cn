@@ -28,7 +28,7 @@ Raft 是一种一致性协议，能提供强一致的数据复制保证，TiDB �
 
 ### 分布式事务
 
-TiDB 提供完整的分布式事务，事务模型是在 [Google Percolator](https://research.google.com/pubs/pub36726.html) 的基础上做了一些优化。具体的实现可以参考[《Percolator 和 TiDB 事务算法》](https://pingcap.com/blog-cn/percolator-and-txn/)这篇文章。本文档只讨论以下几点：
+TiDB 提供完整的分布式事务，事务模型是在 [Google Percolator](https://research.google/pubs/large-scale-incremental-processing-using-distributed-transactions-and-notifications/) 的基础上做了一些优化。具体的实现可以参考[《Percolator 和 TiDB 事务算法》](https://pingcap.com/blog-cn/percolator-and-txn/)这篇文章。本文档只讨论以下几点：
 
 + 乐观锁
 

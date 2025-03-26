@@ -134,13 +134,13 @@ SHOW CREATE TABLE trips\G
 *************************** 1. row ***************************
        Table: trips
 Create Table: CREATE TABLE `trips` (
-  `trip_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `duration` int(11) NOT NULL,
+  `trip_id` bigint NOT NULL AUTO_INCREMENT,
+  `duration` int NOT NULL,
   `start_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
-  `start_station_number` int(11) DEFAULT NULL,
+  `start_station_number` int DEFAULT NULL,
   `start_station` varchar(255) DEFAULT NULL,
-  `end_station_number` int(11) DEFAULT NULL,
+  `end_station_number` int DEFAULT NULL,
   `end_station` varchar(255) DEFAULT NULL,
   `bike_number` varchar(255) DEFAULT NULL,
   `member_type` varchar(255) DEFAULT NULL,

@@ -197,6 +197,8 @@ TABLE t1;
 >
 > - 在以上示例中，ID 是以 2 递增的，而 MySQL 在相同场景中生成的 ID 是以 1 递增的。关于兼容性的更多信息，请参见[自增 ID](/mysql-compatibility.md#自增-id)。
 
+`LAST_INSERT_ID(expr)` 函数可以接受一个表达式作为参数，并将该值存储以供下一次调用 `LAST_INSERT_ID()` 时使用。你可以使用该函数生成序列，与 MySQL 保持兼容。注意 TiDB 也支持标准的[序列函数](/functions-and-operators/sequence-functions.md)。
+
 ### ROW_COUNT()
 
 `ROW_COUNT()` 函数返回受影响的行数。

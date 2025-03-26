@@ -229,7 +229,7 @@ Query OK, 0 rows affected (0.37 sec)
 
 ## IndexFullScan
 
-索引是有序的，所以优化器可以使用 `IndexFullScan` 算子来优化常见的查询，例如在索引值上使用 `MIN` 或 `Max` 函数：
+索引是有序的，所以优化器可以使用 `IndexFullScan` 算子来优化常见的查询，例如在索引值上使用 `MIN` 或 `MAX` 函数：
 
 {{< copyable "sql" >}}
 

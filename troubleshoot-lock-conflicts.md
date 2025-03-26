@@ -160,6 +160,10 @@ CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
 
 如果当前事务的 `start_ts` 未知，可以尝试从 `TIDB_TRX` / `CLUSTER_TIDB_TRX` 表或者 [`PROCESSLIST` / `CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md) 表中的信息进行判断。
 
+### 元数据锁
+
+如果一个会话在等待 schema 更改，这可能是元数据锁引起的。更多详细信息，参见[元数据锁](/metadata-lock.md)。
+
 ## 处理乐观锁冲突问题
 
 以下介绍乐观事务模式下常见的锁冲突问题的处理方式。

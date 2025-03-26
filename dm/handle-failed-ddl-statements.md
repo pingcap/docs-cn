@@ -126,7 +126,7 @@ SHOW CREATE TABLE db1.tbl1;
 | Table | Create Table                                     |
 +-------+--------------------------------------------------+
 | tbl1  | CREATE TABLE `tbl1` (
-  `c1` int(11) NOT NULL,
+  `c1` int NOT NULL,
   `c2` decimal(11,3) DEFAULT NULL,
   PRIMARY KEY (`c1`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
@@ -249,7 +249,7 @@ SHOW CREATE TABLE shard_db.shard_table;
 | Table | Create Table                                                                                              |
 +-------+-----------------------------------------------------------------------------------------------------------+
 | tb    | CREATE TABLE `shard_table` (
-  `id` int(11) DEFAULT NULL,
+  `id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin |
 +-------+-----------------------------------------------------------------------------------------------------------+
@@ -483,7 +483,7 @@ SHOW CREATE TABLE db1.tbl1;
 | Table | Create Table                                                                                              |
 +-------+-----------------------------------------------------------------------------------------------------------+
 | tb    | CREATE TABLE `tbl1` (
-  `id` int(11) DEFAULT NULL,
+  `id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin |
 +-------+-----------------------------------------------------------------------------------------------------------+
@@ -608,7 +608,7 @@ SHOW CREATE TABLE shard_db.shard_table;
 | Table | Create Table                                                                                              |
 +-------+-----------------------------------------------------------------------------------------------------------+
 | tb    | CREATE TABLE `shard_table` (
-  `id` int(11) DEFAULT NULL,
+  `id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin |
 +-------+-----------------------------------------------------------------------------------------------------------+

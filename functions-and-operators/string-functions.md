@@ -634,7 +634,11 @@ mysql> SELECT FROM_BASE64('MTIzNDU2');
 - 如果输入参数为数字，`HEX(n)` 返回 `n` 的十六进制字符串表示。该函数将参数 `n` 视为 `BIGINT` 数字，相当于 `CONV(n, 10, 16)`。
 - 如果输入参数为 `NULL`，该函数返回 `NULL`。
 
-示例：
+> **注意：**
+>
+> 在 MySQL 客户端中，[`--binary-as-hex`](https://dev.mysql.com/doc/refman/8.0/en/mysql-command-options.html#option_mysql_binary-as-hex) 选项在交互模式下默认启用，这会导致客户端将无法识别的字符集数据显示为[十六进制字面量 (Hexadecimal literal)](https://dev.mysql.com/doc/refman/8.0/en/hexadecimal-literals.html)。你可以使用 `--skip-binary-as-hex` 选项来禁用此行为。
+
+示例（使用 `mysql --skip-binary-as-hex`）：
 
 ```sql
 SELECT X'616263', HEX('abc'), UNHEX(HEX('abc')), 0x616263;
@@ -1425,15 +1429,15 @@ SELECT MAKE_SET(b'111','foo','bar','baz');
 
 ### [`MID()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_mid)
 
-`MID(str,pos,len)` 函数返回从指定的 `pos` 位置开始的长度为 `len` 的子字符串。
+`MID(str, pos[, len])` 函数返回从指定的 `pos` 位置开始的长度为 `len` 的子字符串。
+
+从 v8.4.0 开始，TiDB 支持该函数的两参数版本，即 `MID(str, pos)`。如果未指定 `len`，则返回从指定的 `pos` 位置到字符串末尾的所有字符。
 
 如果任一参数为 `NULL`，该函数将返回 `NULL`。
 
-TiDB 不支持该函数的两参数版本。更多信息，请参见 [#52420](https://github.com/pingcap/tidb/issues/52420)。
-
 示例：
 
-在以下示例中，`MID()` 返回给定的字符串中从第二个字符 (`b`) 开始的长度为 `3` 个字符的的子字符串。
+在以下示例中，`MID()` 返回给定的字符串中从第二个字符 (`b`) 开始的长度为 `3` 个字符的子字符串。
 
 ```sql
 SELECT MID('abcdef',2,3);
@@ -1444,6 +1448,21 @@ SELECT MID('abcdef',2,3);
 | MID('abcdef',2,3) |
 +-------------------+
 | bcd               |
++-------------------+
+1 row in set (0.00 sec)
+```
+
+在以下示例中，`MID()` 返回给定的字符串中从第二个字符 (`b`) 开始到字符串末尾的子字符串。
+
+```sql
+SELECT MID('abcdef',2);
+```
+
+```
++-------------------+
+| MID('abcdef',2)   |
++-------------------+
+| bcdef             |
 +-------------------+
 1 row in set (0.00 sec)
 ```
@@ -2220,7 +2239,8 @@ SELECT UCASE('bigdata') AS result_upper, UCASE(null) AS result_null;
 
 > **注意：**
 >
-> 传入的字符串必须是合法的十六进制数值，包含 `0~9`、`A~F`、`a~f`，如果为 `NULL` 或超出该范围，则返回 `NULL`。
+> - 传入的字符串必须是合法的十六进制数值，包含 `0~9`、`A~F`、`a~f`，如果为 `NULL` 或超出该范围，则返回 `NULL`。
+> - 在 MySQL 客户端中，[`--binary-as-hex`](https://dev.mysql.com/doc/refman/8.0/en/mysql-command-options.html#option_mysql_binary-as-hex) 选项在交互模式下默认启用，这会导致客户端将无法识别的字符集数据显示为[十六进制字面量 (Hexadecimal literal)](https://dev.mysql.com/doc/refman/8.0/en/hexadecimal-literals.html)。你可以使用 `--skip-binary-as-hex` 选项来禁用此行为。
 
 查询示例：
 

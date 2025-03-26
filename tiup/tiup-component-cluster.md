@@ -79,5 +79,3 @@ tiup cluster [command] [flags]
 - [meta backup](/tiup/tiup-component-cluster-meta-backup.md)：备份指定集群运维操作所需的 TiUP meta 文件
 - [meta restore](/tiup/tiup-component-cluster-meta-restore.md)：恢复指定集群的 TiUP meta 文件
 - [help](/tiup/tiup-component-cluster-help.md)：输出帮助信息
-
-[<< 返回上一页 - TiUP 组件清单](/tiup/tiup-reference.md#组件清单)

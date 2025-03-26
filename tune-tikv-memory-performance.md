@@ -1,7 +1,7 @@
 ---
 title: TiKV 内存参数性能调优
 aliases: ['/docs-cn/dev/tune-tikv-memory-performance/','/docs-cn/dev/reference/performance/tune-tikv/', '/docs-cn/dev/tune-tikv-performance/']
-summary: TiKV 内存参数性能调优，根据机器配置情况调整参数以达到最佳性能。TiKV 使用 RocksDB 作为持久化存储，配置项包括 block-cache 大小和 write-buffer 大小。除此之外，系统内存还会被用于 page cache 和处理大查询时的数据结构生成。推荐将 TiKV 部署在 CPU 核数不低于 8 或内存不低于 32GB 的机器上，对写入吞吐要求高时使用吞吐能力较好的磁盘，对读写延迟要求高时使用 IOPS 较高的 SSD 盘。
+summary: TiKV 内存参数性能调优，根据机器配置情况调整参数以达到最佳性能。TiKV 使用 RocksDB 作为持久化存储，配置项包括 block-cache 大小和 write-buffer 大小。除此之外，系统内存还会被用于 page cache 和处理大查询时的数据结构生成。推荐将 TiKV 部署在 CPU 核数不低于 8 或内存不低于 32GiB 的机器上，对写入吞吐要求高时使用吞吐能力较好的磁盘，对读写延迟要求高时使用 IOPS 较高的 SSD 盘。
 ---
 
 # TiKV 内存参数性能调优
@@ -105,14 +105,14 @@ job = "tikv"
 
 # 当 Region 写入的数据量超过该阈值的时候，TiKV 会检查该 Region 是否需要分裂。为了减少检查过程
 # 中扫描数据的成本，导入数据过程中可以将该值设置为 32 MB，正常运行状态下使用默认值即可。
-region-split-check-diff = "32MB"
+region-split-check-diff = "32MiB"
 
 [coprocessor]
 
 ## 当区间为 [a,e) 的 Region 的大小超过 `region_max_size`，TiKV 会尝试分裂该 Region，例如分裂成 [a,b)、[b,c)、[c,d)、[d,e) 等区间的 Region 后
 ## 这些 Region [a,b), [b,c), [c,d) 的大小为 `region_split_size` (或者稍大于 `region_split_size`）
-# region-max-size = "144MB"
-# region-split-size = "96MB"
+# region-max-size = "384MiB"
+# region-split-size = "256MiB"
 
 [rocksdb]
 # RocksDB 进行后台任务的最大线程数，后台任务包括 compaction 和 flush。具体 RocksDB 为什么需要进行 compaction，
@@ -124,7 +124,7 @@ region-split-check-diff = "32MB"
 # max-open-files = 40960
 
 # RocksDB MANIFEST 文件的大小限制.# 更详细的信息请参考：https://github.com/facebook/rocksdb/wiki/MANIFEST
-max-manifest-file-size = "20MB"
+max-manifest-file-size = "20MiB"
 
 # RocksDB write-ahead logs 目录。如果机器上有两块盘，可以将 RocksDB 的数据和 WAL 日志放在
 # 不同的盘上，提高 TiKV 的性能。
@@ -138,8 +138,8 @@ max-manifest-file-size = "20MB"
 # RocksDB WAL 日志的最大总大小，通常情况下使用默认值就可以了。
 # max-total-wal-size = "4GB"
 
-# 开启 RocksDB compaction 过程中的预读功能，如果使用的是机械磁盘，建议该值至少为2MB。
-# compaction-readahead-size = "2MB"
+# 开启 RocksDB compaction 过程中的预读功能，如果使用的是机械磁盘，建议该值至少为2MiB。
+# compaction-readahead-size = "2MiB"
 
 [rocksdb.defaultcf]
 # 数据块大小。RocksDB 是按照 block 为单元对数据进行压缩的，同时 block 也是缓存在 block-cache
@@ -162,7 +162,7 @@ block-size = "64KB"
 compression-per-level = ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
 
 # RocksDB memtable 的大小。
-write-buffer-size = "128MB"
+write-buffer-size = "128MiB"
 
 # 最多允许几个 memtable 存在。写入到 RocksDB 的数据首先会记录到 WAL 日志里面，然后会插入到
 # memtable 里面，当 memtable 的大小到达了 write-buffer-size 限定的大小的时候，当前的
@@ -193,45 +193,45 @@ level0-stop-writes-trigger = 36
 # level1 都没有压缩，而且 level0 触发 compaction 的条件是 sst 的个数到达 4（默认值）。在
 # level0 和 level1 都采取了压缩的情况下，就需要分析下 RocksDB 的日志，看一个 memtable 的压
 # 缩成一个 sst 文件的大小大概是多少，例如 32MB，那么 max-bytes-for-level-base 的建议值就应
-# 该是 32MB * 4 = 128MB。
-max-bytes-for-level-base = "512MB"
+# 该是 32MiB * 4 = 128MiB。
+max-bytes-for-level-base = "512MiB"
 
 # sst 文件的大小。level0 的 sst 文件的大小受 write-buffer-size 和 level0 采用的压缩算法的
 # 影响，target-file-size-base 参数用于控制 level1-level6 单个 sst 文件的大小。
-target-file-size-base = "32MB"
+target-file-size-base = "32MiB"
 
 [rocksdb.writecf]
 # 保持和 rocksdb.defaultcf.compression-per-level 一致。
 compression-per-level = ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
 
 # 保持和 rocksdb.defaultcf.write-buffer-size 一致。
-write-buffer-size = "128MB"
+write-buffer-size = "128MiB"
 max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
 
 # 保持和 rocksdb.defaultcf.max-bytes-for-level-base 一致。
-max-bytes-for-level-base = "512MB"
-target-file-size-base = "32MB"
+max-bytes-for-level-base = "512MiB"
+target-file-size-base = "32MiB"
 
 [raftdb]
 # RaftDB 能够打开的最大文件句柄数。
 # max-open-files = 40960
 
-# 开启 RaftDB compaction 过程中的预读功能，如果使用的是机械磁盘，建议该值至少为2MB。
-# compaction-readahead-size = "2MB"
+# 开启 RaftDB compaction 过程中的预读功能，如果使用的是机械磁盘，建议该值至少为2MiB。
+# compaction-readahead-size = "2MiB"
 
 [raftdb.defaultcf]
 # 保持和 rocksdb.defaultcf.compression-per-level 一致。
 compression-per-level = ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
 
 # 保持和 rocksdb.defaultcf.write-buffer-size 一致。
-write-buffer-size = "128MB"
+write-buffer-size = "128MiB"
 max-write-buffer-number = 5
 min-write-buffer-number-to-merge = 1
 
 # 保持和 rocksdb.defaultcf.max-bytes-for-level-base 一致。
-max-bytes-for-level-base = "512MB"
-target-file-size-base = "32MB"
+max-bytes-for-level-base = "512MiB"
+target-file-size-base = "32MiB"
 ```
 
 ## TiKV 内存使用情况
@@ -243,6 +243,6 @@ target-file-size-base = "32MB"
 
 ## TiKV 机器配置推荐
 
-1. 生产环境中，不建议将 TiKV 部署在 CPU 核数小于 8 或内存低于 32GB 的机器上
+1. 生产环境中，不建议将 TiKV 部署在 CPU 核数小于 8 或内存低于 32GiB 的机器上
 2. 如果对写入吞吐要求比较高，建议使用吞吐能力比较好的磁盘
 3. 如果对读写的延迟要求非常高，建议使用 IOPS 比较高的 SSD 盘

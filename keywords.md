@@ -50,6 +50,8 @@ Query OK, 0 rows affected (0.08 sec)
 
 TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/information-schema/information-schema-keywords.md) 表，可以用于查询 TiDB 中所有的关键字。
 
+你可以使用系统变量 [`tidb_enable_window_function`](/system-variables.md#tidb_enable_window_function) 控制[窗口函数](/functions-and-operators/window-functions.md)中的关键词是否在语法树中生效。将 `tidb_enable_window_function` 设置为 `OFF`，则窗口函数中的单词将不再作为关键词。
+
 ## 关键字列表
 
 下表列出了 TiDB 中所有的关键字。其中保留字用 `(R)` 来标识。[窗口函数](/functions-and-operators/window-functions.md)的保留字用 `(R-Window)` 来标识。需要用反引号 `` ` `` 包裹的特殊非保留字用 `(S)` 来标识。
@@ -73,6 +75,7 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - ANALYZE (R)
 - AND (R)
 - ANY
+- APPLY
 - ARRAY (R)
 - AS (R)
 - ASC (R)
@@ -541,6 +544,7 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - READ (R)
 - REAL (R)
 - REBUILD
+- RECOMMEND
 - RECOVER
 - RECURSIVE (R)
 - REDUNDANT
@@ -685,8 +689,6 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - TABLESAMPLE (R)
 - TABLESPACE
 - TABLE_CHECKSUM
-- TELEMETRY
-- TELEMETRY_ID
 - TEMPORARY
 - TEMPTABLE
 - TERMINATED (R)
@@ -694,7 +696,7 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - THAN
 - THEN (R)
 - TIDB
-- TiDB_CURRENT_TSO (R)
+- TIDB_CURRENT_TSO (R)
 - TIFLASH
 - TIKV_IMPORTER
 - TIME

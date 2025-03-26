@@ -5,7 +5,7 @@ summary: TiDB 数据库中 CALIBRATE RESOURCE 的使用概况。
 
 # `CALIBRATE RESOURCE`
 
-`CALIBRATE RESOURCE` 语句用于预估并输出当前集群的 [`Request Unit (RU)`](/tidb-resource-control.md#什么是-request-unit-ru) 的容量。
+`CALIBRATE RESOURCE` 语句用于预估并输出当前集群的 [`Request Unit (RU)`](/tidb-resource-control-ru-groups.md#什么是-request-unit-ru) 的容量。
 
 ## 语法图
 

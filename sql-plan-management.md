@@ -31,50 +31,45 @@ CREATE [GLOBAL | SESSION] BINDING [FOR BindableStmt] USING BindableStmt;
 该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前，可创建执行计划绑定的 SQL 语句类型 (BindableStmt) 包括：`SELECT`、`DELETE`、`UPDATE` 和带有 `SELECT` 子查询的 `INSERT`/`REPLACE`。使用示例如下：
 
 ```sql
-CREATE GLOBAL BINDING USING SELECT * /*+ use_index(t1, a) */ FROM t1;
-CREATE GLOBAL BINDING FOR SELECT * FROM t1 USING SELECT * /*+ use_index(t1, a) */ FROM t1;
+CREATE GLOBAL BINDING USING SELECT /*+ use_index(orders, orders_book_id_idx) */ * FROM orders;
+CREATE GLOBAL BINDING FOR SELECT * FROM orders USING SELECT /*+ use_index(orders, orders_book_id_idx) */ * FROM orders;
 ```
 
 > **注意：**
 >
 > 绑定的优先级高于手工添加的 Hint，即在有绑定的时候执行带有 Hint 的语句时，该语句中控制优化器行为的 Hint 不会生效，但是其他类别的 Hint 仍然能够生效。
 
-其中，有两类特定的语法由于语法冲突不能创建执行计划绑定，例如：
+其中，有两类特定的语法由于语法冲突不能创建执行计划绑定，创建时会报语法错误，例如：
 
 ```sql
 -- 类型一：使用 `JOIN` 关键字但不通过 `USING` 关键字指定关联列的笛卡尔积
 CREATE GLOBAL BINDING for
-    SELECT * FROM t t1 JOIN t t2
+    SELECT * FROM orders o1 JOIN orders o2
 USING
-    SELECT * FROM t t1 JOIN t t2;
+    SELECT * FROM orders o1 JOIN orders o2;
 
 -- 类型二：包含了 `USING` 关键字的 `delete` 语句
 CREATE GLOBAL BINDING for
-    delete FROM t1 USING t1 JOIN t2 ON t1.a = t2.a
+    DELETE FROM users USING users JOIN orders ON users.id = orders.user_id
 USING
-    delete FROM t1 USING t1 JOIN t2 ON t1.a = t2.a;
+    DELETE FROM users USING users JOIN orders ON users.id = orders.user_id;
 ```
 
 可以通过等价的 SQL 改写绕过这个语法冲突的问题。例如，上述两个例子可以改写为：
 
 ```sql
--- 类型一的第一种改写：为 `JOIN` 关键字添加 `USING` 子句
-CREATE GLOBAL BINDING for
-    SELECT * FROM t t1 JOIN t t2 USING (a)
-USING
-    SELECT * FROM t t1 JOIN t t2 USING (a);
 
--- 类型一的第二种改写：去掉 `JOIN` 关键字
+-- 类型一的改写：去掉 `JOIN` 关键字，用逗号代替
 CREATE GLOBAL BINDING for
-    SELECT * FROM t t1, t t2
+    SELECT * FROM orders o1, orders o2
 USING
-    SELECT * FROM t t1, t t2;
+    SELECT * FROM orders o1, orders o2;
 
--- 类型二的改写：去掉 `delete` 语句中的 `USING` 关键字
+-- 类型二的改写：去掉 `DELETE` 语句中的 `USING` 关键字
 CREATE GLOBAL BINDING for
-    delete t1 FROM t1 JOIN t2 ON t1.a = t2.a
+    DELETE users FROM users JOIN orders ON users.id = orders.user_id
 USING
-    delete t1 FROM t1 JOIN t2 ON t1.a = t2.a;
+    DELETE users FROM users JOIN orders ON users.id = orders.user_id;
 ```
 
 > **注意：**
@@ -86,15 +81,15 @@ USING
 ```sql
 -- Hint 能生效的用法
 CREATE GLOBAL BINDING for
-    INSERT INTO t1 SELECT * FROM t2 WHERE a > 1 AND b = 1
+    INSERT INTO orders SELECT * FROM pre_orders WHERE status = 'VALID' AND created <= (NOW() - INTERVAL 1 HOUR)
 USING
-    INSERT INTO t1 SELECT /*+ use_index(@sel_1 t2, a) */ * FROM t2 WHERE a > 1 AND b = 1;
+    INSERT INTO orders SELECT /*+ use_index(@sel_1 pre_orders, idx_created) */ * FROM pre_orders WHERE status = 'VALID' AND created <= (NOW() - INTERVAL 1 HOUR);
 
 -- Hint 不能生效的用法
 CREATE GLOBAL BINDING for
-    INSERT INTO t1 SELECT * FROM t2 WHERE a > 1 AND b = 1
+    INSERT INTO orders SELECT * FROM pre_orders WHERE status = 'VALID' AND created <= (NOW() - INTERVAL 1 HOUR)
 USING
-    INSERT /*+ use_index(@sel_1 t2, a) */ INTO t1 SELECT * FROM t2 WHERE a > 1 AND b = 1;
+    INSERT /*+ use_index(@sel_1 pre_orders, idx_created) */ INTO orders SELECT * FROM pre_orders WHERE status = 'VALID' AND created <= (NOW() - INTERVAL 1 HOUR);
 ```
 
 如果在创建执行计划绑定时不指定作用域，隐式作用域 SESSION 会被使用。TiDB 优化器会将被绑定的 SQL 进行“标准化”处理，然后存储到系统表中。在处理 SQL 查询时，只要“标准化”后的 SQL 和系统表中某个被绑定的 SQL 语句一致，并且系统变量 [`tidb_use_plan_baselines`](/system-variables.md#tidb_use_plan_baselines-从-v40-版本开始引入) 的值为 `on`（其默认值为 `on`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。
@@ -102,9 +97,9 @@ USING
 `标准化`：把 SQL 中的常量变成变量参数，对空格和换行符等做标准化处理，并对查询引用到的表显式指定数据库。例如：
 
 ```sql
-SELECT * FROM t WHERE a >    1
+SELECT * FROM users WHERE balance >    100
 -- 以上语句标准化后如下：
-SELECT * FROM test . t WHERE a > ?
+SELECT * FROM bookshop . users WHERE balance > ?
 ```
 
 > **注意：**
@@ -114,11 +109,11 @@ SELECT * FROM test . t WHERE a > ?
 > 例如：
 >
 > ```sql
-> SELECT * FROM t WHERE a IN (1)
-> SELECT * FROM t WHERE a IN (1,2,3)
+> SELECT * FROM books WHERE type IN ('Novel')
+> SELECT * FROM books WHERE type IN ('Novel','Life','Education')
 > -- 以上语句标准化后如下：
-> SELECT * FROM test . t WHERE a IN ( ... )
-> SELECT * FROM test . t WHERE a IN ( ... )
+> SELECT * FROM bookshop . books WHERE type IN ( ... )
+> SELECT * FROM bookshop . books WHERE type IN ( ... )
 > ```
 >
 > 不同长度的 `IN` 表达式被标准化后，会被识别为同一条语句，因此只需要创建一条绑定，对这些表达式同时生效。
@@ -127,7 +122,7 @@ SELECT * FROM test . t WHERE a > ?
 >
 > ```sql
 > CREATE TABLE t (a INT, KEY(a));
-> CREATE BINDING FOR SELECT * FROM t WHERE a IN (?) USING SELECT /*+ use_index(t, a) */ * FROM t WHERE a in (?);
+> CREATE BINDING FOR SELECT * FROM t WHERE a IN (?) USING SELECT /*+ use_index(t, idx_a) */ * FROM t WHERE a in (?);
 > 
 > SELECT * FROM t WHERE a IN (1);
 > SELECT @@LAST_PLAN_FROM_BINDING;
@@ -152,21 +147,21 @@ SELECT * FROM test . t WHERE a > ?
 >
 > ```sql
 > -- 在 v7.3.0 集群上创建绑定
-> mysql> CREATE GLOBAL BINDING FOR SELECT * FROM t WHERE a IN (1) USING SELECT /*+ use_index(t, a) */ * FROM t WHERE a IN (1);
+> mysql> CREATE GLOBAL BINDING FOR SELECT * FROM t WHERE a IN (1) USING SELECT /*+ use_index(t, idx_a) */ * FROM t WHERE a IN (1);
 > mysql> SHOW GLOBAL BINDINGS;
-> +-----------------------------------------------+--------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
-> | Original_sql                                  | Bind_sql                                                           | Default_db | Status  | Create_time             | Update_time             | Charset | Collation       | Source | Sql_digest                                                       | Plan_digest |
-> +-----------------------------------------------+--------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
-> | select * from `test` . `t` where `a` in ( ? ) | SELECT /*+ use_index(`t` `a`)*/ * FROM `test`.`t` WHERE `a` IN (1) | test       | enabled | 2023-10-20 14:28:10.093 | 2023-10-20 14:28:10.093 | utf8    | utf8_general_ci | manual | 8b9c4e6ab8fad5ba29b034311dcbfc8a8ce57dde2e2d5d5b65313b90ebcdebf7 |             |
-> +-----------------------------------------------+--------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
+> +-----------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+> | Original_sql                                  | Bind_sql                                                               | Default_db | Status  | Create_time             | Update_time             | Charset | Collation          | Source | Sql_digest                                                       | Plan_digest |
+> +-----------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+> | select * from `test` . `t` where `a` in ( ? ) | SELECT /*+ use_index(`t` `idx_a`)*/ * FROM `test`.`t` WHERE `a` IN (1) | test       | enabled | 2024-09-03 15:39:02.695 | 2024-09-03 15:39:02.695 | utf8mb4 | utf8mb4_general_ci | manual | 8b9c4e6ab8fad5ba29b034311dcbfc8a8ce57dde2e2d5d5b65313b90ebcdebf7 |             |
+> +-----------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
 > 
 > -- 升级到 v7.4.0 或更高的版本后
 > mysql> SHOW GLOBAL BINDINGS;
-> +-------------------------------------------------+--------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
-> | Original_sql                                    | Bind_sql                                                           | Default_db | Status  | Create_time             | Update_time             | Charset | Collation       | Source | Sql_digest                                                       | Plan_digest |
-> +-------------------------------------------------+--------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
-> | select * from `test` . `t` where `a` in ( ... ) | SELECT /*+ use_index(`t` `a`)*/ * FROM `test`.`t` WHERE `a` IN (1) | test       | enabled | 2023-10-20 14:28:10.093 | 2023-10-20 14:28:10.093 | utf8    | utf8_general_ci | manual | 8b9c4e6ab8fad5ba29b034311dcbfc8a8ce57dde2e2d5d5b65313b90ebcdebf7 |             |
-> +-------------------------------------------------+--------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
+> +-------------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+> | Original_sql                                    | Bind_sql                                                               | Default_db | Status  | Create_time             | Update_time             | Charset | Collation          | Source | Sql_digest                                                       | Plan_digest |
+> +-------------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+> | select * from `test` . `t` where `a` in ( ... ) | SELECT /*+ use_index(`t` `idx_a`)*/ * FROM `test`.`t` WHERE `a` IN (1) | test       | enabled | 2024-09-03 15:35:59.861 | 2024-09-03 15:35:59.861 | utf8mb4 | utf8mb4_general_ci | manual | da38bf216db4a53e1a1e01c79ffa42306419442ad7238480bb7ac510723c8bdf |             |
+> +-------------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
 > ```
 
 值得注意的是，如果一条 SQL 语句在 GLOBAL 和 SESSION 作用域内都有与之绑定的执行计划，因为优化器在遇到 SESSION 绑定时会忽略 GLOBAL 绑定的执行计划，该语句在 SESSION 作用域内绑定的执行计划会屏蔽掉语句在 GLOBAL 作用域内绑定的执行计划。
@@ -246,9 +241,9 @@ CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST StringLiteralOr
     例如：
 
     ```sql
-    CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
-    SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1;
-    SELECT * FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1'\G
+    CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY idx_a(a));
+    SELECT /*+ IGNORE_INDEX(t, idx_a) */ * FROM t WHERE a = 1;
+    SELECT * FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'SELECT /*+ IGNORE_INDEX(t, idx_a) */ * FROM t WHERE a = 1'\G
     ```
 
     以下为 `statements_summary` 部分查询结果：
@@ -283,7 +278,7 @@ SHOW BINDINGS\G
 ```
 *************************** 1. row ***************************
 Original_sql: select * from `test` . `t` where `a` = ?
-    Bind_sql: SELECT /*+ use_index(@`sel_1` `test`.`t` ) ignore_index(`t` `a`)*/ * FROM `test`.`t` WHERE `a` = 1
+    Bind_sql: SELECT /*+ use_index(@`sel_1` `test`.`t` ) ignore_index(`t` `idx_a`)*/ * FROM `test`.`t` WHERE `a` = 1
        ...........
   Sql_digest: 6909a1bbce5f64ade0a532d7058dd77b6ad5d5068aee22a531304280de48349f
  Plan_digest:
@@ -537,20 +532,20 @@ ORDER BY SUM(exec_count) DESC LIMIT 100;                       -- Top 100 high-f
 使用跨数据库绑定，只需要在创建绑定的 SQL 语句中将数据库名用 `*` 表示，例如：
 
 ```sql
-CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM t; -- 创建 GLOBAL 作用域的普通绑定
-CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM *.t; -- 创建 GLOBAL 作用域的跨数据库绑定
+CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, idx_a) */ * FROM t; -- 创建 GLOBAL 作用域的普通绑定
+CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, idx_a) */ * FROM *.t; -- 创建 GLOBAL 作用域的跨数据库绑定
 SHOW GLOBAL BINDINGS;
 ```
 
 输出结果示例如下：
 
 ```sql
-+----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
-| Original_sql               | Bind_sql                                          | Default_db | Status  | Create_time             | Update_time             | Charset | Collation       | Source | Sql_digest                                                       | Plan_digest |
-+----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
-| select * from `test` . `t` | SELECT /*+ use_index(`t` `a`)*/ * FROM `test`.`t` | test       | enabled | 2023-12-29 14:19:01.332 | 2023-12-29 14:19:01.332 | utf8    | utf8_general_ci | manual | 8b193b00413fdb910d39073e0d494c96ebf24d1e30b131ecdd553883d0e29b42 |             |
-| select * from `*` . `t`    | SELECT /*+ use_index(`t` `a`)*/ * FROM `*`.`t`    |            | enabled | 2023-12-29 14:19:02.232 | 2023-12-29 14:19:02.232 | utf8    | utf8_general_ci | manual | 8b193b00413fdb910d39073e0d494c96ebf24d1e30b131ecdd553883d0e29b42 |             |
-+----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
++----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+--------------+-----------------+--------+------------------------------------------------------------------+-------------+
+| Original_sql               | Bind_sql                                              | Default_db | Status  | Create_time             | Update_time             | Charset | Collation       | Source | Sql_digest                                                       | Plan_digest |
++----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+--------------+-----------------+--------+------------------------------------------------------------------+-------------+
+| select * from `test` . `t` | SELECT /*+ use_index(`t` `idx_a`)*/ * FROM `test`.`t` | test       | enabled | 2023-12-29 14:19:01.332 | 2023-12-29 14:19:01.332 | utf8    | utf8_general_ci | manual | 8b193b00413fdb910d39073e0d494c96ebf24d1e30b131ecdd553883d0e29b42 |             |
+| select * from `*` . `t`    | SELECT /*+ use_index(`t` `idx_a`)*/ * FROM `*`.`t`    |            | enabled | 2023-12-29 14:19:02.232 | 2023-12-29 14:19:02.232 | utf8    | utf8_general_ci | manual | 8b193b00413fdb910d39073e0d494c96ebf24d1e30b131ecdd553883d0e29b42 |             |
++----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+--------------+-----------------+--------+------------------------------------------------------------------+-------------+
 ```
 
 在 `SHOW GLOBAL BINDINGS` 的输出结果中，跨数据库绑定的 `Default_db` 为空，且 `Original_sql` 和 `Bind_sql` 字段中的数据库名通过 `*` 表示。这条绑定会对所有 `select * from t` 查询生效，而不限于特定数据库。
@@ -579,7 +574,7 @@ SHOW GLOBAL BINDINGS;
 3. 创建跨数据库绑定：
 
     ```sql
-    CREATE GLOBAL BINDING USING SELECT /*+ use_index(t1, a), use_index(t2, a) */ * FROM *.t1, *.t2;
+    CREATE GLOBAL BINDING USING SELECT /*+ use_index(t1, idx_a), use_index(t2, idx_a) */ * FROM *.t1, *.t2;
     ```
 
 4. 执行查询并查看是否使用了绑定：
@@ -623,11 +618,11 @@ SHOW GLOBAL BINDINGS;
 
     ```sql
     SHOW GLOBAL BINDINGS;
-    +----------------------------------------------+------------------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
-    | Original_sql                                 | Bind_sql                                                                                 | Default_db | Status  | Create_time             | Update_time             | Charset | Collation          | Source | Sql_digest                                                       | Plan_digest |
-    +----------------------------------------------+------------------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
-    | select * from ( `*` . `t1` ) join `*` . `t2` | SELECT /*+ use_index(`t1` `a`) use_index(`t2` `a`)*/ * FROM (`*` . `t1`) JOIN `*` . `t2` |            | enabled | 2023-12-29 14:22:28.144 | 2023-12-29 14:22:28.144 | utf8    | utf8_general_ci    | manual | ea8720583e80644b58877663eafb3579700e5f918a748be222c5b741a696daf4 |             |
-    +----------------------------------------------+------------------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+    +----------------------------------------------+------------------------------------------------------------------------------------------+------------+-----------------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+    | Original_sql                                 | Bind_sql                                                                                         | Default_db | Status  | Create_time             | Update_time             | Charset | Collation          | Source | Sql_digest                                                       | Plan_digest |
+    +----------------------------------------------+------------------------------------------------------------------------------------------+------------+-----------------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+    | select * from ( `*` . `t1` ) join `*` . `t2` | SELECT /*+ use_index(`t1` `idx_a`) use_index(`t2` `idx_a`)*/ * FROM (`*` . `t1`) JOIN `*` . `t2` |            | enabled | 2023-12-29 14:22:28.144 | 2023-12-29 14:22:28.144 | utf8    | utf8_general_ci    | manual | ea8720583e80644b58877663eafb3579700e5f918a748be222c5b741a696daf4 |             |
+    +----------------------------------------------+------------------------------------------------------------------------------------------+------------+-----------------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
     ```
 
 6. 删除绑定：
