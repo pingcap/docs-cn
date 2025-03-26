@@ -1,16 +1,16 @@
 ---
 title: TiCDC 新架构介绍
-summary: 介绍 TiCDC 新架构的主要特性，架构特点，升级部署指南以及其他注意事项。
+summary: 介绍 TiCDC 新架构的主要特性、架构设计、升级部署指南以及其他注意事项。
 ---
 
 # TiCDC 新架构介绍
 
 自 v9.0.0 版本起，TiCDC 引入新架构，显著提升了实时数据复制的性能、可扩展性与稳定性，同时降低了资源成本。新架构重新设计了 TiCDC 的核心组件并优化了数据处理流程，具有以下优势：
 
-- **更高的单节点性能**：单节点最高可支持 50 万张表的同步任务，宽表场景下的同步流量最高可达 200MiB/s。
+- **更高的单节点性能**：单节点最高可支持 50 万张表的同步任务，宽表场景下的同步流量最高可达 200 MiB/s。
 - **更强的扩展能力**：集群同步能力接近线性扩展，单集群可扩展至超过 100 个节点，支持超 1 万个 Changefeed；单个 Changefeed 可支持百万级表的同步任务。
 - **更高的稳定性**：在高流量、频繁 DDL 操作及集群扩缩容等场景下，Changefeed 的延迟更低且更加稳定。通过资源隔离和优先级调度，减少了多个 Changefeed 任务之间的相互干扰。
-- **更低的资源成本**：通过改进资源利用率，减少冗余开销，在典型场景下，CPU 和内存等资源的利用效率提升高达一个数量级。
+- **更低的资源成本**：通过改进资源利用率，减少冗余开销。在典型场景下，CPU 和内存等资源的利用效率提升高达一个数量级。
 
 > **警告：**
 >
@@ -18,14 +18,14 @@ summary: 介绍 TiCDC 新架构的主要特性，架构特点，升级部署指�
 
 ## 架构设计
 
-![TiCDC New Architecture](/media/ticdc/ticdc-new-arch-1.png)
+![TiCDC 新架构](/media/ticdc/ticdc-new-arch-1.png)
 
 TiCDC 新架构由 Log Service 和 Downstream Adapter 两大核心组件构成。
 
 - Log Service：作为核心数据服务层，Log Service 负责实时拉取上游 TiDB 集群的行变更和 DDL 变更等信息，并将变更数据临时存储在本地磁盘上。此外，它还负责响应 Downstream Adapter 的数据请求，定时将 DML 和 DDL 数据合并排序并推送至 Downstream Adapter。
 - Downstream Adapter：作为下游数据同步适配层，Downstream Adapter 负责处理用户发起的 Changefeed 运维操作，调度生成相关同步任务，从 Log Service 获取数据并同步至下游系统。
 
-TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分，显著提升了系统的可扩展性、可靠性和灵活性。Log Service 作为有状态组件，专注于数据的获取、排序和存储，通过与 Changefeed 业务逻辑的解耦，实现了数据在多个 Changefeed 间的共享，有效提高了资源利用率，降低了系统开销。 Downstream Adapter 作为无状态组件，采用轻量级调度机制，支持任务在不同实例间的快速迁移，并根据负载变化灵活调整同步任务的拆分与合并，确保在各种场景下都能实现低延迟的数据同步。
+TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分，显著提升了系统的可扩展性、可靠性和灵活性。Log Service 作为有状态组件，专注于数据的获取、排序和存储，通过与 Changefeed 业务逻辑的解耦，实现了数据在多个 Changefeed 间的共享，有效提高了资源利用率，降低了系统开销。Downstream Adapter 作为无状态组件，采用轻量级调度机制，支持任务在不同实例间的快速迁移，并根据负载变化灵活调整同步任务的拆分与合并，确保在各种场景下都能实现低延迟的数据同步。
 
 ## 新老架构对比
 
@@ -34,16 +34,16 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 | 特性                     | TiCDC 老架构                             | TiCDC 新架构                             |
 | ------------------------ | ---------------------------------------- | ---------------------------------------- |
 | **处理逻辑驱动方式**      | Timer Driven（定时器驱动）               | Event Driven（事件驱动）                 |
-| **任务触发机制**          | 定时器触发的大循环，每隔 50ms 检查任务，处理性能有限    | 由事件驱动，包括 DML、DDL 变更及 Changefeed 操作，队列中的事件会被尽快处理，无需等待 50ms 的固定间隔，从而减少了额外的延迟 |
+| **任务触发机制**          | 定时器触发的大循环，每隔 50 ms 检查任务，处理性能有限    | 由事件驱动，包括 DML、DDL 变更及 Changefeed 操作，队列中的事件会被尽快处理，无需等待 50 ms 的固定间隔，从而减少了额外的延迟 |
 | **任务调度方式**          | 每个 Changefeed 运行一个主循环，轮询检查任务 | 事件被放入队列后，由多个线程并发消费处理   |
 | **任务处理效率**          | 每个任务需要经过多个周期，存在性能瓶颈    | 事件可以立即处理，无需等待固定间隔，减少延迟 |
 | **资源消耗**              | 对不活跃表进行频繁检查，浪费 CPU 资源    | 消费线程仅处理队列中的事件，无需检查不活跃任务 |
 | **复杂度**                | O(n)，表数量增多时性能下降               | O(1)，不受表数量影响，效率更高           |
 | **CPU 利用率**            | 每个 Changefeed 只能利用一个逻辑 CPU     | 能充分利用多核 CPU 的并行处理能力        |
 | **扩展能力**              | 受限于 CPU 数量，扩展性差                | 通过多线程消费和事件队列，可扩展性强     |
-| **Changefeed 干扰问题**   | 中央控制节点（Owner）会造成 Changefeed 之间的干扰 | 事件驱动模式避免了 Changefeed 之间的干扰 |
+| **Changefeed 干扰问题**   | 中央控制节点 (Owner) 会造成 Changefeed 之间的干扰 | 事件驱动模式避免了 Changefeed 之间的干扰 |
 
-![TiCDC New Architecture](/media/ticdc/ticdc-new-arch-2.png)
+![TiCDC 新老架构对比](/media/ticdc/ticdc-new-arch-2.png)
 
 ## 使用限制
 
@@ -75,7 +75,7 @@ TiCDC 新架构仅支持 v7.5.0 或者以上版本的 TiDB 集群，使用之前
 
 在使用 TiUP 部署 v9.0.0 或者以上版本的全新 TiDB 集群时，支持同时部署启用新架构的 TiCDC 组件。你需要在 TiUP 启动 TiDB 集群时的配置文件中加入 TiCDC 组件相关的部分并启用新架构，以下是一个示例：
 
-```shell
+```yaml
 cdc_servers:
   - host: 10.0.1.20
     config:
@@ -117,7 +117,7 @@ cdc_servers:
         tiup cluster patch <cluster-name> ./cdc-v9.0.0-linux-amd64.tar.gz -R cdc
         ```
 
-3. 如果集群中已经有 Changefeed，请参考[停止同步任务](/ticdc/ticdc-manage-changefeed.md#停止同步任务) 暂停所有的 Changefeed 同步任务。
+3. 如果集群中已经有 Changefeed，请参考[停止同步任务](/ticdc/ticdc-manage-changefeed.md#停止同步任务)暂停所有的 Changefeed 同步任务。
 
 4. 通过 TiUP 更新 TiCDC 配置：
 
@@ -125,7 +125,7 @@ cdc_servers:
     tiup cluster edit-config <cluster-name>
     ```
 
-    ```shell
+    ```yaml
     server_configs:
       cdc:
         newarch: true
@@ -139,13 +139,13 @@ cdc_servers:
 
 例如，要在新架构的 TiCDC 节点中创建同步任务，可执行以下命令：
 
-```
+```shell
 cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
 ```
 
 若需查询特定同步任务的信息，可执行：
 
-```
+```shell
 cdc cli changefeed query -s --server=http://127.0.0.1:8300 --changefeed-id=simple-replication-task
 ```
 
@@ -153,7 +153,7 @@ cdc cli changefeed query -s --server=http://127.0.0.1:8300 --changefeed-id=simpl
 
 ## 监控
 
-TiCDC 新架构监控面板已集成到 Grafana 面板中，其名称为 TiCDC-New-Arch，可以通过该面板查看新架构相关监控指标。
+TiCDC 新架构监控面板已集成到 Grafana 面板中，其名称为 **TiCDC-New-Arch**，可以通过该面板查看新架构相关监控指标。
 
 ## 注意事项
 
