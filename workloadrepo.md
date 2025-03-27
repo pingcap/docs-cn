@@ -1,15 +1,15 @@
 ---
-title: TiDB 工作负载存储库 (Workload Repository)
-summary: 介绍用于收集和存储 TiDB 集群历史工作负载数据的工作负载存储库系统。
+title: TiDB Workload Repository
+summary: 介绍用于收集和存储 TiDB 集群历史工作负载数据的 Workload Repository 系统。
 ---
 
-# TiDB 工作负载存储库 (Workload Repository)
+# TiDB Workload Repository
 
-工作负载存储库是一个用于收集和存储 TiDB 集群历史工作负载数据的系统。它会定期采样各种系统表，以跟踪集群的性能和使用模式。
+Workload Repository 是一个用于收集和存储 TiDB 集群历史工作负载数据的系统。它会定期采样各种系统表，以跟踪集群的性能和使用模式。
 
-## 启用工作负载存储库
+## 启用 Workload Repository 
 
-要启用工作负载存储库，可以设置 [`tidb_workload_repository_dest`](/system-variables.md#tidb_workload_repository_dest-从-v900-版本开始引入) 系统变量：
+要启用 Workload Repository，可以设置 [`tidb_workload_repository_dest`](/system-variables.md#tidb_workload_repository_dest-从-v900-版本开始引入) 系统变量：
 
 ```sql
 SET GLOBAL tidb_workload_repository_dest = 'table';
@@ -23,7 +23,7 @@ SET GLOBAL tidb_workload_repository_dest = '';
 
 ## 数据收集
 
-工作负载存储库将数据存储在 `WORKLOAD_SCHEMA` 数据库下的表中。它通过两种不同的方法收集数据：
+Workload Repository 将数据存储在 `WORKLOAD_SCHEMA` 数据库下的表中。它通过两种不同的方法收集数据：
 
 - 快照采样过程，按可配置的时间间隔运行，通常为每小时一次，也可以手动触发。
 - 基于时间的采样过程，按较短的时间间隔运行，通常为每 5 秒一次。
@@ -91,7 +91,7 @@ SET GLOBAL tidb_workload_repository_active_sampling_interval = 20; -- 将间隔�
 
 系统会根据保留期设置自动清除数据，并使用分区进行高效的数据管理。
 
-[`tidb_workload_repository_retention_days`](/system-variables.md#tidb_workload_repository_retention_days-从-v900-版本开始引入) 变量控制工作负载存储库中历史数据的保留期。例如，要保留 30 天的数据，运行以下命令：
+[`tidb_workload_repository_retention_days`](/system-variables.md#tidb_workload_repository_retention_days-从-v900-版本开始引入) 变量控制 Workload Repository 中历史数据的保留期。例如，要保留 30 天的数据，运行以下命令：
 
 ```sql
 SET GLOBAL tidb_workload_repository_retention_days = 30;
@@ -101,7 +101,7 @@ SET GLOBAL tidb_workload_repository_retention_days = 30;
 
 ## 注意事项
 
-- 启用工作负载存储库可能会对系统性能产生轻微影响。
+- 启用 Workload Repository 可能会对系统性能产生轻微影响。
 - 采样间隔设置得过低可能会增加系统开销。
 - 将保留天数设置为 `0` 会禁用旧数据的自动清除。
 
