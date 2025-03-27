@@ -4266,7 +4266,7 @@ SHOW WARNINGS;
 - 可选值：`"standard"`、`"conservative"`、`"custom{...}"`
 - 该变量控制 [Pipelined DML](/pipelined-dml.md) 的资源使用策略，仅在 [`tidb_dml_type`](#tidb_dml_type-从-v800-版本开始引入) 为 `bulk` 时生效。可选值含义如下：
     - `"standard"`：默认的资源使用策略。
-    - `"conservative"`：Pipelined DML 使用更少的资源，但执行速度更慢，适用于对资源使用较敏感的场景。
+    - `"conservative"`：Pipelined DML 使用更少的资源，但执行速度比默认策略慢，适用于对资源使用较敏感的场景。
     - `"custom{option1=value1,option2=value2,...}"` 格式：自定义资源使用策略。可以只指定需要的子项。例如 `"custom{concurrency=8,write_throttle_ratio=0.5}"`。注意需要用双引号包括该值。支持的自定义项包括：
         - `concurrency`：flush 操作的并发度，影响 Pipelined DML 的执行速度和资源使用。取值范围为`[1,8192]`。
         - `resolve_concurrency`：异步 resolve lock 操作的并发度。只影响 Pipelined DML 资源使用，不影响 Pipelined DML 执行速度。取值范围为`[1,8192]`。
