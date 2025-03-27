@@ -61,16 +61,23 @@ URI 中可配置的参数如下：
 | `root`        | 下游数据库的用户名。当同步数据到 TiDB 或其它兼容 MySQL 的数据库时，下游数据库的用户需要具备[一定的权限](#下游数据库用户所需的权限)。                             |
 | `123456`       | 下游数据库密码。（可采用 Base64 进行编码）                                     |
 | `127.0.0.1`    | 下游数据库的 IP。                                |
-| `3306`         | 下游数据的连接端口。                                 |
-| `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）。       |
+| `3306`         | 下游数据库的连接端口。                                 |
+| `worker-count` | 向下游执行 SQL 语句的并发度（可选，默认值为 `16`，最大值为 `1024`）。       |
 | `cache-prep-stmts` | 向下游执行 SQL 时是否使用 prepared statement 并且开启客户端的 prepared statement 缓存（可选，默认值为 `true`）。 |
-| `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`）。 |
+| `max-txn-row`  | 向下游执行 SQL 语句的 batch 大小（可选，默认值为 `256`，最大值为 `2048`）。 |
+| `max-multi-update-row`  | 开启批量写入时，向下游执行 `UPDATE ROWS` SQL 语句的 batch 大小，总是小于 `max-txn-row`（可选，默认值为 `40`，最大值为 `256`）。|
+| `max-multi-update-row-size` | 开启批量写入时，向下游执行 `UPDATE ROWS` SQL 语句的 size 大小，如果超过这个 size，每个 row 会作为独立的 SQL（可选，默认值为 `1024`，最大值为 `8192`）。|
 | `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选）。 |
 | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选）。 |
 | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选）。 |
 | `time-zone`    | 连接下游 MySQL 实例时使用的时区名称，从 v4.0.8 开始生效。（可选。如果不指定该参数，使用 TiCDC 服务进程的时区；如果指定该参数但使用空值，例如：`time-zone=""`，则表示连接 MySQL 时不指定时区，使用下游默认时区）。 |
 | `transaction-atomicity`      | 指定事务的原子性级别（可选，默认值为 `none`）。当该值为 `table` 时 TiCDC 保证单表事务的原子性，当该值为 `none` 时 TiCDC 会拆分单表事务。 |
-| `safe-mode` | 指定向下游同步数据时 `INSERT` 和 `UPDATE` 语句的处理方式。当设置为 `true` 时，TiCDC 会将上游所有的 `INSERT` 语句转换为 `REPLACE INTO` 语句，所有的 `UPDATE` 语句转换为 `DELETE` + `REPLACE INTO` 语句。在 v6.1.3 版本之前，该参数的默认值为 `true`。从 v6.1.3 版本开始，该参数的默认值调整为 `false`，TiCDC 在启动时会获取一个当前时间戳 `ThresholdTs`，对于 `CommitTs` 小于 `ThresholdTs` 的 `INSERT` 语句和 `UPDATE` 语句，TiCDC 会分别将其转换为 `REPLACE INTO` 语句和 `DELETE` + `REPLACE INTO` 语句。对于 `CommitTs` 大于等于 `ThresholdTs` 的 `INSERT` 语句和 `UPDATE` 语句，`INSERT` 语句将直接同步到下游，`UPDATE` 语句的具体行为则参考 [TiCDC 拆分 UPDATE 事件行为说明](/ticdc/ticdc-split-update-behavior.md)。 |
+| `batch-dml-enable` | 开启 batch-dml 批量写入特性（可选，默认值为 `true`）。|
+| `read-timeout` | go-sql-driver 参数，[I/O 读取超时](https://pkg.go.dev/github.com/go-sql-driver/mysql#readme-readtimeout)（可选，默认值为 `2m`）。|
+| `write-timeout` | go-sql-driver 参数，[I/O 写入超时](https://pkg.go.dev/github.com/go-sql-driver/mysql#readme-writetimeout)（可选，默认值为 `2m`）。|
+| `timeout` | go-sql-driver 参数，[建立连接的超时时间](https://pkg.go.dev/github.com/go-sql-driver/mysql#readme-timeout)，即拨号超时（可选，默认值为 `2m`）。|
+| `tidb-txn-mode` | 设置环境变量 [`tidb_txn_mode`](/system-variables.md#tidb_txn_mode)（可选，默认值为 `optimistic`）。 |
+| `safe-mode` | 指定向下游同步数据时 `INSERT` 和 `UPDATE` 语句的处理方式。当设置为 `true` 时，TiCDC 会将上游所有的 `INSERT` 语句转换为 `REPLACE INTO` 语句，所有的 `UPDATE` 语句转换为 `DELETE` + `REPLACE INTO` 语句。在 v6.1.3 版本之前，该参数的默认值为 `true`。从 v6.1.3 版本开始，该参数的默认值调整为 `false`，TiCDC 在启动时会获取一个当前时间戳 `ThresholdTs`：<ul><li>对于 `CommitTs` 小于 `ThresholdTs` 的 `INSERT` 语句和 `UPDATE` 语句，TiCDC 会分别将其转换为 `REPLACE INTO` 语句和 `DELETE` + `REPLACE INTO` 语句。</li><li>对于 `CommitTs` 大于等于 `ThresholdTs` 的 `INSERT` 语句和 `UPDATE` 语句，`INSERT` 语句将直接同步到下游，`UPDATE` 语句的具体行为则参考 [TiCDC 拆分 UPDATE 事件行为说明](/ticdc/ticdc-split-update-behavior.md)。</li></ul> |
 
 若需要对 Sink URI 中的数据库密码使用 Base64 进行编码，可以参考如下命令：
 
