@@ -3900,7 +3900,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 ### tidb_workload_repository_dest
 
-- [TiDB Workload Repository](/workloadrepo.md#启用工作负载存储库)
+- [TiDB Workload Repository](/workloadrepo.md#启用-workload-repository)
 - [系统变量](/system-variables.md#tidb_workload_repository_dest-从-v900-版本开始引入)
 
 ### tidb_workload_repository_active_sampling_interval
