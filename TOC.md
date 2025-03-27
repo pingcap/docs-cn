@@ -1069,6 +1069,7 @@
   - [错误码](/error-codes.md)
   - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
   - [外部存储服务的 URI 格式](/external-storage-uri.md)
+  - [TiDB 工作负载存储库 (Workload Repository)](/workloadrepo.md)
 - 常见问题解答 (FAQ)
   - [FAQ 汇总](/faq/faq-overview.md)
   - [产品 FAQ](/faq/tidb-faq.md)
