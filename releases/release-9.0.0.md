@@ -121,7 +121,7 @@ TiDB 版本：9.0.0
     * **故障诊断：** 在对过往问题的诊断过程中，需要回顾历史活动和事件。持久化的负载数据可以帮助用户复盘过去某个时间段内的状态信息变化，找出异常点；或者精确定位某个数据库会话或 SQL 语句在特定时刻的具体行为。    
     * **自动化运维：** 数据库自治是提升用户体验并降低使用门槛的必然趋势，而实现数据库自动调优需要历史数据作为支撑。基于持久化的历史工作负载数据，TiDB 可以逐步向自动化运维迈进，例如：索引推荐（Index Advisor）、统计信息推荐（Statistics Advisor）、SQL 绑定推荐（SQL Binding Advisor）等。
 
-  在 v9.0.0 中，你可以通过设置变量 [`tidb_workload_repository_dest`](/system-variables.md#tidb_workload_repository_dest-从-v900-版本开始引入) 启用 Workload Repository，TiDB 会把一部分内存表的快照持续写入 `workload_schema`，持久化到 TiKV 中。当前版本默认关闭。被持久化的内存表分为两类：
+  在 v9.0.0 中，你可以通过设置变量 [`tidb_workload_repository_dest`](/system-variables.md#tidb_workload_repository_dest-从-v900-版本开始引入) 启用 Workload Repository，TiDB 会把一部分内存表的快照持续写入 `workload_schema`，持久化到 TiKV 中。当前版本默认关闭。通过持久化数据库的历史工作负载，TiDB 可以更好地进行故障排查和优化推荐，并在未来推出一系列围绕历史负载的自动化工具，提升数据库运维和诊断的用户体验。被持久化的内存表分为两类：
 
     * **存储累计指标的内存表**体积较大，快照和存储成本比较高，这些表会依据 [`tidb_workload_repository_snapshot_interval`](/system-variables.md#tidb_workload_repository_snapshot_interval-从-v900-版本开始引入) 的设置做批量快照，最小间隔 15 分钟。通过比较任意两个快照间指标的变化，得出这一段时间各个指标的增量。包括以下内存表：
 
@@ -140,8 +140,6 @@ TiDB 版本：9.0.0
         * [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md)
     
     Workload Repository 中的数据会被自动清理，默认保存 7 天。通过设置 [`tidb_workload_repository_retention_days`](/system-variables.md#tidb_workload_repository_retention_days-从-v900-版本开始引入) 修改保存时间。
-
-    通过持久化数据库的历史工作负载，TiDB 可以更好地进行故障排查和优化推荐，并在未来推出一系列围绕历史负载的自动化工具，提升数据库运维和诊断的用户体验。
 
     更多信息，请参考[用户文档](/workloadrepo.md)。
 
