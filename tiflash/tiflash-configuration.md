@@ -93,14 +93,15 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 ##### `format_version`
 
 - DTFile 储存文件格式
-- 默认值：`7`
-- 可选值：`2`、`3`、`4`、`5`、`6`、`7`
+- 默认值：`8`
+- 可选值：`2`、`3`、`4`、`5`、`6`、`7`、`8`
     - `format_version = 2`：v6.0.0 以前版本的默认文件格式
     - `format_version = 3`：v6.0.0 及 v6.1.x 版本的默认文件格式，具有更完善的检验功能
     - `format_version = 4`：v6.2.0 ~ v7.3.0 的默认文件格式，优化了写放大问题，同时减少了后台线程消耗
     - `format_version = 5`：v7.4.0 ~ v8.3.0 的默认文件格式（从 v7.3.0 开始引入），该格式可以合并小文件从而减少了物理文件数量
     - `format_version = 6`：从 v8.4.0 开始引入，部分支持了向量索引的构建与存储
-    - `format_version = 7`：v8.4.0 及以后版本的默认文件格式（从 v8.4.0 开始引入），该格式用于支持向量索引的构建与存储
+    - `format_version = 7`：v8.4.0 ~ v8.5.x 的默认文件格式（从 v8.4.0 开始引入），该格式用于支持向量索引的构建与存储
+    - `format_version = 8`：v9.0.0 及以后版本的默认文件格式，该格式用于支持新的字符串序列化方案，可提升字符串的读写性能。
 
 #### storage.main
 
@@ -466,6 +467,13 @@ I/O 限流功能相关配置。
 
 - 用于 MinTSO 调度器，表示一个 TiFlash 实例中最多可同时运行的查询数量。关于 MinTSO 调度器，详见 [TiFlash MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)。
 - 默认值：`0`，即两倍的 CPU 逻辑核数
+
+##### `hashagg_use_magic_hash` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 控制 TiFlash 在进行聚合操作时使用的哈希函数。如果设置为 `true`，TiFlash 的 HashAgg 将使用 magic hash 而非默认的 CRC32。
+- magic hash 生成的哈希值分布更加均匀，能够有效减少哈希冲突，但其计算速度比 CRC32 慢。建议在 `GROUPBY` 键的 NDV（number of distinct values，不同值的数量）较高时启用该配置，以优化聚合性能。
+- 默认值：`false`
+- 可选值：`true`、`false`
 
 #### security <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
