@@ -6,9 +6,11 @@ summary: sync-diff-inspector 是一个用于校验 MySQL/TiDB 中数据一致性
 
 # sync-diff-inspector 用户文档
 
-[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree/master/sync_diff_inspector) 是一个用于校验 MySQL／TiDB 中两份数据是否一致的工具。该工具提供了修复数据的功能（适用于修复少量不一致的数据）。
+[sync-diff-inspector](https://github.com/pingcap/tiflow/tree/master/sync_diff_inspector) 是一个用于校验 MySQL／TiDB 中两份数据是否一致的工具。该工具提供了修复数据的功能（适用于修复少量不一致的数据）。
 
-主要功能：
+本文介绍 sync-diff-inspector 的主要功能，并说明如何配置以及使用该工具。
+
+## 主要功能
 
 * 对比表结构和数据
 * 如果数据不一致，则生成用于修复数据的 SQL 语句
@@ -17,12 +19,31 @@ summary: sync-diff-inspector 是一个用于校验 MySQL/TiDB 中数据一致性
 * 支持 [TiDB 主从集群的数据校验](/ticdc/ticdc-upstream-downstream-check.md)
 * 支持[从 TiDB DM 拉取配置的数据校验](/sync-diff-inspector/dm-diff.md)
 
-你可通过以下方式下载 sync-diff-inspector：
+## 安装 sync-diff-inspector
 
-+ Binary 包。sync-diff-inspector 的安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
-+ Docker 镜像。执行以下命令进行下载：
+sync-diff-inspector 的安装方法取决于 TiDB 版本。
 
-    {{< copyable "shell-regular" >}}
+对于 TiDB v9.0.0 及以上版本，你可通过以下方式下载 sync-diff-inspector：
+
++ 使用 TiUP 安装：
+
+    ```shell
+    tiup install sync-diff-inspector
+    ```
+
++ 下载 Binary 包。sync-diff-inspector 的安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
+
++ 使用 Docker 镜像。执行以下命令进行下载：
+
+    ```shell
+    docker pull pingcap/sync-diff-inspector:latest
+    ```
+
+对于 TiDB v9.0.0 之前版本，你可通过以下方式下载 sync-diff-inspector：
+
++ 下载来自 [`tidb-tools`](https://github.com/pingcap/tidb-tools) 仓库的 Binary 包。sync-diff-inspector 的安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
+
++ 使用 Docker 镜像。执行以下命令进行下载：
 
     ```shell
     docker pull pingcap/tidb-tools:latest
@@ -287,15 +308,13 @@ Average Speed: 113.277149MB/s
 - 下游数据库冗余行，则是 DELETE 语句
 - 下游数据库行部分数据不一致，则是 REPLACE 语句，但会在 SQL 文件中通过注释的方法标明不同的列
 
-```SQL
+```sql
 -- table: sbtest.sbtest99
 -- range in sequence: (3690708) < (id) <= (3720581)
 /*
   DIFF COLUMNS ╏   `K`   ╏                `C`                 ╏               `PAD`
 ╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍
   source data  ╏ 2501808 ╏ 'hello'                            ╏ 'world'
-╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍
-  target data  ╏ 5003616 ╏ '0709824117-9809973320-4456050422' ╏ '1714066100-7057807621-1425865505'
 ╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍
 */
 REPLACE INTO `sbtest`.`sbtest99`(`id`,`k`,`c`,`pad`) VALUES (3700000,2501808,'hello','world');

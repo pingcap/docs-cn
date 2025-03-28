@@ -697,12 +697,13 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 默认值：`UNSPECIFIED`
-- 可选值：`UNSPECIFIED`，`0`，`1`，`2`
+- 可选值：`UNSPECIFIED`，`0`，`1`，`2`，`3`
 - 该变量用于指定不同版本的 MPP 执行计划。指定后，TiDB 会选择指定版本的 MPP 执行计划。该变量值含义如下：
-    - `UNSPECIFIED`：表示未指定，此时 TiDB 自动选择最新版本 `2`。
+    - `UNSPECIFIED`：表示未指定，此时 TiDB 自动选择最新版本 `3`。
     - `0`：兼容所有 TiDB 集群版本，MPP 版本大于 `0` 的新特性均不会生效。
     - `1`：从 v6.6.0 版本开始引入，用于开启 TiFlash 带压缩的数据交换，详情参见 [MPP Version 和 Exchange 数据压缩](/explain-mpp.md#mpp-version-和-exchange-数据压缩)。
     - `2`：从 v7.3.0 版本开始引入，用于确保在 TiFlash 执行出错的情况下，获取到准确的报错信息。
+    - `3`：从 v9.0.0 版本开始引入，用于开启 TiFlash 新的字符串数据交换格式，以提高字符串的序列化和反序列化效率，从而提升查询性能。
 
 ### `password_history` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
@@ -730,8 +731,10 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
-- 默认值：`OFF`
-- 这个变量用于控制是否开启 Active PD Follower 特性（目前该特性只适用于处理获取 Region 信息的相关请求）。当该值为 `OFF` 时，TiDB 仅从 PD leader 获取 Region 信息。当该值为 `ON` 时，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，因此 PD follower 也可以处理 Region 信息请求，从而减轻 PD leader 的 CPU 压力。
+- 默认值：`ON`。在 v9.0.0 之前，默认值为 `OFF`。
+- 这个变量用于控制是否开启 [Active PD Follower 特性](/tune-region-performance.md#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力)，目前该特性只适用于处理获取 Region 信息的相关请求。
+    - 当该值为 `OFF` 时，TiDB 仅从 PD leader 获取 Region 信息。
+    - 当该值为 `ON` 时，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，因此 PD follower 也可以处理 Region 信息请求，从而减轻 PD leader 的 CPU 压力。从 v9.0.0 开始，当该变量值为 `ON` 时，TiDB Lightning 的 Region 信息请求也会被均匀发送到所有 PD 节点。
 - 适合开启 Active PD Follower 的场景：
     - 集群 Region 数量较多，PD leader 由于处理心跳和调度任务的开销大，导致 CPU 资源紧张。
     - 集群中 TiDB 实例数量较多，Region 信息请求并发量较大，PD leader CPU 压力大。
@@ -878,6 +881,21 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：（随系统）
 - 该变量显示首次引导启动 TiDB 时的系统时区。另请参阅 [`time_zone`](#time_zone)。
+
+### `tidb_accelerate_user_creation_update` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 当 TiDB 中的 SQL 用户数量过多（例如超过 10 万） 时，执行创建用户、修改密码、设置权限等操作可能导致 TiDB 性能显著下降。这是因为每次执行这些操作时，系统默认会触发所有用户数据的重新加载。
+- 为优化性能，在用户数量较多的场景下，建议将该变量设置为 `ON`。
+- `OFF` 或 `0`：每次执行创建用户、修改密码、设置权限等操作时，系统都会重新加载全部用户数据到内存中。在用户数量较多的场景下，此设置可能导致性能显著下降。
+- `ON` 或 `1`：TiDB 将采用更高效的用户数据加载策略：
+    - 创建用户或对**未登录用户**执行修改密码、设置权限等操作时，TiDB **不会**重新加载全部用户数据到内存中。
+    - 对**已登录用户**执行相关操作时，TiDB 仅重新加载这些特定用户的更新数据到内存中。
+    - 在用户数量较多的场景下，此设置能够显著提升系统性能。
 
 ### `tidb_adaptive_closest_read_threshold` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
@@ -2732,7 +2750,12 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置是否在[日志](/tidb-configuration-file.md#logfile)里记录所有的 SQL 语句。该功能默认关闭。如果系统运维人员在定位问题过程中需要追踪所有 SQL 记录，可考虑开启该功能。
+- 如果指定了 [`log.general-log-file`](/tidb-configuration-file.md#general-log-file-从-v800-版本开始引入) 配置项，general log 将被单独写入到指定的文件中。
+- 通过 [`log.format`](/tidb-configuration-file.md#format) 配置项可以配置日志消息的格式，无论 general log 是在单独的文件中还是合并在其它日志文件中。
+- 通过 [`tidb_redact_log`](#tidb_redact_log) 变量可以对 general log 中记录的 SQL 语句进行脱敏处理。
+- 只有执行成功的语句才会被记录在 general log 中。失败的语句不会记录在 general log 中，而是以 `command dispatched failed` 消息的形式记录在 TiDB 日志中。
 - 在 TiDB 配置项 [`log.level`](/tidb-configuration-file.md#level) 为 `"info"` 或 `"debug"` 时，通过查询 `"GENERAL_LOG"` 字符串可以定位到该功能在日志中的所有记录。日志会记录以下内容：
+    - `time`：事件发生时间
     - `conn`：当前会话对应的 ID
     - `user`：当前会话用户
     - `schemaVersion`：当前 schema 版本
@@ -2836,21 +2859,17 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_hash_join_version` <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
-> **警告：**
->
-> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：枚举型
-- 默认值：`legacy`
+- 默认值：`optimized`。在 v9.0.0 之前，默认值为 `legacy`。
 - 可选值：`legacy`、`optimized`
-- 控制 TiDB 是否使用 Hash Join 算子的优化版。默认值为 `legacy`，代表不使用优化版。若设置为 `optimized`，TiDB 在执行 Hash Join 算子时将使用其优化版，以提升 Hash Join 性能。
+- 控制 TiDB 是否使用 [Hash Join 算子的优化版](/sql-statements/sql-statement-explain-analyze.md#hashjoinv2)。该变量设置为 `optimized` 时，TiDB 在执行 Hash Join 算子时将使用其优化版，以提升 Hash Join 性能。
 
 > **注意：**
 >
-> 目前，仅 Inner Join 和 Outer Join 类型的连接操作支持优化版的 Hash Join。对于其他类型的连接操作，即使将该变量设成 `optimized`，TiDB 也不会使用优化版的 Hash Join。
+> 目前，仅 Inner、Outer、Semi 和 Anti Semi 类型的连接操作支持优化版的 Hash Join。对于其他类型的连接操作，即使将该变量设成 `optimized`，TiDB 也不会使用优化版的 Hash Join。
 
 ### `tidb_hashagg_final_concurrency`
 

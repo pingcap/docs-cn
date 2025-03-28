@@ -13,23 +13,44 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
 
 ## 准备用户并配置 SSH 互信
 
-1. 以 `tidb` 用户为例。依次登录所有的部署目标机器，并以 `root` 用户使用如下命令创建一个普通用户 `tidb`。在 no-sudo 模式下，不需要为 `tidb` 用户配置 sudo 免密，即无需将 `tidb` 用户加入 `sudoers` 文件中。
+本文以 `tidb` 用户为例进行说明。
 
-    ```bash
-    adduser tidb
-    ```
+1. 以 `root` 用户身份登录所有目标机器，创建名为 `tidb` 的用户并为该用户配置系统资源限制，如下所示：
+
+    > **注意：**
+    >
+    > 在 no-sudo 模式下，无需为 `tidb` 用户配置免密 sudo，即不需要将 `tidb` 用户添加到 `sudoers` 文件中。
+
+    1. 添加 `tidb` 用户：
+
+        ```shell
+        adduser tidb
+        ```
+
+    2. 为 `tidb` 用户配置资源限制：
+
+        ```shell
+        cat << EOF >>/etc/security/limits.conf
+        tidb           soft    nofile         1000000
+        tidb           hard    nofile         1000000
+        tidb           soft    stack          32768
+        tidb           hard    stack          32768
+        tidb           soft    core           unlimited
+        tidb           hard    core           unlimited
+        EOF
+        ```
 
 2. 在每台部署目标机器上，为 `tidb` 用户启动 `systemd user` 模式。该步骤是必须的，请勿跳过。
 
     1. 使用 `tidb` 用户设置 `XDG_RUNTIME_DIR` 环境变量。
-      
+
         ```bash
         sudo -iu tidb  # Switch to the tidb user
         mkdir -p ~/.bashrc.d
         echo "export XDG_RUNTIME_DIR=/run/user/$(id -u)" > ~/.bashrc.d/systemd
         source ~/.bashrc.d/systemd
         ```
-   
+
     2. 使用 `root` 用户启动 user service。
 
         ```shell
@@ -94,11 +115,11 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
     ```bash
     tiup cluster template > topology.yaml
     ```
-   
+
 2. 编辑拓扑文件。
 
     相比常规模式，使用 no-sudo 模式的 TiUP 时，需要在 `topology.yaml` 的 `global` 模块中新增一行 `systemd_mode: "user"`。`systemd_mode` 参数用于设置是否使用 `systemd user` 模式。如果不设置该参数，其默认值为 `system`，表示需要使用 sudo 权限。
-    
+
     此外，由于 no-sudo 模式下，普通用户 `tidb` 没有权限使用 `/data` 目录作为 `deploy_dir` 和 `data_dir`，因此，你需要选择一个普通用户可以访问的路径。以下示例使用了相对路径，实际使用的路径为 `/home/tidb/data/tidb-deploy` 和 `/home/tidb/data/tidb-data`。拓扑文件的其余部分与常规模式一致。另一种方法是使用 `root` 用户创建目录，然后使用 `chown` 将所有权更改为 `tidb:tidb`。
 
     ```yaml
@@ -111,7 +132,7 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
       arch: "amd64"
       ...
     ```
-   
+
 ## 手动修复检查项
 
 > **注意：**
@@ -125,7 +146,7 @@ Node            Check         Result  Message
 ----            -----         ------  -------
 192.168.124.27  thp           Fail    THP is enabled, please disable it for best performance
 192.168.124.27  command       Pass    numactl: policy: default
-192.168.124.27  os-version    Pass    OS is CentOS Stream 8 
+192.168.124.27  os-version    Pass    OS is CentOS Stream 8
 192.168.124.27  network       Pass    network speed of ens160 is 10000MB
 192.168.124.27  disk          Warn    mount point / does not have 'noatime' option set
 192.168.124.27  disk          Fail    multiple components tikv:/home/blackcat/data/tidb-deploy/tikv-20160/data/tidb-data,tikv:/home/blackcat/data/tidb-deploy/tikv-20161/data/tidb-data are using the same partition 192.168.124.27:/ as data dir
