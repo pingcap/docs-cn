@@ -4009,14 +4009,6 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 - [系统变量](/system-variables.md#tx_read_ts)
 
-### txn_scope
-
-引用该变量的文档：
-
-- [TiDB 配置文件描述](/tidb-configuration-file.md)
-- [使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)
-- [系统变量](/system-variables.md#txn_scope)
-
 ### validate_password.check_user_name
 
 引用该变量的文档：
