@@ -13,7 +13,7 @@ summary: 介绍 TiDB 在 SaaS 多租户场景最佳实践。
 
 ## 硬件配置
 
-建议使用高内存规格的 TiDB 实例，例如，100 万张表使用 32 GiB 或更高内存，300 万张表使用 64 GiB 或更高内存。高内存规格的 TiDB 实例可以为 Infoschema、Statistics 和执行计划缓存分配更多的缓存空间，达到较高的缓存命中率，从而提升业务性能，另外还可以有效的缓解 TiDB GC 带来的稳定性问题。
+建议使用高内存规格的 TiDB 实例，例如，100 万张表使用 32 GiB 或更高内存，300 万张表使用 64 GiB 或更高内存。高内存规格的 TiDB 实例可以为 Infoschema、Statistics 和执行计划缓存分配更多的缓存空间，提高缓存命中率，从而提升业务性能。同时，更大的内存可以缓解 TiDB GC 带来的的性能波动和稳定性问题。
 
 以下是推荐的 TiKV 和 PD 的硬件配置：
 
@@ -25,7 +25,7 @@ summary: 介绍 TiDB 在 SaaS 多租户场景最佳实践。
 
 ## 控制 Region 数量
 
-如果需要创建大量的表（例如 10 万张以上），建议将 TiDB 的配置 [`split-table`](/tidb-configuration-file.md#split-table) 设置为 `false`，减少 Region 数量，降低 TiKV 内存压力。
+如果需要创建大量的表（例如 10 万张以上），建议将 TiDB 的配置 [`split-table`](/tidb-configuration-file.md#split-table) 设置为 `false`，减少集群 Region 数量，从而降低 TiKV 内存压力。
 
 ## 缓存配置
 
@@ -36,9 +36,9 @@ summary: 介绍 TiDB 在 SaaS 多租户场景最佳实践。
 
 * 从 TiDB v8.4.0 开始，TiDB 引入了 [`tidb_auto_analyze_concurrency`](/system-variables.md#tidb_auto_analyze_concurrency-从-v840-版本开始引入) 系统变量用来控制单个自动统计信息收集任务内部的并发度。多表场景下，可以按需提升该并发度，以提高自动分析的吞吐量。随着并发值的增加，自动分析的吞吐量和 TiDB Owner 节点的 CPU 使用率会线性增加。在实际测试中，使用并发值 16，可以在一分钟内自动分析 320 张表（每张表有 1 万行数据、4 列和 1 个索引），消耗 TiDB Owner 节点一个 CPU 核心资源。
 * [`tidb_auto_build_stats_concurrency`](/system-variables.md#tidb_auto_build_stats_concurrency-从-v650-版本开始引入) 和 [`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入) 影响 TiDB 统计信息的构建并发度，需根据场景调整。
-    - 对于分区表多场景，优先提高 `tidb_auto_build_stats_concurrency` 的值
-    - 对于列较多的场景，优先提高 `tidb_build_sampling_stats_concurrency` 的值
-* 三者乘积不应超过 TiDB CPU 核心数，避免过度占用资源。
+    - 对于分区表多场景，优先提高 `tidb_auto_build_stats_concurrency` 的值。
+    - 对于列较多的场景，优先提高 `tidb_build_sampling_stats_concurrency` 的值。
+* `tidb_auto_analyze_concurrency`、`tidb_auto_build_stats_concurrency` 和 `tidb_build_sampling_stats_concurrency` 三个变量的乘积不应超过 TiDB CPU 核心数，避免过度占用资源。
 
 ## 系统表查询
 
@@ -53,7 +53,7 @@ summary: 介绍 TiDB 在 SaaS 多租户场景最佳实践。
 
 ## 大量链接场景
 
-SAAS 多租户场景中，每个用户连接到 TiDB 来操作自己租户(database) 中的数据。为了节省成本，用户希望 TiDB 节点能够支持尽可能多的连接。
+SAAS 多租户场景中，每个用户通常连接到 TiDB 来操作自己租户(database) 中的数据。为了节省成本，用户希望 TiDB 节点能够支持尽可能多的连接。
 
 * 调高 TiDB 的配置 [`token-limit`](/tidb-configuration-file.md#token-limit)（默认 `1000`）以支持更多并发请求。
 * TiDB 的内存使用量与连接数量基本上呈线性关系。在实际测试中，20 万个空闲连接时，TiDB 进程内存增加约 30 GiB。建议调大 TiDB 内存规格。
