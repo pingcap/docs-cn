@@ -168,6 +168,10 @@ TiDB 版本：9.0.0
 
 ### 数据迁移
 
+* TiDB Lightning 与 TiDB `sql_require_primary_key=ON` 兼容 [#57479](https://github.com/pingcap/tidb/issues/57479) @[lance6716](https://github.com/lance6716) **tw@Oreoxmt** <!--2026-->
+
+    当你在 TiDB 中启用系统变量 [`sql_require_primary_key`](/system-variables.md#sql_require_primary_key-从-v630-版本开始引入) 后，表必须包含主键。为避免表创建失败，TiDB Lightning 为其内部的错误日志表和冲突检测表（`conflict_error_v4`、`type_error_v2` 和 `conflict_records_v2`）添加了默认主键。如果你的自动化脚本使用了这些内部表，请更新脚本以适配包含主键的新表结构。
+
 * 将 sync-diff-inspector 从 `pingcap/tidb-tools` 迁移至 `pingcap/tiflow` 代码仓库 [#11672](https://github.com/pingcap/tiflow/issues/11672) @[joechenrh](https://github.com/joechenrh) **tw@Oreoxmt** <!--2070-->
 
     从 v9.0.0 开始，sync-diff-inspector 工具从 [`pingcap/tidb-tools`](https://github.com/pingcap/tidb-tools) GitHub 代码仓库迁移至 [`pingcap/tiflow`](https://github.com/pingcap/tiflow)。该变更将数据同步和迁移工具（[DM](/dm/dm-overview.md)、[TiCDC](/ticdc/ticdc-overview.md) 和 sync-diff-inspector）统一到同一个代码仓库中。
