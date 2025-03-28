@@ -78,7 +78,7 @@ TiDB 版本：9.0.0
         -  如果升级前未指定过 [`format_version`](/tiflash/tiflash-configuration.md#format_version)，升级后 TiFlash 默认采用新的存储格式。
         -  如果升级前指定过 [`format_version`](/tiflash/tiflash-configuration.md#format_version)，升级后 `format_version` 的值保持不变， TiFlash 会继续使用 `format_version` 指定的存储格式。此时如需启用新的存储格式，请在 TiFlash 配置文件中将 `format_version` 设置为 `8`。配置生效后，新写入 TiFlash 的数据将采用新的存储格式，而现有数据的存储格式则不受影响。
 
-    更多信息，请参考[用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)。
+    更多信息，请参考[用户文档](/tiflash/tiflash-configuration.md#format_version)。
 
 ### 高可用
 
