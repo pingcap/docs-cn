@@ -5,33 +5,33 @@ summary: 本文介绍如何使用 BR 全量备份恢复与 TiCDC 增量数据同
 
 # 迁移升级 TiDB 集群
 
-本文介绍如何使用 [BR](/br/backup-and-restore-overview.md) 全量备份恢复与 [TiCDC](/ticdc/ticdc-overview.md) 增量数据同步实现 TiDB 集群的蓝绿升级。该方案通过并行运行新旧集群，确保业务流量平滑切换并支持快速回退，为关键业务系统提供高可靠、低风险的升级路径。该方案特别适用于跨大版本升级场景（例如从 v5.x 升级到 v7.x）。具体优势如下：
+本文介绍如何使用 [BR](/br/backup-and-restore-overview.md) 全量备份恢复与 [TiCDC](/ticdc/ticdc-overview.md) 增量数据同步实现 TiDB 集群的迁移升级（又称蓝绿升级）。该方案通过并行运行新旧集群，确保业务流量平滑切换并支持快速回退，为关键业务系统提供高可靠、低风险的升级路径。该方案特别适用于跨大版本升级场景（例如从 v5.x 升级到 v7.x）。具体优势如下：
 
 - **风险可控**：支持分钟级回退至旧版本集群，确保业务连续性。
 - **数据完整**：采用多阶段验证机制，确保数据零丢失。
 - **业务影响小**：仅需一次短暂停机窗口即可完成最终切换。
 
-迁移升级的流程如下：
+迁移升级的核心流程如下：
 
 1. **风险预检**：检查集群状态与方案适用性。
 2. **准备新集群**：基于旧集群的全量备份创建新集群，并升级至目标版本。
 3. **增量同步**：通过 TiCDC 建立正向数据同步通道。
 4. **切换验证**：完成多维度验证后，将业务流量切换至新集群，并建立 TiCDC 回退通道。
-5. **观察状态**：维持回退通道，观察期后清理环境。
+5. **观察状态**：维持回退通道。观察期后清理环境。
 
-**回退计划**：在迁移升级过程中，如果新集群出现故障，可随时将业务流量切换回旧集群，以确保业务稳定运行。
+**回退计划**：在迁移升级过程中，如果新集群出现故障，可随时将业务流量切换回旧集群。
 
-以下章节提供迁移升级 TiDB 集群的标准化流程和通用操作步骤。
+以下章节提供迁移升级 TiDB 集群的标准化流程和通用操作步骤，相关命令以 TiDB Self-Managed 环境为例。。
 
 ## 步骤一：评估方案可行性
 
-在开始迁移升级前，需评估 TiCDC 和 BR 的适用性，并检查集群的健康状态。
+在开始迁移升级前，需评估相关组件的适用性，并检查集群的健康状态。
 
 - 检查 TiCDC 适用性：
 
     - **表结构要求**：确保待同步的表包含有效索引，详见 [TiCDC 有效索引](/ticdc/ticdc-overview.md#有效索引)。
     - **功能限制**：TiCDC 暂不支持 Sequence、TiFlash DDL 同步等，详见 [TiCDC 暂不支持的场景](/ticdc/ticdc-overview.md#暂不支持的场景)。
-    - **最佳实践**：在切换过程中，应尽量避免在上游集群执行 DDL 操作。
+    - **最佳实践**：在切换过程中，应尽量避免在 TiCDC 的上游集群执行 DDL 操作。
 
 - 检查 BR 适用性：检查 BR 备份与恢复功能的已知限制，详见 [BR 使用限制](/br/backup-and-restore-overview.md#使用限制)。
 
@@ -41,7 +41,7 @@ summary: 本文介绍如何使用 BR 全量备份恢复与 TiCDC 增量数据同
 
 ### 1. 调整旧集群的 GC lifetime
 
-为确保数据同步链路的稳定性，必须调整系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 的值，以确保其足以覆盖以下操作及其间隔的总时长：BR 备份、恢复、升级集群版本和创建 TiCDC Changefeed 同步链路。否则，同步任务可能进入不可恢复的 `failed` 状态，需要重新执行全量备份。
+为确保数据同步链路的稳定性，必须调整系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 的值，以确保其足以覆盖以下操作及其间隔的总时长：BR 备份、恢复、升级集群版本和创建 TiCDC Changefeed 同步链路。否则，同步任务将进入不可恢复的 `failed` 状态。此时整个迁移升级的步骤，需要重新开始一个新的全量备份开始执行。
 
 以下示例将 `tidb_gc_life_time` 调整为 `60h`：
 
@@ -107,7 +107,7 @@ tiup cluster upgrade <new_cluster_name> v_target_version --offline  # 停机升�
 tiup cluster start <new_cluster_name>     # 启动集群
 ```
 
-此外，还需同步旧集群的关键配置至新集群，例如系统配置项和系统变量等，以确保业务运行一致性。
+此外，还需同步旧集群必要的关键配置至新集群，例如系统配置项和系统变量等，以确保业务运行一致性。
 
 ## 步骤三：同步增量数据
 
@@ -119,7 +119,7 @@ tiup cluster start <new_cluster_name>     # 启动集群
 > 
 > TiCDC 组件的版本需与旧集群的大版本保持一致。
 
-- 创建 Changefeed 同步任务，其中增量同步起始点 `${tso}` 为[步骤二](#步骤二准备新集群)中记录的备份的准确时间戳 TSO：
+- 创建 Changefeed 同步任务，其中增量同步起始点 `${tso}` 为[步骤二](#步骤二准备新集群)中记录的备份的准确时间戳 TSO，以避免数据丢失：
 
     ```shell
     tiup cdc:${cluster_version} changefeed create --server http://${cdc_host}:${cdc_port} --sink-uri="mysql://${username}:${password}@${tidb_endpoint}:${port}" --config config.toml --start-ts ${tso}
