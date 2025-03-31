@@ -122,13 +122,13 @@ tiup cluster start <new_cluster_name>     # 启动集群
 - 创建 Changefeed 同步任务，其中增量同步起始点 `${tso}` 为[步骤二](#步骤二准备新集群)中记录的备份的准确时间戳 TSO，以避免数据丢失：
 
     ```shell
-    tiup cdc:${cluster_version} changefeed create --server http://${cdc_host}:${cdc_port} --sink-uri="mysql://${username}:${password}@${tidb_endpoint}:${port}" --config config.toml --start-ts ${tso}
+    tiup cdc:${cluster_version} cli changefeed create --server http://${cdc_host}:${cdc_port} --sink-uri="mysql://${username}:${password}@${tidb_endpoint}:${port}" --config config.toml --start-ts ${tso}
     ```
 
 - 检查同步任务状态，确认 `tso` 或 `checkpoint` 是否在持续推进：
 
     ```shell
-    tiup cdc:${cluster_version} cdc changefeed list --server http://${cdc_host}:${cdc_port}
+    tiup cdc:${cluster_version} cli changefeed list --server http://${cdc_host}:${cdc_port}
     ```
 
     输出示例如下：
@@ -230,7 +230,7 @@ tiup cluster start <new_cluster_name>     # 启动集群
 4. 暂停 Changefeed 正向同步任务：
 
     ```shell
-    tiup cdc:${cluster_version} cdc changefeed pause --server http://${cdc_host}:${cdc_port} -c <changefeedid>
+    tiup cdc:${cluster_version} cli changefeed pause --server http://${cdc_host}:${cdc_port} -c <changefeedid>
     ```
 
 5. 重启新集群的 TiDB 节点，以清除自增 ID 的缓存。
@@ -272,9 +272,9 @@ tiup cluster start <new_cluster_name>     # 启动集群
         - 确保 `sink-uri` 设置为旧集群的地址，以避免回环写入风险。
 
         ```shell
-        tiup cdc:${cluster_version} changefeed create --server http://${cdc_host}:${cdc_port} --sink-uri="mysql://${username}:${password}@${tidb_endpoint}:${port}" --config config.toml --start-ts ${tso}
+        tiup cdc:${cluster_version} cli changefeed create --server http://${cdc_host}:${cdc_port} --sink-uri="mysql://${username}:${password}@${tidb_endpoint}:${port}" --config config.toml --start-ts ${tso}
 
-        tiup cdc:${cluster_version} cdc changefeed list --server http://${cdc_host}:${cdc_port}
+        tiup cdc:${cluster_version} cli changefeed list --server http://${cdc_host}:${cdc_port}
         ```
 
 8. 切换业务流量到新集群。
@@ -311,7 +311,7 @@ tiup cluster start <new_cluster_name>     # 启动集群
 - 下线 TiCDC 逆向同步链路：
 
     ```shell
-    tiup cdc:${cluster_version} cdc changefeed remove --server http://${cdc_host}:${cdc_port} -c <changefeedid>
+    tiup cdc:${cluster_version} cli changefeed remove --server http://${cdc_host}:${cdc_port} -c <changefeedid>
     ```
 
 - 删除旧集群。如果不删除，请确保将 `tidb_gc_life_time` 恢复为原始值：
