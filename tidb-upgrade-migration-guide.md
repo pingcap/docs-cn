@@ -219,6 +219,7 @@ tiup cluster start <new_cluster_name>     # 启动集群
         ```sql
         SELECT tidb_current_ts();
         ```
+
     - 观察 Changefeed `checkpointTs`，确保其大于 `up-tso`，即 TiCDC 已完成数据同步。
 
 3. 确保新旧集群数据一致：
