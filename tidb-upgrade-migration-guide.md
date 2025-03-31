@@ -53,7 +53,7 @@ SET GLOBAL tidb_gc_life_time=60h;
 ```
 
 > **注意：**
-> 
+>
 > 调高 `tidb_gc_life_time` 会增加 [MVCC](/glossary.md#multi-version-concurrency-control-mvcc) 版本数据占用的存储空间，并可能影响查询性能。详见 [GC 机制简介](/garbage-collection-overview.md)。建议综合考虑存储和性能影响，根据预计的操作总时长合理设置 GC 时长。
 
 ### 2. 迁移全量数据到新集群
@@ -116,7 +116,7 @@ tiup cluster start <new_cluster_name>     # 启动集群
 现在，旧集群为原始版本，新集群已升级至目标版本。接下来，需要建立从旧集群到新集群的正向数据同步通道。
 
 > **注意：**
-> 
+>
 > TiCDC 组件的版本需与旧集群的大版本保持一致。
 
 - 创建 Changefeed 同步任务，其中增量同步起始点 `${tso}` 为[步骤二](#步骤二准备新集群)中记录的备份的准确时间戳 TSO，以避免数据丢失：
@@ -190,7 +190,7 @@ tiup cluster start <new_cluster_name>     # 启动集群
 
     - 监控 TiCDC Changefeed 的同步延迟。
     - 确保增量同步的吞吐量大于或等于业务写入峰值。
-  
+
 - 执行多维度验证，例如：
 
     - 确保所有数据和内容验证步骤均已完成，并补充必要的检查项。
