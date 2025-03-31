@@ -11,7 +11,7 @@ summary: 介绍 TiDB 在 SaaS 多租户场景最佳实践。
 >
 > 推荐使用 v8.5.0 及更高版本。
 
-## 硬件配置
+## 硬件配置要求
 
 建议使用高内存规格的 TiDB 实例，例如，100 万张表使用 32 GiB 或更高内存，300 万张表使用 64 GiB 或更高内存。高内存规格的 TiDB 实例可以为 Infoschema、Statistics 和执行计划缓存分配更多的缓存空间，提高缓存命中率，从而提升业务性能。同时，更大的内存可以缓解 TiDB GC 带来的的性能波动和稳定性问题。
 
@@ -38,7 +38,7 @@ summary: 介绍 TiDB 在 SaaS 多租户场景最佳实践。
 * [`tidb_auto_build_stats_concurrency`](/system-variables.md#tidb_auto_build_stats_concurrency-从-v650-版本开始引入) 和 [`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入) 影响 TiDB 统计信息的构建并发度，需根据场景调整。
     - 对于分区表多场景，优先提高 `tidb_auto_build_stats_concurrency` 的值。
     - 对于列较多的场景，优先提高 `tidb_build_sampling_stats_concurrency` 的值。
-* `tidb_auto_analyze_concurrency`、`tidb_auto_build_stats_concurrency` 和 `tidb_build_sampling_stats_concurrency` 三个变量的乘积不应超过 TiDB CPU 核心数，避免过度占用资源。
+* `tidb_auto_analyze_concurrency`、`tidb_auto_build_stats_concurrency` 和 `tidb_build_sampling_stats_concurrency` 三个变量的值的乘积不应超过 TiDB CPU 核心数，避免过度占用资源。
 
 ## 系统表查询
 
@@ -46,8 +46,17 @@ summary: 介绍 TiDB 在 SaaS 多租户场景最佳实践。
 
 例如，在 300 万表的场景下：
 
-- 执行 `select count(*) from information_schema.tables` 要消耗约 8 GiB 内存
-- 执行 `select count(*) from information_schema.views` 需要约 20 分钟
+- 执行以下 SQL 语句要消耗约 8 GiB 内存：
+
+    ```sql
+    SELECT COUNT(*) FROM information_schema.tables;
+    ```
+
+- 执行以下 SQL 语句需要约 20 分钟：
+
+    ```sql
+    SELECT COUNT(*) FROM information_schema.views;
+    ```
 
 在以上示例中的两个 SQL 语句加上建议的查询条件之后，内存消耗可以忽略不计，查询耗时仅为毫秒级别。
 
