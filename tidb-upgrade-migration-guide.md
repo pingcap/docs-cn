@@ -27,13 +27,18 @@ summary: 本文介绍如何使用 BR 全量备份恢复与 TiCDC 增量数据同
 
 在开始迁移升级前，需评估相关组件的适用性，并检查集群的健康状态。
 
+- 检查 TiDB 集群的版本：对于 v6.5.0 及以上版本的 TiDB 集群，可以使用此迁移升级方案。
+
 - 检查 TiCDC 适用性：
 
     - **表结构要求**：确保待同步的表包含有效索引，详见 [TiCDC 有效索引](/ticdc/ticdc-overview.md#有效索引)。
     - **功能限制**：TiCDC 暂不支持 Sequence、TiFlash DDL 同步等，详见 [TiCDC 暂不支持的场景](/ticdc/ticdc-overview.md#暂不支持的场景)。
     - **最佳实践**：在切换过程中，应尽量避免在 TiCDC 的上游集群执行 DDL 操作。
 
-- 检查 BR 适用性：检查 BR 备份与恢复功能的已知限制，详见 [BR 使用限制](/br/backup-and-restore-overview.md#使用限制)。
+- 检查 BR 适用性：
+
+    - 查看 BR 全量备份的兼容性说明，详见 [BR 版本兼容性矩阵](/br/backup-and-restore-overview.md#tidb-v650-版本到-v850-之间的-br-版本兼容性矩阵)。
+    - 检查 BR 备份与恢复功能的已知限制，详见 [BR 使用限制](/br/backup-and-restore-overview.md#使用限制)。
 
 - 检查集群健康状态，例如 [Region](/glossary.md#regionpeerraft-group) 的健康状态、节点资源利用率等。
 
