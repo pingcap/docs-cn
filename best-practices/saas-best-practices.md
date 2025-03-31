@@ -1,6 +1,6 @@
 ---
 title: SaaS 多租户场景最佳实践
-summary: 介绍 TiDB 在 SaaS 多租户场景最佳实践。
+summary: 介绍 TiDB 在 SaaS 多租户场景的最佳实践。
 ---
 
 # SaaS 多租户场景最佳实践
