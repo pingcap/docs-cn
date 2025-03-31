@@ -202,9 +202,9 @@ tiup cluster start <new_cluster_name>     # 启动集群
 
     - 锁定旧集群的用户账户：
 
-       ```sql
-       ALTER USER ACCOUNT LOCK;
-       ```
+        ```sql
+        ALTER USER ACCOUNT LOCK;
+        ```
 
     - 将旧集群设为只读模式。建议重启旧集群的 TiDB 节点，以清理业务会话连接，防止未进入只读状态的连接：
 
@@ -268,8 +268,8 @@ tiup cluster start <new_cluster_name>     # 启动集群
 
     3. 配置逆向数据同步链路，并确认 Changefeed 任务正常：
 
-    - 由于此时业务已停止，可使用当前 TSO。
-    - 确保 `sink-uri` 设置为旧集群的地址，以避免回环写入风险。
+        - 由于此时业务已停止，可使用当前 TSO。
+        - 确保 `sink-uri` 设置为旧集群的地址，以避免回环写入风险。
 
         ```shell
         tiup cdc:${cluster_version} changefeed create --server http://${cdc_host}:${cdc_port} --sink-uri="mysql://${username}:${password}@${tidb_endpoint}:${port}" --config config.toml --start-ts ${tso}
@@ -282,7 +282,7 @@ tiup cluster start <new_cluster_name>     # 启动集群
 9. 检查新集群的负载及运行状态是否正常，可以通过以下 Grafana 面板进行监控：
 
     - [**TiDB Dashboard** > **Query Summary**](/grafana-tidb-dashboard.md#query-summary)：检查 Duration、QPS、Failed Query OPM 监控项是否正常。
-    - [**TiDB Dashboard** > **Server**](/grafana-tidb-dashboard.md#server)： 检查 Connection Count 监控项，查看各节点之间的连接数是否均匀。
+    - [**TiDB Dashboard** > **Server**](/grafana-tidb-dashboard.md#server)：检查 Connection Count 监控项，查看各节点之间的连接数是否均匀。
 
 此时，业务流量已成功切换至新集群，并建立了 TiCDC 逆向同步通道。
 
