@@ -17,7 +17,7 @@ summary: 本文介绍如何使用 BR 全量备份恢复与 TiCDC 增量数据同
 2. **准备新集群**：基于旧集群的全量备份创建新集群，并升级至目标版本。
 3. **增量同步**：通过 TiCDC 建立正向数据同步通道。
 4. **切换验证**：完成多维度验证后，将业务流量切换至新集群，并建立 TiCDC 回退通道。
-5. **观察状态**：维持回退通道。观察期后清理环境。
+5. **观察状态**：维持回退通道。观察期结束后清理环境。
 
 **回退计划**：在迁移升级过程中，如果新集群出现故障，可随时将业务流量切换回旧集群。
 
@@ -103,7 +103,7 @@ SET GLOBAL tidb_gc_life_time=60h;
 
 ```shell
 tiup cluster stop <new_cluster_name>      # 暂停集群
-tiup cluster upgrade <new_cluster_name> v_target_version --offline  # 停机升级
+tiup cluster upgrade <new_cluster_name> <v_target_version> --offline  # 停机升级
 tiup cluster start <new_cluster_name>     # 启动集群
 ```
 
