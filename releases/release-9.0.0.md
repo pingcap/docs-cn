@@ -90,9 +90,9 @@ TiDB 版本：9.0.0
 
 ### 稳定性
 
-* 新增系统变量 `MAX_USER_CONNECTIONS`，用于限制不同用户可以建立的连接数 [#59203](https://github.com/pingcap/tidb/issues/59203) @[joccau](https://github.com/joccau) **tw@hfxsd**<!--2017-->
+* 新增系统变量 `max_user_connections`，用于限制不同用户可以建立的连接数 [#59203](https://github.com/pingcap/tidb/issues/59203) @[joccau](https://github.com/joccau) **tw@hfxsd**<!--2017-->
 
-    从 v9.0.0 版本开始，你可通过设置系统变量 `MAX_USER_CONNECTIONS` ，来限制单个用户对单个 TiDB 节点可建立的连接数，避免由于单个用户消耗过多的 [token](/tidb-configuration-file.md/#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 
+    从 v9.0.0 版本开始，你可通过设置系统变量 `max_user_connections` ，来限制单个用户对单个 TiDB 节点可建立的连接数，避免由于单个用户消耗过多的 [token](/tidb-configuration-file.md/#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 
 
     更多信息，请参考[用户文档](/system-variables.md/#max_user_connections-从-v900-版本开始引入)。
 
@@ -200,11 +200,14 @@ TiDB 版本：9.0.0
 
 | 变量名  | 修改类型    | 描述 |
 |--------|------------------------------|------|
-| MAX_USER_CONNECTIONS | 新增 | 用于限制单个用户对单个 TiDB 节点可建立的连接数，避免单个用户消耗过多的 [token](tidb-configuration-file/#token-limit) 导致其他用户提交的请求得不到及时响应的问题 |
-| [`tidb_workload_repository_dest`](/system-variables.md#tidb_workload_repository_dest)| 新增 | 这变量用户设置 [Workload Repository](/workloadrepo.md) 的写入目标。 默认为空，不启用。 设置为 `table` 写入 TiKV 。|
-| [`tidb_workload_repository_snapshot_interval`](/system-variables.md#tidb_workload_repository_snapshot_interval) | 新增 | 设置 [Workload Repository](/workloadrepo.md) 统一快照的时间间隔。 |
-| [`tidb_workload_repository_active_sampling_interval`](/system-variables.md#tidb_workload_repository_active_sampling_interval) | 新增 | 设置 [Workload Repository](/workloadrepo.md) 快速时间快照的间隔。 |
-| [`tidb_workload_repository_retention_days`](/system-variables.md#tidb_workload_repository_retention_days) | 新增 | 设置 [Workload Repository](/workloadrepo.md) 中数据保存的天数。 |
+| `txn_scope` | 删除 | 在 v9.0.0 中，该变量被移除。 |
+| [`max_user_connections`](/system-variables.md/#max_user_connections-从-v900-版本开始引入) | 新增 | 用于限制单个用户对单个 TiDB 节点可建立的连接数，避免单个用户消耗过多的 [token](tidb-configuration-file.md/#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 |
+| [`tidb_accelerate_user_creation_update`](/system-variables.md/#tidb_accelerate_user_creation_update-从-v900-版本开始引入)| 新增 | 用于在用户数量过多的场景下，提升创建用户、修改用户信息的性能。 |
+| [`tidb_max_dist_task_nodes`](/system-variables.md/#tidb_max_dist_task_nodes-从-v900-版本开始引入)| 新增 | 控制分布式框架任务可使用的最大 TiDB 节点数上限。默认值为 `-1`，表示自动模式。在此模式下，系统将自动选择合适的节点数量。 |
+| [`tidb_workload_repository_active_sampling_interval`](/system-variables.md#tidb_workload_repository_active_sampling_interval-从-v900-版本开始引入) | 新增 | 控制 [Workload Repository](/workloadrepo.md) 的基于时间的采样过程的采样间隔。 |
+| [`tidb_workload_repository_dest`](/system-variables.md#tidb_workload_repository_dest-从-v900-版本开始引入)| 新增 | 控制 [Workload Repository](/workloadrepo.md) 的目标位置。默认为空 `''`，即不启用。设置为 `'table'` 会将数据写入到 TiKV。|
+| [`tidb_workload_repository_retention_days`](/system-variables.md#tidb_workload_repository_retention_days-从-v900-版本开始引入) | 新增 | 控制 [Workload Repository](/workloadrepo.md) 中数据保存的天数。 |
+| [`tidb_workload_repository_snapshot_interval`](/system-variables.md#tidb_workload_repository_snapshot_interval-从-v900-版本开始引入) | 新增 | 控制 [TiDB Workload Repository](/workloadrepo.md) 的快照采样过程的采样间隔。 |
 |  |  |  |
 
 
@@ -212,7 +215,7 @@ TiDB 版本：9.0.0
 
 | 配置文件或组件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-|  |  | |  |
+| BR | [`--checkpoint-storage`](br/br-checkpoint-restore.md#实现细节-将断点数据存储在下游集群) | 新增 | 用于指定断点数据存储的外部存储。 |
 |  |  |  | |
 
 ### 离线包变更
