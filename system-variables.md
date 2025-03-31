@@ -4434,6 +4434,13 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 可选值：`IN`
 - 控制 Runtime Filter 的类型，即生成的 Filter 算子使用的谓词类型。当前仅支持 `IN`，所以无需更改此设置。详细说明见 [Runtime Filter Type](/runtime-filter.md#runtime-filter-type)。
 
+### `tidb_enable_point_get_cache`
+- 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 当启用表锁类型为 `READ` 或者 `READ ONLY` 类型并且此变量设置为 `ON` 时，可以提高单点查询性能。
+
 ### `tidb_scatter_region`
 
 - 作用域：GLOBAL
