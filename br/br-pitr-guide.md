@@ -26,6 +26,8 @@ tiup br log start --task-name=pitr --pd "${PD_IP}:2379" \
 --storage 's3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
 ```
 
+### 查询日志备份状态
+
 日志备份任务启动后，会在 TiDB 集群后台持续地运行，直到你手动将其暂停。在这过程中，TiDB 变更数据将以小批量的形式定期备份到指定存储中。如果你需要查询日志备份任务当前状态，执行如下命令：
 
 ```shell
@@ -37,14 +39,51 @@ tiup br log status --task-name=pitr --pd "${PD_IP}:2379"
 ```
 ● Total 1 Tasks.
 > #1 <
-    name: pitr
-    status: ● NORMAL
-    start: 2022-05-13 11:09:40.7 +0800
-      end: 2035-01-01 00:00:00 +0800
-    storage: s3://backup-101/log-backup
+           name: pitr
+         status: ● NORMAL
+          start: 2022-05-13 11:09:40.7 +0800
+            end: 2035-01-01 00:00:00 +0800
+        storage: s3://backup-101/log-backup
     speed(est.): 0.00 ops/s
 checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 ```
+
+其中，各个字段含义如下：
+
+- `name`：Log Backup 任务的名字。
+- `status`：Log Backup 的状态，包括 `NORMAL`、`PAUSED`、`ERROR`。
+- `start`：Log Backup 的起始时间戳。
+- `end`：Log Backup 的结束时间戳，目前这个字段并不会生效。
+- `storage`：Log Backup 的外部存储的 URI。
+- `speed(est.)`：Log Backup 目前的流量。这个值是取最近数秒内的流量采样估算而成。如需更加精确的流量统计，你可以通过 Grafana 的 **[TiKV-Details](/grafana-tikv-dashboard.md#tikv-details-面板)** 监控面板中的 `Log Backup` 行查看。
+- `checkpoint[global]`：Log Backup 目前的进度。你可以使用 PiTR 恢复到这个时间戳前的时间点。
+
+如果 Log Backup 任务暂停，`log status` 会输出额外的字段来展示暂停的细节，例如：
+
+```
+● Total 1 Tasks.
+> #1 <
+              name: pitr
+            status: ○ ERROR
+               <......>
+        pause-time: 2025-03-14T14:35:06+08:00
+    pause-operator: atelier.local
+pause-operator-pid: 64618
+     pause-payload: The checkpoint is at 2025-03-14T14:34:54+08:00, now it is 2025-03-14T14:35:06+08:00, the lag is too huge (11.956113s) hence pause the task to avoid impaction to the cluster
+```
+
+其中，这些额外的字段含义如下：
+
+- `pause-time`：执行暂停操作的时间。
+- `pause-operator`：执行暂停操作的机器的 hostname。
+- `pause-operator-pid`：执行暂停操作的进程的 PID。
+- `pause-payload`：暂停时所附带的额外信息。
+
+如果 Log Backup 任务的暂停是由于 TiKV 发生错误导致的，你可能还会额外看到 TiKV 上报的错误：
+
+- `error[store=*]`：TiKV 处的错误代码。
+- `error-happen-at[store=*]`：在 TiKV 处发生错误的时间。
+- `error-message[store=*]`：在 TiKV 处的错误消息。
 
 ### 定期执行全量备份
 
