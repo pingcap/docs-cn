@@ -55,7 +55,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0;
 
 > **注意：**
 >
-> 目前，使用 TiCDC 同步表到下游 TiDB 集群时，不支持为表创建 TiFlash 副本。即 TiCDC 不支持同步 TiFlash 相关的 DDL，例如:
+> 目前，使用 TiCDC 同步表到下游 TiDB 集群时，不支持为表创建 TiFlash 副本，即 TiCDC 不支持同步 TiFlash 相关的 DDL，例如:
 >
 > * `ALTER TABLE table_name SET TIFLASH REPLICA count;`
 > * `ALTER DATABASE db_name SET TIFLASH REPLICA count;`
@@ -110,7 +110,7 @@ ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0;
 >
 > - 该命令会跳过系统表、视图、临时表以及包含了 TiFlash 不支持字符集的表。
 >
-> - 通过设置 `tidb_batch_pending_tiflash_count` 系统变量可以控制执行过程中允许的尚未同步完成的表的数量。调小该值有助于减低同步时集群受到的压力。注意，因为这个限制不是实时的，所以设置完后仍有可能存在尚未同步完成的表的数量超过限制的情况。
+> - 通过设置 [`tidb_batch_pending_tiflash_count`](/system-variables.md/#tidb_batch_pending_tiflash_count-从-v60-版本开始引入) 系统变量可以控制执行过程中允许的尚未同步完成的表的数量。调小该值有助于减低同步时集群受到的压力。注意，因为这个限制不是实时的，所以设置完后仍有可能存在尚未同步完成的表的数量超过限制的情况。
 
 ### 查看库同步进度
 
