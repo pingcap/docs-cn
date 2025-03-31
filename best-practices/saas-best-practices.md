@@ -62,7 +62,7 @@ summary: 介绍 TiDB 在 SaaS 多租户场景最佳实践。
 
 ## 大量链接场景
 
-SAAS 多租户场景中，每个用户通常连接到 TiDB 来操作自己租户(database) 中的数据。为了节省成本，用户希望 TiDB 节点能够支持尽可能多的连接。
+SaaS 多租户场景中，每个用户通常连接到 TiDB 来操作自己租户(database) 中的数据。为了节省成本，用户希望 TiDB 节点能够支持尽可能多的连接。
 
 * 调高 TiDB 的配置 [`token-limit`](/tidb-configuration-file.md#token-limit)（默认 `1000`）以支持更多并发请求。
 * TiDB 的内存使用量与连接数量基本上呈线性关系。在实际测试中，20 万个空闲连接时，TiDB 进程内存增加约 30 GiB。建议调大 TiDB 内存规格。
@@ -80,6 +80,6 @@ SAAS 多租户场景中，每个用户通常连接到 TiDB 来操作自己租户
 * BR 日志备份和快照恢复会额外消耗 TiKV 内存，建议 TiKV 使用 32 GiB 或更高规格的内存。
 * 可根据业务需求，适当增加 BR 的 [`pitr-batch-count` 和 `pitr-concurrency`](/br/use-br-command-line-tool.md#常用选项) 配置以提升 BR 日志恢复速度。
 
-## TiDB Lighting 数据导入
+## TiDB Lightning 数据导入
 
 在使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入百万表数据的场景中，建议对大表，例如超过 100 GiB 的表（通常数量较少）使用 TiDB Lightning [物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)，对小表（通常数量较多）使用 TiDB Lightning [逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)。
