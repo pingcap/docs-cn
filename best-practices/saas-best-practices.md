@@ -29,8 +29,8 @@ summary: 介绍 TiDB 在 SaaS 多租户场景的最佳实践。
 
 ## 缓存配置
 
-* 从 TiDB v8.4.0 开始，TiDB 在执行 SQL 语句时，会按需将 SQL 语句涉及到的表信息加载到 Infoschema 缓存中。可以通过观测 TiDB 监控中 **Schema Load** 下的 **Infoschema v2 Cache Size** 和 **Infoschema v2 Cache Operation** 子面板来查看 Infoschema 缓存的大小和命中率。你可以使用 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入) 系统变量调整 Infoschema 缓存的内存上限以适应其业务需求。Infoschema 缓存使用大小与执行 SQL 语句涉及到的不同表数量呈线性关系。在实际测试中，全量缓存 100 万表（4 列、1 个主键和 1 个索引）的元数据约需 2.4 GiB 缓存。
-* TiDB 在执行 SQL 语句时，会按需将 SQL 语句涉及到的表统计信息加载到 Statistics 缓存中。可以通过观测 TiDB 监控中 **Statistics & Plan Management** 下的 **Stats Cache Cost** 和 **Stats Cache OPS** 子面板来查看 Statistics 缓存的大小和命中率。你可以使用 [`tidb_stats_cache_mem_quota`](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入) 系统变量调整 Statistics 缓存的内存上限以适应其业务需求。在实际测试中，执行 10 万张表的简单 SQL（使用 IndexRangeScan 操作符）时，Stats 缓存成本约为 3.96 GiB。
+* 从 TiDB v8.4.0 开始，TiDB 在执行 SQL 语句时，会按需将 SQL 语句涉及到的表信息加载到 Infoschema 缓存中。你可以通过观测 TiDB 监控中 **Schema Load** 下的 **Infoschema v2 Cache Size** 和 **Infoschema v2 Cache Operation** 子面板来查看 Infoschema 缓存的大小和命中率。你可以使用 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入) 系统变量调整 Infoschema 缓存的内存上限以适应其业务需求。Infoschema 缓存使用大小与执行 SQL 语句涉及到的不同表数量呈线性关系。在实际测试中，全量缓存 100 万表（4 列、1 个主键和 1 个索引）的元数据约需 2.4 GiB 缓存。
+* TiDB 在执行 SQL 语句时，会按需将 SQL 语句涉及到的表统计信息加载到 Statistics 缓存中。你可以通过观测 TiDB 监控中 **Statistics & Plan Management** 下的 **Stats Cache Cost** 和 **Stats Cache OPS** 子面板来查看 Statistics 缓存的大小和命中率。你可以使用 [`tidb_stats_cache_mem_quota`](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入) 系统变量调整 Statistics 缓存的内存上限以适应其业务需求。在实际测试中，执行 10 万张表的简单 SQL（使用 IndexRangeScan 操作符）时，Stats 缓存成本约为 3.96 GiB。
 
 ## 统计信息收集
 
