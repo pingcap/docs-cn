@@ -31,13 +31,13 @@ summary: 本文介绍如何使用 BR 全量备份恢复与 TiCDC 增量数据同
 
 - 检查 TiCDC 适用性：
 
-    - **表结构要求**：确保待同步的表包含有效索引，详见 [TiCDC 有效索引](/ticdc/ticdc-overview.md#有效索引)。
+    - **表结构要求**：确保待同步的表包含有效索引，详见 [TiCDC 有效索引](/ticdc/ticdc-overview.md#最佳实践)。
     - **功能限制**：TiCDC 暂不支持 Sequence、TiFlash DDL 同步等，详见 [TiCDC 暂不支持的场景](/ticdc/ticdc-overview.md#暂不支持的场景)。
     - **最佳实践**：在切换过程中，应尽量避免在 TiCDC 的上游集群执行 DDL 操作。
 
 - 检查 BR 适用性：
 
-    - 查看 BR 全量备份的兼容性说明，详见 [BR 版本兼容性矩阵](/br/backup-and-restore-overview.md#tidb-v650-版本到-v850-之间的-br-版本兼容性矩阵)。
+    - 查看 BR 全量备份的兼容性说明，详见 [BR 版本兼容性矩阵](/br/backup-and-restore-overview.md#版本间兼容性)。
     - 检查 BR 备份与恢复功能的已知限制，详见 [BR 使用限制](/br/backup-and-restore-overview.md#使用限制)。
 
 - 检查集群健康状态，例如 [Region](/glossary.md#regionpeerraft-group) 的健康状态、节点资源利用率等。
@@ -59,7 +59,7 @@ SET GLOBAL tidb_gc_life_time=60h;
 
 > **注意：**
 >
-> 调高 `tidb_gc_life_time` 会增加 [MVCC](/glossary.md#multi-version-concurrency-control-mvcc) 版本数据占用的存储空间，并可能影响查询性能。详见 [GC 机制简介](/garbage-collection-overview.md)。建议综合考虑存储和性能影响，根据预计的操作总时长合理设置 GC 时长。
+> 调高 `tidb_gc_life_time` 会增加 MVCC 版本数据占用的存储空间，并可能影响查询性能。详见 [GC 机制简介](/garbage-collection-overview.md)。建议综合考虑存储和性能影响，根据预计的操作总时长合理设置 GC 时长。
 
 ### 2. 迁移全量数据到新集群
 
@@ -156,7 +156,7 @@ tiup cluster start <new_cluster_name>     # 启动集群
 - 吞吐健康：`Sink flush rows/s` 应持续高于业务写入速率。
 - 异常告警：定期检查 TiCDC 节点日志与告警信息。
 - （可选）测试数据同步：更新一些测试数据，验证 Changefeed 是否能将其同步到新集群。
-- （可选）调整 TiCDC 的配置项 [`gc-ttl`](/ticdc/ticdc-server-config.md#gc-ttl)（默认值为 24 小时）。
+- （可选）调整 TiCDC 的配置项 [`gc-ttl`](/ticdc/ticdc-server-config.md)（默认值为 24 小时）。
 
     当同步任务不可用或因某种原因中断，且无法及时解决时，`gc-ttl` 配置可确保 TiCDC 需要消耗的数据保留在 TiKV 中而不被集群 GC 清理。超过此时间后，同步任务将进入 `failed` 状态且无法恢复，而 PD 对应的服务 GC 安全点会继续推进，这种情况下需要重新开始新的备份。
 
