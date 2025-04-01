@@ -20,7 +20,7 @@ jobs:
       (
         github.event_name == 'issue_comment' &&
         contains(github.event.comment.body, '/bot-review') &&
-        contains('hfxsd,lilin90,Oreoxmt,qiancai', github.event.comment.user.login)
+        contains('hfxsd,likidu,lilin90,Oreoxmt,qiancai', github.event.comment.user.login)
       )
     steps:
       - name: Debug Info
