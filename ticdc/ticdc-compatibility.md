@@ -28,6 +28,13 @@ summary: 了解 TiCDC 兼容性相关限制和问题处理。
     1. 使用下游系统提供的离线导入工具，将 TiDB Lightning 的输入文件导入到下游系统。
     2. 创建 changefeed，用于同步后续通过 SQL 写入的增量数据。详情参考[创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务)。
 
+## TiCDC 与 TiFlash 的兼容性
+
+目前，使用 TiCDC 同步表到下游 TiDB 集群时，不支持为表创建 TiFlash 副本，即 TiCDC 不支持同步 TiFlash 相关的 DDL，例如:
+
+* `ALTER TABLE table_name SET TIFLASH REPLICA count;`
+* `ALTER DATABASE db_name SET TIFLASH REPLICA count;`
+
 ## 命令行参数和配置文件兼容性
 
 * TiCDC v4.0.0 中移除了 `ignore-txn-commit-ts`，添加了 `ignore-txn-start-ts`，使用 start_ts 过滤事务。
