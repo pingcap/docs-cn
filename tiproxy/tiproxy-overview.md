@@ -129,7 +129,7 @@ TiProxy 不适用于以下场景：
 
 对于未启用 TiProxy 的集群，可以通过扩容的方式启用 TiProxy。
 
-1. 按照[部署 TiProxy](#部署-tiproxy) 的方式配置 TiDB 和 TiProxy。
+1. 按照[部署 TiProxy](#部署-tiproxy) 里的步骤 1、2、3 配置 TiDB 和 TiProxy。
 
     TiProxy 的配置写在单独的拓扑文件中。例如，文件名为 tiproxy.toml，拓扑配置为：
 
