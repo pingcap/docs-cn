@@ -68,7 +68,7 @@ TiProxy 不适用于以下场景：
 - 使用 TiDB Operator 部署 TiProxy，请参见 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tiproxy) 文档。
 - 使用 TiUP 本地快速部署 TiProxy，请参见[部署 TiProxy](/tiup/tiup-playground.md#部署-tiproxy)。
 
-### 部署 TiProxy
+### 创建带有 TiProxy 的集群
 
 对于新集群，按照以下方式在创建集群的同时部署 TiProxy。
 
@@ -149,7 +149,7 @@ TiProxy 不适用于以下场景：
     tiup cluster scale-out <cluster-name> tiproxy.toml
     ```
 
-    扩容 TiProxy 时，TiUP 会自动为 TiDB 配置自签名证书 [`security.session-token-signing-cert`](/tidb-configuration-file.md#session-token-signing-cert-从-v640-版本开始引入) 和 [`security.session-token-signing-key`](/tidb-configuration-file.md#session-token-signing-key-从-v640-版本开始引入)。
+    扩容 TiProxy 时，TiUP 会自动为 TiDB 配置自签名证书 [`security.session-token-signing-cert`](/tidb-configuration-file.md#session-token-signing-cert-从-v640-版本开始引入) 和 [`security.session-token-signing-key`](/tidb-configuration-file.md#session-token-signing-key-从-v640-版本开始引入)，该证书用于迁移连接。
 
 3. 修改 TiDB 配置。
 
