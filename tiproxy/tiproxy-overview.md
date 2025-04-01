@@ -70,6 +70,8 @@ TiProxy 不适用于以下场景：
 
 ### 部署 TiProxy
 
+对于新集群，按照以下方式在创建集群的同时部署 TiProxy。
+
 1. 对于 TiUP v1.15.0 之前的版本，需要手动生成自签名证书。
 
     为 TiDB 实例生成自签名证书，并把该证书放置到所有 TiDB 实例上，确保所有 TiDB 实例上有完全相同的证书。生成步骤请参阅[生成自签名证书](/generate-self-signed-certificates.md)。
@@ -122,6 +124,53 @@ TiProxy 不适用于以下场景：
 5. 连接到 TiProxy。
 
     部署集群之后，集群同时暴露了 TiDB server 的端口和 TiProxy 端口。客户端应当连接到 TiProxy 的端口，不再连接 TiDB server 的端口。
+
+### 为已有集群启用 TiProxy
+
+对于未启用 TiProxy 的集群，可以通过扩容的方式启用 TiProxy。
+
+1. 按照[部署 TiProxy](#部署-tiproxy) 的方式配置 TiDB 和 TiProxy。
+
+    TiProxy 的配置写在单独的拓扑文件中。例如，文件名为 tiproxy.toml，拓扑配置为：
+
+    ```yaml
+    component_versions:
+      tiproxy: "v1.2.0"
+    server_configs:
+      tiproxy:
+        ha.virtual-ip: "10.0.1.10/24"
+        ha.interface: "eth0"
+    - host: 10.0.1.11
+      deploy_dir: "/tiproxy-deploy"
+      port: 6000
+      status_port: 3080
+    - host: 10.0.1.12
+      deploy_dir: "/tiproxy-deploy"
+      port: 6000
+      status_port: 3080
+    ```
+
+2. 扩容 TiProxy。
+
+    使用 [tiup cluster scale-out](/tiup/tiup-component-cluster-scale-out.md) 命令扩容 TiProxy 实例，例如：
+
+    ```shell
+    tiup cluster scale-out <cluster-name> tiproxy.toml
+    ```
+
+    对于 TiUP v1.15.0 及以上版本，扩容 TiProxy 时，TiUP 会自动为 TiDB 配置自签名证书。
+
+3. 重新加载 TiDB 配置。
+
+    由于以 TiDB 配置了自签名证书和 `graceful-wait-before-shutdown`，需要使用 [tiup cluster reload](/tiup/tiup-component-cluster-reload.md) 命令重新加载配置使它们生效。注意，TiDB 会滚动重启，此时客户端连接会断开。
+
+    ```shell
+    tiup cluster reload <cluster-name> -R tidb
+    ```
+
+4. 连接到 TiProxy。
+
+    启用 TiProxy 之后，客户端应当连接到 TiProxy 的端口，不再连接 TiDB server 的端口。
 
 ### 更改 TiProxy 配置
 
