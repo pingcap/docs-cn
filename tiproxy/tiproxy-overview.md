@@ -120,7 +120,7 @@ TiProxy 不适用于以下场景：
 
 对于未启用 TiProxy 的集群，可以通过扩容的方式启用 TiProxy。
 
-1. 按照[部署 TiProxy](#部署-tiproxy) 里的步骤 1、2 配置 TiDB 和 TiProxy。
+1. 配置 TiProxy 实例。
 
     TiProxy 的配置写在单独的拓扑文件中。例如，文件名为 tiproxy.toml，拓扑配置为：
 
@@ -151,7 +151,19 @@ TiProxy 不适用于以下场景：
 
     扩容 TiProxy 时，TiUP 会自动为 TiDB 配置自签名证书 [`security.session-token-signing-cert`](/tidb-configuration-file.md#session-token-signing-cert-从-v640-版本开始引入) 和 [`security.session-token-signing-key`](/tidb-configuration-file.md#session-token-signing-key-从-v640-版本开始引入)。
 
-3. 重新加载 TiDB 配置。
+3. 修改 TiDB 配置。
+
+    使用 TiProxy 时，还需要给 TiDB 配置 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)，它的值要大于应用程序最长的事务的持续时间，否则 TiDB server 下线时客户端可能断连。你可以通过 [TiDB 监控面板的 Transaction 指标](/grafana-tidb-dashboard.md#transaction)查看事务的持续时间。更多信息，请参阅[使用限制](#使用限制)。
+
+    配置示例：
+
+    ```yaml
+    server_configs:
+      tidb:
+        graceful-wait-before-shutdown: 15
+    ```
+
+4. 重新加载 TiDB 配置。
 
     由于 TiDB 配置了自签名证书和 `graceful-wait-before-shutdown`，需要使用 [tiup cluster reload](/tiup/tiup-component-cluster-reload.md) 命令重新加载配置使它们生效。注意，TiDB 会滚动重启，此时客户端连接会断开。
 
@@ -159,7 +171,7 @@ TiProxy 不适用于以下场景：
     tiup cluster reload <cluster-name> -R tidb
     ```
 
-4. 连接到 TiProxy。
+5. 连接到 TiProxy。
 
     启用 TiProxy 之后，客户端应当连接到 TiProxy 的端口，不再连接 TiDB server 的端口。
 
