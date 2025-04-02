@@ -475,7 +475,7 @@ I/O 限流功能相关配置。
 - 默认值：`false`
 - 可选值：`true`、`false`
 
-##### `max_spilled_bytes` <span class="version-mark">从 v9.1.0 版本开始引入</span>
+##### `max_spilled_bytes` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
 - 表示算子落盘文件可以使用的硬盘大小。如果算子落盘过程中，硬盘用量超过该值，则对应查询会报错。
 - 默认值： `0`，表示落盘文件大小无限制。
