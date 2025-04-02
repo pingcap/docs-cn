@@ -3,7 +3,7 @@ title: mysql.tidb_mdl_view
 summary: 了解 `mysql` 库中的 `tidb_mdl_view` 表。
 ---
 
-该表提供了有关[元数据锁](/metadata-lock.md)视图的详细信息，这些视图用于监控和管理系统中的元数据锁信息。
+该表提供了关于[元数据锁](/metadata-lock.md)的详细信息，可用于监控和管理元数据锁状态。
 
 ```sql
 DESC mysql.tidb_mdl_view;
