@@ -184,6 +184,11 @@ absent -> delete only -> write only -> write reorg -> public
 
     你只能对暂停状态的 DDL 任务进行恢复操作，否则会在 `RESULT` 列看到 `Job 3 can't be resumed`。
 
+## DDL 相关的表
+
+- [`information_schema.DDL_JOBS`](/information-schema/information-schema-ddl-jobs.md)：关于当前正在运行和已完成的 DDL 任务的信息。
+- [`mysql.tidb_mdl_view`](/mysql-schema/mysql-schema-tidb-mdl-view.md)：关于[元数据锁](/metadata-lock.md)视图的信息。它可以帮助识别哪些查询阻止了 DDL 的进展。
+
 ## 常见问题
 
 DDL 语句执行相关的常见问题，参考 [SQL FAQ - DDL 执行](/faq/sql-faq.md#ddl-执行)。
