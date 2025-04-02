@@ -57,21 +57,7 @@ checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 - `speed(est.)`：Log Backup 目前的流量。这个值是取最近数秒内的流量采样估算而成。如需更加精确的流量统计，你可以通过 Grafana 的 **[TiKV-Details](/grafana-tikv-dashboard.md#tikv-details-面板)** 监控面板中的 `Log Backup` 行查看。
 - `checkpoint[global]`：Log Backup 目前的进度。你可以使用 PiTR 恢复到这个时间戳前的时间点。
 
-如果 Log Backup 任务暂停，`log status` 会输出额外的字段来展示暂停的细节，例如：
-
-```
-● Total 1 Tasks.
-> #1 <
-              name: pitr
-            status: ○ ERROR
-               <......>
-        pause-time: 2025-03-14T14:35:06+08:00
-    pause-operator: atelier.local
-pause-operator-pid: 64618
-     pause-payload: The checkpoint is at 2025-03-14T14:34:54+08:00, now it is 2025-03-14T14:35:06+08:00, the lag is too huge (11.956113s) hence pause the task to avoid impaction to the cluster
-```
-
-其中，这些额外的字段含义如下：
+如果 Log Backup 任务暂停，`log status` 会输出以下额外的字段来展示暂停的细节：
 
 - `pause-time`：执行暂停操作的时间。
 - `pause-operator`：执行暂停操作的机器的 hostname。
