@@ -23,7 +23,7 @@ TiDB 提供语句级别、会话级别以及全局级别的 Stale Read 使用方
 - 会话级别：
     - 指定时间范围：在会话级别中，如需 TiDB 在后续的查询中读取一个时间范围内尽可能新的数据并且不破坏隔离级别，你可以通过设置一个 session 变量 `tidb_read_staleness` 来指定一个时间范围。要使用该方式，请参阅[通过系统变量 `tidb_read_staleness` 读取历史数据](/tidb-read-staleness.md)。
 
-除此以外，你也可以通过设置系统变量 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入) 来在某一会话或全局范围读取某一时间点前的历史数据。要使用该方式，请参阅[通过系统变量 `tidb_external_ts` 读取历史数据](/tidb-external-ts.md)。
+除此以外，你也可以通过设置系统变量 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入) 和 [`tidb_enable_external_ts_read`](/system-variables.md#tidb_enable_external_ts_read-从-v640-版本开始引入) 来在某一会话或全局范围读取某一时间点前的历史数据。要使用该方式，请参阅[通过系统变量 `tidb_external_ts` 读取历史数据](/tidb-external-ts.md)。
 
 ### 减少 Stale Read 延时
 
