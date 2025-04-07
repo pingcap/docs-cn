@@ -74,7 +74,7 @@ TiDB v6.3.0 引入了 `mysql.tidb_mdl_view` 视图，可以用于查看当前阻
 >
 > 查询 `mysql.tidb_mdl_view` 视图需要有 [`PROCESS` 权限](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process)。
 
-下面以给表 `t` 添加索引为例，假设有 DDL 语句 `ALTER TABLE t ADD INDEX idx(a)`：
+下面以给表 `t` 添加列为例，假设有 DDL 语句 `ALTER TABLE t ADD COLUMN c INT`：
 
 ```sql
 TABLE mysql.tidb_mdl_view\G
