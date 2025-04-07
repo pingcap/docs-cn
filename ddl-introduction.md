@@ -186,8 +186,8 @@ absent -> delete only -> write only -> write reorg -> public
 
 ## DDL 相关的表
 
-- [`information_schema.DDL_JOBS`](/information-schema/information-schema-ddl-jobs.md)：查看当前正在运行和已完成的 DDL 任务信息。
-- [`mysql.tidb_mdl_view`](/mysql-schema/mysql-schema-tidb-mdl-view.md)：查看元数据锁信息，可用于识别阻塞 DDL 执行的查询。
+- [`information_schema.DDL_JOBS`](/information-schema/information-schema-ddl-jobs.md)：当前正在运行和已完成的 DDL 任务信息。
+- [`mysql.tidb_mdl_view`](/mysql-schema/mysql-schema-tidb-mdl-view.md)：元数据锁的信息。可帮助识别哪个查询阻塞了 DDL 的执行进程。
 
 ## 常见问题
 
