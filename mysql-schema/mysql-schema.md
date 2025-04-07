@@ -87,8 +87,8 @@ summary: 了解 TiDB 系统表。
 
 ## 元数据锁相关系统表
 
-* [`tidb_mdl_view`](/mysql-schema/mysql-schema-tidb-mdl-view.md) 提供当前阻塞的 DDL 操作及其元数据锁的详细信息，另请参阅[元数据锁](/metadata-lock.md)
-* `tidb_mdl_info` TiDB 内部用于同步各节点的元数据锁的相关信息
+* [`tidb_mdl_view`](/mysql-schema/mysql-schema-tidb-mdl-view.md)：元数据锁视图。用于查看当前被阻塞的 DDL 语句的相关信息。另请参阅[元数据锁](/metadata-lock.md)。
+* `tidb_mdl_info`：TiDB 内部使用的表，用于在各个节点之间同步元数据锁的相关信息。
 
 ## DDL 相关系统表
 

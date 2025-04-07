@@ -3,7 +3,9 @@ title: mysql.tidb_mdl_view
 summary: 了解 `mysql` schema 中的 `tidb_mdl_view` 视图。
 ---
 
-该视图提供了关于[元数据锁](/metadata-lock.md)的详细信息，可用于监控和管理元数据锁状态。
+# `mysql.tidb_mdl_view`
+
+`mysql.tidb_mdl_view` 视图提供了关于[元数据锁](/metadata-lock.md)的详细信息，可用于查看当前被阻塞的 DDL 语句的相关信息。
 
 ```sql
 DESC mysql.tidb_mdl_view;
@@ -34,4 +36,4 @@ DESC mysql.tidb_mdl_view;
 * `query`：查询语句。
 * `session_id`：会话的标识符。
 * `start_time`：开始时间。此列在早期版本中称为 `TxnStart`。
-* `SQL_DIGESTS`：SQL 语句的摘要。
+* `SQL_DIGESTS`：SQL 语句的 Digest。
