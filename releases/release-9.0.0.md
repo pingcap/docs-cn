@@ -76,7 +76,7 @@ TiDB 版本：9.0.0
     - 对于新建的 v9.0.0 或之后版本的 TiDB 集群，TiFlash 默认会采用新的存储格式。
     - 对于升级到 v9.0.0 或之后版本的 TiDB 集群，建议用户在升级前阅读 [TiFlash 升级帮助](/tiflash-upgrade-guide.md)。
         -  如果升级前未指定过 [`format_version`](/tiflash/tiflash-configuration.md#format_version)，升级后 TiFlash 默认采用新的存储格式。
-        -  如果升级前指定过 [`format_version`](/tiflash/tiflash-configuration.md#format_version)，升级后 `format_version` 的值保持不变， TiFlash 会继续使用 `format_version` 指定的存储格式。此时如需启用新的存储格式，请在 TiFlash 配置文件中将 `format_version` 设置为 `8`。配置生效后，新写入 TiFlash 的数据将采用新的存储格式，而现有数据的存储格式则不受影响。
+        -  如果升级前指定过 [`format_version`](/tiflash/tiflash-configuration.md#format_version)，升级后 `format_version` 的值保持不变，TiFlash 会继续使用 `format_version` 指定的存储格式。此时如需启用新的存储格式，请在 TiFlash 配置文件中将 `format_version` 设置为 `8`。配置生效后，新写入 TiFlash 的数据将采用新的存储格式，而现有数据的存储格式则不受影响。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-configuration.md#format_version)。
 
@@ -216,6 +216,8 @@ TiDB 版本：9.0.0
 | 配置文件或组件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | BR | [`--checkpoint-storage`](br/br-checkpoint-restore.md#实现细节-将断点数据存储在下游集群) | 新增 | 用于指定断点数据存储的外部存储。 |
+| TiProxy | [`enable-traffic-replay`](/tiproxy/tiproxy-configuration.md#enable-traffic-replay)  | 新增 | 用于指定是否开启[流量回放](/tiproxy/tiproxy-traffic-replay.md)功能。如果为 `false`，则在流量捕获和流量回放时会报错。|
+| TiProxy | [`encryption-key-path`](/tiproxy/tiproxy-configuration.md#encryption-key-path)  | 新增 | 用于指定流量捕获时用于加密流量文件的密钥的文件路径。|
 |  |  |  | |
 
 ### 离线包变更
