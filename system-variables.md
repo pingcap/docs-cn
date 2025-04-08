@@ -2271,6 +2271,14 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`OFF`
 - 这个变量用来控制是否开启 [`PLAN REPLAYER CONTINUOUS CAPTURE` 功能](/sql-plan-replayer.md#使用-plan-replayer-continuous-capture)。默认值 `OFF` 代表关闭功能。
 
+### `tidb_enable_point_get_cache`
+
+- 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 当 [`LOCK TABLES`](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md) 表锁类型为 `READ` 时，将该变量设置为 `ON` 可以缓存点查结果，减少重复查询的开销，从而提高单点查询的性能。
+
 ### `tidb_enable_prepared_plan_cache` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -4581,14 +4589,6 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值：`IN`
 - 可选值：`IN`
 - 控制 Runtime Filter 的类型，即生成的 Filter 算子使用的谓词类型。当前仅支持 `IN`，所以无需更改此设置。详细说明见 [Runtime Filter Type](/runtime-filter.md#runtime-filter-type)。
-
-### `tidb_enable_point_get_cache`
-
-- 作用域：SESSION
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
-- 类型：布尔型
-- 默认值：`OFF`
-- 当 [`LOCK TABLES`](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md) 表锁类型为 `READ` 时，将该变量设置为 `ON` 可以缓存点查结果，减少重复查询的开销，从而提高单点查询的性能。
 
 ### `tidb_scatter_region`
 
