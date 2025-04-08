@@ -177,13 +177,13 @@ TiDB 版本：6.4.0-DMR
 
 * 支持高性能、全局单调递增的 `AUTO_INCREMENT` 列属性（实验特性）[#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao)
 
-    TiDB v6.4.0 引入了 `AUTO_INCREMENT` 的 MySQL 兼容模式，通过中心化分配自增 ID，实现了自增 ID 在所有 TiDB 实例上单调递增。使用该特性能够更容易地实现查询结果按自增 ID 排序。要使用 MySQL 兼容模式，你需要在建表时将 `AUTO_ID_CACHE` 设置为 `1`。
+    TiDB v6.4.0 引入了 `AUTO_INCREMENT` 的兼容 MySQL 的自增列模式，通过中心化分配自增 ID，实现了自增 ID 在所有 TiDB 实例上单调递增。使用该特性能够更容易地实现查询结果按自增 ID 排序。要使用兼容 MySQL 的自增列模式，你需要在建表时将 `AUTO_ID_CACHE` 设置为 `1`。
 
     ```sql
     CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
     ```
 
-    更多信息，请参考[用户文档](/auto-increment.md#mysql-兼容模式)。
+    更多信息，请参考[用户文档](/auto-increment.md#兼容-mysql-的自增列模式)。
 
 * 支持对 JSON 类型中的 Array 数据做范围选择 [#13644](https://github.com/tikv/tikv/issues/13644) @[YangKeao](https://github.com/YangKeao)
 
