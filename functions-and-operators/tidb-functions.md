@@ -9,7 +9,7 @@ summary: 学习使用 TiDB 特有的函数。
 
 | 函数名 | 函数说明 |
 | :-------------- | :------------------------------------- |
-| [`CURRENT_RESOURCE_GROUP()`](#current_resource_group) | 用于查询当前连接绑定的资源组名。参见[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)。 |
+| [`CURRENT_RESOURCE_GROUP()`](#current_resource_group) | 用于查询当前连接绑定的资源组名。参见[使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)。 |
 | [`TIDB_BOUNDED_STALENESS()`](#tidb_bounded_staleness) | 指示 TiDB 在指定时间范围内读取尽可能新的数据。参见[使用 `AS OF TIMESTAMP` 语法读取历史数据](/as-of-timestamp.md)。 |
 | [`TIDB_CURRENT_TSO()`](#tidb_current_tso) | 返回当前的 [TimeStamp Oracle (TSO)](/tso.md)。 |
 | [`TIDB_DECODE_BINARY_PLAN()`](#tidb_decode_binary_plan) | 用于解码以二进制格式编码的执行计划。 |
@@ -30,7 +30,7 @@ summary: 学习使用 TiDB 特有的函数。
 
 ## CURRENT_RESOURCE_GROUP
 
-`CURRENT_RESOURCE_GROUP()` 函数用于查询当前连接绑定的资源组名称。当开启[资源管控 (Resource Control)](/tidb-resource-control.md) 功能时，执行 SQL 语句对资源的占用会受到所绑定的资源组资源配置的限制。
+`CURRENT_RESOURCE_GROUP()` 函数用于查询当前连接绑定的资源组名称。当开启[资源管控 (Resource Control)](/tidb-resource-control-ru-groups.md) 功能时，执行 SQL 语句对资源的占用会受到所绑定的资源组资源配置的限制。
 
 在会话建立时，TiDB 默认会将连接绑定至登录用户绑定的资源组，如果用户没有绑定任何资源组，则会将连接绑定至 `default` 资源组。在会话建立之后，绑定的资源组默认不会发生变化，即使执行了[修改用户绑定的资源组](/sql-statements/sql-statement-alter-user.md#修改用户绑定的资源组)。如需修改当前会话绑定的资源组，可以使用 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 语句。
 

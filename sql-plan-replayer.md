@@ -16,10 +16,8 @@ summary: 了解如何使用 PLAN REPLAY 命令保存和恢复集群现场信息�
 
 你可以使用 `PLAN REPLAYER` 来保存 TiDB 集群的现场信息。导出接口如下：
 
-{{< copyable "sql" >}}
-
 ```sql
-PLAN REPLAYER DUMP EXPLAIN [ANALYZE] [WITH STATS AS OF TIMESTAMP expression] sql-statement;
+PLAN REPLAYER DUMP [WITH STATS AS OF TIMESTAMP expression] EXPLAIN [ANALYZE] sql-statement;
 ```
 
 TiDB 根据 `sql-statement` 整理出以下集群现场信息：

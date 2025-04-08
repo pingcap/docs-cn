@@ -96,7 +96,7 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 
     手动标记 Runaway Query 的功能为数据库中突发的性能问题提供了有效的干预手段。针对由查询引发的性能问题，在定位根本原因之前，该功能可以快速缓解其对整体性能的影响，从而提升系统服务质量。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md#query-watch-语句说明)。
+    更多信息，请参考[用户文档](/tidb-resource-control-runaway-queries.md#query-watch-语句说明)。
 
 ### SQL 功能
 

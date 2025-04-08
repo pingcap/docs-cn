@@ -11,7 +11,7 @@ TiProxy 是可选组件，你也可以使用第三方的代理组件，或者直
 
 TiProxy 示意图如下：
 
-<img src="https://download.pingcap.com/images/docs-cn/tiproxy/tiproxy-architecture.png" alt="TiProxy 架构" width="500" />
+<img src="https://docs-download.pingcap.com/media/images/docs-cn/tiproxy/tiproxy-architecture.png" alt="TiProxy 架构" width="500" />
 
 ## 主要功能
 
@@ -23,7 +23,7 @@ TiProxy 在保持客户端连接不变的情况下，能将一台 TiDB server �
 
 如下图所示，原先客户端通过 TiProxy 连接到 TiDB 1 上，连接迁移之后，客户端实际连接到 TiDB 2 上。在 TiDB 1 即将下线或 TiDB 1 上的连接数比 TiDB 2 上的连接数超过设定阈值时，会触发连接迁移。连接迁移对客户端无感知。
 
-<img src="https://download.pingcap.com/images/docs-cn/tiproxy/tiproxy-session-migration.png" alt="TiProxy 连接迁移" width="400" />
+<img src="https://docs-download.pingcap.com/media/images/docs-cn/tiproxy/tiproxy-session-migration.png" alt="TiProxy 连接迁移" width="400" />
 
 连接迁移通常发生在以下场景：
 
@@ -95,7 +95,9 @@ TiProxy 不适用于以下场景：
 
     建议在拓扑配置里指定 TiProxy 的版本号，这样通过 [`tiup cluster upgrade`](/tiup/tiup-component-cluster-upgrade.md) 升级 TiDB 集群时不会升级 TiProxy，否则升级 TiProxy 会导致客户端连接断开。
 
-    如需配置 TiProxy 配置项，请参阅 [TiProxy 配置](/tiproxy/tiproxy-configuration.md)。更多 TiProxy 部署拓扑配置参数，请参阅 [tiproxy-servers 配置参数](/tiup/tiup-cluster-topology-reference.md#tiproxy_servers)。
+    关于 TiProxy 的配置模板，请参见 [TiProxy 配置模板](/tiproxy/tiproxy-deployment-topology.md)。
+
+    关于 TiDB 集群拓扑文件中的配置项说明，请参见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)。
 
     配置示例：
 
@@ -106,6 +108,13 @@ TiProxy 不适用于以下场景：
       tiproxy:
         ha.virtual-ip: "10.0.1.10/24"
         ha.interface: "eth0"
+    tiproxy_servers:
+      - host: 10.0.1.11
+        port: 6000
+        status_port: 3080
+      - host: 10.0.1.12
+        port: 6000
+        status_port: 3080
     ```
 
 3. 启动集群。

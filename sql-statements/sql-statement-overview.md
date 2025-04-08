@@ -84,6 +84,7 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 
 | SQL 语句 | 描述 |
 |----------|------|
+| [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md) | 修改单个正在运行的 DDL 作业的相关参数。 |
 | [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) | 取消 DDL 作业。 |
 | [`ADMIN CHECK [TABLE\|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) | 检查表或索引的完整性。 |
 | [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md) | 计算表的校验和。 |
@@ -137,7 +138,7 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | SQL 语句 | 描述 |
 |----------|------|
 | [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) | 修改资源组。 |
-| [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md) | 估算并输出当前集群的 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 容量。 |
+| [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md) | 估算并输出当前集群的 [Request Unit (RU)](/tidb-resource-control-ru-groups.md#什么是-request-unit-ru) 容量。 |
 | [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) | 创建新的资源组。 |
 | [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md) | 删除资源组。 |
 | [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md) | 管理 Runaway Queries 监控列表。 |
@@ -231,7 +232,10 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`LOAD STATS`](/sql-statements/sql-statement-load-stats.md) | 将统计信息加载到 TiDB 中。 |
 | [`SHOW ANALYZE STATUS`](/sql-statements/sql-statement-show-analyze-status.md) | 显示统计信息收集任务。 |
 | [`SHOW BINDINGS`](/sql-statements/sql-statement-show-bindings.md) | 显示已创建的 SQL 绑定。 |
+| [`SHOW COLUMN_STATS_USAGE`](/sql-statements/sql-statement-show-column-stats-usage.md) | 显示列统计信息的最近一次使用时间和收集时间。 |
+| [`SHOW STATS_BUCKETS`](/sql-statements/sql-statement-show-stats-buckets.md) | 显示常规统计信息中的桶信息。 |
 | [`SHOW STATS_HEALTHY`](/sql-statements/sql-statement-show-stats-healthy.md) | 显示统计信息准确度的预估值。 |
 | [`SHOW STATS_HISTOGRAMS`](/sql-statements/sql-statement-show-stats-histograms.md) | 显示统计信息中的直方图信息。 |
 | [`SHOW STATS_LOCKED`](/sql-statements/sql-statement-show-stats-locked.md) | 显示统计信息被锁定的表。 |
 | [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md) | 显示表中的行数和表中发生更改的行数。 |
+| [`SHOW STATS_TOPN`](/sql-statements/sql-statement-show-stats-topn.md) | 显示常规统计信息中的 Top-N 信息。 |

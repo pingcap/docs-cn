@@ -10,7 +10,7 @@ summary: 介绍 TiFlash 新的执行模型 Pipeline Model。
 从 v7.2.0 起，TiFlash 支持新的执行模型 Pipeline Model。
 
 - v7.2.0 和 v7.3.0：TiFlash Pipeline Model 为实验特性，使用 [`tidb_enable_tiflash_pipeline_model`](https://docs.pingcap.com/zh/tidb/v7.2/system-variables#tidb_enable_tiflash_pipeline_model-从-v720-版本开始引入) 控制。
-- v7.4.0 及之后版本：Pipeline Model 成为正式功能。Pipeline Model 属于 TiFlash 内部特性，并且与 TiFlash 资源管控功能绑定，开启 TiFlash 资源管控功能时，Pipeline Model 模型将自动启用。关于 TiFlash 资源管控功能的使用方式，参考[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md#相关参数)。同时，从 v7.4.0 开始，变量 `tidb_enable_tiflash_pipeline_model` 被废弃。
+- v7.4.0 及之后版本：Pipeline Model 成为正式功能。Pipeline Model 属于 TiFlash 内部特性，并且与 TiFlash 资源管控功能绑定，开启 TiFlash 资源管控功能时，Pipeline Model 模型将自动启用。关于 TiFlash 资源管控功能的使用方式，参考[使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md#相关参数)。同时，从 v7.4.0 开始，变量 `tidb_enable_tiflash_pipeline_model` 被废弃。
 
 Pipeline Model 主要借鉴了 [Morsel-Driven Parallelism: A NUMA-Aware Query Evaluation Framework for the Many-Core Age](https://dl.acm.org/doi/10.1145/2588555.2610507) 这篇论文，提供了一个精细的任务调度模型，有别于传统的线程调度模型，减少了操作系统申请和调度线程的开销以及提供精细的调度机制。
 

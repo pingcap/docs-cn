@@ -13,11 +13,9 @@ TiDB 采用在线异步变更的方式执行 DDL 语句，从而实现 DDL 语�
 
 ### DDL 语句类型简介
 
-按照执行期间是否阻塞用户业务，DDL 语句可以划分为：
+TiDB 支持在线 DDL (Online DDL)，即在执行 DDL 语句时，数据库通过特定的机制确保 DDL 操作不会阻塞用户业务。你可以在 DDL 执行期间提交数据修改，数据库会保证数据的一致性和正确性。
 
-- **离线 DDL 语句**：即数据库接收到用户的 DDL 语句后，会先对要修改的数据库对象进行加锁，再执行元数据变更，在 DDL 执行过程中将阻塞用户业务对数据的修改。
-
-- **在线 DDL 语句**：即数据库在执行 DDL 语句时，通过一定的方法，使得 DDL 执行不阻塞用户业务，且能够保证用户业务可在 DDL 执行期间提交修改，在执行过程中保证对应对象的数据正确性与一致性。
+相比之下，离线 DDL (Offline DDL) 在执行期间会对数据库对象加锁，阻塞用户对数据的修改操作，直到 DDL 操作完成。TiDB 不支持离线 DDL。
 
 按照是否需要操作 DDL 目标对象所包括的数据来划分，DDL 语句可以划分为：
 
@@ -88,7 +86,7 @@ absent -> delete only -> write only -> write reorg -> public
 + 涉及同一张表的 DDL 相互阻塞。
 + `DROP DATABASE` 和数据库内所有对象的 DDL 互相阻塞。
 + 涉及不同表的加索引和列类型变更可以并发执行。
-+ 逻辑 DDL 需要等待之前正在执行的逻辑 DDL 执行完才能执行。
++ 从 v8.2.0 版本开始，支持并行执行不同表的[逻辑 DDL 语句](/ddl-introduction.md#ddl-语句类型简介)。
 + 其他情况下 DDL 可以根据 Concurrent DDL 并行度可用情况确定是否可以执行。
 
 具体来说，TiDB 在 v6.2.0 中对 DDL 执行框架进行了如下升级：
@@ -185,6 +183,11 @@ absent -> delete only -> write only -> write reorg -> public
 - `ADMIN RESUME DDL JOBS job_id [, job_id]`：用于恢复已被暂停的 DDL 任务。执行该命令后，执行 DDL 任务的 SQL 语句体现为正在执行，后台任务正常执行。详情参阅 [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md)。
 
     你只能对暂停状态的 DDL 任务进行恢复操作，否则会在 `RESULT` 列看到 `Job 3 can't be resumed`。
+
+## DDL 相关的表
+
+- [`information_schema.DDL_JOBS`](/information-schema/information-schema-ddl-jobs.md)：当前正在运行和已完成的 DDL 任务信息。
+- [`mysql.tidb_mdl_view`](/mysql-schema/mysql-schema-tidb-mdl-view.md)：元数据锁的信息。可帮助识别哪个查询阻塞了 DDL 的执行进程。
 
 ## 常见问题
 
