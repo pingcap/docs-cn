@@ -1183,7 +1183,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 - [ADMIN ALTER DDL JOBS](/sql-statements/sql-statement-admin-alter-ddl.md)
 - [ADMIN SHOW DDL [JOBS|JOB QUERIES]](/sql-statements/sql-statement-admin-show-ddl.md)
-- [系统变量](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v755-和-v850-版本开始引入)
+- [系统变量](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v6512v755-和-v850-版本开始引入)
 - [TiDB 8.5.0 Release Notes](/releases/release-8.5.0.md)
 - [TiDB 7.5.5 Release Notes](/releases/release-7.5.5.md)
 
@@ -4008,14 +4008,6 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 引用该变量的文档：
 
 - [系统变量](/system-variables.md#tx_read_ts)
-
-### txn_scope
-
-引用该变量的文档：
-
-- [TiDB 配置文件描述](/tidb-configuration-file.md)
-- [使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)
-- [系统变量](/system-variables.md#txn_scope)
 
 ### validate_password.check_user_name
 

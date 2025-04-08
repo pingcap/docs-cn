@@ -226,7 +226,6 @@ select * from information_schema.inspection_rules where type='inspection';
     |  组件  | 配置项 | 预期值 |
     |  :----  | :----  |  :----  |
     | TiDB | log.slow-threshold | 大于 0 |
-    | TiKV | raftstore.sync-log | true |
 
 ### version 诊断规则
 

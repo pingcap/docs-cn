@@ -201,6 +201,10 @@ inner:{total:4.429220003s, concurrency:5, task:17, construct:96.207725ms, fetch:
 
 ### HashJoin
 
+HashJoin 算子有 HashJoinV1 和 HashJoinV2 两个版本，可以通过系统变量 [`tidb_hash_join_version`](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) 指定所需的版本。以下将分别对这两个版本的执行过程进行说明。
+
+#### HashJoinV1
+
 `HashJoin` 算子有一个 inner worker，一个 outer worker 和 N 个 join worker，其具体执行逻辑如下：
 
 1. inner worker 读取 inner table rows 并构造 hash table。
@@ -225,6 +229,46 @@ build_hash_table:{total:146.071334ms, fetch:110.338509ms, build:35.732825ms}, pr
     - `max`：单个 join worker 执行的最大耗时。
     - `probe`: 用 outer table rows 和 hash table 做 join 的总耗时。
     - `fetch`：join worker 等待读取 outer table rows 数据的总耗时。
+
+#### HashJoinV2
+
+`HashJoin` 算子在 build 端包含一个 fetcher、N 个 row table builder 和 N 个 hash table builder，在 probe 端包含一个 fetcher 和 N 个 worker。具体执行逻辑如下：
+
+1. build 端的 fetcher 读取下游算子的数据，并将数据分发给各个 row table builder。
+2. row table builder 接收数据 chunk，将数据 chunk 划分为多个 partition，然后构造 row table。
+3. 等待 row table 构造完成。
+4. hash table builder 根据 row table 构造 hash table。
+5. probe 端的 fetcher 读取下游算子的数据，将数据派发给 worker。
+6. worker 接收数据，使用数据查询 hash table 并构造最终结果，然后将结果发送给 result channel。
+7. `HashJoin` 的主线程从 result channel 中接收 join 结果。
+
+`HashJoin` 算子包含以下执行信息：
+
+```
+build_hash_table:{concurrency:5, time:2.25s, fetch:1.06s, max_partition:1.06s, total_partition:5.27s, max_build:124ms, total_build:439.5ms}, probe:{concurrency:5, time:13s, fetch_and_wait:3.03s, max_worker_time:13s, total_worker_time:1m4.5s, max_probe:9.93s, total_probe:49.4s, probe_collision:59818971}, spill:{round:1, spilled_partition_num_per_round:[5/8], total_spill_GiB_per_round:[1.64], build_spill_row_table_GiB_per_round:[0.50], build_spill_hash_table_per_round:[0.12]}
+```
+
+- `build_hash_table`：读取下游算子数据并构造 hash table 的执行信息。
+    - `time`：构建 hash table 的总耗时。
+    - `fetch`：从下游读取数据的总耗时。
+    - `max_partition`：row table builder 中耗时最长的 builder 的执行时间。
+    - `total_partition`：所有 row table builder 执行时间的累加耗时。
+    - `max_build`：hash table builder 中耗时最长的 builder 的执行时间。
+    - `total_build`：所有 hash table builder 执行时间的累加耗时。
+- `probe`：读取下游算子数据并进行 probe 的执行信息。
+    - `time`：probe 端操作的总耗时。
+    - `fetch_and_wait`：从下游读取数据并等待上游接受数据的总耗时。
+    - `max_worker_time`：worker 中最长的执行时间，包括从下游读取数据、进行 probe 端操作以及等待上游接受数据的时间。
+    - `total_worker_time`：所有 worker 执行时间的累加耗时。
+    - `max_probe`：worker 中最长的 probe 执行时间。
+    - `total_probe`：所有 worker 的 probe 执行时间的累加耗时。
+    - `probe_collision`：probe 过程中产生的冲突次数。
+- `spill`：spill 过程中的执行信息。
+    - `round`：spill 的轮数。
+    - `spilled_partition_num_per_round`：每一轮中被 spill 的 partition 数量。格式为 `x/y`，其中 `x` 表示被 spill 的 partition 数量，`y` 表示 partition 总数量。
+    - `total_spill_GiB_per_round`：每一轮 spill 中写入磁盘的数据总量。
+    - `build_spill_row_table_GiB_per_round`：每一轮 spill 中 build 端写入磁盘的 row table 数据量。
+    - `build_spill_hash_table_per_round`：每一轮 spill 中 build 端写入磁盘的 hash table 数据量。
 
 ### TableFullScan (TiFlash)
 

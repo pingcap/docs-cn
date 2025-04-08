@@ -13,7 +13,7 @@ summary: 本文介绍如何深入探索并使用 TiDB 的 HTAP 功能。
 
 要快速了解 TiDB 在 HTAP 场景下的体系架构与 HTAP 的适用场景，建议先观看下面的培训视频（时长 15 分钟）。注意本视频只作为学习参考，如需了解详细的 HTAP 相关内容，请参阅下方的文档内容。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson04_htap.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson4.png"></video>
+<video src="https://docs-download.pingcap.com/media/videos/docs-cn%2FLesson04_htap.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson4.png"></video>
 
 ## HTAP 适用场景
 

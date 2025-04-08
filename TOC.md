@@ -223,6 +223,7 @@
     - [使用 TiUP 升级](/upgrade-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
     - [平滑升级 TiDB](/smooth-upgrade-tidb.md)
+    - [迁移升级 TiDB](/tidb-upgrade-migration-guide.md)
     - [TiFlash 升级帮助](/tiflash-upgrade-guide.md)
   - 扩缩容
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
@@ -237,6 +238,7 @@
       - [使用概述](/br/br-use-overview.md)
       - [快照备份与恢复](/br/br-snapshot-guide.md)
       - [日志备份与 PITR](/br/br-pitr-guide.md)
+      - [压缩日志备份](/br/br-compact-log-backup.md)
       - [实践示例](/br/backup-and-restore-use-cases.md)
       - [备份存储](/br/backup-and-restore-storages.md)
     - br cli 命令手册
@@ -496,6 +498,7 @@
     - TiUP 组件文档
       - [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
       - [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
+      - [使用 no-sudo 模式部署运维生产集群](/tiup/tiup-cluster-no-sudo-mode.md)
       - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   - [TiDB Operator](/tidb-operator-overview.md)
@@ -775,6 +778,7 @@
       - [`BEGIN`](/sql-statements/sql-statement-begin.md)
       - [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md)
       - [`CANCEL IMPORT JOB`](/sql-statements/sql-statement-cancel-import-job.md)
+      - [`CANCEL TRAFFIC JOBS`](/sql-statements/sql-statement-cancel-traffic-jobs.md)
       - [`COMMIT`](/sql-statements/sql-statement-commit.md)
       - [`CREATE BINDING`](/sql-statements/sql-statement-create-binding.md)
       - [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md)
@@ -881,6 +885,7 @@
       - [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md)
       - [`SHOW TABLE STATUS`](/sql-statements/sql-statement-show-table-status.md)
       - [`SHOW TABLES`](/sql-statements/sql-statement-show-tables.md)
+      - [`SHOW TRAFFIC JOBS`](/sql-statements/sql-statement-show-traffic-jobs.md)
       - [`SHOW VARIABLES`](/sql-statements/sql-statement-show-variables.md)
       - [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md)
       - [`SHUTDOWN`](/sql-statements/sql-statement-shutdown.md)
@@ -888,6 +893,8 @@
       - [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md)
       - [`TABLE`](/sql-statements/sql-statement-table.md)
       - [`TRACE`](/sql-statements/sql-statement-trace.md)
+      - [`TRAFFIC CAPTURE`](/sql-statements/sql-statement-traffic-capture.md)
+      - [`TRAFFIC REPLAY`](/sql-statements/sql-statement-traffic-replay.md)
       - [`TRUNCATE`](/sql-statements/sql-statement-truncate.md)
       - [`UNLOCK STATS`](/sql-statements/sql-statement-unlock-stats.md)
       - [`UPDATE`](/sql-statements/sql-statement-update.md)
@@ -959,6 +966,7 @@
     - 系统表
       - `mysql` Schema
         - [概述](/mysql-schema/mysql-schema.md)
+        - [`tidb_mdl_view`](/mysql-schema/mysql-schema-tidb-mdl-view.md)
         - [`user`](/mysql-schema/mysql-schema-user.md)
       - INFORMATION_SCHEMA
         - [概述](/information-schema/information-schema.md)
@@ -1102,6 +1110,7 @@
   - v7.6
     - [7.6.0-DMR](/releases/release-7.6.0.md)
   - v7.5
+    - [7.5.6](/releases/release-7.5.6.md)
     - [7.5.5](/releases/release-7.5.5.md)
     - [7.5.4](/releases/release-7.5.4.md)
     - [7.5.3](/releases/release-7.5.3.md)
@@ -1127,6 +1136,7 @@
   - v6.6
     - [6.6.0-DMR](/releases/release-6.6.0.md)
   - v6.5
+    - [6.5.12](/releases/release-6.5.12.md)
     - [6.5.11](/releases/release-6.5.11.md)
     - [6.5.10](/releases/release-6.5.10.md)
     - [6.5.9](/releases/release-6.5.9.md)
