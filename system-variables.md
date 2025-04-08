@@ -4588,7 +4588,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
-- 当启用表锁类型为 `READ` 或者 `READ ONLY` 类型并且此变量设置为 `ON` 时，可以提高单点查询性能。
+- 当启用表锁类型为 `READ` 或者 `READ ONLY` 类型时，启用该变量（设置为 `ON`）可以提高单点查询的性能。
 
 ### `tidb_scatter_region`
 
