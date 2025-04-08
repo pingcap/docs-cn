@@ -24,7 +24,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 - [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)特性 GA，添加索引的性能约提升为 v6.1.0 的 10 倍。
 - TiDB 全局内存控制特性 GA，通过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 即可管理全局内存阈值。
-- 支持高性能、全局单调递增的 [`AUTO_INCREMENT` 列属性](/auto-increment.md#mysql-兼容模式) GA，兼容 MySQL。
+- 支持高性能、全局单调递增的 [`AUTO_INCREMENT` 列属性](/auto-increment.md#兼容-mysql-的自增列模式) GA，兼容 MySQL。
 - [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-cluster.md) 特性新增对 TiCDC 和 PITR 的兼容性支持，该特性已 GA。
 - 优化器引入的更精准的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2) GA，同时优化器增强索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能对 `AND` 连接的表达式的支持。
 - 支持下推 `JSON_EXTRACT()` 函数至 TiFlash。
