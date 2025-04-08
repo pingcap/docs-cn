@@ -3317,7 +3317,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 > **注意：**
 > 
-> 若部分 TiDB 节点显式设置了 [`tidb_service_scope`](#tidb_service_scope-从-v630-版本开始引入)，则分布式执行框架仅会将任务调度到这些节点中执行。此时，即使 `tidb_max_dist_task_nodes` 设置了更大的值，实际使用的 TiDB 节点数也不会超过显式设置的 `tidb_service_scope` 的 TiDB 节点数。
+> 若部分 TiDB 节点显式设置了 [`tidb_service_scope`](#tidb_service_scope-从-v740-版本开始引入)，则分布式执行框架仅会将任务调度到这些节点中执行。此时，即使 `tidb_max_dist_task_nodes` 设置了更大的值，实际使用的 TiDB 节点数也不会超过显式设置的 `tidb_service_scope` 的 TiDB 节点数。
 > 例如，集群中有 10 个 TiDB 节点，其中有 4 个节点设置了相同的 `tidb_service_scope` 值为 `group1`，同时你也设置了 `tidb_max_dist_task_nodes = 5`，最终实际参与任务执行的 TiDB 节点数为 `4`，而非 `5`。
 
 ### `tidb_max_paging_size` <span class="version-mark">从 v6.3.0 版本开始引入</span>
