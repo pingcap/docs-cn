@@ -211,7 +211,7 @@ hikari:
 ```
 
 参考 [HikariCP 官方帮助文档](https://github.com/brettwooldridge/HikariCP/blob/dev/README.md) 的参数解释如下：
-- `maximumPoolSize`：连接池最大连接数，在容器化场景下，可以使用应用 POD 配置的 CPU 核心数的 4~10 倍。连接数配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢，可参考[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。
+- `maximumPoolSize`：连接池最大连接数，默认值为 10。根据经验，在容器化场景下可以使用 JAVA 应用 POD 的 CPU 核心数的 4~10 倍。连接数配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢，可参考[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。
 - `minimumIdle`：官方推荐不要配置连接池最小空闲连接数，默认值等于连接池最大连接数，不使用连接池的伸缩特性，防止业务突发时，建立连接的过程过长，应用持有不到连接。
 - `connectionTimeout`：应用从连接池获取连接时的最长等待时间（单位为毫秒），默认值为 30000 毫秒（即 30 秒）。如果在指定时间内未能获取到可用连接，系统将抛出SQLException异常。
 - `maxLifetime`：连接池中每个连接的最大存活时间（单位：毫秒），即连接的生命周期，默认值为1800000毫秒（即 30 分钟）。使用中的连接不受影响，仅当连接被关闭后才会根据此设置被移除。过短的设置会引发频繁重建连接的开销，如果有 [graceful-wait-before-shutdown](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file/#graceful-wait-before-shutdown-%E4%BB%8E-v50-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5)的使用场景，连接的最大存活时间应小于等待时间。
