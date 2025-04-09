@@ -185,7 +185,7 @@ TiDB 提供两个与 MySQL 兼容的超时控制参数，`wait_timeout` 和 `max
 
 #### 推荐的 JDBC 连接字符串参数
 
-对以上的推荐值进行组合，推荐的 JDBC 组合参数如下：
+对以上的推荐值进行组合，JDBC 连接字符串推荐配置如下：
 
 ```
 JDBC:mysql://IP:PORT/DBNAME?characterEncoding=UTF-8&useSSL=false&useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSqlLimit=10000&prepStmtCacheSize=1000&useConfigs=maxPerformance&rewriteBatchedStatements=true
