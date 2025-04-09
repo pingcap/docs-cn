@@ -185,7 +185,6 @@ update t set a = 10 where id = 1; update t set a = 11 where id = 2; update t set
 >
 > 开启配置 `useConfigs = maxPerformance` 需要使用 MySQL Connector/J 8.0.33 或更高版本，请参考 [MySQL JDBC Bug](https://docs.pingcap.com/zh/tidb/stable/dev-guide-third-party-tools-compatibility/#mysql-jdbc-bug)。
 
-
 #### 超时参数
 
 TiDB 提供两个与 MySQL 兼容的超时控制参数，`wait_timeout` 和 `max_execution_time`。这两个参数分别控制与 Java 应用连接的空闲超时时间和连接中 SQL 执行的超时时间，即控制 TiDB 与 Java 应用的连接最长闲多久和最长忙多久。这两个参数的默认值都是 `0`，即默认允许连接无限闲置以及无限忙碌（一个 SQL 语句执行无限的长的时间）。
