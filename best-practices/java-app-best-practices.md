@@ -192,14 +192,14 @@ TiDB 提供两个与 MySQL 兼容的超时控制参数，`wait_timeout` 和 `max
 对以上的推荐值进行组合，推荐的 JDBC 组合参数如下：
 
 ```
-JDBC:mysql://IP:PORT/DBNAME?characterEncoding=UTF8&useSSL=false&useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSqlLimit=10000&prepStmtCacheSize=1000&useConfigs=maxPerformance&rewriteBatchedStatements=true
+JDBC:mysql://IP:PORT/DBNAME?characterEncoding=UTF-8&useSSL=false&useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSqlLimit=10000&prepStmtCacheSize=1000&useConfigs=maxPerformance&rewriteBatchedStatements=true
 ```
 
 ## 连接池
 
 TiDB (MySQL) 连接建立是比较昂贵的操作（至少对于 OLTP），除了建立 TCP 连接外还需要进行连接鉴权操作，所以客户端通常会把 TiDB (MySQL) 连接保存到连接池中进行复用。
 
-TiDB 可以兼容 Java 的连接池 ([HikariCP](https://github.com/brettwooldridge/HikariCP), [tomcat-jdbc](https://tomcat.apache.org/tomcat-10.1-doc/jdbc-pool.html), [druid](https://github.com/alibaba/druid), [c3p0](https://www.mchange.com/projects/c3p0/), [dbcp](https://commons.apache.org/proper/commons-dbcp/))。在实践中发现某些连接池会长期固定使用某些活跃会话，此时 TiDB 的计算层多个节点间连接数一致，活跃连接数不一致，导致实际负载不均衡，因此在分布式场景更推荐使用 HikariCP，可以实现良好的连接生命周期管理。
+TiDB 支持 Java 的连接池 ([HikariCP](https://github.com/brettwooldridge/HikariCP), [tomcat-jdbc](https://tomcat.apache.org/tomcat-10.1-doc/jdbc-pool.html), [druid](https://github.com/alibaba/druid), [c3p0](https://www.mchange.com/projects/c3p0/), [dbcp](https://commons.apache.org/proper/commons-dbcp/))。在实践中发现某些连接池会长期固定使用某些活跃会话，此时 TiDB 的计算层多个节点间连接数一致，活跃连接数不一致，导致实际负载不均衡，因此在分布式场景更推荐使用 HikariCP，可以实现良好的连接生命周期管理。
 
 ### 推荐的连接池配置
 
