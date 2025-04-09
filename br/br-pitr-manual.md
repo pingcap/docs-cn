@@ -499,7 +499,7 @@ tiup br restore point --pd="${PD_IP}:2379"
 --master-key "local:///path/to/master.key"
 ```
 
-### 进行中的日志备份与恢复的兼容性
+### 进行中的日志备份与快照恢复的兼容性
 
 从 v9.0.0 开始，当存在日志备份任务时，如果**同时满足**以下条件，则可以正常进行快照恢复 (`br restore [full|database|table]`)，并且恢复的数据可以被进行中的日志备份（下称“日志备份”）正常记录：
 
