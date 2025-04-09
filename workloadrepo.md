@@ -30,7 +30,7 @@ Workload Repository 将数据存储在 `WORKLOAD_SCHEMA` 数据库下的表中�
 
 ## 快照采样过程（默认每小时）
 
-快照采样过程每 15 分钟到 2 小时运行一次，从各种监控表中采样数据。快照由指定时间间隔内的某个 TiDB 节点发起，过程如下：
+快照采样过程每 15 分钟到 2 小时运行一次，从存储累计指标的内存表中采样数据。快照由指定时间间隔内的某个 TiDB 节点发起，过程如下：
 
 1. 从发起节点向 `HIST_SNAPSHOTS` 表插入一行，记录快照 ID、开始和结束时间戳以及服务器版本信息。
 2. 在每个 TiDB 节点上，将源表中的所有行复制到带有 `HIST_` 前缀的对应历史表中。复制的数据包括源表中的原始列以及用于时间戳、实例 ID 和快照 ID 的附加列。
@@ -60,10 +60,11 @@ SET GLOBAL tidb_workload_repository_snapshot_interval = 900; -- 将间隔设置�
 ```sql
 ADMIN WORKLOAD REPOSITORY TAKE SNAPSHOT;
 ```
+手动快照并不会改变下一次自动快照的发生时间。
 
 ## 基于时间的采样过程（默认每 5 秒）
 
-基于时间的采样过程每 1 秒到 600 秒运行一次，从各种监控表中采样数据。
+基于时间的采样间隔可设置为 1 秒到 600 秒之间的任意时间，从各个记录瞬时状态的系统表中采样数据。
 
 当基于时间的采样过程运行时，源表中的所有行都会被复制到带有 `HIST_` 前缀的对应历史表中。复制的数据包括源表中的原始列以及用于时间戳和实例 ID 的附加列。
 
@@ -86,6 +87,7 @@ ADMIN WORKLOAD REPOSITORY TAKE SNAPSHOT;
 ```sql
 SET GLOBAL tidb_workload_repository_active_sampling_interval = 20; -- 将间隔设置为 20 秒
 ```
+把间隔设置为 `0` 将会禁用基于时间的采样。
 
 ## 数据保留
 
