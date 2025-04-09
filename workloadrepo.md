@@ -60,6 +60,7 @@ SET GLOBAL tidb_workload_repository_snapshot_interval = 900; -- 将间隔设置�
 ```sql
 ADMIN WORKLOAD REPOSITORY TAKE SNAPSHOT;
 ```
+
 手动快照并不会改变下一次自动快照的发生时间。
 
 ## 基于时间的采样过程（默认每 5 秒）
@@ -87,6 +88,7 @@ ADMIN WORKLOAD REPOSITORY TAKE SNAPSHOT;
 ```sql
 SET GLOBAL tidb_workload_repository_active_sampling_interval = 20; -- 将间隔设置为 20 秒
 ```
+
 把间隔设置为 `0` 将会禁用基于时间的采样。
 
 ## 数据保留
