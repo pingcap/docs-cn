@@ -182,6 +182,11 @@ update t set a = 10 where id = 1; update t set a = 11 where id = 2; update t set
 
 配置后查看监控，可以看到多余语句减少。
 
+> **注意：**
+>
+> 开启配置 `useConfigs = maxPerformance` 需要使用 MySQL Connector/J 8.0.33 或更高版本，请参考 [MySQL JDBC Bug](https://docs.pingcap.com/zh/tidb/stable/dev-guide-third-party-tools-compatibility/#mysql-jdbc-bug)。
+
+
 #### 超时参数
 
 TiDB 提供两个与 MySQL 兼容的超时控制参数，`wait_timeout` 和 `max_execution_time`。这两个参数分别控制与 Java 应用连接的空闲超时时间和连接中 SQL 执行的超时时间，即控制 TiDB 与 Java 应用的连接最长闲多久和最长忙多久。这两个参数的默认值都是 `0`，即默认允许连接无限闲置以及无限忙碌（一个 SQL 语句执行无限的长的时间）。
@@ -193,8 +198,12 @@ TiDB 提供两个与 MySQL 兼容的超时控制参数，`wait_timeout` 和 `max
 对以上的推荐值进行组合，JDBC 连接字符串推荐配置如下：
 
 ```
-JDBC:mysql://IP:PORT/DBNAME?characterEncoding=UTF-8&useSSL=false&useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSqlLimit=10000&prepStmtCacheSize=1000&useConfigs=maxPerformance&rewriteBatchedStatements=true
+JDBC:mysql://<IP>:<PORT>/<DBNAME>?characterEncoding=UTF-8&useSSL=false&useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSqlLimit=10000&prepStmtCacheSize=1000&useConfigs=maxPerformance&rewriteBatchedStatements=true
 ```
+
+> **注意：**
+>
+> 如果在公共网络发起连接时，需要修改配置 useSSL=true，并启用[TiDB 客户端服务端间加密传输](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers/)。
 
 ## 连接池
 
@@ -206,19 +215,19 @@ TiDB 支持 Java 的连接池 ([HikariCP](https://github.com/brettwooldridge/Hik
 
 以 HikariCP 为例：
 
-```
+```yaml
 hikari:
-    maximumPoolSize:20
-    poolName:hikariCP
-    connectionTimeout:30000 
-    maxLifetime:1200000
+    maximumPoolSize: 20
+    poolName: hikariCP
+    connectionTimeout: 30000 
+    maxLifetime: 1200000
     keepaliveTime: 120000
 ```
 
 参考 [HikariCP 官方帮助文档](https://github.com/brettwooldridge/HikariCP/blob/dev/README.md)，参数解释如下：
 
-- `maximumPoolSize`：连接池最大连接数，默认值为 10。根据经验，在容器化场景下可以使用 JAVA 应用 POD 的 CPU 核心数的 4~10 倍。连接数配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢，可参考[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。
-- `minimumIdle`：官方推荐不要配置连接池最小空闲连接数，默认值等于连接池最大连接数。配置为相同值，等同于不使用连接池的伸缩特性，防止业务突增时，建立连接的过程过长，导致 应用持有不到连接。
+- `maximumPoolSize`：连接池最大连接数，默认值为 10。根据经验，在容器化场景下可以使用 Java 应用部署环境的 CPU 核心数的 4~10 倍。连接数配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢，可参考[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。
+- `minimumIdle`：HikariCP 官方推荐不要配置连接池最小空闲连接数，默认值等于连接池最大连接数。配置为相同值，等同于不使用连接池的伸缩特性，防止业务突增时，建立连接的过程过长，导致应用不能获取连接。
 - `connectionTimeout`：应用从连接池获取连接时的最长等待时间（单位为毫秒），默认值为 30000 毫秒（即 30 秒）。如果在指定时间内未能获取到可用连接，系统将抛出 SQLException 异常。
 - `maxLifetime`：连接池中每个连接的最大存活时间（单位：毫秒），即连接的生命周期，默认值为1800000毫秒（即 30 分钟）。使用中的连接不受影响，仅当连接被关闭后才会根据此设置被移除。过短的设置会引发频繁重建连接的开销，如果有 [graceful-wait-before-shutdown](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file/#graceful-wait-before-shutdown-%E4%BB%8E-v50-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5)的使用场景，连接的最大存活时间应小于等待时间。
 - `keepaliveTime`：连接池中连接保活操作间隔（单位：毫秒），防止数据库或网络基础设施因超时断开连接，默认值为 120000 毫秒（即 2 分钟）。连接池对空闲连接优先调用 JDBC4 的 isValid() 方法进行保活。
