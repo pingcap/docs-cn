@@ -199,8 +199,8 @@ JDBC:mysql://IP:PORT/DBNAME?characterEncoding=UTF-8&useSSL=false&useServerPrepSt
 
 TiDB (MySQL) 连接建立是比较昂贵的操作（至少对于 OLTP），除了建立 TCP 连接外还需要进行连接鉴权操作，所以客户端通常会把 TiDB (MySQL) 连接保存到连接池中进行复用。
 
-TiDB 支持 Java 的连接池 ([HikariCP](https://github.com/brettwooldridge/HikariCP), [tomcat-jdbc](https://tomcat.apache.org/tomcat-10.1-doc/jdbc-pool.html), [druid](https://github.com/alibaba/druid), [c3p0](https://www.mchange.com/projects/c3p0/), [dbcp](https://commons.apache.org/proper/commons-dbcp/))。在实践中发现某些连接池会长期固定使用某些活跃会话，此时 TiDB 的计算层多个节点间连接数一致，活跃连接数不一致，导致实际负载不均衡，因此在分布式场景更推荐使用 HikariCP，可以实现良好的连接生命周期管理。
-在分布式场景中更推荐使用 HikariCP，因为它能实现良好的连接生命周期管理，避免连接长期固定在某些节点导致负载不均衡。
+TiDB 支持 Java 的连接池 ([HikariCP](https://github.com/brettwooldridge/HikariCP), [tomcat-jdbc](https://tomcat.apache.org/tomcat-10.1-doc/jdbc-pool.html), [druid](https://github.com/alibaba/druid), [c3p0](https://www.mchange.com/projects/c3p0/), [dbcp](https://commons.apache.org/proper/commons-dbcp/))。在实践中发现某些连接池会长期固定使用某些活跃会话，此时 TiDB 的计算层多个节点间连接数一致，活跃连接数不一致，导致实际负载不均衡。因此在分布式场景更推荐使用 HikariCP，可以实现良好的连接生命周期管理，避免活跃连接长期固定在某些节点导致负载不均衡。
+
 ### 推荐的连接池配置
 
 以 HikariCP 为例：
@@ -216,8 +216,8 @@ hikari:
 
 参考 [HikariCP 官方帮助文档](https://github.com/brettwooldridge/HikariCP/blob/dev/README.md) 的参数解释如下：
 - `maximumPoolSize`：连接池最大连接数，默认值为 10。根据经验，在容器化场景下可以使用 JAVA 应用 POD 的 CPU 核心数的 4~10 倍。连接数配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢，可参考[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。
-- `minimumIdle`：官方推荐不要配置连接池最小空闲连接数，默认值等于连接池最大连接数，不使用连接池的伸缩特性，防止业务突发时，建立连接的过程过长，应用持有不到连接。
-- `connectionTimeout`：应用从连接池获取连接时的最长等待时间（单位为毫秒），默认值为 30000 毫秒（即 30 秒）。如果在指定时间内未能获取到可用连接，系统将抛出SQLException异常。
+- `minimumIdle`：官方推荐不要配置连接池最小空闲连接数，默认值等于连接池最大连接数。配置为相同值，等同于不使用连接池的伸缩特性，防止业务突增时，建立连接的过程过长，导致 应用持有不到连接。
+- `connectionTimeout`：应用从连接池获取连接时的最长等待时间（单位为毫秒），默认值为 30000 毫秒（即 30 秒）。如果在指定时间内未能获取到可用连接，系统将抛出 SQLException 异常。
 - `maxLifetime`：连接池中每个连接的最大存活时间（单位：毫秒），即连接的生命周期，默认值为1800000毫秒（即 30 分钟）。使用中的连接不受影响，仅当连接被关闭后才会根据此设置被移除。过短的设置会引发频繁重建连接的开销，如果有 [graceful-wait-before-shutdown](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file/#graceful-wait-before-shutdown-%E4%BB%8E-v50-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5)的使用场景，连接的最大存活时间应小于等待时间。
 - `keepaliveTime`：连接池中连接保活操作间隔（单位：毫秒），防止数据库或网络基础设施因超时断开连接，默认值为 120000 毫秒（即 2 分钟）。连接池对空闲连接优先调用 JDBC4 的 isValid() 方法进行保活。
 
