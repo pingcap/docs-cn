@@ -187,9 +187,9 @@ TiDB 提供两个与 MySQL 兼容的超时控制参数，`wait_timeout` 和 `max
 
 但在实际生产环境中，空闲连接和一直无限执行的 SQL 对数据库和应用都有不好的影响。你可以通过在应用的连接字符串中配置这两个参数来避免空闲连接和执行时间过长的 SQL 语句。例如，设置 `sessionVariables=wait_timeout=3600`（1 小时）和 `sessionVariables=max_execution_time=300000`（5 分钟）。
 
-#### 推荐的 JDBC 连接字符串参数
+#### 典型的 JDBC 连接字符串参数
 
-对以上的推荐值进行组合，JDBC 连接字符串推荐配置如下：
+对以上的参数值进行组合，JDBC 连接字符串配置如下：
 
 ```
 JDBC:mysql://<IP>:<PORT>/<DBNAME>?characterEncoding=UTF-8&useSSL=false&useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSqlLimit=10000&prepStmtCacheSize=1000&useConfigs=maxPerformance&rewriteBatchedStatements=true
@@ -205,7 +205,7 @@ TiDB (MySQL) 连接建立是比较昂贵的操作（至少对于 OLTP），除�
 
 TiDB 支持 Java 的连接池 ([HikariCP](https://github.com/brettwooldridge/HikariCP), [tomcat-jdbc](https://tomcat.apache.org/tomcat-10.1-doc/jdbc-pool.html), [druid](https://github.com/alibaba/druid), [c3p0](https://www.mchange.com/projects/c3p0/), [dbcp](https://commons.apache.org/proper/commons-dbcp/))。在实践中发现某些连接池会长期固定使用某些活跃会话，此时 TiDB 的计算层多个节点间连接数一致，活跃连接数不一致，导致实际负载不均衡。因此在分布式场景更推荐使用 HikariCP，可以实现良好的连接生命周期管理，避免活跃连接长期固定在某些节点导致负载不均衡。
 
-### 推荐的连接池配置
+### 典型的连接池配置
 
 以 HikariCP 为例：
 
