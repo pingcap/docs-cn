@@ -214,7 +214,8 @@ hikari:
     keepaliveTime: 120000
 ```
 
-参考 [HikariCP 官方帮助文档](https://github.com/brettwooldridge/HikariCP/blob/dev/README.md) 的参数解释如下：
+参考 [HikariCP 官方帮助文档](https://github.com/brettwooldridge/HikariCP/blob/dev/README.md)，参数解释如下：
+
 - `maximumPoolSize`：连接池最大连接数，默认值为 10。根据经验，在容器化场景下可以使用 JAVA 应用 POD 的 CPU 核心数的 4~10 倍。连接数配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢，可参考[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。
 - `minimumIdle`：官方推荐不要配置连接池最小空闲连接数，默认值等于连接池最大连接数。配置为相同值，等同于不使用连接池的伸缩特性，防止业务突增时，建立连接的过程过长，导致 应用持有不到连接。
 - `connectionTimeout`：应用从连接池获取连接时的最长等待时间（单位为毫秒），默认值为 30000 毫秒（即 30 秒）。如果在指定时间内未能获取到可用连接，系统将抛出 SQLException 异常。
