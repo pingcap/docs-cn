@@ -209,11 +209,11 @@ TiDB (MySQL) 连接建立是比较昂贵的操作（至少对于 OLTP），除�
 
 TiDB 支持以下 Java 的连接池：
 
- - [HikariCP](https://github.com/brettwooldridge/HikariCP)
- - [tomcat-jdbc](https://tomcat.apache.org/tomcat-10.1-doc/jdbc-pool)
- - [druid](https://github.com/alibaba/druid)
- - [c3p0](https://www.mchange.com/projects/c3p0/)
- - [dbcp](https://commons.apache.org/proper/commons-dbcp/)
+- [HikariCP](https://github.com/brettwooldridge/HikariCP)
+- [tomcat-jdbc](https://tomcat.apache.org/tomcat-10.1-doc/jdbc-pool)
+- [druid](https://github.com/alibaba/druid)
+- [c3p0](https://www.mchange.com/projects/c3p0/)
+- [dbcp](https://commons.apache.org/proper/commons-dbcp/)
  
 在实践中，发现某些连接池会长期固定使用某些活跃会话，此时 TiDB 的计算层多个节点间连接数一致，活跃连接数不一致，导致实际负载不均衡。因此在分布式场景中，推荐使用 HikariCP，可以实现良好的连接生命周期管理，避免活跃连接长期固定在某些节点导致负载不均衡。
 
