@@ -184,7 +184,7 @@ update t set a = 10 where id = 1; update t set a = 11 where id = 2; update t set
 
 > **注意：**
 >
-> 开启配置 `useConfigs = maxPerformance` 需要使用 MySQL Connector/J 8.0.33 或更高版本，请参考 [MySQL JDBC Bug](https://docs.pingcap.com/zh/tidb/stable/dev-guide-third-party-tools-compatibility/#mysql-jdbc-bug)。
+> 开启 `useConfigs = maxPerformance` 需要使用 MySQL Connector/J 8.0.33 或更高版本，详情请参考 [MySQL JDBC Bug](/develop/dev-guide-third-party-tools-compatibility.md#mysql-jdbc-bug)。
 
 #### 超时参数
 
