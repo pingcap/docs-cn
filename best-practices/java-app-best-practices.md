@@ -197,7 +197,7 @@ JDBC:mysql://<IP>:<PORT>/<DBNAME>?characterEncoding=UTF-8&useSSL=false&useServer
 
 > **注意：**
 >
-> 如果在公共网络发起连接时，需要修改配置 useSSL=true，并启用[TiDB 客户端服务端间加密传输](https://docs.pingcap.com/zh/tidb/stable/enable-tls-between-clients-and-servers/)。
+> 如果在公共网络发起连接时，需要修改配置 `useSSL=true`，并启用 [TiDB 客户端服务端间加密传输](/enable-tls-between-clients-and-servers.md)。
 
 ## 连接池
 
