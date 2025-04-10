@@ -5429,7 +5429,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
     - `force_streaming`：TiFlash 直接将数据发送到下一阶段的 HashAgg，不进行预聚合操作
     - `auto`：TiFlash 根据当前工作负载的聚合度自动选择是否进行预聚合操作
 
-### `tiflash_hash_join_version` <span class="version-mark">从 v9.1.0 版本开始引入</span>
+### `tiflash_hash_join_version` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
 > **警告：**
 >
