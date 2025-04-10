@@ -1079,7 +1079,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[1, 2147483647]`
-- 这个变量用来设置单个自动统计信息收集任务内部的并发度。在 v8.4.0 之前的版本中，该并发度固定为 `1`。你可以根据集群资源情况提高该并发度，从而加快统计信息收集任务的执行速度。
+- 这个变量用来设置 TiDB 集群中自动更新统计信息操作的并发度。在 v8.4.0 之前的版本中，该并发度固定为 `1`。你可以根据集群资源情况提高该并发度，从而加快统计信息收集任务的执行速度。
 
 ### `tidb_auto_analyze_end_time`
 
@@ -2302,6 +2302,14 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`OFF`
 - 这个变量用来控制是否开启 [`PLAN REPLAYER CONTINUOUS CAPTURE` 功能](/sql-plan-replayer.md#使用-plan-replayer-continuous-capture)。默认值 `OFF` 代表关闭功能。
 
+### `tidb_enable_point_get_cache`
+
+- 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 当 [`LOCK TABLES`](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md) 的表锁类型设置为 `READ` 时，将该变量设置为 `ON` 可以缓存点查结果，减少重复查询的开销，从而提高单点查询的性能。
+
 ### `tidb_enable_prepared_plan_cache` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -3184,7 +3192,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
-- 默认值：`43200`
+- 默认值：`43200`，即 12 小时
 - 范围：`[0, 2147483647]`
 - 单位：秒
 - 这个变量用于指定自动 ANALYZE 的最大执行时间。当执行时间超出指定的时间时，自动 ANALYZE 会被终止。当该变量值为 0 时，自动 ANALYZE 没有最大执行时间的限制。
@@ -3254,6 +3262,22 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`1024`
 - 范围：`[100, 16384]`
 - 这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
+
+### `tidb_max_dist_task_nodes` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`-1`
+- 范围：`-1` 或 `[1, 128]`
+- 该变量用于定义分布式框架任务可使用的 TiDB 节点数上限。默认值为 `-1`，表示启用自动模式。在自动模式下，TiDB 将按照 `min(3, tikv_nodes / 3)` 动态地计算该值，其中 `tikv_nodes` 表示集群中 TiKV 节点的数量。
+
+> **注意：**
+> 
+> 如果部分 TiDB 节点显式设置了 [`tidb_service_scope`](#tidb_service_scope-从-v740-版本开始引入)，则分布式执行框架仅会将任务调度到这些节点中执行。此时，即使 `tidb_max_dist_task_nodes` 设置了更大的值，实际使用的 TiDB 节点数也不会超过显式设置了 `tidb_service_scope` 的 TiDB 节点数。
+>
+> 例如，集群有 10 个 TiDB 节点，其中 4 个节点均设置了 `tidb_service_scope = group1`。此时即使设置 `tidb_max_dist_task_nodes = 5`，实际参与任务执行的节点数仍为 4。
 
 ### `tidb_max_paging_size` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
