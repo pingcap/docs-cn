@@ -85,7 +85,7 @@ br 工具暂停 GC 的原理是通过执行 `SET config tikv gc.ratio-threshold 
 
 [PITR (Point-in-time recovery)](/br/br-pitr-guide.md) 恢复分为快照恢复和日志恢复两个阶段。
 
-在第一次执行恢复时，br 工具首先进入快照恢复阶段。断点数据、备份数据的上游集群的 ID 、备份数据的 BackupTS（即日志恢复的起始时间点 `start-ts`）和 PITR 恢复的 `restored-ts` 会被记录到 `__TiDB_BR_Temporary_Snapshot_Restore_Checkpoint` 数据库中。如果在此阶段恢复失败，尝试继续断点恢复时无法再调整日志恢复的起始时间点 `start-ts` 和 `restored-ts`。
+在第一次执行恢复时，br 工具首先进入快照恢复阶段。断点数据、备份数据的上游集群的 ID、备份数据的 BackupTS（即日志恢复的起始时间点 `start-ts`）和 PITR 恢复的 `restored-ts` 会被记录到 `__TiDB_BR_Temporary_Snapshot_Restore_Checkpoint` 数据库中。如果在此阶段恢复失败，尝试继续断点恢复时无法再调整日志恢复的起始时间点 `start-ts` 和 `restored-ts`。
 
 在第一次执行恢复并且进入日志恢复阶段时，br 工具会在恢复集群中创建 `__TiDB_BR_Temporary_Log_Restore_Checkpoint` 数据库，用于记录断点数据，以及这次恢复的上游集群 ID 和恢复的时间范围 `start-ts` 与 `restored-ts`。如果在此阶段恢复失败，重新执行恢复命令时，你需要指定与断点记录相同的 `start-ts` 和 `restored-ts` 参数，否则 br 工具会报错，并提示上游集群 ID 或恢复的时间范围与断点记录不同。如果恢复集群已被清理，你可以手动删除 `__TiDB_BR_Temporary_Log_Restore_Checkpoint` 数据库，然后使用其他备份重试。
 
@@ -95,16 +95,18 @@ br 工具暂停 GC 的原理是通过执行 `SET config tikv gc.ratio-threshold 
 
 > **注意：**
 >
-> 从 v9.0.0 之后，默认将断点数据存储在下游集群。你可以通过参数 `--checkpoint-storage` 来指定断点数据存储的外部存储。
+> 从 v9.0.0 开始，默认将断点数据存储在下游集群。你可以通过参数 `--checkpoint-storage` 来指定断点数据存储的外部存储。例如：
 >
-> 例如：`./br restore full -s "s3://backup-bucket/backup-prefix" --checkpoint-storage "s3://temp-bucket/checkpoints"`
+> ```shell
+> ./br restore full -s "s3://backup-bucket/backup-prefix" --checkpoint-storage "s3://temp-bucket/checkpoints"
+> ```
 
-存储在外部存储中的断点数据存在以下目录格式：
+在外部存储中，断点数据的目录结构如下：
 
 - 主路径 `restore-{downstream-cluster-ID}` 中的下游集群 ID `{downstream-cluster-ID}` 用于区分不同的恢复集群
-- 路径 `restore-{downstream-cluster-ID}/log` 存放日志恢复阶段的日志文件断点数据
-- 路径 `restore-{downstream-cluster-ID}/sst` 存放日志恢复阶段的未被日志备份备份的 SST 文件的恢复断点数据
-- 路径 `restore-{downstream-cluster-ID}/snapshot` 存放快照恢复阶段的断点数据
+- 路径 `restore-{downstream-cluster-ID}/log` 存储日志恢复阶段的日志文件断点数据
+- 路径 `restore-{downstream-cluster-ID}/sst` 存储日志恢复阶段中未被日志备份覆盖的 SST 文件的断点数据
+- 路径 `restore-{downstream-cluster-ID}/snapshot` 存储快照恢复阶段的断点数据
 
 ```
 .
