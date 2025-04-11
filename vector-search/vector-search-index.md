@@ -207,8 +207,8 @@ LIMIT 10;
 ANN index not used: index can be used only when ordering by vec_cosine_distance() in ASC order
 ```
 
-## TiFlash/TiKV存储引擎的执行计划
-同时需要注意，向量索引的构建是在TiFlash引擎内构建的。对于同一条向量搜索语句，它的执行计划经过优化器的优化之后，可能选择TiKV或者TiFlash引擎进行读取。
+## 不同存储引擎的执行计划
+同时需要注意，向量索引的构建是在 TiFlash 引擎内构建的。对于同一条向量搜索语句，它的执行计划经过优化器的优化之后，可能选择 TiKV 或者 TiFlash 引擎进行读取。
 
 **示例：选择不同存储引擎时的执行计划**
 
@@ -248,7 +248,7 @@ LIMIT 10;
 
 由于向量搜索在不同存储引擎下经过的处理不同，它们执行的结果也**可能不同**。但是，不同存储引擎的执行计划所得到的结果是一致的，只是结果展示的先后顺序不同，并**不会影响向量搜索的召回率**。
 
-若你仍然担心该情况可能导致未预期的结果，你可以选择开启[tidb_opt_projection_push_down](/system-variables.md#tidb_opt_projection_push_down-从-v610-版本开始引入)，优化经过TiKV引擎的执行计划，从而使得TiFlash与TiKV的结果保持一致。
+若你仍然担心该情况可能导致未预期的结果，你可以选择开启 [tidb_opt_projection_push_down](/system-variables.md#tidb_opt_projection_push_down-从-v610-版本开始引入)，优化经过TiKV引擎的执行计划，从而使得TiFlash与TiKV的结果保持一致。
 
 **示例：开启tidb_opt_projection_push_down后的执行计划**
 
@@ -273,7 +273,7 @@ LIMIT 10;
 
 > **注意：**
 >
-> 由于不同存储引擎间计算向量距离结果的误差，即使开启了`tidb_opt_projection_push_down`选项，TiKV和TiFlash的结果仍然可能存在不同，在正常的向量数据分布中，误差可以忽略不计，不会导致结果的不同。若您在使用过程中因这一情况产生了问题，请随时向我们提出[issue](https://github.com/pingcap/tidb/issues) 反馈。
+> 由于不同存储引擎间计算向量距离结果的误差，即使开启了`tidb_opt_projection_push_down`选项，TiKV 和 TiFlash 的结果仍然可能存在不同，在正常的向量数据分布中，误差可以忽略不计，不会导致结果的不同。若您在使用过程中因这一情况产生了问题，请随时向我们提出[issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 ## 分析向量搜索性能
 
