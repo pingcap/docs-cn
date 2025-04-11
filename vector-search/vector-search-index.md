@@ -208,6 +208,7 @@ ANN index not used: index can be used only when ordering by vec_cosine_distance(
 ```
 
 ## 不同存储引擎的执行计划
+
 同时需要注意，向量索引的构建是在 TiFlash 引擎内构建的。对于同一条向量搜索语句，它的执行计划经过优化器的优化之后，可能选择 TiKV 或者 TiFlash 引擎进行读取。
 
 **示例：选择不同存储引擎时的执行计划**
