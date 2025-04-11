@@ -158,8 +158,7 @@ LIMIT 10;
 | ... | operator info                                                                       |
 +-----+-------------------------------------------------------------------------------------+
 | ... | ...                                                                                 |
-| ... | Column#5, offset:0, count:10                                                        |
-| ... | ..., vec_cosine_distance(test.vector_table_with_index.embedding, [1,2,3])->Column#5 |
+| ... | Column#4, offset:0, count:10                                                        | |
 | ... | MppVersion: 1, data:ExchangeSender_16                                               |
 | ... | ExchangeType: PassThrough                                                           |
 | ... | ...                                                                                 |
@@ -207,6 +206,74 @@ LIMIT 10;
 [tidb]> SHOW WARNINGS;
 ANN index not used: index can be used only when ordering by vec_cosine_distance() in ASC order
 ```
+
+## TiFlash/TiKV存储引擎的执行计划
+同时需要注意，向量索引的构建是在TiFlash引擎内构建的。对于同一条向量搜索语句，它的执行计划经过优化器的优化之后，可能选择TiKV或者TiFlash引擎进行读取。
+
+**示例：选择不同存储引擎时的执行计划**
+
+```sql
+-- TiFlash路径
+[tidb]> EXPLAIN SELECT * FROM foo
+ORDER BY VEC_COSINE_DISTANCE(embedding, '[1, 2, 3]')
+LIMIT 10;
++--------------------------------+--------------+--------------------------------------------------+
+| id                             | ...          | operator info                                    |
++--------------------------------+--------------+--------------------------------------------------+
+| TopN_10                        | ...          | ...                                              |
+| └─TableReader_27               | ...          | Column#4                                         |
+|   └─ExchangeSender_26          | mpp[tiflash] | ...                                              |
+|     └─TopN_25                  | mpp[tiflash] | Column#4 ...                                     |
+|       └─Projection_24          | mpp[tiflash] | vec_cosine_distance(xxx)->Column#4               |
+|         └─TableFullScan_23     | mpp[tiflash] | annIndex:COSINE(xxx)                             |
++--------------------------------+--------------+--------------------------------------------------+
+6 rows in set, 1 warning (0.01 sec)
+
+-- TiKV路径
+[tidb]> EXPLAIN SELECT * FROM foo
+ORDER BY VEC_COSINE_DISTANCE(embedding, '[1, 2, 3]')
+LIMIT 10;
++--------------------------------+--------------+--------------------------------------------------+
+| id                             | ...          | operator info                                    |
++--------------------------------+--------------+--------------------------------------------------+
+| Projection_14                  | ...          | ...                                              |
+| └─TopN_7                       | ...          | Column#3                                         |
+|   └─Projection_15              | ...          | vec_cosine_distance(xxx)->Column#3               |
+|       └─TableReader_13         | ...          | ...                                              |
+|         └─TopN_25              | cop[tikv]    | vec_cosine_distance(xxx) ...                     |
+|           └─TableFullScan_11   | cop[tikv]    | ...                                              |
++--------------------------------+--------------+--------------------------------------------------+
+6 rows in set, 1 warning (0.01 sec)
+```
+
+由于向量搜索在不同存储引擎下经过的处理不同，它们执行的结果也**可能不同**。但是，不同存储引擎的执行计划所得到的结果是一致的，只是结果展示的先后顺序不同，并**不会影响向量搜索的召回率**。
+
+若你仍然担心该情况可能导致未预期的结果，你可以选择开启[tidb_opt_projection_push_down](/system-variables.md#tidb_opt_projection_push_down-从-v610-版本开始引入)，优化经过TiKV引擎的执行计划，从而使得TiFlash与TiKV的结果保持一致。
+
+**示例：开启tidb_opt_projection_push_down后的执行计划**
+
+```sql
+[tidb]> set @@tidb_opt_projection_push_down=1;
+Query OK, 0 rows affected (0.00 sec)
+
+[tidb]> EXPLAIN SELECT * FROM foo
+ORDER BY VEC_COSINE_DISTANCE(embedding, '[1, 2, 3]')
+LIMIT 10;
++--------------------------------+--------------+--------------------------------------------------+
+| id                             | ...          | operator info                                    |
++--------------------------------+--------------+--------------------------------------------------+
+| TopN_10                        | ...          | Column#4                                         |
+| └─TableReader_27               | ...          | ...                                              |
+|   └─TopN_13                    | mpp[tiflash] | Column#4                                         |
+|     └─Projection_12            | mpp[tiflash] | vec_cosine_distance(xxx)->Column#4               |
+|       └─TableFullScan_11       | mpp[tiflash] | ...                                              |
++--------------------------------+--------------+--------------------------------------------------+
+6 rows in set, 1 warning (0.01 sec)
+```
+
+> **注意：**
+>
+> 由于不同存储引擎间计算向量距离结果的误差，即使开启了`tidb_opt_projection_push_down`选项，TiKV和TiFlash的结果仍然可能存在不同，在正常的向量数据分布中，误差可以忽略不计，不会导致结果的不同。若您在使用过程中因这一情况产生了问题，请随时向我们提出[issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 ## 分析向量搜索性能
 
