@@ -168,6 +168,12 @@ TiDB 版本：9.0.0
 
 ### 数据迁移
 
+* 支持 DM 日志查询参数脱敏 [#11489](https://github.com/pingcap/tiflow/issues/11489) @[db-will](https://github.com/db-will) **tw@Oreoxmt** <!--2030-->
+
+    从 v9.0.0 开始，你可以通过 `redact-info-log` 配置项控制是否启用 DM 日志脱敏功能。启用后，DM 日志中包含敏感数据的查询参数将被替换为 `?` 占位符。如需开启该功能，你可以在 DM-worker 配置文件中设置 `redact-info-log` 为 `true`，或在启动 DM 时传入参数 `--redact-info-log=true`。该功能仅对查询参数进行脱敏，不会脱敏整个 SQL 语句，并且需要重启 DM-worker 才能生效。
+
+    更多信息，请参考[用户文档](/dm/dm-worker-configuration-file.md#redact-info-log-从-v900-版本开始引入)。
+
 * TiDB Lightning 与 TiDB `sql_require_primary_key=ON` 兼容 [#57479](https://github.com/pingcap/tidb/issues/57479) @[lance6716](https://github.com/lance6716) **tw@Oreoxmt** <!--2026-->
 
     当你在 TiDB 中启用系统变量 [`sql_require_primary_key`](/system-variables.md#sql_require_primary_key-从-v630-版本开始引入) 后，表必须包含主键。为避免表创建失败，TiDB Lightning 为其内部的错误日志表和冲突检测表（`conflict_error_v4`、`type_error_v2` 和 `conflict_records_v2`）添加了默认主键。如果你的自动化脚本使用了这些内部表，请更新脚本以适配包含主键的新表结构。
