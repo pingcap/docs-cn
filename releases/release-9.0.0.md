@@ -104,11 +104,11 @@ TiDB 版本：9.0.0
 
 ### 数据库管理
 
-* TiDB 索引推荐 [#12303](https://github.com/pingcap/tidb/issues/12303) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt**<!--2081-->
+* TiDB 索引推荐 (Index Advisor) [#12303](https://github.com/pingcap/tidb/issues/12303) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--2081-->
 
-    索引设计在数据库性能优化中扮演非常重要的作用。自 v9.0.0 起，TiDB 在内核中加入了索引推荐。索引推荐能够分析高频查询的模式并推荐最佳索引策略，协助用户快速实现数据库性能调优，同时降低技术团队的学习门槛。
+    索引设计在数据库性能优化中至关重要。从 v8.5.0 开始，TiDB 引入索引推荐 (Index Advisor) 功能，并持续进行改进和增强。该功能可以分析高频查询模式，推荐最优索引策略，帮助你更高效地进行性能调优，并降低使用门槛。
 
-    通过 [`RECOMMEND INDEX`](/index-advisor.md) 语法，用户可以选择为某条 SQL 语句生成索引推荐，也可以自动读取历史负载中的高频 SQL 语句，做批量索引推荐。推荐结果保存在 `mysql.index_advisor_results` 中，可在后续随时查看。
+    你可以使用 [`RECOMMEND INDEX`](/index-advisor.md#使用-recommend-index-语句推荐索引) SQL 语句为某条 SQL 语句生成索引推荐，或自动分析历史负载中的高频 SQL 语句，实现批量推荐。推荐结果存储在 `mysql.index_advisor_results` 表中，你可以查询此表以查看推荐的索引。
 
     更多信息，请参考[用户文档](/index-advisor.md)。
 
