@@ -148,7 +148,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - 如果不设置该值或者将该值设置为 0，表示不限制临时文件所占用的空间，落盘文件可以使用整个硬盘容量。
 - 如果该值大于 0，TiFlash 启动时会做如下检查：
     - `storage.temp.capacity` 必须小于等于 `storage.temp.dir` 所在硬盘的总空间。
-    - 如果 `storage.temp.dir` 是 `storage.main.dir` 的子目录，且 `storage.main.capacity` 大于 0，则 TiFlash 启动时会检查 `storage.temp.capacity` 必须小于等于 `storage.main.capacity`。（同理位于 `storage.latest.dir`也会做类似的检查）。
+    - 如果 `storage.temp.dir` 是 `storage.main.dir` 的子目录，且 `storage.main.capacity` 大于 0，则 `storage.temp.capacity` 必须小于等于 `storage.main.capacity`。（同理如果是 `storage.latest.dir` 的子目录，也会做类似的检查）。
 - 该配置项不支持热加载，修改后需要重启 TiFlash 进程才能生效。
 
 #### storage.io_rate_limit <span class="version-mark">从 v5.2.0 版本开始引入</span>
