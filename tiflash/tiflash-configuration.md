@@ -83,8 +83,8 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 - TiFlash 临时文件的存放路径。
 - 默认使用 \[[`path`](#path) 或者 [`storage.latest.dir`](#dir-1) 的第一个目录\] + "/tmp"
-- 从 v9.0.0 版本开始，不推荐使用 `tmp_path`。推荐使用 [`storage.tmp`](#storage.tmp-从-v900-版本开始引入)下的配置项代替，因为新的配置项支持设置 capacity 限制临时文件使用的空间。
-- 当 `storage.tmp` 配置存在时，会忽略 `tmp_path`。
+- 从 v9.0.0 版本开始，不推荐使用 `tmp_path`。推荐使用 [`storage.temp`](#storage.temp-从-v900-版本开始引入)下的配置项代替，因为新的配置项支持设置 capacity 限制临时文件使用的空间。
+- 当 `storage.temp` 配置存在时，会忽略 `tmp_path`。
 
 <!-- 示例值：`"/tidb-data/tiflash-9000/tmp"` -->
 
@@ -134,12 +134,12 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 <!-- 示例值：`[10737418240, 10737418240]` -->
 
-#### storage.tmp <span class="version-mark">从 v9.0.0 版本开始引入</span>
+#### storage.temp <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
 ##### `dir`
 
 - 用于存储查询落盘文件。
-- 默认情况可以不设置该值，默认使用 [`storage.latest.dir`](#dir) 。
+- 默认使用 \[[`path`](#path) 或者 [`storage.latest.dir`](#dir-1) 的第一个目录\] + "/tmp"
 
 ##### `capacity`
 
@@ -147,8 +147,8 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - 单位：Byte。目前不支持如 `"10GB"` 的设置。范围：[0, 9223372036854775807]。
 - 如果不设置该值或者将该值设置为 0，表示不限制临时文件所占用的空间，落盘文件可以使用整个硬盘容量。
 - 如果该值大于 0，TiFlash 启动时会做如下检查：
-    - `storage.tmp.capacity` 必须小于等于 `storage.tmp.dir` 所在硬盘的总空间。
-    - 例如 `storage.tmp.dir` 是 `storage.main.dir` 的子目录，且 `storage.main.capacity` 大于 0，则 TiFlash 启动时会检查 `storage.tmp.capacity` 必须小于等于 `storage.main.capacity`。（同理位于 `storage.latest.dir`也会做类似的检查）。
+    - `storage.temp.capacity` 必须小于等于 `storage.temp.dir` 所在硬盘的总空间。
+    - 例如 `storage.temp.dir` 是 `storage.main.dir` 的子目录，且 `storage.main.capacity` 大于 0，则 TiFlash 启动时会检查 `storage.temp.capacity` 必须小于等于 `storage.main.capacity`。（同理位于 `storage.latest.dir`也会做类似的检查）。
 - 该配置项不支持热加载，修改后需要重启 TiFlash 进程才能生效。
 
 #### storage.io_rate_limit <span class="version-mark">从 v5.2.0 版本开始引入</span>
