@@ -83,6 +83,8 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 - TiFlash 临时文件的存放路径。
 - 默认使用 \[[`path`](#path) 或者 [`storage.latest.dir`](#dir-1) 的第一个目录\] + "/tmp"
+- 从 v9.0.0 版本开始，不推荐使用 `tmp_path`。推荐使用 [`storage.tmp`](#storage.tmp-从-v900-版本开始引入)下的配置项代替，因为新的配置项支持设置 capacity 限制临时文件使用的空间。
+- 当 `storage.tmp` 配置存在时，会忽略 `tmp_path`。
 
 <!-- 示例值：`"/tidb-data/tiflash-9000/tmp"` -->
 
@@ -131,6 +133,23 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - [`storage.latest.dir`](#dir-1) 存储目录列表中，每个目录的最大可用容量。
 
 <!-- 示例值：`[10737418240, 10737418240]` -->
+
+#### storage.tmp <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+##### `dir`
+
+- 用于存储查询落盘文件。
+- 默认情况可以不设置该值，默认使用 [`storage.latest.dir`](#dir) 。
+
+##### `capacity`
+
+- 用于限制临时文件目录所能使用的总空间。如果查询落盘过程中落盘文件超过该值，则会报错结束。
+- 单位：Byte。目前不支持如 `"10GB"` 的设置。范围：[0, 9223372036854775807]。
+- 如果不设置该值或者将该值设置为 0，表示不限制临时文件所占用的空间，落盘文件可以使用整个硬盘容量。
+- 如果该值大于 0，TiFlash 启动时会做如下检查：
+    - `storage.tmp.capacity` 必须小于等于 `storage.tmp.dir` 所在硬盘的总空间。
+    - 例如 `storage.tmp.dir` 是 `storage.main.dir` 的子目录，且 `storage.main.capacity` 大于 0，则 TiFlash 启动时会检查 `storage.tmp.capacity` 必须小于等于 `storage.main.capacity`。（同理位于 `storage.latest.dir`也会做类似的检查）。
+- 该配置项不支持热加载，修改后需要重启 TiFlash 进程才能生效。
 
 #### storage.io_rate_limit <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
@@ -474,13 +493,6 @@ I/O 限流功能相关配置。
 - magic hash 生成的哈希值分布更加均匀，能够有效减少哈希冲突，但其计算速度比 CRC32 慢。建议在 `GROUPBY` 键的 NDV（number of distinct values，不同值的数量）较高时启用该配置，以优化聚合性能。
 - 默认值：`false`
 - 可选值：`true`、`false`
-
-##### `max_spilled_bytes` <span class="version-mark">从 v9.0.0 版本开始引入</span>
-
-- 表示算子落盘文件可以使用的硬盘大小。如果算子落盘过程中，硬盘用量超过该值，则对应查询会报错。
-- 默认值： `0`，表示落盘文件大小无限制。
-- 类型：uint64
-- 可选范围：[0, 18446744073709551615]
 
 #### security <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
