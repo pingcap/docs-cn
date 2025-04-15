@@ -196,7 +196,7 @@ jdbc:mysql://<IP_ADDRESS>:<PORT_NUMBER>/<DATABASE_NAME>?characterEncoding=UTF-8&
 
 > **注意：**
 >
-> 如果在公共网络发起连接时，需要修改配置 `useSSL=true`，并启用 [TiDB 客户端服务端间加密传输](/enable-tls-between-clients-and-servers.md)。
+> 如果在公共网络发起连接，需要修改配置 `useSSL=true`，并启用 [TiDB 客户端服务端间加密传输](/enable-tls-between-clients-and-servers.md)。
 
 ## 连接池
 
@@ -210,7 +210,7 @@ TiDB 支持以下 Java 的连接池：
 - [c3p0](https://www.mchange.com/projects/c3p0/)
 - [dbcp](https://commons.apache.org/proper/commons-dbcp/)
  
-在实践中，发现某些连接池会长期固定使用某些活跃会话，此时 TiDB 的计算层多个节点间连接数一致，活跃连接数不一致，导致实际负载不均衡。因此在分布式场景中，推荐使用 HikariCP，可以实现良好的连接生命周期管理，避免活跃连接长期固定在某些节点导致负载不均衡。
+在实践中，某些连接池会长期占用特定的活跃会话。这样虽然 TiDB 计算层的多个节点间连接数一致，但活跃连接数不一致，导致实际负载不均衡。在分布式场景中，推荐使用 HikariCP，该连接池能够有效管理连接的生命周期，避免活跃连接长期固定在部分节点上，从而实现更均衡的负载分布。
 
 ### 典型的连接池配置
 
@@ -225,7 +225,7 @@ hikari:
     keepaliveTime: 120000
 ```
 
-参考 [HikariCP 官方帮助文档](https://github.com/brettwooldridge/HikariCP/blob/dev/README.md)，参数解释如下：
+参数解释如下。更多详情，请参阅 [HikariCP 官方帮助文档](https://github.com/brettwooldridge/HikariCP/blob/dev/README.md)。
 
 - `maximumPoolSize`：连接池的最大连接数，默认值为 `10`。根据经验，在容器化场景下可以使用 Java 应用部署环境的 CPU 核心数的 4 ~ 10 倍。连接数配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢。详情请参考 [About Pool Sizing](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。
 - `minimumIdle`：HikariCP 官方推荐不要配置连接池最小空闲连接数，默认值等于连接池最大连接数。配置为相同值，等同于不使用连接池的伸缩特性，防止业务突增时，建立连接的过程过长，导致应用不能获取连接。
