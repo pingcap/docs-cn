@@ -148,11 +148,11 @@ TiDB 版本：9.0.0
 
 * SQL 跨可用区流量观测 [#57543](https://github.com/pingcap/tidb/issues/57543) @[nolouch](https://github.com/nolouch) @[yibin87](https://github.com/yibin87) **tw@Oreoxmt** <!--2021-->
 
-    跨可用区 (Availability Zone, AZ) 部署可以增强 TiDB 集群的容灾能力。然而，在云服务环境中，这种部署方式会产生额外的网络流量费用，例如 AWS 对跨区域和跨可用区的流量进行计费。因此，对于运行在云服务上的 TiDB 集群，更精确地监控和分析网络流量对于成本控制至关重要。
+    跨可用区 (Availability Zone, AZ) 部署可以增强 TiDB 集群的容灾能力。然而，在云服务环境中，这种部署方式会产生额外的跨区网络传输成本，例如 AWS 会对跨区域和跨可用区的流量进行计费。因此，对于运行在云服务上的 TiDB 集群，精确地监控和分析网络流量对于成本控制至关重要。
 
-    从 v9.0.0 开始，TiDB 记录 SQL 处理过程中产生的网络流量，并区分跨可用区的流量。相关数据会写入 [`statements_summary` 表](/statement-summary-tables.md)和[慢查询日志](/identify-slow-queries.md)。该功能有助于用户跟踪 TiDB 集群内部的主要数据传输路径，分析跨可用区流量的来源，从而更好地理解和控制相关成本。
+    从 v9.0.0 开始，TiDB 会记录 SQL 处理过程中产生的网络流量，并区分哪些是跨可用区传输产生的流量。相关数据会写入 [`statements_summary` 表](/statement-summary-tables.md)和[慢查询日志](/identify-slow-queries.md)。该功能有助于用户跟踪 TiDB 集群内部的主要数据传输路径，分析跨可用区流量的来源，从而更好地理解和控制相关成本。
     
-    需要注意的是，当前版本仅监测 SQL 查询在**集群内部**（TiDB、TiKV 和 TiFlash）之间的网络传输，不包括 DML 和 DDL。另外，记录的流量数据为解包后的流量，与实际物理流量存在差异，因此不能直接作为网络计费的依据。
+    需要注意的是，当前版本仅监测 SQL 查询在**集群内部**（TiDB、TiKV 和 TiFlash）之间的网络流量，不包括 DML 和 DDL 操作产生的流量。另外，记录的流量数据为解包后的流量，与实际物理流量存在差异，因此不能直接作为网络计费的依据。
 
     更多信息，请参考[用户文档](/statement-summary-tables.md#statements_summary-字段介绍)。
 
@@ -168,7 +168,7 @@ TiDB 版本：9.0.0
 
 ### 数据迁移
 
-* 支持 DM 日志查询参数脱敏 [#11489](https://github.com/pingcap/tiflow/issues/11489) @[db-will](https://github.com/db-will) **tw@Oreoxmt** <!--2030-->
+* 支持对 Data Migration (DM) 日志中的查询参数进行脱敏 [#11489](https://github.com/pingcap/tiflow/issues/11489) @[db-will](https://github.com/db-will) **tw@Oreoxmt** <!--2030-->
 
     从 v9.0.0 开始，你可以通过 `redact-info-log` 配置项控制是否启用 DM 日志脱敏功能。启用后，DM 日志中包含敏感数据的查询参数将被替换为 `?` 占位符。如需开启该功能，你可以在 DM-worker 配置文件中设置 `redact-info-log` 为 `true`，或在启动 DM 时传入参数 `--redact-info-log=true`。该功能仅对查询参数进行脱敏，不会脱敏整个 SQL 语句，并且需要重启 DM-worker 才能生效。
 
@@ -176,11 +176,11 @@ TiDB 版本：9.0.0
 
 * TiDB Lightning 与 TiDB `sql_require_primary_key=ON` 兼容 [#57479](https://github.com/pingcap/tidb/issues/57479) @[lance6716](https://github.com/lance6716) **tw@Oreoxmt** <!--2026-->
 
-    当你在 TiDB 中启用系统变量 [`sql_require_primary_key`](/system-variables.md#sql_require_primary_key-从-v630-版本开始引入) 后，表必须包含主键。为避免表创建失败，TiDB Lightning 为其内部的错误日志表和冲突检测表（`conflict_error_v4`、`type_error_v2` 和 `conflict_records_v2`）添加了默认主键。如果你的自动化脚本使用了这些内部表，请更新脚本以适配包含主键的新表结构。
+    当在 TiDB 中启用系统变量 [`sql_require_primary_key`](/system-variables.md#sql_require_primary_key-从-v630-版本开始引入) 后，表必须包含主键。为避免表创建失败，TiDB Lightning 为其内部的错误日志表和冲突检测表（`conflict_error_v4`、`type_error_v2` 和 `conflict_records_v2`）添加了默认主键。如果你的自动化脚本使用了这些内部表，请更新脚本以适配包含主键的新表结构。
 
 * 将 sync-diff-inspector 从 `pingcap/tidb-tools` 迁移至 `pingcap/tiflow` 代码仓库 [#11672](https://github.com/pingcap/tiflow/issues/11672) @[joechenrh](https://github.com/joechenrh) **tw@Oreoxmt** <!--2070-->
 
-    从 v9.0.0 开始，sync-diff-inspector 工具从 [`pingcap/tidb-tools`](https://github.com/pingcap/tidb-tools) GitHub 代码仓库迁移至 [`pingcap/tiflow`](https://github.com/pingcap/tiflow)。该变更将数据同步和迁移工具（[DM](/dm/dm-overview.md)、[TiCDC](/ticdc/ticdc-overview.md) 和 sync-diff-inspector）统一到同一个代码仓库中。
+    从 v9.0.0 开始，sync-diff-inspector 工具从 GitHub 代码仓库 [`pingcap/tidb-tools`](https://github.com/pingcap/tidb-tools) 迁移至 [`pingcap/tiflow`](https://github.com/pingcap/tiflow)。通过该变更，`sync-diff-inspector` 现在与 [DM](/dm/dm-overview.md) 和 [TiCDC](/ticdc/ticdc-overview.md) 一起在同一个代码仓库中维护，实现了这些数据同步和迁移工具的统一管理。
 
     对于 TiDB v9.0.0 及之后版本，你可以使用以下方法之一安装 sync-diff-inspector：
 
