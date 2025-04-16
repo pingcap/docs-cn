@@ -37,7 +37,9 @@ Runaway Query 是指执行时间或消耗资源超出预期的语句。下面使
 
 `WATCH` 中的 `DURATION` 选项，用于表示此识别项的持续时间，默认为无限长。
 
-添加监控项后，匹配特征和 `ACTION` 都不会随着 `QUERY_LIMIT` 配置的修改或删除而改变或删除。可以使用 `QUERY WATCH REMOVE` 来删除监控项。
+添加监控项后，匹配特征和 `ACTION` 都不会随着 `QUERY_LIMIT` 配置的修改或删除而改变或删除。
+
+可以使用 `QUERY WATCH REMOVE` 来删除监控项，或者使用 `QUERY WATCH REMOVE RESOURCE GROUP` 进行批量删除。
 
 `QUERY_LIMIT` 具体格式如下：
 
@@ -133,6 +135,11 @@ Runaway Query 是指执行时间或消耗资源超出预期的语句。下面使
     ```sql
     QUERY WATCH REMOVE 1;
     ```
+- 批量删除监控项
+    ```sql
+    QUERY WATCH REMOVE RESOURCE GROUP rg1;
+    ```
+
 
 ## 可观测性
 
