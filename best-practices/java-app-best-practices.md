@@ -170,11 +170,15 @@ update t set a = 10 where id = 1; update t set a = 11 where id = 2; update t set
 
 #### 集成参数
 
-通过监控可能会发现，虽然业务只向集群进行 insert 操作，却看到有很多多余的 select 语句。通常这是因为 JDBC 发送了一些查询设置类的 SQL 语句（例如 `select @@session.transaction_read_only`）。这些 SQL 对 TiDB 无用，推荐配置 `useConfigs = maxPerformance` 来避免额外开销。
+通过监控可能会发现，虽然业务只向集群进行 insert 操作，却看到有很多多余的 select 语句。通常这是因为 JDBC 发送了一些查询设置类的 SQL 语句（例如 `select @@session.transaction_read_only`）。这些 SQL 对 TiDB 无用，推荐配置 `useConfigs=maxPerformance` 来避免额外开销。
 
-`useConfigs = maxPerformance` 会包含一组配置，可查看 MySQL Connector/J [8.0 版本](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties) 或 [5.1 版本](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties) 来确认当前 MySQL Connector/J 中 `maxPerformance` 包含的具体配置。
+`useConfigs=maxPerformance` 会包含一组配置，可查看 MySQL Connector/J [8.0 版本](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties) 或 [5.1 版本](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties) 来确认当前 MySQL Connector/J 中 `maxPerformance` 包含的具体配置。
 
 配置后查看监控，可以看到多余语句减少。
+
+> **注意：**
+>
+> 开启 `useConfigs=maxPerformance` 需要使用 MySQL Connector/J 8.0.33 或更高版本，详情请参考 [MySQL JDBC Bug](/develop/dev-guide-third-party-tools-compatibility.md#mysql-jdbc-bug)。
 
 #### 超时参数
 
@@ -182,18 +186,52 @@ TiDB 提供两个与 MySQL 兼容的超时控制参数，`wait_timeout` 和 `max
 
 但在实际生产环境中，空闲连接和一直无限执行的 SQL 对数据库和应用都有不好的影响。你可以通过在应用的连接字符串中配置这两个参数来避免空闲连接和执行时间过长的 SQL 语句。例如，设置 `sessionVariables=wait_timeout=3600`（1 小时）和 `sessionVariables=max_execution_time=300000`（5 分钟）。
 
+#### 典型的 JDBC 连接字符串参数
+
+对以上的参数值进行组合，JDBC 连接字符串配置如下：
+
+```
+jdbc:mysql://<IP_ADDRESS>:<PORT_NUMBER>/<DATABASE_NAME>?characterEncoding=UTF-8&useSSL=false&useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSqlLimit=10000&prepStmtCacheSize=1000&useConfigs=maxPerformance&rewriteBatchedStatements=true
+```
+
+> **注意：**
+>
+> 如果在公共网络发起连接，需要修改配置 `useSSL=true`，并启用 [TiDB 客户端服务端间加密传输](/enable-tls-between-clients-and-servers.md)。
+
 ## 连接池
 
 TiDB (MySQL) 连接建立是比较昂贵的操作（至少对于 OLTP），除了建立 TCP 连接外还需要进行连接鉴权操作，所以客户端通常会把 TiDB (MySQL) 连接保存到连接池中进行复用。
 
-Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/HikariCP), [tomcat-jdbc](https://tomcat.apache.org/tomcat-10.1-doc/jdbc-pool.html), [druid](https://github.com/alibaba/druid), [c3p0](https://www.mchange.com/projects/c3p0/), [dbcp](https://commons.apache.org/proper/commons-dbcp/))，TiDB 不会限定使用的连接池，应用可以根据业务特点自行选择连接池实现。
+TiDB 支持以下 Java 的连接池：
 
-### 连接数配置
+- [HikariCP](https://github.com/brettwooldridge/HikariCP)
+- [tomcat-jdbc](https://tomcat.apache.org/tomcat-10.1-doc/jdbc-pool)
+- [druid](https://github.com/alibaba/druid)
+- [c3p0](https://www.mchange.com/projects/c3p0/)
+- [dbcp](https://commons.apache.org/proper/commons-dbcp/)
+ 
+在实践中，某些连接池会长期占用特定的活跃会话。这样虽然 TiDB 计算层的多个节点间连接数一致，但活跃连接数不一致，导致实际负载不均衡。在分布式场景中，推荐使用 HikariCP，该连接池能够有效管理连接的生命周期，避免活跃连接长期固定在部分节点上，从而实现更均衡的负载分布。
 
-比较常见的是应用需要根据自身情况配置合适的连接池大小，以 HikariCP 为例：
+### 典型的连接池配置
 
-- `maximumPoolSize`：连接池最大连接数，配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢，所以需根据应用自身特点配置合适的值，可参考[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。
-- `minimumIdle`：连接池最小空闲连接数，主要用于在应用空闲时存留一些连接以应对突发请求，同样是需要根据业务情况进行配置。
+以 HikariCP 为例：
+
+```yaml
+hikari:
+    maximumPoolSize: 20
+    poolName: hikariCP
+    connectionTimeout: 30000 
+    maxLifetime: 1200000
+    keepaliveTime: 120000
+```
+
+参数解释如下。更多详情，请参阅 [HikariCP 官方帮助文档](https://github.com/brettwooldridge/HikariCP/blob/dev/README.md)。
+
+- `maximumPoolSize`：连接池的最大连接数，默认值为 `10`。根据经验，在容器化场景下可以使用 Java 应用部署环境的 CPU 核心数的 4 ~ 10 倍。连接数配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢。详情请参考 [About Pool Sizing](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。
+- `minimumIdle`：HikariCP 官方推荐不要配置连接池最小空闲连接数，默认值等于连接池最大连接数。配置为相同值，等同于不使用连接池的伸缩特性，防止业务突增时，建立连接的过程过长，导致应用不能获取连接。
+- `connectionTimeout`：应用从连接池获取连接时的最长等待时间（单位为毫秒），默认值为 `30000` 毫秒（即 30 秒）。如果在指定时间内未能获取到可用连接，系统将抛出 SQLException 异常。
+- `maxLifetime`：连接池中每个连接的最大存活时间（单位为毫秒），即连接的生命周期，默认值为 `1800000` 毫秒（即 30 分钟）。使用中的连接不受影响，仅当连接被关闭后才会根据此设置被移除。过短的设置会引发频繁重建连接的开销。如果有 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入) 的使用场景，连接的最大存活时间应小于等待时间。
+- `keepaliveTime`：连接池中连接保活操作间隔（单位为毫秒），防止数据库或网络基础设施因超时断开连接，默认值为 `120000` 毫秒（即 2 分钟）。连接池对空闲连接优先调用 JDBC4 的 `isValid()` 方法进行保活。
 
 应用在使用连接池时，需要注意连接使用完成后归还连接，推荐应用使用对应的连接池相关监控（如 `metricRegistry`），通过监控能及时定位连接池问题。
 
