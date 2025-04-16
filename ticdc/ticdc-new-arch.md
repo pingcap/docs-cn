@@ -111,7 +111,7 @@ cdc_servers:
        wget https://tiup-mirrors.pingcap.com/cdc-v9.0.0-linux-amd64.tar.gz
        ```
 
-    2. 将下载的 TiCDC 二进制文件 Patch 到你的 TiDB 集群中：
+    2. 使用 [`tiup cluster patch`](/tiup/tiup-component-cluster-patch.md) 命令将下载的 TiCDC 二进制文件动态替换到你的 TiDB 集群中：
 
         ```shell
         tiup cluster patch <cluster-name> ./cdc-v9.0.0-linux-amd64.tar.gz -R cdc
