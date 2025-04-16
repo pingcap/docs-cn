@@ -95,7 +95,7 @@ cdc_servers:
 
 1. 如果你的 TiDB 集群中尚无 TiCDC 节点，参考[扩容 TiCDC 节点](/scale-tidb-using-tiup.md#扩容-ticdc-节点)在集群中扩容新的 TiCDC 节点，否则跳过该步骤。
 
-2. 如果你的 TiDB 集群为 v9.0.0 之前版本，需要按照以下方式手动下载 v9.0.0 或以上版本的 TiCDC 离线包，并将下载的 TiCDC 二进制文件 Patch 到你的 TiDB 集群，否则跳过该步骤。
+2. 如果你的 TiDB 集群为 v9.0.0 之前版本，需要按照以下方式手动下载 v9.0.0 或以上版本的 TiCDC 离线包，并将下载的 TiCDC 二进制文件动态替换到你的 TiDB 集群，否则跳过该步骤。
 
     > **警告：**
     >
