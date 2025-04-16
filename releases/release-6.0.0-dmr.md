@@ -349,7 +349,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
     - 新增 `loader.<name>.on-duplicate` 参数，默认值为 `replace`，表示覆盖冲突数据。若希望保持以前版本的行为，可以改为 `error`。此参数仅影响全量数据导入阶段的行为。
 - DM 需使用对应版本的 dmctl 工具
     - 由于内部机制变更，升级 DM 集群版本至 v6.0.0 后，也必须升级 dmctl 与之匹配。
-- 在 v5.4（仅 v5.4）中，TiDB 允许将一些 noop 系统变量设置为不正确的值。从 v6.0.0 起，TiDB 不再允许将系统变量设置为不正确的值 [#31538](https://github.com/pingcap/tidb/issues/31538)
+- 在 v5.4 及之前版本中，TiDB 允许将一些 noop 系统变量设置为不正确的值。从 v6.0.0 起，TiDB 不再允许将系统变量设置为不正确的值 [#31538](https://github.com/pingcap/tidb/issues/31538)
 
 ## 离线包变更
 
