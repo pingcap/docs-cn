@@ -5378,6 +5378,51 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 这个变量用于设置 window 算子的并行度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
+### `tidb_workload_repository_dest` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串
+- 默认值：`''`
+- 该变量用于设置 [Workload Repository](/workload-repository.md) 的目标位置。
+- 可选值为 `'table'`（启用 Workload Repository）或 `''`（禁用 Workload Repository）。
+
+### `tidb_workload_repository_active_sampling_interval` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`5`
+- 范围：`[0, 600]`
+- 单位：秒
+- 用于设置 [Workload Repository](/workload-repository.md) 的基于时间的采样过程的采样间隔。
+- 将该值设置为 `0` 会禁用基于时间的采样过程。
+
+### `tidb_workload_repository_retention_days` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`7`
+- 范围：`[0, 365]`
+- 单位：天
+- 用于设置 [Workload Repository](/workload-repository.md) 数据的保留天数。
+- 将该值设置为 `0` 会禁用旧数据的自动清理。
+
+### `tidb_workload_repository_snapshot_interval` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`3600`
+- 范围：`[900, 7200]`
+- 单位：秒
+- 用于设置 [TiDB Workload Repository](/workload-repository.md) 的快照采样过程的采样间隔。
+
 ### `tiflash_fastscan` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL

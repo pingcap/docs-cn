@@ -14,6 +14,7 @@ summary: TiDB的 `ADMIN` 语句是用于查看TiDB状态和对表数据进行校
 - [`ADMIN REPAIR TABLE`](#admin-repair-table-语句)
 - [`ADMIN SHOW NEXT_ROW_ID`](#admin-show-next_row_id-语句)
 - [`ADMIN SHOW SLOW`](#admin-show-slow-语句)
+- [`ADMIN CREATE WORKLOAD SNAPSHOT`](#admin-create-workload-snapshot-语句)
 
 ## ADMIN 与 DDL 相关的扩展语句
 
@@ -106,7 +107,17 @@ ADMIN SHOW SLOW RECENT N;
 ADMIN SHOW SLOW TOP [INTERNAL | ALL] N;
 ```
 
-这两种语句的具体操作详情可参考：[admin show slow 语句](/identify-slow-queries.md#admin-show-slow-命令)。
+这两种语句的具体操作详情可参考：[ADMIN SHOW SLOW 语句](/identify-slow-queries.md#admin-show-slow-命令)。
+
+## `ADMIN CREATE WORKLOAD SNAPSHOT` 语句
+
+以下 SQL 语句将在 [Workload Repository](/workload-repository.md) 中触发手动快照：
+
+```sql
+ADMIN CREATE WORKLOAD SNAPSHOT;
+```
+
+注意，必须启用 Workload Repository，此语句才能生效，否则会报错。
 
 ## 语句概览
 
@@ -145,6 +156,7 @@ AdminStmt ::=
         | 'FLUSH' ('SESSION' | 'INSTANCE') 'PLAN_CACHE'
         | 'SET' 'BDR' 'ROLE' ( 'PRIMARY' | 'SECONDARY' )
         | 'UNSET' 'BDR' 'ROLE'
+        | 'CREATE' 'WORKLOAD' 'SNAPSHOT'
     )
 
 NumList ::=
