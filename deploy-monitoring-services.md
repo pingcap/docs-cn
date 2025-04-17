@@ -4,7 +4,7 @@ title: 集群监控部署
 
 # TiDB 集群监控部署
 
-本文档适用于希望手动部署 TiDB 监控报警系统的用户。TiUP 部署方式，会同时自动部署监控报警系统，无需手动部署。
+本文档适用于希望手动部署 TiDB 监控报警系统的用户。TiUP 部署方式，会同时自动部署监控报警系统，无需手动部署。[TiDB Dashboard](/dashboard/dashboard-intro.md) 内置于 TiDB 的 PD 组件中，无需独立部署。
 
 ## 部署 Prometheus 和 Grafana
 
