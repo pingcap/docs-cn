@@ -58,7 +58,7 @@ SET GLOBAL tidb_workload_repository_snapshot_interval = 900; -- 将间隔设置�
 请注意，虽然快照采样过程会根据配置的时间间隔自动运行，但你也可以使用以下 SQL 语句触发手动快照：
 
 ```sql
-ADMIN WORKLOAD REPOSITORY TAKE SNAPSHOT;
+ADMIN CREATE WORKLOAD SNAPSHOT;
 ```
 
 手动快照并不会改变下一次自动快照的发生时间。
@@ -93,9 +93,9 @@ SET GLOBAL tidb_workload_repository_active_sampling_interval = 20; -- 将间隔�
 
 ## 数据保留
 
-Workload Repository 中历史数据默认保留 7 天。系统会根据保留期设置自动清除数据，并使用分区进行高效的数据管理。
+系统会根据保留期设置自动清除数据，并使用分区进行高效的数据管理。
 
-可以通过 [`tidb_workload_repository_retention_days`](/system-variables.md#tidb_workload_repository_retention_days-从-v900-版本开始引入) 变量控制 Workload Repository 中历史数据的保留期。例如，要保留 30 天的数据，运行以下语句：
+默认情况下，Workload Repository 会保留 7 天的历史数据，但你可以通过 [`tidb_workload_repository_retention_days`](/system-variables.md#tidb_workload_repository_retention_days-从-v900-版本开始引入) 变量来控制保留期的长度。例如，要保留 30 天的数据，可以运行以下语句：
 
 ```sql
 SET GLOBAL tidb_workload_repository_retention_days = 30;
