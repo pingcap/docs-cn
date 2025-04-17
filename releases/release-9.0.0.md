@@ -147,7 +147,7 @@ TiDB 版本：9.0.0
 
     通过持久化数据库的历史工作负载，TiDB 可以更好地进行故障排查和优化推荐，并在未来推出一系列围绕历史负载的自动化工具，提升数据库运维和诊断的用户体验。
 
-    更多信息，请参考[用户文档](/workloadrepo.md)。
+    更多信息，请参考[用户文档](/workload-repository.md)。
 
 * SQL 跨可用区流量观测 [#57543](https://github.com/pingcap/tidb/issues/57543) @[nolouch](https://github.com/nolouch) @[yibin87](https://github.com/yibin87) **tw@Oreoxmt** <!--2021-->
 
