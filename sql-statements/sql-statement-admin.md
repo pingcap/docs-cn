@@ -111,7 +111,7 @@ ADMIN SHOW SLOW TOP [INTERNAL | ALL] N;
 
 ## `ADMIN CREATE WORKLOAD SNAPSHOT` 语句
 
-以下 SQL 语句将在 [Workload Repository](/workloadrepo.md) 中触发手动快照：
+以下 SQL 语句将在 [Workload Repository](/workload-repository.md) 中触发手动快照：
 
 ```sql
 ADMIN CREATE WORKLOAD SNAPSHOT;
