@@ -55,7 +55,7 @@ cert-allowed-cn = ["dm"]
 
 #### `redact-info-log` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 日志脱敏。控制是否在日志中记录 DM 查询参数详细信息。
+- 控制是否开启日志脱敏。该配置项值设为 `true` 时对 DM-worker 日志脱敏，隐藏 DM 查询参数的详细信息。具体使用方法参见 [DM-worker 组件日志脱敏](/log-redaction.md#dm-worker-组件日志脱敏)。
 - 默认值：`false`
 - 可选值：`false`、`true`
 
