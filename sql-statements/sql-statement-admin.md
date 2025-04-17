@@ -116,6 +116,7 @@ ADMIN SHOW SLOW TOP [INTERNAL | ALL] N;
 ```sql
 ADMIN CREATE WORKLOAD SNAPSHOT;
 ```
+
 注意，必须启用 Workload Repository，此语句才能生效，否则会报错。
 
 ## 语句概览
