@@ -105,16 +105,16 @@ cdc_servers:
 
         该文件下载链接格式为 `https://tiup-mirrors.pingcap.com/cdc-${version}-${os}-${arch}.tar.gz`。其中，`${version}` 为 TiCDC 版本号，`${os}` 为你的操作系统，`${arch}` 为组件运行的平台（`amd64` 或 `arm64`）。
 
-        例如，可以使用以下命令下载 Linux 系统 x86-64 架构的 TiCDC v9.0.0 的二进制文件：
+        例如，可以使用以下命令下载 Linux 系统 x86-64 架构的 TiCDC v9.0.0-beta.1 的二进制文件：
 
        ```shell
-       wget https://tiup-mirrors.pingcap.com/cdc-v9.0.0-linux-amd64.tar.gz
+       wget https://tiup-mirrors.pingcap.com/cdc-v9.0.0-beta.1-linux-amd64.tar.gz
        ```
 
     2. 使用 [`tiup cluster patch`](/tiup/tiup-component-cluster-patch.md) 命令将下载的 TiCDC 二进制文件动态替换到你的 TiDB 集群中：
 
         ```shell
-        tiup cluster patch <cluster-name> ./cdc-v9.0.0-linux-amd64.tar.gz -R cdc
+        tiup cluster patch <cluster-name> ./cdc-v9.0.0-beta.1-linux-amd64.tar.gz -R cdc
         ```
 
 3. 如果集群中已经有 Changefeed，请参考[停止同步任务](/ticdc/ticdc-manage-changefeed.md#停止同步任务)暂停所有的 Changefeed 同步任务。
