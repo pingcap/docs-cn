@@ -73,4 +73,4 @@ TiFlash 侧的日志脱敏需要将 tiflash-server 中 [`security.redact_info_lo
 
 ## DM-worker 组件日志脱敏
 
-DM-worker 侧的日志脱敏需要将 [`log.redact-info-log`](/dm/dm-worker-configuration-file.md#redact-info-log-从-v90-版本开始引入) 的值设为 `true`。该配置项值默认为 `false`，即关闭脱敏。
+DM-worker 侧的日志脱敏需要将 [`log.redact-info-log`](/dm/dm-worker-configuration-file.md#redact-info-log-从-v900-版本开始引入) 的值设为 `true`。该配置项值默认为 `false`，即关闭脱敏。
