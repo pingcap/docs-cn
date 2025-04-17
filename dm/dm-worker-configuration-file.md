@@ -53,7 +53,7 @@ cert-allowed-cn = ["dm"]
 
 - 日志文件。如果不配置，日志会输出到标准输出中。
 
-#### `redact-info-log` <span class="version-mark">从 v9.0 版本开始引入</span>
+#### `redact-info-log` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
 - 日志脱敏。控制是否在日志中记录 DM 查询参数详细信息。
 - 默认值：`false`
