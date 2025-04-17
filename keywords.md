@@ -115,6 +115,7 @@ Query OK, 0 rows affected (0.08 sec)
 <a id="C" class="letter" href="#C">C</a>
 
 - CACHE
+- CALL (R)
 - CANCEL (R)
 - CAPTURE
 - CASCADE (R)
@@ -241,6 +242,7 @@ Query OK, 0 rows affected (0.08 sec)
 
 - FALSE (R)
 - FAULTS
+- FETCH (R)
 - FIELDS
 - FILE
 - FIRST
@@ -304,6 +306,7 @@ Query OK, 0 rows affected (0.08 sec)
 - INT4 (R)
 - INT8 (R)
 - INTEGER (R)
+- INTERSECT (R)
 - INTERVAL (R)
 - INTO (R)
 - INVISIBLE
@@ -418,6 +421,7 @@ Query OK, 0 rows affected (0.08 sec)
 
 <a id="O" class="letter" href="#O">O</a>
 
+- OF (R)
 - OFFSET
 - ON (R)
 - ONLINE
@@ -479,6 +483,7 @@ Query OK, 0 rows affected (0.08 sec)
 - REAL (R)
 - REBUILD
 - RECOVER
+- RECURSIVE (R)
 - REDUNDANT
 - REFERENCES (R)
 - REGEXP (R)
@@ -569,6 +574,7 @@ Query OK, 0 rows affected (0.08 sec)
 - STATS (R)
 - STATS_AUTO_RECALC
 - STATS_BUCKETS (R)
+- STATS_EXTENDED (R)
 - STATS_HEALTHY (R)
 - STATS_HISTOGRAMS (R)
 - STATS_META (R)
@@ -591,6 +597,7 @@ Query OK, 0 rows affected (0.08 sec)
 
 - TABLE (R)
 - TABLES
+- TABLESAMPLE (R)
 - TABLESPACE
 - TABLE_CHECKSUM
 - TEMPORARY
@@ -600,6 +607,7 @@ Query OK, 0 rows affected (0.08 sec)
 - THAN
 - THEN (R)
 - TIDB (R)
+- TiDB_CURRENT_TSO (R)
 - TIFLASH (R)
 - TIKV_IMPORTER
 - TIME
