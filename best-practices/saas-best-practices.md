@@ -1,6 +1,6 @@
 ---
 title: SaaS 多租户场景最佳实践
-summary: 介绍 TiDB 在 SaaS 多租户场景的最佳实践。
+summary: 介绍 TiDB 在 SaaS (Software as a service) 多租户场景的最佳实践，特别适用于单集群表数量超过百万级别的场景。
 ---
 
 # SaaS 多租户场景最佳实践
