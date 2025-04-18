@@ -65,7 +65,7 @@ TiProxy 不适用于以下场景：
 
 > **注意：**
 >
-> 请确保 TiUP 为 v1.16.1 或更高版本。
+> 请确保 TiUP 为 v1.16.1 或之后版本。
 
 其他部署方式，请参考以下文档：
 
@@ -95,8 +95,8 @@ TiProxy 不适用于以下场景：
     注意事项：
 
     - 要根据负载类型和最大 QPS 选择 TiProxy 的机型和实例数。更多详情，请参阅 [TiProxy 性能测试报告](/tiproxy/tiproxy-performance-test.md)。
-    - 由于 TiProxy 的实例数比 TiDB Server 少，所以相比 TiDB server，TiProxy 的网络带宽更可能成为瓶颈。例如，AWS 相同系列的 EC2 的基准网络带宽与 CPU 核数是不成正比的。当网络带宽成为瓶颈时，可以把 TiProxy 实例拆分为更多更小规格的实例，从而提高 QPS。更多详情，请参阅[计算实例网络性能](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/compute-optimized-instances.html#compute-network-performance)。
-    - 建议在拓扑配置里指定 TiProxy 的版本号，这样通过 [`tiup cluster upgrade`](/tiup/tiup-component-cluster-upgrade.md) 升级 TiDB 集群时，不会升级 TiProxy，否则升级 TiProxy 会导致客户端连接断开。
+    - 由于 TiProxy 实例通常少于 TiDB server 实例，TiProxy 的网络带宽更容易成为瓶颈。例如，在 AWS 上，同系列 EC2 的基准网络带宽与 CPU 核数并不成正比。当网络带宽成为瓶颈时，可以把 TiProxy 实例拆分为更多更小规格的实例，从而提高 QPS。更多详情，请参阅[计算实例网络性能](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/compute-optimized-instances.html#compute-network-performance)。
+    - 建议在拓扑配置中指定 TiProxy 的版本号。这样在执行 [`tiup cluster upgrade`](/tiup/tiup-component-cluster-upgrade.md) 升级 TiDB 集群时，可以避免 TiProxy 被一并升级，从而避免因 TiProxy 升级导致客户端连接断开。
 
     关于 TiProxy 的配置模板，请参见 [TiProxy 配置模板](/tiproxy/tiproxy-deployment-topology.md)。
 
@@ -126,7 +126,7 @@ TiProxy 不适用于以下场景：
 
 4. 连接到 TiProxy。
 
-    部署集群之后，集群同时暴露了 TiDB server 的端口和 TiProxy 端口。客户端应当连接到 TiProxy 的端口，不再连接 TiDB server 的端口。
+    集群部署完成后，会同时暴露 TiDB server 端口和 TiProxy 端口。客户端应当连接到 TiProxy 的端口，而不是直接连接 TiDB server。
 
 ### 为已有集群启用 TiProxy
 
@@ -134,7 +134,7 @@ TiProxy 不适用于以下场景：
 
 1. 配置 TiProxy 实例。
 
-    TiProxy 的配置写在单独的拓扑文件中。例如，`tiproxy.toml` 文件中的拓扑配置为：
+    在单独的拓扑文件中配置 TiProxy，例如 `tiproxy.toml`：
 
     ```yaml
     component_versions:
@@ -143,14 +143,15 @@ TiProxy 不适用于以下场景：
       tiproxy:
         ha.virtual-ip: "10.0.1.10/24"
         ha.interface: "eth0"
-    - host: 10.0.1.11
-      deploy_dir: "/tiproxy-deploy"
-      port: 6000
-      status_port: 3080
-    - host: 10.0.1.12
-      deploy_dir: "/tiproxy-deploy"
-      port: 6000
-      status_port: 3080
+    tiproxy_servers:
+      - host: 10.0.1.11
+        deploy_dir: "/tiproxy-deploy"
+        port: 6000
+        status_port: 3080
+      - host: 10.0.1.12
+        deploy_dir: "/tiproxy-deploy"
+        port: 6000
+        status_port: 3080
     ```
 
 2. 扩容 TiProxy。
@@ -185,7 +186,7 @@ TiProxy 不适用于以下场景：
 
 5. 连接到 TiProxy。
 
-    启用 TiProxy 之后，客户端应当连接到 TiProxy 的端口，不再连接 TiDB server 的端口。
+    启用 TiProxy 后，客户端应连接 TiProxy 端口，而不是 TiDB server 端口。
 
 ### 更改 TiProxy 配置
 
