@@ -11,7 +11,7 @@ summary: 介绍 TiDB 在 SaaS (Software as a service) 多租户场景的最佳�
 > 
 > 推荐使用 TiDB v8.5.0 及以上版本。
 
-## 硬件配置要求
+## 硬件配置建议
 
 建议使用高内存规格的 TiDB 实例，例如：
 
