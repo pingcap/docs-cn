@@ -20,7 +20,6 @@ summary: 介绍 TiDB 在 SaaS (Software as a service) 多租户场景的最佳�
 
 高内存规格的 TiDB 实例可以为 Infoschema、Statistics 和执行计划缓存分配更多的缓存空间，提高缓存命中率，从而提升业务性能。同时，更大的内存可以缓解 TiDB GC 带来的性能波动和稳定性问题。
 
-
 以下是推荐的 TiKV 和 PD 的硬件配置：
 
 * **TiKV**：建议使用 8 vCPU 和 32 GiB 或更高内存。
