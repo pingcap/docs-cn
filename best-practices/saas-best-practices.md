@@ -31,20 +31,27 @@ TiKV 和 PD 推荐的硬件配置如下：
 
 ## 缓存配置
 
-* 从 TiDB v8.4.0 开始，TiDB 在执行 SQL 语句时，会按需将 SQL 语句涉及到的表信息加载到 Infoschema 缓存中。你可以通过观测 TiDB 监控中 **Schema Load** 下的 **Infoschema v2 Cache Size** 和 **Infoschema v2 Cache Operation** 子面板来查看 Infoschema 缓存的大小和命中率。你可以使用 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入) 系统变量调整 Infoschema 缓存的内存上限以适应其业务需求。Infoschema 缓存使用大小与执行 SQL 语句涉及到的不同表数量呈线性关系。在实际测试中，全量缓存 100 万表（4 列、1 个主键和 1 个索引）的元数据约需 2.4 GiB 缓存。
-* TiDB 在执行 SQL 语句时，会按需将 SQL 语句涉及到的表统计信息加载到 Statistics 缓存中。你可以通过观测 TiDB 监控中 **Statistics & Plan Management** 下的 **Stats Cache Cost** 和 **Stats Cache OPS** 子面板来查看 Statistics 缓存的大小和命中率。你可以使用 [`tidb_stats_cache_mem_quota`](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入) 系统变量调整 Statistics 缓存的内存上限以适应其业务需求。在实际测试中，执行 10 万张表的简单 SQL（使用 IndexRangeScan 操作符）时，Stats 缓存成本约为 3.96 GiB。
+* 从 TiDB v8.4.0 开始，TiDB 在执行 SQL 语句时，会按需将 SQL 语句涉及的表信息加载到 Infoschema 缓存中。
+
+    * 通过 TiDB 监控中 **Schema Load** 面板下的 **Infoschema v2 Cache Size** 和 **Infoschema v2 Cache Operation** 子面板，可以查看 Infoschema 缓存的大小和命中率。
+    * 使用系统变量 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入) 可以调整 Infoschema 缓存的内存上限，以满足业务需求。Infoschema 缓存大小与执行 SQL 语句涉及的不同表数量呈线性关系。在实际测试中，全量缓存 100 万张表（每张表含 4 列、1 个主键和 1 个索引）的元数据大约需要 2.4 GiB 内存。
+
+* TiDB 在执行 SQL 语句时，也会按需将相关表的统计信息加载到 Statistics 缓存中。
+
+    * 通过 TiDB 监控中 **Statistics & Plan Management** 面板下的 **Stats Cache Cost** 和 **Stats Cache OPS** 子面板，可以查看 Statistics 缓存的使用情况。
+    * 使用系统变量 [`tidb_stats_cache_mem_quota`](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入) 可以调整 Statistics 缓存的内存上限，以满足业务需求。在实际测试中，执行 10 万张表的简单 SQL（使用 IndexRangeScan 操作符）时，Statistics 缓存大约消耗 3.96 GiB 内存。
 
 ## 统计信息收集
 
-* 从 TiDB v8.4.0 开始，TiDB 引入了 [`tidb_auto_analyze_concurrency`](/system-variables.md#tidb_auto_analyze_concurrency-从-v840-版本开始引入) 系统变量用来控制单个自动统计信息收集任务内部的并发度。多表场景下，可以按需提升该并发度，以提高自动分析的吞吐量。随着并发值的增加，自动分析的吞吐量和 TiDB Owner 节点的 CPU 使用率会线性增加。在实际测试中，使用并发值 16，可以在一分钟内自动分析 320 张表（每张表有 1 万行数据、4 列和 1 个索引），消耗 TiDB Owner 节点一个 CPU 核心资源。
-* [`tidb_auto_build_stats_concurrency`](/system-variables.md#tidb_auto_build_stats_concurrency-从-v650-版本开始引入) 和 [`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入) 影响 TiDB 统计信息的构建并发度，需根据场景调整。
-    - 对于分区表多场景，优先提高 `tidb_auto_build_stats_concurrency` 的值。
-    - 对于列较多的场景，优先提高 `tidb_build_sampling_stats_concurrency` 的值。
-* `tidb_auto_analyze_concurrency`、`tidb_auto_build_stats_concurrency` 和 `tidb_build_sampling_stats_concurrency` 三个变量的值的乘积不应超过 TiDB CPU 核心数，避免过度占用资源。
+* 从 TiDB v8.4.0 开始，TiDB 引入了 [`tidb_auto_analyze_concurrency`](/system-variables.md#tidb_auto_analyze_concurrency-从-v840-版本开始引入) 系统变量，用来设置 TiDB 集群中自动更新统计信息操作的并发度。多表场景下，适当提升并发度可提高自动分析吞吐量。随着并发值的增加，自动分析的吞吐量和 TiDB Owner 节点的 CPU 使用率会线性增加。在实际测试中，使用并发度 16 时，每分钟可自动分析 320 张表（每张表有 1 万行数据、4 列和 1 个索引），占用 TiDB Owner 节点一个 CPU 核心。
+* [`tidb_auto_build_stats_concurrency`](/system-variables.md#tidb_auto_build_stats_concurrency-从-v650-版本开始引入) 和 [`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入) 影响 TiDB 统计信息构建的并发度，需根据具体场景调整：
+    - 分区表较多时，优先提高 `tidb_auto_build_stats_concurrency` 的值。
+    - 列数较多时，优先提高 `tidb_build_sampling_stats_concurrency` 的值。
+* 建议确保 `tidb_auto_analyze_concurrency`、`tidb_auto_build_stats_concurrency` 和 `tidb_build_sampling_stats_concurrency` 三个变量的值的乘积不超过 TiDB CPU 核心数，避免过度占用资源。
 
 ## 系统表查询
 
-在系统表的查询中添加 `TABLE_SCHEMA` 和 `TABLE_NAME` 或 `TIDB_TABLE_ID` 等条件，避免扫描集群中大量的数据库和表信息，从而提高查询速度并减少资源消耗。
+在查询系统表时，建议添加 `TABLE_SCHEMA` 和 `TABLE_NAME` 或 `TIDB_TABLE_ID` 等过滤条件，以避免扫描大量无关数据，从而提高查询速度并降低资源消耗。
 
 例如，在 300 万表的场景下：
 
@@ -60,28 +67,31 @@ TiKV 和 PD 推荐的硬件配置如下：
     SELECT COUNT(*) FROM information_schema.views;
     ```
 
-在以上示例中的两个 SQL 语句加上建议的查询条件之后，内存消耗可以忽略不计，查询耗时仅为毫秒级别。
+在以上示例中的两个 SQL 语句加上建议的查询条件之后，内存消耗可以忽略不计，查询耗时降至毫秒级别。
 
-## 大量链接场景
+## 大量连接场景
 
-SaaS 多租户场景中，每个用户通常连接到 TiDB 来操作自己租户(database) 中的数据。为了节省成本，用户希望 TiDB 节点能够支持尽可能多的连接。
+在 SaaS 多租户场景中，通常每个用户连接到 TiDB 操作各自租户 (database) 的数据。为支持更多连接数，建议：
 
-* 调高 TiDB 的配置 [`token-limit`](/tidb-configuration-file.md#token-limit)（默认 `1000`）以支持更多并发请求。
-* TiDB 的内存使用量与连接数量基本上呈线性关系。在实际测试中，20 万个空闲连接时，TiDB 进程内存增加约 30 GiB。建议调大 TiDB 内存规格。
-* 如果你使用 PREPARED 语句，每个连接都会维护一个会话级的 Prepared Plan Cache。在实际使用中，你可能长时间没有执行 DEALLOCATE 预编译语句，这可能导致预编译语句的 Execute 语句的 QPS 不高，但计划缓存中的计划数量相对较高。计划缓存所占用的内存量与计划缓存中的计划数量呈线性关系。在实际测试中，40 万个涉及 IndexRangeScan 的执行计划约消耗 5 GiB TiDB 内存。建议调大 TiDB 内存规格。
+* 调高 TiDB 的配置项 [`token-limit`](/tidb-configuration-file.md#token-limit)（默认值为 `1000`）以支持更多并发请求。
+* TiDB 内存使用量与连接数基本上呈线性关系。在实际测试中，20 万个空闲连接将使 TiDB 进程增加约 30 GiB 内存。建议根据实际连接数调整 TiDB 内存规格。
+* 使用 `PREPARED` 语句时，每个连接都会维护一个会话级的 Prepared Plan Cache。如果长时间未执行 `DEALLOCATE` 预编译语句，可能导致缓存中的计划数量过多，增加内存消耗。在实际测试中，40 万条涉及 IndexRangeScan 的执行计划占用约 5 GiB 内存。建议相应提高内存规格。
 
 ## Stale Read
 
-使用 [Stale Read](/stale-read.md) 时，如果使用的 schema 版本过于陈旧，可能会导致历史 schema 的全量加载，从而对性能产生显著影响。可以通过增加[`tidb_schema_version_cache_limit`](/system-variables.md#tidb_schema_version_cache_limit-从-v740-版本开始引入) 的值（例如 `255`）来缓解此问题。
+使用 [Stale Read](/stale-read.md) 时，如果使用的 schema 版本过于陈旧，可能触发历史 schema 全量加载，影响性能。建议通过提高 [`tidb_schema_version_cache_limit`](/system-variables.md#tidb_schema_version_cache_limit-从-v740-版本开始引入) 的值（例如 `255`）来缓解此问题。
 
 ## BR 备份恢复
 
-* 在全量恢复百万表的场景中，建议使用高内存 BR 实例。例如:
-    - 100 万表恢复建议使用 32 GiB 及其以上内存 BR 实例
-    - 300 万表恢复建议使用 64 GiB 及其以上内存 BR 实例
+* 在全量恢复百万张表的场景中，建议使用高内存 BR 实例。例如：
+    - 100 万张表：使用 32 GiB 或更高内存的 BR 实例
+    - 300 万张表：使用 64 GiB 或更高内存的 BR 实例
 * BR 日志备份和快照恢复会额外消耗 TiKV 内存，建议 TiKV 使用 32 GiB 或更高规格的内存。
 * 可根据业务需求，适当增加 BR 的 [`pitr-batch-count` 和 `pitr-concurrency`](/br/use-br-command-line-tool.md#常用选项) 配置以提升 BR 日志恢复速度。
 
 ## TiDB Lightning 数据导入
 
-在使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入百万表数据的场景中，建议对大表，例如超过 100 GiB 的表（通常数量较少）使用 TiDB Lightning [物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)，对小表（通常数量较多）使用 TiDB Lightning [逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)。
+在使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入百万张表数据时，建议：
+
+- 对大表（超过 100 GiB）使用 TiDB Lightning [物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)。
+- 对小表（通常数量较多）使用 TiDB Lightning [逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)。
