@@ -253,3 +253,7 @@ LIMIT 10;
 
 - [优化向量搜索性能](/vector-search/vector-search-improve-performance.md)
 - [向量数据类型](/vector-search/vector-search-data-types.md)
+
+## 参考
+
+KNN 搜索的解释改编自 ClickHouse 文档，原文采用 Apache License 2.0 授权。
