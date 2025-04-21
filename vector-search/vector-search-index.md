@@ -5,7 +5,7 @@ summary: 了解如何在 TiDB 中构建并使用向量搜索索引加速 K 近�
 
 # 向量搜索索引
 
-如[向量搜索](/vector-search/vector-search-overview.md)文档所述，向量搜索通过计算给定向量与数据库中所有存储的向量之间的距离，找出最近的 Top K 个相邻向量（即 K-Nearest Neighbors，简称 KNN）。这种方式可以获得精确的搜索结果，但若表中存储了大量向量，由于涉及全表搜索，查询耗时可能会较长。
+如[向量搜索](/vector-search/vector-search-overview.md)文档所述，向量搜索通过计算给定向量与数据库中所有存储的向量之间的距离，找出最近的 Top K 个相邻向量（即 K-Nearest Neighbors，简称 KNN）。这种方式可以获得精确的搜索结果，但若表中存储了大量向量，由于涉及全表搜索，查询耗时可能会较长。[^1]
 
 为了提高搜索效率，你可以在 TiDB 中创建向量搜索索引，从而使用效率更高的近似 K 近邻搜索（Approximate KNN，简称 ANN）。使用向量索引进行向量搜索时，TiDB 能大幅度提升查询性能，仅轻微降低搜索准确度，一般能保持搜索召回率在 90% 以上。
 
@@ -253,3 +253,5 @@ LIMIT 10;
 
 - [优化向量搜索性能](/vector-search/vector-search-improve-performance.md)
 - [向量数据类型](/vector-search/vector-search-data-types.md)
+
+[^1]: KNN 搜索的解释改编自 ClickHouse 文档中的 [Approximate Nearest Neighbor Search Indexes](https://github.com/ClickHouse/ClickHouse/pull/50661/files#diff-7ebd9e71df96e74230c9a7e604fa7cb443be69ba5e23bf733fcecd4cc51b7576)，作者 [rschu1ze](https://github.com/rschu1ze)，原文采用 Apache License 2.0 授权。
