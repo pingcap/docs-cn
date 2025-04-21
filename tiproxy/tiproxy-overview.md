@@ -95,7 +95,7 @@ TiProxy 不适用于以下场景：
     注意事项：
 
     - 要根据负载类型和最大 QPS 选择 TiProxy 的机型和实例数。更多详情，请参阅 [TiProxy 性能测试报告](/tiproxy/tiproxy-performance-test.md)。
-    - 由于 TiProxy 实例通常少于 TiDB server 实例，TiProxy 的网络带宽更容易成为瓶颈。例如，在 AWS 上，同系列 EC2 的基准网络带宽与 CPU 核数并不成正比。当网络带宽成为瓶颈时，可以把 TiProxy 实例拆分为更多更小规格的实例，从而提高 QPS。更多详情，请参阅[计算实例网络性能](https://docs.aws.amazon.com/ec2/latest/instancetypes/co.html#co_network)。
+    - 由于 TiProxy 实例通常少于 TiDB server 实例，TiProxy 的网络带宽更容易成为瓶颈。例如，在 AWS 上，同系列 EC2 的基准网络带宽与 CPU 核数并不成正比。当网络带宽成为瓶颈时，可以把 TiProxy 实例拆分为更多更小规格的实例，从而提高 QPS。更多详情，请参阅[网络规格](https://docs.aws.amazon.com/zh_cn/ec2/latest/instancetypes/co.html#co_network)。
     - 建议在拓扑配置中指定 TiProxy 的版本号。这样在执行 [`tiup cluster upgrade`](/tiup/tiup-component-cluster-upgrade.md) 升级 TiDB 集群时，可以避免 TiProxy 被一并升级，从而避免因 TiProxy 升级导致客户端连接断开。
 
     关于 TiProxy 的配置模板，请参见 [TiProxy 配置模板](/tiproxy/tiproxy-deployment-topology.md)。
