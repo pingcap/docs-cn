@@ -256,4 +256,4 @@ LIMIT 10;
 
 ## 参考
 
-KNN 搜索的解释改编自 ClickHouse 文档，原文采用 Apache License 2.0 授权。
+KNN 搜索的解释改编自 ClickHouse 文档中的 [Approximate Nearest Neighbor Search Indexes](https://github.com/ClickHouse/ClickHouse/pull/50661/files#diff-7ebd9e71df96e74230c9a7e604fa7cb443be69ba5e23bf733fcecd4cc51b7576)，作者 [rschu1ze](https://github.com/rschu1ze)，原文采用 Apache License 2.0 授权。
