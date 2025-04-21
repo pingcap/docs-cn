@@ -103,7 +103,7 @@ SHOW CHARACTER SET;
 +---------+-------------------------------------+-------------------+--------+
 | ascii   | US ASCII                            | ascii_bin         |      1 |
 | binary  | binary                              | binary            |      1 |
-| gbk     | Chinese Internal Code Specification | gbk_bin           |      2 |
+| gbk     | Chinese Internal Code Specification | gbk_chinese_ci    |      2 |
 | latin1  | Latin1                              | latin1_bin        |      1 |
 | utf8    | UTF-8 Unicode                       | utf8_bin          |      3 |
 | utf8mb4 | UTF-8 Unicode                       | utf8mb4_bin       |      4 |
