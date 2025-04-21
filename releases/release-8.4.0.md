@@ -54,7 +54,7 @@ TiDB 版本：8.4.0
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/system-variables#tidb_auto_analyze_concurrency-从-v840-版本开始引入">自动统计信息收集任务支持并发</a></td>
-    <td>使用系统变量 <code>tidb_auto_analyze_concurrency</code> 控制单个自动统计信息收集任务内部的并发度，TiDB 会根据节点规模和硬件规格自动确定扫描任务的并发度。该功能通过充分利用系统资源，提高统计信息收集效率，从而减少手动调优，并确保集群性能稳定。</td>
+    <td>引入系统变量 <code>tidb_auto_analyze_concurrency</code> 控制 TiDB 集群中自动更新统计信息操作的并发度，TiDB 会根据节点规模和硬件规格自动确定扫描任务的并发度。该功能通过充分利用系统资源，提高统计信息收集效率，从而减少手动调优，并确保集群性能稳定。</td>
   </tr>
   <tr>
     <td rowspan="1">SQL</td>
@@ -290,7 +290,7 @@ TiDB 版本：8.4.0
 | [`tidb_opt_prefer_range_scan`](/system-variables.md#tidb_opt_prefer_range_scan-从-v50-版本开始引入) | 修改 | 默认值从 `OFF` 修改为 `ON`。对于没有统计信息的表（伪统计信息）或空表（零统计信息），优化器将优先选择区间扫描而不是全表扫描。|
 | [`tidb_scatter_region`](/system-variables.md#tidb_scatter_region) | 修改 | 在 v8.4.0 之前，该变量为布尔型，仅支持开启或关闭，且开启后新建表的 Region 只支持表级别打散。从 v8.4.0 开始，增加 `SESSION` 作用域，类型由布尔型变更为枚举型，默认值由原来的 `OFF` 变更为空，表示不打散表 Region，并增加了可选值 `TABLE` 和 `GLOBAL`。支持集群级别的打散策略，避免快速批量建表时由于 Region 分布不均匀导致 TiKV OOM 的问题。|
 | [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入) | 修改 | 默认值从 `0` 修改为 `536870912`（即 512 MiB），表示默认开启该功能，且最小值允许设置为 `67108864`（即 64 MiB）。|
-| [`tidb_auto_analyze_concurrency`](/system-variables.md#tidb_auto_analyze_concurrency-从-v840-版本开始引入)| 新增 | 设置单个自动统计信息收集任务内部的并发度。在 v8.4.0 之前，该并发度固定为 `1`。你可以根据集群资源情况提高该并发度，从而加快统计信息收集任务的执行速度。|
+| [`tidb_auto_analyze_concurrency`](/system-variables.md#tidb_auto_analyze_concurrency-从-v840-版本开始引入)| 新增 | 设置 TiDB 集群中自动更新统计信息操作的并发度。在 v8.4.0 之前，该并发度固定为 `1`。你可以根据集群资源情况提高该并发度，从而加快统计信息收集任务的执行速度。|
 | [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入)| 新增 | 控制是否开启 Instance Plan Cache 功能。|
 | [`tidb_enable_stats_owner`](/system-variables.md#tidb_enable_stats_owner-从-v840-版本开始引入)| 新增 | 设置该 TiDB 实例是否可以运行统计信息自动更新任务。|
 | [`tidb_hash_join_version`](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) | 新增 | 控制 TiDB 是否使用 Hash Join 算子的优化版。默认值为 `legacy`，表示不使用优化版。如果设置为 `optimized`，TiDB 在执行 Hash Join 算子时将使用其优化版，以提升 Hash Join 性能。|
@@ -375,7 +375,7 @@ TiDB 版本：8.4.0
     - 为日志表 [`mysql.tidb_runaway_queries`](/mysql-schema/mysql-schema.md#runaway-queries-相关系统表) 增加写入控制，降低大量并发写入引发的开销 [#54434](https://github.com/pingcap/tidb/issues/54434) @[HuSharp](https://github.com/HuSharp)
     - 当内表上有 `Selection`、`Projection` 或 `Aggregation` 算子时默认支持 Index Join [#47233](https://github.com/pingcap/tidb/issues/47233) @[winoros](https://github.com/winoros)
     - 在某些场景下减少 `DELETE` 操作从 TiKV 获取的列信息数量，降低 `DELETE` 操作的资源开销 [#38911](https://github.com/pingcap/tidb/issues/38911) @[winoros](https://github.com/winoros)
-    - 支持通过系统变量 `tidb_auto_analyze_concurrency` 设置单个自动统计信息收集任务内部的并发度 [#53460](https://github.com/pingcap/tidb/issues/53460) @[hawkingrei](https://github.com/hawkingrei)
+    - 支持通过系统变量 `tidb_auto_analyze_concurrency` 设置 TiDB 集群中自动更新统计信息操作的并发度 [#53460](https://github.com/pingcap/tidb/issues/53460) @[hawkingrei](https://github.com/hawkingrei)
     - 优化一个内部函数的处理逻辑，提升查询大量列的表时的性能 [#52112](https://github.com/pingcap/tidb/issues/52112) @[Rustin170506](https://github.com/Rustin170506)
     - 支持将形如 `a = 1 AND (a > 1 OR (a = 1 AND b = 2))` 的过滤条件简化为 `a = 1 AND b = 2` [#56005](https://github.com/pingcap/tidb/issues/56005) @[ghazalfamilyusa](https://github.com/ghazalfamilyusa)
     - 在选中不优执行计划风险较高的场景中，提高代价模型中全表扫描的代价，使得优化器更倾向于使用索引 [#56012](https://github.com/pingcap/tidb/issues/56012) @[terry1purcell](https://github.com/terry1purcell)

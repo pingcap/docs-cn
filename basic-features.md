@@ -275,7 +275,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 [^3]: TiDB 支持的完整 SQL 列表，见[语句参考](/sql-statements/sql-statement-select.md)。
 
-[^4]: 从 [TiDB v6.4.0](/releases/release-6.4.0.md) 开始，支持[高性能、全局单调递增的 `AUTO_INCREMENT` 列](/auto-increment.md#mysql-兼容模式)。
+[^4]: 从 [TiDB v6.4.0](/releases/release-6.4.0.md) 开始，支持[高性能、全局单调递增的 `AUTO_INCREMENT` 列](/auto-increment.md#兼容-mysql-的自增列模式)。
 
 [^5]: 从 [TiDB v7.0.0](/releases/release-7.0.0.md) 开始新增的参数 `FIELDS DEFINED NULL BY` 以及新增支持从 S3 和 GCS 导入数据，均为实验特性。从 [TiDB v7.6.0](/releases/release-7.6.0.md) 开始 `LOAD DATA` 的事务行为与 MySQL 的事务行为一致，包括事务内的 `LOAD DATA` 语句本身不再自动提交当前事务，也不会开启新事务，并且事务内的 `LOAD DATA` 语句可以被显式提交或者回滚。此外，`LOAD DATA` 语句会受 TiDB 事务模式设置（乐观/悲观）影响。
 
