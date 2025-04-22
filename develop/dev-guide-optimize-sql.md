@@ -107,7 +107,7 @@ EXPLAIN SELECT * FROM books WHERE title = 'Marian Yost';
 
 从执行计划中的 **IndexLookUp_10** 可以看出，TiDB 将会通过索引 `title_idx` 来查询数据，其 `estRows` 值为 `1.27`，说明优化器估计只会扫描 `1.27` 行数据，远远小于之前全表扫的 `1000000.00` 行数据。
 
-**IndexLookUp_10** 执行计划的执行流程是先用 **IndexRangeScan_8** 算子通过 `title_idx` 索引获取符合条件的索引数据，然后 **TableRowIDScan_9** 再更据索引数据里面的 Row ID 回表查询相应的行数据。
+**IndexLookUp_10** 执行计划的执行流程是先用 **IndexRangeScan_8** 算子通过 `title_idx` 索引获取符合条件的索引数据，然后 **TableRowIDScan_9** 再根据索引数据里面的 Row ID 回表查询相应的行数据。
 
 更多关于 TiDB 执行计划的内容，可以阅读[TiDB 执行计划概览](/explain-overview.md)。
 
