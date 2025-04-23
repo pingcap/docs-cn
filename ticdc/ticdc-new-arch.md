@@ -107,9 +107,9 @@ cdc_servers:
 
         例如，可以使用以下命令下载 Linux 系统 x86-64 架构的 TiCDC v9.0.0-beta.1 的二进制文件：
 
-       ```shell
-       wget https://tiup-mirrors.pingcap.com/cdc-v9.0.0-beta.1-linux-amd64.tar.gz
-       ```
+        ```shell
+        wget https://tiup-mirrors.pingcap.com/cdc-v9.0.0-beta.1-linux-amd64.tar.gz
+        ```
 
     2. 使用 [`tiup cluster patch`](/tiup/tiup-component-cluster-patch.md) 命令将下载的 TiCDC 二进制文件动态替换到你的 TiDB 集群中：
 
