@@ -71,12 +71,12 @@ TiDB 版本：9.0.0
 
 * TiFlash 支持新的存储格式以提升字符串类型扫描效率 [#9673](https://github.com/pingcap/tiflash/issues/9673) @[JinheLin](https://github.com/JinheLin) **tw@qiancai**<!--2066-->
 
-    在 v9.0.0 版本之前，TiFlash 存储字符串类型数据的格式在扫描时需要逐行读取，因此对于长度较小的字符串数据，扫描效率不高。在 v9.0.0 中，TiFlash 引入了新的存储格式，针对字符串格式数据的存储进行了优化，提升了长度小于 64 字节的字符串数据扫描效率，且不会影响其他数据的存储和扫描性能。
+    在 v9.0.0 版本之前，TiFlash 存储字符串类型数据的格式在扫描时需要逐行读取，导致短字符串的扫描效率较低。在 v9.0.0 中，TiFlash 引入了新的存储格式，针对字符串格式数据的存储进行了优化，提升了长度小于 64 字节的字符串数据的扫描效率，且不会影响其他数据的存储和扫描性能。
 
     - 对于新建的 v9.0.0 或之后版本的 TiDB 集群，TiFlash 默认会采用新的存储格式。
     - 对于升级到 v9.0.0 或之后版本的 TiDB 集群，建议用户在升级前阅读 [TiFlash 升级帮助](/tiflash-upgrade-guide.md)。
-        -  如果升级前未指定过 [`format_version`](/tiflash/tiflash-configuration.md#format_version)，升级后 TiFlash 默认采用新的存储格式。
-        -  如果升级前指定过 [`format_version`](/tiflash/tiflash-configuration.md#format_version)，升级后 `format_version` 的值保持不变， TiFlash 会继续使用 `format_version` 指定的存储格式。此时如需启用新的存储格式，请在 TiFlash 配置文件中将 `format_version` 设置为 `8`。配置生效后，新写入 TiFlash 的数据将采用新的存储格式，而现有数据的存储格式则不受影响。
+        - 如果升级前未指定过 [`format_version`](/tiflash/tiflash-configuration.md#format_version)，升级后 TiFlash 默认采用新的存储格式。
+        - 如果升级前指定过 [`format_version`](/tiflash/tiflash-configuration.md#format_version)，升级后 `format_version` 的值保持不变，TiFlash 会继续使用 `format_version` 指定的存储格式。此时如需启用新的存储格式，请在 TiFlash 配置文件中将 `format_version` 设置为 `8`。配置生效后，新写入 TiFlash 的数据将采用新的存储格式，而现有数据的存储格式则不受影响。
         
   更多信息，请参考[用户文档](/tiflash/tiflash-configuration.md#format_version)。
 
@@ -101,7 +101,7 @@ TiDB 版本：9.0.0
 
 * 支持对分区表的非唯一列创建全局索引 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014) @[mjonss](https://github.com/mjonss) **tw@qiancai**<!--2057-->
 
-    从 v8.3.0 开始，TiDB 支持用户在分区表的唯一列上创建全局索引以提高查询性能，但不支持在非唯一列上创建全局索引。从 v9.0 版本起，TiDB 取消了这一限制，允许用户在分区表的非唯一列上创建全局索引，提升了全局索引的易用性。
+    从 v8.3.0 开始，TiDB 支持用户在分区表的唯一列上创建全局索引以提高查询性能，但不支持在非唯一列上创建全局索引。从 v9.0.0 起，TiDB 取消了这一限制，允许用户在分区表的非唯一列上创建全局索引，提升了全局索引的易用性。
 
     更多信息，请参考[全局索引](/partitioned-table.md#全局索引)。
 
