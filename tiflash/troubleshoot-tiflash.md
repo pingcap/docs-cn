@@ -265,7 +265,7 @@ show warnings;
 
 同步慢可能由多种原因引起，你可以按以下步骤进行排查。
 
-1. 参考 [加快 TiFlash 副本同步速度](create-tiflash-replicas.md#加快-tiflash-副本同步速度) 调整调度参数，加快同步速度。
+1. 参考 [加快 TiFlash 副本同步速度](/tiflash/create-tiflash-replicas.md#加快-tiflash-副本同步速度) 调整调度参数，加快同步速度。
 
 2. 调整 TiFlash 侧负载。
 
