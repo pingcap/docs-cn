@@ -569,9 +569,12 @@ I/O 限流功能相关配置。
 
 - 指定轮换新主密钥时的旧主密钥。旧主密钥的配置格式与主密钥相同。若要了解如何配置主密钥，可以参考[静态加密 - 配置加密](/encryption-at-rest.md#配置加密)。
 
-### 通过拓扑 label 进行副本调度
+#### server
 
-[TiFlash 设置可用区](/tiflash/create-tiflash-replicas.md#设置可用区)
+##### `labels`
+
+- 指定服务器属性，例如 `{ zone = "us-west-1", disk = "ssd" }`。可以参考 [TiFlash 设置可用区](/tiflash/create-tiflash-replicas.md#设置可用区) 了解如何通过 label 进行副本调度。
+- 默认值：`{}`
 
 ### 多盘部署
 
