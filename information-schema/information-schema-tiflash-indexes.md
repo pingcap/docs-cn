@@ -3,7 +3,7 @@ title: TIFLASH_INDEXES
 summary: 了解 information_schema 表 `TIFLASH_INDEXES`。
 ---
 
-# TIFLASH_TABLES
+# TIFLASH_INDEXES
 
 > **警告：**
 >
