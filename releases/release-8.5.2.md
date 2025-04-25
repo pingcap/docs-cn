@@ -43,7 +43,7 @@ TiDB 版本：8.5.2
 + Tools
 
     + Backup & Restore (BR)
-
+        - 删除 aws region name 判断，从而避免某些在新开放 region 中，无法通过检查的问题[#18159(https://github.com/tikv/tikv/issues/18159)@[3pointer]([https://github.com/3pointer])
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
@@ -95,6 +95,19 @@ TiDB 版本：8.5.2
     - 修复了分区表在 PointGet 场景下可能会出现分区裁剪错误的问题 [#59827](https://github.com/pingcap/tidb/issues/59827) @[mjonss](https://github.com/mjonss)
     - 修复了在 DDL 执行过程中更新分区表记录可能会导致数据错误的问题 [#57588](https://github.com/pingcap/tidb/issues/57588) @[Defined2014](https://github.com/Defined2014)
     - 提升改进了 information_schema 功能在部分场景下的性能和稳定性 [#58142](https://github.com/pingcap/tidb/issues/58142) [#58363](https://github.com/pingcap/tidb/issues/58363) [#58712](https://github.com/pingcap/tidb/issues/58712) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复了在启用 DXF 时，TiDB 内部 session 中`tidb_txn_entry_size_limit` 不能动态调整的问题 [#59506](https://github.com/pingcap/tidb/issues/59506)@[D3Hunter](https://github.com/D3Hunter)
+    - 修复了在 global sort 配置下数据导入功能import into不能正确处理 UK conflict 的问题 [#59650](https://github.com/pingcap/tidb/issues/59650) @[lance6716](https://github.com/lance6716)
+    - 修复了在 global sort 数据路径上注入网络延迟故障时会导致数据导入 `import into`失败的问题 [#50451](https://github.com/pingcap/tidb/issues/50451) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复了在给数据库 add unique index 时可能会出现数据不一致的问题  [#60339](https://github.com/pingcap/tidb/issues/60339) @[tangenta](https://github.com/tangenta)
+    - 修复了查询 INFORMATION_SCHEMA.TIDB_SERVERS_INFO 中的 schema 列信息和数据不相匹配的问题  [#59245](https://github.com/pingcap/tidb/issues/59245) @[lance6716](https://github.com/lance6716)
+    - 修复了在添加索引操作时注入 kill pd leader 故障可能导致数据不一致的问题 [#59701](https://github.com/pingcap/tidb/issues/59701) @[tangenta](https://github.com/tangenta)
+    - 修复了在创建约 6.5M 张表后 TiDB OOM 的问题 [#58368](https://github.com/pingcap/tidb/issues/58368) @[lance6716](https://github.com/lance6716)
+    - 修复了在配置 global sort 条件下 ddl: add unique key 在导入大量数据时会失败的问题 [#59725](https://github.com/pingcap/tidb/issues/59725) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复了 TiDB 在访问 S3 外部存储报错后 error message 不可读的问题 https://github.com/pingcap/tidb/issues/59326 @[lance6716](https://github.com/lance6716)
+    - 修复了查询 infoschema.tables 中 schema 和 table name 不匹配的问题  https://github.com/pingcap/tidb/issues/60593 @[tangenta](https://github.com/tangenta)
+    - 修复了当内部 SQL 提交失败时 DDL notifier 不保证完成转达的问题  [#59055](https://github.com/pingcap/tidb/issues/59055) @[lance6716](https://github.com/lance6716)
+    - 修复了当数据分片 region 为 256M 时，add index DDL 在 global sort 配置下仍然按照 96M 切分 SST 的问题 [#59962](https://github.com/pingcap/tidb/issues/59962) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复了在 global sort 配置下导入数据时，内存使用超过 80% 后 TiDB server OOM 的问题 [#59508](https://github.com/pingcap/tidb/issues/59508) @[D3Hunter](https://github.com/D3Hunter)
 
 + TiKV
 
@@ -145,6 +158,7 @@ TiDB 版本：8.5.2
 
     + Backup & Restore (BR)
 
+        - 修复在极端情况下，恢复过程中重复 download sst 导致 TiKV panic 的问题。[#18335]([https://github.com/tikv/tikv/issues/18335]) @[3pointer]([https://github.com/3pointer])
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-6.5.12.md > 错误修复> Tools> Backup & Restore (BR) - 修复使用 `br log status --json` 查询日志备份任务时，返回结果中缺少任务状态 `status` 字段的问题 [#57959](https://github.com/pingcap/tidb/issues/57959) @[Leavrth](https://github.com/Leavrth)
@@ -176,6 +190,10 @@ TiDB 版本：8.5.2
         - (dup): release-6.5.12.md > 错误修复> Tools> TiDB Lightning - 修复在高并发场景下，从云存储导入数据时性能下降的问题 [#57413](https://github.com/pingcap/tidb/issues/57413) @[xuanyu66](https://github.com/xuanyu66)
         - (dup): release-6.5.12.md > 错误修复> Tools> TiDB Lightning - 修复使用 TiDB Lightning 导入数据时，错误报告输出被截断的问题 [#58085](https://github.com/pingcap/tidb/issues/58085) @[lance6716](https://github.com/lance6716)
         - (dup): release-6.5.12.md > 错误修复> Tools> TiDB Lightning - 修复日志没有正确脱敏的问题 [#59086](https://github.com/pingcap/tidb/issues/59086) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复了当使用外部账号执行 GCS 存储操作鉴权都会失败并且报 context canceled 错误的问题 [#60155](https://github.com/pingcap/tidb/issues/60155) @[lance6716](https://github.com/lance6716)
+        - 修复了从云存储导入 parquet 文件到 TiDB 时，lightning 可能会 stuck 达数小时的问题 [#60224](https://github.com/pingcap/tidb/issues/60224) @[joechenrh](https://github.com/joechenrh)
+        - 修复了当 import 大量数据时，在 write/ingest SST 到 TiKV 集群期间 Lightning 可能会 OOM 的问题 [#59947](https://github.com/pingcap/tidb/issues/59947) @[OliverS929](https://github.com/OliverS929)
+        - 修复了Lightning 建表的最大 QPS 很低且 information_schema.tables 速度变慢，会导致在 1M table 场景下 Lightning 调度任务运行速度变慢的问题 [#58141](https://github.com/pingcap/tidb/issues/58141@) @[D3Hunter](https://github.com/D3Hunter)
 
     + Dumpling
 
@@ -185,6 +203,7 @@ TiDB 版本：8.5.2
     + TiUP
 
         - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+
     + NG Monitoring <!--tw@qiancai: 2 notes-->
 
         - 修复 DocDB 在高负载下内存占用高的问题，以 SQLite 作为 DocDB 的可选后端 [#267](https://github.com/pingcap/ng-monitoring/issues/267) @[mornyx](https://github.com/mornyx)
