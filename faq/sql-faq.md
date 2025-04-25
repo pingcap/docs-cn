@@ -327,7 +327,7 @@ TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schem
 
 ## JDBC 连接所使用的排序规则
 
-本节介绍了 JDBC 连接的排序规则行为，并提供了解决 TiDB 升级后排序规则变化问题的方案。关于 TiDB 支持的字符集和排序规则，请参考[字符集和排序规则](/character-set-and-collation.md)。
+本节列出了 JDBC 连接排序规则的相关问题。关于 TiDB 支持的字符集和排序规则，请参考[字符集和排序规则](/character-set-and-collation.md)。
 
 ### 当 JDBC URL 中未配置 `connectionCollation` 时，JDBC 连接使用什么排序规则？
 
