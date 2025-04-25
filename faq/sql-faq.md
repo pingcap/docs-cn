@@ -357,7 +357,7 @@ TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schem
 spring.datasource.url=JDBC:mysql://{TiDBIP}:{TiDBPort}/{DBName}?characterEncoding=utf8&useSSL=false&useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSqlLimit=10000&prepStmtCacheSize=1000&useConfigs=maxPerformance&rewriteBatchedStatements=true&defaultfetchsize=-2147483648&allowMultiQueries=true
 ```
 
-升级到 TiDB v7.5 或更高版本后，建议在 JDBC URL 中配置 `connectionCollation` 参数：
+升级到 TiDB v7.4 或更高版本后，建议在 JDBC URL 中配置 `connectionCollation` 参数：
 
 ```
 spring.datasource.url=JDBC:mysql://{TiDBIP}:{TiDBPort}/{DBName}?characterEncoding=utf8&connectionCollation=utf8mb4_bin&useSSL=false&useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSqlLimit=10000&prepStmtCacheSize=1000&useConfigs=maxPerformance&rewriteBatchedStatements=true&defaultFetchSize=-2147483648&allowMultiQueries=true
