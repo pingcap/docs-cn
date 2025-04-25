@@ -341,7 +341,7 @@ TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schem
     - 当返回值小于 `8.0.1` 时，驱动程序使用 `utf8mb4_general_ci` 作为连接排序规则。TiDB 将遵循驱动程序，使用 `utf8mb4_general_ci` 作为排序规则。
     - 当返回值大于等于 `8.0.1` 时，驱动程序使用 `utf8mb4_0900_ai_ci` 作为连接排序规则。v7.4.0 及更高版本的 TiDB 将遵循驱动程序，使用 `utf8mb4_0900_ai_ci` 作为排序规则，而 v7.4.0 之前版本的 TiDB 由于不支持 `utf8mb4_0900_ai_ci` 排序规则，将回退到使用默认的排序规则 `utf8mb4_bin`。
 
-**场景二**： JDBC URL 中配置了 `characterEncoding=utf8` 但未配置 `connectionCollation`，JDBC 驱动程序将按照映射规则使用 `utf8mb4` 字符集，并按照场景一中的描述选择排序规则。
+**场景二**：JDBC URL 中配置了 `characterEncoding=utf8` 但未配置 `connectionCollation`，JDBC 驱动程序将按照映射规则使用 `utf8mb4` 字符集，并按照场景一中的描述选择排序规则。
 
 ### 如何解决 TiDB 升级后排序规则变化带来的问题？
 
