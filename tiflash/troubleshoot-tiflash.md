@@ -170,7 +170,7 @@ show warnings;
     ```
 
     - 如果 `count` 取值未超过 TiKV 节点数，进入下一步。
-    - 如果 `count` 超过 TiKV 节点数(比如测试集群中只有 1 个 TiKV 节点，但是 count 值为 3)，PD 不会向 TiFlash 同步数据。此时，请参考 [使用 pd-ctl 设置规则](/configure-placement-rules.md/#使用-pd-ctl-设置规则) 将 `count` 修改为小于等于 TiKV 节点数的整数。
+    - 如果 `count` 超过 TiKV 节点数(比如测试集群中只有 1 个 TiKV 节点，但是 count 值为 3)，PD 不会向 TiFlash 同步数据。此时，请参考 [使用 pd-ctl 设置规则](/configure-placement-rules.md#使用-pd-ctl-设置规则) 将 `count` 修改为小于等于 TiKV 节点数的整数。
 
     > **注意：**
     >
