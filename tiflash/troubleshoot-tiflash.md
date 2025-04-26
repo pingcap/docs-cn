@@ -216,8 +216,8 @@ show warnings;
 
     - 如果有正常返回，进入下一步。
     - 如果无正常返回，请执行 `SELECT * FROM information_schema.tiflash_replica` 检查是否已经创建 TiFlash replica。如果没有，请重新执行 `ALTER table ${tbl_name} set tiflash replica ${num}`
-      - 通过 [ADMIN SHOW DDL](/sql-statement-admin-show-ddl.md) 检查 DDL 操作是否正常。查看是否有其他 DDL 语句（如 `add index`）阻塞修改 TiFlash 副本的操作。
-      - 通过 [SHOW PROCESSLIST](/sql-statement-show-processlist.md) 检查是否有 DML 语句在执行，阻塞修改 TiFlash 副本的操作。
+      - 通过 [ADMIN SHOW DDL](/sql-statements/sql-statement-show-processlist.md) 检查 DDL 操作是否正常。查看是否有其他 DDL 语句（如 `add index`）阻塞修改 TiFlash 副本的操作。
+      - 通过 [SHOW PROCESSLIST](/sql-statements/sql-statement-show-processlist.md) 检查是否有 DML 语句在执行，阻塞修改 TiFlash 副本的操作。
       - 如果上述情况都没有，进入下一步。
 
 2. 检查 TiFlash Region 同步是否正常。
