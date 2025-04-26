@@ -32,6 +32,13 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
 3. 使用 PD Control 工具检查在该节点（相同 IP 和 Port）是否有之前未成功下线的 TiFlash 实例，并将它们强制下线。（下线步骤参考[手动缩容 TiFlash 节点](/scale-tidb-using-tiup.md#方案二手动缩容-tiflash-节点)）
 
+4. 检查系统 CPU 是否支持向量扩展指令集
+
+    自 v6.3 版本开始，在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `grep avx2 /proc/cpuinfo` 有输出。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。确保命令 `grep 'crc32' /proc/cpuinfo | grep 'asimd'` 有输出。
+
+    如果在虚拟机上部署，将虚拟机的 CPU 架构改成 haswell。
+
+
 如果遇到上述方法无法解决的问题，可以打包 TiFlash 的 log 文件夹，并在 [AskTUG](http://asktug.com) 社区中提问。
 
 ## 部分查询返回 Region Unavailable 的错误
@@ -164,7 +171,7 @@ show warnings;
     ```
 
     - 如果 `count` 取值未超过 TiKV 节点数，进入下一步。
-    - 如果 `count` 超过 TiKV 节点数(比如测试集群中只有 1 个 TiKV 节点，但是 count 值为 3)，PD 不会向 TiFlash 同步数据。此时，请将 `count` 修改为小于等于 TiKV 节点数的整数。
+    - 如果 `count` 超过 TiKV 节点数(比如测试集群中只有 1 个 TiKV 节点，但是 count 值为 3)，PD 不会向 TiFlash 同步数据。此时，请参考 [使用 pd-ctl 设置规则](/configure-placement-rules.md/#使用-pd-ctl-设置规则) 将 `count` 修改为小于等于 TiKV 节点数的整数。
 
     > **注意：**
     >
