@@ -38,7 +38,6 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
     如果在虚拟机上部署，将虚拟机的 CPU 架构改成 haswell。
 
-
 如果遇到上述方法无法解决的问题，可以打包 TiFlash 的 log 文件夹，并在 [AskTUG](http://asktug.com) 社区中提问。
 
 ## 部分查询返回 Region Unavailable 的错误
@@ -227,18 +226,18 @@ show warnings;
     - 如果有变化，说明 TiFlash 同步正常，可能只是同步速度较慢，参考 "数据同步慢" 章节进行调整。
     - 如果没有变化，说明 TiFlash 同步异常，在 `tidb.log` 中，搜索 `Tiflash replica is not available` 相关日志。检查对应表的 `progress` 是否更新。如果无更新，请进入下一步。
 
-5. 检查 TiDB 是否为表创建 Placement rule。
+3. 检查 TiDB 是否为表创建 Placement rule。
 
     搜索 TiDB DDL Owner 的日志，检查 TiDB 是否通知 PD 添加  Placement rule。对于非分区表搜索 `ConfigureTiFlashPDForTable`；对于分区表，搜索 `ConfigureTiFlashPDForPartitions`。
 
     - 有关键字，进入下一步。
     - 没有关键字，收集相关组件的日志进行排查。
 
-6. 检查 PD 是否为表设置  Placement rule。
+4. 检查 PD 是否为表设置  Placement rule。
 
     可以通过 `curl http://<pd-ip>:<pd-port>/pd/api/v1/config/rules/group/tiflash` 查询比较当前 PD 上的所有 TiFlash 的 Placement rule。如果观察到有 id 为 `table-<table_id>-r` 的 Rule，则表示 PD rule 设置成功。
 
-7. 检查 PD 是否正常发起调度。
+5. 检查 PD 是否正常发起调度。
 
     查看 `pd.log` 日志是否出现 `table-<table_id>-r` 关键字，且之后是否出现 `add operator` 之类的调度行为。或者 Grafana 的 PD 面板中的 Operator/Schedule operator create 中是否产生 `add-rule-peer` 的调度。
 
