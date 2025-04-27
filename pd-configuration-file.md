@@ -457,7 +457,7 @@ PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项�
 
 ### `disable-custom-prom-addr`
 
-+ 是否禁止在 TiDB Dashboard 中配置自定义的 Prometheus 数据源地址。
++ 是否禁止在 [TiDB Dashboard](/dashboard/dashboard-intro.md) 中配置自定义的 Prometheus 数据源地址。
 + 默认值：`false`
 + 当配置为 `true` 时，如果在 TiDB Dashboard 中配置自定义的 Prometheus 数据源地址，TiDB Dashboard 会报错。
 
