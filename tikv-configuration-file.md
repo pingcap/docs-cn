@@ -230,6 +230,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 单位：KiB|MiB|GiB
 + 最小值：1KiB
 
+### `snap-min-ingest-size` <span class="version-mark">从 v8.1.2 版本开始引入</span>
+
++ 是否采用 ingest 方式处理 snapshot 的最小阈值。如果 snapshot 的大小未超过该阈值，将采用直接写入的方式以加速 snapshot 的应用。
++ 默认值：2MiB
++ 单位：KiB|MiB|GiB
++ 最小值：0
+
 ### `enable-request-batch`
 
 + 控制是否开启批处理请求。
@@ -525,6 +532,11 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。
     + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为系统总内存大小的 30%。
 
 + 单位：KiB|MiB|GiB
+
+### `low-pri-pool-ratio` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
++ 控制 titan 组件的 block cache 的使用比率。
++ 默认值：0.2
 
 ## storage.flow-control
 
@@ -827,6 +839,17 @@ raftstore 相关的配置项。
 + 默认值：10s
 + 最小值：0
 
+### `pd-report-min-resolved-ts-interval` <span class="version-mark">从 v6.0.0 版本开始引入</span>
+
+> **注意：**
+>
+> - 该变量是由 v6.3.0 中的 [`report-min-resolved-ts-interval`](https://docs-archive.pingcap.com/zh/tidb/v6.3/tikv-configuration-file/#report-min-resolved-ts-interval) 更名而来的。从 v7.6.0 开始，`report-min-resolved-ts-interval` 不再生效。
+
++ 设置 PD leader 收到 Resolved TS 的间隔时间。如果该值设置为 `0`，表示禁用该功能。
++ 默认值：在 v6.3.0 之前版本中为 `"0s"`，在 v6.3.0 及之后的版本中为 `"1s"`，即最小正值。
++ 最小值：0
++ 单位：秒
+
 ### `snap-mgr-gc-tick-interval`
 
 + 触发回收过期 snapshot 文件的时间间隔，0 表示不启用。
@@ -1026,13 +1049,6 @@ raftstore 相关的配置项。
 + 触发 Raft 数据写入的阈值。当数据大小超过该配置项值，数据会被写入磁盘。当 `store-io-pool-size` 的值为 `0` 时，该配置项不生效。
 + 默认值：1MiB
 + 最小值：0
-
-### `report-min-resolved-ts-interval` <span class="version-mark">从 v6.0.0 版本开始引入</span>
-
-+ 设置 PD leader 收到 Resolved TS 的间隔时间。如果该值设置为 `0`，表示禁用该功能。
-+ 默认值：在 v6.3.0 之前版本中为 `"0s"`，在 v6.3.0 及之后的版本中为 `"1s"`，即最小正值。
-+ 最小值：0
-+ 单位：秒
 
 ### `evict-cache-on-memory-ratio` <span class="version-mark">从 v7.5.0 版本开始引入</span>
 
@@ -1427,7 +1443,7 @@ Titan 相关的配置项。
 ### `max-background-gc`
 
 + Titan 后台 GC 的线程个数，当从 **TiKV Details** > **Thread CPU** > **RocksDB CPU** 监控中观察到 Titan GC 线程长期处于满负荷状态时，应该考虑增加 Titan GC 线程池大小。
-+ 默认值：4
++ 默认值：1。在 v8.0.0 之前，默认值为 4。
 + 最小值：1
 
 ## rocksdb.defaultcf | rocksdb.writecf | rocksdb.lockcf | rocksdb.raftcf
@@ -2336,6 +2352,12 @@ Raft Engine 相关的配置项。
 + 默认值：6，即最多并发执行 6 个任务
 + 注意：`incremental-scan-concurrency` 需要大于等于 `incremental-scan-threads`，否则 TiKV 启动会报错。
 
+### `incremental-scan-concurrency-limit` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
++ 增量扫描历史数据任务的最大队列长度。
++ 默认值：10000，即最多可允许创建 10000 个任务等待执行。
++ 注意：`incremental-scan-concurrency-limit` 需要大于等于 `incremental-scan-concurrency`，否则 TiKV 会将默认值使用 `incremental-scan-concurrency` 进行覆盖。
+
 ## resolved-ts
 
 用于维护 Resolved TS 以服务 Stale Read 请求的相关配置项。
@@ -2565,6 +2587,11 @@ Raft Engine 相关的配置项。
 
 + 设置 TiKV 堆内存分析每次采样的数据量，以 2 的指数次幂向上取整。
 + 默认值：512KiB
+
+### `enable-thread-exclusive-arena` <span class="version-mark">从 v8.1.0 版本开始引入</span>
+
++ 控制是否开启 TiKV 线程级别的内存分配展示，以跟踪 TiKV 各个线程的内存使用情况。
++ 默认值：true
 
 ## in-memory-engine <span class="version-mark">从 v8.5.0 版本开始引入</span>
 
