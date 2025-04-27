@@ -22,7 +22,7 @@ TiDB 版本：8.5.2
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-7.5.6.md > 改进提升> TiDB - 将 TTL 表的 GC 及相关统计信息收集任务限定在 owner 节点执行，从而降低开销 [#59357](https://github.com/pingcap/tidb/issues/59357) @[lcwangchao](https://github.com/lcwangchao)
-    - TiDB 支持在 loong64 arch 架构上的编译和构建 [#59051](https://github.com/pingcap/tidb/issues/59051) @[D3Hunter](https://github.com/D3Hunter)
+    - TiDB 支持在龙芯 loong64 架构上进行编译和构建 [#59051](https://github.com/pingcap/tidb/issues/59051) @[D3Hunter](https://github.com/D3Hunter)
 
 + TiKV
 
@@ -100,15 +100,15 @@ TiDB 版本：8.5.2
     - 修复了在 global sort 配置下数据导入功能import into不能正确处理 UK conflict 的问题 [#59650](https://github.com/pingcap/tidb/issues/59650) @[lance6716](https://github.com/lance6716)
     - 修复了在 global sort 数据路径上注入网络延迟故障时会导致数据导入 `import into`失败的问题 [#50451](https://github.com/pingcap/tidb/issues/50451) @[D3Hunter](https://github.com/D3Hunter) 
     - 修复了在给数据库 add unique index 时可能会出现数据不一致的问题  [#60339](https://github.com/pingcap/tidb/issues/60339) @[tangenta](https://github.com/tangenta) <!--tw@Oreoxmt: the following 9 notes-->
-    - 修复了查询 INFORMATION_SCHEMA.TIDB_SERVERS_INFO 中的 schema 列信息和数据不相匹配的问题  [#59245](https://github.com/pingcap/tidb/issues/59245) @[lance6716](https://github.com/lance6716)
-    - 修复了在添加索引操作时注入 kill pd leader 故障可能导致数据不一致的问题 [#59701](https://github.com/pingcap/tidb/issues/59701) @[tangenta](https://github.com/tangenta)
-    - 修复了在创建约 6.5M 张表后 TiDB OOM 的问题 [#58368](https://github.com/pingcap/tidb/issues/58368) @[lance6716](https://github.com/lance6716)
-    - 修复了在配置 global sort 条件下 ddl: add unique key 在导入大量数据时会失败的问题 [#59725](https://github.com/pingcap/tidb/issues/59725) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - 修复了 TiDB 在访问 S3 外部存储报错后 error message 不可读的问题 https://github.com/pingcap/tidb/issues/59326 @[lance6716](https://github.com/lance6716)
-    - 修复了查询 infoschema.tables 中 schema 和 table name 不匹配的问题  https://github.com/pingcap/tidb/issues/60593 @[tangenta](https://github.com/tangenta)
-    - 修复了当内部 SQL 提交失败时 DDL notifier 不保证完成转达的问题  [#59055](https://github.com/pingcap/tidb/issues/59055) @[lance6716](https://github.com/lance6716)
-    - 修复了当数据分片 region 为 256M 时，add index DDL 在 global sort 配置下仍然按照 96M 切分 SST 的问题 [#59962](https://github.com/pingcap/tidb/issues/59962) @[D3Hunter](https://github.com/D3Hunter)
-    - 修复了在 global sort 配置下导入数据时，内存使用超过 80% 后 TiDB server OOM 的问题 [#59508](https://github.com/pingcap/tidb/issues/59508) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复查询 `INFORMATION_SCHEMA.TIDB_SERVERS_INFO` 时，`LABELS` 列的值错误显示在 `BINLOG_STATUS` 列中的问题 [#59245](https://github.com/pingcap/tidb/issues/59245) @[lance6716](https://github.com/lance6716)
+    - 修复在添加索引操作时，注入 kill PD Leader 故障可能导致数据不一致的问题 [#59701](https://github.com/pingcap/tidb/issues/59701) @[tangenta](https://github.com/tangenta)
+    - 修复在创建约 650 万张表后 TiDB OOM 的问题 [#58368](https://github.com/pingcap/tidb/issues/58368) @[lance6716](https://github.com/lance6716)
+    - 修复开启全局排序功能后，导入大量数据时新增唯一键 (Unique Key) 可能会失败的问题 [#59725](https://github.com/pingcap/tidb/issues/59725) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复 TiDB 访问 S3 外部存储报错后，错误信息不可读的问题 [#59326](https://github.com/pingcap/tidb/issues/59326) @[lance6716](https://github.com/lance6716)
+    - 修复查询 `infoschema.tables` 时，返回结果中 `table_schema` 和 `table_name` 不匹配的问题 [#60593](https://github.com/pingcap/tidb/issues/60593) @[tangenta](https://github.com/tangenta)
+    - 修复当内部 SQL 提交失败时，DDL notifier 可能无法完成转达的问题 [#59055](https://github.com/pingcap/tidb/issues/59055) @[lance6716](https://github.com/lance6716)
+    - 修复当数据分片 Region 大小为 256 MiB 时，`ADD INDEX` DDL 在开启全局排序功能后仍按 96 MiB 切分 SST 文件的问题 [#59962](https://github.com/pingcap/tidb/issues/59962) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复在开启全局排序功能并导入数据时，内存使用超过 80% 后 TiDB server 发生 OOM 的问题 [#59508](https://github.com/pingcap/tidb/issues/59508) @[D3Hunter](https://github.com/D3Hunter)
 
 + TiKV
 
