@@ -44,7 +44,7 @@ TiDB 版本：8.5.2
 
     + Backup & Restore (BR) <!--tw@qiancai: 1 note--> 
 
-        - 删除 aws region name 判断，从而避免某些在新开放 region 中，无法通过检查的问题[#18159(https://github.com/tikv/tikv/issues/18159)@[3pointer]([https://github.com/3pointer])
+        - 移除对 AWS region 名称的检查，避免新支持的 AWS region 因无法通过检查而导致备份报错的问题 [#18159(https://github.com/tikv/tikv/issues/18159)@[3pointer]([https://github.com/3pointer])
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
