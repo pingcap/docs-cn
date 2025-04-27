@@ -170,7 +170,7 @@ show warnings;
     ```
 
     - 如果 `count` 取值未超过 TiKV 节点数，进入下一步。
-    - 如果 `count` 超过 TiKV 节点数(例如某些测试集群中只有 1 个 TiKV 节点，但是 count 值为 3)，PD 不会向 TiFlash 同步数据。此时，请参考 [使用 pd-ctl 设置规则](/configure-placement-rules.md#使用-pd-ctl-设置规则) 将 `count` 修改为小于等于 TiKV 节点数的整数。
+    - 如果 `count` 超过 TiKV 节点数(例如某些测试集群中只有 1 个 TiKV 节点，但是 count 值为 3)，PD 不会向 TiFlash 调度 Region。此时，请参考 [使用 pd-ctl 设置规则](/configure-placement-rules.md#使用-pd-ctl-设置规则) 将 `count` 修改为小于等于 TiKV 节点数的整数。
 
     > **注意：**
     >
@@ -195,11 +195,15 @@ show warnings;
 
 5. 检查 TiFlash 节点所在机器剩余的磁盘空间比例是否高于 [`low-space-ratio`](/pd-configuration-file.md#low-space-ratio) 的值。默认值 0.8，即当节点的使用空间占比超过 capacity 的 80%时，为避免磁盘空间被耗尽，PD 会尽可能避免往该节点迁移数据。如果所有 TiFlash 节点的剩余空间都不足，则会导致 PD 不往 TiFlash 调度新的 Region peer，导致副本始终处于不可用状态，即 progress < 1。
 
-    - 如果磁盘使用率大于等于 `low-space-ratio`，说明磁盘空间不足。此时可以：
+    - 如果磁盘使用率大于等于 `low-space-ratio`，说明磁盘空间不足。此时可以采取以下一个或多个措施：
 
         - 修改 `low-space-ratio` 的值，让 PD 恢复向 TiFlash 节点调度 Region。
 
-        - 扩容 TiFlash 节点。
+            ```
+            tiup ctl:nightly pd -u http://${pd-ip}:${pd-port} config set low-space-ratio 0.9
+            ```
+
+        - 扩容 TiFlash 节点，PD 会平衡各个 TiFlash 节点间的数据，并恢复调度 Region 到空闲的 TiFlash 节点。
 
         - 删除 TiFlash 节点磁盘中不必要的文件，如 `${data}/flash/` 目录下的 `space_placeholder_file` 文件。必要时可同时将 tiflash-learner.toml 的 `storage.reserve-space` 设置为 `0MB`，临时让 TiFlash 恢复服务。
 
