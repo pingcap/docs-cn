@@ -154,6 +154,7 @@ TiDB 版本：8.5.2
     - 修复在同一个表上创建多个 VECTOR INDEX 后，之前创建的部分 VECTOR INDEX 可能会被意外删除带来性能下降的问题 [#9971](https://github.com/pingcap/tiflash/issues/9971) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复在存算分离架构下，TiFlash 无法利用 VECTOR INDEX 加速向量搜索查询的问题 [#9847](https://github.com/pingcap/tiflash/issues/9847) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复在存算分离架构下，可能会打印大量 "unknown enum" 的日志的问题 [#9955](https://github.com/pingcap/tiflash/issues/9955) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复执行 `SELECT ... AS OF TIMESTAMP` 查询时，TiFlash 读取仍发生预期外 LearnerRead 的问题 [#10046](https://github.com/pingcap/tiflash/issues/10046) @[CalvinNeo](https://github.com/CalvinNeo)
 
 + Tools
 
