@@ -36,9 +36,9 @@ aliases: ['/docs-cn/dev/faq/upgrade-faq/','/docs-cn/dev/faq/upgrade/']
 
 本小节列出了一些升级后可能会遇到的问题与解决办法。
 
-## TiDB 升级后的排序规则变化
+### TiDB 升级后 JDBC 连接的排序规则变化问题
 
-当从较低版本升级到 v7.4 或更高版本时（例如，从 v6.5 升级到 v7.5），如果 JDBC URL 中未配置 `connectionCollation`，升级后 JDBC 连接的默认排序规则可能会从 `utf8mb4_bin` 更改为 `utf8mb4_0900_ai_ci`。如需保持排序规则为 `utf8mb4_bin`，请在 JDBC URL 中配置 `connectionCollation=utf8mb4_bin`。
+当从较低版本升级到 v7.4 或更高版本时，如果 JDBC URL 中未配置 `connectionCollation`，且 `characterEncoding` 未配置或配置为 `UTF-8`，升级后 JDBC 连接的默认排序规则可能会从 `utf8mb4_bin` 变更为 `utf8mb4_0900_ai_ci`。如需保持排序规则为 `utf8mb4_bin`，请在 JDBC URL 中配置 `connectionCollation=utf8mb4_bin`。
 
 更多信息，请参考 [JDBC 连接所使用的排序规则](/faq/sql-faq.md#jdbc-连接所使用的排序规则)。
 
