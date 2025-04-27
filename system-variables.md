@@ -4997,6 +4997,15 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 单位：字节
 - 这个变量用来控制 [Statement Summary Tables](/statement-summary-tables.md) 和 [TiDB Dashboard](/dashboard/dashboard-intro.md) 中显示的 SQL 字符串长度。
 
+### `tidb_ignore_inlist_plan_digest` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用来控制是否忽略 `IN` 列表中元素差异对计划摘要的影响。设置为 `ON` 时，TiDB 将考虑 `IN` 列表中元素差异（包括数量）对计划摘要的影响。设置为 `OFF` 时，TiDB 将不考虑 `IN` 列表中元素差异（包括数量）对计划摘要的影响。
+
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
