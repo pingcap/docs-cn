@@ -233,7 +233,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `snap-min-ingest-size` <span class="version-mark">从 v8.1.2 版本开始引入</span>
 
-+ 是否采用 ingest 方式处理 snapshot 的最小阈值。如果 snapshot 的大小未超过该阈值，将采用直接写入的方式以加速 snapshot 的应用。
++ 是否采用 ingest 方式处理 snapshot 的最小阈值。当 snapshot 大小超过该阈值时，采用 ingest 方式（通过 RocksDB 的 SST 文件导入机制）；否则采用直接写入方式（逐条写入），后者对小文件处理效率更高。
 + 默认值：2MiB
 + 单位：KiB|MiB|GiB
 + 最小值：0
@@ -536,7 +536,7 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。
 
 ### `low-pri-pool-ratio` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
-+ 控制 titan 组件的 block cache 的使用比率。
++ 控制 Titan 组件使用的 block cache 占整个 block cache 的比例。
 + 默认值：0.2
 
 ## storage.flow-control
@@ -871,10 +871,10 @@ raftstore 相关的配置项。
 
 > **注意：**
 >
-> - 该变量是由 v6.3.0 中的 [`report-min-resolved-ts-interval`](https://docs-archive.pingcap.com/zh/tidb/v6.3/tikv-configuration-file/#report-min-resolved-ts-interval) 更名而来的。从 v7.6.0 开始，`report-min-resolved-ts-interval` 不再生效。
+> 该变量是由 v6.3.0 中的 [`report-min-resolved-ts-interval`](https://docs-archive.pingcap.com/zh/tidb/v6.3/tikv-configuration-file/#report-min-resolved-ts-interval) 更名而来的。从 v7.6.0 开始，`report-min-resolved-ts-interval` 不再生效。
 
-+ 设置 PD leader 收到 Resolved TS 的间隔时间。如果该值设置为 `0`，表示禁用该功能。
-+ 默认值：在 v6.3.0 之前版本中为 `"0s"`，在 v6.3.0 及之后的版本中为 `"1s"`，即最小正值。
++ 设置 TiKV 向 PD leader 上报 Resolved TS 的最小时间间隔。设置为 `0` 表示禁用该功能。
++ 默认值：`"1s"`，即最小正值。在 v6.3.0 之前，默认值为 `"0s"`。
 + 最小值：0
 + 单位：秒
 
@@ -2382,9 +2382,9 @@ Raft Engine 相关的配置项。
 
 ### `incremental-scan-concurrency-limit` <span class="version-mark">从 v7.6.0 版本开始引入</span>
 
-+ 增量扫描历史数据任务的最大队列长度。
++ 控制增量扫描历史数据任务的最大队列长度。当待执行任务数超过此限制时，新任务将被拒绝。
 + 默认值：10000，即最多可允许创建 10000 个任务等待执行。
-+ 注意：`incremental-scan-concurrency-limit` 需要大于等于 `incremental-scan-concurrency`，否则 TiKV 会将默认值使用 `incremental-scan-concurrency` 进行覆盖。
++ 注意：`incremental-scan-concurrency-limit` 需要大于等于 `incremental-scan-concurrency`，否则 TiKV 会使用 `incremental-scan-concurrency` 覆盖默认值。
 
 ## resolved-ts
 
@@ -2618,7 +2618,7 @@ Raft Engine 相关的配置项。
 
 ### `enable-thread-exclusive-arena` <span class="version-mark">从 v8.1.0 版本开始引入</span>
 
-+ 控制是否开启 TiKV 线程级别的内存分配展示，以跟踪 TiKV 各个线程的内存使用情况。
++ 控制是否展示 TiKV 线程级别的内存分配情况，以跟踪 TiKV 各个线程的内存使用。
 + 默认值：true
 
 ## in-memory-engine <span class="version-mark">从 v8.5.0 版本开始引入</span>
