@@ -94,7 +94,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `tick-interval`
 
-+ 等价于 etcd 的 `heartbeat-interval` 配置项，用于控制 PD 节点中内嵌的 etcd 之间的 Raft 心跳间隔。
++ 等价于 etcd 的 `heartbeat-interval` 配置项，用于控制 PD 节点中内嵌的 etcd 之间的 Raft 心跳间隔。较小的值可以提高故障检测速度，但会增加网络负载。
 + 默认值：500ms
 
 ### `election-interval`
@@ -105,7 +105,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `enable-prevote`
 
-+ 等价于 etcd 的 `enable-prevote` 配置项，用于控制 PD 节点中内嵌的 etcd 是否开启 Raft 预投票，启用后，etcd 会进行额外的选举阶段，以检查是否能获得足够的票数赢得选举，从而最大程度地减少服务中断。
++ 等价于 etcd 的 `enable-prevote` 配置项，用于控制 PD 节点中内嵌的 etcd 是否开启 Raft 预投票。启用后，etcd 会进行额外的选举阶段，以检查是否能获得足够的票数赢得选举，从而最大程度地减少服务中断。
 + 默认值：true
 
 ### `force-new-cluster`
@@ -418,12 +418,12 @@ pd-server 相关配置项。
 
 ### `enable-heartbeat-breakdown-metrics` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
-+ 是否开启 Region 心跳指标拆分，用于统计 Region 心跳处理各阶段所消耗的时间。
++ 是否开启 Region 心跳指标拆分，用于统计 Region 心跳处理各阶段所消耗的时间，便于在监控上分析心跳处理中不同阶段所消耗的时间。
 + 默认值：true
 
 ### `enable-heartbeat-concurrent-runner` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
-+ 是否开启 Region 心跳异步并发处理，开启后会使用一个执行器异步并发地处理 Region 心跳请求。
++ 是否开启 Region 心跳异步并发处理功能。开启后会使用独立的执行器异步并发处理 Region 心跳请求，可提高心跳处理吞吐量，降低延迟。
 + 默认值：true
 
 ## replication
