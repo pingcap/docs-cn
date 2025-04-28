@@ -2382,9 +2382,9 @@ Raft Engine 相关的配置项。
 
 ### `incremental-scan-concurrency-limit` <span class="version-mark">从 v7.6.0 版本开始引入</span>
 
-+ 控制增量扫描历史数据任务的最大队列长度。当待执行任务数超过此限制时，新任务将被拒绝。
++ 待执行的增量扫描历史数据任务的最大队列长度。当待执行任务数超过此限制时，新任务将被拒绝。
 + 默认值：10000，即最多可允许创建 10000 个任务等待执行。
-+ 注意：`incremental-scan-concurrency-limit` 需要大于等于 `incremental-scan-concurrency`，否则 TiKV 会使用 `incremental-scan-concurrency` 覆盖默认值。
++ 注意：`incremental-scan-concurrency-limit` 需要大于等于 `incremental-scan-concurrency`，否则 TiKV 会使用 `incremental-scan-concurrency` 覆盖此配置。
 
 ## resolved-ts
 
