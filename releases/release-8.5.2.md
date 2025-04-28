@@ -125,7 +125,7 @@ TiDB 版本：8.5.2
 
 + PD <!--tw@lilin90: 5 notes--> 
 
-    - 修复在启用微服务的场景中，转发 Tso 可能引起的并发问题 [#9091](https://github.com/tikv/pd/issues/9091) @[lhy1024](https://github.com/lhy1024)
+    - 修复在启用微服务的场景中，转发 TSO 可能引起的并发问题 [#9091](https://github.com/tikv/pd/issues/9091) @[lhy1024](https://github.com/lhy1024)
     - 修复调用 `BatchScanRegions` 时，返回结果未被正确限制的问题  [#9216](https://github.com/tikv/pd/issues/9216) @[lhy1024](https://github.com/lhy1024)
     - 修复 follower 发生网络隔离时，触发非预期的选举的问题 [#9020](https://github.com/tikv/pd/issues/9020) @[lhy1024](https://github.com/lhy1024)
     - 修复 Resource Control 中，当存在 `QUERY_LIMIT` 时，`COOLDOWN`/`SWITCH_GROUP` 无法触发的问题  [#60404](https://github.com/pingcap/tidb/issues/60404) @[JmPotato](https://github.com/JmPotato)
