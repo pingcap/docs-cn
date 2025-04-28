@@ -5004,7 +5004,10 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用来控制是否忽略 `IN` 列表中元素差异对计划摘要的影响。设置为 `ON` 时，TiDB 将考虑 `IN` 列表中元素差异（包括数量）对计划摘要的影响。设置为 `OFF` 时，TiDB 将不考虑 `IN` 列表中元素差异（包括数量）对计划摘要的影响。
+- 这个变量用来控制 TiDB 在生成执行计划摘要 (Plan Digest) 时，是否忽略不同查询中 `IN` 列表的元素差异。
+
+    - 当为默认值 `OFF` 时，TiDB 在生成执行计划摘要时，会忽略 `IN` 列表中的元素差异（包括元素数量差异）。
+    - 当设置为 `ON` 时，TiDB 会将 `IN` 列表中的元素（包括元素数量）作为执行计划摘要的一部分。`IN` 列表的元素差异将导致生成的执行计划摘要不同。
 
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
