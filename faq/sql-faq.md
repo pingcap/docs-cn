@@ -324,6 +324,73 @@ TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schem
 - 如果 Owner 不存在，尝试手动触发 Owner 选举：`curl -X POST http://{TiDBIP}:10080/ddl/owner/resign`。
 - 如果 Owner 存在，导出 Goroutine 堆栈并检查可能卡住的地方。
 
+## JDBC 连接所使用的排序规则
+
+本节列出了 JDBC 连接排序规则的相关问题。关于 TiDB 支持的字符集和排序规则，请参考[字符集和排序规则](/character-set-and-collation.md)。
+
+### 当 JDBC URL 中未配置 `connectionCollation` 时，JDBC 连接使用什么排序规则？
+
+当 JDBC URL 中未配置 `connectionCollation` 时，有以下两种场景：
+
+**场景一**：JDBC URL 中 `connectionCollation` 和 `characterEncoding` 均未配置
+
+- 对于 Connector/J8.0.25 及之前版本，JDBC 驱动程序将尝试使用服务器的默认字符集。因为 TiDB 的默认字符集为 `utf8mb4`，驱动程序将使用 `utf8mb4_bin` 作为连接排序规则。
+- 对于 Connector/J8.0.26 及之后版本，JDBC 驱动程序将使用 `utf8mb4` 字符集，并根据 `SELECT VERSION()` 的返回值自动选择排序规则。
+
+    - 当返回值小于 `8.0.1` 时，驱动程序使用 `utf8mb4_general_ci` 作为连接排序规则。TiDB 将遵循驱动程序，使用 `utf8mb4_general_ci` 作为排序规则。
+    - 当返回值大于等于 `8.0.1` 时，驱动程序使用 `utf8mb4_0900_ai_ci` 作为连接排序规则。v7.4.0 及之后版本的 TiDB 将遵循驱动程序，使用 `utf8mb4_0900_ai_ci` 作为排序规则，而 v7.4.0 之前版本的 TiDB 由于不支持 `utf8mb4_0900_ai_ci` 排序规则，将回退到使用默认的排序规则 `utf8mb4_bin`。
+
+**场景二**：JDBC URL 中配置了 `characterEncoding=utf8` 但未配置 `connectionCollation`，JDBC 驱动程序将按照映射规则使用 `utf8mb4` 字符集，并按照场景一中的描述选择排序规则。
+
+### 如何解决 TiDB 升级后排序规则变化带来的问题？
+
+在 TiDB v7.4 及之前版本中，如果 JDBC URL 中未配置 `connectionCollation`，且 `characterEncoding` 未配置或配置为 `UTF-8`，TiDB [`collation_connection`](/system-variables.md#collation_connection) 变量将默认使用 `utf8mb4_bin` 排序规则。
+
+从 TiDB v7.4 开始，如果 JDBC URL 中未配置 `connectionCollation`，且 `characterEncoding` 未配置或配置为 `UTF-8`，[`collation_connection`](/system-variables.md#collation_connection) 变量值取决于 JDBC 驱动版本。例如，对于 Connector/J8.0.26 及之后版本，JDBC 驱动程序默认使用 `utf8mb4` 字符集，使用 `utf8mb4_general_ci` 作为连接排序规则，TiDB 将遵循驱动程序，[`collation_connection`](/system-variables.md#collation_connection) 变量将使用 `utf8mb4_0900_ai_ci` 排序规则。详情请参考[JDBC 连接的排序规则](#当-jdbc-url-中未配置-connectioncollation-时jdbc-连接使用什么排序规则)。
+
+当从较低版本升级到 v7.4 或更高版本时（例如，从 v6.5 升级到 v7.5），如需保持 JDBC 连接的 `collation_connection` 为 `utf8mb4_bin`，建议在 JDBC URL 中配置 `connectionCollation` 参数。
+
+以下为 TiDB v6.5 中常见的 JDBC URL 配置：
+
+```
+spring.datasource.url=JDBC:mysql://{TiDBIP}:{TiDBPort}/{DBName}?characterEncoding=UTF-8&useSSL=false&useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSqlLimit=10000&prepStmtCacheSize=1000&useConfigs=maxPerformance&rewriteBatchedStatements=true&defaultfetchsize=-2147483648&allowMultiQueries=true
+```
+
+升级到 TiDB v7.4 或更高版本后，建议在 JDBC URL 中配置 `connectionCollation` 参数：
+
+```
+spring.datasource.url=JDBC:mysql://{TiDBIP}:{TiDBPort}/{DBName}?characterEncoding=UTF-8&connectionCollation=utf8mb4_bin&useSSL=false&useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSqlLimit=10000&prepStmtCacheSize=1000&useConfigs=maxPerformance&rewriteBatchedStatements=true&defaultFetchSize=-2147483648&allowMultiQueries=true
+```
+
+### `utf8mb4_bin` 与 `utf8mb4_0900_ai_ci` 排序规则有何区别？
+
+| 排序规则             | 是否区分大小写 | 是否忽略末尾空格 | 是否区分重音 | 比较方式               |
+|----------------------|----------------|------------------|--------------|------------------------|
+| `utf8mb4_bin`        | 区分           | 忽略             | 区分         | 按二进制编码值比较     |
+| `utf8mb4_0900_ai_ci` | 不区分         | 不忽略           | 不区分       | 使用 Unicode 排序算法 |
+
+例如：
+
+```sql
+-- utf8mb4_bin 区分大小写
+SELECT 'apple' = 'Apple' COLLATE utf8mb4_bin;  -- 返回 0 (FALSE)
+
+-- utf8mb4_0900_ai_ci 不区分大小写
+SELECT 'apple' = 'Apple' COLLATE utf8mb4_0900_ai_ci;  -- 返回 1 (TRUE)
+
+-- utf8mb4_bin 忽略末尾空格
+SELECT 'Apple ' = 'Apple' COLLATE utf8mb4_bin; -- 返回 1 (TRUE)
+
+-- utf8mb4_0900_ai_ci 不忽略末尾空格
+SELECT 'Apple ' = 'Apple' COLLATE utf8mb4_0900_ai_ci; -- 返回 0 (FALSE)
+
+-- utf8mb4_bin 区分重音
+SELECT 'café' = 'cafe' COLLATE utf8mb4_bin;  -- 返回 0 (FALSE)
+
+-- utf8mb4_0900_ai_ci 不区分重音
+SELECT 'café' = 'cafe' COLLATE utf8mb4_0900_ai_ci;  -- 返回 1 (TRUE)
+```
+
 ## SQL 优化
 
 ### TiDB 执行计划解读
