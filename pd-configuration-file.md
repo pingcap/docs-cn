@@ -101,6 +101,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + 等价于 etcd 的 `election-timeout` 配置项，用于控制 PD 节点中内嵌的 etcd 的选举超时时间，即在超过该时间没有收到来自其他 etcd 节点的有效心跳后，当前 etcd 节点会发起 Raft 选举。
 + 默认值：3000ms
++ 该值必须至少为 `tick-interval` 的 5 倍，例如 `tick-interval` 为 500ms，则 `election-interval` 必须大于等于 2500ms。
 
 ### `enable-prevote`
 
