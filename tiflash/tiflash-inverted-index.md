@@ -9,15 +9,13 @@ summary: 了解如何在 TiDB 中构建并使用数值列倒排索引加速 OLAP
 
 对于数值列（整数、时间和日期类型），我们可以简化存储从数字到其在列中位置的映射（值 → rowid）。因此，使用倒排索引，可以快速查找包含特定值的行，从而加快 WHERE 子句的处理速度。
 
-## 使用限制
+## 适用场景
 
-- 集群需要提前部署 TiFlash 节点。
-- 数值列倒排索引不能作为主键或者唯一索引。
-- 数值列倒排索引只能基于单一的数值列创建，不能与其他列组合形成复合索引。
-- 不支持直接删除具有数值列倒排索引的列。可以通过先删除列上的数值列倒排索引，再删除列的方式完成删除。
-- 不支持对带有数值列倒排索引的列进行 [Reorg 类型变更](/sql-statements/sql-statement-modify-column.md)。
-- 不支持将数值列倒排索引[设置为不可见](/sql-statements/sql-statement-alter-index.md)。
-- 不支持在开启了[静态加密](/encryption-at-rest.md)的 TiFlash 节点上构建数值列倒排索引。
+数值列倒排索引在 TiFlash 中构建，支持数值、日期时间类型的 =, !=, >, >=, <, <=, in 快速过滤，在以下场景中数值列倒排索引有明显优势：
+
+- 过滤条件过滤率高，但过滤后行数依然较多。TiFlash 批量读取性能可能优于 TiKV 索引回表。
+- 查询包含 IndexMerge 或 IndexJoin 算子，但 TiKV 索引命中行数多导致性能差。将 IndexJoin 转化为 HashJoin，下推到 TiFlash 节点进行计算，利用 MPP 并行降低查询延迟。
+- 查询 WHERE 子句同时包含简单等值、范围过滤条件和复杂函数过滤条件。数值列倒排索引帮忙提前过滤掉不满足简单等值、范围过滤条件的行，从而减少复杂函数过滤条件的计算量。
 
 ## 创建数值列倒排索引
 
@@ -51,7 +49,7 @@ summary: 了解如何在 TiDB 中构建并使用数值列倒排索引加速 OLAP
 
 ## 使用数值列倒排索引
 
-数值列倒排索引支持包含 =, !=, >, >=, <, <=, in 的过滤条件，TiDB 优化器会自动选择使用倒排索引来加速查询，如下所示：
+TiDB 优化器会自动选择使用倒排索引来加速查询，如下所示：
 
 ```sql
 SELECT *
@@ -69,7 +67,7 @@ WHERE count > 10 AND create_date = '2023-01-01';
 
 ## 查看索引构建进度
 
-当插入大批量数据后，部分数据可能没有立即持久化到 TiFlash 中。对于已经持久化的向量数据，数值列倒排索引是通过同步的方式构建的；对于尚未未持久化的数据，数值列倒排索引会在数据持久化后才开始构建，但这并不会影响数据的准确性和一致性。你仍然可以随时进行查询，并获得完整的结果，但需要注意的是，查询性能只有在数值列倒排索引完全构建好之后才会达到最佳水平。
+当插入大批量数据后，部分数据可能没有立即持久化到 TiFlash 中。对于已经持久化的数据，数值列倒排索引是通过同步的方式构建的；对于尚未未持久化的数据，数值列倒排索引会在数据持久化后才开始构建，但这并不会影响数据的准确性和一致性。你仍然可以随时进行查询，并获得完整的结果，但需要注意的是，查询性能只有在数值列倒排索引完全构建好之后才会达到最佳水平。
 
 要查看索引构建进度，可以按如下方式查询 `INFORMATION_SCHEMA.TIFLASH_INDEXES` 表：
 
@@ -101,7 +99,7 @@ SELECT * FROM INFORMATION_SCHEMA.TIFLASH_INDEXES;
 
 你可以使用 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 或 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 语句查看一个查询是否使用了数值列倒排索引。如果 `TableFullScan` 执行计划的 `operator info` 列中出现了 `invertedIndex:`，表示 TiDB 在扫描该表时使用了数值列倒排索引。
 
-**示例：使用了向量索引的查询**
+**示例：使用了数值列倒排索引的查询**
 
 ```sql
 [tidb]> EXPLAIN SELECT * FROM foo WHERE count < 10;
@@ -141,9 +139,9 @@ SELECT * FROM INFORMATION_SCHEMA.TIFLASH_INDEXES;
 4 rows in set (0.00 sec)
 ```
 
-## 分析向量搜索性能
+## 分析数值列倒排索引性能
 
-你可以执行 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 语句，然后查看输出中的 `execution info` 列了解向量索引使用情况的详细信息：
+你可以执行 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 语句，然后查看输出中的 `execution info` 列了解数值列倒排索引使用情况的详细信息：
 
 ```sql
 [tidb]> EXPLAIN ANALYZE SELECT * FROM foo WHERE create_date > DATE('2025-05-01');
@@ -163,13 +161,23 @@ SELECT * FROM INFORMATION_SCHEMA.TIFLASH_INDEXES;
 
 以下为一些重要字段的解释：
 
-- `inverted_idx.load.total`：加载索引的总时长。该字段的值可能会超过查询实际耗时，因为 TiDB 可能会并行加载多个向量索引。
+- `inverted_idx.load.total`：加载索引的总时长。该字段的值可能会超过查询实际耗时，因为 TiDB 可能会并行加载多个数值列倒排索引。
 - `inverted_idx.load.from_s3`：从 S3 加载的索引数量。
 - `inverted_idx.load.from_disk`：从磁盘加载的索引数量。这些索引之前已经从 S3 下载到磁盘上。
 - `inverted_idx.load.from_cache`：从缓存中加载的索引数量。这些索引之前已经从 S3 下载并存储在缓存中。
-- `inverted_idx.search.total`：在索引中搜索的总时长。如果该时间存在较大的延迟，通常意味着该索引为冷索引（以前从未被访问过，或很久以前被访问过），因此在索引中搜索时会产生较多的 I/O 操作。该字段的值可能会超过查询实际耗时，因为 TiDB 可能会并行搜索多个向量索引。
+- `inverted_idx.search.total`：在索引中搜索的总时长。如果该时间存在较大的延迟，通常意味着该索引为冷索引（以前从未被访问过，或很久以前被访问过），因此在索引中搜索时会产生较多的 I/O 操作。该字段的值可能会超过查询实际耗时，因为 TiDB 可能会并行搜索多个数值列倒排索引。
 - `inverted_idx.search.skipped_packs`：在搜索过程中跳过的 Pack 的数量。Pack 是 TiFlash 中存储数据的基本单位。TiFlash 会将数据分成多个 Pack 进行存储和索引。该字段的值越大，表示在搜索过程中跳过的 Pack 越多，减少的 I/O 操作越多。
 - `inverted_idx.search.indexed_rows`：被索引的总行数。
 - `inverted_idx.search.selected_rows`：在搜索过程中被选中的总行数。
 
 关于执行信息输出的更多信息，请参阅 [`EXPLAIN`](/sql-statements/sql-statement-explain.md)、[`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)，以及[使用 `EXPLAIN` 解读执行计划](/explain-walkthrough.md)。
+
+## 使用限制
+
+- 集群需要提前部署 TiFlash 节点。
+- 数值列倒排索引不能作为主键或者唯一索引。
+- 数值列倒排索引只能基于单一的数值列创建，不能与其他列组合形成复合索引。
+- 不支持直接删除具有数值列倒排索引的列。可以通过先删除列上的数值列倒排索引，再删除列的方式完成删除。
+- 不支持对带有数值列倒排索引的列进行 [Reorg 类型变更](/sql-statements/sql-statement-modify-column.md)。
+- 不支持将数值列倒排索引[设置为不可见](/sql-statements/sql-statement-alter-index.md)。
+- 不支持在开启了[静态加密](/encryption-at-rest.md)的 TiFlash 节点上构建数值列倒排索引。
