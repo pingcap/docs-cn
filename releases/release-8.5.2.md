@@ -127,9 +127,9 @@ TiDB 版本：8.5.2
 
     - 修复在启用微服务的场景中，转发 TSO 可能引起的并发问题 [#9091](https://github.com/tikv/pd/issues/9091) @[lhy1024](https://github.com/lhy1024)
     - 修复调用 `BatchScanRegions` 时，返回结果未被正确限制的问题  [#9216](https://github.com/tikv/pd/issues/9216) @[lhy1024](https://github.com/lhy1024)
-    - 修复 follower 发生网络隔离时，触发非预期的选举的问题 [#9020](https://github.com/tikv/pd/issues/9020) @[lhy1024](https://github.com/lhy1024)
-    - 修复 Resource Control 中，当存在 `QUERY_LIMIT` 时，`COOLDOWN`/`SWITCH_GROUP` 无法触发的问题  [#60404](https://github.com/pingcap/tidb/issues/60404) @[JmPotato](https://github.com/JmPotato)
-    - 修复 `StoreInfo` 可能存在错误覆盖的问题[#9185](https://github.com/tikv/pd/issues/9185) @[okJiang](https://github.com/okJiang)
+    - 修复 follower 发生网络隔离时，触发非预期选举的问题 [#9020](https://github.com/tikv/pd/issues/9020) @[lhy1024](https://github.com/lhy1024)
+    - 修复当资源管控中存在 `QUERY_LIMIT` 时，无法触发 `COOLDOWN`/`SWITCH_GROUP` 的问题 [#60404](https://github.com/pingcap/tidb/issues/60404) @[JmPotato](https://github.com/JmPotato)
+    - 修复 `StoreInfo` 可能存在错误覆盖的问题 [#9185](https://github.com/tikv/pd/issues/9185) @[okJiang](https://github.com/okJiang)
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-7.5.6.md > 错误修复> PD - 修复在导入或添加索引场景中，因 PD 网络不稳定可能导致操作失败的问题 [#8962](https://github.com/tikv/pd/issues/8962) @[okJiang](https://github.com/okJiang)
     - (dup): release-7.5.6.md > 错误修复> PD - 修复单个日志文件 `max-size` 默认值未被正确设置的问题 [#9037](https://github.com/tikv/pd/issues/9037) @[rleungx](https://github.com/rleungx)
@@ -161,7 +161,7 @@ TiDB 版本：8.5.2
 
     + Backup & Restore (BR) <!--tw@lilin90: 1 note-->
 
-        - 修复在极端情况下，恢复过程中重复 download sst 导致 TiKV panic 的问题。[#18335]([https://github.com/tikv/tikv/issues/18335]) @[3pointer]([https://github.com/3pointer])
+        - 修复在极端情况下，数据恢复过程中重复下载 SST 文件导致 TiKV panic 的问题 [#18335](https://github.com/tikv/tikv/issues/18335) @[3pointer]([https://github.com/3pointer])
         - (dup): release-6.5.12.md > 错误修复> Tools> Backup & Restore (BR) - 修复使用 `br log status --json` 查询日志备份任务时，返回结果中缺少任务状态 `status` 字段的问题 [#57959](https://github.com/pingcap/tidb/issues/57959) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-6.5.12.md > 错误修复> Tools> Backup & Restore (BR) - 修复 BR 向 TiKV 发送请求时收到 `rpcClient is idle` 错误导致恢复失败的问题 [#58845](https://github.com/pingcap/tidb/issues/58845) @[Tristan1900](https://github.com/Tristan1900)
         - (dup): release-7.5.6.md > 错误修复> Tools> Backup & Restore (BR) - 修复日志备份在无法访问 PD 时，遇到致命错误无法正确退出的问题 [#18087](https://github.com/tikv/tikv/issues/18087) @[YuJuncen](https://github.com/YuJuncen)
@@ -188,10 +188,10 @@ TiDB 版本：8.5.2
         - (dup): release-6.5.12.md > 错误修复> Tools> TiDB Lightning - 修复在高并发场景下，从云存储导入数据时性能下降的问题 [#57413](https://github.com/pingcap/tidb/issues/57413) @[xuanyu66](https://github.com/xuanyu66)
         - (dup): release-6.5.12.md > 错误修复> Tools> TiDB Lightning - 修复使用 TiDB Lightning 导入数据时，错误报告输出被截断的问题 [#58085](https://github.com/pingcap/tidb/issues/58085) @[lance6716](https://github.com/lance6716)
         - (dup): release-6.5.12.md > 错误修复> Tools> TiDB Lightning - 修复日志没有正确脱敏的问题 [#59086](https://github.com/pingcap/tidb/issues/59086) @[GMHDBJD](https://github.com/GMHDBJD)
-        - 修复了当使用外部账号执行 GCS 存储操作鉴权都会失败并且报 context canceled 错误的问题 [#60155](https://github.com/pingcap/tidb/issues/60155) @[lance6716](https://github.com/lance6716)
-        - 修复了从云存储导入 parquet 文件到 TiDB 时，lightning 可能会 stuck 达数小时的问题 [#60224](https://github.com/pingcap/tidb/issues/60224) @[joechenrh](https://github.com/joechenrh)
-        - 修复了当 import 大量数据时，在 write/ingest SST 到 TiKV 集群期间 Lightning 可能会 OOM 的问题 [#59947](https://github.com/pingcap/tidb/issues/59947) @[OliverS929](https://github.com/OliverS929)
-        - 修复了Lightning 建表的最大 QPS 很低且 information_schema.tables 速度变慢，会导致在 1M table 场景下 Lightning 调度任务运行速度变慢的问题 [#58141](https://github.com/pingcap/tidb/issues/58141@) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复使用外部账号执行 GCS 存储操作鉴权会失败并且报 `context canceled` 错误的问题 [#60155](https://github.com/pingcap/tidb/issues/60155) @[lance6716](https://github.com/lance6716)
+        - 修复将 Parquet 文件从云存储导入到 TiDB 时，TiDB Lightning 可能会卡住达数小时的问题 [#60224](https://github.com/pingcap/tidb/issues/60224) @[joechenrh](https://github.com/joechenrh)
+        - 修复当导入大量数据时，在 write/ingest SST 到 TiKV 集群期间，TiDB Lightning 可能会 OOM 的问题 [#59947](https://github.com/pingcap/tidb/issues/59947) @[OliverS929](https://github.com/OliverS929)
+        - 修复 TiDB Lightning 建表的最大 QPS 过低且访问 `information_schema.tables` 变慢，导致在百万张表场景下 TiDB Lightning 调度任务运行缓慢的问题 [#58141](https://github.com/pingcap/tidb/issues/58141) @[D3Hunter](https://github.com/D3Hunter)
 
     + Dumpling
 
