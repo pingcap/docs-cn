@@ -16,28 +16,8 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 
 ## 操作系统及平台要求
 
-<<<<<<< HEAD
 <SimpleTab>
 <div label="v6.1.1 及以上的 v6.1.x 版本">
-=======
-|  操作系统   |   支持的 CPU 架构   |
-|   :---   |   :---   |
-| Red Hat Enterprise Linux 8.4 及以上的 8.x 版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
-| Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| Amazon Linux 2023      |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
-| 银河麒麟 V10 SP1/SP2/SP3（从 v7.5.5 开始支持 SP3）   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| 统信操作系统 (UOS) V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| openEuler 22.03 LTS SP1/SP3 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| macOS 13 (Ventura) 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
-| Oracle Enterprise Linux 8 及以上的版本  |  x86_64           |
-| Ubuntu LTS 22.04 及以上的版本  |  x86_64           |
-| CentOS 9 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
-| Debian 11 (Bullseye) 及以上的版本  |  x86_64           |
-| Fedora 40 及以上的版本   |  x86_64           |
-| openSUSE Leap 15.6 以上的版本（不包含 Tumbleweed） |  x86_64           |
-| SUSE Linux Enterprise Server 15.6  |  x86_64                        |
->>>>>>> bda8212521 (hardware-and-software-requirements: update "麒麟欧拉版"  to "银河麒麟" (#20279))
 
 自 v6.1.1 开始，针对不同操作系统和 CPU 架构的组合，TiDB 提供不同级别质量标准的支持。
 
@@ -48,7 +28,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
     | Red Hat Enterprise Linux 8.4 及以上的 8.x 版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
     | <ul><li>Red Hat Enterprise Linux 7.3 及以上的 7.x 版本</li><li>CentOS 7.3 及以上的 7.x 版本</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
     |  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-    | 麒麟欧拉版 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+    | 银河麒麟 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
     | 统信操作系统 (UOS) V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 
     > **注意：**
