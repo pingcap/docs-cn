@@ -233,7 +233,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `snap-min-ingest-size` <span class="version-mark">从 v8.1.2 版本开始引入</span>
 
-+ 是否采用 ingest 方式处理 snapshot 的最小阈值。当 snapshot 大小超过该阈值时，采用 ingest 方式（通过 RocksDB 的 SST 文件导入机制）；否则采用直接写入方式（逐条写入），后者对小文件处理效率更高。
++ 指定 TiKV 在处理 snapshot 时是否采用 ingest 方式的最小阈值。
+
+    + 当 snapshot 大小超过该阈值时，TiKV 会采用 ingest 方式，即将 snapshot 中的 SST 文件导入 RocksDB。这种方式适合处理大文件，导入速度更快。
+    + 当 snapshot 大小不超过该阈值时，TiKV 会采用直接写入方式，即将每一条数据逐条写入 RocksDB。这种方式在处理小文件时更高效。
+
 + 默认值：2MiB
 + 单位：KiB|MiB|GiB
 + 最小值：0
@@ -867,11 +871,11 @@ raftstore 相关的配置项。
 + 默认值：10s
 + 最小值：0
 
-### `pd-report-min-resolved-ts-interval` <span class="version-mark">从 v6.0.0 版本开始引入</span>
+### `pd-report-min-resolved-ts-interval` <span class="version-mark">从 v7.6.0 版本开始引入</span>
 
 > **注意：**
 >
-> 该变量是由 v6.3.0 中的 [`report-min-resolved-ts-interval`](https://docs-archive.pingcap.com/zh/tidb/v6.3/tikv-configuration-file/#report-min-resolved-ts-interval) 更名而来的。从 v7.6.0 开始，`report-min-resolved-ts-interval` 不再生效。
+> 该配置项由 [`report-min-resolved-ts-interval`](https://docs.pingcap.com/zh/tidb/v7.5/tikv-configuration-file/#report-min-resolved-ts-interval-从-v600-版本开始引入) 更名而来。从 v7.6.0 开始，`report-min-resolved-ts-interval` 不再生效。
 
 + 设置 TiKV 向 PD leader 上报 Resolved TS 的最小时间间隔。设置为 `0` 表示禁用该功能。
 + 默认值：`"1s"`，即最小正值。在 v6.3.0 之前，默认值为 `"0s"`。
