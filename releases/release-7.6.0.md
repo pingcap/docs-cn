@@ -281,7 +281,7 @@ TiDB 版本：7.6.0
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiDB | [`tls-version`](/tidb-configuration-file.md#tls-version) | 修改 | 默认值为空，TiDB 默认支持的 TLS 版本从 `TLS1.1` 及更高提升为 `TLS1.2` 及更高。 |
-| TiKV | [`raftstore.report-min-resolved-ts-interval`](https://docs.pingcap.com/zh/tidb/v7.5/tikv-configuration-file/#report-min-resolved-ts-interval-从-v600-版本开始引入) | 更名 | 为了使变量名称更直观，从 v7.6.0 起，该配置项更名为 [`raftstore.pd-report-min-resolved-ts-interval`](/tikv-configuration-file.md#pd-report-min-resolved-ts-interval-从-v760-版本开始引入)。`raftstore.report-min-resolved-ts-interval` 不再生效。 |
+| TiKV | [`raftstore.report-min-resolved-ts-interval`](https://docs.pingcap.com/zh/tidb/v7.5/tikv-configuration-file/#report-min-resolved-ts-interval-从-v600-版本开始引入) | 更名 | 为了使名称更准确，从 v7.6.0 起，该配置项更名为 [`raftstore.pd-report-min-resolved-ts-interval`](/tikv-configuration-file.md#pd-report-min-resolved-ts-interval-从-v760-版本开始引入)。`raftstore.report-min-resolved-ts-interval` 不再生效。 |
 | TiKV | [`blob-file-compression`](/tikv-configuration-file.md#blob-file-compression) | 修改 | 设置 Titan 中 value 所使用的压缩算法。从 v7.6.0 开始，默认采用 `zstd` 压缩算法。 |
 | TiKV | [`rocksdb.defaultcf.titan.min-blob-size`](/tikv-configuration-file.md#min-blob-size) | 修改 | 从 TiDB v7.6.0 开始，新建集群默认值为 `32KB`。对于已有集群升级到 v7.6.0 版本的情况，默认值为 `1KB` 保持不变。 |
 | TiKV | [`rocksdb.titan.enabled`](/tikv-configuration-file.md#enabled) | 修改 | 开启 Titan 开关。v7.5.0 及更早的版本默认值为 `false`。从 v7.6.0 开始，新建集群默认值是 `true`，已有集群升级到 v7.6.0 或更高版本则会维持原有的配置。 |
