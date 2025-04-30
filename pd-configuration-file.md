@@ -91,6 +91,22 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + compaction-mode 为 periodic 时为元信息数据库自动压缩的间隔时间；compaction-mode 设置为 revision 时为自动压缩的版本数。
 + 默认值：1h
 
+### `tick-interval`
+
++ 等价于 etcd 的 `heartbeat-interval` 配置项，用于控制不同 PD 节点中内嵌的 etcd 实例之间的 Raft 心跳间隔。较小的值可以提高故障检测速度，但会增加网络负载。
++ 默认值：500ms
+
+### `election-interval`
+
++ 等价于 etcd 的 `election-timeout` 配置项，用于控制 PD 节点中内嵌的 etcd 实例的选举超时时间，即在超过该时间没有收到来自其他 etcd 实例的有效心跳后，当前 etcd 实例会发起 Raft 选举。
++ 默认值：3000ms
++ 该值必须至少为 [`tick-interval`](#tick-interval) 的 5 倍，例如 `tick-interval` 为 `500ms`，则 `election-interval` 必须大于等于 `2500ms`。
+
+### `enable-prevote`
+
++ 等价于 etcd 的 `pre-vote` 配置项，用于控制 PD 节点中内嵌的 etcd 是否开启 Raft 预投票。启用后，etcd 会进行额外的选举阶段，以检查是否能获得足够的票数赢得选举，从而最大程度地减少服务中断。
++ 默认值：true
+
 ### `force-new-cluster`
 
 + 强制让该 PD 以一个新集群启动，且修改 raft 成员数为 1。
@@ -389,6 +405,16 @@ pd-server 相关配置项。
 
 * 设置 PD 保留的 Hot Region 信息的最长时间。单位为天。
 * 默认值: 7
+
+### `enable-heartbeat-breakdown-metrics` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
++ 是否开启 Region 心跳指标拆分，用于统计 Region 心跳处理各阶段所消耗的时间，便于在监控上进行分析。
++ 默认值：true
+
+### `enable-heartbeat-concurrent-runner` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
++ 是否开启 Region 心跳异步并发处理功能。开启后会使用独立的执行器异步并发处理 Region 心跳请求，可提高心跳处理吞吐量，降低延迟。
++ 默认值：true
 
 ## replication
 
