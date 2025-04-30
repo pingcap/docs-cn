@@ -2890,6 +2890,18 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用来控制用户会话中事务的空闲超时。当用户会话处于事务状态且空闲时间超过该变量设定的值时，会话会被 Kill 掉。用户会话空闲是指没有正在执行的请求，处于等待请求的状态。
 - 默认值 `0` 表示没有时间限制。
 
+### `tidb_ignore_inlist_plan_digest` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用来控制 TiDB 在生成执行计划摘要 (Plan Digest) 时，是否忽略不同查询中 `IN` 列表的元素差异。
+
+    - 当为默认值 `OFF` 时，TiDB 在生成执行计划摘要时，不会忽略 `IN` 列表中的元素差异（包括元素数量差异）。`IN` 列表的元素差异将导致生成的执行计划摘要不同。
+    - 当设置为 `ON` 时，TiDB 会忽略 `IN` 列表中的元素差异（包括元素数量差异），在执行计划摘要中使用 `...` 代替 `IN` 列表中的元素。此时，相同类型的 `IN` 查询会生成相同的执行计划摘要。
+
 ### `tidb_ignore_prepared_cache_close_stmt` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
