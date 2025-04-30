@@ -1053,13 +1053,6 @@ raftstore 相关的配置项。
 + 默认值：1MiB
 + 最小值：0
 
-### `report-min-resolved-ts-interval` <span class="version-mark">从 v6.0.0 版本开始引入</span>
-
-+ 设置 PD leader 收到 Resolved TS 的间隔时间。如果该值设置为 `0`，表示禁用该功能。
-+ 默认值：在 v6.3.0 之前版本中为 `"0s"`，在 v6.3.0 及之后的版本中为 `"1s"`，即最小正值。
-+ 最小值：0
-+ 单位：秒
-
 ### `evict-cache-on-memory-ratio` <span class="version-mark">从 v7.5.0 版本开始引入</span> 
 
 + 当 TiKV 的内存使用超过系统可用内存的 90%，并且 Raft 缓存条目占用的内存超过已使用内存 * `evict-cache-on-memory-ratio` 时，TiKV 会逐出 Raft 缓存条目。
