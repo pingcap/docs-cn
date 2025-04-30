@@ -1,6 +1,6 @@
 ---
 title: TiDB 8.1.2 Release Notes
-summary: 了解 TiDB 8.1.2 版本的改进提升和错误修复。
+summary: 了解 TiDB 8.1.2 版本的兼容性变更、改进提升和错误修复。
 ---
 
 # TiDB 8.1.2 Release Notes
@@ -10,6 +10,13 @@ summary: 了解 TiDB 8.1.2 版本的改进提升和错误修复。
 TiDB 版本：8.1.2
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v8.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v8.1.2#version-list)
+
+## 兼容性变更
+
+- 新增 TiKV 配置项 [`server.snap-min-ingest-size`](/tikv-configuration-file.md#snap-min-ingest-size-从-v812-版本开始引入)，用于指定 TiKV 在处理 snapshot 时是否采用 ingest 方式的最小阈值。默认值为 `2MiB`。
+
+    - 当 snapshot 大小超过该阈值时，TiKV 会采用 ingest 方式，即将 snapshot 中的 SST 文件导入 RocksDB。这种方式适合处理大文件，导入速度更快。
+    - 当 snapshot 大小不超过该阈值时，TiKV 会采用直接写入方式，即将每一条数据逐条写入 RocksDB。这种方式在处理小文件时更高效。
 
 ## 改进提升
 
