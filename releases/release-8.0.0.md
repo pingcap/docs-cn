@@ -341,6 +341,8 @@ TiDB 版本：8.0.0
 | TiKV | [`storage.block-cache.low-pri-pool-ratio`](/tikv-configuration-file.md#low-pri-pool-ratio-从-v800-版本开始引入) | 新增 | 指定 Titan 组件使用的 block cache 占整个 block cache 的比例。默认值为 `0.2`。 |
 | TiKV | [`rocksdb.defaultcf.titan.shared-blob-cache`](/tikv-configuration-file.md#shared-blob-cache从-v800-版本开始引入) | 新增 | 控制是否启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存。默认值为 `true`。|
 | TiKV | [`security.encryption.master-key.gcp.credential-file-path`](/encryption-at-rest.md#通过-kms-指定主密钥) | 新增 | 在 `security.encryption.master-key.vendor` 为 `gcp` 时，用于指定 Google Cloud 认证凭证文件的路径。|
+| PD | [`schedule.enable-heartbeat-breakdown-metrics`](/pd-configuration-file.md#enable-heartbeat-breakdown-metrics-从-v800-版本开始引入) | 新增 | 控制是否开启 Region 心跳指标拆分，用于统计 Region 心跳处理各阶段所消耗的时间，便于在监控上进行分析。默认值为 `true`。 |
+| PD | [`schedule.enable-heartbeat-concurrent-runner`](/pd-configuration-file.md#enable-heartbeat-concurrent-runner-从-v800-版本开始引入) | 新增 | 控制是否开启 Region 心跳异步并发处理功能。开启后会使用独立的执行器异步并发处理 Region 心跳请求，可提高心跳处理吞吐量，降低延迟。默认值为 `true`。 |
 | TiDB Lightning  | [`tikv-importer.duplicate-resolution`](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃)  | 废弃 | 用于在物理导入模式下设置是否检测和解决唯一键冲突的记录。从 v8.0.0 开始被参数 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 替代。 |
 | TiDB Lightning  | [`conflict.precheck-conflict-before-import`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)  | 新增 | 控制是否开启前置冲突检测，即导入数据到 TiDB 前，先检查所需导入的数据是否存在冲突。该参数默认值为 `false`，表示仅开启后置冲突检测。仅当导入模式为物理导入模式 (`tikv-importer.backend = "local"`) 时可以使用该参数。 |
 | TiDB Lightning  | [`logical-import-batch-rows`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 在逻辑导入模式下，用于限制每个事务中可插入的最大行数，默认值为 `65536`。 |
