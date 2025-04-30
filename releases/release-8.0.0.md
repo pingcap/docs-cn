@@ -336,7 +336,9 @@ TiDB 版本：8.0.0
 | TiKV | [`log-backup.initial-scan-rate-limit`](/tikv-configuration-file.md#initial-scan-rate-limit-从-v620-版本开始引入) | 修改 | 增加了最小值为 `1MiB` 的限制。 |
 | TiKV | [`raftstore.store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) | 修改 | 为了提升 TiKV 性能，该参数默认值从 `0` 修改为 `1`，表示 StoreWriter 线程池的大小默认为 `1`。|
 | TiKV | [`rocksdb.defaultcf.titan.blob-cache-size`](/tikv-configuration-file.md#blob-cache-size) | 修改 | 从 v8.0.0 开始，TiKV 引入了 `shared-blob-cache` 配置项并默认开启，因此无需再单独设置 `blob-cache-size`。只有当 `shared-blob-cache` 设置为 `false` 时，`blob-cache-size` 的设置才生效。|
+| TiKV | [`rocksdb.titan.max-background-gc`](/tikv-configuration-file.md#max-background-gc) | 修改 | 默认值从 `4` 修改为 `1`，以减少 Titan GC 过程对线程资源的占用。 |
 | TiKV | [`security.encryption.master-key.vendor`](/encryption-at-rest.md#通过-kms-指定主密钥) | 修改 | 主密钥可选的服务商类型新增 `gcp`。 |
+| TiKV | [`storage.block-cache.low-pri-pool-ratio`](/tikv-configuration-file.md#low-pri-pool-ratio-从-v800-版本开始引入) | 新增 | 指定 Titan 组件使用的 block cache 占整个 block cache 的比例。默认值为 `0.2`。 |
 | TiKV | [`rocksdb.defaultcf.titan.shared-blob-cache`](/tikv-configuration-file.md#shared-blob-cache从-v800-版本开始引入) | 新增 | 控制是否启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存。默认值为 `true`。|
 | TiKV | [`security.encryption.master-key.gcp.credential-file-path`](/encryption-at-rest.md#通过-kms-指定主密钥) | 新增 | 在 `security.encryption.master-key.vendor` 为 `gcp` 时，用于指定 Google Cloud 认证凭证文件的路径。|
 | PD | [`schedule.enable-heartbeat-breakdown-metrics`](/pd-configuration-file.md#enable-heartbeat-breakdown-metrics-从-v800-版本开始引入) | 新增 | 控制是否开启 Region 心跳指标拆分，用于统计 Region 心跳处理各阶段所消耗的时间，便于在监控上进行分析。默认值为 `true`。 |
