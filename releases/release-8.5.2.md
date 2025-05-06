@@ -97,7 +97,7 @@ TiDB 版本：8.5.2
     - 修复 `rowContainer` 在部分场景下会导致 TiDB panic 的问题 [#59976](https://github.com/pingcap/tidb/issues/59976) @[YangKeao](https://github.com/YangKeao)
     - 修复分区表在 `Point_Get` 场景下可能会出现分区裁剪错误的问题 [#59827](https://github.com/pingcap/tidb/issues/59827) @[mjonss](https://github.com/mjonss)
     - 修复在 DDL 执行过程中更新分区表记录可能会导致数据错误的问题 [#57588](https://github.com/pingcap/tidb/issues/57588) @[Defined2014](https://github.com/Defined2014)
-    - 修复部分场景下影响 `information_schema` 的性能和稳定性的问题 [#58142](https://github.com/pingcap/tidb/issues/58142) [#58363](https://github.com/pingcap/tidb/issues/58363) [#58712](https://github.com/pingcap/tidb/issues/58712) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复部分场景下 `information_schema` 的性能和稳定性受到影响的问题 [#58142](https://github.com/pingcap/tidb/issues/58142) [#58363](https://github.com/pingcap/tidb/issues/58363) [#58712](https://github.com/pingcap/tidb/issues/58712) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复在启用分布式执行框架 (Distributed eXecution Framework, DXF) 时，TiDB 内部会话中的 `tidb_txn_entry_size_limit` 不能动态调整的问题 [#59506](https://github.com/pingcap/tidb/issues/59506)@[D3Hunter](https://github.com/D3Hunter)
     - 修复在全局排序配置下，数据导入功能 `IMPORT INTO` 不能正确处理唯一键冲突的问题 [#59650](https://github.com/pingcap/tidb/issues/59650) @[lance6716](https://github.com/lance6716)
     - 修复在全局排序数据路径上注入网络延迟故障导致执行 `IMPORT INTO` 失败的问题 [#50451](https://github.com/pingcap/tidb/issues/50451) @[D3Hunter](https://github.com/D3Hunter) 
