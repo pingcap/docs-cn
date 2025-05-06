@@ -272,6 +272,7 @@ TiDB 版本：7.6.0
 | [`tidb_ddl_version`](https://docs.pingcap.com/zh/tidb/v7.6/system-variables#tidb_ddl_version-从-v760-版本开始引入)  |  新增  | 用于控制是否开启 [TiDB DDL V2](https://docs.pingcap.com/zh/tidb/v7.6/ddl-v2)。将该变量的值设置为 `2` 可以开启该功能，设置为 `1` 关闭该功能。默认值为 `1`。开启后，将使用新版本的实现执行 DDL 语句。TiDB DDL V2 对 DDL 功能做了提升，建表 DDL 的执行速度相比 V1 版本提升 10 倍。 |
 | [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入)  |  新增  | 用于控制是否支持对分区表创建 `Global index`。默认值为 `OFF`。`Global index` 当前正处于开发阶段，**不推荐修改该变量值**。 |
 | [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) | 新增 | 用来控制用户会话中事务的空闲超时。当用户会话处于事务状态且空闲时间超过该变量设定的值时，会话会被 Kill 掉。默认值 `0` 表示没有时间限制。 |
+| [`tidb_ignore_inlist_plan_digest`](/system-variables.md#tidb_ignore_inlist_plan_digest-从-v760-版本开始引入) | 新增 | 用于控制 TiDB 在生成执行计划摘要 (Plan Digest) 时，是否忽略不同查询中 `IN` 列表的元素差异。默认值为 `OFF`，代表不忽略。 |
 | [`tidb_opt_enable_fuzzy_binding`](/system-variables.md#tidb_opt_enable_fuzzy_binding-从-v760-版本开始引入) | 新增 | 用于控制是否开启跨数据库绑定执行计划功能，默认值 `OFF` 表示关闭。 |
 | [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) | 新增 | 用于动态修改 TiDB 配置项 [`performance.txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入)，即限制 TiDB 单行数据的大小。默认值为 `0`，表示默认使用配置项的值。当设置为非 `0` 值时，优先使用该变量的值作为 `txn-entry-size-limit` 的值。 |
 | [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) | 新增 | 用于控制是否开启 [Active PD Follower](/tune-region-performance.md#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力)（实验特性）。当该值为 `OFF` 时，TiDB 仅从 PD leader 获取 Region 信息。当该值为 `ON` 时，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，因此 PD follower 也可以处理 Region 信息请求，从而减轻 PD leader 的 CPU 压力。 |
@@ -281,12 +282,15 @@ TiDB 版本：7.6.0
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiDB | [`tls-version`](/tidb-configuration-file.md#tls-version) | 修改 | 默认值为空，TiDB 默认支持的 TLS 版本从 `TLS1.1` 及更高提升为 `TLS1.2` 及更高。 |
+| TiKV | [`raftstore.report-min-resolved-ts-interval`](https://docs.pingcap.com/zh/tidb/v7.5/tikv-configuration-file/#report-min-resolved-ts-interval-从-v600-版本开始引入) | 更名 | 为了使名称更准确，从 v7.6.0 起，该配置项更名为 [`raftstore.pd-report-min-resolved-ts-interval`](/tikv-configuration-file.md#pd-report-min-resolved-ts-interval-从-v760-版本开始引入)。`raftstore.report-min-resolved-ts-interval` 不再生效。 |
 | TiKV | [`blob-file-compression`](/tikv-configuration-file.md#blob-file-compression) | 修改 | 设置 Titan 中 value 所使用的压缩算法。从 v7.6.0 开始，默认采用 `zstd` 压缩算法。 |
 | TiKV | [`rocksdb.defaultcf.titan.min-blob-size`](/tikv-configuration-file.md#min-blob-size) | 修改 | 从 TiDB v7.6.0 开始，新建集群默认值为 `32KB`。对于已有集群升级到 v7.6.0 版本的情况，默认值为 `1KB` 保持不变。 |
 | TiKV | [`rocksdb.titan.enabled`](/tikv-configuration-file.md#enabled) | 修改 | 开启 Titan 开关。v7.5.0 及更早的版本默认值为 `false`。从 v7.6.0 开始，新建集群默认值是 `true`，已有集群升级到 v7.6.0 或更高版本则会维持原有的配置。 |
+| TiKV | [`cdc.incremental-scan-concurrency-limit`](/tikv-configuration-file.md#incremental-scan-concurrency-limit-从-v760-版本开始引入) | 新增 | 用于设置待执行的增量扫描历史数据任务的最大队列长度。默认值为 `10000`，代表最多可允许创建 10000 个任务等待执行。 |
 | TiKV | [`gc.num-threads`](/tikv-configuration-file.md#num-threads-从-v658v714v751-和-v760-版本开始引入) | 新增 | 设置当 `enable-compaction-filter` 为 `false` 时 GC 的线程个数。默认值为 `1`。 |
 | TiKV | [`raftstore.periodic-full-compact-start-times`](/tikv-configuration-file.md#periodic-full-compact-start-times-从-v760-版本开始引入) | 新增 | 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。默认值 `[]` 表示默认情况下禁用周期性全量数据整理。 |
 | TiKV | [`raftstore.periodic-full-compact-start-max-cpu`](/tikv-configuration-file.md#periodic-full-compact-start-max-cpu-从-v760-版本开始引入) | 新增 | 设置 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值，默认值为 `0.1`。 |
+| TiKV | [`raftstore.pd-report-min-resolved-ts-interval`](/tikv-configuration-file.md#pd-report-min-resolved-ts-interval-从-v760-版本开始引入) | 新增 | 由 [`raftstore.report-min-resolved-ts-interval`](https://docs.pingcap.com/zh/tidb/v7.5/tikv-configuration-file/#report-min-resolved-ts-interval-从-v600-版本开始引入) 更名而来，用于设置 TiKV 向 PD leader 上报 Resolved TS 的最小时间间隔。默认值为 `"1s"`。 |
 | TiKV | [`zstd-dict-size`](/tikv-configuration-file.md#zstd-dict-size) | 新增 | 指定 `zstd` 字典大小，默认值为 `0KB`，表示关闭 `zstd` 字典压缩。 |
 | TiFlash | [`logger.level`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 为减少日志打印的开销，默认值由 `"debug"` 改为 `"INFO"`。 |
 | TiDB Lightning | [`tidb.pd-addr`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 修改 | 配置 PD Server 的地址，从 v7.6.0 开始支持设置多个地址。 |

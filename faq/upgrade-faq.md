@@ -36,6 +36,12 @@ aliases: ['/docs-cn/dev/faq/upgrade-faq/','/docs-cn/dev/faq/upgrade/']
 
 本小节列出了一些升级后可能会遇到的问题与解决办法。
 
+### TiDB 升级后 JDBC 连接的排序规则变化问题
+
+当从较低版本升级到 v7.4 或更高版本时，如果 JDBC URL 中未配置 `connectionCollation`，且 `characterEncoding` 未配置或配置为 `UTF-8`，升级后 JDBC 连接的默认排序规则可能会从 `utf8mb4_bin` 变更为 `utf8mb4_0900_ai_ci`。如需保持排序规则为 `utf8mb4_bin`，请在 JDBC URL 中配置 `connectionCollation=utf8mb4_bin`。
+
+更多信息，请参考 [JDBC 连接所使用的排序规则](/faq/sql-faq.md#jdbc-连接所使用的排序规则)。
+
 ### 执行 DDL 操作时遇到的字符集 (charset) 问题
 
 TiDB 在 v2.1.0 以及之前版本（包括 v2.0 所有版本）中，默认字符集是 UTF8。从 v2.1.1 开始，默认字符集变更为 UTF8MB4。如果在 v2.1.0 及之前版本中，建表时显式指定了 table 的 charset 为 UTF8，那么升级到 v2.1.1 之后，执行 DDL 操作可能会失败。
