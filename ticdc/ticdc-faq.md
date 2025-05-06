@@ -490,3 +490,19 @@ mysql://user:password@host:port/?safe-mode=true
 ```
 
 在安全模式下，TiCDC 会将 `UPDATE` 操作拆分为 `DELETE + REPLACE INTO` 进行执行，从而避免唯一键冲突错误。
+
+## 为什么 TiCDC 同步到 Kafka 的任务经常因为 “broken pipe” 报错而失败？
+
+TiCDC 同步数据到 Kafka 时使用了 Sarama 客户端。出于防止数据乱序的考虑，TiCDC 禁用了 Sarama 的自动重试机制（将重试次数设为 0）。这样一来，如果 TiCDC 和 Kafka 之间的连接在空闲一段时间后被 Kafka 主动关闭，后续写入数据时就会报 `write: broken pipe` 错误，导致同步任务失败。
+
+虽然 Changefeed 会因为报错而失败，但 TiCDC 会自动重启该 Changefeed，任务仍可继续正常运行。需要注意的是，在重启的过程中，Changefeed 的同步延迟（lag）可能会出现一次性的小幅增加，通常在 30 秒以内，之后会自动恢复正常。
+
+如果用户对 Changefeed 的延迟非常敏感的话，建议将 Kafka 的连接空闲超时时间调大，例如配置：
+
+```properties
+connections.max.idle.ms=86400000  # 设置为 1 天
+```
+
+然后重启 Kafka 以使配置生效，从而避免连接被提前关闭，减少 broken pipe 报错。
+
+具体设置多长时间，建议根据业务实际的数据同步情况进行调整：如果 TiCDC Changefeed 在几十分钟内一定会有数据同步发生，那么可以将 `connections.max.idle.ms` 设置为几十分钟即可，无需设置过大。
