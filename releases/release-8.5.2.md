@@ -129,9 +129,9 @@ TiDB 版本：8.5.2
 + PD <!--tw@lilin90: 5 notes--> 
 
     - 修复在启用微服务的场景中，转发 TSO 可能引起的并发问题 [#9091](https://github.com/tikv/pd/issues/9091) @[lhy1024](https://github.com/lhy1024)
-    - 修复调用 `BatchScanRegions` 时，返回结果未被正确限制的问题  [#9216](https://github.com/tikv/pd/issues/9216) @[lhy1024](https://github.com/lhy1024)
+    - 修复调用 `BatchScanRegions` 时，返回结果未被正确限制的问题 [#9216](https://github.com/tikv/pd/issues/9216) @[lhy1024](https://github.com/lhy1024)
     - 修复 follower 发生网络隔离时，触发非预期选举的问题 [#9020](https://github.com/tikv/pd/issues/9020) @[lhy1024](https://github.com/lhy1024)
-    - 修复当资源管控中存在 `QUERY_LIMIT` 时，无法触发 `COOLDOWN`/`SWITCH_GROUP` 的问题 [#60404](https://github.com/pingcap/tidb/issues/60404) @[JmPotato](https://github.com/JmPotato)
+    - 修复当资源管控中存在 `QUERY_LIMIT` 时，无法触发 `COOLDOWN` 或 `SWITCH_GROUP` 的问题 [#60404](https://github.com/pingcap/tidb/issues/60404) @[JmPotato](https://github.com/JmPotato)
     - 修复 `StoreInfo` 可能存在错误覆盖的问题 [#9185](https://github.com/tikv/pd/issues/9185) @[okJiang](https://github.com/okJiang)
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-7.5.6.md > 错误修复> PD - 修复在导入或添加索引场景中，因 PD 网络不稳定可能导致操作失败的问题 [#8962](https://github.com/tikv/pd/issues/8962) @[okJiang](https://github.com/okJiang)
@@ -193,7 +193,7 @@ TiDB 版本：8.5.2
         - (dup): release-6.5.12.md > 错误修复> Tools> TiDB Lightning - 修复日志没有正确脱敏的问题 [#59086](https://github.com/pingcap/tidb/issues/59086) @[GMHDBJD](https://github.com/GMHDBJD)
         - 修复当使用外部账号执行 GCS 存储操作时，鉴权会失败并且报 `context canceled` 错误的问题 [#60155](https://github.com/pingcap/tidb/issues/60155) @[lance6716](https://github.com/lance6716)
         - 修复将 Parquet 文件从云存储导入到 TiDB 时，TiDB Lightning 可能会卡住达数小时的问题 [#60224](https://github.com/pingcap/tidb/issues/60224) @[joechenrh](https://github.com/joechenrh)
-        - 修复当导入大量数据时，在 write/ingest SST 到 TiKV 集群期间，TiDB Lightning 可能会 OOM 的问题 [#59947](https://github.com/pingcap/tidb/issues/59947) @[OliverS929](https://github.com/OliverS929)
+        - 修复当导入大量数据时，在 write 或 ingest SST 文件到 TiKV 集群期间，TiDB Lightning 可能会 OOM 的问题 [#59947](https://github.com/pingcap/tidb/issues/59947) @[OliverS929](https://github.com/OliverS929)
         - 修复 TiDB Lightning 建表的最大 QPS 过低且访问 `information_schema.tables` 变慢，导致在百万张表场景下 TiDB Lightning 调度任务运行缓慢的问题 [#58141](https://github.com/pingcap/tidb/issues/58141) @[D3Hunter](https://github.com/D3Hunter)
 
     + Dumpling
