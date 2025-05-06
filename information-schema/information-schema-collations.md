@@ -48,12 +48,12 @@ SELECT * FROM collations WHERE character_set_name='utf8mb4';
 
 `COLLATIONS` 表中列的含义如下：
 
-* `COLLATION_NAME`：排序规则名称
-* `CHARACTER_SET_NAME`：排序规则所属的字符集名称
-* `ID`：排序规则的 ID
-* `IS_DEFAULT`：该排序规则是否是所属字符集的默认排序规则
-* `IS_COMPILED`：字符集是否编译到服务器中
-* `SORTLEN`：排序规则在对字符进行排序时，所分配内存的最小长度
+* `COLLATION_NAME`：排序规则名称。
+* `CHARACTER_SET_NAME`：排序规则所属的字符集名称。
+* `ID`：排序规则的 ID。
+* `IS_DEFAULT`：该排序规则是否是所属字符集的默认排序规则。
+* `IS_COMPILED`：字符集是否编译到服务器中。
+* `SORTLEN`：排序规则在对字符进行排序时，所分配内存的最小长度。
 * `PAD_ATTRIBUTE`：在比较字符串时是否忽略末尾空格。`PAD SPACE` 表示忽略末尾空格（例如 `'abc'` 等于 `'abc '`），而 `NO PAD` 表示末尾空格会影响比较结果（例如 `'abc'` 不等于 `'abc '`）。
 
 ## 另请参阅
