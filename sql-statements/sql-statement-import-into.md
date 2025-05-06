@@ -17,6 +17,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 ## 使用限制
 
 - 只支持导入数据到数据库中已有的空表。
+- 如果表中其他分区已包含数据，不支持将数据导入到该表的空分区中。目标表必须完全为空才能执行导入操作。
 - 不支持导入到[临时表](/temporary-tables.md)或者[缓存表](/cached-tables.md)。
 - 不支持事务，也无法回滚。在显式事务 (`BEGIN`/`END`) 中执行会报错。
 - 不支持和 [Backup & Restore](/br/backup-and-restore-overview.md)、[`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md)、[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)、TiDB Lightning 导入、TiCDC 数据同步、[Point-in-time recovery (PITR)](/br/br-log-architecture.md) 等功能同时工作。相关兼容性介绍，请参见 [`IMPORT INTO` 和 TiDB Lightning 与日志备份和 TiCDC 的兼容性](/tidb-lightning/tidb-lightning-compatibility-and-scenarios.md)。
