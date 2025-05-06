@@ -78,16 +78,16 @@ SHOW COLLATION WHERE Charset="utf8mb4";
 ```
 
 ```
-+--------------------+---------+-----+---------+----------+---------+
-| Collation          | Charset | Id  | Default | Compiled | Sortlen |
-+--------------------+---------+-----+---------+----------+---------+
-| utf8mb4_0900_ai_ci | utf8mb4 | 255 |         | Yes      |       1 |
-| utf8mb4_0900_bin   | utf8mb4 | 309 |         | Yes      |       1 |
-| utf8mb4_bin        | utf8mb4 |  46 | Yes     | Yes      |       1 |
-| utf8mb4_general_ci | utf8mb4 |  45 |         | Yes      |       1 |
-| utf8mb4_unicode_ci | utf8mb4 | 224 |         | Yes      |       1 |
-+--------------------+---------+-----+---------+----------+---------+
-5 rows in set (0.00 sec)
++--------------------+---------+-----+---------+----------+---------+---------------+
+| Collation          | Charset | Id  | Default | Compiled | Sortlen | Pad_attribute |
++--------------------+---------+-----+---------+----------+---------+---------------+
+| utf8mb4_0900_ai_ci | utf8mb4 | 255 |         | Yes      |       0 | NO PAD        |
+| utf8mb4_0900_bin   | utf8mb4 | 309 |         | Yes      |       1 | NO PAD        |
+| utf8mb4_bin        | utf8mb4 |  46 | Yes     | Yes      |       1 | PAD SPACE     |
+| utf8mb4_general_ci | utf8mb4 |  45 |         | Yes      |       1 | PAD SPACE     |
+| utf8mb4_unicode_ci | utf8mb4 | 224 |         | Yes      |       8 | PAD SPACE     |
++--------------------+---------+-----+---------+----------+---------+---------------+
+5 rows in set (0.001 sec)
 ```
 
 ## MySQL 兼容性
