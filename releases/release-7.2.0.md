@@ -173,6 +173,7 @@ TiDB 版本：7.2.0
 ### 行为变更
 
 - TiCDC 在处理 Update 事件时，如果事件的主键或者非空唯一索引的列值发生改变，则会将该条事件拆分为 Delete 和 Insert 两条事件。更多信息，请参考[用户文档](/ticdc/ticdc-split-update-behavior.md#含有单条-update-变更的事务拆分)。
+- 系统变量 [`tidb_remove_orderby_in_subquery`](/system-variables.md#tidb_remove_orderby_in_subquery-从-v610-版本开始引入) 的默认值从 `OFF` 修改为 `ON`，即优化器改写会移除子查询中的 `ORDER BY` 子句，以避免不必要的排序操作。此变更可能造成 SQL 输出不同的查询顺序。ISO/IEC SQL 标准并不要求查询结果遵循子查询的 `ORDER BY` 排序，如需严格保证最终结果的顺序，应在外层查询添加 `ORDER BY`。如果你的应用依赖子查询排序，可以将此变量修改为 `OFF`。从旧版本升级的集群默认不会修改该行为。
 
 ### 系统变量
 
