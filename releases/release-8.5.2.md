@@ -63,8 +63,7 @@ TiDB 版本：8.5.2
     - 修复在启用分布式执行框架 (Distributed eXecution Framework, DXF) 时，TiDB 内部会话中的 `tidb_txn_entry_size_limit` 不能动态调整的问题 [#59506](https://github.com/pingcap/tidb/issues/59506)@[D3Hunter](https://github.com/D3Hunter)
     - 修复在全局排序配置下，数据导入功能 `IMPORT INTO` 不能正确处理唯一键冲突的问题 [#59650](https://github.com/pingcap/tidb/issues/59650) @[lance6716](https://github.com/lance6716)
     - 修复在全局排序数据路径上注入网络延迟故障导致执行 `IMPORT INTO` 失败的问题 [#50451](https://github.com/pingcap/tidb/issues/50451) @[D3Hunter](https://github.com/D3Hunter) 
-    - 修复执行 `ADD UNIQUE INDEX` 可能导致数据不一致的问题  [#60339](https://github.com/pingcap/tidb/issues/60339) @[tangenta](https://github.com/tangenta) 
-<!--tw@Oreoxmt: the following 9 notes-->
+    - 修复执行 `ADD UNIQUE INDEX` 可能导致数据不一致的问题  [#60339](https://github.com/pingcap/tidb/issues/60339) @[tangenta](https://github.com/tangenta) <!--tw@Oreoxmt: the following 9 notes-->
     - 修复查询 `INFORMATION_SCHEMA.TIDB_SERVERS_INFO` 时，`LABELS` 列的值错误显示在 `BINLOG_STATUS` 列中的问题 [#59245](https://github.com/pingcap/tidb/issues/59245) @[lance6716](https://github.com/lance6716)
     - 修复在添加索引操作时，注入 kill PD Leader 故障可能导致数据不一致的问题 [#59701](https://github.com/pingcap/tidb/issues/59701) @[tangenta](https://github.com/tangenta)
     - 修复在创建约 650 万张表后 TiDB OOM 的问题 [#58368](https://github.com/pingcap/tidb/issues/58368) @[lance6716](https://github.com/lance6716)
