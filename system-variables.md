@@ -5446,7 +5446,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 > **注意：**
 >
 > - 目前，仅 Inner Join 类型的连接操作支持优化版的 Hash Join。对于其他类型的连接操作，即使将该变量设成 `optimized`，TiFlash 也不会使用优化版的 Hash Join。
-> - 目前，TiFlash 中优化版的 Hash Join 不支持在内存使用超限时落盘内存数据。如果 [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_mem_quota_query_per_node-从-v740-版本开始引入) 和 [`tiflash_query_spill_ratio`](/system-variables.md#tiflash_query_spill_ratio-从-v740-版本开始引入) 均大于 0, 或者 [tidb_max_bytes_before_tiflash_external_join](/system-variables.md#tidb_max_bytes_before_tiflash_external_join-从-v700-版本开始引入) 大于 0，TiFlash 将不会使用优化版的 Hash Join。
+> - 目前，TiFlash 中优化版的 Hash Join 不支持在内存使用超限时落盘内存数据。如果 [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_mem_quota_query_per_node-从-v740-版本开始引入) 和 [`tiflash_query_spill_ratio`](/system-variables.md#tiflash_query_spill_ratio-从-v740-版本开始引入) 均大于 `0`，或者 [`tidb_max_bytes_before_tiflash_external_join`](/system-variables.md#tidb_max_bytes_before_tiflash_external_join-从-v700-版本开始引入) 大于 `0`，TiFlash 将不会使用优化版的 Hash Join。
 
 ### `tikv_client_read_timeout` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
