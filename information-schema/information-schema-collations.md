@@ -7,8 +7,6 @@ summary: 了解 information_schema 表 `COLLATIONS`。
 
 `COLLATIONS` 表提供了 `CHARACTER_SETS` 表中字符集对应的排序规则列表。目前 TiDB 包含该表仅为兼容 MySQL。
 
-{{< copyable "sql" >}}
-
 ```sql
 USE information_schema;
 DESC collations;
