@@ -72,7 +72,7 @@ TiDB 版本：8.5.2
 
 + TiKV
 
-    - 修复 txn_status_cache 中可能的死锁问题 [#18384](https://github.com/tikv/tikv/issues/18384) @[ekexium](https://github.com/ekexium)
+    - 修复 `txn_status_cache` 中可能出现死锁的问题 [#18384](https://github.com/tikv/tikv/issues/18384) @[ekexium](https://github.com/ekexium)
     - (dup): release-7.5.6.md > 错误修复> TiKV - 修复 Resolved-TS 监控和日志可能显示异常的问题 [#17989](https://github.com/tikv/tikv/issues/17989) @[ekexium](https://github.com/ekexium)
     - (dup): release-7.5.6.md > 错误修复> TiKV - 修复 Region 合并时可能因 Raft index 匹配异常而导致 TiKV 异常退出的问题 [#18129](https://github.com/tikv/tikv/issues/18129) @[glorv](https://github.com/glorv)
     - (dup): release-8.1.2.md > 错误修复> TiKV - 修复磁盘卡住时，TiKV 无法向 PD 上报心跳的问题 [#17939](https://github.com/tikv/tikv/issues/17939) @[LykxSassinator](https://github.com/LykxSassinator)
