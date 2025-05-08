@@ -116,6 +116,7 @@ rules = ['test.t*']
 [filter]
 rules = ['test.t*']
 
+[[filter.event-filters]]
 matcher = ["test.t1"] # 该过滤规则只应用于 test 库中的 t1 表
 ignore-event = ["create table", "drop table", "truncate table"]
 ```
