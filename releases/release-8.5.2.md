@@ -109,7 +109,7 @@ TiDB 版本：8.5.2
     - 修复当集群的表中存在大量 `ENUM` 类型列时，TiFlash 的内存可能会大量消耗问题 [#9947](https://github.com/pingcap/tiflash/issues/9947) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复插入单行超过 16 MiB 的数据后，TiFlash 可能无法正常重启的问题 [#10052](https://github.com/pingcap/tiflash/issues/10052) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复在包含向量索引的表中插入数据后，部分磁盘数据可能无法被正确清理从而导致磁盘空间异常占用的问题 [#9946](https://github.com/pingcap/tiflash/issues/9946) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复在同一个表上创建多个向量索引后，先前创建的向量索引可能被意外删除而导致性能下降的问题  [#9971](https://github.com/pingcap/tiflash/issues/9971) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 修复在同一个表上创建多个向量索引后，先前创建的向量索引可能被意外删除而导致性能下降的问题 [#9971](https://github.com/pingcap/tiflash/issues/9971) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复在存算分离架构下，TiFlash 无法利用向量索引加速向量搜索查询的问题 [#9847](https://github.com/pingcap/tiflash/issues/9847) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复在存算分离架构下，可能会产生大量 `tag=EnumParseOverflowContainer` 日志的问题 [#9955](https://github.com/pingcap/tiflash/issues/9955) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复执行 `SELECT ... AS OF TIMESTAMP` 查询时，TiFlash 未按预期跳过 Learner Read 的问题 [#10046](https://github.com/pingcap/tiflash/issues/10046) @[CalvinNeo](https://github.com/CalvinNeo)
