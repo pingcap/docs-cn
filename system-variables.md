@@ -2932,6 +2932,18 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用来控制用户会话中事务的空闲超时。当用户会话处于事务状态且空闲时间超过该变量设定的值时，会话会被 Kill 掉。用户会话空闲是指没有正在执行的请求，处于等待请求的状态。
 - 默认值 `0` 表示没有时间限制。
 
+### `tidb_ignore_inlist_plan_digest` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用来控制 TiDB 在生成执行计划摘要 (Plan Digest) 时，是否忽略不同查询中 `IN` 列表的元素差异。
+
+    - 当为默认值 `OFF` 时，TiDB 在生成执行计划摘要时，不会忽略 `IN` 列表中的元素差异（包括元素数量差异）。`IN` 列表的元素差异将导致生成的执行计划摘要不同。
+    - 当设置为 `ON` 时，TiDB 会忽略 `IN` 列表中的元素差异（包括元素数量差异），在执行计划摘要中使用 `...` 代替 `IN` 列表中的元素。此时，相同类型的 `IN` 查询会生成相同的执行计划摘要。
+
 ### `tidb_ignore_prepared_cache_close_stmt` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -4284,6 +4296,22 @@ SHOW WARNINGS;
 > - 该选项目前仅对需要上锁单个 key 的语句有效。如果一个语句需要对多行同时上锁，则该选项不会对此类语句生效。
 > - 该功能从 v6.6.0 版本引入。在 v6.6.0 版本中，该功能由变量 [`tidb_pessimistic_txn_aggressive_locking`](https://docs-archive.pingcap.com/zh/tidb/v6.6/system-variables#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) 控制，默认关闭。
 
+### `tidb_pipelined_dml_resource_policy` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：字符串型
+- 默认值：`"standard"`
+- 可选值：`"standard"`、`"conservative"`、`"custom{...}"`
+- 该变量控制 [Pipelined DML](/pipelined-dml.md) 的资源使用策略，仅在 [`tidb_dml_type`](#tidb_dml_type-从-v800-版本开始引入) 为 `bulk` 时生效。可选值含义如下：
+    - `"standard"`：默认的资源使用策略。
+    - `"conservative"`：Pipelined DML 使用更少的资源，但执行速度比默认策略慢，适用于对资源使用较敏感的场景。
+    - `"custom{option1=value1,option2=value2,...}"` 格式：自定义资源使用策略。可以只指定需要的子项。例如 `"custom{concurrency=8,write_throttle_ratio=0.5}"`。注意需要用双引号包括该值。支持的自定义项包括：
+        - `concurrency`：flush 操作的并发度，影响 Pipelined DML 的执行速度和资源使用。取值范围为 `[1, 8192]`。
+        - `resolve_concurrency`：异步 resolve lock 操作的并发度。只影响 Pipelined DML 资源使用，不影响 Pipelined DML 执行速度。取值范围为 `[1, 8192]`。
+        - `write_throttle_ratio`：主动限流 (throttle) 的时间比例。值越大表示 throttle 时间在总时间中的占比越高，从而减少资源使用。`0` 表示不进行限流。取值范围为 `[0, 1)`。
+
 ### `tidb_placement_mode` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -5361,6 +5389,51 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 单位：线程
 - 这个变量用于设置 window 算子的并行度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
+
+### `tidb_workload_repository_dest` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串
+- 默认值：`''`
+- 该变量用于设置 [Workload Repository](/workload-repository.md) 的目标位置。
+- 可选值为 `'table'`（启用 Workload Repository）或 `''`（禁用 Workload Repository）。
+
+### `tidb_workload_repository_active_sampling_interval` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`5`
+- 范围：`[0, 600]`
+- 单位：秒
+- 用于设置 [Workload Repository](/workload-repository.md) 的基于时间的采样过程的采样间隔。
+- 将该值设置为 `0` 会禁用基于时间的采样过程。
+
+### `tidb_workload_repository_retention_days` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`7`
+- 范围：`[0, 365]`
+- 单位：天
+- 用于设置 [Workload Repository](/workload-repository.md) 数据的保留天数。
+- 将该值设置为 `0` 会禁用旧数据的自动清理。
+
+### `tidb_workload_repository_snapshot_interval` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`3600`
+- 范围：`[900, 7200]`
+- 单位：秒
+- 用于设置 [TiDB Workload Repository](/workload-repository.md) 的快照采样过程的采样间隔。
 
 ### `tiflash_fastscan` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 

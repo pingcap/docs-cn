@@ -91,6 +91,7 @@ DESC CLUSTER_TIDB_INDEX_USAGE;
 
 - `TIDB_INDEX_USAGE` 表中的数据可能存在最多 5 分钟的延迟。
 - 在 TiDB 重启后，`TIDB_INDEX_USAGE` 表中的数据会被清空。
+- 只有在表具有有效统计信息时，TiDB 才会记录该表的索引使用情况。
 
 ## 更多阅读
 
