@@ -35,7 +35,7 @@ TiDB 的事务的实现采用了 MVCC（多版本并发控制）机制，当新�
 >
 > 在这些场景中，你必须使用 `tikv_gc_life_time` 提前手动调长 GC 时间，以避免因为导出过程中发生 GC 导致导出失败。详见 TiDB 工具 Dumpling 的[手动设置 TiDB GC 时间](/dumpling-overview.md#手动设置-tidb-gc-时间)。
 
-更多关于 GC 的信息，请参考 [GC 机制简介](https://pingcap.com/docs-cn/stable/reference/garbage-collection/overview/)文档。
+更多关于 GC 的信息，请参考 [GC 机制简介](/garbage-collection-overview.md)文档。
 
 ## 事务超时
 
