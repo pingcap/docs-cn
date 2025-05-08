@@ -154,12 +154,19 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
     > tiup ctl:v8.5.0 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer
     > ```
 
+    如果集群中已经有比较大量的 Region 存在旧的 TiFlash 节点，需要将 Region 从旧的 TiFlash 节点均衡到新的 TiFlash 节点，则需要同时修改 remove-peer 的限制。
+
+    ```shell
+    tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 remove-peer
+    ```
+
     执行完毕后，几分钟内，你将观察到 TiFlash 节点的 CPU 及磁盘 IO 资源占用显著提升，TiFlash 将更快地创建副本。同时，TiKV 节点的 CPU 及磁盘 IO 资源占用也将有所上升。
 
-    如果此时 TiKV 及 TiFlash 节点的资源仍有富余，且线上业务的延迟没有显著上升，则可以考虑进一步放开调度速度，例如将新增副本的速度增加为原来的 3 倍：
+    如果此时 TiKV 及 TiFlash 节点的资源仍有富余，且线上业务的延迟没有显著上升，则可以考虑进一步放开调度速度，例如将副本调度的速度增加为原来的 3 倍：
 
     ```shell
     tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 90 add-peer
+    tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 90 remove-peer
     ```
 
 3. 在副本同步完毕后，恢复到默认配置，减少在线业务受到的影响。
@@ -168,6 +175,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
     ```shell
     tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 30 add-peer
+    tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 30 remove-peer
     ```
 
     执行以下 SQL 语句可恢复默认的数据快照写入速度：
