@@ -18,6 +18,7 @@ name = "worker1"
 # Log configuration.
 log-level = "info"
 log-file = "dm-worker.log"
+redact-info-log = false
 
 # DM-worker listen address.
 worker-addr = ":8262"
@@ -51,6 +52,12 @@ cert-allowed-cn = ["dm"]
 #### `log-file`
 
 - 日志文件。如果不配置，日志会输出到标准输出中。
+
+#### `redact-info-log` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 控制是否开启日志脱敏。该配置项值设为 `true` 时对 DM-worker 日志脱敏，隐藏 DM 查询参数的详细信息。具体使用方法参见 [DM-worker 组件日志脱敏](/log-redaction.md#dm-worker-组件日志脱敏)。
+- 默认值：`false`
+- 可选值：`false`、`true`
 
 #### `worker-addr`
 
