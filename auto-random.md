@@ -165,7 +165,7 @@ SHOW WARNINGS;
 
 冲突发生的原因如下：每个 `AUTO_RANDOM` ID 由随机位 (Random Bits) 和自增部分组成。TiDB 使用内部计数器来管理自增部分。如果显式插入的 ID 的自增部分与计数器的下一个值匹配，则此后 TiDB 自动生成了相同的 ID 时，可能会发生重复键错误。有关更多详细信息，请参阅 [`AUTO_INCREMENT` 唯一性保证](/auto-increment.md#唯一性保证)。
 
-在单个 TiDB 实例中，此问题不会发生，因为节点在处理显式插入时会自动调整其内部计数器，从而防止冲突。相比之下，在多个 TiDB 节点的环境中，每个节点维护自己的 ID 缓存，在显式插入后，你需要清除这些未分配的缓存 ID 以防止冲突。要清除这些未分配的缓存 ID 并避免潜在的冲突，有以下两种方法：
+在单个 TiDB 实例中，该问题不会发生，因为节点在处理显式插入时会自动调整其内部计数器，从而防止冲突。相比之下，在有多个 TiDB 节点的环境中，每个节点维护自己的 ID 缓存，所以在显式插入后，你需要清除这些未分配的缓存 ID 以防止冲突。要清除这些未分配的缓存 ID 并避免潜在的冲突，有以下两种方法：
 
 ### 方法 1：自动重置基值（推荐方式）
 
@@ -173,7 +173,7 @@ SHOW WARNINGS;
 ALTER TABLE t AUTO_RANDOM_BASE=0;
 ```
 
-此语句会自动确定一个合适的基值。尽管它会产生类似于 `Can't reset AUTO_INCREMENT to 0 without FORCE option, using XXX instead` 的警告信息，但基值确实会发生变化，你可以安全地忽略此警告。
+该语句会自动确定一个合适的基值。尽管它会产生类似于 `Can't reset AUTO_INCREMENT to 0 without FORCE option, using XXX instead` 的警告信息，但基值确实会发生变化，你可以安全地忽略此警告。
 
 > **注意：**
 >
@@ -191,7 +191,7 @@ ALTER TABLE t AUTO_RANDOM_BASE=0;
 ALTER TABLE t FORCE AUTO_RANDOM_BASE = 1000;
 ```
 
-这种方法并不太方便，因为需要你自己确定一个合适的基值。
+但是这种方法并不方便，你需要自行确定合适的基值。
 
 > **注意：**
 >
