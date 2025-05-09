@@ -1525,7 +1525,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：字符串
 - 默认值：`0`
 - 范围：`[0, 1PiB]`
-- 这个变量用于限制索引回填过程中，**单个 TiDB 节点**向所有 TiKV 副本写入的带宽，仅在开启添加索引加速功能时生效（由变量 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。注意在开启[全局排序](/tidb-global-sort.md)时，多个 TiDB 节点可以同时向 TiKV 写入数据。在数据量特别大的情况下（如数十亿行数据），降低加索引时写入 TiKV 节点的带宽可以有效减少对业务负载的影响。
+- 这个变量用于限制索引回填过程中**单个 TiDB 节点向单个 TiKV 副本**写入的带宽，仅在开启添加索引加速功能时生效（由变量 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。注意在开启[全局排序](/tidb-global-sort.md)时，多个 TiDB 节点可以同时向 TiKV 写入数据。在数据量特别大的情况下（如数十亿行数据），降低加索引时写入 TiKV 节点的带宽可以有效减少对业务负载的影响。
 - 默认值 `0` 表示不限制写入带宽。
 - 该变量可设置为带单位的格式或不带单位的格式。
     - 当该变量值不带单位时，默认单位为字节每秒。例如 `67108864` 表示 `64MiB` 每秒。
@@ -1535,8 +1535,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 假设当前有 4 个 TiDB 和 6 个 TiKV，每个 TiDB 均可以执行索引回填任务，Region 均匀分布在所有 TiKV 节点上，`tidb_ddl_reorg_max_write_speed` 被设置为 `100MiB`
 
-* 当全局排序关闭时，同一时刻只有 1 个 TiDB 向 TiKV 写入，此时向每个 TiKV 节点的平均写入带宽为 `100MiB / 6 = 16.67MiB`
-* 当全局排序开启时，同一时刻所有 4 个 TiDB 都能向 TiKV 写入，此时向每个 TiKV 节点的平均写入带宽为 `4 * 100MiB / 6 = 66.67MiB`
+* 当全局排序关闭时，同一时刻只有 1 个 TiDB 向 TiKV 写入，此时每个 TiKV 节点的最大写入带宽为 `100MiB`
+* 当全局排序开启时，同一时刻所有 4 个 TiDB 都能向 TiKV 写入，此时每个 TiKV 节点的最大写入带宽为 `4 * 100MiB = 400MiB`
 
 ### `tidb_ddl_reorg_worker_cnt`
 
