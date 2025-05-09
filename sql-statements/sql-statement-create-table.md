@@ -132,6 +132,7 @@ DefaultValueExpr ::=
 |   SignedLiteral
 |   NextValueForSequenceParentheses
 |   BuiltinFunction
+|   '(' SignedLiteral ')'
 
 BuiltinFunction ::=
     '(' BuiltinFunction ')'
