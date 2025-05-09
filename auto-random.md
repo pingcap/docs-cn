@@ -160,30 +160,43 @@ SHOW WARNINGS;
 
 ## 清除自增 ID 缓存
 
-显式插入数据到 `AUTO_RANDOM` 列的行为与 `AUTO_INCREMENT` 列一致，你也需要清除自增 ID 缓存。详细信息请参阅[清除自增 ID 缓存](/auto-increment.md#清除自增-id-缓存)。
+在包含多个 TiDB 实例的部署环境中，向 `AUTO_RANDOM` 列插入显式值时，可能会发生 ID 冲突，与 `AUTO_INCREMENT` 列类似。如果显式插入的 ID 值与 TiDB 用于自动生成的内部计数器冲突，可能会导致错误。
 
-你可以执行 `ALTER TABLE` 语句设置 `AUTO_RANDOM_BASE=0` 来清除集群中所有 TiDB 节点的自增 ID 缓存。例如：
+冲突发生的原因如下：每个 `AUTO_RANDOM` ID 由随机位 (Random Bits) 和自增部分组成。TiDB 使用内部计数器来管理自增部分。如果显式插入的 ID 的自增部分与计数器的下一个值匹配，则此后 TiDB 自动生成了相同的 ID 时，可能会发生重复键错误。有关更多详细信息，请参阅 [`AUTO_INCREMENT` 唯一性保证](/auto-increment.md#唯一性保证)。
+
+在单个 TiDB 实例中，此问题不会发生，因为节点在处理显式插入时会自动调整其内部计数器，从而防止冲突。相比之下，在多个 TiDB 节点的环境中，每个节点维护自己的 ID 缓存，在显式插入后，你需要清除这些未分配的缓存 ID 以防止冲突。要清除这些未分配的缓存 ID 并避免潜在的冲突，有以下两种方法：
+
+### 方法 1：自动重置基值（推荐方式）
 
 ```sql
 ALTER TABLE t AUTO_RANDOM_BASE=0;
 ```
 
-```
-Query OK, 0 rows affected, 1 warning (0.52 sec)
-```
+此语句会自动确定一个合适的基值。尽管它会产生类似于 `Can't reset AUTO_INCREMENT to 0 without FORCE option, using XXX instead` 的警告信息，但基值确实会发生变化，你可以安全地忽略此警告。
+
+> **注意：**
+>
+> 不能使用 `FORCE` 关键字将 `AUTO_RANDOM_BASE` 设置为 `0`，否则会导致错误。
 
 ```sql
-SHOW WARNINGS;
+ALTER TABLE t AUTO_RANDOM_BASE=0;
 ```
 
+### 方法 2：手动设置特定的基值
+
+如果需要设置一个特定的基值（例如 `1000`），可以使用 `FORCE` 关键字：
+
+```sql
+ALTER TABLE t FORCE AUTO_RANDOM_BASE = 1000;
 ```
-+---------+------+-------------------------------------------------------------------------+
-| Level   | Code | Message                                                                 |
-+---------+------+-------------------------------------------------------------------------+
-| Warning | 1105 | Can't reset AUTO_INCREMENT to 0 without FORCE option, using 101 instead |
-+---------+------+-------------------------------------------------------------------------+
-1 row in set (0.00 sec)
-```
+
+这种方法并不太方便，因为需要你自己确定一个合适的基值。
+
+> **注意：**
+>
+> 使用 `FORCE` 时，必须指定一个非零的正整数。
+
+以上两个方法中的语句均会修改所有 TiDB 节点上 `AUTO_RANDOM` 值生成时使用的自增位起始点，但不会影响已经分配的 ID。
 
 ## 使用限制
 
