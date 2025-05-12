@@ -193,7 +193,7 @@ show warnings;
     }' <http://172.16.x.xxx:2379/pd/api/v1/config/rule>
     ```
 
-5. 检查 TiFlash 节点所在机器剩余的磁盘空间比例是否高于 [`low-space-ratio`](/pd-configuration-file.md#low-space-ratio) 的值。默认值 0.8，即当节点的使用空间占比超过 capacity 的 80%时，为避免磁盘空间被耗尽，PD 会尽可能避免往该节点迁移数据。如果所有 TiFlash 节点的剩余空间都不足，则会导致 PD 不往 TiFlash 调度新的 Region peer，导致副本始终处于不可用状态，即 progress < 1。
+5. 检查 TiFlash 节点所在机器的磁盘空间使用情况。默认情况下，当节点使用空间占比超过 capacity 的 80%（即 `low-space-ratio` 默认值为 0.8）时，PD 会避免往该节点迁移数据以防止磁盘空间耗尽。如果所有 TiFlash 节点的剩余磁盘空间都不足，则会导致 PD 不往 TiFlash 调度新的 Region peer，导致副本始终处于不可用状态，即 progress < 1。
 
     - 如果磁盘使用率大于等于 `low-space-ratio`，说明磁盘空间不足。此时可以采取以下一个或多个措施：
 
@@ -222,7 +222,7 @@ show warnings;
 
 1. 检查同步操作是否能正常执行。
 
-    执行 `ALTER table <tbl_name> set tiflash replica <num>` 操作，查看是否有正常返回:
+    执行 `ALTER table <tbl_name> set tiflash replica <num>` 并检查返回结果：
 
     - 如果有正常返回，进入下一步。
     - 如果无正常返回，请执行 `SELECT * FROM information_schema.tiflash_replica` 检查是否已经创建 TiFlash replica。如果没有，请重新执行 `ALTER table ${tbl_name} set tiflash replica ${num}`。
@@ -254,7 +254,7 @@ show warnings;
 5. 检查 PD 是否正常发起调度。
 
     查看 `pd.log` 日志是否出现 `table-<table_id>-r` 关键字，且之后是否出现 `add operator` 之类的调度行为。或者 Grafana 的 PD 面板中的 "Operator/Schedule operator create" 中是否产生 `add-rule-peer` 的调度。
-
+    查看 `pd.log` 日志是否出现 `table-<table_id>-r` 关键字及 `add operator` 调度行为。或检查 Grafana PD 面板的 "Operator/Schedule operator create" 看板中是否有 `add-rule-peer` 调度产生。
     - 是，PD 调度正常。
     - 否，PD 调度异常，收集相关组件的日志获取支持。
 
