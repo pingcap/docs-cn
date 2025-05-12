@@ -140,7 +140,7 @@ show warnings;
 
 ## TiFlash 副本始终处于不可用状态
 
-如果 TiFlash 副本始终无法创建成功，或者一开始可以正常同步，过一段时间后全部或者部分数据无法继续同步。你可以通过以下步骤排查或解决问题：
+如果 TiFlash 副本无法创建成功，或者创建后部分数据同步中断。你可以通过以下步骤排查或解决问题：
 
 1. 检查 PD 的 [Placement Rules](/configure-placement-rules.md) 功能是否开启，该功能在 TiDB v5.0 及以上的版本中默认开启：
 
@@ -174,7 +174,7 @@ show warnings;
 
     > **注意：**
     >
-    > `count` 的默认值是 3。在生产环境中，TiKV 节点数一般大于该值；在测试环境中，可以修改为 1。
+    > `count` 的默认值是 3。在生产环境中，TiKV 节点数一般大于该值；在测试环境中，如果允许集群中的 Region 副本数只有 1 个，可以修改为 1。
 
     {{< copyable "shell-regular" >}}
 
@@ -197,15 +197,15 @@ show warnings;
 
     - 如果磁盘使用率大于等于 `low-space-ratio`，说明磁盘空间不足。此时可以采取以下一个或多个措施：
 
-        - 修改 `low-space-ratio` 的值，让 PD 恢复向 TiFlash 节点调度 Region。
+        - 修改 `low-space-ratio` 的值，这会允许 PD 向 TiFlash 节点调度 Region，直到再次达到使用率限制。
 
             ```
             tiup ctl:nightly pd -u http://${pd-ip}:${pd-port} config set low-space-ratio 0.9
             ```
 
-        - 扩容 TiFlash 节点，PD 会平衡各个 TiFlash 节点间的数据，并恢复调度 Region 到空闲的 TiFlash 节点。
+        - 扩容 TiFlash 节点，PD 会自动平衡各个 TiFlash 节点间的数据，将 Region 副本调度到空闲的 TiFlash 节点。
 
-        - 删除 TiFlash 节点磁盘中不必要的文件，如 `${data}/flash/` 目录下的 `space_placeholder_file` 文件。必要时可同时将 tiflash-learner.toml 的 `storage.reserve-space` 设置为 `0MB`，临时让 TiFlash 恢复服务。
+        - 删除 TiFlash 节点磁盘中不必要的文件，如日志文件、`${data}/flash/` 目录下的 `space_placeholder_file` 文件。必要时可同时将 tiflash-learner.toml 的 `storage.reserve-space` 设置为 `0MB`，临时让 TiFlash 恢复服务。
 
     - 如果磁盘使用率小于 `low-space-ratio`，说明磁盘空间正常，进入下一步。
 
@@ -224,18 +224,17 @@ show warnings;
 
     执行 `ALTER table <tbl_name> set tiflash replica <num>` 并检查返回结果：
 
-    - 如果有正常返回，进入下一步。
-    - 如果无正常返回，请执行 `SELECT * FROM information_schema.tiflash_replica` 检查是否已经创建 TiFlash replica。如果没有，请重新执行 `ALTER table ${tbl_name} set tiflash replica ${num}`。
+    - 如果语句被阻塞，请执行 `SELECT * FROM information_schema.tiflash_replica` 检查是否已经创建 TiFlash replica。
       - 通过 [ADMIN SHOW DDL](/sql-statements/sql-statement-show-processlist.md) 检查 DDL 操作是否正常。查看是否有其他 DDL 语句（如 `add index`）阻塞修改 TiFlash 副本的操作。
       - 通过 [SHOW PROCESSLIST](/sql-statements/sql-statement-show-processlist.md) 检查是否有 DML 语句在执行，阻塞修改 TiFlash 副本的操作。
-      - 如果上述情况都没有，进入下一步。
+    - 等待阻塞设置 TiFlash 副本的其他语句完成或者被 cancel 后，再次尝试设置 TiFlash 副本。如果没有异常情况，进入下一步。
 
 2. 检查 TiFlash Region 同步是否正常。
 
-    查看 `progress` 是否有变化:
+    查看 `information_schema.tiflash_replica` 表中的 `progress` 是否有变化。或者 在 `tidb.log` 中，搜索 `Tiflash replica is not available` 相关日志，查看其中的 `progress` 值:
 
     - 如果有变化，说明 TiFlash 同步正常，可能只是同步速度较慢，参考[数据同步慢](/tiflash/troubleshoot-tiflash.md#数据同步慢)进行调整。
-    - 如果没有变化，说明 TiFlash 同步异常，在 `tidb.log` 中，搜索 `Tiflash replica is not available` 相关日志。检查对应表的 `progress` 是否更新。如果无更新，请进入下一步。
+    - 如果没有变化，说明 TiFlash 同步异常，进入下一步。
 
 3. 检查 TiDB 是否成功为表创建 Placement rule。
 
@@ -253,10 +252,10 @@ show warnings;
 
 5. 检查 PD 是否正常发起调度。
 
-    查看 `pd.log` 日志是否出现 `table-<table_id>-r` 关键字，且之后是否出现 `add operator` 之类的调度行为。或者 Grafana 的 PD 面板中的 "Operator/Schedule operator create" 中是否产生 `add-rule-peer` 的调度。
-    查看 `pd.log` 日志是否出现 `table-<table_id>-r` 关键字及 `add operator` 调度行为。或检查 Grafana PD 面板的 "Operator/Schedule operator create" 看板中是否有 `add-rule-peer` 调度产生。
+    查看 `pd.log` 日志是否出现 `table-<table_id>-r` 关键字及 `add operator` 调度行为。或检查 Grafana PD 面板的 "Operator/Schedule operator create" 看板中是否有 `add-rule-peer` 调度产生，检查 "Scheduler/Patrol Region time" 看板的耗时值。"Patrol Region time" 显示的值为 PD 扫描一轮集群内所有 Region 并生成调度的耗时，这个值较高时，PD 生成调度会存在延迟。
+
     - 是，PD 调度正常。
-    - 否，PD 调度异常，收集相关组件的日志获取支持。
+    - 没有 `add-rule-peer` 调度产生，或者 "Patrol Region time" 显示的值超过 30 min，PD 调度存在异常或者速度比较慢，收集相关组件的日志获取支持。
 
 如果遇到上述方法无法解决的问题，请收集必要的信息如 TiDB、PD、TiFlash 日志等，从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
 
