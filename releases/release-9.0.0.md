@@ -171,6 +171,20 @@ TiDB 版本：9.0.0
 
 ### 数据迁移
 
+* TiCDC 引入新架构，以提高实时数据复制的性能、可扩展性和稳定性 (实验特性) [#442](https://github.com/pingcap/ticdc/issues/442) @[CharlesCheung96](https://github.com/CharlesCheung96) **tw@qiancai** <!--2027-->
+
+    在 v9.0.0 中，TiCDC 引入了新架构（实验特性），显著提升了实时数据复制的性能、可扩展性与稳定性，同时降低了资源成本。新架构重新设计了 TiCDC 的核心组件并优化了数据处理流程。
+
+    在新架构下，TiCDC 同步能力接近线性扩展，实现以更低的资源成本完成百万级表的同步任务。在高流量、频繁 DDL 操作及集群扩缩容等场景下，Changefeed 的延迟更低且更加稳定。
+
+    更多信息，请参考[用户文档](/ticdc/ticdc-new-arch.md)。
+
+* TiCDC 新增安全机制，避免将数据同步回同一个 TiDB 集群 [#12062](https://github.com/pingcap/tiflow/issues/12062) @[wlwilliamx](https://github.com/wlwilliamx) **tw@qiancai** <!--2063-->
+
+    TiCDC 支持从上游的一个 TiDB 集群同步数据到下游的多个其他系统，包括其他 TiDB 集群。在 v9.0.0 之前，如果在 TiCDC 配置中误将同一个 TiDB 集群同时配置为数据源集群和目标集群，可能会导致数据同步循环，从而引发数据一致性问题。从 v9.0.0 开始，TiCDC 会自动检查源和目标 TiDB 集群是否相同，从而避免这种配置错误。
+
+    更多信息，请参考[用户文档](/ticdc/ticdc-manage-changefeed.md#安全机制)。
+
 * 支持对 Data Migration (DM) 日志中的查询参数进行脱敏 [#11489](https://github.com/pingcap/tiflow/issues/11489) @[db-will](https://github.com/db-will) **tw@Oreoxmt** <!--2030-->
 
     从 v9.0.0 开始，你可以通过 `redact-info-log` 配置项控制是否启用 DM 日志脱敏功能。启用后，DM 日志中包含敏感数据的查询参数将被替换为 `?` 占位符。如需开启该功能，你可以在 DM-worker 配置文件中设置 `redact-info-log` 为 `true`，或在启动 DM 时传入参数 `--redact-info-log=true`。该功能仅对查询参数进行脱敏，不会脱敏整个 SQL 语句，并且需要重启 DM-worker 才能生效。
