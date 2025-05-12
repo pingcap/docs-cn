@@ -142,7 +142,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
 2. 使用 [PD Control](/pd-control.md) 逐步放开副本调度速度限制：
 
-    TiFlash 默认副本调度速度是 30（每分钟会有大约 30 个 Region 新增或删除 TiFlash 副本）。执行以下命令将调整所有 TiFlash 实例的新增副本速度到 60，即原来的 2 倍速度：
+    TiFlash 默认副本调度速度是 30（在每个 TiFlash 实例上，每分钟会有大约 30 个 Region 新增或删除 TiFlash 副本）。执行以下命令将调整所有 TiFlash 实例的新增副本速度到 60，即原来的 2 倍速度：
 
     ```shell
     tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
@@ -154,7 +154,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
     > tiup ctl:v8.5.0 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer
     > ```
 
-    如果集群中已经有比较大量的 Region 存在旧的 TiFlash 节点，需要将 Region 从旧的 TiFlash 节点均衡到新的 TiFlash 节点，则需要同时修改 remove-peer 的限制。
+    如果集群中已经有大量的 Region 存在旧的 TiFlash 节点，需要将 Region 从旧的 TiFlash 节点均衡调度到新的 TiFlash 节点，则需要同时修改 `remove-peer` 的限制。
 
     ```shell
     tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 remove-peer
