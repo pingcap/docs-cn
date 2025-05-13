@@ -183,7 +183,7 @@ TiDB 版本：9.0.0
 
 ### 数据迁移
 
-* TiCDC 引入新架构，显著提升性能、可扩展性和稳定性 (实验特性) [#442](https://github.com/pingcap/ticdc/issues/442) @[CharlesCheung96](https://github.com/CharlesCheung96) **tw@qiancai** <!--2027-->
+* TiCDC 引入新架构，显著提升性能、可扩展性和稳定性（实验特性）[#442](https://github.com/pingcap/ticdc/issues/442) @[CharlesCheung96](https://github.com/CharlesCheung96) **tw@qiancai** <!--2027-->
 
     在 v9.0.0 中，TiCDC 引入了新架构（实验特性），显著提升了实时数据复制的性能、可扩展性与稳定性，同时降低了资源成本。新架构重新设计了 TiCDC 的核心组件并优化了数据处理流程。
 
