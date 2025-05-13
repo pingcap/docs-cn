@@ -25,7 +25,7 @@ ADMIN ALTER DDL JOBS 101 THREAD = 8;
 - `ADD INDEX`：
     - `THREAD`：并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
     - `BATCH_SIZE`：批大小，初始值由系统变量 [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size) 设置。
-    - `MAX_WRITE_SPEED`：向每个 TiKV 导入索引记录时的最大带宽限制，初始值由系统变量 [`tidb_ddl_reorg_max_write_speed`](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v755-和-v850-版本开始引入) 设置。
+    - `MAX_WRITE_SPEED`：向每个 TiKV 导入索引记录时的最大带宽限制，初始值由系统变量 [`tidb_ddl_reorg_max_write_speed`](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v6512v755-和-v850-版本开始引入) 设置。
 
   以上设置，当前仅对关闭 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 后，提交并运行中的 `ADD INDEX` 的作业生效。
 

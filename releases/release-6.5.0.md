@@ -24,7 +24,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 - [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)特性 GA，添加索引的性能约提升为 v6.1.0 的 10 倍。
 - TiDB 全局内存控制特性 GA，通过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 即可管理全局内存阈值。
-- 支持高性能、全局单调递增的 [`AUTO_INCREMENT` 列属性](/auto-increment.md#mysql-兼容模式) GA，兼容 MySQL。
+- 支持高性能、全局单调递增的 [`AUTO_INCREMENT` 列属性](/auto-increment.md#兼容-mysql-的自增列模式) GA，兼容 MySQL。
 - [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-cluster.md) 特性新增对 TiCDC 和 PITR 的兼容性支持，该特性已 GA。
 - 优化器引入的更精准的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2) GA，同时优化器增强索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能对 `AND` 连接的表达式的支持。
 - 支持下推 `JSON_EXTRACT()` 函数至 TiFlash。
@@ -219,13 +219,13 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 支持高性能、全局单调递增的 `AUTO_INCREMENT` 列属性 (GA) [#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao)
 
-    TiDB v6.4.0 引入了 `AUTO_INCREMENT` 的 MySQL 兼容模式作为实验特性，通过中心化分配自增 ID，实现了自增 ID 在所有 TiDB 实例上单调递增。使用该特性能够更容易地实现查询结果按自增 ID 排序。该功能在 v6.5.0 正式 GA。使用该功能的单表写入 TPS 预期超过 2 万，并支持通过弹性扩容提升单表和整个集群的写入吞吐。要使用 MySQL 兼容模式，你需要在建表时将 `AUTO_ID_CACHE` 设置为 `1`。
+    TiDB v6.4.0 引入了 `AUTO_INCREMENT` 的兼容 MySQL 的自增列模式作为实验特性，通过中心化分配自增 ID，实现了自增 ID 在所有 TiDB 实例上单调递增。使用该特性能够更容易地实现查询结果按自增 ID 排序。该功能在 v6.5.0 正式 GA。使用该功能的单表写入 TPS 预期超过 2 万，并支持通过弹性扩容提升单表和整个集群的写入吞吐。要使用兼容 MySQL 的自增列模式，你需要在建表时将 `AUTO_ID_CACHE` 设置为 `1`。
 
     ```sql
     CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
     ```
 
-    更多信息，请参考[用户文档](/auto-increment.md#mysql-兼容模式)。
+    更多信息，请参考[用户文档](/auto-increment.md#兼容-mysql-的自增列模式)。
 
 ### 数据迁移
 
@@ -321,6 +321,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) |  修改 | 该变量默认值由 `0` 修改为 `80%`，因为 TiDB 全局内存控制特性 GA，该调整默认开启 TiDB 实例的内存限制，并将默认的内存限制设为总内存的 80%。|
 | [`default_password_lifetime`](/system-variables.md#default_password_lifetime-从-v650-版本开始引入) | 新增 | 用于设置全局自动密码过期策略，要求用户定期修改密码。默认值为 `0`，表示禁用全局自动密码过期策略。 |
 | [`disconnect_on_expired_password`](/system-variables.md#disconnect_on_expired_password-从-v650-版本开始引入) | 新增 | 该变量是一个只读变量，用来显示 TiDB 是否会直接断开密码已过期用户的连接。 |
+| [`tidb_store_batch_size`](/system-variables.md#tidb_store_batch_size) | 新增 | 该变量默认关闭，其控制的功能尚未稳定，不建议在生产环境中修改该变量值。 |
 | [`password_history`](/system-variables.md#password_history-从-v650-版本开始引入) | 新增 | 基于密码更改次数的密码重用策略，不允许用户重复使用最近设置次数内使用过的密码。默认值为 `0`，表示禁用基于密码更改次数的密码重用策略。 |
 | [`password_reuse_interval`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) | 新增 | 基于经过时间限制的密码重用策略，不允许用户重复使用最近设置天数内使用过的密码。默认值为 `0`，表示禁用基于密码更改时间内的密码重用策略。 |
 | [`tidb_auto_build_stats_concurrency`](/system-variables.md#tidb_auto_build_stats_concurrency-从-v650-版本开始引入) | 新增 | 该变量用于设置执行统计信息自动更新的并发度，默认值为 `1`。 |

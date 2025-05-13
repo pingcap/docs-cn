@@ -172,7 +172,7 @@ cdc cli changefeed resume --server=http://10.0.10.25:8300 --changefeed-id simple
 ```
 
 - `--changefeed-id=uuid` 为需要操作的 `changefeed` ID。
-- `--overwrite-checkpoint-ts`：从 v6.2 开始支持指定 changefeed 恢复的起始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。该项支持 `now` 或一个具体的 TSO（如 434873584621453313），指定的 TSO 应在 (GC safe point, CurrentTSO] 范围内。如未指定该参数，默认从当前的 `checkpoint-ts` 同步数据。
+- `--overwrite-checkpoint-ts`：从 v6.2 开始支持指定 changefeed 恢复的起始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。该项支持 `now` 或一个具体的 TSO（如 434873584621453313），指定的 TSO 应在 (GC safe point, CurrentTSO] 范围内。如未指定该参数，默认从当前的 `checkpoint-ts` 同步数据。可以使用 `cdc cli changefeed list` 命令查看当前的 `checkpoint-ts` 的值。
 - `--no-confirm`：恢复同步任务时无需用户确认相关信息。默认为 false。
 
 > **注意：**
@@ -254,6 +254,39 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 - `status.tables` 中每一个作为 key 的数字代表同步表的 id，对应 TiDB 中表的 tidb_table_id。
 - `resolved-ts` 代表当前 Processor 中已经排序数据的最大 TSO。
 - `checkpoint-ts` 代表当前 Processor 已经成功写入下游的事务的最大 TSO。
+
+## 安全机制
+
+从 v9.0.0 开始，TiCDC 新增安全机制，防止用户误将同一个 TiDB 集群同时作为上游和下游进行数据同步，避免由此引发的循环复制及数据异常问题。
+
+在执行创建、更新或恢复数据同步任务时，TiCDC 会自动检查上下游 TiDB 集群的 `cluster_id` 是否相同。一旦发现上下游集群 `cluster_id` 相同，TiCDC 会拒绝执行该任务。`cluster_id` 是 TiDB 集群的唯一标识（从 v9.0.0 开始引入），可通过执行以下 SQL 语句查看：
+
+```sql
+SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME = 'cluster_id';
+```
+
+### 兼容性
+
+- 如果下游不是 TiDB 集群（例如 MySQL、Kafka 等），TiCDC 会跳过此检查，以确保兼容性。
+- 对于 v9.0.0 之前版本的 TiDB，系统无法获取 `cluster_id`，TiCDC 仍然允许用户创建数据同步任务，以避免影响现有功能。在这种情况下，由于缺少 `cluster_id`，你需要自行核实配置，确保没有配置错误，从而避免可能的异常情况。
+
+### 检查报错的示例
+
+在执行创建、更新或恢复数据同步任务时，如果 TiCDC 检测到上下游 TiDB 集群的 `cluster_id` 相同，会进行报错。以下是一个典型的示例：
+
+若使用 CLI 命令创建数据同步任务时，上下游为同一个集群：
+
+```
+cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:@127.0.0.1:8300/" --changefeed-id="create-cmd"
+```
+
+则会出现报错信息：
+
+```
+Error: [CDC:ErrSameUpstreamDownstream]TiCDC does not support creating a changefeed with the same TiDB cluster as both the source and the target for the changefeed.
+```
+
+此错误信息包含错误码 `CDC:ErrSameUpstreamDownstream`，表示 TiCDC 检测到上下游属于同一集群。如果遇到此类报错，请检查当前同步任务的 `sink-uri` 参数是否配置正确。
 
 ## 同步启用了 TiDB 新的 Collation 框架的表
 

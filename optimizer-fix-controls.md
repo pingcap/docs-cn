@@ -88,7 +88,7 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 - 默认值：`ON`
 - 可选值：`ON`、`OFF`
 - 由于查询计划中每个步骤符合条件的行数难以精确估算，优化器有可能会为 `estRows` 估算出一个较小的值。此开关控制是否限制 `estRows` 的最小值。
-- `ON`：将 `estRows` 的最小值限制为 1。这是 v8.4.0 中引入的新行为，与 Oracle 和 DB2 等数据库一致。
+- `ON`：将 `estRows` 的最小值限制为 1。这是 v8.4.0 中引入的新行为，与 Oracle 和 Db2 等数据库一致。
 - `OFF`：不限制 `estRows` 的最小值，与 v8.4.0 之前版本的行为保持一致。此时，`estRows` 可能为 0。
 
 ### [`52592`](https://github.com/pingcap/tidb/issues/52592) <span class="version-mark">从 v8.4.0 版本开始引入</span>
@@ -108,7 +108,7 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 - 如果查询有除了全表扫描以外的单索引扫描方式可以选择，优化器不会自动选择索引合并。详情请参考[用 EXPLAIN 查看索引合并的 SQL 执行计划](/explain-index-merge.md#示例)中的**注意**部分。
 - 打开此开关后，这个限制会被解除。解除此限制能让优化器在更多查询中自动选择索引合并，但也有可能忽略其他更好的执行计划，因此建议在解除此限制前针对实际场景进行充分测试，确保不会带来性能回退。
 
-### [`54337`](https://github.com/pingcap/tidb/issues/54337) <span class="version-mark">从 v8.2.0 版本开始引入</span>
+### [`54337`](https://github.com/pingcap/tidb/issues/54337) <span class="version-mark">从 v8.3.0 版本开始引入</span>
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`

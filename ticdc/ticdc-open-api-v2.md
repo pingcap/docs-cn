@@ -771,7 +771,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds/test1
 
 ### 请求 URI
 
-`GET /api/v2/changefeed/{changefeed_id}/synced`
+`GET /api/v2/changefeeds/{changefeed_id}/synced`
 
 ### 参数说明
 
@@ -786,7 +786,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds/test1
 以下请求会查询 ID 为 `test1` 的同步任务的同步完成状态。
 
 ```shell
-curl -X GET http://127.0.0.1:8300/api/v2/changefeed/test1/synced
+curl -X GET http://127.0.0.1:8300/api/v2/changefeeds/test1/synced
 ```
 
 **示例 1：同步已完成**
