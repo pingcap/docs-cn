@@ -11,7 +11,7 @@ summary: 了解 TiDB 9.0.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：9.0.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v9.0/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v9.0.0#version-list)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v9.0/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v9.0/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v9.0.0#version-list)
 
 在 9.0.0 版本中，你可以获得以下关键特性：
 
@@ -34,6 +34,18 @@ TiDB 版本：9.0.0
 
 ### 可扩展性
 
+* PD 支持的微服务模式成为正式功能 (GA) [#5766](https://github.com/tikv/pd/issues/5766) @[binshi-bing](https://github.com/binshi-bing) tw@hfxsd <!--2052-->
+
+    从 v9.0.0 开始，PD 支持的微服务模式成为正式功能。该模式可将 PD 的时间戳分配和集群调度功能拆分为以下微服务单独部署，从而实现 PD 的性能扩展，解决大规模集群下 PD 的性能瓶颈问题。
+
+    - `tso` 微服务：为整个集群提供单调递增的时间戳分配。
+    - `scheduling` 微服务：为整个集群提供调度功能，包括但不限于负载均衡、热点处理、副本修复、副本放置等。
+
+  每个微服务都以独立进程的方式部署。当设置某个微服务的副本数大于 1 时，该微服务会自动实现主备的容灾模式，以确保服务的高可用性和可靠性。
+
+    目前 PD 微服务仅支持通过 TiDB Operator 进行部署。当 PD 出现明显的性能瓶颈且无法升级配置的情况下，建议考虑使用该模式。
+
+    更多信息，请参考[用户文档](/pd-microservices.md)。
 
 ### 性能
 
