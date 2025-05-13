@@ -113,6 +113,7 @@ TiDB 版本：8.5.2
     - 修复在存算分离架构下，TiFlash 无法利用向量索引加速向量搜索查询的问题 [#9847](https://github.com/pingcap/tiflash/issues/9847) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复在存算分离架构下，可能会产生大量 `tag=EnumParseOverflowContainer` 日志的问题 [#9955](https://github.com/pingcap/tiflash/issues/9955) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复执行 `SELECT ... AS OF TIMESTAMP` 查询时，TiFlash 未按预期跳过 Learner Read 的问题 [#10046](https://github.com/pingcap/tiflash/issues/10046) @[CalvinNeo](https://github.com/CalvinNeo)
+    - 修复 TiFlash 处理带有不规则 key-range 的 Region snapshot 时可能 panic 的问题 [#10147](https://github.com/pingcap/tiflash/issues/10147) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
 
