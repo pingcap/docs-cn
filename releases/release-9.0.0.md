@@ -25,9 +25,17 @@ TiDB 版本：9.0.0
 </thead>
 <tbody>
   <tr>
-    <td rowspan="1">可扩展性与性能</td>
+    <td rowspan="3">可扩展性与性能</td>
     <td>PD 支持的微服务模式成为正式功能（从 v8.0.0 开始引入）</td>
     <td>PD 微服务模式通过将 PD 的不同功能模块解耦为独立服务，提升了系统的可扩展性、稳定性和部署灵活性，为大规模集群部署提供了更好的架构基础。</td>
+  </tr>
+    <tr>
+    <td>Disaggregation of PD to improve scalability (General Availability)</td>
+    <td>The Placement Driver (PD) provides multiple critical modules to ensure the normal operation of TiDB clusters. Now Generally Available in v9.0.0, PD's Microservices mode supports deploying the TSO and scheduling modules as independent microservices. This can significantly reduce resource conflicts for these services as the cluster scales. With this architecture, much larger clusters with much larger workloads are now possible.</td>
+  </tr>
+    <tr>
+    <td>Point-In-Time-Recovery (PITR) Now Supports Recovery from Compacted Log Backups for Faster Restores</td>
+    <td>Starting from v9.0.0, the log backup feature provides offline compaction capabilities, converting unstructured log backup data into structured SST files. These SST files can now recovered into the cluster much more quickly than reapplying the original logs, delivering improved recovery performance.</td>
   </tr>
   <tr>
     <td rowspan="1">稳定性与高可用</td>
@@ -46,6 +54,19 @@ TiDB 版本：9.0.0
   <tr>
     <td> SQL 跨可用区流量观测 </td>
     <td> 跨可用区流量观测帮助用户识别 TiDB 集群内部 SQL 查询过程中产生的跨区网络传输，从而分析流量来源、优化部署架构、控制云上跨区通信成本，是提升成本可见性和资源使用效率的重要手段。 </td>
+  </tr>
+  <tr>
+    <td rowspan="3">Data Migration</td>
+    <td>Support query argument redaction in DM logs</td>
+    <td>Introduces an optional <code>redact-info-log</code> parameter to mask query arguments in DM logs, preventing sensitive data from appearing in logs.</td>
+  </tr>
+  <tr>
+    <td>Ensure Lightning compatibility with TiDB <code>sql_require_primary_key=ON</code></td>
+    <td>Ensures the internal error-logging tables have primary keys if <code>sql_require_primary_key=ON</code> is enabled in TiDB, avoiding creation failures during data imports.</td>
+  </tr>
+  <tr>
+    <td>Migrated sync-diff-inspector from <code>tidb-tools</code> to <code>tiflow</code> repository</td>
+    <td>Consolidates sync-diff-inspector with other data migration and replication tools (DM and TiCDC) in the <code>tiflow</code> repository. Now available via TiUP and a dedicated Docker image.</td>
   </tr>
 </tbody>
 </table>
