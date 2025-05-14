@@ -56,7 +56,7 @@ TiDB 版本：9.0.0
     <td> 跨可用区流量观测帮助用户识别 TiDB 集群内部 SQL 查询过程中产生的跨区网络传输，从而分析流量来源、优化部署架构、控制云上跨区通信成本，是提升成本可见性和资源使用效率的重要手段。 </td>
   </tr>
   <tr>
-    <td rowspan="3">Data Migration</td>
+    <td rowspan="3">数据迁移</td>
     <td>Support query argument redaction in DM logs</td>
     <td>Introduces an optional <code>redact-info-log</code> parameter to mask query arguments in DM logs, preventing sensitive data from appearing in logs.</td>
   </tr>
