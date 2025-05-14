@@ -26,7 +26,7 @@ TiDB 版本：9.0.0
 <tbody>
   <tr>
     <td rowspan="3">可扩展性与性能</td>
-    <td>PD 支持的微服务模式成为正式功能（从 v8.0.0 开始引入）</td>
+    <td>PD 支持的[微服务模式](/pd-microservices.md)成为正式功能（从 v8.0.0 开始引入）</td>
     <td>PD 微服务模式通过将 PD 的不同功能模块解耦为独立服务，提升了系统的可扩展性、稳定性和部署灵活性，为大规模集群部署提供了更好的架构基础。</td>
   </tr>
     <tr>
@@ -39,13 +39,13 @@ TiDB 版本：9.0.0
   </tr>
   <tr>
     <td rowspan="1">稳定性与高可用</td>
-    <td>TiProxy 流量捕捉与回放成为正式功能（从 v8.4.0 开始引入）</td>
+    <td>[TiProxy 流量回放](/tiproxy/tiproxy-traffic-replay.md)成为正式功能（从 v8.4.0 开始引入）</td>
     <td>在进行集群升级、迁移或部署变更等重要操作之前，使用 TiProxy 捕获 TiDB 生产集群的真实负载，并在测试的目标集群中重现该工作负载，从而验证性能，确保变更成功。</td>
   </tr>
   <tr>
     <td rowspan="3">数据库管理与可观测性</td>
-    <td> TiDB Workload Repository </td>
-    <td>将数据库运行时的历史状态持久化，能够显著提升历史故障和性能问题的诊断效率，帮助用户快速定位并优化问题，同时为健康检查和自动调优提供关键的数据基础。</td>
+    <td> [TiDB Workload Repository](/workload-repository.md) </td>
+    <td>TiDB Workload Repository 可以将数据库运行时的历史状态持久化，能够显著提升历史故障和性能问题的诊断效率，帮助你快速定位并优化问题，同时为健康检查和自动调优提供关键的数据基础。</td>
   </tr>
   <tr>
     <td> TiDB 索引推荐 </td>
