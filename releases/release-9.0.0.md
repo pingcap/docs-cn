@@ -133,6 +133,16 @@ TiDB 版本：9.0.0
         
   更多信息，请参考[用户文档](/tiflash/tiflash-configuration.md#format_version)。
 
+* 按时间点恢复 (Point-in-time recovery, PITR) 支持从压缩后的日志备份中恢复，以加快恢复速度 [#56522](https://github.com/pingcap/tidb/issues/56522) @[YuJuncen](https://github.com/YuJuncen) **tw@lilin90** <!--2001-->
+
+    Starting from v9.0.0, the compact log backup feature provides offline compaction capabilities, converting unstructured log backup data into structured SST files. This results in the following improvements:从 v9.0.0 开始，压缩日志备份功能提供了离线压缩能力，将非结构化的日志备份数据转换为结构化的 SST 文件，从而实现以下改进：
+
+    - SST 可以被快速导入集群，从而**提升恢复性能**。
+    - 压缩过程中消除重复记录，从而**减少空间消耗**。
+    - 在确保 RTO (Recovery Time Objective) 的前提下，你可以设置更长的全量备份间隔，从而**降低对业务的影响**。
+
+  更多信息，请参考[用户文档](/br/br-compact-log-backup.md)。
+
 ### 高可用
 
 * TiProxy 支持流量回放功能正式发布 (GA) [#642](https://github.com/pingcap/tiproxy/issues/642) @[djshow832](https://github.com/djshow832)   **tw@hfxsd**<!--2062-->
