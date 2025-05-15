@@ -44,25 +44,25 @@ TiDB 版本：9.0.0
     <td>TiDB Workload Repository 可以将数据库运行时的历史状态持久化，能够显著提升历史故障和性能问题的诊断效率，帮助你快速定位并优化问题，同时为健康检查和自动调优提供关键的数据基础。</td>
   </tr>
   <tr>
-    <td> TiDB 索引推荐 </td>
-    <td>数据库自动索引推荐通过分析实际查询负载，智能识别缺失或冗余的索引，帮助用户在无需深入理解业务的情况下完成索引优化。它不仅显著降低了人工分析和调优成本，还提升了系统整体的查询性能与稳定性。</td>
+    <td>TiDB 索引推荐 (Index Advisor) tw@Oreoxmt</td>
+    <td>TiDB 索引推荐 (Index Advisor) 通过分析实际查询负载，智能识别缺失或冗余的索引，帮助你在无需深入了解业务的情况下完成索引优化。该功能可降低手动分析和调优的成本，并提升查询性能和系统稳定性。</td>
   </tr>
   <tr>
-    <td> SQL 跨可用区流量观测 </td>
-    <td> 跨可用区流量观测帮助用户识别 TiDB 集群内部 SQL 查询过程中产生的跨区网络传输，从而分析流量来源、优化部署架构、控制云上跨区通信成本，是提升成本可见性和资源使用效率的重要手段。 </td>
+    <td>SQL 跨可用区流量观测 tw@Oreoxmt</td>
+    <td>跨可用区流量观测可用于识别 TiDB 集群中 SQL 查询产生的跨可用区网络流量，帮助你分析流量来源、优化部署架构，并控制云服务中的跨区传输成本，从而提升资源使用效率和成本可见性。</td>
   </tr>
   <tr>
     <td rowspan="3">数据迁移</td>
-    <td>Support query argument redaction in DM logs</td>
-    <td>Introduces an optional <code>redact-info-log</code> parameter to mask query arguments in DM logs, preventing sensitive data from appearing in logs.</td>
+    <td>支持对 Data Migration (DM) 日志中的查询参数进行脱敏 tw@Oreoxmt</td>
+    <td>引入 <code>redact-info-log</code> 配置项，支持对 DM 日志中的查询参数进行脱敏处理，防止敏感数据出现在日志中。</td>
   </tr>
   <tr>
-    <td>Ensure Lightning compatibility with TiDB <code>sql_require_primary_key=ON</code></td>
-    <td>Ensures the internal error-logging tables have primary keys if <code>sql_require_primary_key=ON</code> is enabled in TiDB, avoiding creation failures during data imports.</td>
+    <td>TiDB Lightning 与 TiDB <code>sql_require_primary_key=ON</code> 兼容 tw@Oreoxmt</td>
+    <td>当在 TiDB 中启用系统变量 <code>sql_require_primary_key=ON</code> 时，确保内部错误日志表包含主键，以避免数据导入过程中表创建失败。</td>
   </tr>
   <tr>
-    <td>Migrated sync-diff-inspector from <code>tidb-tools</code> to <code>tiflow</code> repository</td>
-    <td>Consolidates sync-diff-inspector with other data migration and replication tools (DM and TiCDC) in the <code>tiflow</code> repository. Now available via TiUP and a dedicated Docker image.</td>
+    <td>将 sync-diff-inspector 从 <code>pingcap/tidb-tools</code> 迁移至 <code>pingcap/tiflow</code> 代码仓库 tw@Oreoxmt</td>
+    <td>将 sync-diff-inspector 与 DM 和 TiCDC 等迁移与复制工具整合至 <code>pingcap/tiflow</code> 仓库。你现在可以通过 TiUP 或专用 Docker 镜像安装 sync-diff-inspector 工具。</td>
   </tr>
 </tbody>
 </table>
