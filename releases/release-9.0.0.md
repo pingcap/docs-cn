@@ -244,6 +244,12 @@ TiDB 版本：9.0.0
 
     更多信息，请参考[用户文档](/ticdc/ticdc-new-arch.md)。
 
+* TiCDC 为 Debezium 协议支持 DDL 事件和 WATERMARK 事件 [#11566](https://github.com/pingcap/tiflow/issues/11566) @[wk989898](https://github.com/wk989898) **tw@lilin90** <!--2009-->
+
+    TiCDC 支持以 Debezium 的格式输出 DDL 和 WATERMARK 事件。当上游 DDL 操作成功执行后，TiCDC 会将该 DDL 事件编码为 Kafka 消息，其 key 和 message 均采用 Debezium 格式。WATERMARK 事件是 TiCDC 的扩展功能（通过在 Kafka sink 中配置 [`enable-tidb-extension`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 来启用），用于表示一个特殊的时间点，在这个时间点之前收到的事件是完整的。
+
+    更多信息，请参考[用户文档](/ticdc/ticdc-debezium.md)。
+
 * TiCDC 新增安全机制，避免将数据同步回同一个 TiDB 集群 [#12062](https://github.com/pingcap/tiflow/issues/12062) @[wlwilliamx](https://github.com/wlwilliamx) **tw@qiancai** <!--2063-->
 
     TiCDC 支持从上游的一个 TiDB 集群同步数据到下游的多个其他系统，包括其他 TiDB 集群。在 v9.0.0 之前，如果在 TiCDC 配置中误将同一个 TiDB 集群同时配置为数据源集群和目标集群，可能会导致数据同步循环，从而引发数据一致性问题。从 v9.0.0 开始，TiCDC 会自动检查源和目标 TiDB 集群是否相同，从而避免这种配置错误。
