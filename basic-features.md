@@ -134,7 +134,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [临时表](/temporary-tables.md) |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | N | N |
 | 并行 DDL |  Y  |  Y  |  Y  | Y | Y | N | N | N | N | N |
 | [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) |  Y  |  Y  |  Y  | Y | Y | N | N | N | N | N |
-| [元数据锁](/metadata-lock.md) |  Y  |  Y  | Y | Y | N | N | N | N | N |
+| [元数据锁](/metadata-lock.md) |  Y  |  Y  | Y | Y | Y | N | N | N | N | N |
 | [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md) |  Y  |  Y  |  Y  | Y | Y | N | N | N | N | N |
 | [暂停](/sql-statements/sql-statement-admin-pause-ddl.md)/[恢复](/sql-statements/sql-statement-admin-resume-ddl.md) DDL |  Y  |  Y  | Y | N | N | N | N | N | N | N |
 | [TiDB 加速建表](/accelerated-table-creation.md) | Y | E | N | N | N | N | N | N | N | N |
@@ -152,7 +152,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [可重复读隔离（快照隔离）](/transaction-isolation-levels.md) |  Y |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [读已提交隔离](/transaction-isolation-levels.md) |  Y |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [自动终止长时间未提交的空闲事务](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) |  Y |  Y  | N | N | N | N | N | N | N | N |
-| [批量 DML 语句的执行方式 (`tidb_dml_type = "bulk"`)](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) | E |  N | N | N | N | N | N | N | N |
+| [批量 DML 语句的执行方式 (`tidb_dml_type = "bulk"`)](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) | E |  E | N | N | N | N | N | N | N | N |
 
 ## 分区
 
