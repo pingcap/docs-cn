@@ -10,13 +10,11 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
 ## TiFlash 未能正常启动
 
-该问题可能由多个因素构成，可以通过以下步骤依次排查：
+该问题可能由多个因素导致，可以通过以下步骤依次排查：
 
-1. 检查系统环境是否是 CentOS8。
+1. 检查系统环境是否是 CentOS 8。
 
-    CentOS8 中缺少 `libnsl.so` 系统库，可以通过手动安装的方式解决：
-
-    {{< copyable "shell-regular" >}}
+    CentOS 8 中缺少 `libnsl.so` 系统库，可以通过手动安装的方式解决：
 
     ```shell
     dnf install libnsl
@@ -24,13 +22,11 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
 2. 检查系统的 `ulimit` 参数设置。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     ulimit -n 1000000
     ```
 
-3. 使用 PD Control 工具检查在该节点（相同 IP 和 Port）是否有之前未成功下线的 TiFlash 实例，并将它们强制下线。（下线步骤参考[手动缩容 TiFlash 节点](/scale-tidb-using-tiup.md#方案二手动缩容-tiflash-节点)）
+3. 使用 PD Control 工具检查在该节点（相同 IP 和 Port）是否有之前未成功下线的 TiFlash 实例，并将它们强制下线。下线的操作步骤，请参考[手动缩容 TiFlash 节点](/scale-tidb-using-tiup.md#方案二手动缩容-tiflash-节点)。
 
 4. 检查系统 CPU 是否支持 SIMD 指令集
 
@@ -44,7 +40,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
 如果在 TiFlash 上的负载压力过大，会导致 TiFlash 数据同步落后，部分查询可能会返回 `Region Unavailable` 的错误。
 
-在这种情况下，可以增加 TiFlash 节点分担负载压力。
+在这种情况下，可以[增加 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)分担负载压力。
 
 ## 数据文件损坏
 
@@ -117,8 +113,6 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
 如果语句中含有 MPP 模式不支持的算子或函数等，TiDB 不会选择 MPP 模式，可能导致分析慢。此时，可以执行 `EXPLAIN` 语句检查 SQL 中是否含有 TiFlash 不支持的函数或算子。
 
-{{< copyable "sql" >}}
-
 ```sql
 create table t(a datetime);
 alter table t set tiflash replica 1;
@@ -128,7 +122,7 @@ explain select count(*) from t where subtime(a, '12:00:00') > '2022-01-01' group
 show warnings;
 ```
 
-示例中，warning 消息显示，因为 TiDB 5.4 及更早的版本尚不支持 `subtime` 函数的下推，因此 TiDB 没有选择 MPP 模式。
+示例中，warning 消息显示，因为 TiDB v5.4 及更早的版本尚不支持 `subtime` 函数的下推，因此 TiDB 没有选择 MPP 模式。
 
 ```
 +---------+------+-----------------------------------------------------------------------------+
@@ -144,14 +138,12 @@ show warnings;
 
 1. 检查 PD 的 [Placement Rules](/configure-placement-rules.md) 功能是否开启，该功能在 TiDB v5.0 及以上的版本中默认开启：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     echo 'config show replication' | /path/to/pd-ctl -u http://${pd-ip}:${pd-port}
     ```
 
     - 如果返回 `true`，进入下一步。
-    - 如果返回 `false`，你需要先[开启 Placement Rules 特性](/configure-placement-rules.md#开启-placement-rules-特性) 后再进入下一步。
+    - 如果返回 `false`，你需要先[开启 Placement Rules 特性](/configure-placement-rules.md#开启-placement-rules-特性)后再进入下一步。
 
 2. 通过 TiFlash-Summary 监控面板下的 UpTime 检查操作系统中 TiFlash 进程是否正常。
 
@@ -161,7 +153,7 @@ show warnings;
     tiup ctl:nightly pd -u http://${pd-ip}:${pd-port} store
     ```
 
-    store.labels 中含有 `{"key": "engine", "value": "tiflash"}` 信息的为 TiFlash。
+    `store.labels` 中含有 `{"key": "engine", "value": "tiflash"}` 信息的为 TiFlash。
 
 4. 检查集群 Placement Rule 中 ID 为 `default` Rule 的 `count` 配置是否合理：
 
@@ -170,13 +162,11 @@ show warnings;
     ```
 
     - 如果 `count` 取值未超过 TiKV 节点数，进入下一步。
-    - 如果 `count` 超过 TiKV 节点数(例如某些测试集群中只有 1 个 TiKV 节点，但是 count 值为 `3`)，PD 不会向 TiFlash 调度 Region。此时，请参考[使用 pd-ctl 设置规则](/configure-placement-rules.md#使用-pd-ctl-设置规则)，将 `count` 修改为小于等于 TiKV 节点数的整数。
+    - 如果 `count` 超过 TiKV 节点数(例如某些测试集群中只有 1 个 TiKV 节点，但是 count 值为 `3`)，PD 不会向 TiFlash 调度 Region。此时，请参考[使用 pd-ctl 设置规则](/configure-placement-rules.md#使用-pd-ctl-设置规则)，将 `count` 修改为小于或等于 TiKV 节点数的整数。
 
     > **注意：**
     >
     > `count` 的默认值是 `3`。在生产环境中，TiKV 节点数一般大于该值；在测试环境中，如果允许集群中的 Region 副本数只有 1 个，可以修改为 `1`。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     curl -X POST -d '{
@@ -193,7 +183,7 @@ show warnings;
     }' <http://172.16.x.xxx:2379/pd/api/v1/config/rule>
     ```
 
-5. 检查 TiFlash 节点所在机器的磁盘空间使用情况。默认情况下，当节点使用空间占比超过 capacity 的 80%（即 `low-space-ratio` 默认值为 `0.8`）时，PD 会避免往该节点迁移数据以防止磁盘空间耗尽。如果所有 TiFlash 节点的剩余磁盘空间都不足，则会导致 PD 不往 TiFlash 调度新的 Region peer，导致副本始终处于不可用状态，即 progress < 1。
+5. 检查 TiFlash 节点所在机器的磁盘空间使用情况。默认情况下，当节点使用空间占比超过 capacity 的 80%（即 `low-space-ratio` 默认值为 `0.8`）时，PD 会避免往该节点迁移数据，以防止磁盘空间耗尽。如果所有 TiFlash 节点的剩余磁盘空间都不足，则会导致 PD 不往 TiFlash 调度新的 Region peer，导致副本始终处于不可用状态，即 progress < 1。
 
     - 如果磁盘使用率大于等于 `low-space-ratio`，说明磁盘空间不足。此时可以采取以下一个或多个措施：
 
@@ -214,7 +204,7 @@ show warnings;
     - 执行 `pd-ctl region check-down-peer` 命令检查是否有 `down peer`。
     - 如果存在 `down peer`，执行 `pd-ctl operator add remove-peer <region-id> <tiflash-store-id>` 命令将其清除。
 
-7. 如果上述配置、TiFlash 状态都不存在异常，请按照下面 [TiFlash 数据不同步](#tiflash-数据不同步)排查同步环节出现异常的组件或数据。
+如果上述配置、TiFlash 状态都不存在异常，请按照下面 [TiFlash 数据不同步](#tiflash-数据不同步)排查同步环节出现异常的组件或数据。
 
 ## TiFlash 数据不同步
 
