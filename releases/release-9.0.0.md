@@ -45,7 +45,7 @@ TiDB 版本：9.0.0
   </tr>
   <tr>
     <td>TiDB 索引推荐 (Index Advisor) tw@Oreoxmt</td>
-    <td>TiDB 索引推荐 (Index Advisor) 通过分析实际查询负载，智能识别缺失或冗余的索引，帮助你在无需深入了解业务的情况下完成索引优化。该功能可降低手动分析和调优的成本，并提升查询性能和系统稳定性。</td>
+    <td>TiDB 索引推荐 (Index Advisor) 通过分析实际查询负载，自动识别缺失或冗余的索引，帮助你在无需深入了解业务的情况下完成索引优化。该功能可降低手动分析和调优的成本，并提升查询性能和系统稳定性。</td>
   </tr>
   <tr>
     <td>SQL 跨可用区流量观测 tw@Oreoxmt</td>
@@ -54,15 +54,15 @@ TiDB 版本：9.0.0
   <tr>
     <td rowspan="3">数据迁移</td>
     <td>支持对 Data Migration (DM) 日志中的查询参数进行脱敏 tw@Oreoxmt</td>
-    <td>引入 <code>redact-info-log</code> 配置项，支持对 DM 日志中的查询参数进行脱敏处理，防止敏感数据出现在日志中。</td>
+    <td>Data Migration (DM) 引入 <code>redact-info-log</code> 配置项，支持对 DM 日志中的查询参数进行脱敏处理，防止敏感数据出现在日志中。</td>
   </tr>
   <tr>
     <td>TiDB Lightning 与 TiDB <code>sql_require_primary_key=ON</code> 兼容 tw@Oreoxmt</td>
-    <td>当在 TiDB 中启用系统变量 <code>sql_require_primary_key=ON</code> 时，确保内部错误日志表包含主键，以避免数据导入过程中表创建失败。</td>
+    <td>当在 TiDB 中启用系统变量 <code>sql_require_primary_key</code> 时，TiDB Lightning 会在数据导入过程中自动为其内部的错误日志表和冲突检测表添加默认主键，以避免数据导入过程中表创建失败。</td>
   </tr>
   <tr>
     <td>将 sync-diff-inspector 从 <code>pingcap/tidb-tools</code> 迁移至 <code>pingcap/tiflow</code> 代码仓库 tw@Oreoxmt</td>
-    <td>将 sync-diff-inspector 与 DM 和 TiCDC 等迁移与复制工具整合至 <code>pingcap/tiflow</code> 仓库。你现在可以通过 TiUP 或专用 Docker 镜像安装 sync-diff-inspector 工具。</td>
+    <td>将 sync-diff-inspector 整合至已包含 DM 和 TiCDC 等迁移与同步工具的 <code>pingcap/tiflow</code> 仓库。现在你可以通过 TiUP 或专用 Docker 镜像安装 sync-diff-inspector 工具。</td>
   </tr>
 </tbody>
 </table>
