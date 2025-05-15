@@ -25,13 +25,9 @@ TiDB 版本：9.0.0
 </thead>
 <tbody>
   <tr>
-    <td rowspan="3">可扩展性与性能</td>
+    <td rowspan="2">可扩展性与性能</td>
     <td>PD 支持的[微服务模式](/pd-microservices.md)成为正式功能（从 v8.0.0 开始引入）</td>
     <td>PD 微服务模式通过将 PD 的不同功能模块解耦为独立服务，提升了系统的可扩展性、稳定性和部署灵活性，为大规模集群部署提供了更好的架构基础。</td>
-  </tr>
-    <tr>
-    <td>Disaggregation of PD to improve scalability (General Availability)</td>
-    <td>The Placement Driver (PD) provides multiple critical modules to ensure the normal operation of TiDB clusters. Now Generally Available in v9.0.0, PD's Microservices mode supports deploying the TSO and scheduling modules as independent microservices. This can significantly reduce resource conflicts for these services as the cluster scales. With this architecture, much larger clusters with much larger workloads are now possible.</td>
   </tr>
     <tr>
     <td>Point-In-Time-Recovery (PITR) Now Supports Recovery from Compacted Log Backups for Faster Restores</td>
