@@ -64,6 +64,10 @@ UPDATE books SET stock=stock-1 WHERE id IN (1, 2);
 
 ### 解决方案 3：使用乐观事务
 
+> **警告：**
+>
+> TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)。从 v7.1.0 开始，不推荐设置 `tidb_txn_mode` 的值为 `"optimistic"` 或 `""`。
+
 乐观事务模型下，并不会有死锁问题，但应用端需要加上乐观事务在失败后的重试逻辑，具体重试逻辑见[应用端重试和错误处理](#应用端重试和错误处理)。
 
 ### 解决方案 4：重试
