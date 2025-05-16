@@ -8,6 +8,7 @@ summary: 了解 TiCDC 的数据同步能力。
 ## 背景知识
 
 TiCDC（TiDB Change Data Capture）是 TiDB 生态中用于实时数据同步的核心组件。
+
 1. TiCDC 监听 TiKV 的变更日志（Raft Log），将行数据的增删改操作转换为下游兼容的 SQL 语句。与 Binlog 不同，TiCDC 并不基于上游的 SQL 获取数据变更。参考 [TiCDC 处理数据变更的实现原理](/ticdc/ticdc-overview.md#ticdc-处理数据变更的实现原理)。
 
 2. TiCDC 生成与 SQL 语义等效的逻辑操作（如 INSERT/UPDATE/DELETE），而非逐条还原上游执行的原始 SQL。参考 [TiCDC 处理数据变更的实现原理](/ticdc/ticdc-overview.md#ticdc-处理数据变更的实现原理)。
