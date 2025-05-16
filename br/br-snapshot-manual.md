@@ -36,15 +36,12 @@ tiup br backup full \
     --pd "${PD_IP}:2379" \
     --backupts '2022-09-08 13:30:00 +08:00' \
     --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
-    --ratelimit 128 \
     --log-file backupfull.log
 ```
 
 以上命令中：
 
-- `--backupts`：快照对应的物理时间点。如果该快照的数据已经被 GC，那么 `tiup br backup` 命令会报错退出；如果没有指定该参数，br 命令行工具会选取备份开始的时间点所对应的快照。
-- `--ratelimit`：**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。
-- `--log-file`：备份日志写入的目标文件。
+- `--backupts`：快照对应的物理时间点，格式可以是 [TSO](/tso.md) 或者时间戳，例如 `400036290571534337` 或者 `2024-06-28 13:30:00 +08:00`。如果该快照的数据已经被 GC，那么 `tiup br backup` 命令会报错退出；如果没有指定该参数，br 命令行工具会选取备份开始的时间点所对应的快照。
 
 > **注意：**
 >
@@ -71,7 +68,6 @@ tiup br backup db \
     --pd "${PD_IP}:2379" \
     --db test \
     --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
-    --ratelimit 128 \
     --log-file backuptable.log
 ```
 
@@ -89,7 +85,6 @@ tiup br backup table \
     --db test \
     --table usertable \
     --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
-    --ratelimit 128 \
     --log-file backuptable.log
 ```
 
@@ -106,7 +101,6 @@ tiup br backup full \
     --pd "${PD_IP}:2379" \
     --filter 'db*.tbl*' \
     --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
-    --ratelimit 128 \
     --log-file backupfull.log
 ```
 
