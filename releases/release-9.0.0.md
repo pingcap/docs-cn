@@ -30,8 +30,8 @@ TiDB 版本：9.0.0
     <td>PD 微服务模式通过将 PD 的不同功能模块解耦为独立服务，提升了系统的可扩展性、稳定性和部署灵活性，为大规模集群部署提供了更好的架构基础。</td>
   </tr>
     <tr>
-    <td>Point-In-Time-Recovery (PITR) Now Supports Recovery from Compacted Log Backups for Faster Restores</td>
-    <td>Starting from v9.0.0, the log backup feature provides offline compaction capabilities, converting unstructured log backup data into structured SST files. These SST files can now recovered into the cluster much more quickly than reapplying the original logs, delivering improved recovery performance.</td>
+    <td>按时间点恢复 (Point-in-time recovery, PITR) 支持从[压缩后的日志备份](/br/br-compact-log-backup.md)中恢复，以加快恢复速度</td>
+    <td>从 v9.0.0 开始，压缩日志备份功能提供了离线压缩能力，将非结构化的日志备份数据转换为结构化的 SST 文件。与重新应用原始日志相比，这些 SST 文件可以更快地恢复到集群中，从而提升了恢复性能。</td>
   </tr>
   <tr>
     <td rowspan="1">稳定性与高可用</td>
@@ -40,8 +40,8 @@ TiDB 版本：9.0.0
   </tr>
   <tr>
     <td rowspan="3">数据库管理与可观测性</td>
-    <td> [TiDB Workload Repository](/workload-repository.md) </td>
-    <td>TiDB Workload Repository 可以将数据库运行时的历史状态持久化，能够显著提升历史故障和性能问题的诊断效率，帮助你快速定位并优化问题，同时为健康检查和自动调优提供关键的数据基础。</td>
+    <td>新增 [TiDB Workload Repository](/workload-repository.md) 功能，支持将历史工作负载数据持久化存储到 TiKV 中</td>
+    <td>TiDB Workload Repository 可以将数据库运行时的历史状态持久化，能够显著提升历史故障和性能问题的诊断效率，帮助你快速定位和解决问题，同时为健康检查和自动调优提供关键的数据基础。</td>
   </tr>
   <tr>
     <td>TiDB 索引推荐 (Index Advisor) tw@Oreoxmt</td>
@@ -182,7 +182,7 @@ TiDB 版本：9.0.0
 
 ### 可观测性
 
-* TiDB Workload Repository [#58247](https://github.com/pingcap/tidb/issues/58247) @[xhebox](https://github.com/xhebox) @[henrybw](https://github.com/henrybw) @[wddevries](https://github.com/wddevries) **tw@lilin90**<!--1953-->
+* 新增 TiDB Workload Repository 功能，支持将历史工作负载数据持久化存储到 TiKV 中 [#58247](https://github.com/pingcap/tidb/issues/58247) @[xhebox](https://github.com/xhebox) @[henrybw](https://github.com/henrybw) @[wddevries](https://github.com/wddevries) **tw@lilin90**<!--1953-->
 
     很多高频更新的负载指标和状态信息被维护在实例的内存中，这些历史负载数据可以作为数据库的一部分持久化下来。主要用于以下目的：
     
