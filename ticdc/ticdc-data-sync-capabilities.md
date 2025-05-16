@@ -15,7 +15,7 @@ TiCDC（TiDB Change Data Capture）是 TiDB 生态中用于实时数据同步的
 
 3. TiCDC 提供事务最终一致性的保证，开启 [redo log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制) 后提供容灾场景下的最终一致性保证，开启 [Syncpoint](/ticdc/ticdc-upstream-downstream-check.md#启用-syncpoint) 后提供一致性快照读和数据一致性校验。
 
-4. TiCDC 支持同步数据到多类下游，包括 [TiDB 及兼容Mysql 协议的数据库](/ticdc/ticdc-sink-to-mysql.md)，[Kafka](/ticdc/ticdc-sink-to-kafka.md)，[Pulsar](/ticdc/ticdc-sink-to-pulsar), [存储服务（Amazon S3、GCS、Azure Blob Storage 和 NFS](/ticdc/ticdc-sink-to-cloud-storage.md)。
+4. TiCDC 支持同步数据到多类下游，包括 [TiDB 及兼容Mysql 协议的数据库](/ticdc/ticdc-sink-to-mysql.md)，[Kafka](/ticdc/ticdc-sink-to-kafka.md)，[Pulsar](/ticdc/ticdc-sink-to-pulsar.md), [存储服务（Amazon S3、GCS、Azure Blob Storage 和 NFS](/ticdc/ticdc-sink-to-cloud-storage.md)。
 
 ## TiCDC 的数据同步能力
 
