@@ -30,7 +30,7 @@ TiDB 版本：9.0.0
     <td>PD 微服务模式通过将 PD 的不同功能模块解耦为独立服务，提升了系统的可扩展性、稳定性和部署灵活性，为大规模集群部署提供了更好的架构基础。</td>
   </tr>
     <tr>
-    <td>按时间点恢复 (Point-in-time recovery, PITR) 支持从[压缩后的日志备份](/br/br-compact-log-backup.md)中恢复，以加快恢复速度</td>
+    <td>按时间点恢复 (Point-in-time recovery, PITR) 支持从<a href="https://docs.pingcap.com/zh/tidb/dev/br-compact-log-backup/">压缩后的日志备份</a>中恢复，以加快恢复速度 tw@lilin90</td>
     <td>从 v9.0.0 开始，压缩日志备份功能提供了离线压缩能力，将非结构化的日志备份数据转换为结构化的 SST 文件。与重新应用原始日志相比，这些 SST 文件可以更快地恢复到集群中，从而提升了恢复性能。</td>
   </tr>
   <tr>
@@ -40,7 +40,7 @@ TiDB 版本：9.0.0
   </tr>
   <tr>
     <td rowspan="3">数据库管理与可观测性</td>
-    <td>新增 [TiDB Workload Repository](/workload-repository.md) 功能，支持将历史工作负载数据持久化存储到 TiKV 中</td>
+    <td>新增 <a href="https://docs.pingcap.com/zh/tidb/dev/workload-repository/">TiDB Workload Repository</a> 功能，支持将历史工作负载数据持久化存储到 TiKV 中 tw@lilin90</td>
     <td>TiDB Workload Repository 可以将数据库运行时的历史状态持久化，能够显著提升历史故障和性能问题的诊断效率，帮助你快速定位和解决问题，同时为健康检查和自动调优提供关键的数据基础。</td>
   </tr>
   <tr>
