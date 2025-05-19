@@ -28,7 +28,7 @@ TiDB 版本：9.0.0
 <tbody>
   <tr>
     <td rowspan="2">可扩展性与性能</td>
-    <td>PD 支持的[微服务模式](/pd-microservices.md)成为正式功能（从 v8.0.0 开始引入）</td>
+    <td>PD 支持的<a href="https://docs.pingcap.com/zh/tidb/dev/pd-microservices/">微服务模式</a>成为正式功能（从 v8.0.0 开始引入）</td>
     <td>PD 微服务模式通过将 PD 的不同功能模块解耦为独立服务，提升了系统的可扩展性、稳定性和部署灵活性，为大规模集群部署提供了更好的架构基础。</td>
   </tr>
     <tr>
@@ -37,7 +37,7 @@ TiDB 版本：9.0.0
   </tr>
   <tr>
     <td rowspan="1">稳定性与高可用</td>
-    <td>[TiProxy 流量回放](/tiproxy/tiproxy-traffic-replay.md)成为正式功能（从 v8.4.0 开始引入）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/dev/tiproxy-traffic-replay/">TiProxy 流量回放</a>成为正式功能（从 v8.4.0 开始引入）</td>
     <td>在进行集群升级、迁移或部署变更等重要操作之前，使用 TiProxy 捕获 TiDB 生产集群的真实负载，并在测试的目标集群中重现该工作负载，从而验证性能，确保变更成功。</td>
   </tr>
   <tr>
