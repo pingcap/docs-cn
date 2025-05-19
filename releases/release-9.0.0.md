@@ -313,10 +313,10 @@ TiDB 版本：9.0.0
 
 | 配置文件或组件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| TiKV | [`hashagg_use_magic_hash`](/tikv-configuration-file.md#hashagg_use_magic_hash-从-v900-版本开始引入) | 新增 | 控制 TiFlash 在进行聚合操作时使用的哈希函数。 |
 | TiKV | [`storage.max-ts.action-on-invalid-update`](/tikv-configuration-file.md#action-on-invalid-update-从-v900-版本开始引入) | 新增 | 指定当检测到非法的 `max-ts` 更新请求时，TiKV 的处理方式。默认值为 `"panic"`，代表 TiKV 检测到非法的 `max-ts` 更新请求时会 panic。 |
 | TiKV | [`storage.max-ts.cache-sync-interval`](/tikv-configuration-file.md#cache-sync-interval-从-v900-版本开始引入) | 新增 | 控制 TiKV 更新本地 PD TSO 缓存的时间间隔。默认值为 `"15s"`。 |
 | TiKV | [`storage.max-ts.max-drift`](/tikv-configuration-file.md#max-drift-从-v900-版本开始引入) | 新增 | 定义当读写请求使用的 TS 超过 TiKV 缓存的 PD TSO 时，所允许的最长超出时间。默认值为`"60s"`。 |
+| TiFlash | [`hashagg_use_magic_hash`](/tiflash/tiflash-configuration.md#hashagg_use_magic_hash-从-v900-版本开始引入) | 新增 | 控制 TiFlash 在进行聚合操作时使用的哈希函数。 |
 | TiFlash | [`format_version`](/tiflash/tiflash-configuration.md#format_version) | 修改 | 默认值从 `7` 变更为 `8`，代表 v9.0.0 以及以后版本 DTFile 文件的默认格式 `8`。该格式用于支持新的字符串序列化方案，可提升字符串的读写性能。 |
 <!--
 | TiCDC | [`newarch`](/ticdc/ticdc-server-config.md#newarch) | 新增 | 控制是否开启 [TiCDC 新架构](/ticdc/ticdc-new-arch.md)。默认值为不设置，表示使用老架构。该配置项仅用于新架构，如果在 TiCDC 老架构的配置文件中添加该配置项，可能会导致解析失败。 |
