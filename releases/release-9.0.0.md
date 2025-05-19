@@ -298,7 +298,7 @@ TiDB 版本：9.0.0
 |--------|------------------------------|------|
 | `txn_scope` | 删除 | 在 v9.0.0 中，该变量被移除。 |
 | [`tidb_hash_join_version`](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) | 修改 | 经进一步的测试后，默认值从 `legacy` 变更为 `optimized`，即 TiDB 在执行 Hash Join 算子时使用 [Hash Join 算子的优化版](/sql-statements/sql-statement-explain-analyze.md#hashjoinv2)，以提升 Hash Join 性能。 |
-| [`max_user_connections`](/system-variables.md/#max_user_connections-从-v900-版本开始引入) | 新增 | 用于限制单个用户对单个 TiDB 节点可建立的连接数，避免单个用户消耗过多的 [token](tidb-configuration-file.md#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 |
+| [`max_user_connections`](/system-variables.md/#max_user_connections-从-v900-版本开始引入) | 新增 | 用于限制单个用户对单个 TiDB 节点可建立的连接数，避免单个用户消耗过多的 [token](/tidb-configuration-file.md#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 |
 | [`tidb_accelerate_user_creation_update`](/system-variables.md/#tidb_accelerate_user_creation_update-从-v900-版本开始引入)| 新增 | 用于在用户数量过多的场景下，提升创建用户、修改用户信息的性能。 |
 | [`tidb_max_dist_task_nodes`](/system-variables.md/#tidb_max_dist_task_nodes-从-v900-版本开始引入)| 新增 | 控制分布式框架任务可使用的最大 TiDB 节点数上限。默认值为 `-1`，表示自动模式。在此模式下，系统将自动选择合适的节点数量。 |
 | [`mpp_version`](/system-variables.md#mpp_version-从-v660-版本开始引入) | 修改 | 该变量新增可选值 `3`，用于开启 TiFlash 新的字符串数据交换格式。当该变量的值未指定时，TiDB 将自动选择 MPP 执行计划的最新版本 `3`，以提高字符串的序列化和反序列化效率，从而提升查询性能。 |
