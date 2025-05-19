@@ -298,7 +298,7 @@ TiDB 版本：9.0.0
 |--------|------------------------------|------|
 | `txn_scope` | 删除 | 在 v9.0.0 中，该变量被移除。 |
 | [`tidb_hash_join_version`](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) | 修改 | 经进一步的测试后，默认值从 `legacy` 变更为 `optimized`，即 TiDB 在执行 Hash Join 算子时使用 [Hash Join 算子的优化版](/sql-statements/sql-statement-explain-analyze.md#hashjoinv2)，以提升 Hash Join 性能。 |
-| [`max_user_connections`](/system-variables.md/#max_user_connections-从-v900-版本开始引入) | 新增 | 用于限制单个用户对单个 TiDB 节点可建立的连接数，避免单个用户消耗过多的 [token](tidb-configuration-file.md/#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 |
+| [`max_user_connections`](/system-variables.md/#max_user_connections-从-v900-版本开始引入) | 新增 | 用于限制单个用户对单个 TiDB 节点可建立的连接数，避免单个用户消耗过多的 [token](tidb-configuration-file.md#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 |
 | [`tidb_accelerate_user_creation_update`](/system-variables.md/#tidb_accelerate_user_creation_update-从-v900-版本开始引入)| 新增 | 用于在用户数量过多的场景下，提升创建用户、修改用户信息的性能。 |
 | [`tidb_max_dist_task_nodes`](/system-variables.md/#tidb_max_dist_task_nodes-从-v900-版本开始引入)| 新增 | 控制分布式框架任务可使用的最大 TiDB 节点数上限。默认值为 `-1`，表示自动模式。在此模式下，系统将自动选择合适的节点数量。 |
 | [`mpp_version`](/system-variables.md#mpp_version-从-v660-版本开始引入) | 修改 | 该变量新增可选值 `3`，用于开启 TiFlash 新的字符串数据交换格式。当该变量的值未指定时，TiDB 将自动选择 MPP 执行计划的最新版本 `3`，以提高字符串的序列化和反序列化效率，从而提升查询性能。 |
@@ -318,8 +318,10 @@ TiDB 版本：9.0.0
 | TiKV | [`storage.max-ts.cache-sync-interval`](/tikv-configuration-file.md#cache-sync-interval-从-v900-版本开始引入) | 新增 | 控制 TiKV 更新本地 PD TSO 缓存的时间间隔。默认值为 `"15s"`。 |
 | TiKV | [`storage.max-ts.max-drift`](/tikv-configuration-file.md#max-drift-从-v900-版本开始引入) | 新增 | 定义当读写请求使用的 TS 超过 TiKV 缓存的 PD TSO 时，所允许的最长超出时间。默认值为`"60s"`。 |
 | TiFlash | [`format_version`](/tiflash/tiflash-configuration.md#format_version) | 修改 | 默认值从 `7` 变更为 `8`，代表 v9.0.0 以及以后版本 DTFile 文件的默认格式 `8`。该格式用于支持新的字符串序列化方案，可提升字符串的读写性能。 |
+<!--
 | TiCDC | [`newarch`](/ticdc/ticdc-server-config.md#newarch) | 新增 | 控制是否开启 [TiCDC 新架构](/ticdc/ticdc-new-arch.md)。默认值为不设置，表示使用老架构。该配置项仅用于新架构，如果在 TiCDC 老架构的配置文件中添加该配置项，可能会导致解析失败。 |
-<!--| BR | [`--checkpoint-storage`](br/br-checkpoint-restore.md#实现细节-将断点数据存储在下游集群) | 新增 | 用于指定断点数据存储的外部存储。 | -->
+| BR | [`--checkpoint-storage`](br/br-checkpoint-restore.md#实现细节-将断点数据存储在下游集群) | 新增 | 用于指定断点数据存储的外部存储。 | 
+-->
 | DM | [`redact-info-log`](/dm/dm-worker-configuration-file.md#redact-info-log-从-v900-版本开始引入) | 新增 | 控制是否开启 DM 日志脱敏。 |
 | TiProxy | [`enable-traffic-replay`](/tiproxy/tiproxy-configuration.md#enable-traffic-replay)  | 新增 | 用于指定是否开启[流量回放](/tiproxy/tiproxy-traffic-replay.md)功能。如果为 `false`，则在流量捕获和流量回放时会报错。|
 | TiProxy | [`encryption-key-path`](/tiproxy/tiproxy-configuration.md#encryption-key-path)  | 新增 | 用于指定流量捕获时用于加密流量文件的密钥的文件路径。|
