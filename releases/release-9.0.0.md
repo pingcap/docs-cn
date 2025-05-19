@@ -153,9 +153,9 @@ TiDB 版本：9.0.0
 
 * 新增系统变量 `MAX_USER_CONNECTIONS`，用于限制不同用户可以建立的连接数 [#59203](https://github.com/pingcap/tidb/issues/59203) @[joccau](https://github.com/joccau) **tw@hfxsd**<!--2017-->
 
-    从 v9.0.0 版本开始，你可通过设置系统变量 `MAX_USER_CONNECTIONS` ，来限制单个用户对单个 TiDB 节点可建立的连接数，避免由于单个用户消耗过多的 [token](/tidb-configuration-file.md/#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 
+    从 v9.0.0 版本开始，你可通过设置系统变量 `MAX_USER_CONNECTIONS` ，来限制单个用户对单个 TiDB 节点可建立的连接数，避免由于单个用户消耗过多的 [token](/tidb-configuration-file.md#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 
 
-    更多信息，请参考[用户文档](/system-variables.md/#max_user_connections-从-v900-版本开始引入)。
+    更多信息，请参考[用户文档](/system-variables.md#max_user_connections-从-v900-版本开始引入)。
 
 ### SQL 功能
 
@@ -243,7 +243,7 @@ TiDB 版本：9.0.0
 
     在新架构下，TiCDC 同步能力接近线性扩展，并能以更低的资源成本完成百万级表的同步任务。在高流量、频繁 DDL 操作及集群扩缩容等场景下，Changefeed 的延迟更低且更加稳定。
 
-    更多信息，请参考[用户文档](/ticdc/ticdc-new-arch.md)。
+    <!--更多信息，请参考[用户文档](/ticdc/ticdc-new-arch.md)。-->
 
 * TiCDC 为 Debezium 协议支持 DDL 事件和 WATERMARK 事件 [#11566](https://github.com/pingcap/tiflow/issues/11566) @[wk989898](https://github.com/wk989898) **tw@lilin90** <!--2009-->
 
@@ -319,7 +319,7 @@ TiDB 版本：9.0.0
 | TiKV | [`storage.max-ts.max-drift`](/tikv-configuration-file.md#max-drift-从-v900-版本开始引入) | 新增 | 定义当读写请求使用的 TS 超过 TiKV 缓存的 PD TSO 时，所允许的最长超出时间。默认值为`"60s"`。 |
 | TiFlash | [`format_version`](/tiflash/tiflash-configuration.md#format_version) | 修改 | 默认值从 `7` 变更为 `8`，代表 v9.0.0 以及以后版本 DTFile 文件的默认格式 `8`。该格式用于支持新的字符串序列化方案，可提升字符串的读写性能。 |
 | TiCDC | [`newarch`](/ticdc/ticdc-server-config.md#newarch) | 新增 | 控制是否开启 [TiCDC 新架构](/ticdc/ticdc-new-arch.md)。默认值为不设置，表示使用老架构。该配置项仅用于新架构，如果在 TiCDC 老架构的配置文件中添加该配置项，可能会导致解析失败。 |
-| BR | [`--checkpoint-storage`](br/br-checkpoint-restore.md#实现细节-将断点数据存储在下游集群) | 新增 | 用于指定断点数据存储的外部存储。 |
+<!--| BR | [`--checkpoint-storage`](br/br-checkpoint-restore.md#实现细节-将断点数据存储在下游集群) | 新增 | 用于指定断点数据存储的外部存储。 | -->
 | DM | [`redact-info-log`](/dm/dm-worker-configuration-file.md#redact-info-log-从-v900-版本开始引入) | 新增 | 控制是否开启 DM 日志脱敏。 |
 | TiProxy | [`enable-traffic-replay`](/tiproxy/tiproxy-configuration.md#enable-traffic-replay)  | 新增 | 用于指定是否开启[流量回放](/tiproxy/tiproxy-traffic-replay.md)功能。如果为 `false`，则在流量捕获和流量回放时会报错。|
 | TiProxy | [`encryption-key-path`](/tiproxy/tiproxy-configuration.md#encryption-key-path)  | 新增 | 用于指定流量捕获时用于加密流量文件的密钥的文件路径。|
