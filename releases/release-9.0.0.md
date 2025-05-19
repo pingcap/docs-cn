@@ -342,7 +342,7 @@ TiDB 版本：9.0.0
 
 * 以下为已移除的功能：
 
-  * 原有的[执行计划绑定的自动演进](/sql-plan-management.md#自动演进绑定-baseline-evolution)已经被移除，后续推出增强的功能替代。
+    * 原有的[执行计划绑定的自动演进](/sql-plan-management.md#自动演进绑定-baseline-evolution)已经被移除，后续推出增强的功能替代。
 
 * 以下为计划在未来版本中移除的功能：
 
@@ -364,6 +364,7 @@ TiDB 版本：9.0.0
 ## 改进提升
 
 + TiDB
+
 * 优化了全局排序功能对 CPU 的资源开销，对 CPU 的最低配置要求从 8c 降低到了 1c，提升了全局排序在小规格机型上的易用性。 [#58680](https://github.com/pingcap/tidb/issues/58680) @[joccau](https://github.com/joccau)
     
 + TiKV 
