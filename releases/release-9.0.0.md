@@ -11,7 +11,9 @@ summary: 了解 TiDB 9.0.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：9.0.0
 
+<!--
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v9.0/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v9.0/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v9.0.0#version-list)
+-->
 
 在 9.0.0 版本中，你可以获得以下关键特性：
 
@@ -396,7 +398,9 @@ TiDB 版本：9.0.0
 
 ## 性能测试
 
+<!--
 如需了解 TiDB v9.0.0 的性能表现，你可以参考 TiDB Cloud Dedicated 集群的[性能测试报告](https://docs.pingcap.com/tidbcloud/v9.0-performance-highlights)（英文版）。
+-->
 
 ## 贡献者
 
