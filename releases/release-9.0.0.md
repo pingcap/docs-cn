@@ -155,7 +155,6 @@ TiDB 版本：9.0.0
 
     更多信息，请参考[用户文档](/system-variables.md/#max_user_connections-从-v900-版本开始引入)。
 
-
 ### SQL 功能
 
 * 支持对分区表的非唯一列创建全局索引 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014) @[mjonss](https://github.com/mjonss) **tw@qiancai**<!--2057-->
@@ -307,7 +306,6 @@ TiDB 版本：9.0.0
 | [`tidb_workload_repository_snapshot_interval`](/system-variables.md#tidb_workload_repository_snapshot_interval) | 新增 | 设置 [Workload Repository](/workload-repository.md) 统一快照的时间间隔。 |
 | [`tidb_workload_repository_active_sampling_interval`](/system-variables.md#tidb_workload_repository_active_sampling_interval) | 新增 | 设置 [Workload Repository](/workload-repository.md) 快速时间快照的间隔。 |
 | [`tidb_workload_repository_retention_days`](/system-variables.md#tidb_workload_repository_retention_days) | 新增 | 设置 [Workload Repository](/workload-repository.md) 中数据保存的天数。 |
-|  |  |  |
 
 ### 配置参数
 
@@ -332,14 +330,11 @@ TiDB 版本：9.0.0
 
 升级 TiDB 前，请务必确保你的操作系统版本符合[操作系统及平台要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
 
-
 ### 系统表变更
 
 | 系统表 | 变更类型 | 描述 |
 | -------- | -------- | -------- |
 | [`mysql.tidb`](/mysql-schema/mysql-schema.md#集群状态系统表) | 修改 | 新增 `cluster_id` 字段，用于记录 TiDB 集群的唯一标识，注意该值为只读，不可修改。 |
-
-
 
 ## 移除功能
 
@@ -369,59 +364,35 @@ TiDB 版本：9.0.0
 + TiDB
 * 优化了全局排序功能对 CPU 的资源开销，对 CPU 的最低配置要求从 8c 降低到了 1c，提升了全局排序在小规格机型上的易用性。 [#58680](https://github.com/pingcap/tidb/issues/58680) @[joccau](https://github.com/joccau)
     
++ TiKV 
 
-+ TiKV
++ PD    
 
-    
-
-+ PD
-
-    
-
-+ TiFlash
-
-    
++ TiFlash   
 
 + Tools
 
-    + Backup & Restore (BR)
-
-       
+    + Backup & Restore (BR)       
 
     + TiDB Data Migration (DM)
-
         
 ## 错误修复
 
-+ TiDB
++ TiDB   
 
-    
++ TiKV   
 
-+ TiKV
++ PD    
 
-   
-
-+ PD
-
-    
-
-+ TiFlash
-
-    
++ TiFlash   
 
 + Tools
 
-    + Backup & Restore (BR)
+    + Backup & Restore (BR)        
 
-        
+    + TiCDC        
 
-    + TiCDC
-
-        
-
-    + TiDB Lightning
-
-       
+    + TiDB Lightning       
 
 ## 性能测试
 
@@ -430,4 +401,3 @@ TiDB 版本：9.0.0
 ## 贡献者
 
 感谢来自 TiDB 社区的贡献者们：
-
