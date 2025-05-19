@@ -191,9 +191,9 @@ TiDB 版本：9.0.0
     
     * **自动化运维**：数据库自治是提升用户体验并降低使用门槛的必然趋势，而实现数据库自动调优需要历史数据作为支撑。基于持久化的历史工作负载数据，TiDB 可以逐步向自动化运维迈进，例如：索引推荐 (Index Advisor)、统计信息推荐 (Statistics Advisor)、SQL 绑定推荐 (SQL Binding Advisor) 等。
 
-  在 v9.0.0 中，通过设置变量 [`tidb_workload_repository_dest`](/system-variables.md#tidb_workload_repository_dest) 启用 Workload Repository，TiDB 会把一部分内存表的快照持续写入 `workload_schema`，持久化到 TiKV 中。当前版本默认关闭。被持久化的内存表分为以下两类：
+  在 v9.0.0 中，通过设置变量 [`tidb_workload_repository_dest`](/system-variables.md#tidb_workload_repository_dest-从-v900-版本开始引入) 启用 Workload Repository，TiDB 会把一部分内存表的快照持续写入 `workload_schema`，持久化到 TiKV 中。当前版本默认关闭。被持久化的内存表分为以下两类：
 
-    * **存储累计指标的内存表**体积较大，快照和存储成本比较高，这些表会依据 [`tidb_workload_repository_snapshot_interval`](/system-variables.md#tidb_workload_repository_snapshot_interval) 的设置做批量快照，最小间隔 15 分钟。通过比较任意两个快照间指标的变化，得出这一段时间各个指标的增量。包括以下内存表：
+    * **存储累计指标的内存表**体积较大，快照和存储成本比较高，这些表会依据 [`tidb_workload_repository_snapshot_interval`](/system-variables.md#tidb_workload_repository_snapshot_interval-从-v900-版本开始引入) 的设置做批量快照，最小间隔 15 分钟。通过比较任意两个快照间指标的变化，得出这一段时间各个指标的增量。包括以下内存表：
 
         * [`INFORMATION_SCHEMA.TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md)
         * [`INFORMATION_SCHEMA.TIDB_STATEMENTS_STATS`](/statement-summary-tables.md) (由 `STATEMENTS_SUMMARY` 派生的内存表，计划在未来取代 `STATEMENTS_SUMMARY`。)
@@ -303,11 +303,11 @@ TiDB 版本：9.0.0
 | [`tidb_max_dist_task_nodes`](/system-variables.md#tidb_max_dist_task_nodes-从-v900-版本开始引入)| 新增 | 控制分布式框架任务可使用的最大 TiDB 节点数上限。默认值为 `-1`，表示自动模式。在此模式下，系统将自动选择合适的节点数量。 |
 | [`mpp_version`](/system-variables.md#mpp_version-从-v660-版本开始引入) | 修改 | 该变量新增可选值 `3`，用于开启 TiFlash 新的字符串数据交换格式。当该变量的值未指定时，TiDB 将自动选择 MPP 执行计划的最新版本 `3`，以提高字符串的序列化和反序列化效率，从而提升查询性能。 |
 | [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) | 修改 | 默认值从 `OFF` 变更为 `ON`。当该值为 `ON` 时，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，因此 PD follower 也可以处理 Region 信息请求，从而减轻 PD leader 的 CPU 压力。从 v9.0.0 开始，当该变量值为 `ON` 时，TiDB Lightning 的 Region 信息请求也会被均匀发送到所有 PD 节点。 |
-| [`tidb_pipelined_dml_resource_policy`](/system-variables.md#tidb_pipelined_dml_resource_policy-从-v900-版本开始引入) | 新增 | 该变量控制 [Pipelined DML](/pipelined-dml.md) 的资源使用策略，仅在 [`tidb_dml_type`](#tidb_dml_type-从-v800-版本开始引入) 为 `bulk` 时生效。|
-| [`tidb_workload_repository_dest`](/system-variables.md#tidb_workload_repository_dest)| 新增 | 这变量用户设置 [Workload Repository](/workload-repository.md) 的写入目标。默认为空，不启用。 设置为 `table` 写入 TiKV 。|
-| [`tidb_workload_repository_snapshot_interval`](/system-variables.md#tidb_workload_repository_snapshot_interval) | 新增 | 设置 [Workload Repository](/workload-repository.md) 统一快照的时间间隔。 |
-| [`tidb_workload_repository_active_sampling_interval`](/system-variables.md#tidb_workload_repository_active_sampling_interval) | 新增 | 设置 [Workload Repository](/workload-repository.md) 快速时间快照的间隔。 |
-| [`tidb_workload_repository_retention_days`](/system-variables.md#tidb_workload_repository_retention_days) | 新增 | 设置 [Workload Repository](/workload-repository.md) 中数据保存的天数。 |
+| [`tidb_pipelined_dml_resource_policy`](/system-variables.md#tidb_pipelined_dml_resource_policy-从-v900-版本开始引入) | 新增 | 该变量控制 [Pipelined DML](/pipelined-dml.md) 的资源使用策略，仅在 [`tidb_dml_type`](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) 为 `bulk` 时生效。|
+| [`tidb_workload_repository_dest`](/system-variables.md#tidb_workload_repository_dest-从-v900-版本开始引入)| 新增 | 这变量用户设置 [Workload Repository](/workload-repository.md) 的写入目标。默认为空，不启用。 设置为 `table` 写入 TiKV 。|
+| [`tidb_workload_repository_snapshot_interval`](/system-variables.md#tidb_workload_repository_snapshot_interval-从-v900-版本开始引入) | 新增 | 设置 [Workload Repository](/workload-repository.md) 统一快照的时间间隔。 |
+| [`tidb_workload_repository_active_sampling_interval`](/system-variables.md#tidb_workload_repository_active_sampling_interval-从-v900-版本开始引入) | 新增 | 设置 [Workload Repository](/workload-repository.md) 快速时间快照的间隔。 |
+| [`tidb_workload_repository_retention_days`](/system-variables.md#tidb_workload_repository_retention_days-从-v900-版本开始引入) | 新增 | 设置 [Workload Repository](/workload-repository.md) 中数据保存的天数。 |
 
 ### 配置参数
 
