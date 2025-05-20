@@ -9,15 +9,17 @@ summary: 了解 TiCDC 的数据同步能力。
 
 ## 工作原理​
 
-- TiCDC 监听 TiKV 的变更日志（Raft Log），将行数据的增删改操作转换为下游兼容的 SQL 语句。与 Binlog 不同，TiCDC 并不基于上游的 SQL 获取数据变更。参考 [TiCDC 处理数据变更的实现原理](/ticdc/ticdc-overview.md#ticdc-处理数据变更的实现原理)。
+- TiCDC 监听 TiKV 的变更日志 (Raft Log)，将行数据的增删改操作转换为下游兼容的 SQL 语句，并不基于上游的 SQL 获取数据变更。详情请参考 [TiCDC 处理数据变更的实现原理](/ticdc/ticdc-overview.md#ticdc-处理数据变更的实现原理)。
 
-- TiCDC 生成与 SQL 语义等效的逻辑操作（如 INSERT/UPDATE/DELETE），而非逐条还原上游执行的原始 SQL。参考 [TiCDC 处理数据变更的实现原理](/ticdc/ticdc-overview.md#ticdc-处理数据变更的实现原理)。
+- TiCDC 生成与 SQL 语义等效的逻辑操作（如 `INSERT`、`UPDATE`、`DELETE`），而非逐条还原上游执行的原始 SQL 语句。详情请参考 [TiCDC 处理数据变更的实现原理](/ticdc/ticdc-overview.md#ticdc-处理数据变更的实现原理)。
 
-- TiCDC 提供事务最终一致性的保证，开启 [redo log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制) 后提供容灾场景下的最终一致性保证，开启 [Syncpoint](/ticdc/ticdc-upstream-downstream-check.md#启用-syncpoint) 后提供一致性快照读和数据一致性校验。
+- TiCDC 提供事务最终一致性的保证。开启 [redo log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制) 后，TiCDC 可以保证容灾场景下的最终一致性；开启 [Syncpoint](/ticdc/ticdc-upstream-downstream-check.md#启用-syncpoint) 后，TiCDC 提供一致性快照读和数据一致性校验。
 
-- TiCDC 支持同步数据到多类下游，包括 [TiDB 及兼容Mysql 协议的数据库](/ticdc/ticdc-sink-to-mysql.md)，[Kafka](/ticdc/ticdc-sink-to-kafka.md)，[Pulsar](/ticdc/ticdc-sink-to-pulsar.md), [存储服务（Amazon S3、GCS、Azure Blob Storage 和 NFS](/ticdc/ticdc-sink-to-cloud-storage.md)。
+## 下游兼容性
 
-## TiCDC 的数据同步能力
+TiCDC 支持同步数据到多类下游，包括 [TiDB 及兼容 MySQL 协议的数据库](/ticdc/ticdc-sink-to-mysql.md)，[Kafka](/ticdc/ticdc-sink-to-kafka.md)，[Pulsar](/ticdc/ticdc-sink-to-pulsar.md)，[存储服务（Amazon S3、GCS、Azure Blob Storage 和 NFS](/ticdc/ticdc-sink-to-cloud-storage.md)。
+
+## 数据同步范围与限制
 
 - TiCDC 支持同步上游执行的 DDL 和 DML 语句，但不同步上游系统表执行的 DDL 和 DML（包括 `mysql.*` 和 `information_schema.*`），也不同步上游中创建的临时表。
 
