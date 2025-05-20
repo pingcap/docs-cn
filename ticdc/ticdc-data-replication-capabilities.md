@@ -19,14 +19,22 @@ summary: 了解 TiCDC 的数据同步能力。
 
 TiCDC 支持同步数据到多类下游，包括 [TiDB 及兼容 MySQL 协议的数据库](/ticdc/ticdc-sink-to-mysql.md)，[Kafka](/ticdc/ticdc-sink-to-kafka.md)，[Pulsar](/ticdc/ticdc-sink-to-pulsar.md)，[存储服务（Amazon S3、GCS、Azure Blob Storage 和 NFS](/ticdc/ticdc-sink-to-cloud-storage.md)。
 
-## 数据同步范围与限制
+## 数据同步范围
 
-- TiCDC 支持同步上游执行的 DDL 和 DML 语句，但不同步上游系统表执行的 DDL 和 DML（包括 `mysql.*` 和 `information_schema.*`），也不同步上游中创建的临时表。
+TiCDC 对上游数据变更的支持范围如下：
 
-- TiCDC 不支持同步 DQL (Data Query Language) 语句，也不支持同步 DCL (Data Control Language) 语句。
+- 支持：
+    - DDL 和 DML 语句（非系统表）
+    - 索引操作 (`ADD INDEX`, `CREATE INDEX`)：为了减少对 Changefeed 同步延迟的影响，当下游为 TiDB 时，TiCDC 会[异步执行创建和添加索引的 DDL 操作](/ticdc/ticdc-ddl.md#创建和添加索引-ddl-的异步执行)。
+    - 外键约束 DDL 语句 (`ADD FOREIGN KEY`)：TiCDC 不会同步上游系统变量的设置，需要在下游手动设置 [`foreign_key_checks`](/system-variables.md#foreign_key_checks) 来决定是否开启下游的外键约束检查。
 
-- TiCDC 支持通过 DDL 同步上游表中 Index 的设置 (`ADD INDEX`, `CREATE INDEX`), 并且为了减小对 Changefeed 同步延迟的影响，如果下游是 TiDB，TiCDC 会[异步执行创建和添加索引的 DDL 操作](/ticdc/ticdc-ddl.md#创建和添加索引-ddl-的异步执行)。
+- 不支持：
+    - 系统表（如 `mysql.*` 和 `information_schema.*`）的 DDL 和 DML 语句
+    - 临时表的 DDL 和 DML 语句
+    - DQL (Data Query Language) 语句 和 DCL (Data Control Language) 语句
 
-- 对于表中设定的外键约束，TiCDC 会同步对应的 DDL (`add foreign key`) 语句，但 TiCDC 不负责同步上游系统变量的设置，如 [foreign_key_checks](/system-variables.md#foreign_key_checks) 。因此客户需要自行在下游设置合适的系统变量，以决定下游外键约束检查是否开启。
+## 使用限制
 
-- TiCDC 内部只检查收到的上游变更的完整性，不参与检查数据变更是否符合下游各类约束。如遇到不满足下游约束的数据变更，TiCDC 会在写下游时进行报错返回。
+TiCDC 对一些场景暂不支持，详见[暂不支持的场景](/ticdc/ticdc-overview.md#暂不支持的场景)。
+
+TiCDC 只检查上游数据变更的完整性，不检查数据变更是否符合下游的约束。如果遇到不满足下游约束的数据变更，TiCDC 会在写入下游时报错。
