@@ -243,7 +243,9 @@ TiDB 版本：9.0.0
 
     在新架构下，TiCDC 同步能力接近线性扩展，并能以更低的资源成本完成百万级表的同步任务。在高流量、频繁 DDL 操作及集群扩缩容等场景下，Changefeed 的延迟更低且更加稳定。
 
-    <!--更多信息，请参考[用户文档](/ticdc/ticdc-new-arch.md)。-->
+<!--
+    更多信息，请参考[用户文档](/ticdc/ticdc-new-arch.md)。
+-->
 
 * TiCDC 为 Debezium 协议支持 DDL 事件和 WATERMARK 事件 [#11566](https://github.com/pingcap/tiflow/issues/11566) @[wk989898](https://github.com/wk989898) **tw@lilin90** <!--2009-->
 
@@ -261,7 +263,9 @@ TiDB 版本：9.0.0
 
     从 v9.0.0 开始，你可以通过 `redact-info-log` 配置项控制是否启用 DM 日志脱敏功能。启用后，DM 日志中包含敏感数据的查询参数将被替换为 `?` 占位符。如需开启该功能，你可以在 DM-worker 配置文件中设置 `redact-info-log` 为 `true`，或在启动 DM 时传入参数 `--redact-info-log=true`。该功能仅对查询参数进行脱敏，不会脱敏整个 SQL 语句，并且需要重启 DM-worker 才能生效。
 
-    <!-- 更多信息，请参考[用户文档](/dm/dm-worker-configuration-file.md#redact-info-log-从-v900-版本开始引入)。-->
+<!--
+    更多信息，请参考[用户文档](/dm/dm-worker-configuration-file.md#redact-info-log-从-v900-版本开始引入)。
+-->
 
 * TiDB Lightning 与 TiDB `sql_require_primary_key=ON` 兼容 [#57479](https://github.com/pingcap/tidb/issues/57479) @[lance6716](https://github.com/lance6716) **tw@Oreoxmt** <!--2026-->
 
