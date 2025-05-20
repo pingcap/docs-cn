@@ -1,9 +1,9 @@
 ---
-title: TiCDC 的数据同步能力说明
+title: TiCDC 的数据同步能力
 summary: 了解 TiCDC 的数据同步能力。
 ---
 
-# TiCDC 的数据同步能力说明
+# TiCDC 的数据同步能力
 
 ## 背景知识
 
@@ -19,12 +19,12 @@ TiCDC（TiDB Change Data Capture）是 TiDB 生态中用于实时数据同步的
 
 ## TiCDC 的数据同步能力
 
-1. TiCDC 支持同步上游执行的 DDL 和 DML 语句，但不同步上游系统表执行的 DDL 和 DML（包括 `mysql.*` 和 `information_schema.*`) ，也不同步上游中创建的临时表。
+- TiCDC 支持同步上游执行的 DDL 和 DML 语句，但不同步上游系统表执行的 DDL 和 DML（包括 `mysql.*` 和 `information_schema.*`) ，也不同步上游中创建的临时表。
 
-2. TiCDC 不支持同步 DQL (Data Query Language) 语句，也不支持同步 DCL (Data Control Language) 语句。
+- TiCDC 不支持同步 DQL (Data Query Language) 语句，也不支持同步 DCL (Data Control Language) 语句。
 
-3. TiCDC 支持通过 DDL 同步上游表中 Index 的设置 (`add index`， `create index`), 并且为了减小对 Changefeed 同步延迟的影响，如果下游是 TiDB，TiCDC 会[异步执行创建和添加索引的 DDL 操作](/ticdc/ticdc-ddl.md#创建和添加索引-ddl-的异步执行)。
+- TiCDC 支持通过 DDL 同步上游表中 Index 的设置 (`ADD INDEX`， `CREATE INDEX`), 并且为了减小对 Changefeed 同步延迟的影响，如果下游是 TiDB，TiCDC 会[异步执行创建和添加索引的 DDL 操作](/ticdc/ticdc-ddl.md#创建和添加索引-ddl-的异步执行)。
 
-4. 对于表中设定的外键约束，TiCDC 会同步对应的 DDL (`add foreign key`) 语句，但 TiCDC 不负责同步上游系统变量的设置，如 [foreign_key_checks](/system-variables.md#foreign_key_checks) 。因此客户需要自行在下游设置合适的系统变量，以决定下游外键约束检查是否开启。
+- 对于表中设定的外键约束，TiCDC 会同步对应的 DDL (`add foreign key`) 语句，但 TiCDC 不负责同步上游系统变量的设置，如 [foreign_key_checks](/system-variables.md#foreign_key_checks) 。因此客户需要自行在下游设置合适的系统变量，以决定下游外键约束检查是否开启。
 
-5. TiCDC 内部只检查收到的上游变更的完整性，不参与检查数据变更是否符合下游各类约束。如遇到不满足下游约束的数据变更，TiCDC 会在写下游时进行报错返回。
+- TiCDC 内部只检查收到的上游变更的完整性，不参与检查数据变更是否符合下游各类约束。如遇到不满足下游约束的数据变更，TiCDC 会在写下游时进行报错返回。
