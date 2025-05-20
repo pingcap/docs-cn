@@ -17,7 +17,12 @@ summary: 了解 TiCDC 的数据同步能力。
 
 ## 下游兼容性
 
-TiCDC 支持同步数据到多类下游，包括 [TiDB 及兼容 MySQL 协议的数据库](/ticdc/ticdc-sink-to-mysql.md)，[Kafka](/ticdc/ticdc-sink-to-kafka.md)，[Pulsar](/ticdc/ticdc-sink-to-pulsar.md)，[存储服务（Amazon S3、GCS、Azure Blob Storage 和 NFS](/ticdc/ticdc-sink-to-cloud-storage.md)。
+TiCDC 支持同步数据到多类下游，包括：
+
+- [TiDB 及兼容 MySQL 协议的数据库](/ticdc/ticdc-sink-to-mysql.md)
+- [Kafka](/ticdc/ticdc-sink-to-kafka.md)
+- [Pulsar](/ticdc/ticdc-sink-to-pulsar.md)
+- [存储服务（Amazon S3、GCS、Azure Blob Storage 和 NFS](/ticdc/ticdc-sink-to-cloud-storage.md)
 
 ## 数据同步范围
 
@@ -35,6 +40,5 @@ TiCDC 对上游数据变更的支持范围如下：
 
 ## 使用限制
 
-TiCDC 对一些场景暂不支持，详见[暂不支持的场景](/ticdc/ticdc-overview.md#暂不支持的场景)。
-
-TiCDC 只检查上游数据变更的完整性，不检查数据变更是否符合下游的约束。如果遇到不满足下游约束的数据变更，TiCDC 会在写入下游时报错。
+- TiCDC 对一些场景暂不支持，详见[暂不支持的场景](/ticdc/ticdc-overview.md#暂不支持的场景)。
+- TiCDC 只检查上游数据变更的完整性，不检查数据变更是否符合下游的约束。如果遇到不满足下游约束的数据变更，TiCDC 会在写入下游时报错。
