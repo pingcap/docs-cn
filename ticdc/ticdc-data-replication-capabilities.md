@@ -15,7 +15,7 @@ summary: 了解 TiCDC 的数据同步能力。
 
 - TiCDC 提供事务最终一致性的保证。开启 [redo log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制) 后，TiCDC 可以保证容灾场景下的最终一致性；开启 [Syncpoint](/ticdc/ticdc-upstream-downstream-check.md#启用-syncpoint) 后，TiCDC 提供一致性快照读和数据一致性校验。
 
-## 下游兼容性
+## 支持的下游
 
 TiCDC 支持同步数据到多类下游，包括：
 
