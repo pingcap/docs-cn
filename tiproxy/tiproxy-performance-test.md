@@ -9,7 +9,7 @@ summary: TiProxy 的性能测试报告、与 HAProxy 的性能对比。
 
 结果显示：
 
-- TiProxy 的 QPS 上限受工作负载类型的影响。在 Sysbench 的基本工作负载、同等 CPU 使用率的情况下，TiProxy 的 QPS 比 HAProxy 低约 25%
+- TiProxy 的 QPS 上限受工作负载类型的影响。在相同客户端并发数且 TiProxy 的 CPU 使用率在 80% 以下时，QPS 比 HAProxy 低 5% 以内，此时可以加大客户端并发数以提升 QPS。在相同 QPS 的情况下，TiProxy 的 CPU 使用率比 HAProxy 高 25%，因此需要预留更多 CPU 资源。
 - TiProxy 能承载的 TiDB server 实例数量根据工作负载类型而变化。在 Sysbench 的基本工作负载下，一台 TiProxy 能承载 5 至 12 台同机型的 TiDB server 实例
 - 查询结果集的行数对 TiProxy 的 QPS 有显著影响，且影响程度与 HAProxy 相同
 - TiProxy 的性能随 vCPU 的数量接近线性增长，因此增加 vCPU 的数量可以有效提高 QPS 上限
