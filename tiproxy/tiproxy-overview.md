@@ -47,7 +47,7 @@ TiProxy 适用于以下场景：
 
 TiProxy 不适用于以下场景：
 
-- 对性能敏感：TiProxy 的性能低于 HAProxy 等负载均衡器，因此使用 TiProxy 会降低 QPS。请参阅 [TiProxy 性能测试报告](/tiproxy/tiproxy-performance-test.md)。
+- 对性能敏感：TiProxy 的性能低于 HAProxy 等负载均衡器，因此使用 TiProxy 需要预留更多 CPU 资源。请参阅 [TiProxy 性能测试报告](/tiproxy/tiproxy-performance-test.md)。
 - 对成本敏感：如果 TiDB 集群使用了硬件负载均衡、虚拟 IP 或 Kubernetes 自带的负载均衡器，此时增加 TiProxy 组件会增加成本。另外，如果在云上跨可用区部署 TiDB 集群，增加 TiProxy 组件也会增加跨可用区的流量费用。
 - TiDB server 的故障转移：只有当 TiDB server 在计划内的下线或重启操作时，TiProxy 才能保持连接。如果 TiDB server 意外下线，则连接仍然会断开。
 
