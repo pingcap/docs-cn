@@ -30,12 +30,14 @@ TiCDC 支持同步数据到多类下游，包括：
 
 TiCDC 对上游数据变更的支持范围如下：
 
-- 支持：
++ 支持：
+
     - DDL 和 DML 语句（非系统表）。
     - 索引操作 (`ADD INDEX`, `CREATE INDEX`)：为了减少对 Changefeed 同步延迟的影响，当下游为 TiDB 时，TiCDC 会[异步执行创建和添加索引的 DDL 操作](/ticdc/ticdc-ddl.md#创建和添加索引-ddl-的异步执行)。
     - 外键约束 DDL 语句 (`ADD FOREIGN KEY`)：TiCDC 不会同步上游系统变量的设置，需要在下游手动设置 [`foreign_key_checks`](/system-variables.md#foreign_key_checks) 来决定是否开启下游的外键约束检查。
 
-- 不支持：
++ 不支持：
+
     - 系统表（如 `mysql.*` 和 `information_schema.*`）的 DDL 和 DML 语句。
     - 临时表的 DDL 和 DML 语句。
     - DQL (Data Query Language) 语句 和 DCL (Data Control Language) 语句。
