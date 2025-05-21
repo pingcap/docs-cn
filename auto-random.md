@@ -178,7 +178,6 @@ ALTER TABLE t AUTO_RANDOM_BASE=0;
 >
 > 不能使用 `FORCE` 关键字将 `AUTO_RANDOM_BASE` 设置为 `0`，否则会导致错误。
 
-
 ### 方法 2：手动设置特定的基值
 
 如果需要设置一个特定的基值（例如 `1000`），可以使用 `FORCE` 关键字：
