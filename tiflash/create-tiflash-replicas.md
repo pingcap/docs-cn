@@ -130,8 +130,8 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
 当执行以下操作时，TiDB 集群会触发 TiFlash 副本同步流程：
 
-    * 为表添加 TiFlash 副本
-    * 新增 TiFlash 节点，PD 将 TiFlash 副本从原有节点调度至新节点
+* 为表添加 TiFlash 副本
+* 新增 TiFlash 节点，PD 将 TiFlash 副本从原有节点调度至新节点
 
 在此过程中，各个 TiKV 实例将进行全表数据扫描，并将扫描得到的数据快照发送给 TiFlash 从而形成副本。默认情况下，为了降低对 TiKV 及 TiFlash 线上业务的影响，TiFlash 新增副本速度较慢、占用资源较少。如果集群中 TiKV 及 TiFlash 的 CPU 和磁盘 IO 资源有富余，你可以按以下步骤操作来提升 TiFlash 副本同步速度：
 
