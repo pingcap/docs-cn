@@ -102,11 +102,11 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
     - 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         tiup playground v8.5.1 --db 2 --pd 3 --kv 3
         ```
+
+        执行该命令时，建议使用内存 10 GiB、4 CPU 及以上配置。配置过低可能会导致系统崩溃。
 
         如果要查看当前支持部署的所有 TiDB 版本，执行 `tiup list tidb`。
 
