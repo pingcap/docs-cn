@@ -4,7 +4,7 @@ title: TiCDC 简介
 
 # TiCDC 简介
 
-[TiCDC](https://github.com/pingcap/tiflow/tree/master/cdc) 是一款 TiDB 增量数据同步工具，通过拉取上游 TiKV 的数据变更日志，TiCDC 可以将数据解析为有序的行级变更数据输出到下游。
+[TiCDC](https://github.com/pingcap/tiflow/tree/master/cdc) 是一款 TiDB 增量数据同步工具，通过拉取上游 TiKV 的数据变更日志，TiCDC 可以将数据解析为有序的行级变更数据输出到下游。关于具体的数据同步能力，参见 [TiCDC 数据同步能力详解](/ticdc/ticdc-data-replication-capabilities.md)。
 
 ## TiCDC 适用场景
 
