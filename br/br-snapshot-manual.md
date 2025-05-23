@@ -127,7 +127,18 @@ tiup br restore full \
 --storage local:///br_data/ --pd "${PD_IP}:2379" --log-file restore.log
 ```
 
+> **注意：**
+>
+> 从 v9.0.0 起，当设置参数 `--load-stats` 为 false 时，br 将不会在表 `mysql.stats_meta` 中更新恢复的表的相关信息。你可以在恢复完成后手动执行 analyze table，更新相关统计信息。
+
 备份恢复功能在备份时，将统计信息通过 JSON 格式存储在 `backupmeta` 文件中。在恢复时，将 JSON 格式的统计信息导入到集群中。详情请参考 [LOAD STATS](/sql-statements/sql-statement-load-stats.md)。
+
+从 9.0.0 起，BR 引入参数 `--load-stats-physical`。当 br 命令行工具恢复在全新集群并且上下游表和分区的 ID 都能被复用时，通过设置 `--load-stats-physical` 会将统计信息相关表恢复到临时系统库 `__TiDB_BR_Temporary_mysql` 中，再通过 `RENAME TABLE` DDL 将恢复的统计信息表和 `mysql` 库下的表进行原子交换。示例如下：
+
+```shell
+tiup br restore full \
+--storage local:///br_data/ --pd "${PD_IP}:2379" --log-file restore.log --load-stats --load-stats-physical
+```
 
 ## 备份数据加密
 
@@ -179,6 +190,18 @@ tiup br restore full \
 Split&Scatter Region <--------------------------------------------------------------------> 100.00%
 Download&Ingest SST <---------------------------------------------------------------------> 100.00%
 Restore Pipeline <-------------------------/...............................................> 17.12%
+```
+
+自 TiDB v9.0.0 起，你可以通过指定参数 `--load-sys-table-physical` 在全新的集群上进行物理恢复系统表：
+
+```shell
+tiup br restore full \
+    --pd "${PD_IP}:2379" \
+    --with-sys-table \
+    --load-sys-table-physical \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
+    --ratelimit 128 \
+    --log-file restorefull.log
 ```
 
 ## 恢复备份数据中指定库表的数据
