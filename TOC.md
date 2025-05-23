@@ -151,6 +151,34 @@
   - 数据集成场景
     - [与 Confluent Cloud 和 Snowflake 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)
     - [与 Apache Kafka 和 Apache Flink 进行数据集成](/replicate-data-to-kafka.md)
+<<<<<<< HEAD
+=======
+  - 参考指南
+    - [TiCDC 架构设计与原理](/ticdc/ticdc-architecture.md)
+    - [TiCDC 数据同步能力详解](/ticdc/ticdc-data-replication-capabilities.md)
+    - [TiCDC Server 配置参数](/ticdc/ticdc-server-config.md)
+    - [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)
+    - [TiCDC 客户端鉴权](/ticdc/ticdc-client-authentication.md)
+    - [单行数据正确性校验](/ticdc/ticdc-integrity-check.md)
+    - [主从集群数据校验和快照读](/ticdc/ticdc-upstream-downstream-check.md)
+    - [拆分 UPDATE 事件行为说明](/ticdc/ticdc-split-update-behavior.md)
+    - 输出数据协议
+      - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
+      - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
+      - [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
+      - [TiCDC Debezium Protocol](/ticdc/ticdc-debezium.md)
+      - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+      - [TiCDC Simple Protocol](/ticdc/ticdc-simple-protocol.md)
+    - [TiCDC Open API v2](/ticdc/ticdc-open-api-v2.md)
+    - [TiCDC Open API v1](/ticdc/ticdc-open-api.md)
+    - TiCDC 数据消费
+      - [基于 Avro 的 TiCDC 行数据 Checksum 校验](/ticdc/ticdc-avro-checksum-verification.md)
+      - [Storage sink 消费程序编写指引](/ticdc/ticdc-storage-consumer-dev-guide.md)
+    - [TiCDC 兼容性](/ticdc/ticdc-compatibility.md)
+  - [故障处理](/ticdc/troubleshoot-ticdc.md)
+  - [常见问题解答](/ticdc/ticdc-faq.md)
+  - [术语表](/ticdc/ticdc-glossary.md)
+>>>>>>> 16b417f5ba (ticdc: add new doc for TiCDC data replication capabilities (#20345))
 - 运维操作
   - 安全加固
     - [TiDB 安全配置最佳实践](/best-practices-for-security-configuration.md)
