@@ -302,7 +302,7 @@ grafana_servers:
     tiup cluster edit-config ${cluster-name}
     ```
 
-2. 在 `monitoring_servers` 下设置 `prom_remote_write_to_vm` 为 `true`：
+2. 在 `monitoring_servers` 配置下，添加 `prom_remote_write_to_vm`: `true`：
 
     ```yaml
     monitoring_servers:
