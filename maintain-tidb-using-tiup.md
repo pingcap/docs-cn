@@ -266,7 +266,7 @@ tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.12
 
 在大型集群中，Prometheus 在面对大量实例时可能面临性能瓶颈。从 tiup 1.16.3 版本开始，TiUP 支持将指标服务器从 Prometheus 切换为 VictoriaMetrics (VM)，以提供更好的可扩展性、更高的性能和更低的资源消耗。
 
-### 为新部署设置 VictoriaMetrics
+### 在新部署中启用 VictoriaMetrics
 
 默认情况下，TiUP 使用 Prometheus 作为指标服务器。如果要在新部署中使用 VictoriaMetrics 替代 Prometheus，可以在拓扑文件中进行如下配置：
 
