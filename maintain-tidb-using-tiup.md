@@ -312,7 +312,7 @@ grafana_servers:
         prom_remote_write_to_vm: true
     ```
 
-3. 重新加载更新后的配置：
+3. 重新加载配置使其生效：
 
     {{< copyable "shell-regular" >}}
 
