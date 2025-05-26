@@ -80,12 +80,12 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
 
 ### 安装 HAProxy
 
-1. 下载 HAProxy 2.6.2 的源码包：
+1. 下载 HAProxy 2.6.21 的源码包：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    wget https://www.haproxy.org/download/2.6/src/haproxy-2.6.2.tar.gz
+    wget https://www.haproxy.org/download/2.6/src/haproxy-2.6.21.tar.gz
     ```
 
 2. 解压源码包：
@@ -93,7 +93,7 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tar zxf haproxy-2.6.2.tar.gz
+    tar zxf haproxy-2.6.21.tar.gz
     ```
 
 3. 从源码编译 HAProxy 应用：
@@ -101,7 +101,7 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
     {{< copyable "shell-regular" >}}
 
     ```bash
-    cd haproxy-2.6.2
+    cd haproxy-2.6.21
     make clean
     make -j 8 TARGET=linux-glibc USE_THREAD=1
     make PREFIX=${/app/haproxy} SBINDIR=${/app/haproxy/bin} install  # 将 `${/app/haproxy}` 和 `${/app/haproxy/bin}` 替换为自定义的实际路径。
