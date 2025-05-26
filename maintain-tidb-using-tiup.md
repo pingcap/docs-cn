@@ -425,7 +425,8 @@ grafana_servers:
         data_dir: "/tidb-data/prometheus-8249"
     ```
 
-2. 移除数据目录：
+2. 手动删除数据目录：
+
 
     {{< copyable "shell-regular" >}}
 
