@@ -346,7 +346,7 @@ grafana_servers:
     tiup cluster reload ${cluster-name} -R grafana
     ```
 
-#### (可选) 查看切换前生成的指标
+####（可选）查看切换前的历史指标
 
 如果需要查看切换前生成的历史指标，可以按照以下步骤切换 Grafana 的数据源：
 
