@@ -414,7 +414,7 @@ grafana_servers:
     tiup cluster reload ${cluster-name} -R prometheus
     ```
 
-#### 移除过期的数据目录
+#### 删除 Prometheus 旧数据目录
 
 1. 在配置文件中找到监控服务器的 `data_dir`：
 
