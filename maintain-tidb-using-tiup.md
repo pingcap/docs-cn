@@ -417,7 +417,7 @@ grafana_servers:
 
 #### 删除 Prometheus 旧数据目录
 
-1. 在配置文件中找到监控服务器的 `data_dir`：
+1. 在配置文件中找到监控服务器的数据目录路径 `data_dir`：
 
     ```yaml
     monitoring_servers:
