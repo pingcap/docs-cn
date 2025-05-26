@@ -292,7 +292,8 @@ grafana_servers:
 
 迁移过程可在不中断服务的前提下进行：现有历史指标仍保留在 Prometheus 中，新的指标则写入 VictoriaMetrics。
 
-#### 启用 VictoriaMetrics 远程写入
+#### 启用 Prometheus 向 VictoriaMetrics 的远程写入
+
 
 1. 编辑集群配置：
 
