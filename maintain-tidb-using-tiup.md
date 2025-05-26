@@ -320,7 +320,7 @@ grafana_servers:
     tiup cluster reload ${cluster-name} -R prometheus
     ```
 
-#### 将默认数据源切换到 VictoriaMetrics
+#### 切换 Grafana 默认数据源至 VictoriaMetrics
 
 1. 编辑集群配置：
 
