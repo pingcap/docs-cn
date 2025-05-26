@@ -390,7 +390,8 @@ grafana_servers:
     tiup cluster edit-config ${cluster-name}
     ```
 
-2. 在 `monitoring_servers` 下设置 `enable_prom_agent_mode` 为 `true`，并确保 `prom_remote_write_to_vm` 和 `use_vm_as_datasource` 也正确设置：
+2. 设置代理模式并确保相关参数已正确配置
+在 `monitoring_servers` 下设置 `enable_prom_agent_mode` 为 `true`，并确保 `prom_remote_write_to_vm` 和 `use_vm_as_datasource` 也正确设置：
 
     ```yaml
     monitoring_servers:
