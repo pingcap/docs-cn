@@ -73,13 +73,11 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
     2. 点击目标集群的名称，进入集群的 **Overview** 页面，然后在左侧导航栏中点击 **Import**。
 
-2. 选择 **Import data from S3**。
-
-    如果这是你第一次使用 TiDB Cloud 的导入功能，选择 **Import From Amazon S3**。
+2. 选择 **Import data from Cloud Storage**，然后点击 **Amazon S3**.
 
 3. 在 **Import Data from Amazon S3** 页面，配置以下源数据信息：
 
-    - **Import File Count**：选择 **Multiple files**
+    - **Import File Count**：对于 TiDB Cloud Serverless，选择 **Multiple files**。TiDB Cloud Dedicated 中没有该字段。
     - **Included Schema Files**：选择 **Yes**
     - **Data Format**：选择 **SQL**
     - **Folder URI**：输入 `s3://developer.pingcap.com/bookshop/`
