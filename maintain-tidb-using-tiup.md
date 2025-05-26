@@ -368,7 +368,7 @@ grafana_servers:
         # use_vm_as_datasource: true
     ```
 
-3. 重新加载更新后的配置：
+3. 重新加载配置使其生效：
 
     {{< copyable "shell-regular" >}}
 
