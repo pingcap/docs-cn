@@ -388,7 +388,8 @@ TiDB 版本：9.0.0
 + TiFlash
 
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 跳过不必要的数据读取，提升 TiFlash `TableScan` 算子的性能 [#9875](https://github.com/pingcap/tiflash/issues/9875) @[gengliqi](https://github.com/gengliqi)
+    - 默认打开新的字符串序列化格式，提升 TiFlash `TableScan` 算子的性能 [#9673](https://github.com/pingcap/tiflash/issues/9673) @[JinheLin](https://github.com/JinheLin)
 
 + Tools
 
@@ -474,6 +475,9 @@ TiDB 版本：9.0.0
     - (dup): release-7.5.6.md > 错误修复> TiFlash - 修复在某些情况下 TiFlash 意外退出时无法打印错误堆栈的问题 [#9902](https://github.com/pingcap/tiflash/issues/9902) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-7.5.6.md > 错误修复> TiFlash - 修复当 `profiles.default.init_thread_count_scale` 设置为 `0` 时，TiFlash 启动可能会卡住的问题 [#9906](https://github.com/pingcap/tiflash/issues/9906) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-7.5.6.md > 错误修复> TiFlash - 修复在查询涉及虚拟列并且触发远程读时，可能会出现 `Not found column` 错误的问题 [#9561](https://github.com/pingcap/tiflash/issues/9561) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复在包含向量索引的表中插入数据后，部分磁盘数据可能无法被正确清理从而导致磁盘空间异常占用的问题 [#9946](https://github.com/pingcap/tiflash/issues/9946) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复当集群的表中存在大量 `ENUM` 类型列时，TiFlash 的内存可能会大量消耗问题 [#9947](https://github.com/pingcap/tiflash/issues/9947) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复在存算分离架构下，可能会产生大量 `tag=EnumParseOverflowContainer` 日志的问题 [#9955](https://github.com/pingcap/tiflash/issues/9955) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
 
@@ -515,19 +519,6 @@ TiDB 版本：9.0.0
         - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
-## Other dup notes
-
-- (dup): release-8.3.0.md > # 性能> `INFORMATION_SCHEMA.VIEWS` * 批量建表 (`CREATE TABLE`) 的性能提升了 1.4 倍，批量建库 (`CREATE DATABASE`) 的性能提升了 2.1 倍，批量加列 (`ADD COLUMN`) 的性能提升了 2 倍 [#54436](https://github.com/pingcap/tidb/issues/54436) @[D3Hunter](https://github.com/D3Hunter)
-- (dup): release-8.4.0.md > # SQL 功能 * 支持向量搜索功能（实验特性）[#54245](https://github.com/pingcap/tidb/issues/54245) [#17290](https://github.com/tikv/tikv/issues/17290) [#9032](https://github.com/pingcap/tiflash/issues/9032) @[breezewish](https://github.com/breezewish) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) @[EricZequan](https://github.com/EricZequan) @[zimulala](https://github.com/zimulala) @[JaySon-Huang](https://github.com/JaySon-Huang) @[winoros](https://github.com/winoros) @[wk989898](https://github.com/wk989898)
-- (dup): release-8.5.0.md > # 性能 * TiKV 支持 MVCC 内存引擎 (In-memory Engine, IME)，可加速需要扫描大量 MVCC 历史版本的查询 [#16141](https://github.com/tikv/tikv/issues/16141) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[glorv](https://github.com/glorv) @[overvenus](https://github.com/overvenus)
-- (dup): release-8.5.0.md > # 可扩展性 * Schema 缓存可用的内存上限成为正式功能 (GA)，当表的数量达到几十万甚至上百万时，可以显著减少 Schema 元数据的内存占用 [#50959](https://github.com/pingcap/tidb/issues/50959) @[tiancaiamao](https://github.com/tiancaiamao) @[wjhuang2016](https://github.com/wjhuang2016) @[gmhdbjd](https://github.com/gmhdbjd) @[tangenta](https://github.com/tangenta)
-- (dup): release-7.4.0.md > # 性能 * 支持下推包含任意帧定义类型的窗口函数到 TiFlash [#7376](https://github.com/pingcap/tiflash/issues/7376) @[xzhangxian1008](https://github.com/xzhangxian1008)
-- (dup): release-8.2.0.md > # 数据库管理 * TiUP 支持部署 PD 微服务 [#5766](https://github.com/tikv/pd/issues/5766) @[rleungx](https://github.com/rleungx)
-- (dup): release-6.0.0-dmr.md > 提升改进> TiKV - 向量计算支持 `QUARTER` 函数 [#5751](https://github.com/tikv/tikv/issues/5751)
-- (dup): release-5.4.0.md > 提升改进> PD - TiDB Dashboard 更新至 v2021.12.31 [#4257](https://github.com/tikv/pd/issues/4257)
-- (dup): release-8.2.0.md > # 数据迁移 * TiCDC Pulsar Sink 新增支持 `pulsar+http` 和 `pulsar+https` 连接协议 [#11336](https://github.com/pingcap/tiflow/issues/11336) @[SandeepPadhi](https://github.com/SandeepPadhi)
-- (dup): release-8.3.0.md > # 性能 * 优化器默认允许将 `Projection` 算子下推到存储引擎 [#51876](https://github.com/pingcap/tidb/issues/51876) @[yibin87](https://github.com/yibin87)
-- (dup): release-8.0.0.md > # SQL 功能 * 支持处理大量数据的 DML 类型（实验特性）[#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium)  
 
 ## 性能测试
 
