@@ -623,6 +623,7 @@
       - [报警规则](/ticdc/ticdc-alert-rules.md)
     - 参考指南
       - [架构设计与原理](/ticdc/ticdc-architecture.md)
+      - [TiCDC 数据同步能力详解](/ticdc/ticdc-data-replication-capabilities.md)
       - [TiCDC Server 配置参数](/ticdc/ticdc-server-config.md)
       - [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)
       - 输出数据协议
