@@ -135,8 +135,8 @@ Slow Query 基础信息：
 * `Cop_wait_p90`：cop-task 的 P90 分位等待时间。
 * `Cop_wait_max`：cop-task 的最大等待时间。
 * `Cop_wait_addr`：等待时间最长的 cop-task 所在地址。
-* `Rocksdb_delete_skipped_count`：RocksDB 读数据过程中已删除 Key 的扫描数。
-* `Rocksdb_key_skipped_count`：RocksDB 扫数据时遇到的已删除 (tombstone) Key 数量。
+* `Rocksdb_delete_skipped_count`：RocksDB 扫数据时遇到的已删除 (tombstone) Key 数量。
+* `Rocksdb_key_skipped_count`：RocksDB 扫数据时所有遇到的 Key 数量。
 * `Rocksdb_block_cache_hit_count`：RocksDB 从 Block Cache 缓存中读数据的次数。
 * `Rocksdb_block_read_count`：RocksDB 从文件系统中读数据的次数。
 * `Rocksdb_block_read_byte`：RocksDB 从文件系统中读数据的数据量。
