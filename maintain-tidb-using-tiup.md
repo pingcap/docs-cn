@@ -375,7 +375,7 @@ grafana_servers:
     tiup cluster reload ${cluster-name} -R grafana
     ```
 
-4. 要切换回 VictoriaMetrics，请重复"将默认数据源切换到 VictoriaMetrics"的步骤。
+4. 若需切换回 VictoriaMetrics，请重复"切换 Grafana 默认数据源至 VictoriaMetrics"的步骤。
 
 ### 清理旧指标和服务
 
