@@ -21,7 +21,7 @@ TiCDC 支持同步数据到多类下游，包括：
 
 - [TiDB 及兼容 MySQL 协议的数据库](/ticdc/ticdc-sink-to-mysql.md)
 - [Apache Kafka](/ticdc/ticdc-sink-to-kafka.md)
-- [Message Queue (MQ) 类的下游](/ticdc/ticdc-changefeed-config.md#sink)，如 [Pulsar](/ticdc/ticdc-sink-to-pulsar.md)
+- Message Queue (MQ) 类的下游，如 [Pulsar](/ticdc/ticdc-sink-to-pulsar.md)
 - [存储服务（Amazon S3、GCS、Azure Blob Storage 和 NFS）](/ticdc/ticdc-sink-to-cloud-storage.md)
 - [通过 Confluent Cloud 同步至 Snowflake、ksqlDB、SQL Server](/ticdc/integrate-confluent-using-ticdc.md)
 - [使用 Apache Flink 消费同步至 Kafka 的数据](/replicate-data-to-kafka.md)
