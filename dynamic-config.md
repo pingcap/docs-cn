@@ -171,8 +171,8 @@ show warnings;
 | quota.foreground-write-bandwidth | 限制前台事务写入的带宽，软限制 |
 | quota.foreground-read-bandwidth | 限制前台事务读取数据和 Coprocessor 读取数据的带宽，软限制 |
 | quota.background-cpu-time | 限制处理 TiKV 后台读写请求所使用的 CPU 资源使用量，软限制 |
-| quota.background-write-bandwidth | 限制后台事务写入的带宽，软限制，暂未生效 |
-| quota.background-read-bandwidth | 限制后台事务读取数据和 Coprocessor 读取数据的带宽，软限制，暂未生效 |
+| quota.background-write-bandwidth | 限制后台事务写入的带宽，软限制 |
+| quota.background-read-bandwidth | 限制后台事务读取数据和 Coprocessor 读取数据的带宽，软限制 |
 | quota.enable-auto-tune | 是否支持 quota 动态调整。如果打开该配置项，TiKV 会根据 TiKV 实例的负载情况动态调整对后台请求的限制 quota |
 | quota.max-delay-duration | 单次读写请求被强制等待的最大时间 |
 | gc.ratio-threshold | 跳过 Region GC 的阈值（GC 版本个数/key 个数）|
