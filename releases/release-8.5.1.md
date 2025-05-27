@@ -1,6 +1,6 @@
 ---
 title: TiDB 8.5.1 Release Notes
-summary: 了解 TiDB 8.5.1 版本的操作系统支持变更、改进提升，以及错误修复。
+summary: 了解 TiDB 8.5.1 版本的操作系统支持变更、兼容性变更、改进提升，以及错误修复。
 ---
 
 # TiDB 8.5.1 Release Notes
@@ -22,7 +22,7 @@ TiDB 版本：8.5.1
 
 ## 兼容性变更
 
-- 为了降低统计信息缓存对内存的占用，系统变量 [`tidb_stats_cache_mem_quota`](/system-variables.md#tidb_stats_cache_mem_quota-span-classversion-mark从-v610-版本开始引入span) 的默认值 `0` 所代表的含义发生变化：
+- 为了降低 TiDB 统计信息缓存对内存的占用，系统变量 [`tidb_stats_cache_mem_quota`](/system-variables.md#tidb_stats_cache_mem_quota-span-classversion-mark从-v610-版本开始引入span) 的默认值 `0` 所代表的含义发生变化：
 
     - 在 v8.5.1 之前的版本中，`0` 表示统计信息缓存的内存使用上限为 TiDB 实例总内存的 50%。
     - 从 v8.5.1 起，`0` 表示统计信息缓存的内存使用上限为 TiDB 实例总内存的 20%。
