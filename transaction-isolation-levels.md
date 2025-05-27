@@ -87,6 +87,7 @@ start transaction;                 start transaction;
 select * from t1;                  select * from t1;
 update t1 set id=id+1;             update t1 set id=id+1; -- 会等待事务 A 的锁
 commit;                            commit; -- 可以成功提交
+```
 
 ### 事务启动和时间戳机制
 
