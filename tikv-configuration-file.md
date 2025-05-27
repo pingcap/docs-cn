@@ -2442,18 +2442,10 @@ Raft Engine 相关的配置项。
 
 #### `background-write-bandwidth` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
-> **注意：**
->
-> 该配置项可以通过 `SHOW CONFIG` 查询到，但暂未生效。设置该配置项的值不生效。
-
 + 限制后台事务写入的带宽，这是一个软限制。
 + 默认值：0KiB（即无限制）
 
 #### `background-read-bandwidth` <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-> **注意：**
->
-> 该配置项可以通过 `SHOW CONFIG` 查询到，但暂未生效。设置该配置项的值不生效。
 
 + 限制后台事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
 + 默认值：0KiB（即无限制）
