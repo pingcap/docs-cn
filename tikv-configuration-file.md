@@ -2625,7 +2625,7 @@ TiKV MVCC 内存引擎 (In-Memory Engine) 在 TiKV 存储层相关的配置项�
 ### `gc-run-interval` <span class="version-mark">从 v8.5.0 版本开始引入</span>
 
 + 控制内存引擎 GC 缓存 MVCC 版本的时间间隔。调小该参数可加快 GC 频率，减少 MVCC 记录，但会增加 GC 的 CPU 消耗，以及增加内存引擎失效的概率。
-+ 默认值：3m
++ 默认值："3m"
 
 ### `mvcc-amplification-threshold` <span class="version-mark">从 v8.5.0 版本开始引入</span>
 
