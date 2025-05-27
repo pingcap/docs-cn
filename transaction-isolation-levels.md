@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/transaction-isolation-levels/','/docs-cn/dev/reference/t
 
 # TiDB 事务隔离级别
 
-事务隔离级别是数据库事务处理的基础，[ACID](/glossary.md#acid) 中的 “I”，即 Isolation，指的就是事务的隔离性。
+事务隔离级别是数据库事务处理的基础，[ACID](/glossary.md#acid) 中的 "I"，即 Isolation，指的就是事务的隔离性。
 
 SQL-92 标准定义了 4 种隔离级别：读未提交 (READ UNCOMMITTED)、读已提交 (READ COMMITTED)、可重复读 (REPEATABLE READ)、串行化 (SERIALIZABLE)。详见下表：
 
@@ -27,30 +27,127 @@ TiDB 实现了快照隔离 (Snapshot Isolation, SI) 级别的一致性。为与 
 
 ## 可重复读隔离级别 (Repeatable Read)
 
-当事务隔离级别为可重复读时，只能读到该事务启动时已经提交的其他事务修改的数据，未提交的数据或在事务启动后其他事务提交的数据是不可见的。对于本事务而言，事务语句可以看到之前的语句做出的修改。
+TiDB 的可重复读隔离级别基于快照隔离 (Snapshot Isolation, SI) 实现，行为会根据事务模式（乐观事务或悲观事务）有所不同。
 
-对于运行于不同节点的事务而言，不同事务启动和提交的顺序取决于从 PD 获取时间戳的顺序。
+### 乐观事务中的可重复读
 
-处于可重复读隔离级别的事务不能并发的更新同一行，当事务提交时发现该行在该事务启动后，已经被另一个已提交的事务更新过，那么该事务会回滚。示例如下：
+在乐观事务模式下，TiDB 的可重复读隔离级别提供以下特性：
+
+#### 读取特性
+
+- **快照一致性**：事务只能读到该事务启动时已经提交的其他事务修改的数据
+- **事务内一致性**：事务语句可以看到之前的语句在本事务内做出的修改
+- **时间戳确定性**：事务的 `start_ts` 在事务开始时确定，所有读操作都使用这个时间戳
+
+#### 写冲突检测
+
+- **提交时检测**：当事务提交时，会检查是否存在写冲突
+- **回滚重试**：如果发现该行在事务启动后被其他已提交事务更新过，当前事务会回滚
+- **重试机制**：在满足条件时，事务可能会自动重试（不推荐开启）
+
+#### 示例行为
 
 ```sql
+-- 乐观事务示例
 create table t1(id int);
 insert into t1 values(0);
 
-start transaction;              |               start transaction;
-select * from t1;               |               select * from t1;
-update t1 set id=id+1;          |               update t1 set id=id+1; -- 如果使用悲观事务，则后一个执行的 update 语句会等锁，直到持有锁的事务提交或者回滚释放行锁。
-commit;                         |
-                                |               commit; -- 事务提交失败，回滚。如果使用悲观事务，可以提交成功。
+-- 事务 A                           -- 事务 B
+start transaction;                 start transaction;
+select * from t1;                  select * from t1;
+update t1 set id=id+1;             update t1 set id=id+1;
+commit;                            commit; -- 会失败并回滚
 ```
+
+### 悲观事务中的可重复读
+
+在悲观事务模式下，TiDB 的可重复读隔离级别行为更接近 MySQL：
+
+#### 读取特性
+
+- **快照读一致性**：普通的 `SELECT` 语句读取事务开始时的快照
+- **当前读更新**：`SELECT FOR UPDATE`、`UPDATE`、`DELETE` 等 DML 操作会读取最新已提交的数据
+- **ForUpdate 时间戳**：DML 操作使用单独的 `for_update_ts` 时间戳，确保读取最新数据
+
+#### 锁机制
+
+- **即时加锁**：写操作会立即对相关行加悲观锁
+- **锁等待**：当多个事务并发更新同一行时，后执行的事务会等待锁释放
+- **避免回滚**：通过预先加锁，大大减少了事务提交时的冲突
+
+#### 示例行为
+
+```sql
+-- 悲观事务示例
+create table t1(id int);
+insert into t1 values(0);
+
+-- 事务 A                           -- 事务 B
+start transaction;                 start transaction;
+select * from t1;                  select * from t1;
+update t1 set id=id+1;             update t1 set id=id+1; -- 会等待事务 A 的锁
+commit;                            commit; -- 可以成功提交
+
+### 事务启动和时间戳机制
+
+对于运行于不同节点的事务而言，不同事务启动和提交的顺序取决于从 PD 获取时间戳的顺序。
+
+#### 乐观事务
+
+- 事务开始时获取 `start_ts`
+- 所有读操作使用 `start_ts`
+- 提交时获取 `commit_ts` 并检查冲突
+
+#### 悲观事务
+
+- 事务开始时获取 `start_ts`
+- 普通读操作使用 `start_ts`
+- DML 操作获取新的 `for_update_ts` 并使用该时间戳读取最新数据
+- 提交时使用两阶段提交协议
+
+### 并发更新处理
+
+两种事务模式在处理并发更新冲突时有着不同的机制：
+
+#### 乐观事务的并发更新行为
+
+乐观事务使用延迟冲突检测机制，在事务执行期间不会获取任何锁。具体行为如下：
+
+- **执行阶段**：允许多个事务并发执行 DML 操作，彼此不受干扰
+- **冲突检测**：冲突检测发生在提交阶段（prewrite 阶段）
+- **冲突处理**：当事务提交时发现该行在该事务启动后已经被另一个已提交的事务更新过（`data.commit_ts > txn.start_ts`），当前事务会自动回滚
+- **重试机制**：如果开启了自动重试，事务会在限定次数内重试（不推荐开启）
+
+这种机制在代码中体现为使用固定的 `start_ts` 进行读取，并在提交时进行写写冲突检测。
+
+#### 悲观事务的并发更新行为
+
+悲观事务使用即时加锁机制，在执行 DML 操作时立即获取锁。具体行为如下：
+
+- **即时加锁**：DML 操作（`UPDATE`、`DELETE`、`SELECT FOR UPDATE` 等）执行时立即对相关行加悲观锁
+- **锁等待机制**：处于可重复读隔离级别的悲观事务在更新同一行时，后执行的事务会等待获取锁，直到持有锁的事务提交或回滚释放行锁后才能继续执行
+- **超时控制**：事务等待锁的时间由 `innodb_lock_wait_timeout` 参数控制（默认 50 秒），超时后返回错误码 `1205`
+- **避免冲突**：通过预先加锁，避免了提交时的冲突检测和回滚
+
+这种机制确保了在可重复读隔离级别下，同一行数据不会被多个事务同时修改，提供了更好的并发控制。
 
 ### 与 ANSI 可重复读隔离级别的区别
 
-尽管名称是可重复读隔离级别，但是 TiDB 中可重复读隔离级别和 ANSI 可重复隔离级别是不同的。按照 [A Critique of ANSI SQL Isolation Levels](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-95-51.pdf) 论文中的标准，TiDB 实现的是论文中的快照隔离级别。该隔离级别不会出现狭义上的幻读 (A3)，但不会阻止广义上的幻读 (P3)，同时，SI 还会出现写偏斜，而 ANSI 可重复读隔离级别不会出现写偏斜，会出现幻读。
+尽管名称是可重复读隔离级别，但是 TiDB 中可重复读隔离级别和 ANSI 可重复隔离级别是不同的。按照 [A Critique of ANSI SQL Isolation Levels](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-95-51.pdf) 论文中的标准，TiDB 实现的是论文中的快照隔离级别。该隔离级别不会出现狭义上的幻读 (A3)，但不会阻止广义上的幻读 (P3)，同时，快照隔离还会出现写偏斜，而 ANSI 可重复读隔离级别不会出现写偏斜，会出现幻读。
 
 ### 与 MySQL 可重复读隔离级别的区别
 
-MySQL 可重复读隔离级别在更新时并不检验当前版本是否可见，也就是说，即使该行在事务启动后被更新过，同样可以继续更新。这种情况在 TiDB 使用乐观事务时会导致事务回滚，导致事务最终失败，而 TiDB 默认的悲观事务和 MySQL 是可以更新成功的。
+#### 乐观事务与 MySQL 的区别
+
+MySQL 可重复读隔离级别在更新时并不检验当前版本是否可见，也就是说，即使该行在事务启动后被更新过，同样可以继续更新。这种情况在 TiDB 使用乐观事务时会导致事务回滚，可能导致事务最终失败。
+
+#### 悲观事务与 MySQL 的相似性
+
+TiDB 默认的悲观事务和 MySQL 行为基本一致，都可以在行被其他事务更新后继续更新成功。主要区别在于：
+
+- **读取行为**：TiDB 悲观事务中，DML 操作基于最新已提交数据执行，与 MySQL 行为相同，但与 TiDB 乐观事务模式不同
+- **锁等待**：两者都支持锁等待机制
+- **事务重试**：TiDB 支持更灵活的事务重试机制
 
 ## 读已提交隔离级别 (Read Committed)
 
@@ -103,7 +200,7 @@ SET SESSION transaction_isolation = 'READ-COMMITTED';
 - [系统变量 `transaction_isolation`](/system-variables.md#transaction_isolation)
 - [事务模式](/pessimistic-transaction.md#隔离级别)
 - [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
-  
+
 ## 更多阅读
 
 - [TiDB 的乐观事务模型](https://pingcap.com/blog-cn/best-practice-optimistic-transaction/)
