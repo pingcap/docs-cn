@@ -1,6 +1,6 @@
 ---
 title: TiDB 8.5.1 Release Notes
-summary: 了解 TiDB 8.5.1 版本的操作系统支持变更、改进提升，以及错误修复。
+summary: 了解 TiDB 8.5.1 版本的操作系统支持变更、兼容性变更、改进提升，以及错误修复。
 ---
 
 # TiDB 8.5.1 Release Notes
@@ -19,6 +19,13 @@ TiDB 版本：8.5.1
 - 为了更好地服务仍在使用 CentOS Linux 7 的用户，TiDB 从 v8.5.1 版本起恢复了对 CentOS Linux 7 的兼容性测试和支持。然而，由于 CentOS Linux 7 已到达 EOL，强烈建议用户参考该系统的[官方声明和安全建议](https://www.redhat.com/en/blog/centos-linux-has-reached-its-end-life-eol)，将生产环境迁移到 [TiDB 支持的操作系统版本](/hardware-and-software-requirements.md#操作系统及平台要求)，如 Rocky Linux 9.1 及以上版本。
 
 由于 CentOS Linux 7 已到达 EOL，TiDB 将在未来版本中停止对 CentOS Linux 7 的兼容性支持。
+
+## 兼容性变更
+
+- 为了降低 TiDB 统计信息缓存对内存的占用，系统变量 [`tidb_stats_cache_mem_quota`](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入) 的默认值 `0` 所代表的含义发生变化：
+
+    - 在 v8.5.1 之前的版本中，`0` 表示统计信息缓存的内存使用上限为 TiDB 实例总内存的 50%。
+    - 从 v8.5.1 起，`0` 表示统计信息缓存的内存使用上限为 TiDB 实例总内存的 20%。
 
 ## 改进提升
 
