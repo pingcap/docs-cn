@@ -1,6 +1,6 @@
 ---
 title: TiDB 6.5.11 Release Notes
-summary: 了解 TiDB 6.5.11 版本的改进提升和错误修复。
+summary: 了解 TiDB 6.5.11 版本的兼容性变更、改进提升和错误修复。
 ---
 
 # TiDB 6.5.11 Release Notes
@@ -13,7 +13,7 @@ TiDB 版本：6.5.11
 
 ## 兼容性变更
 
-- TiKV 配置项 [`server.grpc-compression-type`](/tikv-configuration-file.md#grpc-compression-type) 也会影响 TiKV 向 TiDB 发送的 gRPC（响应）消息时使用的压缩算法。开启压缩可能消耗更多 CPU 资源。[#17176](https://github.com/tikv/tikv/issues/17176) @[ekexium](https://github.com/ekexium)
+- TiKV 配置项 [`server.grpc-compression-type`](/tikv-configuration-file.md#grpc-compression-type) 也会影响 TiKV 向 TiDB 发送 gRPC（响应）消息时使用的压缩算法。开启压缩可能消耗更多 CPU 资源。[#17176](https://github.com/tikv/tikv/issues/17176) @[ekexium](https://github.com/ekexium)
 
 ## 改进提升
 

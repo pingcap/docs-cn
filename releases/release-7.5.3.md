@@ -14,7 +14,7 @@ TiDB 版本：7.5.3
 ## 兼容性变更
 
 - 新增系统表 [`INFORMATION_SCHEMA.KEYWORDS`](/information-schema/information-schema-keywords.md) 用来展示 TiDB 支持的所有关键字的信息 [#48801](https://github.com/pingcap/tidb/issues/48801) @[dveeden](https://github.com/dveeden)
-- TiKV 配置项 [`server.grpc-compression-type`](/tikv-configuration-file.md#grpc-compression-type) 也会影响 TiKV 向 TiDB 发送的 gRPC（响应）消息时使用的压缩算法。开启压缩可能消耗更多 CPU 资源。[#17176](https://github.com/tikv/tikv/issues/17176) @[ekexium](https://github.com/ekexium)
+- TiKV 配置项 [`server.grpc-compression-type`](/tikv-configuration-file.md#grpc-compression-type) 也会影响 TiKV 向 TiDB 发送 gRPC（响应）消息时使用的压缩算法。开启压缩可能消耗更多 CPU 资源。[#17176](https://github.com/tikv/tikv/issues/17176) @[ekexium](https://github.com/ekexium)
 
 ## 改进提升
 
