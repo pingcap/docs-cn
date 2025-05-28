@@ -11,7 +11,7 @@ summary: 介绍 TiDB 在 SaaS (Software as a service) 多租户场景的最佳�
 > 
 > 推荐使用 TiDB v8.5.0 及以上版本。
 
-关于该最佳实践的实操案例，请参考 Blog：[Scaling 3 Million Tables: How TiDB Powers Atlassian Forge's SaaS Platform](https://www.pingcap.com/blog/scaling-3-million-tables-how-tidb-powers-atlassian-forge-saas-platform/)。
+关于该最佳实践的实操案例，请参阅博客 [Scaling 3 Million Tables: How TiDB Powers Atlassian Forge's SaaS Platform](https://www.pingcap.com/blog/scaling-3-million-tables-how-tidb-powers-atlassian-forge-saas-platform/)。
 
 ## 硬件配置建议
 
