@@ -262,6 +262,16 @@ tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.11:9000
 tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.12
 ```
 
+## 销毁集群
+
+销毁集群操作会关闭服务，清空数据目录和部署目录，并且无法恢复，需要**谨慎操作**。
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster destroy ${cluster-name}
+```
+
 ## 从 Prometheus 切换到 VictoriaMetrics
 
 在大型集群中，Prometheus 在面对大量实例时可能面临性能瓶颈。从 tiup 1.16.3 版本开始，TiUP 支持将指标服务器从 Prometheus 切换为 VictoriaMetrics (VM)，以提供更好的可扩展性、更高的性能和更低的资源消耗。
@@ -414,13 +424,3 @@ grafana_servers:
     ```bash
     rm -rf /tidb-data/prometheus-8249
     ```
-
-## 销毁集群
-
-销毁集群操作会关闭服务，清空数据目录和部署目录，并且无法恢复，需要**谨慎操作**。
-
-{{< copyable "shell-regular" >}}
-
-```bash
-tiup cluster destroy ${cluster-name}
-```
