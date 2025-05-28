@@ -293,7 +293,6 @@ grafana_servers:
 
 #### 启用 Prometheus 向 VictoriaMetrics 的远程写入
 
-
 1. 编辑集群配置：
 
     ```bash
@@ -344,8 +343,6 @@ grafana_servers:
 
 1. 编辑集群配置：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     tiup cluster edit-config ${cluster-name}
     ```
@@ -361,8 +358,6 @@ grafana_servers:
 
 3. 重新加载配置使其生效：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     tiup cluster reload ${cluster-name} -R grafana
     ```
@@ -376,8 +371,6 @@ grafana_servers:
 #### 将 Prometheus 设置为代理模式
 
 1. 编辑集群配置：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     tiup cluster edit-config ${cluster-name}
@@ -401,8 +394,6 @@ grafana_servers:
 
 3. 重新加载配置使其生效：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     tiup cluster reload ${cluster-name} -R prometheus
     ```
@@ -419,9 +410,6 @@ grafana_servers:
     ```
 
 2. 手动删除数据目录：
-
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     rm -rf /tidb-data/prometheus-8249
