@@ -110,7 +110,7 @@ summary: 了解 TiDB 系统表。
 
 ## 备份和恢复相关系统表
 
-* `tidb_pitr_id_map` 存储时间点恢复 (PITR) 操作的 ID 映射信息
+* `tidb_pitr_id_map` 存储时间点恢复 (Point-in-time recovery, PITR) 操作的 ID 映射信息
 
 ## 其它系统表
 
