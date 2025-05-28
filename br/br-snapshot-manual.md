@@ -134,7 +134,7 @@ tiup br restore full \
 
 > **注意：**
 >
-> 从 v9.0.0 起，当关闭 br 命令行工具参数 `--load-stats` 时，br 将不会在表 `mysql.stats_meta` 中更新恢复的表的相关信息。如果你想要在恢复完成后手动分析表，那么可以关闭这个参数。
+> 从 v9.0.0 起，当设置参数 `--load-stats` 为 false 时，br 将不会在表 `mysql.stats_meta` 中更新恢复的表的相关信息。你可以在恢复完成后手动执行 analyze table，更新相关统计信息。
 
 备份恢复功能在备份时，将统计信息通过 JSON 格式存储在 `backupmeta` 文件中。在恢复时，将 JSON 格式的统计信息导入到集群中。详情请参考 [LOAD STATS](/sql-statements/sql-statement-load-stats.md)。
 
