@@ -297,8 +297,6 @@ grafana_servers:
 
 1. 编辑集群配置：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     tiup cluster edit-config ${cluster-name}
     ```
@@ -314,8 +312,6 @@ grafana_servers:
 
 3. 重新加载配置使其生效：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     tiup cluster reload ${cluster-name} -R prometheus
     ```
@@ -323,8 +319,6 @@ grafana_servers:
 #### 切换 Grafana 默认数据源至 VictoriaMetrics
 
 1. 编辑集群配置：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     tiup cluster edit-config ${cluster-name}
@@ -340,8 +334,6 @@ grafana_servers:
     ```
 
 3. 重新加载配置使其生效：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     tiup cluster reload ${cluster-name} -R grafana
