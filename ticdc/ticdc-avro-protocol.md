@@ -203,6 +203,7 @@ Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部�
 | ENUM       | ENUM      | string    |                                                                                                                           |
 | SET        | SET       | string    |                                                                                                                           |
 | DECIMAL    | DECIMAL   | bytes     | 当 `avro-decimal-handling-mode` 为 string 时，AVRO_TYPE 也为 string。                                                         |
+| TiDBVECTORFloat32 | TiDBVECTORFloat32 | string | - |
 
 对于 Avro 协议，另外两个 `sink-uri` 参数 `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode` 也会影响 Column 数据格式:
 
