@@ -108,6 +108,10 @@ summary: 了解 TiDB 系统表。
 
 * `request_unit_by_group` 存放资源组 RU 消耗统计的历史记录
 
+## 备份和恢复相关系统表
+
+* `tidb_pitr_id_map` 存储时间点恢复 (Point-in-time recovery, PITR) 操作的 ID 映射信息
+
 ## 其它系统表
 
 * `GLOBAL_VARIABLES` 全局系统变量表
