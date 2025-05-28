@@ -13,7 +13,10 @@ TiDB 版本：6.5.11
 
 ## 兼容性变更
 
-- TiKV 配置项 [`server.grpc-compression-type`](/tikv-configuration-file.md#grpc-compression-type) 也会影响 TiKV 向 TiDB 发送 gRPC（响应）消息时使用的压缩算法。开启压缩可能消耗更多 CPU 资源。[#17176](https://github.com/tikv/tikv/issues/17176) @[ekexium](https://github.com/ekexium)
+- TiKV 配置项 [`server.grpc-compression-type`](/tikv-configuration-file.md#grpc-compression-type) 的作用范围发生变更：
+
+    - 在 v6.5.11 之前的 6.5.x 版本中，该配置项只影响 TiKV 节点之间的 gRPC 消息的压缩算法。
+    - 从 v6.5.11 起，该配置项也会影响 TiKV 向 TiDB 发送的 gRPC（响应）消息的压缩算法，开启压缩可能消耗更多 CPU 资源。[#17176](https://github.com/tikv/tikv/issues/17176) @[ekexium](https://github.com/ekexium)
 
 ## 改进提升
 
