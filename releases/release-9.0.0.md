@@ -371,7 +371,13 @@ TiDB 版本：9.0.0
 ## 改进提升
 
 + TiDB
-
+    - 支持 from_unixtime 表达式下推 TiKV [#58940](https://github.com/pingcap/tidb/issues/58940) @[wshwsh12](https://github.com/wshwsh12)
+    - 支持 timestampdiff 表达式下推 TiKV [#59365](https://github.com/pingcap/tidb/issues/59365) @[gengliqi](https://github.com/gengliqi)
+    - 在 explain analyze 结果中支持更多 spill 的细节信息 [#59076](https://github.com/pingcap/tidb/issues/59076) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 支持 truncate 表达式下推 TiFlash [#59317](https://github.com/pingcap/tidb/issues/59317) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 支持 unix_timestamp 表达式下推 TiKV [#59497](https://github.com/pingcap/tidb/issues/59497) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 支持 aggregation window function 下推 TiFlash [#59509](https://github.com/pingcap/tidb/issues/59509) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 在 hash join v2 中支持 left outer anti semi join [#58479](https://github.com/pingcap/tidb/pull/58479) @[wshwsh12](https://github.com/wshwsh12)
     - (dup): release-8.5.1.md > 改进提升> TiDB - 支持将只读的用户自定义变量折叠为常量 [#52742](https://github.com/pingcap/tidb/issues/52742) @[winoros](https://github.com/winoros)
     - (dup): release-8.5.1.md > 改进提升> TiDB - 将统计信息内存缓存的默认阈值调整为总内存的 20% [#58014](https://github.com/pingcap/tidb/issues/58014) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-7.5.6.md > 改进提升> TiDB - 将 TTL 表的 GC 及相关统计信息收集任务限定在 owner 节点执行，从而降低开销 [#59357](https://github.com/pingcap/tidb/issues/59357) @[lcwangchao](https://github.com/lcwangchao)
@@ -390,7 +396,9 @@ TiDB 版本：9.0.0
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - 跳过不必要的数据读取，提升 TiFlash `TableScan` 算子的性能 [#9875](https://github.com/pingcap/tiflash/issues/9875) @[gengliqi](https://github.com/gengliqi)
     - 默认打开新的字符串序列化格式，提升 TiFlash `TableScan` 算子的性能 [#9673](https://github.com/pingcap/tiflash/issues/9673) @[JinheLin](https://github.com/JinheLin)
-
+    - 通过内存预取优化部分 Aggregation 场景性能 [#9680](https://github.com/pingcap/tiflash/issues/9680) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 引入新版 hash join 优化部分 inner join 场景性能 [#9060](https://github.com/pingcap/tiflash/issues/9060) @[gengliqi](https://github.com/gengliqi)
+    
 + Tools
 
     + Backup & Restore (BR)
@@ -427,6 +435,14 @@ TiDB 版本：9.0.0
 
 + TiDB
 
+    - 修复当 `truncate` 表达式的第一个参数为 0 且第二个值过大时，计算结果错误的问题 [#57651](https://github.com/pingcap/tidb/issues/57651) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复 hash aggregation 算子潜在的 goroutine 泄漏问题 [#58004](https://github.com/pingcap/tidb/issues/58004) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复 Hash Join 算子中触发 spill 后统计信息不准确的问题 [#58571](https://github.com/pingcap/tidb/issues/58571) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复 `json_extract` 表达式计算结果不准确的问题 [#49513](https://github.com/pingcap/tidb/issues/49513) @[YangKeao](https://github.com/YangKeao)
+    - 修复当 Hash Join 执行出错时，返回错误结果但未报错的问题 [#59377](https://github.com/pingcap/tidb/issues/59377) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复当 json_keys 表达式包含 2 个参数且第 1 个参数为 JSONTypeCodeArray 类型时，计算结果错误的问题 [#56788](https://github.com/pingcap/tidb/issues/56788) @[zimulala](https://github.com/zimulala)
+    - 修复 mpp coordinator 潜在的内存泄漏问题 [#59703](https://github.com/pingcap/tidb/issues/59703) @[yibin87](https://github.com/yibin87)
+    - 修复多并发排序过程中潜在的卡住问题 [#59655](https://github.com/pingcap/tidb/issues/59655) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - (dup): release-7.5.6.md > 错误修复> TiDB - 修复在修改 `tidb_ttl_delete_rate_limit` 时，部分 TTL 任务可能挂起的问题 [#58484](https://github.com/pingcap/tidb/issues/58484) @[lcwangchao](https://github.com/lcwangchao)
     - (dup): release-8.5.1.md > 错误修复> TiDB - 修复查询慢日志时，更改时区导致返回结果错误的问题 [#58452](https://github.com/pingcap/tidb/issues/58452) @[lcwangchao](https://github.com/lcwangchao)
     - (dup): release-6.5.12.md > 错误修复> TiDB - 修复在构造 `IndexMerge` 时可能丢失部分谓词的问题 [#58476](https://github.com/pingcap/tidb/issues/58476) @[hawkingrei](https://github.com/hawkingrei)
@@ -470,6 +486,10 @@ TiDB 版本：9.0.0
 
 + TiFlash
 
+    - 修复 TiFlash 处理包含时区的 `IN(Timestamp | Time * )` 表达式时结果不正确的问题 [#9778](https://github.com/pingcap/tiflash/issues/9778) @[solotzg](https://github.com/solotzg)
+    - 修复 TiFlash 处理溢出错误的行为同 TiDB 不兼容导致 `import into` 语句报错的问题 [#9752](https://github.com/pingcap/tiflash/issues/9752) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复 TiFlash 处理 `Aggregation Window Function` 的内存泄漏问题 [#9930](https://github.com/pingcap/tiflash/issues/9930) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复 TiFlash 处理 `Aggregation Window Function` 时出现空指针的问题 [#9964](https://github.com/pingcap/tiflash/issues/9964) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - (dup): release-7.5.6.md > 错误修复> TiFlash - 修复 TiFlash 在内存占用较低的情况下，可能意外拒绝处理 Raft 消息的问题 [#9745](https://github.com/pingcap/tiflash/issues/9745) @[CalvinNeo](https://github.com/CalvinNeo)
     - (dup): release-7.5.6.md > 错误修复> TiFlash - 修复在分区表上执行 `ALTER TABLE ... RENAME COLUMN` 后，查询该表可能报错的问题 [#9787](https://github.com/pingcap/tiflash/issues/9787) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - (dup): release-6.5.12.md > 错误修复> TiFlash - 修复在导入大量数据后，TiFlash 可能持续占用较高内存的问题 [#9812](https://github.com/pingcap/tiflash/issues/9812) @[CalvinNeo](https://github.com/CalvinNeo)
