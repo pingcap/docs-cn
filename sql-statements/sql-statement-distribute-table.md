@@ -11,7 +11,7 @@ summary: 介绍 TiDB 数据库中 DISTRIBUTE TABLE 的使用概况。
 
 ```ebnf+diagram
 DistributeTableStmt ::=
-    "DISTRIBUTE" "TABLE" TableName PartitionNameListOpt "RULE" EqOrAssignmentEq Identifier "ENGINE" EqOrAssignmentEq Identifier
+    "DISTRIBUTE" "TABLE" TableName PartitionNameListOpt "RULE" EqOrAssignmentEq Identifier "ENGINE" EqOrAssignmentEq Identifier "TIMEOUT" EqOrAssignmentEq Identifier
 
 TableName ::=
     (SchemaName ".")? Identifier
@@ -24,51 +24,46 @@ PartitionNameList ::=
 ## 示例
 
 通过 `DISTRIBUTE TABLE` 语句重新调度表中的 Region 时，你可以根据需求指定存储引擎（如 TiFlash 或 TiKV）以及不同的 Raft 角色（如 Leader、Learner、Voter）进行均衡打散操作。
+timeout: 如果 PD 在改指定时间内没有打散时会退出该任务，默认值为 30m。
 
 对表 `t1` 在 TiKV 上的 Leader 所在的 Region 重新进行均衡调度：
 
 ```sql
 CREATE TABLE t1 (a INT);
 ...
-DISTRIBUTE TABLE t1 RULE= `leader-scatter` ENGINE = tikv 
+DISTRIBUTE TABLE t1 RULE= `leader-scatter` ENGINE = tikv TIMEOUT=`1h`
+```
+
+```
 +---------+
 | JOB_ID  |
 100
 +---------+
 ```
 
+对表 `t2` 在 Tiflash 上的 learner 所在的 Region 重新进行均衡调度
 ```sql
 CREATE TABLE t2 (a INT);
 ...
-DISTRIBUTE table t2  RULE = `learner-scatter` Engine=tiflash;
+DISTRIBUTE table t2  RULE = `learner-scatter` ENGINE = tiflash;
+```
+
+```
 +---------+
 | JOB_ID  | 
 101
 +---------+
 ```
 
-对分区表 `t5` 的 `p1` 和 `p2` 分区在 TiKV 上的 peer 所在的 Region 重新进行均衡调度：
+对分区表 `t3· 的 `p1` 和 `p2` 分区在 TiKV 上的 peer 所在的 Region 重新进行均衡调度：
 
 ```sql
-CREATE TABLE t ( a INT, b INT, INDEX idx(b)) PARTITION BY RANGE( a ) (
+CREATE TABLE t3 ( a INT, b INT, INDEX idx(b)) PARTITION BY RANGE( a ) (
     PARTITION p1 VALUES LESS THAN (10000),
     PARTITION p2 VALUES LESS THAN (20000),
     PARTITION p3 VALUES LESS THAN (MAXVALUE) );
 ...
-DISTRIBUTE TABLE t5 PARTITION (p1, p2) RULE= `peer-scatter` ENGINE =tikv;
-
-+---------+
-| JOB_ID  |
-101
-+---------+
-```
-
-对分区表 `t3` 的 `p1` 和 `p2` 分区在 TiKV 上的 Leader 所在的 Region 重新进行均衡调度：
-
-```sql
-CREATE TABLE t3 (a INT);
-...
-DISTRIBUTE TABLE t3 PARTITION (p1, p2) ENGINE tikv role leader;
+DISTRIBUTE TABLE t3 PARTITION (p1, p2) RULE = `peer-scatter` ENGINE = tikv;
 ```
 
 ```
@@ -78,9 +73,27 @@ DISTRIBUTE TABLE t3 PARTITION (p1, p2) ENGINE tikv role leader;
 +---------+
 ```
 
-取消指定的调度任务
+对分区表 `t4` 的 `p1` 和 `p2` 分区在 TiKV 上的 Leader 所在的 Region 重新进行均衡调度：
+
 ```sql
-CANCEL DISTRIBUTION JOB 1;
+CREATE TABLE t4 ( a INT, b INT, INDEX idx(b)) PARTITION BY RANGE( a ) (
+    PARTITION p1 VALUES LESS THAN (10000),
+    PARTITION p2 VALUES LESS THAN (20000),
+    PARTITION p3 VALUES LESS THAN (MAXVALUE) );
+DISTRIBUTE TABLE t4 PARTITION (p1, p2) RULE = `leader-scatter` ENGINE=tiflash;
+```
+
+```
++---------+
+| JOB_ID  |
+103
++---------+
+```
+
+取消指定的调度任务
+
+```sql
+CANCEL DISTRIBUTION JOB 100;
 ```
 
 ## 注意事项
