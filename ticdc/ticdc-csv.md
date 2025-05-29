@@ -103,3 +103,4 @@ CREATE TABLE `employee` (
 | `DECIMAL`                                                         | String  | `"129012.1230000"`             | -                             |
 | `ENUM`                                                            | String  | `"a"`                          | -                             |
 | `SET`                                                             | String  | `"a,b"`                        | -                             |
+| `TiDBVectorFloat32`                                               | String  | `"[1.23, -0.4]"`               | -                             |

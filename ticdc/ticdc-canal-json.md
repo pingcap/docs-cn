@@ -209,6 +209,7 @@ Canal-JSON 格式会在 `sqlType` 字段中记录每一列的 Java SQL Type，�
 | Set        | -7                 |
 | Bit        | -7                 |
 | JSON       | 12                 |
+| TiDBVectorFloat32 | 12          |
 
 ## 整数类型
 
