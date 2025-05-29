@@ -34,7 +34,7 @@ TiCDC 对上游数据变更的支持范围如下：
 
     - DDL 和 DML 语句（非系统表）。
     - 索引操作 (`ADD INDEX`, `CREATE INDEX`)：为了减少对 Changefeed 同步延迟的影响，当下游为 TiDB 时，TiCDC 会[异步执行创建和添加索引的 DDL 操作](/ticdc/ticdc-ddl.md#创建和添加索引-ddl-的异步执行)。
-    - 外键约束 DDL 语句 (`ADD FOREIGN KEY`)：TiCDC 不会同步上游系统变量的设置，需要在下游手动设置 [`foreign_key_checks`](/system-variables.md#foreign_key_checks) 来决定是否开启下游的外键约束检查。另外，TiCDC 在向下游写入数据时，自动启用会话级设置 `SET SESSION foreign_key_checks = OFF;`。因此即使下游开启了全局外键检查，TiCDC 写入的数据也不会触发外键约束验证。
+    - 外键约束 DDL 语句 (`ADD FOREIGN KEY`)：TiCDC 不会同步上游系统变量的设置，需要在下游手动设置 [`foreign_key_checks`](/system-variables.md#foreign_key_checks) 来决定是否开启下游的外键约束检查。另外，TiCDC 在向下游写入数据时，自动启用会话级别设置 `SET SESSION foreign_key_checks = OFF;`。因此，即使下游开启了全局外键检查，TiCDC 写入的数据也不会触发外键约束验证。
 
 + 不支持：
 
