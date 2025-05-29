@@ -667,6 +667,10 @@ opentracing.reporter 相关的设置。
 + 默认值："none"
 + 可选值："none", "gzip"
 
+> **注意：**
+>
+> TiKV 节点返回给 TiDB 的响应消息的压缩算法是由 TiKV 配置项 [`grpc-compression-type`](/tikv-configuration-file.md#grpc-compression-type) 控制的。
+
 ### `commit-timeout`
 
 + 执行事务提交时，最大的超时时间。
