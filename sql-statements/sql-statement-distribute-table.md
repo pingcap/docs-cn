@@ -90,12 +90,6 @@ DISTRIBUTE TABLE t4 PARTITION (p1, p2) RULE = `leader-scatter` ENGINE=tiflash;
 +---------+
 ```
 
-取消指定的调度任务
-
-```sql
-CANCEL DISTRIBUTION JOB 100;
-```
-
 ## 注意事项
 
 `DISTRIBUTE TABLE` 语句在重新调度表中的 Region 时，可能会受到 PD 热点调度器的影响。调度完成后，随着时间推移，表的 Region 分布可能再次失衡。
@@ -109,3 +103,4 @@ CANCEL DISTRIBUTION JOB 100;
 - [`SHOW DISTRIBUTION JOBS`](/sql-statements/sql-statement-show-distribution-jobs.md)
 - [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql-statement-show-table-distribution.md)
 - [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md)
+- [`CANCEL DISTRIBUTION JOBS`] (/sql-statements/sql-statement-cancel-distribution-job.md)
