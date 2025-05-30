@@ -16,6 +16,10 @@ TiDB 版本：7.1.6
 - 通过 [TiDB HTTP API](https://github.com/pingcap/tidb/blob/release-7.1/docs/tidb_http_api.md) 获取 DDL 历史任务时，默认获取任务数量的上限为 2048，以避免历史任务数量过多导致 OOM 的问题 [#55711](https://github.com/pingcap/tidb/issues/55711) @[joccau](https://github.com/joccau)
 - 在之前的版本中，TiCDC 在处理包含 `UPDATE` 变更的事务时，如果事件的主键或者非空唯一索引的列值发生改变，则会将该条事件拆分为 `DELETE` 和 `INSERT` 两条事件。从 v7.1.6 开始，当使用 MySQL Sink 时，如果 `UPDATE` 变更所在事务的 `commitTS` 小于对应表开始向下游同步数据时从 PD 获取的当前时间戳 `thresholdTS`，TiCDC 就会将该 `UPDATE` 事件拆分为 `DELETE` 和 `INSERT` 两条事件，然后写入 Sorter 模块。该行为变更解决了由于 TiCDC 接收到的 `UPDATE` 事件顺序可能不正确，导致拆分后的 `DELETE` 和 `INSERT` 事件顺序也可能不正确，从而引发下游数据不一致的问题。更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v7.1/ticdc-split-update-behavior#mysql-sink-拆分-update-事件行为说明)。[#10918](https://github.com/pingcap/tiflow/issues/10918) @[lidezhu](https://github.com/lidezhu)
 - 使用 TiDB Lightning 的严格格式 `strict-format` 导入 CSV 文件时，必须设置行分隔符 [#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
+- TiKV 配置项 [`server.grpc-compression-type`](/tikv-configuration-file.md#grpc-compression-type) 的作用范围发生变更：
+
+    - 在 v7.1.6 之前的 7.1.x 版本中，该配置项只影响 TiKV 节点之间的 gRPC 消息的压缩算法。
+    - 从 v7.1.6 起，该配置项也会影响 TiKV 向 TiDB 发送的 gRPC（响应）消息的压缩算法，开启压缩可能消耗更多 CPU 资源。[#17176](https://github.com/tikv/tikv/issues/17176) @[ekexium](https://github.com/ekexium)
 
 ## 改进提升
 
