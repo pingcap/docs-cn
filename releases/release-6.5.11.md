@@ -1,6 +1,6 @@
 ---
 title: TiDB 6.5.11 Release Notes
-summary: 了解 TiDB 6.5.11 版本的改进提升和错误修复。
+summary: 了解 TiDB 6.5.11 版本的兼容性变更、改进提升和错误修复。
 ---
 
 # TiDB 6.5.11 Release Notes
@@ -10,6 +10,13 @@ summary: 了解 TiDB 6.5.11 版本的改进提升和错误修复。
 TiDB 版本：6.5.11
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.5.11#version-list)
+
+## 兼容性变更
+
+- TiKV 配置项 [`server.grpc-compression-type`](/tikv-configuration-file.md#grpc-compression-type) 的作用范围发生变更：
+
+    - 在 v6.5.11 之前的 6.5.x 版本中，该配置项只影响 TiKV 节点之间的 gRPC 消息的压缩算法。
+    - 从 v6.5.11 起，该配置项也会影响 TiKV 向 TiDB 发送的 gRPC（响应）消息的压缩算法，开启压缩可能消耗更多 CPU 资源。[#17176](https://github.com/tikv/tikv/issues/17176) @[ekexium](https://github.com/ekexium)
 
 ## 改进提升
 
