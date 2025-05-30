@@ -272,3 +272,157 @@ tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.12
 ```bash
 tiup cluster destroy ${cluster-name}
 ```
+
+## 从 Prometheus 切换到 VictoriaMetrics
+
+在大型集群中，Prometheus 在面对大量实例时可能面临性能瓶颈。从 tiup 1.16.3 版本开始，TiUP 支持将指标服务器从 Prometheus 切换为 VictoriaMetrics (VM)，以提供更好的可扩展性、更高的性能和更低的资源消耗。
+
+### 在新部署中启用 VictoriaMetrics
+
+默认情况下，TiUP 使用 Prometheus 作为指标服务器。如果要在新部署中使用 VictoriaMetrics 替代 Prometheus，可以在拓扑文件中进行如下配置：
+
+```yaml
+# 监控服务器配置
+monitoring_servers:
+  # 监控服务器的 IP 地址
+  - host: ip_address
+    ...
+    prom_remote_write_to_vm: true
+    enable_prom_agent_mode: true
+
+# Grafana 服务器配置
+grafana_servers:
+  # Grafana 服务器的 IP 地址
+  - host: ip_address
+    ...
+    use_vm_as_datasource: true
+```
+
+### 将现有部署迁移到 VictoriaMetrics
+
+迁移过程可在不中断服务的前提下进行：现有历史指标仍保留在 Prometheus 中，新的指标则写入 VictoriaMetrics。
+
+#### 启用 Prometheus 向 VictoriaMetrics 的远程写入
+
+1. 编辑集群配置：
+
+    ```bash
+    tiup cluster edit-config ${cluster-name}
+    ```
+
+2. 在 `monitoring_servers` 配置下，添加 `prom_remote_write_to_vm`: `true`：
+
+    ```yaml
+    monitoring_servers:
+      - host: ip_address
+        ...
+        prom_remote_write_to_vm: true
+    ```
+
+3. 重新加载配置使其生效：
+
+    ```bash
+    tiup cluster reload ${cluster-name} -R prometheus
+    ```
+
+#### 切换 Grafana 默认数据源至 VictoriaMetrics
+
+1. 编辑集群配置：
+
+    ```bash
+    tiup cluster edit-config ${cluster-name}
+    ```
+
+2. 在 `grafana_servers` 配置下添加 `use_vm_as_datasource`: `true`：
+
+    ```yaml
+    grafana_servers:
+      - host: ip_address
+        ...
+        use_vm_as_datasource: true
+    ```
+
+3. 重新加载配置使其生效：
+
+    ```bash
+    tiup cluster reload ${cluster-name} -R grafana
+    ```
+
+#### 查看切换前的历史指标（可选）
+
+如果需要查看切换前生成的历史指标，可以按照以下步骤切换 Grafana 的数据源：
+
+1. 编辑集群配置：
+
+    ```bash
+    tiup cluster edit-config ${cluster-name}
+    ```
+
+2. 注释掉 `grafana_servers` 下的 `use_vm_as_datasource`：
+
+    ```yaml
+    grafana_servers:
+      - host: ip_address
+        ...
+        # use_vm_as_datasource: true
+    ```
+
+3. 重新加载配置使其生效：
+
+    ```bash
+    tiup cluster reload ${cluster-name} -R grafana
+    ```
+
+4. 若需切换回 VictoriaMetrics，请重复"切换 Grafana 默认数据源至 VictoriaMetrics"的步骤。
+
+### 清理旧指标和服务
+
+在确认旧指标已过期的前提下，可按以下步骤移除相关冗余服务和文件，这不会影响集群的正常运行。
+
+#### 将 Prometheus 设置为代理模式
+
+1. 编辑集群配置：
+
+    ```bash
+    tiup cluster edit-config ${cluster-name}
+    ```
+
+2. 设置代理模式，并确保相关参数已正确配置。
+
+    在 `monitoring_servers` 下设置 `enable_prom_agent_mode` 为 `true`，并确保 `prom_remote_write_to_vm` 和 `use_vm_as_datasource` 也正确设置：
+
+    ```yaml
+    monitoring_servers:
+      - host: ip_address
+        ...
+        prom_remote_write_to_vm: true
+        enable_prom_agent_mode: true
+
+    grafana_servers:
+      - host: ip_address
+        ...
+        use_vm_as_datasource: true
+    ```
+
+3. 重新加载配置使其生效：
+
+    ```bash
+    tiup cluster reload ${cluster-name} -R prometheus
+    ```
+
+#### 删除 Prometheus 旧数据目录
+
+1. 在配置文件中找到监控服务器的数据目录路径 `data_dir`：
+
+    ```yaml
+    monitoring_servers:
+      - host: ip_address
+        ...
+        data_dir: "/tidb-data/prometheus-8249"
+    ```
+
+2. 手动删除数据目录：
+
+    ```bash
+    rm -rf /tidb-data/prometheus-8249
+    ```
