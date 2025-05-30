@@ -30,7 +30,7 @@ DM 的性能参数如下表所示。
 - DM 支持同时管理 1000 个同步节点（Work Node），最大同步任务数量为 600 个。为了保证同步节点的高可用，应预留一部分同步节点作为备用节点。建议预留的节点数量为已开启同步任务的同步节点数量的 20% ~ 50%。
 - 单机部署 Work Node 数量。在服务器配置较好情况下，要保证每个 Work Node 至少有 2 核 CPU 加 4G 内存的可用工作资源，并且应为主机预留 10% ~ 20% 的系统资源。
 - 单个同步节点（Work Node），理论最大同步 QPS 为 30K QPS/worker（不同 Schema 和 workload 会有所差异），处理上游 Binlog 的能力最高为 20 MB/s/worker。
-- 如果将 DM 作为需要长期使用的数据同步中间件，需要注意 DM 组件的部署架构。请参见 [DM-master 与 DM-woker 部署实践](#dm-master-与-dm-woker-部署实践)。
+- 如果将 DM 作为需要长期使用的数据同步中间件，需要注意 DM 组件的部署架构。请参见 [DM-master 与 DM-worker 部署实践](#dm-master-与-dm-worker-部署实践)。
 
 ## 数据迁移前
 
@@ -64,11 +64,11 @@ TiDB 在建表时可以声明为主键创建聚簇索引或非聚簇索引。下
 
 - 聚簇索引 + AUTO_RANDOM
 
-    此方案是目前分布式数据库既能避免出现写入热点问题，又能保留聚簇索引带来的查询收益的方案。整体改造也相对轻量，可以在业务切换使用 TiDB 作为写库时，修改 Schema 属性来达到目的。如果在后续查询时一定要利用 ID 列进行排序，可以使用 [AUTO_RANDOM](/auto-random.md) ID 列左移 5 位来保证查询数据的顺序性。示例：
+    此方案是目前分布式数据库既能避免出现写入热点问题，又能保留聚簇索引带来的查询收益的方案。整体改造也相对轻量，可以在业务切换使用 TiDB 作为写库时，修改 Schema 属性来达到目的。如果在后续查询时一定要利用 ID 列进行排序，可以使用 [AUTO_RANDOM](/auto-random.md) ID 列左移 6 位（符号位 1 位 + 分片位 5 位）来保证查询数据的顺序性。示例：
 
     ```sql
     CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM, b varchar(255));
-    Select  a, a<<5 ,b from t order by a <<5 desc
+    Select  a, a<<6 ,b from t order by a <<6 asc
     ```
 
 下表汇总了不同使用场景的推荐方案和优劣势。
@@ -124,7 +124,7 @@ TiDB 默认使用的字符集为 utf8mb4。建议同步上下游及应用统一�
 
 ### 实施侧要点
 
-#### DM-master 与 DM-woker 部署实践
+#### DM-master 与 DM-worker 部署实践
 
 DM 整体架构分为 DM-master 与 DM-worker。
 
