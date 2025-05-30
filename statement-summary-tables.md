@@ -90,11 +90,11 @@ select * from employee where id in (...) and salary between ? and ?;
 
 ## `statements_summary_evicted`
 
-[`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-new-in-v40) 系统变量用于限制 `statements_summary` 和 `statements_summary_history` 两张表在内存中可存储的 SQL digest 总数。当超出该限制时，TiDB 会从 `statements_summary` 和 `statements_summary_history` 这两张表中驱逐最久未使用的 SQL digest。
+[`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-new-in-v40) 系统变量用于限制 `statements_summary` 和 `statements_summary_history` 这两张表在内存中可存储的 SQL digest 总数。当超出该限制时，TiDB 会从 `statements_summary` 和 `statements_summary_history` 这两张表中驱逐最久未使用的 SQL digest。
 
 > **注意：**
 >
-> 当启用 [`tidb_stmt_summary_enable_persistent`](#persist-statements-summary) 时，`statements_summary_history` 表中的数据会持久化到磁盘。此时，`tidb_stmt_summary_max_stmt_count` 仅限制 `statements_summary` 表在内存中可存储的 SQL digest 数量；当超出该限制时，TiDB 仅会从 `statements_summary` 表中驱逐最久未使用的 SQL digest。
+> 当启用 [`tidb_stmt_summary_enable_persistent`](#持久化-statements-summary) 时，`statements_summary_history` 表中的数据会持久化到磁盘。此时，`tidb_stmt_summary_max_stmt_count` 仅限制 `statements_summary` 表在内存中可存储的 SQL digest 数量；当超出该限制时，TiDB 仅会从 `statements_summary` 表中驱逐最久未使用的 SQL digest。
 
 `statements_summary_evicted` 表记录了发生 SQL digest 驱逐的时间段，以及该时间段内被驱逐的 SQL digest 数量。通过该表，你可以评估当前 `tidb_stmt_summary_max_stmt_count` 的配置是否适合你的工作负载。如果该表中存在记录，说明在某个时间点上 SQL digest 的数量曾超出过 `tidb_stmt_summary_max_stmt_count` 的限制。
 
@@ -113,14 +113,14 @@ select * from employee where id in (...) and salary between ? and ?;
 - `tidb_enable_stmt_summary`：是否打开 statement summary 功能。1 代表打开，0 代表关闭，默认打开。statement summary 关闭后，系统表里的数据会被清空，下次打开后重新统计。经测试，打开后对性能几乎没有影响。
 - `tidb_stmt_summary_refresh_interval`：`statements_summary` 的清空周期，单位是秒 (s)，默认值是 `1800`。
 - `tidb_stmt_summary_history_size`：`statements_summary_history` 保存每种 SQL 的历史的数量，也是 `statements_summary_evicted` 的表容量，默认值是 `24`。
-- `tidb_stmt_summary_max_stmt_count`：限制 `statements_summary` 和 `statements_summary_history` 两张表在内存中可存储的 SQL digest 总数。默认值为 3000 条。
+- `tidb_stmt_summary_max_stmt_count`：限制 `statements_summary` 和 `statements_summary_history` 这两张表在内存中可存储的 SQL digest 总数。默认值为 3000 条。
 
     当超出该限制时，TiDB 会从 `statements_summary` 和 `statements_summary_history` 这两张表中驱逐最久未使用的 SQL digest。这些被驱逐的 SQL digest 的数量将会被记录在 [`statements_summary_evicted`](#statements_summary_evicted) 表中。
 
     > **Note:**
     >
     > - 当 SQL digest 被驱逐时，其相关的所有时间段的 summary 数据都会从 `statements_summary` 和 `statements_summary_history` 这两张表中移除。因此，即使一个时间段的 SQL digest 数量没有超过限制，`statements_summary_history` 表中的 SQL digest 数量也可能小于实际的 SQL digest 数量。如果遇到该情况，并且影响了性能，建议调大 `tidb_stmt_summary_max_stmt_count` 的值。
-    > - 当启用 [`tidb_stmt_summary_enable_persistent`](#persist-statements-summary) 时，`statements_summary_history` 表中的数据会持久化到磁盘。此时，`tidb_stmt_summary_max_stmt_count` 仅限制 `statements_summary` 表在内存中可存储的 SQL digest 数量；当超出该限制时，TiDB 仅会从 `statements_summary` 表中驱逐最久未使用的 SQL digest。
+    > - 当启用 [`tidb_stmt_summary_enable_persistent`](#持久化-statements-summary) 时，`statements_summary_history` 表中的数据会持久化到磁盘。此时，`tidb_stmt_summary_max_stmt_count` 仅限制 `statements_summary` 表在内存中可存储的 SQL digest 数量；当超出该限制时，TiDB 仅会从 `statements_summary` 表中驱逐最久未使用的 SQL digest。
 
 - `tidb_stmt_summary_max_sql_length`：字段 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 的最大显示长度，默认值是 4096。
 - `tidb_stmt_summary_internal_query`：是否统计 TiDB 的内部 SQL。1 代表统计，0 代表不统计，默认不统计。
