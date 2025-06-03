@@ -480,6 +480,10 @@ TiDB 版本：9.0.0
     - 修复 TiDB 可能不退出的问题 [#58418](https://github.com/pingcap/tidb/issues/58418) @[tiancaiamao](https://github.com/tiancaiamao)
     - 避免更新 Infoschema v2 时可能 panic 的问题 [#58712](https://github.com/pingcap/tidb/issues/58712) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复部分 gRPC 客户端连接不上 TiDB Server 状态接口的问题 [#59093](https://github.com/pingcap/tidb/issues/59093) @[iosmanthus](https://github.com/iosmanthus)
+    - 修复使用 cursor 时可能 panic，且可能泄露文件的问题 [#59976](https://github.com/pingcap/tidb/issues/59976) [#59963](https://github.com/pingcap/tidb/issues/59963) @[YangKeao](https://github.com/YangKeao)
+    - 修复向量化执行时 `json_search` 在搜索路径为 `NULL` 时不返回 `NULL` 的问题 [#59463](https://github.com/pingcap/tidb/issues/59463) @[YangKeao](https://github.com/YangKeao)
+    - 修复慢日志在库名、表名包含 : 时无法解析的问题 [#39940](https://github.com/pingcap/tidb/issues/39940) @[Defined2014](https://github.com/Defined2014)
+    - 修复 MOD 函数不支持表达式的问题 [#59000](https://github.com/pingcap/tidb/issues/59000) @[Defined2014](https://github.com/Defined2014)
 
 + TiKV
 
