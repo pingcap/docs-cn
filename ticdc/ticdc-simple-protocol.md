@@ -710,6 +710,7 @@ Index 是一个 JSON 对象，包含了索引的 schema 信息，包括索引名
 | bit | / | uint64 | long |
 | json | / | string | string |
 | bool | / | int64 | long |
+| TiDBVectorFloat32 | / | string | string |
 
 ### Avro Schema 定义
 
