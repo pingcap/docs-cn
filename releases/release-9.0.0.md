@@ -382,6 +382,8 @@ TiDB 版本：9.0.0
     - (dup): release-8.5.1.md > 改进提升> TiDB - 将统计信息内存缓存的默认阈值调整为总内存的 20% [#58014](https://github.com/pingcap/tidb/issues/58014) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-7.5.6.md > 改进提升> TiDB - 将 TTL 表的 GC 及相关统计信息收集任务限定在 owner 节点执行，从而降低开销 [#59357](https://github.com/pingcap/tidb/issues/59357) @[lcwangchao](https://github.com/lcwangchao)
     - 跳过自动提交的乐观语句的清锁阶段以提高性能 [#58675](https://github.com/pingcap/tidb/issues/58675) @[ekexium](https://github.com/ekexium)
+    - 支持使用非唯一索引创建全局索引 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014)
+    - TTL 关闭 `tidb_enable_paging`，以减少扫描行数 [#58342](https://github.com/pingcap/tidb/issues/58342) @[lcwangchao](https://github.com/lcwangchao)
 
 + TiKV
 
@@ -421,7 +423,6 @@ TiDB 版本：9.0.0
         - 通过并行化技术，提升 pitr 恢复过程中修复索引的速度 [#59158](https://github.com/pingcap/tidb/issues/59158) @[Leavrth](https://github.com/Leavrth)
         - 备份扫描过程中支持忽略某些 lock [#53224](https://github.com/pingcap/tidb/issues/53224)@[3pointer](https://github.com/3pointer)  
         - 在 tikv 节点内存水位很高时，对 br restore 的请求进行限流，避免 tikv oom [#18124](https://github.com/tikv/tikv/issues/18124) @[3pointer](https://github.com/3pointer)
-             
 
     + TiCDC
 
@@ -477,6 +478,9 @@ TiDB 版本：9.0.0
     - (dup): release-7.5.6.md > 错误修复> TiDB - 修复 TTL 任务可能被忽略或处理多次的问题 [#59347](https://github.com/pingcap/tidb/issues/59347) @[YangKeao](https://github.com/YangKeao)
     - (dup): release-7.5.6.md > 错误修复> TiDB - 修复 exchange partition 错误判断导致执行失败的问题 [#59534](https://github.com/pingcap/tidb/issues/59534) @[mjonss](https://github.com/mjonss)
     - (dup): release-7.5.6.md > 错误修复> TiDB - 修复 Join 的等值条件两边数据类型不同，可能导致 TiFlash 产生错误结果的问题 [#59877](https://github.com/pingcap/tidb/issues/59877) @[yibin87](https://github.com/yibin87)
+    - 修复 TiDB 可能不退出的问题 [#58418](https://github.com/pingcap/tidb/issues/58418) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 避免更新 Infoschema v2 时可能 panic 的问题 [#58712](https://github.com/pingcap/tidb/issues/58712) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复部分 gRPC 客户端连接不上 TiDB Server 状态接口的问题 [#59093](https://github.com/pingcap/tidb/issues/59093) @[iosmanthus](https://github.com/iosmanthus)
 
 + TiKV
 
