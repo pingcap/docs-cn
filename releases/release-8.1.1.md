@@ -16,6 +16,10 @@ TiDB 版本：8.1.1
 - 使用 TiDB Lightning 导入 CSV 文件时，如果设置了严格格式 `strict-format = true` 将一个大 CSV 文件切分为多个小 CSV 文件来提升并发和导入性能，需要显式指定行结束符 `terminator`，参数的取值为 `\r`、`\n` 或 `\r\n`。如果没有指定行结束符，可能导致 CSV 文件数据解析异常。[#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
 - 使用 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 导入 CSV 文件时，如果指定 `SPLIT_FILE` 参数将一个大 CSV 文件切分为多个小 CSV 文件来提升并发和导入性能，需显式指定行结束符 `LINES_TERMINATED_BY`，参数的取值为 `\r`、`\n` 或 `\r\n`。如果没有指定行结束符，可能导致 CSV 文件数据解析异常。[#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
 - 将变量 [`tidb_enable_parallel_hashagg_spill`](https://docs.pingcap.com/zh/tidb/v8.1/system-variables#tidb_enable_parallel_hashagg_spill-从-v800-版本开始引入) 的默认值从 `ON` 修改为 `OFF`，以避免落盘导致并行计算过程中查询结果出错的问题。对于从 v8.0.0 或 v8.1.0 升级到 v8.1.1 的集群，升级后该变量会保持之前的默认值 `ON`，建议将其手动修改为 `OFF`。[#55290](https://github.com/pingcap/tidb/issues/55290) @[xzhangxian1008](https://github.com/xzhangxian1008)
+- TiKV 配置项 [`server.grpc-compression-type`](/tikv-configuration-file.md#grpc-compression-type) 的作用范围发生变更：
+
+    - 在 v8.1.0 中，该配置项只影响 TiKV 节点之间的 gRPC 消息的压缩算法。
+    - 从 v8.1.1 起，该配置项也会影响 TiKV 向 TiDB 发送的 gRPC（响应）消息的压缩算法，开启压缩可能消耗更多 CPU 资源。[#17176](https://github.com/tikv/tikv/issues/17176) @[ekexium](https://github.com/ekexium)
 
 ## 离线包变更
 
