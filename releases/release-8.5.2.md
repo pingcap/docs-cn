@@ -5,7 +5,7 @@ summary: 了解 TiDB 8.5.2 版本的改进提升和错误修复。
 
 # TiDB 8.5.2 Release Notes
 
-发版日期：2025 年 x 月 x 日
+发版日期：2025 年 6 月 4 日
 
 TiDB 版本：8.5.2
 
