@@ -90,7 +90,7 @@ select * from employee where id in (...) and salary between ? and ?;
 
 ## `statements_summary_evicted`
 
-[`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-new-in-v40) 系统变量用于限制 `statements_summary` 和 `statements_summary_history` 这两张表在内存中可存储的 SQL digest 总数。当超出该限制时，TiDB 会从 `statements_summary` 和 `statements_summary_history` 这两张表中驱逐最久未使用的 SQL digest。
+[`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-从-v40-版本开始引入) 系统变量用于限制 `statements_summary` 和 `statements_summary_history` 这两张表在内存中可存储的 SQL digest 总数。当超出该限制时，TiDB 会从 `statements_summary` 和 `statements_summary_history` 这两张表中驱逐最久未使用的 SQL digest。
 
 > **注意：**
 >
