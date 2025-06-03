@@ -371,6 +371,11 @@ TiDB 版本：9.0.0
 ## 改进提升
 
 + TiDB
+    - 移除 TiDB 升级时对 `tidb_enable_dist_task` 变量的限制 [#54061](https://github.com/pingcap/tidb/issues/54061) @[tangenta](https://github.com/tangenta)
+    - 支持在创建索引前预先划分 Region [#57551](https://github.com/pingcap/tidb/issues/57551) @[tangenta](https://github.com/tangenta)
+    - 优化了大量表的场景下 TiDB 重启时的 InfoSchema 加载速度 [#58821](https://github.com/pingcap/tidb/issues/58821) @[GMHDBJD](https://github.com/GMHDBJD)
+    - 优化了系统表查询过程中的内存使用监控 [#58985](https://github.com/pingcap/tidb/issues/58985) @[tangenta](https://github.com/tangenta)
+    - 优化了分布式框架内部 SQL 语句的 CPU 使用率 [#59344](https://github.com/pingcap/tidb/issues/59344) @[D3Hunter](https://github.com/D3Hunter)
     - 支持 from_unixtime 表达式下推 TiKV [#58940](https://github.com/pingcap/tidb/issues/58940) @[wshwsh12](https://github.com/wshwsh12)
     - 支持 timestampdiff 表达式下推 TiKV [#59365](https://github.com/pingcap/tidb/issues/59365) @[gengliqi](https://github.com/gengliqi)
     - 在 explain analyze 结果中支持更多 spill 的细节信息 [#59076](https://github.com/pingcap/tidb/issues/59076) @[xzhangxian1008](https://github.com/xzhangxian1008)
@@ -433,6 +438,7 @@ TiDB 版本：9.0.0
     + TiDB Data Migration (DM)
 
         - (dup): release-6.6.0.md > 改进提升> Tools> TiDB Data Migration (DM) - 新增 async/batch relay writer 以优化 relay 性能 [#4287](https://github.com/pingcap/tiflow/issues/4287) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 为 dm 添加多安全配置的支持 [#11831](https://github.com/pingcap/tiflow/issues/11831) @[River2000i](https://github.com/River2000i)
 
     + TiDB Lightning
 
@@ -451,6 +457,19 @@ TiDB 版本：9.0.0
 ## 错误修复
 
 + TiDB
+    - 修复了在 TiDB 升级过程中执行的 modify column 语句可能失败的问题 [#58843](https://github.com/pingcap/tidb/issues/58843) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复了在 TiDB 升级过程中执行的 drop column 语句可能失败的问题 [#58863](https://github.com/pingcap/tidb/issues/58863) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复了在添加索引过程中动态调整 Worker 数量可能导致的数据竞争问题 [#59016](https://github.com/pingcap/tidb/issues/59016) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复了在添加索引过程中减少 Worker 数量可能导致任务卡死的 bug [#59267](https://github.com/pingcap/tidb/issues/59267) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复了一个在添加索引期间杀死 PD Leader 可能导致的数据索引不一致问题 [#59701](https://github.com/pingcap/tidb/issues/59701) @[tangenta](https://github.com/tangenta)
+    - 修复了一个使用 Global Sort 添加唯一索引失败的问题 [#59725](https://github.com/pingcap/tidb/issues/59725) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复了 `ADMIN SHOW DDL JOBS` 不能正确显示行数的问题 [#59897](https://github.com/pingcap/tidb/issues/59897) @[tangenta](https://github.com/tangenta)
+    - 修复了 `IMPORT INTO FROM SELECT` 导入 TiFlash 时发生错误的问题 [#58443](https://github.com/pingcap/tidb/issues/58443) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复了 `IMPORT INTO FROM SELECT` 没有正确转换负数的问题 [#58613](https://github.com/pingcap/tidb/issues/58613) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复了在部分 TiDB 节点未同步 Schema Version 时，日志中没有打印相应节点的问题 [#58480](https://github.com/pingcap/tidb/issues/58480) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复了一个可能导致创建多个同名视图的 bug [#58769](https://github.com/pingcap/tidb/issues/58769) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复了在分布式框架下执行添加索引操作时没有正确更新行数的问题 [#58573](https://github.com/pingcap/tidb/issues/58573) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复了当表存在大量索引时，Global Sort 可能导致 OOM 的问题 [#59508](https://github.com/pingcap/tidb/issues/59508) @[D3Hunter](https://github.com/D3Hunter)
 
     - 修复当 `truncate` 表达式的第一个参数为 0 且第二个值过大时，计算结果错误的问题 [#57651](https://github.com/pingcap/tidb/issues/57651) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复 hash aggregation 算子潜在的 goroutine 泄漏问题 [#58004](https://github.com/pingcap/tidb/issues/58004) @[xzhangxian1008](https://github.com/xzhangxian1008)
@@ -565,7 +584,9 @@ TiDB 版本：9.0.0
         - (dup): release-6.5.12.md > 错误修复> Tools> TiCDC - 修复当上游将一个新增的列的默认值从 `NOT NULL` 修改为 `NULL` 后，下游默认值错误的问题 [#12037](https://github.com/pingcap/tiflow/issues/12037) @[wk989898](https://github.com/wk989898)
 
     + TiDB Data Migration (DM)
-
+    - 将系统表加入默认过滤列表 [#11984](https://github.com/pingcap/tiflow/issues/11984) @[River2000i](https://github.com/River2000i)
+    - 修复 dm 仅检查 `LightningTableEmptyChecking` 会导致任务失败的问题 [#11945](https://github.com/pingcap/tiflow/issues/11945) @[River2000i](https://github.com/River2000i)
+    - 修复 dm 不能备份至 azure 的问题 [#11912](https://github.com/pingcap/tiflow/issues/11912) @[River2000i](https://github.com/River2000i)
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
