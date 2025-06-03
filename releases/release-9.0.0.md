@@ -399,7 +399,6 @@ TiDB 版本：9.0.0
 - 为更新 TSO 增加了重试机制 [#9020](https://github.com/tikv/pd/issues/9020) @[lhy1024](https://github.com/lhy1024)
 - 资源管控支持更多 BURSTABLE 模式 [#9057](https://github.com/tikv/pd/issues/9057) @[lhy1024](https://github.com/lhy1024)
 
-
 + TiFlash
 
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
