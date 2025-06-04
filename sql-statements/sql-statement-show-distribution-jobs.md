@@ -40,3 +40,4 @@ SHOW DISTRIBUTION JOBS;
 
 - [`DISTRIBUTE TABLE`](/sql-statements/sql-statement-distribute-table.md)
 - [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql-statement-show-table-distribution.md)
+- [`CANCEL DISTRIBUTION JOB`](/sql-statements/sql-statement-cancel-distribution-job.md)
