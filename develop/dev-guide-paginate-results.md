@@ -320,16 +320,18 @@ WHERE (
     OR (
         268996 != 140982742
         AND (
-            book_id > 268996
-            AND book_id < 140982742
-        )
-        OR (
-            book_id = 268996
-            AND user_id >= 92104804
-        )
-        OR (
-            book_id = 140982742
-            AND user_id <= 374645100
+            (
+                book_id > 268996
+                AND book_id < 140982742
+            )
+            OR (
+                book_id = 268996
+                AND user_id >= 92104804
+            )
+            OR (
+                book_id = 140982742
+                AND user_id <= 374645100
+            )
         )
     )
 ORDER BY book_id, user_id;
