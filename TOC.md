@@ -425,7 +425,7 @@
     - [在三数据中心下就近读取数据](/best-practices/three-dc-local-read.md)
     - [使用 UUID](/best-practices/uuid.md)
     - [只读存储节点最佳实践](/best-practices/readonly-nodes.md)
-    - [SaaS 多租户场景最佳实践](/best-practices/saas-best-practices.md)
+    - [SaaS 多租户场景下处理百万张表](/best-practices/saas-best-practices.md)
   - [Placement Rules 使用文档](/configure-placement-rules.md)
   - [Load Base Split 使用文档](/configure-load-base-split.md)
   - [Store Limit 使用文档](/configure-store-limit.md)
@@ -1096,6 +1096,7 @@
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
   - v8.5
+    - [8.5.2](/releases/release-8.5.2.md)
     - [8.5.1](/releases/release-8.5.1.md)
     - [8.5.0](/releases/release-8.5.0.md)
   - v8.4

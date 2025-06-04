@@ -402,3 +402,9 @@ Top SQL 用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较
 ### Universally Unique Identifier (UUID)
 
 通用唯一标识符 (Universally Unique Identifier, UUID) 是一种 128 位（16 字节）的生成 ID，用于在数据库中唯一地标识记录。更多信息，请参见 [UUID](/best-practices/uuid.md)。
+
+## V
+
+### Vector Search
+
+[向量搜索 (Vector Search)](/vector-search/vector-search-overview.md) 是一种优先考虑数据语义以提供相关结果的搜索方法。与传统的全文检索主要依赖于精确的关键词匹配和词频不同，向量搜索通过将不同类型的数据（如文本、图像或音频）转换为高维向量，并根据这些向量之间的相似度来进行查询。这种搜索方法能够捕捉数据的语义特征和上下文信息，从而更准确地理解用户意图。即使搜索的词语与数据库中的内容不完全匹配，向量搜索仍然可以通过对数据语义的理解，找到与用户意图相符合的结果。

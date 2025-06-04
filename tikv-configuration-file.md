@@ -141,8 +141,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `grpc-compression-type`
 
-+ gRPC 消息的压缩算法。它会影响 TiKV 节点之间的 gRPC 消息以及 TiKV 发送给 TiDB 的 gRPC（响应）消息。
++ gRPC 消息的压缩算法。它会影响 TiKV 节点之间的 gRPC 消息的压缩算法。从 v6.5.11、v7.1.6、v7.5.3、v8.1.1、v8.2.0 起，它也会影响 TiKV 向 TiDB 发送的 gRPC（响应）消息的压缩算法。
 + 可选值：`"none"`、`"deflate"`、`"gzip"`
+
+    > **注意：**
+    >
+    > TiDB 不支持 `"deflate"`。因此，如需压缩 TiKV 向 TiDB 发送的 gRPC 响应消息，请将此配置项设置为 `"gzip"`。
+
 + 默认值：`"none"`
 
 ### `grpc-concurrency`
@@ -2645,7 +2650,7 @@ TiKV MVCC 内存引擎 (In-Memory Engine) 在 TiKV 存储层相关的配置项�
 ### `gc-run-interval` <span class="version-mark">从 v8.5.0 版本开始引入</span>
 
 + 控制内存引擎 GC 缓存 MVCC 版本的时间间隔。调小该参数可加快 GC 频率，减少 MVCC 记录，但会增加 GC 的 CPU 消耗，以及增加内存引擎失效的概率。
-+ 默认值：3m
++ 默认值："3m"
 
 ### `mvcc-amplification-threshold` <span class="version-mark">从 v8.5.0 版本开始引入</span>
 
