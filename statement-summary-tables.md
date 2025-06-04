@@ -305,6 +305,7 @@ SQL 的基础信息：
 - `MAX_MEM`：使用的最大内存，单位 byte
 - `AVG_DISK`：使用的平均硬盘空间，单位 byte
 - `MAX_DISK`：使用的最大硬盘空间，单位 byte
+- `AVG_TIDB_CPU_TIME`：这类 SQL 平均占用 TiDB 服务器 CPU 的时间。该列仅在开启 [Top SQL 特性](/dashboard/top-sql.md)时显示实际值，否则始终显示为 `0`
 
 和 TiKV Coprocessor Task 相关的字段：
 
@@ -323,6 +324,7 @@ SQL 的基础信息：
 - `MAX_TOTAL_KEYS`：Coprocessor 扫过的 key 的最大数量
 - `AVG_PROCESSED_KEYS`：Coprocessor 处理的 key 的平均数量。相比 `avg_total_keys`，`avg_processed_keys` 不包含 MVCC 的旧版本。如果 `avg_total_keys` 和 `avg_processed_keys` 相差很大，说明旧版本比较多
 - `MAX_PROCESSED_KEYS`：Coprocessor 处理的 key 的最大数量
+- `AVG_TIKV_CPU_TIME`：这类 SQL 平均占用 TiKV 服务器 CPU 的时间
 
 和事务相关的字段：
 
