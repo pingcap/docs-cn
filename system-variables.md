@@ -4959,7 +4959,11 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数型
 - 默认值：`3000`
 - 范围：`[1, 32767]`
-- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 在内存中保存的语句的最大数量。
+- 这个变量用于限制 [`statements_summary`](/statement-summary-tables.md#statements_summary) 和 [`statements_summary_history`](/statement-summary-tables.md#statements_summary_history) 这两张表在内存中可存储的 SQL digest 总数。
+
+> **注意:**
+>
+> 当启用 [`tidb_stmt_summary_enable_persistent`](/statement-summary-tables.md#持久化-statements-summary) 时，`tidb_stmt_summary_max_stmt_count` 仅限制 [`statements_summary`](/statement-summary-tables.md#statements_summary) 表在内存中可存储的 SQL digest 数量。
 
 ### `tidb_stmt_summary_refresh_interval` <span class="version-mark">从 v4.0 版本开始引入</span>
 
