@@ -94,7 +94,7 @@ select * from employee where id in (...) and salary between ? and ?;
 
 > **注意：**
 >
-> 当启用 [`tidb_stmt_summary_enable_persistent`](#持久化-statements-summary) 时，`statements_summary_history` 表中的数据会持久化到磁盘。此时，`tidb_stmt_summary_max_stmt_count` 仅限制 `statements_summary` 表在内存中可存储的 SQL digest 数量；当超出该限制时，TiDB 仅会从 `statements_summary` 表中驱逐最久未使用的 SQL digest。
+> 当启用 [`tidb_stmt_summary_enable_persistent`](#持久化-statements-summary) 时，`statements_summary_history` 表中的数据会持久化到磁盘。此时，`tidb_stmt_summary_max_stmt_count` 仅限制 `statements_summary` 表在内存中可存储的 SQL digest 数量；当超出 `tidb_stmt_summary_max_stmt_count` 的限制时，TiDB 仅会从 `statements_summary` 表中驱逐最久未使用的 SQL digest。
 
 `statements_summary_evicted` 表记录了发生 SQL digest 驱逐的时间段，以及该时间段内被驱逐的 SQL digest 数量。通过该表，你可以评估当前 `tidb_stmt_summary_max_stmt_count` 的配置是否适合你的工作负载。如果该表中存在记录，说明在某个时间点上 SQL digest 的数量曾超出过 `tidb_stmt_summary_max_stmt_count` 的限制。
 
