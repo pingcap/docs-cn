@@ -370,7 +370,12 @@ TiDB 版本：9.0.0
 
 ## 改进提升
 
-+ TiDB
++ TiDB <!--tw@hfxsd: 28 notes-->
+
+    - (dup): release-8.5.1.md > 改进提升> TiDB - 支持将只读的用户自定义变量折叠为常量 [#52742](https://github.com/pingcap/tidb/issues/52742) @[winoros](https://github.com/winoros)
+    - (dup): release-8.5.1.md > 改进提升> TiDB - 将统计信息内存缓存的默认阈值调整为总内存的 20% [#58014](https://github.com/pingcap/tidb/issues/58014) @[hawkingrei](https://github.com/hawkingrei)
+    - (dup): release-7.5.6.md > 改进提升> TiDB - 将 TTL 表的 GC 及相关统计信息收集任务限定在 owner 节点执行，从而降低开销 [#59357](https://github.com/pingcap/tidb/issues/59357) @[lcwangchao](https://github.com/lcwangchao)
+    - (dup): release-8.5.1.md > 改进提升> TiDB - 将统计信息内存缓存的默认阈值调整为总内存的 20% [#58014](https://github.com/pingcap/tidb/issues/58014) @[hawkingrei](https://github.com/hawkingrei)
     - 移除 TiDB 升级时对 `tidb_enable_dist_task` 变量的限制 [#54061](https://github.com/pingcap/tidb/issues/54061) @[tangenta](https://github.com/tangenta)
     - 支持在创建索引前预先划分 Region [#57551](https://github.com/pingcap/tidb/issues/57551) @[tangenta](https://github.com/tangenta)
     - 优化了大量表的场景下 TiDB 重启时的 InfoSchema 加载速度 [#58821](https://github.com/pingcap/tidb/issues/58821) @[GMHDBJD](https://github.com/GMHDBJD)
@@ -383,30 +388,24 @@ TiDB 版本：9.0.0
     - 支持 unix_timestamp 表达式下推 TiKV [#59497](https://github.com/pingcap/tidb/issues/59497) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 支持 aggregation window function 下推 TiFlash [#59509](https://github.com/pingcap/tidb/issues/59509) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 在 hash join v2 中支持 left outer anti semi join [#58479](https://github.com/pingcap/tidb/pull/58479) @[wshwsh12](https://github.com/wshwsh12)
-    - (dup): release-8.5.1.md > 改进提升> TiDB - 支持将只读的用户自定义变量折叠为常量 [#52742](https://github.com/pingcap/tidb/issues/52742) @[winoros](https://github.com/winoros)
-    - (dup): release-8.5.1.md > 改进提升> TiDB - 将统计信息内存缓存的默认阈值调整为总内存的 20% [#58014](https://github.com/pingcap/tidb/issues/58014) @[hawkingrei](https://github.com/hawkingrei)
-    - (dup): release-7.5.6.md > 改进提升> TiDB - 将 TTL 表的 GC 及相关统计信息收集任务限定在 owner 节点执行，从而降低开销 [#59357](https://github.com/pingcap/tidb/issues/59357) @[lcwangchao](https://github.com/lcwangchao)
     - 跳过自动提交的乐观语句的清锁阶段以提高性能 [#58675](https://github.com/pingcap/tidb/issues/58675) @[ekexium](https://github.com/ekexium)
     - 支持使用非唯一索引创建全局索引 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014)
     - TTL 关闭 `tidb_enable_paging`，以减少扫描行数 [#58342](https://github.com/pingcap/tidb/issues/58342) @[lcwangchao](https://github.com/lcwangchao)
-- (dup): release-6.5.12.md > 错误修复> TiDB - 修复在构造 `IndexMerge` 时可能丢失部分谓词的问题 [#58476](https://github.com/pingcap/tidb/issues/58476) @[hawkingrei](https://github.com/hawkingrei)
-- 支持在构建 semi join 和 anti semi join 时候可以选择左侧作为 build 侧 [#58325](https://github.com/pingcap/tidb/issues/58325) @[hawkingrei](https://github.com/hawkingrei)
-- 支持对于形如 a = 1 and (b = 2 or c = 3 or d = 4) 的查询条件，TiDB 能够生成使用 (a,b), (a,c), (a,d) 的 IndexMerge 计划，用户不再需要人工展开表达式 [#58361](https://github.com/pingcap/tidb/issues/58361) @[time-and-fate](https://github.com/time-and-fate)
-- 修复在用户创建不合法的 binding 的时候报错 [#51347](https://github.com/pingcap/tidb/issues/51347) @[qw4990](https://github.com/qw4990)
-- (dup): release-8.5.1.md > 改进提升> TiDB - 将统计信息内存缓存的默认阈值调整为总内存的 20% [#58014](https://github.com/pingcap/tidb/issues/58014) @[hawkingrei](https://github.com/hawkingrei)
-- 支持由 IN 子查询而来的 semi join 使用 semi_join_rewrite 的 hint [#58829](https://github.com/pingcap/tidb/issues/58829) @[qw4990](https://github.com/qw4990)
-- 纠正收集统计信息失败时同步的耗时 [#58797](https://github.com/pingcap/tidb/issues/58797) @[hawkingrei](https://github.com/hawkingrei)
-- 修复自动删除由 OR 连接的过滤条件中的冗余表达式 [#58998](https://github.com/pingcap/tidb/issues/58998) @[time-and-fate](https://github.com/time-and-fate)
-- 修复异步统计信息加载时候可能会加载比当前同步加载更多的 item [#59107](https://github.com/pingcap/tidb/issues/59107)@[winoros]([https://github.com/winoros)
-- 修复在新 new-only-full-group 打开的情况下 union-all 语句不报错的问题 [#59211](https://github.com/pingcap/tidb/issues/59211) @[AilinKid](https://github.com/AilinKid)
-- 修复统计信息在使用的内部会话在遇到错误时可能没有被释放的问题，该问题可能导致内存泄漏  [#59524](https://github.com/pingcap/tidb/issues/59524) @[Rustin170506](https://github.com/Rustin170506)
-- 修复当 column hist ndv 大于 column topn num 时的统计信息评估错误的问题 [#59563](https://github.com/pingcap/tidb/issues/59563) @[AilinKid](https://github.com/AilinKid)
-- 修复了合并全局统计信息时候的 bucket 顺序 [#59274](https://github.com/pingcap/tidb/issues/59274)@[winoros](https://github.com/winoros)
-- 修复当 fixcontrol#44855 开启时，TiDB 的会话可能执行崩溃的问题 [#59762](https://github.com/pingcap/tidb/issues/59762) @[winoros](https://github.com/winoros)
-- 修复了只有在 hint 或者 join key 完全匹配的情况下才会选择 merge join [#20710](https://github.com/pingcap/tidb/issues/20710)@[winoros](https://github.com/winoros)
-- 修复了在用户尝试创建过长的 binding 时报错 [#51347](https://github.com/pingcap/tidb/issues/51347) @[qw4990](https://github.com/qw4990)
-- 支持通过 hash join v2 开关来改变 join order [#58325](https://github.com/pingcap/tidb/issues/58325)@[hawkingrei](https://github.com/hawkingrei)
-+ TiKV
+    - 支持在构建 semi join 和 anti semi join 时候可以选择左侧作为 build 侧 [#58325](https://github.com/pingcap/tidb/issues/58325) @[hawkingrei](https://github.com/hawkingrei)
+    - 支持对于形如 a = 1 and (b = 2 or c = 3 or d = 4) 的查询条件，TiDB 能够生成使用 (a,b), (a,c), (a,d) 的 IndexMerge 计划，用户不再需要人工展开表达式 [#58361](https://github.com/pingcap/tidb/issues/58361) @[time-and-fate](https://github.com/time-and-fate)
+    - 支持由 IN 子查询而来的 semi join 使用 semi_join_rewrite 的 hint [#58829](https://github.com/pingcap/tidb/issues/58829) @[qw4990](https://github.com/qw4990)
+    - 纠正收集统计信息失败时同步的耗时 [#58797](https://github.com/pingcap/tidb/issues/58797) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复在用户创建不合法的 binding 的时候报错 [#51347](https://github.com/pingcap/tidb/issues/51347) @[qw4990](https://github.com/qw4990)
+    - 修复自动删除由 OR 连接的过滤条件中的冗余表达式 [#58998](https://github.com/pingcap/tidb/issues/58998) @[time-and-fate](https://github.com/time-and-fate)
+    - 修复异步统计信息加载时候可能会加载比当前同步加载更多的 item [#59107](https://github.com/pingcap/tidb/issues/59107)@[winoros]([https://github.com/winoros)
+    - 修复在新 new-only-full-group 打开的情况下 union-all 语句不报错的问题 [#59211](https://github.com/pingcap/tidb/issues/59211) @[AilinKid](https://github.com/AilinKid)
+    - 修复统计信息在使用的内部会话在遇到错误时可能没有被释放的问题，该问题可能导致内存泄漏  [#59524](https://github.com/pingcap/tidb/issues/59524) @[Rustin170506](https://github.com/Rustin170506)
+    - 修复当 column hist ndv 大于 column topn num 时的统计信息评估错误的问题 [#59563](https://github.com/pingcap/tidb/issues/59563) @[AilinKid](https://github.com/AilinKid)
+    - 修复了合并全局统计信息时候的 bucket 顺序 [#59274](https://github.com/pingcap/tidb/issues/59274)@[winoros](https://github.com/winoros)
+    - 修复当 fixcontrol#44855 开启时，TiDB 的会话可能执行崩溃的问题 [#59762](https://github.com/pingcap/tidb/issues/59762) @[winoros](https://github.com/winoros)
+    - 修复了只有在 hint 或者 join key 完全匹配的情况下才会选择 merge join [#20710](https://github.com/pingcap/tidb/issues/20710)@[winoros](https://github.com/winoros)
+
++ TiKV <!--tw@qiancai: 4 notes-->
 
     - (dup): release-6.5.12.md > 改进提升> TiKV - 增加对非法 `max_ts` 更新的检测机制 [#17916](https://github.com/tikv/tikv/issues/17916) @[ekexium](https://github.com/ekexium)
     - (dup): release-8.2.0.md > 改进提升> TiKV - 默认开启[提前 apply](/tikv-configuration-file.md#max-apply-unpersisted-log-limit-从-v810-版本开始引入) 特性，开启后，Raft leader 在多数 peer 完成 Raft log 持久化之后即可进行 apply，不再要求 leader 自身完成 Raft log 的持久化，降低少数 TiKV 抖动对写请求延迟的影响 [#16717](https://github.com/tikv/tikv/issues/16717) @[glorv](https://github.com/glorv)
@@ -415,18 +414,17 @@ TiDB 版本：9.0.0
     - 降低 IME 自动淘汰机制对 Coprocessor 请求延时的影响 [#18130](https://github.com/tikv/tikv/issues/18130) @[overvenus](https://github.com/overvenus)
     - 支持 `timestampdiff` Coprocessor 函数下推 [#18184](https://github.com/tikv/tikv/issues/18184) @[gengliqi](https://github.com/gengliqi)
 
-+ PD
++ PD <!--tw@lilin90: 5 notes-->
 
-- 设置 max-replicas 小于当前副本数时打印警告信息 [#8959](https://github.com/tikv/pd/issues/8959) @[lhy1024](https://github.com/lhy1024)
-- 增加了 `gRPC Received commands rate` 监控面板 [#8920](https://github.com/tikv/pd/issues/8920) @[okJiang](https://github.com/okJiang)
-- Slow store 调度器支持设置 `batch` 大小 [#7156](https://github.com/tikv/pd/issues/7156) @[rleungx]
+    - 设置 max-replicas 小于当前副本数时打印警告信息 [#8959](https://github.com/tikv/pd/issues/8959) @[lhy1024](https://github.com/lhy1024)
+    - 增加了 `gRPC Received commands rate` 监控面板 [#8920](https://github.com/tikv/pd/issues/8920) @[okJiang](https://github.com/okJiang)
+    - Slow store 调度器支持设置 `batch` 大小 [#7156](https://github.com/tikv/pd/issues/7156) @[rleungx]
 (https://github.com/rleungx)
-- 为更新 TSO 增加了重试机制 [#9020](https://github.com/tikv/pd/issues/9020) @[lhy1024](https://github.com/lhy1024)
-- 资源管控支持更多 BURSTABLE 模式 [#9057](https://github.com/tikv/pd/issues/9057) @[lhy1024](https://github.com/lhy1024)
+    - 为更新 TSO 增加了重试机制 [#9020](https://github.com/tikv/pd/issues/9020) @[lhy1024](https://github.com/lhy1024)
+    - 资源管控支持更多 BURSTABLE 模式 [#9057](https://github.com/tikv/pd/issues/9057) @[lhy1024](https://github.com/lhy1024)
 
-+ TiFlash
++ TiFlash <!--tw@qiancai: 4 notes-->
 
-    - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - 跳过不必要的数据读取，提升 TiFlash `TableScan` 算子的性能 [#9875](https://github.com/pingcap/tiflash/issues/9875) @[gengliqi](https://github.com/gengliqi)
     - 默认打开新的字符串序列化格式，提升 TiFlash `TableScan` 算子的性能 [#9673](https://github.com/pingcap/tiflash/issues/9673) @[JinheLin](https://github.com/JinheLin)
     - 通过内存预取优化部分 Aggregation 场景性能 [#9680](https://github.com/pingcap/tiflash/issues/9680) @[guo-shaoge](https://github.com/guo-shaoge)
@@ -434,10 +432,8 @@ TiDB 版本：9.0.0
     
 + Tools
 
-    + Backup & Restore (BR)
+    + Backup & Restore (BR) <!--tw@qiancai: 9 notes-->
 
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - 在测试用例中默认打开 --checksum 参数  [#57472](https://github.com/pingcap/tidb/issues/57472) @[Tristan1900](https://github.com/Tristan1900)
         - 给日志备份 advance owner 增加混沌测试用例 [#50458](https://github.com/pingcap/tidb/issues/50458) @[Tristan1900](https://github.com/Tristan1900)
         - 支持库表级别的备份到开启日志备份的集群上 [#58685](https://github.com/pingcap/tidb/issues/58685) @[YuJuncen](https://github.com/YuJuncen)
@@ -448,14 +444,12 @@ TiDB 版本：9.0.0
         - 备份扫描过程中支持忽略某些 lock [#53224](https://github.com/pingcap/tidb/issues/53224)@[3pointer](https://github.com/3pointer)  
         - 在 tikv 节点内存水位很高时，对 br restore 的请求进行限流，避免 tikv oom [#18124](https://github.com/tikv/tikv/issues/18124) @[3pointer](https://github.com/3pointer)
 
-    + TiCDC
+    + TiCDC <!--tw@qiancai: 2 notes-->
 
         - canal json 协议支持在 tidb_extension 区域中输出 tableId 和 partitionId 字段  [#11874](https://github.com/pingcap/tiflow/issues/11874) @[3AceShowHand](https://github.com/3AceShowHand)
         - TiCDC 禁止创建同步到上游 TiDB 集群的 changefeed，以防止数据错乱 [#11767](https://github.com/pingcap/tiflow/issues/11767) @[wlwilliamx](https://github.com/wlwilliamx)
-        - 
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
-    + TiDB Data Migration (DM)
+    + TiDB Data Migration (DM) <!--tw@lilin90: 1 note-->
 
         - (dup): release-6.6.0.md > 改进提升> Tools> TiDB Data Migration (DM) - 新增 async/batch relay writer 以优化 relay 性能 [#4287](https://github.com/pingcap/tiflow/issues/4287) @[GMHDBJD](https://github.com/GMHDBJD)
         - 为 dm 添加多安全配置的支持 [#11831](https://github.com/pingcap/tiflow/issues/11831) @[River2000i](https://github.com/River2000i)
@@ -464,19 +458,10 @@ TiDB 版本：9.0.0
 
         - (dup): release-6.5.12.md > 改进提升> Tools> TiDB Lightning - 在解析 CSV 文件时，新增行宽检查以防止 OOM 问题 [#58590](https://github.com/pingcap/tidb/issues/58590) @[D3Hunter](https://github.com/D3Hunter)
 
-    + Dumpling
-
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + TiUP
-
-        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
 ## 错误修复
 
-+ TiDB
++ TiDB <!--tw@Oreoxmt: 28 notes-->
+
     - 修复了在 TiDB 升级过程中执行的 modify column 语句可能失败的问题 [#58843](https://github.com/pingcap/tidb/issues/58843) @[D3Hunter](https://github.com/D3Hunter)
     - 修复了在 TiDB 升级过程中执行的 drop column 语句可能失败的问题 [#58863](https://github.com/pingcap/tidb/issues/58863) @[D3Hunter](https://github.com/D3Hunter)
     - 修复了在添加索引过程中动态调整 Worker 数量可能导致的数据竞争问题 [#59016](https://github.com/pingcap/tidb/issues/59016) @[D3Hunter](https://github.com/D3Hunter)
@@ -490,7 +475,6 @@ TiDB 版本：9.0.0
     - 修复了一个可能导致创建多个同名视图的 bug [#58769](https://github.com/pingcap/tidb/issues/58769) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复了在分布式框架下执行添加索引操作时没有正确更新行数的问题 [#58573](https://github.com/pingcap/tidb/issues/58573) @[D3Hunter](https://github.com/D3Hunter)
     - 修复了当表存在大量索引时，Global Sort 可能导致 OOM 的问题 [#59508](https://github.com/pingcap/tidb/issues/59508) @[D3Hunter](https://github.com/D3Hunter)
-
     - 修复当 `truncate` 表达式的第一个参数为 0 且第二个值过大时，计算结果错误的问题 [#57651](https://github.com/pingcap/tidb/issues/57651) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复 hash aggregation 算子潜在的 goroutine 泄漏问题 [#58004](https://github.com/pingcap/tidb/issues/58004) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复 Hash Join 算子中触发 spill 后统计信息不准确的问题 [#58571](https://github.com/pingcap/tidb/issues/58571) @[xzhangxian1008](https://github.com/xzhangxian1008)
@@ -524,7 +508,7 @@ TiDB 版本：9.0.0
     - 修复慢日志在库名、表名包含 : 时无法解析的问题 [#39940](https://github.com/pingcap/tidb/issues/39940) @[Defined2014](https://github.com/Defined2014)
     - 修复 MOD 函数不支持表达式的问题 [#59000](https://github.com/pingcap/tidb/issues/59000) @[Defined2014](https://github.com/Defined2014)
 
-+ TiKV
++ TiKV <!--tw@lilin90: 3 notes-->
 
     - (dup): release-8.5.1.md > 错误修复> TiKV - 修复因 TiKV MVCC 内存引擎 (In-Memory Engine, IME) 预加载尚未初始化的副本导致 TiKV panic 的问题 [#18046](https://github.com/tikv/tikv/issues/18046) @[overvenus](https://github.com/overvenus)
     - (dup): release-6.5.12.md > 错误修复> TiKV - 修复处理 GBK/GB18030 编码的数据时可能出现编码失败的问题 [#17618](https://github.com/tikv/tikv/issues/17618) @[CbcWestwolf](https://github.com/CbcWestwolf)
@@ -538,7 +522,7 @@ TiDB 版本：9.0.0
     - 修复 TiKV 重启后非预期的 server is busy 状态 [#18233](https://github.com/tikv/tikv/issues/18233) @[LykxSassinator](https://github.com/LykxSassinator)
     - 修复 Unsafe recovery 因 Tiflash learner 而卡住的问题 [#18197](https://github.com/tikv/tikv/issues/18197) @[v01dstar](https://github.com/v01dstar)
 
-+ PD
++ PD <!--tw@lilin90: 7 notes-->
 
     - (dup): release-6.5.12.md > 错误修复> PD - 修复设置 `tidb_enable_tso_follower_proxy` 系统变量可能不生效的问题 [#8947](https://github.com/tikv/pd/issues/8947) @[JmPotato](https://github.com/JmPotato)
     - (dup): release-7.5.6.md > 错误修复> PD - 修复启用 `tidb_enable_tso_follower_proxy` 系统变量后，PD 可能出现 panic 的问题 [#8950](https://github.com/tikv/pd/issues/8950) @[okJiang](https://github.com/okJiang)
@@ -557,7 +541,7 @@ TiDB 版本：9.0.0
     - 修复微服务模式下转发 TSO 可能导致 panic 的问题 [#9091](https://github.com/tikv/pd/issues/9091) @[lhy1024](https://github.com/lhy1024)
     - 修复因为 PD 网络问题可能导致 TSO client 没有初始化的问题 [#58239](https://github.com/pingcap/tidb/issues/58239) @[okJiang](https://github.com/okJiang)
 
-+ TiFlash
++ TiFlash <!--tw@qiancai: 7 notes-->
 
     - 修复 TiFlash 处理包含时区的 `IN(Timestamp | Time * )` 表达式时结果不正确的问题 [#9778](https://github.com/pingcap/tiflash/issues/9778) @[solotzg](https://github.com/solotzg)
     - 修复 TiFlash 处理溢出错误的行为同 TiDB 不兼容导致 `import into` 语句报错的问题 [#9752](https://github.com/pingcap/tiflash/issues/9752) @[guo-shaoge](https://github.com/guo-shaoge)
@@ -576,7 +560,7 @@ TiDB 版本：9.0.0
 
 + Tools
 
-    + Backup & Restore (BR)
+    + Backup & Restore (BR) <!--tw@lilin90: 8 notes-->
 
         - (dup): release-6.5.12.md > 错误修复> Tools> Backup & Restore (BR) - 修复使用 `br log status --json` 查询日志备份任务时，返回结果中缺少任务状态 `status` 字段的问题 [#57959](https://github.com/pingcap/tidb/issues/57959) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.6.md > 错误修复> Tools> Backup & Restore (BR) - 修复 PITR 无法恢复大于 3072 字节的索引的问题 [#58430](https://github.com/pingcap/tidb/issues/58430) @[YuJuncen](https://github.com/YuJuncen)
@@ -589,10 +573,9 @@ TiDB 版本：9.0.0
         - 修复一个和 gc safepoint 相关的测试用例 [#59604](https://github.com/pingcap/tidb/issues/59604) @[RidRisR](https://github.com/RidRisR)
         - 修复一个解析外部存储 url 的问题 [#59548](https://github.com/pingcap/tidb/issues/59548) @[Leavrth](https://github.com/Leavrth)
         - 修复一个恢复过程中 table id 预分配的问题  [#59718](https://github.com/pingcap/tidb/issues/59718) @[Leavrth](https://github.com/Leavrth)
-        - 修复一个单元测试用例 [#59925](https://github.com/pingcap/tidb/issues/59925) @[Leavrth](https://github.com/Leavrth)
-        
+        - 修复一个单元测试用例 [#59925](https://github.com/pingcap/tidb/issues/59925) @[Leavrth](https://github.com/Leavrth)        
 
-    + TiCDC
+    + TiCDC <!--tw@qiancai: 2 notes-->
 
         - 修复在 PD 切换 leader 之后，changefeed 同步延迟受到影响的问题 [#11997](https://github.com/pingcap/tiflow/issues/11997) @[lidezhu](https://github.com/lidezhu)
         - 修复 changefeed 的下游是 pulsar + http 和 pulsar + https 时，一些配置不生效的问题  [#12068](https://github.com/pingcap/tiflow/issues/12068) @[SandeepPadhi](https://github.com/SandeepPadhi)
@@ -606,27 +589,15 @@ TiDB 版本：9.0.0
         - (dup): release-6.5.12.md > 错误修复> Tools> TiCDC - 修复 PD 缩容后 TiCDC 无法正确连接 PD 的问题 [#12004](https://github.com/pingcap/tiflow/issues/12004) @[lidezhu](https://github.com/lidezhu)
         - (dup): release-6.5.12.md > 错误修复> Tools> TiCDC - 修复当上游将一个新增的列的默认值从 `NOT NULL` 修改为 `NULL` 后，下游默认值错误的问题 [#12037](https://github.com/pingcap/tiflow/issues/12037) @[wk989898](https://github.com/wk989898)
 
-    + TiDB Data Migration (DM)
-    - 将系统表加入默认过滤列表 [#11984](https://github.com/pingcap/tiflow/issues/11984) @[River2000i](https://github.com/River2000i)
-    - 修复 dm 仅检查 `LightningTableEmptyChecking` 会导致任务失败的问题 [#11945](https://github.com/pingcap/tiflow/issues/11945) @[River2000i](https://github.com/River2000i)
-    - 修复 dm 不能备份至 azure 的问题 [#11912](https://github.com/pingcap/tiflow/issues/11912) @[River2000i](https://github.com/River2000i)
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    + TiDB Data Migration (DM) <!--tw@lilin90: 3 notes-->
+
+        - 将系统表加入默认过滤列表 [#11984](https://github.com/pingcap/tiflow/issues/11984) @[River2000i](https://github.com/River2000i)
+        - 修复 dm 仅检查 `LightningTableEmptyChecking` 会导致任务失败的问题 [#11945](https://github.com/pingcap/tiflow/issues/11945) @[River2000i](https://github.com/River2000i)
+        - 修复 dm 不能备份至 azure 的问题 [#11912](https://github.com/pingcap/tiflow/issues/11912) @[River2000i](https://github.com/River2000i)
 
     + TiDB Lightning
 
         - (dup): release-6.5.12.md > 错误修复> Tools> TiDB Lightning - 修复日志没有正确脱敏的问题 [#59086](https://github.com/pingcap/tidb/issues/59086) @[GMHDBJD](https://github.com/GMHDBJD)
-
-    + Dumpling
-
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + TiUP
-
-        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
 
 ## 性能测试
 
