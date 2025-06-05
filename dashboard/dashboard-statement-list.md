@@ -70,7 +70,7 @@ SQL 语句分析页面所展示的所有数据都来自于 TiDB Statement 系统
 
 ### Others
 
-[`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-从-v40-版本开始引入) 控制 Statement Summary 系统表保存的 SQL 种类数量。当 SQL 种类超过该值时，会移除最近没有出现的 SQL。这些 SQL 将会被 `DIGEST` 为 `NULL` 的行数据统计。`DIGEST` 为 `NULL` 的行数据在 TiDB Dashboard SQL 语句分析列表页面中将会显示为 `Others`，如下所示：
+[`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-从-v40-版本开始引入) 用于限制 [`statements_summary`](/statement-summary-tables.md#statements_summary) 和 [`statements_summary_history`](/statement-summary-tables.md#statements_summary_history) 这两张表在内存中可存储的 SQL digest 总数。当超出该限制时，TiDB 会移除最近没有使用的 SQL。这些 SQL 将会被 `DIGEST` 为 `NULL` 的行数据统计。`DIGEST` 为 `NULL` 的行数据在 TiDB Dashboard SQL 语句分析列表页面中将会显示为 `Others`，如下所示：
 
 ![Others 行](/media/dashboard/dashboard-statement-other-row.png)
 
