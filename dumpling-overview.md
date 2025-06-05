@@ -271,7 +271,7 @@ Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表�
 Dumpling 通过 `--consistency <consistency level>` 标志控制导出数据“一致性保证”的方式。在使用 snapshot 来保证一致性的时候，可以使用 `--snapshot` 选项指定要备份的时间戳。还可以使用以下的一致性级别：
 
 - `flush`：使用 [`FLUSH TABLES WITH READ LOCK`](https://dev.mysql.com/doc/refman/8.0/en/flush.html#flush-tables-with-read-lock) 短暂地中断备份库的 DML 和 DDL 操作、保证备份连接的全局一致性和记录 POS 信息。所有的备份连接启动事务后释放该锁。推荐在业务低峰或者 MySQL 备份库上进行全量备份。注意 TiDB 不支持该值。
-- `snapshot`：获取指定时间戳的一致性快照并导出。注意该值仅对 TiDB 有效。
+- `snapshot`：获取指定时间戳的一致性快照并导出。
 - `lock`：为待导出的所有表上读锁。
 - `none`：不做任何一致性保证。
 - `auto`：对 MySQL 使用 `flush`，对 TiDB 使用 `snapshot`。
