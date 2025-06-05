@@ -410,6 +410,10 @@ TiDB 版本：9.0.0
 
     - (dup): release-6.5.12.md > 改进提升> TiKV - 增加对非法 `max_ts` 更新的检测机制 [#17916](https://github.com/tikv/tikv/issues/17916) @[ekexium](https://github.com/ekexium)
     - (dup): release-8.2.0.md > 改进提升> TiKV - 默认开启[提前 apply](/tikv-configuration-file.md#max-apply-unpersisted-log-limit-从-v810-版本开始引入) 特性，开启后，Raft leader 在多数 peer 完成 Raft log 持久化之后即可进行 apply，不再要求 leader 自身完成 Raft log 的持久化，降低少数 TiKV 抖动对写请求延迟的影响 [#16717](https://github.com/tikv/tikv/issues/16717) @[glorv](https://github.com/glorv)
+    - 降低清理残留数据对请求延时的影响 [#18107](https://github.com/tikv/tikv/issues/18107) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 优化 IME 在 transfer leader 时的预热机制，降低 transfer leader 对 Coprocessor 请求延时的影响 [#17782](https://github.com/tikv/tikv/issues/17782) @[overvenus](https://github.com/overvenus)
+    - 降低 IME 自动淘汰机制对 Coprocessor 请求延时的影响 [#18130](https://github.com/tikv/tikv/issues/18130) @[overvenus](https://github.com/overvenus)
+    - 支持 `timestampdiff` Coprocessor 函数下推 [#18184](https://github.com/tikv/tikv/issues/18184) @[gengliqi](https://github.com/gengliqi)
 
 + PD
 
@@ -530,6 +534,9 @@ TiDB 版本：9.0.0
     - (dup): release-7.5.6.md > 错误修复> TiKV - 修复 Region 合并时可能因 Raft index 匹配异常而导致 TiKV 异常退出的问题 [#18129](https://github.com/tikv/tikv/issues/18129) @[glorv](https://github.com/glorv)
     - (dup): release-6.5.12.md > 错误修复> TiKV - 修复 GC Worker 负载过高时可能出现的死锁问题 [#18214](https://github.com/tikv/tikv/issues/18214) @[zyguan](https://github.com/zyguan)
     - (dup): release-7.5.6.md > 错误修复> TiKV - 修复 CDC 连接在遇到异常时可能发生资源泄漏的问题 [#18245](https://github.com/tikv/tikv/issues/18245) @[wlwilliamx](https://github.com/wlwilliamx)
+    - 修复错误的线程内存监控指标 [#18125](https://github.com/tikv/tikv/issues/18125) @[Connor1996](https://github.com/Connor1996)
+    - 修复 TiKV 重启后非预期的 server is busy 状态 [#18233](https://github.com/tikv/tikv/issues/18233) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 修复 Unsafe recovery 因 Tiflash learner 而卡住的问题 [#18197](https://github.com/tikv/tikv/issues/18197) @[v01dstar](https://github.com/v01dstar)
 
 + PD
 
