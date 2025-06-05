@@ -28,7 +28,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 
 > **注意：**
 >
-> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。从 v7.5.0 开始，[Mydumper](https://docs.pingcap.com/tidb/v4.0/mydumper-overview) 废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
+> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。从 v7.5.0 开始，[Mydumper](https://docs-archive.pingcap.com/tidb/v4.0/mydumper-overview) 废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
 
 Dumpling 具有以下优势：
 
@@ -56,8 +56,8 @@ Dumpling 具有以下优势：
 
 - PROCESS：需要该权限用于查询集群信息以获取 PD 地址，从而通过 PD 控制 GC。
 - SELECT：导出目标表时需要。
-- RELOAD：使用 consistency flush 时需要。注意，只有 TiDB 支持该权限，当上游为 RDS 或采用托管服务时，可忽略该权限。
-- LOCK TABLES：使用 consistency lock 时需要，需要导出的库表都有该权限。
+- RELOAD：`consistency` 级别为 `flush` 时需要，当上游为 RDS 或采用托管服务时，可忽略该权限。
+- LOCK TABLES：`consistency` 级别为 `lock` 时需要，需要导出的库表都有该权限。
 - REPLICATION CLIENT：导出 metadata 记录数据快照点时需要，可选，如果不需要导出 metadata，可忽略该权限。
 
 ### 导出为 SQL 文件
@@ -270,7 +270,7 @@ Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表�
 
 Dumpling 通过 `--consistency <consistency level>` 标志控制导出数据“一致性保证”的方式。在使用 snapshot 来保证一致性的时候，可以使用 `--snapshot` 选项指定要备份的时间戳。还可以使用以下的一致性级别：
 
-- `flush`：使用 [`FLUSH TABLES WITH READ LOCK`](https://dev.mysql.com/doc/refman/8.0/en/flush.html#flush-tables-with-read-lock) 短暂地中断备份库的 DML 和 DDL 操作、保证备份连接的全局一致性和记录 POS 信息。所有的备份连接启动事务后释放该锁。推荐在业务低峰或者 MySQL 备份库上进行全量备份。
+- `flush`：使用 [`FLUSH TABLES WITH READ LOCK`](https://dev.mysql.com/doc/refman/8.0/en/flush.html#flush-tables-with-read-lock) 短暂地中断备份库的 DML 和 DDL 操作、保证备份连接的全局一致性和记录 POS 信息。所有的备份连接启动事务后释放该锁。推荐在业务低峰或者 MySQL 备份库上进行全量备份。注意 TiDB 不支持该值。
 - `snapshot`：获取指定时间戳的一致性快照并导出。
 - `lock`：为待导出的所有表上读锁。
 - `none`：不做任何一致性保证。
