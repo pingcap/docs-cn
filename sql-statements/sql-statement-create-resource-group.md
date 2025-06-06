@@ -128,7 +128,7 @@ SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1' or NAME = 'rg
 +------+------------+----------+----------------+-----------------------------------+------------+
 | NAME | RU_PER_SEC | PRIORITY | BURSTABLE      | QUERY_LIMIT                       | BACKGROUND |
 +------+------------+----------+----------------+-----------------------------------+------------+
-| rg1  | 100        | HIGH     | YES(UNLIMITED) | NULL                              | NULL       |
+| rg1  | 100        | HIGH     | YES(MODERATED) | NULL                              | NULL       |
 | rg2  | 200        | MEDIUM   | NO             | EXEC_ELAPSED='100ms', ACTION=KILL | NULL       |
 +------+------------+----------+----------------+-----------------------------------+------------+
 2 rows in set (1.30 sec)
