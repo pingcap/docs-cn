@@ -112,7 +112,7 @@ TiDB 版本：9.0.0
 
   更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
-* 支持下推以下日期函数到 TiKV [#59365](https://github.com/pingcap/tidb/issues/59365) @[gengliqi](https://github.com/gengliqi) **tw@Oreoxmt** <!--1837-->
+* 支持下推以下日期函数到 TiKV [#59365](https://github.com/pingcap/tidb/issues/59365) [#18184](https://github.com/tikv/tikv/issues/18184) @[gengliqi](https://github.com/gengliqi) **tw@Oreoxmt** <!--1837-->
 
     * `FROM_UNIXTIME()`
     * `TIMESTAMPDIFF()`
@@ -412,7 +412,6 @@ TiDB 版本：9.0.0
     - 降低清理残留数据对请求延时的影响 [#18107](https://github.com/tikv/tikv/issues/18107) @[LykxSassinator](https://github.com/LykxSassinator)
     - 优化 IME 在 transfer leader 时的预热机制，降低 transfer leader 对 Coprocessor 请求延时的影响 [#17782](https://github.com/tikv/tikv/issues/17782) @[overvenus](https://github.com/overvenus)
     - 降低 IME 自动淘汰机制对 Coprocessor 请求延时的影响 [#18130](https://github.com/tikv/tikv/issues/18130) @[overvenus](https://github.com/overvenus)
-    - 支持 `timestampdiff` Coprocessor 函数下推 [#18184](https://github.com/tikv/tikv/issues/18184) @[gengliqi](https://github.com/gengliqi)
 
 + PD <!--tw@lilin90: 5 notes-->
 
