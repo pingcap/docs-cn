@@ -242,3 +242,7 @@ TiDB 资源组创建与修改语句的语法与 MySQL 官方不同，详情参�
 - [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md)
 - [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md)
 - [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md)
+
+## 悲观事务（锁）与 MySQL InnoDB 的差异
+
+关于悲观事务（锁）与 MySQL InnoDB 的差异，请参阅[和 MySQL InnoDB 的差异](/pessimistic-transaction.md#和-mysql-innodb-的差异)。
