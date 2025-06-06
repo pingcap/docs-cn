@@ -425,7 +425,6 @@ TiDB 版本：9.0.0
 + TiFlash <!--tw@qiancai: 4 notes-->
 
     - 提升 TiFlash `TableScan` 算子性能，跳过不必要的数据读取 [#9875](https://github.com/pingcap/tiflash/issues/9875) @[gengliqi](https://github.com/gengliqi)
-    - 默认打开新的字符串序列化格式，提升 TiFlash `TableScan` 算子的性能 [#9673](https://github.com/pingcap/tiflash/issues/9673) @[JinheLin](https://github.com/JinheLin)
     - 通过内存预取，提升特定 Aggregation 场景的性能 [#9680](https://github.com/pingcap/tiflash/issues/9680) @[guo-shaoge](https://github.com/guo-shaoge)
     - 引入 [HashJoinV2](/sql-statements/sql-statement-explain-analyze.md#hashjoinv2)，提升部分 inner join 场景的性能 [#9060](https://github.com/pingcap/tiflash/issues/9060) @[gengliqi](https://github.com/gengliqi)
     
