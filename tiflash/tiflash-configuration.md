@@ -466,7 +466,7 @@ I/O 限流功能相关配置。
 ##### `task_scheduler_active_set_soft_limit` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 用于 MinTSO 调度器，表示一个 TiFlash 实例中最多可同时运行的查询数量。关于 MinTSO 调度器，详见 [TiFlash MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)。
-- 默认值：`0`，即两倍的 CPU 逻辑核数
+- 默认值：在 v7.4.0 之前，默认值为 `vcpu * 0.25`，即 vCPU 数量的四分之一。从 v7.4.0 开始，默认值为 `vcpu * 2`，即两倍的 vCPU 数量。
 
 ##### `hashagg_use_magic_hash` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
