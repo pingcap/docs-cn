@@ -409,9 +409,9 @@ TiDB 版本：9.0.0
 
     - (dup): release-6.5.12.md > 改进提升> TiKV - 增加对非法 `max_ts` 更新的检测机制 [#17916](https://github.com/tikv/tikv/issues/17916) @[ekexium](https://github.com/ekexium)
     - (dup): release-8.2.0.md > 改进提升> TiKV - 默认开启[提前 apply](/tikv-configuration-file.md#max-apply-unpersisted-log-limit-从-v810-版本开始引入) 特性，开启后，Raft leader 在多数 peer 完成 Raft log 持久化之后即可进行 apply，不再要求 leader 自身完成 Raft log 的持久化，降低少数 TiKV 抖动对写请求延迟的影响 [#16717](https://github.com/tikv/tikv/issues/16717) @[glorv](https://github.com/glorv)
-    - 降低清理残留数据对请求延时的影响 [#18107](https://github.com/tikv/tikv/issues/18107) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 优化 IME 在 transfer leader 时的预热机制，降低 transfer leader 对 Coprocessor 请求延时的影响 [#17782](https://github.com/tikv/tikv/issues/17782) @[overvenus](https://github.com/overvenus)
-    - 降低 IME 自动淘汰机制对 Coprocessor 请求延时的影响 [#18130](https://github.com/tikv/tikv/issues/18130) @[overvenus](https://github.com/overvenus)
+    - 优化残留数据清理机制，减少对请求延迟的影响 [#18107](https://github.com/tikv/tikv/issues/18107) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 优化 TiKV MVCC 内存引擎在迁移 Leader 时的预热机制，减少迁移 Leader 对 Coprocessor 请求延时的影响 [#17782](https://github.com/tikv/tikv/issues/17782) @[overvenus](https://github.com/overvenus)
+    - 优化 TiKV MVCC 内存的自动淘汰机制，减少对 Coprocessor 请求延时的影响 [#18130](https://github.com/tikv/tikv/issues/18130) @[overvenus](https://github.com/overvenus)
 
 + PD <!--tw@lilin90: 5 notes-->
 
@@ -424,10 +424,10 @@ TiDB 版本：9.0.0
 
 + TiFlash <!--tw@qiancai: 4 notes-->
 
-    - 跳过不必要的数据读取，提升 TiFlash `TableScan` 算子的性能 [#9875](https://github.com/pingcap/tiflash/issues/9875) @[gengliqi](https://github.com/gengliqi)
+    - 提升 TiFlash `TableScan` 算子性能，跳过不必要的数据读取 [#9875](https://github.com/pingcap/tiflash/issues/9875) @[gengliqi](https://github.com/gengliqi)
     - 默认打开新的字符串序列化格式，提升 TiFlash `TableScan` 算子的性能 [#9673](https://github.com/pingcap/tiflash/issues/9673) @[JinheLin](https://github.com/JinheLin)
-    - 通过内存预取优化部分 Aggregation 场景性能 [#9680](https://github.com/pingcap/tiflash/issues/9680) @[guo-shaoge](https://github.com/guo-shaoge)
-    - 引入新版 hash join 优化部分 inner join 场景性能 [#9060](https://github.com/pingcap/tiflash/issues/9060) @[gengliqi](https://github.com/gengliqi)
+    - 通过内存预取，提升特定 Aggregation 场景的性能 [#9680](https://github.com/pingcap/tiflash/issues/9680) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 引入 [HashJoinV2](/sql-statements/sql-statement-explain-analyze.md#hashjoinv2)，提升部分 inner join 场景的性能 [#9060](https://github.com/pingcap/tiflash/issues/9060) @[gengliqi](https://github.com/gengliqi)
     
 + Tools
 
@@ -436,16 +436,16 @@ TiDB 版本：9.0.0
         - 在测试用例中默认打开 --checksum 参数  [#57472](https://github.com/pingcap/tidb/issues/57472) @[Tristan1900](https://github.com/Tristan1900)
         - 给日志备份 advance owner 增加混沌测试用例 [#50458](https://github.com/pingcap/tidb/issues/50458) @[Tristan1900](https://github.com/Tristan1900)
         - 支持库表级别的备份到开启日志备份的集群上 [#58685](https://github.com/pingcap/tidb/issues/58685) @[YuJuncen](https://github.com/YuJuncen)
-        - 在全量备份日志中打印一条从 TiKV 节点返回的错误信息，辅助问题诊断  [#58666](https://github.com/pingcap/tidb/issues/58666) @[Leavrth](https://github.com/Leavrth)
-        - 改善备份恢复 summary log 的结构和内容 [#56493](https://github.com/pingcap/tidb/issues/56493) @[Leavrth](https://github.com/Leavrth)
-        - 更新不可恢复的系统表列表  [#52530](https://github.com/pingcap/tidb/issues/52530) @[Leavrth](https://github.com/Leavrth)
-        - 通过并行化技术，提升 pitr 恢复过程中修复索引的速度 [#59158](https://github.com/pingcap/tidb/issues/59158) @[Leavrth](https://github.com/Leavrth)
-        - 备份扫描过程中支持忽略某些 lock [#53224](https://github.com/pingcap/tidb/issues/53224)@[3pointer](https://github.com/3pointer)  
-        - 在 tikv 节点内存水位很高时，对 br restore 的请求进行限流，避免 tikv oom [#18124](https://github.com/tikv/tikv/issues/18124) @[3pointer](https://github.com/3pointer)
+        - 在全量备份日志中记录 TiKV 节点返回的错误信息，便于问题诊断 [#58666](https://github.com/pingcap/tidb/issues/58666) @[Leavrth](https://github.com/Leavrth)
+        - 优化备份恢复 summary 日志的结构和内容 [#56493](https://github.com/pingcap/tidb/issues/56493) @[Leavrth](https://github.com/Leavrth)
+        - 更新不可恢复的系统表列表 [#52530](https://github.com/pingcap/tidb/issues/52530) @[Leavrth](https://github.com/Leavrth)
+        - 采用并行方式，提升 PITR 恢复过程中的索引修复速度 [#59158](https://github.com/pingcap/tidb/issues/59158) @[Leavrth](https://github.com/Leavrth)
+        - 备份扫描过程中支持忽略特定 lock，提高备份效率 [#53224](https://github.com/pingcap/tidb/issues/53224)@[3pointer](https://github.com/3pointer)
+        - 在 TiKV 内存占用高时，对 BR 的日志恢复请求进行限流，防止 TiKV OOM [#18124](https://github.com/tikv/tikv/issues/18124) @[3pointer](https://github.com/3pointer)
 
     + TiCDC <!--tw@qiancai: 2 notes-->
 
-        - canal json 协议支持在 tidb_extension 区域中输出 tableId 和 partitionId 字段  [#11874](https://github.com/pingcap/tiflow/issues/11874) @[3AceShowHand](https://github.com/3AceShowHand)
+        - Canal-JSON 协议支持在 TiDB 扩展字段中新增 `table_id` 和 `table_partition_id` 字段 [#11874](https://github.com/pingcap/tiflow/issues/11874) @[3AceShowHand](https://github.com/3AceShowHand)
         - TiCDC 禁止创建同步到上游 TiDB 集群的 changefeed，以防止数据错乱 [#11767](https://github.com/pingcap/tiflow/issues/11767) @[wlwilliamx](https://github.com/wlwilliamx)
 
     + TiDB Data Migration (DM) <!--tw@lilin90: 1 note-->
@@ -542,10 +542,10 @@ TiDB 版本：9.0.0
 
 + TiFlash <!--tw@qiancai: 7 notes-->
 
-    - 修复 TiFlash 处理包含时区的 `IN(Timestamp | Time * )` 表达式时结果不正确的问题 [#9778](https://github.com/pingcap/tiflash/issues/9778) @[solotzg](https://github.com/solotzg)
-    - 修复 TiFlash 处理溢出错误的行为同 TiDB 不兼容导致 `import into` 语句报错的问题 [#9752](https://github.com/pingcap/tiflash/issues/9752) @[guo-shaoge](https://github.com/guo-shaoge)
-    - 修复 TiFlash 处理 `Aggregation Window Function` 的内存泄漏问题 [#9930](https://github.com/pingcap/tiflash/issues/9930) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复 TiFlash 处理 `Aggregation Window Function` 时出现空指针的问题 [#9964](https://github.com/pingcap/tiflash/issues/9964) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复 TiFlash 处理包含时区的 `IN(Timestamp)` 或 `IN(Time)` 表达式时结果错误的问题 [#9778](https://github.com/pingcap/tiflash/issues/9778) @[solotzg](https://github.com/solotzg)
+    - 修复 TiFlash 在处理溢出错误时行为与 TiDB 不兼容，导致 `IMPORT INTO` 语句执行失败的问题 [#9752](https://github.com/pingcap/tiflash/issues/9752) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复 TiFlash 在执行 `Aggregation Window Function` 时出现内存泄漏的问题 [#9930](https://github.com/pingcap/tiflash/issues/9930) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复 TiFlash 在执行 `Aggregation Window Function` 时可能出现空指针的问题 [#9964](https://github.com/pingcap/tiflash/issues/9964) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - (dup): release-7.5.6.md > 错误修复> TiFlash - 修复 TiFlash 在内存占用较低的情况下，可能意外拒绝处理 Raft 消息的问题 [#9745](https://github.com/pingcap/tiflash/issues/9745) @[CalvinNeo](https://github.com/CalvinNeo)
     - (dup): release-7.5.6.md > 错误修复> TiFlash - 修复在分区表上执行 `ALTER TABLE ... RENAME COLUMN` 后，查询该表可能报错的问题 [#9787](https://github.com/pingcap/tiflash/issues/9787) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - (dup): release-6.5.12.md > 错误修复> TiFlash - 修复在导入大量数据后，TiFlash 可能持续占用较高内存的问题 [#9812](https://github.com/pingcap/tiflash/issues/9812) @[CalvinNeo](https://github.com/CalvinNeo)
@@ -553,9 +553,9 @@ TiDB 版本：9.0.0
     - (dup): release-7.5.6.md > 错误修复> TiFlash - 修复在某些情况下 TiFlash 意外退出时无法打印错误堆栈的问题 [#9902](https://github.com/pingcap/tiflash/issues/9902) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-7.5.6.md > 错误修复> TiFlash - 修复当 `profiles.default.init_thread_count_scale` 设置为 `0` 时，TiFlash 启动可能会卡住的问题 [#9906](https://github.com/pingcap/tiflash/issues/9906) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-7.5.6.md > 错误修复> TiFlash - 修复在查询涉及虚拟列并且触发远程读时，可能会出现 `Not found column` 错误的问题 [#9561](https://github.com/pingcap/tiflash/issues/9561) @[guo-shaoge](https://github.com/guo-shaoge)
-    - 修复在包含向量索引的表中插入数据后，部分磁盘数据可能无法被正确清理从而导致磁盘空间异常占用的问题 [#9946](https://github.com/pingcap/tiflash/issues/9946) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复当集群的表中存在大量 `ENUM` 类型列时，TiFlash 的内存可能会大量消耗问题 [#9947](https://github.com/pingcap/tiflash/issues/9947) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复在存算分离架构下，可能会产生大量 `tag=EnumParseOverflowContainer` 日志的问题 [#9955](https://github.com/pingcap/tiflash/issues/9955) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复在向包含向量索引的表中插入数据后，部分磁盘数据可能未能及时清理，从而导致磁盘空间异常占用的问题 [#9946](https://github.com/pingcap/tiflash/issues/9946) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复当集群中表包含大量 `ENUM` 类型列时，TiFlash 内存占用异常升高的问题 [#9947](https://github.com/pingcap/tiflash/issues/9947) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复在存算分离架构下 TiFlash 可能打印大量 `tag=EnumParseOverflowContainer` 日志的问题 [#9955](https://github.com/pingcap/tiflash/issues/9955) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
 
@@ -576,8 +576,8 @@ TiDB 版本：9.0.0
 
     + TiCDC <!--tw@qiancai: 2 notes-->
 
-        - 修复在 PD 切换 leader 之后，changefeed 同步延迟受到影响的问题 [#11997](https://github.com/pingcap/tiflow/issues/11997) @[lidezhu](https://github.com/lidezhu)
-        - 修复 changefeed 的下游是 pulsar + http 和 pulsar + https 时，一些配置不生效的问题  [#12068](https://github.com/pingcap/tiflow/issues/12068) @[SandeepPadhi](https://github.com/SandeepPadhi)
+        - 修复 PD 切换 leader 后，changefeed 同步延迟显著增加的问题 [#11997](https://github.com/pingcap/tiflow/issues/11997) @[lidezhu](https://github.com/lidezhu)
+        - 修复当 changefeed 下游的连接协议为 `pulsar + http` 或 `pulsar + https` 时，部分配置项未生效的问题 [#12068](https://github.com/pingcap/tiflow/issues/12068) @[SandeepPadhi](https://github.com/SandeepPadhi)
         - (dup): release-6.5.12.md > 错误修复> Tools> TiCDC - 修复 TiCDC 同步 `CREATE TABLE IF NOT EXISTS` 或 `CREATE DATABASE IF NOT EXISTS` 语句时可能出现 panic 的问题 [#11839](https://github.com/pingcap/tiflow/issues/11839) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-6.5.12.md > 错误修复> Tools> TiCDC - 修复在集群扩容出新的 TiKV 节点后 Changefeed 可能会卡住的问题 [#11766](https://github.com/pingcap/tiflow/issues/11766) @[lidezhu](https://github.com/lidezhu)
         - (dup): release-6.5.12.md > 错误修复> Tools> TiCDC - 修复由于 Sarama 客户端乱序重发消息导致 Kafka 消息乱序的问题 [#11935](https://github.com/pingcap/tiflow/issues/11935) @[3AceShowHand](https://github.com/3AceShowHand)
