@@ -151,6 +151,7 @@ tiup br restore full \
 - `br` v5.1.0 开始，快照备份时默认自动备份 **mysql schema 下的系统表数据**，但恢复数据时默认不恢复系统表数据。
 - `br` v6.2.0 开始，增加恢复参数 `--with-sys-table` 支持恢复数据的同时恢复**部分系统表相关数据**。
 - `br` v7.6.0 开始，恢复参数 `--with-sys-table` 默认开启，即默认支持恢复数据的同时恢复**部分系统表相关数据**。
+- `br` v9.0.0 开始，增加恢复参数 `--fast-load-sys-tables` 支持物理恢复系统表。通过 `RENAME TABLE` DDL 将 `__TiDB_BR_Temporary_mysql` 下的系统表和 `mysql` 库下的系统表进行原子交换。与通过 `REPLACE INTO` SQL 写入的逻辑恢复系统表方式不同，物理恢复系统表将会完全覆盖系统表中原有的数据。
 
 **可恢复的部分系统表**：
 
