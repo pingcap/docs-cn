@@ -20,7 +20,7 @@ TiDB 高度兼容 MySQL 协议，以及 MySQL 5.7 和 MySQL 8.0 常用的功能�
 
 > **注意：**
 >
-> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/security-compatibility-with-mysql.md)、[悲观事务模式](/pessimistic-transaction.md#和-mysql-innodb-的差异)相关的兼容信息，请查看各自具体页面。
+> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于安全特性相关的兼容信息，请查看[TiDB 与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)。
 
 ## 不支持的功能特性
 
@@ -241,3 +241,7 @@ TiDB 资源组创建与修改语句的语法与 MySQL 官方不同，详情参�
 - [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md)
 - [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md)
 - [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md)
+
+## 悲观事务（锁）方面与 MySQL InnoDB 的差异
+
+关于 TiDB 与 MySQL InnoDB 处理悲观事务（锁）的差异，请参阅[和 MySQL InnoDB 的差异](/pessimistic-transaction.md#和-mysql-innodb-的差异)。
