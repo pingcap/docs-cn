@@ -253,7 +253,7 @@ TiDB 版本：9.0.0
 
     更多信息，请参考[用户文档](/ticdc/ticdc-debezium.md)。
 
-* TiCDC 新增安全机制，避免将数据同步回同一个 TiDB 集群 [#12062](https://github.com/pingcap/tiflow/issues/12062) @[wlwilliamx](https://github.com/wlwilliamx) **tw@qiancai** <!--2063-->
+* TiCDC 新增安全机制，避免将数据同步回同一个 TiDB 集群 [#11767](https://github.com/pingcap/tiflow/issues/11767) [#12062](https://github.com/pingcap/tiflow/issues/12062) @[wlwilliamx](https://github.com/wlwilliamx) **tw@qiancai** <!--2063-->
 
     TiCDC 支持从上游的一个 TiDB 集群同步数据到下游的多个其他系统，包括其他 TiDB 集群。在 v9.0.0 之前，如果在 TiCDC 配置中误将同一个 TiDB 集群同时配置为数据源集群和目标集群，可能会导致数据同步循环，从而引发数据一致性问题。从 v9.0.0 开始，TiCDC 会自动检查源和目标 TiDB 集群是否相同，从而避免这种配置错误。
 
@@ -444,7 +444,6 @@ TiDB 版本：9.0.0
     + TiCDC <!--tw@qiancai: 2 notes-->
 
         - Canal-JSON 协议支持在 TiDB 扩展字段中新增 `table_id` 和 `table_partition_id` 字段 [#11874](https://github.com/pingcap/tiflow/issues/11874) @[3AceShowHand](https://github.com/3AceShowHand)
-        - TiCDC 禁止创建同步到上游 TiDB 集群的 changefeed，以防止数据错乱 [#11767](https://github.com/pingcap/tiflow/issues/11767) @[wlwilliamx](https://github.com/wlwilliamx)
 
     + TiDB Data Migration (DM) <!--tw@lilin90: 1 note-->
 
