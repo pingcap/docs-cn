@@ -244,4 +244,4 @@ TiDB 资源组创建与修改语句的语法与 MySQL 官方不同，详情参�
 
 ## 悲观事务（锁）与 MySQL InnoDB 的差异
 
-关于悲观事务（锁）与 MySQL InnoDB 的差异，请参阅[和 MySQL InnoDB 的差异](/pessimistic-transaction.md#和-mysql-innodb-的差异)。
+关于 TiDB 与 MySQL InnoDB 处理悲观事务（锁）的差异，请参阅[和 MySQL InnoDB 的差异](/pessimistic-transaction.md#和-mysql-innodb-的差异)。
