@@ -410,8 +410,9 @@ TiDB 版本：9.0.0
     - (dup): release-6.5.12.md > 改进提升> TiKV - 增加对非法 `max_ts` 更新的检测机制 [#17916](https://github.com/tikv/tikv/issues/17916) @[ekexium](https://github.com/ekexium)
     - (dup): release-8.2.0.md > 改进提升> TiKV - 默认开启[提前 apply](/tikv-configuration-file.md#max-apply-unpersisted-log-limit-从-v810-版本开始引入) 特性，开启后，Raft leader 在多数 peer 完成 Raft log 持久化之后即可进行 apply，不再要求 leader 自身完成 Raft log 的持久化，降低少数 TiKV 抖动对写请求延迟的影响 [#16717](https://github.com/tikv/tikv/issues/16717) @[glorv](https://github.com/glorv)
     - 优化残留数据清理机制，减少对请求延迟的影响 [#18107](https://github.com/tikv/tikv/issues/18107) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 优化 TiKV MVCC 内存引擎在迁移 Leader 时的预热机制，减少迁移 Leader 对 Coprocessor 请求延时的影响 [#17782](https://github.com/tikv/tikv/issues/17782) @[overvenus](https://github.com/overvenus)
-    - 优化 TiKV MVCC 内存的自动淘汰机制，减少对 Coprocessor 请求延时的影响 [#18130](https://github.com/tikv/tikv/issues/18130) @[overvenus](https://github.com/overvenus)
+    - 优化 TiKV MVCC 内存引擎在迁移 Leader 时的预热机制，减少迁移 Leader 期间对 Coprocessor 请求延时的影响 [#17782](https://github.com/tikv/tikv/issues/17782) @[overvenus](https://github.com/overvenus)
+    - 优化 TiKV MVCC 内存引擎的自动淘汰机制，减少对 Coprocessor 请求延时的影响 [#18130](https://github.com/tikv/tikv/issues/18130) @[overvenus](https://github.com/overvenus)
+    - 在 TiKV 内存占用高时，对 BR 的日志恢复请求进行限流，防止 TiKV OOM [#18124](https://github.com/tikv/tikv/issues/18124) @[3pointer](https://github.com/3pointer)
 
 + PD <!--tw@lilin90: 5 notes-->
 
@@ -425,7 +426,7 @@ TiDB 版本：9.0.0
 + TiFlash <!--tw@qiancai: 4 notes-->
 
     - 提升 TiFlash `TableScan` 算子性能，跳过不必要的数据读取 [#9875](https://github.com/pingcap/tiflash/issues/9875) @[gengliqi](https://github.com/gengliqi)
-    - 通过内存预取，提升特定 Aggregation 场景的性能 [#9680](https://github.com/pingcap/tiflash/issues/9680) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 通过内存预取，提升特定场景中 Aggregation 的性能 [#9680](https://github.com/pingcap/tiflash/issues/9680) @[guo-shaoge](https://github.com/guo-shaoge)
     - 引入 [HashJoinV2](/sql-statements/sql-statement-explain-analyze.md#hashjoinv2)，提升部分 inner join 场景的性能 [#9060](https://github.com/pingcap/tiflash/issues/9060) @[gengliqi](https://github.com/gengliqi)
     
 + Tools
