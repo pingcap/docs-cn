@@ -443,7 +443,7 @@ TiDB 版本：9.0.0
 
     + TiCDC <!--tw@qiancai: 2 notes-->
 
-        - Canal-JSON 协议支持在 TiDB 扩展字段中新增 `table_id` 和 `table_partition_id` 字段 [#11874](https://github.com/pingcap/tiflow/issues/11874) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 为 Canal-JSON 协议的 TiDB 扩展字段中新增 `table_id` 和 `table_partition_id` 字段 [#11874](https://github.com/pingcap/tiflow/issues/11874) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Data Migration (DM) <!--tw@lilin90: 1 note-->
 
