@@ -21,10 +21,16 @@ PartitionNameList ::=
 
 ```
 
-## 示例
+## 参数说明
 
-通过 `DISTRIBUTE TABLE` 语句重新调度表中的 Region 时，你可以根据需求指定存储引擎（如 TiFlash 或 TiKV）以及不同的 Raft 角色（如 Leader、Learner、Voter）进行均衡打散操作。
-timeout: 如果 PD 在改指定时间内没有打散时会退出该任务，默认值为 30m。
+通过 `DISTRIBUTE TABLE` 语句重新调度表中的 Region 时，你可以根据需求指定存储引擎（如 TiFlash 或 TiKV）以及不同的 Raft 角色（如 Leader、Learner、Voter）进行均衡。
+
+- `RULE`：指定针对哪个 Raft 角色所在的 Region 进行均衡调度，可选值为 `leader-scatter`、`learner-scatter` 和 `learner-scatter`。
+- `ENGINE`：指定存储引擎，可选值为 `tikv` 和 `tiflash`。
+- `TIMEOUT`：指定打散操作的超时限制。 如果 PD 未在该时间内进行打散，打散任务将会自动退出。当未指定该参数时，默认值为 `30m`。
+
+
+## 示例
 
 对表 `t1` 在 TiKV 上的 Leader 所在的 Region 重新进行均衡调度：
 
@@ -41,7 +47,8 @@ DISTRIBUTE TABLE t1 RULE= `leader-scatter` ENGINE = tikv TIMEOUT=`1h`
 +---------+
 ```
 
-对表 `t2` 在 Tiflash 上的 learner 所在的 Region 重新进行均衡调度
+对表 `t2` 在 Tiflash 上的 Learner 所在的 Region 重新进行均衡调度：
+
 ```sql
 CREATE TABLE t2 (a INT);
 ...
@@ -55,7 +62,7 @@ DISTRIBUTE table t2  RULE = `learner-scatter` ENGINE = tiflash;
 +---------+
 ```
 
-对分区表 `t3· 的 `p1` 和 `p2` 分区在 TiKV 上的 peer 所在的 Region 重新进行均衡调度：
+对分区表 `t3` 的 `p1` 和 `p2` 分区在 TiKV 上的 Peer 所在的 Region 重新进行均衡调度：
 
 ```sql
 CREATE TABLE t3 ( a INT, b INT, INDEX idx(b)) PARTITION BY RANGE( a ) (

@@ -5,8 +5,7 @@ summary: TiDB 数据库中 CANCEL DISTRIBUTION 的使用情况。
 
 # CANCEL IMPORT
 
-`CANCEL DISTRIBUTION` 语句用于取消 TiDB 中创建的 region 调度任务。
-。
+`CANCEL DISTRIBUTION` 语句用于取消 TiDB 中通过 [`DISTRIBUTE TABLE`](sql-statements/sql-statement-distribute-table.md) 语句创建的 Region 调度任务。
 
 ## 语法图
 
