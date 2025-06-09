@@ -440,7 +440,6 @@ TiDB 版本：9.0.0
         - 更新不可恢复的系统表列表 [#52530](https://github.com/pingcap/tidb/issues/52530) @[Leavrth](https://github.com/Leavrth)
         - 采用并行方式，提升 PITR 恢复过程中的索引修复速度 [#59158](https://github.com/pingcap/tidb/issues/59158) @[Leavrth](https://github.com/Leavrth)
         - 备份扫描过程中支持忽略特定 lock，提高备份效率 [#53224](https://github.com/pingcap/tidb/issues/53224)@[3pointer](https://github.com/3pointer)
-        - 在 TiKV 内存占用高时，对 BR 的日志恢复请求进行限流，防止 TiKV OOM [#18124](https://github.com/tikv/tikv/issues/18124) @[3pointer](https://github.com/3pointer)
 
     + TiCDC <!--tw@qiancai: 2 notes-->
 
