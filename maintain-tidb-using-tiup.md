@@ -274,7 +274,7 @@ tiup cluster destroy ${cluster-name}
 
 ## 从 Prometheus 切换到 VictoriaMetrics
 
-在大型集群中，Prometheus 在面对大量实例时可能面临性能瓶颈。从 tiup 1.16.3 版本开始，TiUP 支持将指标服务器从 Prometheus 切换为 VictoriaMetrics (VM)，以提供更好的可扩展性、更高的性能和更低的资源消耗。
+在大型集群中，Prometheus 在处理大量实例时可能会遇到性能瓶颈。从 TiUP 1.16.3 版本开始，TiUP 支持将指标监控组件从 Prometheus 切换为 VictoriaMetrics (VM)，以提供更好的可扩展性、更高的性能和更低的资源消耗。
 
 ### 在新部署中启用 VictoriaMetrics
 
