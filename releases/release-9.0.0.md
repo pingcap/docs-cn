@@ -370,7 +370,7 @@ TiDB 版本：9.0.0
 
 ## 改进提升
 
-+ TiDB <!--tw@hfxsd: 28 notes-->
++ TiDB <!--tw@hfxsd: 16 notes-->
 
     - (dup): release-8.5.1.md > 改进提升> TiDB - 支持将只读的用户自定义变量折叠为常量 [#52742](https://github.com/pingcap/tidb/issues/52742) @[winoros](https://github.com/winoros)
     - (dup): release-8.5.1.md > 改进提升> TiDB - 将统计信息内存缓存的默认阈值调整为总内存的 20% [#58014](https://github.com/pingcap/tidb/issues/58014) @[hawkingrei](https://github.com/hawkingrei)
@@ -386,20 +386,12 @@ TiDB 版本：9.0.0
     - 在 Hash Join v2 中支持 Left Outer Anti Semi Join [#58479](https://github.com/pingcap/tidb/pull/58479) @[wshwsh12](https://github.com/wshwsh12)
     - 跳过自动提交的乐观语句的清锁阶段以提高性能 [#58675](https://github.com/pingcap/tidb/issues/58675) @[ekexium](https://github.com/ekexium)
     - 支持使用非唯一索引创建全局索引 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014)
-    - TTL 关闭 `tidb_enable_paging`，以减少扫描行数 [#58342](https://github.com/pingcap/tidb/issues/58342) @[lcwangchao](https://github.com/lcwangchao)
-    - 支持在构建 semi join 和 anti semi join 时候可以选择左侧作为 build 侧 [#58325](https://github.com/pingcap/tidb/issues/58325) @[hawkingrei](https://github.com/hawkingrei)
-    - 支持对于形如 a = 1 and (b = 2 or c = 3 or d = 4) 的查询条件，TiDB 能够生成使用 (a,b), (a,c), (a,d) 的 IndexMerge 计划，用户不再需要人工展开表达式 [#58361](https://github.com/pingcap/tidb/issues/58361) @[time-and-fate](https://github.com/time-and-fate)
-    - 支持由 IN 子查询而来的 semi join 使用 semi_join_rewrite 的 hint [#58829](https://github.com/pingcap/tidb/issues/58829) @[qw4990](https://github.com/qw4990)
-    - 纠正收集统计信息失败时同步的耗时 [#58797](https://github.com/pingcap/tidb/issues/58797) @[hawkingrei](https://github.com/hawkingrei)
+    - TTL 关闭 `tidb_enable_paging`，以减少扫描行数，提升性能 [#58342](https://github.com/pingcap/tidb/issues/58342) @[lcwangchao](https://github.com/lcwangchao)
+    - 在构建 Semi Join 和 Anti Semi Join 时，支持选择左侧作为构建侧 [#58325](https://github.com/pingcap/tidb/issues/58325) @[hawkingrei](https://github.com/hawkingrei)
+    - 对于形如 `a = 1 and (b = 2 or c = 3 or d = 4)` 的查询条件，支持生成使用 `(a,b), (a,c), (a,d)` 的 `IndexMerge` 计划，无需人工展开表达式 [#58361](https://github.com/pingcap/tidb/issues/58361) @[time-and-fate](https://github.com/time-and-fate)
+    - 支持由 `IN` 子查询而来的 Semi Join 使用 `semi_join_rewrite` 的 Hint [#58829](https://github.com/pingcap/tidb/issues/58829) @[qw4990](https://github.com/qw4990)
     - 修复在用户创建不合法的 binding 的时候报错 [#51347](https://github.com/pingcap/tidb/issues/51347) @[qw4990](https://github.com/qw4990)
-    - 修复自动删除由 OR 连接的过滤条件中的冗余表达式 [#58998](https://github.com/pingcap/tidb/issues/58998) @[time-and-fate](https://github.com/time-and-fate)
-    - 修复异步统计信息加载时候可能会加载比当前同步加载更多的 item [#59107](https://github.com/pingcap/tidb/issues/59107)@[winoros]([https://github.com/winoros)
-    - 修复在新 new-only-full-group 打开的情况下 union-all 语句不报错的问题 [#59211](https://github.com/pingcap/tidb/issues/59211) @[AilinKid](https://github.com/AilinKid)
-    - 修复统计信息在使用的内部会话在遇到错误时可能没有被释放的问题，该问题可能导致内存泄漏  [#59524](https://github.com/pingcap/tidb/issues/59524) @[Rustin170506](https://github.com/Rustin170506)
-    - 修复当 column hist ndv 大于 column topn num 时的统计信息评估错误的问题 [#59563](https://github.com/pingcap/tidb/issues/59563) @[AilinKid](https://github.com/AilinKid)
-    - 修复了合并全局统计信息时候的 bucket 顺序 [#59274](https://github.com/pingcap/tidb/issues/59274)@[winoros](https://github.com/winoros)
-    - 修复当 fixcontrol#44855 开启时，TiDB 的会话可能执行崩溃的问题 [#59762](https://github.com/pingcap/tidb/issues/59762) @[winoros](https://github.com/winoros)
-    - 修复了只有在 hint 或者 join key 完全匹配的情况下才会选择 merge join [#20710](https://github.com/pingcap/tidb/issues/20710)@[winoros](https://github.com/winoros)
+    - 自动删除由 `OR` 连接的过滤条件中的冗余表达式 [#58998](https://github.com/pingcap/tidb/issues/58998) @[time-and-fate](https://github.com/time-and-fate)
 
 + TiKV <!--tw@qiancai: 4 notes-->
 
@@ -499,11 +491,19 @@ TiDB 版本：9.0.0
     - 修复向量化执行时 `json_search` 在搜索路径为 `NULL` 时未返回 `NULL` 的问题 [#59463](https://github.com/pingcap/tidb/issues/59463) @[YangKeao](https://github.com/YangKeao)
     - 修复慢日志在库名或表名包含冒号 (`:`) 时无法正确解析的问题 [#39940](https://github.com/pingcap/tidb/issues/39940) @[Defined2014](https://github.com/Defined2014)
     - 修复 `MOD()` 函数不支持使用表达式作为参数的问题 [#59000](https://github.com/pingcap/tidb/issues/59000) @[Defined2014](https://github.com/Defined2014)
-<!--tw@hfxsd: the following xx notes-->
+<!--tw@hfxsd: the following 12 notes-->
     - 修复启用 `tidb_enable_dist_task` 导致 TiDB 升级失败的问题 [#54061](https://github.com/pingcap/tidb/issues/54061) @[tangenta](https://github.com/tangenta)
     - 修复创建索引后产生写热点的问题，支持在创建索引前预先划分 Region [#57551](https://github.com/pingcap/tidb/issues/57551) @[tangenta](https://github.com/tangenta)
     - 修复在大量表的场景下重启 TiDB 时，InfoSchema 加载速度过慢的问题 [#58821](https://github.com/pingcap/tidb/issues/58821) @[GMHDBJD](https://github.com/GMHDBJD)
     - 修复查询 `information_schema.tables` 可能出现 OOM 问题，优化系统表查询过程中的内存使用监控 [#58985](https://github.com/pingcap/tidb/issues/58985) @[tangenta](https://github.com/tangenta)
+    - 修复收集统计信息失败时没有收集耗时的问题 [#58797](https://github.com/pingcap/tidb/issues/58797) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复在异步加载统计信息时，加载的信息可能比当前同步加载的信息多 [#59107](https://github.com/pingcap/tidb/issues/59107)@[winoros](https://github.com/winoros)   
+    - 修复 `sql_mode=only-full-group_by` 时，`UNION ALL` 语句不报错的问题 [#59211](https://github.com/pingcap/tidb/issues/59211) @[AilinKid](https://github.com/AilinKid) 
+    - 修复统计信息使用的内部会话在遇到错误时可能没有被释放的问题，该问题可能导致内存泄漏 [#59524](https://github.com/pingcap/tidb/issues/59524) @[Rustin170506](https://github.com/Rustin170506)
+    - 修复当 `column.hist.NDV` 大于 `column.topN.num()` 时，统计信息评估错误的问题 [#59563](https://github.com/pingcap/tidb/issues/59563) @[AilinKid](https://github.com/AilinKid)
+    - 修复合并全局统计信息失败的问题 [#59274](https://github.com/pingcap/tidb/issues/59274)@[winoros](https://github.com/winoros)
+    - 修复当 Fix Control #44855 开启时，TiDB 的会话可能崩溃的问题 [#59762](https://github.com/pingcap/tidb/issues/59762) @[winoros](https://github.com/winoros)
+    - 修复只有在 hint 或 Join Key 完全匹配的情况下才会选择 Merge Join 的问题 [#20710](https://github.com/pingcap/tidb/issues/20710)@[winoros](https://github.com/winoros)
 
 + TiKV <!--tw@lilin90: 3 notes-->
 
