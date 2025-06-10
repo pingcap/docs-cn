@@ -333,7 +333,7 @@ grafana_servers:
     tiup cluster edit-config ${cluster-name}
     ```
 
-2. 在 `grafana_servers` 配置下添加 `use_vm_as_datasource`: `true`：
+2. 在 `grafana_servers` 配置下，添加 `use_vm_as_datasource: true`：
 
     ```yaml
     grafana_servers:
