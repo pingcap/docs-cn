@@ -300,7 +300,7 @@ grafana_servers:
 
 ### 将现有部署迁移到 VictoriaMetrics
 
-迁移过程可在不中断服务的前提下进行：现有历史指标仍保留在 Prometheus 中，新的指标则写入 VictoriaMetrics。
+你可以在不中断服务的情况下完成迁移。TiUP 会将现有的指标数据保留在 Prometheus 中，将新的指标数据写入 VictoriaMetrics。
 
 #### 启用 Prometheus 向 VictoriaMetrics 的远程写入
 
