@@ -29,6 +29,7 @@ null = '\N'
 include-commit-ts = true
 binary-encoding-method = 'base64'
 output-old-value = false
+output-field-header = false
 ```
 
 ## 数据保存的事务性约束
@@ -51,6 +52,10 @@ CSV 文件中，单行的每一列定义如下：
 - 第四列：`commit ts`，即原始事务的 commit ts。该列为可选配置。
 - 第五列：`is-update`，该列仅在 `output-old-value` 为 true 时存在，用于标识该行变更来自 Update 事件（值为 true），还是来自 Insert/Delete 事件（值为 false）。
 - 第六列至最后一列：变更数据的列，可为一列或多列。
+
+| column1 |  column2 | column3 | column4(optional) | column5(optional) | column6 | ... |columnX |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| ticdc-meta$operation | ticdc-meta$table | ticdc-meta$schema | ticdc-meta$commit-ts | ticdc-meta$is-update | col1 | xxx | colX |
 
 假设某张表 `hr.employee` 的定义如下：
 
@@ -77,6 +82,19 @@ CREATE TABLE `employee` (
 当配置中 `include-commit-ts = true` 且 `output-old-value = true` 时，该表上的 DML 事件以 CSV 格式存储后如下所示：
 
 ```
+"I","employee","hr",433305438660591626,false,101,"Smith","Bob","2014-06-04","New York"
+"D","employee","hr",433305438660591627,true,101,"Smith","Bob","2015-10-08","Shanghai"
+"I","employee","hr",433305438660591627,true,101,"Smith","Bob","2015-10-08","Los Angeles"
+"D","employee","hr",433305438660591629,false,101,"Smith","Bob","2017-03-13","Dallas"
+"I","employee","hr",433305438660591630,false,102,"Alex","Alice","2017-03-14","Shanghai"
+"D","employee","hr",433305438660591630,true,102,"Alex","Alice","2017-03-14","Beijing"
+"I","employee","hr",433305438660591630,true,102,"Alex","Alice","2018-06-15","Beijing"
+```
+
+当配置中 `include-commit-ts = true` 且 `output-old-value = true` 且 `output-field-header = true` 时，该表上的 DML 事件以 CSV 格式存储后如下所示：
+
+```
+ticdc-meta$operation,ticdc-meta$table,ticdc-meta$schema,ticdc-meta$commit-ts,ticdc-meta$is-update,Id,LastName,FirstName,HireDate,OfficeLocation
 "I","employee","hr",433305438660591626,false,101,"Smith","Bob","2014-06-04","New York"
 "D","employee","hr",433305438660591627,true,101,"Smith","Bob","2015-10-08","Shanghai"
 "I","employee","hr",433305438660591627,true,101,"Smith","Bob","2015-10-08","Los Angeles"
