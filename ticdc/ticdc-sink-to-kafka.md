@@ -44,7 +44,6 @@ TiCDC 与支持的 Kafka 最低版本对应关系如下：
 | v6.5.0 <= TiCDC < v7.5.0 | 2.1.0              |
 | v6.1.0 <= TiCDC < v6.5.0 | 2.0.0              |
 
-
 ## Sink URI 配置 `kafka`
 
 Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
