@@ -35,7 +35,6 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 ### 配置文件 tiflash.toml
 
-<<<<<<< HEAD
 ```toml
 ## TiFlash TCP/HTTP 等辅助服务的监听 host。建议配置成 0.0.0.0，即监听本机所有 IP 地址。
 listen_host = "0.0.0.0"
@@ -282,7 +281,6 @@ delta_index_cache_size = 0
     ## 包含 PEM 格式的 X509 key 文件路径
     # key_path = "/path/to/tiflash-server-key.pem"
 ```
-=======
 #### `listen_host`
 
 - TiFlash TCP/HTTP 等辅助服务的监听 host。
@@ -715,13 +713,6 @@ I/O 限流功能相关配置。
 - 用于 MinTSO 调度器，表示一个 TiFlash 实例中最多可同时运行的查询数量。关于 MinTSO 调度器，详见 [TiFlash MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)。
 - 默认值：在 v7.4.0 之前，默认值为 `vcpu * 0.25`，即 vCPU 数量的四分之一。从 v7.4.0 开始，默认值为 `vcpu * 2`，即两倍的 vCPU 数量。
 
-##### `hashagg_use_magic_hash` <span class="version-mark">从 v9.0.0 版本开始引入</span>
-
-- 控制 TiFlash 在进行聚合操作时使用的哈希函数。如果设置为 `true`，TiFlash 的 HashAgg 将使用 magic hash 而非默认的 CRC32。
-- magic hash 生成的哈希值分布更加均匀，能够有效减少哈希冲突，但其计算速度比 CRC32 慢。建议在 `GROUPBY` 键的 NDV（number of distinct values，不同值的数量）较高时启用该配置，以优化聚合性能。
-- 默认值：`false`
-- 可选值：`true`、`false`
-
 #### security <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
 安全相关配置。
@@ -753,7 +744,6 @@ I/O 限流功能相关配置。
 - 包含 PEM 格式的 X509 key 文件路径。
 
 <!-- 示例值：`"/path/to/tiflash-server-key.pem"` -->
->>>>>>> aad5766e95 (tiflash: correct the default value of `task_scheduler_active_set_soft_limit` (#20474))
 
 ### 配置文件 tiflash-learner.toml
 
