@@ -281,6 +281,7 @@ delta_index_cache_size = 0
     ## 包含 PEM 格式的 X509 key 文件路径
     # key_path = "/path/to/tiflash-server-key.pem"
 ```
+
 #### `listen_host`
 
 - TiFlash TCP/HTTP 等辅助服务的监听 host。
