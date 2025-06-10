@@ -278,7 +278,7 @@ tiup cluster destroy ${cluster-name}
 
 ### 在新部署中启用 VictoriaMetrics
 
-默认情况下，TiUP 使用 Prometheus 作为指标服务器。如果要在新部署中使用 VictoriaMetrics 替代 Prometheus，可以在拓扑文件中进行如下配置：
+默认情况下，TiUP 使用 Prometheus 作为指标监控组件。如果要在新部署中使用 VictoriaMetrics 替代 Prometheus，可以在拓扑文件中进行如下配置：
 
 ```yaml
 # 监控服务器配置
@@ -420,7 +420,7 @@ grafana_servers:
         data_dir: "/tidb-data/prometheus-8249"
     ```
 
-2. 手动删除数据目录：
+2. 删除数据目录：
 
     ```bash
     rm -rf /tidb-data/prometheus-8249
