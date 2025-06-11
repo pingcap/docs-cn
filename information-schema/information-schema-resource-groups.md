@@ -23,7 +23,7 @@ DESC resource_groups;
 | QUERY_LIMIT | varchar(256) | YES  |      | NULL    |       |
 | BACKGROUND  | varchar(256) | YES  |      | NULL    |       |
 +-------------+--------------+------+------+---------+-------+
-3 rows in set (0.00 sec)
+6 rows in set (0.00 sec)
 ```
 
 ## 示例
