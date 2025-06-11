@@ -133,7 +133,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
 
 下面举例说明如何创建资源组。
 
-1. 创建 `rg1` 资源组，限额是每秒 500 RU，并且允许这个资源组的应用超额占用资源。不特意指定的话，其 `BURSTABLE` 模式为 `MODERATED`。
+1. 创建 `rg1` 资源组，限额是每秒 500 RU，并且允许这个资源组的应用超额占用资源。如果不特意指定 `BURSTABLE` 模式，则默认启用 `MODERATED` 模式。
 
     ```sql
     CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 BURSTABLE;
