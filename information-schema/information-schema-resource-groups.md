@@ -83,4 +83,4 @@ SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1'; -- 查看�
 
 > **注意：**
 >
-> TiDB 集群在初始化时会自动创建 `default` 资源组，其 `RU_PER_SEC` 的默认值为 `UNLIMITED` (等同于 `INT` 类型最大值，即 `2147483647`)，且 `BURSTABLE` 为 `UNLIMITED` 模式。对于没有绑定资源组的语句会自动绑定至此资源组。此资源组不支持删除，但允许修改其 RU 的配置。
+> TiDB 集群在初始化时会自动创建 `default` 资源组，其 `RU_PER_SEC` 的默认值为 `UNLIMITED` (等同于 `INT` 类型最大值，即 `2147483647`)，且 `BURSTABLE` 为 `UNLIMITED` 模式。所有未绑定资源组的语句将自动绑定至该资源组。`default` 资源组不支持删除，但支持修改其 RU 配置。
