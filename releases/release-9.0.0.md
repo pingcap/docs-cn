@@ -429,6 +429,9 @@ TiDB 版本：9.0.0
     + TiCDC <!--tw@qiancai: 2 notes-->
 
         <!-- - 为 Canal-JSON 协议的 TiDB 扩展字段中新增 `tableId` 和 `partitionId` 字段 [#11874](https://github.com/pingcap/tiflow/issues/11874) @[3AceShowHand](https://github.com/3AceShowHand) --> <!-- for-beta.2 -->
+    + Backup & Restore (BR)
+
+        - 移除对 AWS region 名称的检查，避免新支持的 AWS region 因无法通过检查而导致备份报错的问题 [#18159](https://github.com/tikv/tikv/issues/18159) @[3pointer](https://github.com/3pointer)
 
     + TiDB Data Migration (DM) <!--tw@lilin90: 1 note-->
 
@@ -500,7 +503,7 @@ TiDB 版本：9.0.0
     - 修复当 `column.hist.NDV` 的值大于 `column.topN.num()` 的值时，统计信息评估错误的问题 [#59563](https://github.com/pingcap/tidb/issues/59563) @[AilinKid](https://github.com/AilinKid)
     - 修复合并全局统计信息失败的问题 [#59274](https://github.com/pingcap/tidb/issues/59274)@[winoros](https://github.com/winoros)
     - 修复当 Fix Control #44855 开启时，TiDB 的会话可能崩溃的问题 [#59762](https://github.com/pingcap/tidb/issues/59762) @[winoros](https://github.com/winoros)
-    - 修复只有在 hint 或 Join Key 完全匹配的情况下才会选择 Merge Join 的问题 [#20710](https://github.com/pingcap/tidb/issues/20710)@[winoros](https://github.com/winoros)
+    - 修复在没有 hint 且 Join Key 不完全匹配的情况下，TiDB 选择 Merge Join 的问题 [#20710](https://github.com/pingcap/tidb/issues/20710)@[winoros](https://github.com/winoros)
 
 + TiKV <!--tw@lilin90: 3 notes-->
 
@@ -513,8 +516,8 @@ TiDB 版本：9.0.0
     - (dup): release-6.5.12.md > 错误修复> TiKV - 修复 GC Worker 负载过高时可能出现的死锁问题 [#18214](https://github.com/tikv/tikv/issues/18214) @[zyguan](https://github.com/zyguan)
     - (dup): release-7.5.6.md > 错误修复> TiKV - 修复 CDC 连接在遇到异常时可能发生资源泄漏的问题 [#18245](https://github.com/tikv/tikv/issues/18245) @[wlwilliamx](https://github.com/wlwilliamx)
     - 修复错误的线程内存监控指标 [#18125](https://github.com/tikv/tikv/issues/18125) @[Connor1996](https://github.com/Connor1996)
-    - 修复 TiKV 重启后非预期的 server is busy 状态 [#18233](https://github.com/tikv/tikv/issues/18233) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 修复 Unsafe recovery 因 Tiflash learner 而卡住的问题 [#18197](https://github.com/tikv/tikv/issues/18197) @[v01dstar](https://github.com/v01dstar)
+    - 修复 TiKV 重启后出现非预期的 `Server is busy` 报错 [#18233](https://github.com/tikv/tikv/issues/18233) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 修复 Online Unsafe Recovery 因 Tiflash Learner 而卡住的问题 [#18197](https://github.com/tikv/tikv/issues/18197) @[v01dstar](https://github.com/v01dstar)
 
 + PD <!--tw@lilin90: 7 notes-->
 
@@ -527,13 +530,13 @@ TiDB 版本：9.0.0
     - (dup): release-6.5.12.md > 错误修复> PD - 修复长期运行的集群中可能出现的内存泄漏问题 [#9047](https://github.com/tikv/pd/issues/9047) @[bufferflies](https://github.com/bufferflies)
     - (dup): release-6.5.12.md > 错误修复> PD - 修复当某个 PD 节点不是 Leader 时，仍可能生成 TSO 的问题 [#9051](https://github.com/tikv/pd/issues/9051) @[rleungx](https://github.com/rleungx)
     - (dup): release-6.5.12.md > 错误修复> PD - 修复 PD Leader 切换过程中，Region syncer 未能及时退出的问题 [#9017](https://github.com/tikv/pd/issues/9017) @[rleungx](https://github.com/rleungx)
-    - 修复 `minResolvedTS` 没有初始化导致的 panic 问题 [#8964](https://github.com/tikv/pd/issues/8964) @[rleungx](https://github.com/rleungx)
-    - 修复 pd client 重试策略没有正确初始化的问题 [#9013](https://github.com/tikv/pd/issues/9013) @[rleungx](https://github.com/rleungx)
-    - 修复通过 API 查询不存在的 Region 时的报错信息 [#8868](https://github.com/tikv/pd/issues/8868) @[lhy1024](https://github.com/lhy1024)
+    - 修复 `minResolvedTS` 没有初始化导致 TiDB panic 的问题 [#8964](https://github.com/tikv/pd/issues/8964) @[rleungx](https://github.com/rleungx)
+    - 修复 PD Client 重试策略没有正确初始化的问题 [#9013](https://github.com/tikv/pd/issues/9013) @[rleungx](https://github.com/rleungx)
+    - 修复通过 API 查询不存在的 Region 时报错信息有误的问题 [#8868](https://github.com/tikv/pd/issues/8868) @[lhy1024](https://github.com/lhy1024)
     - 修复 ping API 被错误转发的问题 [#9031](https://github.com/tikv/pd/issues/9031) @[rleungx](https://github.com/rleungx)
     - 修复 TTL cache goroutine 泄露的问题 [#9047](https://github.com/tikv/pd/issues/9047) @[bufferflies](https://github.com/bufferflies)
-    - 修复微服务模式下转发 TSO 可能导致 panic 的问题 [#9091](https://github.com/tikv/pd/issues/9091) @[lhy1024](https://github.com/lhy1024)
-    - 修复因为 PD 网络问题可能导致 TSO client 没有初始化的问题 [#58239](https://github.com/pingcap/tidb/issues/58239) @[okJiang](https://github.com/okJiang)
+    - 修复微服务模式下转发 TSO 可能导致 TiDB panic 的问题 [#9091](https://github.com/tikv/pd/issues/9091) @[lhy1024](https://github.com/lhy1024)
+    - 修复 PD 网络问题可能导致 TSO Client 无法初始化的问题 [#58239](https://github.com/pingcap/tidb/issues/58239) @[okJiang](https://github.com/okJiang)
 
 + TiFlash <!--tw@qiancai: 7 notes-->
 
@@ -560,14 +563,13 @@ TiDB 版本：9.0.0
         - (dup): release-7.5.6.md > 错误修复> Tools> Backup & Restore (BR) - 修复 PITR 无法恢复大于 3072 字节的索引的问题 [#58430](https://github.com/pingcap/tidb/issues/58430) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-6.5.12.md > 错误修复> Tools> Backup & Restore (BR) - 修复 BR 向 TiKV 发送请求时收到 `rpcClient is idle` 错误导致恢复失败的问题 [#58845](https://github.com/pingcap/tidb/issues/58845) @[Tristan1900](https://github.com/Tristan1900)
         - (dup): release-7.5.6.md > 错误修复> Tools> Backup & Restore (BR) - 修复日志备份在无法访问 PD 时，遇到致命错误无法正确退出的问题 [#18087](https://github.com/tikv/tikv/issues/18087) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复在断点恢复时额外检查存储节点可用空间的问题 [#54316](https://github.com/Leavrth))[)](https://github.com/Leavrth))
-        - 修复全量备份过程中 RangeTree 存储结果内存效率问题 [#58587](https://github.com/pingcap/tidb/issues/58587) @[3pointer](https://github.com/3pointer)
-        - 修复没等待 info schema 加载结束后，就执行 pitr 后期的 sql 操作导致的问题 [#57743](https://github.com/pingcap/tidb/issues/57743) @[Leavrth](https://github.com/Leavrth)
-        - 修复对 region 白名单检查的问题 [#18159](https://github.com/tikv/tikv/issues/18159) @[3pointer](https://github.com/3pointer)
-        - 修复一个和 gc safepoint 相关的测试用例 [#59604](https://github.com/pingcap/tidb/issues/59604) @[RidRisR](https://github.com/RidRisR)
-        - 修复一个解析外部存储 url 的问题 [#59548](https://github.com/pingcap/tidb/issues/59548) @[Leavrth](https://github.com/Leavrth)
-        - 修复一个恢复过程中 table id 预分配的问题  [#59718](https://github.com/pingcap/tidb/issues/59718) @[Leavrth](https://github.com/Leavrth)
-        - 修复一个单元测试用例 [#59925](https://github.com/pingcap/tidb/issues/59925) @[Leavrth](https://github.com/Leavrth)        
+        - 修复在断点恢复时额外检查存储节点可用空间的问题 [#54316](https://github.com/pingcap/tidb/issues/54316)(https://github.com/Leavrth)
+        - 修复全量备份过程中 RangeTree 存储结果内存效率低的问题 [#58587](https://github.com/pingcap/tidb/issues/58587) @[3pointer](https://github.com/3pointer)
+        - 修复当集群存在大量表但实际数据量较小时，PITR 数据恢复任务可能出现 `Information schema is out of date` 报错的问题 [#57743](https://github.com/pingcap/tidb/issues/57743) @[Leavrth](https://github.com/Leavrth)
+        - 修复解析外部存储 URL 导致外部存储的 Backend 错误的问题 [#59548](https://github.com/pingcap/tidb/issues/59548) @[Leavrth](https://github.com/Leavrth)
+        - 修复恢复过程中 Table ID 预分配错误的问题 [#59718](https://github.com/pingcap/tidb/issues/59718) @[Leavrth](https://github.com/Leavrth)
+        - 修复单元测试用例 [#59925](https://github.com/pingcap/tidb/issues/59925) @[Leavrth](https://github.com/Leavrth)     
+        - 修复和 gc safepoint 相关的测试用例 [#59604](https://github.com/pingcap/tidb/issues/59604) @[RidRisR](https://github.com/RidRisR)   
 
     + TiCDC <!--tw@qiancai: 2 notes-->
 
@@ -585,9 +587,9 @@ TiDB 版本：9.0.0
 
     + TiDB Data Migration (DM) <!--tw@lilin90: 3 notes-->
 
-        - 将系统表加入默认过滤列表 [#11984](https://github.com/pingcap/tiflow/issues/11984) @[River2000i](https://github.com/River2000i)
-        - 修复 dm 仅检查 `LightningTableEmptyChecking` 会导致任务失败的问题 [#11945](https://github.com/pingcap/tiflow/issues/11945) @[River2000i](https://github.com/River2000i)
-        - 修复 dm 不能备份至 azure 的问题 [#11912](https://github.com/pingcap/tiflow/issues/11912) @[River2000i](https://github.com/River2000i)
+        - 修复由于没有将系统表加入到默认过滤列表导致 dump 任务失败的问题 [#11984](https://github.com/pingcap/tiflow/issues/11984) @[River2000i](https://github.com/River2000i)
+        - 修复 DM 仅检查 `LightningTableEmptyChecking` 导致任务失败的问题 [#11945](https://github.com/pingcap/tiflow/issues/11945) @[River2000i](https://github.com/River2000i)
+        - 修复 DM 不能备份至 Azure 的问题 [#11912](https://github.com/pingcap/tiflow/issues/11912) @[River2000i](https://github.com/River2000i)
 
     + TiDB Lightning
 
