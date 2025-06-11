@@ -568,8 +568,6 @@ TiDB 版本：9.0.0
         - 修复当集群存在大量表但实际数据量较小时，PITR 数据恢复任务可能出现 `Information schema is out of date` 报错的问题 [#57743](https://github.com/pingcap/tidb/issues/57743) @[Leavrth](https://github.com/Leavrth)
         - 修复解析外部存储 URL 导致外部存储的 Backend 错误的问题 [#59548](https://github.com/pingcap/tidb/issues/59548) @[Leavrth](https://github.com/Leavrth)
         - 修复恢复过程中 Table ID 预分配错误的问题 [#59718](https://github.com/pingcap/tidb/issues/59718) @[Leavrth](https://github.com/Leavrth)
-        - 修复单元测试用例 [#59925](https://github.com/pingcap/tidb/issues/59925) @[Leavrth](https://github.com/Leavrth)     
-        - 修复和 gc safepoint 相关的测试用例 [#59604](https://github.com/pingcap/tidb/issues/59604) @[RidRisR](https://github.com/RidRisR)   
 
     + TiCDC <!--tw@qiancai: 2 notes-->
 
