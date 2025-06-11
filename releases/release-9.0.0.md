@@ -390,7 +390,6 @@ TiDB 版本：9.0.0
     - 在构建 Semi Join 和 Anti Semi Join 时，支持选择左侧作为构建侧 [#58325](https://github.com/pingcap/tidb/issues/58325) @[hawkingrei](https://github.com/hawkingrei)
     - 对于形如 `a = 1 and (b = 2 or c = 3 or d = 4)` 的查询条件，支持生成使用 `(a,b), (a,c), (a,d)` 的 `IndexMerge` 计划，无需人工展开表达式 [#58361](https://github.com/pingcap/tidb/issues/58361) @[time-and-fate](https://github.com/time-and-fate)
     - 支持由 `IN` 子查询而来的 Semi Join 使用 `semi_join_rewrite` 的 Hint [#58829](https://github.com/pingcap/tidb/issues/58829) @[qw4990](https://github.com/qw4990)
-    - 修复在用户创建不合法的 binding 的时候报错 [#51347](https://github.com/pingcap/tidb/issues/51347) @[qw4990](https://github.com/qw4990)
     - 自动删除由 `OR` 连接的过滤条件中的冗余表达式 [#58998](https://github.com/pingcap/tidb/issues/58998) @[time-and-fate](https://github.com/time-and-fate)
 
 + TiKV <!--tw@qiancai: 4 notes-->
@@ -421,8 +420,6 @@ TiDB 版本：9.0.0
 
     + Backup & Restore (BR) <!--tw@qiancai: 9 notes-->
 
-        - 在测试用例中默认打开 --checksum 参数  [#57472](https://github.com/pingcap/tidb/issues/57472) @[Tristan1900](https://github.com/Tristan1900)
-        - 给日志备份 advance owner 增加混沌测试用例 [#50458](https://github.com/pingcap/tidb/issues/50458) @[Tristan1900](https://github.com/Tristan1900)
         - 在全量备份日志中记录 TiKV 节点返回的错误信息，便于问题诊断 [#58666](https://github.com/pingcap/tidb/issues/58666) @[Leavrth](https://github.com/Leavrth)
         - 优化备份恢复 summary 日志的结构和内容 [#56493](https://github.com/pingcap/tidb/issues/56493) @[Leavrth](https://github.com/Leavrth)
         - 更新不可恢复的系统表列表 [#52530](https://github.com/pingcap/tidb/issues/52530) @[Leavrth](https://github.com/Leavrth)
@@ -500,7 +497,7 @@ TiDB 版本：9.0.0
     - 修复在异步加载统计信息时，加载的信息可能比当前同步加载的信息多 [#59107](https://github.com/pingcap/tidb/issues/59107)@[winoros](https://github.com/winoros)   
     - 修复 `sql_mode=only-full-group_by` 时，`UNION ALL` 语句不报错的问题 [#59211](https://github.com/pingcap/tidb/issues/59211) @[AilinKid](https://github.com/AilinKid) 
     - 修复统计信息使用的内部会话在遇到错误时可能没有被释放的问题，该问题可能导致内存泄漏 [#59524](https://github.com/pingcap/tidb/issues/59524) @[Rustin170506](https://github.com/Rustin170506)
-    - 修复当 `column.hist.NDV` 大于 `column.topN.num()` 时，统计信息评估错误的问题 [#59563](https://github.com/pingcap/tidb/issues/59563) @[AilinKid](https://github.com/AilinKid)
+    - 修复当 `column.hist.NDV` 的值大于 `column.topN.num()` 的值时，统计信息评估错误的问题 [#59563](https://github.com/pingcap/tidb/issues/59563) @[AilinKid](https://github.com/AilinKid)
     - 修复合并全局统计信息失败的问题 [#59274](https://github.com/pingcap/tidb/issues/59274)@[winoros](https://github.com/winoros)
     - 修复当 Fix Control #44855 开启时，TiDB 的会话可能崩溃的问题 [#59762](https://github.com/pingcap/tidb/issues/59762) @[winoros](https://github.com/winoros)
     - 修复只有在 hint 或 Join Key 完全匹配的情况下才会选择 Merge Join 的问题 [#20710](https://github.com/pingcap/tidb/issues/20710)@[winoros](https://github.com/winoros)
