@@ -490,13 +490,13 @@ TiDB 版本：9.0.0
     - 修复在大量表的场景下重启 TiDB 时，InfoSchema 加载速度过慢的问题 [#58821](https://github.com/pingcap/tidb/issues/58821) @[GMHDBJD](https://github.com/GMHDBJD)
     - 修复查询 `information_schema.tables` 可能出现 OOM 问题，优化系统表查询过程中的内存使用监控 [#58985](https://github.com/pingcap/tidb/issues/58985) @[tangenta](https://github.com/tangenta)
     - 修复收集统计信息失败时没有收集耗时的问题 [#58797](https://github.com/pingcap/tidb/issues/58797) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复在异步加载统计信息时，加载的信息可能比当前同步加载的信息多 [#59107](https://github.com/pingcap/tidb/issues/59107)@[winoros](https://github.com/winoros)   
+    - 修复在异步加载统计信息时，加载的信息可能比当前同步加载的信息多 [#59107](https://github.com/pingcap/tidb/issues/59107) @[winoros](https://github.com/winoros)   
     - 修复 `sql_mode=only-full-group_by` 时，`UNION ALL` 语句不报错的问题 [#59211](https://github.com/pingcap/tidb/issues/59211) @[AilinKid](https://github.com/AilinKid) 
     - 修复统计信息使用的内部会话在遇到错误时可能没有被释放的问题，该问题可能导致内存泄漏 [#59524](https://github.com/pingcap/tidb/issues/59524) @[Rustin170506](https://github.com/Rustin170506)
     - 修复当 `column.hist.NDV` 的值大于 `column.topN.num()` 的值时，统计信息评估错误的问题 [#59563](https://github.com/pingcap/tidb/issues/59563) @[AilinKid](https://github.com/AilinKid)
-    - 修复合并全局统计信息失败的问题 [#59274](https://github.com/pingcap/tidb/issues/59274)@[winoros](https://github.com/winoros)
+    - 修复合并全局统计信息失败的问题 [#59274](https://github.com/pingcap/tidb/issues/59274) @[winoros](https://github.com/winoros)
     - 修复当 Fix Control #44855 开启时，TiDB 的会话可能崩溃的问题 [#59762](https://github.com/pingcap/tidb/issues/59762) @[winoros](https://github.com/winoros)
-    - 修复在没有 hint 且 Join Key 不完全匹配的情况下，TiDB 选择 Merge Join 的问题 [#20710](https://github.com/pingcap/tidb/issues/20710)@[winoros](https://github.com/winoros)
+    - 修复在没有 hint 且 Join Key 不完全匹配的情况下，TiDB 选择 Merge Join 的问题 [#20710](https://github.com/pingcap/tidb/issues/20710) @[winoros](https://github.com/winoros)
 
 + TiKV <!--tw@lilin90: 3 notes-->
 
