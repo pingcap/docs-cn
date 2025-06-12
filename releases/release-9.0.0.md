@@ -112,7 +112,7 @@ TiDB 版本：9.0.0
 
   更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
-* 支持下推以下日期函数到 TiKV [#59365](https://github.com/pingcap/tidb/issues/59365) [#18184](https://github.com/tikv/tikv/issues/18184) @[gengliqi](https://github.com/gengliqi) **tw@Oreoxmt** <!--1837-->
+* 支持下推以下日期函数到 TiKV [#59365](https://github.com/pingcap/tidb/issues/59365) [#18184](https://github.com/tikv/tikv/issues/18184) [#58940](https://github.com/pingcap/tidb/issues/58940) [#59497](https://github.com/pingcap/tidb/issues/59497) @[wshwsh12](https://github.com/wshwsh12) @[xzhangxian1008] @[gengliqi](https://github.com/gengliqi) **tw@Oreoxmt** <!--1837-->
 
     * `FROM_UNIXTIME()`
     * `TIMESTAMPDIFF()`
