@@ -378,14 +378,8 @@ TiDB 版本：9.0.0
     - (dup): release-8.5.1.md > 改进提升> TiDB - 将统计信息内存缓存的默认阈值调整为总内存的 20% [#58014](https://github.com/pingcap/tidb/issues/58014) @[hawkingrei](https://github.com/hawkingrei)
     - 优化分布式执行框架 (Distributed eXecution Framework, DXF) 内部 SQL 语句的 CPU 使用率 [#59344](https://github.com/pingcap/tidb/issues/59344) @[D3Hunter](https://github.com/D3Hunter)
     - 在 `EXPLAIN ANALYZE` 的执行结果中新增更多 Spill 的细节信息 [#59076](https://github.com/pingcap/tidb/issues/59076) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 支持将 `FROM_UNIXTIME()` 表达式下推到 TiKV [#58940](https://github.com/pingcap/tidb/issues/58940) @[wshwsh12](https://github.com/wshwsh12)
-    - 支持将 `TIMESTAMPDIFF()` 表达式下推到 TiKV [#59365](https://github.com/pingcap/tidb/issues/59365) @[gengliqi](https://github.com/gengliqi)
-    - 支持将 `UNIX_TIMESTAMP()` 表达式下推到 TiKV [#59497](https://github.com/pingcap/tidb/issues/59497) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 支持将 `TRUNCATE `表达式下推到 TiFlash [#59317](https://github.com/pingcap/tidb/issues/59317) @[guo-shaoge](https://github.com/guo-shaoge)
-    - 支持将 Aggregation 窗口函数下推到 TiFlash [#59509](https://github.com/pingcap/tidb/issues/59509) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 在 Hash Join v2 中支持 Left Outer Anti Semi Join [#58479](https://github.com/pingcap/tidb/pull/58479) @[wshwsh12](https://github.com/wshwsh12)
     - 跳过自动提交的乐观语句的清锁阶段以提高性能 [#58675](https://github.com/pingcap/tidb/issues/58675) @[ekexium](https://github.com/ekexium)
-    - 支持使用非唯一索引创建全局索引 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014)
     - TTL 关闭 `tidb_enable_paging`，以减少扫描行数，提升性能 [#58342](https://github.com/pingcap/tidb/issues/58342) @[lcwangchao](https://github.com/lcwangchao)
     - 在构建 Semi Join 和 Anti Semi Join 时，支持选择左侧作为构建侧 [#58325](https://github.com/pingcap/tidb/issues/58325) @[hawkingrei](https://github.com/hawkingrei)
     - 对于形如 `a = 1 and (b = 2 or c = 3 or d = 4)` 的查询条件，支持生成使用 `(a,b), (a,c), (a,d)` 的 `IndexMerge` 计划，无需人工展开表达式 [#58361](https://github.com/pingcap/tidb/issues/58361) @[time-and-fate](https://github.com/time-and-fate)
@@ -403,12 +397,11 @@ TiDB 版本：9.0.0
 
 + PD <!--tw@lilin90: 5 notes-->
 
-    - 设置 max-replicas 小于当前副本数时打印警告信息 [#8959](https://github.com/tikv/pd/issues/8959) @[lhy1024](https://github.com/lhy1024)
-    - 增加了 `gRPC Received commands rate` 监控面板 [#8920](https://github.com/tikv/pd/issues/8920) @[okJiang](https://github.com/okJiang)
-    - Slow store 调度器支持设置 `batch` 大小 [#7156](https://github.com/tikv/pd/issues/7156) @[rleungx]
+    - 支持这 `max-replicas` 小于当前副本数时打印警告信息 [#8959](https://github.com/tikv/pd/issues/8959) @[lhy1024](https://github.com/lhy1024)
+    - 新增 `gRPC Received commands rate` 监控面板 [#8920](https://github.com/tikv/pd/issues/8920) @[okJiang](https://github.com/okJiang)
+    - 支持设置 `evict-slow-store-scheduler` 的 `batch` 大小 [#7156](https://github.com/tikv/pd/issues/7156) @[rleungx]
 (https://github.com/rleungx)
-    - 为更新 TSO 增加了重试机制 [#9020](https://github.com/tikv/pd/issues/9020) @[lhy1024](https://github.com/lhy1024)
-    - 资源管控支持更多 BURSTABLE 模式 [#9057](https://github.com/tikv/pd/issues/9057) @[lhy1024](https://github.com/lhy1024)
+    - 为 `UpdateTSO` 增加了重试机制 [#9020](https://github.com/tikv/pd/issues/9020) @[lhy1024](https://github.com/lhy1024)
 
 + TiFlash <!--tw@qiancai: 4 notes-->
 
@@ -436,7 +429,7 @@ TiDB 版本：9.0.0
     + TiDB Data Migration (DM) <!--tw@lilin90: 1 note-->
 
         - (dup): release-6.6.0.md > 改进提升> Tools> TiDB Data Migration (DM) - 新增 async/batch relay writer 以优化 relay 性能 [#4287](https://github.com/pingcap/tiflow/issues/4287) @[GMHDBJD](https://github.com/GMHDBJD)
-        - 为 dm 添加多安全配置的支持 [#11831](https://github.com/pingcap/tiflow/issues/11831) @[River2000i](https://github.com/River2000i)
+        - DM 支持多安全配置 [#11831](https://github.com/pingcap/tiflow/issues/11831) @[River2000i](https://github.com/River2000i)
 
     + TiDB Lightning
 
