@@ -102,7 +102,7 @@ TiDB 版本：9.0.0
 
   更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
-* 新增支持下推包含以下聚合函数的窗口函数到 TiFlash [#7376](https://github.com/pingcap/tiflash/issues/7376) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai**<!--1382-->
+* 新增支持下推包含以下聚合函数的窗口函数到 TiFlash [#7376](https://github.com/pingcap/tiflash/issues/7376) [#59509](https://github.com/pingcap/tidb/issues/59509) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai**<!--1382-->
 
     * `MAX()`
     * `MIN()`
