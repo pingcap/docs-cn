@@ -61,7 +61,7 @@ sync-diff-inspector 的安装方法取决于 TiDB 版本。
 
 sync-diff-inspector 需要具备特定的数据库权限以获取表结构信息、查询数据。你需要在上游数据库和下游数据库中授予以下权限：
 
-- `SELECT`：用于数据对比。
+- `SELECT`：用于对比数据。
 - `RELOAD`：用于查看表结构。
 
 > **注意：**
