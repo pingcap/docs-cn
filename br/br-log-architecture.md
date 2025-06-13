@@ -99,7 +99,7 @@ PITR 的流程如下：
 ├── v1
 │   ├── backupmeta
 │   │   ├── ...
-│   │   └── {resolved_ts}-{uuid}.meta
+│   │   └── {flushTs}-{minDefaultTs}-{minTs}-{maxTs}.meta
 │   ├── global_checkpoint
 │   │   └── {store_id}.ts
 │   └── {date}
@@ -112,7 +112,7 @@ PITR 的流程如下：
 
 备份文件目录结构的说明如下：
 
-- `backupmeta`：备份的元数据。文件名中的 `resolved_ts` 指备份的进度，表示该 TSO 之前的数据已被完整备份。但是需注意，该 TSO 仅反映部分分片的进度。
+- `backupmeta`：备份的元数据文件。文件名中包含以下若干关键时间戳字段：flushTs：备份文件的定期上传时间戳，从 PD 获取，具有全局唯一性。minDefaultTs：针对 write CF 文件特有的最小事务起始时间，表示该备份覆盖的最早事务起点。 minTs / maxTs：该文件中包含的所有 key-value 数据的最小和最大时间戳。上述所有时间戳字段均采用 16 位固定长度的十六进制字符串编码，左侧补零以保持长度一致。这样的编码方式有助于文件名按字典序自然排序，便于在外部存储系统中高效进行批量列举和范围过滤。
 - `global_checkpoint`：备份的全局进度。它记录了可以被 `br restore point` 恢复到的最晚时间点。
 - `{date}/{hour}`：对应日期和小时的备份数据。注意在清理存储的时候，需使用 `br log truncate`，不能手动删除数据。这是因为 metadata 会指向这里的数据，手动删除它们会导致恢复失败或恢复后数据不一致等问题。
 
@@ -122,9 +122,9 @@ PITR 的流程如下：
 ├── v1
 │   ├── backupmeta
 │   │   ├── ...
-│   │   ├── 435213818858112001-e2569bda-a75a-4411-88de-f469b49d6256.meta
-│   │   ├── 435214043785779202-1780f291-3b8a-455e-a31d-8a1302c43ead.meta
-│   │   └── 435214443785779202-224f1408-fff5-445f-8e41-ca4fcfbd2a67.meta
+│   │   ├── 060c4bc7b0cdd582-06097a780d1ba138-060ab960016d2f00-060c0b9e47d4787b.meta
+│   │   ├── 06123bc6a0cdd591-060c3d24585be000-060c4453954a4000-060c4bc7b0cdcfa4.meta
+│   │   └── 063c2ac1c0cdd5c3-0609d2e6b3bcb064-060ab960016d2f84-060c0b9e47d47a77.meta
 │   ├── global_checkpoint
 │   │   ├── 1.ts
 │   │   ├── 2.ts
