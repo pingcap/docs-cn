@@ -343,7 +343,7 @@ I/O 限流功能相关配置。
 
 ##### `max_threads`
 
-- `max_threads` 指的是执行一个 MMP Task 的内部线程并发度。当值为 `0` 时，TiFlash 执行 MMP Task 的线程并发度为 CPU 逻辑核数。
+- `max_threads` 指的是执行一个 MPP Task 的内部线程并发度。当值为 `0` 时，TiFlash 执行 MPP Task 的线程并发度为 CPU 逻辑核数。
 - 该参数只有在系统变量 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) 设置为 `-1` 时才会生效。
 - 默认值：`0`
 
