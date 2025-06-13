@@ -604,8 +604,8 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 处理方法：
 
-    1. 查看 Scheduler-All 监控中的 scheduler command duration，看哪一个命令耗时最大。
-    2. 查看 Scheduler-All 监控中的 scheduler scan details，看 `total` 和 `process` 是否匹配。如果相差太大，表明有很多无效的扫描，另外观察是否有 `over seek bound`，如果太多，表明 GC 不及时。
+    1. 查看 `Scheduler` 和 `Scheduler-${cmd}`（`${cmd}` 为指定待查询的写命令）监控中的 scheduler command duration，看哪一个命令耗时最大。
+    2. 查看 `Scheduler` 和 `Scheduler-${cmd}` 监控中的 scheduler scan details，检查 `total` 和 `process` 是否匹配。如果相差太大，表明有很多无效的扫描。同时观察是否有 `over seek bound`，如果太多，表明 GC 不及时。
     3. 查看 Storage 监控中的 storage async snapshot/write duration，看是否 Raft 操作不及时。
 
 #### `TiKV_thread_apply_worker_cpu_seconds`
