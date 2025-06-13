@@ -111,7 +111,13 @@ TiDB 版本：9.0.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+* 优化包含外键表场景下的建库建表和加列性能 [#61126](https://github.com/pingcap/tidb/issues/61126) @[GMHDBJD](https://github.com/GMHDBJD) @[River2000i](https://github.com/River2000i) **tw@hfxsd** <!--1896 beta.2-->
 
+    在早期版本中，在部分 SaaS 场景下，当集群中的表数量达到千万级别时，创建包含外键的表会出现明显的性能瓶颈。同时，大量外键关系还会进一步拖慢 CREATE TABLE 和 ADD COLUMN 等 DDL 操作的执行效率。从本版本起，TiDB 优化了相关元信息的处理逻辑，显著提升了在超大表规模场景下的 DDL 性能。
+
+    根据内部测试数据，在集群空负载、连接至 DDL owner 节点的情况下，建表速度最高可达 126 张表每秒，ADD COLUMN 操作的平均执行速度约为 45.5 张表每秒。
+
+     更多信息，请参考[用户文档](链接)。
 * 在几十万甚至上百万用户数的场景下，创建用户、修改用户信息的性能提升了 77 倍 [#55563](https://github.com/pingcap/tidb/issues/55563) @[tiancaiamao](https://github.com/tiancaiamao)  **tw@hfxsd**<!--1941-->
 
     之前的版本，当集群的用户数超过 20 万时，创建和修改用户的性能 QPS 会降低到 1。在一些 SaaS 场景，如果需要创建百万个用户，以及定期批量修改用户的密码信息，需要 2 天甚至更久的时间，对于一些 SaaS 业务是不可接受的。
@@ -198,7 +204,17 @@ TiDB 版本：9.0.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+* 客户端断连后，Server 端自动终止对应的 SQL [#60685](https://github.com/pingcap/tidb/pull/60685) @[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--2060 beta.2-->
 
+    为提升资源利用率和系统稳定性，TiDB 从 v9.0.0 起引入连接中断检测机制。当客户端连接异常断开时，TiDB 会主动终止该连接上仍在执行的 SQL 语句，及时释放资源，避免无效语句长期运行，影响系统性能。
+
+    更多信息，请参考[用户文档](链接)。
+
+* 引入 Table mode，在数据恢复阶段将限制用户对目标表进行读写操作，提升备份恢复任务的稳定性和数据一致性  [#59008](https://github.com/pingcap/tidb/issues/59008) @[fishiu](https://github.com/fishiu)@[River2000i](https://github.com/River2000i) @[Tristan1900](https://github.com/Tristan1900) @[Leavrth](https://github.com/Leavrth)   **tw@hfxsd** <!--2056 beta.2-->
+
+     引入了 Table Mode，当用户执行快照恢复，或者 PITR 时，目标表的 table mode 会被置为 restore，处于 restore mode 的表会禁止用户执行任何读写操作。当数据恢复完成时，table mode 会被自动置回 normal，用户可以正常读写该表，从而提升数据恢复期间的任务稳定性和数据一致性。
+
+    更多信息，请参考[用户文档](链接)。    
 * 新增系统变量 `MAX_USER_CONNECTIONS`，用于限制不同用户可以建立的连接数 [#59203](https://github.com/pingcap/tidb/issues/59203) @[joccau](https://github.com/joccau) **tw@hfxsd**<!--2017-->
 
     从 v9.0.0 版本开始，你可通过设置系统变量 `MAX_USER_CONNECTIONS` ，来限制单个用户对单个 TiDB 节点可建立的连接数，避免由于单个用户消耗过多的 [token](/tidb-configuration-file.md#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 
@@ -218,7 +234,11 @@ TiDB 版本：9.0.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+ * 支持字符集 `gb18030` 和排序规则 `gb18030_bin` 和 `gb18030_chinese_ci` [#17470](https://github.com/tikv/tikv/issues/17470) [#55791](https://github.com/pingcap/tidb/issues/55791) @[cbcwestwolf](https://github.com/cbcwestwolf) *tw@hfxsd* <!--1962--> 
+ 
+    从 v9.0.0 开始，TiDB 支持 `gb18030` 字符集和 `gb18030_bin` 和 `gb18030_chinese_ci` 排序规则，以确保 TiDB 能够更好地处理中文相关的数据存储和查询需求。该字符集是一个广泛用于中文字符编码的标准，`gb18030_bin` 提供了基于二进制的精准排序，而 `gb18030_chinese_ci` 则支持大小写不敏感的通用排序规则，这两种排序规则使得对 `gb18030` 编码文本的排序和比较更加灵活高效。 通过支持 `gb18030` 字符集及其排序规则，TiDB v9.0.0 增强了与中文应用场景的兼容性，特别是在涉及多种语言和字符编码的场景下，可以更方便地进行字符集的选择和操作，提升了数据库的使用体验。 
 
+    更多信息，请参考[用户文档](/character-set-gb18030.md)。
 * 支持对分区表的非唯一列创建全局索引 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014) @[mjonss](https://github.com/mjonss) **tw@qiancai**<!--2057-->
 
     从 v8.3.0 开始，TiDB 支持用户在分区表的唯一列上创建全局索引以提高查询性能，但不支持在非唯一列上创建全局索引。从 v9.0.0 起，TiDB 取消了这一限制，允许用户在分区表的非唯一列上创建全局索引，提升了全局索引的易用性。
