@@ -273,11 +273,11 @@ Query OK, 0 rows affected (0.01 sec)
 | schedule.max-merge-region-size |  控制 Region Merge 的 size 上限（单位是 MiB） |
 | schedule.max-merge-region-keys | 控制 Region Merge 的 key 数量上限 |
 | schedule.patrol-region-interval | 控制 checker 检查 Region 健康状态的运行频率 |
-| scheduler.patrol-region-worker-count| 控制 checker 检查 Region 健康状态时，创建 operator 的并发数 |
 | schedule.split-merge-interval | 控制对同一个 Region 做 split 和 merge 操作的间隔 |
 | schedule.max-snapshot-count | 控制单个 store 最多同时接收或发送的 snapshot 数量 |
 | schedule.max-pending-peer-count | 控制单个 store 的 pending peer 上限 |
 | schedule.max-store-down-time | PD 认为失联 store 无法恢复的时间 |
+| schedule.max-store-preparing-time | 控制 store 上线阶段的最长等待时间 |
 | schedule.leader-schedule-policy | 用于控制 leader 调度的策略 |
 | schedule.leader-schedule-limit | 可以控制同时进行 leader 调度的任务个数 |
 | schedule.region-schedule-limit | 可以控制同时进行 Region 调度的任务个数 |
@@ -295,16 +295,42 @@ Query OK, 0 rows affected (0.01 sec)
 | schedule.enable-location-replacement | 用于开启隔离级别检查 |
 | schedule.enable-cross-table-merge | 用于开启跨表 Merge |
 | schedule.enable-one-way-merge | 用于开启单向 Merge（只允许和下一个相邻的 Region Merge） |
+| schedule.region-score-formula-version | 用于设置 Region 算分公式的版本 |
+| schedule.scheduler-max-waiting-operator | 用于控制每个调度器同时存在的 operator 的个数 |
+| schedule.enable-debug-metrics | 用于开启 debug 的 metrics |
+| schedule.enable-heartbeat-concurrent-runner | 用于开启 Region 心跳异步并发处理功能 |
+| schedule.enable-heartbeat-breakdown-metrics | 用于开启 Region 心跳指标拆分，用于统计 Region 心跳处理各阶段所消耗的时间 |
+| schedule.enable-joint-consensus | 用于开启 Joint Consensus 进行副本调度 |
+| schedule.hot-regions-write-interval | 设置 PD 存储 Hot Region 信息时间间隔 |
+| schedule.hot-regions-reserved-days | 设置 PD 保留的 Hot Region 信息的最长时间 |
+| schedule.max-movable-hot-peer-size | 设置热点调度可以调度的最大 Region size |
+| schedule.store-limit-version | 设置 store limit 工作模式 |
+| schedule.patrol-region-worker-count | 控制 checker 检查 Region 健康状态时，创建 operator 的并发数 |
 | replication.max-replicas | 用于设置副本的数量 |
 | replication.location-labels | 用于设置 TiKV 集群的拓扑信息 |
 | replication.enable-placement-rules | 开启 Placement Rules |
 | replication.strictly-match-label | 开启 label 检查 |
+| replication.isolation-level | 设置 TiKV 集群的最小强制拓扑隔离级别 |
 | pd-server.use-region-storage | 开启独立的 Region 存储 |
 | pd-server.max-gap-reset-ts | 用于设置最大的重置 timestamp 的间隔（BR）|
 | pd-server.key-type| 用于设置集群 key 的类型 |
 | pd-server.metric-storage | 用于设置集群 metrics 的存储地址 |
 | pd-server.dashboard-address | 用于设置 dashboard 的地址 |
+| pd-server.flow-round-by-digit | PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新 |
+| pd-server.min-resolved-ts-persistence-interval | 设置 PD leader 对集群中 Resolved TS 最小值进行持久化的间隔时间 |
+| pd-server.server-memory-limit | PD 实例的内存限制比例 |
+| pd-server.server-memory-limit-gc-trigger | PD 尝试触发 GC 的阈值比例 |
+| pd-server.enable-gogc-tuner | 是否开启 GOGC Tuner |
+| pd-server.gc-tuner-threshold | GOGC Tuner 自动调节的最大内存阈值比例 |
 | replication-mode.replication-mode | 备份的模式 |
+| replication-mode.dr-auto-sync.label-key | 用于区分不同的 AZ，需要和 Placement Rules 相匹配 |
+| replication-mode.dr-auto-sync.primary | 主 AZ |
+| replication-mode.dr-auto-sync.dr | 从 AZ |
+| replication-mode.dr-auto-sync.primary-replicas  | 是主 AZ 上 Voter 副本的数量 |
+| replication-mode.dr-auto-sync.dr-replicas | 是从 AZ 上 Voter 副本的数量 |
+| replication-mode.dr-auto-sync.wait-store-timeout | 当出现网络隔离或者故障时，切换到异步复制模式的等待时间 |
+| replication-mode.dr-auto-sync.wait-recover-timeout | 当网络恢复后，切换回 sync-recover 状态的等待时间 |
+| replication-mode.dr-auto-sync.pause-region-split | 用于控制在 async_wait 和 async 状态下是否暂停 Region 的 split 操作 |
 
 具体配置项意义可参考 [PD 配置文件描述](/pd-configuration-file.md)。
 
