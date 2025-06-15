@@ -16,7 +16,6 @@ TiDB 支持使用 MySQL 8.0 中提供的大部分[加密和压缩函数](https:/
 | [`AES_ENCRYPT()`](#aes_encrypt)                               | 使用 AES 加密         |
 | [`COMPRESS()`](#compress)                                     | 返回压缩后的二进制字符串      |
 | [`MD5()`](#md5)                                               | 计算字符串的 MD5 校验和    |
-| [`PASSWORD()`](#password)                                     | 计算并返回密码字符串        |
 | [`RANDOM_BYTES()`](#random_bytes)                             | 返回随机字节向量          |
 | [`SHA()`](#sha)                                               | 计算 SHA-1 160 位校验和 |
 | [`SHA1()`](#sha1)                                             | 计算 SHA-1 160 位校验和 |
@@ -137,29 +136,6 @@ SELECT MD5('abc');
 | 900150983cd24fb0d6963f7d28e17f72 |
 +----------------------------------+
 1 row in set (0.00 sec)
-```
-
-### [`PASSWORD()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_password)
-
-> **警告：**
->
-> `PASSWORD()` 函数在 MySQL 5.7 中已弃用，在 MySQL 8.0 中已删除，在 TiDB 中也已弃用。不建议使用此函数。
-
-`PASSWORD(str)` 函数计算可用于 `mysql_native_password` 认证方法的密码哈希。
-
-```sql
-SELECT PASSWORD('secret');
-```
-
-```
-+-------------------------------------------+
-| PASSWORD('secret')                        |
-+-------------------------------------------+
-| *14E65567ABDB5135D0CFD9A70B3032C179A49EE7 |
-+-------------------------------------------+
-1 row in set, 1 warning (0.00 sec)
-
-Warning (Code 1681): PASSWORD is deprecated and will be removed in a future release.
 ```
 
 ### [`RANDOM_BYTES()`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_random-bytes)
