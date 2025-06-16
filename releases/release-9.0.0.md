@@ -397,7 +397,7 @@ TiDB 版本：9.0.0
 
 + PD <!--tw@lilin90: 5 notes-->
 
-    - 支持这 `max-replicas` 小于当前副本数时打印警告信息 [#8959](https://github.com/tikv/pd/issues/8959) @[lhy1024](https://github.com/lhy1024)
+    - 支持当 `max-replicas` 小于当前副本数时打印警告信息 [#8959](https://github.com/tikv/pd/issues/8959) @[lhy1024](https://github.com/lhy1024)
     - 新增 `gRPC Received commands rate` 监控面板 [#8920](https://github.com/tikv/pd/issues/8920) @[okJiang](https://github.com/okJiang)
     - 支持设置 `evict-slow-store-scheduler` 的 `batch` 大小 [#7156](https://github.com/tikv/pd/issues/7156) @[rleungx]
 (https://github.com/rleungx)
@@ -557,7 +557,7 @@ TiDB 版本：9.0.0
         - (dup): release-6.5.12.md > 错误修复> Tools> Backup & Restore (BR) - 修复 BR 向 TiKV 发送请求时收到 `rpcClient is idle` 错误导致恢复失败的问题 [#58845](https://github.com/pingcap/tidb/issues/58845) @[Tristan1900](https://github.com/Tristan1900)
         - (dup): release-7.5.6.md > 错误修复> Tools> Backup & Restore (BR) - 修复日志备份在无法访问 PD 时，遇到致命错误无法正确退出的问题 [#18087](https://github.com/tikv/tikv/issues/18087) @[YuJuncen](https://github.com/YuJuncen)
         - 修复在断点恢复时额外检查存储节点可用空间的问题 [#54316](https://github.com/pingcap/tidb/issues/54316) @[Leavrth](https://github.com/Leavrth)
-        - 修复全量备份过程中 RangeTree 存储结果内存效率低的问题 [#58587](https://github.com/pingcap/tidb/issues/58587) @[3pointer](https://github.com/3pointer)
+        - 修复在全量备份过程中 RangeTree 结果内存使用效率低下的问题 [#58587](https://github.com/pingcap/tidb/issues/58587) @[3pointer](https://github.com/3pointer)
         - 修复当集群存在大量表但实际数据量较小时，PITR 数据恢复任务可能出现 `Information schema is out of date` 报错的问题 [#57743](https://github.com/pingcap/tidb/issues/57743) @[Leavrth](https://github.com/Leavrth)
         - 修复解析外部存储 URL 导致外部存储的 Backend 错误的问题 [#59548](https://github.com/pingcap/tidb/issues/59548) @[Leavrth](https://github.com/Leavrth)
         - 修复恢复过程中 Table ID 预分配错误的问题 [#59718](https://github.com/pingcap/tidb/issues/59718) @[Leavrth](https://github.com/Leavrth)
@@ -578,7 +578,7 @@ TiDB 版本：9.0.0
 
     + TiDB Data Migration (DM) <!--tw@lilin90: 3 notes-->
 
-        - 修复由于没有将系统表加入到默认过滤列表导致 dump 任务失败的问题 [#11984](https://github.com/pingcap/tiflow/issues/11984) @[River2000i](https://github.com/River2000i)
+        - 修复未将系统表加入默认过滤列表导致 dump 任务失败的问题 [#11984](https://github.com/pingcap/tiflow/issues/11984) @[River2000i](https://github.com/River2000i)
         - 修复 DM 仅检查 `LightningTableEmptyChecking` 导致任务失败的问题 [#11945](https://github.com/pingcap/tiflow/issues/11945) @[River2000i](https://github.com/River2000i)
         - 修复 DM 不能备份至 Azure 的问题 [#11912](https://github.com/pingcap/tiflow/issues/11912) @[River2000i](https://github.com/River2000i)
 
