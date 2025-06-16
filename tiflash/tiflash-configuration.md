@@ -363,7 +363,7 @@ I/O 限流功能相关配置。
 
 ##### `max_threads`
 
-- `max_threads` 指的是执行一个 MMP Task 的内部线程并发度。当值为 `0` 时，TiFlash 执行 MMP Task 的线程并发度为 CPU 逻辑核数。
+- `max_threads` 指的是执行一个 MPP Task 的内部线程并发度。当值为 `0` 时，TiFlash 执行 MPP Task 的线程并发度为 CPU 逻辑核数。
 - 该参数只有在系统变量 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) 设置为 `-1` 时才会生效。
 - 默认值：`0`
 
@@ -379,9 +379,9 @@ I/O 限流功能相关配置。
 
 - 所有查询过程中，节点对中间数据的内存限制。
 - 设置为整数时，单位为 byte，比如 `34359738368` 表示 32 GiB 的内存限制，`0` 表示无限制。
-- 设置为 `[0.0, 1.0)` 之间的浮点数时，指节点总内存的比值，比如 `0.8` 表示总内存的 80%，`0.0` 表示无限制。
-- 当查询试图申请超过限制的内存时，查询终止执行并且报错
-- 默认值：`0.8`，表示总内存的 80%
+- 从 v6.6.0 开始，支持设置为 `[0.0, 1.0)` 之间的浮点数，表示节点总内存的比值。例如 `0.8` 表示总内存的 80%，`0.0` 表示无限制。
+- 当查询试图申请超过限制的内存时，查询终止执行并且报错。
+- 默认值：`0.8`，表示总内存的 80%。在 v6.6.0 之前，默认值为 `0`，表示不限制。
 
 ##### `cop_pool_size` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -466,7 +466,7 @@ I/O 限流功能相关配置。
 ##### `task_scheduler_active_set_soft_limit` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 用于 MinTSO 调度器，表示一个 TiFlash 实例中最多可同时运行的查询数量。关于 MinTSO 调度器，详见 [TiFlash MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)。
-- 默认值：`0`，即两倍的 CPU 逻辑核数
+- 默认值：在 v7.4.0 之前，默认值为 `vcpu * 0.25`，即 vCPU 数量的四分之一。从 v7.4.0 开始，默认值为 `vcpu * 2`，即两倍的 vCPU 数量。
 
 ##### `hashagg_use_magic_hash` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
