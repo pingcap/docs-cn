@@ -95,6 +95,7 @@ TiDB 版本：8.5.2
     - 修复设置 `tidb_enable_tso_follower_proxy` 系统变量可能不生效的问题 [#8947](https://github.com/tikv/pd/issues/8947) @[JmPotato](https://github.com/JmPotato)
     - 修复当某个 PD 节点不是 Leader 时，仍可能生成 TSO 的问题 [#9051](https://github.com/tikv/pd/issues/9051) @[rleungx](https://github.com/rleungx)
     - 修复 PD Leader 切换过程中，Region syncer 未能及时退出的问题 [#9017](https://github.com/tikv/pd/issues/9017) @[rleungx](https://github.com/rleungx)
+    - 修复 `lease` 默认值未被正确设置的问题 [#9156](https://github.com/tikv/pd/issues/9156) @[rleungx](https://github.com/rleungx)
 
 + TiFlash
 
