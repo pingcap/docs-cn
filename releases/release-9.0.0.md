@@ -379,10 +379,10 @@ TiDB 版本：9.0.0
     - 优化分布式执行框架 (Distributed eXecution Framework, DXF) 内部 SQL 语句的 CPU 使用率 [#59344](https://github.com/pingcap/tidb/issues/59344) @[D3Hunter](https://github.com/D3Hunter)
     - 在 `EXPLAIN ANALYZE` 的执行结果中新增更多 Spill 的细节信息 [#59076](https://github.com/pingcap/tidb/issues/59076) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 在 Hash Join v2 中支持 Left Outer Anti Semi Join [#58479](https://github.com/pingcap/tidb/pull/58479) @[wshwsh12](https://github.com/wshwsh12)
-    - 跳过自动提交的乐观语句的清锁阶段以提高性能 [#58675](https://github.com/pingcap/tidb/issues/58675) @[ekexium](https://github.com/ekexium)
+    - 跳过乐观事务中自动提交语句的锁清理阶段以提升性能 [#58675](https://github.com/pingcap/tidb/issues/58675) @[ekexium](https://github.com/ekexium)
     - TTL 关闭 `tidb_enable_paging`，以减少扫描行数，提升性能 [#58342](https://github.com/pingcap/tidb/issues/58342) @[lcwangchao](https://github.com/lcwangchao)
     - 在构建 Semi Join 和 Anti Semi Join 时，支持选择左侧作为构建侧 [#58325](https://github.com/pingcap/tidb/issues/58325) @[hawkingrei](https://github.com/hawkingrei)
-    - 对于形如 `a = 1 and (b = 2 or c = 3 or d = 4)` 的查询条件，支持生成使用 `(a,b), (a,c), (a,d)` 的 `IndexMerge` 计划，无需人工展开表达式 [#58361](https://github.com/pingcap/tidb/issues/58361) @[time-and-fate](https://github.com/time-and-fate)
+    - 对于形如 `a = 1 AND (b = 2 OR c = 3 OR d = 4)` 的查询条件，支持生成使用 `(a,b), (a,c), (a,d)` 的 `IndexMerge` 计划，无需人工展开表达式 [#58361](https://github.com/pingcap/tidb/issues/58361) @[time-and-fate](https://github.com/time-and-fate)
     - 支持由 `IN` 子查询而来的 Semi Join 使用 `semi_join_rewrite` 的 Hint [#58829](https://github.com/pingcap/tidb/issues/58829) @[qw4990](https://github.com/qw4990)
     - 自动删除由 `OR` 连接的过滤条件中的冗余表达式 [#58998](https://github.com/pingcap/tidb/issues/58998) @[time-and-fate](https://github.com/time-and-fate)
 
