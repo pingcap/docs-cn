@@ -1,5 +1,5 @@
 ---
-title: Utility Functions
+title: 效用函数
 summary: 了解 TiDB 中的效用函数。
 ---
 
@@ -26,7 +26,7 @@ SELECT FORMAT_BYTES(10*1024*1024);
 
 ## `FORMAT_NANO_TIME()`
 
-`FORMAT_NANO_TIME()` 函数用于将纳秒数格式化为易于阅读的形式。
+`FORMAT_NANO_TIME()` 函数用于将纳秒数格式化为易于阅读的时间形式。
 
 ```sql
 SELECT FORMAT_NANO_TIME(1000000);
