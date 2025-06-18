@@ -16,7 +16,6 @@ TiDB 版本：8.5.2
 + TiDB
 
     - 将 TTL 表的 GC 及相关统计信息收集任务限定在 owner 节点执行，从而降低开销 [#59357](https://github.com/pingcap/tidb/issues/59357) @[lcwangchao](https://github.com/lcwangchao)
-    - TiDB 支持在龙芯 loong64 架构上进行编译和构建 [#59051](https://github.com/pingcap/tidb/issues/59051) @[D3Hunter](https://github.com/D3Hunter)
 
 + TiKV
 
