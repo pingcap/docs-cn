@@ -1429,6 +1429,10 @@ Titan 相关的配置项。
 
 ### `enabled`
 
+> **警告：**
+>
+> 对于 v8.5.0 之前的版本，关闭 Titan 时，不建议更新该配置项值为 `false` 以避免 TiKV crash，请参考[关闭 Titan](/storage-engine/titan-configuration.md#关闭-titan) 中的步骤。
+
 > **注意：**
 >
 > - 从 TiDB v7.6.0 开始，参数默认值从 `false` 变更为 `true`，即新集群默认开启 Titan，以更好地支持 TiDB 宽表写入场景和 JSON。
