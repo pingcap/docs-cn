@@ -1,13 +1,13 @@
 ---
-title: CREATE TABLE
-summary: TiDB 数据库中 CREATE TABLE 的使用概况
+title: CREATE TABLE | TiDB SQL 语句参考
+summary: TiDB 数据库中 CREATE TABLE 的使用概览。
 ---
 
 # CREATE TABLE
 
-`CREATE TABLE` 语句用于在当前所选数据库中创建新表，与 MySQL 中 `CREATE TABLE` 语句的行为类似。另可参阅单独的 `CREATE TABLE LIKE` 文档。
+此语句在当前选择的数据库中创建一个新表。它的行为类似于 MySQL 中的 `CREATE TABLE` 语句。
 
-## 语法图
+## 语法
 
 ```ebnf+diagram
 CreateTableStmt ::=
@@ -157,26 +157,37 @@ NextValueForSequence ::=
 |   "NEXTVAL" '(' TableName ')'
 ```
 
-TiDB 支持以下 `table_option`。TiDB 会解析并忽略其他 `table_option` 参数，例如 `AVG_ROW_LENGTH`、`CHECKSUM`、`COMPRESSION`、`CONNECTION`、`DELAY_KEY_WRITE`、`ENGINE`、`KEY_BLOCK_SIZE`、`MAX_ROWS`、`MIN_ROWS`、`ROW_FORMAT` 和 `STATS_PERSISTENT`。
+支持以下 *table_options*。其他选项如 `AVG_ROW_LENGTH`、`CHECKSUM`、`COMPRESSION`、`CONNECTION`、`DELAY_KEY_WRITE`、`ENGINE`、`KEY_BLOCK_SIZE`、`MAX_ROWS`、`MIN_ROWS`、`ROW_FORMAT` 和 `STATS_PERSISTENT` 会被解析但忽略。
 
-| 参数           |含义                                  |举例                      |
-|----------------|--------------------------------------|----------------------------|
-|`AUTO_INCREMENT`|自增字段初始值                        |`AUTO_INCREMENT` = 5|
-| [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) |用来设置隐式 _tidb_rowid 的分片数量的 bit 位数 |`SHARD_ROW_ID_BITS` = 4|
-|`PRE_SPLIT_REGIONS`|用来在建表时预先均匀切分 `2^(PRE_SPLIT_REGIONS)` 个 Region |`PRE_SPLIT_REGIONS` = 4|
-|`AUTO_ID_CACHE`|用来指定 Auto ID 在 TiDB 实例中 Cache 的大小，默认情况下 TiDB 会根据 Auto ID 分配速度自动调整 |`AUTO_ID_CACHE` = 200|
-|`AUTO_RANDOM_BASE`|用来指定 AutoRandom 自增部分的初始值，该参数可以被认为属于内部接口的一部分，对于用户而言请忽略 |`AUTO_RANDOM_BASE` = 0|
-|`CHARACTER SET` |指定该表所使用的[字符集](/character-set-and-collation.md)                | `CHARACTER SET` = 'utf8mb4'|
-|`COLLATE`       |指定该表所使用的字符集排序规则        | `COLLATE` = 'utf8mb4_bin'|
-|`COMMENT`       |注释信息                              | `COMMENT` = 'comment info'|
+| 选项 | 描述 | 示例 |
+| ---------- | ---------- | ------- |
+| `AUTO_INCREMENT` | 自增字段的初始值 | `AUTO_INCREMENT` = 5 |
+| [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md)| 设置隐式 `_tidb_rowid` 分片的位数 |`SHARD_ROW_ID_BITS` = 4|
+|`PRE_SPLIT_REGIONS`| 在创建表时预先切分 `2^(PRE_SPLIT_REGIONS)` 个 Region |`PRE_SPLIT_REGIONS` = 4|
+|`AUTO_ID_CACHE`| 设置 TiDB 实例中的自动 ID 缓存大小。默认情况下，TiDB 会根据自动 ID 的分配速度自动调整此大小 |`AUTO_ID_CACHE` = 200 |
+|`AUTO_RANDOM_BASE`| 设置 auto_random 的初始增量部分值。此选项可以被视为内部接口的一部分。用户可以忽略此参数 |`AUTO_RANDOM_BASE` = 0|
+| `CHARACTER SET` | 指定表的[字符集](/character-set-and-collation.md) | `CHARACTER SET` =  'utf8mb4' |
+| `COMMENT` | 注释信息 | `COMMENT` = 'comment info' |
+
+<CustomContent platform="tidb">
 
 > **注意：**
 >
-> 在 TiDB 配置文件中，`split-table` 默认开启。当该配置项开启时，建表操作会为每个表建立单独的 Region，详情参见 [TiDB 配置文件描述](/tidb-configuration-file.md)。
+> `split-table` 配置选项默认启用。启用时，为每个新创建的表创建单独的 Region。详情请参见 [TiDB 配置文件](/tidb-configuration-file.md)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+> **注意：**
+>
+> TiDB 为每个新创建的表创建单独的 Region。
+
+</CustomContent>
 
 ## 示例
 
-创建一张简单表并插入一行数据：
+创建一个简单的表并插入一行：
 
 {{< copyable "sql" >}}
 
@@ -188,7 +199,7 @@ INSERT INTO t1 (a) VALUES (1);
 SELECT * FROM t1;
 ```
 
-```sql
+```
 mysql> drop table if exists t1;
 Query OK, 0 rows affected (0.23 sec)
 
@@ -223,7 +234,7 @@ mysql> SELECT * FROM t1;
 1 row in set (0.00 sec)
 ```
 
-删除一张表。如果该表不存在，就建一张表：
+如果表存在则删除，如果表不存在则有条件地创建表：
 
 {{< copyable "sql" >}}
 
@@ -239,11 +250,13 @@ DESC t1;
 ```sql
 mysql> DROP TABLE IF EXISTS t1;
 Query OK, 0 rows affected (0.22 sec)
+
 mysql> CREATE TABLE IF NOT EXISTS t1 (
-          id BIGINT NOT NULL PRIMARY KEY auto_increment,
-          b VARCHAR(200) NOT NULL
-         );
+         id BIGINT NOT NULL PRIMARY KEY auto_increment,
+         b VARCHAR(200) NOT NULL
+        );
 Query OK, 0 rows affected (0.08 sec)
+
 mysql> DESC t1;
 +-------+--------------+------+------+---------+----------------+
 | Field | Type         | Null | Key  | Default | Extra          |
@@ -256,14 +269,26 @@ mysql> DESC t1;
 
 ## MySQL 兼容性
 
-* 支持除空间类型以外的所有数据类型。
-* 为了兼容 MySQL，TiDB 在语法上支持 `HASH`、`BTREE` 和 `RTREE` 等索引类型，但会忽略它们。
+* 支持除空间类型外的所有数据类型。
+* TiDB 在语法上接受 `HASH`、`BTREE` 和 `RTREE` 等索引类型以与 MySQL 兼容，但会忽略它们。
 * TiDB 支持解析 `FULLTEXT` 语法，但不支持使用 `FULLTEXT` 索引。
-* 为了与 MySQL 兼容，`index_col_name` 属性支持 length 选项，最大长度默认限制为 3072 字节。此长度限制可以通过配置项 `max-index-length` 更改，具体请参阅 [TiDB 配置文件描述](/tidb-configuration-file.md#max-index-length)。
-* 为了与 MySQL 兼容，TiDB 会解析但忽略 `index_col_name` 属性的 `[ASC | DESC]` 索引排序选项。
+
+<CustomContent platform="tidb">
+
+* 为了兼容性，`index_col_name` 属性支持长度选项，默认最大长度限制为 3072 字节。可以通过 `max-index-length` 配置选项更改长度限制。详情请参见 [TiDB 配置文件](/tidb-configuration-file.md#max-index-length)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+* 为了兼容性，`index_col_name` 属性支持长度选项，最大长度限制为 3072 字节。
+
+</CustomContent>
+
+* `index_col_name` 中的 `[ASC | DESC]` 目前会被解析但忽略（与 MySQL 5.7 兼容的行为）。
 * `COMMENT` 属性不支持 `WITH PARSER` 选项。
-* TiDB 在单个表中默认支持 1017 列，最大可支持 4096 列。InnoDB 中相应的数量限制为 1017 列，MySQL 中的硬限制为 4096 列。详情参阅 [TiDB 使用限制](/tidb-limitations.md)。
-* 分区表支持 `HASH`、`RANGE`、`LIST` 和 `KEY` [分区类型](/partitioned-table.md#分区类型)。对于不支持的分区类型，TiDB 会报 `Warning: Unsupported partition type %s, treat as normal table` 错误，其中 `%s` 为不支持的具体分区类型。
+* TiDB 默认支持单个表中的 1017 列，最多支持 4096 列。InnoDB 中对应的限制是 1017 列，MySQL 的硬限制是 4096 列。详情请参见 [TiDB 限制](/tidb-limitations.md)。
+* TiDB 支持 `HASH`、`RANGE`、`LIST` 和 `KEY` [分区类型](/partitioned-table.md#分区类型)。对于不支持的分区类型，TiDB 返回 `Warning: Unsupported partition type %s, treat as normal table`，其中 `%s` 是具体的不支持的分区类型。
 
 ## 另请参阅
 

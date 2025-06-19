@@ -1,35 +1,35 @@
 ---
 title: HTAP 查询
-summary: 介绍 TiDB 中的 HTAP 查询功能。
+summary: 介绍 TiDB 中的 HTAP 查询。
 ---
 
 # HTAP 查询
 
-HTAP 是 Hybrid Transactional / Analytical Processing 的缩写。传统意义上，数据库往往专为交易或者分析场景设计，因而数据平台往往需要被切分为 Transactional Processing 和 Analytical Processing 两个部分，而数据需要从交易库复制到分析型数据库以便快速响应分析查询。而 TiDB 数据库则可以同时承担交易和分析两种职能，这大大简化了数据平台的建设，也能让用户使用更新鲜的数据进行分析。
+HTAP 代表混合事务和分析处理（Hybrid Transactional and Analytical Processing）。传统上，数据库通常针对事务或分析场景进行设计，因此数据平台经常需要拆分为事务处理和分析处理，并且需要将数据从事务数据库复制到分析数据库以快速响应分析查询。TiDB 数据库可以同时执行事务和分析任务，这大大简化了数据平台的构建，并允许用户使用更新鲜的数据进行分析。
 
-在 TiDB 当中，同时拥有面向在线事务处理的行存储引擎 TiKV 与面向实时分析场景的列存储引擎 TiFlash 两套存储引擎。数据在行存 (Row-Store) 与列存 (Columnar-Store) 同时存在，自动同步，保持强一致性。行存为在线事务处理 OLTP 提供优化，列存则为在线分析处理 OLAP 提供性能优化。
+TiDB 使用行式存储引擎 TiKV 进行在线事务处理（OLTP），使用列式存储引擎 TiFlash 进行在线分析处理（OLAP）。行式存储引擎和列式存储引擎共存以实现 HTAP。两种存储引擎都可以自动复制数据并保持强一致性。行式存储引擎优化 OLTP 性能，列式存储引擎优化 OLAP 性能。
 
-在[创建数据库](/develop/dev-guide-create-table.md#使用-htap-能力)章节当中，已经介绍了如何开启 TiDB 的 HTAP 能力。下面将进一步介绍如何使用 HTAP 能力更快地分析数据。
+[创建表](/develop/dev-guide-create-table.md#use-htap-capabilities)部分介绍了如何启用 TiDB 的 HTAP 功能。以下介绍如何使用 HTAP 更快地分析数据。
 
 ## 数据准备
 
-在开始之前，你可以[通过 `tiup demo` 命令导入](/develop/dev-guide-bookshop-schema-design.md#方法一通过-tiup-demo-命令行)更加大量的示例数据，例如：
+在开始之前，你可以[通过 `tiup demo` 命令](/develop/dev-guide-bookshop-schema-design.md#method-1-via-tiup-demo)导入更多示例数据。例如：
 
 ```shell
 tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --ratings=1000000 --orders=1000000 --host 127.0.0.1 --port 4000 --drop-tables
 ```
 
-或[使用 TiDB Cloud 的 Import 功能导入](/develop/dev-guide-bookshop-schema-design.md#方法二通过-tidb-cloud-import-功能)预先准备好的示例数据。
+或者你可以[使用 TiDB Cloud 的导入功能](/develop/dev-guide-bookshop-schema-design.md#method-2-via-tidb-cloud-import)导入预先准备好的示例数据。
 
 ## 窗口函数
 
-在使用数据库时，除了希望它能够存储想要记录的数据，能够实现诸如下单买书、给书籍评分等业务功能外，可能还需要对已有的数据进行分析，以便根据数据作出进一步的运营和决策。
+在使用数据库时，除了存储数据和提供应用功能（如订购和评价图书）外，你可能还需要分析数据库中的数据以进行进一步的操作和决策。
 
-在[单表读取](/develop/dev-guide-get-data-from-single-table.md)章节当中，已经介绍了如何使用聚合查询来分析数据的整体情况，在更为复杂的使用场景下，你可能希望多个聚合查询的结果汇总在一个查询当中。例如：你想要对某一本书的订单量的历史趋势有所了解，就需要在每个月都对所有订单数据进行一次聚合求 `sum`，然后将 `sum` 结果汇总在一起才能够得到历史的趋势变化数据。
+[从单表查询数据](/develop/dev-guide-get-data-from-single-table.md)文档介绍了如何使用聚合查询来整体分析数据。在更复杂的场景中，你可能想要将多个聚合查询的结果聚合到一个查询中。如果你想知道特定图书订单金额的历史趋势，你可以对每个月的所有订单数据进行 `sum` 聚合，然后将 `sum` 结果聚合在一起以获得历史趋势。
 
-为了方便用户进行此类分析，TiDB 从 3.0 版本开始便支持了窗口函数功能，窗口函数为每一行数据提供了跨行数据访问的能力，不同于常规的聚合查询，窗口函数在对数据行进行聚合时不会导致结果集被合并成单行数据。
+为了便于此类分析，从 TiDB v3.0 开始，TiDB 支持窗口函数。对于每一行数据，此函数提供了跨多行访问数据的能力。与常规聚合查询不同，窗口函数在聚合行时不会将结果集合并为单行。
 
-与聚合函数类似，窗口函数在使用时也需要搭配一套固定的语法：
+与聚合函数类似，在使用窗口函数时也需要遵循固定的语法集：
 
 ```sql
 SELECT
@@ -40,7 +40,7 @@ FROM
 
 ### `ORDER BY` 子句
 
-例如：可以利用聚合窗口函数 `sum()` 函数的累加效果来实现对某一本书的订单量的历史趋势的分析:
+使用聚合窗口函数 `sum()`，你可以分析特定图书订单金额的历史趋势。例如：
 
 ```sql
 WITH orders_group_by_month AS (
@@ -56,7 +56,7 @@ FROM orders_group_by_month
 ORDER BY month ASC;
 ```
 
-`sum()` 函数会在 `OVER` 子句当中通过 `ORDER BY` 子句指定的排序方式按顺序对数据进行累加，累加的结果如下：
+`sum()` 函数按照 `OVER` 子句中 `ORDER BY` 语句指定的顺序累积数据。结果如下：
 
 ```
 +---------+-------+
@@ -79,13 +79,13 @@ ORDER BY month ASC;
 13 rows in set (0.01 sec)
 ```
 
-将得到的数据通过一个横轴为时间，纵轴为累计订单量的折线图进行可视化，便可以轻松地通过折线图的斜率变化宏观地了解到这本书的历史订单的增长趋势。
+通过以时间为横轴、累计订单金额为纵轴的折线图可视化上述数据。你可以通过斜率的变化轻松了解该书的历史订购趋势。
 
 ### `PARTITION BY` 子句
 
-把需求变得更复杂一点，假设想要分析不同类型书的历史订单增长趋势，并且希望将这些数据通过同一个多系列折线图进行呈现。
+假设你想分析不同类型图书的历史订购趋势，并在同一个折线图中以多个系列进行可视化。
 
-可以利用 `PARTITION BY` 子句根据书的类型进行分组，对不同类型的书籍分别统计它们的订单历史订单累计量。
+你可以使用 `PARTITION BY` 子句按类型对图书进行分组，并分别统计每种类型的历史订单。
 
 ```sql
 WITH orders_group_by_month AS (
@@ -108,7 +108,7 @@ WITH orders_group_by_month AS (
 SELECT * FROM acc;
 ```
 
-查询结果如下：
+结果如下：
 
 ```
 +------------------------------+---------+------+
@@ -136,31 +136,31 @@ SELECT * FROM acc;
 
 ### 非聚合窗口函数
 
-除此之外，TiDB 还提供了一些非聚合的[窗口函数](/functions-and-operators/window-functions.md)，可以借助这些函数实现更加丰富分析查询。
+TiDB 还提供了一些非聚合的[窗口函数](/functions-and-operators/window-functions.md)用于更多分析语句。
 
-例如，在前面的[分页查询](/develop/dev-guide-paginate-results.md)章节当中，已经介绍了如何巧妙地利用 `row_number()` 函数实现高效的分页批处理能力。
+例如，[分页查询](/develop/dev-guide-paginate-results.md)文档介绍了如何使用 `row_number()` 函数实现高效的分页批处理。
 
 ## 混合负载
 
-当将 TiDB 应用于在线实时分析处理的混合负载场景时，开发人员只需要提供一个入口，TiDB 将自动根据业务类型选择不同的处理引擎。
+在混合负载场景中使用 TiDB 进行实时在线分析处理时，你只需要为你的数据提供一个 TiDB 入口点。TiDB 会根据具体业务自动选择不同的处理引擎。
 
-### 开启列存副本
+### 创建 TiFlash 副本
 
-TiDB 默认使用的存储引擎 TiKV 是行存的，你可以通过阅读[开启 HTAP 能力](/develop/dev-guide-create-table.md#使用-htap-能力)章节，在进行后续步骤前，先通过如下 SQL 对 `books` 与 `orders` 表添加 TiFlash 列存副本：
+TiDB 默认使用行式存储引擎 TiKV。要使用列式存储引擎 TiFlash，请参阅[启用 HTAP 功能](/develop/dev-guide-create-table.md#use-htap-capabilities)。在通过 TiFlash 查询数据之前，你需要使用以下语句为 `books` 和 `orders` 表创建 TiFlash 副本：
 
 ```sql
 ALTER TABLE books SET TIFLASH REPLICA 1;
 ALTER TABLE orders SET TIFLASH REPLICA 1;
 ```
 
-通过执行下面的 SQL 语句可以查看到 TiDB 创建列存副本的进度：
+你可以使用以下语句检查 TiFlash 副本的进度：
 
 ```sql
 SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'bookshop' and TABLE_NAME = 'books';
 SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'bookshop' and TABLE_NAME = 'orders';
 ```
 
-当 `PROGRESS` 列为 1 时表示同步进度完成度达到 100%，`AVAILABLE` 列为 1 表示副本当前可用。
+`PROGRESS` 列为 1 表示进度为 100% 完成，`AVAILABLE` 列为 1 表示副本当前可用。
 
 ```
 +--------------+------------+----------+---------------+-----------------+-----------+----------+
@@ -177,9 +177,9 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'bookshop'
 1 row in set (0.07 sec)
 ```
 
-副本添加完成之后，你可以通过使用 `EXPLAIN` 语句查看上面窗口函数[示例 SQL](#partition-by-子句) 的执行计划。你会发现执行计划当中已经出现了 `cop[tiflash]` 字样，说明 TiFlash 引擎已经开始发挥作用了。
+添加副本后，你可以使用 `EXPLAIN` 语句检查上述窗口函数 [`PARTITION BY` 子句](#partition-by-子句)的执行计划。如果执行计划中出现 `cop[tiflash]`，表示 TiFlash 引擎已开始工作。
 
-再次执行[示例 SQL](#partition-by-子句)，查询结果如下：
+然后，再次执行 [`PARTITION BY` 子句](#partition-by-子句)中的示例 SQL 语句。结果如下：
 
 ```
 +------------------------------+---------+------+
@@ -205,18 +205,18 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'bookshop'
 1500 rows in set (0.79 sec)
 ```
 
-通过对比前后两次的执行结果，你会发现使用 TiFlash 处理有查询速度有了较为明显的提升（当数据量更大时，提升会更为显著）。这是因为在使用窗口函数时往往需要对某些列的数据进行全表扫描，相比行存的 TiKV，列存的 TiFlash 更加适合来处理这类分析型任务的负载。而对于 TiKV 来说，如果能够通过主键或索引快速地将所要查询的行数减少，往往查询速度也会非常快，而且所消耗的资源一般相对 TiFlash 而言会更少。
+通过比较两次执行结果，你可以发现使用 TiFlash 后查询速度显著提高（在数据量大的情况下提升更明显）。这是因为窗口函数通常依赖于对某些列的全表扫描，而列式的 TiFlash 比行式的 TiKV 更适合处理这类分析任务。对于 TiKV，如果你使用主键或索引来减少需要查询的行数，查询也可以很快，并且与 TiFlash 相比消耗更少的资源。
 
 ### 指定查询引擎
 
-尽管 TiDB 会使用基于成本的优化器（CBO）自动地根据代价估算选择是否使用 TiFlash 副本。但是在实际使用当中，如果你非常确定查询的类型，推荐你使用 [Optimizer Hints](/optimizer-hints.md) 明确的指定查询所使用的执行引擎，避免因为优化器的优化结果不同，导致应用程序性能出现波动。
+TiDB 使用基于成本的优化器（CBO）根据成本估算自动选择是否使用 TiFlash 副本。但是，如果你确定你的查询是事务性的还是分析性的，你可以使用[优化器提示](/optimizer-hints.md)指定要使用的查询引擎。
 
-你可以像下面的 SQL 一样在 SELECT 语句中通过 Hint `/*+ read_from_storage(engine_name[table_name]) */` 指定查询时需要使用的查询引擎。
+要在查询中指定使用哪个引擎，你可以使用 `/*+ read_from_storage(engine_name[table_name]) */` 提示，如以下语句所示。
 
 > **注意：**
 >
-> 1. 如果你的表使用了别名，你应该将 Hints 当中的 table_name 替代为 alias_name，否则 Hints 会失效。
-> 2. 另外，对[公共表表达式](/develop/dev-guide-use-common-table-expression.md)设置 read_from_storage Hint 是不起作用的。
+> - 如果表有别名，在提示中使用别名而不是表名，否则提示不会生效。
+> - `read_from_storage` 提示对[公共表表达式](/develop/dev-guide-use-common-table-expression.md)不起作用。
 
 ```sql
 WITH orders_group_by_month AS (
@@ -240,13 +240,38 @@ WITH orders_group_by_month AS (
 SELECT * FROM acc;
 ```
 
-如果你通过 `EXPLAIN` 语句查看上面 SQL 的执行计划，你会发现 task 列中会同时出现 `cop[tiflash]` 和 `cop[tikv]`，这意味着 TiDB 在处理这个查询的时候会同时调度行存查询引擎和列存查询引擎来完成查询任务。需要指出的是，因为 tiflash 和 tikv 存储引擎通常属于不同的计算节点，所以两种查询类型互相之间不受影响。
+你可以使用 `EXPLAIN` 语句检查上述 SQL 语句的执行计划。如果任务列中同时出现 `cop[tiflash]` 和 `cop[tikv]`，表示 TiFlash 和 TiKV 都被调度来完成此查询。注意，TiFlash 和 TiKV 存储引擎通常使用不同的 TiDB 节点，因此两种查询类型不会相互影响。
 
-你可以通过阅读[使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md) 小节进一步了解 TiDB 如何选择使用 TiFlash 作为查询引擎。
+有关 TiDB 如何选择使用 TiFlash 的更多信息，请参阅[使用 TiDB 读取 TiFlash 副本](/tiflash/use-tidb-to-read-tiflash.md)。
 
-## 扩展阅读
+## 阅读更多
 
-- [HTAP 快速上手指南](/quick-start-with-htap.md)
-- [HTAP 深入探索指南](/explore-htap.md)
+<CustomContent platform="tidb">
+
+- [HTAP 快速上手](/quick-start-with-htap.md)
+- [探索 HTAP](/explore-htap.md)
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+- [TiDB Cloud HTAP 快速上手](/tidb-cloud/tidb-cloud-htap-quickstart.md)
+
+</CustomContent>
+
 - [窗口函数](/functions-and-operators/window-functions.md)
-- [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)
+- [使用 TiFlash](/tiflash/tiflash-overview.md#use-tiflash)
+
+## 需要帮助？
+
+<CustomContent platform="tidb">
+
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 上询问社区，或[提交支持工单](/support.md)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 上询问社区，或[提交支持工单](https://tidb.support.pingcap.com/)。
+
+</CustomContent>

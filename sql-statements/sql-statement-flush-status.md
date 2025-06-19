@@ -1,13 +1,13 @@
 ---
-title: FLUSH STATUS
-summary: TiDB 数据库中 FLUSH STATUS 的使用概况。
+title: FLUSH STATUS | TiDB SQL 语句参考
+summary: TiDB 数据库中 FLUSH STATUS 的使用概述。
 ---
 
 # FLUSH STATUS
 
-`FLUSH STATUS` 语句用于提供 MySQL 兼容性，但在 TiDB 上并无作用。因为 TiDB 使用 Prometheus 和 Grafana 而非 `SHOW STATUS` 来进行集中度量收集。
+此语句是为了与 MySQL 兼容而包含的。它对 TiDB 没有任何影响，因为 TiDB 使用 Prometheus 和 Grafana 进行集中式指标收集，而不是使用 `SHOW STATUS`。
 
-## 语法图
+## 语法概要
 
 ```ebnf+diagram
 FlushStmt ::=
@@ -27,13 +27,8 @@ FlushOption ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
-show status;
-```
-
-```
+mysql> show status;
 +--------------------+--------------------------------------+
 | Variable_name      | Value                                |
 +--------------------+--------------------------------------+
@@ -45,15 +40,8 @@ show status;
 | Ssl_cipher         |                                      |
 +--------------------+--------------------------------------+
 6 rows in set (0.01 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-show global status;
-```
-
-```
+mysql> show global status;
 +--------------------+--------------------------------------+
 | Variable_name      | Value                                |
 +--------------------+--------------------------------------+
@@ -65,25 +53,11 @@ show global status;
 | ddl_schema_version | 141                                  |
 +--------------------+--------------------------------------+
 6 rows in set (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-flush status;
-```
-
-```
+mysql> flush status;
 Query OK, 0 rows affected (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-show status;
-```
-
-```
+mysql> show status;
 +--------------------+--------------------------------------+
 | Variable_name      | Value                                |
 +--------------------+--------------------------------------+
@@ -99,7 +73,7 @@ show status;
 
 ## MySQL 兼容性
 
-* `FLUSH STATUS` 语句与 MySQL 兼容。
+* 此语句与 MySQL 兼容。
 
 ## 另请参阅
 

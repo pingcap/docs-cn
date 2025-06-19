@@ -1,11 +1,11 @@
 ---
 title: VIEWS
-summary: 了解 INFORMATION_SCHEMA 表 `VIEWS`。
+summary: 了解 `VIEWS` INFORMATION_SCHEMA 表。
 ---
 
 # VIEWS
 
-`VIEWS` 表提供了关于 [SQL 视图](/views.md)的信息。
+`VIEWS` 表提供了关于 [SQL 视图](/views.md) 的信息。
 
 ```sql
 USE INFORMATION_SCHEMA;
@@ -32,7 +32,7 @@ DESC VIEWS;
 10 rows in set (0.00 sec)
 ```
 
-创建视图并查询 `VIEWS` 表信息：
+创建一个视图并查询 `VIEWS` 表：
 
 ```sql
 CREATE VIEW test.v1 AS SELECT 1;
@@ -56,18 +56,18 @@ COLLATION_CONNECTION: utf8mb4_0900_ai_ci
 1 row in set (0.00 sec)
 ```
 
-`VIEWS` 表中列的含义如下：
+`VIEWS` 表中各字段的描述如下：
 
-* `TABLE_CATALOG`：视图所属的目录的名称。该值始终为 `def`。
-* `TABLE_SCHEMA`：视图所属的数据库的名称。
+* `TABLE_CATALOG`：视图所属的目录名称。该值始终为 `def`。
+* `TABLE_SCHEMA`：视图所属的数据库名称。
 * `TABLE_NAME`：视图名称。
-* `VIEW_DEFINITION`：视图的定义，由创建视图时 `SELECT` 部分的语句组成。
-* `CHECK_OPTION`：`CHECK_OPTION` 的值。取值为 `NONE`、`CASCADE` 或 `LOCAL`。
-* `IS_UPDATABLE`：`UPDATE`/`INSERT`/`DELETE` 是否对该视图可用。在 TiDB，始终为 `NO`。
-* `DEFINER`：视图的创建者用户名称，格式为 `'user_name'@'host_name'`。
-* `SECURITY_TYPE`：`SQL SECURITY` 的值，取值为 `DEFINER` 或 `INVOKER`。
-* `CHARACTER_SET_CLIENT`：在视图创建时 session 变量 `character_set_client` 的值。
-* `COLLATION_CONNECTION`：在视图创建时 session 变量 `collation_connection` 的值。
+* `VIEW_DEFINITION`：视图的定义，即创建视图时的 `SELECT` 语句。
+* `CHECK_OPTION`：`CHECK_OPTION` 的值。可选值为 `NONE`、`CASCADE` 和 `LOCAL`。
+* `IS_UPDATABLE`：视图是否可以执行 `UPDATE`/`INSERT`/`DELETE` 操作。在 TiDB 中，该值始终为 `NO`。
+* `DEFINER`：创建视图的用户名，格式为 `'user_name'@'host_name'`。
+* `SECURITY_TYPE`：`SQL SECURITY` 的值。可选值为 `DEFINER` 和 `INVOKER`。
+* `CHARACTER_SET_CLIENT`：创建视图时 `character_set_client` 会话变量的值。
+* `COLLATION_CONNECTION`：创建视图时 `collation_connection` 会话变量的值。
 
 ## 另请参阅
 

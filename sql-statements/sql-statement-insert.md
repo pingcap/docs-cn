@@ -1,11 +1,11 @@
 ---
-title: INSERT
-summary: TiDB 数据库中 INSERT 的使用概况。
+title: INSERT | TiDB SQL 语句参考
+summary: TiDB 数据库中 INSERT 的使用概述。
 ---
 
 # INSERT
 
-使用 `INSERT` 语句在表中插入新行。
+此语句用于向表中插入新行。
 
 ## 语法图
 
@@ -43,68 +43,28 @@ OnDuplicateKeyUpdate ::=
 
 > **注意：**
 >
-> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PriorityOpt` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
+> 从 v6.6.0 开始，TiDB 支持[资源控制](/tidb-resource-control.md)。你可以使用此功能在不同的资源组中以不同的优先级执行 SQL 语句。通过为这些资源组配置适当的配额和优先级，你可以更好地控制不同优先级 SQL 语句的调度。当启用资源控制时，语句优先级（`PriorityOpt`）将不再生效。建议你使用[资源控制](/tidb-resource-control.md)来管理不同 SQL 语句的资源使用。
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
-CREATE TABLE t1 (a INT);
-```
-
-```
+mysql> CREATE TABLE t1 (a INT);
 Query OK, 0 rows affected (0.11 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-CREATE TABLE t2 LIKE t1;
-```
-
-```
+mysql> CREATE TABLE t2 LIKE t1;
 Query OK, 0 rows affected (0.11 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-INSERT INTO t1 VALUES (1);
-```
-
-```
+mysql> INSERT INTO t1 VALUES (1);
 Query OK, 1 row affected (0.02 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-INSERT INTO t1 (a) VALUES (1);
-```
-
-```
+mysql> INSERT INTO t1 (a) VALUES (1);
 Query OK, 1 row affected (0.01 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-INSERT INTO t2 SELECT * FROM t1;
-```
-
-```
+mysql> INSERT INTO t2 SELECT * FROM t1;
 Query OK, 2 rows affected (0.01 sec)
 Records: 2  Duplicates: 0  Warnings: 0
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM t1;
-```
-
-```
+mysql> SELECT * FROM t1;
 +------+
 | a    |
 +------+
@@ -112,15 +72,8 @@ SELECT * FROM t1;
 |    1 |
 +------+
 2 rows in set (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM t2;
-```
-
-```
+mysql> SELECT * FROM t2;
 +------+
 | a    |
 +------+
@@ -128,26 +81,12 @@ SELECT * FROM t2;
 |    1 |
 +------+
 2 rows in set (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-INSERT INTO t2 VALUES (2),(3),(4);
-```
-
-```
+mysql> INSERT INTO t2 VALUES (2),(3),(4);
 Query OK, 3 rows affected (0.02 sec)
 Records: 3  Duplicates: 0  Warnings: 0
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM t2;
-```
-
-```
+mysql> SELECT * FROM t2;
 +------+
 | a    |
 +------+
@@ -162,7 +101,7 @@ SELECT * FROM t2;
 
 ## MySQL 兼容性
 
-`INSERT` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
+TiDB 中的 `INSERT` 语句与 MySQL 完全兼容。如果发现任何兼容性差异，请[报告问题](https://docs.pingcap.com/tidb/stable/support)。
 
 ## 另请参阅
 

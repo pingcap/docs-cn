@@ -1,17 +1,17 @@
 ---
-title: SHOW COLLATION
-summary: TiDB 数据库中 SHOW COLLATION 的使用概况。
+title: SHOW COLLATION | TiDB SQL 语句参考
+summary: TiDB 数据库中 SHOW COLLATION 的使用概述。
 ---
 
 # SHOW COLLATION
 
-`SHOW COLLATION` 语句用于提供一个静态的排序规则列表，确保与 MySQL 客户端库的兼容性。
+此语句提供排序规则的静态列表，包含它是为了与 MySQL 客户端库保持兼容。
 
 > **注意：**
 >
-> `SHOW COLLATION` 所展示的排序规则列表与 TiDB 集群是否开启[新排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)有关，详情请见 [TiDB 字符集和排序规则](/character-set-and-collation.md)。
+> 当启用["新的排序规则框架"](/character-set-and-collation.md#new-framework-for-collations)时，`SHOW COLLATION` 的结果会有所不同。有关新排序规则框架的详细信息，请参阅[字符集和排序规则](/character-set-and-collation.md)。
 
-## 语法图
+## 语法
 
 ```ebnf+diagram
 ShowCollationStmt ::=
@@ -24,13 +24,13 @@ ShowLikeOrWhere ::=
 
 ## 示例
 
-若未开启新排序规则框架，仅展示二进制排序规则：
+当禁用新的排序规则框架时，只显示二进制排序规则。
 
 ```sql
 SHOW COLLATION;
 ```
 
-```sql
+```
 +-------------+---------+------+---------+----------+---------+
 | Collation   | Charset | Id   | Default | Compiled | Sortlen |
 +-------------+---------+------+---------+----------+---------+
@@ -43,13 +43,13 @@ SHOW COLLATION;
 5 rows in set (0.02 sec)
 ```
 
-若开启了新排序规则框架，则在二进制排序规则之外，额外支持 `utf8_general_ci` 和 `utf8mb4_general_ci` 两种大小写和口音不敏感的排序规则：
+当启用新的排序规则框架时，还额外支持 `utf8_general_ci` 和 `utf8mb4_general_ci`。
 
 ```sql
 SHOW COLLATION;
 ```
 
-```sql
+```
 +--------------------+---------+------+---------+----------+---------+
 | Collation          | Charset | Id   | Default | Compiled | Sortlen |
 +--------------------+---------+------+---------+----------+---------+
@@ -68,7 +68,7 @@ SHOW COLLATION;
 11 rows in set (0.001 sec)
 ```
 
-要过滤字符集，可以添加 `WHERE` 子句。
+要筛选字符集，你可以添加 `WHERE` 子句。
 
 ```sql
 SHOW COLLATION WHERE Charset="utf8mb4";
@@ -89,7 +89,7 @@ SHOW COLLATION WHERE Charset="utf8mb4";
 
 ## MySQL 兼容性
 
-`SHOW COLLATION` 语句功能与 MySQL 完全兼容。注意，TiDB 中字符集的默认排序规则与 MySQL 有所不同，具体可参考[与 MySQL 兼容性对比](/mysql-compatibility.md#默认设置)。如发现任何其他兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
+TiDB 中 `SHOW COLLATION` 语句的用法与 MySQL 完全兼容。但是，TiDB 中的字符集可能与 MySQL 相比有不同的默认排序规则。详情请参阅[与 MySQL 的兼容性](/mysql-compatibility.md)。如果发现任何兼容性差异，请[报告问题](https://docs.pingcap.com/tidb/stable/support)。
 
 ## 另请参阅
 

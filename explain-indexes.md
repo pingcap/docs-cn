@@ -1,20 +1,18 @@
 ---
-title: 用 EXPLAIN 查看索引查询的执行计划
+title: 解释使用索引的语句
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 ---
 
-# 用 EXPLAIN 查看索引查询的执行计划
+# 解释使用索引的语句
 
-SQL 查询可能会使用索引，可以通过 `EXPLAIN` 语句来查看索引查询的执行计划。本文提供多个示例，以帮助用户理解索引查询是如何执行的。
-
-TiDB 支持以下使用索引的算子来提升查询速度：
+TiDB 支持几种使用索引来加速查询执行的算子：
 
 + [`IndexLookup`](#indexlookup)
 + [`IndexReader`](#indexreader)
 + [`Point_Get` 和 `Batch_Point_Get`](#point_get-和-batch_point_get)
 + [`IndexFullScan`](#indexfullscan)
 
-本文档中的示例都基于以下数据：
+本文档中的示例基于以下示例数据：
 
 {{< copyable "sql" >}}
 
@@ -34,7 +32,7 @@ INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1024), RANDOM_BYTES(1024) FROM t1 a JOI
 
 ## IndexLookup
 
-TiDB 从二级索引检索数据时会使用 `IndexLookup` 算子。例如，以下所有查询均会在 `intkey` 列的索引上使用 `IndexLookup` 算子：
+TiDB 在从二级索引检索数据时使用 `IndexLookup` 算子。在这种情况下，以下查询都将在 `intkey` 索引上使用 `IndexLookup` 算子：
 
 {{< copyable "sql" >}}
 
@@ -93,12 +91,12 @@ EXPLAIN SELECT * FROM t1 WHERE intkey >= 99 AND intkey <= 103;
 3 rows in set (0.00 sec)
 ```
 
-`IndexLookup` 算子有以下两个子节点：
+`IndexLookup` 算子有两个子节点：
 
-* `├─IndexRangeScan_8(Build)` 算子节点对 `intkey` 列的索引执行范围扫描，并检索内部的 `RowID` 值（对此表而言，即为主键）。
-* `└─TableRowIDScan_9(Probe)` 算子节点随后从表数据中检索整行。
+* `├─IndexRangeScan_8(Build)` 算子在 `intkey` 索引上执行范围扫描，并检索内部 `RowID`（对于此表，即主键）的值。
+* `└─TableRowIDScan_9(Probe)` 算子然后从表数据中检索完整的行。
 
-`IndexLookup` 任务分以上两步执行。如果满足条件的行较多，SQL 优化器可能会根据[常规统计信息](/statistics.md)选择使用 `TableFullScan` 算子。在以下示例中，很多行都满足 `intkey > 100` 这一条件，因此优化器选择了 `TableFullScan`：
+因为 `IndexLookup` 任务需要两个步骤，在匹配大量行的场景中，SQL 优化器可能会根据[统计信息](/statistics.md)选择 `TableFullScan` 算子。在以下示例中，大量行匹配条件 `intkey > 100`，因此选择了 `TableFullScan`：
 
 {{< copyable "sql" >}}
 
@@ -117,7 +115,7 @@ EXPLAIN SELECT * FROM t1 WHERE intkey > 100;
 3 rows in set (0.00 sec)
 ```
 
-`IndexLookup` 算子能在带索引的列上有效优化 `LIMIT`：
+`IndexLookup` 算子还可以用于有效地优化索引列上的 `LIMIT`：
 
 {{< copyable "sql" >}}
 
@@ -135,13 +133,14 @@ EXPLAIN SELECT * FROM t1 ORDER BY intkey DESC LIMIT 10;
 | └─TableRowIDScan_19(Probe)     | 10.00   | cop[tikv] | table:t1                       | keep order:false, stats:pseudo     |
 +--------------------------------+---------+-----------+--------------------------------+------------------------------------+
 4 rows in set (0.00 sec)
+
 ```
 
-以上示例中，TiDB 从 `intkey` 索引读取最后 10 行，然后从表数据中检索这些行的 `RowID` 值。
+在上面的示例中，从索引 `intkey` 中读取最后 10 行。然后从表数据中检索这些 `RowID` 值。
 
 ## IndexReader
 
-TiDB 支持覆盖索引优化 (covering index optimization)。如果 TiDB 能从索引中检索出所有行，就会跳过 `IndexLookup` 任务中通常所需的第二步（即从表数据中检索整行）。示例如下：
+TiDB 支持_覆盖索引优化_。如果所有行都可以从索引中检索，TiDB 将跳过 `IndexLookup` 中通常需要的第二个步骤。考虑以下两个示例：
 
 {{< copyable "sql" >}}
 
@@ -170,11 +169,11 @@ EXPLAIN SELECT id FROM t1 WHERE intkey = 123;
 3 rows in set (0.00 sec)
 ```
 
-以上结果中，`id` 也是内部的 `RowID` 值，因此 `id` 也存储在 `intkey` 索引中。部分 `└─IndexRangeScan_5` 任务使用 `intkey` 索引后，可直接返回 `RowID` 值。
+因为 `id` 也是内部 `RowID`，所以它存储在 `intkey` 索引中。在使用 `intkey` 索引作为 `└─IndexRangeScan_5` 的一部分后，可以直接返回 `RowID` 的值。
 
 ## Point_Get 和 Batch_Point_Get
 
-TiDB 直接从主键或唯一键检索数据时会使用 `Point_Get` 或 `Batch_Point_Get` 算子。这两个算子比 `IndexLookup` 更有效率。示例如下：
+TiDB 在直接从主键或唯一键检索数据时使用 `Point_Get` 或 `Batch_Point_Get` 算子。这些算子比 `IndexLookup` 更高效。例如：
 
 {{< copyable "sql" >}}
 
@@ -229,7 +228,7 @@ Query OK, 0 rows affected (0.37 sec)
 
 ## IndexFullScan
 
-索引是有序的，所以优化器可以使用 `IndexFullScan` 算子来优化常见的查询，例如在索引值上使用 `MIN` 或 `MAX` 函数：
+因为索引是有序的，所以 `IndexFullScan` 算子可以用来优化常见查询，例如索引值的 `MIN` 或 `MAX` 值：
 
 {{< copyable "sql" >}}
 
@@ -262,9 +261,9 @@ EXPLAIN SELECT MAX(intkey) FROM t1;
 5 rows in set (0.00 sec)
 ```
 
-以上语句的执行过程中，TiDB 在每一个 TiKV Region 上执行 `IndexFullScan` 操作。虽然算子名为 `FullScan` 即全扫描，TiDB 只读取第一行 (`└─Limit_28`)。每个 TiKV Region 返回各自的 `MIN` 或 `MAX` 值给 TiDB，TiDB 再执行流聚合运算来过滤出一行数据。即使表为空，带 `MAX` 或 `MIN` 函数的流聚合运算也能保证返回 `NULL` 值。
+在上述语句中，在每个 TiKV Region 上执行 `IndexFullScan` 任务。尽管名称为 `FullScan`，但只需要读取第一行（`└─Limit_28`）。每个 TiKV Region 将其 `MIN` 或 `MAX` 值返回给 TiDB，然后 TiDB 执行流式聚合以过滤出单行。带有聚合函数 `MAX` 或 `MIN` 的流式聚合还确保在表为空时返回 `NULL`。
 
-相反，在没有索引的值上执行 `MIN` 函数会在每一个 TiKV Region 上执行 `TableFullScan` 操作。该查询会要求在 TiKV 中扫描所有行，但 `TopN` 计算可保证每个 TiKV Region 只返回一行数据给 TiDB。尽管 `TopN` 能减少 TiDB 和 TiKV 之间的多余数据传输，但该查询的效率仍远不及以上示例（`MIN` 能够使用索引）。
+相比之下，在未索引值上执行 `MIN` 函数将导致 `TableFullScan`。查询将需要扫描 TiKV 中的所有行，但执行 `TopN` 计算以确保每个 TiKV Region 只向 TiDB 返回一行。虽然 `TopN` 防止了 TiKV 和 TiDB 之间传输过多的行，但与上面的示例相比，这个语句仍然被认为效率低得多，因为 `MIN` 能够利用索引。
 
 {{< copyable "sql" >}}
 
@@ -286,7 +285,7 @@ EXPLAIN SELECT MIN(pad1) FROM t1;
 6 rows in set (0.00 sec)
 ```
 
-执行以下语句时，TiDB 将使用 `IndexFullScan` 算子扫描索引中的每一行：
+以下语句将使用 `IndexFullScan` 算子扫描索引中的每一行：
 
 {{< copyable "sql" >}}
 
@@ -317,9 +316,9 @@ EXPLAIN SELECT AVG(intkey) FROM t1;
 4 rows in set (0.00 sec)
 ```
 
-以上示例中，`IndexFullScan` 比 `TableFullScan` 更有效率，因为 `(intkey + RowID)` 索引中值的长度小于整行的长度。
+在上面的示例中，`IndexFullScan` 比 `TableFullScan` 更高效，因为 `(intkey + RowID)` 索引中的值宽度小于完整行的宽度。
 
-以下语句不支持使用 `IndexFullScan` 算子，因为涉及该表中的其他列：
+以下语句不支持使用 `IndexFullScan` 算子，因为需要从表中获取额外的列：
 
 {{< copyable "sql" >}}
 
@@ -339,13 +338,3 @@ EXPLAIN SELECT AVG(intkey), ANY_VALUE(pad1) FROM t1;
 +------------------------------+---------+-----------+---------------+-----------------------------------------------------------------------------------------------------------------------+
 5 rows in set (0.00 sec)
 ```
-
-## 其他类型查询的执行计划
-
-+ [MPP 模式查询的执行计划](/explain-mpp.md)
-+ [Join 查询的执行计划](/explain-joins.md)
-+ [子查询的执行计划](/explain-subqueries.md)
-+ [聚合查询的执行计划](/explain-aggregation.md)
-+ [视图查询的执行计划](/explain-views.md)
-+ [分区查询的执行计划](/explain-partitions.md)
-+ [索引合并查询的执行计划](/explain-index-merge.md)

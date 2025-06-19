@@ -1,27 +1,27 @@
 ---
-title: 公共表表达式 (CTE)
-summary: 介绍 TiDB 公共表表达式能力，用以简化 SQL。
+title: 公共表表达式
+summary: 了解 TiDB 的 CTE 功能，它可以帮助你更高效地编写 SQL 语句。
 ---
 
-# 公共表表达式 (CTE)
+# 公共表表达式
 
-由于业务的客观复杂性，有时候会写出长达 2000 行的单条 SQL 语句，其中包含大量的聚合和多层子查询嵌套，维护此类 SQL 堪称开发人员的噩梦。
+在某些事务场景中，由于应用程序的复杂性，你可能需要编写长达 2,000 行的单个 SQL 语句。该语句可能包含大量聚合和多层子查询嵌套。维护这样一个长 SQL 语句可能会成为开发人员的噩梦。
 
-在前面的小节当中已经介绍了如何使用[视图](/develop/dev-guide-use-views.md)简化查询，也介绍了如何使用[临时表](/develop/dev-guide-use-temporary-tables.md)来缓存中间查询结果。
+为了避免这样的长 SQL 语句，你可以使用[视图](/develop/dev-guide-use-views.md)来简化查询，或使用[临时表](/develop/dev-guide-use-temporary-tables.md)来缓存中间查询结果。
 
-在这一小节当中，将介绍 TiDB 当中的公共表表达式（CTE）语法，它是一种更加便捷的复用查询结果的方法。
+本文介绍 TiDB 中的公共表表达式（Common Table Expression，CTE）语法，这是重用查询结果的一种更便捷的方式。
 
-TiDB 从 5.1 版本开始支持 ANSI SQL 99 标准的 CTE 及其递归的写法，极大提升开发人员和 DBA 编写复杂业务逻辑 SQL 的效率，增强代码的可维护性。
+自 TiDB v5.1 起，TiDB 支持 ANSI SQL99 标准的 CTE 和递归。使用 CTE，你可以更高效地编写复杂应用逻辑的 SQL 语句，并且更容易维护代码。
 
-## 基本使用
+## 基本用法
 
-公共表表达式 (CTE) 是一个临时的中间结果集，能够在 SQL 语句中引用多次，提高 SQL 语句的可读性与执行效率。在 TiDB 中可以通过 [`WITH`](/sql-statements/sql-statement-with.md) 语句使用公共表表达式。
+公共表表达式（CTE）是一个临时结果集，可以在 SQL 语句中多次引用，以提高语句的可读性和执行效率。你可以使用 [`WITH`](/sql-statements/sql-statement-with.md) 语句来使用 CTE。
 
-公共表表达式可以分为非递归和递归两种类型。
+公共表表达式可以分为两种类型：非递归 CTE 和递归 CTE。
 
-### 非递归的 CTE
+### 非递归 CTE
 
-非递归的 CTE 使用如下语法进行定义：
+非递归 CTE 可以使用以下语法定义：
 
 ```sql
 WITH <query_name> AS (
@@ -30,12 +30,12 @@ WITH <query_name> AS (
 SELECT ... FROM <query_name>;
 ```
 
-例如，假设还想知道最年长的 50 位作家分别编写过多少书籍。
+例如，如果你想知道 50 位最年长的作者各自写了多少本书，请按照以下步骤操作：
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
-在 SQL 中，可以将[临时表](/develop/dev-guide-use-temporary-tables.md)小节当中的例子改为以下 SQL 语句：
+将[临时表](/develop/dev-guide-use-temporary-tables.md)中的语句更改为以下内容：
 
 ```sql
 WITH top_50_eldest_authors_cte AS (
@@ -54,7 +54,7 @@ LEFT JOIN book_authors ba ON ta.id = ba.author_id
 GROUP BY ta.id;
 ```
 
-查询结果如下：
+结果如下：
 
 ```
 +------------+------------+---------------------+-------+
@@ -70,9 +70,7 @@ GROUP BY ta.id;
 ```
 
 </div>
-<div label="Java">
-
-在 Java 中的示例如下：
+<div label="Java" value = "java">
 
 ```java
 public List<Author> getTop50EldestAuthorInfoByCTE() throws SQLException {
@@ -111,7 +109,7 @@ public List<Author> getTop50EldestAuthorInfoByCTE() throws SQLException {
 </div>
 </SimpleTab>
 
-这时，可以发现名为 “Ray Macejkovic” 的作者写了 4 本书，继续通过 CTE 查询来了解这 4 本书的销量和评分：
+可以发现作者 "Ray Macejkovic" 写了 4 本书。通过 CTE 查询，你可以进一步获取这 4 本书的订单和评分信息，如下所示：
 
 ```sql
 WITH books_authored_by_rm AS (
@@ -146,7 +144,7 @@ FROM
 ;
 ```
 
-查询结果如下：
+结果如下：
 
 ```
 +------------+-------------------------+----------------+--------+
@@ -160,19 +158,19 @@ FROM
 4 rows in set (0.06 sec)
 ```
 
-在这个 SQL 语句，定义了三个 CTE 块，CTE 块之间使用 `,` 进行分隔。
+这个 SQL 语句中定义了三个 CTE 块，它们用 `,` 分隔。
 
-先在 CTE 块 `books_authored_by_rm` 当中将该作者（作者 ID 为 `2299112019`）所编写的书查出来，然后在 `books_with_average_ratings` 和 `books_with_orders` 中分别查出这些书的平均评分和订单数，最后通过 `JOIN` 语句进行汇总。
+首先，在 CTE 块 `books_authored_by_rm` 中查找该作者（ID 为 `2299112019`）写的书。然后在 `books_with_average_ratings` 和 `books_with_orders` 中分别找到这些书的平均评分和订单。最后，通过 `JOIN` 语句聚合结果。
 
-值得注意的是，`books_authored_by_rm` 中的查询只会执行一次，TiDB 会开辟一块临时空间对查询的结果进行缓存，当 `books_with_average_ratings` 和 `books_with_orders` 引用时会直接从该临时空间当中获取数据。
+注意，`books_authored_by_rm` 中的查询只执行一次，然后 TiDB 创建一个临时空间来缓存其结果。当 `books_with_average_ratings` 和 `books_with_orders` 中的查询引用 `books_authored_by_rm` 时，TiDB 直接从这个临时空间获取其结果。
 
-> **建议：**
+> **提示：**
 >
-> 当默认的 CTE 查询执行效率不高时，你可以使用 [`MERGE()`](/optimizer-hints.md#merge) hint，将 CTE 子查询拓展到外部查询，以此提高执行效率。
+> 如果默认 CTE 查询的效率不好，你可以使用 [`MERGE()`](/optimizer-hints.md#merge) 提示将 CTE 子查询展开到外部查询中以提高效率。
 
-### 递归的 CTE
+### 递归 CTE
 
-递归的公共表表达式可以使用如下语法进行定义：
+递归 CTE 可以使用以下语法定义：
 
 ```sql
 WITH RECURSIVE <query_name> AS (
@@ -181,7 +179,7 @@ WITH RECURSIVE <query_name> AS (
 SELECT ... FROM <query_name>;
 ```
 
-比较经典的例子是通过递归的 CTE 生成一组[斐波那契数](https://zh.wikipedia.org/wiki/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0)：
+一个经典的例子是使用递归 CTE 生成一组[斐波那契数](https://en.wikipedia.org/wiki/Fibonacci_number)：
 
 ```sql
 WITH RECURSIVE fibonacci (n, fib_n, next_fib_n) AS
@@ -193,7 +191,7 @@ WITH RECURSIVE fibonacci (n, fib_n, next_fib_n) AS
 SELECT * FROM fibonacci;
 ```
 
-查询结果如下：
+结果如下：
 
 ```
 +------+-------+------------+
@@ -213,6 +211,20 @@ SELECT * FROM fibonacci;
 10 rows in set (0.00 sec)
 ```
 
-## 扩展阅读
+## 阅读更多
 
 - [WITH](/sql-statements/sql-statement-with.md)
+
+## 需要帮助？
+
+<CustomContent platform="tidb">
+
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 上询问社区，或[提交支持工单](/support.md)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 上询问社区，或[提交支持工单](https://tidb.support.pingcap.com/)。
+
+</CustomContent>

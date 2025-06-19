@@ -1,45 +1,55 @@
 ---
-title: 下推计算结果缓存
-summary: TiDB 4.0 支持下推计算结果缓存，配置位于 `tikv-client.copr-cache`，缓存仅存储在 TiDB 内存中，不共享缓存，对 Region 写入会导致缓存失效。缓存命中率可通过 `EXPLAIN ANALYZE` 或 Grafana 监控面板查看。
+title: Coprocessor 缓存
+summary: 了解 Coprocessor 缓存的功能特性。
 ---
 
-# 下推计算结果缓存
+# Coprocessor 缓存
 
-TiDB 从 4.0 起支持下推计算结果缓存（即 Coprocessor Cache 功能）。开启该功能后，将在 TiDB 实例侧缓存下推给 TiKV 计算的结果，在部分场景下起到加速效果。
+从 v4.0 开始，TiDB 实例支持缓存下推到 TiKV 的计算结果（Coprocessor 缓存功能），这可以在某些场景下加速计算过程。
 
 ## 配置
 
-Coprocessor Cache 的配置均位于 TiDB 的 `tikv-client.copr-cache` 配置项中。Coprocessor 的具体开启和配置方法，见 [TiDB 配置文件描述](/tidb-configuration-file.md#tikv-clientcopr-cache-从-v400-版本开始引入)。
+<CustomContent platform="tidb">
 
-## 特性说明
+您可以通过 TiDB 配置文件中的 `tikv-client.copr-cache` 配置项配置 Coprocessor 缓存。有关如何启用和配置 Coprocessor 缓存的详细信息，请参见 [TiDB 配置文件](/tidb-configuration-file.md#tikv-clientcopr-cache-new-in-v400)。
 
-+ 所有 SQL 在单个 TiDB 实例上的首次执行都不会被缓存。
-+ 缓存仅存储在 TiDB 内存中，TiDB 重启后缓存会失效。
-+ 不同 TiDB 实例之间不共享缓存。
-+ 缓存的是下推计算结果，即使缓存命中，后续仍有 TiDB 计算。
-+ 缓存以 Region 为单位。对 Region 的写入会导致涉及该 Region 的缓存失效。基于此原因，该功能主要会对很少变更的数据有效果。
-+ 下推计算请求相同时，缓存会被命中。通常在以下场景下，下推计算的请求是相同或部分相同的：
-    - SQL 语句完全一致，例如重复执行相同的 SQL 语句。
+</CustomContent>
 
-        该场景下所有下推计算的请求都是一致的，所有请求都能利用上下推计算缓存。
+<CustomContent platform="tidb-cloud">
 
-    - SQL 语句包含一个变化的条件，其他部分一致，变化的条件是表主键或分区主键。
+Coprocessor 缓存功能默认启用。可以缓存的数据的最大大小为 1000 MB。
 
-        该场景下一部分下推计算的请求会与之前出现过的一致，部分请求能利用上下推计算结果缓存。
+</CustomContent>
 
-    - SQL 语句包含多个变化的条件，其他部分一致，变化的条件完全匹配一个复合索引列。
+## 功能说明
 
-        该场景下一部分下推计算的请求会与之前出现过的一致，部分请求能利用上下推计算结果缓存。
++ 当 SQL 语句第一次在单个 TiDB 实例上执行时，执行结果不会被缓存。
++ 计算结果缓存在 TiDB 的内存中。如果 TiDB 实例重启，缓存将失效。
++ 缓存不在 TiDB 实例之间共享。
++ 只缓存下推计算结果。即使命中缓存，TiDB 仍然需要执行后续计算。
++ 缓存以 Region 为单位。向 Region 写入数据会导致该 Region 的缓存失效。因此，Coprocessor 缓存功能主要对很少变化的数据有效。
++ 当下推计算请求相同时，缓存会命中。通常在以下场景中，下推计算请求相同或部分相同：
+    - SQL 语句相同。例如，重复执行相同的 SQL 语句。
 
-+ 该功能对用户透明，开启和关闭都不影响计算结果，仅影响 SQL 执行时间。
+        在这种场景下，所有下推计算请求都一致，所有请求都可以使用下推计算缓存。
 
-## 检验缓存效果
+    - SQL 语句包含一个变化的条件，其他部分一致。变化的条件是表的主键或分区。
 
-可以通过执行 `EXPLAIN ANALYZE` 或查看 Grafana 监控面板来检查 Coprocessor 的缓存效果。
+        在这种场景下，一些下推计算请求与之前的某些请求相同，这些计算请求可以使用缓存的（之前的）下推计算结果。
+
+    - SQL 语句包含多个变化的条件，其他部分一致。变化的条件恰好匹配复合索引列。
+
+        在这种场景下，一些下推计算请求与之前的某些请求相同，这些计算请求可以使用缓存的（之前的）下推计算结果。
+
++ 此功能对用户透明。启用或禁用此功能不会影响计算结果，只会影响 SQL 执行时间。
+
+## 检查缓存效果
+
+您可以通过执行 `EXPLAIN ANALYZE` 或查看 Grafana 监控面板来检查 Coprocessor 的缓存效果。
 
 ### 使用 `EXPLAIN ANALYZE`
 
-用户可以通过 [`EXPLAIN ANALYZE` 语句](/sql-statements/sql-statement-explain-analyze.md)查看[读表算子](/choose-index.md#读表算子)中的缓存命中率，示例如下：
+您可以使用 [`EXPLAIN ANALYZE` 语句](/sql-statements/sql-statement-explain-analyze.md)在[访问表的算子](/choose-index.md#访问表的算子)中查看缓存命中率。请看以下示例：
 
 ```sql
 EXPLAIN ANALYZE SELECT * FROM t USE INDEX(a);
@@ -53,8 +63,8 @@ EXPLAIN ANALYZE SELECT * FROM t USE INDEX(a);
 3 rows in set (0.62 sec)
 ```
 
-执行结果的 `execution info` 列有 `copr_cache_hit_ratio` 信息，表示下推计算结果缓存的命中率。以上示例的 `0.75` 表示命中率大约是 75%。
+执行结果的 `execution info` 列给出了 `copr_cache_hit_ratio` 信息，表示 Coprocessor 缓存的命中率。上述示例中的 `0.75` 表示命中率约为 75%。
 
 ### 查看 Grafana 监控面板
 
-在 Grafana 监控中，`tidb` 命名空间下 `distsql` 子系统中可见 **copr-cache** 面板，该面板监控整个集群中下推计算结果缓存的命中次数、未命中次数和缓存丢弃次数。
+在 Grafana 中，您可以在 `tidb` 命名空间下的 `distsql` 子系统中看到 **copr-cache** 面板。此面板监控整个集群中 Coprocessor 缓存的命中次数、未命中次数和缓存丢弃次数。

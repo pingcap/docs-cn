@@ -1,135 +1,172 @@
 ---
-title: 使用 TiDB Cloud Serverless 构建 TiDB 集群
-summary: 使用 TiDB Cloud Serverless 构建 TiDB 集群，并连接 TiDB Cloud Serverless 集群。
+title: 构建 TiDB Cloud Serverless 集群
+summary: 了解如何在 TiDB Cloud 中构建 TiDB Cloud Serverless 集群并连接到它。
 ---
 
 <!-- markdownlint-disable MD029 -->
 
-# 使用 TiDB Cloud Serverless 构建 TiDB 集群
+# 构建 TiDB Cloud Serverless 集群
 
-本文将介绍如何以最快的方式开始使用 TiDB。你将创建并启动一个 [TiDB Cloud Serverless](https://www.pingcap.com/tidb-serverless/) 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
+<CustomContent platform="tidb">
 
-若你需要在本地计算机上启动 TiDB，请参阅[本地启动 TiDB](/quick-start-with-tidb.md)。
+本文将指导你快速开始使用 TiDB。你将使用 [TiDB Cloud](https://www.pingcap.com/tidb-cloud) 创建一个 TiDB Cloud Serverless 集群，连接到它，并在其上运行示例应用程序。
+
+如果你需要在本地机器上运行 TiDB，请参阅[在本地启动 TiDB](/quick-start-with-tidb.md)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+本文将指导你快速开始使用 TiDB Cloud。你将创建一个 TiDB 集群，连接到它，并在其上运行示例应用程序。
+
+</CustomContent>
 
 ## 第 1 步：创建 TiDB Cloud Serverless 集群
 
-1. 如果你还未拥有 TiDB Cloud 账号，请先在此[注册](https://tidbcloud.com/free-trial)。
-2. 使用你的 TiDB Cloud 账号[登录](https://tidbcloud.com/)。
+1. 如果你还没有 TiDB Cloud 账号，请点击[这里](https://tidbcloud.com/free-trial)注册账号。
 
-    登录后，默认进入 [**Clusters**](https://tidbcloud.com/console/clusters) 页面。
+2. [登录](https://tidbcloud.com/)你的 TiDB Cloud 账号。
 
-3. 对于新注册的用户，TiDB Cloud 会自动为你创建一个 TiDB Cloud Serverless 集群 `Cluster0`。你可以使用这个默认集群进行后续操作，也可以自行创建一个新的 TiDB Cloud Serverless 集群。
+3. 在[**集群**](https://tidbcloud.com/project/clusters)页面，点击**创建集群**。
 
-    如果你想创建一个新的 TiDB Cloud Serverless 集群，请进行以下操作：
+4. 在**创建集群**页面，默认选择 **Serverless**。根据需要更新默认集群名称，然后选择要创建集群的区域。
 
-    1. 点击 **Create Cluster**。
-    2. **Create Cluster** 页面默认选择 **Serverless**。你可以根据需要修改集群名称、选择可用区，然后点击 **Create**。你的 TiDB Cloud Serverless 集群将于 30 秒后创建完毕。
+5. 点击**创建**来创建 TiDB Cloud Serverless 集群。
 
-4. 点击目标集群名称，进入集群概览页面，然后点击右上角的 **Connect** 按钮，弹出连接对话框。
+    你的 TiDB Cloud 集群将在大约 30 秒内创建完成。
 
-5. 在对话框中，选择你需要的连接方式和操作系统并保存对应的连接字符串。下面连接到集群的步骤将以 MySQL 客户端为例。
+6. 集群创建完成后，点击集群名称进入集群概览页面，然后点击右上角的**连接**。此时会显示一个连接对话框。
 
-6. 点击 **Generate Password** 生成随机密码。生成的密码不会再次显示，因此请将密码妥善保存。如果没有设置 root 密码，你将无法连接到集群。
+7. 在对话框中，选择你偏好的连接方式和操作系统，以获取相应的连接字符串。本文以 MySQL 客户端为例。
 
-    > **注意：**
-    >
-    > 在连接到 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 集群时，你需要给用户名加上前缀并使用单引号包裹用户名。你可以在 [TiDB Cloud Serverless 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix) 中获得更多信息。
+8. 点击**生成密码**来生成随机密码。生成的密码不会再次显示，因此请将密码保存在安全的位置。如果你不设置 root 密码，就无法连接到集群。
+
+<CustomContent platform="tidb">
+
+> **注意：**
+>
+> 对于 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 集群，当你连接到集群时，必须在用户名中包含集群的前缀，并用引号将名称括起来。更多信息，请参阅[用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+> **注意：**
+>
+> 对于 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 集群，当你连接到集群时，必须在用户名中包含集群的前缀，并用引号将名称括起来。更多信息，请参阅[用户名前缀](/tidb-cloud/select-cluster-tier.md#user-name-prefix)。
+
+</CustomContent>
 
 ## 第 2 步：连接到集群
 
-1. 若未安装 MySQL 客户端，请选择自己的操作系统，按以下步骤安装。
+1. 如果未安装 MySQL 客户端，请选择你的操作系统并按照以下步骤进行安装。
 
-    <SimpleTab>
+<SimpleTab>
 
-    <div label="macOS">
+<div label="macOS">
 
-    对于 macOS 操作系统，如果你没有安装 Homebrew，请参考 [Homebrew 官网](https://brew.sh/zh-cn/)进行安装。
+对于 macOS，如果你还没有安装 [Homebrew](https://brew.sh/index)，请先安装它，然后运行以下命令来安装 MySQL 客户端：
 
-    ```shell
-    brew install mysql-client
-    ```
+```shell
+brew install mysql-client
+```
 
-    在安装完成的命令行输出中，得到以下信息：
+输出如下：
 
-    ```
-    mysql-client is keg-only, which means it was not symlinked into /opt/homebrew,
-    because it conflicts with mysql (which contains client libraries).
+```
+mysql-client is keg-only, which means it was not symlinked into /opt/homebrew,
+because it conflicts with mysql (which contains client libraries).
 
-    If you need to have mysql-client first in your PATH, run:
-    echo 'export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"' >> ~/.zshrc
+If you need to have mysql-client first in your PATH, run:
+  echo 'export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"' >> ~/.zshrc
 
-    For compilers to find mysql-client you may need to set:
-    export LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
-    export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
-    ```
+For compilers to find mysql-client you may need to set:
+  export LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
+  export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
+```
 
-    请运行其中的此行（命令行输出若与此处文档不一致，请以命令行输出为准）：
+要将 MySQL 客户端添加到你的 PATH 中，请在上述输出中找到以下命令（如果你的输出与文档中的上述输出不一致，请使用你的输出中相应的命令）并运行它：
 
-    ```shell
-    echo 'export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"' >> ~/.zshrc
-    ```
+```shell
+echo 'export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"' >> ~/.zshrc
+```
 
-    完成后，生效该配置文件（例如 `~/.zshrc`），并验证 MySQL 客户端是否安装成功：
+然后，使用 `source` 命令声明全局环境变量，并验证 MySQL 客户端是否安装成功：
 
-    ```shell
-    source ~/.zshrc
-    mysql --version
-    ```
+```shell
+source ~/.zshrc
+mysql --version
+```
 
-    预期会得到形如以下的输出：
+预期输出示例：
 
-    ```
-    mysql  Ver 8.0.28 for macos12.0 on arm64 (Homebrew)
-    ```
+```
+mysql  Ver 8.0.28 for macos12.0 on arm64 (Homebrew)
+```
 
-    </div>
+</div>
 
-    <div label="Linux">
+<div label="Linux">
 
-    对于 Linux 操作系统，下面以 CentOS 7 为例：
+对于 Linux，以下以 CentOS 7 为例：
 
-    ```shell
-    yum install mysql
-    ```
+```shell
+yum install mysql
+```
 
-    完成后，请验证 MySQL 客户端是否安装成功：
+然后，验证 MySQL 客户端是否安装成功：
 
-    ```shell
-    mysql --version
-    ```
+```shell
+mysql --version
+```
 
-    预期会得到形如以下的输出：
+预期输出示例：
 
-    ```
-    mysql  Ver 15.1 Distrib 5.5.68-MariaDB, for Linux (x86_64) using readline 5.1
-    ```
+```
+mysql  Ver 15.1 Distrib 5.5.68-MariaDB, for Linux (x86_64) using readline 5.1
+```
 
-    </div>
+</div>
 
-    </SimpleTab>
+</SimpleTab>
 
-2. 运行第 1 步中得到的连接字符串。
+2. 运行在[第 1 步](#第-1-步创建-tidb-cloud-serverless-集群)中获取的连接字符串。
+
+    {{< copyable "shell-regular" >}}
 
     ```shell
     mysql --connect-timeout 15 -u '<prefix>.root' -h <host> -P 4000 -D test --ssl-mode=VERIFY_IDENTITY --ssl-ca=/etc/ssl/cert.pem -p
     ```
 
+<CustomContent platform="tidb">
+
 > **注意：**
 >
-> - 在连接 TiDB Cloud Serverless 集群时，[必须使用 TLS 连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)。
-> - 如果你在连接时遇到问题，可阅读 [TiDB Cloud Serverless 集群安全连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters) 来获得更多信息。
+> - 连接到 TiDB Cloud Serverless 集群时，你必须[使用 TLS 连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-clusters)。
+> - 如果你在连接 TiDB Cloud Serverless 集群时遇到问题，可以阅读[连接到 TiDB Cloud Serverless 集群的安全连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-clusters)获取更多信息。
 
-3. 填写密码，完成登录。
+</CustomContent>
 
-## 第 3 步：运行 SQL
+<CustomContent platform="tidb-cloud">
 
-尝试运行一下你在 TiDB Cloud 上的的第一个 SQL 吧：
+> **注意：**
+>
+> - 连接到 TiDB Cloud Serverless 集群时，你必须[使用 TLS 连接](/tidb-cloud/secure-connections-to-serverless-clusters.md)。
+> - 如果你在连接 TiDB Cloud Serverless 集群时遇到问题，可以阅读[连接到 TiDB Cloud Serverless 集群的安全连接](/tidb-cloud/secure-connections-to-serverless-clusters.md)获取更多信息。
+
+</CustomContent>
+
+3. 输入密码以登录。
+
+## 第 3 步：执行 SQL 语句
+
+让我们尝试在 TiDB Cloud 上执行你的第一条 SQL 语句。
 
 ```sql
 SELECT 'Hello TiDB Cloud!';
 ```
 
-你将看到这样的输出：
+预期输出：
 
 ```sql
 +-------------------+
@@ -139,4 +176,18 @@ SELECT 'Hello TiDB Cloud!';
 +-------------------+
 ```
 
-如果你的实际输出与预期输出一致，表示你已经在 TiDB Cloud 上成功地运行了 SQL 语句。
+如果你的实际输出与预期输出类似，恭喜你已经成功在 TiDB Cloud 上执行了一条 SQL 语句。
+
+## 需要帮助？
+
+<CustomContent platform="tidb">
+
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 上询问社区，或[提交支持工单](/support.md)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 上询问社区，或[提交支持工单](https://tidb.support.pingcap.com/)。
+
+</CustomContent>

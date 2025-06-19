@@ -1,13 +1,13 @@
 ---
-title: SHOW WARNINGS
-summary: TiDB 数据库中 SHOW WARNINGS 的使用概况。
+title: SHOW WARNINGS | TiDB SQL 语句参考
+summary: TiDB 数据库中 SHOW WARNINGS 的使用概览。
 ---
 
 # SHOW WARNINGS
 
-`SHOW WARNINGS` 语句用于显示当前客户端连接中已执行语句的报错列表。与在 MySQL 中一样，`sql_mode` 极大地影响哪些语句会导致错误与警告。
+此语句显示当前客户端连接中之前执行的语句产生的警告列表。与 MySQL 一样，`sql_mode` 会显著影响哪些语句会导致错误或警告。
 
-## 语法图
+## 语法
 
 ```ebnf+diagram
 ShowWarningsStmt ::=
@@ -16,123 +16,54 @@ ShowWarningsStmt ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
-CREATE TABLE t1 (a INT UNSIGNED);
-```
-
-```
+mysql> CREATE TABLE t1 (a INT UNSIGNED);
 Query OK, 0 rows affected (0.11 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-INSERT INTO t1 VALUES (0);
-```
-
-```
+mysql> INSERT INTO t1 VALUES (0);
 Query OK, 1 row affected (0.02 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SELECT 1/a FROM t1;
-```
-
-```
+mysql> SELECT 1/a FROM t1;
 +------+
 | 1/a  |
 +------+
 | NULL |
 +------+
 1 row in set, 1 warning (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SHOW WARNINGS;
-```
-
-```
+mysql> SHOW WARNINGS;
 +---------+------+---------------+
 | Level   | Code | Message       |
 +---------+------+---------------+
 | Warning | 1365 | Division by 0 |
 +---------+------+---------------+
 1 row in set (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-INSERT INTO t1 VALUES (-1);
-```
-
-```
+mysql> INSERT INTO t1 VALUES (-1);
 ERROR 1264 (22003): Out of range value for column 'a' at row 1
-```
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM t1;
-```
-
-```
+mysql> SELECT * FROM t1;
 +------+
 | a    |
 +------+
 |    0 |
 +------+
 1 row in set (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SET sql_mode='';
-```
-
-```
+mysql> SET sql_mode='';
 Query OK, 0 rows affected (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-INSERT INTO t1 VALUES (-1);
-```
-
-```
+mysql> INSERT INTO t1 VALUES (-1);
 Query OK, 1 row affected, 1 warning (0.01 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SHOW WARNINGS;
-```
-
-```
+mysql> SHOW WARNINGS;
 +---------+------+---------------------------+
 | Level   | Code | Message                   |
 +---------+------+---------------------------+
 | Warning | 1690 | constant -1 overflows int |
 +---------+------+---------------------------+
 1 row in set (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM t1;
-```
-
-```
+mysql> SELECT * FROM t1;
 +------+
 | a    |
 +------+
@@ -140,11 +71,12 @@ SELECT * FROM t1;
 |    0 |
 +------+
 2 rows in set (0.00 sec)
+
 ```
 
 ## MySQL 兼容性
 
-`SHOW WARNINGS` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
+TiDB 中的 `SHOW WARNINGS` 语句与 MySQL 完全兼容。如果发现任何兼容性差异，请[报告问题](https://docs.pingcap.com/tidb/stable/support)。
 
 ## 另请参阅
 

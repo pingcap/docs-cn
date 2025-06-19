@@ -1,11 +1,11 @@
 ---
-title: SHOW CREATE USER
-summary: TiDB 数据库中 SHOW CREATE USER 的使用概况。
+title: SHOW CREATE USER | TiDB SQL 语句参考
+summary: TiDB 数据库中 SHOW CREATE USER 的使用概览。
 ---
 
 # SHOW CREATE USER
 
-`SHOW CREATE USER` 语句用于显示如何使用 `CREATE USER` 语法来重新创建用户。
+该语句显示如何使用 `CREATE USER` 语法重新创建用户。
 
 ## 语法图
 
@@ -16,13 +16,8 @@ ShowCreateUserStmt ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
-SHOW CREATE USER 'root';
-```
-
-```
+mysql> SHOW CREATE USER 'root';
 +--------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER for root@%                                                                                                   |
 +--------------------------------------------------------------------------------------------------------------------------+
@@ -41,7 +36,17 @@ mysql> SHOW GRANTS FOR 'root';
 
 ## MySQL 兼容性
 
-* `SHOW CREATE USER` 的输出结果旨在匹配 MySQL，但 TiDB 尚不支持若干 `CREATE` 选项。尚未支持的选项在语句执行过程中会被解析但会被跳过执行。详情可参阅[与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)。
+<CustomContent platform="tidb">
+
+* `SHOW CREATE USER` 的输出设计为与 MySQL 匹配，但 TiDB 尚未支持几个 `CREATE` 选项。尚未支持的选项将被解析但被忽略。更多详细信息，请参见[安全兼容性](/security-compatibility-with-mysql.md)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+* `SHOW CREATE USER` 的输出设计为与 MySQL 匹配，但 TiDB 尚未支持几个 `CREATE` 选项。尚未支持的选项将被解析但被忽略。更多详细信息，请参见[安全兼容性](https://docs.pingcap.com/tidb/stable/security-compatibility-with-mysql/)。
+
+</CustomContent>
 
 ## 另请参阅
 

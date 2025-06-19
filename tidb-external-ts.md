@@ -1,29 +1,29 @@
 ---
-title: 通过系统变量 `tidb_external_ts` 读取历史数据
-summary: 了解如何通过系统变量 `tidb_external_ts` 读取历史数据。
+title: 使用 `tidb_external_ts` 变量读取历史数据
+summary: 了解如何使用 `tidb_external_ts` 变量读取历史数据。
 ---
 
-# 通过系统变量 `tidb_external_ts` 读取历史数据
+# 使用 `tidb_external_ts` 变量读取历史数据
 
-为了支持读取历史版本数据，TiDB 从 v6.4.0 起引入了一个新的系统变量 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入)。本文档介绍如何通过该系统变量读取历史数据，其中包括具体的操作流程。
+为了支持读取历史数据，TiDB v6.4.0 引入了系统变量 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-new-in-v640)。本文档描述如何通过这个系统变量读取历史数据，包括详细的使用示例。
 
-## 场景介绍
+## 应用场景
 
-通过配置让 TiDB 能够读取某一固定时间点的历史数据对于 TiCDC 等数据同步工具非常有用。在数据同步工具完成了某一时间点前的数据同步之后，可以通过设置下游 TiDB 的 `tidb_external_ts` 系统变量，使得下游 TiDB 的请求能够读取到该时间点前的数据。这将避免在同步过程中，下游 TiDB 读取到尚未完全同步而不一致的数据。
+从指定时间点读取历史数据对于数据复制工具（如 TiCDC）来说非常有用。在数据复制工具完成某个时间点之前的数据复制后，您可以设置下游 TiDB 的 `tidb_external_ts` 系统变量来读取该时间点之前的数据。这可以防止因数据复制导致的数据不一致。
 
-## 功能介绍
+## 功能说明
 
-系统变量 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入) 用于指定启用 `tidb_enable_external_ts_read` 时，读取历史数据使用的时间戳。
+系统变量 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-new-in-v640) 在启用 `tidb_enable_external_ts_read` 时指定要读取的历史数据的时间戳。
 
-系统变量 [`tidb_enable_external_ts_read`](/system-variables.md#tidb_enable_external_ts_read-从-v640-版本开始引入) 控制着是否在当前会话或全局启用读取历史数据的功能。默认值为 `OFF`，这意味着该功能关闭，并且设置 `tidb_external_ts` 没有作用。当该变量被全局地设置为 `ON` 时，所有的请求都将读取到 `tidb_external_ts` 指定时间之前的历史数据。如果 `tidb_enable_external_ts_read` 仅在某一会话被设置为 `ON`，则只有该会话中的请求会读取到历史数据。
+系统变量 [`tidb_enable_external_ts_read`](/system-variables.md#tidb_enable_external_ts_read-new-in-v640) 控制是否在当前会话或全局范围内读取历史数据。默认值为 `OFF`，表示禁用读取历史数据的功能，并忽略 `tidb_external_ts` 的值。当 `tidb_enable_external_ts_read` 全局设置为 `ON` 时，所有查询都会读取 `tidb_external_ts` 指定时间之前的历史数据。如果仅对某个会话将 `tidb_enable_external_ts_read` 设置为 `ON`，则只有该会话中的查询会读取历史数据。
 
-当 `tidb_enable_external_ts_read` 被设置为 `ON` 时，TiDB 会进入只读模式，任何写请求都会失败并且返回错误 `ERROR 1836 (HY000): Running in read-only mode`。
+当启用 `tidb_enable_external_ts_read` 时，TiDB 变为只读模式。所有写入查询都会失败，并显示类似 `ERROR 1836 (HY000): Running in read-only mode` 的错误。
 
-## 示例
+## 使用示例
 
-以下是一个使用该功能的示例：
+本节通过示例说明如何使用 `tidb_external_ts` 变量读取历史数据。
 
-1. 创建一个表后，在表中插入几行数据：
+1. 创建表并插入一些行：
 
     ```sql
     CREATE TABLE t (c INT);
@@ -62,11 +62,11 @@ summary: 了解如何通过系统变量 `tidb_external_ts` 读取历史数据。
 
     ```sql
     START TRANSACTION;
-    SET GLOBAL tidb_external_ts = @@tidb_current_ts;
+    SET GLOBAL tidb_external_ts=@@tidb_current_ts;
     COMMIT;
     ```
 
-4. 插入新的一行并确认新的一行已经被插入：
+4. 插入新行并确认已插入：
 
     ```sql
     INSERT INTO t VALUES (4);
@@ -92,10 +92,10 @@ summary: 了解如何通过系统变量 `tidb_external_ts` 读取历史数据。
     4 rows in set (0.00 sec)
     ```
 
-5. 将 `tidb_enable_external_ts_read` 设置为 `ON` 后，再次查询表中的数据：
+5. 将 `tidb_enable_external_ts_read` 设置为 `ON` 然后查看表中的数据：
 
     ```sql
-    SET tidb_enable_external_ts_read = ON;
+    SET tidb_enable_external_ts_read=ON;
     SELECT * FROM t;
     ```
 
@@ -110,4 +110,4 @@ summary: 了解如何通过系统变量 `tidb_external_ts` 读取历史数据。
     3 rows in set (0.00 sec)
     ```
 
-    因为 `tidb_external_ts` 被设置为插入这一行之前的时间，在启动 `tidb_enable_external_ts_read` 后，将读取不到新插入的行。
+    因为 `tidb_external_ts` 被设置为插入新行之前的时间戳，所以在启用 `tidb_enable_external_ts_read` 后，新插入的行不会被返回。

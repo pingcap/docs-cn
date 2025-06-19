@@ -1,11 +1,11 @@
 ---
 title: TIDB_INDEXES
-summary: 了解 information_schema 表 `TIDB_INDEXES`。
+summary: 了解 `TIDB_INDEXES` information_schema 表。
 ---
 
 # TIDB_INDEXES
 
-`TIDB_INDEXES` 记录了所有表中的 INDEX 信息。
+`TIDB_INDEXES` 表提供了所有表的索引信息。
 
 {{< copyable "sql" >}}
 
@@ -14,7 +14,7 @@ USE information_schema;
 DESC tidb_indexes;
 ```
 
-```sql
+```
 +---------------+---------------+------+------+---------+-------+
 | Field         | Type          | Null | Key  | Default | Extra |
 +---------------+---------------+------+------+---------+-------+
@@ -34,9 +34,9 @@ DESC tidb_indexes;
 12 rows in set (0.00 sec)
 ```
 
-`INDEX_ID` 是 TiDB 为每个索引分配的唯一 ID。它可以与从另一个表或 API 获得的 `INDEX_ID` 一起执行 `join` 操作。
+`INDEX_ID` 是 TiDB 为每个索引分配的唯一 ID。它可以用于与从其他表或 API 获取的 `INDEX_ID` 进行联接操作。
 
-例如，你可以在 [`SLOW_QUERY` 表](/information-schema/information-schema-slow-query.md) 中获取某些慢查询所涉及的 `TABLE_ID` 和 `INDEX_ID`，然后使用以下 SQL 语句获取特定索引信息：
+例如，你可以在 [`SLOW_QUERY` 表](/information-schema/information-schema-slow-query.md)中获取某些慢查询涉及的 `TABLE_ID` 和 `INDEX_ID`，然后使用以下 SQL 语句获取具体的索引信息：
 
 ```sql
 SELECT
@@ -51,16 +51,16 @@ WHERE
  AND index_id = ?
 ```
 
-`TIDB_INDEXES` 表中列的含义如下：
+`TIDB_INDEXES` 表中各字段的描述如下：
 
-* `TABLE_SCHEMA`：索引所在表的所属数据库的名称。
-* `TABLE_NAME`：索引所在表的名称。
-* `NON_UNIQUE`：如果索引是唯一的，则为 `0`，否则为 `1`。
-* `KEY_NAME`：索引的名称。如果索引是主键，则名称为 `PRIMARY`。
-* `SEQ_IN_INDEX`：索引中列的顺序编号，从 `1` 开始。
-* `COLUMN_NAME`：索引所在的列名。
-* `SUB_PART`：索引前缀长度。如果列是部分被索引，则该值为被索引的字符数量，否则为 `NULL`。
-* `INDEX_COMMENT`：创建索引时以 `COMMENT` 标注的注释。
-* `INDEX_ID`：索引的 ID。
+* `TABLE_SCHEMA`：索引所属的数据库（schema）名称。
+* `TABLE_NAME`：索引所属的表名。
+* `NON_UNIQUE`：如果索引是唯一的，则值为 `0`；否则值为 `1`。
+* `KEY_NAME`：索引名称。如果该索引是主键，则名称为 `PRIMARY`。
+* `SEQ_IN_INDEX`：索引中列的顺序号，从 `1` 开始。
+* `COLUMN_NAME`：索引所在列的名称。
+* `SUB_PART`：索引的前缀长度。如果列是部分索引，则 `SUB_PART` 值是已索引字符的数量；否则值为 `NULL`。
+* `INDEX_COMMENT`：创建索引时的索引注释。
+* `INDEX_ID`：索引 ID。
 * `IS_VISIBLE`：索引是否可见。
 * `CLUSTERED`：是否为[聚簇索引](/clustered-indexes.md)。

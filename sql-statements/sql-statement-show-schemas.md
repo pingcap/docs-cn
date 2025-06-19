@@ -1,8 +1,8 @@
 ---
-title: SHOW SCHEMAS
-summary: TiDB 数据库中 SHOW SCHEMAS 的使用概况。
+title: SHOW SCHEMAS | TiDB SQL 语句参考
+summary: TiDB 数据库中 SHOW SCHEMAS 的使用概述。
 ---
 
 # SHOW SCHEMAS
 
-`SHOW SCHEMAS` 语句是 [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md) 的别名。包含该语句提供了 MySQL 兼容性。
+此语句是 [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md) 的别名。它是为了与 MySQL 兼容而包含的。
