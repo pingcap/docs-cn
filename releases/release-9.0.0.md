@@ -423,9 +423,7 @@ TiDB 版本：9.0.0
     + TiCDC <!--tw@qiancai: 2 notes-->
 
         <!-- - 为 Canal-JSON 协议的 TiDB 扩展字段中新增 `tableId` 和 `partitionId` 字段 [#11874](https://github.com/pingcap/tiflow/issues/11874) @[3AceShowHand](https://github.com/3AceShowHand) --> <!-- for-beta.2 -->
-    + Backup & Restore (BR)
 
-        - 移除对 AWS region 名称的检查，避免新支持的 AWS region 因无法通过检查而导致备份报错的问题 [#18159](https://github.com/tikv/tikv/issues/18159) @[3pointer](https://github.com/3pointer)
 
     + TiDB Data Migration (DM) <!--tw@lilin90: 1 note-->
 
