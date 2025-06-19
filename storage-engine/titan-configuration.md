@@ -169,17 +169,6 @@ level-merge = false
 
 3. 等待数据整理结束，通过 **TiKV-Details**/**Titan - kv** 监控面板确认 **Blob file count** 指标降为 0。
 
-4. 对于 v8.5.0 及之后的 TiDB 版本，更新 TiKV 节点的配置，关闭 Titan。
-
-    > **警告：**
-    >
-    > 对于 v8.5.0 之前的版本，建议跳过该步骤，因为在这些版本中该步骤可能导致 TiKV crash。v8.5.0 之前的版本，可以直接通过步骤 1 来达到关闭 Titan 的目的，步骤 1 中的设置和下面的设置，在数据迁移完成后，不会有性能上的差异。
-
-    ```toml
-    [rocksdb.titan]
-    enabled = false
-    ```
-
 ## Level Merge（实验功能）
 
 TiKV 4.0 中 Titan 提供新的算法提升范围查询性能并降低 Titan GC 对前台写入性能的影响。这个新的算法称为 [Level Merge](/storage-engine/titan-overview.md#level-merge)。Level Merge 可以通过以下选项开启：
