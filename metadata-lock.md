@@ -1,47 +1,47 @@
 ---
 title: 元数据锁
-summary: 介绍 TiDB 中元数据锁的概念、原理、实现和影响。
+summary: 介绍 TiDB 中元数据锁的概念、原理和实现细节。
 ---
 
 # 元数据锁
 
-本文介绍了 TiDB 中的元数据锁。
+本文介绍 TiDB 中的元数据锁。
 
-## 元数据锁的概念
+## 概念
 
-在 TiDB 中，对元数据对象的更改采用的是在线异步变更算法。事务在执行时会获取开始时对应的元数据快照。如果事务执行过程中相关表上发生了元数据的更改，为了保证数据的一致性，TiDB 会返回 `Information schema is changed` 的错误，导致用户事务提交失败。
+TiDB 使用在线异步 schema 变更算法来支持元数据对象的变更。当执行事务时，事务会在开始时获取相应的元数据快照。如果在事务执行期间元数据发生变更，为了保证数据一致性，TiDB 会返回 `Information schema is changed` 错误，事务提交失败。
 
-为了解决这个问题，在 TiDB v6.3.0 中，online DDL 算法中引入了元数据锁特性。通过协调表元数据变更过程中 DML 语句和 DDL 语句的优先级，让执行中的 DDL 语句等待持有旧版本元数据的 DML 语句提交，尽可能避免 DML 语句报错。
+为了解决这个问题，TiDB v6.3.0 在在线 DDL 算法中引入了元数据锁。为了避免大多数 DML 错误，TiDB 在表元数据变更期间协调 DML 和 DDL 的优先级，使执行 DDL 等待使用旧元数据的 DML 提交。
 
-## 适用场景
+## 应用场景
 
-元数据锁适用于所有的 DDL 语句，包括但不限于：
+TiDB 中的元数据锁适用于所有 DDL 语句，例如：
 
 - [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
 - [`ADD COLUMN`](/sql-statements/sql-statement-add-column.md)
 - [`DROP COLUMN`](/sql-statements/sql-statement-drop-column.md)
 - [`DROP INDEX`](/sql-statements/sql-statement-drop-index.md)
-- [`DROP PARTITION`](/partitioned-table.md#分区管理)
+- [`DROP PARTITION`](/partitioned-table.md#partition-management)
 - [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md)
-- [`EXCHANGE PARTITION`](/partitioned-table.md#分区管理)
+- [`EXCHANGE PARTITION`](/partitioned-table.md#partition-management)
 - [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)
 - [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md)
 
-使用元数据锁机制会给 TiDB DDL 任务的执行带来一定的性能影响。为了降低元数据锁对 DDL 任务的影响，下列场景不需要加元数据锁：
+启用元数据锁可能会对 TiDB 中 DDL 任务的执行性能产生一些影响。为了减少影响，以下列出了一些不需要元数据锁的场景：
 
-- 开启了 auto-commit 的查询语句
-- 开启了 Stale Read 功能
-- 访问临时表
++ 启用自动提交的 `SELECT` 查询
++ 启用 Stale Read
++ 访问临时表
 
-## 使用元数据锁
+## 使用方法
 
-在 v6.5.0 及之后的版本中，TiDB 默认开启元数据锁特性。当集群从 v6.5.0 之前的版本升级到 v6.5.0 及之后的版本时，TiDB 会自动开启元数据锁功能。如果需要关闭元数据锁，你可以将系统变量 [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-从-v630-版本开始引入) 设置为 `OFF`。
+从 v6.5.0 开始，TiDB 默认启用元数据锁。当你将现有集群从 v6.4.0 或更早版本升级到 v6.5.0 或更高版本时，TiDB 会自动启用元数据锁。要禁用元数据锁，你可以将系统变量 [`tidb_enable_metadata_lock`](/system-variables.md#tidb_enable_metadata_lock-new-in-v630) 设置为 `OFF`。
 
-## 元数据锁的影响
+## 影响
 
-- 对于 DML 语句来说，元数据锁不会导致 DML 语句被阻塞，因此也不会存在死锁的问题。
-- 开启元数据锁后，事务中某个元数据对象的元数据信息在第一次访问时确定，之后不再变化。
-- 对于 DDL 语句来说，在进行元数据状态变更时，会被涉及相关元数据的旧事务所阻塞。例如以下的执行流程：
+- 对于 DML，元数据锁不会阻塞其执行，也不会造成任何死锁。
+- 当启用元数据锁时，事务中元数据对象的信息在首次访问时确定，之后不会改变。
+- 对于 DDL，在更改元数据状态时，DDL 可能会被旧事务阻塞。以下是一个示例：
 
     | Session 1 | Session 2 |
     |:---------------------------|:----------|
@@ -49,10 +49,10 @@ summary: 介绍 TiDB 中元数据锁的概念、原理、实现和影响。
     | `INSERT INTO t VALUES(1);` |           |
     | `BEGIN;`                   |           |
     |                            | `ALTER TABLE t ADD COLUMN b INT;` |
-    | `SELECT * FROM t;`<br/>（采用 `t` 表当前的元数据版本，返回 `(a=1，b=NULL)`，同时给表 `t` 加锁）|           |
-    |                            | `ALTER TABLE t ADD COLUMN c INT;`（被 Session 1 阻塞）|
+    | `SELECT * FROM t;`<br/>（使用表 `t` 的当前元数据版本。返回 `(a=1, b=NULL)` 并锁定表 `t`。）         |           |
+    |                            | `ALTER TABLE t ADD COLUMN c INT;`（被 Session 1 阻塞） |
 
-    在可重复读隔离级别下，如果从事务开始到确定一个表的元数据过程中，执行了加索引或者变更列类型等需要更改数据的 DDL，则有以下表现：
+    在可重复读隔离级别下，从事务开始到确定表元数据的时间点之间，如果执行了需要数据变更的 DDL，例如添加索引或更改列类型，DDL 会返回如下错误：
 
     | Session 1                  | Session 2                                 |
     |:---------------------------|:------------------------------------------|
@@ -60,21 +60,21 @@ summary: 介绍 TiDB 中元数据锁的概念、原理、实现和影响。
     | `INSERT INTO t VALUES(1);` |                                           |
     | `BEGIN;`                   |                                           |
     |                            | `ALTER TABLE t ADD INDEX idx(a);`         |
-    | `SELECT * FROM t;`（索引 `idx` 不可用）|                                 |
+    | `SELECT * FROM t;`（索引 `idx` 不可用） |                    |
     | `COMMIT;`                  |                                           |
     | `BEGIN;`                   |                                           |
     |                            | `ALTER TABLE t MODIFY COLUMN a CHAR(10);` |
-    | `SELECT * FROM t;`（报错 `ERROR 8028 (HY000): public column a has changed`） |             |
+    | `SELECT * FROM t;`（返回 `ERROR 8028 (HY000): public column a has changed`） | |
 
-## 元数据锁的可观测性
+## 可观察性
 
-TiDB v6.3.0 引入了 `mysql.tidb_mdl_view` 视图，可以用于查看当前阻塞的 DDL 的相关信息。
+TiDB v6.3.0 引入了 `mysql.tidb_mdl_view` 视图，帮助你获取当前被阻塞的 DDL 信息。
 
 > **注意：**
 >
-> 查询 `mysql.tidb_mdl_view` 视图需要有 [`PROCESS` 权限](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process)。
+> 查询 `mysql.tidb_mdl_view` 视图需要 [`PROCESS` 权限](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process)。
 
-下面以给表 `t` 添加索引为例，假设有 DDL 语句 `ALTER TABLE t ADD INDEX idx(a)`：
+以下以为表 `t` 添加索引为例。假设有一个 DDL 语句 `ALTER TABLE t ADD INDEX idx(a)`：
 
 ```sql
 SELECT * FROM mysql.tidb_mdl_view\G
@@ -89,31 +89,31 @@ SQL_DIGESTS: ["begin","select * from `t`"]
 1 row in set (0.02 sec)
 ```
 
-可以从上面的输出结果中了解到，有一个 `SESSION ID` 为 `2199023255957` 的事务阻塞了该添加索引 DDL 的执行。该事务执行的 SQL 语句如 `SQL_DIGESTS` 中所示，即 ``["begin","select * from `t`"]``。如果想要使被阻塞的 DDL 能够继续执行，可以通过如下 Global `KILL` 命令中止 `SESSION ID` 为 `2199023255957` 的事务：
+从上述输出中可以看到，`SESSION ID` 为 `2199023255957` 的事务阻塞了 `ADD INDEX` DDL。`SQL_DIGEST` 显示了该事务执行的 SQL 语句，即 ``["begin","select * from `t`"]``。要使被阻塞的 DDL 继续执行，你可以使用以下全局 `KILL` 语句来终止 `2199023255957` 事务：
 
 ```sql
 mysql> KILL 2199023255957;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-中止该事务后，再次查询 `mysql.tidb_mdl_view` 视图。此时，查询结果不再显示上面的事务信息，说明 DDL 不再被阻塞：
+终止事务后，你可以再次查询 `mysql.tidb_mdl_view` 视图。此时，上述事务不会出现在输出中，这意味着 DDL 不再被阻塞。
 
 ```sql
 SELECT * FROM mysql.tidb_mdl_view\G
 Empty set (0.01 sec)
 ```
 
-## 元数据锁的原理
+## 原理
 
 ### 问题描述
 
-TiDB 中 DDL 操作使用的是 online DDL 模式。一个 DDL 语句在执行过程中，需要修改定义的对象元数据版本可能会进行多次小版本变更，而元数据在线异步变更的算法只论证了相邻的两个小版本之间是兼容的，即在相邻的两个元数据版本间操作，不会破坏 DDL 变更对象所存储的数据一致性。
+TiDB 中的 DDL 操作是在线 DDL 模式。当执行 DDL 语句时，要修改的定义对象的元数据版本可能会经历多个小版本变更。在线异步元数据变更算法只建立了相邻两个小版本之间的兼容性，即两个版本之间的操作不会破坏 DDL 变更对象的数据一致性。
 
-以添加索引为例，DDL 语句的状态会经历 None -> Delete Only，Delete Only -> Write Only，Write Only -> Write Reorg，Write Reorg -> Public 这四个变化。
+在为表添加索引时，DDL 语句的状态变更如下：None -> Delete Only, Delete Only -> Write Only, Write Only -> Write Reorg, Write Reorg -> Public。
 
-以下的提交流程将违反“相邻的两个小版本之间是兼容的”约束：
+以下事务的提交过程违反了上述约束：
 
-| 事务  | 所用的版本  | 集群最新版本 | 版本差 |
+| 事务  | 事务使用的版本  | 集群中的最新版本 | 版本差异 |
 |:-----|:-----------|:-----------|:----|
 | txn1 | None       | None       | 0   |
 | txn2 | DeleteOnly | DeleteOnly | 0   |
@@ -123,11 +123,11 @@ TiDB 中 DDL 操作使用的是 online DDL 模式。一个 DDL 语句在执行�
 | txn6 | WriteOnly  | WriteReorg | 1   |
 | txn7 | Public     | Public     | 0   |
 
-其中 `txn4` 提交时采用的元数据版本与集群最新的元数据版本相差了两个版本，会影响数据正确性。
+在上表中，`txn4` 提交时使用的元数据版本与集群中的最新版本相差两个版本。这可能会导致数据不一致。
 
-### 实现
+### 实现细节
 
-引入元数据锁会保证整个 TiDB 集群中的所有事务所用的元数据版本最多相差一个版本。为此：
+元数据锁可以确保 TiDB 集群中所有事务使用的元数据版本最多相差一个版本。为了实现这个目标，TiDB 实现了以下两个规则：
 
-- 执行 DML 语句时，TiDB 会在事务上下文中记录该 DML 语句访问的元数据对象，例如表、视图，以及对应的元数据版本。事务提交时会清空这些记录。
-- DDL 语句进行状态变更时，会向所有的 TiDB 节点推送最新版本的元数据。如果一个 TiDB 节点上所有与这次状态变更相关的事务使用的元数据版本与当前元数据版本之差小于 2，则称这个 TiDB 节点获得了该元数据对象的元数据锁。当集群中的所有 TiDB 节点都获得了该元数据对象的元数据锁后，才能进行下一次状态变更。
+- 执行 DML 时，TiDB 在事务上下文中记录 DML 访问的元数据对象，如表、视图和相应的元数据版本。这些记录在事务提交时被清理。
+- 当 DDL 语句改变状态时，最新版本的元数据被推送到所有 TiDB 节点。如果 TiDB 节点上与此状态变更相关的所有事务使用的元数据版本与当前元数据版本的差异小于两个，则认为该 TiDB 节点获得了元数据对象的元数据锁。只有在集群中所有 TiDB 节点都获得元数据对象的元数据锁后，才能执行下一个状态变更。

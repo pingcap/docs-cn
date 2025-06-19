@@ -1,11 +1,11 @@
 ---
 title: DATA_LOCK_WAITS
-summary: 了解 information_schema 表 `DATA_LOCK_WAITS`。
+summary: 了解 `DATA_LOCK_WAITS` information_schema 表。
 ---
 
 # DATA_LOCK_WAITS
 
-`DATA_LOCK_WAITS` 表展示了集群中所有 TiKV 节点上当前正在发生的等锁情况，包括悲观锁的等锁情况和乐观事务被阻塞的信息。
+`DATA_LOCK_WAITS` 表显示集群中所有 TiKV 节点上正在进行的锁等待信息，包括悲观事务的锁等待信息和被阻塞的乐观事务的信息。
 
 {{< copyable "sql" >}}
 
@@ -27,47 +27,47 @@ DESC data_lock_waits;
 +------------------------+---------------------+------+------+---------+-------+
 ```
 
-`DATA_LOCK_WAITS` 表中各列的字段含义如下：
+`DATA_LOCK_WAITS` 表中各列字段的含义如下：
 
-* `KEY`：正在发生等锁的 key，以十六进制编码的形式显示。
-* `KEY_INFO`：对 `KEY` 进行解读得出的一些详细信息，见 [KEY_INFO](#key_info)。
-* `TRX_ID`：正在等锁的事务 ID，即 `start_ts`。
-* `CURRENT_HOLDING_TRX_ID`：当前持有锁的事务 ID，即 `start_ts`。
-* `SQL_DIGEST`：当前正在等锁的事务中被阻塞的 SQL 语句的 Digest。
-* `SQL_DIGEST_TEXT`：当前正在等锁的事务中被阻塞的 SQL 语句的归一化形式，即去除了参数和格式的 SQL 语句。与 `SQL_DIGEST` 对应。
+* `KEY`：正在等待锁的键，以十六进制形式表示。
+* `KEY_INFO`：`KEY` 的详细信息。参见 [KEY_INFO](#key_info) 部分。
+* `TRX_ID`：等待锁的事务 ID。此 ID 也是事务的 `start_ts`。
+* `CURRENT_HOLDING_TRX_ID`：当前持有锁的事务 ID。此 ID 也是事务的 `start_ts`。
+* `SQL_DIGEST`：锁等待事务中当前被阻塞的 SQL 语句的摘要。
+* `SQL_DIGEST_TEXT`：锁等待事务中当前被阻塞的规范化 SQL 语句（不含参数和格式的 SQL 语句）。它与 `SQL_DIGEST` 相对应。
 
 > **警告：**
 >
-> * 仅拥有 [PROCESS](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process) 权限的用户可以查询该表。
-> * 由于实现限制，目前对于乐观事务被阻塞情况的 `SQL_DIGEST` 和 `SQL_DIGEST_TEXT` 字段为 `null`。如果需要知道导致阻塞的 SQL 语句，可以将此表与 [`CLUSTER_TIDB_TRX`](/information-schema/information-schema-tidb-trx.md) 进行 `JOIN` 来获得对应事务的所有 SQL 语句。 
-> * `DATA_LOCK_WAITS` 表中的信息是在查询时，从所有 TiKV 节点实时获取的。目前，即使加上了 `WHERE` 查询条件，也无法避免对所有 TiKV 节点都进行信息收集。如果集群规模很大、负载很高，查询该表有造成性能抖动的潜在风险，因此请根据实际情况使用。
-> * 来自不同 TiKV 节点的信息不能保证是同一时间点的快照。
-> * `SQL_DIGEST` 列中的信息（SQL Digest）为 SQL 语句进行归一化后计算得到的哈希值。`SQL_DIGEST_TEXT` 列中的信息为内部从 Statements Summary 系列表中查询得到，因而存在内部查询不到对应语句的可能性。关于 SQL Digest 和 Statements Summary 相关表的详细说明，请参阅[Statement Summary Tables](/statement-summary-tables.md)。
+> * 只有具有 [PROCESS](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process) 权限的用户才能查询此表。
+> * 目前，对于乐观事务，`SQL_DIGEST` 和 `SQL_DIGEST_TEXT` 字段为 `null`（表示不可用）。作为解决方法，要找出导致阻塞的 SQL 语句，你可以将此表与 [`CLUSTER_TIDB_TRX`](/information-schema/information-schema-tidb-trx.md) 联合查询，以获取乐观事务的所有 SQL 语句。
+> * `DATA_LOCK_WAITS` 表中的信息是在查询期间从所有 TiKV 节点实时获取的。目前，即使查询有 `WHERE` 条件，信息收集仍会在所有 TiKV 节点上进行。如果你的集群较大且负载较高，查询此表可能会带来性能抖动的潜在风险。因此，请根据实际情况使用。
+> * 来自不同 TiKV 节点的信息不保证是同一时间点的快照。
+> * `SQL_DIGEST` 列中的信息（SQL 摘要）是从规范化 SQL 语句计算得出的哈希值。`SQL_DIGEST_TEXT` 列中的信息是从语句概要表内部查询的，因此可能找不到相应的语句。有关 SQL 摘要和语句概要表的详细说明，请参见[语句概要表](/statement-summary-tables.md)。
 
 ## `KEY_INFO`
 
-`KEY_INFO` 列中展示了对 `KEY` 列中所给出的 key 的详细信息，以 JSON 格式给出。其包含的信息如下：
+`KEY_INFO` 列显示 `KEY` 列的详细信息。信息以 JSON 格式显示。各字段说明如下：
 
-* `"db_id"`：该 key 所属的数据库（schema）的 ID。
-* `"db_name"`：该 key 所属的数据库（schema）的名称。
-* `"table_id"`：该 key 所属的表的 ID。
-* `"table_name"`：该 key 所属的表的名称。
-* `"partition_id"`：该 key 所在的分区（partition）的 ID。
-* `"partition_name"`：该 key 所在的分区（partition）的名称。
-* `"handle_type"`：该 row key （即储存一行数据的 key）的 handle 类型，其可能的值有：
-    * `"int"`：handle 为 int 类型，即 handle 为 row ID
-    * `"common"`：非 int64 类型的 handle，在启用 clustered index 时非 int 类型的主键会显示为此类型
-    * `"unknown"`：当前暂不支持的 handle 类型
-* `"handle_value"`：handle 的值。
-* `"index_id"`：该 index key （即储存索引的 key）所属的 index ID。
-* `"index_name"`：该 index key 所属的 index 名称。
-* `"index_values"`：该 index key 中的 index value。
+* `"db_id"`：键所属 schema 的 ID。
+* `"db_name"`：键所属 schema 的名称。
+* `"table_id"`：键所属表的 ID。
+* `"table_name"`：键所属表的名称。
+* `"partition_id"`：键所在分区的 ID。
+* `"partition_name"`：键所在分区的名称。
+* `"handle_type"`：行键（即存储一行数据的键）的句柄类型。可能的值如下：
+    * `"int"`：句柄类型为 int，表示句柄是行 ID。
+    * `"common"`：句柄类型不是 int64。这种类型在启用聚簇索引时的非整数主键中显示。
+    * `"unknown"`：当前不支持的句柄类型。
+* `"handle_value"`：句柄值。
+* `"index_id"`：索引键（存储索引的键）所属的索引 ID。
+* `"index_name"`：索引键所属的索引名称。
+* `"index_values"`：索引键中的索引值。
 
-其中，不适用或当前无法查询到的信息会被省略。比如，row key 的信息中不会包含 `index_id`、`index_name` 和 `index_values`；index key 不会包含 `handle_type` 和 `handle_value`；非分区表不会显示 `partition_id` 和 `partition_name`；已经被删除掉的表中的 key 的信息无法获取 `table_name`、`db_id`、`db_name`、`index_name` 等 schema 信息，且无法区分是否为分区表。
+在上述字段中，如果某个字段的信息不适用或当前不可用，则该字段在查询结果中会被省略。例如，行键信息不包含 `index_id`、`index_name` 和 `index_values`；索引键不包含 `handle_type` 和 `handle_value`；非分区表不显示 `partition_id` 和 `partition_name`；已删除表中的键信息无法获取 `table_name`、`db_id`、`db_name` 和 `index_name` 等 schema 信息，也无法区分该表是否为分区表。
 
 > **注意：**
 >
-> 如果一个 key 来自一张启用了分区的表，而在查询时，由于某些原因（例如，其所属的表已经被删除）导致无法查询其所属的 schema 信息，则其所属的分区的 ID 可能会出现在 `table_id` 字段中。这是因为，TiDB 对不同分区的 key 的编码方式与对几张独立的表的 key 的编码方式一致，因而在缺失 schema 信息时无法确认该 key 属于一张未分区的表还是某张表的一个分区。
+> 如果一个键来自启用了分区的表，并且在查询期间由于某些原因（例如，键所属的表已被删除）无法查询到该键所属的 schema 信息，则该键所属的分区的 ID 可能会出现在 `table_id` 字段中。这是因为 TiDB 对不同分区的键的编码方式与对几个独立表的键的编码方式相同。因此，当缺少 schema 信息时，TiDB 无法确认该键是属于非分区表还是属于某个表的一个分区。
 
 ## 示例
 
@@ -88,4 +88,4 @@ CURRENT_HOLDING_TRX_ID: 426790590082449409
 1 row in set (0.01 sec)
 ```
 
-以上查询结果显示，ID 为 `426790594290122753` 的事务在执行 Digest 为 `"38b03afa5debbdf0326a014dbe5012a62c51957f1982b3093e748460f8b00821"`、形如 ``update `t` set `v` = `v` + ? where `id` = ?`` 的语句的过程中，试图在 `"7480000000000000355F728000000000000001"` 这个 key 上获取悲观锁，但是该 key 上的锁目前被 ID 为 `426790590082449409` 的事务持有。
+上述查询结果显示，ID 为 `426790594290122753` 的事务在执行摘要为 `"38b03afa5debbdf0326a014dbe5012a62c51957f1982b3093e748460f8b00821"` 且形式为 ``update `t` set `v` = `v` + ? where `id` = ?`` 的语句时，正在尝试获取键 `"7480000000000000355F728000000000000001"` 的悲观锁，但该键的锁被 ID 为 `426790590082449409` 的事务持有。

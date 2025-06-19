@@ -1,28 +1,28 @@
 ---
 title: CLIENT_ERRORS_SUMMARY_BY_HOST
-summary: 了解 INFORMATION_SCHEMA 表 `CLIENT_ERRORS_SUMMARY_BY_HOST`。
+summary: 了解 `CLIENT_ERRORS_SUMMARY_BY_HOST` INFORMATION_SCHEMA 表。
 ---
 
 # CLIENT_ERRORS_SUMMARY_BY_HOST
 
-`CLIENT_ERRORS_SUMMARY_BY_HOST` 表汇总了已返回给连接到 TiDB 服务器的客户端的 SQL 错误和警告。这些错误和警告包括：
+`CLIENT_ERRORS_SUMMARY_BY_HOST` 表提供了返回给连接到 TiDB 服务器的客户端的 SQL 错误和警告的摘要。这些包括：
 
 * 格式错误的 SQL 语句。
-* 除以零错误。
-* 尝试插入超出范围或重复的键值。
+* 除零错误。
+* 尝试插入超出范围或重复键值。
 * 权限错误。
 * 表不存在。
 
-以上错误通过 MySQL 服务器协议返回给客户端，此时应用程序应在客户端采取适当操作。`INFORMATION_SCHEMA.CLIENT_ERRORS_SUMMARY_BY_HOST` 表提供了一种有效方法，能够在应用程序没有正确处理（或记录）TiDB 服务器返回的错误的情况下检查错误。
+这些错误通过 MySQL 服务器协议返回给客户端，应用程序需要采取适当的操作。在应用程序没有正确处理（或记录）TiDB 服务器返回的错误的情况下，`INFORMATION_SCHEMA.CLIENT_ERRORS_SUMMARY_BY_HOST` 表提供了一种检查错误的有用方法。
 
-由于 `CLIENT_ERRORS_SUMMARY_BY_HOST` 会基于每个远程主机汇总错误，在诊断其中一台应用程序服务器比其他服务器生成更多错误的情况时很有用。可能的情况包括：
+由于 `CLIENT_ERRORS_SUMMARY_BY_HOST` 按远程主机汇总错误，因此它可以用于诊断某个应用服务器产生的错误比其他服务器多的情况。可能的场景包括：
 
 * 过时的 MySQL 客户端库。
-* 过时的应用程序（可能是在推出新部署时遗漏了此服务器）。
-* 用户权限中“主机”部分的使用不正确。
-* 网络连接不可靠，导致更多超时或连接断开。
+* 过时的应用程序（可能在部署新版本时遗漏了这台服务器）。
+* 用户权限中的 "host" 部分使用不当。
+* 网络连接不稳定导致更多超时或断开连接。
 
-可以使用 `FLUSH CLIENT_ERRORS_SUMMARY` 语句重置汇总的计数。所汇总的是每个 TiDB 服务器的本地数据，并且只保留在内存中。如果 TiDB 服务器重新启动，会丢失汇总信息。
+可以使用 `FLUSH CLIENT_ERRORS_SUMMARY` 语句重置汇总计数。摘要信息仅在每个 TiDB 服务器本地保存，并且只保存在内存中。如果 TiDB 服务器重启，摘要信息将会丢失。
 
 ```sql
 USE INFORMATION_SCHEMA;
@@ -46,17 +46,17 @@ DESC CLIENT_ERRORS_SUMMARY_BY_HOST;
 7 rows in set (0.00 sec)
 ```
 
-字段说明如下：
+字段说明：
 
 * `HOST`：客户端的远程主机。
-* `ERROR_NUMBER`：返回的与 MySQL 兼容的错误码。
-* `ERROR_MESSAGE`：与错误码匹配的错误消息（预处理语句形式）。
-* `ERROR_COUNT`：此错误返回到客户端主机的次数。
-* `WARNING_COUNT`：此警告返回到客户端主机的次数。
-* `FIRST_SEEN`：首次从客户端主机看到此错误（或警告）的时间。
-* `LAST_SEEN`：最近一次从客户端主机看到此错误（或警告）的时间。
+* `ERROR_NUMBER`：返回的 MySQL 兼容错误号。
+* `ERROR_MESSAGE`：与错误号匹配的错误消息（以预处理语句形式）。
+* `ERROR_COUNT`：此错误返回给客户端主机的次数。
+* `WARNING_COUNT`：此警告返回给客户端主机的次数。
+* `FIRST_SEEN`：从客户端主机首次看到此错误（或警告）的时间。
+* `LAST_SEEN`：从客户端主机最近一次看到此错误（或警告）的时间。
 
-以下示例显示了客户端连接到本地 TiDB 服务器时生成的警告。执行 `FLUSH CLIENT_ERRORS_SUMMARY` 语句后，会重置汇总。
+以下示例显示了客户端连接到本地 TiDB 服务器时生成的警告。执行 `FLUSH CLIENT_ERRORS_SUMMARY` 后重置摘要：
 
 ```sql
 SELECT 0/0;

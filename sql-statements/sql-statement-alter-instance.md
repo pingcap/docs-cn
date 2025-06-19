@@ -1,21 +1,37 @@
 ---
 title: ALTER INSTANCE
-summary: TiDB 数据库中 ALTER INSTANCE 的使用概况。
+summary: 了解 TiDB 中 `ALTER INSTANCE` 的使用概述。
 ---
 
 # ALTER INSTANCE
 
-`ALTER INSTANCE` 语句用于对单个 TiDB 实例进行变更操作。目前 TiDB 仅支持 `RELOAD TLS` 子句。
+`ALTER INSTANCE` 语句用于对单个 TiDB 实例进行更改。目前，TiDB 仅支持 `RELOAD TLS` 子句。
+
+> **注意：**
+>
+> [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 可以自动刷新 TLS 证书，因此此功能不适用于 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 集群。
 
 ## RELOAD TLS
 
-`ALTER INSTANCE RELOAD TLS` 语句用于从原配置的证书 ([`ssl-cert`](/tidb-configuration-file.md#ssl-cert))、密钥 ([`ssl-key`](/tidb-configuration-file.md#ssl-key)) 和 CA ([`ssl-ca`](/tidb-configuration-file.md#ssl-ca)) 的路径重新加证书、密钥和 CA。
+<CustomContent platform="tidb">
 
-新加载的证书密钥和 CA 将在语句执行成功后对新建立的连接生效，不会影响语句执行前已建立的连接。
+你可以执行 `ALTER INSTANCE RELOAD TLS` 语句来从原始配置路径重新加载证书（[`ssl-cert`](/tidb-configuration-file.md#ssl-cert)）、密钥（[`ssl-key`](/tidb-configuration-file.md#ssl-key)）和 CA（[`ssl-ca`](/tidb-configuration-file.md#ssl-ca)）。
 
-在重加载遇到错误时默认会报错返回且继续使用变更前的密钥和证书，但在添加可选的 `NO ROLLBACK ON ERROR` 后遇到错误将不报错并以关闭 TLS 安全连接功能的方式处理后续请求。
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+你可以执行 `ALTER INSTANCE RELOAD TLS` 语句来从原始配置路径重新加载证书（[`ssl-cert`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#ssl-cert)）、密钥（[`ssl-key`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#ssl-key)）和 CA（[`ssl-ca`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#ssl-ca)）。
+
+</CustomContent>
+
+新加载的证书、密钥和 CA 在语句成功执行后建立的连接上生效。在执行此语句之前建立的连接不受影响。
+
+当重新加载过程中发生错误时，默认情况下会返回错误消息，并继续使用之前的密钥和证书。但是，如果你添加了可选的 `NO ROLLBACK ON ERROR`，当重新加载过程中发生错误时，不会返回错误，而是在禁用 TLS 安全连接的情况下处理后续请求。
 
 ## 语法图
+
+**AlterInstanceStmt:**
 
 ```ebnf+diagram
 AlterInstanceStmt ::=
@@ -35,8 +51,18 @@ ALTER INSTANCE RELOAD TLS;
 
 ## MySQL 兼容性
 
-仅支持从原配置路径重加载，不支持动态修改加载路径，也不支持动态启用启动 TiDB 时未开启的 TLS 加密连接功能。
+`ALTER INSTANCE RELOAD TLS` 语句仅支持从原始配置路径重新加载。它不支持动态修改加载路径或在 TiDB 启动时动态启用 TLS 加密连接功能。重启 TiDB 时，此功能默认是禁用的。
 
 ## 另请参阅
 
-[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
+<CustomContent platform="tidb">
+
+[启用 TiDB 客户端与服务端之间的 TLS](/enable-tls-between-clients-and-servers.md)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+[启用 TiDB 客户端与服务端之间的 TLS](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers)。
+
+</CustomContent>

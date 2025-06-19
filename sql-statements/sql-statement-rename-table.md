@@ -1,13 +1,13 @@
 ---
-title: RENAME TABLE
-summary: TiDB 数据库中 RENAME TABLE 的使用概况。
+title: RENAME TABLE | TiDB SQL 语句参考
+summary: TiDB 数据库中 RENAME TABLE 的使用概览。
 ---
 
 # RENAME TABLE
 
-`RENAME TABLE` 语句用于重命名现有表和视图，支持同时重命名多个表及跨数据库重命名。
+此语句用于重命名现有的表和视图，支持同时重命名多个表以及跨数据库重命名。
 
-## 语法图
+## 语法
 
 ```ebnf+diagram
 RenameTableStmt ::=
@@ -61,7 +61,7 @@ SHOW TABLES;
 1 row in set (0.00 sec)
 ```
 
-以下示例演示了如何跨数据库重命名多个表（假设数据库 `db1`、`db2`、`db3` 和 `db4` 已存在，表 `db1.t1` 和 `db3.t3` 已存在）：
+以下示例演示如何跨数据库重命名多个表，假设数据库 `db1`、`db2`、`db3` 和 `db4` 已经存在，并且表 `db1.t1` 和 `db3.t3` 已经存在：
 
 ```sql
 RENAME TABLE db1.t1 To db2.t2, db3.t3 To db4.t4;
@@ -117,7 +117,7 @@ Database changed
 1 row in set (0.00 sec)
 ```
 
-原子重命名可以确保在交换表时，表始终存在。
+原子重命名可用于替换表，而不会出现表不存在的时刻。
 
 ```sql
 CREATE TABLE t1(id int PRIMARY KEY);
@@ -160,7 +160,7 @@ Create Table: CREATE TABLE `t1` (
 
 ## MySQL 兼容性
 
-`RENAME TABLE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
+TiDB 中的 `RENAME TABLE` 语句与 MySQL 完全兼容。如果发现任何兼容性差异，请[报告问题](https://docs.pingcap.com/tidb/stable/support)。
 
 ## 另请参阅
 

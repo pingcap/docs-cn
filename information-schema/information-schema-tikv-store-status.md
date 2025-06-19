@@ -1,11 +1,15 @@
 ---
 title: TIKV_STORE_STATUS
-summary: 了解 INFORMATION_SCHEMA 表 `TIKV_STORE_STATUS`。
+summary: 了解 `TIKV_STORE_STATUS` INFORMATION_SCHEMA 表。
 ---
 
 # TIKV_STORE_STATUS
 
-`TIKV_STORE_STATUS` 表通过 PD 的 API 显示了 TiKV 节点的一些基本信息，例如在集群中分配的 ID、地址和端口、状态、容量以及当前节点的 Region leader 的数量。
+`TIKV_STORE_STATUS` 表通过 PD 的 API 显示 TiKV 节点的一些基本信息，如在集群中分配的 ID、地址和端口，以及当前节点的状态、容量和 Region leader 的数量。
+
+> **注意：**
+>
+> 此表在 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 集群上不可用。
 
 ```sql
 USE INFORMATION_SCHEMA;
@@ -41,24 +45,24 @@ DESC TIKV_STORE_STATUS;
 19 rows in set (0.00 sec)
 ```
 
-`TIKV_STORE_STATUS` 表中列的含义如下：
+`TIKV_STORE_STATUS` 表中各列的描述如下：
 
 * `STORE_ID`：Store 的 ID。
 * `ADDRESS`：Store 的地址。
 * `STORE_STATE`：Store 状态的标识符，与 `STORE_STATE_NAME` 相对应。
-* `STORE_STATE_NAME`：Store 状态的名字，为 `Up`、`Offline`、`Tombstone` 中的一种。
-* `LABEL`：给 Store 设置的标签。
+* `STORE_STATE_NAME`：Store 状态的名称。名称为 `Up`、`Offline` 或 `Tombstone`。
+* `LABEL`：为 Store 设置的标签。
 * `VERSION`：Store 的版本号。
 * `CAPACITY`：Store 的存储容量。
 * `AVAILABLE`：Store 的剩余存储空间。
-* `LEADER_COUNT`：Store 上的 leader 的数量。
+* `LEADER_COUNT`：Store 上的 leader 数量。
 * `LEADER_WEIGHT`：Store 的 leader 权重。
-* `LEADER_SCORE`：Store 的 leader 评分。
-* `LEADER_SIZE`：Store 上的所有 leader 的近似总数据量 (MB)。
-* `REGION_COUNT`：Store 上的 Region 总数。
+* `LEADER_SCORE`：Store 的 leader 分数。
+* `LEADER_SIZE`：Store 上所有 leader 的大致总数据大小（MB）。
+* `REGION_COUNT`：Store 上的 Region 数量。
 * `REGION_WEIGHT`：Store 的 Region 权重。
-* `REGION_SCORE`：Store 的 Region 评分。
-* `REGION_SIZE`：Store 上的所有 Region 的近似总数据量 (MB)。
-* `START_TS`：Store 启动时的时间戳。
-* `LAST_HEARTBEAT_TS`：Store 上次发出心跳的时间戳。
+* `REGION_SCORE`：Store 的 Region 分数。
+* `REGION_SIZE`：Store 上所有 Region 的大致总数据大小（MB）。
+* `START_TS`：Store 启动的时间戳。
+* `LAST_HEARTBEAT_TS`：Store 发送的最后一次心跳的时间戳。
 * `UPTIME`：Store 启动以来的总时间。

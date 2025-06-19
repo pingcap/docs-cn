@@ -1,13 +1,23 @@
 ---
-title: 使用 EXPLAIN 解读执行计划
-summary: 通过示例了解如何使用 EXPLAIN 分析执行计划。
+title: EXPLAIN 使用教程
+summary: 通过示例语句学习如何使用 EXPLAIN
 ---
 
-# 使用 `EXPLAIN` 解读执行计划
+# `EXPLAIN` 使用教程
 
-SQL 是一种声明性语言，因此用户无法根据 SQL 语句直接判断一条查询的执行是否有效率。用户首先要使用 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 语句查看当前的执行计划。
+由于 SQL 是一种声明式语言，你无法自动判断查询是否高效执行。你必须首先使用 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 语句来了解当前的执行计划。
 
-以 [bikeshare 数据库示例（英文）](https://docs.pingcap.com/tidb/stable/import-example-data) 中的一个 SQL 语句为例，该语句统计了 2017 年 7 月 1 日的行程次数：
+<CustomContent platform="tidb">
+
+以下语句来自 [bikeshare 示例数据库](/import-example-data.md)，用于统计 2017 年 7 月 1 日发生的行程数量：
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+以下语句来自 [bikeshare 示例数据库](/tidb-cloud/import-sample-data.md)，用于统计 2017 年 7 月 1 日发生的行程数量：
+
+</CustomContent>
 
 {{< copyable "sql" >}}
 
@@ -28,25 +38,21 @@ EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00
 5 rows in set (0.00 sec)
 ```
 
-以上是该查询的执行计划结果。从 `└─TableFullScan_18` 算子开始向上看，查询的执行过程如下（非最佳执行计划）：
+从子运算符 `└─TableFullScan_18` 开始回溯，你可以看到其执行过程如下，目前这个执行计划并不是最优的：
 
-1. Coprocessor (TiKV) 读取整张 `trips` 表的数据，作为一次 `TableFullScan` 操作，再将读取到的数据传递给 `Selection_19` 算子。`Selection_19` 算子仍在 TiKV 内。
-
-2. `Selection_19` 算子根据谓词 `WHERE start_date BETWEEN ..` 进行数据过滤。预计大约有 250 行数据满足该过滤条件（基于统计信息以及算子的执行逻辑估算而来）。`└─TableFullScan_18` 算子显示 `stats:pseudo`，表示该表没有实际统计信息，执行 `ANALYZE TABLE trips` 收集统计信息后，预计的估算的数字会更加准确。
-
-3. `COUNT` 函数随后应用于满足过滤条件的行，这一过程也是在 TiKV (`cop[tikv]`) 中的 `StreamAgg_9` 算子内完成的。TiKV coprocessor 能执行一些 MySQL 内置函数，`COUNT` 是其中之一。
-
-4. `StreamAgg_9` 算子执行的结果会被传递给 `TableReader_21` 算子（位于 TiDB 进程中，即 `root` 任务）。执行计划中，`TableReader_21` 算子的 `estRows` 为 `1`，表示该算子将从每个访问的 TiKV Region 接收一行数据。这一请求过程的详情，可参阅 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)。
-
-5. `StreamAgg_20` 算子随后对 `└─TableReader_21` 算子传来的每行数据计算 `COUNT` 函数的结果。`StreamAgg_20` 是根算子，会将结果返回给客户端。
+1. 协处理器（TiKV）通过 `TableFullScan` 操作读取整个 `trips` 表。然后将读取的行传递给仍在 TiKV 中的 `Selection_19` 运算符。
+2. `WHERE start_date BETWEEN ..` 谓词在 `Selection_19` 运算符中进行过滤。估计约有 `250` 行满足这个选择条件。注意，这个数字是根据统计信息和运算符的逻辑估算的。`└─TableFullScan_18` 运算符显示 `stats:pseudo`，这表示该表没有实际的统计信息。在运行 `ANALYZE TABLE trips` 收集统计信息后，预计统计数据会更准确。
+3. 对满足选择条件的行应用 `count` 函数。这也在仍在 TiKV 中的 `StreamAgg_9` 运算符内完成（`cop[tikv]`）。TiKV 协处理器可以执行多个 MySQL 内置函数，`count` 就是其中之一。
+4. `StreamAgg_9` 的结果然后发送到现在位于 TiDB 服务器内（任务为 `root`）的 `TableReader_21` 运算符。该运算符的 `estRows` 列值为 `1`，这表示运算符将从每个要访问的 TiKV Region 接收一行。有关这些请求的更多信息，请参见 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)。
+5. `StreamAgg_20` 运算符然后对来自 `└─TableReader_21` 运算符的每一行应用 `count` 函数，从 [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) 可以看到大约有 56 行。由于这是根运算符，它随后将结果返回给客户端。
 
 > **注意：**
 >
-> 要查看 TiDB 中某张表的 Region 信息，可执行 [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) 语句。
+> 要查看表包含的 Region 的概览，请执行 [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md)。
 
-## 评估当前的性能
+## 评估当前性能
 
-`EXPLAIN` 语句只返回查询的执行计划，并不执行该查询。若要获取实际的执行时间，可执行该查询，或使用 `EXPLAIN ANALYZE` 语句：
+`EXPLAIN` 只返回查询执行计划但不执行查询。要获取实际执行时间，你可以执行查询或使用 `EXPLAIN ANALYZE`：
 
 {{< copyable "sql" >}}
 
@@ -67,11 +73,9 @@ EXPLAIN ANALYZE SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 
 5 rows in set (1.03 sec)
 ```
 
-执行以上示例查询耗时 `1.03` 秒，说明执行性能较为理想。
+上面的示例查询执行需要 `1.03` 秒，这并不是理想的性能。
 
-以上 `EXPLAIN ANALYZE` 的结果中，`actRows` 表明一些 `estRows` 预估数不准确（预估返回 10000 行数据但实际返回 19117643 行）。`└─TableFullScan_18` 算子的 `operator info` 列 (`stats:pseudo`) 信息也表明该算子的预估数不准确。
-
-如果先执行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 再执行 `EXPLAIN ANALYZE`，预估数与实际数会更接近：
+从上面 `EXPLAIN ANALYZE` 的结果中，`actRows` 表明一些估计值（`estRows`）不准确（预期 1 万行但实际找到 1900 万行），这在 `└─TableFullScan_18` 的 `operator info`（`stats:pseudo`）中已经有所提示。如果你先运行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 然后再次运行 `EXPLAIN ANALYZE`，你会看到估计值更接近实际值：
 
 {{< copyable "sql" >}}
 
@@ -95,9 +99,9 @@ Query OK, 0 rows affected (10.22 sec)
 5 rows in set (0.93 sec)
 ```
 
-执行 `ANALYZE TABLE` 后，可以看到 `└─TableFullScan_18` 算子的预估行数是准确的，`└─Selection_19` 算子的预估行数也更接近实际行数。以上两个示例中的执行计划（即 TiDB 执行查询所使用的一组算子）未改变，但过时的统计信息常常导致 TiDB 选择到非最优的执行计划。
+执行 `ANALYZE TABLE` 后，你可以看到 `└─TableFullScan_18` 运算符的估计行数是准确的，`└─Selection_19` 的估计值现在也更接近实际值。在上述两种情况下，虽然执行计划（TiDB 用于执行此查询的运算符集）没有改变，但不理想的执行计划通常是由过时的统计信息导致的。
 
-除 `ANALYZE TABLE` 外，达到 [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) 阈值后，TiDB 会自动在后台重新生成统计数据。若要查看 TiDB 有多接近该阈值（即 TiDB 判断统计数据有多健康），可执行 [`SHOW STATS_HEALTHY`](/sql-statements/sql-statement-show-stats-healthy.md) 语句。
+除了 `ANALYZE TABLE`，TiDB 还会在达到 [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) 阈值后自动在后台重新生成统计信息。你可以通过执行 [`SHOW STATS_HEALTHY`](/sql-statements/sql-statement-show-stats-healthy.md) 语句来查看 TiDB 距离这个阈值有多近（TiDB 认为统计信息的健康程度）：
 
 {{< copyable "sql" >}}
 
@@ -114,15 +118,15 @@ SHOW STATS_HEALTHY;
 1 row in set (0.00 sec)
 ```
 
-## 确定优化方案
+## 识别优化机会
 
-当前执行计划是有效率的：
+当前执行计划在以下方面是高效的：
 
-* 大部分任务是在 TiKV 内处理的，需要通过网络传输给 TiDB 处理的仅有 56 行数据，每行都满足过滤条件，而且都很短。
+* 大部分工作在 TiKV 协处理器内处理。只有 56 行数据需要通过网络发送回 TiDB 进行处理。每一行都很短，只包含匹配选择条件的计数。
 
-* 在 TiDB (`StreamAgg_20`) 中和在 TiKV (`└─StreamAgg_9`) 中汇总行数都使用了 Stream Aggregate，该算法在内存使用方面很有效率。
+* 在 TiDB (`StreamAgg_20`) 和 TiKV (`└─StreamAgg_9`) 中聚合行数都使用了流式聚合，这在内存使用上非常高效。
 
-当前执行计划存在的最大问题在于谓词 `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` 并未立即生效，先是 `TableFullScan` 算子读取所有行数据，然后才进行过滤选择。可以在 `SHOW CREATE TABLE trips` 的返回结果中找出问题原因：
+当前执行计划最大的问题是谓词 `start_date BETWEEN '2017-07-01 00:00:00' AND '2017-07-01 23:59:59'` 没有立即应用。所有行都先通过 `TableFullScan` 运算符读取，然后才应用选择条件。你可以从 `SHOW CREATE TABLE trips` 的输出中找出原因：
 
 {{< copyable "sql" >}}
 
@@ -149,7 +153,7 @@ Create Table: CREATE TABLE `trips` (
 1 row in set (0.00 sec)
 ```
 
-以上返回结果显示，`start_date` 列**没有**索引。要将该谓词下推到 index reader 算子，还需要一个索引。添加索引如下：
+`start_date` 列上**没有**索引。你需要一个索引才能将这个谓词推入索引读取运算符。添加索引的方法如下：
 
 {{< copyable "sql" >}}
 
@@ -163,9 +167,9 @@ Query OK, 0 rows affected (2 min 10.23 sec)
 
 > **注意：**
 >
-> 你可通过执行 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 语句来查看 DDL 任务的进度。TiDB 中的默认值的设置较为保守，因此添加索引不会对生产环境下的负载造成太大影响。测试环境下，可以考虑调大 [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size) 和 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt) 的值。在参照系统上，将批处理大小设为 `10240`，将 worker count 并发度设置为 `32`，该系统可获得 10 倍的性能提升（较之使用默认值）。
+> 你可以使用 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 命令监控 DDL 作业的进度。TiDB 的默认设置经过精心选择，以确保添加索引不会对生产工作负载产生太大影响。对于测试环境，考虑增加 [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size) 和 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt) 的值。在参考系统上，批量大小为 `10240` 和工作线程数为 `32` 可以实现比默认值高 10 倍的性能提升。
 
-添加索引后，可以使用 `EXPLAIN` 重复该查询。在以下返回结果中，可见 TiDB 选择了新的执行计划，而且不再使用 `TableFullScan` 和 `Selection` 算子。
+添加索引后，你可以再次使用 `EXPLAIN` 查询。在下面的输出中，你可以看到选择了一个新的执行计划，`TableFullScan` 和 `Selection` 运算符已被消除：
 
 {{< copyable "sql" >}}
 
@@ -185,7 +189,7 @@ EXPLAIN SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 00:00:00
 4 rows in set (0.00 sec)
 ```
 
-若要比较实际的执行时间，可再次使用 `EXPLAIN ANALYZE` 语句：
+要比较实际执行时间，你可以再次使用 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)：
 
 {{< copyable "sql" >}}
 
@@ -205,15 +209,15 @@ EXPLAIN ANALYZE SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 
 4 rows in set (0.00 sec)
 ```
 
-从以上结果可看出，查询时间已从 1.03 秒减少到 0.0 秒。
+从上面的结果可以看出，查询时间从 1.03 秒减少到了 0.0 秒。
 
 > **注意：**
 >
-> 以上示例另一个可用的优化方案是 [coprocessor cache](/coprocessor-cache.md)。如果你无法添加索引，可考虑开启 coprocessor cache 功能。开启后，只要算子上次执行以来 Region 未作更改，TiKV 将从缓存中返回值。这也有助于减少 `TableFullScan` 和 `Selection` 算子的大部分运算成本。
+> 这里还有另一个优化选项是协处理器缓存。如果你无法添加索引，可以考虑启用[协处理器缓存](/coprocessor-cache.md)。启用后，只要自上次执行运算符以来 Region 没有被修改，TiKV 就会返回缓存中的值。这也将有助于减少昂贵的 `TableFullScan` 和 `Selection` 运算符的大部分开销。
 
-## 禁止子查询提前执行
+## 禁用子查询的提前执行
 
-在查询优化过程中，TiDB 会提前执行可以在优化阶段直接计算的子查询。例如：
+在查询优化过程中，TiDB 会提前执行可以直接计算的子查询。例如：
 
 ```sql
 CREATE TABLE t1(a int);
@@ -233,9 +237,9 @@ EXPLAIN SELECT * FROM t2 WHERE a = (SELECT a FROM t1);
 3 rows in set (0.00 sec)
 ```
 
-在上述例子中 `a = (SELECT a FROM t1)` 子查询在优化阶段就进行了计算，表达式被改写为 `t2.a=1`。这种执行方式可以在优化阶段进行更多的常量传播和常量折叠优化，但是会影响 `EXPLAIN` 语句的执行时间。当子查询本身耗时较长时，`EXPLAIN` 语句无法执行完成，可能会影响线上问题的排查。
+在上面的例子中，`a = (SELECT a FROM t1)` 子查询在优化过程中被计算并重写为 `t2.a=1`。这允许在优化过程中进行更多优化，如常量传播和折叠。但是，这会影响 `EXPLAIN` 语句的执行时间。当子查询本身需要很长时间执行时，`EXPLAIN` 语句可能无法完成，这可能会影响在线故障排除。
 
-从 v7.3.0 开始，TiDB 引入 [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) 系统变量，可以控制这类子查询在 `EXPLAIN` 语句中是否禁止提前执行计算展开。该变量默认值为 `OFF`，即提前计算子查询。你可以将该变量设置为 `ON` 来禁止子查询提前执行：
+从 v7.3.0 开始，TiDB 引入了 [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-new-in-v730) 系统变量，用于控制是否在 `EXPLAIN` 中禁用此类子查询的提前执行。该变量的默认值为 `OFF`，表示会提前计算子查询。你可以将此变量设置为 `ON` 来禁用子查询的提前执行：
 
 ```sql
 SET @@tidb_opt_enable_non_eval_scalar_subquery = ON;
@@ -257,8 +261,8 @@ EXPLAIN SELECT * FROM t2 WHERE a = (SELECT a FROM t1);
 7 rows in set (0.00 sec)
 ```
 
-可以看到，标量子查询在执行阶段并没有被展开，这样更便于理解该类 SQL 具体的执行过程。
+如你所见，标量子查询在执行过程中没有被展开，这使得更容易理解此类 SQL 的具体执行过程。
 
 > **注意：**
 >
-> [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) 目前仅控制 `EXPLAIN` 语句的行为，`EXPLAIN ANALYZE` 语句仍然会将子查询提前展开。
+> [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-new-in-v730) 只影响 `EXPLAIN` 语句的行为，`EXPLAIN ANALYZE` 语句仍然会提前执行子查询。

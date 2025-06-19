@@ -1,13 +1,13 @@
 ---
-title: CREATE USER
-summary: TiDB 数据库中 CREATE USER 的使用概况。
+title: CREATE USER | TiDB SQL 语句参考
+summary: TiDB 数据库中 CREATE USER 的使用概述。
 ---
 
 # CREATE USER
 
-`CREATE USER` 语句用于创建带有指定密码的新用户。和 MySQL 一样，在 TiDB 权限系统中，用户是用户名和用户名所连接主机的组合。因此，可创建一个用户 `'newuser2'@'192.168.1.1'`，使其只能通过 IP 地址 `192.168.1.1` 进行连接。相同的用户名从不同主机登录时可能会拥有不同的权限。
+此语句用于创建一个新用户，并指定密码。在 MySQL 权限系统中，用户是用户名和其连接来源主机的组合。因此，可以创建一个只能从 IP 地址 `192.168.1.1` 连接的用户 `'newuser2'@'192.168.1.1'`。同时也可以让两个用户具有相同的用户名部分，但因为从不同的主机登录而具有不同的权限。
 
-## 语法图
+## 语法
 
 ```ebnf+diagram
 CreateUserStmt ::=
@@ -50,57 +50,35 @@ RequireListElement ::= 'ISSUER' Issuer | 'SUBJECT' Subject | 'CIPHER' Cipher | '
 
 ## 示例
 
-创建一个密码为 `newuserpassword` 的用户。
-
-{{< copyable "sql" >}}
+创建一个密码为 `newuserpassword` 的用户：
 
 ```sql
-CREATE USER 'newuser' IDENTIFIED BY 'newuserpassword';
-```
-
-```
+mysql> CREATE USER 'newuser' IDENTIFIED BY 'newuserpassword';
 Query OK, 1 row affected (0.04 sec)
 ```
 
-创建一个只能在 `192.168.1.1` 登录的用户，密码为 `newuserpassword`。
-
-{{< copyable "sql" >}}
+创建一个只能从 `192.168.1.1` 登录的用户：
 
 ```sql
-CREATE USER 'newuser2'@'192.168.1.1' IDENTIFIED BY 'newuserpassword';
-```
-
-```
+mysql> CREATE USER 'newuser2'@'192.168.1.1' IDENTIFIED BY 'newuserpassword';
 Query OK, 1 row affected (0.02 sec)
 ```
 
-创建一个要求在登录时使用 TLS 连接的用户。
-
-{{< copyable "sql" >}}
+创建一个必须使用 TLS 连接登录的用户：
 
 ```sql
 CREATE USER 'newuser3'@'%' IDENTIFIED BY 'newuserpassword' REQUIRE SSL;
-```
-
-```
 Query OK, 1 row affected (0.02 sec)
 ```
 
-创建一个要求在登录时提供指定客户端证书的用户。
-
-{{< copyable "sql" >}}
+创建一个登录时需要使用 X.509 证书的用户：
 
 ```sql
 CREATE USER 'newuser4'@'%' IDENTIFIED BY 'newuserpassword' REQUIRE ISSUER '/C=US/ST=California/L=San Francisco/O=PingCAP';
-```
-
-```
 Query OK, 1 row affected (0.02 sec)
 ```
 
-创建一个初始状态下被锁住的用户。
-
-{{< copyable "sql" >}}
+创建一个创建时就被锁定的用户：
 
 ```sql
 CREATE USER 'newuser5'@'%' ACCOUNT LOCK;
@@ -110,7 +88,7 @@ CREATE USER 'newuser5'@'%' ACCOUNT LOCK;
 Query OK, 1 row affected (0.02 sec)
 ```
 
-创建一个带注释的用户。
+创建一个带有注释的用户：
 
 ```sql
 CREATE USER 'newuser6'@'%' COMMENT 'This user is created only for test';
@@ -126,7 +104,7 @@ SELECT * FROM information_schema.user_attributes;
 1 rows in set (0.00 sec)
 ```
 
-创建一个具有邮箱 (`email`) 属性的用户。
+创建一个带有 `email` 属性的用户：
 
 ```sql
 CREATE USER 'newuser7'@'%' ATTRIBUTE '{"email": "user@pingcap.com"}';
@@ -142,7 +120,7 @@ SELECT * FROM information_schema.user_attributes;
 1 rows in set (0.00 sec)
 ```
 
-创建一个禁止重复使用最近 5 次密码的用户。
+创建一个不允许重复使用最近 5 个密码的用户：
 
 ```sql
 CREATE USER 'newuser8'@'%' PASSWORD HISTORY 5;
@@ -152,7 +130,7 @@ CREATE USER 'newuser8'@'%' PASSWORD HISTORY 5;
 Query OK, 1 row affected (0.02 sec)
 ```
 
-创建一个密码已经手动过期的用户。
+创建一个密码已手动过期的用户：
 
 ```sql
 CREATE USER 'newuser9'@'%' PASSWORD EXPIRE;
@@ -170,24 +148,30 @@ SELECT USER, HOST, USER_ATTRIBUTES FROM MYSQL.USER WHERE USER='newuser7';
 ```
 
 ```sql
-+-----------+------+---------------------------------------------------+
-| USER      | HOST | USER_ATTRIBUTES                                   |
-+-----------+------+---------------------------------------------------+
-| newuser7  | %    | {"resource_group": "rg1"} |
-+-----------+------+---------------------------------------------------+
++----------+------+---------------------------+
+| USER     | HOST | USER_ATTRIBUTES           |
++----------+------+---------------------------+
+| newuser7 | %    | {"resource_group": "rg1"} |
++----------+------+---------------------------+
 1 rows in set (0.00 sec)
 ```
 
 ## MySQL 兼容性
 
-* TiDB 不支持 `WITH MAX_QUERIES_PER_HOUR`、`WITH MAX_UPDATES_PER_HOUR`、`WITH MAX_USER_CONNECTIONS` 等 `CREATE` 选项。
+以下 `CREATE USER` 选项尚未被 TiDB 支持，将被解析但会被忽略：
+
+* TiDB 不支持 `WITH MAX_QUERIES_PER_HOUR`、`WITH MAX_UPDATES_PER_HOUR` 和 `WITH MAX_USER_CONNECTIONS` 选项。
 * TiDB 不支持 `DEFAULT ROLE` 选项。
-* 对于 TiDB 尚不支持的 `CREATE` 选项。这些选项可被解析，但会被忽略。
 
 ## 另请参阅
 
-* [Security Compatibility with MySQL](/security-compatibility-with-mysql.md)
+<CustomContent platform="tidb">
+
+* [与 MySQL 的安全兼容性](/security-compatibility-with-mysql.md)
+* [权限管理](/privilege-management.md)
+
+</CustomContent>
+
 * [DROP USER](/sql-statements/sql-statement-drop-user.md)
 * [SHOW CREATE USER](/sql-statements/sql-statement-show-create-user.md)
 * [ALTER USER](/sql-statements/sql-statement-alter-user.md)
-* [Privilege Management](/privilege-management.md)

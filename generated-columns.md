@@ -1,25 +1,25 @@
 ---
 title: 生成列
-summary: 生成列是由列定义中的表达式计算得到的值。它包括存储生成列和虚拟生成列，存储生成列会将计算得到的值存储起来，而虚拟生成列不会存储其值。生成列可以用于从 JSON 数据类型中解出数据，并为该数据建立索引。在 INSERT 和 UPDATE 语句中，会检查生成列计算得到的值是否满足生成列的定义。生成列的局限性包括不能增加存储生成列，不能转换存储生成列为普通列，不能修改存储生成列的生成列表达式，以及不支持所有的 JSON 函数。
+summary: 了解如何使用生成列。
 ---
 
 # 生成列
 
-本文介绍生成列的概念以及用法。
+本文介绍生成列的概念和用法。
 
-## 生成列的基本概念
+## 基本概念
 
-与一般的列不同，生成列的值由列定义中表达式计算得到。对生成列进行插入或更新操作时，并不能对之赋值，只能使用 `DEFAULT`。
+与普通列不同，生成列的值是由列定义中的表达式计算得出的。在插入或更新生成列时，你不能为其赋值，只能使用 `DEFAULT`。
 
-生成列包括存储生成列和虚拟生成列。存储生成列会将计算得到的值存储起来，在读取时不需要重新计算。虚拟生成列不会存储其值，在读取时会重新计算。存储生成列和虚拟生成列相比，前者在读取时性能更好，但是要占用更多的磁盘空间。
+生成列有两种类型：虚拟生成列和存储生成列。虚拟生成列不占用存储空间，在读取时计算。存储生成列在写入（插入或更新）时计算，并占用存储空间。与虚拟生成列相比，存储生成列具有更好的读取性能，但会占用更多磁盘空间。
 
-无论是存储生成列还是虚拟列，都可以在其上面建立索引。
+无论是虚拟生成列还是存储生成列，你都可以在其上创建索引。
 
-## 生成列的应用
+## 用法
 
-生成列的主要的作用之一：从 JSON 数据类型中解出数据，并为该数据建立索引。
+生成列的主要用途之一是从 JSON 数据类型中提取数据并为其建立索引。
 
-MySQL 8.0 及 TiDB 都不能直接为 JSON 类型的列添加索引，即不支持在如下表结构中的 `address_info` 上建立索引：
+在 MySQL 8.0 和 TiDB 中，JSON 类型的列不能直接创建索引。也就是说，以下表结构是**不支持的**：
 
 {{< copyable "sql" >}}
 
@@ -32,9 +32,9 @@ CREATE TABLE person (
 );
 ```
 
-如果要为 JSON 列某个字段添加索引，可以抽取该字段为生成列。
+要为 JSON 列创建索引，你必须先将其提取为生成列。
 
-以 `city` 这一 `address_info` 中的字段为例，可以为其建立一个虚拟生成列并添加索引：
+以 `address_info` 中的 `city` 字段为例，你可以创建一个虚拟生成列并为其添加索引：
 
 {{< copyable "sql" >}}
 
@@ -50,7 +50,7 @@ CREATE TABLE person (
 );
 ```
 
-该表中，`city` 列是一个虚拟生成列。并且在该列上建立了索引。以下语句能够利用索引加速语句的执行速度：
+在这个表中，`city` 列是一个**虚拟生成列**并且有一个索引。以下查询可以使用该索引来加速执行：
 
 {{< copyable "sql" >}}
 
@@ -64,7 +64,7 @@ SELECT name, id FROM person WHERE city = 'Beijing';
 EXPLAIN SELECT name, id FROM person WHERE city = 'Beijing';
 ```
 
-```
+```sql
 +---------------------------------+---------+-----------+--------------------------------+-------------------------------------------------------------+
 | id                              | estRows | task      | access object                  | operator info                                               |
 +---------------------------------+---------+-----------+--------------------------------+-------------------------------------------------------------+
@@ -75,9 +75,9 @@ EXPLAIN SELECT name, id FROM person WHERE city = 'Beijing';
 +---------------------------------+---------+-----------+--------------------------------+-------------------------------------------------------------+
 ```
 
-从执行计划中，可以看出使用了 `city` 这个索引来读取满足 `city = 'Beijing'` 这个条件的行的 `HANDLE`，再用这个 `HANDLE` 来读取该行的数据。
+从查询执行计划可以看出，使用了 `city` 索引来读取满足条件 `city ='Beijing'` 的行的 `HANDLE`，然后使用这个 `HANDLE` 来读取行的数据。
 
-如果 `$.city` 路径中无数据，则 `JSON_EXTRACT` 返回 `NULL`。如果想增加约束，`city` 列必须是 `NOT NULL`，则可按照以下方式定义虚拟生成列：
+如果路径 `$.city` 处不存在数据，`JSON_EXTRACT` 返回 `NULL`。如果你想强制约束 `city` 必须为 `NOT NULL`，可以按如下方式定义虚拟生成列：
 
 {{< copyable "sql" >}}
 
@@ -91,27 +91,22 @@ CREATE TABLE person (
 );
 ```
 
-## 生成列在 INSERT 和 UPDATE 语句中的行为
+## 生成列的验证
 
-`INSERT` 和 `UPDATE` 语句都会检查生成列计算得到的值是否满足生成列的定义。未通过有效性检测的行会返回错误：
+`INSERT` 和 `UPDATE` 语句都会检查虚拟列定义。不通过验证的行会返回错误：
 
 {{< copyable "sql" >}}
 
 ```sql
-INSERT INTO person (name, address_info) VALUES ('Morgan', JSON_OBJECT('Country', 'Canada'));
-```
-
-```
+mysql> INSERT INTO person (name, address_info) VALUES ('Morgan', JSON_OBJECT('Country', 'Canada'));
 ERROR 1048 (23000): Column 'city' cannot be null
 ```
 
-## 索引生成列替换
+## 生成列索引替换规则
 
-当查询中出现的某个表达式与一个含索引的生成列严格同等时，TiDB 会将这个表达式替换为对应的生成列，这样就可以在生成查询计划时考虑使用这个索引。
+当查询中的表达式与带有索引的生成列严格等价时，TiDB 会用相应的生成列替换该表达式，这样优化器在构建执行计划时就可以考虑使用该索引。
 
-下面的例子为 `a+1` 这个表达式创建生成列并添加索引，从而加速查询。其中，`a` 的列类型是 int，而 `a+1` 的列类型是 bigint。如果将生成列的类型改为 int，就不会发生替换。关于类型转换的规则，可以参见[表达式求值的类型转换](/functions-and-operators/type-conversion-in-expression-evaluation.md)。
-
-{{< copyable "sql" >}}
+以下示例为表达式 `a+1` 创建生成列并添加索引。列 `a` 的类型为 int，`a+1` 的列类型为 bigint。如果将生成列的类型设置为 int，则不会发生替换。关于类型转换规则，请参见[表达式求值的类型转换](/functions-and-operators/type-conversion-in-expression-evaluation.md)。
 
 ```sql
 create table t(a int);
@@ -148,15 +143,15 @@ desc select a+1 from t where a+1=3;
 
 > **注意：**
 >
-> 若待替换的表达式类型和生成列类型都是字符类型，但两种类型长度不同时，仍可通过将系统变量 [`tidb_enable_unsafe_substitute`](/system-variables.md#tidb_enable_unsafe_substitute-从-v630-版本开始引入) 设置为 `ON` 来允许其替换。配置该系统变量时，需要保证生成列计算得到的值严格满足生成列的定义，否则，可能因为长度不同，导致数据截断得到错误的结果。详情见 GitHub issue [#35490](https://github.com/pingcap/tidb/issues/35490#issuecomment-1211658886)。
+> 如果要替换的表达式和生成列都是字符串类型但长度不同，你可以通过将系统变量 [`tidb_enable_unsafe_substitute`](/system-variables.md#tidb_enable_unsafe_substitute-new-in-v630) 设置为 `ON` 来实现替换。在配置此系统变量时，请确保生成列计算的值严格满足生成列的定义。否则，由于长度差异可能导致数据被截断，从而导致结果不正确。详见 GitHub issue [#35490](https://github.com/pingcap/tidb/issues/35490#issuecomment-1211658886)。
 
-## 生成列的局限性
+## 限制
 
-目前生成列有以下局限性：
+JSON 和生成列当前的限制如下：
 
-- 不能通过 `ALTER TABLE` 增加存储生成列；
-- 不能通过 `ALTER TABLE` 将存储生成列转换为普通列，也不能将普通列转换成存储生成列；
-- 不能通过 `ALTER TABLE` 修改存储生成列的生成列表达式；
-- 并未支持所有的 [JSON 函数](/functions-and-operators/json-functions.md)；
-- 不支持使用 [`NULLIF()` 函数](/functions-and-operators/control-flow-functions.md#nullif)，可以使用 [`CASE` 函数](/functions-and-operators/control-flow-functions.md#case)代替；
-- 目前仅当生成列是虚拟生成列时索引生成列替换规则有效，暂不支持将表达式替换为存储生成列，但仍然可以通过直接使用该生成列本身来使用索引。
+- 不能通过 `ALTER TABLE` 添加存储生成列。
+- 不能通过 `ALTER TABLE` 语句将存储生成列转换为普通列，也不能将普通列转换为存储生成列。
+- 不能通过 `ALTER TABLE` 语句修改存储生成列的表达式。
+- 不是所有的 [JSON 函数](/functions-and-operators/json-functions.md)都支持。
+- 不支持 [`NULLIF()` 函数](/functions-and-operators/control-flow-functions.md#nullif)。你可以使用 [`CASE` 函数](/functions-and-operators/control-flow-functions.md#case)代替。
+- 目前，生成列索引替换规则仅在生成列是虚拟生成列时有效。对于存储生成列不生效，但可以通过直接使用生成列本身来使用索引。

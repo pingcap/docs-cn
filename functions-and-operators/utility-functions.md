@@ -1,15 +1,15 @@
 ---
-title: 效用函数
-summary: 了解 TiDB 中的效用函数。
+title: 实用函数
+summary: 本文档介绍 TiDB 支持的实用函数。
 ---
 
-# 效用函数
+# 实用函数
 
-本文介绍了 TiDB 支持的效用函数，这些函数旨在简化常见数据转换，使结果更易于阅读和理解。
+本文档介绍 TiDB 支持的实用函数，这些函数旨在简化常见的数据转换，提高可读性。
 
 ## `FORMAT_BYTES()`
 
-`FORMAT_BYTES()` 函数用于将字节数格式化为易于阅读的形式。
+`FORMAT_BYTES()` 函数将字节数转换为人类可读的格式。
 
 ```sql
 SELECT FORMAT_BYTES(10*1024*1024);
@@ -26,7 +26,7 @@ SELECT FORMAT_BYTES(10*1024*1024);
 
 ## `FORMAT_NANO_TIME()`
 
-`FORMAT_NANO_TIME()` 函数用于将纳秒数格式化为易于阅读的时间形式。
+`FORMAT_NANO_TIME()` 函数将纳秒数转换为人类可读的时间格式。
 
 ```sql
 SELECT FORMAT_NANO_TIME(1000000);

@@ -1,15 +1,15 @@
 ---
 title: DEADLOCKS
-summary: 了解 INFORMATION_SCHEMA 表 `DEADLOCKS`。
+summary: 了解 `DEADLOCKS` INFORMATION_SCHEMA 表。
 ---
 
 # DEADLOCKS
 
-`DEADLOCKS` 表提供当前 TiDB 节点上最近发生的若干次死锁错误的信息。
+`DEADLOCKS` 表显示当前 TiDB 节点上最近发生的几次死锁错误的信息。
 
 ```sql
 USE INFORMATION_SCHEMA;
-DESC DEADLOCKS;
+DESC deadlocks;
 ```
 
 输出结果如下：
@@ -30,97 +30,121 @@ DESC DEADLOCKS;
 +-------------------------+---------------------+------+------+---------+-------+
 ```
 
-`DEADLOCKS` 表中需要用多行来表示同一个死锁事件，每行显示参与死锁的其中一个事务的信息。当该 TiDB 节点记录了多次死锁错误时，需要按照 `DEADLOCK_ID` 列来区分，相同的 `DEADLOCK_ID` 表示同一个死锁事件。需要注意，`DEADLOCK_ID` **并不保证全局唯一，也不会持久化**，因而其只能在同一个结果集里表示同一个死锁事件。
+`DEADLOCKS` 表使用多行来显示同一个死锁事件，每一行显示死锁事件中涉及的其中一个事务的信息。如果 TiDB 节点记录了多个死锁错误，则使用 `DEADLOCK_ID` 列来区分每个错误。相同的 `DEADLOCK_ID` 表示同一个死锁事件。注意，`DEADLOCK_ID` **不保证全局唯一性且不会被持久化**，它仅用于在同一个结果集中表示同一个死锁事件。
 
-`DEADLOCKS` 表中各列的字段含义如下：
+`DEADLOCKS` 表中各列字段的含义如下：
 
-* `DEADLOCK_ID`：死锁事件的 ID。当表内存在多次死锁错误的信息时，需要使用该列来区分属于不同死锁错误的行。
-* `OCCUR_TIME`：发生该次死锁错误的时间。
-* `RETRYABLE`：该次死锁错误是否可重试。关于可重试的死锁错误的说明，参见[可重试的死锁错误](#可重试的死锁错误)小节。
-* `TRY_LOCK_TRX_ID`：试图上锁的事务 ID，即事务的 `start_ts`。
-* `CURRENT_SQL_DIGEST`：试图上锁的事务中当前正在执行的 SQL 语句的 Digest。
-* `CURRENT_SQL_DIGEST_TEXT`：试图上锁的事务中当前正在执行的 SQL 语句的归一化形式。
-* `KEY`：该事务试图上锁、但是被阻塞的 key，以十六进制编码的形式显示。
-* `KEY_INFO`：对 `KEY` 进行解读得出的一些详细信息，详见 [`KEY_INFO`](#key_info)。
-* `TRX_HOLDING_LOCK`：该 key 上当前持锁并导致阻塞的事务 ID，即事务的 `start_ts`。
+* `DEADLOCK_ID`：死锁事件的 ID。当表中存在多个死锁错误时，可以使用此列来区分属于不同死锁错误的行。
+* `OCCUR_TIME`：死锁错误发生的时间。
+* `RETRYABLE`：死锁错误是否可以重试。关于可重试死锁错误的说明，请参见[可重试死锁错误](#可重试死锁错误)部分。
+* `TRY_LOCK_TRX_ID`：尝试获取锁的事务 ID。此 ID 也是事务的 `start_ts`。
+* `CURRENT_SQL_DIGEST`：获取锁事务中当前正在执行的 SQL 语句的摘要。
+* `CURRENT_SQL_DIGEST_TEXT`：获取锁事务中当前正在执行的 SQL 语句的规范化形式。
+* `KEY`：事务尝试锁定的被阻塞的键。此字段的值以十六进制字符串形式显示。
+* `KEY_INFO`：`KEY` 的详细信息。参见 [`KEY_INFO`](#key_info) 部分。
+* `TRX_HOLDING_LOCK`：当前持有该键的锁并导致阻塞的事务 ID。此 ID 也是事务的 `start_ts`。
 
-要调整 `DEADLOCKS` 表中可以容纳的死锁事件数量，可通过 TiDB 配置文件中的 [`pessimistic-txn.deadlock-history-capacity`](/tidb-configuration-file.md#deadlock-history-capacity) 配置项进行调整，默认容纳最近 10 次死锁错误的信息。
+<CustomContent platform="tidb">
 
-> **注意：**
+要调整 `DEADLOCKS` 表中可以记录的最大死锁事件数，请在 TiDB 配置文件中调整 [`pessimistic-txn.deadlock-history-capacity`](/tidb-configuration-file.md#deadlock-history-capacity) 配置。默认情况下，表中记录最近 10 次死锁事件的信息。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+`DEADLOCKS` 表中记录最近 10 次死锁事件的信息。
+
+</CustomContent>
+
+> **警告：**
 >
-> * 仅拥有 [PROCESS](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process) 权限的用户可以查询该表。
-> * `CURRENT_SQL_DIGEST` 列中的信息 (SQL Digest) 为 SQL 语句进行归一化后计算得到的哈希值。`CURRENT_SQL_DIGEST_TEXT` 列中的信息为内部从 Statements Summary 系列表中查询得到，因而存在内部查询不到对应语句的可能性。关于 SQL Digest 和 Statements Summary 相关表的详细说明，请参阅[Statement Summary Tables](/statement-summary-tables.md)。
+> * 只有具有 [PROCESS](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process) 权限的用户才能查询此表。
+> * `CURRENT_SQL_DIGEST` 列中的信息（SQL 摘要）是从规范化 SQL 语句计算得出的哈希值。`CURRENT_SQL_DIGEST_TEXT` 列中的信息是从语句概要表内部查询的，因此可能找不到相应的语句。有关 SQL 摘要和语句概要表的详细说明，请参见[语句概要表](/statement-summary-tables.md)。
 
 ## `KEY_INFO`
 
-`KEY_INFO` 列中展示了对 `KEY` 列中所给出的 key 的详细信息，以 JSON 格式给出。其包含的信息如下：
+`KEY_INFO` 列显示 `KEY` 列的详细信息。信息以 JSON 格式显示。各字段说明如下：
 
-* `"db_id"`：该 key 所属的数据库 (schema) 的 ID。
-* `"db_name"`：该 key 所属的数据库 (schema) 的名称。
-* `"table_id"`：该 key 所属的表的 ID。
-* `"table_name"`：该 key 所属的表的名称。
-* `"partition_id"`：该 key 所在的分区 (partition) 的 ID。
-* `"partition_name"`：该 key 所在的分区 (partition) 的名称。
-* `"handle_type"`：该 row key（即储存一行数据的 key）的 handle 类型，其可能的值有：
-    * `"int"`：handle 为 int 类型，即 handle 为 row ID
-    * `"common"`：非 int64 类型的 handle，在启用 clustered index 时非 int 类型的主键会显示为此类型
-    * `"unknown"`：当前暂不支持的 handle 类型
-* `"handle_value"`：handle 的值。
-* `"index_id"`：该 index key（即储存索引的 key）所属的 index ID。
-* `"index_name"`：该 index key 所属的 index 名称。
-* `"index_values"`：该 index key 中的 index value。
+* `"db_id"`：键所属 schema 的 ID。
+* `"db_name"`：键所属 schema 的名称。
+* `"table_id"`：键所属表的 ID。
+* `"table_name"`：键所属表的名称。
+* `"partition_id"`：键所在分区的 ID。
+* `"partition_name"`：键所在分区的名称。
+* `"handle_type"`：行键（即存储一行数据的键）的句柄类型。可能的值如下：
+    * `"int"`：句柄类型为 int，表示句柄是行 ID。
+    * `"common"`：句柄类型不是 int64。这种类型在启用聚簇索引时的非整数主键中显示。
+    * `"unknown"`：当前不支持的句柄类型。
+* `"handle_value"`：句柄值。
+* `"index_id"`：索引键（存储索引的键）所属的索引 ID。
+* `"index_name"`：索引键所属的索引名称。
+* `"index_values"`：索引键中的索引值。
 
-其中，不适用或当前无法查询到的信息会被省略。比如，row key 的信息中不会包含 `index_id`、`index_name` 和 `index_values`；index key 不会包含 `handle_type` 和 `handle_value`；非分区表不会显示 `partition_id` 和 `partition_name`；已经被删除掉的表中的 key 的信息无法获取 `table_name`、`db_id`、`db_name`、`index_name` 等 schema 信息，且无法区分是否为分区表。
-
-> **注意：**
->
-> 如果一个 key 来自一张启用了分区的表，而在查询时，由于某些原因（例如，其所属的表已经被删除）导致无法查询其所属的 schema 信息，则其所属的分区的 ID 可能会出现在 `table_id` 字段中。这是因为，TiDB 对不同分区的 key 的编码方式与对几张独立的表的 key 的编码方式一致，因而在缺失 schema 信息时无法确认该 key 属于一张未分区的表还是某张表的一个分区。
-
-## 可重试的死锁错误
+在上述字段中，如果某个字段的信息不适用或当前不可用，则该字段在查询结果中会被省略。例如，行键信息不包含 `index_id`、`index_name` 和 `index_values`；索引键不包含 `handle_type` 和 `handle_value`；非分区表不显示 `partition_id` 和 `partition_name`；已删除表中的键信息无法获取 `table_name`、`db_id`、`db_name` 和 `index_name` 等 schema 信息，也无法区分该表是否为分区表。
 
 > **注意：**
 >
-> `DEADLOCKS` 表中默认不收集可重试的死锁错误的信息。如果需要收集，可通过 TiDB 配置文件中的 [`pessimistic-txn.deadlock-history-collect-retryable`](/tidb-configuration-file.md#deadlock-history-collect-retryable) 配置项进行调整。
+> 如果一个键来自启用了分区的表，并且在查询期间由于某些原因（例如，键所属的表已被删除）无法查询到该键所属的 schema 信息，则该键所属的分区的 ID 可能会出现在 `table_id` 字段中。这是因为 TiDB 对不同分区的键的编码方式与对几个独立表的键的编码方式相同。因此，当缺少 schema 信息时，TiDB 无法确认该键是属于非分区表还是属于某个表的一个分区。
 
-当事务 A 被另一个事务 B 已经持有的锁阻塞，而事务 B 直接或间接地被当前事务 A 持有的锁阻塞，将会引发一个死锁错误。这里：
+## 可重试死锁错误
 
-+ 情况一：事务 B 可能（直接或间接地）被事务 A 开始后到被阻塞前这段时间内已经执行完成的语句产生的锁阻塞
-+ 情况二：事务 B 也可能被事务 A 目前正在执行的语句阻塞
+<CustomContent platform="tidb-cloud">
 
-对于情况一，TiDB 将会向事务 A 的客户端报告死锁错误，并终止该事务；而对于情况二，事务 A 当前正在执行的语句将在 TiDB 内部被自动重试。例如，假设事务 A 执行了如下语句：
+> **注意：**
+>
+> 此部分不适用于 TiDB Cloud。
+
+</CustomContent>
+
+<CustomContent platform="tidb">
+
+> **注意：**
+>
+> 默认情况下，`DEADLOCKS` 表不收集可重试死锁错误的信息。如果你希望表收集可重试死锁错误信息，可以在 TiDB 配置文件中调整 [`pessimistic-txn.deadlock-history-collect-retryable`](/tidb-configuration-file.md#deadlock-history-collect-retryable) 的值。
+
+</CustomContent>
+
+当事务 A 被事务 B 已持有的锁阻塞，而事务 B 又直接或间接地被当前事务 A 持有的锁阻塞时，就会发生死锁错误。在这个死锁中，可能存在两种情况：
+
++ 情况 1：事务 B 可能被事务 A 在开始后、被阻塞前执行的语句生成的锁（直接或间接）阻塞。
++ 情况 2：事务 B 也可能被事务 A 当前正在执行的语句阻塞。
+
+在情况 1 中，TiDB 会向事务 A 的客户端报告死锁错误并终止事务。
+
+在情况 2 中，TiDB 会自动重试事务 A 当前正在执行的语句。例如，假设事务 A 执行以下语句：
 
 ```sql
 UPDATE t SET v = v + 1 WHERE id = 1 OR id = 2;
 ```
 
-事务 B 则先后执行如下两条语句：
+事务 B 依次执行以下两条语句：
 
 ```sql
 UPDATE t SET v = 4 WHERE id = 2;
 UPDATE t SET v = 2 WHERE id = 1;
 ```
 
-那么如果事务 A 先后对 `id = 1` 和 `id = 2` 的两行分别上锁，且两个事务以如下时序运行：
+然后，如果事务 A 锁定 `id = 1` 和 `id = 2` 的两行，并且两个事务按以下顺序运行：
 
-1. 事务 A 对 `id = 1` 的行上锁
-2. 事务 B 执行第一条语句并对 `id = 2` 的行上锁
-3. 事务 B 执行第二条语句试图对 `id = 1` 的行上锁，被事务 A 阻塞
-4. 事务 A 试图对 `id = 2` 的行上锁，被 B 阻塞，形成死锁
+1. 事务 A 锁定 `id = 1` 的行。
+2. 事务 B 执行第一条语句并锁定 `id = 2` 的行。
+3. 事务 B 执行第二条语句并尝试锁定 `id = 1` 的行，被事务 A 阻塞。
+4. 事务 A 尝试锁定 `id = 2` 的行并被事务 B 阻塞，形成死锁。
 
-对于情况二，由于事务 A 阻塞其它事务的语句也是当前正在执行的语句，因而可以解除当前语句所上的悲观锁（使得事务 B 可以继续运行），并重试当前语句。TiDB 内部使用 key 的哈希值来判断是否属于这种情况。
+对于这种情况，由于阻塞其他事务的事务 A 的语句也是当前正在执行的语句，因此可以解除当前语句的悲观锁（以便事务 B 可以继续运行），并重试当前语句。TiDB 内部使用键的哈希来判断是否属于这种情况。
 
-当可重试的死锁发生时，内部自动重试并不会引起事务报错，因而对客户端透明，但是这种情况的频繁发生可能影响性能。当这种情况发生时，在 TiDB 的日志中可以观察到 `single statement deadlock, retry statement` 字样的日志。
+当发生可重试死锁时，内部自动重试不会导致事务错误，因此对客户端是透明的。但是，如果这种情况频繁发生，可能会影响性能。发生这种情况时，你可以在 TiDB 日志中看到 `single statement deadlock, retry statement`。
 
 ## 示例 1
 
-假设有如下表定义和初始数据：
+假设表定义和初始数据如下：
 
 ```sql
 CREATE TABLE t (id int primary key, v int);
 INSERT INTO t VALUES (1, 10), (2, 20);
 ```
 
-使两个事务按如下顺序执行：
+两个事务按以下顺序执行：
 
 | 事务 1                               | 事务 2                               | 说明                 |
 |--------------------------------------|--------------------------------------|----------------------|
@@ -128,16 +152,16 @@ INSERT INTO t VALUES (1, 10), (2, 20);
 |                                      | `BEGIN;`                             |                      |
 | `UPDATE t SET v = 11 WHERE id = 1;`  |                                      |                      |
 |                                      | `UPDATE t SET v = 21 WHERE id = 2;`  |                      |
-| `UPDATE t SET v = 12 WHERE id = 2;`  |                                      | 事务 1 阻塞          |
-|                                      | `UPDATE t SET v = 22 WHERE id = 1;`  | 事务 2 报出死锁错误  |
+| `UPDATE t SET v = 12 WHERE id = 2;`  |                                      | 事务 1 被阻塞          |
+|                                      | `UPDATE t SET v = 22 WHERE id = 1;`  | 事务 2 报告死锁错误  |
 
-接下来，事务 2 将报出死锁错误。此时，查询 `DEADLOCKS` 表：
+接下来，事务 2 报告死锁错误。此时，查询 `DEADLOCKS` 表：
 
 ```sql
 SELECT * FROM INFORMATION_SCHEMA.DEADLOCKS;
 ```
 
-输出结果如下：
+预期输出如下：
 
 ```sql
 +-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+-----------------------------------------+----------------------------------------+----------------------------------------------------------------------------------------------------+--------------------+
@@ -148,11 +172,11 @@ SELECT * FROM INFORMATION_SCHEMA.DEADLOCKS;
 +-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+-----------------------------------------+----------------------------------------+----------------------------------------------------------------------------------------------------+--------------------+
 ```
 
-该表中产生了两行数据，两行的 `DEADLOCK_ID` 字段皆为 1，表示这两行数据包含同一次死锁错误的信息。第一行显示 ID 为 `426812829645406216` 的事务，在 `"7480000000000000355F728000000000000002"` 这个 key 上，被 ID 为 `"426812829645406217"` 的事务阻塞了；第二行则显示 ID 为 `"426812829645406217"` 的事务在 `"7480000000000000355F728000000000000001"` 这个 key 上被 ID 为 `426812829645406216` 的事务阻塞了，构成了相互阻塞的状态，形成了死锁。
+在 `DEADLOCKS` 表中生成了两行数据。两行的 `DEADLOCK_ID` 字段都是 `1`，表示两行中的信息属于同一个死锁错误。第一行显示，在键 `"7480000000000000355F728000000000000002"` 上，ID 为 `"426812829645406216"` 的事务被 ID 为 `"426812829645406217"` 的事务阻塞。第二行显示，在键 `"7480000000000000355F728000000000000001"` 上，ID 为 `"426812829645406217"` 的事务被 ID 为 `426812829645406216` 的事务阻塞，这构成了互相阻塞，形成了死锁。
 
 ## 示例 2
 
-假设查询 `DEADLOCKS` 表得到了如下结果集：
+假设你查询 `DEADLOCKS` 表，得到以下结果：
 
 ```sql
 +-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+-----------------------------------------+----------------------------------------+----------------------------------------------------------------------------------------------------+--------------------+
@@ -166,18 +190,20 @@ SELECT * FROM INFORMATION_SCHEMA.DEADLOCKS;
 +-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+-----------------------------------------+----------------------------------------+----------------------------------------------------------------------------------------------------+--------------------+
 ```
 
-以上查询结果中的 `DEADLOCK_ID` 列表明，前两行共同表示一次死锁错误的信息，两条事务相互等待构成了死锁；而后三行共同表示另一次死锁信息，三个事务循环等待构成了死锁。
+上述查询结果中的 `DEADLOCK_ID` 列显示，前两行一起表示一个死锁错误的信息，两个相互等待的事务形成了死锁。接下来的三行一起表示另一个死锁错误的信息，三个循环等待的事务形成了死锁。
 
 ## CLUSTER_DEADLOCKS
 
-`CLUSTER_DEADLOCKS` 表返回整个集群上每个 TiDB 节点中最近发生的数次死锁错误的信息，即将每个节点上的 `DEADLOCKS` 表内的信息合并在一起。`CLUSTER_DEADLOCKS` 还包含额外的 `INSTANCE` 列展示所属节点的 IP 地址和端口，用以区分不同的 TiDB 节点。
+`CLUSTER_DEADLOCKS` 表返回整个集群中每个 TiDB 节点上最近的死锁错误信息，这是每个节点上 `DEADLOCKS` 表信息的组合。`CLUSTER_DEADLOCKS` 还包括一个额外的 `INSTANCE` 列，用于显示节点的 IP 地址和端口，以区分不同的 TiDB 节点。
 
-需要注意的是，由于 `DEADLOCK_ID` 并不保证全局唯一，所以在 `CLUSTER_DEADLOCKS` 表的查询结果中，需要 `INSTANCE` 和 `DEADLOCK_ID` 两个字段共同区分结果集中的不同死锁错误的信息。
+注意，由于 `DEADLOCK_ID` 不保证全局唯一性，在 `CLUSTER_DEADLOCKS` 表的查询结果中，你需要同时使用 `INSTANCE` 和 `DEADLOCK_ID` 来区分结果集中不同死锁错误的信息。
 
 ```sql
 USE INFORMATION_SCHEMA;
 DESC CLUSTER_DEADLOCKS;
 ```
+
+输出结果如下：
 
 ```sql
 +-------------------------+---------------------+------+------+---------+-------+

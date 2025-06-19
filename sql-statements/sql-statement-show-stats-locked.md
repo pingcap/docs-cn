@@ -1,20 +1,20 @@
 ---
 title: SHOW STATS_LOCKED
-summary: TiDB 数据库中 SHOW STATS_LOCKED 的使用概况。
+summary: TiDB 数据库中 SHOW STATS_LOCKED 的使用概览。
 ---
 
 # SHOW STATS_LOCKED
 
-`SHOW STATS_LOCKED` 语句显示统计信息被锁定的表。
+`SHOW STATS_LOCKED` 显示统计信息被锁定的表。
 
 目前，`SHOW STATS_LOCKED` 语句返回以下列：
 
-| 列名 | 说明          |
+| 列名 | 描述            |
 | -------- | ------------- |
-| `Db_name` | 数据库名 |
-| `Table_name` | 表名 |
-| `Partition_name` | 分区名 |
-| `Status` | 统计信息状态，例如 `locked` |
+| `Db_name` | 数据库名称 |
+| `Table_name` | 表名称 |
+| `Partition_name` | 分区名称 |
+| `Status` | 统计信息状态，如 `locked` |
 
 ## 语法图
 
@@ -26,7 +26,7 @@ ShowLikeOrWhereOpt ::= 'LIKE' SimpleExpr | 'WHERE' Expression
 
 ## 示例
 
-创建表 `t`，插入一些数据，在未锁定表 `t` 的统计信息的情况下成功执行 `ANALYZE` 语句。
+创建表 `t` 并向其中插入数据。当表 `t` 的统计信息未被锁定时，可以成功执行 `ANALYZE` 语句。
 
 ```sql
 mysql> CREATE TABLE t(a INT, b INT);
@@ -48,7 +48,7 @@ mysql> SHOW WARNINGS;
 1 row in set (0.00 sec)
 ```
 
-锁定表 `t` 的统计信息，执行 `SHOW STATS_LOCKED` 语句，显示表 `t` 的统计信息被锁定。
+锁定表 `t` 的统计信息并执行 `SHOW STATS_LOCKED`。输出显示表 `t` 的统计信息已被锁定。
 
 ```sql
 mysql> LOCK STATS t;
@@ -69,6 +69,6 @@ mysql> SHOW STATS_LOCKED;
 
 ## 另请参阅
 
-* [统计信息](/statistics.md#锁定统计信息)
+* [统计信息](/statistics.md#lock-statistics)
 * [LOCK STATS](/sql-statements/sql-statement-lock-stats.md)
 * [UNLOCK STATS](/sql-statements/sql-statement-unlock-stats.md)

@@ -1,17 +1,17 @@
 ---
-title: SHOW TABLE STATUS
-summary: TiDB 数据库中 SHOW TABLE STATUS 的使用概况。
+title: SHOW TABLE STATUS | TiDB SQL 语句参考
+summary: TiDB 数据库中 SHOW TABLE STATUS 的使用概述。
 ---
 
 # SHOW TABLE STATUS
 
-`SHOW TABLE STATUS` 语句用于显示 TiDB 中表的各种统计信息。如果显示统计信息过期，建议运行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)。
+此语句显示 TiDB 中表的各种统计信息。如果统计信息看起来已过期，建议运行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)。
 
-## 语法图
+## 语法概要
 
 ```ebnf+diagram
-ShowTableStmt ::=
-    "SHOW" "FULL"? "TABLES" ("FROM" Identifier | "IN" Identifier )? ShowLikeOrWhere?
+ShowTableStatusStmt ::=
+    "SHOW" "TABLE" "STATUS" ("FROM" Identifier | "IN" Identifier )? ShowLikeOrWhere?
 
 ShowLikeOrWhere ::=
     "LIKE" SimpleExpr
@@ -21,27 +21,14 @@ ShowLikeOrWhere ::=
 ## 示例
 
 ```sql
-CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
-```
-
-```
+mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 Query OK, 0 rows affected (0.11 sec)
-```
 
-```sql
-INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
-```
-
-```
+mysql> INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
 Query OK, 5 rows affected (0.02 sec)
 Records: 5  Duplicates: 0  Warnings: 0
-```
 
-```sql
-SHOW TABLE STATUS LIKE 't1';
-```
-
-```
+mysql> SHOW TABLE STATUS LIKE 't1'\G
 *************************** 1. row ***************************
            Name: t1
          Engine: InnoDB
@@ -62,21 +49,11 @@ Max_data_length: 0
  Create_options:
         Comment:
 1 row in set (0.00 sec)
-```
 
-```sql
-ANALYZE TABLE t1;
-```
-
-```
+mysql> ANALYZE TABLE t1;
 Query OK, 0 rows affected (0.12 sec)
-```
 
-```sql
-SHOW TABLE STATUS LIKE 't1';
-```
-
-```
+mysql> SHOW TABLE STATUS LIKE 't1'\G
 *************************** 1. row ***************************
            Name: t1
          Engine: InnoDB
@@ -101,7 +78,7 @@ Max_data_length: 0
 
 ## MySQL 兼容性
 
-`SHOW TABLE STATUS` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
+TiDB 中的 `SHOW TABLE STATUS` 语句与 MySQL 完全兼容。如果发现任何兼容性差异，请[报告 bug](https://docs.pingcap.com/tidb/stable/support)。
 
 ## 另请参阅
 

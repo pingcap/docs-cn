@@ -1,11 +1,11 @@
 ---
 title: REFERENTIAL_CONSTRAINTS
-summary: 了解 INFORMATION_SCHEMA 表 `REFERENTIAL_CONSTRAINTS`。
+summary: 了解 `REFERENTIAL_CONSTRAINTS` INFORMATION_SCHEMA 表。
 ---
 
 # REFERENTIAL_CONSTRAINTS
 
-`REFERENTIAL_CONSTRAINTS` 表提供 TiDB 表之间 [`FOREIGN KEY`](/foreign-key.md) 关系的信息。
+`REFERENTIAL_CONSTRAINTS` 表提供了表之间的 [`FOREIGN KEY`](/foreign-key.md)（外键）关系信息。
 
 ```sql
 USE INFORMATION_SCHEMA;
@@ -25,8 +25,8 @@ DESC REFERENTIAL_CONSTRAINTS;
 | UNIQUE_CONSTRAINT_SCHEMA  | varchar(64)  | NO   |      | NULL    |       |
 | UNIQUE_CONSTRAINT_NAME    | varchar(64)  | YES  |      | NULL    |       |
 | MATCH_OPTION              | varchar(64)  | NO   |      | NULL    |       |
-| UPDATE_RULE               | varchar(64)  | NO   |      | NULL    |       |
-| DELETE_RULE               | varchar(64)  | NO   |      | NULL    |       |
+| UPDATE_RULE              | varchar(64)  | NO   |      | NULL    |       |
+| DELETE_RULE              | varchar(64)  | NO   |      | NULL    |       |
 | TABLE_NAME                | varchar(64)  | NO   |      | NULL    |       |
 | REFERENCED_TABLE_NAME     | varchar(64)  | NO   |      | NULL    |       |
 +---------------------------+--------------+------+------+---------+-------+

@@ -5,16 +5,16 @@ summary: 本文介绍 TiDB 支持的注释语法。
 
 # 注释语法
 
-本文档介绍 TiDB 支持的注释语法。
+本文描述 TiDB 支持的注释语法。
 
 TiDB 支持三种注释风格：
 
-* 用 `#` 注释一行：
+- 使用 `#` 注释一行：
 
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT 1+1;     # 注释文字
+    SELECT 1+1;     # comments
     ```
 
     ```
@@ -26,12 +26,12 @@ TiDB 支持三种注释风格：
     1 row in set (0.00 sec)
     ```
 
-* 用 `--` 注释一行：
+- 使用 `--` 注释一行：
 
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT 1+1;     -- 注释文字
+    SELECT 1+1;     -- comments
     ```
 
     ```
@@ -42,10 +42,10 @@ TiDB 支持三种注释风格：
     +------+
     1 row in set (0.00 sec)
     ```
+    
+    这种风格要求在 `--` 后至少有一个空格：
 
-    用 `--` 注释时，必须要在其之后留出至少一个空格，否则注释不生效：
-
-    {{< copyable "sql" >}}
+   {{< copyable "sql" >}}
 
     ```sql
     SELECT 1+1--1;
@@ -60,12 +60,12 @@ TiDB 支持三种注释风格：
     1 row in set (0.01 sec)
     ```
 
-* 用 `/* */` 注释一块，可以注释多行：
+- 使用 `/* */` 注释一个块或多行：
 
-    {{< copyable "sql" >}}
+   {{< copyable "sql" >}}
 
     ```sql
-    SELECT 1 /* 这是行内注释文字 */ + 1;
+    SELECT 1 /* this is an in-line comment */ + 1;
     ```
 
     ```
@@ -82,8 +82,8 @@ TiDB 支持三种注释风格：
     ```sql
     SELECT 1+
     /*
-    /*> 这是一条
-    /*> 多行注释
+    /*> this is a
+    /*> multiple-line comment
     /*> */
         1;
     ```
@@ -91,7 +91,6 @@ TiDB 支持三种注释风格：
     ```
     +-------------------+
     | 1+
-
             1 |
     +-------------------+
     |                 2 |
@@ -101,37 +100,44 @@ TiDB 支持三种注释风格：
 
 ## MySQL 兼容的注释语法
 
-TiDB 也跟 MySQL 保持一致，支持一种 C 风格注释的变体：
+与 MySQL 一样，TiDB 支持 C 风格注释语法的变体：
 
 ```
-/*! Specific code */
+/*! 特定代码 */
 ```
 
-或者
+或
 
 ```
-/*!50110 Specific code */
+/*!50110 特定代码 */
 ```
 
-和 MySQL 一样，TiDB 会执行注释中的语句。
+在这种风格中，TiDB 会执行注释中的语句。
 
-例如：`SELECT /*! STRAIGHT_JOIN */ col1 FROM table1,table2 WHERE ...`
+例如：
 
-在 TiDB 中，这种写法等价于 `SELECT STRAIGHT_JOIN col1 FROM table1,table2 WHERE ...`
+```sql
+SELECT /*! STRAIGHT_JOIN */ col1 FROM table1,table2 WHERE ...
+```
 
-如果注释中指定了 Server 版本号，例如 `/*!50110 KEY_BLOCK_SIZE=1024 */`，在 MySQL 中表示只有 MySQL 的版本大于等于 5.1.10 才会处理这个 comment 中的内容。但是在 TiDB 中，这个 MySQL 版本号不会起作用，所有的 comment 都被会处理。
+在 TiDB 中，你也可以使用另一个版本：
 
-## TiDB 可执行的注释语法
+```sql
+SELECT STRAIGHT_JOIN col1 FROM table1,table2 WHERE ...
+```
 
-TiDB 也有独立的注释语法，称为 TiDB 可执行注释语法。主要分为两种：
+如果在注释中指定了服务器版本号，例如 `/*!50110 KEY_BLOCK_SIZE=1024 */`，在 MySQL 中这意味着只有当 MySQL 版本是或高于 5.1.10 时才处理此注释中的内容。但在 TiDB 中，MySQL 版本号不起作用，注释中的所有内容都会被处理。
 
-* `/*T! Specific code */`：该语法只能被 TiDB 解析执行，而在其他数据库中会被忽略。
+## TiDB 特有的注释语法
 
-* `/*T![feature_id] Specific code */`：该语法用于保证 TiDB 不同版本之间的兼容性。只有在当前版本中实现了 `feature_id` 对应的功能特性的 TiDB，才会试图解析该注释里的 SQL 片段。例如 v3.1.1 中引入了 `AUTO_RANDOM` 特性，该版本能够将 `/*T![auto_rand] auto_random */` 解析为 `auto_random`；而 v3.0.0 中没有实现 `AUTO_RANDOM` 特性，则上述 SQL 语句片段会被忽略。**注意前几个字符 `/*T![` 中，各字符之间没有任何空格**。
+TiDB 有自己的注释语法（即 TiDB 特有的注释语法），可以分为以下两种：
+
+* `/*T! 特定代码 */`：这种语法只能被 TiDB 解析和执行，在其他数据库中会被忽略。
+* `/*T![feature_id] 特定代码 */`：这种语法用于确保不同版本的 TiDB 之间的兼容性。TiDB 只有在当前版本实现了相应的 `feature_id` 功能时才能解析这个注释中的 SQL 片段。例如，由于 `AUTO_RANDOM` 功能是在 v3.1.1 中引入的，因此这个版本的 TiDB 可以将 `/*T![auto_rand] auto_random */` 解析为 `auto_random`。因为 v3.0.0 中没有实现 `AUTO_RANDOM` 功能，所以上述 SQL 语句片段会被忽略。**不要在 `/*T![` 字符内留有任何空格**。
 
 ## 优化器注释语法
 
-还有一种注释会被当做是优化器 Hint 特殊对待：
+另一种注释类型被特别处理为优化器提示：
 
 {{< copyable "sql" >}}
 
@@ -139,10 +145,10 @@ TiDB 也有独立的注释语法，称为 TiDB 可执行注释语法。主要分
 SELECT /*+ hint */ FROM ...;
 ```
 
-TiDB 支持的相关优化器 hint 详见 [Optimizer Hints](/optimizer-hints.md)。
+关于 TiDB 支持的优化器提示的详细信息，请参见[优化器提示](/optimizer-hints.md)。
 
 > **注意：**
 >
-> 在 MySQL 客户端中，TiDB 可执行注释语法会被默认当成注释被清除掉。在 MySQL 客户端 5.7.7 之前的版本中，Hint 也会被默认当成注释被清除掉。推荐在启动客户端时加上 `--comments` 选项，例如 `mysql -h 127.0.0.1 -P 4000 -uroot --comments`。
+> 在 MySQL 客户端中，TiDB 特有的注释语法默认被视为注释并被清除。在 MySQL 5.7.7 之前的客户端中，提示也被视为注释并默认被清除。建议在启动客户端时使用 `--comments` 选项。例如，`mysql -h 127.0.0.1 -P 4000 -uroot --comments`。
 
-更多细节，请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/comments.html)。
+更多信息，请参见 [Comment Syntax](https://dev.mysql.com/doc/refman/8.0/en/comments.html)。

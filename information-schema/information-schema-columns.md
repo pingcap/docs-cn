@@ -1,11 +1,11 @@
 ---
 title: COLUMNS
-summary: 了解 INFORMATION_SCHEMA 表 `COLUMNS`。
+summary: 了解 `COLUMNS` INFORMATION_SCHEMA 表。
 ---
 
 # COLUMNS
 
-`COLUMNS` 表提供了表的所有列的信息。
+`COLUMNS` 表提供了关于表中列的详细信息。
 
 ```sql
 USE INFORMATION_SCHEMA;
@@ -32,7 +32,7 @@ DESC COLUMNS;
 | NUMERIC_SCALE            | bigint(21)    | YES  |      | NULL    |       |
 | DATETIME_PRECISION       | bigint(21)    | YES  |      | NULL    |       |
 | CHARACTER_SET_NAME       | varchar(32)   | YES  |      | NULL    |       |
-| COLLATION_NAME           | varchar(32)   | YES  |      | NULL    |       |
+| COLLATION_NAME          | varchar(32)   | YES  |      | NULL    |       |
 | COLUMN_TYPE              | text          | YES  |      | NULL    |       |
 | COLUMN_KEY               | varchar(3)    | YES  |      | NULL    |       |
 | EXTRA                    | varchar(30)   | YES  |      | NULL    |       |
@@ -43,7 +43,7 @@ DESC COLUMNS;
 21 rows in set (0.00 sec)
 ```
 
-创建表 `test.t1`，并查询 `COLUMNS` 表的信息：
+创建表 `test.t1` 并查询 `COLUMNS` 表中的信息：
 
 ```sql
 CREATE TABLE test.t1 (a int);
@@ -78,33 +78,33 @@ CHARACTER_MAXIMUM_LENGTH: NULL
 1 row in set (0.02 sec)
 ```
 
-`COLUMNS` 表中列的含义如下：
+`COLUMNS` 表中各列的描述如下：
 
-* `TABLE_CATALOG`：包含列的表所属的目录的名称。该值始终为 `def`。
-* `TABLE_SCHEMA`：包含列的表所属的数据库的名称。
-* `TABLE_NAME`：包含列的表的名称。
-* `COLUMN_NAME`：列的名称。
-* `ORDINAL_POSITION`：表中列的位置。
-* `COLUMN_DEFAULT`：列的默认值。如果列的显式默认值为 `NULL`，或者列定义中不包含 `default` 子句，则此值为 `NULL`。
-* `IS_NULLABLE`：列的可空性。如果列中可以存储空值，则该值为 `YES`，否则为 `NO`。
-* `DATA_TYPE`：列的数据类型。
-* `CHARACTER_MAXIMUM_LENGTH`：对于字符串列，以字符为单位的最大长度。
-* `CHARACTER_OCTET_LENGTH`：对于字符串列，以字节为单位的最大长度。
-* `NUMERIC_PRECISION`：对于数字列，为数字精度。
-* `NUMERIC_SCALE`：对于数字列，为数字刻度。
-* `DATETIME_PRECISION`：对于时间列，小数秒精度。
-* `CHARACTER_SET_NAME`：对于字符串列，字符集名称。
-* `COLLATION_NAME`：对于字符串列，排序规则名称。
+* `TABLE_CATALOG`：包含该列的表所属的目录名称。该值始终为 `def`。
+* `TABLE_SCHEMA`：包含该列的表所在的数据库（schema）名称。
+* `TABLE_NAME`：包含该列的表名。
+* `COLUMN_NAME`：列名。
+* `ORDINAL_POSITION`：该列在表中的位置。
+* `COLUMN_DEFAULT`：列的默认值。如果显式默认值为 `NULL`，或者列定义中不包含 `default` 子句，则该值为 `NULL`。
+* `IS_NULLABLE`：该列是否可为空。如果该列可以存储 NULL 值，则该值为 `YES`；否则为 `NO`。
+* `DATA_TYPE`：列中数据的类型。
+* `CHARACTER_MAXIMUM_LENGTH`：对于字符串列，表示最大字符长度。
+* `CHARACTER_OCTET_LENGTH`：对于字符串列，表示最大字节长度。
+* `NUMERIC_PRECISION`：数字类型列的数值精度。
+* `NUMERIC_SCALE`：数字类型列的数值小数位数。
+* `DATETIME_PRECISION`：对于时间类型列，表示小数秒精度。
+* `CHARACTER_SET_NAME`：字符串列的字符集名称。
+* `COLLATION_NAME`：字符串列的排序规则名称。
 * `COLUMN_TYPE`：列类型。
-* `COLUMN_KEY`：该列是否被索引。具体显示如下：
-    * 如果此值为空，则该列要么未被索引，要么被索引且是多列非唯一索引中的第二列。
-    * 如果此值是 `PRI`，则该列是主键，或者是多列主键中的一列。
-    * 如果此值是 `UNI`，则该列是唯一索引的第一列。
-    * 如果此值是 `MUL`，则该列是非唯一索引的第一列，在该列中允许给定值的多次出现。
-* `EXTRA`：关于给定列的任何附加信息。
-* `PRIVILEGES`：当前用户对该列拥有的权限。目前在 TiDB 中，此值为定值，一直为 `select,insert,update,references`。
+* `COLUMN_KEY`：该列是否被索引。该字段可能有以下值：
+    * 空：该列未被索引，或该列被索引但是是多列非唯一索引中的第二列。
+    * `PRI`：该列是主键或多个主键之一。
+    * `UNI`：该列是唯一索引的第一列。
+    * `MUL`：该列是非唯一索引的第一列，其中给定值允许出现多次。
+* `EXTRA`：给定列的任何附加信息。
+* `PRIVILEGES`：当前用户对该列拥有的权限。目前在 TiDB 中该值是固定的，始终为 `select,insert,update,references`。
 * `COLUMN_COMMENT`：列定义中包含的注释。
-* `GENERATION_EXPRESSION`：对于生成的列，显示用于计算列值的表达式。对于未生成的列为空。
+* `GENERATION_EXPRESSION`：对于生成列，该值显示用于计算列值的表达式。对于非生成列，该值为空。
 
 对应的 `SHOW` 语句如下：
 

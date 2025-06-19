@@ -1,13 +1,23 @@
 ---
-title: 用 EXPLAIN 查看带视图的 SQL 执行计划
-summary: 了解 TiDB 中视图相关语句的执行计划。
+title: EXPLAIN 使用视图的语句
+summary: 了解 TiDB 中 `EXPLAIN` 语句返回的执行计划信息。
 ---
 
-# 用 EXPLAIN 查看带视图的 SQL 执行计划
+# EXPLAIN 使用视图的语句
 
-`EXPLAIN` 语句返回的结果会显示[视图](/views.md)引用的表和索引，而不是视图本身的名称。这是因为视图是一张虚拟表，本身并不存储任何数据。视图的定义会和查询语句的其余部分在 SQL 优化过程中进行合并。
+`EXPLAIN` 显示[视图](/views.md)引用的表和索引，而不是视图本身的名称。这是因为视图只是虚拟表，本身不存储任何数据。视图的定义和语句的其余部分在 SQL 优化期间会合并在一起。
 
-参考 [bikeshare 数据库示例（英文）](https://docs.pingcap.com/tidb/stable/import-example-data)，以下两个示例查询的执行方式类似：
+<CustomContent platform="tidb">
+
+从 [bikeshare 示例数据库](/import-example-data.md)中，你可以看到以下两个查询的执行方式类似：
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+从 [bikeshare 示例数据库](/tidb-cloud/import-sample-data.md)中，你可以看到以下两个查询的执行方式类似：
+
+</CustomContent>
 
 {{< copyable "sql" >}}
 
@@ -42,7 +52,7 @@ Query OK, 0 rows affected (0.13 sec)
 3 rows in set (0.00 sec)
 ```
 
-同样，该视图中的谓词被下推至基表：
+类似地，视图中的谓词会下推到基表：
 
 {{< copyable "sql" >}}
 
@@ -72,9 +82,9 @@ EXPLAIN SELECT * FROM trips WHERE bike_number = 'W00950';
 3 rows in set (0.00 sec)
 ```
 
-执行以上第一条语句时使用了索引，满足视图定义，接着在 TiDB 读取行时应用了 `bike_number = 'W00950'` 条件。执行以上第二条语句时，不存在满足该语句的索引，因此使用了 `TableFullScan`。
+在上面的第一个语句中，你可以看到索引用于满足视图定义，然后在 TiDB 读取表行时应用 `bike_number = 'W00950'`。在第二个语句中，没有索引可以满足该语句，因此使用了 `TableFullScan`。
 
-TiDB 使用的索引可以同时满足视图定义和语句本身，如以下组合索引所示：
+TiDB 会使用同时满足视图定义和语句本身的索引。考虑以下复合索引：
 
 {{< copyable "sql" >}}
 
@@ -106,14 +116,4 @@ Query OK, 0 rows affected (2 min 31.20 sec)
 3 rows in set (0.00 sec)
 ```
 
-在第一条语句中，TiDB 能够使用组合索引的两个部分 `(bike_number, duration)`。在第二条语句，TiDB 仅使用了索引 `(bike_number, duration)` 的第一部分 `bike_number`。
-
-## 其他类型查询的执行计划
-
-+ [MPP 模式查询的执行计划](/explain-mpp.md)
-+ [索引查询的执行计划](/explain-indexes.md)
-+ [Join 查询的执行计划](/explain-joins.md)
-+ [子查询的执行计划](/explain-subqueries.md)
-+ [聚合查询的执行计划](/explain-aggregation.md)
-+ [分区查询的执行计划](/explain-partitions.md)
-+ [索引合并查询的执行计划](/explain-index-merge.md)
+在第一个语句中，TiDB 能够使用复合索引 `(bike_number, duration)` 的两个部分。在第二个语句中，只使用了索引 `(bike_number, duration)` 的第一部分 `bike_number`。

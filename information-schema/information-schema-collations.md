@@ -1,11 +1,11 @@
 ---
 title: COLLATIONS
-summary: 了解 information_schema 表 `COLLATIONS`。
+summary: 了解 `COLLATIONS` information_schema 表。
 ---
 
 # COLLATIONS
 
-`COLLATIONS` 表提供了 `CHARACTER_SETS` 表中字符集对应的排序规则列表。目前 TiDB 包含该表仅为兼容 MySQL。
+`COLLATIONS` 表提供了与 `CHARACTER_SETS` 表中的字符集相对应的排序规则列表。目前，此表仅为了与 MySQL 兼容而包含。
 
 {{< copyable "sql" >}}
 
@@ -45,14 +45,14 @@ SELECT * FROM collations WHERE character_set_name='utf8mb4';
 3 rows in set (0.001 sec)
 ```
 
-`COLLATIONS` 表中列的含义如下：
+`COLLATIONS` 表中各列的描述如下：
 
-* `COLLATION_NAME`：排序规则名称
-* `CHARACTER_SET_NAME`：排序规则所属的字符集名称
-* `ID`：排序规则的 ID
-* `IS_DEFAULT`：该排序规则是否是所属字符集的默认排序规则
-* `IS_COMPILED`：字符集是否编译到服务器中
-* `SORTLEN`：排序规则在对字符进行排序时，所分配内存的最小长度
+* `COLLATION_NAME`：排序规则的名称。
+* `CHARACTER_SET_NAME`：该排序规则所属的字符集名称。
+* `ID`：排序规则的 ID。
+* `IS_DEFAULT`：该排序规则是否是其所属字符集的默认排序规则。
+* `IS_COMPILED`：该字符集是否已编译到服务器中。
+* `SORTLEN`：排序规则在排序字符时分配的最小内存长度。
 
 ## 另请参阅
 

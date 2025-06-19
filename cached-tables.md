@@ -1,37 +1,37 @@
 ---
 title: 缓存表
-summary: 了解 TiDB 中的缓存表功能，用于很少被修改的热点小表，提升读性能。
+summary: 了解 TiDB 中的缓存表功能，该功能用于提高很少更新的小型热点表的读取性能。
 ---
 
 # 缓存表
 
-TiDB 在 v6.0.0 版本中引入了缓存表功能。该功能适用于频繁被访问且很少被修改的热点小表，即把整张表的数据加载到 TiDB 服务器的内存中，直接从内存中获取表数据，避免从 TiKV 获取表数据，从而提升读性能。
+在 v6.0.0 中，TiDB 为经常访问但很少更新的小型热点表引入了缓存表功能。使用此功能时，整个表的数据会加载到 TiDB 服务器的内存中，TiDB 直接从内存获取表数据而无需访问 TiKV，从而提高读取性能。
 
-本文介绍了 TiDB 缓存表的使用场景、使用示例、与其他 TiDB 功能的兼容性限制。
+本文档描述缓存表的使用场景、示例以及与其他 TiDB 功能的兼容性限制。
 
 ## 使用场景
 
-TiDB 缓存表功能适用于以下特点的表：
+缓存表功能适用于具有以下特征的表：
 
-- 表的数据量不大，例如 4 MiB 以下
-- 只读表，或者几乎很少修改，例如写入 QPS 低于每分钟 10 次
-- 表的访问很频繁，期望有更好的读性能，例如在直接读取 TiKV 时遇到小表热点瓶颈
+- 表的数据量小，例如小于 4 MiB。
+- 表是只读的或很少更新，例如每分钟写入 QPS（每秒查询数）少于 10 次。
+- 表经常被访问，并且你期望更好的读取性能，例如当从 TiKV 直接读取小表时遇到热点。
 
-当表的数据量不大，访问又特别频繁的情况下，数据会集中在 TiKV 一个 Region 上，形成热点，从而影响性能。因此，TiDB 缓存表的典型使用场景如下：
+当表的数据量小但数据经常被访问时，数据会集中在 TiKV 的一个 Region 上并形成热点 Region，这会影响性能。因此，缓存表的典型使用场景如下：
 
-- 配置表，业务通过该表读取配置信息
-- 金融场景中的存储汇率的表，该表不会实时更新，每天只更新一次
-- 银行分行或者网点信息表，该表很少新增记录项
+- 配置表，应用程序从中读取配置信息。
+- 金融领域的汇率表。这些表每天只更新一次，而不是实时更新。
+- 银行分支机构或网络信息表，很少更新。
 
-以配置表为例，当业务重启的瞬间，全部连接一起加载配置，会造成较高的数据库读延迟。如果使用了缓存表，则可以解决这样的问题。
+以配置表为例。当应用程序重启时，所有连接都会加载配置信息，这会导致较高的读取延迟。在这种情况下，你可以使用缓存表功能来解决这个问题。
 
-## 使用示例
+## 示例
 
-本节通过示例介绍缓存表的使用方法。
+本节通过示例描述缓存表的使用方法。
 
-### 将普通表设为缓存表
+### 将普通表设置为缓存表
 
-假设已存在普通表 `users`:
+假设有一个表 `users`：
 
 ```sql
 CREATE TABLE users (
@@ -41,25 +41,25 @@ CREATE TABLE users (
 );
 ```
 
-通过 `ALTER TABLE` 语句，可以将这张表设置成缓存表：
+要将此表设置为缓存表，使用 `ALTER TABLE` 语句：
 
 ```sql
 ALTER TABLE users CACHE;
 ```
 
-```
+```sql
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-### 验证是否为缓存表
+### 验证缓存表
 
-要验证一张表是否为缓存表，使用 `SHOW CREATE TABLE` 语句。如果为缓存表，返回结果中会带有 `CACHED ON` 属性：
+要验证缓存表，使用 `SHOW CREATE TABLE` 语句。如果表已缓存，返回结果会包含 `CACHED ON` 属性：
 
 ```sql
 SHOW CREATE TABLE users;
 ```
 
-```
+```sql
 +-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Table | Create Table                                                                                                                                                                                                               |
 +-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -72,13 +72,13 @@ SHOW CREATE TABLE users;
 1 row in set (0.00 sec)
 ```
 
-从缓存表读取数据后，TiDB 会将数据加载到内存中。你可使用 [`TRACE`](/sql-statements/sql-statement-trace.md) 语句查看 TiDB 是否已将数据加载到内存中。当缓存还未加载时，语句的返回结果会出现 `regionRequest.SendReqCtx`，表示 TiDB 从 TiKV 读取了数据。
+从缓存表读取数据后，TiDB 会将数据加载到内存中。你可以使用 [`TRACE`](/sql-statements/sql-statement-trace.md) 语句检查数据是否已加载到内存中。当缓存未加载时，返回结果包含 `regionRequest.SendReqCtx` 属性，这表示 TiDB 从 TiKV 读取数据。
 
 ```sql
 TRACE SELECT * FROM users;
 ```
 
-```
+```sql
 +------------------------------------------------+-----------------+------------+
 | operation                                      | startTS         | duration   |
 +------------------------------------------------+-----------------+------------+
@@ -98,9 +98,9 @@ TRACE SELECT * FROM users;
 12 rows in set (0.01 sec)
 ```
 
-而再次执行 [`TRACE`](/sql-statements/sql-statement-trace.md)，返回结果中不再有 `regionRequest.SendReqCtx`，表示 TiDB 已经不再从 TiKV 读取数据，而是直接从内存中读取：
+再次执行 [`TRACE`](/sql-statements/sql-statement-trace.md) 后，返回结果不再包含 `regionRequest.SendReqCtx` 属性，这表示 TiDB 不再从 TiKV 读取数据，而是从内存中读取数据。
 
-```
+```sql
 +----------------------------------------+-----------------+------------+
 | operation                              | startTS         | duration   |
 +----------------------------------------+-----------------+------------+
@@ -115,7 +115,7 @@ TRACE SELECT * FROM users;
 7 rows in set (0.00 sec)
 ```
 
-注意，读取缓存表会使用 `UnionScan` 算子，所以通过 `explain` 查看缓存表的执行计划时，可能会在结果中看到 `UnionScan`：
+注意，`UnionScan` 运算符用于读取缓存表，所以你可以通过 `explain` 在缓存表的执行计划中看到 `UnionScan`：
 
 ```sql
 +-------------------------+---------+-----------+---------------+--------------------------------+
@@ -128,15 +128,15 @@ TRACE SELECT * FROM users;
 3 rows in set (0.00 sec)
 ```
 
-### 往缓存表写入数据
+### 向缓存表写入数据
 
-缓存表支持写入数据。例如，往 `users` 表中插入一条记录：
+缓存表支持数据写入。例如，你可以向 `users` 表插入一条记录：
 
 ```sql
 INSERT INTO users(id, name) VALUES(1001, 'Davis');
 ```
 
-```
+```sql
 Query OK, 1 row affected (0.00 sec)
 ```
 
@@ -144,7 +144,7 @@ Query OK, 1 row affected (0.00 sec)
 SELECT * FROM users;
 ```
 
-```
+```sql
 +------+-------+
 | id   | name  |
 +------+-------+
@@ -155,15 +155,15 @@ SELECT * FROM users;
 
 > **注意：**
 >
-> 往缓存表写入数据时，有可能出现秒级别的写入延迟。延迟的时长由全局环境变量 [`tidb_table_cache_lease`](/system-variables.md#tidb_table_cache_lease-从-v600-版本开始引入) 控制。你可根据实际业务能否承受此限制带来的延迟，决定是否适合使用缓存表功能。例如，对于完全只读的场景，可以将 `tidb_table_cache_lease` 调大：
+> 向缓存表插入数据时，可能会出现秒级写入延迟。延迟由全局环境变量 [`tidb_table_cache_lease`](/system-variables.md#tidb_table_cache_lease-new-in-v600) 控制。你可以根据应用程序检查延迟是否可接受来决定是否使用缓存表功能。例如，在只读场景中，你可以增加 `tidb_table_cache_lease` 的值：
 >
 > ```sql
 > set @@global.tidb_table_cache_lease = 10;
 > ```
 >
-> 缓存表的写入延时高是受到实现的限制。存在多个 TiDB 实例时，一个 TiDB 实例并不知道其它的 TiDB 实例是否缓存了数据，如果该实例直接修改了表数据，而其它 TiDB 实例依然读取旧的缓存数据，就会读到错误的结果。为了保证数据正确性，缓存表的实现使用了一套基于 lease 的复杂机制：读操作在缓存数据同时，还会对于缓存设置一个有效期，也就是 lease。在 lease 过期之前，无法对数据执行修改操作。因为修改操作必须等待 lease 过期，所以会出现写入延迟。
+> 缓存表的写入延迟较高，因为缓存表功能的实现使用了复杂的机制，需要为每个缓存设置租约。当有多个 TiDB 实例时，一个实例不知道其他实例是否已缓存数据。如果一个实例直接修改表数据，其他实例会读取旧的缓存数据。为确保正确性，缓存表实现使用租约机制确保在租约到期前数据不会被修改。这就是写入延迟较高的原因。
 
-缓存表相关的元信息存储在 `mysql.table_cache_meta` 表中。这张表记录了所有缓存表的 ID、当前的锁状态 `lock_type`，以及锁租约 `lease` 相关的信息。这张表仅供 TiDB 内部使用，不建议用户修改该表，否则可能导致不可预期的错误。
+缓存表的元数据存储在 `mysql.table_cache_meta` 表中。此表记录了所有缓存表的 ID、当前锁定状态（`lock_type`）和锁定租约信息（`lease`）。此表仅供 TiDB 内部使用，不建议修改它。否则，可能会发生意外错误。
 
 ```sql
 SHOW CREATE TABLE mysql.table_cache_meta\G
@@ -183,13 +183,13 @@ Create Table: CREATE TABLE `table_cache_meta` (
 
 > **注意：**
 >
-> 对缓存表执行 DDL 语句会失败。若要对缓存表执行 DDL 语句，需要先去掉缓存属性，将缓存表设回普通表后，才能对其执行 DDL 语句。
+> 在缓存表上执行 DDL 语句将会失败。在对缓存表执行 DDL 语句之前，你需要先移除缓存属性，将缓存表恢复为普通表。
 
 ```sql
 TRUNCATE TABLE users;
 ```
 
-```
+```sql
 ERROR 8242 (HY000): 'Truncate Table' is unsupported on cache tables.
 ```
 
@@ -197,48 +197,48 @@ ERROR 8242 (HY000): 'Truncate Table' is unsupported on cache tables.
 mysql> ALTER TABLE users ADD INDEX k_id(id);
 ```
 
-```
+```sql
 ERROR 8242 (HY000): 'Alter Table' is unsupported on cache tables.
 ```
 
-使用 `ALTER TABLE t NOCACHE` 语句可以将缓存表恢复成普通表：
+要将缓存表恢复为普通表，使用 `ALTER TABLE t NOCACHE`：
 
 ```sql
-ALTER TABLE users NOCACHE
+ALTER TABLE users NOCACHE;
 ```
 
-```
+```sql
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-## 缓存表大小限制
+## 缓存表的大小限制
 
-由于 TiDB 将整张缓存表的数据加载到 TiDB 进程的内存中，并且执行修改操作后缓存会失效，需要重新加载，所以 TiDB 缓存表只适用于表比较小的场景。
+缓存表仅适用于小表场景，因为 TiDB 会将整个表的数据加载到内存中，并且缓存的数据在修改后会失效并需要重新加载。
 
-目前 TiDB 对于每张缓存表的大小限制为 64 MB。如果表的数据超过了 64 MB，执行 `ALTER TABLE t CACHE` 会失败。
+目前，TiDB 中缓存表的大小限制为 64 MB。如果表数据超过 64 MB，执行 `ALTER TABLE t CACHE` 将会失败。
 
 ## 与其他 TiDB 功能的兼容性限制
 
-以下是缓存表不支持的功能：
+缓存表**不支持**以下功能：
 
-- 不支持对分区表执行 `ALTER TABLE t CACHE` 操作
-- 不支持对临时表执行 `ALTER TABLE t CACHE` 操作
-- 不支持对视图执行 `ALTER TABLE t CACHE` 操作
-- 不支持 Stale Read 功能
-- 不支持对缓存表直接做 DDL 操作，需要先通过 `ALTER TABLE t NOCACHE` 将缓存表改回普通表后再进行 DDL 操作。
+- 不支持对分区表执行 `ALTER TABLE t ADD PARTITION` 操作。
+- 不支持对临时表执行 `ALTER TABLE t CACHE` 操作。
+- 不支持对视图执行 `ALTER TABLE t CACHE` 操作。
+- 不支持 Stale Read。
+- 不支持直接对缓存表执行 DDL 操作。在执行 DDL 操作之前，你需要先使用 `ALTER TABLE t NOCACHE` 将缓存表恢复为普通表。
 
-以下是缓存表无法使用缓存的场景：
+缓存表**不能**在以下场景中使用：
 
-- 设置系统变量 `tidb_snapshot` 读取历史数据
-- 执行修改操作期间，已有缓存会失效，直到数据被再次加载
+- 设置系统变量 `tidb_snapshot` 来读取历史数据。
+- 在修改期间，缓存的数据会失效，直到数据重新加载。
 
-## TiDB 数据迁移工具兼容性
+## 与 TiDB 迁移工具的兼容性
 
-缓存表并不是标准的 MySQL 功能，而是 TiDB 扩展。只有 TiDB 能识别 `ALTER TABLE ... CACHE` 语句。所有的 TiDB 数据迁移工具均不支持缓存表功能，包括 Backup & Restore (BR)、TiCDC、Dumpling 等组件，它们会将缓存表当作普通表处理。
+缓存表是 TiDB 对 MySQL 语法的扩展。只有 TiDB 能识别 `ALTER TABLE ... CACHE` 语句。TiDB 迁移工具**不支持**缓存表，包括 Backup & Restore (BR)、TiCDC 和 Dumpling。这些工具将缓存表视为普通表。
 
-这意味着，备份恢复一张缓存表时，它会变成一张普通表。如果下游集群是另一套 TiDB 集群并且你希望继续使用缓存表功能，可以对下游集群中的表执行 `ALTER TABLE ... CACHE` 手动开启缓存表功能。
+也就是说，当缓存表被备份和恢复时，它会变成普通表。如果下游集群是不同的 TiDB 集群，并且你想继续使用缓存表功能，你可以在下游集群上通过对下游表执行 `ALTER TABLE ... CACHE` 手动启用缓存表。
 
 ## 另请参阅
 
 * [ALTER TABLE](/sql-statements/sql-statement-alter-table.md)
-* [System Variables](/system-variables.md)
+* [系统变量](/system-variables.md)

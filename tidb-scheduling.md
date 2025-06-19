@@ -1,153 +1,151 @@
 ---
-title: TiDB 数据库的调度
-summary: TiDB 数据库的调度由 PD（Placement Driver）模块负责管理和实时调度集群数据。PD 需要收集节点和 Region 的状态信息，并根据调度策略制定调度计划，包括增加 / 删除副本、迁移 Leader 角色等基本操作。调度需满足副本数量、位置分布、负载均衡、存储空间利用等需求。PD 通过心跳包收集信息，并根据策略生成调度操作序列，但具体执行由 Region Leader 决定。
+title: TiDB 调度
+summary: 介绍 TiDB 集群中的 PD 调度组件。
 ---
 
-# TiDB 数据库的调度
+# TiDB 调度
 
-[PD](https://github.com/tikv/pd) (Placement Driver) 是 TiDB 集群的管理模块，同时也负责集群数据的实时调度。本文档介绍一下 PD 的设计思想和关键概念。
+Placement Driver ([PD](https://github.com/tikv/pd)) 作为 TiDB 集群的管理者，同时也负责集群中的 Region 调度。本文介绍了 PD 调度组件的设计和核心概念。
 
-## 场景描述
+## 调度场景
 
-TiKV 集群是 TiDB 数据库的分布式 KV 存储引擎，数据以 Region 为单位进行复制和管理，每个 Region 会有多个副本 (Replica)，这些副本会分布在不同的 TiKV 节点上，其中 Leader 负责读/写，Follower 负责同步 Leader 发来的 Raft log。
+TiKV 是 TiDB 使用的分布式键值存储引擎。在 TiKV 中，数据被组织为 Region，并在多个节点上进行复制。在所有副本中，leader 负责读写，而 follower 负责从 leader 复制 Raft 日志。
 
-需要考虑以下场景：
+现在考虑以下场景：
 
-* 为了提高集群的空间利用率，需要根据 Region 的空间占用对副本进行合理的分布。
-* 集群进行跨机房部署的时候，要保证一个机房掉线，不会丢失 Raft Group 的多个副本。
-* 添加一个节点进入 TiKV 集群之后，需要合理地将集群中其他节点上的数据搬到新增节点。
-* 当一个节点掉线时，需要考虑快速稳定地进行容灾。
-    * 从节点的恢复时间来看
-        * 如果节点只是短暂掉线（重启服务），是否需要进行调度。
-        * 如果节点是长时间掉线（磁盘故障，数据全部丢失），如何进行调度。
-    * 假设集群需要每个 Raft Group 有 N 个副本，从单个 Raft Group 的副本个数来看
-        * 副本数量不够（例如节点掉线，失去副本），需要选择适当的机器的进行补充。
-        * 副本数量过多（例如掉线的节点又恢复正常，自动加入集群），需要合理的删除多余的副本。
-* 读/写通过 Leader 进行，Leader 的分布只集中在少量几个节点会对集群造成影响。
-* 并不是所有的 Region 都被频繁的访问，可能访问热点只在少数几个 Region，需要通过调度进行负载均衡。
-* 集群在做负载均衡的时候，往往需要搬迁数据，这种数据的迁移可能会占用大量的网络带宽、磁盘 IO 以及 CPU，进而影响在线服务。
+* 为了高效利用存储空间，同一个 Region 的多个副本需要根据 Region 大小合理地分布在不同节点上；
+* 对于多数据中心的拓扑结构，一个数据中心的故障应该只会导致所有 Region 的一个副本失效；
+* 当新增 TiKV 节点时，可以将数据重新平衡到新节点；
+* 当 TiKV 节点发生故障时，PD 需要考虑：
+    * 故障节点的恢复时间。
+        * 如果时间较短（例如服务重启），是否需要调度。
+        * 如果时间较长（例如磁盘故障导致数据丢失），如何进行调度。
+    * 所有 Region 的副本。
+        * 如果某些 Region 的副本数不足，PD 需要补充副本。
+        * 如果某些 Region 的副本数超出预期（例如，故障节点恢复后重新加入集群），PD 需要删除多余的副本。
+* 读写操作在 leader 上进行，不能只分布在少数几个节点上；
+* 并非所有 Region 都是热点，因此需要平衡所有 TiKV 节点的负载；
+* 在 Region 进行均衡时，数据传输会占用大量网络/磁盘流量和 CPU 时间，这可能会影响在线服务。
 
-以上问题和场景如果多个同时出现，就不太容易解决，因为需要考虑全局信息。同时整个系统也是在动态变化的，因此需要一个中心节点，来对系统的整体状况进行把控和调整，所以有了 PD 这个模块。
+这些场景可能同时发生，这使得问题更难解决。此外，整个系统是动态变化的，因此需要一个调度器来收集集群的所有信息，然后对集群进行调整。因此，PD 被引入到 TiDB 集群中。
 
-## 调度的需求
+## 调度需求
 
-对以上的问题和场景进行分类和整理，可归为以下两类：
+上述场景可以分为两类：
 
-**第一类：作为一个分布式高可用存储系统，必须满足的需求，包括几种**
+1. 作为一个分布式高可用存储系统必须满足的需求：
 
-* 副本数量不能多也不能少
-* 副本需要根据拓扑结构分布在不同属性的机器上
-* 节点宕机或异常能够自动合理快速地进行容灾
+    * 副本数量正确。
+    * 副本需要根据不同的拓扑结构分布在不同的机器上。
+    * 集群能够自动从 TiKV 节点故障中恢复。
 
-**第二类：作为一个良好的分布式系统，需要考虑的地方包括**
+2. 作为一个良好的分布式系统需要的优化：
 
-* 维持整个集群的 Leader 分布均匀
-* 维持每个节点的储存容量均匀
-* 维持访问热点分布均匀
-* 控制负载均衡的速度，避免影响在线服务
-* 管理节点状态，包括手动上线/下线节点
+    * 所有 Region 的 leader 在节点间均匀分布；
+    * 所有 TiKV 节点的存储容量均衡；
+    * 热点均衡；
+    * Region 负载均衡的速度需要限制，以确保在线服务的稳定性；
+    * 运维人员能够手动上下线节点。
 
-满足第一类需求后，整个系统将具备强大的容灾功能。满足第二类需求后，可以使得系统整体的资源利用率更高且合理，具备良好的扩展性。
+满足第一类需求后，系统将具有容错能力。满足第二类需求后，资源将被更有效地利用，系统将具有更好的可扩展性。
 
-为了满足这些需求，首先需要收集足够的信息，比如每个节点的状态、每个 Raft Group 的信息、业务访问操作的统计等；其次需要设置一些策略，PD 根据这些信息以及调度的策略，制定出尽量满足前面所述需求的调度计划；最后需要一些基本的操作，来完成调度计划。
+为了实现这些目标，PD 首先需要收集信息，如节点状态、Raft 组信息和访问节点的统计信息。然后我们需要为 PD 指定一些策略，使 PD 能够根据这些信息和策略制定调度计划。最后，PD 向 TiKV 节点分发一些操作指令来完成调度计划。
 
-## 调度的基本操作
+## 基本调度操作
 
-调度的基本操作指的是为了满足调度的策略。上述调度需求可整理为以下三个操作：
+所有调度计划包含三种基本操作：
 
-* 增加一个副本
-* 删除一个副本
-* 将 Leader 角色在一个 Raft Group 的不同副本之间 transfer（迁移）
+* 添加新副本
+* 删除副本
+* 在 Raft 组内的副本之间转移 Region leader
 
-刚好 Raft 协议通过 `AddReplica`、`RemoveReplica`、`TransferLeader` 这三个命令，可以支撑上述三种基本操作。
+这些操作通过 Raft 命令 `AddReplica`、`RemoveReplica` 和 `TransferLeader` 来实现。
 
 ## 信息收集
 
-调度依赖于整个集群信息的收集，简单来说，调度需要知道每个 TiKV 节点的状态以及每个 Region 的状态。TiKV 集群会向 PD 汇报两类消息，TiKV 节点信息和 Region 信息：
+调度基于信息收集。简而言之，PD 调度组件需要知道所有 TiKV 节点和所有 Region 的状态。TiKV 节点向 PD 报告以下信息：
 
-**每个 TiKV 节点会定期向 PD 汇报节点的状态信息**
+- 每个 TiKV 节点报告的状态信息：
 
-TiKV 节点 (Store) 与 PD 之间存在心跳包，一方面 PD 通过心跳包检测每个 Store 是否存活，以及是否有新加入的 Store；另一方面，心跳包中也会携带这个 [Store 的状态信息](https://github.com/pingcap/kvproto/blob/release-8.1/proto/pdpb.proto#L473)，主要包括：
+    每个 TiKV 节点定期向 PD 发送心跳。PD 不仅检查节点是否存活，还在心跳消息中收集 [`StoreState`](https://github.com/pingcap/kvproto/blob/release-8.1/proto/pdpb.proto#L473)。`StoreState` 包括：
 
-* 总磁盘容量
-* 可用磁盘容量
-* 承载的 Region 数量
-* 数据写入/读取速度
-* 发送/接受的 Snapshot 数量（副本之间可能会通过 Snapshot 同步数据）
-* 是否过载
-* labels 标签信息（标签是具备层级关系的一系列 Tag，能够[感知拓扑信息](/schedule-replicas-by-topology-labels.md)）
+    * 总磁盘空间
+    * 可用磁盘空间
+    * Region 数量
+    * 数据读写速度
+    * 发送/接收的快照数量（数据可能通过快照在副本之间复制）
+    * 节点是否过载
+    * 标签（参见[拓扑感知](https://docs.pingcap.com/tidb/stable/schedule-replicas-by-topology-labels)）
 
-通过使用 `pd-ctl` 可以查看到 TiKV Store 的状态信息。TiKV Store 的状态具体分为 Up，Disconnect，Offline，Down，Tombstone。各状态的关系如下：
+    你可以使用 PD control 检查 TiKV 节点的状态，状态可以是 Up、Disconnect、Offline、Down 或 Tombstone。以下是所有状态及其关系的描述。
 
-+ **Up**：表示当前的 TiKV Store 处于提供服务的状态。
-+ **Disconnect**：当 PD 和 TiKV Store 的心跳信息丢失超过 20 秒后，该 Store 的状态会变为 Disconnect 状态，当时间超过 `max-store-down-time` 指定的时间后，该 Store 会变为 Down 状态。
-+ **Down**：表示该 TiKV Store 与集群失去连接的时间已经超过了 `max-store-down-time` 指定的时间，默认 30 分钟。超过该时间后，对应的 Store 会变为 Down，并且开始在存活的 Store 上补足各个 Region 的副本。
-+ **Offline**：当对某个 TiKV Store 通过 PD Control 进行手动下线操作，该 Store 会变为 Offline 状态。该状态只是 Store 下线的中间状态，处于该状态的 Store 会将其上的所有 Region 搬离至其它满足搬迁条件的 Up 状态 Store。当该 Store 的 `leader_count` 和 `region_count` (在 PD Control 中获取) 均显示为 0 后，该 Store 会由 Offline 状态变为 Tombstone 状态。在 Offline 状态下，禁止关闭该 Store 服务以及其所在的物理服务器。下线过程中，如果集群里不存在满足搬迁条件的其它目标 Store（例如没有足够的 Store 能够继续满足集群的副本数量要求），该 Store 将一直处于 Offline 状态。
-+ **Tombstone**：表示该 TiKV Store 已处于完全下线状态，可以使用 `remove-tombstone` 接口安全地清理该状态的 TiKV。从 v6.5.0 开始，如果没有手动处理，当节点转换为 Tombstone 一个月后，PD 将自动删除内部存储的 Tombstone 的记录。
+    + **Up**：TiKV 节点正在服务中。
+    + **Disconnect**：PD 和 TiKV 节点之间的心跳消息丢失超过 20 秒。如果丢失时间超过 `max-store-down-time` 指定的时间，状态 "Disconnect" 会变为 "Down"。
+    + **Down**：PD 和 TiKV 节点之间的心跳消息丢失时间超过 `max-store-down-time`（默认 30 分钟）。在此状态下，TiKV 节点开始在存活的节点上补充每个 Region 的副本。
+    + **Offline**：TiKV 节点通过 PD Control 手动下线。这只是节点下线过程的中间状态。处于此状态的节点会将其所有 Region 迁移到满足重定位条件的其他 "Up" 状态的节点。当 `leader_count` 和 `region_count`（通过 PD Control 获取）都显示为 `0` 时，节点状态从 "Offline" 变为 "Tombstone"。在 "Offline" 状态下，**不要**禁用节点服务或节点所在的物理服务器。在节点下线过程中，如果集群没有目标节点来重定位 Region（例如，集群中没有足够的节点来存放副本），节点将一直处于 "Offline" 状态。
+    + **Tombstone**：TiKV 节点完全下线。你可以使用 `remove-tombstone` 接口安全地清理处于此状态的 TiKV。从 v6.5.0 开始，如果不手动处理，PD 会在节点转换为 Tombstone 一个月后自动删除内部存储的 Tombstone 记录。
 
-![TiKV store status relationship](/media/tikv-store-status-relationship.png)
+    ![TiKV 节点状态关系](/media/tikv-store-status-relationship.png)
 
-**每个 Raft Group 的 Leader 会定期向 PD 汇报 Region 的状态信息**
+- Region leader 报告的信息：
 
-每个 Raft Group 的 Leader 和 PD 之间存在心跳包，用于汇报这个 [Region 的状态](https://github.com/pingcap/kvproto/blob/release-8.1/proto/pdpb.proto#L312)，主要包括下面几点信息：
+    每个 Region leader 定期向 PD 发送心跳以报告 [`RegionState`](https://github.com/pingcap/kvproto/blob/release-8.1/proto/pdpb.proto#L312)，包括：
 
-* Leader 的位置
-* Followers 的位置
-* 掉线副本的个数
-* 数据写入/读取的速度
+    * leader 自身的位置
+    * 其他副本的位置
+    * 离线副本的数量
+    * 数据读写速度
 
-PD 不断的通过这两类心跳消息收集整个集群的信息，再以这些信息作为决策的依据。
+PD 通过这两种心跳收集集群信息，然后基于这些信息做出决策。
 
-除此之外，PD 还可以通过扩展的接口接受额外的信息，用来做更准确的决策。比如当某个 Store 的心跳包中断的时候，PD 并不能判断这个节点是临时失效还是永久失效，只能经过一段时间的等待（默认是 30 分钟），如果一直没有心跳包，就认为该 Store 已经下线，再决定需要将这个 Store 上面的 Region 都调度走。
+此外，PD 可以通过扩展接口获取更多信息来做出更精确的决策。例如，如果节点的心跳中断，PD 无法知道该节点是暂时还是永久下线。它只会等待一段时间（默认 30 分钟），如果仍然没有收到心跳，就将该节点视为离线。然后 PD 会将该节点上的所有 Region 平衡到其他节点。
 
-但是有的时候，是运维人员主动将某台机器下线，这个时候，可以通过 PD 的管理接口通知 PD 该 Store 不可用，PD 就可以马上判断需要将这个 Store 上面的 Region 都调度走。
+但有时节点是由运维人员手动下线的，因此运维人员可以通过 PD control 接口告知 PD。这样 PD 就可以立即开始平衡所有 Region。
 
-## 调度的策略
+## 调度策略
 
-PD 收集了这些信息后，还需要一些策略来制定具体的调度计划。
+收集信息后，PD 需要一些策略来制定调度计划。
 
-**一个 Region 的副本数量正确**
+**策略 1：Region 的副本数量需要正确**
 
-当 PD 通过某个 Region Leader 的心跳包发现这个 Region 的副本数量不满足要求时，需要通过 Add/Remove Replica 操作调整副本数量。出现这种情况的可能原因是：
+PD 可以从 Region leader 的心跳中知道某个 Region 的副本数量是否不正确。如果发生这种情况，PD 可以通过添加/删除副本来调整副本数量。副本数量不正确的原因可能是：
 
-* 某个节点掉线，上面的数据全部丢失，导致一些 Region 的副本数量不足
-* 某个掉线节点又恢复服务，自动接入集群，这样之前已经补足了副本的 Region 的副本数量过多，需要删除某个副本
-* 管理员调整副本策略，修改了 [max-replicas](https://github.com/pingcap/pd/blob/v4.0.0-beta/conf/config.toml#L95) 的配置
+* 节点故障导致某些 Region 的副本数量少于预期；
+* 故障节点恢复后，某些 Region 的副本数量可能多于预期；
+* [`max-replicas`](https://github.com/pingcap/pd/blob/v4.0.0-beta/conf/config.toml#L95) 被修改。
 
-**一个 Raft Group 中的多个副本不在同一个位置**
+**策略 2：Region 的副本需要位于不同位置**
 
-注意这里用的是『同一个位置』而不是『同一个节点』。在一般情况下，PD 只会保证多个副本不落在一个节点上，以避免单个节点失效导致多个副本丢失。在实际部署中，还可能出现下面这些需求：
+注意这里的"位置"与"机器"是不同的。通常 PD 只能确保一个 Region 的副本不在同一个节点上，以避免该节点的故障导致多个副本丢失。但在生产环境中，你可能有以下需求：
 
-* 多个节点部署在同一台物理机器上
-* TiKV 节点分布在多个机架上，希望单个机架掉电时，也能保证系统可用性
-* TiKV 节点分布在多个 IDC 中，希望单个机房掉电时，也能保证系统可用性
+* 多个 TiKV 节点在同一台机器上；
+* TiKV 节点分布在多个机架上，即使一个机架故障系统也能保持可用；
+* TiKV 节点分布在多个数据中心，即使一个数据中心故障系统也能保持可用；
 
-这些需求本质上都是某一个节点具备共同的位置属性，构成一个最小的『容错单元』，希望这个单元内部不会存在一个 Region 的多个副本。这个时候，可以给节点配置 [labels](https://github.com/tikv/tikv/blob/v4.0.0-beta/etc/config-template.toml#L140) 并且通过在 PD 上配置 [location-labels](https://github.com/pingcap/pd/blob/v4.0.0-beta/conf/config.toml#L100) 来指名哪些 label 是位置标识，需要在副本分配的时候尽量保证一个 Region 的多个副本不会分布在具有相同的位置标识的节点上。
+这些需求的关键是节点可以有相同的"位置"，这是容错的最小单位。一个 Region 的副本不能在同一个单位内。因此，我们可以为 TiKV 节点配置 [labels](https://github.com/tikv/tikv/blob/v4.0.0-beta/etc/config-template.toml#L140)，并在 PD 上设置 [location-labels](https://github.com/pingcap/pd/blob/v4.0.0-beta/conf/config.toml#L100) 来指定哪些标签用于标记位置。
 
-**副本在 Store 之间的分布均匀分配**
+**策略 3：副本需要在节点之间保持均衡**
 
-由于每个 Region 的副本中存储的数据容量上限是固定的，通过维持每个节点上面副本数量的均衡，使得各节点间承载的数据更均衡。
+Region 副本的大小限制是固定的，因此在节点之间保持副本均衡有助于数据大小的均衡。
 
-**Leader 数量在 Store 之间均匀分配**
+**策略 4：leader 需要在节点之间保持均衡**
 
-Raft 协议要求读取和写入都通过 Leader 进行，所以计算的负载主要在 Leader 上面，PD 会尽可能将 Leader 在节点间分散开。
+根据 Raft 协议，读写操作在 leader 上执行，因此 PD 需要将 leader 分散到整个集群而不是集中在几个节点上。
 
-**访问热点数量在 Store 之间均匀分配**
+**策略 5：热点需要在节点之间保持均衡**
 
-每个 Store 以及 Region Leader 在上报信息时携带了当前访问负载的信息，比如 Key 的读取/写入速度。PD 会检测出访问热点，且将其在节点之间分散开。
+PD 可以从节点心跳和 Region 心跳中检测热点，从而分散热点。
 
-**各个 Store 的存储空间占用大致相等**
+**策略 6：存储大小需要在节点之间保持均衡**
 
-每个 Store 启动的时候都会指定一个 `Capacity` 参数，表明这个 Store 的存储空间上限，PD 在做调度的时候，会考虑节点的存储空间剩余量。
+TiKV 节点启动时会报告存储 `capacity`，这表示节点的空间限制。PD 在调度时会考虑这一点。
 
-**控制调度速度，避免影响在线服务**
+**策略 7：调整调度速度以稳定在线服务**
 
-调度操作需要耗费 CPU、内存、磁盘 IO 以及网络带宽，需要避免对线上服务造成太大影响。PD 会对当前正在进行的操作数量进行控制，默认的速度控制是比较保守的，如果希望加快调度（比如停服务升级或者增加新节点，希望尽快调度），那么可以通过调节 PD 参数动态加快调度速度。
+调度会占用 CPU、内存、网络和 I/O 流量。过多的资源使用会影响在线服务。因此，PD 需要限制并发调度任务的数量。默认情况下这个策略是保守的，但如果需要更快的调度可以进行调整。
 
-## 调度的实现
+## 调度实现
 
-本节介绍调度的实现
+PD 从节点心跳和 Region 心跳收集集群信息，然后根据信息和策略制定调度计划。调度计划是一系列基本操作的序列。每次 PD 从 Region leader 收到 Region 心跳时，它会检查该 Region 是否有待处理的操作。如果 PD 需要向 Region 分派新的操作，它会将操作放入心跳响应中，并通过检查后续的 Region 心跳来监控操作的执行情况。
 
-PD 不断地通过 Store 或者 Leader 的心跳包收集整个集群信息，并且根据这些信息以及调度策略生成调度操作序列。每次收到 Region Leader 发来的心跳包时，PD 都会检查这个 Region 是否有待进行的操作，然后通过心跳包的回复消息，将需要进行的操作返回给 Region Leader，并在后面的心跳包中监测执行结果。
-
-注意这里的操作只是给 Region Leader 的建议，并不保证一定能得到执行，具体是否会执行以及什么时候执行，由 Region Leader 根据当前自身状态来定。
+注意这里的"操作"只是对 Region leader 的建议，Region 可以选择跳过。Region 的 leader 可以根据其当前状态决定是否跳过调度操作。

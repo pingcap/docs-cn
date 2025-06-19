@@ -1,11 +1,11 @@
 ---
 title: CREATE SEQUENCE
-summary: CREATE SEQUENCE 在 TiDB 中的使用概况
+summary: TiDB 数据库中 CREATE SEQUENCE 的使用概述。
 ---
 
 # CREATE SEQUENCE
 
-`CREATE SEQUENCE` 语句用于在 TiDB 中创建序列对象。序列是一种与表、视图对象平级的数据库对象，用于生成自定义的序列化 ID。
+`CREATE SEQUENCE` 语句在 TiDB 中创建序列对象。序列是与表和 `View` 对象同级的数据库对象。序列用于以自定义方式生成序列化的 ID。
 
 ## 语法图
 
@@ -36,11 +36,11 @@ SequenceOption ::=
 |   'NOCYCLE'
 ```
 
-## 语法说明
+## 语法
 
 {{< copyable "sql" >}}
 
-```
+```sql
 CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     [ INCREMENT [ BY | = ] increment ]
     [ MINVALUE [=] minvalue | NO MINVALUE | NOMINVALUE ]
@@ -51,41 +51,41 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     [table_options]
 ```
 
-## 参数说明
+## 参数
 
 |参数 | 默认值 | 描述 |
 | :-- | :-- | :--|
-| `TEMPORARY` | `false` | TiDB 暂时不支持 `TEMPORARY` 选项，仅在语法上做兼容。|
-| `INCREMENT` | `1` | 指定序列的步长。其正负值可以控制序列的增长方向。|
-| `MINVALUE` | `1` 或 `-9223372036854775807` | 指定序列的最小值。当 `INCREMENT` > `0` 时，默认值为 `1`；当 `INCREMENT` < `0` 时，默认值为 `-9223372036854775807`。|
-| `MAXVALUE` | `9223372036854775806` 或 `-1` | 指定序列的最大值。当 `INCREMENT` > `0` 时，默认值为 `9223372036854775806`；当 `INCREMENT` < `0` 时，默认值为 `-1`。|
-| `START` | `MINVALUE` 或 `MAXVALUE` | 指定序列的初始值。当 `INCREMENT` > `0` 时，默认值为 `MINVALUE`; 当 `INCREMENT` < `0` 时，默认值为 `MAXVALUE`。 |
-| `CACHE` | `1000` | 指定每个 TiDB 本地缓存序列的大小。|
-| `CYCLE` | `NO CYCLE` | 指定序列用完之后是否要循环使用。在 `CYCLE` 的情况下，当 `INCREMENT` > `0` 时，序列用完后的后续起始值为 `MINVALUE`；当 `INCREMENT` < `0` 时，序列用完后的后续起始值为 `MAXVALUE`。|
+| `TEMPORARY` | `false` | TiDB 目前不支持 `TEMPORARY` 选项，仅提供语法兼容。 |
+| `INCREMENT` | `1` | 指定序列的增量。其正值或负值可以控制序列的增长方向。 |
+| `MINVALUE` | `1` 或 `-9223372036854775807` | 指定序列的最小值。当 `INCREMENT` > `0` 时，默认值为 `1`。当 `INCREMENT` < `0` 时，默认值为 `-9223372036854775807`。 |
+| `MAXVALUE` | `9223372036854775806` 或 `-1` | 指定序列的最大值。当 `INCREMENT` > `0` 时，默认值为 `9223372036854775806`。当 `INCREMENT` < `0` 时，默认值为 `-1`。 |
+| `START` | `MINVALUE` 或 `MAXVALUE`| 指定序列的初始值。当 `INCREMENT` > `0` 时，默认值为 `MINVALUE`。当 `INCREMENT` < `0` 时，默认值为 `MAXVALUE`。 |
+| `CACHE` | `1000` | 指定序列在 TiDB 中的本地缓存大小。 |
+| `CYCLE` | `NO CYCLE` | 指定序列是否从最小值重新开始（或递减序列的最大值）。当 `INCREMENT` > `0` 时，默认值为 `MINVALUE`。当 `INCREMENT` < `0` 时，默认值为 `MAXVALUE`。 |
 
 ## `SEQUENCE` 函数
 
-主要通过表达式函数来操纵序列的使用。
+你可以通过以下表达式函数控制序列：
 
 + `NEXTVAL` 或 `NEXT VALUE FOR`
 
-    本质上都是 `NEXTVAL()` 函数，获取序列对象的下一个有效值，其参数为序列的 `identifier`。
+    本质上，两者都是 `NEXTVAL()` 函数，用于获取序列对象的下一个有效值。`NEXTVAL()` 函数的参数是序列的 `identifier`。
 
 + `LASTVAL`
 
-    `LASTVAL()` 函数，用于获取本会话上一个使用过的值。如果没有值，则为 `NULL`，其参数为序列的 `identifier`。
+    此函数获取此会话中最后使用的值。如果该值不存在，则使用 `NULL`。此函数的参数是序列的 `identifier`。
 
 + `SETVAL`
 
-    `SETVAL()` 函数，用于设置序列的增长。其第一参数为序列的 `identifier`，第二个参数为 `num`。
+    此函数设置序列当前值的进程。此函数的第一个参数是序列的 `identifier`；第二个参数是 `num`。
 
 > **注意：**
 >
-> 在 TiDB 序列的实现中，`SETVAL` 函数并不能改变序列增长的初始步调或循环步调。在 `SETVAL` 之后只会返回符合步调规律的下一个有效的序列值。
+> 在 TiDB 的序列实现中，`SETVAL` 函数不能更改此序列的初始进程或循环进程。此函数仅根据此进程返回下一个有效值。
 
 ## 示例
 
-+ 创建一个默认参数的序列对象。
++ 使用默认参数创建序列对象：
 
     {{< copyable "sql" >}}
 
@@ -97,7 +97,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     Query OK, 0 rows affected (0.06 sec)
     ```
 
-+ 使用 `NEXTVAL()` 函数获取序列对象的下一个值。
++ 使用 `NEXTVAL()` 函数获取序列对象的下一个值：
 
     {{< copyable "sql" >}}
 
@@ -114,7 +114,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     1 row in set (0.02 sec)
     ```
 
-+ 使用 `LASTVAL()` 函数获取本会话上一次调用序列对象所产生的值。
++ 使用 `LASTVAL()` 函数获取此会话中序列对象最后一次调用生成的值：
 
     {{< copyable "sql" >}}
 
@@ -131,7 +131,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     1 row in set (0.02 sec)
     ```
 
-+ 使用 `SETVAL()` 函数设置序列对象当前值的位置。
++ 使用 `SETVAL()` 函数设置序列对象的当前值（或当前位置）：
 
     {{< copyable "sql" >}}
 
@@ -148,7 +148,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     1 row in set (0.01 sec)
     ```
 
-+ 也可使用 `next value for` 语法获取序列的下一个值。
++ 你也可以使用 `next value for` 语法获取序列的下一个值：
 
     {{< copyable "sql" >}}
 
@@ -165,7 +165,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     1 row in set (0.00 sec)
     ```
 
-+ 创建一个默认自定义参数的序列对象。
++ 使用自定义默认参数创建序列对象：
 
     {{< copyable "sql" >}}
 
@@ -177,7 +177,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     Query OK, 0 rows affected (0.01 sec)
     ```
 
-+ 当本会话还未使用过序列对象时，`LASTVAL()` 函数返回 NULL 值。
++ 当序列对象在此会话中未被使用时，`LASTVAL()` 函数返回 `NULL` 值。
 
     {{< copyable "sql" >}}
 
@@ -194,7 +194,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     1 row in set (0.01 sec)
     ```
 
-+ 序列对象 `NEXTVAL()` 的第一个有效值为 `start` 值。
++ 序列对象的 `NEXTVAL()` 函数的第一个有效值是 `START` 参数的值。
 
     {{< copyable "sql" >}}
 
@@ -211,7 +211,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     1 row in set (0.00 sec)
     ```
 
-+ 使用 `SETVAL()` 虽然可以改变序列对象当前值的位置，但是无法改变下一个值的等差规律。
++ 虽然 `SETVAL()` 函数可以更改序列对象的当前值，但它不能更改下一个值的算术进程规则。
 
     {{< copyable "sql" >}}
 
@@ -228,7 +228,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     1 row in set (0.00 sec)
     ```
 
-+ 使用 `NEXTVAL()` 下一个值获取时，会遵循序列定义的等差规律。
++ 当你使用 `NEXTVAL()` 获取下一个值时，下一个值将遵循序列定义的算术进程规则。
 
     {{< copyable "sql" >}}
 
@@ -245,19 +245,19 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     1 row in set (0.00 sec)
     ```
 
-+ 可以将序列的下一个值作为列的默认值来使用。
++ 你可以使用序列的下一个值作为列的默认值，如下例所示。
 
     {{< copyable "sql" >}}
 
     ```sql
-    CREATE TABLE t(a int default next value for seq2);
+    CREATE table t(a int default next value for seq2);
     ```
 
     ```
     Query OK, 0 rows affected (0.02 sec)
     ```
 
-+ 下列示例中，因为没有指定值，会直接获取 `seq2` 的默认值来使用。
++ 在下面的示例中，未指定值，因此使用 `seq2` 的默认值。
 
     {{< copyable "sql" >}}
 
@@ -284,7 +284,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     1 row in set (0.00 sec)
     ```
 
-+ 下列示例中，因为没有指定值，会直接获取 `seq2` 的默认值来使用。由于 `seq2` 的下一个值超过了上述示例 (`CREATE SEQUENCE seq2 start 3 increment 2 minvalue 1 maxvalue 10 cache 3;`) 的定义范围，所以会显示报错。
++ 在下面的示例中，未指定值，因此使用 `seq2` 的默认值。但是 `seq2` 的下一个值不在上面示例中定义的范围内（`CREATE SEQUENCE seq2 start 3 increment 2 minvalue 1 maxvalue 10 cache 3;`），因此返回错误。
 
     {{< copyable "sql" >}}
 
@@ -298,23 +298,23 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 ## MySQL 兼容性
 
-该语句是 TiDB 的扩展，序列的实现借鉴自 MariaDB。
+此语句是 TiDB 对 MySQL 语法的扩展。其实现参考了 MariaDB 中可用的序列。
 
-除了 `SETVAL` 函数外，其他函数的“步调 (progressions)” 与 MariaDB 一致。这里的步调是指，序列中的数在定义之后会产生一定的等差关系。`SETVAL` 虽然可以将序列的当前值进行移动设置，但是后续出现的值仍会遵循原有的等差关系。
+除了 `SETVAL` 函数外，所有其他函数都具有与 MariaDB 相同的_进程_。这里的"进程"意味着序列中的数字遵循序列定义的某个算术进程规则。虽然你可以使用 `SETVAL` 设置序列的当前值，但序列的后续值仍然遵循原始进程规则。
 
-示例如下：
+例如：
 
 ```
-1, 3, 5, ...            // 序列遵循起始为 1、步长为 2 的等差关系。
-select SETVAL(seq, 6)   // 设置序列的当前值为 6。
-7, 9, 11, ...           // 后续产生值仍会遵循这个等差关系。
+1, 3, 5, ...            // 序列从 1 开始，每次增加 2。
+select SETVAL(seq, 6)   // 将序列的当前值设置为 6。
+7, 9, 11, ...           // 后续值仍然遵循进程规则。
 ```
 
-在 `CYCLE` 模式下，序列的起始值第一轮为 `START`，后续轮次将会是 `MinValue` (INCREMENT > 0) 或 `MaxValue` (INCREMENT < 0)。
+在 `CYCLE` 模式下，序列在第一轮中的初始值是 `START` 参数的值，在后续轮次中的初始值是 `MinValue`（`INCREMENT` > 0）或 `MaxValue`（`INCREMENT` < 0）的值。
 
 ## 另请参阅
 
 * [ALTER SEQUENCE](/sql-statements/sql-statement-alter-sequence.md)
 * [DROP SEQUENCE](/sql-statements/sql-statement-drop-sequence.md)
 * [SHOW CREATE SEQUENCE](/sql-statements/sql-statement-show-create-sequence.md)
-* [Sequence 函数](/functions-and-operators/sequence-functions.md)
+* [序列函数](/functions-and-operators/sequence-functions.md)

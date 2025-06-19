@@ -1,11 +1,11 @@
 ---
 title: USER_ATTRIBUTES
-summary: 了解 INFORMATION_SCHEMA 表 `USER_ATTRIBUTES`。
+summary: 了解 `USER_ATTRIBUTES` INFORMATION_SCHEMA 表。
 ---
 
 # USER_ATTRIBUTES
 
-`USER_ATTRIBUTES` 表提供了用户的注释和属性。该表的数据根据 `mysql.user` 系统表生成。
+`USER_PRIVILEGES` 表提供了用户注释和用户属性的相关信息。这些信息来自 `mysql.user` 系统表。
 
 ```sql
 USE information_schema;
@@ -23,13 +23,13 @@ DESC user_attributes;
 3 rows in set (0.00 sec)
 ```
 
-`USER_ATTRIBUTES` 表中列的含义如下：
+`USER_ATTRIBUTES` 表中的字段说明如下：
 
 * `USER`：用户名。
-* `HOST`：用户可用于连接的主机。百分号（`％`）表示主机名不受限制。
-* `ATTRIBUTE`：通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句设置的用户相关的注释和属性。
+* `HOST`：用户可以从哪个主机连接到 TiDB。如果该字段的值为 `％`，表示用户可以从任何主机连接到 TiDB。
+* `ATTRIBUTE`：用户的注释和属性，通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 或 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句设置。
 
-示例：
+以下是一个示例：
 
 ```sql
 CREATE USER testuser1 COMMENT 'This user is created only for test';

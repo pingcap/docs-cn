@@ -1,36 +1,36 @@
 ---
-title: TiKV 简介
-summary: TiKV 是一个分布式事务型的键值数据库，通过 Raft 协议保证了多副本数据一致性和高可用。整体架构采用 multi-raft-group 的副本机制，保证数据和读写负载均匀分散在各个 TiKV 上。TiKV 支持分布式事务，通过两阶段提交保证了 ACID 约束。同时，通过协处理器可以为 TiDB 分担一部分计算。
+title: TiKV 概述
+summary: TiKV 存储引擎的概述。
 ---
 
-# TiKV 简介
+# TiKV 概述
 
-TiKV 是一个分布式事务型的键值数据库，提供了满足 ACID 约束的分布式事务接口，并且通过 [Raft 协议](https://raft.github.io/raft.pdf)保证了多副本数据一致性以及高可用。TiKV 作为 TiDB 的存储层，为用户写入 TiDB 的数据提供了持久化以及读写服务，同时还存储了 TiDB 的统计信息数据。
+TiKV 是一个分布式事务型键值数据库，提供符合 ACID 的事务 API。通过实现 [Raft 共识算法](https://raft.github.io/raft.pdf)并将共识状态存储在 RocksDB 中，TiKV 保证了多副本之间的数据一致性和高可用性。作为 TiDB 分布式数据库的存储层，TiKV 提供读写服务，并持久化来自应用程序的写入数据。它还存储 TiDB 集群的统计数据。
 
-## 整体架构
+## 架构概述
 
-与传统的整节点备份方式不同，TiKV 参考 Spanner 设计了 multi-raft-group 的副本机制。将数据按照 key 的范围划分成大致相等的切片（下文统称为 Region），每一个切片会有多个副本（通常是 3 个），其中一个副本是 Leader，提供读写服务。TiKV 通过 PD 对这些 Region 以及副本进行调度，以保证数据和读写负载都均匀地分散在各个 TiKV 上，这样的设计保证了整个集群资源的充分利用并且可以随着机器数量的增加水平扩展。
+TiKV 基于 Google Spanner 的设计实现了多 Raft 组副本机制。Region 是键值数据移动的基本单位，指的是 Store 中的一个数据范围。每个 Region 被复制到多个节点。这些多个副本形成一个 Raft 组。Region 的一个副本称为 Peer。通常一个 Region 有 3 个 Peer。其中一个是 Leader，提供读写服务。PD 组件自动平衡所有 Region，以确保读写吞吐量在 TiKV 集群的所有节点之间保持平衡。通过 PD 和精心设计的 Raft 组，TiKV 在水平扩展性方面表现出色，可以轻松扩展到存储超过 100 TB 的数据。
 
 ![TiKV 架构](/media/tikv-arch.png)
 
-### Region 与 RocksDB
+### Region 和 RocksDB
 
-虽然 TiKV 将数据按照范围切割成了多个 Region，但是同一个节点的所有 Region 数据仍然是不加区分地存储于同一个 RocksDB 实例上，而用于 Raft 协议复制所需要的日志则存储于另一个 RocksDB 实例。这样设计的原因是因为随机 I/O 的性能远低于顺序 I/O，所以 TiKV 使用同一个 RocksDB 实例来存储这些数据，以便不同 Region 的写入可以合并在一次 I/O 中。
+每个 Store 内都有一个 RocksDB 数据库，它将数据存储到本地磁盘中。所有 Region 数据都存储在每个 Store 中的同一个 RocksDB 实例中。用于 Raft 共识算法的所有日志都存储在每个 Store 中的另一个 RocksDB 实例中。这是因为顺序 I/O 的性能优于随机 I/O。通过使用不同的 RocksDB 实例存储 Raft 日志和 Region 数据，TiKV 将 Raft 日志和 TiKV Region 的所有数据写入操作合并为一个 I/O 操作，以提高性能。
 
-### Region 与 Raft 协议
+### Region 和 Raft 共识算法
 
-Region 与副本之间通过 Raft 协议来维持数据一致性，任何写请求都只能在 Leader 上写入，并且需要写入多数副本后（默认配置为 3 副本，即所有请求必须至少写入两个副本成功）才会返回客户端写入成功。
+Region 副本之间的数据一致性由 Raft 共识算法保证。只有 Region 的 Leader 才能提供写入服务，并且只有当数据写入到 Region 的大多数副本时，写入操作才会成功。
 
-TiKV 会尽量保持每个 Region 中保存的数据在一个合适的大小，目前默认是 96 MB，这样更有利于 PD 进行调度决策。当某个 Region 的大小超过一定限制（默认是 144 MiB）后，TiKV 会将它分裂为两个或者更多个 Region。同样，当某个 Region 因为大量的删除请求而变得太小时（默认是 20 MiB），TiKV 会将比较小的两个相邻 Region 合并为一个。
+TiKV 尝试为集群中的每个 Region 保持适当的大小。Region 大小目前默认为 96 MiB。这种机制帮助 PD 组件在 TiKV 集群的节点之间平衡 Region。当 Region 的大小超过阈值（默认为 144 MiB）时，TiKV 会将其拆分为两个或多个 Region。当 Region 的大小小于阈值（默认为 20 MiB）时，TiKV 会将两个较小的相邻 Region 合并为一个 Region。
 
-当 PD 需要把某个 Region 的一个副本从一个 TiKV 节点调度到另一个上面时，PD 会先为这个 Raft Group 在目标节点上增加一个 Learner 副本（虽然会复制 Leader 的数据，但是不会计入写请求的多数副本中）。当这个 Learner 副本的进度大致追上 Leader 副本时，Leader 会将它变更为 Follower，之后再移除操作节点的 Follower 副本，这样就完成了 Region 副本的一次调度。
+当 PD 将副本从一个 TiKV 节点移动到另一个节点时，它首先在目标节点上添加一个 Learner 副本，当 Learner 副本中的数据与 Leader 副本中的数据几乎相同时，PD 将其更改为 Follower 副本，并移除源节点上的 Follower 副本。
 
-Leader 副本的调度原理也类似，不过需要在目标节点的 Learner 副本变为 Follower 副本后，再执行一次 Leader Transfer，让该 Follower 主动发起一次选举成为新 Leader，之后新 Leader 负责删除旧 Leader 这个副本。
+将 Leader 副本从一个节点移动到另一个节点的机制类似。不同之处在于，当 Learner 副本成为 Follower 副本后，会有一个"Leader 转移"操作，其中 Follower 副本主动提出选举以选举自己为 Leader。最后，新的 Leader 移除源节点中的旧 Leader 副本。
 
 ## 分布式事务
 
-TiKV 支持分布式事务，用户（或者 TiDB）可以一次性写入多个 key-value 而不必关心这些 key-value 是否处于同一个数据切片 (Region) 上，TiKV 通过两阶段提交保证了这些读写请求的 ACID 约束，详见 [TiDB 乐观事务模型](/optimistic-transaction.md)。
+TiKV 支持分布式事务。用户（或 TiDB）可以写入多个键值对，而不用担心它们是否属于同一个 Region。TiKV 使用两阶段提交来实现 ACID 约束。详情请参见 [TiDB 乐观事务模型](/optimistic-transaction.md)。
 
-## 计算加速
+## TiKV Coprocessor
 
-TiKV 通过协处理器 (Coprocessor) 可以为 TiDB 分担一部分计算：TiDB 会将可以由存储层分担的计算下推。能否下推取决于 TiKV 是否可以支持相关下推。计算单元仍然是以 Region 为单位，即 TiKV 的一个 Coprocessor 计算请求中不会计算超过一个 Region 的数据。
+TiDB 将一些数据计算逻辑下推到 TiKV Coprocessor。TiKV Coprocessor 处理每个 Region 的计算。发送到 TiKV Coprocessor 的每个请求只涉及一个 Region 的数据。

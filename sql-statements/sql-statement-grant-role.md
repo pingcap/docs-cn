@@ -1,11 +1,11 @@
 ---
-title: GRANT <role>
-summary: TiDB 数据库中 GRANT <role> 的使用概况。
+title: GRANT <role> | TiDB SQL 语句参考
+summary: TiDB 数据库中 GRANT <role> 的使用概览。
 ---
 
 # `GRANT <role>`
 
-`GRANT <role>` 语句用于将之前创建的角色授予给现有用户。用户可以通过 `SET ROLE <rolename>` 语句拥有角色权限，或者通过 `SET ROLE ALL` 语句拥有被授予的所有角色。
+将先前创建的角色分配给现有用户。用户随后可以使用语句 `SET ROLE <rolename>` 来获取该角色的权限，或使用 `SET ROLE ALL` 来获取已分配的所有角色的权限。
 
 ## 语法图
 
@@ -22,7 +22,7 @@ UsernameList ::=
 
 ## 示例
 
-以 `root` 用户连接 TiDB：
+以 `root` 用户身份连接到 TiDB：
 
 ```shell
 mysql -h 127.0.0.1 -P 4000 -u root
@@ -44,13 +44,13 @@ GRANT analyticsteam TO jennifer;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-以 `jennifer` 用户连接 TiDB：
+以 `jennifer` 用户身份连接到 TiDB：
 
 ```shell
 mysql -h 127.0.0.1 -P 4000 -u jennifer
 ```
 
-需要注意的是，默认情况下，用户 `jennifer` 需要执行 `SET ROLE analyticsteam` 语句才能使用与 `analyticsteam` 角色相关联的权限：
+注意，默认情况下，`jennifer` 需要执行 `SET ROLE analyticsteam` 才能使用与 `analyticsteam` 角色相关的权限：
 
 ```sql
 SHOW GRANTS;
@@ -86,26 +86,26 @@ SHOW TABLES IN test;
 1 row in set (0.00 sec)
 ```
 
-以 `root` 用户连接 TiDB：
+以 `root` 用户身份连接到 TiDB：
 
 ```shell
 mysql -h 127.0.0.1 -P 4000 -u root
 ```
 
-执行 `SET DEFAULT ROLE` 语句将用户 `jennifer` 与 `analyticsteam` 角色相关联：
+可以使用 `SET DEFAULT ROLE` 语句将角色 `analyticsteam` 关联到 `jennifer`：
 
 ```sql
 SET DEFAULT ROLE analyticsteam TO jennifer;
 Query OK, 0 rows affected (0.02 sec)
 ```
 
-以 `jennifer` 用户连接 TiDB：
+以 `jennifer` 用户身份连接到 TiDB：
 
 ```shell
 mysql -h 127.0.0.1 -P 4000 -u jennifer
 ```
 
-此时 `jennifer` 用户无需执行 `SET ROLE` 语句就能拥有 `analyticsteam` 角色相关联的权限：
+此后，用户 `jennifer` 拥有与角色 `analyticsteam` 相关的权限，且 `jennifer` 不需要执行 `SET ROLE` 语句：
 
 ```sql
 SHOW GRANTS;
@@ -129,7 +129,7 @@ SHOW TABLES IN test;
 
 ## MySQL 兼容性
 
-`GRANT <role>` 语句与 MySQL 8.0 的角色功能完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
+TiDB 中的 `GRANT <role>` 语句与 MySQL 8.0 的角色功能完全兼容。如果发现任何兼容性差异，请[报告问题](https://docs.pingcap.com/tidb/stable/support)。
 
 ## 另请参阅
 
@@ -139,4 +139,9 @@ SHOW TABLES IN test;
 * [`REVOKE <role>`](/sql-statements/sql-statement-revoke-role.md)
 * [`SET ROLE`](/sql-statements/sql-statement-set-role.md)
 * [`SET DEFAULT ROLE`](/sql-statements/sql-statement-set-default-role.md)
+
+<CustomContent platform="tidb">
+
 * [基于角色的访问控制](/role-based-access-control.md)
+
+</CustomContent>

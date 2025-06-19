@@ -1,13 +1,13 @@
 ---
-title: TRACE
-summary: TiDB 数据库中 TRACE 的使用概况。
+title: TRACE | TiDB SQL 语句参考
+summary: TiDB 数据库中 TRACE 的使用概述。
 ---
 
 # TRACE
 
-`TRACE` 语句用于提供查询执行的详细信息，可通过 TiDB 服务器状态端口所公开的图形界面进行查看。
+`TRACE` 语句提供查询执行的详细信息。它旨在通过 TiDB 服务器状态端口暴露的图形界面进行查看。
 
-## 语法图
+## 语法
 
 ```ebnf+diagram
 TraceStmt ::=
@@ -17,11 +17,11 @@ TracableStmt ::=
     ( SelectStmt | DeleteFromStmt | UpdateStmt | InsertIntoStmt | ReplaceIntoStmt | UnionStmt | LoadDataStmt | BeginTransactionStmt | CommitStmt | RollbackStmt | SetStmt )
 ```
 
-| Format | 描述                                |
+| 格式 | 描述 |
 |--------|------------------------------------|
-| `row`  | 以树形格式输出                       |
-| `json` | 以 JSON 格式结构化输出                |
-| `log`  | 基于日志输出                         |
+| row    | 以树形格式输出 |
+| json   | 以 JSON 格式结构化输出 |
+| log    | 基于日志的输出 |
 
 ## 示例
 
@@ -31,7 +31,7 @@ TracableStmt ::=
 TRACE FORMAT='row' SELECT * FROM mysql.user;
 ```
 
-```sql
+```
 +--------------------------------------------+-----------------+------------+
 | operation                                  | startTS         | duration   |
 +--------------------------------------------+-----------------+------------+
@@ -58,7 +58,7 @@ TRACE FORMAT='row' SELECT * FROM mysql.user;
 TRACE FORMAT='json' SELECT * FROM mysql.user;
 ```
 
-可将 JSON 格式的跟踪文件粘贴到跟踪查看器中。查看器可通过 TiDB 状态端口访问：
+JSON 格式的跟踪信息可以粘贴到跟踪查看器中，该查看器可通过 TiDB 状态端口访问：
 
 ![TiDB Trace Viewer-1](/media/trace-paste.png)
 
@@ -70,7 +70,7 @@ TRACE FORMAT='json' SELECT * FROM mysql.user;
 TRACE FORMAT='log' SELECT * FROM mysql.user;
 ```
 
-```sql
+```
 +----------------------------+--------------------------------------------------------+------+------------------------------------+
 | time                       | event                                                  | tags | spanName                           |
 +----------------------------+--------------------------------------------------------+------+------------------------------------+
@@ -94,7 +94,7 @@ TRACE FORMAT='log' SELECT * FROM mysql.user;
 
 ## MySQL 兼容性
 
-`TRACE` 语句是 TiDB 对 MySQL 语法的扩展。
+此语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

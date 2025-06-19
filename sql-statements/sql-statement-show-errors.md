@@ -1,15 +1,15 @@
 ---
-title: SHOW ERRORS
-summary: TiDB 数据库中 SHOW ERRORS 的使用概况。
+title: SHOW ERRORS | TiDB SQL 语句参考
+summary: TiDB 数据库中 SHOW ERRORS 的使用概述。
 ---
 
 # SHOW ERRORS
 
-`SHOW ERRORS` 语句用于显示已执行语句中的错误。一旦先前的语句成功执行，就会清除错误缓冲区，这时 `SHOW ERRORS` 会返回一个空集。
+此语句显示之前执行的语句中的错误。当语句成功执行时，错误缓冲区会被清除。在这种情况下，`SHOW ERRORS` 将返回一个空集。
 
-当前的 `sql_mode` 很大程度决定了哪些语句会产生错误与警告。
+哪些语句生成错误而不是警告的行为很大程度上受当前 `sql_mode` 的影响。
 
-## 语法图
+## 语法概要
 
 ```ebnf+diagram
 ShowErrorsStmt ::=
@@ -22,33 +22,12 @@ ShowLikeOrWhere ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
-select invalid;
-```
-
-```
+mysql> select invalid;
 ERROR 1054 (42S22): Unknown column 'invalid' in 'field list'
-```
-
-{{< copyable "sql" >}}
-
-```sql
-create invalid;
-```
-
-```
+mysql> create invalid;
 ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 14 near "invalid"
-```
-
-{{< copyable "sql" >}}
-
-```sql
-SHOW ERRORS;
-```
-
-```
+mysql> SHOW ERRORS;
 +-------+------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Level | Code | Message                                                                                                                                                   |
 +-------+------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -56,46 +35,24 @@ SHOW ERRORS;
 | Error | 1064 | You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 14 near "invalid"  |
 +-------+------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
 2 rows in set (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-CREATE invalid2;
-```
-
-```
+mysql> CREATE invalid2;
 ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 15 near "invalid2"
-```
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT 1;
-```
-
-```
+mysql> SELECT 1;
 +------+
 | 1    |
 +------+
 |    1 |
 +------+
 1 row in set (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SHOW ERRORS;
-```
-
-```
+mysql> SHOW ERRORS;
 Empty set (0.00 sec)
 ```
 
 ## MySQL 兼容性
 
-`SHOW ERRORS` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
+TiDB 中的 `SHOW ERRORS` 语句与 MySQL 完全兼容。如果发现任何兼容性差异，请[报告 bug](https://docs.pingcap.com/tidb/stable/support)。
 
 ## 另请参阅
 

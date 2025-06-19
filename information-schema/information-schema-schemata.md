@@ -1,18 +1,18 @@
 ---
 title: SCHEMATA
-summary: 了解 information_schema 表 `SCHEMATA`。
+summary: 了解 `SCHEMATA` information_schema 表。
 ---
 
 # SCHEMATA
 
-`SCHEMATA` 表提供了关于数据库的信息。表中的数据与 [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md) 语句的执行结果等价。
+`SCHEMATA` 表提供了数据库的相关信息。该表的数据等同于 [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md) 语句的结果。
 
 ```sql
 USE information_schema;
 desc SCHEMATA;
 ```
 
-```sql
+```
 +----------------------------+--------------+------+------+---------+-------+
 | Field                      | Type         | Null | Key  | Default | Extra |
 +----------------------------+--------------+------+------+---------+-------+
@@ -29,7 +29,7 @@ desc SCHEMATA;
 SELECT * FROM SCHEMATA;
 ```
 
-```sql
+```
 +--------------+--------------------+----------------------------+------------------------+----------+
 | CATALOG_NAME | SCHEMA_NAME        | DEFAULT_CHARACTER_SET_NAME | DEFAULT_COLLATION_NAME | SQL_PATH |
 +--------------+--------------------+----------------------------+------------------------+----------+
@@ -42,10 +42,10 @@ SELECT * FROM SCHEMATA;
 5 rows in set (0.00 sec)
 ```
 
-`SCHEMATA` 表各列字段含义如下：
+`SCHEMATA` 表中的字段说明如下：
 
-* CATALOG_NAME：数据库归属的目录名，该列值永远为 `def`。
-* SCHEMA_NAME：数据库的名字。
-* DEFAULT_CHARACTER_SET_NAME：数据库的默认字符集。
-* DEFAULT_COLLATION_NAME：数据库的默认 collation。
-* SQL_PATH：该项值永远为 `NULL`。
+* `CATALOG_NAME`：数据库所属的目录。
+* `SCHEMA_NAME`：数据库名称。
+* `DEFAULT_CHARACTER_SET_NAME`：数据库的默认字符集。
+* `DEFAULT_COLLATION_NAME`：数据库的默认排序规则。
+* `SQL_PATH`：该项的值始终为 `NULL`。

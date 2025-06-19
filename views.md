@@ -1,23 +1,26 @@
 ---
 title: 视图
-summary: TiDB 支持视图，视图是虚拟表，结构由创建时的 SELECT 语句定义。使用视图可保证数据安全，简化复杂查询。查询视图类似查询表，TiDB 执行查询时会展开视图。可通过 SHOW CREATE TABLE 或 SHOW CREATE VIEW 查看视图创建语句及相关信息。也可查询 INFORMATION_SCHEMA.VIEWS 表或访问 HTTP API 获取视图元信息。视图有局限性，不支持物化视图，且为只读视图，不支持写入操作。已创建的视图仅支持 DROP 操作。
+summary: 了解如何在 TiDB 中使用视图。
 ---
 
 # 视图
 
-TiDB 支持视图，视图是一张虚拟表，该虚拟表的结构由创建视图时的 `SELECT` 语句定义。使用视图一方面可以对用户只暴露安全的字段及数据，进而保证底层表的敏感字段及数据的安全。另一方面，将频繁出现的复杂查询定义为视图，可以使复杂查询更加简单便捷。
+TiDB 支持视图。视图作为一个虚拟表，其架构由创建视图的 `SELECT` 语句定义。使用视图具有以下优点：
+
+- 仅向用户公开安全的字段和数据，确保底层表中存储的敏感字段和数据的安全性。
+- 将经常出现的复杂查询定义为视图，使复杂查询更简单和方便。
 
 ## 查询视图
 
-查询一个视图和查询一张普通表类似。但是 TiDB 在真正执行查询视图时，会将视图展开成创建视图时定义的 `SELECT` 语句，进而执行展开后的查询语句。
+查询视图与查询普通表类似。但是，当 TiDB 查询视图时，它实际上是在查询与该视图关联的 `SELECT` 语句。
 
-## 查看视图的相关信息
+## 显示元数据
 
-通过以下方式，可以查看 view 相关的信息。
+要获取视图的元数据，可以选择以下任一方法。
 
 ### 使用 `SHOW CREATE TABLE view_name` 或 `SHOW CREATE VIEW view_name` 语句
 
-示例：
+使用示例：
 
 {{< copyable "sql" >}}
 
@@ -25,7 +28,7 @@ TiDB 支持视图，视图是一张虚拟表，该虚拟表的结构由创建视
 show create view v;
 ```
 
-使用该语句可以查看 view 对应的创建语句，及创建 view 时对应的 `character_set_client` 及 `collation_connection` 系统变量值。
+此语句显示与此视图对应的 `CREATE VIEW` 语句，以及创建视图时 `character_set_client` 和 `collation_connection` 系统变量的值。
 
 ```sql
 +------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+
@@ -38,7 +41,7 @@ show create view v;
 
 ### 查询 `INFORMATION_SCHEMA.VIEWS` 表
 
-示例：
+使用示例：
 
 {{< copyable "sql" >}}
 
@@ -46,7 +49,7 @@ show create view v;
 select * from information_schema.views;
 ```
 
-通过查询该表可以查看 view 的相关元信息，如 `TABLE_CATALOG`、`TABLE_SCHEMA`、`TABLE_NAME`、`VIEW_DEFINITION`、`CHECK_OPTION`、`IS_UPDATABLE`、`DEFINER`、`SECURITY_TYPE`、`CHARACTER_SET_CLIENT`、`COLLATION_CONNECTION` 等。
+通过查询此表，你可以查看视图的相关元信息，如 `TABLE_CATALOG`、`TABLE_SCHEMA`、`TABLE_NAME`、`VIEW_DEFINITION`、`CHECK_OPTION`、`IS_UPDATABLE`、`DEFINER`、`SECURITY_TYPE`、`CHARACTER_SET_CLIENT` 和 `COLLATION_CONNECTION`。
 
 ```sql
 +---------------+--------------+------------+------------------------------------------------------------------------+--------------+--------------+----------------+---------------+----------------------+----------------------+
@@ -57,17 +60,17 @@ select * from information_schema.views;
 1 row in set (0.00 sec)
 ```
 
-### 查询 HTTP API
+### 使用 HTTP API
 
-示例：
+使用示例：
 
 {{< copyable "" >}}
 
-```
+```sql
 curl http://127.0.0.1:10080/schema/test/v
 ```
 
-通过访问 `http://{TiDBIP}:10080/schema/{db}/{view}` 可以得到对应 view 的所有元信息。
+通过访问 `http://{TiDBIP}:10080/schema/{db}/{view}`，你可以获取视图的所有元数据。
 
 ```
 {
@@ -149,7 +152,7 @@ curl http://127.0.0.1:10080/schema/test/v
 
 ## 示例
 
-以下例子将创建一个视图，并在该视图上进行查询，最后删除该视图。
+以下示例创建一个视图，查询此视图，并删除此视图：
 
 {{< copyable "sql" >}}
 
@@ -230,15 +233,15 @@ drop view v;
 Query OK, 0 rows affected (0.02 sec)
 ```
 
-## 局限性
+## 限制
 
-目前 TiDB 中的视图有以下局限性：
+目前，TiDB 中的视图有以下限制：
 
-- 不支持物化视图。
-- TiDB 中视图为只读视图，不支持对视图进行 `UPDATE`、`INSERT`、`DELETE`、`TRUNCATE` 等写入操作。
-- 对已创建的视图仅支持 `DROP` 的 DDL 操作，即 `DROP [VIEW | TABLE]`。
+* 尚不支持物化视图。
+* TiDB 中的视图是只读的，不支持 `UPDATE`、`INSERT`、`DELETE` 和 `TRUNCATE` 等写操作。
+* 对于已创建的视图，唯一支持的 DDL 操作是 `DROP [VIEW | TABLE]`
 
-## 扩展阅读
+## 另请参阅
 
-- [创建视图](/sql-statements/sql-statement-create-view.md)
-- [删除视图](/sql-statements/sql-statement-drop-view.md)
+- [CREATE VIEW](/sql-statements/sql-statement-create-view.md)
+- [DROP VIEW](/sql-statements/sql-statement-drop-view.md)

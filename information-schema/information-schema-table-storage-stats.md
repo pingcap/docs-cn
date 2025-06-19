@@ -1,11 +1,11 @@
 ---
 title: TABLE_STORAGE_STATS
-summary: 了解 INFORMATION_SCHEMA 表 `TABLE_STORAGE_STATS`。
+summary: 了解 `TABLE_STORAGE_STATS` INFORMATION_SCHEMA 表。
 ---
 
 # TABLE_STORAGE_STATS
 
-`TABLE_STORAGE_STATS` 表提供有关由存储引擎 (TiKV) 存储的表大小的信息。
+`TABLE_STORAGE_STATS` 表提供了存储引擎（TiKV）中表大小的相关信息。
 
 ```sql
 USE INFORMATION_SCHEMA;
@@ -51,13 +51,13 @@ EMPTY_REGION_COUNT: 1
 1 row in set (0.00 sec)
 ```
 
-`TABLE_STORAGE_STATS` 表各列字段含义如下：
+`TABLE_STORAGE_STATS` 表中的字段说明如下：
 
-* `TABLE_SCHEMA`：表所在 schema 名字
-* `TABLE_NAME`：表名
-* `TABLE_ID`：表 ID
-* `PEER_COUNT`：副本个数
-* `REGION_COUNT`：表所在的 Region 个数
-* `EMPTY_REGION_COUNT`：没有该表数据的 Region 个数
-* `TABLE_SIZE`：数据量大小，单位 MiB
-* `TABLE_KEYS`：表记录个数
+* `TABLE_SCHEMA`：表所属的 schema 名称。
+* `TABLE_NAME`：表名。
+* `TABLE_ID`：表的 ID。
+* `PEER_COUNT`：表的副本数量。
+* `REGION_COUNT`：Region 的数量。
+* `EMPTY_REGION_COUNT`：此表中不包含数据的 Region 数量。
+* `TABLE_SIZE`：表的总大小，单位为 MiB。
+* `TABLE_KEYS`：表中的总记录数。

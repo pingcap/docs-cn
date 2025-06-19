@@ -1,16 +1,16 @@
 ---
 title: SHOW IMPORT
-summary: TiDB 数据库中 SHOW IMPORT 的使用概况。
+summary: TiDB 中 SHOW IMPORT 的使用概览。
 ---
 
 # SHOW IMPORT
 
-`SHOW IMPORT` 语句用于显示 TiDB 中已经创建的 IMPORT 任务。该语句只能显示由当前用户创建的任务。
+`SHOW IMPORT` 语句用于显示在 TiDB 中创建的导入作业。此语句只能显示当前用户创建的作业。
 
 ## 所需权限
 
-- 对于 `SHOW IMPORT JOBS` 语句，如果用户有 `SUPER` 权限，则可以看到所有 job，否则只能看到当前用户创建的 job。
-- 对于 `SHOW IMPORT JOB <job-id>`，只有 job 创建者或者拥有 `SUPER` 权限的用户才可以查看。
+- `SHOW IMPORT JOBS`：如果用户具有 `SUPER` 权限，此语句显示 TiDB 中的所有导入作业。否则，此语句仅显示当前用户创建的作业。
+- `SHOW IMPORT JOB <job-id>`：只有导入作业的创建者或具有 `SUPER` 权限的用户可以使用此语句查看特定作业。
 
 ## 语法图
 
@@ -22,22 +22,22 @@ ShowImportJobStmt ::=
     'SHOW' 'IMPORT' 'JOB' JobID
 ```
 
-`SHOW IMPORT` 语句输出结果的字段含义如下:
+`SHOW IMPORT` 语句的输出字段说明如下：
 
-| 列名              | 说明                    |
+| 列名             | 描述                |
 |------------------|-------------------------|
-| Job_ID           | 任务 ID                  |
-| Data_Source      | 数据源信息                |
-| Target_Table     | 目标表                    |
-| Phase        | 表示任务当前所处的阶段，导入过程分为 `importing`、`validating`、`add-index` 等阶段 |
-| Status       | 表示当前任务的状态。有以下几种状态：`pending` 表示任务已创建但还未开始运行；`running` 表示运行中；`canceled` 表示已经取消的任务；`failed` 表示任务失败并退出；`finished` 表示任务已完成。|
-| Source_File_Size | 源文件大小 |
-| Imported_Rows | 已经读到并写入目标表的数据行数 |
-| Result_Message   | 如果导入失败，则返回错误信息，否则为空。|
-| Create_Time      | 任务创建时间              |
-| Start_Time       | 任务启动时间              |
-| End_Time         | 任务结束时间              |
-| Created_By       | 创建该任务的数据库用户名        |
+| Job_ID           | 任务的 ID                  |
+| Data_Source      | 数据源信息                  |
+| Target_Table     | 目标表的名称                     |
+| Phase            | 作业的当前阶段，包括 `importing`、`validating` 和 `add-index` |
+| Status           | 作业的当前状态，包括 `pending`（表示已创建但尚未开始）、`running`、`canceled`、`failed` 和 `finished` |
+| Source_File_Size | 源文件的大小  |
+| Imported_Rows    | 已读取并写入目标表的数据行数  |
+| Result_Message   | 如果导入失败，此字段返回错误消息。否则为空。|
+| Create_Time      | 任务创建的时间                 |
+| Start_Time       | 任务开始的时间                     |
+| End_Time         | 任务结束的时间            |
+| Created_By       | 创建任务的数据库用户名         |
 
 ## 示例
 

@@ -1,11 +1,11 @@
 ---
 title: TIFLASH_REPLICA
-summary: 了解 INFORMATION_SCHEMA 表 `TIFLASH_REPLICA`。
+summary: 了解 `TIFLASH_REPLICA` INFORMATION_SCHEMA 表。
 ---
 
 # TIFLASH_REPLICA
 
-`TIFLASH_REPLICA` 表提供了有关可用的 TiFlash 副本的信息。
+`TIFLASH_REPLICA` 表提供了可用的 TiFlash 副本信息。
 
 ```sql
 USE INFORMATION_SCHEMA;
@@ -29,12 +29,12 @@ DESC TIFLASH_REPLICA;
 7 rows in set (0.01 sec)
 ```
 
-`TIFLASH_REPLICA` 表中各列的字段含义如下：
+`TIFLASH_REPLICA` 表中各字段的描述如下：
 
-- `TABLE_SCHEMA`：表所属的数据库的名称。
+- `TABLE_SCHEMA`：表所属的数据库名称。
 - `TABLE_NAME`：表的名称。
-- `TABLE_ID`：表的内部 ID，该 ID 在一个 TiDB 集群内部唯一。
-- `REPLICA_COUNT`：TiFlash 副本数。
-- `LOCATION_LABELS`：设置 TiFlash 副本时设置的 LocationLabelList。
-- `AVAILABLE`：表的 TiFlash 副本是否可用。`1` 代表可用，TiDB 优化器将依据查询代价智能选择下推查询到 TiKV 或 TiFlash；`0` 代表不可用，TiDB 将不会下推查询到 TiFlash。副本状态变为可用之后就不再改变。
-- `PROGRESS`：TiFlash 副本同步进度，范围是 `[0, 1]`，精确到小数点后两位，刷新的精度为分钟级。当 `AVAILABLE` 字段为 1 时，如果 `PROGRESS` 小于 1，表示 TiFlash 副本落后 TiKV 较多，下推到 TiFlash 的查询很可能会因为等待数据同步超时而失败。
+- `TABLE_ID`：表的内部 ID，在 TiDB 集群中是唯一的。
+- `REPLICA_COUNT`：TiFlash 副本的数量。
+- `LOCATION_LABELS`：创建 TiFlash 副本时设置的 LocationLabelList。
+- `AVAILABLE`：表示表的 TiFlash 副本是否可用。当值为 `1`（可用）时，TiDB 优化器可以根据查询成本智能地选择将查询下推到 TiKV 或 TiFlash。当值为 `0`（不可用）时，TiDB 不会将查询下推到 TiFlash。一旦该字段的值变为 `1`（可用），就不会再改变。
+- `PROGRESS`：TiFlash 副本的复制进度，精确到小数点后两位，以分钟为单位。该字段的范围是 `[0, 1]`。当 `AVAILABLE` 字段为 `1` 且 `PROGRESS` 小于 1 时，表示 TiFlash 副本远落后于 TiKV，下推到 TiFlash 的查询可能会因等待数据复制超时而失败。

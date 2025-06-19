@@ -1,15 +1,23 @@
 ---
-title: SHOW [BACKUPS|RESTORES]
-summary: TiDB 数据库中 SHOW [BACKUPS|RESTORES] 的使用概况。
+title: SHOW [BACKUPS|RESTORES] | TiDB SQL 语句参考
+summary: TiDB 数据库中 SHOW [BACKUPS|RESTORES] 的使用概览。
 ---
 
 # SHOW [BACKUPS|RESTORES]
 
-`SHOW [BACKUPS|RESTORES]` 语句会列出所有队列中或正在执行的 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 任务。
+这些语句显示在 TiDB 实例上执行的所有排队、正在运行和最近完成的 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 任务的列表。
 
-查询 `BACKUP` 任务时，使用 `SHOW BACKUPS` 语句。查询 `RESTORE` 任务时，使用 `SHOW RESTORES` 语句。执行两个语句均需要 `SUPER` 权限。
+这两个语句都需要 `SUPER` 权限才能运行。
 
-## 语法图
+使用 `SHOW BACKUPS` 查询 `BACKUP` 任务，使用 `SHOW RESTORES` 查询 `RESTORE` 任务。
+
+> **注意：**
+>
+> 此功能在 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 集群上不可用。
+
+使用 `br` 命令行工具启动的备份和恢复不会显示在结果中。
+
+## 语法
 
 ```ebnf+diagram
 ShowBRIEStmt ::=
@@ -22,15 +30,15 @@ ShowLikeOrWhere ::=
 
 ## 示例
 
-在一个连接中，执行以下命令备份数据库：
+在一个连接中执行以下语句：
 
 {{< copyable "sql" >}}
 
 ```sql
-BACKUP DATABASE `test` TO 's3://example-bucket/backup-01/';
+BACKUP DATABASE `test` TO 's3://example-bucket/backup-01';
 ```
 
-在备份完成之前，在新的连接中执行 `SHOW BACKUPS`：
+在备份完成之前，在新连接中运行 `SHOW BACKUPS`：
 
 {{< copyable "sql" >}}
 
@@ -39,27 +47,36 @@ SHOW BACKUPS;
 ```
 
 ```sql
-+--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+
-| Destination                    | State   | Progress | Queue_Time          | Execution_Time      | Finish_Time | Connection |
-+--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+
-| s3://example-bucket/backup-01/ | Backup  | 98.38    | 2020-04-12 23:09:03 | 2020-04-12 23:09:25 |        NULL |          4 |
-+--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+
++--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+---------+
+| Destination                    | State   | Progress | Queue_time          | Execution_time      | Finish_time | Connection | Message |
++--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+---------+
+| s3://example-bucket/backup-01/ | Backup  | 98.38    | 2020-04-12 23:09:03 | 2020-04-12 23:09:25 |        NULL |          4 | NULL    |
++--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+---------+
 1 row in set (0.00 sec)
 ```
 
-输出结果的第一行描述如下：
+上述结果的第一行描述如下：
 
 | 列名 | 描述 |
 | :-------- | :--------- |
-| `Destination` | 目标存储的 URL（为避免泄露密钥，所有参数均不显示） |
+| `Destination` | 目标 URL（已去除所有参数以避免泄露密钥） |
 | `State` | 任务状态 |
-| `Progress` | 当前状态的进度（百分比） |
-| `Queue Time` | 任务开始排队的时间 |
-| `Execution Time` | 任务开始执行的时间；对于队列中任务，该值为 `0000-00-00 00:00:00` |
-| `Finish_Time` | （暂不适用） |
-| `Connection` | 运行任务的连接 ID |
+| `Progress` | 当前状态下的估计进度百分比 |
+| `Queue_time` | 任务排队的时间 |
+| `Execution_time` | 任务开始执行的时间；对于排队中的任务，值为 `0000-00-00 00:00:00` |
+| `Finish_time` | 任务完成的时间戳；对于排队中和正在运行的任务，值为 `0000-00-00 00:00:00` |
+| `Connection` | 运行此任务的连接 ID |
+| `Message` | 包含详细信息的消息 |
 
-连接 ID 可用于在 [`KILL TIDB QUERY`](/sql-statements/sql-statement-kill.md) 语句中取消备份/恢复任务：
+可能的状态有：
+
+| 状态 | 描述 |
+| :-----|:------------|
+| Backup | 正在进行备份 |
+| Wait | 等待执行 |
+| Checksum | 正在运行校验和操作 |
+
+连接 ID 可以通过 [`KILL TIDB QUERY`](/sql-statements/sql-statement-kill.md) 语句用来取消备份/恢复任务。
 
 {{< copyable "sql" >}}
 
@@ -73,7 +90,7 @@ Query OK, 0 rows affected (0.00 sec)
 
 ### 过滤
 
-在 `LIKE` 子句中使用通配符，可以按目标存储 URL 筛选任务：
+使用 `LIKE` 子句通过将目标 URL 与通配符表达式匹配来过滤任务。
 
 {{< copyable "sql" >}}
 
@@ -81,7 +98,7 @@ Query OK, 0 rows affected (0.00 sec)
 SHOW BACKUPS LIKE 's3://%';
 ```
 
-使用 `WHERE` 子句，可以按列筛选任务：
+使用 `WHERE` 子句按列进行过滤。
 
 {{< copyable "sql" >}}
 
@@ -91,7 +108,7 @@ SHOW BACKUPS WHERE `Progress` < 25.0;
 
 ## MySQL 兼容性
 
-该语句是 TiDB 对 MySQL 语法的扩展。
+此语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

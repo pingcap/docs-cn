@@ -1,46 +1,44 @@
 ---
-title: GROUP BY 聚合函数
-summary: TiDB支持的聚合函数包括 COUNT、COUNT(DISTINCT)、SUM、AVG、MAX、MIN、GROUP_CONCAT、VARIANCE、VAR_POP、STD、STDDEV、VAR_SAMP、STDDEV_SAMP 和 JSON_OBJECTAGG。除了 GROUP_CONCAT 和 APPROX_PERCENTILE 外，这些聚合函数可以作为窗口函数使用。另外，TiDB 的 GROUP BY 子句支持 WITH ROLLUP 修饰符，还支持 SQL 模式 ONLY_FULL_GROUP_BY。与 MySQL 的区别在于 TiDB 对标准 SQL 有一些扩展，允许在 HAVING 子句中使用别名和非列表达式。
+title: 聚合（GROUP BY）函数
+summary: 了解 TiDB 支持的聚合函数。
 ---
 
-# GROUP BY 聚合函数
+# 聚合（GROUP BY）函数
 
-本文将详细介绍 TiDB 支持的聚合函数。
+本文档详细介绍了 TiDB 支持的聚合函数。
 
-## TiDB 支持的聚合函数
+## 支持的聚合函数
 
-TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
+本节介绍 TiDB 支持的 MySQL `GROUP BY` 聚合函数。
 
-| 函数名    | 功能描述              |
-|:---------|:--------------------|
-| [`COUNT()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count)                   | 返回检索到的行的数目|
-| [`COUNT(DISTINCT)`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count-distinct)  | 返回不同值的数目 |
-| [`SUM()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_sum)                       | 返回和         |
-| [`AVG()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_avg)                       | 返回平均值     |
-| [`MAX()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_max)                       | 返回最大值     |
-| [`MIN()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_min)                       | 返回最小值     |
-| [`GROUP_CONCAT()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_group-concat)     | 返回连接的字符串  |
-| [`VARIANCE()`，`VAR_POP()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_var-pop) | 返回总体标准方差 |
-| [`STD()`，`STDDEV()`，`STDDEV_POP`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_std) | 返回总体标准差 |
-| [`VAR_SAMP()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_var-samp) | 返回采样方差 |
-| [`STDDEV_SAMP()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_stddev-samp) | 返回采样标准方差 |
-| [`JSON_ARRAYAGG()`](/functions-and-operators/json-functions/json-functions-aggregate.md#json_arrayagg)    | 将结果集返回为单个 JSON 数组    |
-| [`JSON_OBJECTAGG()`](/functions-and-operators/json-functions/json-functions-aggregate.md#json_objectagg) | 将结果集返回为单个含 (key, value) 键值对的 JSON 对象 |
+| 名称                                                                                                           | 描述                                       |
+|:---------------------------------------------------------------------------------------------------------------|:--------------------------------------------------|
+| [`COUNT()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count)                   | 返回返回行数的计数     |
+| [`COUNT(DISTINCT)`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count-distinct)  | 返回不同值的计数  |
+| [`SUM()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_sum)                       | 返回总和                                    |
+| [`AVG()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_avg)                       | 返回参数的平均值          |
+| [`MAX()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_max)                       | 返回最大值                          |
+| [`MIN()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_min)                       | 返回最小值                          |
+| [`GROUP_CONCAT()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_group-concat)     | 返回连接后的字符串                      |
+| [`VARIANCE()`, `VAR_POP()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_var-pop) | 返回总体标准方差           |
+| [`STD()`, `STDDEV()`, `STDDEV_POP`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_std) | 返回总体标准差      |
+| [`VAR_SAMP()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_var-samp)             | 返回样本方差                        |
+| [`STDDEV_SAMP()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_stddev-samp)       | 返回样本标准差              |
+| [`JSON_ARRAYAGG()`](/functions-and-operators/json-functions/json-functions-aggregate.md#json_arrayagg)         | 将结果集作为单个 JSON 数组返回      |
+| [`JSON_OBJECTAGG()`](/functions-and-operators/json-functions/json-functions-aggregate.md#json_objectagg)       | 将结果集作为包含键值对的单个 JSON 对象返回 |
 
-> **注意：**
->
-> - 除非另有说明，否则聚合函数默认忽略 `NULL` 值。
-> - 如果在不包含 `GROUP BY` 子句的语句中使用聚合函数，则相当于对所有行进行分组。
+- 除非另有说明，分组函数会忽略 `NULL` 值。
+- 如果在不包含 `GROUP BY` 子句的语句中使用分组函数，则等同于对所有行进行分组。
 
-另外，TiDB 还支持以下聚合函数：
+此外，TiDB 还提供以下聚合函数：
 
 + `APPROX_PERCENTILE(expr, constant_integer_expr)`
 
-    该函数用于计算 `expr` 值的百分位数。参数 `constant_integer_expr` 是一个取值为区间 `[1,100]` 内整数的常量表达式，表示百分数。一个百分位数 P<sub>k</sub>（`k`为百分数）表示数据集中至少有 `k%` 的数据小于等于 P<sub>k</sub>。
+    此函数返回 `expr` 的百分位数。`constant_integer_expr` 参数表示百分比值，是范围在 `[1,100]` 内的常量整数。百分位数 P<sub>k</sub>（`k` 表示百分比）表示数据集中至少有 `k%` 的值小于或等于 P<sub>k</sub>。
 
-    该函数中，表达式的返回结果必须为[数值类型](/data-type-numeric.md)或[日期与时间类型](/data-type-date-and-time.md)。函数不支持计算其他类型的返回结果，并直接返回 `NULL`。
+    此函数仅支持 [数值类型](/data-type-numeric.md) 和 [日期时间类型](/data-type-date-and-time.md) 作为 `expr` 的返回类型。对于其他返回类型，`APPROX_PERCENTILE` 仅返回 `NULL`。
 
-    以下是一个计算第 50 百分位数的例子：
+    以下示例展示如何计算 `INT` 列的第五十百分位数：
 
     ```sql
     DROP TABLE IF EXISTS t;
@@ -63,9 +61,9 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
 
 + `APPROX_COUNT_DISTINCT(expr, [expr...])`
 
-    该函数的功能与 `COUNT(DISTINCT)` 相似，用于统计不同值的数量，但返回的是一个近似值。它采用 `BJKST` 算法，在处理具有幂律分布特征的大规模数据集时，可以显著降低内存消耗。此外，对于低基数 (low cardinality) 的数据，该函数的结果准确性较高，同时对 CPU 的使用效率也较优。
+    此函数类似于 `COUNT(DISTINCT)`，用于计算不同值的数量，但返回的是近似结果。它使用 `BJKST` 算法，在处理具有幂律分布的大型数据集时显著减少内存消耗。此外，对于低基数数据，该函数在保持高效 CPU 利用率的同时提供高精度。
 
-    以下是一个使用该函数的示例：
+    以下示例展示如何使用此函数：
 
     ```sql
     DROP TABLE IF EXISTS t;
@@ -87,27 +85,22 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
     2 rows in set (0.00 sec)
     ```
 
-上述聚合函数除 `GROUP_CONCAT()`、 `APPROX_PERCENTILE()` 和 `APPROX_COUNT_DISTINCT` 以外，均可作为[窗口函数](/functions-and-operators/window-functions.md)使用。
+除了 `GROUP_CONCAT()`、`APPROX_PERCENTILE()` 和 `APPROX_COUNT_DISTINCT` 函数外，所有上述函数都可以作为[窗口函数](/functions-and-operators/window-functions.md)使用。
 
 ## GROUP BY 修饰符
 
-自 v7.4.0 起，TiDB 的 `GROUP BY` 子句支持 `WITH ROLLUP` 修饰符。详情请参阅 [GROUP BY 修饰符](/functions-and-operators/group-by-modifier.md)。
+从 v7.4.0 开始，TiDB 的 `GROUP BY` 子句支持 `WITH ROLLUP` 修饰符。更多信息，请参见 [GROUP BY 修饰符](/functions-and-operators/group-by-modifier.md)。
 
-## 对 SQL 模式的支持
+## SQL 模式支持
 
-TiDB 支持 SQL 模式 `ONLY_FULL_GROUP_BY`，当启用该模式时，TiDB 拒绝不明确的非聚合列的查询。例如，以下查询在启用 `ONLY_FULL_GROUP_BY` 时是不合规的，因为 `SELECT` 列表中的非聚合列 "b" 在 `GROUP BY` 语句中不显示：
+TiDB 支持 SQL 模式 `ONLY_FULL_GROUP_BY`，启用时 TiDB 将拒绝包含不明确非聚合列的查询。例如，当启用 `ONLY_FULL_GROUP_BY` 时，以下查询是非法的，因为 `SELECT` 列表中的非聚合列 "b" 未出现在 `GROUP BY` 语句中：
 
 ```sql
 drop table if exists t;
 create table t(a bigint, b bigint, c bigint);
 insert into t values(1, 2, 3), (2, 2, 3), (3, 2, 3);
-```
 
-```sql
-select a, b, sum(c) from t group by a;
-```
-
-```
+mysql> select a, b, sum(c) from t group by a;
 +------+------+--------+
 | a    | b    | sum(c) |
 +------+------+--------+
@@ -116,29 +109,19 @@ select a, b, sum(c) from t group by a;
 |    3 |    2 |      3 |
 +------+------+--------+
 3 rows in set (0.01 sec)
-```
 
-```sql
-set sql_mode = 'ONLY_FULL_GROUP_BY';
-```
-
-```
+mysql> set sql_mode = 'ONLY_FULL_GROUP_BY';
 Query OK, 0 rows affected (0.00 sec)
-```
 
-```sql
-select a, b, sum(c) from t group by a;
-```
-
-```
+mysql> select a, b, sum(c) from t group by a;
 ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'b' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
 ```
 
-目前，TiDB 默认开启 SQL 模式 [`ONLY_FULL_GROUP_BY`](/mysql-compatibility.md#sql-模式)。
+TiDB 目前默认启用 [`ONLY_FULL_GROUP_BY`](/mysql-compatibility.md#default-differences) 模式。
 
-### 与 MySQL 的区别
+### 与 MySQL 的差异
 
-TiDB 目前实现的 `ONLY_FULL_GROUP_BY` 没有 MySQL 5.7 严格。例如，假设我们执行以下查询，希望结果按 "c" 排序：
+当前 `ONLY_FULL_GROUP_BY` 的实现比 MySQL 5.7 中的实现要宽松。例如，假设我们执行以下查询，期望结果按 "c" 排序：
 
 ```sql
 drop table if exists t;
@@ -147,16 +130,16 @@ insert into t values(1, 2, 1), (1, 2, 2), (1, 3, 1), (1, 3, 2);
 select distinct a, b from t order by c;
 ```
 
-要对结果进行排序，必须先清除重复。但选择保留哪一行会影响 `c` 的保留值，也会影响排序，并使其具有任意性。
+要对结果进行排序，必须先消除重复项。但是，我们应该保留哪一行？这个选择会影响保留的 "c" 值，进而影响排序并使其变得任意。
 
-在 MySQL 中，`ORDER BY` 表达式需至少满足以下条件之一，否则 `DISTINCT` 和 `ORDER BY` 查询将因不合规而被拒绝：
+在 MySQL 中，如果任何 `ORDER BY` 表达式不满足以下条件之一，则包含 `DISTINCT` 和 `ORDER BY` 的查询将被拒绝为无效：
 
-- 表达式等同于 `SELECT` 列表中的一个。
-- 表达式引用并属于查询选择表的所有列都是 `SELECT` 列表的元素。
+- 该表达式等于 `SELECT` 列表中的一个表达式
+- 表达式引用的所有列都属于查询的选定表，并且是 `SELECT` 列表的元素
 
-但是在 TiDB 中，上述查询是合规的，详情参阅 [#4254](https://github.com/pingcap/tidb/issues/4254)。
+但在 TiDB 中，上述查询是合法的，更多信息请参见 [#4254](https://github.com/pingcap/tidb/issues/4254)。
 
-TiDB 中另一个标准 SQL 的扩展允许 `HAVING` 子句中的引用使用 `SELECT` 列表中的别名表达式。例如：以下查询返回在 `orders` 中只出现一次的 `name` 值
+TiDB 对标准 SQL 的另一个扩展是允许在 `HAVING` 子句中引用 `SELECT` 列表中的别名表达式。例如，以下查询返回表 "orders" 中只出现一次的 "name" 值：
 
 ```sql
 select name, count(name) from orders
@@ -164,7 +147,7 @@ group by name
 having count(name) = 1;
 ```
 
-这个 TiDB 扩展允许在聚合列的 `HAVING` 子句中使用别名：
+TiDB 扩展允许在 `HAVING` 子句中使用聚合列的别名：
 
 ```sql
 select name, count(name) as c from orders
@@ -172,7 +155,7 @@ group by name
 having c = 1;
 ```
 
-标准 SQL 只支持 `GROUP BY` 子句中的列表达式，以下语句不合规，因为 `FLOOR(value/100)` 是一个非列表达式：
+标准 SQL 仅允许在 `GROUP BY` 子句中使用列表达式，因此像这样的语句是无效的，因为 "FLOOR(value/100)" 是非列表达式：
 
 ```sql
 select id, floor(value/100)
@@ -180,9 +163,9 @@ from tbl_name
 group by id, floor(value/100);
 ```
 
-TiDB 对标准 SQL 的扩展支持 `GROUP BY` 子句中非列表达式，认为上述语句合规。
+TiDB 扩展了标准 SQL，允许在 `GROUP BY` 子句中使用非列表达式，并认为上述语句有效。
 
-标准 SQL 也不支持 `GROUP BY` 子句中使用别名。TiDB 对标准 SQL 的扩展支持使用别名，查询的另一种写法如下：
+标准 SQL 也不允许在 `GROUP BY` 子句中使用别名。TiDB 扩展了标准 SQL 以允许使用别名，因此可以这样编写查询：
 
 ```sql
 select id, floor(value/100) as val
@@ -192,4 +175,4 @@ group by id, val;
 
 ## 相关系统变量
 
-[`group_concat_max_len`](/system-variables.md#group_concat_max_len) 变量设置 `GROUP_CONCAT()` 函数缓冲区的最大长度。
+[`group_concat_max_len`](/system-variables.md#group_concat_max_len) 变量设置 `GROUP_CONCAT()` 函数的最大项目数。

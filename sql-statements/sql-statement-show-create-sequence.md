@@ -1,13 +1,13 @@
 ---
 title: SHOW CREATE SEQUENCE
-summary: TiDB 数据库中 SHOW CREATE SEQUENCE 的使用概况。
+summary: TiDB 数据库中 SHOW CREATE SEQUENCE 的使用概述。
 ---
 
 # SHOW CREATE SEQUENCE
 
-`SHOW CREATE SEQUENCE` 语句用于查看一个序列的详细信息，类似于 `SHOW CREATE TABLE` 语句。
+`SHOW CREATE SEQUENCE` 显示序列的详细信息，类似于 `SHOW CREATE TABLE`。
 
-## 语法图
+## 语法
 
 ```ebnf+diagram
 ShowCreateSequenceStmt ::=
@@ -39,7 +39,7 @@ SHOW CREATE SEQUENCE seq;
 
 ## MySQL 兼容性
 
-该语句是 TiDB 的扩展，序列的实现借鉴自 MariaDB。
+此语句是 TiDB 扩展语法。其实现参考了 MariaDB 中可用的序列功能。
 
 ## 另请参阅
 

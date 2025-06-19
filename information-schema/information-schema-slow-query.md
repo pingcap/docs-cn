@@ -1,20 +1,40 @@
 ---
 title: SLOW_QUERY
-summary: 了解 INFORMATION_SCHEMA 表 `SLOW_QUERY`。
+summary: 了解 `SLOW_QUERY` INFORMATION_SCHEMA 表。
 ---
 
 # SLOW_QUERY
 
-`SLOW_QUERY` 表中提供了当前节点的慢查询相关的信息，其内容通过解析当前节点的 TiDB [慢查询日志](/tidb-configuration-file.md#slow-query-file)而来，列名和慢日志中的字段名是一一对应。关于如何使用该表调查和改善慢查询，请参考[慢查询日志文档](/identify-slow-queries.md)。
+<CustomContent platform="tidb">
+
+`SLOW_QUERY` 表提供当前节点的慢查询信息，这些信息是 TiDB [慢日志文件](/tidb-configuration-file.md#slow-query-file)的解析结果。表中的列名与慢日志中的字段名相对应。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+`SLOW_QUERY` 表提供当前节点的慢查询信息，这些信息是 TiDB [慢日志文件](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#slow-query-file)的解析结果。表中的列名与慢日志中的字段名相对应。
+
+</CustomContent>
+
+> **注意：**
+>
+> 此表在 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 集群中不可用。
+
+<CustomContent platform="tidb">
+
+关于如何使用此表来识别有问题的语句并改进查询性能，请参见[慢查询日志文档](/identify-slow-queries.md)。
+
+</CustomContent>
 
 ```sql
 USE INFORMATION_SCHEMA;
-DESC slow_query;
+DESC SLOW_QUERY;
 ```
 
-输出结果示例如下：
+输出结果如下：
 
-```sql
+```
 +-------------------------------+---------------------+------+------+---------+-------+
 | Field                         | Type                | Null | Key  | Default | Extra |
 +-------------------------------+---------------------+------+------+---------+-------+
@@ -101,15 +121,27 @@ DESC slow_query;
 79 rows in set (0.00 sec)
 ```
 
-## CLUSTER_SLOW_QUERY table
+`Query` 列的最大语句长度受系统变量 [`tidb_stmt_summary_max_sql_length`](/system-variables.md#tidb_stmt_summary_max_sql_length-new-in-v40) 限制。
 
-`CLUSTER_SLOW_QUERY` 表中提供了集群所有节点的慢查询相关的信息，其内容通过解析 TiDB 慢查询日志而来，该表使用上和 `SLOW_QUERY` 表一样。`CLUSTER_SLOW_QUERY` 表结构上比 `SLOW_QUERY` 多一列 `INSTANCE`，表示该行慢查询信息来自的 TiDB 节点地址。关于如何使用该表调查和改善慢查询，请参考[慢查询日志文档](/identify-slow-queries.md)。
+## CLUSTER_SLOW_QUERY 表
+
+`CLUSTER_SLOW_QUERY` 表提供集群中所有节点的慢查询信息，这些信息是 TiDB 慢日志文件的解析结果。你可以像使用 `SLOW_QUERY` 表一样使用 `CLUSTER_SLOW_QUERY` 表。`CLUSTER_SLOW_QUERY` 表的表结构与 `SLOW_QUERY` 表的区别在于前者多了一个 `INSTANCE` 列。`INSTANCE` 列表示该行慢查询信息所在的 TiDB 节点地址。
+
+> **注意：**
+>
+> 此表在 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 集群中不可用。
+
+<CustomContent platform="tidb">
+
+关于如何使用此表来识别有问题的语句并改进查询性能，请参见[慢查询日志文档](/identify-slow-queries.md)。
+
+</CustomContent>
 
 ```sql
 DESC CLUSTER_SLOW_QUERY;
 ```
 
-输出结果示例如下：
+输出结果如下：
 
 ```sql
 +-------------------------------+---------------------+------+------+---------+-------+
@@ -199,13 +231,13 @@ DESC CLUSTER_SLOW_QUERY;
 80 rows in set (0.00 sec)
 ```
 
-查询集群系统表时，TiDB 也会将相关计算下推给其他节点执行，而不是把所有节点的数据都取回来，可以查看执行计划，如下：
+当查询集群系统表时，TiDB 不会从所有节点获取数据，而是将相关计算下推到其他节点。执行计划如下：
 
 ```sql
 DESC SELECT COUNT(*) FROM CLUSTER_SLOW_QUERY WHERE user = 'u1';
 ```
 
-输出结果示例如下：
+输出结果如下：
 
 ```sql
 +----------------------------+----------+-----------+--------------------------+------------------------------------------------------+
@@ -219,9 +251,9 @@ DESC SELECT COUNT(*) FROM CLUSTER_SLOW_QUERY WHERE user = 'u1';
 4 rows in set (0.00 sec)
 ```
 
-上面执行计划表示，会将 `user = u1` 条件下推给其他的 (`cop`) TiDB 节点执行，也会把聚合算子（即上面输出结果中的 `StreamAgg` 算子）下推。
+在上述执行计划中，`user = u1` 条件被下推到其他（`cop`）TiDB 节点，聚合运算符也被下推（图中的 `StreamAgg` 运算符）。
 
-目前由于没有对系统表收集统计信息，所以有时会导致某些聚合算子不能下推，导致执行较慢，用户可以通过手动指定聚合下推的 SQL HINT 来将聚合算子下推，示例如下：
+目前，由于系统表的统计信息未被收集，有时一些聚合运算符无法下推，导致执行较慢。在这种情况下，你可以手动指定 SQL HINT 来下推聚合运算符。例如：
 
 ```sql
 SELECT /*+ AGG_TO_COP() */ COUNT(*) FROM CLUSTER_SLOW_QUERY GROUP BY user;

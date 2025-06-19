@@ -1,22 +1,22 @@
 ---
-title: 控制流程函数
-summary: TiDB 支持 MySQL 8.0 中的控制流程函数，包括 CASE、IF()、IFNULL() 和 NULLIF()。这些函数可以用于构建 if/else 语句和处理 NULL 值。
+title: 流程控制函数
+summary: 了解流程控制函数。
 ---
 
-# 控制流程函数
+# 流程控制函数
 
-TiDB 支持使用 MySQL 8.0 中提供的所有[控制流程函数](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html)。
+TiDB 支持 MySQL 8.0 中提供的所有[流程控制函数](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html)。
 
-| 函数名                 | 功能描述                       |
-|:----------------------|:------------------------------|
-| [`CASE`](#case)       | Case 操作符                    |
-| [`IF()`](#if)         | 构建 if/else                   |
-| [`IFNULL()`](#ifnull) | 构建 Null if/else              |
-| [`NULLIF()`](#nullif) | 如果 expr1 = expr2，返回 `NULL` |
+| 名称                                                                                            | 描述                       |
+|:--------------------------------------------------------------------------------------------------|:----------------------------------|
+| [`CASE`](#case)       | Case 运算符                     |
+| [`IF()`](#if)         | If/else 结构                 |
+| [`IFNULL()`](#ifnull) | Null if/else 结构            |
+| [`NULLIF()`](#nullif) | 如果 expr1 = expr2，则返回 `NULL`      |
 
 ## CASE
 
-[`CASE`](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#operator_case) 操作符可以根据指定的条件进行条件逻辑判断并自定义查询结果。
+[`CASE`](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#operator_case) 运算符使你能够执行条件逻辑并根据指定条件自定义查询结果。
 
 语法：
 
@@ -56,7 +56,7 @@ SELECT n, CASE WHEN n MOD 2 THEN "odd" ELSE "even" END FROM d;
 
 ## IF()
 
-[`IF()`](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#function_if) 函数可以根据值或表达式是否为真执行不同的操作。
+[`IF()`](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#function_if) 函数使你能够根据值或表达式是否为真来执行不同的操作。
 
 语法：
 
@@ -91,7 +91,7 @@ SELECT n, IF(n MOD 2, "odd", "even") FROM d;
 
 ## IFNULL()
 
-[`IFNULL(expr1,expr2)`](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#function_ifnull) 函数用于处理查询中的 NULL 值。如果 `expr1` 不为 `NULL`，该函数返回 `expr1`；否则返回 `expr2`。
+[`IFNULL(expr1,expr2)`](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#function_ifnull) 函数用于处理查询中的 NULL 值。如果 `expr1` 不为 `NULL`，则返回 `expr1`；否则返回 `expr2`。
 
 示例：
 
@@ -112,7 +112,7 @@ SELECT x, IFNULL(x,'x has no value') FROM data;
 
 ## NULLIF()
 
-[`NULLIF(expr1,expr2)`](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#function_nullif) 函数用于在两个参数相同或第一个参数为 `NULL` 时返回 `NULL`。否则，返回第一个参数。
+[`NULLIF(expr1,expr2)`](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#function_nullif) 函数在两个参数相同或第一个参数为 `NULL` 时返回 `NULL`。否则，返回第一个参数。
 
 示例：
 
@@ -139,4 +139,4 @@ SELECT n, NULLIF(n+n, n+2) FROM d;
 10 rows in set (0.00 sec)
 ```
 
-在该示例中，当 `n` 等于 `2` 时，`n+n` 和 `n+2` 都等于 `4`，两个参数值相同，因此函数返回 `NULL`。
+在此示例中，当 `n` 等于 `2` 时，`n+n` 和 `n+2` 都等于 `4`，使两个参数相同，导致函数返回 `NULL`。

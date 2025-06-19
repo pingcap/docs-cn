@@ -1,18 +1,11 @@
 ---
-title: 用 EXPLAIN 查看聚合查询的执行计划
-summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
+title: 使用聚合的 EXPLAIN 语句
+summary: 了解 TiDB 中 `EXPLAIN` 语句返回的执行计划信息。
 ---
 
-# 用 EXPLAIN 查看聚合查询执行计划
+# 使用聚合的 EXPLAIN 语句
 
-SQL 查询中可能会使用聚合计算，可以通过 `EXPLAIN` 语句来查看聚合查询的执行计划。本文提供多个示例，以帮助用户理解聚合查询是如何执行的。
-
-SQL 优化器会选择以下任一算子实现数据聚合：
-
-- Hash Aggregation
-- Stream Aggregation
-
-为了提高查询效率，数据聚合在 Coprocessor 层和 TiDB 层均会执行。现有示例如下：
+在进行数据聚合时，SQL 优化器会选择使用 Hash 聚合或者流式聚合操作符。为了提高查询效率，聚合操作会同时在 coprocessor 和 TiDB 层进行。考虑以下示例：
 
 {{< copyable "sql" >}}
 
@@ -38,7 +31,7 @@ SELECT SLEEP(1);
 ANALYZE TABLE t1;
 ```
 
-以上示例创建表格 `t1` 并插入数据后，再执行 [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) 语句。从以下 `SHOW TABLE REGIONS` 的执行结果可知，表 `t1` 被切分为多个 Region：
+从 [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) 的输出可以看到，该表被分割成多个 Region：
 
 {{< copyable "sql" >}}
 
@@ -58,7 +51,7 @@ SHOW TABLE t1 REGIONS;
 4 rows in set (0.00 sec)
 ```
 
-使用 `EXPLAIN` 查看以下聚合语句的执行计划。可以看到 `└─StreamAgg_8` 算子先执行在 TiKV 内每个 Region 上，然后 TiKV 的每个 Region 会返回一行数据给 TiDB，TiDB 在 `StreamAgg_16` 算子上对每个 Region 返回的数据进行聚合：
+使用 `EXPLAIN` 查看以下聚合语句，可以看到 `└─StreamAgg_8` 首先在 TiKV 的每个 Region 内执行。然后每个 TiKV Region 会向 TiDB 返回一行数据，TiDB 在 `StreamAgg_16` 中聚合来自每个 Region 的数据：
 
 {{< copyable "sql" >}}
 
@@ -78,7 +71,7 @@ EXPLAIN SELECT COUNT(*) FROM t1;
 4 rows in set (0.00 sec)
 ```
 
-同样，通过执行 `EXPLAIN ANALYZE` 语句可知，`actRows` 与 `SHOW TABLE REGIONS` 返回结果中的 Region 数匹配，这是因为执行使用了 `TableFullScan` 全表扫并且没有二级索引：
+这在 `EXPLAIN ANALYZE` 中最容易观察到，其中 `actRows` 与 `SHOW TABLE REGIONS` 中的 Region 数量匹配，因为使用了 `TableFullScan` 且没有二级索引：
 
 ```sql
 EXPLAIN ANALYZE SELECT COUNT(*) FROM t1;
@@ -96,11 +89,11 @@ EXPLAIN ANALYZE SELECT COUNT(*) FROM t1;
 4 rows in set (0.01 sec)
 ```
 
-## Hash Aggregation
+## Hash 聚合
 
-Hash Aggregation 算法在执行聚合时使用 Hash 表存储中间结果。此算法采用多线程并发优化，执行速度快，但与 Stream Aggregation 算法相比会消耗较多内存。
+Hash 聚合算法使用哈希表来存储执行聚合时的中间结果。它使用多个线程并行执行，但比流式聚合消耗更多内存。
 
-下面是一个使用 Hash Aggregation（即 `HashAgg` 算子）的例子：
+以下是 `HashAgg` 操作符的示例：
 
 {{< copyable "sql" >}}
 
@@ -120,13 +113,13 @@ EXPLAIN SELECT /*+ HASH_AGG() */ count(*) FROM t1;
 4 rows in set (0.00 sec)
 ```
 
-`operator info` 列显示，用于聚合数据的 Hash 函数为 `funcs:count(1)->Column#6`。
+`operator info` 显示用于聚合数据的哈希函数是 `funcs:count(1)->Column#6`。
 
-## Stream Aggregation
+## 流式聚合
 
-Stream Aggregation 算法通常会比 Hash Aggregation 算法占用更少的内存。但是此算法要求数据按顺序发送，以便对依次到达的值实现流式数据聚合。
+流式聚合算法通常比 Hash 聚合消耗更少的内存。但是，这个操作符要求数据是有序发送的，这样它才能在数据到达时进行流式处理并应用聚合。
 
-下面是一个使用 Stream Aggregation 的例子：
+考虑以下示例：
 
 {{< copyable "sql" >}}
 
@@ -154,7 +147,7 @@ Records: 5  Duplicates: 0  Warnings: 0
 5 rows in set (0.00 sec)
 ```
 
-以上示例中，可以在 `col1` 上添加索引来消除 `└─Sort_13` 算子。添加索引后，TiDB 就可以按顺序读取数据并消除 `└─Sort_13` 算子。
+在这个示例中，通过在 `col1` 上添加索引可以消除 `└─Sort_13` 操作符。一旦添加了索引，数据就可以按顺序读取，`└─Sort_13` 操作符就被消除了：
 
 {{< copyable "sql" >}}
 
@@ -178,15 +171,15 @@ Query OK, 0 rows affected (0.28 sec)
 5 rows in set (0.00 sec)
 ```
 
-## 多维度数据聚合 ROLLUP
+## 使用 ROLLUP 进行多维数据聚合
 
-自 v7.4.0 起，TiDB 的 `GROUP BY` 子句支持 `WITH ROLLUP` 修饰符。
+从 v7.4.0 版本开始，TiDB 的 `GROUP BY` 子句支持 `WITH ROLLUP` 修饰符。
 
-你可以在 `GROUP BY` 子句中指定一个或多个列，形成一个分组列表，然后添加 `WITH ROLLUP` 修饰符。TiDB 将会按照分组列表中的列进行多维度的递减分组，并在输出中为你提供各个分组数据的汇总结果。
+在 `GROUP BY` 子句中，你可以指定一个或多个列作为分组列表，并在列表后添加 `WITH ROLLUP` 修饰符。然后，TiDB 将基于分组列表中的列进行多维度降序分组，并在输出中为你提供每个分组的汇总结果。
 
-> **注意**
+> **注意：**
 >
-> TiDB 暂不支持 Cube 语法; TiDB 目前仅在 MPP 模式下支持为 `WITH ROLLUP` 语法生成有效的执行计划。
+> 目前，TiDB 不支持 Cube 语法，并且 TiDB 仅在 TiFlash MPP 模式下支持为 `WITH ROLLUP` 语法生成有效的执行计划。
 
 ```sql
 explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS profit FROM bank GROUP BY year, month WITH ROLLUP;
@@ -207,16 +200,6 @@ explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS prof
 10 rows in set (0.05 sec)
 ```
 
-该语句的 SQL 聚合可以按照 `GROUP BY year, month WITH ROLLUP` 语法在 {year, month}、{year}、{} 这 3 个分组中分别计算并连接结果。
+根据上述语句中的 `GROUP BY year, month WITH ROLLUP` 语法，该 SQL 语句的聚合结果可以按照 `{year, month}`、`{year}` 和 `{}` 三个分组分别计算并连接。
 
-更多信息，请参考 [GROUP BY 修饰符](/functions-and-operators/group-by-modifier.md)。
-
-## 其他类型查询的执行计划
-
-+ [MPP 模式查询的执行计划](/explain-mpp.md)
-+ [索引查询的执行计划](/explain-indexes.md)
-+ [Join 查询的执行计划](/explain-joins.md)
-+ [子查询的执行计划](/explain-subqueries.md)
-+ [视图查询的执行计划](/explain-views.md)
-+ [分区查询的执行计划](/explain-partitions.md)
-+ [索引合并查询的执行计划](/explain-index-merge.md)
+更多信息，请参见 [GROUP BY 修饰符](/functions-and-operators/group-by-modifier.md)。

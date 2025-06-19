@@ -1,11 +1,11 @@
 ---
-title: SHOW CREATE TABLE
-summary: TiDB 数据库中 SHOW CREATE TABLE 的使用概况。
+title: SHOW CREATE TABLE | TiDB SQL 语句参考
+summary: TiDB 数据库中 SHOW CREATE TABLE 的使用概述。
 ---
 
 # SHOW CREATE TABLE
 
-`SHOW CREATE TABLE` 语句用于显示用 SQL 重新创建已有表的确切语句。
+此语句显示使用 SQL 重新创建现有表的确切语句。
 
 ## 语法图
 
@@ -16,23 +16,11 @@ ShowCreateTableStmt ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
-CREATE TABLE t1 (a INT);
-```
-
-```
+mysql> CREATE TABLE t1 (a INT);
 Query OK, 0 rows affected (0.12 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SHOW CREATE TABLE t1\G
-```
-
-```
+mysql> SHOW CREATE TABLE t1\G
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
@@ -43,7 +31,7 @@ Create Table: CREATE TABLE `t1` (
 
 ## MySQL 兼容性
 
-`SHOW CREATE TABLE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
+TiDB 中的 `SHOW CREATE TABLE` 语句与 MySQL 完全兼容。如果发现任何兼容性差异，请[报告问题](https://docs.pingcap.com/tidb/stable/support)。
 
 ## 另请参阅
 

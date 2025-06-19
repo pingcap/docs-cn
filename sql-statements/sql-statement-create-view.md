@@ -1,13 +1,13 @@
 ---
-title: CREATE VIEW
-summary: TiDB 数据库中 CREATE VIEW 的使用概况。
+title: CREATE VIEW | TiDB SQL 语句参考
+summary: TiDB 数据库中 CREATE VIEW 的使用概述。
 ---
 
 # CREATE VIEW
 
-使用 `CREATE VIEW` 语句将 `SELECT` 语句保存为类似于表的可查询对象。TiDB 中的视图是非物化的，这意味着在查询视图时，TiDB 将在内部重写查询，以将视图定义与 SQL 查询结合起来。
+`CREATE VIEW` 语句将 `SELECT` 语句保存为可查询对象，类似于表。TiDB 中的视图是非物化的。这意味着在查询视图时，TiDB 会在内部重写查询，将视图定义与 SQL 查询组合在一起。
 
-## 语法图
+## 语法概要
 
 ```ebnf+diagram
 CreateViewStmt ::=
@@ -36,44 +36,18 @@ ViewCheckOption ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
-CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
-```
-
-```
+mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 Query OK, 0 rows affected (0.11 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
-```
-
-```
+mysql> INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
 Query OK, 5 rows affected (0.03 sec)
 Records: 5  Duplicates: 0  Warnings: 0
-```
 
-{{< copyable "sql" >}}
-
-```sql
-CREATE VIEW v1 AS SELECT * FROM t1 WHERE c1 > 2;
-```
-
-```
+mysql> CREATE VIEW v1 AS SELECT * FROM t1 WHERE c1 > 2;
 Query OK, 0 rows affected (0.11 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM t1;
-```
-
-```
+mysql> SELECT * FROM t1;
 +----+----+
 | id | c1 |
 +----+----+
@@ -84,15 +58,8 @@ SELECT * FROM t1;
 |  5 |  5 |
 +----+----+
 5 rows in set (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM v1;
-```
-
-```
+mysql> SELECT * FROM v1;
 +----+----+
 | id | c1 |
 +----+----+
@@ -101,25 +68,11 @@ SELECT * FROM v1;
 |  5 |  5 |
 +----+----+
 3 rows in set (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-INSERT INTO t1 (c1) VALUES (6);
-```
-
-```
+mysql> INSERT INTO t1 (c1) VALUES (6);
 Query OK, 1 row affected (0.01 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM v1;
-```
-
-```
+mysql> SELECT * FROM v1;
 +----+----+
 | id | c1 |
 +----+----+
@@ -129,23 +82,16 @@ SELECT * FROM v1;
 |  6 |  6 |
 +----+----+
 4 rows in set (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-INSERT INTO v1 (c1) VALUES (7);
-```
-
-```
+mysql> INSERT INTO v1 (c1) VALUES (7);
 ERROR 1105 (HY000): insert into view v1 is not supported now.
 ```
 
 ## MySQL 兼容性
 
-* 目前 TiDB 中的任何视图都不可被插入，也不可被更新（即不支持 INSERT VIEW，也不支持 UPDATE VIEW）。`WITH CHECK OPTION` 只做了语法兼容但不生效。
-* 目前 TiDB 中的视图不支持 `ALTER VIEW`，但可以使用 `CREATE OR REPLACE` 替代。
-* 目前 `ALGORITHM` 字段在 TiDB 中只做了语法兼容但不生效，TiDB 目前只支持 MERGE 算法。
+* 目前，TiDB 中的任何视图都不能进行插入或更新操作（即不支持 `INSERT VIEW` 和 `UPDATE VIEW`）。`WITH CHECK OPTION` 仅在语法上兼容但不生效。
+* 目前，TiDB 中的视图不支持 `ALTER VIEW`，但你可以使用 `CREATE OR REPLACE` 代替。
+* 目前，`ALGORITHM` 字段在 TiDB 中仅在语法上兼容但不生效。TiDB 目前仅支持 MERGE 算法。
 
 ## 另请参阅
 

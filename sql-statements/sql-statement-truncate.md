@@ -1,15 +1,15 @@
 ---
-title: TRUNCATE
-summary: TiDB 数据库中 TRUNCATE 的使用概况。
+title: TRUNCATE | TiDB SQL 语句参考
+summary: TiDB 数据库中 TRUNCATE 的使用概览。
 ---
 
 # TRUNCATE
 
-`TRUNCATE` 语句以非事务方式从表中删除所有数据。可认为 `TRUNCATE` 语句同 `DROP TABLE` + `CREATE TABLE` 组合在语义上相同，定义与 `DROP TABLE` 语句相同。
+`TRUNCATE` 语句以非事务方式删除表中的所有数据。`TRUNCATE` 在语义上可以被理解为等同于 `DROP TABLE` + 使用之前的定义 `CREATE TABLE`。
 
-`TRUNCATE TABLE tableName` 和 `TRUNCATE tableName` 均为有效语法。
+`TRUNCATE TABLE tableName` 和 `TRUNCATE tableName` 都是有效的语法。
 
-## 语法图
+## 语法
 
 ```ebnf+diagram
 TruncateTableStmt ::=
@@ -21,34 +21,15 @@ TableName ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
-CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY);
-```
-
-```
+mysql> CREATE TABLE t1 (a INT NOT NULL PRIMARY KEY);
 Query OK, 0 rows affected (0.11 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
-```
-
-```
+mysql> INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
 Query OK, 5 rows affected (0.01 sec)
 Records: 5  Duplicates: 0  Warnings: 0
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM t1;
-```
-
-```
+mysql> SELECT * FROM t1;
 +---+
 | a |
 +---+
@@ -59,52 +40,24 @@ SELECT * FROM t1;
 | 5 |
 +---+
 5 rows in set (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-TRUNCATE t1;
-```
-
-```
+mysql> TRUNCATE t1;
 Query OK, 0 rows affected (0.11 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM t1;
-```
-
-```
+mysql> SELECT * FROM t1;
 Empty set (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
-```
-
-```
+mysql> INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
 Query OK, 5 rows affected (0.01 sec)
 Records: 5  Duplicates: 0  Warnings: 0
-```
 
-{{< copyable "sql" >}}
-
-```sql
-TRUNCATE TABLE t1;
-```
-
-```
+mysql> TRUNCATE TABLE t1;
 Query OK, 0 rows affected (0.11 sec)
 ```
 
 ## MySQL 兼容性
 
-`TRUNCATE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
+TiDB 中的 `TRUNCATE` 语句与 MySQL 完全兼容。如果发现任何兼容性差异，请[报告问题](https://docs.pingcap.com/tidb/stable/support)。
 
 ## 另请参阅
 

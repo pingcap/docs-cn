@@ -1,13 +1,17 @@
 ---
 title: CREATE PLACEMENT POLICY
-summary: TiDB 数据库中 CREATE PLACEMENT POLICY 的使用概况。
+summary: TiDB 中 CREATE PLACEMENT POLICY 的使用方法。
 ---
 
 # CREATE PLACEMENT POLICY
 
-`CREATE PLACEMENT POLICY` 用于创建命名的放置策略，随后可以将该策略分配给表、分区或数据库。
+`CREATE PLACEMENT POLICY` 用于创建命名放置策略，该策略可以稍后分配给表、分区或数据库架构。
 
-## 语法图
+> **注意：**
+>
+> 此功能在 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 集群上不可用。
+
+## 语法
 
 ```ebnf+diagram
 CreatePolicyStmt ::=
@@ -47,7 +51,9 @@ AdvancedPlacementOption ::=
 
 > **注意：**
 >
-> 如要查看所在集群中可用的区域，见 [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md)。如果未看到任何可用的区域，此 TiKV 集群在部署时可能未正确设置标签 (label)。
+> 要了解集群中有哪些可用区域，请参见 [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md)。
+>
+> 如果你没有看到任何可用区域，你的 TiKV 安装可能没有正确设置标签。
 
 {{< copyable "sql" >}}
 
@@ -76,7 +82,7 @@ Query OK, 0 rows affected (0.10 sec)
 
 ## 另请参阅
 
-* [Placement Rules in SQL](/placement-rules-in-sql.md)
+* [SQL 中的放置规则](/placement-rules-in-sql.md)
 * [SHOW PLACEMENT](/sql-statements/sql-statement-show-placement.md)
 * [ALTER PLACEMENT POLICY](/sql-statements/sql-statement-alter-placement-policy.md)
 * [DROP PLACEMENT POLICY](/sql-statements/sql-statement-drop-placement-policy.md)

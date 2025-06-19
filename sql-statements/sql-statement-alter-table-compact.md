@@ -1,32 +1,32 @@
 ---
 title: ALTER TABLE ... COMPACT
-summary: TiDB 数据库中 ALTER TABLE ... COMPACT 语句的使用概况。
+summary: TiDB 数据库中 ALTER TABLE ... COMPACT 的使用概述。
 ---
 
 # ALTER TABLE ... COMPACT
 
-TiDB 存储节点在后台会自动发起数据整理（Compaction）。数据整理时，表中的物理数据会被重写，如清理已删除的数据、合并多版本数据等，从而可以获得更高的访问性能，并减少磁盘空间占用。使用 `ALTER TABLE ... COMPACT` 语句可以立即对指定的表进行数据整理，而无需等待后台触发。
+为了提高读取性能并减少磁盘使用，TiDB 会在后台自动调度存储节点上的数据压缩。在压缩过程中，存储节点会重写物理数据，包括清理已删除的行和合并由更新引起的多个数据版本。`ALTER TABLE ... COMPACT` 语句允许你立即对特定表启动压缩，而无需等待后台触发压缩。
 
-该语句执行时不会阻塞现有 SQL 语句的执行或 TiDB 功能的使用，包括事务、DDL、GC 等，也不会改变通过 SQL 语句访问获得的数据内容。该语句执行时会消耗一定量的 IO 及 CPU 资源，请注意选择合适的时机执行，如资源空闲时段，避免对业务造成负面影响。
+执行此语句不会阻塞现有的 SQL 语句或影响任何 TiDB 功能，如事务、DDL 和 GC。通过 SQL 语句可以选择的数据也不会改变。执行此语句会消耗一些 IO 和 CPU 资源。请注意选择合适的执行时机，例如在资源充足时执行，以避免对业务产生负面影响。
 
-该语句会等待表中所有副本都数据整理完毕后才结束运行并返回。在执行过程中，你可以通过 [`KILL`](/sql-statements/sql-statement-kill.md) 语句安全地中断本张表的数据整理过程。中断不会破坏数据一致性或丢失数据，也不会影响后续重新发起或自动触发后台数据整理。
+当表的所有副本都压缩完成时，压缩语句将完成并返回。在执行过程中，你可以通过执行 [`KILL`](/sql-statements/sql-statement-kill.md) 语句安全地中断压缩。中断压缩不会破坏数据一致性或导致数据丢失，也不会影响后续的手动或后台压缩。
 
-目前该语句仅支持对 TiFlash 进行数据整理，不支持对 TiKV 进行数据整理。
+此数据压缩语句目前仅支持 TiFlash 副本，不支持 TiKV 副本。
 
-## 语法图
+## 语法概要
 
 ```ebnf+diagram
 AlterTableCompactStmt ::=
     'ALTER' 'TABLE' TableName 'COMPACT' ( 'PARTITION' PartitionNameList )? ( 'TIFLASH' 'REPLICA' )?
 ```
 
-自 v6.2.0 起，语法中 `TIFLASH REPLICA` 部分可以被省略。省略后语句含义不变，同样只对 TiFlash 列存有效。
+从 v6.2.0 开始，语法中的 `TIFLASH REPLICA` 部分可以省略。省略时，语句的语义保持不变，仅对 TiFlash 生效。
 
 ## 示例
 
-### 对表中 TiFlash 副本进行数据整理
+### 压缩表中的 TiFlash 副本
 
-假设目前有一张 `employees` 表具有 4 个分区，且具有 2 个 TiFlash 副本：
+以下以一个具有 4 个分区和 2 个 TiFlash 副本的 `employees` 表为例：
 
 ```sql
 CREATE TABLE employees (
@@ -40,11 +40,10 @@ PARTITION BY LIST (store_id) (
     PARTITION pWest VALUES IN (11, 12, 13, 14, 15),
     PARTITION pCentral VALUES IN (16, 17, 18, 19, 20)
 );
-
 ALTER TABLE employees SET TIFLASH REPLICA 2;
 ```
 
-执行以下语句可对 `employees` 表上所有分区的 2 个 TiFlash 副本立即进行数据整理：
+你可以执行以下语句立即对 `employees` 表中所有分区的 2 个 TiFlash 副本启动压缩：
 
 {{< copyable "sql" >}}
 
@@ -52,9 +51,9 @@ ALTER TABLE employees SET TIFLASH REPLICA 2;
 ALTER TABLE employees COMPACT TIFLASH REPLICA;
 ```
 
-### 对分区表中指定分区的 TiFlash 副本进行数据整理
+### 压缩表中指定分区的 TiFlash 副本
 
-假设目前有一张 `employees` 表具有 4 个分区，且具有 2 个 TiFlash 副本：
+以下以一个具有 4 个分区和 2 个 TiFlash 副本的 `employees` 表为例：
 
 ```sql
 CREATE TABLE employees (
@@ -72,26 +71,30 @@ PARTITION BY LIST (store_id) (
 ALTER TABLE employees SET TIFLASH REPLICA 2;
 ```
 
-执行以下语句可对 `employees` 表上 `pNorth`、`pEast` 这两个分区的 2 个 TiFlash 副本立即进行数据整理：
+你可以执行以下语句立即对 `employees` 表中 `pNorth` 和 `pEast` 分区的 2 个 TiFlash 副本启动压缩：
 
 ```sql
 ALTER TABLE employees COMPACT PARTITION pNorth, pEast TIFLASH REPLICA;
 ```
 
-## 并发度
+## 并发性
 
-`ALTER TABLE ... COMPACT` 语句会同时对表中所有副本发起数据整理操作。
+`ALTER TABLE ... COMPACT` 语句同时压缩表中的所有副本。
 
-为了避免数据整理操作对在线业务造成显著影响，在同一时间，每个 TiFlash 实例默认只会处理一张表的数据整理操作（后台自动触发的数据整理除外）。这意味着，若你同时对多张表执行 `ALTER TABLE ... COMPACT` 语句，则它们在同一个 TiFlash 实例上会排队依次执行，而非同时执行。
+为了避免对在线业务产生重大影响，默认情况下每个 TiFlash 实例一次只压缩一个表的数据（后台触发的压缩除外）。这意味着如果你同时对多个表执行 `ALTER TABLE ... COMPACT` 语句，它们的执行将在同一个 TiFlash 实例上排队，而不是同时执行。
 
-你可以修改 TiFlash 配置文件参数 [`manual_compact_pool_size`](/tiflash/tiflash-configuration.md)，以更大资源占用为代价、获得更大的表级别并发度。例如，参数指定为 2 时，可以同时对 2 张表进行数据整理。
+<CustomContent platform="tidb">
 
-## 观测数据整理进度
+要获得更高的表级并发性和更高的资源使用率，你可以修改 TiFlash 配置 [`manual_compact_pool_size`](/tiflash/tiflash-configuration.md)。例如，当 `manual_compact_pool_size` 设置为 2 时，可以同时处理 2 个表的压缩。
 
-你可以通过 `INFORMATION_SCHEMA.TIFLASH_TABLES` 表中 `TOTAL_DELTA_ROWS` 列来观测 TiFlash 存储引擎上数据整理的进度，或判断是否有必要对某张表发起数据整理。`TOTAL_DELTA_ROWS` 的值越大，说明还能被整理的数据越多；若 `TOTAL_DELTA_ROWS` 为 `0`，说明表中所有数据都处于最佳状态，无需整理。
+</CustomContent>
+
+## 观察数据压缩进度
+
+你可以通过检查 `INFORMATION_SCHEMA.TIFLASH_TABLES` 表中的 `TOTAL_DELTA_ROWS` 列来观察数据压缩的进度或确定是否需要对表启动压缩。`TOTAL_DELTA_ROWS` 的值越大，可以压缩的数据就越多。如果 `TOTAL_DELTA_ROWS` 为 `0`，则表中的所有数据都处于最佳状态，不需要压缩。
 
 <details>
-  <summary>示例：查询普通表的数据整理状态</summary>
+  <summary>示例：检查非分区表的压缩状态</summary>
 
 ```sql
 USE test;
@@ -119,7 +122,7 @@ SELECT TOTAL_DELTA_ROWS, TOTAL_STABLE_ROWS FROM INFORMATION_SCHEMA.TIFLASH_TABLE
 +------------------+-------------------+
 |                3 |                 0 |
 +------------------+-------------------+
--- 新写入的数据可被整理
+-- 新写入的数据可以压缩
 
 ALTER TABLE foo COMPACT TIFLASH REPLICA;
 
@@ -131,13 +134,13 @@ SELECT TOTAL_DELTA_ROWS, TOTAL_STABLE_ROWS FROM INFORMATION_SCHEMA.TIFLASH_TABLE
 +------------------+-------------------+
 |                0 |                 3 |
 +------------------+-------------------+
--- 所有数据都处于最佳整理状态
+-- 所有数据都处于最佳状态，不需要压缩
 ```
 
 </details>
 
 <details>
-  <summary>示例：查询分区表的数据整理状态</summary>
+  <summary>示例：检查分区表的压缩状态</summary>
 
 ```sql
 USE test;
@@ -167,7 +170,7 @@ SELECT PARTITION_NAME, TOTAL_DELTA_ROWS, TOTAL_STABLE_ROWS
 | pWest          |                0 |                 0 |
 | pCentral       |                0 |                 0 |
 +----------------+------------------+-------------------+
--- 一些分区上有数据可被整理
+-- 某些分区可以压缩
 
 ALTER TABLE employees COMPACT TIFLASH REPLICA;
 
@@ -183,28 +186,28 @@ SELECT PARTITION_NAME, TOTAL_DELTA_ROWS, TOTAL_STABLE_ROWS
 | pWest          |                0 |                 0 |
 | pCentral       |                0 |                 0 |
 +----------------+------------------+-------------------+
--- 所有分区上的数据都处于最佳整理状态
+-- 所有分区中的数据都处于最佳状态，不需要压缩
 ```
 
 </details>
 
 > **注意：**
 >
-> - 若数据整理的过程中发生了数据更新，你可能观察到数据整理完毕后 `TOTAL_DELTA_ROWS` 仍为非零值。这是正常现象，表明这些更新部分没有被整理到。若你想对这部分更新数据也进行整理，可再次执行 `ALTER TABLE ... COMPACT` 语句。
+> - 如果在压缩过程中更新了数据，压缩完成后 `TOTAL_DELTA_ROWS` 可能仍然是非零值。这是正常的，表示这些更新尚未被压缩。要压缩这些更新，请再次执行 `ALTER TABLE ... COMPACT` 语句。
 >
-> - `TOTAL_DELTA_ROWS` 的单位是数据版本数，而非数据行数。例如，插入一行记录再删除该行后，`TOTAL_DELTA_ROWS` 会增加 2。
+> - `TOTAL_DELTA_ROWS` 表示数据版本，而不是行数。例如，如果你插入一行然后删除它，`TOTAL_DELTA_ROWS` 将增加 2。
 
 ## 兼容性
 
 ### MySQL 兼容性
 
-`ALTER TABLE ... COMPACT` 语法是 TiDB 引入的对标准 SQL 语法的扩展。尽管没有对应的 MySQL 语法，但你仍然可通过 MySQL 各版本客户端，或各个遵循 MySQL 协议的数据库驱动执行该语句。
+`ALTER TABLE ... COMPACT` 语法是 TiDB 特有的，是对标准 SQL 语法的扩展。虽然没有等效的 MySQL 语法，但你仍然可以使用符合 MySQL 协议的 MySQL 客户端或各种数据库驱动程序执行此语句。
 
-### TiDB Binlog 及 TiCDC 兼容性
+### TiDB Binlog 和 TiCDC 兼容性
 
-`ALTER TABLE ... COMPACT` 语句不会导致逻辑数据变化，因而不会被 TiDB Binlog 及 TiCDC 同步到下游。
+`ALTER TABLE ... COMPACT` 语句不会导致逻辑数据更改，因此不会被 TiDB Binlog 或 TiCDC 复制到下游。
 
 ## 另请参阅
 
 - [ALTER TABLE](/sql-statements/sql-statement-alter-table.md)
-- [KILL](/sql-statements/sql-statement-kill.md)
+- [KILL TIDB](/sql-statements/sql-statement-kill.md)

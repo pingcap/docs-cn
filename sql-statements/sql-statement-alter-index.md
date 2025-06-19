@@ -1,11 +1,11 @@
 ---
 title: ALTER INDEX
-summary: TiDB 数据库中 ALTER INDEX 的使用概况。
+summary: TiDB 数据库中 ALTER INDEX 的使用概览。
 ---
 
 # ALTER INDEX
 
-`ALTER INDEX` 语句用于修改索引的可见性，可以将索引设置为 `Visible` 或者 `Invisible`。设置为 `Invisible` 的索引即不可见索引 (Invisible Index) 由 DML 语句维护，不会被查询优化器使用。从 TiDB v8.0.0 开始，你可以通过修改系统变量 [`tidb_opt_use_invisible_indexes`](/system-variables.md#tidb_opt_use_invisible_indexes-从-v800-版本开始引入)，允许优化器选择不可见索引。
+`ALTER INDEX` 语句用于修改索引的可见性为 `Visible` 或 `Invisible`。不可见索引会被 DML 语句维护，但查询优化器不会使用它们。这在你想要在永久删除索引之前进行双重检查的场景中很有用。从 TiDB v8.0.0 开始，你可以通过修改系统变量 [`tidb_opt_use_invisible_indexes`](/system-variables.md#tidb_opt_use_invisible_indexes-new-in-v800) 来让优化器选择不可见索引。
 
 ## 语法图
 
@@ -19,7 +19,7 @@ AlterIndexSpec
 
 ## 示例
 
-可以通过 `ALTER TABLE ... ALTER INDEX ...` 语句，修改索引的可见性：
+你可以使用 `ALTER TABLE ... ALTER INDEX ...` 语句修改索引的可见性。
 
 {{< copyable "sql" >}}
 
@@ -51,7 +51,7 @@ SHOW CREATE TABLE t1;
 1 row in set (0.00 sec)
 ```
 
-优化器将无法使用 `c1` 这个**不可见的索引**：
+优化器无法使用 `c1` 的**不可见索引**。
 
 {{< copyable "sql" >}}
 
@@ -70,7 +70,7 @@ EXPLAIN SELECT c1 FROM t1 ORDER BY c1;
 3 rows in set (0.00 sec)
 ```
 
-作为对比，c2 是**可见的索引**，优化器将可以使用索引：
+相比之下，`c2` 是**可见索引**，可以被优化器使用。
 
 {{< copyable "sql" >}}
 
@@ -88,7 +88,7 @@ EXPLAIN SELECT c2 FROM t1 ORDER BY c2;
 2 rows in set (0.00 sec)
 ```
 
-即使用 SQL Hint `USE INDEX` 强制使用索引，优化器也无法使用不可见索引，否则 SQL 语句会报错：
+即使使用 `USE INDEX` SQL 提示强制使用索引，优化器仍然无法使用不可见索引；否则，会返回错误。
 
 {{< copyable "sql" >}}
 
@@ -102,7 +102,7 @@ ERROR 1176 (42000): Key 'c1' doesn't exist in table 't1'
 
 > **注意：**
 >
-> “不可见”是仅仅对优化器而言的，不可见索引仍然可以被修改或删除。
+> 这里的"不可见"仅对优化器不可见。你仍然可以修改或删除不可见索引。
 
 {{< copyable "sql" >}}
 
@@ -116,8 +116,8 @@ Query OK, 0 rows affected (0.02 sec)
 
 ## MySQL 兼容性
 
-* TiDB 中的不可见索引是基于 MySQL 8.0 中的同等特性构建的。
-* 与 MySQL 类似，TiDB 不允许将主键索引设为不可见。
+* TiDB 中的不可见索引是基于 MySQL 8.0 中的相同功能建模的。
+* 与 MySQL 类似，TiDB 不允许将 `PRIMARY KEY` 索引设置为不可见。
 
 ## 另请参阅
 

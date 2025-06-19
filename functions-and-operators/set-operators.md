@@ -5,11 +5,11 @@ summary: 了解 TiDB 支持的集合运算。
 
 # 集合运算
 
-TiDB 支持三种集合运算：并集 (UNION)，差集 (EXCEPT) 和交集 (INTERSECT)。最小的集合单位是一个 [`SELECT` 语句](/sql-statements/sql-statement-select.md)。
+TiDB 支持使用 UNION、EXCEPT 和 INTERSECT 运算符进行三种集合运算。集合的最小单位是 [`SELECT` 语句](/sql-statements/sql-statement-select.md)。
 
-## 并集 (UNION)
+## UNION 运算符
 
-数学上，两个集合 A 和 B 的并集是含有所有属于 A 或属于 B 的元素。下面是一个 UNION 的例子：
+在数学中，两个集合 A 和 B 的并集由 A 或 B 中的所有元素组成。例如：
 
 ```sql
 SELECT 1 UNION SELECT 2;
@@ -22,9 +22,7 @@ SELECT 1 UNION SELECT 2;
 2 rows in set (0.00 sec)
 ```
 
-TiDB 支持 `UNION ALL` 和 `UNION DISTINCT` 并集，两者区别在于 `UNION DISTINCT` 会对并集结果去重复，而 `UNION ALL` 不会。TiDB 中默认使用 `UNION DISTINCT`。
-
-{{< copyable "sql" >}}
+TiDB 同时支持 `UNION DISTINCT` 和 `UNION ALL` 运算符。`UNION DISTINCT` 从结果集中删除重复记录，而 `UNION ALL` 保留所有记录，包括重复项。在 TiDB 中默认使用 `UNION DISTINCT`。
 
 ```sql
 CREATE TABLE t1 (a int);
@@ -33,7 +31,7 @@ INSERT INTO t1 VALUES (1),(2);
 INSERT INTO t2 VALUES (1),(3);
 ```
 
-`UNION DISTINCT`与 `UNION ALL` 的结果分别如下：
+以下分别是 `UNION DISTINCT` 和 `UNION ALL` 查询的示例：
 
 ```sql
 SELECT * FROM t1 UNION DISTINCT SELECT * FROM t2;
@@ -58,9 +56,9 @@ SELECT * FROM t1 UNION ALL SELECT * FROM t2;
 4 rows in set (0.00 sec)
 ```
 
-## 差集 (EXCEPT)
+## EXCEPT 运算符
 
-若 A 和 B 是集合，则 A 与 B 的差集是由所有属于 A 但不属于 B 的元素组成的集合。
+如果 A 和 B 是两个集合，EXCEPT 返回 A 和 B 的差集，即在 A 中但不在 B 中的元素组成的集合。
 
 ```sql
 SELECT * FROM t1 EXCEPT SELECT * FROM t2;
@@ -72,11 +70,11 @@ SELECT * FROM t1 EXCEPT SELECT * FROM t2;
 1 rows in set (0.00 sec)
 ```
 
-差集 (EXCEPT) 暂时不支持 `EXCEPT ALL`。
+目前尚不支持 `EXCEPT ALL` 运算符。
 
-## 交集 (INTERSECT)
+## INTERSECT 运算符
 
-数学上，两个集合 A 和 B 的交集是含有所有既属于 A 又属于 B 的元素，而且没有其他元素的集合。
+在数学中，两个集合 A 和 B 的交集由同时在 A 和 B 中的所有元素组成，不包含其他元素。
 
 ```sql
 SELECT * FROM t1 INTERSECT SELECT * FROM t2;
@@ -88,7 +86,7 @@ SELECT * FROM t1 INTERSECT SELECT * FROM t2;
 1 rows in set (0.00 sec)
 ```
 
-交集 (INTERSECT) 暂时不支持 `INTERSECT ALL`。交集 (INTERSECT) 的计算优先级大于差集 (EXCEPT) 和并集 (UNION)。
+目前尚不支持 `INTERSECT ALL` 运算符。INTERSECT 运算符的优先级高于 EXCEPT 和 UNION 运算符。
 
 ```sql
 SELECT * FROM t1 UNION ALL SELECT * FROM t1 INTERSECT SELECT * FROM t2;
@@ -102,9 +100,9 @@ SELECT * FROM t1 UNION ALL SELECT * FROM t1 INTERSECT SELECT * FROM t2;
 3 rows in set (0.00 sec)
 ```
 
-## 括号优先
+## 括号
 
-TiDB 支持使用括号修改集合运算的优先级，如同[四则运算](https://zh.wikipedia.org/zh-hans/%E5%9B%9B%E5%88%99%E8%BF%90%E7%AE%97)中先计算括号部分，集合运算也先计算括号内的部分。
+TiDB 支持使用括号来指定集合运算的优先级。括号中的表达式会首先被处理。
 
 ```sql
 (SELECT * FROM t1 UNION ALL SELECT * FROM t1) INTERSECT SELECT * FROM t2;
@@ -116,9 +114,9 @@ TiDB 支持使用括号修改集合运算的优先级，如同[四则运算](htt
 1 rows in set (0.00 sec)
 ```
 
-## 与 `ORDER BY` 和 `LIMIT` 结合
+## 使用 `ORDER BY` 和 `LIMIT`
 
-TiDB 支持对整个集合运算的结果使用 `ORDER BY` 或 `LIMIT` 子句。这两个子句必须位于整个语句的末尾。
+TiDB 支持在集合运算的整个结果上使用 `ORDER BY` 或 `LIMIT` 子句。这两个子句必须位于整个语句的末尾。
 
 ```sql
 (SELECT * FROM t1 UNION ALL SELECT * FROM t1 INTERSECT SELECT * FROM t2) ORDER BY a LIMIT 2;

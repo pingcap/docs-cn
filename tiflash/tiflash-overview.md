@@ -1,81 +1,140 @@
 ---
-title: TiFlash 简介
-summary: TiFlash 是 TiDB HTAP 形态的关键组件，提供了良好的隔离性和强一致性。它使用列存扩展和 Raft Learner 协议异步复制，通过 Raft 校对索引配合 MVCC 实现一致性隔离级别。TiFlash 架构解决了 HTAP 场景的隔离性和列存同步问题。它提供列式存储和借助 ClickHouse 高效实现的协处理器层。TiFlash 可以兼容 TiDB 和 TiSpark，推荐与 TiKV 不同节点部署以实现 Workload 隔离。具有异步复制、一致性、智能选择和计算加速等核心特性。部署完成后需要手动指定需要同步的表。
+title: TiFlash 概述
+summary: 了解 TiFlash 的架构和主要特性。
 ---
 
-# TiFlash 简介
+# TiFlash 概述
 
-[TiFlash](https://github.com/pingcap/tiflash) 是 TiDB HTAP 形态的关键组件，它是 TiKV 的列存扩展，在提供了良好的隔离性的同时，也兼顾了强一致性。列存副本通过 Raft Learner 协议异步复制，但是在读取的时候通过 Raft 校对索引配合 MVCC 的方式获得 Snapshot Isolation 的一致性隔离级别。这个架构很好地解决了 HTAP 场景的隔离性以及列存同步的问题。
+[TiFlash](https://github.com/pingcap/tiflash) 是使 TiDB 成为混合事务/分析处理 (HTAP) 数据库的关键组件。作为 TiKV 的列式存储扩展，TiFlash 提供了良好的隔离级别和强一致性保证。
 
-## 整体架构
+在 TiFlash 中，列式副本根据 Raft Learner 共识算法进行异步复制。在读取这些副本时，通过验证 Raft 索引和多版本并发控制 (MVCC) 来实现快照隔离级别的一致性。
+
+<CustomContent platform="tidb-cloud">
+
+使用 TiDB Cloud，您可以根据 HTAP 工作负载轻松创建 HTAP 集群，只需指定一个或多个 TiFlash 节点即可。如果在创建集群时未指定 TiFlash 节点数量，或者您想添加更多 TiFlash 节点，可以通过[扩展集群](/tidb-cloud/scale-tidb-cluster.md)来更改节点数量。
+
+</CustomContent>
+
+## 架构
 
 ![TiFlash 架构](/media/tidb-storage-architecture-1.png)
 
-上图为 TiDB HTAP 形态架构，其中包含 TiFlash 节点。
+上图是包含 TiFlash 节点的 TiDB HTAP 形态的架构。
 
-TiFlash 提供列式存储，且拥有借助 ClickHouse 高效实现的协处理器层。除此以外，它与 TiKV 非常类似，依赖同样的 Multi-Raft 体系，以 Region 为单位进行数据复制和分散（详情见[《说存储》](https://pingcap.com/blog-cn/tidb-internal-1/)一文）。
+TiFlash 提供列式存储，并通过 ClickHouse 高效实现了一层协处理器。与 TiKV 类似，TiFlash 也有一个多 Raft 系统，支持以 Region 为单位复制和分发数据（详情请参见[数据存储](https://www.pingcap.com/blog/tidb-internal-data-storage/)）。
 
-TiFlash 以低消耗不阻塞 TiKV 写入的方式，实时复制 TiKV 集群中的数据，并同时提供与 TiKV 一样的一致性读取，且可以保证读取到最新的数据。TiFlash 中的 Region 副本与 TiKV 中完全对应，且会跟随 TiKV 中的 Leader 副本同时进行分裂与合并。
+TiFlash 以低成本实时复制 TiKV 节点中的数据，不会阻塞 TiKV 中的写入。同时，它提供与 TiKV 相同的读一致性，并确保读取最新数据。TiFlash 中的 Region 副本在逻辑上与 TiKV 中的副本相同，并与 TiKV 中的 Leader 副本同时进行分裂和合并。
 
-在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `cat /proc/cpuinfo | grep avx2` 有输出。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。确保命令 `cat /proc/cpuinfo | grep 'crc32' | grep 'asimd'` 有输出。通过使用向量扩展指令集，TiFlash 的向量化引擎能提供更好的性能。
+要在 Linux AMD64 架构下部署 TiFlash，CPU 必须支持 AVX2 指令集。确保 `cat /proc/cpuinfo | grep avx2` 有输出。要在 Linux ARM64 架构下部署 TiFlash，CPU 必须支持 ARMv8 指令集架构。确保 `cat /proc/cpuinfo | grep 'crc32' | grep 'asimd'` 有输出。通过使用指令集扩展，TiFlash 的向量化引擎可以提供更好的性能。
 
-TiFlash 可以兼容 TiDB 与 TiSpark，用户可以选择使用不同的计算引擎。
+<CustomContent platform="tidb">
 
-TiFlash 推荐使用和 TiKV 不同的节点以做到 Workload 隔离，但在无业务隔离的前提下，也可以选择与 TiKV 同节点部署。
+TiFlash 同时兼容 TiDB 和 TiSpark，使您可以在这两个计算引擎之间自由选择。
 
-TiFlash 暂时无法直接接受数据写入，任何数据必须先写入 TiKV 再同步到 TiFlash。TiFlash 以 learner 角色接入 TiDB 集群，TiFlash 支持表粒度的数据同步，部署后默认情况下不会同步任何数据，需要按照[按表构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md#按表构建-tiflash-副本)一节完成指定表的数据同步。
+</CustomContent>
 
-TiFlash 主要包含两个组件，一个是列式存储引擎组件，另一个是处理 Multi-Raft 协议通信相关工作的 TiFlash proxy 组件。
+建议将 TiFlash 部署在与 TiKV 不同的节点上，以确保工作负载隔离。如果不需要业务隔离，也可以将 TiFlash 和 TiKV 部署在同一节点上。
 
-对于按表构建 TiFlash 副本的流程，TiDB 接收到相应的 DDL 命令后，会自动在 PD 创建对应的 [Placement Rules](/configure-placement-rules.md)，PD 根据该信息进行相关的数据调度。
+目前，数据不能直接写入 TiFlash。您需要先将数据写入 TiKV，然后复制到 TiFlash，因为它作为 Learner 角色连接到 TiDB 集群。TiFlash 支持以表为单位进行数据复制，但部署后默认不会复制任何数据。要复制指定表的数据，请参见[为表创建 TiFlash 副本](/tiflash/create-tiflash-replicas.md#为表创建-tiflash-副本)。
 
-## 核心特性
+TiFlash 由两个主要组件组成：列式存储组件和 TiFlash 代理组件。TiFlash 代理组件负责使用多 Raft 共识算法进行通信。
 
-TiFlash 主要有异步复制、一致性、智能选择、计算加速等几个核心特性。
+在收到为表在 TiFlash 中创建副本的 DDL 命令后，TiDB 会自动在 PD 中创建相应的[放置规则](https://docs.pingcap.com/tidb/stable/configure-placement-rules)，然后 PD 根据这些规则执行相应的数据调度。
+
+## 主要特性
+
+TiFlash 具有以下主要特性：
+
+- [异步复制](#异步复制)
+- [一致性](#一致性)
+- [智能选择](#智能选择)
+- [计算加速](#计算加速)
 
 ### 异步复制
 
-TiFlash 中的副本以特殊角色 (Raft Learner) 进行异步的数据复制。这表示当 TiFlash 节点宕机或者网络高延迟等状况发生时，TiKV 的业务仍然能确保正常进行。
+TiFlash 中的副本作为特殊角色 Raft Learner 进行异步复制。这意味着当 TiFlash 节点宕机或出现高网络延迟时，TiKV 中的应用程序仍可正常进行。
 
-这套复制机制也继承了 TiKV 体系的自动负载均衡和高可用：并不用依赖附加的复制管道，而是直接以多对多方式接收 TiKV 的数据传输；且只要 TiKV 中数据不丢失，就可以随时恢复 TiFlash 的副本。
+这种复制机制继承了 TiKV 的两个优点：自动负载均衡和高可用性。
+
+- TiFlash 不依赖额外的复制通道，而是直接以多对多的方式从 TiKV 接收数据。
+- 只要数据在 TiKV 中没有丢失，您随时都可以在 TiFlash 中恢复副本。
 
 ### 一致性
 
-TiFlash 提供与 TiKV 一样的快照隔离支持，且保证读取数据最新（确保之前写入的数据能被读取）。这个一致性是通过对数据进行复制进度校验做到的。
+TiFlash 提供与 TiKV 相同的快照隔离级别一致性，并确保读取最新数据，这意味着您可以读取之前写入 TiKV 的数据。这种一致性是通过验证数据复制进度来实现的。
 
-每次收到读取请求，TiFlash 中的 Region 副本会向 Leader 副本发起进度校对（一个非常轻的 RPC 请求），只有当进度确保至少所包含读取请求时间戳所覆盖的数据之后才响应读取。
+每次 TiFlash 收到读取请求时，Region 副本都会向 Leader 副本发送进度验证请求（一个轻量级的 RPC 请求）。只有在当前复制进度包含读取请求时间戳所覆盖的数据后，TiFlash 才会执行读取操作。
 
 ### 智能选择
 
-TiDB 可以自动选择使用 TiFlash 列存或者 TiKV 行存，甚至在同一查询内混合使用提供最佳查询速度。这个选择机制与 TiDB 选取不同索引提供查询类似：根据统计信息判断读取代价并作出合理选择。
+TiDB 可以自动选择使用 TiFlash（列式）或 TiKV（行式），或在一个查询中同时使用两者，以确保最佳性能。
+
+这种选择机制类似于 TiDB 选择不同索引来执行查询。TiDB 优化器根据读取成本的统计信息做出适当的选择。
 
 ### 计算加速
 
-TiFlash 对 TiDB 的计算加速分为两部分：列存本身的读取效率提升以及为 TiDB 分担计算。其中分担计算的原理和 TiKV 的协处理器一致：TiDB 会将可以由存储层分担的计算下推。能否下推取决于 TiFlash 是否可以支持相关下推。具体介绍请参阅[“TiFlash 支持的计算下推”](/tiflash/tiflash-supported-pushdown-calculations.md)一节。
+TiFlash 通过两种方式加速 TiDB 的计算：
+
+- 列式存储引擎在执行读取操作时更高效。
+- TiFlash 分担 TiDB 的部分计算工作负载。
+
+TiFlash 以与 TiKV 协处理器相同的方式分担计算工作负载：TiDB 下推可以在存储层完成的计算。计算是否可以下推取决于 TiFlash 的支持情况。详情请参见[支持的下推计算](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
 ## 使用 TiFlash
 
-TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表。
+部署 TiFlash 后，数据复制不会自动开始。您需要手动指定要复制的表。
 
-你可以使用 TiDB 或者 TiSpark 读取 TiFlash，TiDB 适合用于中等规模的 OLAP 计算，而 TiSpark 适合大规模的 OLAP 计算，你可以根据自己的场景和使用习惯自行选择。具体参见：
+<CustomContent platform="tidb">
 
-- [构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)
-- [使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md)
-- [使用 TiSpark 读取 TiFlash](/tiflash/use-tispark-to-read-tiflash.md)
+您可以根据自己的需求，使用 TiDB 读取 TiFlash 副本进行中等规模的分析处理，或使用 TiSpark 读取 TiFlash 副本进行大规模的分析处理。详情请参见以下章节：
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+您可以使用 TiDB 读取 TiFlash 副本进行分析处理。详情请参见以下章节：
+
+</CustomContent>
+
+- [创建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)
+- [使用 TiDB 读取 TiFlash 副本](/tiflash/use-tidb-to-read-tiflash.md)
+
+<CustomContent platform="tidb">
+
+- [使用 TiSpark 读取 TiFlash 副本](/tiflash/use-tispark-to-read-tiflash.md)
+
+</CustomContent>
+
 - [使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)
 
-如果需要快速体验以 TPC-H 为例子，从导入到查询的完整流程，可以参考 [HTAP 快速上手指南](/quick-start-with-htap.md)。
+<CustomContent platform="tidb">
+
+要体验从导入数据到在 TPC-H 数据集中查询的完整过程，请参考 [TiDB HTAP 快速上手指南](/quick-start-with-htap.md)。
+
+</CustomContent>
 
 ## 另请参阅
 
-- 全新部署一个包含 TiFlash 节点的集群，请参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
-- 已有集群新增一个 TiFlash 节点，请参考[扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)
-- [TiFlash 常见运维操作](/tiflash/maintain-tiflash.md)
-- [TiFlash 性能调优](/tiflash/tune-tiflash-performance.md)
-- [TiFlash 配置参数介绍](/tiflash/tiflash-configuration.md)
-- [TiFlash 监控说明](/tiflash/monitor-tiflash.md)
-- [TiFlash 报警规则](/tiflash/tiflash-alert-rules.md)
-- [TiFlash 常见问题处理](/tiflash/troubleshoot-tiflash.md)
-- [TiFlash 支持的计算下推](/tiflash/tiflash-supported-pushdown-calculations.md)
-- [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
-- [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
+<CustomContent platform="tidb">
+
+- 要部署带有 TiFlash 节点的新集群，请参见[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
+- 要在已部署的集群中添加 TiFlash 节点，请参见[扩容 TiFlash 集群](/scale-tidb-using-tiup.md#扩容-tiflash-集群)。
+- [维护 TiFlash 集群](/tiflash/maintain-tiflash.md)。
+- [调优 TiFlash 性能](/tiflash/tune-tiflash-performance.md)。
+- [配置 TiFlash](/tiflash/tiflash-configuration.md)。
+- [监控 TiFlash 集群](/tiflash/monitor-tiflash.md)。
+- 了解 [TiFlash 告警规则](/tiflash/tiflash-alert-rules.md)。
+- [排查 TiFlash 集群问题](/tiflash/troubleshoot-tiflash.md)。
+- [TiFlash 支持的下推计算](/tiflash/tiflash-supported-pushdown-calculations.md)
+- [TiFlash 数据验证](/tiflash/tiflash-data-validation.md)
+- [TiFlash 兼容性](/tiflash/tiflash-compatibility.md)
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+- [调优 TiFlash 性能](/tiflash/tune-tiflash-performance.md)。
+- [TiFlash 支持的下推计算](/tiflash/tiflash-supported-pushdown-calculations.md)
+- [TiFlash 兼容性](/tiflash/tiflash-compatibility.md)
+
+</CustomContent>
