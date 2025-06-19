@@ -304,7 +304,7 @@ Query OK, 0 rows affected (0.01 sec)
 | schedule.hot-regions-write-interval | 设置 PD 存储 Hot Region 信息时间间隔 |
 | schedule.hot-regions-reserved-days | 设置 PD 保留的 Hot Region 信息的最长时间 |
 | schedule.max-movable-hot-peer-size | 设置热点调度可以调度的最大 Region size |
-| schedule.store-limit-version | 设置 store limit 工作模式 |
+| schedule.store-limit-version | 设置 [store limit](/configure-store-limit.md) 工作模式 |
 | schedule.patrol-region-worker-count | 控制 checker 检查 Region 健康状态时，创建 operator 的并发数 |
 | replication.max-replicas | 用于设置副本的数量 |
 | replication.location-labels | 用于设置 TiKV 集群的拓扑信息 |
@@ -316,7 +316,7 @@ Query OK, 0 rows affected (0.01 sec)
 | pd-server.key-type| 用于设置集群 key 的类型 |
 | pd-server.metric-storage | 用于设置集群 metrics 的存储地址 |
 | pd-server.dashboard-address | 用于设置 dashboard 的地址 |
-| pd-server.flow-round-by-digit | PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新 |
+| pd-server.flow-round-by-digit | 指定 PD 对 Region 流量信息的末尾数字进行四舍五入的位数 |
 | pd-server.min-resolved-ts-persistence-interval | 设置 PD leader 对集群中 Resolved TS 最小值进行持久化的间隔时间 |
 | pd-server.server-memory-limit | PD 实例的内存限制比例 |
 | pd-server.server-memory-limit-gc-trigger | PD 尝试触发 GC 的阈值比例 |
@@ -326,11 +326,11 @@ Query OK, 0 rows affected (0.01 sec)
 | replication-mode.dr-auto-sync.label-key | 用于区分不同的 AZ，需要和 Placement Rules 相匹配 |
 | replication-mode.dr-auto-sync.primary | 主 AZ |
 | replication-mode.dr-auto-sync.dr | 从 AZ |
-| replication-mode.dr-auto-sync.primary-replicas  | 是主 AZ 上 Voter 副本的数量 |
-| replication-mode.dr-auto-sync.dr-replicas | 是从 AZ 上 Voter 副本的数量 |
+| replication-mode.dr-auto-sync.primary-replicas  | 主 AZ 上 Voter 副本的数量 |
+| replication-mode.dr-auto-sync.dr-replicas | 从 AZ 上 Voter 副本的数量 |
 | replication-mode.dr-auto-sync.wait-store-timeout | 当出现网络隔离或者故障时，切换到异步复制模式的等待时间 |
-| replication-mode.dr-auto-sync.wait-recover-timeout | 当网络恢复后，切换回 sync-recover 状态的等待时间 |
-| replication-mode.dr-auto-sync.pause-region-split | 用于控制在 async_wait 和 async 状态下是否暂停 Region 的 split 操作 |
+| replication-mode.dr-auto-sync.wait-recover-timeout | 当网络恢复后，切换回 `sync-recover` 状态的等待时间 |
+| replication-mode.dr-auto-sync.pause-region-split | 用于控制在 `async_wait` 和 `async` 状态下是否暂停 Region 的 split 操作 |
 
 具体配置项意义可参考 [PD 配置文件描述](/pd-configuration-file.md)。
 
