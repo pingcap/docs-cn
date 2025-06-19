@@ -10,7 +10,7 @@ summary: TiDB 数据库中 CANCEL DISTRIBUTION 的使用情况。
 ## 语法图
 
 ```ebnf+diagram
-CancelImportJobsStmt ::=
+CancelDistributionJobsStmt ::=
     'CANCEL' 'DISTRIBUTION' 'JOB' JobID
 ```
 
