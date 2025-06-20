@@ -412,10 +412,7 @@ TiDB 版本：9.0.0
         - 更新不可恢复的系统表列表 [#52530](https://github.com/pingcap/tidb/issues/52530) @[Leavrth](https://github.com/Leavrth)
         - 采用并行方式，提升 PITR 恢复过程中的索引修复速度 [#59158](https://github.com/pingcap/tidb/issues/59158) @[Leavrth](https://github.com/Leavrth)
         - 备份扫描过程中支持忽略特定 lock，提高备份效率 [#53224](https://github.com/pingcap/tidb/issues/53224) @[3pointer](https://github.com/3pointer)
-        - 移除对 AWS region 名称的检查，避免新支持的 AWS region 因无法通过检查而导致备份报错的问题 [#18159](https://github.com/tikv/tikv/issues/18159) @[3pointer](https://github.com/3pointer)
-    <!-- + TiCDC
-
-         - 为 Canal-JSON 协议的 TiDB 扩展字段中新增 `tableId` 和 `partitionId` 字段 [#11874](https://github.com/pingcap/tiflow/issues/11874) @[3AceShowHand](https://github.com/3AceShowHand) --> <!-- for-beta.2 -->
+        - 移除对 AWS region 名称的检查，避免新支持的 AWS region 因无法通过检查而导致备份报错的问题 [#18159](https://github.com/tikv/tikv/issues/18159) @[3pointer](https://github.com/3pointer) <!-- + TiCDC         - 为 Canal-JSON 协议的 TiDB 扩展字段中新增 `tableId` 和 `partitionId` 字段 [#11874](https://github.com/pingcap/tiflow/issues/11874) @[3AceShowHand](https://github.com/3AceShowHand) --> <!-- for-beta.2 -->
 
     + TiDB Data Migration (DM)
 
