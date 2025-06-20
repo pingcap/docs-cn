@@ -161,7 +161,7 @@ server_configs:
 >
 > - 虚拟 IP 仅支持 Linux 操作系统。
 > - 运行 TiProxy 的 Linux 用户必须具有绑定 IP 地址的权限。
-> - 虚拟 IP 和所有 TiProxy 实例的 IP 必须处于同一个 CIDR 范围内。
+> - TiProxy 实例的真实 IP 和虚拟 IP 必须处于同一个 CIDR 范围内。
 
 #### `interface`
 
