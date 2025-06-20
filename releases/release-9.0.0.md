@@ -393,8 +393,7 @@ TiDB 版本：9.0.0
 
     - 支持当 `max-replicas` 小于当前副本数时打印警告信息 [#8959](https://github.com/tikv/pd/issues/8959) @[lhy1024](https://github.com/lhy1024)
     - 新增 `gRPC Received commands rate` 监控面板 [#8920](https://github.com/tikv/pd/issues/8920) @[okJiang](https://github.com/okJiang)
-    - 支持设置 `evict-slow-store-scheduler` 的 `batch` 大小 [#7156](https://github.com/tikv/pd/issues/7156) @[rleungx]
-(https://github.com/rleungx)
+    - 支持设置 `evict-slow-store-scheduler` 的 `batch` 大小 [#7156](https://github.com/tikv/pd/issues/7156) @[rleungx](https://github.com/rleungx)
     - 为 `UpdateTSO` 增加了重试机制 [#9020](https://github.com/tikv/pd/issues/9020) @[lhy1024](https://github.com/lhy1024)
 
 + TiFlash
