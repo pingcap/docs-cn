@@ -37,7 +37,7 @@ PartitionNameList ::=
 ```sql
 CREATE TABLE t1 (a INT);
 ...
-DISTRIBUTE TABLE t1 RULE= `leader-scatter` ENGINE = tikv TIMEOUT=`1h`
+DISTRIBUTE TABLE t1 RULE= "leader-scatter" ENGINE = "tikv" TIMEOUT="1h"
 ```
 
 ```
@@ -52,7 +52,7 @@ DISTRIBUTE TABLE t1 RULE= `leader-scatter` ENGINE = tikv TIMEOUT=`1h`
 ```sql
 CREATE TABLE t2 (a INT);
 ...
-DISTRIBUTE table t2  RULE = `learner-scatter` ENGINE = tiflash;
+DISTRIBUTE table t2  RULE = "learner-scatter" ENGINE = "tiflash";
 ```
 
 ```
@@ -70,7 +70,7 @@ CREATE TABLE t3 ( a INT, b INT, INDEX idx(b)) PARTITION BY RANGE( a ) (
     PARTITION p2 VALUES LESS THAN (20000),
     PARTITION p3 VALUES LESS THAN (MAXVALUE) );
 ...
-DISTRIBUTE TABLE t3 PARTITION (p1, p2) RULE = `peer-scatter` ENGINE = tikv;
+DISTRIBUTE TABLE t3 PARTITION (p1, p2) RULE = "peer-scatter" ENGINE = "tikv";
 ```
 
 ```
@@ -87,7 +87,7 @@ CREATE TABLE t4 ( a INT, b INT, INDEX idx(b)) PARTITION BY RANGE( a ) (
     PARTITION p1 VALUES LESS THAN (10000),
     PARTITION p2 VALUES LESS THAN (20000),
     PARTITION p3 VALUES LESS THAN (MAXVALUE) );
-DISTRIBUTE TABLE t4 PARTITION (p1, p2) RULE = `leader-scatter` ENGINE=tiflash;
+DISTRIBUTE TABLE t4 PARTITION (p1, p2) RULE = "leader-scatter" ENGINE="tiflash";
 ```
 
 ```
