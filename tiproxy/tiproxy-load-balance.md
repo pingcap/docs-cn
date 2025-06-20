@@ -43,7 +43,7 @@ TiProxy 定时通过 SQL 端口和状态端口检查 TiDB 是否已下线或正�
 4. 如果需要同时隔离存储层的资源，可配置 [Placement Rules](/configure-placement-rules.md) 或[资源管控 (Resource Control)](/tidb-resource-control-ru-groups.md)。
 5. 交易和 BI 业务的客户端分别连接到 2 台 TiProxy 的地址。
 
-<img src="https://github.com/pingcap/docs-cn/blob/release-8.5/media/tiproxy/tiproxy-balance-label.png" alt="基于标签的负载均衡" width="600" />
+<img src="https://docs-download.pingcap.com/media/images/docs-cn/tiproxy/tiproxy-balance-label.png" alt="基于标签的负载均衡" width="600" />
 
 上述拓扑图的配置示例如下：
 
