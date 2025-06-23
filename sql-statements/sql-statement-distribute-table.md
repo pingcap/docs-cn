@@ -47,12 +47,12 @@ DISTRIBUTE TABLE t1 RULE= "leader-scatter" ENGINE = "tikv" TIMEOUT="1h"
 +---------+
 ```
 
-对表 `t2` 在 Tiflash 上的 Learner 所在的 Region 重新进行均衡调度：
+对表 `t2` 在 TiFlash 上的 Learner 所在的 Region 重新进行均衡调度：
 
 ```sql
 CREATE TABLE t2 (a INT);
 ...
-DISTRIBUTE table t2  RULE = "learner-scatter" ENGINE = "tiflash";
+DISTRIBUTE TABLE t2  RULE = "learner-scatter" ENGINE = "tiflash";
 ```
 
 ```
