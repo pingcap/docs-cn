@@ -25,9 +25,9 @@ PartitionNameList ::=
 
 通过 `DISTRIBUTE TABLE` 语句重新调度表中的 Region 时，你可以根据需求指定存储引擎（如 TiFlash 或 TiKV）以及不同的 Raft 角色（如 Leader、Learner、Voter）进行均衡。
 
-- `RULE`：指定针对哪个 Raft 角色所在的 Region 进行均衡调度，可选值为 `leader-scatter`、`peer-scatter` 和 `learner-scatter`。
-- `ENGINE`：指定存储引擎，可选值为 `tikv` 和 `tiflash`。
-- `TIMEOUT`：指定打散操作的超时限制。 如果 PD 未在该时间内进行打散，打散任务将会自动退出。当未指定该参数时，默认值为 `30m`。
+- `RULE`：指定针对哪个 Raft 角色所在的 Region 进行均衡调度，可选值为 `"leader-scatter"`、`"peer-scatter"` 和 `"learner-scatter"`。
+- `ENGINE`：指定存储引擎，可选值为 `"tikv"` 和 `"tiflash"`。
+- `TIMEOUT`：指定打散操作的超时限制。 如果 PD 未在该时间内进行打散，打散任务将会自动退出。当未指定该参数时，默认值为 `"30m"`。
 
 
 ## 示例
