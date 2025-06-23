@@ -88,6 +88,14 @@ TiDB 版本：9.0.0
 
 ### 性能
 
+* 优化包含外键表场景下的建库建表和加列性能 [#61126](https://github.com/pingcap/tidb/issues/61126) @[GMHDBJD](https://github.com/GMHDBJD) @[River2000i](https://github.com/River2000i) **tw@hfxsd** <!--1896 beta.2-->
+
+    在早期版本中，在部分 SaaS 场景下，当集群中的表数量达到千万级别时，创建包含外键的表会出现明显的性能瓶颈。同时，大量外键关系还会进一步拖慢 CREATE TABLE 和 ADD COLUMN 等 DDL 操作的执行效率。从本版本起，TiDB 优化了相关元信息的处理逻辑，显著提升了在超大表规模场景下的 DDL 性能。
+
+    根据内部测试数据，在集群空负载、连接至 DDL owner 节点的情况下，建表速度最高可达 126 张表每秒，ADD COLUMN 操作的平均执行速度约为 45.5 张表每秒。
+
+     更多信息，请参考[用户文档](链接)。
+
 * 在几十万甚至上百万用户数的场景下，创建用户、修改用户信息的性能提升了 77 倍 [#55563](https://github.com/pingcap/tidb/issues/55563) @[tiancaiamao](https://github.com/tiancaiamao)  **tw@hfxsd**<!--1941-->
 
     之前的版本，当集群的用户数超过 20 万时，创建和修改用户的性能 QPS 会降低到 1。在一些 SaaS 场景，如果需要创建百万个用户，以及定期批量修改用户的密码信息，需要 2 天甚至更久的时间，对于一些 SaaS 业务是不可接受的。
@@ -143,6 +151,12 @@ TiDB 版本：9.0.0
 
 ### 高可用
 
+* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234 beta.2-->
+
+    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+
+    更多信息，请参考[用户文档](链接)。
+
 * TiProxy 支持流量回放功能正式发布 (GA) [#642](https://github.com/pingcap/tiproxy/issues/642) @[djshow832](https://github.com/djshow832)   **tw@hfxsd**<!--2062-->
 
     TiProxy v1.3.0 将流量回放功能作为实验特性发布。在 TiProxy v1.4.0 版本，流量回放功能正式发布 (GA)。TiProxy 提供专有的 SQL 命令进行流量捕获和流量回放功能。你可以更加方便地捕获 TiDB 生产集群中的访问流量，并在测试集群中按照指定的速率回放这些流量，完成业务验证。
@@ -151,13 +165,41 @@ TiDB 版本：9.0.0
 
 ### 稳定性
 
+* 客户端断连后，Server 端自动终止对应的 SQL [#60685](https://github.com/pingcap/tidb/pull/60685) @[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--2060 beta.2-->
+
+    为提升资源利用率和系统稳定性，TiDB 从 v9.0.0 起引入连接中断检测机制。当客户端连接异常断开时，TiDB 会主动终止该连接上仍在执行的 SQL 语句，及时释放资源，避免无效语句长期运行，影响系统性能。
+
+    更多信息，请参考[用户文档](链接)。
+
+* 引入 Table mode，在数据恢复阶段将限制用户对目标表进行读写操作，提升备份恢复任务的稳定性和数据一致性  [#59008](https://github.com/pingcap/tidb/issues/59008) @[fishiu](https://github.com/fishiu)@[River2000i](https://github.com/River2000i) @[Tristan1900](https://github.com/Tristan1900) @[Leavrth](https://github.com/Leavrth)   **tw@hfxsd** <!--2056 beta.2-->
+
+     引入了 Table Mode，当用户执行快照恢复，或者 PITR 时，目标表的 table mode 会被置为 restore，处于 restore mode 的表会禁止用户执行任何读写操作。当数据恢复完成时，table mode 会被自动置回 normal，用户可以正常读写该表，从而提升数据恢复期间的任务稳定性和数据一致性。
+
+    更多信息，请参考[用户文档](链接)。
+
 * 新增系统变量 `MAX_USER_CONNECTIONS`，用于限制不同用户可以建立的连接数 [#59203](https://github.com/pingcap/tidb/issues/59203) @[joccau](https://github.com/joccau) **tw@hfxsd**<!--2017-->
 
     从 v9.0.0 版本开始，你可通过设置系统变量 `MAX_USER_CONNECTIONS` ，来限制单个用户对单个 TiDB 节点可建立的连接数，避免由于单个用户消耗过多的 [token](/tidb-configuration-file.md#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 
 
     更多信息，请参考[用户文档](/system-variables.md#max_user_connections-从-v900-版本开始引入)。
 
+* 限制超额使用的资源组 [#issue号](链接) @[lhy1024](https://github.com/lhy1024) **tw@lilin90** <!--1940 beta.2-->
+
+    为资源组 (Resource Group) 设置 BURSTABLE 属性之后，TiDB 允许这个资源组的应用超额占用资源。但超额的申请有可能会挤占其他资源组的资源分配，影响其他资源组的 SLA。在 v9.0.0 中，我们为 BURSTABLE 增加了模式定义。默认情况下，BURSTABLE 采用相对 “温和 (`MODERATED`)” 的策略，TiDB 会动态调整超额资源申请的上限，尽量满足各个资源组限额内的资源。从前的“无限模式“仍旧保留，通过设置 `BURSTABLE=UNLIMITED` 来指定。
+
+    需要注意的是，旧版本升级上来的资源组默认保留原行为 (`UNLIMITED`)。如果要调整到”温和“模式，需要通过 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 修改定义。
+
+    为 BURSTABLE 增加”温和“分配模式，适用于系统中多个资源组优先级相当的场景。允许部分资源组安全地“溢出” ，在保证服务质量的前提下，更加高效利用资源。
+
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-create-resource-group.md)。
+
 ### SQL 功能
+
+* 支持字符集 `gb18030` 和排序规则 `gb18030_bin` 和 `gb18030_chinese_ci` [#17470](https://github.com/tikv/tikv/issues/17470) [#55791](https://github.com/pingcap/tidb/issues/55791) @[cbcwestwolf](https://github.com/cbcwestwolf) *tw@hfxsd* <!--1962 beta.2--> 
+ 
+    从 v9.0.0 开始，TiDB 支持 `gb18030` 字符集和 `gb18030_bin` 和 `gb18030_chinese_ci` 排序规则，以确保 TiDB 能够更好地处理中文相关的数据存储和查询需求。该字符集是一个广泛用于中文字符编码的标准，`gb18030_bin` 提供了基于二进制的精准排序，而 `gb18030_chinese_ci` 则支持大小写不敏感的通用排序规则，这两种排序规则使得对 `gb18030` 编码文本的排序和比较更加灵活高效。 通过支持 `gb18030` 字符集及其排序规则，TiDB v9.0.0 增强了与中文应用场景的兼容性，特别是在涉及多种语言和字符编码的场景下，可以更方便地进行字符集的选择和操作，提升了数据库的使用体验。 
+
+    更多信息，请参考[用户文档](/character-set-gb18030.md)。
 
 * 支持对分区表的非唯一列创建全局索引 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014) @[mjonss](https://github.com/mjonss) **tw@qiancai**<!--2057-->
 
@@ -180,6 +222,16 @@ TiDB 版本：9.0.0
     从 v9.0.0 开始，当日志备份任务正在运行时，在满足特定条件的情况下，仍然可以执行快照恢复，并且恢复的数据可以被进行中的日志备份正常记录。这样，日志备份可以持续进行，无需在恢复数据期间中断。
 
     更多信息，请参考[用户文档](/br/br-pitr-manual.md#进行中的日志备份与快照恢复的兼容性)。
+
+* 支持表级别数据打散功能（实验特性）[#8986](https://github.com/tikv/pd/issues/8986) @[bufferflies](https://github.com/bufferflies) **tw@qiancai** <!--1724 beta.2-->
+
+    PD 会自动调度数据，将整个集群的数据尽可能均匀地分布到所有 TiKV 节点上。然而，这种自动调度是基于集群全局的。在某些场景下，尽管整个集群的数据分布是均衡的，但某张表在各个 TiKV 节点上的数据分布可能仍然不均匀。
+
+    从 v9.0.0 开始，你可以通过 [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql-statement-show-distribution-jobs.md) 语句查看某张表在集群中所有 TiKV 节点上的数据分布情况。如果存在数据分布不均衡，可以通过 [`DISTRIBUTE TABLE`](/sql-statements/sql-statement-distribute-table.md) 语句对该表进行数据打散（实验特性），以提升负载均衡性。
+
+    表级数据打散功能属于一次性执行任务，并设有超时时间限制。如果到达超时时间后，打散任务未还未完成，则会自动退出。
+
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-distribute-table.md)。
 
 ### 可观测性
 
@@ -233,9 +285,39 @@ TiDB 版本：9.0.0
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-explain-analyze.md)。
 
+* 在慢日志和 Statement Summary Tables 中增加存储引擎标识 [#61736](https://github.com/pingcap/tidb/issues/61736) @[henrybw](https://github.com/henrybw) **tw@Oreoxmt**<!--2034 beta.2-->
+
+    在诊断优化过程中，经常需要按照存储引擎对 SQL 语句进行过滤。比如，当用户发现 TiFlash 上高负载时，希望只对运行在 TiFlash 的 SQL 语句进行过滤，找到可能引发 TiFlash 高负载的 SQL 语句。因此，在 v9.0.0 中，主要的 SQL 观测对象中增加了存储引擎标识。
+
+    在 [Statement Summary Tables](/statement-summary-tables.md) 中：
+
+    * `STORAGE_KV` = `1`： 该 SQL 读取了 TiKV。
+    * `STORAGE_MPP` = `1`： 该 SQL 读取了 TiFlash。
+
+    在[慢日志](/identify-slow-queries.md)中：
+
+    * `Storage_from_kv` = `true`：该 SQL 读取了 TiKV。
+    * `Storage_from_kv` = `true`：该 SQL 读取了 TiFlash。
+
+    这个增强能够简化一部分诊断和优化场景的工作，加速诊断效率。
+
+    更多信息，请参考 [Statement Summary Tables](/statement-summary-tables.md) 和 [慢日志](/identify-slow-queries.md)。
+
 ### 安全
 
+* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234 beta.2-->
+
+    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+
+    更多信息，请参考[用户文档](链接)。
+
 ### 数据迁移
+
+* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234 beta.2-->
+
+    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+
+    更多信息，请参考[用户文档](链接)。
 
 * TiCDC 引入新架构，显著提升性能、可扩展性和稳定性（实验特性）[#442](https://github.com/pingcap/ticdc/issues/442) @[CharlesCheung96](https://github.com/CharlesCheung96) **tw@qiancai** <!--2027-->
 
