@@ -244,7 +244,7 @@ TiProxy 的以下行为与 TiDB 不兼容：
 - TiProxy 进行缩容、升级、重启等下线操作。一旦 TiProxy 下线，客户端连接也会断开。
 - TiDB 主动断开连接。例如会话超过 `wait_timeout` 的时间没有发送请求时，TiDB 会主动断开连接，此时 TiProxy 也会断开客户端连接。
 
-以下情况下，TiProxy 无法进行连接迁移，因此无法正常地保持客户端连接或负载均衡：
+在以下情况下，TiProxy 将无法完成连接迁移，会导致客户端连接中断或负载均衡失效：
 
 - 单条语句或单个事务持续时间超过 TiDB server 配置的 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入) 时间减去 10 秒。
 - 会话使用了游标读取数据，且超过 TiDB server 配置的 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入) 时间减去 10 秒没有读完数据或关闭游标。
