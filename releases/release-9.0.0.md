@@ -223,13 +223,15 @@ TiDB 版本：9.0.0
 
     更多信息，请参考[用户文档](/br/br-pitr-manual.md#进行中的日志备份与快照恢复的兼容性)。
 
-* 支持表级别数据打散功能（实验特性） [#8986](https://github.com/tikv/pd/issues/8986) @[bufferflies](https://github.com/bufferflies) **tw@qiancai** <!--1724 beta.2-->
+* 支持表级别数据打散功能（实验特性）[#8986](https://github.com/tikv/pd/issues/8986) @[bufferflies](https://github.com/bufferflies) **tw@qiancai** <!--1724 beta.2-->
 
-    TiDB 会自动调度，将整个集群的数据均匀分布在所有 TiKV 节点。但是，数据的调度基于整个集群，在某些情况下，可能存在整个集群数据均匀分布，但是某张表的数据在整个集群中分布并不均匀的情况。从 v9.0.0 开始，TiDB 提供实验特性：表级数据分布信息查询和数据打散功能。该功能可以查看某张表在整个集群的所有 TiKV 节点的数据分布信息，以及将某张表的数据打散。
-    
-    表级数据打散功能为单次执行任务，有超时时间限制。如果在超时时间内表的数据已经打散，则该任务提前结束。
+    PD 会自动调度数据，将整个集群的数据尽可能均匀地分布到所有 TiKV 节点上。然而，这种自动调度是基于集群全局的。在某些场景下，尽管整个集群的数据分布是均衡的，但某张表在各个 TiKV 节点上的数据分布可能仍然不均匀。
 
-    更多信息，请参考[用户文档](/sql-statements/sql-statement-show-distribution-jobs.md)。
+    从 v9.0.0 开始，你可以通过 [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql-statement-show-distribution-jobs.md) 语句查看某张表在集群中所有 TiKV 节点上的数据分布情况。如果存在数据分布不均衡，可以通过 [`DISTRIBUTE TABLE`](/sql-statements/sql-statement-distribute-table.md) 语句对该表进行数据打散（实验特性），以提升负载均衡性。
+
+    表级数据打散功能属于一次性执行任务，并设有超时时间限制。如果到达超时时间后，打散任务未还未完成，则会自动退出。
+
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-distribute-table.md)。
 
 ### 可观测性
 
