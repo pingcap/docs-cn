@@ -144,7 +144,7 @@ level-merge = false
 
 > **警告：**
 >
-> 对于 v8.5.0 之前的版本，关闭 Titan 时，不建议更新 TiKV 配置项 [`rocksdb.titan.enabled`](/tikv-configuration-file.md#enabled) 为 `false`，因为该更新可能导致 TiKV crash。执行以下步骤 1 即可达到关闭 Titan 的目的。
+> 对于 v8.5.0 之前的版本，关闭 Titan 时，不建议更新 TiKV 配置项 [`rocksdb.titan.enabled`](/tikv-configuration-file.md#enabled) 为 `false`，因为该操作可能导致 TiKV crash。执行以下步骤 1 即可达到关闭 Titan 的目的。
 
 1. 更新需要关闭 Titan 的 TiKV 节点的配置。你可以通过以下两种方式之一更新 TiKV 配置：
 
