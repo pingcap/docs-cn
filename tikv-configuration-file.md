@@ -1431,7 +1431,7 @@ Titan 相关的配置项。
 
 > **警告：**
 >
-> 对于 v8.5.0 之前的版本，关闭 Titan 时，不建议更新该配置项值为 `false`，因为该更新可能导致 TiKV crash。要关闭 Titan，请参考[关闭 Titan](/storage-engine/titan-configuration.md#关闭-titan) 中的步骤。
+> 对于 v8.5.0 之前的版本，关闭 Titan 时，不建议更新该配置项值为 `false`，因为该操作可能导致 TiKV crash。要关闭 Titan，请参考[关闭 Titan](/storage-engine/titan-configuration.md#关闭-titan) 中的步骤。
 
 > **注意：**
 >
