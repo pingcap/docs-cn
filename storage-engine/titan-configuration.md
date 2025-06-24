@@ -117,15 +117,11 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 - 当设置为 `read-only` 时，新写入的 value 不论大小均会写入 RocksDB。
 - 当设置为 `fallback` 时，新写入的 value 不论大小均会写入 RocksDB，并且当 RocksDB 进行 compaction 时，会自动把所碰到的存储在 Titan blob file 中的 value 移回 RocksDB。
 
-<<<<<<< HEAD
-如果现有数据和未来数据均不再需要 Titan，可执行以下步骤完全关闭 Titan：
-=======
 如果现有数据和未来数据均不再需要 Titan，可执行以下步骤关闭 Titan。一般情况下，只需要执行以下步骤 1 和步骤 3 即可。步骤 2 虽然可以加快数据迁移速度，但会严重影响用户 SQL 的性能。事实上，即使跳过步骤 2，由于在 Compaction 过程中会将数据从 Titan 迁移到 RocksDB，会占用额外的 I/O 和 CPU 资源，因此仍然可以观察到一定的性能损失，在资源紧张的情况下吞吐可以下降 50% 以上。
 
 > **警告：**
 >
 > 对于 v8.5.0 之前的版本，关闭 Titan 时，不建议修改 TiKV 配置项 [`rocksdb.titan.enabled`](/tikv-configuration-file.md#enabled) 为 `false`，因为该修改可能导致 TiKV crash。执行以下步骤 1 即可达到关闭 Titan 的目的。
->>>>>>> 9aacbc5260 (titan-configuration: remove the unrecommended steps of updating TiKV configuration  (#20526))
 
 1. 更新需要关闭 Titan 的 TiKV 节点的配置。你可以通过以下两种方式之一更新 TiKV 配置：
 
@@ -146,16 +142,6 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 3. 数据整理结束后，通过 **TiKV-Details**/**Titan - kv** 监控面板确认 **Blob file count** 指标降为 0。
 
-<<<<<<< HEAD
-4. 更新 TiKV 节点的配置，关闭 Titan。
-
-    ```toml
-    [rocksdb.titan]
-    enabled = false
-    ```
-
-=======
->>>>>>> 9aacbc5260 (titan-configuration: remove the unrecommended steps of updating TiKV configuration  (#20526))
 ## Level Merge（实验功能）
 
 TiKV 4.0 中 Titan 提供新的算法提升范围查询性能并降低 Titan GC 对前台写入性能的影响。这个新的算法称为 [Level Merge](/storage-engine/titan-overview.md#level-merge)。Level Merge 可以通过以下选项开启：
