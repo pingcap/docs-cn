@@ -1,38 +1,38 @@
 ---
 title: 其他函数
-summary: TiDB 支持使用 MySQL 8.0 中提供的大部分其他函数。
+summary: 了解 TiDB 中的其他函数。
 ---
 
 # 其他函数
 
-TiDB 支持使用 MySQL 8.0 中提供的大部分[其他函数](https://dev.mysql.com/doc/refman/8.0/en/miscellaneous-functions.html)。
+TiDB 支持 MySQL 8.0 中提供的大多数[其他函数](https://dev.mysql.com/doc/refman/8.0/en/miscellaneous-functions.html)。
 
 ## 支持的函数
 
-| 函数名 | 功能描述  |
-|:------------|:-------------------------------------------------------------------------------|
-| [`ANY_VALUE()`](#any_value)              | 在 `ONLY_FULL_GROUP_BY` 模式下，防止带有 `GROUP BY` 的语句报错      |
-| [`BIN_TO_UUID()`](#bin_to_uuid)          | 将通用唯一识别码 (UUID) 从二进制格式转换为文本格式    |
-| [`DEFAULT()`](#default)                  | 返回表的某一列的默认值      |
+| 名称 | 描述  |
+|:------------|:-----------------------------------------------------------------------------------------------|
+| [`ANY_VALUE()`](#any_value)              | 抑制 `ONLY_FULL_GROUP_BY` 值拒绝     |
+| [`BIN_TO_UUID()`](#bin_to_uuid)          | 将 UUID 从二进制格式转换为文本格式    |
+| [`DEFAULT()`](#default)                  | 返回表列的默认值      |
 | [`GROUPING()`](#grouping)                | `GROUP BY` 操作的修饰符                |
-| [`INET_ATON()`](#inet_aton)              | 将 IP 地址转换为数值         |
-| [`INET_NTOA()`](#inet_ntoa)              | 将数值转换为 IP 地址        |
-| [`INET6_ATON()`](#inet6_aton)            | 将 IPv6 地址转换为数值       |
-| [`INET6_NTOA()`](#inet6_ntoa)            | 将数值转换为 IPv6 地址      |
+| [`INET_ATON()`](#inet_aton)              | 返回 IP 地址的数值         |
+| [`INET_NTOA()`](#inet_ntoa)              | 从数值返回 IP 地址        |
+| [`INET6_ATON()`](#inet6_aton)            | 返回 IPv6 地址的数值       |
+| [`INET6_NTOA()`](#inet6_ntoa)            | 从数值返回 IPv6 地址      |
 | [`IS_IPV4()`](#is_ipv4)                  | 判断参数是否为 IPv4 地址               |
-| [`IS_IPV4_COMPAT()`](#is_ipv4_compat)    | 判断参数是否为兼容 IPv4 的地址    |
-| [`IS_IPV4_MAPPED()`](#is_ipv4_mapped)    | 判断参数是否为 IPv4 映射的地址        |
+| [`IS_IPV4_COMPAT()`](#is_ipv4_compat)    | 判断参数是否为 IPv4 兼容地址    |
+| [`IS_IPV4_MAPPED()`](#is_ipv4_mapped)    | 判断参数是否为 IPv4 映射地址        |
 | [`IS_IPV6()`](#is_ipv6)                  | 判断参数是否为 IPv6 地址               |
 | [`IS_UUID()`](#is_uuid)                  | 判断参数是否为 UUID                       |
-| [`NAME_CONST()`](#name_const)            | 可以用于重命名列名               |
-| [`SLEEP()`](#sleep)                      | 让语句暂停执行几秒时间       |
-| [`UUID()`](#uuid)                        | 返回一个通用唯一识别码 (UUID)       |
+| [`NAME_CONST()`](#name_const)            | 可用于重命名列名               |
+| [`SLEEP()`](#sleep)                      | 休眠指定的秒数。注意，对于 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 集群，`SLEEP()` 函数有一个限制，即最大休眠时间只能支持 300 秒。       |
+| [`UUID()`](#uuid)                        | 返回通用唯一标识符 (UUID)       |
 | [`UUID_TO_BIN()`](#uuid_to_bin)          | 将 UUID 从文本格式转换为二进制格式    |
-| [`VALUES()`](#values)                    | 定义 `INSERT` 语句使用的值    |
+| [`VALUES()`](#values)                    | 定义在 INSERT 期间要使用的值    |
 
 ### ANY_VALUE()
 
-`ANY_VALUE()` 函数可以从一组值中返回其中任意一个值。通常，该函数用于需要在 `SELECT` 语句中包含非聚合列以及 `GROUP BY` 子句的场景中。
+`ANY_VALUE()` 函数从一组值中返回任意一个值。通常，它用在需要在 `SELECT` 语句中包含非聚合列和 `GROUP BY` 子句的场景中。
 
 ```sql
 CREATE TABLE fruits (id INT PRIMARY KEY, name VARCHAR(255));
@@ -57,14 +57,14 @@ SELECT ANY_VALUE(id),GROUP_CONCAT(id),name FROM fruits GROUP BY name;
 4 rows in set (0.00 sec)
 ```
 
-在以上示例中，执行了第一条 `SELECT` 语句后，TiDB 返回了一条错误，这是因为 `id` 列是非聚合列且未包含在 `GROUP BY` 子句中。为了解决此问题，第二个 `SELECT` 查询使用了 `ANY_VALUE()` 从每个组中获取任意值，并使用了 `GROUP_CONCAT()` 将每个组中 `id` 列的所有值拼接成一个字符串。通过这种方法，你可以获取每个组中的一个值以及该组的所有值，而无需改变非聚合列的 SQL 模式。
+在上述示例中，第一个 `SELECT` 语句返回错误，因为 `id` 列是非聚合的且未包含在 `GROUP BY` 子句中。为解决此问题，第二个 `SELECT` 查询使用 `ANY_VALUE()` 从每个组中获取任意值，并使用 `GROUP_CONCAT()` 将每个组内 `id` 列的所有值连接成单个字符串。这种方法使您能够在不更改非聚合列的 SQL 模式的情况下，获取每个组的一个值和该组的所有值。
 
 ### BIN_TO_UUID()
 
-`BIN_TO_UUID()` 和 `UUID_TO_BIN()` 用于在文本格式 UUID 和二进制格式 UUID 之间进行转换。这两个函数都可以接受两个参数。
+`BIN_TO_UUID()` 和 `UUID_TO_BIN()` 可用于在文本格式 UUID 和二进制格式之间进行转换。这两个函数都接受两个参数。
 
-- 第一个参数用于指定要转换的值。
-- 第二个参数（可选）用于控制二进制格式中字段的排序。
+- 第一个参数指定要转换的值。
+- 第二个参数（可选）控制二进制格式中字段的排序。
 
 ```sql
 SET @a := UUID();
@@ -137,7 +137,7 @@ TABLE t1;
 1 row in set (0.00 sec)
 ```
 
-在以上示例中，`UPDATE` 语句将 `c1` 列的值设置为列的默认值（即 `5`）加 `3`，从而得到一个新值 `8`。
+在上述示例中，`UPDATE` 语句将 `c1` 列的值设置为该列的默认值（即 `5`）加 `3`，得到新值 `8`。
 
 ### GROUPING()
 
@@ -145,7 +145,7 @@ TABLE t1;
 
 ### INET_ATON()
 
-`INET_ATON()` 函数用于将点分十进制形式表示的 IPv4 地址转换为可有效存储的二进制形式。
+`INET_ATON()` 函数将点分四段表示法的 IPv4 地址转换为可以高效存储的二进制版本。
 
 ```sql
 SELECT INET_ATON('127.0.0.1');
@@ -162,7 +162,7 @@ SELECT INET_ATON('127.0.0.1');
 
 ### INET_NTOA()
 
-`INET_NTOA()` 函数用于将二进制 IPv4 地址转换为点分十进制表示形式。
+`INET_NTOA()` 函数将二进制 IPv4 地址转换为点分四段表示法。
 
 ```sql
 SELECT INET_NTOA(2130706433);
@@ -179,7 +179,7 @@ SELECT INET_NTOA(2130706433);
 
 ### INET6_ATON()
 
-`INET6_ATON()` 函数的功能类似于 [`INET_ATON()`](#inet_aton)，但 `INET6_ATON()` 还可以处理 IPv6 地址。
+`INET6_ATON()` 函数类似于 [`INET_ATON()`](#inet_aton)，但 `INET6_ATON()` 也可以处理 IPv6 地址。
 
 ```sql
 SELECT INET6_ATON('::1');
@@ -196,7 +196,7 @@ SELECT INET6_ATON('::1');
 
 ### INET6_NTOA()
 
-`INET6_NTOA()` 函数的功能类似于 [`INET_NTOA()`](#inet_ntoa)，但 `INET6_NTOA()` 还可以处理 IPv6 地址。
+`INET6_NTOA()` 函数类似于 [`INET_NTOA()`](#inet_ntoa)，但 `INET6_NTOA()` 也可以处理 IPv6 地址。
 
 ```sql
 SELECT INET6_NTOA(0x00000000000000000000000000000001);
@@ -213,7 +213,7 @@ SELECT INET6_NTOA(0x00000000000000000000000000000001);
 
 ### IS_IPV4()
 
-`IS_IPV4()` 函数用于判断输入的参数是否为 IPv4 地址。
+`IS_IPV4()` 函数测试给定参数是否为 IPv4 地址。
 
 ```sql
 SELECT IS_IPV4('127.0.0.1');
@@ -243,7 +243,7 @@ SELECT IS_IPV4('300.0.0.1');
 
 ### IS_IPV4_COMPAT()
 
-`IS_IPV4_COMPAT()` 函数用于判断输入的参数是否为兼容 IPv4 的地址。
+`IS_IPV4_COMPAT()` 函数测试给定参数是否为 IPv4 兼容地址。
 
 ```sql
 SELECT IS_IPV4_COMPAT(INET6_ATON('::127.0.0.1'));
@@ -260,7 +260,7 @@ SELECT IS_IPV4_COMPAT(INET6_ATON('::127.0.0.1'));
 
 ### IS_IPV4_MAPPED()
 
-`IS_IPV4_MAPPED()` 函数用于判断输入的参数是否为 IPv4 映射的地址。
+`IS_IPV4_MAPPED()` 函数测试给定参数是否为 IPv4 映射地址。
 
 ```sql
 SELECT IS_IPV4_MAPPED(INET6_ATON('::ffff:127.0.0.1'));
@@ -277,7 +277,7 @@ SELECT IS_IPV4_MAPPED(INET6_ATON('::ffff:127.0.0.1'));
 
 ### IS_IPV6()
 
-`IS_IPV6()` 函数用于判断输入的参数是否为 IPv6 地址。
+`IS_IPV6()` 函数测试给定参数是否为 IPv6 地址。
 
 ```sql
 SELECT IS_IPV6('::1');
@@ -294,7 +294,7 @@ SELECT IS_IPV6('::1');
 
 ### IS_UUID()
 
-`IS_UUID()` 函数用于判断输入的参数是否为 [UUID](/best-practices/uuid.md)。
+`IS_UUID()` 函数测试给定参数是否为 [UUID](/best-practices/uuid.md)。
 
 ```sql
 SELECT IS_UUID('eb48c08c-eb71-11ee-bacf-5405db7aad56');
@@ -311,7 +311,7 @@ SELECT IS_UUID('eb48c08c-eb71-11ee-bacf-5405db7aad56');
 
 ### NAME_CONST()
 
-函数 `NAME_CONST()` 用于命名列。建议使用列别名功能代替。
+`NAME_CONST()` 函数用于命名列。建议使用列别名代替。
 
 ```sql
 SELECT NAME_CONST('column name', 'value') UNION ALL SELECT 'another value';
@@ -327,7 +327,7 @@ SELECT NAME_CONST('column name', 'value') UNION ALL SELECT 'another value';
 2 rows in set (0.00 sec)
 ```
 
-上面这条语句使用了 `NAME_CONST()`，下面这条语句使用了列别名的方式（推荐）。
+上述语句使用 `NAME_CONST()`，而下面的语句使用推荐的列别名方式。
 
 ```sql
 SELECT 'value' AS 'column name' UNION ALL SELECT 'another value';
@@ -345,7 +345,7 @@ SELECT 'value' AS 'column name' UNION ALL SELECT 'another value';
 
 ### SLEEP()
 
-`SLEEP()` 函数用于将查询暂停执行几秒。
+`SLEEP()` 函数用于暂停查询执行指定的秒数。
 
 ```sql
 SELECT SLEEP(1.5);
@@ -362,7 +362,7 @@ SELECT SLEEP(1.5);
 
 ### UUID()
 
-`UUID()` 函数用于返回通用唯一标识符 (UUID) version 1。UUID 的定义可参考 [RFC 4122](https://datatracker.ietf.org/doc/html/rfc4122)。
+`UUID()` 函数返回一个符合 [RFC 4122](https://datatracker.ietf.org/doc/html/rfc4122) 定义的版本 1 通用唯一标识符 (UUID)。
 
 ```sql
 SELECT UUID();
@@ -414,6 +414,6 @@ TABLE t1;
 
 ## 不支持的函数
 
-| 函数名 | 功能描述  |
-|:------|:-----------|
-| [`UUID_SHORT()`](https://dev.mysql.com/doc/refman/8.0/en/miscellaneous-functions.html#function_uuid-short)  | 基于特定假设提供唯一的 UUID，目前这些假设在 TiDB 中不存在，详见 [TiDB #4620](https://github.com/pingcap/tidb/issues/4620) |
+| 名称 | 描述  |
+|:------------|:-----------------------------------------------------------------------------------------------|
+| [`UUID_SHORT()`](https://dev.mysql.com/doc/refman/8.0/en/miscellaneous-functions.html#function_uuid-short)            | 提供在 TiDB 中不存在的某些假设条件下唯一的 UUID [TiDB #4620](https://github.com/pingcap/tidb/issues/4620) |

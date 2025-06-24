@@ -1,68 +1,86 @@
 ---
 title: 创建二级索引
-summary: 创建二级索引的方法、规范及例子。
+summary: 学习创建二级索引的步骤、规则和示例。
 ---
 
 # 创建二级索引
 
-在这个章节当中，将开始介绍如何使用 SQL 来创建二级索引，及创建二级索引时应遵守的规则。将在这个章节中围绕 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 这个应用程序来对 TiDB 的创建二级索引部分展开介绍。
+本文介绍如何使用 SQL 和各种编程语言创建二级索引，并列出了索引创建的规则。在本文中，以 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 应用程序为例，引导你完成二级索引创建的步骤。
 
-## 在开始之前
+## 开始之前
 
-在阅读本页面之前，你需要准备以下事项：
+在创建二级索引之前，请执行以下操作：
 
-- [使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
-- 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)。
-- [创建一个数据库](/develop/dev-guide-create-database.md)。
+- [构建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- 阅读[架构设计概述](/develop/dev-guide-schema-design-overview.md)。
+- [创建数据库](/develop/dev-guide-create-database.md)。
 - [创建表](/develop/dev-guide-create-table.md)。
 
 ## 什么是二级索引
 
-二级索引是集群中的逻辑对象，你可以简单地认为它就是一种对数据的排序，TiDB 使用这种有序性来加速查询。TiDB 的创建二级索引的操作为在线操作，不会阻塞表中的数据读写。TiDB 会创建表中各行的引用，并按选择的列进行排序。而并非对表本身的数据进行排序。可在[二级索引](/best-practices/tidb-best-practices.md#二级索引)中查看更多信息。二级索引可[跟随表进行创建](#新建表的同时创建二级索引)，也可[在已有的表上进行添加](#在已有表中添加二级索引)。
+二级索引是 TiDB 集群中的一个逻辑对象。你可以简单地将其视为 TiDB 用来提高查询性能的一种数据排序方式。在 TiDB 中，创建二级索引是一个在线操作，不会阻塞表上的任何数据读写操作。对于每个索引，TiDB 为表中的每一行创建引用，并按选定的列对引用进行排序，而不是直接对数据进行排序。
 
-## 在已有表中添加二级索引
+<CustomContent platform="tidb">
 
-如果需要对已有表中添加二级索引，可使用 [CREATE INDEX](/sql-statements/sql-statement-create-index.md) 语句。在 TiDB 中，`CREATE INDEX` 为在线操作，不会阻塞表中的数据读写。二级索引创建一般如以下形式：
+有关二级索引的更多信息，请参阅[二级索引](/best-practices/tidb-best-practices.md#secondary-index)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+有关二级索引的更多信息，请参阅[二级索引](https://docs.pingcap.com/tidb/stable/tidb-best-practices#secondary-index)。
+
+</CustomContent>
+
+在 TiDB 中，你可以[为现有表添加二级索引](#为现有表添加二级索引)或[在创建新表时创建二级索引](#在创建新表时创建二级索引)。
+
+## 为现有表添加二级索引
+
+要为现有表添加二级索引，你可以使用 [CREATE INDEX](/sql-statements/sql-statement-create-index.md) 语句，如下所示：
 
 ```sql
 CREATE INDEX {index_name} ON {table_name} ({column_names});
 ```
 
-**参数描述**
+参数说明：
 
-- `{index_name}`: 二级索引名。
-- `{table_name}`: 表名。
-- `{column_names}`: 将需要索引的列名列表，以半角逗号分隔。
+- `{index_name}`：二级索引的名称。
+- `{table_name}`：表名。
+- `{column_names}`：要建立索引的列名，用逗号分隔。
 
-## 新建表的同时创建二级索引
+## 在创建新表时创建二级索引
 
-如果你希望在创建表的同时，同时创建二级索引，可在 [CREATE TABLE](/sql-statements/sql-statement-create-table.md) 的末尾使用包含 `KEY` 关键字的子句来创建二级索引：
+要在创建表的同时创建二级索引，你可以在 [CREATE TABLE](/sql-statements/sql-statement-create-table.md) 语句的末尾添加包含 `KEY` 关键字的子句：
 
 ```sql
 KEY `{index_name}` (`{column_names}`)
 ```
 
-**参数描述**
+参数说明：
 
-- `{index_name}`: 二级索引名。
-- `{column_names}`: 将需要索引的列名列表，以半角逗号分隔。
+- `{index_name}`：二级索引的名称。
+- `{column_names}`：要建立索引的列名，用逗号分隔。
 
-## 创建二级索引时应遵守的规则
+## 创建二级索引的规则
 
-见[索引的最佳实践](/develop/dev-guide-index-best-practice.md)。
+请参阅[索引的最佳实践](/develop/dev-guide-index-best-practice.md)。
 
-## 例子
+## 示例
 
-假设你希望 `bookshop` 应用程序有 **查询某个年份出版的所有书籍** 的功能。`books` 表如下所示:
+假设你希望 `bookshop` 应用程序支持**搜索指定年份发布的所有图书**。
 
-|    字段名    |     类型      |                 含义                  |
-| :----------: | :-----------: | :-----------------------------------: |
-|      id      |  bigint(20)   |            书籍的唯一标识             |
-|    title     | varchar(100)  |               书籍名称                |
-|     type     |     enum      | 书籍类型（如：杂志、动漫、教辅等） |
-|    stock     |  bigint(20)   |                 库存                  |
-|    price     | decimal(15,2) |                 价格                  |
-| published_at |   datetime    |               出版时间                |
+`books` 表中的字段如下：
+
+| 字段名        | 类型          | 字段说明                                                          |
+|--------------|---------------|------------------------------------------------------------------|
+| id           | bigint(20)    | 图书的唯一 ID                                                     |
+| title        | varchar(100)  | 图书标题                                                          |
+| type         | enum          | 图书类型（例如，杂志、动漫和教辅）                                  |
+| stock        | bigint(20)    | 库存                                                              |
+| price        | decimal(15,2) | 价格                                                              |
+| published_at | datetime      | 发布日期                                                          |
+
+使用以下 SQL 语句创建 `books` 表：
 
 ```sql
 CREATE TABLE `bookshop`.`books` (
@@ -76,19 +94,19 @@ CREATE TABLE `bookshop`.`books` (
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 ```
 
-因此，就需要对 **查询某个年份出版的所有书籍** 的 SQL 进行编写，以 2022 年为例，如下所示：
+要支持按年份搜索功能，你需要编写一个 SQL 语句来**搜索指定年份发布的所有图书**。以 2022 年为例，编写如下 SQL 语句：
 
 ```sql
 SELECT * FROM `bookshop`.`books` WHERE `published_at` >= '2022-01-01 00:00:00' AND `published_at` < '2023-01-01 00:00:00';
 ```
 
-可以使用 [EXPLAIN](/sql-statements/sql-statement-explain.md) 进行 SQL 语句的执行计划检查：
+要检查 SQL 语句的执行计划，你可以使用 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 语句。
 
 ```sql
 EXPLAIN SELECT * FROM `bookshop`.`books` WHERE `published_at` >= '2022-01-01 00:00:00' AND `published_at` < '2023-01-01 00:00:00';
 ```
 
-运行结果为：
+以下是执行计划的示例输出：
 
 ```
 +-------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------+
@@ -101,15 +119,17 @@ EXPLAIN SELECT * FROM `bookshop`.`books` WHERE `published_at` >= '2022-01-01 00:
 3 rows in set (0.61 sec)
 ```
 
-可以看到返回的计划中，出现了类似 **TableFullScan** 的字样，这代表 TiDB 准备在这个查询中对 `books` 表进行全表扫描，这在数据量较大的情况下，几乎是致命的。
+在示例输出中，`id` 列显示了 **TableFullScan**，这意味着 TiDB 准备在这个查询中对 `books` 表进行全表扫描。然而，在数据量较大的情况下，全表扫描可能会非常慢，并造成致命影响。
 
-在 `books` 表增加一个 `published_at` 列的索引：
+为避免这种影响，你可以为 `books` 表的 `published_at` 列添加一个索引，如下所示：
 
 ```sql
 CREATE INDEX `idx_book_published_at` ON `bookshop`.`books` (`bookshop`.`books`.`published_at`);
 ```
 
-添加索引后，再次运行 `EXPLAIN` 语句检查执行计划：
+添加索引后，再次执行 `EXPLAIN` 语句来检查执行计划。
+
+以下是示例输出：
 
 ```
 +-------------------------------+---------+-----------+--------------------------------------------------------+-------------------------------------------------------------------+
@@ -122,23 +142,33 @@ CREATE INDEX `idx_book_published_at` ON `bookshop`.`books` (`bookshop`.`books`.`
 3 rows in set (0.18 sec)
 ```
 
-可以看到执行计划中没有了 **TableFullScan** 的字样，取而代之的是 **IndexRangeScan**，这代表已经 TiDB 在进行这个查询时准备使用索引。
+在输出中，显示了 **IndexRangeScan** 而不是 **TableFullScan**，这意味着 TiDB 准备使用索引来执行这个查询。
+
+执行计划中的 **TableFullScan** 和 **IndexRangeScan** 等词是 TiDB 中的[算子](/explain-overview.md#operator-overview)。有关执行计划和算子的更多信息，请参阅 [TiDB 执行计划概览](/explain-overview.md)。
+
+<CustomContent platform="tidb">
+
+执行计划不会每次都返回相同的算子。这是因为 TiDB 使用**基于成本的优化 (CBO)** 方法，其中执行计划取决于规则和数据分布。有关 TiDB SQL 性能的更多信息，请参阅 [SQL 调优概述](/sql-tuning-overview.md)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+执行计划不会每次都返回相同的算子。这是因为 TiDB 使用**基于成本的优化 (CBO)** 方法，其中执行计划取决于规则和数据分布。有关 TiDB SQL 性能的更多信息，请参阅 [SQL 调优概述](/tidb-cloud/tidb-cloud-sql-tuning-overview.md)。
+
+</CustomContent>
 
 > **注意：**
 >
-> 上方执行计划中的的 **TableFullScan**、**IndexRangeScan** 等在 TiDB 内被称为[算子](/explain-overview.md#算子简介)。这里对执行计划的解读及算子等不做进一步的展开，若你对此感兴趣，可前往 [TiDB 执行计划概览](/explain-overview.md)文档查看更多关于执行计划与 TiDB 算子的相关知识。
->
-> 执行计划并非每次返回使用的算子都相同，这是由于 TiDB 使用的优化方式为 **基于代价的优化方式 (CBO)**，执行计划不仅与规则相关，还和数据分布相关。你可以前往 [SQL 性能调优](/sql-tuning-overview.md)文档查看更多 TiDB SQL 性能的描述。
->
-> TiDB 在查询时，还支持显式地使用索引，你可以使用 [Optimizer Hints](/optimizer-hints.md) 或[执行计划管理 (SPM)](/sql-plan-management.md) 来人为的控制索引的使用。但如果你不了解它内部发生了什么，请你**_暂时先不要使用它_**。
+> TiDB 还支持在查询时显式使用索引，你可以使用[优化器提示](/optimizer-hints.md)或 [SQL 计划管理 (SPM)](/sql-plan-management.md)来人为控制索引的使用。但如果你对索引、优化器提示或 SPM 不够了解，**不要**使用此功能，以避免任何意外结果。
 
-可以使用 [SHOW INDEXES](/sql-statements/sql-statement-show-indexes.md) 语句查询表中的索引：
+要查询表上的索引，你可以使用 [SHOW INDEXES](/sql-statements/sql-statement-show-indexes.md) 语句：
 
 ```sql
 SHOW INDEXES FROM `bookshop`.`books`;
 ```
 
-运行结果为：
+以下是示例输出：
 
 ```
 +-------+------------+-----------------------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+-----------+
@@ -150,6 +180,20 @@ SHOW INDEXES FROM `bookshop`.`books`;
 2 rows in set (1.63 sec)
 ```
 
-## 更进一步
+## 下一步
 
-至此，你已经完成数据库、表及二级索引的创建，接下来，数据库模式已经准备好给你的应用程序提供[写入](/develop/dev-guide-insert-data.md)和[读取](/develop/dev-guide-get-data-from-single-table.md)的能力了。
+在创建数据库并向其添加表和二级索引后，你可以开始向应用程序添加数据[写入](/develop/dev-guide-insert-data.md)和[读取](/develop/dev-guide-get-data-from-single-table.md)功能。
+
+## 需要帮助？
+
+<CustomContent platform="tidb">
+
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 上询问社区，或[提交支持工单](/support.md)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 上询问社区，或[提交支持工单](https://tidb.support.pingcap.com/)。
+
+</CustomContent>

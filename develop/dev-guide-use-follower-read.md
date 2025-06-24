@@ -1,49 +1,61 @@
 ---
 title: Follower Read
-summary: 使用 Follower Read 在特定情况下加速查询。
+summary: 了解如何使用 Follower Read 优化查询性能。
 ---
 
 # Follower Read
 
-本章将介绍使用 Follower Read 在特定情况下加速查询的方法。
+本文档介绍如何使用 Follower Read 优化查询性能。
 
 ## 简介
 
-在 TiDB 当中，数据是以 [Region](/tidb-storage.md#region) 为单位，分散在集群中所有的节点上进行存储的。一个 Region 可以存在多个副本，副本又分为一个 leader 和多个 follower。当 leader 上的数据发生变化时，TiDB 会将数据同步更新到 follower。
+TiDB 使用 [Region](/tidb-storage.md#region) 作为基本单位将数据分布到集群中的所有节点。一个 Region 可以有多个副本，这些副本分为一个 leader 和多个 follower。当 leader 上的数据发生变化时，TiDB 会同步更新数据到 follower。
 
-默认情况下，TiDB 只会在同一个 Region 的 leader 上读写数据。当系统中存在读取热点 Region 导致 leader 资源紧张成为整个系统读取瓶颈时，启用 Follower Read 功能可明显降低 leader 的负担，并且通过在多个 follower 之间均衡负载，显著地提升整体系统的吞吐能力。
+默认情况下，TiDB 只在同一个 Region 的 leader 上读写数据。当 Region 出现读热点时，Region leader 可能成为整个系统的读取瓶颈。在这种情况下，启用 Follower Read 功能可以通过在多个 follower 之间平衡负载来显著减少 leader 的负载并提高整个系统的吞吐量。
 
-## 何时使用
+## 使用场景
 
-### 优化读热点
+### 减少读热点
 
-你可以在 [TiDB Dashboard 流量可视化页面](/dashboard/dashboard-key-visualizer.md)当中通过可视化的方法分析你的应用程序是否存在热点 Region。你可以通过将「指标选择框」选择到 `Read (bytes)` 或 `Read (keys)` 查看是否存在读取热点 Region。
+<CustomContent platform="tidb">
 
-如果发现确实存在热点问题，你可以通过阅读 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)章节进行逐一排查，以便从应用程序层面上避免热点的产生。
+你可以在 [TiDB Dashboard 的 Key Visualizer 页面](/dashboard/dashboard-key-visualizer.md)上直观地分析你的应用程序是否存在热点 Region。你可以通过选择"指标选择框"为 `Read (bytes)` 或 `Read (keys)` 来检查是否出现读热点。
 
-如果读取热点的确无法避免或者改动的成本很大，你可以尝试通过 Follower Read 功能将读取请求更好的负载均衡到 follower region。
+有关处理热点的更多信息，请参阅 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)。
 
-### 优化跨数据中心部署的延迟
+</CustomContent>
 
-如果 TiDB 集群是跨地区或跨数据中心部署的，一个 Region 的不同副本分布在不同的地区或数据中心，此时可以通过配置 Follower Read 为 `closest-adaptive` 或 `closest-replicas` 让 TiDB 优先从当前的数据中心执行读操作，这样可以大幅降低读操作的延迟和流量开销。具体原理可参考 [Follower Read](/follower-read.md)。
+<CustomContent platform="tidb-cloud">
 
-## 开启 Follower Read
+你可以在 [TiDB Cloud 的 Key Visualizer 页面](/tidb-cloud/tune-performance.md#key-visualizer)上直观地分析你的应用程序是否存在热点 Region。你可以通过选择"指标选择框"为 `Read (bytes)` 或 `Read (keys)` 来检查是否出现读热点。
 
-<SimpleTab>
-<div label="SQL">
+有关处理热点的更多信息，请参阅 [TiDB 热点问题处理](https://docs.pingcap.com/tidb/stable/troubleshoot-hot-spot-issues)。
 
-在 SQL 中，你可以将变量 `tidb_replica_read` 的值（默认为 `leader`）设置为 `follower`、`leader-and-follower`、`prefer-leader`、`closest-replicas` 或 `closest-adaptive` 开启 TiDB 的 Follower Read 功能：
+</CustomContent>
+
+如果读热点不可避免或更改成本很高，你可以尝试使用 Follower Read 功能，将读取请求更好地负载均衡到 follower Region。
+
+### 减少地理分布部署的延迟
+
+如果你的 TiDB 集群跨区域或数据中心部署，Region 的不同副本分布在不同的区域或数据中心。在这种情况下，你可以将 Follower Read 配置为 `closest-adaptive` 或 `closest-replicas`，允许 TiDB 优先从当前数据中心读取，这可以显著减少读取操作的延迟和流量开销。有关实现细节，请参阅 [Follower Read](/follower-read.md)。
+
+## 启用 Follower Read
+
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
+
+要启用 Follower Read，将变量 `tidb_replica_read`（默认值为 `leader`）设置为 `follower`、`leader-and-follower`、`prefer-leader`、`closest-replicas` 或 `closest-adaptive`：
 
 ```sql
 SET [GLOBAL] tidb_replica_read = 'follower';
 ```
 
-你可以通过 [Follower Read 使用方式](/follower-read.md#使用方式) 了解该变量的更多细节。
+有关此变量的更多详细信息，请参阅 [Follower Read 使用方法](/follower-read.md#usage)。
 
 </div>
-<div label="Java">
+<div label="Java" value="java">
 
-在 Java 语言当中，可以定义一个 `FollowerReadHelper` 类用于开启 Follower Read 功能：
+在 Java 中，要启用 Follower Read，定义一个 `FollowerReadHelper` 类。
 
 ```java
 public enum FollowReadMode {
@@ -88,19 +100,19 @@ public class FollowerReadHelper {
 }
 ```
 
-在需要使用从 Follower 节点读取数据时，通过 `setSessionReplicaRead(conn, FollowReadMode.LEADER_AND_FOLLOWER)` 方法在当前 Session 开启能够在 Leader 节点和 Follower 节点进行负载均衡的 Follower Read 功能，当连接断开时，会恢复到原来的模式。
+从 Follower 节点读取数据时，使用 `setSessionReplicaRead(conn, FollowReadMode.LEADER_AND_FOLLOWER)` 方法启用 Follower Read 功能，可以在当前会话中平衡 Leader 节点和 Follower 节点之间的负载。当连接断开时，它将恢复到原始模式。
 
 ```java
 public static class AuthorDAO {
 
-    // Omit initialization of instance variables...
+    // 省略实例变量的初始化...
 
     public void getAuthorsByFollowerRead() throws SQLException {
         try (Connection conn = ds.getConnection()) {
-            // Enable the follower read feature.
+            // 启用 follower read 功能。
             FollowerReadHelper.setSessionReplicaRead(conn, FollowReadMode.LEADER_AND_FOLLOWER);
 
-            // Read the authors list for 100000 times.
+            // 读取作者列表 100000 次。
             Random random = new Random();
             for (int i = 0; i < 100000; i++) {
                 Integer birthYear = 1920 + random.nextInt(100);
@@ -131,8 +143,34 @@ public static class AuthorDAO {
 </div>
 </SimpleTab>
 
-## 扩展阅读
+## 阅读更多
 
 - [Follower Read](/follower-read.md)
-- [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)
-- [TiDB Dashboard 流量可视化页面](/dashboard/dashboard-key-visualizer.md)
+
+<CustomContent platform="tidb">
+
+- [热点问题处理](/troubleshoot-hot-spot-issues.md)
+- [TiDB Dashboard - Key Visualizer 页面](/dashboard/dashboard-key-visualizer.md)
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+- [热点问题处理](https://docs.pingcap.com/tidb/stable/troubleshoot-hot-spot-issues)
+- [TiDB Cloud Key Visualizer 页面](/tidb-cloud/tune-performance.md#key-visualizer)
+
+</CustomContent>
+
+## 需要帮助？
+
+<CustomContent platform="tidb">
+
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 上询问社区，或[提交支持工单](/support.md)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 上询问社区，或[提交支持工单](https://tidb.support.pingcap.com/)。
+
+</CustomContent>

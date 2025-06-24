@@ -1,13 +1,13 @@
 ---
-title: SET DEFAULT ROLE
-summary: TiDB 数据库中 SET DEFAULT ROLE 的使用概况。
+title: SET DEFAULT ROLE | TiDB SQL 语句参考
+summary: TiDB 数据库中 SET DEFAULT ROLE 的使用概述。
 ---
 
 # `SET DEFAULT ROLE`
 
-`SET DEFAULT ROLE` 语句默认设置将特定角色应用于用户。因此，用户不必执行 `SET ROLE <rolename>` 或 `SET ROLE ALL` 语句，也可以自动具有与角色相关联的权限。
+此语句用于设置默认应用于用户的特定角色。这样，用户无需执行 `SET ROLE <rolename>` 或 `SET ROLE ALL` 就可以自动拥有与该角色相关联的权限。
 
-## 语法图
+## 语法概要
 
 ```ebnf+diagram
 SetDefaultRoleStmt ::=
@@ -16,13 +16,13 @@ SetDefaultRoleStmt ::=
 
 ## 示例
 
-以 `root` 用户连接 TiDB：
+以 `root` 用户身份连接到 TiDB：
 
 ```shell
 mysql -h 127.0.0.1 -P 4000 -u root
 ```
 
-创建新角色 `analyticsteam` 和新用户 `jennifer`：
+创建一个新角色 `analyticsteam` 和一个新用户 `jennifer`：
 
 ```sql
 CREATE ROLE analyticsteam;
@@ -38,13 +38,13 @@ GRANT analyticsteam TO jennifer;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-以 `jennifer` 用户连接 TiDB：
+以 `jennifer` 用户身份连接到 TiDB：
 
 ```shell
 mysql -h 127.0.0.1 -P 4000 -u jennifer
 ```
 
-需要注意的是，默认情况下，用户 `jennifer` 需要执行 `SET ROLE analyticsteam` 语句才能使用与 `analyticsteam` 角色相关联的权限：
+注意，默认情况下，`jennifer` 需要执行 `SET ROLE analyticsteam` 才能使用与 `analyticsteam` 角色相关联的权限：
 
 ```sql
 SHOW GRANTS;
@@ -80,26 +80,26 @@ SHOW TABLES IN test;
 1 row in set (0.00 sec)
 ```
 
-以 `root` 用户连接 TiDB：
+以 `root` 用户身份连接到 TiDB：
 
 ```shell
 mysql -h 127.0.0.1 -P 4000 -u root
 ```
 
-执行 `SET DEFAULT ROLE` 语句将用户 `jennifer` 与 `analyticsteam` 角色相关联：
+可以使用 `SET DEFAULT ROLE` 语句将角色 `analyticsteam` 关联到 `jennifer`：
 
 ```sql
 SET DEFAULT ROLE analyticsteam TO jennifer;
 Query OK, 0 rows affected (0.02 sec)
 ```
 
-以 `jennifer` 用户连接 TiDB：
+以 `jennifer` 用户身份连接到 TiDB：
 
 ```shell
 mysql -h 127.0.0.1 -P 4000 -u jennifer
 ```
 
-此时 `jennifer` 用户无需执行 `SET ROLE` 语句就能拥有 `analyticsteam` 角色相关联的权限：
+此后，用户 `jennifer` 拥有与角色 `analyticsteam` 相关联的权限，且 `jennifer` 不需要执行 `SET ROLE` 语句：
 
 ```sql
 SHOW GRANTS;
@@ -121,7 +121,7 @@ SHOW TABLES IN test;
 1 row in set (0.00 sec)
 ```
 
-`SET DEFAULT ROLE` 语句不会自动将相关角色授予 (`GRANT`) 用户。若尝试为 `jennifer` 尚未被授予的角色执行 `SET DEFAULT ROLE` 语句会导致以下错误：
+`SET DEFAULT ROLE` 不会自动将相关角色 `GRANT` 给用户。尝试为 `jennifer` 设置未被授予的角色作为默认角色会导致以下错误：
 
 ```sql
 SET DEFAULT ROLE analyticsteam TO jennifer;
@@ -130,7 +130,7 @@ ERROR 3530 (HY000): `analyticsteam`@`%` is is not granted to jennifer@%
 
 ## MySQL 兼容性
 
-`SET DEFAULT ROLE` 语句与 MySQL 8.0 的角色功能完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
+TiDB 中的 `SET DEFAULT ROLE` 语句与 MySQL 8.0 的角色功能完全兼容。如果发现任何兼容性差异，请[报告 bug](https://docs.pingcap.com/tidb/stable/support)。
 
 ## 另请参阅
 
@@ -139,4 +139,9 @@ ERROR 3530 (HY000): `analyticsteam`@`%` is is not granted to jennifer@%
 * [`GRANT <role>`](/sql-statements/sql-statement-grant-role.md)
 * [`REVOKE <role>`](/sql-statements/sql-statement-revoke-role.md)
 * [`SET ROLE`](/sql-statements/sql-statement-set-role.md)
+
+<CustomContent platform="tidb">
+
 * [基于角色的访问控制](/role-based-access-control.md)
+
+</CustomContent>

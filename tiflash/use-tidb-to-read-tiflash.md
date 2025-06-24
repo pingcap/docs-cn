@@ -1,17 +1,17 @@
 ---
-title: 使用 TiDB 读取 TiFlash
+title: 使用 TiDB 读取 TiFlash 副本
 summary: 了解如何使用 TiDB 读取 TiFlash 副本。
 ---
 
-# 使用 TiDB 读取 TiFlash
+# 使用 TiDB 读取 TiFlash 副本
 
-本文档介绍如何使用 TiDB 读取 TiFlash 副本。
+本文介绍如何使用 TiDB 读取 TiFlash 副本。
 
-TiDB 提供三种读取 TiFlash 副本的方式。如果添加了 TiFlash 副本，而没有做任何 engine 的配置，则默认使用 CBO 方式。
+TiDB 提供三种方式来读取 TiFlash 副本。如果你添加了 TiFlash 副本但没有任何引擎配置，默认使用 CBO（基于成本的优化）模式。
 
 ## 智能选择
 
-对于创建了 TiFlash 副本的表，TiDB 优化器会自动根据代价估算选择是否使用 TiFlash 副本。具体有没有选择 TiFlash 副本，可以通过 `desc` 或 `explain analyze` 语句查看，例如：
+对于有 TiFlash 副本的表，TiDB 优化器会根据成本估算自动决定是否使用 TiFlash 副本。你可以使用 `desc` 或 `explain analyze` 语句来检查是否选择了 TiFlash 副本。例如：
 
 {{< copyable "sql" >}}
 
@@ -46,52 +46,74 @@ explain analyze select count(*) from test.t;
 +--------------------------+---------+---------+--------------+---------------+----------------------------------------------------------------------+--------------------------------+-----------+------+
 ```
 
-`cop[tiflash]` 表示该任务会发送至 TiFlash 进行处理。如果没有选择 TiFlash 副本，可尝试通过 `analyze table` 语句更新统计信息后，再查看 `explain analyze` 结果。
+`cop[tiflash]` 表示该任务将被发送到 TiFlash 进行处理。如果你没有选择 TiFlash 副本，可以尝试使用 `analyze table` 语句更新统计信息，然后使用 `explain analyze` 语句检查结果。
 
-需要注意的是，如果表仅有单个 TiFlash 副本且相关节点无法服务，智能选择模式下的查询会不断重试，需要指定 Engine 或者手工 Hint 来读取 TiKV 副本。
+注意，如果一个表只有一个 TiFlash 副本且相关节点无法提供服务，CBO 模式下的查询将重复重试。在这种情况下，你需要指定引擎或使用手动提示来从 TiKV 副本读取数据。
 
-## Engine 隔离
+## 引擎隔离
 
-Engine 隔离是通过配置变量来指定所有的查询均使用指定 engine 的副本，可选 engine 为 "tikv"、"tidb" 和 "tiflash"（其中 "tidb" 表示 TiDB 内部的内存表区，主要用于存储一些 TiDB 系统表，用户不能主动使用），分别有 2 个配置级别：
+引擎隔离是通过配置相应变量来指定所有查询使用指定引擎的副本。可选的引擎包括 "tikv"、"tidb"（表示 TiDB 的内部内存表区域，用于存储一些 TiDB 系统表，用户不能主动使用）和 "tiflash"。
 
-1. TiDB 实例级别，即 INSTANCE 级别。在 TiDB 的配置文件添加如下配置项：
+<CustomContent platform="tidb">
+
+你可以在以下两个配置级别指定引擎：
+
+* TiDB 实例级别，即 INSTANCE 级别。在 TiDB 配置文件中添加以下配置项：
 
     ```
     [isolation-read]
     engines = ["tikv", "tidb", "tiflash"]
     ```
 
-    **实例级别的默认配置为 `["tikv", "tidb", "tiflash"]`。**
+    **INSTANCE 级别的默认配置是 `["tikv", "tidb", "tiflash"]`。**
 
-2. 会话级别，即 SESSION 级别。设置语句：
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    set @@session.tidb_isolation_read_engines = "逗号分隔的 engine list";
-    ```
-
-    或者
+* SESSION 级别。使用以下语句进行配置：
 
     {{< copyable "sql" >}}
 
     ```sql
-    set SESSION tidb_isolation_read_engines = "逗号分隔的 engine list";
+    set @@session.tidb_isolation_read_engines = "以逗号分隔的引擎列表";
     ```
 
-    **会话级别的默认配置继承自 TiDB 实例级别的配置。**
+    或
 
-最终的 engine 配置为会话级别配置，即会话级别配置会覆盖实例级别配置。比如实例级别配置了 "tikv"，而会话级别配置了 "tiflash"，则会读取 TiFlash 副本。当 engine 配置为 "tikv, tiflash"，即可以同时读取 TiKV 和 TiFlash 副本，优化器会自动选择。
+    {{< copyable "sql" >}}
+
+    ```sql
+    set SESSION tidb_isolation_read_engines = "以逗号分隔的引擎列表";
+    ```
+
+    SESSION 级别的默认配置继承自 TiDB INSTANCE 级别的配置。
+
+最终的引擎配置是会话级别的配置，即会话级别的配置会覆盖实例级别的配置。例如，如果你在 INSTANCE 级别配置了 "tikv"，在 SESSION 级别配置了 "tiflash"，那么将读取 TiFlash 副本。如果最终的引擎配置是 "tikv" 和 "tiflash"，那么会同时读取 TiKV 和 TiFlash 副本，优化器会自动选择更好的引擎来执行。
 
 > **注意：**
 >
-> 由于 [TiDB Dashboard](/dashboard/dashboard-intro.md) 等组件需要读取一些存储于 TiDB 内存表区的系统表，因此建议实例级别 engine 配置中始终加入 "tidb" engine。
+> 因为 [TiDB Dashboard](/dashboard/dashboard-intro.md) 和其他组件需要读取存储在 TiDB 内存表区域的一些系统表，建议始终在实例级别的引擎配置中添加 "tidb" 引擎。
 
-如果查询中的表没有对应 engine 的副本，比如配置了 engine 为 "tiflash" 而该表没有 TiFlash 副本，则查询会报该表不存在该 engine 副本的错。
+</CustomContent>
 
-## 手工 Hint
+<CustomContent platform="tidb-cloud">
 
-手工 Hint 可以在满足 engine 隔离的前提下，强制 TiDB 对于某张或某几张表使用指定的副本，使用方法为：
+你可以使用以下语句指定引擎：
+
+```sql
+set @@session.tidb_isolation_read_engines = "以逗号分隔的引擎列表";
+```
+
+或
+
+```sql
+set SESSION tidb_isolation_read_engines = "以逗号分隔的引擎列表";
+```
+
+</CustomContent>
+
+如果查询的表没有指定引擎的副本（例如，引擎配置为 "tiflash" 但表没有 TiFlash 副本），查询将返回错误。
+
+## 手动提示
+
+手动提示可以在满足引擎隔离的前提下强制 TiDB 对特定表使用指定的副本。以下是使用手动提示的示例：
 
 {{< copyable "sql" >}}
 
@@ -99,7 +121,7 @@ Engine 隔离是通过配置变量来指定所有的查询均使用指定 engine
 select /*+ read_from_storage(tiflash[table_name]) */ ... from table_name;
 ```
 
-如果在查询语句中对表设置了别名，在 Hint 语句中必须使用别名才能使 Hint 生效。比如：
+如果你在查询语句中为表设置了别名，你必须在包含提示的语句中使用别名才能使提示生效。例如：
 
 {{< copyable "sql" >}}
 
@@ -107,21 +129,21 @@ select /*+ read_from_storage(tiflash[table_name]) */ ... from table_name;
 select /*+ read_from_storage(tiflash[alias_a,alias_b]) */ ... from table_name_1 as alias_a, table_name_2 as alias_b where alias_a.column_1 = alias_b.column_2;
 ```
 
-其中 `tiflash[]` 是提示优化器读取 TiFlash 副本，亦可以根据需要使用 `tikv[]` 来提示优化器读取 TiKV 副本。更多关于该 Hint 语句的语法可以参考 [READ_FROM_STORAGE](/optimizer-hints.md#read_from_storagetiflasht1_name--tl_name--tikvt2_name--tl_name-)。
+在上述语句中，`tiflash[]` 提示优化器读取 TiFlash 副本。你也可以根据需要使用 `tikv[]` 提示优化器读取 TiKV 副本。有关提示语法的详细信息，请参考 [READ_FROM_STORAGE](/optimizer-hints.md#read_from_storagetiflasht1_name--tl_name--tikvt2_name--tl_name-)。
 
-如果 Hint 指定的表在指定的引擎上不存在副本，则 Hint 会被忽略，并产生 warning。另外 Hint 必须在满足 engine 隔离的前提下才会生效，如果 Hint 中指定的引擎不在 engine 隔离列表中，Hint 同样会被忽略，并产生 warning。
-
-> **注意：**
->
-> MySQL 命令行客户端在 5.7.7 版本之前默认清除了 Optimizer Hints。如果需要在这些早期版本的客户端中使用 `Hint` 语法，需要在启动客户端时加上 `--comments` 选项，例如 `mysql -h 127.0.0.1 -P 4000 -uroot --comments`。
-
-## 三种方式之间关系的总结
-
-上述三种读取 TiFlash 副本的方式中，Engine 隔离规定了总的可使用副本 engine 的范围，手工 Hint 可以在该范围内进一步实现语句级别及表级别的细粒度的 engine 指定，最终由 CBO 在指定的 engine 范围内根据代价估算最终选取某个 engine 上的副本。
+如果提示指定的表没有指定引擎的副本，提示将被忽略并报告警告。此外，提示只在引擎隔离的前提下生效。如果提示中指定的引擎不在引擎隔离列表中，提示也会被忽略并报告警告。
 
 > **注意：**
 >
-> - TiDB 4.0.3 版本之前，在非只读 SQL 语句中（比如 `INSERT INTO ... SELECT`、`SELECT ... FOR UPDATE`、`UPDATE ...`、`DELETE ...`）读取 TiFlash，行为是未定义的。
-> - TiDB 4.0.3 到 6.2.0 之间的版本，TiDB 内部会对非只读 SQL 语句忽略 TiFlash 副本以保证数据写入、更新、删除的正确性。对应的，如果使用了[智能选择](#智能选择)的方式，TiDB 会自动选择非 TiFlash 副本；如果使用了 [Engine 隔离](#engine-隔离)的方式指定**仅**读取 TiFlash 副本，则查询会报错；而如果使用了[手工 Hint](#手工-hint) 的方式，则 Hint 会被忽略。
-> - TiDB 6.3.0 到 7.0.0 之间的版本，如果 TiFlash 副本被允许使用，你可以通过变量 [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) 控制是否允许 TiDB 在处理非只读 SQL 语句时使用 TiFlash 副本。
-> - 从 TiDB 7.1.0 起，如果 TiFlash 副本被允许使用且当前会话的 [SQL 模式](/sql-mode.md)为非严格模式（即 `sql_mode` 值不包含 `STRICT_TRANS_TABLES` 和 `STRICT_ALL_TABLES`），TiDB 在处理非只读 SQL 语句时会根据代价估算自动选择是否使用 TiFlash 副本。
+> 5.7.7 或更早版本的 MySQL 客户端默认会清除优化器提示。要在这些早期版本中使用提示语法，请使用 `--comments` 选项启动客户端，例如，`mysql -h 127.0.0.1 -P 4000 -uroot --comments`。
+
+## 智能选择、引擎隔离和手动提示的关系
+
+在上述三种读取 TiFlash 副本的方式中，引擎隔离指定了可用引擎副本的整体范围；在此范围内，手动提示提供了更细粒度的语句级和表级引擎选择；最后，CBO 在指定的引擎列表内基于成本估算做出决策并选择一个引擎的副本。
+
+> **注意：**
+>
+> - 在 v4.0.3 之前，在非只读 SQL 语句中读取 TiFlash 副本的行为是未定义的（例如，`INSERT INTO ... SELECT`、`SELECT ... FOR UPDATE`、`UPDATE ...`、`DELETE ...`）。
+> - 从 v4.0.3 到 v6.2.0 版本，为了保证数据正确性，TiDB 在内部忽略非只读 SQL 语句的 TiFlash 副本。也就是说，对于[智能选择](#智能选择)，TiDB 自动选择非 TiFlash 副本；对于仅指定 TiFlash 副本的[引擎隔离](#引擎隔离)，TiDB 报错；对于[手动提示](#手动提示)，TiDB 忽略提示。
+> - 从 v6.3.0 到 v7.0.0 版本，如果启用了 TiFlash 副本，你可以使用 [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-new-in-v630) 变量来控制 TiDB 是否在非只读 SQL 语句中使用 TiFlash 副本。
+> - 从 v7.1.0 开始，如果启用了 TiFlash 副本且当前会话的 [SQL 模式](/sql-mode.md)不是严格模式（即 `sql_mode` 值不包含 `STRICT_TRANS_TABLES` 或 `STRICT_ALL_TABLES`），TiDB 会根据成本估算自动决定是否在非只读 SQL 语句中使用 TiFlash 副本。

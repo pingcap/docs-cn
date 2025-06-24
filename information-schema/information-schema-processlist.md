@@ -1,19 +1,19 @@
 ---
 title: PROCESSLIST
-summary: 了解 information_schema 表 `PROCESSLIST`。
+summary: 了解 `PROCESSLIST` information_schema 表。
 ---
 
 # PROCESSLIST
 
-`PROCESSLIST` 和 [`SHOW PROCESSLIST`](/sql-statements/sql-statement-show-processlist.md) 的功能一样，都是查看当前正在处理的请求。
+`PROCESSLIST` 与 [`SHOW PROCESSLIST`](/sql-statements/sql-statement-show-processlist.md) 一样，用于查看正在处理的请求。
 
-`PROCESSLIST` 表比 `SHOW PROCESSLIST` 的结果多出下面几列：
+`PROCESSLIST` 表比 `SHOW PROCESSLIST` 多了以下列：
 
-* `DIGEST` 列：显示 SQL 语句的 digest。
-* `MEM` 列：显示正在处理的请求已使用的内存，单位是 byte。
-* `DISK` 列：显示磁盘空间使用情况，单位是 byte。
-* `TxnStart`列：显示事务的开始时间。
-* `RESOURCE_GROUP`列：显示对应的资源组名称。
+* `DIGEST` 列，用于显示 SQL 语句的摘要。
+* `MEM` 列，用于显示正在处理的请求使用的内存，单位为字节。
+* `DISK` 列，用于显示磁盘使用量，单位为字节。
+* `TxnStart` 列，用于显示事务的开始时间。
+* `RESOURCE_GROUP` 列，用于显示资源组名称。
 
 ```sql
 USE information_schema;
@@ -63,27 +63,25 @@ SELECT * FROM processlist\G
 1 row in set (0.00 sec)
 ```
 
-`PROCESSLIST` 表各列的含义如下：
+`PROCESSLIST` 表中的字段说明如下：
 
-* `ID` 列：客户连接 ID。
-* `USER` 列：执行当前 PROCESS 的用户名。
-* `HOST` 列：客户连接的地址。
-* `DB` 列：当前连接的默认数据库名。
-* `COMMAND` 列：当前 PROCESS 执行的命令类型。
-* `TIME` 列：当前 PROCESS 的已经执行的时间，单位是秒。
-* `STATE` 列：当前连接的状态。
-* `INFO` 列：正在处理的请求语句。
-* `DIGEST` 列：SQL 语句的 digest。
-* `MEM` 列：正在处理的请求已使用的内存，单位是 byte。
-* `DISK` 列：磁盘空间使用情况，单位是 byte。
-* `TxnStart`列：显示事务的开始时间。
-* `RESOURCE_GROUP`列：显示对应的资源组名称。
+* ID：用户连接的 ID。
+* USER：执行 `PROCESS` 的用户名。
+* HOST：用户连接的地址。
+* DB：当前连接的默认数据库名称。
+* COMMAND：`PROCESS` 正在执行的命令类型。
+* TIME：`PROCESS` 当前执行的持续时间，单位为秒。
+* STATE：当前连接状态。
+* INFO：正在处理的请求语句。
+* DIGEST：SQL 语句的摘要。
+* MEM：正在处理的请求使用的内存，单位为字节。
+* DISK：磁盘使用量，单位为字节。
+* TxnStart：事务的开始时间。
+* RESOURCE_GROUP：资源组名称。
 
 ## CLUSTER_PROCESSLIST
 
-`CLUSTER_PROCESSLIST` 是 `PROCESSLIST` 对应的集群系统表，用于查询集群中所有 TiDB 节点的 `PROCESSLIST` 信息。`CLUSTER_PROCESSLIST` 表结构上比 `PROCESSLIST` 多一列 `INSTANCE`，表示该行数据来自的 TiDB 节点地址。
-
-{{< copyable "sql" >}}
+`CLUSTER_PROCESSLIST` 是对应于 `PROCESSLIST` 的集群系统表，用于查询集群中所有 TiDB 节点的 `PROCESSLIST` 信息。`CLUSTER_PROCESSLIST` 的表结构比 `PROCESSLIST` 多一列 `INSTANCE`，用于存储该行数据来自哪个 TiDB 节点的地址。
 
 ```sql
 SELECT * FROM information_schema.cluster_processlist;

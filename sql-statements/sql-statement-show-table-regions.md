@@ -1,21 +1,24 @@
 ---
 title: SHOW TABLE REGIONS
-summary: 了解如何使用 TiDB 数据库中的 SHOW TABLE REGIONS。
+summary: 了解如何在 TiDB 中使用 SHOW TABLE REGIONS。
 ---
 
 # SHOW TABLE REGIONS
 
-`SHOW TABLE REGIONS` 语句用于显示 TiDB 中某个表的 Region 信息。
+`SHOW TABLE REGIONS` 语句用于显示 TiDB 中表的 Region 信息。
+
+> **注意：**
+>
+> 此功能在 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 集群上不可用。
 
 ## 语法
 
 ```sql
 SHOW TABLE [table_name] REGIONS [WhereClauseOptional];
-
 SHOW TABLE [table_name] INDEX [index_name] REGIONS [WhereClauseOptional];
 ```
 
-### 语法图
+## 语法图
 
 ```ebnf+diagram
 ShowTableRegionStmt ::=
@@ -25,29 +28,41 @@ TableName ::=
     (SchemaName ".")? Identifier
 ```
 
-`SHOW TABLE REGIONS` 会返回如下列：
+执行 `SHOW TABLE REGIONS` 返回以下列：
 
-* `REGION_ID`：Region 的 ID。
-* `START_KEY`：Region 的 Start key。
-* `END_KEY`：Region 的 End key。
+* `REGION_ID`：Region ID。
+* `START_KEY`：Region 的起始键。
+* `END_KEY`：Region 的结束键。
 * `LEADER_ID`：Region 的 Leader ID。
-* `LEADER_STORE_ID`：Region leader 所在的 store (TiKV) ID。
-* `PEERS`：Region 所有副本的 ID。
-* `SCATTERING`：Region 是否正在调度中。1 表示正在调度。
-* `WRITTEN_BYTES`：估算的 Region 在 1 个心跳周期内的写入数据量大小，单位是 byte。
-* `READ_BYTES`：估算的 Region 在 1 个心跳周期内的读数据量大小，单位是 byte。
-* `APPROXIMATE_SIZE(MB)`：估算的 Region 的数据量大小，单位是 MB。
-* `APPROXIMATE_KEYS`：估算的 Region 内 Key 的个数。
-* `SCHEDULING_CONSTRAINTS`：Region 所在的表或者分区所关联的[放置策略](/placement-rules-in-sql.md)的规则。
-* `SCHEDULING_STATE`：关联了放置策略的 Region 的当前调度状态。
+* `LEADER_STORE_ID`：Region leader 所在的 store（TiKV）的 ID。
+* `PEERS`：所有 Region 副本的 ID。
+* `SCATTERING`：Region 是否正在调度。`1` 表示是。
+* `WRITTEN_BYTES`：一个心跳周期内估计写入该 Region 的数据量，单位为字节。
+* `READ_BYTES`：一个心跳周期内估计从该 Region 读取的数据量，单位为字节。
+* `APPROXIMATE_SIZE(MB)`：该 Region 中数据量的估计值，单位为兆字节（MB）。
+* `APPROXIMATE_KEYS`：该 Region 中 Key 的估计数量。
+
+<CustomContent platform="tidb">
+
+* `SCHEDULING_CONSTRAINTS`：与 Region 所属的表或分区相关联的[放置规则设置](/placement-rules-in-sql.md)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+* `SCHEDULING_CONSTRAINTS`：与 Region 所属的表或分区相关联的放置规则设置。
+
+</CustomContent>
+
+* `SCHEDULING_STATE`：具有放置规则的 Region 的调度状态。
 
 > **注意：**
 >
-> `WRITTEN_BYTES`，`READ_BYTES`，`APPROXIMATE_SIZE(MB)`，`APPROXIMATE_KEYS` 的值是 PD 根据 Region 的心跳汇报信息统计，估算出来的数据，所以不是精确的数据。
+> `WRITTEN_BYTES`、`READ_BYTES`、`APPROXIMATE_SIZE(MB)`、`APPROXIMATE_KEYS` 的值不是准确数据。它们是 PD 根据从 Region 收到的心跳信息估算的数据。
 
 ## 示例
 
-创建一个示例表，并在若干 Region 中填充足够的数据量：
+创建一个包含足够数据以填充几个 Region 的示例表：
 
 {{< copyable "sql" >}}
 
@@ -75,13 +90,11 @@ SELECT SLEEP(5);
 SHOW TABLE t1 REGIONS;
 ```
 
-结果显示示例表被切分成多个 Regions。`REGION_ID`、`START_KEY` 和 `END_KEY` 可能不完全匹配：
+输出应该显示表被分割成多个 Region。`REGION_ID`、`START_KEY` 和 `END_KEY` 可能不完全匹配：
 
 ```sql
-SHOW TABLE t1 REGIONS;
-```
-
-```
+...
+mysql> SHOW TABLE t1 REGIONS;
 +-----------+--------------+--------------+-----------+-----------------+-------+------------+---------------+------------+----------------------+------------------+------------------------+------------------+
 | REGION_ID | START_KEY    | END_KEY      | LEADER_ID | LEADER_STORE_ID | PEERS | SCATTERING | WRITTEN_BYTES | READ_BYTES | APPROXIMATE_SIZE(MB) | APPROXIMATE_KEYS | SCHEDULING_CONSTRAINTS | SCHEDULING_STATE |
 +-----------+--------------+--------------+-----------+-----------------+-------+------------+---------------+------------+----------------------+------------------+------------------------+------------------+
@@ -92,32 +105,20 @@ SHOW TABLE t1 REGIONS;
 3 rows in set (0.00 sec)
 ```
 
-解释：
+在上面的输出中，`START_KEY` 为 `t_75_r_31717` 和 `END_KEY` 为 `t_75_r_63434` 表示主键在 `31717` 和 `63434` 之间的数据存储在这个 Region 中。前缀 `t_75_` 表示这是一个表（`t`）的 Region，该表的内部表 ID 为 `75`。`START_KEY` 或 `END_KEY` 的空值分别表示负无穷或正无穷。
 
-上面 `START_KEY` 列的值 `t_75_r_31717` 和 `END_KEY` 列的值 `t_75_r_63434` 表示主键在 `31717` 和 `63434` 之间的数据存储在该 Region 中。`t_75_` 是前缀，表示这是表格 (`t`) 的 Region，`75` 是表格的内部 ID。若 `START_KEY` 或 `END_KEY` 的一对键值为空，分别表示负无穷大或正无穷大。
-
-TiDB 会根据需要自动重新平衡 Regions。建议使用 `SPLIT TABLE REGION` 语句手动进行平衡：
-
-{{< copyable "sql" >}}
+TiDB 会根据需要自动重新平衡 Region。对于手动重新平衡，使用 `SPLIT TABLE REGION` 语句：
 
 ```sql
-SPLIT TABLE t1 BETWEEN (31717) AND (63434) REGIONS 2;
-```
-
-```sql
+mysql> SPLIT TABLE t1 BETWEEN (31717) AND (63434) REGIONS 2;
 +--------------------+----------------------+
 | TOTAL_SPLIT_REGION | SCATTER_FINISH_RATIO |
 +--------------------+----------------------+
 |                  1 |                    1 |
 +--------------------+----------------------+
 1 row in set (42.34 sec)
-```
 
-```sql
-SHOW TABLE t1 REGIONS;
-```
-
-```sql
+mysql> SHOW TABLE t1 REGIONS;
 +-----------+--------------+--------------+-----------+-----------------+-------+------------+---------------+------------+----------------------+------------------+------------------------+------------------+
 | REGION_ID | START_KEY    | END_KEY      | LEADER_ID | LEADER_STORE_ID | PEERS | SCATTERING | WRITTEN_BYTES | READ_BYTES | APPROXIMATE_SIZE(MB) | APPROXIMATE_KEYS | SCHEDULING_CONSTRAINTS | SCHEDULING_STATE |
 +-----------+--------------+--------------+-----------+-----------------+-------+------------+---------------+------------+----------------------+------------------+------------------------+------------------+
@@ -129,20 +130,15 @@ SHOW TABLE t1 REGIONS;
 4 rows in set (0.00 sec)
 ```
 
-上面的输出结果显示 Region 96 被切分，并创建一个新的 Region 98。切分操作不会影响表中的其他 Region。输出结果同样证实：
+上面的输出显示 Region 96 被分割，创建了一个新的 Region 98。表中的其他 Region 不受分割操作的影响。这可以通过输出统计信息确认：
 
-- `TOTAL_SPLIT_REGION` 表示新切的 Region 数量。以上示例新切了 1 个 Region。
-- `SCATTER_FINISH_RATIO` 表示新切的 Region 的打散成功率，1.0 表示都已经打散了。
+* `TOTAL_SPLIT_REGION` 表示新分割的 Region 数量。在此示例中，数量为 1。
+* `SCATTER_FINISH_RATIO` 表示新分割的 Region 成功分散的比率。`1.0` 表示所有 Region 都已分散。
 
-更详细的示例如下：
-
-{{< copyable "sql" >}}
+更详细的示例：
 
 ```sql
-SHOW TABLE t REGIONS;
-```
-
-```sql
+mysql> SHOW TABLE t REGIONS;
 +-----------+--------------+--------------+-----------+-----------------+---------------+------------+---------------+------------+----------------------+------------------+------------------------+------------------+
 | REGION_ID | START_KEY    | END_KEY      | LEADER_ID | LEADER_STORE_ID | PEERS         | SCATTERING | WRITTEN_BYTES | READ_BYTES | APPROXIMATE_SIZE(MB) | APPROXIMATE_KEYS | SCHEDULING_CONSTRAINTS | SCHEDULING_STATE |
 +-----------+--------------+--------------+-----------+-----------------+---------------+------------+---------------+------------+----------------------+------------------+------------------------+------------------+
@@ -156,20 +152,17 @@ SHOW TABLE t REGIONS;
 6 rows in set
 ```
 
-解释：
+在上面的示例中：
 
-- Region 102 的 `START_KEY` 和 `END_KEY` 中，`t_43` 是表数据前缀和 table ID，`_r` 是表 t record 数据的前缀，索引数据的前缀是 `_i`，所以 Region 102 的 `START_KEY` 和 `END_KEY` 表示用来存储 `[-inf, 20000)` 之前的 record 数据。其他 Region (106, 110, 114, 3) 的存储范围依次类推。
-- Region 98 用来存储索引数据存储。表 t 索引数据的起始 key 是 `t_43_i`，处于 Region 98 的存储范围内。
+* 表 t 对应六个 Region。在这些 Region 中，`102`、`106`、`110`、`114` 和 `3` 存储行数据，`98` 存储索引数据。
+* 对于 Region `102` 的 `START_KEY` 和 `END_KEY`，`t_43` 表示表前缀和 ID。`_r` 是表 t 中记录数据的前缀。`_i` 是索引数据的前缀。
+* 在 Region `102` 中，`START_KEY` 和 `END_KEY` 表示存储了范围 `[-inf, 20000)` 内的记录数据。同样，也可以计算出 Region（`106`、`110`、`114`、`3`）中数据存储的范围。
+* Region `98` 存储索引数据。表 t 的索引数据的起始键是 `t_43_i`，它在 Region `98` 的范围内。
 
-查看表 t 在 store 1 上的 region，用 `WHERE` 条件过滤。
-
-{{< copyable "sql" >}}
+要检查 store 1 中对应表 t 的 Region，使用 `WHERE` 子句：
 
 ```sql
-SHOW TABLE t REGIONS WHERE leader_store_id =1;
-```
-
-```
+test> SHOW TABLE t REGIONS WHERE leader_store_id =1;
 +-----------+-----------+---------+-----------+-----------------+--------------+------------+---------------+------------+----------------------+------------------+------------------------+------------------+
 | REGION_ID | START_KEY | END_KEY | LEADER_ID | LEADER_STORE_ID | PEERS        | SCATTERING | WRITTEN_BYTES | READ_BYTES | APPROXIMATE_SIZE(MB) | APPROXIMATE_KEYS | SCHEDULING_CONSTRAINTS | SCHEDULING_STATE |
 +-----------+-----------+---------+-----------+-----------------+--------------+------------+---------------+------------+----------------------+------------------+------------------------+------------------+
@@ -177,15 +170,10 @@ SHOW TABLE t REGIONS WHERE leader_store_id =1;
 +-----------+-----------+---------+-----------+-----------------+--------------+------------+---------------+------------+----------------------+------------------+------------------------+------------------+
 ```
 
-用 `SPLIT TABLE REGION` 语法切分索引数据的 Region，下面语法把表 t 的索引 name 数据在 [a,z] 范围内切分成 2 个 Region。
-
-{{< copyable "sql" >}}
+使用 `SPLIT TABLE REGION` 将索引数据分割成 Region。在下面的示例中，表 t 的索引数据 `name` 在范围 `[a,z]` 内被分割成两个 Region。
 
 ```sql
-SPLIT TABLE t INDEX name BETWEEN ("a") AND ("z") REGIONS 2;
-```
-
-```
+test> SPLIT TABLE t INDEX name BETWEEN ("a") AND ("z") REGIONS 2;
 +--------------------+----------------------+
 | TOTAL_SPLIT_REGION | SCATTER_FINISH_RATIO |
 +--------------------+----------------------+
@@ -194,15 +182,10 @@ SPLIT TABLE t INDEX name BETWEEN ("a") AND ("z") REGIONS 2;
 1 row in set
 ```
 
-现在表 t 一共有 7 个 Region，其中 5 个 Region (102, 106, 110, 114, 3) 用来存表 t 的 record 数据，另外 2 个 Region (135, 98) 用来存 name 索引的数据。
-
-{{< copyable "sql" >}}
+现在表 t 对应七个 Region。其中五个（`102`、`106`、`110`、`114`、`3`）存储表 t 的记录数据，另外两个（`135`、`98`）存储索引数据 `name`。
 
 ```sql
-SHOW TABLE t REGIONS;
-```
-
-```
+test> SHOW TABLE t REGIONS;
 +-----------+-----------------------------+-----------------------------+-----------+-----------------+---------------+------------+---------------+------------+----------------------+------------------+------------------------+------------------+
 | REGION_ID | START_KEY                   | END_KEY                     | LEADER_ID | LEADER_STORE_ID | PEERS         | SCATTERING | WRITTEN_BYTES | READ_BYTES | APPROXIMATE_SIZE(MB) | APPROXIMATE_KEYS | SCHEDULING_CONSTRAINTS | SCHEDULING_STATE |
 +-----------+-----------------------------+-----------------------------+-----------+-----------------+---------------+------------+---------------+------------+----------------------+------------------+------------------------+------------------+
@@ -219,7 +202,7 @@ SHOW TABLE t REGIONS;
 
 ## MySQL 兼容性
 
-`SHOW TABLE REGIONS` 语句是 TiDB 对 MySQL 语法的扩展。
+此语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

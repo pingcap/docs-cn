@@ -1,11 +1,11 @@
 ---
 title: MEMORY_USAGE_OPS_HISTORY
-summary: 了解 information_schema 表 `MEMORY_USAGE_OPS_HISTORY`。
+summary: 了解 `MEMORY_USAGE_OPS_HISTORY` information_schema 系统表。
 ---
 
 # MEMORY_USAGE_OPS_HISTORY
 
-`MEMORY_USAGE_OPS_HISTORY` 表描述了 TiDB 实例内存相关的历史操作和执行依据。
+`MEMORY_USAGE_OPS_HISTORY` 表描述了当前 TiDB 实例的内存相关操作历史记录和执行依据。
 
 ```sql
 USE information_schema;
@@ -47,17 +47,17 @@ SELECT * FROM information_schema.memory_usage_ops_history;
 2 rows in set (0.002 sec)
 ```
 
-`MEMORY_USAGE_OPS_HISTORY` 表中列的含义如下：
+`MEMORY_USAGE_OPS_HISTORY` 表中的列说明如下：
 
-* TIME：终止会话的时间戳。
-* OPS："SessionKill"
-* MEMORY_LIMIT：TiDB 终止会话时的内存使用限制，单位为 byte。其值和系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 相同。
-* MEMORY_CURRENT：TiDB 当前的内存使用量，单位为 byte。
-* PROCESSID：被终止会话的客户连接 ID。
-* MEM：被终止的会话已使用的内存使用量，单位是 byte。
-* DISK：被终止的会话已使用的硬盘使用量，单位是 byte。
-* CLIENT：被终止的会话的客户连接的地址。
-* DB：被终止的会话所连接的数据库名。
-* USER：被终止的会话的用户名。
-* SQL_DIGEST：被终止的会话正在执行 SQL 语句的 digest。
-* SQL_TEXT: 被终止的会话正在执行的 SQL 语句。
+* `TIME`：会话终止的时间戳。
+* `OPS`："SessionKill"
+* `MEMORY_LIMIT`：终止时 TiDB 的内存使用限制，单位为字节。其值与系统变量 `tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-new-in-v640) 的值相同。
+* `MEMORY_CURRENT`：TiDB 当前的内存使用量，单位为字节。
+* `PROCESSID`：被终止会话的连接 ID。
+* `MEM`：被终止会话的内存使用量，单位为字节。
+* `DISK`：被终止会话的磁盘使用量，单位为字节。
+* `CLIENT`：被终止会话的客户端连接地址。
+* `DB`：被终止会话连接的数据库名称。
+* `USER`：被终止会话的用户名。
+* `SQL_DIGEST`：被终止会话中正在执行的 SQL 语句的摘要。
+* `SQL_TEXT`：被终止会话中正在执行的 SQL 语句。

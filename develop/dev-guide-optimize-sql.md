@@ -1,27 +1,27 @@
 ---
 title: SQL 性能调优
-summary: 介绍 TiDB 的 SQL 性能调优方案和分析办法。
+summary: 介绍 TiDB 的 SQL 性能调优方案和分析方法。
 ---
 
 # SQL 性能调优
 
-本章介绍常见的 SQL 性能调优，你将会了解导致 SQL 执行慢的常见的原因。
+本文介绍一些常见的 SQL 语句慢的原因以及 SQL 性能调优的技巧。
 
-## 准备工作
+## 开始之前
 
-在开始之前，你可以[通过 `tiup demo` 命令导入](/develop/dev-guide-bookshop-schema-design.md#方法一通过-tiup-demo-命令行)示例数据：
+你可以使用 [`tiup demo` 导入](/develop/dev-guide-bookshop-schema-design.md#method-1-via-tiup-demo)准备数据：
 
 ```shell
-tiup demo bookshop prepare --books 1000000 --host 127.0.0.1 --port 4000
+tiup demo bookshop prepare --host 127.0.0.1 --port 4000 --books 1000000
 ```
 
-或[使用 TiDB Cloud 的 Import 功能导入](/develop/dev-guide-bookshop-schema-design.md#方法二通过-tidb-cloud-import-功能)预先准备好的示例数据。
+或者[使用 TiDB Cloud 的导入功能](/develop/dev-guide-bookshop-schema-design.md#method-2-via-tidb-cloud-import)导入预先准备的示例数据。
 
 ## 问题：全表扫描
 
-慢查询最常见的原因就是 `SELECT` 语句执行是全表扫描，或者是用了不合适的索引。
+SQL 查询慢最常见的原因是 `SELECT` 语句执行全表扫描或使用了错误的索引。
 
-当基于不在主键或任何二级索引中的列从大表中检索少量行时，通常会获得较差的性能：
+当 TiDB 从一个大表中基于非主键列或不在二级索引中的列检索少量行时，性能通常较差：
 
 ```sql
 SELECT * FROM books WHERE title = 'Marian Yost';
@@ -41,7 +41,7 @@ SELECT * FROM books WHERE title = 'Marian Yost';
 Time: 0.582s
 ```
 
-可以使用 `EXPLAIN` 来查看这个查询的执行计划，看看为什么查询这么慢：
+要了解为什么这个查询很慢，你可以使用 `EXPLAIN` 查看执行计划：
 
 ```sql
 EXPLAIN SELECT * FROM books WHERE title = 'Marian Yost';
@@ -57,19 +57,19 @@ EXPLAIN SELECT * FROM books WHERE title = 'Marian Yost';
 +---------------------+------------+-----------+---------------+-----------------------------------------+
 ```
 
-从执行计划中的 **TableFullScan_5** 可以看出，TiDB 将会对表 `books` 进行全表扫描，然后对每一行都判断 `title` 是否满足条件。**TableFullScan_5** 的 `estRows` 值为 `1000000.00`，说明优化器估计这个全表扫描会扫描 `1000000.00` 行数据。
+从执行计划中的 `TableFullScan_5` 可以看出，TiDB 对 `books` 表执行全表扫描，并检查每一行的 `title` 是否满足条件。`TableFullScan_5` 的 `estRows` 值为 `1000000.00`，这意味着优化器估计这次全表扫描需要扫描 `1000000.00` 行数据。
 
-更多关于 `EXPLAIN` 的使用介绍，可以阅读[使用 EXPLAIN 解读执行计划](/explain-walkthrough.md)。
+关于 `EXPLAIN` 的使用方法，请参见 [`EXPLAIN` 详解](/explain-walkthrough.md)。
 
-### 解决方案：使用索引过滤数据
+### 解决方案：使用二级索引
 
-为了加速上面的查询，可以在 `books.title` 列创建一个索引：
+要加快上述查询，可以在 `books.title` 列上添加二级索引：
 
 ```sql
 CREATE INDEX title_idx ON books (title);
 ```
 
-现在再执行这个查询将会快很多：
+查询执行速度快了很多：
 
 ```sql
 SELECT * FROM books WHERE title = 'Marian Yost';
@@ -89,7 +89,7 @@ SELECT * FROM books WHERE title = 'Marian Yost';
 Time: 0.007s
 ```
 
-可以使用 `EXPLAIN` 来查看这个查询的执行计划，看看为什么查询变快了：
+要了解为什么性能得到改善，使用 `EXPLAIN` 查看新的执行计划：
 
 ```sql
 EXPLAIN SELECT * FROM books WHERE title = 'Marian Yost';
@@ -105,17 +105,17 @@ EXPLAIN SELECT * FROM books WHERE title = 'Marian Yost';
 +---------------------------+---------+-----------+-------------------------------------+-------------------------------------------------------+
 ```
 
-从执行计划中的 **IndexLookUp_10** 可以看出，TiDB 将会通过索引 `title_idx` 来查询数据，其 `estRows` 值为 `1.27`，说明优化器估计只会扫描 `1.27` 行数据，远远小于之前全表扫的 `1000000.00` 行数据。
+从执行计划中的 `IndexLookup_10` 可以看出，TiDB 通过 `title_idx` 索引查询数据。其 `estRows` 值为 `1.27`，这意味着优化器估计只需要扫描 `1.27` 行。估计扫描的行数远少于全表扫描的 `1000000.00` 行数据。
 
-**IndexLookUp_10** 执行计划的执行流程是先用 **IndexRangeScan_8** 算子通过 `title_idx` 索引获取符合条件的索引数据，然后 **TableRowIDScan_9** 再更据索引数据里面的 Row ID 回表查询相应的行数据。
+`IndexLookup_10` 执行计划是先使用 `IndexRangeScan_8` 算子通过 `title_idx` 索引读取满足条件的索引数据，然后使用 `TableLookup_9` 算子根据索引数据中存储的 Row ID 查询对应的行。
 
-更多关于 TiDB 执行计划的内容，可以阅读[TiDB 执行计划概览](/explain-overview.md)。
+关于 TiDB 执行计划的更多信息，请参见 [TiDB 执行计划概览](/explain-overview.md)。
 
-### 解决方案：使用索引查询数据
+### 解决方案：使用覆盖索引
 
-上述解决方案中，需要先读取索引信息，再回表查询对应的行数据。但如果索引数据中包含了 SQL 查询所需的所有信息，就可以省去回表查询这个步骤。
+如果索引是覆盖索引，包含了 SQL 语句查询的所有列，那么扫描索引数据就足够完成查询。
 
-例如下面查询中，仅需要根据 `title` 查询对应的 `price`：
+例如，在以下查询中，你只需要根据 `title` 查询对应的 `price`：
 
 ```sql
 SELECT title, price FROM books WHERE title = 'Marian Yost';
@@ -135,7 +135,7 @@ SELECT title, price FROM books WHERE title = 'Marian Yost';
 Time: 0.007s
 ```
 
-由于索引 `title_idx` 仅包含 `title` 列的信息，所以 TiDB 还是需要扫描索引数据，然后回表查询 `price` 数据：
+因为 `title_idx` 索引只包含 `title` 列的数据，TiDB 仍然需要先扫描索引数据，然后从表中查询 `price` 列。
 
 ```sql
 EXPLAIN SELECT title, price FROM books WHERE title = 'Marian Yost';
@@ -151,7 +151,7 @@ EXPLAIN SELECT title, price FROM books WHERE title = 'Marian Yost';
 +---------------------------+---------+-----------+-------------------------------------+-------------------------------------------------------+
 ```
 
-删除 `title_idx` 索引，并新建一个 `title_price_idx` 索引：
+要优化性能，删除 `title_idx` 索引并创建新的覆盖索引 `title_price_idx`：
 
 ```sql
 ALTER TABLE books DROP INDEX title_idx;
@@ -161,7 +161,7 @@ ALTER TABLE books DROP INDEX title_idx;
 CREATE INDEX title_price_idx ON books (title, price);
 ```
 
-现在，`price` 数据已经存储在索引 `title_price_idx` 中了，所以下面查询仅需扫描索引数据，无需回表查询了。这种索引通常被叫做覆盖索引：
+因为 `price` 数据存储在 `title_price_idx` 索引中，以下查询只需要扫描索引数据：
 
 ```sql
 EXPLAIN SELECT title, price FROM books WHERE title = 'Marian Yost';
@@ -176,7 +176,7 @@ EXPLAIN SELECT title, price FROM books WHERE title = 'Marian Yost';
 +--------------------+---------+-----------+--------------------------------------------------+-------------------------------------------------------+
 ```
 
-现在这条查询的速度将会更快：
+现在这个查询运行得更快：
 
 ```sql
 SELECT title, price FROM books WHERE title = 'Marian Yost';
@@ -196,15 +196,15 @@ SELECT title, price FROM books WHERE title = 'Marian Yost';
 Time: 0.004s
 ```
 
-由于后面的示例还会用到这个库，删除 `title_price_idx` 索引。
+由于 `books` 表将在后面的示例中使用，删除 `title_price_idx` 索引：
 
 ```sql
 ALTER TABLE books DROP INDEX title_price_idx;
 ```
 
-### 解决方案：使用主键查询数据
+### 解决方案：使用主键索引
 
-如果查询中使用主键过滤数据，这条查询的执行速度会非常快，例如表 `books` 的主键是列 `id`，使用列 `id` 来查询数据：
+如果查询使用主键过滤数据，查询运行速度很快。例如，`books` 表的主键是 `id` 列，所以你可以使用 `id` 列查询数据：
 
 ```sql
 SELECT * FROM books WHERE id = 896;
@@ -220,7 +220,7 @@ SELECT * FROM books WHERE id = 896;
 Time: 0.004s
 ```
 
-使用 `EXPLAIN` 查看执行计划:
+使用 `EXPLAIN` 查看执行计划：
 
 ```sql
 EXPLAIN SELECT * FROM books WHERE id = 896;
@@ -234,13 +234,27 @@ EXPLAIN SELECT * FROM books WHERE id = 896;
 +-------------+---------+------+---------------+---------------+
 ```
 
-**Point_Get**，又名 “点查”，它的执行速度也非常快。
+`Point_Get` 是一个非常快的执行计划。
 
-## 选择合适的 Join 执行计划
+## 使用正确的连接类型
 
-见 [JOIN 查询的执行计划](/explain-joins.md)。
+请参见[连接的执行计划](/explain-joins.md)。
 
-## 推荐阅读
+### 另请参阅
 
-- [使用 EXPLAIN 解读执行计划](/explain-walkthrough.md)。
-- [用 EXPLAIN 查看索引查询的执行计划](/explain-indexes.md)。
+* [EXPLAIN 详解](/explain-walkthrough.md)
+* [使用索引的执行计划](/explain-indexes.md)
+
+## 需要帮助？
+
+<CustomContent platform="tidb">
+
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 上询问社区，或[提交支持工单](/support.md)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 上询问社区，或[提交支持工单](https://tidb.support.pingcap.com/)。
+
+</CustomContent>

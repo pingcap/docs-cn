@@ -1,19 +1,19 @@
 ---
-title: SHOW [FULL] COLUMNS FROM
-summary: TiDB 数据库中 SHOW [FULL] COLUMNS FROM 的使用概况。
+title: SHOW [FULL] COLUMNS FROM | TiDB SQL 语句参考
+summary: TiDB 数据库中 SHOW [FULL] COLUMNS FROM 的使用概述。
 ---
 
 # SHOW [FULL] COLUMNS FROM
 
-`SHOW [FULL] COLUMNS FROM <table_name>` 语句用于以表格格式描述表或视图中的列。可选关键字 `FULL` 用于显示当前用户对该列的权限，以及表定义中的 `comment`。
+`SHOW [FULL] COLUMNS FROM <table_name>` 语句以有用的表格格式描述表或视图的列。可选关键字 `FULL` 显示当前用户对该列的权限，以及来自表定义的 `comment`。
 
-`SHOW [FULL] FIELDS FROM <table_name>`、`DESC <table_name>`、`DESCRIBE <table_name>` 和 `EXPLAIN <table_name>` 语句都是 `SHOW [FULL] COLUMNS FROM` 的别名。
+语句 `SHOW [FULL] FIELDS FROM <table_name>`、`DESC <table_name>`、`DESCRIBE <table_name>` 和 `EXPLAIN <table_name>` 都是此语句的别名。
 
 > **注意：**
 >
-> `DESC TABLE <table_name>`、`DESCRIBE TABLE <table_name>` 和 `EXPLAIN TABLE <table_name>` 与上面的语句并不等价，它们是 [`DESC SELECT * FROM <table_name>`](/sql-statements/sql-statement-explain.md) 的别名。
+> `DESC TABLE <table_name>`、`DESCRIBE TABLE <table_name>` 和 `EXPLAIN TABLE <table_name>` 与上述语句不等价。它们是 [`DESC SELECT * FROM <table_name>`](/sql-statements/sql-statement-explain.md) 的别名。
 
-## 语法图
+## 语法概要
 
 ```ebnf+diagram
 ShowColumnsFromStmt ::=
@@ -30,96 +30,58 @@ ShowLikeOrWhere ::=
 ## 示例
 
 ```sql
-CREATE VIEW v1 AS SELECT 1;
-```
-
-```
+mysql> CREATE VIEW v1 AS SELECT 1;
 Query OK, 0 rows affected (0.11 sec)
-```
 
-```sql
-SHOW COLUMNS FROM v1;
-```
-
-```
+mysql> SHOW COLUMNS FROM v1;
 +-------+-----------+------+------+---------+-------+
 | Field | Type      | Null | Key  | Default | Extra |
 +-------+-----------+------+------+---------+-------+
 | 1     | bigint(1) | YES  |      | NULL    |       |
 +-------+-----------+------+------+---------+-------+
 1 row in set (0.00 sec)
-```
 
-```sql
-DESC v1;
-```
-
-```
+mysql> DESC v1;
 +-------+-----------+------+------+---------+-------+
 | Field | Type      | Null | Key  | Default | Extra |
 +-------+-----------+------+------+---------+-------+
 | 1     | bigint(1) | YES  |      | NULL    |       |
 +-------+-----------+------+------+---------+-------+
 1 row in set (0.00 sec)
-```
 
-```sql
-DESCRIBE v1;
-```
-
-```
+mysql> DESCRIBE v1;
 +-------+-----------+------+------+---------+-------+
 | Field | Type      | Null | Key  | Default | Extra |
 +-------+-----------+------+------+---------+-------+
 | 1     | bigint(1) | YES  |      | NULL    |       |
 +-------+-----------+------+------+---------+-------+
 1 row in set (0.00 sec)
-```
 
-```sql
-EXPLAIN v1;
-```
-
-```
+mysql> EXPLAIN v1;
 +-------+-----------+------+------+---------+-------+
 | Field | Type      | Null | Key  | Default | Extra |
 +-------+-----------+------+------+---------+-------+
 | 1     | bigint(1) | YES  |      | NULL    |       |
 +-------+-----------+------+------+---------+-------+
 1 row in set (0.00 sec)
-```
 
-```sql
-SHOW FIELDS FROM v1;
-```
-
-```
+mysql> SHOW FIELDS FROM v1;
 +-------+-----------+------+------+---------+-------+
 | Field | Type      | Null | Key  | Default | Extra |
 +-------+-----------+------+------+---------+-------+
 | 1     | bigint(1) | YES  |      | NULL    |       |
 +-------+-----------+------+------+---------+-------+
 1 row in set (0.00 sec)
-```
 
-```sql
-SHOW FULL COLUMNS FROM v1
-```
-
-```
+mysql> SHOW FULL COLUMNS FROM v1;
 +-------+-----------+-----------+------+------+---------+-------+---------------------------------+---------+
 | Field | Type      | Collation | Null | Key  | Default | Extra | Privileges                      | Comment |
 +-------+-----------+-----------+------+------+---------+-------+---------------------------------+---------+
 | 1     | bigint(1) | NULL      | YES  |      | NULL    |       | select,insert,update,references |         |
 +-------+-----------+-----------+------+------+---------+-------+---------------------------------+---------+
 1 row in set (0.00 sec)
-```
 
-```sql
-SHOW FULL COLUMNS FROM mysql.user;
-```
-
-```
+mysql> SHOW FULL COLUMNS FROM mysql.user;
 +------------------------+---------------+-------------+------+------+---------+-------+---------------------------------+---------+
 | Field                  | Type          | Collation   | Null | Key  | Default | Extra | Privileges                      | Comment |
 +------------------------+---------------+-------------+------+------+---------+-------+---------------------------------+---------+
@@ -167,7 +129,7 @@ SHOW FULL COLUMNS FROM mysql.user;
 
 ## MySQL 兼容性
 
-`SHOW [FULL] COLUMNS FROM` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
+TiDB 中的 `SHOW [FULL] COLUMNS FROM` 语句与 MySQL 完全兼容。如果发现任何兼容性差异，请[报告 bug](https://docs.pingcap.com/tidb/stable/support)。
 
 ## 另请参阅
 

@@ -1,35 +1,34 @@
 ---
 title: SHOW ANALYZE STATUS
-summary: TiDB 数据库中 SHOW ANALYZE STATUS 的使用概况。
+summary: TiDB 数据库中 SHOW ANALYZE STATUS 的使用概述。
 ---
 
 # SHOW ANALYZE STATUS
 
-`SHOW ANALYZE STATUS` 语句提供 TiDB 正在执行的统计信息收集任务以及有限条历史任务记录。
+`SHOW ANALYZE STATUS` 语句显示 TiDB 正在执行的统计信息收集任务和有限数量的历史任务记录。
 
-从 TiDB v6.1.0 起，执行 `SHOW ANALYZE STATUS` 语句将显示集群级别的任务，且 TiDB 重启后仍能看到重启之前的任务记录。在 TiDB v6.1.0 之前，执行 `SHOW ANALYZE STATUS` 语句仅显示实例级别的任务，且 TiDB 重启后任务记录会被清空。
+从 TiDB v6.1.0 开始，`SHOW ANALYZE STATUS` 语句支持显示集群级别的任务。即使在 TiDB 重启后，你仍然可以使用此语句查看重启前的任务记录。在 TiDB v6.1.0 之前，`SHOW ANALYZE STATUS` 语句只能显示实例级别的任务，且任务记录会在 TiDB 重启后被清除。
 
-从 TiDB v6.1.0 起，你可以通过系统表 `mysql.analyze_jobs` 查看过去 7 天内的历史记录。
+从 TiDB v6.1.0 开始，你可以通过系统表 `mysql.analyze_jobs` 查看最近 7 天的历史任务。
 
-从 TiDB v7.3.0 起，你可以通过系统表 `mysql.analyze_jobs` 或者 `SHOW ANALYZE STATUS` 查看当前 `ANALYZE` 任务的进度。
+从 TiDB v7.3.0 开始，你可以通过系统表 `mysql.analyze_jobs` 或 `SHOW ANALYZE STATUS` 查看当前 `ANALYZE` 任务的进度。
 
 目前，`SHOW ANALYZE STATUS` 语句返回以下列：
 
-| 列名 | 说明            |
-| :-------- | :------------- |
-| `Table_schema` |  数据库名    |
-| `Table_name` | 表名 |
+| 列名            | 描述 |
+| :--------------- | :------------- |
+| `Table_schema`   | 数据库名 |
+| `Table_name`     | 表名 |
 | `Partition_name` | 分区名 |
-| `Job_info` | 任务具体信息。当收集索引的统计信息时，该信息会包含索引名。当 `tidb_analyze_version = 2` 时，该信息会包含采样率等配置项。 |
-| `Processed_rows` | 已经 `ANALYZE` 的行数 |
-| `Start_time` | 任务开始执行的时间 |
-| `End_time` | 任务结束执行的时间 |
-| `State` | 任务状态，包括 pending（等待）、running（正在执行）、finished（执行成功）和 failed（执行失败）|
-| `Fail_reason` | 任务失败的原因。如果执行成功则为 `NULL`。 |
-| `Instance` | 执行任务的 TiDB 实例 |
-| `Process_id` | 执行任务的 process ID |
+| `Job_info`       | 任务信息。如果分析了索引，此信息将包括索引名。当 `tidb_analyze_version =2` 时，此信息将包括采样率等配置项。 |
+| `Processed_rows` | 已分析的行数 |
+| `Start_time`     | 任务开始时间 |
+| `State`          | 任务状态，包括 `pending`、`running`、`finished` 和 `failed` |
+| `Fail_reason`    | 任务失败的原因。如果执行成功，该值为 `NULL`。 |
+| `Instance`       | 执行任务的 TiDB 实例 |
+| `Process_id`     | 执行任务的进程 ID |
 
-## 语法图
+## 语法概要
 
 ```ebnf+diagram
 ShowAnalyzeStatusStmt ::= 'SHOW' 'ANALYZE' 'STATUS' ShowLikeOrWhereOpt
@@ -83,8 +82,8 @@ mysql> show analyze status;
 
 ## MySQL 兼容性
 
-该语句是 TiDB 对 MySQL 语法的扩展。
+此语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 
-* [`ANALYZE_STATUS` 表](/information-schema/information-schema-analyze-status.md)
+* [ANALYZE_STATUS 表](/information-schema/information-schema-analyze-status.md)

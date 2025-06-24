@@ -1,19 +1,19 @@
 ---
-title: MODIFY COLUMN
-summary: TiDB 数据库中 MODIFY COLUMN 的使用概况。
+title: MODIFY COLUMN | TiDB SQL 语句参考
+summary: TiDB 数据库中 MODIFY COLUMN 的使用概览。
 ---
 
 # MODIFY COLUMN
 
-`ALTER TABLE .. MODIFY COLUMN` 语句用于修改已有表上的列，包括列的数据类型和属性。若要同时重命名，可改用 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 语句。
+`ALTER TABLE.. MODIFY COLUMN` 语句修改现有表上的列。修改可以包括更改数据类型和属性。如果同时需要重命名，请使用 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 语句。
 
-从 v5.1.0 版本起，TiDB 开始支持 Reorg 类型变更，包括但不限于：
+从 v5.1.0 开始，TiDB 支持 Reorg 数据的数据类型更改，包括但不限于：
 
-- 从 `VARCHAR` 转换为 `BIGINT`
-- `DECIMAL` 精度修改
-- 从 `VARCHAR(10)` 到 `VARCHAR(5)` 的长度压缩
+- 将 `VARCHAR` 更改为 `BIGINT`
+- 修改 `DECIMAL` 精度
+- 将 `VARCHAR(10)` 的长度压缩为 `VARCHAR(5)`
 
-## 语法图
+## 语法
 
 ```ebnf+diagram
 AlterTableStmt
@@ -51,7 +51,7 @@ ColumnName ::=
 
 ## 示例
 
-### Meta-Only Change
+### 仅元数据更改
 
 {{< copyable "sql" >}}
 
@@ -101,7 +101,7 @@ Create Table: CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
-### Reorg-Data Change
+### Reorg 数据更改
 
 {{< copyable "sql" >}}
 
@@ -151,24 +151,24 @@ CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
-**注意：**
-
-> - 当所变更的类型与已经存在的数据行产生冲突时，TiDB 会进行报错处理。在上述例子中，TiDB 将进行如下报错：
+> **注意：**
 >
->   ```
->   alter table t1 modify column col1 varchar(4);
->   ERROR 1406 (22001): Data Too Long, field len 4, data len 5
->   ```
+> - 当更改的数据类型与现有数据行冲突时，TiDB 会返回错误。在上面的示例中，TiDB 返回以下错误：
 >
-> - 由于和 Async Commit 功能兼容，DDL 在开始进入到 Reorg Data 前会有一定时间（约 2.5s）的等待处理：
+>    ```
+>    alter table t1 modify column col1 varchar(4);
+>    ERROR 1406 (22001): Data Too Long, field len 4, data len 5
+>    ```
 >
->   ```
->   Query OK, 0 rows affected (2.52 sec)
->   ```
+> - 由于与 Async Commit 功能的兼容性，DDL 语句在开始处理 Reorg 数据之前会等待一段时间（约 2.5 秒）。
+>
+>    ```
+>    Query OK, 0 rows affected (2.52 sec)
+>    ```
 
 ## MySQL 兼容性
 
-* 不支持修改主键列上需要 Reorg-Data 的类型，但是支持修改 Meta-Only 的类型。例如：
+* 不支持在主键列上修改 Reorg 数据类型，但支持修改仅元数据类型。例如：
 
     ```sql
     CREATE TABLE t (a int primary key);
@@ -188,7 +188,7 @@ CREATE TABLE `t1` (
     Query OK, 0 rows affected (0.01 sec)
     ```
 
-* 不支持修改生成列的类型。例如：
+* 不支持修改生成列的列类型。例如：
 
     ```sql
     CREATE TABLE t (a INT, b INT as (a+1));
@@ -196,7 +196,7 @@ CREATE TABLE `t1` (
     ERROR 8200 (HY000): Unsupported modify column: column is generated
     ```
 
-* 不支持修改分区表上的列类型。例如：
+* 不支持修改分区表的列类型。例如：
 
     ```sql
     CREATE TABLE t (c1 INT, c2 INT, c3 INT) partition by range columns(c1) ( partition p0 values less than (10), partition p1 values less than (maxvalue));
@@ -204,7 +204,7 @@ CREATE TABLE `t1` (
     ERROR 8200 (HY000): Unsupported modify column: table is partition table
     ```
 
-* 不支持部分数据类型（例如，部分 TIME 类型、BIT、SET、ENUM、JSON 等）向某些类型的变更，因为 TiDB 的 `CAST` 函数与 MySQL 的行为有一些兼容性问题。例如：
+* 由于 TiDB 和 MySQL 之间 `cast` 函数行为的一些兼容性问题，不支持从某些数据类型（例如某些 TIME 类型、BIT、SET、ENUM、JSON）转换为其他类型。
 
     ```sql
     CREATE TABLE t (a DECIMAL(13, 7));

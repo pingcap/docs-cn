@@ -1,28 +1,28 @@
 ---
-title: 多表连接查询
-summary: 介绍 TiDB 中的多表连接查询功能。
+title: 多表联接查询
+summary: 本文介绍如何使用多表联接查询。
 ---
 
-# 多表连接查询
+# 多表联接查询
 
-很多时候，应用程序需要在一个查询当中使用到多张表的数据，这个时候可以通过 `JOIN` 语句将两张或多张表的数据组合在一起。
+在许多场景中，你需要使用一个查询从多个表中获取数据。你可以使用 `JOIN` 语句来组合来自两个或多个表的数据。
 
-## Join 类型
+## 联接类型
 
-此节将详细叙述 Join 的连接类型。
+本节详细介绍联接类型。
 
-### 内连接 INNER JOIN
+### INNER JOIN
 
-内连接的连接结果只返回匹配连接条件的行。
-
-例如，想要知道编写过最多书的作家是谁，需要将作家基础信息表 `authors` 与书籍作者表 `book_authors` 进行连接。
+内联接的联接结果仅返回满足联接条件的行。
 
 ![Inner Join](/media/develop/inner-join.png)
+
+例如，如果你想知道最多产的作者，你需要将名为 `authors` 的作者表与名为 `book_authors` 的图书作者表联接起来。
 
 <SimpleTab groupId="language">
 <div label="SQL" value="sql">
 
-在下面的 SQL 语句当中，通过关键字 `JOIN` 声明要将左表 `authors` 和右表 `book_authors` 的数据行以内连接的方式进行连接，连接条件为 `a.id = ba.author_id`，那么连接的结果集当中将只会包含满足连接条件的行。假设有一个作家没有编写过任何书籍，那么他在 `authors` 表当中的记录将无法满足连接条件，因此也不会出现在结果集当中。
+在以下 SQL 语句中，使用关键字 `JOIN` 声明你要将左表 `authors` 和右表 `book_authors` 的行作为内联接进行联接，联接条件为 `a.id = ba.author_id`。结果集将只包含满足联接条件的行。如果一个作者没有写过任何书，那么他在 `authors` 表中的记录将不满足联接条件，因此不会出现在结果集中。
 
 ```sql
 SELECT ANY_VALUE(a.id) AS author_id, ANY_VALUE(a.name) AS author_name, COUNT(ba.book_id) AS books
@@ -56,8 +56,6 @@ LIMIT 10;
 </div>
 <div label="Java" value="java">
 
-在 Java 中内连接的示例如下：
-
 ```java
 public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
     List<Author> authors = new ArrayList<>();
@@ -86,20 +84,20 @@ public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
 </div>
 </SimpleTab>
 
-### 左外连接 LEFT OUTER JOIN
+### LEFT OUTER JOIN
 
-左外连接会返回左表中的所有数据行，以及右表当中能够匹配连接条件的值，如果在右表当中没有找到能够匹配的行，则使用 `NULL` 填充。
+左外联接返回左表中的所有行以及右表中满足联接条件的值。如果在右表中没有匹配的行，将用 `NULL` 填充。
 
 ![Left Outer Join](/media/develop/left-outer-join.png)
 
-在一些情况下，希望使用多张表来完成数据的查询，但是并不希望因为不满足连接条件而导致数据集变小。
+在某些情况下，你想使用多个表来完成数据查询，但不希望因为不满足联接条件而使数据集变得太小。
 
-例如，在 Bookshop 应用的首页，希望展示一个带有平均评分的最新书籍列表。在这种情况下，最新的书籍可能是还没有经过任何人评分的，如果使用内连接就会导致这些无人评分的书籍信息被过滤掉，而这并不是期望的结果。
+例如，在 Bookshop 应用的主页上，你想显示带有平均评分的新书列表。在这种情况下，新书可能还没有被任何人评分。使用内联接会导致这些未评分书籍的信息被过滤掉，这不是你期望的。
 
 <SimpleTab groupId="language">
 <div label="SQL" value="sql">
 
-在下面的 SQL 语句当中，通过 `LEFT JOIN` 关键字声明左表 `books` 将以左外连接的方式与右表 `ratings` 进行连接，从而确保 `books` 表当中的所有记录都能得到返回。
+在以下 SQL 语句中，使用 `LEFT JOIN` 关键字声明左表 `books` 将以左外联接的方式与右表 `ratings` 联接，从而确保返回 `books` 表中的所有行。
 
 ```sql
 SELECT b.id AS book_id, ANY_VALUE(b.title) AS book_title, AVG(r.score) AS average_score
@@ -130,13 +128,13 @@ LIMIT 10;
 10 rows in set (0.30 sec)
 ```
 
-看起来最新出版的书籍已经有了很多评分，为了验证上面所说的，通过 SQL 语句把 **The Documentary of lion** 这本书的所有评分给删掉：
+看起来最新发布的书已经有很多评分了。为了验证上述方法，让我们通过 SQL 语句删除《The Documentary of lion》这本书的所有评分：
 
 ```sql
 DELETE FROM ratings WHERE book_id = 3438991610;
 ```
 
-再次查询，你会发现 **The Documentary of lion** 这本书依然出现在结果集当中，但是通过右表 `ratings` 的 `score` 列计算得到的 `average_score` 列被填上了 `NULL`。
+再次查询。《The Documentary of lion》这本书仍然出现在结果集中，但从右表 `ratings` 的 `score` 计算得出的 `average_score` 列被填充为 `NULL`。
 
 ```
 +------------+---------------------------------+---------------+
@@ -156,12 +154,10 @@ DELETE FROM ratings WHERE book_id = 3438991610;
 10 rows in set (0.30 sec)
 ```
 
-如果改成使用的是内连接 `JOIN` 结果会怎样？这就交给你来尝试了。
+如果使用 `INNER JOIN` 会发生什么？你可以自己尝试一下。
 
 </div>
 <div label="Java" value="java">
-
-在 Java 中左外连接的示例如下：
 
 ```java
 public List<Book> getLatestBooksWithAverageScore() throws SQLException {
@@ -191,35 +187,37 @@ public List<Book> getLatestBooksWithAverageScore() throws SQLException {
 </div>
 </SimpleTab>
 
-### 右外连接 RIGHT OUTER JOIN
+### RIGHT OUTER JOIN
 
-右外连接返回右表中的所有记录，以及左表当中能够匹配连接条件的值，没有匹配的值则使用 `NULL` 填充。
+右外联接返回右表中的所有记录以及左表中满足联接条件的值。如果没有匹配的值，则用 `NULL` 填充。
 
 ![Right Outer Join](/media/develop/right-outer-join.png)
 
-### 交叉连接 CROSS JOIN
+### CROSS JOIN
 
-当连接条件恒成立时，两表之间的内连接称为[交叉连接](https://zh.wikipedia.org/wiki/%E8%BF%9E%E6%8E%A5#%E4%BA%A4%E5%8F%89%E8%BF%9E%E6%8E%A5)（又被称为“笛卡尔连接”）。交叉连接会把左表的每一条记录和右表的所有记录相连接，如果左表的记录数为 m，右表的记录数为 n，则结果集中会产生 m \* n 条记录。
+当联接条件为常量时，两个表之间的内联接称为[交叉联接](https://en.wikipedia.org/wiki/Join_(SQL)#Cross_join)。交叉联接将左表的每条记录与右表的所有记录联接。如果左表中的记录数为 `m`，右表中的记录数为 `n`，则结果集中将生成 `m \* n` 条记录。
 
-### 左半连接 LEFT SEMI JOIN
+### LEFT SEMI JOIN
 
-TiDB 在 SQL 语法层面上不支持 `LEFT SEMI JOIN table_name`，但是在执行计划层面，[子查询相关的优化](/subquery-optimization.md)会将 `semi join` 作为改写后的等价 JOIN 查询默认的连接方式。
+TiDB 在 SQL 语法级别不支持 `LEFT SEMI JOIN table_name`。但在执行计划级别，[子查询相关优化](/subquery-optimization.md)会使用 `semi join` 作为重写等价 JOIN 查询的默认联接方法。
 
-## 隐式连接
+## 隐式联接
 
-在显式声明连接的 `JOIN` 语句作为 SQL 标准出现之前，在 SQL 语句当中可以通过 `FROM t1, t2` 子句来连接两张或多张表，通过 `WHERE t1.id = t2.id` 子句来指定连接的条件。你可以将其理解为隐式声明的连接，隐式连接会使用内连接的方式进行连接。
+在明确声明联接的 `JOIN` 语句被添加到 SQL 标准之前，可以使用 `FROM t1, t2` 子句在 SQL 语句中联接两个或多个表，并使用 `WHERE t1.id = t2.id` 子句指定联接条件。你可以将其理解为隐式联接，它使用内联接来联接表。
 
-## Join 相关算法
+## 联接相关算法
 
-TiDB 支持下列三种常规的表连接算法，优化器会根据所连接表的数据量等因素来选择合适的 Join 算法去执行。你可以通过 `EXPLAIN` 语句来查看查询使用了何种算法进行 Join。
+TiDB 支持以下通用表联接算法。
 
 - [Index Join](/explain-joins.md#index-join)
 - [Hash Join](/explain-joins.md#hash-join)
 - [Merge Join](/explain-joins.md#merge-join)
 
-如果发现 TiDB 的优化器没有按照最佳的 Join 算法去执行。你也可以通过 [Optimizer Hints](/optimizer-hints.md) 强制 TiDB 使用更好的 Join 算法去执行。
+优化器会根据联接表中的数据量等因素选择合适的联接算法来执行。你可以使用 `EXPLAIN` 语句查看查询使用了哪种联接算法。
 
-例如，假设上文当中的左连接查询的示例 SQL 使用 Hash Join 算法执行更快，而优化器并没有选择这种算法，你可以在 `SELECT` 关键字后面加上 Hint `/*+ HASH_JOIN(b, r) */`（注意：如果表名添加了别名，Hint 当中也应该使用表别名）。
+如果 TiDB 的优化器没有按照最优的联接算法执行，你可以使用[优化器提示](/optimizer-hints.md)强制 TiDB 使用更好的联接算法。
+
+例如，假设上面的左联接查询示例使用 Hash Join 算法执行得更快，但优化器没有选择它，你可以在 `SELECT` 关键字后面添加提示 `/*+ HASH_JOIN(b, r) */`。注意，如果表有别名，在提示中使用别名。
 
 ```sql
 EXPLAIN SELECT /*+ HASH_JOIN(b, r) */ b.id AS book_id, ANY_VALUE(b.title) AS book_title, AVG(r.score) AS average_score
@@ -230,18 +228,18 @@ ORDER BY b.published_at DESC
 LIMIT 10;
 ```
 
-Join 算法相关的 Hints：
+与联接算法相关的提示：
 
 - [MERGE_JOIN(t1_name [, tl_name ...])](/optimizer-hints.md#merge_joint1_name--tl_name-)
 - [INL_JOIN(t1_name [, tl_name ...])](/optimizer-hints.md#inl_joint1_name--tl_name-)
 - [INL_HASH_JOIN(t1_name [, tl_name ...])](/optimizer-hints.md#inl_hash_join)
 - [HASH_JOIN(t1_name [, tl_name ...])](/optimizer-hints.md#hash_joint1_name--tl_name-)
 
-## Join 顺序
+## 联接顺序
 
-在实际的业务场景中，多个表的 Join 语句是很常见的，而 Join 的执行效率和各个表参与 Join 的顺序有关。TiDB 使用 Join Reorder 算法来确定多个表进行 Join 的顺序。
+在实际业务场景中，多表联接语句非常常见。联接的执行效率与每个表在联接中的顺序有关。TiDB 使用联接重排算法来确定多个表联接的顺序。
 
-当优化器选择的 Join 顺序并不够好时，你可以使用 `STRAIGHT_JOIN` 语法让 TiDB 强制按照 FROM 子句中所使用的表的顺序做联合查询。
+如果优化器选择的联接顺序不是最优的，你可以使用 `STRAIGHT_JOIN` 强制 TiDB 按照 `FROM` 子句中使用的表的顺序进行联接查询。
 
 ```sql
 EXPLAIN SELECT *
@@ -249,9 +247,23 @@ FROM authors a STRAIGHT_JOIN book_authors ba STRAIGHT_JOIN books b
 WHERE b.id = ba.book_id AND ba.author_id = a.id;
 ```
 
-关于该算法的实现细节和限制你可以通过查看[Join Reorder 算法简介](/join-reorder.md)章节进行了解。
+有关此联接重排算法的实现细节和限制的更多信息，请参阅[联接重排算法简介](/join-reorder.md)。
 
-## 扩展阅读
+## 另请参阅
 
-- [用 EXPLAIN 查看 JOIN 查询的执行计划](/explain-joins.md)
-- [Join Reorder 算法简介](/join-reorder.md)
+- [使用联接的语句的执行计划](/explain-joins.md)
+- [联接重排简介](/join-reorder.md)
+
+## 需要帮助？
+
+<CustomContent platform="tidb">
+
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 上询问社区，或[提交支持工单](/support.md)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 上询问社区，或[提交支持工单](https://tidb.support.pingcap.com/)。
+
+</CustomContent>

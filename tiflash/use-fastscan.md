@@ -1,19 +1,21 @@
 ---
-title: 使用 FastScan 功能
-summary: 介绍通过使用 FastScan 来加速 OLAP 场景的查询的方法。
+title: 使用 FastScan
+summary: 介绍如何使用 FastScan 在 OLAP 场景下加速查询。
 ---
 
-# 使用 FastScan 功能
+# 使用 FastScan
 
-本文档介绍通过使用 FastScan 来加速 Online Analytical Processing (OLAP) 场景中查询的方法。
+本文档介绍如何使用 FastScan 在在线分析处理（OLAP）场景中加速查询。
 
-默认情况下，TiFlash 能够保证查询结果精度以及数据一致性。如果使用 FastScan，TiFlash 可以实现更高效的查询性能，但不保证查询结果精度和数据一致性。
+默认情况下，TiFlash 保证查询结果的精确性和数据一致性。通过 FastScan 功能，TiFlash 可以提供更高效的查询性能，但不保证查询结果的准确性和数据一致性。
 
-某些 OLAP 对查询结果精度可以容忍一定误差。如果对查询性能有更高要求，可以在 session 级别或 global 级别开启 FastScan 功能，你可以通过修改变量 `tiflash_fastscan` 的值来选择是否启用 FastScan 功能。
+某些 OLAP 场景允许查询结果有一定的容错性。在这些情况下，如果你需要更高的查询性能，可以在会话级别或全局级别启用 FastScan 功能。你可以通过配置变量 `tiflash_fastscan` 来选择是否启用 FastScan 功能。
 
-## 使用限制
+## 限制
 
-当开启 FastScan 功能时，查询结果可能会包含表中的旧数据，即相同主键的多个历史版本的数据或者已经删除的数据。如下所示：
+当启用 FastScan 功能时，你的查询结果可能包含表的旧数据。这意味着你可能会获得具有相同主键的多个历史版本数据或已被删除的数据。
+
+例如：
 
 ```sql
 CREATE TABLE t1 (a INT PRIMARY KEY, b INT);
@@ -42,17 +44,15 @@ SELECT * FROM t1;
 +------+------+
 ```
 
-对于这些旧数据，TiFlash 在后台会自动发起数据整理（Compaction）。当这些旧数据已经被后台整理且它们的数据版本小于 GC safe point 之后，才会被物理清理。此后在 FastScan 模式下将不再返回这些数据。旧数据被整理的时机受多种因素的自动触发，你也可以通过 [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) 手动触发数据整理。 
+虽然 TiFlash 可以在后台自动触发旧数据的压缩，但在数据被压缩且其数据版本早于 GC 安全点之前，旧数据不会被物理清理。在物理清理之后，被清理的旧数据将不再在 FastScan 模式下返回。数据压缩的时机由各种因素自动触发。你也可以使用 [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) 语句手动触发数据压缩。
 
 ## 启用和禁用 FastScan
 
-默认情况下，session 和 global 级别的变量 `tiflash_fastscan=OFF`，即没有开启 FastScan 功能。你可以通过以下语句来查看对应的变量信息。
+默认情况下，变量 `tiflash_fastscan=OFF` 在会话级别和全局级别都是关闭的，即 FastScan 功能未启用。你可以使用以下语句查看变量信息。
 
 ```
 show variables like 'tiflash_fastscan';
-```
 
-```
 +------------------+-------+
 | Variable_name    | Value |
 +------------------+-------+
@@ -62,9 +62,7 @@ show variables like 'tiflash_fastscan';
 
 ```
 show global variables like 'tiflash_fastscan';
-```
 
-```
 +------------------+-------+
 | Variable_name    | Value |
 +------------------+-------+
@@ -72,34 +70,34 @@ show global variables like 'tiflash_fastscan';
 +------------------+-------+
 ```
 
-变量 `tiflash_fastscan` 支持 session 级别和 global 级别的修改。如果需要在当前 session 中启用 FastScan 功能，可以通过以下语句设置:
+你可以在会话级别和全局级别配置变量 `tiflash_fastscan`。如果你需要在当前会话中启用 FastScan，可以使用以下语句：
 
 ```
 set session tiflash_fastscan=ON;
 ```
 
-如果对 global 级别的 `tiflash_fastscan` 进行设置，设置后新建的会话中默认 session 和 global 变量 `tiflash_fastscan` 启用新值。设置方式如下：
+你也可以在全局级别设置 `tiflash_fastscan`。新设置将在新会话中生效，但不会在当前和之前的会话中生效。此外，在新会话中，会话级别和全局级别的 `tiflash_fastscan` 都将采用新值。
 
 ```
 set global tiflash_fastscan=ON;
 ```
 
-可以用下面语句禁用 FastScan：
+你可以使用以下语句禁用 FastScan。
 
-```sql
+```
 set session tiflash_fastscan=OFF;
 set global tiflash_fastscan=OFF;
 ```
 
-## 实现机制
+## FastScan 的工作机制
 
-TiFlash 存储层的数据主要存放在 Delta 层和 Stable 层。
+TiFlash 存储层的数据存储在两个层次：Delta 层和 Stable 层。
 
-在默认状态下（即未开启 FastScan 功能），TableScan 算子过程整体包括了以下步骤：
+默认情况下，FastScan 未启用，TableScan 算子按以下步骤处理数据：
 
-1. Read data：在 Delta 层和 Stable 层分别建立数据流，进行各自数据的读取。
-2. Sort Merge：将步骤 1 中建立的数据流进行合并，并且将数据按照 (主键列，时间戳列) 顺序排列返回。
-3. Range Filter：根据读取范围限制，对步骤 2 中的数据进行过滤筛选并返回。
-4. MVCC + Column Filter：对步骤 3 中的数据进行 MVCC 过滤（即依照查询需要的数据版本，根据主键列以及时间戳列筛选出正确的数据版本），同时进行 Column 过滤（即过滤掉查询请求中不需要的列）并返回。
+1. 读取数据：在 Delta 层和 Stable 层分别创建数据流来读取各自的数据。
+2. 排序合并：合并步骤 1 中创建的数据流。然后按照（主键列，时间戳列）的顺序排序后返回数据。
+3. 范围过滤：根据数据范围，过滤步骤 2 生成的数据，然后返回数据。
+4. MVCC + 列过滤：通过 MVCC（即根据主键列和时间戳列过滤数据版本）和列过滤（即过滤掉不需要的列）对步骤 3 生成的数据进行过滤，然后返回数据。
 
-FastScan 通过损失一定的数据一致性来获取更快的查询性能。FastScan 中的 TableScan 流程省略了上述过程中的第 2 步和第 4 步中 MVCC 的部分，从而提高查询性能。
+FastScan 通过牺牲一些数据一致性来获得更快的查询速度。在 FastScan 中，正常扫描过程中的步骤 2 和步骤 4 中的 MVCC 部分被省略，从而提高查询性能。

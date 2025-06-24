@@ -1,11 +1,15 @@
 ---
 title: ALTER RANGE
-summary: TiDB 数据库中 ALTER RANGE 的使用概况。
+summary: TiDB 中 ALTER RANGE 的使用概述。
 ---
 
 # ALTER RANGE
 
-`ALTER RANGE` 语句目前仅用于修改 TiDB 数据库中指定范围的放置策略。
+目前，`ALTER RANGE` 语句只能用于修改 TiDB 中特定放置策略的范围。
+
+> **注意：**
+>
+> 此功能在 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 集群上不可用。
 
 ## 语法图
 
@@ -14,10 +18,10 @@ AlterRangeStmt ::=
     'ALTER' 'RANGE' Identifier PlacementPolicyOption
 ```
 
-目前 `ALTER RANGE` 能起作用的有 `global` 和 `meta` 两个参数：
+`ALTER RANGE` 支持以下两个参数：
 
-- `global`：表示集群内全域数据的范围
-- `meta`：表示 TiDB 内部存储的元信息的数据范围
+- `global`：表示集群中所有数据的范围。
+- `meta`：表示存储在 TiDB 中的内部元数据的范围。
 
 ## 示例
 
@@ -29,4 +33,4 @@ ALTER RANGE global PLACEMENT POLICY = "deploy111";
 ALTER RANGE meta PLACEMENT POLICY = "five_replicas";
 ```
 
-上述示例创建了一个名为 `deploy111` 和 `five_replicas` 的放置策略，为不同的区域指定了约束条件。然后将 `deploy111` 放置策略应用到了整个集群范围内的数据，将 `five_replicas` 放置策略应用到元数据范围内。
+上述示例创建了两个放置策略（`deploy111` 和 `five_replicas`），为不同区域指定了约束条件，然后将 `deploy111` 放置策略应用于集群范围内的所有数据，将 `five_replicas` 放置策略应用于元数据范围。

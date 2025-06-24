@@ -1,46 +1,60 @@
 ---
 title: 对象命名规范
-summary: 介绍 TiDB 中的对象命名规范。
+summary: 了解 TiDB 中的对象命名规范。
 ---
 
 # 对象命名规范
 
-用于规范数据库对象的命名，如数据库（DATABASE）、表（TABLE）、索引（INDEX）、用户（USER）等的命名约定。
+本文介绍数据库对象（如数据库、表、索引和用户）的命名规则。
 
-## 原则
+## 通用规则
 
-- 命名建议使用具有意义的英文词汇，词汇中间以下划线分隔。
-- 命名只能使用英文字母、数字、下划线。
-- 避免用 TiDB 的保留字如：group，order 等作为单个字段名。
-- 建议所有数据库对象使用小写字母。
+- 建议使用有意义的英文单词，用下划线分隔。
+- 名称中只使用字母、数字和下划线。
+- 避免使用 TiDB 保留字（如 `group` 和 `order`）作为列名。
+- 建议对所有数据库对象使用小写字母。
 
 ## 数据库命名规范
 
-建议按照业务、产品线或者其它指标进行区分，一般不要超过 20 个字符。如：临时库 (tmp_crm)、测试库 (test_crm)。
+建议按业务、产品或其他指标区分数据库名称，数据库名称不超过 20 个字符。例如，可以将临时库命名为 `tmp_crm`，将测试库命名为 `test_crm`。
 
 ## 表命名规范
 
-- 同一业务或者模块的表尽可能使用相同的前缀，表名称尽可能表达含义。
-- 多个单词以下划线分隔，不推荐超过 32 个字符。
-- 建议对表的用途进行注释说明，以便于统一认识。如：
-    - 临时表（tmp_t_crm_relation_0425）
-    - 备份表（bak_t_crm_relation_20170425）
-    - 业务运营临时统计表（`tmp_st_{business code}_{creator abbreviation}_{date}`）
-    - 账期归档表（`t_crm_ec_record_YYYY{MM}{dd}`）
-- 不同业务模块的表单独建立 DATABASE，并增加相应注释。
+- 同一业务或模块的表使用相同的前缀，并尽可能确保表名是自解释的。
+- 名称中的单词用下划线分隔。建议表名不超过 32 个字符。
+- 建议注释表的用途以便更好地理解。例如：
+    - 临时表：`tmp_t_crm_relation_0425`
+    - 备份表：`bak_t_crm_relation_20170425`
+    - 业务操作临时表：`tmp_st_{业务代码}_{创建者缩写}_{日期}`
+    - 账期记录表：`t_crm_ec_record_YYYY{MM}{dd}`
+- 为不同业务模块的表创建单独的数据库，并添加相应的注释。
 
-## 字段命名规范
+## 列命名规范
 
-- 字段命名需要表示其实际含义的英文单词或简写。
-- 建议各表之间相同意义的字段应同名。
-- 字段也尽量添加注释，枚举型需指明主要值的含义，如”0 - 离线，1 - 在线”。
-- 布尔值列命名为 `is_{description}`。如 member 表上表示为 enabled 的会员的列命名为 is_enabled。
-- 字段名不建议超过 30 个字符，字段个数不建议大于 60。
-- 尽量避免使用保留字，如 order、from、desc 等，请参考附录部分的官方保留字。
+- 列命名为该列的实际含义或缩写。
+- 建议在具有相同含义的表之间使用相同的列名。
+- 建议为列添加注释，并为枚举类型指定命名值，例如"0：离线，1：在线"。
+- 建议将布尔列命名为 `is_{description}`。例如，`member` 表中表示成员是否启用的列可以命名为 `is_enabled`。
+- 不建议列名超过 30 个字符，列数应少于 60 个。
+- 避免使用 TiDB 保留字作为列名，如 `order`、`from` 和 `desc`。要检查关键字是否为保留字，请参阅 [TiDB 关键字](/keywords.md)。
 
 ## 索引命名规范
 
-- 主键索引：`pk_{表名称简写}_{字段名简写}`
-- 唯一索引：`uk_{表名称简写}_{字段名简写}`
-- 普通索引：`idx_{表名称简写}_{字段名简写}`
-- 多单词组成的 column_name，取尽可能代表意义的缩写。
+- 主键索引：`pk_{表名缩写}_{字段名缩写}`
+- 唯一索引：`uk_{表名缩写}_{字段名缩写}`
+- 普通索引：`idx_{表名缩写}_{字段名缩写}`
+- 多个单词的列名：使用有意义的缩写
+
+## 需要帮助？
+
+<CustomContent platform="tidb">
+
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 上询问社区，或[提交支持工单](/support.md)。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 上询问社区，或[提交支持工单](https://tidb.support.pingcap.com/)。
+
+</CustomContent>

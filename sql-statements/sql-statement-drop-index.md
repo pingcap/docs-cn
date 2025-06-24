@@ -1,13 +1,13 @@
 ---
-title: DROP INDEX
-summary: TiDB 数据库中 DROP INDEX 的使用概况。
+title: DROP INDEX | TiDB SQL 语句参考
+summary: TiDB 数据库中 DROP INDEX 的使用概述。
 ---
 
 # DROP INDEX
 
-`DROP INDEX` 语句用于从指定的表中删除索引，并在 TiKV 中将空间标记为释放。
+此语句用于从指定表中删除索引，并在 TiKV 中将相应空间标记为可用。
 
-## 语法图
+## 语法
 
 ```ebnf+diagram
 DropIndexStmt ::=
@@ -22,34 +22,15 @@ IndexLockAndAlgorithmOpt ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
-CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
-```
-
-```
+mysql> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 Query OK, 0 rows affected (0.10 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
-```
-
-```
+mysql> INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
 Query OK, 5 rows affected (0.02 sec)
 Records: 5  Duplicates: 0  Warnings: 0
-```
 
-{{< copyable "sql" >}}
-
-```sql
-EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
-```
-
-```
+mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 +-------------------------+----------+-----------+---------------+--------------------------------+
 | id                      | estRows  | task      | access object | operator info                  |
 +-------------------------+----------+-----------+---------------+--------------------------------+
@@ -58,25 +39,11 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 |   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t1      | keep order:false, stats:pseudo |
 +-------------------------+----------+-----------+---------------+--------------------------------+
 3 rows in set (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-CREATE INDEX c1 ON t1 (c1);
-```
-
-```
+mysql> CREATE INDEX c1 ON t1 (c1);
 Query OK, 0 rows affected (0.30 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
-```
-
-```
+mysql> EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 +------------------------+---------+-----------+------------------------+---------------------------------------------+
 | id                     | estRows | task      | access object          | operator info                               |
 +------------------------+---------+-----------+------------------------+---------------------------------------------+
@@ -84,21 +51,14 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 | └─IndexRangeScan_5     | 0.01    | cop[tikv] | table:t1, index:c1(c1) | range:[3,3], keep order:false, stats:pseudo |
 +------------------------+---------+-----------+------------------------+---------------------------------------------+
 2 rows in set (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-DROP INDEX c1 ON t1;
-```
-
-```
+mysql> DROP INDEX c1 ON t1;
 Query OK, 0 rows affected (0.30 sec)
 ```
 
 ## MySQL 兼容性
 
-* 不支持删除 `CLUSTERED` 类型的 `PRIMARY KEY`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
+* 不支持删除 `CLUSTERED` 类型的主键。关于 `CLUSTERED` 类型的主键的更多详情，请参考[聚簇索引](/clustered-indexes.md)。
 
 ## 另请参阅
 

@@ -1,13 +1,13 @@
 ---
-title: GRANT <privileges>
-summary: TiDB 数据库中 GRANT <privileges> 的使用概况。
+title: GRANT <privileges> | TiDB SQL 语句参考
+summary: TiDB 数据库中 GRANT <privileges> 的使用概览。
 ---
 
 # `GRANT <privileges>`
 
-`GRANT <privileges>` 语句用于为 TiDB 中已存在的用户分配权限。TiDB 中的权限系统同 MySQL 一样，都基于数据库/表模式来分配凭据。执行 `GRANT <privileges>` 语句需要拥有分配的权限，并且拥有 `GRANT OPTION` 权限。
+此语句为 TiDB 中的已存在用户分配权限。TiDB 中的权限系统遵循 MySQL，其中凭据是基于数据库/表模式分配的。执行此语句需要 `GRANT OPTION` 权限和你分配的所有权限。
 
-## 语法图
+## 语法
 
 ```ebnf+diagram
 GrantStmt ::=
@@ -62,33 +62,14 @@ RequireListElement ::= 'ISSUER' Issuer | 'SUBJECT' Subject | 'CIPHER' Cipher | '
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
-CREATE USER 'newuser' IDENTIFIED BY 'mypassword';
-```
-
-```
+mysql> CREATE USER 'newuser' IDENTIFIED BY 'mypassword';
 Query OK, 1 row affected (0.02 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-GRANT ALL ON test.* TO 'newuser';
-```
-
-```
+mysql> GRANT ALL ON test.* TO 'newuser';
 Query OK, 0 rows affected (0.03 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SHOW GRANTS FOR 'newuser';
-```
-
-```
+mysql> SHOW GRANTS FOR 'newuser';
 +-------------------------------------------------+
 | Grants for newuser@%                            |
 +-------------------------------------------------+
@@ -102,12 +83,17 @@ SHOW GRANTS FOR 'newuser';
 
 * 与 MySQL 类似，`USAGE` 权限表示登录 TiDB 服务器的能力。
 * 目前不支持列级权限。
-* 与 MySQL 类似，不存在 `NO_AUTO_CREATE_USER` sql 模式时，`GRANT` 语句将在用户不存在时自动创建一个空密码的新用户。删除此 sql-mode（默认情况下已启用）会带来安全风险。
-* `GRANT <privileges>` 语句执行成功后，在 TiDB 中语句执行的结果会在当前连接立即生效，而 [MySQL 中部分权限的结果需要等到之后的连接才生效](https://dev.mysql.com/doc/refman/8.0/en/privilege-changes.html)。见 [TiDB #39356](https://github.com/pingcap/tidb/issues/39356)。
+* 与 MySQL 类似，当不存在 `NO_AUTO_CREATE_USER` SQL 模式时，如果用户不存在，`GRANT` 语句将自动创建一个空密码的新用户。移除此 SQL 模式（默认启用）会带来安全风险。
+* 在 TiDB 中，`GRANT <privileges>` 语句成功执行后，执行结果会立即在当前连接上生效。而[在 MySQL 中，对于某些权限，执行结果仅在后续连接中生效](https://dev.mysql.com/doc/refman/8.0/en/privilege-changes.html)。详情请参见 [TiDB #39356](https://github.com/pingcap/tidb/issues/39356)。
 
 ## 另请参阅
 
 * [`GRANT <role>`](/sql-statements/sql-statement-grant-role.md)
 * [`REVOKE <privileges>`](/sql-statements/sql-statement-revoke-privileges.md)
-* [`SHOW GRANTS`](/sql-statements/sql-statement-show-grants.md)
+* [SHOW GRANTS](/sql-statements/sql-statement-show-grants.md)
+
+<CustomContent platform="tidb">
+
 * [权限管理](/privilege-management.md)
+
+</CustomContent>

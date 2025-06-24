@@ -1,11 +1,11 @@
 ---
 title: TABLE_CONSTRAINTS
-summary: 了解 information_schema 表 `TABLE_CONSTRAINTS`。
+summary: 了解 `TABLE_CONSTRAINTS` information_schema 表。
 ---
 
 # TABLE_CONSTRAINTS
 
-`TABLE_CONSTRAINTS` 表记录了表的[约束](/constraints.md)信息。
+`TABLE_CONSTRAINTS` 表描述了哪些表具有[约束](/constraints.md)。
 
 {{< copyable "sql" >}}
 
@@ -49,10 +49,10 @@ SELECT * FROM table_constraints WHERE constraint_type='UNIQUE';
 7 rows in set (0.01 sec)
 ```
 
-`TABLE_CONSTRAINTS` 表中列的含义如下：
+`TABLE_CONSTRAINTS` 表中的字段说明如下：
 
-* `CONSTRAINT_CATALOG`：约束所属的目录的名称。这个值总是 `def`。
-* `CONSTRAINT_SCHEMA`：约束所属的数据库的名称。
+* `CONSTRAINT_CATALOG`：约束所属的目录名称。该值始终为 `def`。
+* `CONSTRAINT_SCHEMA`：约束所属的数据库名称。
 * `CONSTRAINT_NAME`：约束的名称。
 * `TABLE_NAME`：表的名称。
-* `CONSTRAINT_TYPE`：约束的类型。取值可以是 `UNIQUE`、`PRIMARY KEY` 或者 `FOREIGN KEY`。`UNIQUE` 和 `PRIMARY KEY` 信息与 `SHOW INDEX` 语句的执行结果类似。
+* `CONSTRAINT_TYPE`：约束的类型。值可以是 `UNIQUE`、`PRIMARY KEY` 或 `FOREIGN KEY`。`UNIQUE` 和 `PRIMARY KEY` 信息类似于 `SHOW INDEX` 语句的执行结果。

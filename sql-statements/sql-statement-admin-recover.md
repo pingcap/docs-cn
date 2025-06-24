@@ -1,11 +1,11 @@
 ---
 title: ADMIN RECOVER INDEX
-summary: TiDB 数据库中 ADMIN RECOVER INDEX 的使用概况。
+summary: TiDB 数据库中 ADMIN RECOVER INDEX 的使用概览。
 ---
 
 # ADMIN RECOVER INDEX
 
-`ADMIN RECOVER INDEX` 语句用于在表发生行数据和索引的一致性故障时，根据表中多余的索引，使表的行数据和索引重新恢复到一致状态。注意，该语法尚不支持[外键约束](/foreign-key.md)。
+当行数据和索引数据不一致时，你可以使用 `ADMIN RECOVER INDEX` 语句基于冗余索引恢复一致性。注意，此语法目前还不支持[外键约束](/foreign-key.md)。
 
 ## 语法图
 
@@ -16,7 +16,7 @@ AdminRecoverStmt ::=
 
 ## 示例
 
-假设由于一些原因（例如灾难恢复场景，集群中丢失了部分索引数据），数据库中的 `tbl` 表出现行数据和索引不一致现象：
+假设数据库中的 `tbl` 表由于某些原因（例如，在灾难恢复场景中集群中的某些行数据丢失）导致行数据和索引不一致：
 
 ```sql
 SELECT * FROM tbl;
@@ -26,13 +26,13 @@ ADMIN CHECK INDEX tbl idx ;
 ERROR 1105 (HY000): handle &kv.CommonHandle{encoded:[]uint8{0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xf8}, colEndOffsets:[]uint16{0xa}}, index:types.Datum{k:0x5, decimal:0x0, length:0x0, i:0, collation:"utf8mb4_bin", b:[]uint8{0x0}, x:interface {}(nil)} != record:<nil>
 ```
 
-从 `SELECT` 查询的错误信息可以看到，`tbl` 表中包含 3 条行数据和 2 条索引数据，这意味着行数据与索引数据出现了不一致故障，同时至少有 1 条行数据缺少了对应的索引。此时可以使用 `ADMIN RECOVER INDEX` 语句补充缺少的索引：
+从 `SELECT` 查询的错误消息可以看出，`tbl` 表包含三行数据和两行索引数据，这意味着行数据和索引数据不一致。同时，至少有一行数据没有对应的索引。在这种情况下，你可以使用 `ADMIN RECOVER INDEX` 语句来补充缺失的索引：
 
 ```sql
 ADMIN RECOVER INDEX tbl idx;
 ```
 
-执行结果示例如下：
+执行结果如下：
 
 ```sql
 ADMIN RECOVER INDEX tbl idx;
@@ -44,27 +44,46 @@ ADMIN RECOVER INDEX tbl idx;
 1 row in set (0.00 sec)
 ```
 
-此时，可以重新使用 `ADMIN CHECK INDEX` 语句对数据索引的一致性进行检查，验证数据恢复到正常状态：
+你可以再次执行 `ADMIN CHECK INDEX` 语句来检查数据和索引的一致性，并验证数据是否已恢复正常：
 
 ```sql
 ADMIN CHECK INDEX tbl idx;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
+<CustomContent platform="tidb">
+
 > **注意：**
 >
-> 当由于副本丢失导致数据索引出现不一致时：
+> 当由于副本丢失导致数据和索引不一致时：
 >
-> - 通常行数据与索引数据都有丢失，此时需要同时使用 [`ADMIN CLEANUP INDEX`](/sql-statements/sql-statement-admin-cleanup.md) 与 `ADMIN RECOVER INDEX` 语句保证行数据与索引数据的一致性。
-> - `ADMIN RECOVER INDEX` 总是单并发执行。在表数据量大时，建议通过重建索引的方式进行索引数据的恢复。
-> - `ADMIN RECOVER INDEX` 在执行期间，不会为对应的表或索引记录加锁，这意味着 TiDB 允许同时有其他的会话对表记录进行更新或修改。然而，在此情况下 `ADMIN RECOVER INDEX` 可能无法正确处理所有数据。因此，在执行 `ADMIN RECOVER INDEX` 时，请避免同时修改表数据。
-> - 若你使用 TiDB 企业版，此时建议[提交工单](https://support.pingcap.cn/)联系 PingCAP 支持工程师进行处理。
+> - 可能同时存在行数据和索引数据的丢失。要解决此问题，请同时使用 [`ADMIN CLEANUP INDEX`](/sql-statements/sql-statement-admin-cleanup.md) 和 `ADMIN RECOVER INDEX` 语句来恢复行数据和索引数据的一致性。
+> - `ADMIN RECOVER INDEX` 语句始终以单线程执行。当表数据较大时，建议通过重建索引来恢复索引数据。
+> - 执行 `ADMIN RECOVER INDEX` 语句时，相应的表或索引不会被锁定，TiDB 允许其他会话同时修改表记录。但是，在这种情况下，`ADMIN RECOVER INDEX` 可能无法正确处理所有表记录。因此，执行 `ADMIN RECOVER INDEX` 时，应避免同时修改表数据。
+> - 如果你使用 TiDB 企业版，可以[提交请求](/support.md)联系支持工程师寻求帮助。
 >
-> `ADMIN RECOVER INDEX` 命令不具有原子性：若该命令在执行期间中断，建议重新执行直到成功。
+> `ADMIN RECOVER INDEX` 语句不是原子性的：如果语句在执行过程中被中断，建议重新执行直到成功。
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+> **注意：**
+>
+> 当由于副本丢失导致数据和索引不一致时：
+>
+> - 可能同时存在行数据和索引数据的丢失。要解决此问题，请同时使用 [`ADMIN CLEANUP INDEX`](/sql-statements/sql-statement-admin-cleanup.md) 和 `ADMIN RECOVER INDEX` 语句来恢复行数据和索引数据的一致性。
+> - `ADMIN RECOVER INDEX` 语句始终以单线程执行。当表数据较大时，建议通过重建索引来恢复索引数据。
+> - 执行 `ADMIN RECOVER INDEX` 语句时，相应的表或索引不会被锁定，TiDB 允许其他会话同时修改表记录。但是，在这种情况下，`ADMIN RECOVER INDEX` 可能无法正确处理所有表记录。因此，执行 `ADMIN RECOVER INDEX` 时，应避免同时修改表数据。
+> - 如果你使用 TiDB 企业版，可以[提交请求](https://tidb.support.pingcap.com/)联系支持工程师寻求帮助。
+>
+> `ADMIN RECOVER INDEX` 语句不是原子性的：如果语句在执行过程中被中断，建议重新执行直到成功。
+
+</CustomContent>
 
 ## MySQL 兼容性
 
-`ADMIN RECOVER INDEX` 语句是 TiDB 对 MySQL 语法的扩展。
+该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

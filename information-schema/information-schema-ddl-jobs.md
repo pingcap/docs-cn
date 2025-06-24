@@ -1,11 +1,11 @@
 ---
 title: DDL_JOBS
-summary: 了解 information_schema 表 `DDL_JOBS`。
+summary: 了解 `DDL_JOBS` information_schema 表。
 ---
 
 # DDL_JOBS
 
-`DDL_JOBS` 表为 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 命令提供了一个 `INFORMATION_SCHEMA` 接口。它提供了 TiDB 集群中 DDL 操作的当前状态、DDL 语句、起始时间、结束时间、库表名称等信息。
+`DDL_JOBS` 表为 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 命令提供了一个 `INFORMATION_SCHEMA` 接口。它提供了 TiDB 集群中 DDL 操作的相关信息，例如当前状态、DDL 语句、开始时间、结束时间、数据库名称和表名。
 
 ```sql
 USE information_schema;

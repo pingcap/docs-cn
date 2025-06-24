@@ -1,11 +1,11 @@
 ---
-title: CREATE DATABASE
-summary: TiDB 数据库中 CREATE DATABASE 的使用概况。
+title: CREATE DATABASE | TiDB SQL 语句参考
+summary: TiDB 数据库中 CREATE DATABASE 的使用概览。
 ---
 
 # CREATE DATABASE
 
-`CREATE DATABASE` 语句用于在 TiDB 上创建新数据库。按照 SQL 标准，“数据库”一词在 MySQL 术语中最接近 “schema”。
+此语句在 TiDB 中创建一个新的数据库。MySQL 中的"数据库"术语最接近于 SQL 标准中的 schema。
 
 ## 语法图
 
@@ -36,9 +36,7 @@ PlacementPolicyOption ::=
 
 ## 语法说明
 
-`CREATE DATABASE` 用于创建数据库，并可以指定数据库的默认属性（如数据库默认字符集、排序规则）。`CREATE SCHEMA` 跟 `CREATE DATABASE` 操作效果一样。
-
-{{< copyable "sql" >}}
+`CREATE DATABASE` 语句用于创建数据库，并指定数据库的默认属性，如默认字符集和排序规则。`CREATE SCHEMA` 是 `CREATE DATABASE` 的同义词。
 
 ```sql
 CREATE {DATABASE | SCHEMA} [IF NOT EXISTS] db_name
@@ -49,49 +47,22 @@ create_specification:
   | [DEFAULT] COLLATE [=] collation_name
 ```
 
-当创建已存在的数据库且不指定使用 `IF NOT EXISTS` 时会报错。
+如果你创建一个已存在的数据库且未指定 `IF NOT EXISTS`，将显示错误。
 
-`create_specification` 选项用于指定数据库具体的 `CHARACTER SET` 和 `COLLATE`。目前 TiDB 只支持部分的字符集和排序规则，请参照[字符集支持](/character-set-and-collation.md)。
+`create_specification` 选项用于指定数据库中的特定 `CHARACTER SET` 和 `COLLATE`。目前，TiDB 仅支持部分字符集和排序规则。详情请参见[字符集和排序规则支持](/character-set-and-collation.md)。
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
-CREATE DATABASE mynewdatabase;
-```
-
-```
+mysql> CREATE DATABASE mynewdatabase;
 Query OK, 0 rows affected (0.09 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-USE mynewdatabase;
-```
-
-```
+mysql> USE mynewdatabase;
 Database changed
-```
-
-{{< copyable "sql" >}}
-
-```sql
-CREATE TABLE t1 (a int);
-```
-
-```
+mysql> CREATE TABLE t1 (a int);
 Query OK, 0 rows affected (0.11 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SHOW TABLES;
-```
-
-```
+mysql> SHOW TABLES;
 +-------------------------+
 | Tables_in_mynewdatabase |
 +-------------------------+
@@ -102,7 +73,7 @@ SHOW TABLES;
 
 ## MySQL 兼容性
 
-`CREATE DATABASE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
+TiDB 中的 `CREATE DATABASE` 语句与 MySQL 完全兼容。如果发现任何兼容性差异，请[报告问题](https://docs.pingcap.com/tidb/stable/support)。
 
 ## 另请参阅
 

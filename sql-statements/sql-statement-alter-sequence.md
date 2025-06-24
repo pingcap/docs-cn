@@ -1,13 +1,13 @@
 ---
 title: ALTER SEQUENCE
-summary: 介绍 ALTER SEQUENCE 在 TiDB 中的使用概况。
+summary: TiDB 数据库中 ALTER SEQUENCE 的使用概述。
 ---
 
 # ALTER SEQUENCE
 
-`ALTER SEQUENCE` 语句用于在 TiDB 中修改序列对象。序列是一种与 `Table` 和 `View` 对象平级的数据库对象，用于生成自定义的序列化 ID。
+`ALTER SEQUENCE` 语句用于修改 TiDB 中的序列对象。序列是与 `Table` 和 `View` 对象同级的数据库对象。序列用于以自定义方式生成序列化的 ID。
 
-## 语法图
+## 语法概要
 
 ```ebnf+diagram
 CreateSequenceStmt ::=
@@ -34,7 +34,7 @@ SequenceOption ::=
 |   'RESTART' ( ( '='? | 'WITH' ) SignedNum )?
 ```
 
-## 语法说明
+## 语法
 
 ```sql
 ALTER SEQUENCE sequence_name
@@ -47,40 +47,40 @@ ALTER SEQUENCE sequence_name
     [table_options]
 ```
 
-## 参数说明
+## 参数
 
 |参数 | 默认值 | 描述 |
 | :-- | :-- | :--|
-| `INCREMENT` | `1` | 指定序列的步长。其正负值可以控制序列的增长方向。|
-| `MINVALUE` | `1` 或 `-9223372036854775807` | 指定序列的最小值。当 `INCREMENT` > `0` 时，默认值为 `1`；当 `INCREMENT` < `0` 时，默认值为 `-9223372036854775807`。|
-| `MAXVALUE` | `9223372036854775806` 或 `-1` | 指定序列的最大值。当 `INCREMENT` > `0` 时，默认值为 `9223372036854775806`；当 `INCREMENT` < `0` 时，默认值为 `-1`。|
-| `START` | `MINVALUE` 或 `MAXVALUE` | 指定序列的初始值。当 `INCREMENT` > `0` 时，默认值为 `MINVALUE`; 当 `INCREMENT` < `0` 时，默认值为 `MAXVALUE`。 |
-| `CACHE` | `1000` | 指定每个 TiDB 本地缓存序列的大小。|
-| `CYCLE` | `NO CYCLE` | 指定序列用完之后是否要循环使用。在 `CYCLE` 的情况下，当 `INCREMENT` > `0` 时，序列用完后的后续起始值为 `MINVALUE`；当 `INCREMENT` < `0` 时，序列用完后的后续起始值为 `MAXVALUE`。|
+| `INCREMENT` | `1` | 指定序列的增量。其正值或负值可以控制序列的增长方向。 |
+| `MINVALUE` | `1` 或 `-9223372036854775807` | 指定序列的最小值。当 `INCREMENT` > `0` 时，默认值为 `1`。当 `INCREMENT` < `0` 时，默认值为 `-9223372036854775807`。 |
+| `MAXVALUE` | `9223372036854775806` 或 `-1` | 指定序列的最大值。当 `INCREMENT` > `0` 时，默认值为 `9223372036854775806`。当 `INCREMENT` < `0` 时，默认值为 `-1`。 |
+| `START` | `MINVALUE` 或 `MAXVALUE` | 指定序列的初始值。当 `INCREMENT` > `0` 时，默认值为 `MINVALUE`。当 `INCREMENT` < `0` 时，默认值为 `MAXVALUE`。 |
+| `CACHE` | `1000` | 指定 TiDB 中序列的本地缓存大小。 |
+| `CYCLE` | `NO CYCLE` | 指定序列是否从最小值重新开始（或降序序列的最大值）。当 `INCREMENT` > `0` 时，默认值为 `MINVALUE`。当 `INCREMENT` < `0` 时，默认值为 `MAXVALUE`。 |
 
 > **注意：**
 >
-> 在执行 `ALTER SEQUENCE ... RESTART` 之前，更改 `START` 值不会影响生成的值。
+> 更改 `START` 值不会影响生成的值，直到你执行 `ALTER SEQUENCE ... RESTART`。
 
 ## `SEQUENCE` 函数
 
-主要通过表达式函数来操纵序列的使用。
+你可以通过以下表达式函数控制序列：
 
 + `NEXTVAL` 或 `NEXT VALUE FOR`
 
-    本质上都是 `NEXTVAL()` 函数，获取序列对象的下一个有效值，其参数为序列的 `identifier`。
+    本质上，两者都是 `NEXTVAL()` 函数，用于获取序列对象的下一个有效值。`NEXTVAL()` 函数的参数是序列的 `identifier`。
 
 + `LASTVAL`
 
-    `LASTVAL()` 函数，用于获取本会话上一个使用过的值。如果没有值，则为 `NULL`，其参数为序列的 `identifier`。
+    此函数获取此会话的最后使用值。如果该值不存在，则使用 `NULL`。此函数的参数是序列的 `identifier`。
 
 + `SETVAL`
 
-    `SETVAL()` 函数，用于设置序列的增长。其第一参数为序列的 `identifier`，第二个参数为 `num`。
+    此函数设置序列当前值的进程。此函数的第一个参数是序列的 `identifier`；第二个参数是 `num`。
 
 > **注意：**
 >
-> 在 TiDB 序列的实现中，`SETVAL` 函数并不能改变序列增长的初始步调或循环步调。在 `SETVAL` 之后只会返回符合步调规律的下一个有效的序列值。
+> 在 TiDB 的序列实现中，`SETVAL` 函数不能更改此序列的初始进程或循环进程。此函数仅根据此进程返回下一个有效值。
 
 ## 示例
 
@@ -94,7 +94,7 @@ CREATE SEQUENCE s1;
 Query OK, 0 rows affected (0.15 sec)
 ```
 
-执行以下 SQL 语句两次，获取该序列接下来的两个值：
+通过执行以下 SQL 语句两次从序列中获取接下来的两个值：
 
 ```sql
 SELECT NEXTVAL(s1);
@@ -122,7 +122,7 @@ SELECT NEXTVAL(s1);
 1 row in set (0.00 sec)
 ```
 
-将该序列的步长更改为 `2`：
+将序列的增量更改为 `2`：
 
 ```sql
 ALTER SEQUENCE s1 INCREMENT=2;
@@ -132,7 +132,7 @@ ALTER SEQUENCE s1 INCREMENT=2;
 Query OK, 0 rows affected (0.18 sec)
 ```
 
-此时，再次获取该序列接下来的两个值：
+现在，再次从序列中获取接下来的两个值：
 
 ```sql
 SELECT NEXTVAL(s1);
@@ -160,9 +160,9 @@ SELECT NEXTVAL(s1);
 1 row in set (0.00 sec)
 ```
 
-从以上输出中可以看到，在执行了 `ALTER SEQUENCE` 语句后，数值的增幅为 `2`。
+从输出可以看出，在执行 `ALTER SEQUENCE` 语句后，值现在每次增加 2。
 
-你还可以更改序列的其他参数。例如，可以按照以下方式更改序列的 `MAXVALUE`：
+你还可以更改序列的其他参数。例如，你可以按如下方式更改序列的 `MAXVALUE`：
 
 ```sql
 CREATE SEQUENCE s2 MAXVALUE=10;
@@ -193,23 +193,23 @@ Create Sequence: CREATE SEQUENCE `s2` start with 1 minvalue 1 maxvalue 100 incre
 
 ## MySQL 兼容性
 
-该语句是 TiDB 的扩展，序列的实现借鉴自 MariaDB。
+此语句是 TiDB 扩展。其实现是基于 MariaDB 中可用的序列。
 
-除了 `SETVAL` 函数外，其他函数的“步调 (progressions)” 与 MariaDB 一致。这里的步调是指，序列中的数在定义之后会产生一定的等差关系。`SETVAL` 虽然可以将序列的当前值进行移动设置，但是后续出现的值仍会遵循原有的等差关系。
+除了 `SETVAL` 函数外，所有其他函数都具有与 MariaDB 相同的_进程_。这里的"进程"意味着序列中的数字遵循由序列定义的某个算术进程规则。虽然你可以使用 `SETVAL` 设置序列的当前值，但序列的后续值仍然遵循原始进程规则。
 
-示例如下：
+例如：
 
 ```
-1, 3, 5, ...            // 序列遵循起始为 1、步长为 2 的等差关系。
-SELECT SETVAL(seq, 6)   // 设置序列的当前值为 6。
-7, 9, 11, ...           // 后续产生值仍会遵循这个等差关系。
+1, 3, 5, ...            // 序列从 1 开始，每次增加 2。
+SELECT SETVAL(seq, 6)   // 将序列的当前值设置为 6。
+7, 9, 11, ...           // 后续值仍然遵循进程规则。
 ```
 
-在 `CYCLE` 模式下，序列的起始值第一轮为 `START`，后续轮次将会是 `MinValue` (INCREMENT > 0) 或 `MaxValue` (INCREMENT < 0)。
+在 `CYCLE` 模式下，序列在第一轮中的初始值是 `START` 参数的值，在后续轮次中的初始值是 `MinValue`（`INCREMENT` > 0）或 `MaxValue`（`INCREMENT` < 0）的值。
 
 ## 另请参阅
 
 * [CREATE SEQUENCE](/sql-statements/sql-statement-create-sequence.md)
 * [DROP SEQUENCE](/sql-statements/sql-statement-drop-sequence.md)
 * [SHOW CREATE SEQUENCE](/sql-statements/sql-statement-show-create-sequence.md)
-* [Sequence Functions](/functions-and-operators/sequence-functions.md)
+* [序列函数](/functions-and-operators/sequence-functions.md)

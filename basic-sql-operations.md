@@ -1,33 +1,39 @@
 ---
-title: SQL 基本操作
-summary: TiDB 是一个兼容 MySQL 的数据库，可以执行 DDL、DML、DQL 和 DCL 操作。可以使用 SHOW DATABASES 查看数据库列表，使用 CREATE DATABASE 创建数据库，使用 DROP DATABASE 删除数据库。使用 CREATE TABLE 创建表，使用 SHOW CREATE TABLE 查看建表语句，使用 DROP TABLE 删除表。使用 CREATE INDEX 创建索引，使用 SHOW INDEX 查看表内所有索引，使用 DROP INDEX 删除索引。使用 INSERT 向表内插入记录，使用 UPDATE 修改记录，使用 DELETE 删除记录。使用 SELECT 检索表内数据，使用 WHERE 子句进行筛选。使用 CREATE USER 创建用户，使用 GRANT 授权用户，使用 DROP USER 删除用户。
+title: 使用 TiDB 探索 SQL
+summary: 了解 TiDB 数据库的基本 SQL 语句。
 ---
 
-# SQL 基本操作
+# 使用 TiDB 探索 SQL
 
-成功部署 TiDB 集群之后，便可以在 TiDB 中执行 SQL 语句了。因为 TiDB 兼容 MySQL，你可以使用 MySQL 客户端连接 TiDB，并且[大多数情况下](/mysql-compatibility.md)可以直接执行 MySQL 语句。
+TiDB 与 MySQL 兼容，在大多数情况下您可以直接使用 MySQL 语句。有关不支持的功能，请参阅[与 MySQL 的兼容性](/mysql-compatibility.md#unsupported-features)。
 
-SQL 是一门声明性语言，它是数据库用户与数据库交互的方式。它更像是一种自然语言，好像在用英语与数据库进行对话。本文档介绍基本的 SQL 操作。完整的 TiDB SQL 语句列表，参见 [SQL 语句概览](/sql-statements/sql-statement-overview.md)。
+<CustomContent platform="tidb">
+
+要试验 SQL 并测试 TiDB 与 MySQL 查询的兼容性，您可以尝试使用 [TiDB Playground](https://play.tidbcloud.com/?utm_source=docs&utm_medium=basic-sql-operations)。您也可以先部署一个 TiDB 集群，然后在其中运行 SQL 语句。
+
+</CustomContent>
+
+本页将指导您了解基本的 TiDB SQL 语句，如 DDL、DML 和 CRUD 操作。有关 TiDB 语句的完整列表，请参阅 [SQL 语句概览](/sql-statements/sql-statement-overview.md)。
 
 ## 分类
 
-SQL 语言通常按照功能划分成以下的 4 个部分：
+SQL 根据其功能分为以下 4 种类型：
 
-- DDL (Data Definition Language)：数据定义语言，用来定义数据库对象，包括库、表、视图和索引等。
+- DDL（数据定义语言）：用于定义数据库对象，包括数据库、表、视图和索引。
 
-- DML (Data Manipulation Language)：数据操作语言，用来操作和业务相关的记录。
+- DML（数据操作语言）：用于操作应用程序相关的记录。
 
-- DQL (Data Query Language)：数据查询语言，用来查询经过条件筛选的记录。
+- DQL（数据查询语言）：用于在条件过滤后查询记录。
 
-- DCL (Data Control Language)：数据控制语言，用来定义访问权限和安全级别。
+- DCL（数据控制语言）：用于定义访问权限和安全级别。
 
-常用的 DDL 功能是对象（如表、索引等）的创建、属性修改和删除，对应的命令分别是 CREATE、ALTER 和 DROP。
+常见的 DDL 功能是创建、修改和删除对象（如表和索引）。相应的命令是 `CREATE`、`ALTER` 和 `DROP`。
 
-## 查看、创建和删除数据库
+## 显示、创建和删除数据库
 
-TiDB 语境中的 Database 或者说数据库，可以认为是表和索引等对象的集合。
+TiDB 中的数据库可以被视为表和索引等对象的集合。
 
-使用 `SHOW DATABASES` 语句查看系统中数据库列表：
+要显示数据库列表，使用 `SHOW DATABASES` 语句：
 
 {{< copyable "sql" >}}
 
@@ -35,7 +41,7 @@ TiDB 语境中的 Database 或者说数据库，可以认为是表和索引等�
 SHOW DATABASES;
 ```
 
-使用名为 `mysql` 的数据库：
+要使用名为 `mysql` 的数据库，使用以下语句：
 
 {{< copyable "sql" >}}
 
@@ -43,7 +49,7 @@ SHOW DATABASES;
 USE mysql;
 ```
 
-使用 `SHOW TABLES` 语句查看数据库中的所有表。例如：
+要显示数据库中的所有表，使用 `SHOW TABLES` 语句：
 
 {{< copyable "sql" >}}
 
@@ -51,7 +57,7 @@ USE mysql;
 SHOW TABLES FROM mysql;
 ```
 
-使用 `CREATE DATABASE` 语句创建数据库。语法如下：
+要创建数据库，使用 `CREATE DATABASE` 语句：
 
 {{< copyable "sql" >}}
 
@@ -59,7 +65,7 @@ SHOW TABLES FROM mysql;
 CREATE DATABASE db_name [options];
 ```
 
-例如，要创建一个名为 `samp_db` 的数据库，可使用以下语句：
+要创建名为 `samp_db` 的数据库，使用以下语句：
 
 {{< copyable "sql" >}}
 
@@ -67,9 +73,9 @@ CREATE DATABASE db_name [options];
 CREATE DATABASE IF NOT EXISTS samp_db;
 ```
 
-添加 `IF NOT EXISTS` 可防止发生错误。
+添加 `IF NOT EXISTS` 可以防止在数据库已存在时出现错误。
 
-使用 `DROP DATABASE` 语句删除数据库。例如：
+要删除数据库，使用 `DROP DATABASE` 语句：
 
 {{< copyable "sql" >}}
 
@@ -77,9 +83,9 @@ CREATE DATABASE IF NOT EXISTS samp_db;
 DROP DATABASE samp_db;
 ```
 
-## 创建、查看和删除表
+## 创建、显示和删除表
 
-使用 `CREATE TABLE` 语句创建表。语法如下：
+要创建表，使用 `CREATE TABLE` 语句：
 
 {{< copyable "sql" >}}
 
@@ -87,7 +93,7 @@ DROP DATABASE samp_db;
 CREATE TABLE table_name column_name data_type constraint;
 ```
 
-例如，要创建一个名为 `person` 的表，包括编号、名字、生日等字段，可使用以下语句：
+例如，要创建一个名为 `person` 的表，其中包括编号、姓名和生日等字段，使用以下语句：
 
 {{< copyable "sql" >}}
 
@@ -99,15 +105,15 @@ CREATE TABLE person (
     );
 ```
 
-使用 `SHOW CREATE` 语句查看建表语句，即 DDL。例如：
+要查看创建表的语句（DDL），使用 `SHOW CREATE` 语句：
 
 {{< copyable "sql" >}}
 
 ```sql
-SHOW CREATE TABLE person;
+SHOW CREATE table person;
 ```
 
-使用 `DROP TABLE` 语句删除表。例如：
+要删除表，使用 `DROP TABLE` 语句：
 
 {{< copyable "sql" >}}
 
@@ -115,9 +121,9 @@ SHOW CREATE TABLE person;
 DROP TABLE person;
 ```
 
-## 创建、查看和删除索引
+## 创建、显示和删除索引
 
-索引通常用于加速索引列上的查询。对于值不唯一的列，可使用 `CREATE INDEX` 或 `ALTER TABLE` 语句创建普通索引。例如：
+索引用于加快对索引列的查询。要为值不唯一的列创建索引，使用 `CREATE INDEX` 语句：
 
 {{< copyable "sql" >}}
 
@@ -125,7 +131,7 @@ DROP TABLE person;
 CREATE INDEX person_id ON person (id);
 ```
 
-或者：
+或使用 `ALTER TABLE` 语句：
 
 {{< copyable "sql" >}}
 
@@ -133,7 +139,7 @@ CREATE INDEX person_id ON person (id);
 ALTER TABLE person ADD INDEX person_id (id);
 ```
 
-对于值唯一的列，可以创建唯一索引。例如：
+要为值唯一的列创建唯一索引，使用 `CREATE UNIQUE INDEX` 语句：
 
 {{< copyable "sql" >}}
 
@@ -141,7 +147,7 @@ ALTER TABLE person ADD INDEX person_id (id);
 CREATE UNIQUE INDEX person_unique_id ON person (id);
 ```
 
-或者：
+或使用 `ALTER TABLE` 语句：
 
 {{< copyable "sql" >}}
 
@@ -149,7 +155,7 @@ CREATE UNIQUE INDEX person_unique_id ON person (id);
 ALTER TABLE person ADD UNIQUE person_unique_id (id);
 ```
 
-使用 `SHOW INDEX` 语句查看表内所有索引：
+要显示表中的所有索引，使用 `SHOW INDEX` 语句：
 
 {{< copyable "sql" >}}
 
@@ -157,7 +163,7 @@ ALTER TABLE person ADD UNIQUE person_unique_id (id);
 SHOW INDEX FROM person;
 ```
 
-使用 `ALTER TABLE` 或 `DROP INDEX` 语句来删除索引。与 `CREATE INDEX` 语句类似，`DROP INDEX` 也可以嵌入 `ALTER TABLE` 语句。例如：
+要删除索引，使用 `DROP INDEX` 或 `ALTER TABLE` 语句。`DROP INDEX` 可以嵌套在 `ALTER TABLE` 中：
 
 {{< copyable "sql" >}}
 
@@ -171,13 +177,15 @@ DROP INDEX person_id ON person;
 ALTER TABLE person DROP INDEX person_unique_id;
 ```
 
-注意：DDL 操作不是事务，在执行 DDL 时，不需要对应 COMMIT 语句。
+> **注意：**
+> 
+> DDL 操作不是事务。执行 DDL 操作时不需要运行 `COMMIT` 语句。
 
-常用的 DML 功能是对表记录的新增、修改和删除，对应的命令分别是 INSERT、UPDATE 和 DELETE。
+## 插入、更新和删除数据
 
-## 记录的增删改
+常见的 DML 功能是添加、修改和删除表记录。相应的命令是 `INSERT`、`UPDATE` 和 `DELETE`。
 
-使用 `INSERT` 语句向表内插入表记录。例如：
+要向表中插入数据，使用 `INSERT` 语句：
 
 {{< copyable "sql" >}}
 
@@ -185,7 +193,7 @@ ALTER TABLE person DROP INDEX person_unique_id;
 INSERT INTO person VALUES(1,'tom','20170912');
 ```
 
-使用 `INSERT` 语句向表内插入包含部分字段数据的表记录。例如：
+要向表中插入包含某些字段数据的记录，使用 `INSERT` 语句：
 
 {{< copyable "sql" >}}
 
@@ -193,7 +201,7 @@ INSERT INTO person VALUES(1,'tom','20170912');
 INSERT INTO person(id,name) VALUES('2','bob');
 ```
 
-使用 `UPDATE` 语句向表内修改表记录的部分字段数据。例如：
+要更新表中记录的某些字段，使用 `UPDATE` 语句：
 
 {{< copyable "sql" >}}
 
@@ -201,7 +209,7 @@ INSERT INTO person(id,name) VALUES('2','bob');
 UPDATE person SET birthday='20180808' WHERE id=2;
 ```
 
-使用 `DELETE` 语句向表内删除部分表记录。例如：
+要删除表中的数据，使用 `DELETE` 语句：
 
 {{< copyable "sql" >}}
 
@@ -209,13 +217,15 @@ UPDATE person SET birthday='20180808' WHERE id=2;
 DELETE FROM person WHERE id=2;
 ```
 
-注意：UPDATE 和 DELETE 操作如果不带 WHERE 过滤条件是对全表进行操作。
-
-DQL 数据查询语言是从一个表或多个表中检索出想要的数据行，通常是业务开发的核心内容。
+> **注意：**
+> 
+> 没有 `WHERE` 子句作为过滤器的 `UPDATE` 和 `DELETE` 语句会对整个表进行操作。
 
 ## 查询数据
 
-使用 `SELECT` 语句检索表内数据。例如：
+DQL 用于从一个或多个表中检索所需的数据行。
+
+要查看表中的数据，使用 `SELECT` 语句：
 
 {{< copyable "sql" >}}
 
@@ -223,7 +233,7 @@ DQL 数据查询语言是从一个表或多个表中检索出想要的数据行�
 SELECT * FROM person;
 ```
 
-在 SELECT 后面加上要查询的列名。例如：
+要查询特定列，在 `SELECT` 关键字后添加列名：
 
 {{< copyable "sql" >}}
 
@@ -240,19 +250,19 @@ SELECT name FROM person;
 1 rows in set (0.00 sec)
 ```
 
-使用 WHERE 子句，对所有记录进行是否符合条件的筛选后再返回。例如：
+使用 `WHERE` 子句过滤所有匹配条件的记录，然后返回结果：
 
 {{< copyable "sql" >}}
 
 ```sql
-SELECT * FROM person WHERE id<5;
+SELECT * FROM person where id<5;
 ```
-
-常用的 DCL 功能是创建或删除用户，和对用户权限的管理。
 
 ## 创建、授权和删除用户
 
-使用 `CREATE USER` 语句创建一个用户 `tiuser`，密码为 `123456`：
+DCL 通常用于创建或删除用户，以及管理用户权限。
+
+要创建用户，使用 `CREATE USER` 语句。以下示例创建一个名为 `tiuser`，密码为 `123456` 的用户：
 
 {{< copyable "sql" >}}
 
@@ -260,7 +270,7 @@ SELECT * FROM person WHERE id<5;
 CREATE USER 'tiuser'@'localhost' IDENTIFIED BY '123456';
 ```
 
-授权用户 `tiuser` 可检索数据库 `samp_db` 内的表：
+要授予 `tiuser` 检索 `samp_db` 数据库中表的权限：
 
 {{< copyable "sql" >}}
 
@@ -268,7 +278,7 @@ CREATE USER 'tiuser'@'localhost' IDENTIFIED BY '123456';
 GRANT SELECT ON samp_db.* TO 'tiuser'@'localhost';
 ```
 
-查询用户 `tiuser` 的权限：
+要检查 `tiuser` 的权限：
 
 {{< copyable "sql" >}}
 
@@ -276,7 +286,7 @@ GRANT SELECT ON samp_db.* TO 'tiuser'@'localhost';
 SHOW GRANTS for tiuser@localhost;
 ```
 
-删除用户 `tiuser`：
+要删除 `tiuser`：
 
 {{< copyable "sql" >}}
 

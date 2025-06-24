@@ -1,17 +1,17 @@
 ---
 title: CREATE [GLOBAL|SESSION] BINDING
-summary: TiDB 数据库中 CREATE [GLOBAL|SESSION] BINDING 的使用概况。
+summary: TiDB 数据库中 CREATE BINDING 的使用。
 ---
 
 # CREATE [GLOBAL|SESSION] BINDING
 
-`CREATE [GLOBAL|SESSION] BINDING` 语句用于在 TiDB 中创建新的执行计划绑定。绑定可用于将优化器 Hint 插入语句中，而无需更改底层查询。
+此语句在 TiDB 中创建一个新的执行计划绑定。绑定可用于在不需要更改底层查询的情况下注入提示（hint）。
 
-`BINDING` 语句可以在 `GLOBAL` 或者 `SESSION` 作用域内创建执行计划绑定。在不指定作用域时，默认的作用域为 `SESSION`。
+`BINDING` 可以是 `GLOBAL` 或 `SESSION` 级别。默认为 `SESSION`。
 
-被绑定的 SQL 语句会被参数化后存储到系统表中。在处理 SQL 查询时，只要参数化后的 SQL 语句和系统表中某个被绑定的 SQL 语句一致，并且系统变量 `tidb_use_plan_baselines` 的值为 `ON`（其默认值为 `ON`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。更多信息，请参考[创建绑定](/sql-plan-management.md#创建绑定)。
+绑定的 SQL 语句会被参数化并存储在系统表中。当处理 SQL 查询时，只要参数化的 SQL 语句与系统表中的绑定语句一致，且系统变量 `tidb_use_plan_baselines` 设置为 `ON`（默认值），相应的优化器提示就可用。如果有多个可用的执行计划，优化器会选择成本最低的计划进行绑定。更多信息，请参见[创建绑定](/sql-plan-management.md#create-a-binding)。
 
-## 语法图
+## 语法
 
 ```ebnf+diagram
 CreateBindingStmt ::=
@@ -29,50 +29,50 @@ BindableStmt ::=
 
 ## 示例
 
-你可以根据 SQL 或历史执行计划创建绑定。
+你可以根据 SQL 语句或历史执行计划创建绑定。
 
-下面的示例演示如何根据 SQL 创建绑定。
+以下示例展示如何根据 SQL 语句创建绑定。
 
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1 (
-    id INT NOT NULL PRIMARY KEY auto_increment,
-    b INT NOT NULL,
-    pad VARBINARY(255),
-    INDEX(b)
-   );
+mysql> CREATE TABLE t1 (
+     id INT NOT NULL PRIMARY KEY auto_increment,
+     b INT NOT NULL,
+     pad VARBINARY(255),
+     INDEX(b)
+    );
 Query OK, 0 rows affected (0.07 sec)
 
-INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM dual;
+mysql> INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM dual;
 Query OK, 1 row affected (0.01 sec)
 Records: 1  Duplicates: 0  Warnings: 0
 
-INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 100000;
+mysql> INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 100000;
 Query OK, 1 row affected (0.00 sec)
 Records: 1  Duplicates: 0  Warnings: 0
 
-INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 100000;
+mysql> INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 100000;
 Query OK, 8 rows affected (0.00 sec)
 Records: 8  Duplicates: 0  Warnings: 0
 
-INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 100000;
+mysql> INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 100000;
 Query OK, 1000 rows affected (0.04 sec)
 Records: 1000  Duplicates: 0  Warnings: 0
 
-INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 100000;
+mysql> INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 100000;
 Query OK, 100000 rows affected (1.74 sec)
 Records: 100000  Duplicates: 0  Warnings: 0
 
-INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 100000;
+mysql> INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 100000;
 Query OK, 100000 rows affected (2.15 sec)
 Records: 100000  Duplicates: 0  Warnings: 0
 
-INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 100000;
+mysql> INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM t1 a JOIN t1 b JOIN t1 c LIMIT 100000;
 Query OK, 100000 rows affected (2.64 sec)
 Records: 100000  Duplicates: 0  Warnings: 0
 
-SELECT SLEEP(1);
+mysql> SELECT SLEEP(1);
 +----------+
 | SLEEP(1) |
 +----------+
@@ -80,10 +80,10 @@ SELECT SLEEP(1);
 +----------+
 1 row in set (1.00 sec)
 
-ANALYZE TABLE t1;
+mysql> ANALYZE TABLE t1;
 Query OK, 0 rows affected (1.33 sec)
 
-EXPLAIN ANALYZE SELECT * FROM t1 WHERE b = 123;
+mysql> EXPLAIN ANALYZE SELECT * FROM t1 WHERE b = 123;
 +-------------------------------+---------+---------+-----------+----------------------+---------------------------------------------------------------------------+-----------------------------------+----------------+------+
 | id                            | estRows | actRows | task      | access object        | execution info                                                            | operator info                     | memory         | disk |
 +-------------------------------+---------+---------+-----------+----------------------+---------------------------------------------------------------------------+-----------------------------------+----------------+------+
@@ -93,13 +93,13 @@ EXPLAIN ANALYZE SELECT * FROM t1 WHERE b = 123;
 +-------------------------------+---------+---------+-----------+----------------------+---------------------------------------------------------------------------+-----------------------------------+----------------+------+
 3 rows in set (0.02 sec)
 
-CREATE SESSION BINDING FOR
-    SELECT * FROM t1 WHERE b = 123
-   USING
-    SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
+mysql> CREATE SESSION BINDING FOR
+         SELECT * FROM t1 WHERE b = 123
+        USING
+         SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
 Query OK, 0 rows affected (0.00 sec)
 
-EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
+mysql> EXPLAIN ANALYZE SELECT * FROM t1 WHERE b = 123;
 +-------------------------+-----------+---------+-----------+---------------+--------------------------------------------------------------------------------+--------------------+---------------+------+
 | id                      | estRows   | actRows | task      | access object | execution info                                                                 | operator info      | memory        | disk |
 +-------------------------+-----------+---------+-----------+---------------+--------------------------------------------------------------------------------+--------------------+---------------+------+
@@ -109,7 +109,7 @@ EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
 +-------------------------+-----------+---------+-----------+---------------+--------------------------------------------------------------------------------+--------------------+---------------+------+
 3 rows in set (0.22 sec)
 
-SHOW SESSION BINDINGS\G
+mysql> SHOW SESSION BINDINGS\G
 *************************** 1. row ***************************
 Original_sql: select * from t1 where b = ?
     Bind_sql: SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123
@@ -121,10 +121,10 @@ Original_sql: select * from t1 where b = ?
    Collation: utf8mb4_0900_ai_ci
 1 row in set (0.00 sec)
 
-DROP SESSION BINDING FOR SELECT * FROM t1 WHERE b = 123;
+mysql> DROP SESSION BINDING FOR SELECT * FROM t1 WHERE b = 123;
 Query OK, 0 rows affected (0.00 sec)
 
-EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
+mysql> EXPLAIN ANALYZE SELECT * FROM t1 WHERE b = 123;
 +-------------------------------+---------+---------+-----------+----------------------+-------------------------------------------------------------------------+-----------------------------------+----------------+------+
 | id                            | estRows | actRows | task      | access object        | execution info                                                          | operator info                     | memory         | disk |
 +-------------------------------+---------+---------+-----------+----------------------+-------------------------------------------------------------------------+-----------------------------------+----------------+------+
@@ -135,7 +135,7 @@ EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
 3 rows in set (0.01 sec)
 ```
 
-下面的示例演示如何根据历史执行计划创建绑定。
+以下示例展示如何根据历史执行计划创建绑定。
 
 ```sql
 mysql> CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
@@ -165,17 +165,16 @@ mysql> SELECT @@LAST_PLAN_FROM_BINDING;
 |                        1 |
 +--------------------------+
 1 row in set (0.01 sec)
-
 ```
 
 ## MySQL 兼容性
 
-`CREATE [GLOBAL|SESSION] BINDING` 语句是 TiDB 对 MySQL 语法的扩展。
+该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 
 * [DROP [GLOBAL|SESSION] BINDING](/sql-statements/sql-statement-drop-binding.md)
 * [SHOW [GLOBAL|SESSION] BINDINGS](/sql-statements/sql-statement-show-bindings.md)
-* [ANALYZE](/sql-statements/sql-statement-analyze-table.md)
-* [Optimizer Hints](/optimizer-hints.md)
-* [执行计划管理 (SPM)](/sql-plan-management.md)
+* [ANALYZE TABLE](/sql-statements/sql-statement-analyze-table.md)
+* [优化器提示](/optimizer-hints.md)
+* [SQL 计划管理](/sql-plan-management.md)

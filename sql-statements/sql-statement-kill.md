@@ -1,13 +1,13 @@
 ---
 title: KILL
-summary: TiDB 数据库中 KILL 的使用概况。
+summary: TiDB 数据库中 KILL 的使用概述。
 ---
 
 # KILL
 
-`KILL` 语句可以终止当前 TiDB 集群中任意一个 TiDB 实例中的某个连接，从 v6.2.0 开始，`KILL` 语句也可以终止正在执行中的 DDL 作业。
+`KILL` 语句用于终止当前 TiDB 集群中任何 TiDB 实例的连接。从 TiDB v6.2.0 开始，你还可以使用 `KILL` 语句终止正在进行的 DDL 作业。
 
-## 语法图
+## 语法概要
 
 ```ebnf+diagram
 KillStmt ::= 'KILL' 'TIDB'? ( 'CONNECTION' | 'QUERY' )? CONNECTION_ID
@@ -15,7 +15,7 @@ KillStmt ::= 'KILL' 'TIDB'? ( 'CONNECTION' | 'QUERY' )? CONNECTION_ID
 
 ## 示例
 
-查询当前集群中所有活跃查询，并终止其中某一个连接：
+以下示例展示如何获取当前集群中所有活跃查询并终止其中任意一个。
 
 {{< copyable "sql" >}}
 
@@ -45,26 +45,46 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## MySQL 兼容性
 
-- MySQL 的 `KILL` 语句仅能终止当前连接的 MySQL 实例上的连接，TiDB 的 `KILL` 语句能终止整个集群中任意一个 TiDB 实例上的连接。
-- v7.2.0 及之前的版本不支持使用 MySQL 命令行 <kbd>Control+C</kbd> 终止查询或连接。
+- MySQL 的 `KILL` 语句只能终止当前连接的 MySQL 实例中的连接，而 TiDB 的 `KILL` 语句可以终止整个集群中任何 TiDB 实例的连接。
+- 在 v7.2.0 及更早版本中，不支持使用 MySQL 命令行的 <kbd>Control+C</kbd> 来终止 TiDB 中的查询或连接。
 
 ## 行为变更说明
 
-TiDB 从 v7.3.0 起支持生成 32 位 connection ID（由 [`enable-32bits-connection-id`](/tidb-configuration-file.md#enable-32bits-connection-id-从-v730-版本开始引入) 配置项控制，默认启用）。同时启用 Global Kill 功能和 32 位 connection ID 后，TiDB 将生成 32 位的 connection ID，从而支持在 MySQL 命令行中通过 <kbd>Control+C</kbd> 终止查询或连接。
+<CustomContent platform="tidb">
 
-> **注意：**
+从 v7.3.0 开始，TiDB 支持生成 32 位连接 ID，默认启用，由配置项 [`enable-32bits-connection-id`](/tidb-configuration-file.md#enable-32bits-connection-id-new-in-v730) 控制。当 Global Kill 功能和 32 位连接 ID 都启用时，TiDB 生成 32 位连接 ID，你可以在 MySQL 命令行中使用 <kbd>Control+C</kbd> 终止查询或连接。
+
+> **警告：**
 >
-> 当集群中 TiDB 实例数量超过 2048 或者单个 TiDB 实例的同时连接数超过 1048576 时，由于 32 位 connection ID 空间不足，将自动升级为 64 位 connection ID。该升级过程不影响业务和已建立的连接，但后续的新建连接将无法通过 MySQL 命令行 <kbd>Control+C</kbd> 终止。
+> 当集群中 TiDB 实例数量超过 2048 个或单个 TiDB 实例并发连接数超过 1048576 时，32 位连接 ID 空间不足，会自动升级为 64 位连接 ID。升级过程中，现有业务和已建立的连接不受影响。但是，后续新建的连接将无法在 MySQL 命令行中使用 <kbd>Control+C</kbd> 终止。
 
-TiDB 从 v6.1.0 起新增 Global Kill 功能（由 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入) 配置项控制，默认启用）。启用 Global Kill 功能时，`KILL` 语句和 `KILL TIDB` 语句均能跨节点终止查询或连接，且无需担心错误地终止其他查询或连接。当你使用客户端连接到任何一个 TiDB 节点执行 `KILL` 语句或 `KILL TIDB` 语句时，该语句会被转发给对应的 TiDB 节点。当客户端和 TiDB 中间有代理时，`KILL` 及 `KILL TIDB` 语句也会被转发给对应的 TiDB 节点执行。
+从 v6.1.0 开始，TiDB 支持 Global Kill 功能，默认启用，由配置项 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-new-in-v610) 控制。
 
-对于 TiDB v6.1.0 之前的版本，或未启用 Global Kill 功能时：
+</CustomContent>
 
-- `KILL` 语句与 MySQL 不兼容，负载均衡器后面通常放有多个 TiDB 服务器，这种不兼容有助于防止在错误的 TiDB 服务器上终止连接。你需要显式地增加 `TIDB` 后缀，通过执行 `KILL TIDB` 语句来终止当前连接的 TiDB 实例上的其他连接。
-- **强烈不建议**在配置文件里设置 [`compatible-kill-query = true`](/tidb-configuration-file.md#compatible-kill-query)，**除非**你确定客户端将始终连接到同一个 TiDB 节点。这是因为当你在默认的 MySQL 客户端按下 <kbd>Control+C</kbd> 时，客户端会开启一个新连接，并在这个新连接中执行 `KILL` 语句。此时，如果客户端和 TiDB 中间有代理，新连接可能会被路由到其他的 TiDB 节点，从而错误地终止其他会话。
-- `KILL TIDB` 语句是 TiDB 的扩展语法，其功能与 MySQL 命令 `KILL [CONNECTION|QUERY]` 和 MySQL 命令行 <kbd>Control+C</kbd> 相同。在同一个 TiDB 节点上，你可以安全地使用 `KILL TIDB` 语句。
+<CustomContent platform="tidb-cloud">
+
+从 v7.3.0 开始，TiDB 支持生成 32 位连接 ID，默认启用。当 Global Kill 功能和 32 位连接 ID 都启用时，你可以在 MySQL 命令行中使用 <kbd>Control+C</kbd> 终止查询或连接。
+
+从 v6.1.0 开始，TiDB 支持 Global Kill 功能，默认启用。
+
+</CustomContent>
+
+当启用 Global Kill 功能时，`KILL` 和 `KILL TIDB` 语句都可以跨实例终止查询或连接，因此你无需担心错误终止查询或连接。当你使用客户端连接到任何 TiDB 实例并执行 `KILL` 或 `KILL TIDB` 语句时，该语句将被转发到目标 TiDB 实例。如果客户端和 TiDB 集群之间有代理，`KILL` 和 `KILL TIDB` 语句也会被转发到目标 TiDB 实例执行。
+
+如果未启用 Global Kill 功能或你使用的 TiDB 版本早于 v6.1.0，请注意以下事项：
+
+- 默认情况下，`KILL` 与 MySQL 不兼容。这有助于防止连接被错误的 TiDB 服务器终止，因为通常会在负载均衡器后面放置多个 TiDB 服务器。要终止当前连接的 TiDB 实例上的其他连接，你需要通过执行 `KILL TIDB` 语句显式添加 `TIDB` 后缀。
+
+<CustomContent platform="tidb">
+
+- **强烈不建议**在配置文件中设置 [`compatible-kill-query = true`](/tidb-configuration-file.md#compatible-kill-query)，除非你确定客户端将始终连接到同一个 TiDB 实例。这是因为在默认 MySQL 客户端中按 <kbd>Control+C</kbd> 会打开一个新连接来执行 `KILL`。如果客户端和 TiDB 集群之间有代理，新连接可能会被路由到不同的 TiDB 实例，这可能会错误地终止不同的会话。
+
+</CustomContent>
+
+- `KILL TIDB` 语句是 TiDB 的扩展。此语句的功能类似于 MySQL 的 `KILL [CONNECTION|QUERY]` 命令和 MySQL 命令行的 <kbd>Control+C</kbd>。在同一个 TiDB 实例上使用 `KILL TIDB` 是安全的。
 
 ## 另请参阅
 
-- [SHOW \[FULL\] PROCESSLIST](/sql-statements/sql-statement-show-processlist.md)
-- [CLUSTER_PROCESSLIST](/information-schema/information-schema-processlist.md#cluster_processlist)
+* [SHOW \[FULL\] PROCESSLIST](/sql-statements/sql-statement-show-processlist.md)
+* [CLUSTER_PROCESSLIST](/information-schema/information-schema-processlist.md#cluster_processlist)

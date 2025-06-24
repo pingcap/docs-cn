@@ -1,41 +1,41 @@
 ---
-title: TiFlash 性能调优
-summary: 介绍 TiFlash 性能调优的方法，包括机器资源规划和 TiDB 参数调优。
+title: 调优 TiFlash 性能
+summary: 了解如何通过规划机器资源和调整 TiDB 参数来调优 TiFlash 的性能。
 ---
 
-# TiFlash 性能调优
+# 调优 TiFlash 性能
 
-本文介绍了 TiFlash 性能调优的几种方式，包括机器资源规划和 TiDB 参数调优，通过这些方式，TiFlash 性能可以达到最优状态。
+本文介绍如何通过合理规划机器资源和调整 TiDB 参数来调优 TiFlash 的性能。通过遵循这些方法，你的 TiFlash 集群可以达到最佳性能。
 
-## 资源规划
+## 规划资源
 
-对于希望节省机器资源，并且完全没有隔离要求的场景，可以使用 TiKV 和 TiFlash 联合部署。建议为 TiKV 与 TiFlash 分别留够资源，同时避免共享磁盘。
+如果你想节省机器资源且对隔离没有要求，可以使用 TiKV 和 TiFlash 混合部署的方式。建议为 TiKV 和 TiFlash 分别预留足够的资源，并且不要共享磁盘。
 
-## TiDB 相关参数调优
+## 调整 TiDB 参数
 
-本部分介绍如何通过调整 TiDB 相关参数来提升 TiFlash 性能，具体包括如下几个方面：
+本节介绍如何通过调整 TiDB 参数来提高 TiFlash 性能，包括：
 
-- [强制开启 MPP 模式](#强制开启-mpp-模式)
-- [聚合下推 `Join` 或 `Union`](#聚合下推-join-或-union)
-- [开启 `Distinct` 优化](#开启-distinct-优化)
-- [使用 `ALTER TABLE...COMPACT` 整理数据](#使用-alter-tablecompact-整理数据)
-- [使用 Broadcast Hash Join 代替 Shuffled Hash Join](#使用-broadcast-hash-join-代替-shuffled-hash-join)
+- [强制启用 MPP 模式](#强制启用-mpp-模式)
+- [将聚合函数下推到 Join 或 Union 之前](#将聚合函数下推到-join-或-union-之前)
+- [启用 Distinct 优化](#启用-distinct-优化)
+- [使用 `ALTER TABLE ... COMPACT` 语句压缩数据](#使用-alter-table--compact-语句压缩数据)
+- [用广播哈希连接替换分散哈希连接](#用广播哈希连接替换分散哈希连接)
 - [设置更大的执行并发度](#设置更大的执行并发度)
-- [设置细粒度 Shuffle 参数](#设置细粒度-shuffle-参数)
+- [配置 `tiflash_fine_grained_shuffle_stream_count`](#配置-tiflash_fine_grained_shuffle_stream_count)
 
-### 强制开启 MPP 模式
+### 强制启用 MPP 模式
 
-MPP 执行计划可以充分利用分布式计算资源，从而显著提高批量数据查询的效率。当查询没有生成 MPP 执行计划的时候，你可以强制开启 MPP：
+MPP 执行计划可以充分利用分布式计算资源，从而显著提高批量数据查询的效率。当优化器没有为查询生成 MPP 执行计划时，你可以强制启用 MPP 模式：
 
-[`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。要开启 MPP 模式查询，执行如下命令：
+变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-new-in-v51) 控制是否忽略优化器的成本估算，强制使用 TiFlash 的 MPP 模式执行查询。要强制启用 MPP 模式，运行以下命令：
 
 ```sql
 set @@tidb_enforce_mpp = ON;
 ```
 
-在以下示例中，`tidb_enforce_mpp` 开启前，TiDB 需要从 TiKV 读取数据，并在 TiDB 侧执行 `Join` 和 `Aggregation`。`tidb_enforce_mpp` 开启后，`Join` 和 `Aggregation` 被下推到了 TiFlash。需要注意的是，有时候优化器生成的执行计划并不稳定，可能生成 `MPP`，也可能不生成，这时候可以开启 `tidb_enforce_mpp`，强制优化器生成 `MPP` 计划。
+以下示例展示了启用 `tidb_enforce_mpp` 前后的查询结果。在启用此变量之前，TiDB 需要从 TiKV 读取数据并在 TiDB 中执行 `Join` 和 `Aggregation`。启用 `tidb_enforce_mpp` 后，`Join` 和 `Aggregation` 被下推到 TiFlash。此外，由于优化器不一定会生成 MPP 执行计划，通过启用 `tidb_enforce_mpp`，你可以强制优化器生成 MPP 执行计划。
 
-MPP 模式开启前：
+启用 MPP 模式之前：
 
 ```sql
 mysql> explain analyze select o_orderpriority, count(*) as order_count from orders where o_orderdate >= '1995-01-01' and o_orderdate < date_add('1995-01-01', interval '3' month) and exists (select * from lineitem where l_orderkey = o_orderkey and l_commitdate < l_receiptdate) group by o_orderpriority;
@@ -56,14 +56,15 @@ mysql> explain analyze select o_orderpriority, count(*) as order_count from orde
 10 rows in set (22.82 sec)
 ```
 
-开启 MPP 模式：
+启用 MPP 模式：
 
 ```sql
 mysql> set @@tidb_enforce_mpp = ON;
+
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-MPP 模式开启后：
+启用 MPP 模式后：
 
 ```sql
 mysql> explain analyze select o_orderpriority, count(*) as order_count from orders where o_orderdate >= '1995-01-01' and o_orderdate < date_add('1995-01-01', interval '3' month) and exists (select * from lineitem where l_orderkey = o_orderkey and l_commitdate < l_receiptdate) group by o_orderpriority;
@@ -92,19 +93,18 @@ mysql> explain analyze select o_orderpriority, count(*) as order_count from orde
 18 rows in set (6.00 sec)
 ```
 
-### 聚合下推 `Join` 或 `Union`
+### 将聚合函数下推到 Join 或 Union 之前
 
-将聚合操作下推到 `Join` 或 `Union` 之前执行，有可能能显著减少 `Join` 或 `Union` 需要处理的数据量，从而提升性能。
+通过将聚合操作下推到 `Join` 或 `Union` 操作之前的位置，可以减少 `Join` 或 `Union` 操作中需要处理的数据量，从而提高性能。
 
-[`tidb_opt_agg_push_down`](/system-variables.md#tidb_opt_agg_push_down) 变量用来设置优化器是否执行聚合函数下推到 Join 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 `ON`。
+变量 [`tidb_opt_agg_push_down`](/system-variables.md#tidb_opt_agg_push_down) 控制优化器是否执行将聚合函数下推到 `Join` 或 `Union` 之前的优化操作。当查询中的聚合操作执行较慢时，你可以将此变量设置为 `ON`。
 
 ```sql
 set @@tidb_opt_agg_push_down = ON;
 ```
 
-在以下示例中，`tidb_opt_agg_push_down` 开启前，`HashAgg_58` 在 `HashJoin_41` 之后执行。`tidb_opt_agg_push_down` 开启后，新生成的 `HashAgg_21` 和 `HashAgg_32` 在 `HashJoin_76` 之前执行，显著减少了 `Join` 需要处理的数据量。
-
-`tidb_opt_agg_push_down` 开启前:
+以下示例展示了启用 `tidb_opt_agg_push_down` 变量前后的查询结果。在启用此变量之前，`HashAgg_58` 操作在 `HashJoin_41` 操作之后执行。启用此变量后，新生成的 `HashAgg_21` 和 `HashAgg_32` 操作在 `HashJoin_76` 操作之前执行。这显著减少了 `Join` 操作需要处理的数据量。
+启用 `tidb_opt_agg_push_down` 之前：
 
 ```sql
 mysql> explain analyze select count(*) from t1 join t2 where t1.a = t2.b group by t1.a;
@@ -128,14 +128,14 @@ mysql> explain analyze select count(*) from t1 join t2 where t1.a = t2.b group b
 13 rows in set (2.15 sec)
 ```
 
-开启 `tidb_opt_agg_push_down`：
+启用 `tidb_opt_agg_push_down`：
 
 ```sql
 mysql> set @@tidb_opt_agg_push_down = ON;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-开启 `tidb_opt_agg_push_down` 后：
+启用 `tidb_opt_agg_push_down` 后：
 
 ```sql
 mysql> explain analyze select count(*) from t1 join t2 where t1.a = t2.b group by t1.a;
@@ -163,20 +163,18 @@ mysql> explain analyze select count(*) from t1 join t2 where t1.a = t2.b group b
 +------------------------------------------------------+--------------+-----------+--------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------+--------+------+
 18 rows in set (0.46 sec)
 ```
+### 启用 Distinct 优化
 
-### 开启 `Distinct` 优化
+TiFlash 不支持某些带有 `Distinct` 列的聚合函数，例如 `Sum`。默认情况下，整个聚合函数在 TiDB 中计算。通过启用 `Distinct` 优化，某些操作可以下推到 TiFlash，从而提高查询性能。
 
-TiFlash 暂时还不支持部分可接受 `Distinct` 列的聚合函数，比如 `Sum` 。默认情况下，整个聚合函数运算都会在 TiDB 端执行。通过开启 `Distinct` 优化，部分操作可以下推到 TiFlash，从而提升查询性能：
-
-[`tidb_opt_distinct_agg_push_down`](/system-variables.md#tidb_opt_distinct_agg_push_down) 变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select sum(distinct a) from t`）下推到 Coprocessor 的优化操作。当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `ON`。
+如果查询中带有 `distinct` 操作的聚合函数执行较慢，你可以通过将 [`tidb_opt_distinct_agg_push_down`](/system-variables.md#tidb_opt_distinct_agg_push_down) 变量设置为 `ON` 来启用将带有 `Distinct` 的聚合函数（如 `select sum(distinct a) from t`）下推到 Coprocessor 的优化操作。
 
 ```sql
 set @@tidb_opt_distinct_agg_push_down = ON;
 ```
 
-在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiFlash 读取所有数据，并在 TiDB 侧执行 `distinct`。`tidb_opt_distinct_agg_push_down` 开启后，`distinct a` 被下推到了 TiFlash，在 `HashAgg_6` 里新增里一个 `group by` 列 `test.t.a`。这边查询结果里面的两个 warnings 是警告聚合函数不能完全下推。
-
-`tidb_opt_distinct_agg_push_down` 开启前：
+以下示例展示了启用 `tidb_opt_distinct_agg_push_down` 变量前后的查询结果。在启用此变量之前，TiDB 需要从 TiFlash 读取所有数据并在 TiDB 中执行 `distinct`。启用此变量后，`distinct a` 被下推到 TiFlash，并在 `HashAgg_6` 中添加了一个新的 `group by` 列 `test.t.a`。查询结果中的两个警告表明聚合函数无法完全下推到 TiFlash。
+启用 `tidb_opt_distinct_agg_push_down` 之前：
 
 ```sql
 mysql> explain analyze select count(distinct a) from test.t;
@@ -191,14 +189,14 @@ mysql> explain analyze select count(distinct a) from test.t;
 4 rows in set, 2 warnings (2 min 23.21 sec)
 ```
 
-开启 `tidb_opt_distinct_agg_push_down`：
+启用 `tidb_opt_distinct_agg_push_down`：
 
 ```sql
 mysql> set @@tidb_opt_distinct_agg_push_down = ON;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-`tidb_opt_distinct_agg_push_down` 开启后：
+启用 `tidb_opt_distinct_agg_push_down` 后：
 
 ```sql
 mysql> explain analyze select count(distinct a) from test.t;
@@ -214,9 +212,9 @@ mysql> explain analyze select count(distinct a) from test.t;
 5 rows in set, 2 warnings (0.24 sec)
 ```
 
-### 使用 `ALTER TABLE...COMPACT` 整理数据
+### 使用 `ALTER TABLE ... COMPACT` 语句压缩数据
 
-[`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) 可以触发 TiFlash 节点对某个表或者某个分区进行数据整理。数据整理时，表中的物理数据会被重写，如清理已删除的数据、合并多版本数据等，从而可以获得更高的访问性能，并减少磁盘空间占用。
+执行 [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) 语句可以在 TiFlash 节点上为特定表或分区启动压缩。在压缩过程中，节点上的物理数据会被重写，包括清理已删除的行和合并由更新引起的多个数据版本。这有助于提高访问性能并减少磁盘使用。以下是示例：
 
 ```sql
 ALTER TABLE employees COMPACT TIFLASH REPLICA;
@@ -226,25 +224,24 @@ ALTER TABLE employees COMPACT TIFLASH REPLICA;
 ALTER TABLE employees COMPACT PARTITION pNorth, pEast TIFLASH REPLICA;
 ```
 
-### 使用 Broadcast Hash Join 代替 Shuffled Hash Join
+### 用广播哈希连接替换分散哈希连接
 
-对于有小表的 `Join` 算子，Broadcast Hash Join 可以避免大表的网络传输，从而提升计算性能。
+对于小表的 `Join` 操作，广播哈希连接算法可以避免传输大表，从而提高计算性能。
 
-- [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为 bytes。如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+- [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_size-new-in-v50) 变量控制是否使用广播哈希连接算法。如果表大小（单位：字节）小于此变量的值，则使用广播哈希连接算法。否则，使用分散哈希连接算法。
 
     ```sql
     set @@tidb_broadcast_join_threshold_size = 2000000;
     ```
 
-- [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+- [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-new-in-v50) 变量也控制是否使用广播哈希连接算法。如果连接操作的对象属于子查询，优化器无法估计子查询结果集的大小。在这种情况下，大小由结果集中的行数决定。如果子查询的估计行数少于此变量的值，则使用广播哈希连接算法。否则，使用分散哈希连接算法。
 
     ```sql
     set @@tidb_broadcast_join_threshold_count = 100000;
     ```
+以下示例展示了重新配置 `tidb_broadcast_join_threshold_size` 前后的查询结果。在重新配置之前，`ExchangeSender_29` 的 `ExchangeType` 是 `HashPartition`。将此变量的值更改为 `10000000` 后，`ExchangeSender_29` 的 `ExchangeType` 变为 `Broadcast`。
 
-在以下示例中，`tidb_broadcast_join_threshold_size` 设置前，`ExchangeSender_29` 的 `ExchangeType` 是 `HashPartition`。`tidb_broadcast_join_threshold_size` 设置后，`ExchangeSender_29` 的 `ExchangeType` 改变为 `Broadcast`。
-
-`tidb_broadcast_join_threshold_size` 设置前：
+重新配置 `tidb_broadcast_join_threshold_size` 之前：
 
 ```sql
 mysql> explain analyze select max(l_shipdate), max(l_commitdate), max(l_receiptdate) from supplier,lineitem where s_suppkey = l_suppkey;
@@ -266,14 +263,14 @@ mysql> explain analyze select max(l_shipdate), max(l_commitdate), max(l_receiptd
 11 rows in set (3.83 sec)
 ```
 
-设置 `tidb_broadcast_join_threshold_size`：
+将 `tidb_broadcast_join_threshold_size` 设置为 `10000000`：
 
 ```sql
 mysql> set @@tidb_broadcast_join_threshold_size = 10000000;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-`tidb_broadcast_join_threshold_size` 设置后：
+将 `tidb_broadcast_join_threshold_size` 设置为 `10000000` 后：
 
 ```sql
 mysql> explain analyze select max(l_shipdate), max(l_commitdate), max(l_receiptdate) from supplier,lineitem where s_suppkey = l_suppkey;
@@ -292,20 +289,19 @@ mysql> explain analyze select max(l_shipdate), max(l_commitdate), max(l_receiptd
 +------------------------------------------+--------------+-----------+--------------+----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+------+
 9 rows in set (2.76 sec)
 ```
-
 ### 设置更大的执行并发度
 
-设置更大的执行并发度，可以让 TiFlash 占用更多系统 CPU 资源，从而提升查询性能。
+更大的执行并发度允许 TiFlash 占用系统更多的 CPU 资源，从而提高查询性能。
 
-[`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入)，单位为线程。用来设置 TiFlash 中 request 执行的最大并发度。
+[`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-new-in-v610) 变量用于设置 TiFlash 执行请求的最大并发度。单位是线程。
 
 ```sql
 set @@tidb_max_tiflash_threads = 20;
 ```
 
-在以下示例中，设置 `tidb_max_tiflash_threads` 前，单个 TiFlash 实例的 request 执行的并发度为 8 个线程。该集群一共有 3 个 TiFlash 实例，因此所有 TiFlash 实例上的 request 执行的线程总数是 24。当将 `tidb_max_tiflash_threads` 设置为 `20` 后，所有 TiFlash 实例上的 request 执行的线程总数是 60。
+以下示例展示了重新配置 `tidb_max_tiflash_threads` 前后的查询结果。在设置 `tidb_max_tiflash_threads` 之前，单个 TiFlash 实例的请求执行并发度为 8 个线程。由于集群总共有 3 个 TiFlash 实例，所有 TiFlash 实例上请求执行的总线程数为 24（8 × 3）。将 `tidb_max_tiflash_threads` 设置为 `20` 后，所有 TiFlash 实例上请求执行的总线程数为 60（20 × 3）。
 
-`tidb_max_tiflash_threads` 设置前：
+重新配置 `tidb_max_tiflash_threads` 之前：
 
 ```sql
 mysql> explain analyze select a, count(*) from t group by a;
@@ -325,14 +321,14 @@ mysql> explain analyze select a, count(*) from t group by a;
 9 rows in set (0.67 sec)
 ```
 
-设置 `tidb_max_tiflash_threads`：
+将 `tidb_max_tiflash_threads` 设置为 `20`：
 
 ```sql
 mysql> set @@tidb_max_tiflash_threads = 20;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-`tidb_max_tiflash_threads` 设置后：
+将 `tidb_max_tiflash_threads` 设置为 `20` 后：
 
 ```sql
 mysql> explain analyze select a, count(*) from t group by a;
@@ -352,19 +348,18 @@ mysql> explain analyze select a, count(*) from t group by a;
 9 rows in set (0.37 sec)
 ```
 
-### 设置细粒度 Shuffle 参数
+### 配置 `tiflash_fine_grained_shuffle_stream_count`
 
-细粒度 Shuffle 可以通过参数增加窗口函数执行的并发度，让函数执行占用更多系统资源，从而提升查询性能。
+你可以通过配置细粒度 Shuffle 特性的 [`tiflash_fine_grained_shuffle_stream_count`](/system-variables.md#tiflash_fine_grained_shuffle_stream_count-new-in-v620) 来增加窗口函数执行的并发度。这样，窗口函数的执行可以占用更多的系统资源，从而提高查询性能。
 
-[`tiflash_fine_grained_shuffle_stream_count`](/system-variables.md#tiflash_fine_grained_shuffle_stream_count-从-v620-版本开始引入)，单位为线程数。当窗口函数下推到 TiFlash 执行时，可以通过该变量控制窗口函数执行的并行度。
+当窗口函数被下推到 TiFlash 执行时，你可以使用此变量来控制窗口函数执行的并发度级别。单位是线程。
 
 ```sql
 set @@tiflash_fine_grained_shuffle_stream_count = 20;
 ```
 
-在以下示例中，`tiflash_fine_grained_shuffle_stream_count` 设置前，`[ExchangeSender_11, ExchangeReceiver_12, Sort_13, Window_22]` 的 `stream_count` 是 8。`tiflash_fine_grained_shuffle_stream_count` 设置后，`[ExchangeSender_11, ExchangeReceiver_12, Sort_13, Window_22]` 的 `stream_count` 是 20。
-
-`tiflash_fine_grained_shuffle_stream_count` 设置前：
+以下示例展示了重新配置 `tiflash_fine_grained_shuffle_stream_count` 变量前后的查询结果。在重新配置之前，`[ExchangeSender_11, ExchangeReceiver_12, Sort_13, Window_22]` 的 `stream_count` 是 8。重新配置后，`stream_count` 变为 20。
+重新配置 `tiflash_fine_grained_shuffle_stream_count` 之前：
 
 ```sql
 mysql> explain analyze select *, row_number() over (partition by a) from t;
@@ -382,14 +377,14 @@ mysql> explain analyze select *, row_number() over (partition by a) from t;
 7 rows in set (4 min 30.59 sec)
 ```
 
-设置 `tiflash_fine_grained_shuffle_stream_count`：
+将 `tiflash_fine_grained_shuffle_stream_count` 设置为 `20`：
 
 ```sql
 mysql> set @@tiflash_fine_grained_shuffle_stream_count = 20;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-`tiflash_fine_grained_shuffle_stream_count` 设置后：
+将 `tiflash_fine_grained_shuffle_stream_count` 设置为 `20` 后：
 
 ```sql
 mysql> explain analyze select *, row_number() over (partition by a) from t;

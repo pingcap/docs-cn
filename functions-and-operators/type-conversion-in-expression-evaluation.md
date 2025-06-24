@@ -1,8 +1,8 @@
 ---
-title: 表达式求值的类型转换
-summary: TiDB 中的表达式求值类型转换与 MySQL 基本一致。详情请参见 MySQL 表达式求值类型转换文档。
+title: 表达式求值中的类型转换
+summary: 了解表达式求值中的类型转换。
 ---
 
-# 表达式求值的类型转换
+# 表达式求值中的类型转换
 
-TiDB 中表达式求值的类型转换与 MySQL 基本一致，详情参见 [MySQL 表达式求值的类型转换](https://dev.mysql.com/doc/refman/8.0/en/type-conversion.html)。
+TiDB 的行为与 MySQL 相同：[https://dev.mysql.com/doc/refman/8.0/en/type-conversion.html](https://dev.mysql.com/doc/refman/8.0/en/type-conversion.html)

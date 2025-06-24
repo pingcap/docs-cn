@@ -1,15 +1,15 @@
 ---
 title: 关键字
-summary: 本文介绍 TiDB 的关键字。
+summary: 关键字和保留字
 ---
 
 # 关键字
 
-本文介绍 TiDB 的关键字，对保留字和非保留字作出区分，并汇总所有的关键字以供查询使用。
+本文介绍 TiDB 中的关键字、保留字和非保留字之间的区别，并总结了所有可查询的关键字。
 
-关键字是 SQL 语句中具有特殊含义的单词，例如  [`SELECT`](/sql-statements/sql-statement-select.md)、[`UPDATE`](/sql-statements/sql-statement-update.md) 和 [`DELETE`](/sql-statements/sql-statement-delete.md) 等等。它们之中有的能够直接作为标识符，被称为**非保留关键字**（简称**非保留字**），但有需要经过特殊处理才能作为标识符的字，被称为**保留关键字**（简称**保留字**）。
+关键字是在 SQL 语句中具有特殊含义的词，例如 [`SELECT`](/sql-statements/sql-statement-select.md)、[`UPDATE`](/sql-statements/sql-statement-update.md) 和 [`DELETE`](/sql-statements/sql-statement-delete.md)。其中一些可以直接用作标识符，这些被称为**非保留关键字**。另一些在用作标识符之前需要特殊处理，这些被称为**保留关键字**。
 
-对于保留字，必须使用反引号包裹，才能作为标识符被使用。例如：
+要将保留关键字用作标识符，你必须将它们用反引号 `` ` `` 括起来：
 
 ```sql
 CREATE TABLE select (a INT);
@@ -27,7 +27,7 @@ CREATE TABLE `select` (a INT);
 Query OK, 0 rows affected (0.09 sec)
 ```
 
-而非保留字则不需要反引号也能直接作为标识符。例如 `BEGIN` 和 `END` 是非保留字，以下语句能够正常执行：
+非保留关键字不需要反引号，例如 `BEGIN` 和 `END`，可以在以下语句中成功用作标识符：
 
 ```sql
 CREATE TABLE `select` (BEGIN int, END int);
@@ -37,7 +37,7 @@ CREATE TABLE `select` (BEGIN int, END int);
 Query OK, 0 rows affected (0.09 sec)
 ```
 
-有一种特殊情况，如果使用了限定符 `.`，那么也不需要用反引号：
+在特殊情况下，如果保留关键字与 `.` 分隔符一起使用，则不需要反引号：
 
 ```sql
 CREATE TABLE test.select (BEGIN int, END int);
@@ -47,11 +47,11 @@ CREATE TABLE test.select (BEGIN int, END int);
 Query OK, 0 rows affected (0.08 sec)
 ```
 
-TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/information-schema/information-schema-keywords.md) 表，可以用于查询 TiDB 中所有的关键字。
+从 v7.5.3 和 v7.6.0 版本开始，TiDB 在 [`INFORMATION_SCHEMA.KEYWORDS`](/information-schema/information-schema-keywords.md) 表中提供了完整的关键字列表。
 
 ## 关键字列表
 
-下表列出了 TiDB 中所有的关键字。其中保留字用 `(R)` 来标识。[窗口函数](/functions-and-operators/window-functions.md)的保留字用 `(R-Window)` 来标识。
+以下列表显示了 TiDB 中的关键字。保留关键字标记为 `(R)`。[窗口函数](/functions-and-operators/window-functions.md)的保留关键字标记为 `(R-Window)`。
 
 <TabsPanel letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ" />
 

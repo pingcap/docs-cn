@@ -1,33 +1,34 @@
 ---
 title: SHOW STATS_BUCKETS
-summary: TiDB 数据库中 SHOW STATS_BUCKETS 的使用概况。
+summary: TiDB 数据库中 SHOW STATS_BUCKETS 的使用概述。
 ---
 
 # SHOW STATS_BUCKETS
 
-`SHOW STATS_BUCKETS` 语句显示[常规统计信息](/statistics.md)中桶的信息。
+`SHOW STATS_BUCKETS` 语句显示[统计信息](/statistics.md)中的桶信息。
 
 目前，`SHOW STATS_BUCKETS` 语句返回以下列：
 
-| 列名 | 说明   |
+| 列名 | 描述 |
 | :-------- | :------------- |
-| `Db_name`  |  数据库名  |
+| `Db_name` | 数据库名称 |
 | `Table_name` | 表名 |
-| `Partition_name` | 分区名 |
-| `Column_name` | 取决于 `Is_index` 值：`Is_index` 为 `0` 时显示列名，为 `1` 时显示索引名 |
-| `Is_index` | 是否是索引列 |
+| `Partition_name` | 分区名称 |
+| `Column_name` | 当 `is_index` 为 `0` 时表示列名，当 `is_index` 为 `1` 时表示索引名 |
+| `Is_index` | 是否为索引列 |
 | `Bucket_id` | 桶的 ID |
-| `Count` | 该桶和之前桶中所有数值的个数 |
+| `Count` | 落在该桶及之前所有桶中的值的数量 |
 | `Repeats` | 最大值的出现次数 |
 | `Lower_bound` | 最小值 |
 | `Upper_bound` | 最大值 |
-| `Ndv` | 桶中不同值的数量。该字段已废弃，其值由于不准确会始终显示为 `0`。 |
+| `Ndv` | 桶中不同值的数量。由于该字段的值不准确，已被弃用且始终显示为 `0`。 |
 
-## 语法图
+## 语法
 
 ```ebnf+diagram
 ShowStatsBucketsStmt ::=
     "SHOW" "STATS_BUCKETS" ShowLikeOrWhere?
+
 ShowLikeOrWhere ::=
     "LIKE" SimpleExpr
 |   "WHERE" Expression
@@ -55,9 +56,9 @@ SHOW STATS_BUCKETS WHERE Table_name='t';
 
 ## MySQL 兼容性
 
-该语句是 TiDB 对 MySQL 语法的扩展。
+此语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 
 * [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md)
-* [常规统计信息](/statistics.md)
+* [统计信息简介](/statistics.md)

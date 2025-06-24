@@ -1,31 +1,30 @@
 ---
-title: RESTORE
-summary: TiDB 数据库中 RESTORE 的使用概况。
+title: RESTORE | TiDB SQL 语句参考
+summary: TiDB 数据库中 RESTORE 的使用概览。
 ---
 
 # RESTORE
 
+该语句从之前由 [`BACKUP` 语句](/sql-statements/sql-statement-backup.md)生成的备份存档执行分布式恢复。
+
 > **警告：**
 >
-> `RESTORE` 语句目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+> - 这是一个实验性功能。不建议在生产环境中使用。此功能可能会在没有事先通知的情况下更改或删除。如果发现错误，你可以在 GitHub 上报告[问题](https://github.com/pingcap/tidb/issues)。
+> - 此功能在 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 集群上不可用。
 
-`RESTORE` 语句用于执行分布式恢复，把 [`BACKUP` 语句](/sql-statements/sql-statement-backup.md)生成的备份文件恢复到 TiDB 集群中。
+`RESTORE` 语句使用与 [BR 工具](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview)相同的引擎，只是恢复过程由 TiDB 本身而不是单独的 BR 工具驱动。BR 的所有优点和注意事项也适用于此。特别是，**`RESTORE` 目前不符合 ACID**。在运行 `RESTORE` 之前，请确保满足以下要求：
 
-`RESTORE` 语句使用的引擎与 [BR](/br/backup-and-restore-overview.md) 相同，但恢复过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `RESTORE` 语句。需要注意的是，**`RESTORE` 语句目前不遵循 ACID 原则**。
+* 集群处于"离线"状态，当前 TiDB 会话是访问所有要恢复的表的唯一活动 SQL 连接。
+* 当执行完整恢复时，要恢复的表不应该已经存在，因为现有数据可能会被覆盖并导致数据和索引之间的不一致。
+* 当执行增量恢复时，表应该与创建备份时的 `LAST_BACKUP` 时间戳处于完全相同的状态。
 
-执行 `RESTORE` 语句前，确保集群已满足以下要求：
+运行 `RESTORE` 需要 `RESTORE_ADMIN` 或 `SUPER` 权限。此外，执行恢复的 TiDB 节点和集群中的所有 TiKV 节点都必须具有目标的读取权限。
 
-* 集群处于“下线”状态，当前的 TiDB 会话是唯一在访问待恢复表的活跃 SQL 连接。
-* 执行全量恢复时，确保即将恢复的表不存在于集群中，因为现有的数据可能被覆盖，从而导致数据与索引不一致。
-* 执行增量恢复时，表的状态应该与创建备份时 `LAST_BACKUP` 时间戳的状态完全一致。
+`RESTORE` 语句是阻塞的，只有在整个恢复任务完成、失败或取消后才会结束。运行 `RESTORE` 应准备一个长期存在的连接。可以使用 [`KILL TIDB QUERY`](/sql-statements/sql-statement-kill.md) 语句取消任务。
 
-执行 `RESTORE` 需要 `RESTORE_ADMIN` 或 `SUPER` 权限。此外，执行恢复操作的 TiDB 节点和集群中的所有 TiKV 节点都必须有对目标存储的读权限。
+一次只能执行一个 `BACKUP` 和 `RESTORE` 任务。如果同一 TiDB 服务器上已经在运行 `BACKUP` 或 `RESTORE` 任务，新的 `RESTORE` 执行将等待所有先前的任务完成。
 
-`RESTORE` 语句开始执行后将会被阻塞，直到整个恢复任务完成、失败或取消。因此，执行 `RESTORE` 时需要准备一个持久的连接。如需取消任务，可执行 [`KILL TIDB QUERY`](/sql-statements/sql-statement-kill.md) 语句。
-
-一次只能执行一个 `BACKUP` 和 `RESTORE` 任务。如果 TiDB server 上已经在执行一个 `BACKUP` 或 `RESTORE` 语句，新的 `RESTORE` 将等待前面所有的任务完成后再执行。
-
-`RESTORE` 只能在 "tikv" 存储引擎上使用，如果使用 "unistore" 存储引擎，`RESTORE` 操作会失败。
+`RESTORE` 只能与 "tikv" 存储引擎一起使用。使用 "unistore" 引擎的 `RESTORE` 将失败。
 
 ## 语法图
 
@@ -49,7 +48,7 @@ Boolean ::=
 
 ## 示例
 
-### 从备份文件恢复
+### 从备份存档恢复
 
 {{< copyable "sql" >}}
 
@@ -66,21 +65,21 @@ RESTORE DATABASE * FROM 'local:///mnt/backup/2020/04/';
 1 row in set (28.961 sec)
 ```
 
-上述示例中，所有数据均从本地的备份文件中恢复到集群中。`RESTORE` 从 SST 文件里读取数据，SST 文件存储在所有 TiDB 和 TiKV 节点的 `/mnt/backup/2020/04/` 目录下。
+在上面的示例中，所有数据都从本地文件系统的备份存档中恢复。数据作为 SST 文件从分布在所有 TiDB 和 TiKV 节点中的 `/mnt/backup/2020/04/` 目录中读取。
 
-输出结果的第一行描述如下：
+上面结果的第一行描述如下：
 
-| 列名 | 描述 |
+| 列 | 描述 |
 | :-------- | :--------- |
-| `Destination` | 读取的目标存储 URL |
-| `Size` |  备份文件的总大小，单位为字节 |
-| `BackupTS` | 不适用 |
-| `Queue Time` | `RESTORE` 任务开始排队的时间戳（当前时区） |
-| `Execution Time` | `RESTORE` 任务开始执行的时间戳（当前时区） |
+| `Destination` | 要读取的目标 URL |
+| `Size` | 备份存档的总大小，以字节为单位 |
+| `BackupTS` | (未使用) |
+| `Queue Time` | `RESTORE` 任务排队的时间戳（当前时区） |
+| `Execution Time` | `RESTORE` 任务开始运行的时间戳（当前时区） |
 
 ### 部分恢复
 
-你可以指定恢复部分数据库或部分表数据。如果备份文件中缺失了某些数据库或表，缺失的部分将被忽略。此时，`RESTORE` 语句不进行任何操作即完成执行。
+你可以指定要恢复的数据库或表。如果备份存档中缺少某些数据库或表，它们将被忽略，因此 `RESTORE` 将不执行任何操作就完成。
 
 {{< copyable "sql" >}}
 
@@ -96,7 +95,7 @@ RESTORE TABLE `test`.`sbtest01`, `test`.`sbtest02` FROM 'local:///mnt/backup/202
 
 ### 外部存储
 
-BR 支持从 Amazon S3 或 Google Cloud Storage (GCS) 恢复数据：
+BR 支持从 S3 或 GCS 恢复数据：
 
 {{< copyable "sql" >}}
 
@@ -104,9 +103,9 @@ BR 支持从 Amazon S3 或 Google Cloud Storage (GCS) 恢复数据：
 RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/';
 ```
 
-有关详细的 URI 语法，见[外部存储服务的 URI 格式](/external-storage-uri.md)。
+URL 语法在[外部存储服务的 URI 格式](/external-storage-uri.md)中有进一步解释。
 
-当运行在云环境中时，不能分发凭证，可设置 `SEND_CREDENTIALS_TO_TIKV` 选项为 `FALSE`：
+在不应分发凭证的云环境中运行时，将 `SEND_CREDENTIALS_TO_TIKV` 选项设置为 `FALSE`：
 
 {{< copyable "sql" >}}
 
@@ -117,9 +116,9 @@ RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/'
 
 ### 性能调优
 
-如果你需要减少网络带宽占用，可以通过 `RATE_LIMIT` 来限制每个 TiKV 节点的平均下载速度。
+使用 `RATE_LIMIT` 限制每个 TiKV 节点的平均下载速度以减少网络带宽。
 
-在恢复完成之前，`RESTORE` 将对备份文件中的数据进行校验，以验证数据的正确性。如果你确定无需进行校验，可以通过将 `CHECKSUM` 参数设置为 `FALSE` 来禁用该检查。
+在恢复完成之前，`RESTORE` 会对备份文件中的数据执行校验和以验证正确性。如果你确信这种验证是不必要的，可以通过将 `CHECKSUM` 参数设置为 `FALSE` 来禁用检查。
 
 {{< copyable "sql" >}}
 
@@ -132,9 +131,9 @@ RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-06/'
 
 ### 增量恢复
 
-增量恢复没有特殊的语法。TiDB 将识别备份文件属于全量备份或增量备份，然后执行对应的恢复操作，用户只需按照正确顺序进行增量恢复。
+执行增量恢复没有特殊语法。TiDB 将识别备份存档是完整的还是增量的，并采取适当的操作。你只需要按正确的顺序应用每个增量恢复。
 
-假设按照如下方式创建一个备份任务：
+例如，如果按如下方式创建备份任务：
 
 {{< copyable "sql" >}}
 
@@ -144,7 +143,7 @@ BACKUP DATABASE `test` TO 's3://example-bucket/inc-backup-1' SNAPSHOT = 41497185
 BACKUP DATABASE `test` TO 's3://example-bucket/inc-backup-2' SNAPSHOT = 416353458585600 LAST_BACKUP = 414971854848000;
 ```
 
-在恢复备份时，需要采取同样的顺序：
+那么恢复时应该按相同的顺序应用：
 
 {{< copyable "sql" >}}
 
