@@ -319,7 +319,7 @@ TiDB 版本：9.0.0
 <!--
 | TiCDC | [`newarch`](/ticdc/ticdc-server-config.md#newarch) | 新增 | 控制是否开启 [TiCDC 新架构](/ticdc/ticdc-new-arch.md)。默认值为不设置，表示使用老架构。该配置项仅用于新架构，如果在 TiCDC 老架构的配置文件中添加该配置项，可能会导致解析失败。 |
 -->
-| BR | [`--checkpoint-storage`](/br/br-checkpoint-restore.md#实现细节-将断点数据存储在下游集群) | 新增 | 用于指定断点数据存储的外部存储。 | 
+| BR | [`--checkpoint-storage`](/br/br-checkpoint-restore.md#实现细节将断点数据存储在下游集群) | 新增 | 用于指定断点数据存储的外部存储。 | 
 | DM | [`redact-info-log`](/dm/dm-worker-configuration-file.md#redact-info-log-从-v900-版本开始引入) | 新增 | 控制是否开启 DM 日志脱敏。 |
 | TiProxy | [`enable-traffic-replay`](/tiproxy/tiproxy-configuration.md#enable-traffic-replay)  | 新增 | 用于指定是否开启[流量回放](/tiproxy/tiproxy-traffic-replay.md)功能。如果为 `false`，则在流量捕获和流量回放时会报错。|
 | TiProxy | [`encryption-key-path`](/tiproxy/tiproxy-configuration.md#encryption-key-path)  | 新增 | 用于指定流量捕获时用于加密流量文件的密钥的文件路径。|
