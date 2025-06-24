@@ -49,7 +49,9 @@ TiDB 还提供了一个系统变量来限制单条 SQL 语句的执行时间，�
 
 ## JDBC 查询超时
 
-MySQL jdbc 的查询超时设置 `setQueryTimeout()` 对 TiDB 不起作用。这是因为现实客户端感知超时时，向数据库发送一个 KILL 命令。但是由于 tidb-server 是负载均衡的，为防止在错误的 tidb-server 上终止连接，tidb-server 不会执行这个 KILL。这时就要用 `MAX_EXECUTION_TIME` 实现查询超时的效果。
+对于 `v6.1` 及之后版本的 TiDB，`enable-global-kill` 的参数默认为 `true`, 你可以使用 MySQL JDBC 的查询超时设置 `setQueryTimeout()` 来控制查询超时。
+
+然而，`setQueryTimeout()` 对 `v6.1` 版本前的 TiDB 不起作用。这是因为客户端在超时后，会向数据库发送一个 KILL 命令。但是由于 tidb-server 是负载均衡的，为防止在错误的 tidb-server 上终止连接，tidb-server 不会执行这个 KILL。这时就要用 `MAX_EXECUTION_TIME` 实现查询超时的效果。
 
 TiDB 提供了三个与 MySQL 兼容的超时控制参数：
 
