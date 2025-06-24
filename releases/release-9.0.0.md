@@ -581,3 +581,5 @@ TiDB 版本：9.0.0
 ## 贡献者
 
 感谢来自 TiDB 社区的贡献者们：
+
+- [SandeepPadhi](https://github.com/SandeepPadhi)
