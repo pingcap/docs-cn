@@ -582,4 +582,7 @@ TiDB 版本：9.0.0
 
 感谢来自 TiDB 社区的贡献者们：
 
+- [b6g](https://github.com/b6g)
+- [mengxian-li](https://github.com/mengxian-li)
 - [SandeepPadhi](https://github.com/SandeepPadhi)
+- [takaebato](https://github.com/takaebato)
