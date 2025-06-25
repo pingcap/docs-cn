@@ -297,7 +297,7 @@ TiDB 版本：9.0.0
     在[慢日志](/identify-slow-queries.md)中新增的字段：
 
     * `Storage_from_kv`：值为 `true` 时表示该 SQL 语句访问了 TiKV。
-    * `Storage_from_kv`：值为 `true` 时表示该 SQL 语句访问了 TiFlash。
+    * `Storage_from_mpp`：值为 `true` 时表示该 SQL 语句访问了 TiFlash。
 
     该功能可以简化部分诊断和性能优化场景的工作流程，提升问题诊断效率。
 
