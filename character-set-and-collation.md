@@ -448,7 +448,6 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 >
 > 跳过字符检查可能会使 TiDB 检测不到应用写入的非法 UTF-8 字符，进一步导致执行 `ANALYZE` 时解码错误，以及引入其他未知的编码问题。如果应用不能保证写入字符串的合法性，不建议跳过该检查。
 
-
 在某些 SQL 语句中，可能涉及与非法 UTF-8 字符的比较。例如：
 
 ```golang
