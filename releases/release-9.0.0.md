@@ -285,23 +285,23 @@ TiDB 版本：9.0.0
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-explain-analyze.md)。
 
-* 在慢日志和 Statement Summary Tables 中增加存储引擎标识 [#61736](https://github.com/pingcap/tidb/issues/61736) @[henrybw](https://github.com/henrybw) **tw@Oreoxmt**<!--2034 beta.2-->
+* 在 Statement Summary Tables 和慢日志中增加存储引擎标识 [#61736](https://github.com/pingcap/tidb/issues/61736) @[henrybw](https://github.com/henrybw) **tw@Oreoxmt**<!--2034 beta.2-->
 
-    在诊断优化过程中，经常需要按照存储引擎对 SQL 语句进行过滤。比如，当用户发现 TiFlash 上高负载时，希望只对运行在 TiFlash 的 SQL 语句进行过滤，找到可能引发 TiFlash 高负载的 SQL 语句。因此，在 v9.0.0 中，主要的 SQL 观测对象中增加了存储引擎标识。
+    在数据库诊断和性能优化过程中，用户经常需要根据存储引擎筛选 SQL 语句。例如，当用户发现 TiFlash 负载较高时，需要筛选出在 TiFlash 上运行的 SQL 语句，以便识别可能导致 TiFlash 负载过高的查询语句。为解决此需求，TiDB 从 v9.0.0 开始，在主要的 SQL 观测对象中新增了存储引擎标识字段。
 
-    在 [Statement Summary Tables](/statement-summary-tables.md) 中：
+    在 [Statement Summary Tables](/statement-summary-tables.md) 中新增的字段：
 
-    * `STORAGE_KV` = `1`： 该 SQL 读取了 TiKV。
-    * `STORAGE_MPP` = `1`： 该 SQL 读取了 TiFlash。
+    * `STORAGE_KV`：值为 `1` 时表示该 SQL 语句访问了 TiKV。
+    * `STORAGE_MPP`：值为 `1` 时表示该 SQL 语句访问了 TiFlash。
 
-    在[慢日志](/identify-slow-queries.md)中：
+    在[慢日志](/identify-slow-queries.md)中新增的字段：
 
-    * `Storage_from_kv` = `true`：该 SQL 读取了 TiKV。
-    * `Storage_from_kv` = `true`：该 SQL 读取了 TiFlash。
+    * `Storage_from_kv`：值为 `true` 时表示该 SQL 语句访问了 TiKV。
+    * `Storage_from_kv`：值为 `true` 时表示该 SQL 语句访问了 TiFlash。
 
-    这个增强能够简化一部分诊断和优化场景的工作，加速诊断效率。
+    该功能可以简化部分诊断和性能优化场景的工作流程，提升问题诊断效率。
 
-    更多信息，请参考 [Statement Summary Tables](/statement-summary-tables.md) 和 [慢日志](/identify-slow-queries.md)。
+    更多信息，请参考 [Statement Summary Tables](/statement-summary-tables.md) 和[慢日志](/identify-slow-queries.md)。
 
 ### 安全
 
