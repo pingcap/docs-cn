@@ -41,10 +41,11 @@ DISTRIBUTE TABLE t1 RULE= "leader-scatter" ENGINE = "tikv" TIMEOUT="1h"
 ```
 
 ```
-+---------+
-| JOB_ID  |
-100
-+---------+
++--------+
+| JOB_ID |
++--------+
+|    100 |
++--------+
 ```
 
 对表 `t2` 在 Tiflash 上的 Learner 所在的 Region 重新进行均衡调度：
@@ -56,10 +57,11 @@ DISTRIBUTE table t2  RULE = "learner-scatter" ENGINE = "tiflash";
 ```
 
 ```
-+---------+
-| JOB_ID  | 
-101
-+---------+
++--------+
+| JOB_ID |
++--------+
+|    101 |
++--------+
 ```
 
 对分区表 `t3` 的 `p1` 和 `p2` 分区在 TiKV 上的 Peer 所在的 Region 重新进行均衡调度：
@@ -74,10 +76,11 @@ DISTRIBUTE TABLE t3 PARTITION (p1, p2) RULE = "peer-scatter" ENGINE = "tikv";
 ```
 
 ```
-+---------+
-| JOB_ID  |
-102
-+---------+
++--------+
+| JOB_ID |
++--------+
+|    102 |
++--------+
 ```
 
 对分区表 `t4` 的 `p1` 和 `p2` 分区在 TiKV 上的 Leader 所在的 Region 重新进行均衡调度：
@@ -91,10 +94,11 @@ DISTRIBUTE TABLE t4 PARTITION (p1, p2) RULE = "leader-scatter" ENGINE="tiflash";
 ```
 
 ```
-+---------+
-| JOB_ID  |
-103
-+---------+
++--------+
+| JOB_ID |
++--------+
+|    103 |
++--------+
 ```
 
 ## 注意事项
