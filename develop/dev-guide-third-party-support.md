@@ -58,3 +58,4 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 | [JetBrains DataGrip](https://www.jetbrains.com/datagrip/) | 2023.2.1              | Full          | N/A |
 | [DBeaver](https://dbeaver.io/)                            | 23.0.3                | Full          | N/A |
 | [Visual Studio Code](https://code.visualstudio.com/)      | 1.72.0                | Full          | N/A |
+| [Navicat](https://www.navicat.com)      | 17.1.6                | Full          | [使用 Navicat 连接到 TiDB](/develop/dev-guide-gui-navicat.md) |
