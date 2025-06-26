@@ -175,7 +175,7 @@ TiDB 版本：9.0.0
 
     引入了 Table Mode，当用户执行快照恢复，或者 PITR 时，目标表的 Table Mode 会被设置为 `restore`，处于 Restore Mode 的表会禁止用户执行任何读写操作。当数据恢复完成时，Table Mode 会被自动恢复到 `normal` 状态，用户可以正常读写该表，从而提升数据恢复期间的任务稳定性和数据一致性。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/br/br-pitr-guide.md)。
 
 * 新增系统变量 `MAX_USER_CONNECTIONS`，用于限制不同用户可以建立的连接数 [#59203](https://github.com/pingcap/tidb/issues/59203) @[joccau](https://github.com/joccau) **tw@hfxsd**<!--2017-->
 
