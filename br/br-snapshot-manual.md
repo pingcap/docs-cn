@@ -134,11 +134,11 @@ tiup br restore full \
 
 > **注意：**
 >
-> 从 v9.0.0 起，当设置参数 `--load-stats` 为 false 时，br 将不会在表 `mysql.stats_meta` 中更新恢复的表的相关信息。你可以在恢复完成后手动执行 analyze table，更新相关统计信息。
+> 从 v9.0.0 起，当参数 `--load-stats` 设置为 `false` 时，br 不再向 `mysql.stats_meta` 表写入恢复表的统计信息。你可以在恢复完成后手动执行 `ANALYZE TABLE`，以更新相关统计信息。
 
 备份恢复功能在备份时，将统计信息通过 JSON 格式存储在 `backupmeta` 文件中。在恢复时，将 JSON 格式的统计信息导入到集群中。详情请参考 [LOAD STATS](/sql-statements/sql-statement-load-stats.md)。
 
-从 9.0.0 起，BR 引入参数 `--fast-load-sys-tables`，默认开启。当 br 命令行工具恢复在全新集群并且上下游表和分区的 ID 都能被复用时（否则，将自动回退为逻辑导入统计信息数据），通过设置 `--fast-load-sys-tables` 会将统计信息相关表恢复到临时系统库 `__TiDB_BR_Temporary_mysql` 中，再通过 `RENAME TABLE` DDL 将恢复的统计信息表和 `mysql` 库下的表进行原子交换。示例如下：
+从 v9.0.0 起，BR 引入参数 `--fast-load-sys-tables`，该参数默认开启。在使用 br 命令行工具将数据恢复到一个全新集群，且上下游的表和分区 ID 能够复用的前提下（否则会自动回退为逻辑导入统计信息），开启 `--fast-load-sys-tables` 后，br 会先将统计信息相关表恢复至临时系统库 `__TiDB_BR_Temporary_mysql` 中，再通过 `RENAME TABLE` 语句将这些表与 `mysql` 库下的原有表进行原子性替换。使用示例如下：
 
 ```shell
 tiup br restore full \
@@ -211,7 +211,7 @@ tiup br restore full \
 
 > **注意：**
 >
-> 与通过 `REPLACE INTO` SQL 写入的逻辑恢复系统表方式不同，物理恢复系统表将会完全覆盖系统表中原有的数据。
+> 与通过 `REPLACE INTO` SQL 语句执行的逻辑恢复系统表方式不同，物理恢复系统表会完全覆盖系统表中的原有数据。
 
 ## 恢复备份数据中指定库表的数据
 
