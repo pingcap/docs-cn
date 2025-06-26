@@ -100,7 +100,7 @@ Restore KV Files <--------------------------------------------------------------
 *** ["restore log success summary"] [total-take=xxx.xx] [restore-from={TS}] [restore-to={TS}] [total-kv-count=xxx] [total-size=xxx]
 ```
 
-在恢复期间，恢复的表的 Table Mode 会被设置为 `restore`，处于 Restore Mode 的表会禁止用户执行任何读写操作。当数据恢复完成时，Table Mode 会被自动恢复到 `normal` 状态，用户可以正常读写该表，从而提升数据恢复期间的任务稳定性和数据一致性。
+在恢复期间，恢复的表的 Table Mode 会被自动设置为 `restore`，处于 Restore Mode 的表会禁止用户执行任何读写操作。当数据恢复完成时，Table Mode 会被自动恢复到 `normal` 状态，用户可以正常读写该表，从而提升数据恢复期间的任务稳定性和数据一致性。
 
 ## 清理过期的日志备份数据
 
