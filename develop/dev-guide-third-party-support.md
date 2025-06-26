@@ -180,3 +180,4 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 | GUI | 最新已测试版本 | 支持等级 | 教程 |
 | - | - | - | - |
 | [DBeaver](https://dbeaver.io/) | 23.0.1 | Full | N/A |
+| [Navicat](https://www.navicat.com)      | 17.1.6                | Full          | [使用 Navicat 连接到 TiDB](/develop/dev-guide-gui-navicat.md) |
