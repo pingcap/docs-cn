@@ -3,6 +3,7 @@ title: DISTRIBUTE TABLE
 summary: 介绍 TiDB 数据库中 DISTRIBUTE TABLE 的使用概况。
 ---
 
+
 # DISTRIBUTE TABLE
 > **警告：**
 >
@@ -86,7 +87,7 @@ DISTRIBUTE TABLE t3 PARTITION (p1, p2) RULE = "peer-scatter" ENGINE = "tikv";
 +--------+
 ```
 
-对分区表 `t4` 的 `p1` 和 `p2` 分区在 Tiflash 上的 Learner 所在的 Region 重新进行均衡调度：
+对分区表 `t4` 的 `p1` 和 `p2` 分区在 TiFlash 上的 Learner 所在的 Region 重新进行均衡调度：
 
 ```sql
 CREATE TABLE t4 ( a INT, b INT, INDEX idx(b)) PARTITION BY RANGE( a ) (
