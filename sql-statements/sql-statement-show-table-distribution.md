@@ -11,7 +11,7 @@ summary: 介绍 TiDB 数据库中 SHOW TABLE DISTRIBUTION 的使用概况。
 
 ```ebnf+diagram
 ShowTableDistributionStmt ::=
-    "SHOW" "TABLE" "DISTRIBUTION" TableName
+    "SHOW" "TABLE" TableName "DISTRIBUTIONS"
 
 TableName ::=
     (SchemaName ".")? Identifier
@@ -22,7 +22,7 @@ TableName ::=
 显示当前表 `t1` 的 Region 分布情况：
 
 ```sql
-SHOW TABLE DISTRIBUTION t1;
+SHOW TABLE t1 DISTRIBUTIONS;
 ```
 
 ```

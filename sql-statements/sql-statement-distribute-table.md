@@ -4,6 +4,9 @@ summary: 介绍 TiDB 数据库中 DISTRIBUTE TABLE 的使用概况。
 ---
 
 # DISTRIBUTE TABLE
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 `DISTRIBUTE TABLE` 语句用于对指定表的 Region 进行重新打散和调度，以实现表级别的均衡分布。执行该语句可以防止个别 Region 集中在少数 TiFlash 或 TiKV 节点上，从而解决表中 Region 分布不均衡的问题。
 
@@ -83,14 +86,14 @@ DISTRIBUTE TABLE t3 PARTITION (p1, p2) RULE = "peer-scatter" ENGINE = "tikv";
 +--------+
 ```
 
-对分区表 `t4` 的 `p1` 和 `p2` 分区在 TiKV 上的 Leader 所在的 Region 重新进行均衡调度：
+对分区表 `t4` 的 `p1` 和 `p2` 分区在 Tiflash 上的 Learner 所在的 Region 重新进行均衡调度：
 
 ```sql
 CREATE TABLE t4 ( a INT, b INT, INDEX idx(b)) PARTITION BY RANGE( a ) (
     PARTITION p1 VALUES LESS THAN (10000),
     PARTITION p2 VALUES LESS THAN (20000),
     PARTITION p3 VALUES LESS THAN (MAXVALUE) );
-DISTRIBUTE TABLE t4 PARTITION (p1, p2) RULE = "leader-scatter" ENGINE="tiflash";
+DISTRIBUTE TABLE t4 PARTITION (p1, p2) RULE = "learner-scatter" ENGINE="tiflash";
 ```
 
 ```
