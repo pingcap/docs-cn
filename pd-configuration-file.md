@@ -74,7 +74,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `lease`
 
 + PD Leader Key 租约超时时间，超时系统重新选举 Leader。
-+ 默认值：3
++ 默认值：从 v8.5.2 版本开始，默认值为 5。在 v8.5.2 版本之前，默认值为 3。
 + 单位：秒
 
 ### `quota-backend-bytes`
@@ -306,6 +306,12 @@ pd-server 相关配置项。
 
 + 控制对同一个 Region 做 split 和 merge 操作的间隔，即对于新 split 的 Region 一段时间内不会被 merge。
 + 默认：1h
+
+### `max-movable-hot-peer-size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
++ 控制热点调度可以调度的最大 Region size。
++ 默认：512
++ 单位：MiB
 
 ### `max-snapshot-count`
 
