@@ -117,6 +117,12 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - 单位：Byte。目前不支持如 `"10GB"` 的设置。
 - `capacity` 列表的长度应当与 [`storage.main.dir`](#dir) 列表长度保持一致。
 
+#### storage.api_version <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 多租户的 TiDB 集群的场景下，支持 keyspace 相关的 API 与 TIKV、PD 之间进行通讯。 `0` 代表不使用 keyspace 相关 API，`2` 代表使用 keyspace 相关 API。
+- 默认值：`0`
+- 可选值：`0`、`2`
+
 #### storage.latest
 
 ##### `dir`
@@ -433,6 +439,11 @@ I/O 限流功能相关配置。
 
 - 表示 PageStorage 单个数据文件中有效数据的最低比例。当某个数据文件的有效数据比例低于该值时，会触发 GC 对该文件的数据进行整理。
 - 默认值：`0.5`
+
+##### `disagg_blocklist_wn_store_id` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 使用 `,` 分割的 store_id 的字符串。表示在存算分离架构中，TiFlash 计算节点不会将请求分发至列表中 store_id 的 TiFlash 存储节点。
+- 默认值：`""`，表示 TiFlash 计算节点会将请求分发至所有 TiFlash 存储节点。
 
 ##### `max_bytes_before_external_group_by` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
