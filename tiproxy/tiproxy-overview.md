@@ -204,6 +204,10 @@ TiProxy 不适用于以下场景：
 tiup cluster upgrade <cluster-name> <version> --tiproxy-version <tiproxy-version>
 ```
 
+> **注意：**
+>
+> 该命令将会同时升级 TiDB 集群。即使 TiDB 版本没有变化，也会重启 TiDB 集群。
+
 ### 重启 TiDB 集群
 
 使用 [`tiup cluster restart`](/tiup/tiup-component-cluster-restart.md) 重启 TiDB 集群时，TiDB server 不是滚动重启，会导致连接断开，请尽量避免使用。
