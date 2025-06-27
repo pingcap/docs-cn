@@ -183,13 +183,13 @@ TiDB 版本：9.0.0
 
     更多信息，请参考[用户文档](/system-variables.md#max_user_connections-从-v900-版本开始引入)。
 
-* 限制超额使用的资源组 [#issue号](链接) @[lhy1024](https://github.com/lhy1024) **tw@lilin90** <!--1940 beta.2-->
+* 限制资源组超额使用系统资源 [#9057](https://github.com/tikv/pd/issues/9057) [#59389](https://github.com/pingcap/tidb/issues/59389) @[lhy1024](https://github.com/lhy1024) **tw@lilin90** <!--1940 beta.2-->
 
-    为资源组 (Resource Group) 设置 BURSTABLE 属性之后，TiDB 允许这个资源组的应用超额占用资源。但超额的申请有可能会挤占其他资源组的资源分配，影响其他资源组的 SLA。在 v9.0.0 中，我们为 BURSTABLE 增加了模式定义。默认情况下，BURSTABLE 采用相对 “温和 (`MODERATED`)” 的策略，TiDB 会动态调整超额资源申请的上限，尽量满足各个资源组限额内的资源。从前的“无限模式“仍旧保留，通过设置 `BURSTABLE=UNLIMITED` 来指定。
+    在 v9.0.0 之前，为资源组 (Resource Group) 设置 `BURSTABLE` 属性之后，TiDB 允许这个资源组的应用超额使用系统资源。但超额的申请可能会挤占其他资源组的资源分配，影响其他资源组的 SLA。从 v9.0.0 开始，为 `BURSTABLE` 增加了支持的模式。如果没有为 `BURSTABLE` 指定目标值，将默认启用相对温和的 `MODERATED` 模式，TiDB 会动态调整超额资源申请的上限，尽量满足各个资源组限额内的资源。从前的“无限模式“仍旧保留，通过设置 `BURSTABLE=UNLIMITED` 来指定。
 
-    需要注意的是，旧版本升级上来的资源组默认保留原行为 (`UNLIMITED`)。如果要调整到”温和“模式，需要通过 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 修改定义。
+    需要注意的是，旧版本升级上来的资源组默认保留原行为 (`UNLIMITED`)。如果要调整到 `MODERATED` 模式，需要通过 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 修改定义。
 
-    为 BURSTABLE 增加”温和“分配模式，适用于系统中多个资源组优先级相当的场景。允许部分资源组安全地“溢出” ，在保证服务质量的前提下，更加高效利用资源。
+    `BURSTABLE` 的 `MODERATED` 资源分配模式适用于系统中多个资源组优先级相当的场景。允许部分资源组安全地“溢出” ，从而在保证服务质量的前提下，更高效地利用资源。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-create-resource-group.md)。
 
