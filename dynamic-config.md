@@ -256,11 +256,7 @@ Query OK, 0 rows affected (0.01 sec)
 | cluster-version | 集群的版本 |
 | schedule.max-merge-region-size |  控制 Region Merge 的 size 上限（单位是 MiB） |
 | schedule.max-merge-region-keys | 控制 Region Merge 的 key 数量上限 |
-<<<<<<< HEAD
-| schedule.patrol-region-interval | 控制 replicaChecker 检查 Region 健康状态的运行频率 |
-=======
 | schedule.patrol-region-interval | 控制 checker 检查 Region 健康状态的运行频率 |
->>>>>>> ed496dc3cb (pd: complement pd section (#20500))
 | schedule.split-merge-interval | 控制对同一个 Region 做 split 和 merge 操作的间隔 |
 | schedule.max-snapshot-count | 控制单个 store 最多同时接收或发送的 snapshot 数量 |
 | schedule.max-pending-peer-count | 控制单个 store 的 pending peer 上限 |
@@ -286,14 +282,11 @@ Query OK, 0 rows affected (0.01 sec)
 | schedule.region-score-formula-version | 用于设置 Region 算分公式的版本 |
 | schedule.scheduler-max-waiting-operator | 用于控制每个调度器同时存在的 operator 的个数 |
 | schedule.enable-debug-metrics | 用于开启 debug 的 metrics |
-| schedule.enable-heartbeat-concurrent-runner | 用于开启 Region 心跳异步并发处理功能 |
-| schedule.enable-heartbeat-breakdown-metrics | 用于开启 Region 心跳指标拆分，用于统计 Region 心跳处理各阶段所消耗的时间 |
 | schedule.enable-joint-consensus | 用于开启 Joint Consensus 进行副本调度 |
 | schedule.hot-regions-write-interval | 设置 PD 存储 Hot Region 信息时间间隔 |
 | schedule.hot-regions-reserved-days | 设置 PD 保留的 Hot Region 信息的最长时间 |
 | schedule.max-movable-hot-peer-size | 设置热点调度可以调度的最大 Region size |
 | schedule.store-limit-version | 设置 [store limit](/configure-store-limit.md) 工作模式 |
-| schedule.patrol-region-worker-count | 控制 checker 检查 Region 健康状态时，创建 operator 的并发数 |
 | replication.max-replicas | 用于设置副本的数量 |
 | replication.location-labels | 用于设置 TiKV 集群的拓扑信息 |
 | replication.enable-placement-rules | 开启 Placement Rules |
