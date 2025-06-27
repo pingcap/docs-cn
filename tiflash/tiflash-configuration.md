@@ -119,7 +119,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 #### storage.api_version <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 多租户的 TiDB 集群的场景下，支持 keyspace 相关的 API 与 TIKV、PD 之间进行通讯。 `0` 代表不使用 keyspace 相关 API，`2` 代表使用 keyspace 相关 API。
+- 多租户的 TiDB 集群的场景下，支持使用 keyspace 相关的 API 与 TIKV、PD 之间进行通讯。 `0` 代表不使用 keyspace 相关 API，`2` 代表使用 keyspace 相关 API。
 - 默认值：`0`
 - 可选值：`0`、`2`
 
@@ -442,7 +442,7 @@ I/O 限流功能相关配置。
 
 ##### `disagg_blocklist_wn_store_id` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 使用 `,` 分割的 store_id 的字符串。表示在存算分离架构中，TiFlash 计算节点不会将请求分发至列表中 store_id 的 TiFlash 存储节点。
+- 值为使用 `,` 分隔的 store_id 字符串，例如 "140,141"。表示在存算分离架构中，TiFlash 计算节点不会将请求分发至列表中 store_id 指定的 TiFlash 存储节点。
 - 默认值：`""`，表示 TiFlash 计算节点会将请求分发至所有 TiFlash 存储节点。
 
 ##### `max_bytes_before_external_group_by` <span class="version-mark">从 v7.0.0 版本开始引入</span>
