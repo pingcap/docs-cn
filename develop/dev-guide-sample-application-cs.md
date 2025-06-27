@@ -13,7 +13,7 @@ C#（发音为 "C-Sharp"）是 .NET 家族中的一种编程语言，由微软�
 
 - 下载并安装 [.NET 9.0 SDK](https://dotnet.microsoft.com/en-us/download)。
 - 本教程使用 `dotnet` 命令行工具。你也可以使用 Visual Studio Code IDE 编写 C# 代码。
-- 你需要有一个可用的 TiDB 实例。可以使用 [TiDB Cloud Serverless](/tidb-cloud/select-cluster-tier.md#tidb-cloud-serverless) 或 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated) 集群，或自建集群（如通过 `tiup playground` 启动）。
+- 你需要有一个可用的 TiDB 实例。可以使用 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier/#tidb-cloud-serverless) 或 [TiDB Cloud Dedicated](https://docs.pingcap.com/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated) 集群，或自建集群（如通过 `tiup playground` 启动）。
 
 ## 第 1 步：创建控制台项目
 
