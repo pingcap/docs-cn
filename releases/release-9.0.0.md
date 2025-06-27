@@ -149,6 +149,11 @@ TiDB 版本：9.0.0
 
   更多信息，请参考[用户文档](/br/br-compact-log-backup.md)。
 
+* 推荐执行计划绑定（预览版） [#60148](https://github.com/pingcap/tidb/issues/60148) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--2225-->
+
+    通过“执行计划绑定 ([SQL Binding](/sql-plan-management.md#执行计划绑定-sql-binding))” 来稳定执行计划，是 SQL 调优过程中最重要的手段之一。当用户遇到 SQL 性能问题时，通常会在系统中寻找更优的执行计划，并将其绑定，以求快速修复问题。为简化这一流程，TiDB 引入了 `EXPLAIN EXPLORE` 命令，自动遍历并分析某条 SQL 语句的可能执行计划，并推荐可能更优的方案。这一能力可以加快 SQL 性能问题的定位与恢复，降低故障带来的影响。
+
+
 ### 高可用
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234 beta.2-->
