@@ -173,7 +173,7 @@ TiDB 版本：9.0.0
 
 * 引入 Table Mode，在数据恢复阶段限制用户对目标表进行读写操作，提升备份恢复任务的稳定性和数据一致性  [#59008](https://github.com/pingcap/tidb/issues/59008) @[fishiu](https://github.com/fishiu) @[River2000i](https://github.com/River2000i) @[Tristan1900](https://github.com/Tristan1900) @[Leavrth](https://github.com/Leavrth)   **tw@hfxsd** <!--2056 beta.2-->
 
-    引入了 Table Mode，当用户执行快照恢复，或者 PITR 时，目标表的 Table Mode 会被设置为 `restore`，处于 Restore Mode 的表会禁止用户执行任何读写操作。当数据恢复完成时，Table Mode 会被自动恢复到 `normal` 状态，用户可以正常读写该表，从而提升数据恢复期间的任务稳定性和数据一致性。
+    引入了 Table Mode，当用户执行快照恢复，或者 PITR 时，目标表的 Table Mode 会被自动设置为 `restore`，处于 Restore Mode 的表会禁止用户执行任何读写操作。当数据恢复完成时，Table Mode 会被自动恢复到 `normal` 状态，用户可以正常读写该表，从而提升数据恢复期间的任务稳定性和数据一致性。
 
     更多信息，请参考[用户文档](/br/br-pitr-guide.md)。
 
