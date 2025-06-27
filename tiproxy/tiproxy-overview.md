@@ -78,14 +78,14 @@ TiProxy 不适用于以下场景：
 
 1. 配置 TiDB 实例。
 
-    使用 TiProxy 时，需要为 TiDB 配置 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)。该值应大于应用程序最长事务的持续时间，以避免 TiDB server 下线时客户端连接中断。你可以通过 [TiDB 监控面板的 Transaction 指标](/grafana-tidb-dashboard.md#transaction) 查看事务持续时间。更多信息，请参阅[使用限制](#使用限制)。
+    使用 TiProxy 时，需要为 TiDB 配置 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)。该值应比应用程序最长事务的持续时间大 10 秒以上，以避免 TiDB server 下线时客户端连接中断。你可以通过 [TiDB 监控面板的 Transaction 指标](/grafana-tidb-dashboard.md#transaction) 查看事务持续时间。更多信息，请参阅[使用限制](#使用限制)。
 
     配置示例：
 
     ```yaml
     server_configs:
       tidb:
-        graceful-wait-before-shutdown: 15
+        graceful-wait-before-shutdown: 30
     ```
 
 2. 配置 TiProxy 实例。
@@ -166,14 +166,14 @@ TiProxy 不适用于以下场景：
 
 3. 修改 TiDB 配置。
 
-    使用 TiProxy 时，需要为 TiDB 配置 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)。该值应大于应用程序最长事务的持续时间，以避免 TiDB server 下线时客户端连接中断。你可以通过 [TiDB 监控面板的 Transaction 指标](/grafana-tidb-dashboard.md#transaction) 查看事务持续时间。更多信息，请参阅[使用限制](#使用限制)。
+    使用 TiProxy 时，需要为 TiDB 配置 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)。该值应比应用程序最长事务的持续时间大 10 秒以上，以避免 TiDB server 下线时客户端连接中断。你可以通过 [TiDB 监控面板的 Transaction 指标](/grafana-tidb-dashboard.md#transaction) 查看事务持续时间。更多信息，请参阅[使用限制](#使用限制)。
 
     配置示例：
 
     ```yaml
     server_configs:
       tidb:
-        graceful-wait-before-shutdown: 15
+        graceful-wait-before-shutdown: 30
     ```
 
 4. 重新加载 TiDB 配置。
@@ -248,10 +248,10 @@ TiProxy 的以下行为与 TiDB 不兼容：
 - TiProxy 进行缩容、升级、重启等下线操作。一旦 TiProxy 下线，客户端连接也会断开。
 - TiDB 主动断开连接。例如会话超过 `wait_timeout` 的时间没有发送请求时，TiDB 会主动断开连接，此时 TiProxy 也会断开客户端连接。
 
-以下情况下，TiProxy 无法进行连接迁移，因此无法正常地保持客户端连接或负载均衡：
+在以下情况下，TiProxy 将无法完成连接迁移，会导致客户端连接中断或负载均衡失效：
 
-- 单条语句或单个事务持续时间超过 TiDB server 配置的 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入) 时间。
-- 会话使用了游标读取数据，且超过 TiDB server 配置的 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入) 时间没有读完数据或关闭游标。
+- 长时间运行的单条语句或单个事务：其执行时间超过了 TiDB Server 配置的 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入) 的值减去 10 秒的时间窗口。
+- 使用游标且未及时完成：会话使用游标读取数据，但超过 TiDB Server 配置的 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入) 的值减去 10 秒后，仍未完成数据读取或关闭游标。
 - 会话创建了[本地临时表](/temporary-tables.md#本地临时表)。
 - 会话持有了[用户级锁](/functions-and-operators/locking-functions.md)。
 - 会话持有了[表锁](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md)。
