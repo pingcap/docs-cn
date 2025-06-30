@@ -22,7 +22,6 @@ TableName ::=
 
 PartitionNameList ::=
     "PARTITION" "(" PartitionName ("," PartitionName)* ")"
-
 ```
 
 ## 参数说明
