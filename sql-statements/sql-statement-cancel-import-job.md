@@ -14,7 +14,7 @@ summary: TiDB 数据库中 CANCEL IMPORT 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
-CancelJobsStmt ::=
+CancelImportJobsStmt ::=
     'CANCEL' 'IMPORT' 'JOB' JobID
 ```
 
