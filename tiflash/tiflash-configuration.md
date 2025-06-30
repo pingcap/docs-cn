@@ -446,7 +446,8 @@ I/O 限流功能相关配置。
 
 - 控制在存算分离架构下，TiFlash Compute Node 不会将请求分发至哪些 TiFlash Write Node。
 - 其值为使用 `,` 分隔的 store_id 字符串。例如，设置为 `"140,141"` 表示 TiFlash Compute Node 不会将请求分发至 store_id 为 `140` 或 `141` 的 TiFlash Write Node。可以使用 [pd-ctl](/pd-control.md#查询存算分离架构下的-tiflash-节点) 查找集群中 TiFlash Write Node 的 store_id。
-- 默认值：`""`，表示 TiFlash Compute Node 会将请求分发至所有 TiFlash Write Node。
+- 如果其值为空字符串 `""`，表示 TiFlash Compute Node 会将请求分发至所有 TiFlash Write Node。
+- 默认值：`""`
 
 ##### `max_bytes_before_external_group_by` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
