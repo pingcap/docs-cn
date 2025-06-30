@@ -90,11 +90,9 @@ TiDB 版本：9.0.0
 
 * 优化包含外键表场景下的建库建表和加列性能 [#61126](https://github.com/pingcap/tidb/issues/61126) @[GMHDBJD](https://github.com/GMHDBJD) @[River2000i](https://github.com/River2000i) **tw@hfxsd** <!--1896 beta.2-->
 
-    在早期版本中，在部分 SaaS 场景下，当集群中的表数量达到千万级别时，创建包含外键的表会出现明显的性能瓶颈。同时，大量外键关系还会进一步拖慢 `CREATE TABLE` 和 `ADD COLUMN` 等 DDL 操作的执行效率。
+    在 v9.0.0 之前，在部分 SaaS 场景下，当集群中的表数量达到千万级别时，创建包含外键的表会出现明显的性能瓶颈。同时，大量外键关系还会进一步拖慢 `CREATE TABLE` 和 `ADD COLUMN` 等 DDL 操作的执行效率。
 
-    从 v9.0.0 起，TiDB 优化了相关元信息的处理逻辑，显著提升了在超大表规模场景下的 DDL 性能。根据内部测试数据，在集群空负载、连接至 DDL Owner 节点的情况下，建表速度最高可达每秒 126 张表，`ADD COLUMN` 操作的平均执行速度约为 45.5 张表每秒。
-
-     更多信息，请参考[用户文档](链接)。
+    从 v9.0.0 开始，TiDB 优化了相关元信息的处理逻辑，显著提升了在超大表规模场景下的 DDL 性能。根据内部测试数据，在集群空负载、连接至 DDL Owner 节点的情况下，建表速度最高可达每秒 126 张表，`ADD COLUMN` 操作的平均执行速度约为每秒 45.5 张表。
 
 * 在几十万甚至上百万用户数的场景下，创建用户、修改用户信息的性能提升了 77 倍 [#55563](https://github.com/pingcap/tidb/issues/55563) @[tiancaiamao](https://github.com/tiancaiamao)  **tw@hfxsd**<!--1941-->
 
@@ -170,15 +168,13 @@ TiDB 版本：9.0.0
 
 ### 稳定性
 
-* 引入了连接中断检测机制，在客户端断连后，Server 端会自动终止仍在执行的 SQL 语句 [#60685](https://github.com/pingcap/tidb/pull/60685) @[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--2060 beta.2-->
+* 引入连接中断检测机制，在客户端断连后，Server 端会自动终止仍在执行的 SQL 语句 [#60685](https://github.com/pingcap/tidb/pull/60685) @[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--2060 beta.2-->
 
     为提升资源利用率和系统稳定性，TiDB v9.0.0 引入了连接中断检测机制。当客户端连接异常断开时，TiDB 会主动终止该连接上仍在执行的 SQL 语句，及时释放资源，避免无效语句长期运行，影响系统性能。
 
-    更多信息，请参考[用户文档](链接)。
-
 * 引入 Table Mode，在数据恢复阶段限制用户对目标表进行读写操作，提升备份恢复任务的稳定性和数据一致性  [#59008](https://github.com/pingcap/tidb/issues/59008) @[fishiu](https://github.com/fishiu) @[River2000i](https://github.com/River2000i) @[Tristan1900](https://github.com/Tristan1900) @[Leavrth](https://github.com/Leavrth)   **tw@hfxsd** <!--2056 beta.2-->
 
-    引入了 Table Mode，当用户执行快照恢复，或者 PITR 时，目标表的 Table Mode 会被自动设置为 `restore`，处于 Restore Mode 的表会禁止用户执行任何读写操作。当数据恢复完成时，Table Mode 会被自动恢复到 `normal` 状态，用户可以正常读写该表，从而提升数据恢复期间的任务稳定性和数据一致性。
+    引入 Table Mode，当你执行快照恢复或者 PITR 时，目标表的 Table Mode 会被自动设置为 `restore`，处于 Restore Mode 的表会禁止执行任何读写操作。当数据恢复完成时，Table Mode 会被自动恢复到 `normal` 状态，你可以正常读写该表，从而提升数据恢复期间的任务稳定性和数据一致性。
 
     更多信息，请参考[用户文档](/br/br-pitr-guide.md)。
 
@@ -200,9 +196,9 @@ TiDB 版本：9.0.0
 
 ### SQL 功能
 
-* 支持 `gb18030` 字符集和 `gb18030_bin` 、`gb18030_chinese_ci` 排序规则 [#17470](https://github.com/tikv/tikv/issues/17470) [#55791](https://github.com/pingcap/tidb/issues/55791) @[cbcwestwolf](https://github.com/cbcwestwolf) *tw@hfxsd* <!--1962 beta.2--> 
+* 支持 `gb18030` 字符集和 `gb18030_bin`、`gb18030_chinese_ci` 排序规则 [#17470](https://github.com/tikv/tikv/issues/17470) [#55791](https://github.com/pingcap/tidb/issues/55791) @[cbcwestwolf](https://github.com/cbcwestwolf) *tw@hfxsd* <!--1962 beta.2--> 
  
-    从 v9.0.0 开始，TiDB 支持 `gb18030` 字符集和 `gb18030_bin` 、`gb18030_chinese_ci` 排序规则，以确保 TiDB 能够更好地处理中文相关的数据存储和查询需求。 
+    从 v9.0.0 开始，TiDB 支持 `gb18030` 字符集和 `gb18030_bin`、`gb18030_chinese_ci` 排序规则，以确保 TiDB 能够更好地处理中文相关的数据存储和查询需求。 
     
     - `gb18030` 字符集是一个广泛用于中文字符编码的标准。
     - `gb18030_bin` 提供了基于二进制的精准排序，而 `gb18030_chinese_ci` 则支持大小写不敏感的通用排序规则。这两种排序规则使得对 `gb18030` 编码文本的排序和比较更加灵活高效。 
