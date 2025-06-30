@@ -605,3 +605,38 @@ tiup br restore point --pd="${PD_IP}:2379" \
 
 - 恢复到 `t1` 时间点（获取不一致时期之前的数据）
 - 或在 `t2` 时间点后执行新的快照备份，并基于此备份进行后续 PITR 操作
+
+## 中止恢复操作
+
+当恢复操作失败时，你可以使用 `tiup br abort` 命令来清理注册表条目和检查点数据。该命令会根据提供的原始恢复参数自动找到并删除相关的元数据，包括 `mysql.tidb_restore_registry` 表中的条目以及检查点数据（无论存储在本地数据库还是外部存储中）。注意，`abort` 命令仅清理元数据，任何实际恢复的数据需要手动从集群中删除。
+
+### 使用示例
+
+使用与原始恢复命令相同的参数：
+
+```shell
+# 中止 PITR 操作
+tiup br abort restore point --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--full-backup-storage='s3://backup-101/snapshot-20250602000000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}'
+
+# 中止带过滤器的 PITR 操作
+tiup br abort restore point --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--full-backup-storage='s3://backup-101/snapshot-20250602000000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--filter 'db1.*'
+
+# 中止全量恢复
+tiup br abort restore full --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/snapshot-20250602000000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}'
+
+# 中止数据库恢复
+tiup br abort restore db --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/snapshot-20250602000000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--db database_name
+
+# 中止表恢复
+tiup br abort restore table --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/snapshot-20250602000000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--db database_name --table table_name
+```
