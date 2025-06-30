@@ -1579,7 +1579,7 @@ store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"en
 ```
 
 ```
-{"id":130,"address":"10.2.12.81:9540","labels":[{"key":"engine_role","value":"write"},{"key":"engine","value":"tiflash"}],"state_name":"Up"}
+{"id":130,"address":"172.31.8.1:10161","labels":[{"key":"engine_role","value":"write"},{"key":"engine","value":"tiflash"}],"state_name":"Up"}
 ...
 ```
 
@@ -1590,7 +1590,7 @@ store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"en
 ```
 
 ```
-{"id":131,"address":"10.2.12.81:9550","labels":[{"key":"engine","value":"tiflash_compute"}],"state_name":"Up"}
+{"id":131,"address":"172.31.9.1:10161","labels":[{"key":"engine","value":"tiflash_compute"}],"state_name":"Up"}
 ...
 ```
 
