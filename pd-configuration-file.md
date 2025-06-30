@@ -279,6 +279,16 @@ pd-server 相关配置项。
 + 控制对同一个 Region 做 split 和 merge 操作的间隔，即对于新 split 的 Region 一段时间内不会被 merge。
 + 默认：1h
 
+### `max-movable-hot-peer-size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+> **警告：**
+>
+> 目前该配置项为实验特性，不建议在生产环境中使用。
+
++ 控制热点调度可以调度的最大 Region size。
++ 默认：512
++ 单位：MiB
+
 ### `max-snapshot-count`
 
 + 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。
