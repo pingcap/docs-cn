@@ -117,7 +117,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - 单位：Byte。目前不支持如 `"10GB"` 的设置。
 - `capacity` 列表的长度应当与 [`storage.main.dir`](#dir) 列表长度保持一致。
 
-#### storage.api_version <span class="version-mark">从 v9.0.0 版本开始引入</span>
+#### `storage.api_version` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
 - TiFlash 与 PD、TiKV 进行通讯时的接口版本。
 - 可选值：
