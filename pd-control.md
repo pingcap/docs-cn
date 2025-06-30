@@ -1572,7 +1572,7 @@ store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"en
 
 ### 查询存算分离架构下的 TiFlash 节点
 
-查找[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Write Node
+查找[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Write Node：
 
 ```bash
 store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}, {"key":"engine_role","value":"write"}])) | {id, address, labels, state_name}'
@@ -1583,7 +1583,7 @@ store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"en
 ...
 ```
 
-查找[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Compute Node
+查找[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Compute Node：
 
 ```bash
 store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash_compute"}])) | {id, address, labels, state_name}'
