@@ -119,9 +119,11 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 #### storage.api_version <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 多租户的 TiDB 集群的场景下，支持 TiFlash 使用 keyspace 相关的 API 与 TiKV 和 PD 进行通讯。 `0` 代表不使用 keyspace 相关 API。`2` 代表使用 keyspace 相关 API，用于多租户场景。
-- 默认值：`0`
-- 可选值：`0`、`2`
+- TiFlash 与 PD、TiKV 进行通讯时的接口版本。
+- 可选值：
+    - `1`：使用 API V1 与 PD、TiKV 进行通讯。
+    - `2`：使用 API V2 与 PD、TiKV 进行通讯，为多租户特性提供支持。
+- 默认值：`1`
 
 #### storage.latest
 
