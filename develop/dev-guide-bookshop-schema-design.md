@@ -78,7 +78,7 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
 3. 在 **Import Data from Amazon S3** 页面，配置以下源数据信息：
 
-    - **Import File Count**：对于 TiDB Cloud Serverless，选择 **Multiple files**。TiDB Cloud Dedicated 中没有该字段。
+    - **Import File Count**：对于 TiDB Cloud Starter，选择 **Multiple files**。TiDB Cloud Dedicated 中没有该字段。
     - **Included Schema Files**：选择 **Yes**
     - **Data Format**：选择 **SQL**
     - **Folder URI**：输入 `s3://developer.pingcap.com/bookshop/`

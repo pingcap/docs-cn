@@ -248,7 +248,7 @@ TiDB 版本：7.0.0
 * [DBeaver](https://dbeaver.io/) v23.0.1 默认支持 TiDB [#17396](https://github.com/dbeaver/dbeaver/issues/17396) @[Icemap](https://github.com/Icemap)
 
     - 提供独立的 TiDB 模块、Icon 和标识。
-    - 默认配置支持 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless)，你可以更方便地连接 TiDB Cloud Serverless。
+    - 默认配置支持 [TiDB Cloud Starter](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless)，你可以更方便地连接 TiDB Cloud Starter。
     - 支持识别 TiDB 版本，从而显示或隐藏外键 Tab。
     - 支持 Explain SQL 计划显示。
     - 支持 TiDB 语法高亮，如 `PESSIMISTIC`、`OPTIMISTIC`、`AUTO_RANDOM`、`PLACEMENT`、`POLICY`、`REORGANIZE`、`EXCHANGE`、`CACHE`、`NONCLUSTERED`、`CLUSTERED` 等。
