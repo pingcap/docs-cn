@@ -3,7 +3,6 @@ title: DISTRIBUTE TABLE
 summary: 介绍 TiDB 数据库中 DISTRIBUTE TABLE 的使用概况。
 ---
 
-
 # DISTRIBUTE TABLE
 > **警告：**
 >
