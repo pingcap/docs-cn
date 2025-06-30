@@ -281,6 +281,10 @@ pd-server 相关配置项。
 
 ### `max-movable-hot-peer-size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
+> **警告：**
+>
+> 目前该配置项为实验特性，不建议在生产环境中使用。
+
 + 控制热点调度可以调度的最大 Region size。
 + 默认：512
 + 单位：MiB
