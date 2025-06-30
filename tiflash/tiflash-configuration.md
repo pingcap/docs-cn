@@ -442,7 +442,7 @@ I/O 限流功能相关配置。
 
 ##### `disagg_blocklist_wn_store_id` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 值为使用 `,` 分隔的 store_id 字符串，例如 "140,141"。表示在存算分离架构中，TiFlash Compute Node 不会将请求分发至列表中 store_id 指定的 TiFlash Write Node。可以使用 [pd-ctl](/pd-control.md#查询存算分离架构下的 TiFlash 节点) 查找集群中的 TiFlash Write Node 的 store_id。
+- 值为使用 `,` 分隔的 store_id 字符串，例如 "140,141"。表示在存算分离架构中，TiFlash Compute Node 不会将请求分发至列表中 store_id 指定的 TiFlash Write Node。可以使用 [pd-ctl](/pd-control.md#查询存算分离架构下的 TiFlash 节点) 查找集群中 TiFlash Write Node 的 store_id。
 - 默认值：`""`，表示 TiFlash Compute Node 会将请求分发至所有 TiFlash Write Node。
 
 ##### `max_bytes_before_external_group_by` <span class="version-mark">从 v7.0.0 版本开始引入</span>
