@@ -119,7 +119,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 #### storage.api_version <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 多租户的 TiDB 集群的场景下，支持使用 keyspace 相关的 API 与 TIKV、PD 之间进行通讯。 `0` 代表不使用 keyspace 相关 API，`2` 代表使用 keyspace 相关 API。
+- 多租户的 TiDB 集群的场景下，支持 TiFlash 使用 keyspace 相关的 API 与 TiKV 和 PD 进行通讯。 `0` 代表不使用 keyspace 相关 API。`2` 代表使用 keyspace 相关 API，用于多租户场景。
 - 默认值：`0`
 - 可选值：`0`、`2`
 
@@ -442,8 +442,8 @@ I/O 限流功能相关配置。
 
 ##### `disagg_blocklist_wn_store_id` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 值为使用 `,` 分隔的 store_id 字符串，例如 "140,141"。表示在存算分离架构中，TiFlash 计算节点不会将请求分发至列表中 store_id 指定的 TiFlash 存储节点。
-- 默认值：`""`，表示 TiFlash 计算节点会将请求分发至所有 TiFlash 存储节点。
+- 值为使用 `,` 分隔的 store_id 字符串，例如 "140,141"。表示在存算分离架构中，TiFlash Compute Node 不会将请求分发至列表中 store_id 指定的 TiFlash Write Node。可以使用 [pd-ctl](/pd-control.md#查询存算分离架构下的 TiFlash 节点) 查找集群中的 TiFlash Write Node 的 store_id。
+- 默认值：`""`，表示 TiFlash Compute Node 会将请求分发至所有 TiFlash Write Node。
 
 ##### `max_bytes_before_external_group_by` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
