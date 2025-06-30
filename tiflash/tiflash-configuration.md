@@ -121,8 +121,8 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 - TiFlash 与 PD、TiKV 进行通讯时的接口版本。
 - 可选值：
-    - `1`：使用 API V1 与 PD、TiKV 进行通讯。
-    - `2`：使用 API V2 与 PD、TiKV 进行通讯，为多租户特性提供支持。
+    - `1`：TiFlash 使用 API V1 与 PD、TiKV 进行通信。
+    - `2`：TiFlash 使用 API V2 与 PD、TiKV 进行通信，为多租户特性提供支持。
 - 默认值：`1`
 
 #### storage.latest
