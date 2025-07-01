@@ -11,7 +11,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
 
 > **注意**
 >
-> 本文档适用于 TiDB Cloud Starter、TiDB Cloud Dedicated 和本地部署的 TiDB。
+> 本文档适用于 {{{ .starter }}}、TiDB Cloud Dedicated 和本地部署的 TiDB。
 
 ## 前置需求
 
@@ -23,7 +23,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
 
 **如果你还没有 TiDB 集群，可以按如下方式创建一个：**
 
-- （推荐方式）参考[创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md)，创建一个 TiDB Cloud 集群。
+- （推荐方式）参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md)，创建一个 TiDB Cloud 集群。
 - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建一个本地集群。
 
 ## 连接到 TiDB
@@ -31,7 +31,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
 根据你选择的 TiDB 部署方式连接到 TiDB 集群。
 
 <SimpleTab>
-<div label="TiDB Cloud Starter">
+<div label="{{{ .starter }}}">
 
 1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，点击你目标集群的名字，进入集群的 **Overview** 页面。
 
@@ -60,15 +60,15 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
     - **Host**：输入从 TiDB Cloud 连接对话框中的得到的 `HOST` 参数。
     - **Port**：输入从 TiDB Cloud 连接对话框中的得到的 `PORT` 参数。
     - **User Name**：输入从 TiDB Cloud 连接对话框中的得到的 `USERNAME` 参数。
-    - **Password**：输入 TiDB Cloud Starter 集群的密码。
+    - **Password**：输入 {{{ .starter }}} 集群的密码。
 
-    ![Navicat: configure connection general panel for TiDB Cloud Starter](/media/develop/navicat-premium-connection-config-serverless-general.png)
+    ![Navicat: configure connection general panel for {{{ .starter }}}](/media/develop/navicat-premium-connection-config-serverless-general.png)
 
 7. 点击 **SSL** 选项卡，选择 **Use SSL**，**Use authentication** 以及 **Verify server certificate against CA** 复选框。并在 **CA Certificate** 字段中填入从 TiDB Cloud 连接对话框中获取的 `CA` 文件路径。
 
-    ![Navicat: configure connection SSL panel for TiDB Cloud Starter](/media/develop/navicat-premium-connection-config-serverless-ssl.png)
+    ![Navicat: configure connection SSL panel for {{{ .starter }}}](/media/develop/navicat-premium-connection-config-serverless-ssl.png)
 
-8. 点击 **Test Connection** 以验证与 TiDB Cloud Starter 集群的连接。
+8. 点击 **Test Connection** 以验证与 {{{ .starter }}} 集群的连接。
 
 9. 如果连接测试成功，你可以看到 **Connection Successful** 信息。点击 **OK** 完成连接配置。
 
