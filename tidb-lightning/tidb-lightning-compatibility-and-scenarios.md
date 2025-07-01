@@ -37,7 +37,6 @@ summary: 了解 IMPORT INTO 和 TiDB Lightning 与日志备份和 TiCDC 的兼�
 
     由于无法对 TiDB Lightning 物理导入模式导入的数据进行日志备份，如果你需要对该表进行备份，可在 TiDB Lightning 物理导入模式完成数据导入后，对该表执行一次表级别快照备份即可，操作步骤请参考[备份单张表的数据](/br/br-snapshot-manual.md#备份单张表的数据)。
 
-
 ### 和 TiCDC 同时使用
 
 该场景短期内无法兼容，因为 TiCDC 很难追上 TiDB Lightning 物理导入的写入速度，可能造成集群同步延迟不断增加。
@@ -63,7 +62,6 @@ summary: 了解 IMPORT INTO 和 TiDB Lightning 与日志备份和 TiCDC 的兼�
     该场景下，如果开启了 [PITR](/br/br-log-architecture.md#pitr)，提交 `IMPORT INTO` SQL 语句后兼容性检查会报错。如果你确定这些表不需要备份或者[日志备份](/br/br-pitr-guide.md)，你可以在该 SQL 的 [`WithOptions`](/sql-statements/sql-statement-import-into.md#withoptions) 里带上参数 `DISABLE_PRECHECK`（从 v8.0.0 版本引入）重新提交即可，这样数据导入任务会忽略该兼容性检查，直接导入数据。
 
     由于无法对 `IMPORT INTO` 导入的数据进行日志备份，如果你需要对该表进行备份，可在完成数据导入后，对该表执行一次表级别快照备份即可，操作步骤请参考[备份单张表的数据](/br/br-snapshot-manual.md#备份单张表的数据)。
-
 
 ### 和 TiCDC 同时使用
 
