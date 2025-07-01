@@ -35,7 +35,7 @@ summary: 了解 IMPORT INTO 和 TiDB Lightning 与日志备份和 TiCDC 的兼�
 
     该场景下，如果开启了 [PITR](/br/br-log-architecture.md#pitr)，启动 TiDB Lightning 后兼容性检查会报错。如果你确定不需要备份这些表，你可以把 [TiDB Lightning 配置文件](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)中的 `Lightning.check-requirements` 参数改成 `false`，然后重新启动导入任务即可。
 
-    由于无法对 TiDB Lightning 物理导入模式导入的数据进行日志备份，如果你需要对该表进行备份，可在 TiDB Lightning 物理导入模式完成数据导入后，对该表执行一次表级别快照备份即可，操作步骤请参考[备份单张表的数据](/br/br-snapshot-manual.md#备份单张表的数据)。
+由于无法对 TiDB Lightning 物理导入模式导入的数据进行日志备份，如果你需要对该表进行备份，可在 TiDB Lightning 物理导入模式完成数据导入后，对该表执行一次表级别快照备份即可，操作步骤请参考[备份单张表的数据](/br/br-snapshot-manual.md#备份单张表的数据)。
 
 ### 和 TiCDC 同时使用
 
