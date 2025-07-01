@@ -24,7 +24,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
     如果你想创建一个新的 {{{ .starter }}} 集群，请进行以下操作：
 
     1. 点击 **Create Cluster**。
-    2. **Create Cluster** 页面默认选择 **Starter**。你可以根据需要修改集群名称、选择可用区，然后点击 **Create**。你的 {{{ .starter }}} 集群将于 30 秒后创建完毕。
+    2. **Create Cluster** 页面默认选择 **Serverless**。你可以根据需要修改集群名称、选择可用区，然后点击 **Create**。你的 {{{ .starter }}} 集群将于 30 秒后创建完毕。
 
 4. 点击目标集群名称，进入集群概览页面，然后点击右上角的 **Connect** 按钮，弹出连接对话框。
 
