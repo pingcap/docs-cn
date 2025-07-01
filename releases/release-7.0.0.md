@@ -9,7 +9,7 @@ summary: 了解 TiDB 7.0.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：7.0.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.0/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v7.0.0-DMR#version-list)
+试用链接：[快速体验](https://docs-archive.pingcap.com/zh/tidb/v7.0/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v7.0.0-DMR#version-list)
 
 在 7.0.0 版本中，你可以获得以下关键特性：
 
@@ -24,11 +24,11 @@ TiDB 版本：7.0.0
 <tbody>
   <tr>
     <td rowspan="2">可扩展性与性能</td>
-    <td>会话级别内<a href="https://docs.pingcap.com/zh/tidb/v7.0/sql-non-prepared-plan-cache" target="_blank">无需手动准备 SQL 执行计划缓存</a>（实验特性）</td>
+    <td>会话级别内<a href="https://docs-archive.pingcap.com/zh/tidb/v7.0/sql-non-prepared-plan-cache" target="_blank">无需手动准备 SQL 执行计划缓存</a>（实验特性）</td>
     <td>支持在会话级别自动重用执行计划缓存，可以减少编译并缩短相同 SQL 查询的时间，而无需事先手动准备 Prepare Statement 语句。</td>
   </tr>
   <tr>
-    <td>TiFlash 支持<a href="https://docs.pingcap.com/zh/tidb/v7.0/tiflash-disaggregated-and-s3" target="_blank">存储计算分离和 S3 共享存储</a>（实验特性）</td>
+    <td>TiFlash 支持<a href="https://docs-archive.pingcap.com/zh/tidb/v7.0/tiflash-disaggregated-and-s3" target="_blank">存储计算分离和 S3 共享存储</a>（实验特性）</td>
     <td>TiFlash 增加云原生架构的支持作为可选项：
       <ul>
         <li>支持存算分离架构，提升 HTAP 资源的弹性能力。</li>
@@ -38,29 +38,29 @@ TiDB 版本：7.0.0
   </tr>
   <tr>
     <td rowspan="2">稳定性与高可用</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v7.0/tidb-resource-control" target="_blank">增强了资源管控</a>（实验特性）</td>
+    <td><a href="https://docs-archive.pingcap.com/zh/tidb/v7.0/tidb-resource-control" target="_blank">增强了资源管控</a>（实验特性）</td>
     <td>支持使用资源组来为一个集群中的不同应用或工作负载分配和隔离资源。在这个版本中，TiDB 增加了对不同资源的绑定模式（用户级、会话级、语句级）和用户定义的优先级的支持，你还可以使用命令来对集群整体资源量进行预估。</td>
   </tr>
   <tr>
-    <td>TiFlash 支持<a href="https://docs.pingcap.com/zh/tidb/v7.0/tiflash-spill-disk" target="_blank">数据落盘</a></td>
+    <td>TiFlash 支持<a href="https://docs-archive.pingcap.com/zh/tidb/v7.0/tiflash-spill-disk" target="_blank">数据落盘</a></td>
     <td>TiFlash 支持将中间结果落盘，以缓解数据密集型操作（如聚合、排序和 Hash Join）中的 OOM 问题。</td>
   </tr>
   <tr>
     <td rowspan="2">SQL</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v7.0/time-to-live" target="_blank">行级 TTL</a> (GA)</td>
+    <td><a href="https://docs-archive.pingcap.com/zh/tidb/v7.0/time-to-live" target="_blank">行级 TTL</a> (GA)</td>
     <td>支持通过后台任务自动删除超过生命周期（Time to live）的数据，并以此来自动管理数据规模并提高性能。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v7.0/partitioned-table#重组分区" target="_blank">支持 <code>REORGANIZE PARTITION</code> 语法（List/Range 分区表）</a></td>
+    <td><a href="https://docs-archive.pingcap.com/zh/tidb/v7.0/partitioned-table#重组分区" target="_blank">支持 <code>REORGANIZE PARTITION</code> 语法（List/Range 分区表）</a></td>
     <td><code>REORGANIZE PARTITION</code> 语句可用于合并相邻分区，或将一个分区拆分为多个分区，从而提升分区表的易用性。</td>
   </tr>
   <tr>
     <td rowspan="2">数据库管理与可观测性<br/></td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v7.0/sql-statement-load-data" target="_blank"><code>LOAD DATA</code> 语句功能增强</a>（实验特性）</td>
+    <td><a href="https://docs-archive.pingcap.com/zh/tidb/v7.0/sql-statement-load-data" target="_blank"><code>LOAD DATA</code> 语句功能增强</a>（实验特性）</td>
     <td><code>LOAD DATA</code> 语句功能增强，例如支持从 S3/GCS 导入数据。</td>
   </tr>
   <tr>
-    <td>TiCDC 支持<a href="https://docs.pingcap.com/zh/tidb/v7.0/ticdc-sink-to-cloud-storage" target="_blank">对象存储 Sink</a> (GA)</td>
+    <td>TiCDC 支持<a href="https://docs-archive.pingcap.com/zh/tidb/v7.0/ticdc-sink-to-cloud-storage" target="_blank">对象存储 Sink</a> (GA)</td>
     <td>TiCDC 支持将行变更事件同步到对象存储服务，包括 Amazon S3、GCS、Azure Blob Storage 和 NFS 等。</td>
   </tr>
 </tbody>
