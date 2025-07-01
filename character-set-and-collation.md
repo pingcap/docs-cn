@@ -458,7 +458,7 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
 * 非二进制排序规则（如 `utf8mb4_general_ci`）：TiDB 会在遇到非法字节时进行截断，后续字符将不会参与比较。
 
-* `gbk_bin`, `gb18030_bin`：TiDB 会将非法字节替换为字符 '?'，并继续执行后续的比较操作。
+* `gbk_bin` 和 `gb18030_bin`：TiDB 会将非法字节替换为字符 '?'，并继续执行后续的比较操作。
 
 * 其他二进制排序规则（如 `utf8_bin`）：TiDB 会将非法字节视为普通字节，按其原始二进制值参与比较。
 
