@@ -15,7 +15,7 @@ TiDB 是一个兼容 MySQL 的数据库。[node-mysql2](https://github.com/sidor
 
 > **注意**
 >
-> 本文档适用于 TiDB Cloud Serverless、TiDB Cloud Dedicated 和本地部署的 TiDB。
+> 本文档适用于 {{{ .starter }}}、TiDB Cloud Dedicated 和本地部署的 TiDB。
 
 ## 前置需求
 
@@ -27,7 +27,7 @@ TiDB 是一个兼容 MySQL 的数据库。[node-mysql2](https://github.com/sidor
 
 如果你还没有 TiDB 集群，可以按照以下方式创建：
 
-- （推荐方式）参考[创建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-cloud-serverless-集群)，创建你自己的 TiDB Cloud 集群。
+- （推荐方式）参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-cloud-集群)，创建你自己的 TiDB Cloud 集群。
 - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
 ## 运行代码并连接到 TiDB
@@ -63,9 +63,9 @@ npm install mysql2 dotenv --save
 
 <SimpleTab>
 
-<div label="TiDB Cloud Serverless">
+<div label="{{{ .starter }}}">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Cloud Serverless 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 {{{ .starter }}} 集群，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
@@ -101,7 +101,7 @@ npm install mysql2 dotenv --save
 
    > **Note**
    >
-   > 当你使用 Public Endpoint 连接 TiDB Cloud Serverless 集群时，**必须**启用 TLS 连接，请将 `TIDB_ENABLE_SSL` 修改为 `true`。
+   > 当你使用 Public Endpoint 连接 {{{ .starter }}} 集群时，**必须**启用 TLS 连接，请将 `TIDB_ENABLE_SSL` 修改为 `true`。
 
 7. 保存 `.env` 文件。
 
@@ -235,7 +235,7 @@ void main();
 
 > **Note**
 >
-> 使用 Public Endpoint 连接 TiDB Cloud Serverless 时，**必须**启用 TLS 连接，请将 `TIDB_ENABLE_SSL` 修改为 `true`。但是你**不需要**通过 `TIDB_CA_PATH` 指定 SSL CA 证书，因为 Node.js 默认使用内置的 [Mozilla CA 证书](https://wiki.mozilla.org/CA/Included_Certificates)，该证书已被 TiDB Cloud Serverless 信任。
+> 使用 Public Endpoint 连接 {{{ .starter }}} 时，**必须**启用 TLS 连接，请将 `TIDB_ENABLE_SSL` 修改为 `true`。但是你**不需要**通过 `TIDB_CA_PATH` 指定 SSL CA 证书，因为 Node.js 默认使用内置的 [Mozilla CA 证书](https://wiki.mozilla.org/CA/Included_Certificates)，该证书已被 {{{ .starter }}} 信任。
 
 ### 插入数据
 
