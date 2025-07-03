@@ -41,7 +41,7 @@ TiDB 版本：9.0.0
     <td>在进行集群升级、迁移或部署变更等重要操作之前，使用 TiProxy 捕获 TiDB 生产集群的真实负载，并在测试的目标集群中重现该工作负载，从而验证性能，确保变更成功。</td>
   </tr>
   <tr>
-    <td rowspan="3">数据库管理与可观测性</td>
+    <td rowspan="5">数据库管理与可观测性</td>
     <td>新增 <a href="https://docs.pingcap.com/zh/tidb/dev/workload-repository/">TiDB Workload Repository</a> 功能，支持将历史工作负载数据持久化存储到 TiKV 中 tw@lilin90</td>
     <td>TiDB Workload Repository 可以将数据库运行时的历史状态持久化，能够显著提升历史故障和性能问题的诊断效率，帮助你快速定位和解决问题，同时为健康检查和自动调优提供关键的数据基础。</td>
   </tr>
@@ -49,9 +49,17 @@ TiDB 版本：9.0.0
     <td>TiDB 索引推荐 (Index Advisor) tw@Oreoxmt</td>
     <td>TiDB 索引推荐 (Index Advisor) 通过分析实际查询负载，自动识别缺失或冗余的索引，帮助你在无需深入了解业务的情况下完成索引优化。该功能可降低手动分析和调优的成本，并提升查询性能和系统稳定性。</td>
   </tr>
+    <tr>
+    <td>执行计划绑定推荐 **tw@Oreoxmt**</td>
+    <td>当遭遇突发的 SQL 性能问题时，TiDB 可以根据历史负载向用户推荐执行计划绑定( SQL Binding )，提升 SQL 性能问题的解决速度，降低系统影响。</td>
+  </tr>
   <tr>
     <td>SQL 跨可用区流量观测 tw@Oreoxmt</td>
     <td>跨可用区流量观测可用于识别 TiDB 集群中 SQL 查询产生的跨可用区网络流量，帮助你分析流量来源、优化部署架构，并控制云服务中的跨区传输成本，从而提升资源使用效率和成本可见性。</td>
+  </tr>
+  <tr>
+    <td> 支持表级别数据打散功能（实验特性）</td>
+    <td>数据热点是最常见的造成数据库性能问题的根本原因。表级数据打散功能让用户能够在集群整体均衡的基础上，进一步主动优化单表在各 TiKV 节点上的数据分布，提升负载均衡性和查询性能。</td>
   </tr>
   <tr>
     <td rowspan="3">数据迁移</td>
