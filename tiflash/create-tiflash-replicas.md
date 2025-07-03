@@ -128,10 +128,10 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
 ## 加快 TiFlash 副本同步速度
 
-当执行以下操作时，TiDB 集群会触发 TiFlash 副本同步流程：
+当你执行以下任一操作时，TiDB 集群会触发 TiFlash 副本同步流程：
 
-* 为表添加 TiFlash 副本
-* 新增 TiFlash 节点，PD 将 TiFlash 副本从原有节点调度至新节点
+* 为某个表添加 TiFlash 副本
+* 新增 TiFlash 节点，PD 会将 TiFlash 副本从原有节点调度至新节点
 
 在此过程中，各个 TiKV 实例将进行全表数据扫描，并将扫描得到的数据快照发送给 TiFlash 从而形成副本。默认情况下，为了降低对 TiKV 及 TiFlash 线上业务的影响，TiFlash 新增副本速度较慢、占用资源较少。如果集群中 TiKV 及 TiFlash 的 CPU 和磁盘 IO 资源有富余，你可以按以下步骤操作来提升 TiFlash 副本同步速度：
 
@@ -147,7 +147,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
 2. 使用 [PD Control](/pd-control.md) 逐步放开副本调度速度限制：
 
-    TiFlash 默认副本调度速度是 30（在每个 TiFlash 实例上，每分钟会有大约 30 个 Region 新增或删除 TiFlash 副本）。执行以下命令将调整所有 TiFlash 实例的新增副本速度到 60，即原来的 2 倍速度：
+    TiFlash 默认副本调度速度是 30，即在每个 TiFlash 实例上，每分钟大约有 30 个 Region 的 TiFlash 副本被添加或删除。执行以下命令将调整所有 TiFlash 实例的新增副本速度到 60，即原来的 2 倍速度：
 
     ```shell
     tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer

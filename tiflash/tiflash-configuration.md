@@ -1,7 +1,7 @@
 ---
 title: TiFlash 配置参数
 aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/tiflash/configuration/']
-summary: TiFlash 配置参数。TiFlash 配置参数包括 tiflash.toml 和 tiflash-learner.toml，用于配置 TiFlash TCP/HTTP 服务的监听和存储路径。另外，通过拓扑 label 进行副本调度和多盘部署也是可行的。
+summary: 介绍 TiFlash 的配置参数，包括 tiflash.toml 和 tiflash-learner.toml，用于配置 TiFlash TCP/HTTP 服务的监听和存储路径。另外，通过拓扑 label 进行副本调度和多盘部署也是可行的。
 ---
 
 # TiFlash 配置参数
@@ -573,7 +573,7 @@ I/O 限流功能相关配置。
 
 ##### `labels`
 
-- 指定服务器属性，例如 `{ zone = "us-west-1", disk = "ssd" }`。可以参考 [TiFlash 设置可用区](/tiflash/create-tiflash-replicas.md#设置可用区) 了解如何通过 label 进行副本调度。
+- 指定服务器属性，例如 `{ zone = "us-west-1", disk = "ssd" }`。要了解如何使用 label 实现副本的拓扑调度，请参考 [TiFlash 设置可用区](/tiflash/create-tiflash-replicas.md#设置可用区)。
 - 默认值：`{}`
 
 ### 多盘部署
