@@ -232,10 +232,10 @@ show warnings;
 
 2. 检查 TiFlash Region 同步是否正常。
 
-    查看 `information_schema.tiflash_replica` 表中的 `progress` 是否有变化。或者在 `tidb.log` 中，搜索 `Tiflash replica is not available` 相关日志，查看其中的 `progress` 值:
+    查询 [`information_schema.tiflash_replica`](/information-schema/information-schema-tiflash-replica.md) 表，观察 TiFlash 副本同步进度 `PROGRESS` 字段的值是否变化。或者在 `tidb.log` 中搜索关键字 `Tiflash replica is not available`，查看相关日志及 `progress` 值。
 
-    - 如果有变化，说明 TiFlash 同步正常，可能只是同步速度较慢，参考[数据同步慢](/tiflash/troubleshoot-tiflash.md#数据同步慢)进行调整。
-    - 如果没有变化，说明 TiFlash 同步异常，进入下一步。
+    - 如果同步进度有变化，说明 TiFlash 同步正常，但可能速度较慢，参考[数据同步慢](/tiflash/troubleshoot-tiflash.md#数据同步慢)进行调整。
+    - 如果同步进度没有变化，说明 TiFlash 同步异常，进入下一步。
 
 3. 检查 TiDB 是否成功为表创建 Placement Rule。
 
