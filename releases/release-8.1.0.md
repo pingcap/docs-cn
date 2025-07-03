@@ -199,7 +199,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 从 TiDB v8.1.0 开始，TiDB 和 TiDB Dashboard 移除了遥测功能：
 
-    * 废弃系统变量 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入从-v810-版本开始废弃)、TiDB 配置项 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入从-v810-版本开始废弃) 和 PD 配置项 [`enable-telemetry`](/pd-configuration-file.md#enable-telemetry)。这些变量和配置项的值已不再生效。
+    * 废弃系统变量 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入)、TiDB 配置项 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 和 PD 配置项 [`enable-telemetry`](/pd-configuration-file.md#enable-telemetry)。这些变量和配置项的值已不再生效。
     * 移除 `ADMIN SHOW TELEMETRY` 语法。
     * 删除 `TELEMETRY` 和 `TELEMETRY_ID` 关键字。
 
