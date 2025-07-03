@@ -45,6 +45,7 @@ Cast 函数和操作符用于将某种数据类型的值转换为另一种数据
 | `SIGNED [INTEGER]`   | 有符号整数       | 是                                             |
 | `TIME(fsp)`          | 时间             | 是                                             |
 | `UNSIGNED [INTEGER]` | 无符号整数       | 是                                             |
+| `VECTOR`             | 向量            | 否                                             |
 | `YEAR`               | 年               | 否                                             |
 
 示例：
