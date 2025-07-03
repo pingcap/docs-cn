@@ -455,6 +455,7 @@ TiDB 版本：9.0.0
 * 配置项 [`concurrently-init-stats`](/tidb-configuration-file.md#concurrently-init-stats-从-v810-和-v752-版本开始引入) 用于控制初始化统计信息缓存的并发模式，并从 v8.2 开始默认启用。计划在后续版本中仅支持并发模式，因此该配置项将被移除。
 * 算子 `indexMergeJoin` 是表连接的一种方式，目前已经被其他连接方式取代，`indexMergeJoin` 计划在未来版本废弃。对应的系统变量[`tidb_enable_index_merge_join`](/system-variables.md#tidb_enable_index_merge_join) 也将被一同废弃。
 * 作为测试用途的优化器提示 [`NTH_PLAN(N)`](/optimizer-hints.md#nth_plann) 计划在未来版本废弃。
+* 优化器代价估算已经全面转向 [代价模型 V2](/cost-model.md#cost-model-version-2)。因此，系统变量 [`tidb_enable_new_cost_interface`](/system-variables.md#tidb_enable_new_cost_interface-从-v620-版本开始引入) 将会在未来版本被移除。
 
 ## 改进提升
 
