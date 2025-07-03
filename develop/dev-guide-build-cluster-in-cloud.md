@@ -11,7 +11,7 @@ summary: 使用 {{{ .starter }}} 构建 TiDB 集群，并连接 {{{ .starter }}}
 
 若你需要在本地计算机上启动 TiDB，请参阅[本地启动 TiDB](/quick-start-with-tidb.md)。
 
-## 第 1 步：创建 {{{ .starter }}} 集群 {#第-1-步创建-tidb-cloud-集群}
+## 第 1 步：创建 {{{ .starter }}} 集群 {#step-1-create-a-tidb-cloud-cluster}
 
 1. 如果你还未拥有 TiDB Cloud 账号，请先在此[注册](https://tidbcloud.com/free-trial)。
 2. 使用你的 TiDB Cloud 账号[登录](https://tidbcloud.com/)。
