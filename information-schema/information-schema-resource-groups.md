@@ -33,11 +33,11 @@ SELECT * FROM information_schema.resource_groups; -- 查看资源组，TiDB 默�
 ```
 
 ```sql
-+---------+------------+----------+----------------+-------------+------------+
-| NAME    | RU_PER_SEC | PRIORITY | BURSTABLE      | QUERY_LIMIT | BACKGROUND |
-+---------+------------+----------+----------------+-------------+------------+
-| default | UNLIMITED  | MEDIUM   | YES(UNLIMITED) | NULL        | NULL       |
-+---------+------------+----------+----------------+-------------+------------+
++---------+------------+----------+-----------+-------------+------------+
+| NAME    | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT | BACKGROUND |
++---------+------------+----------+-----------+-------------+------------+
+| default | UNLIMITED  | MEDIUM   | UNLIMITED | NULL        | NULL       |
++---------+------------+----------+-----------+-------------+------------+
 ```
 
 ```sql
@@ -69,7 +69,7 @@ SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1'; -- 查看�
 +------+------------+----------+-----------+-------------+------------+
 | NAME | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT | BACKGROUND |
 +------+------------+----------+-----------+-------------+------------+
-| rg1  | 1000       | MEDIUM   | NO        | NULL        | NULL       |
+| rg1  | 1000       | MEDIUM   | OFF       | NULL        | NULL       |
 +------+------------+----------+-----------+-------------+------------+
 1 row in set (0.00 sec)
 ```

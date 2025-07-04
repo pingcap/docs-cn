@@ -122,7 +122,7 @@ SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 +------+------------+----------+-----------+-------------+------------+
 | NAME | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT | BACKGROUND |
 +------+------------+----------+-----------+-------------+------------+
-| rg1  | 100        | MEDIUM   | NO        | NULL        | NULL       |
+| rg1  | 100        | MEDIUM   | OFF       | NULL        | NULL       |
 +------+------------+----------+-----------+-------------+------------+
 1 rows in set (1.30 sec)
 ```
@@ -146,7 +146,7 @@ SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 +------+------------+----------+-----------+----------------------------------------------------------------+------------+
 | NAME | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT                                                    | BACKGROUND |
 +------+------------+----------+-----------+----------------------------------------------------------------+------------+
-| rg1  | 200        | LOW      | NO        | EXEC_ELAPSED='1s', ACTION=COOLDOWN, WATCH=EXACT DURATION='30s' | NULL       |
+| rg1  | 200        | LOW      | OFF       | EXEC_ELAPSED='1s', ACTION=COOLDOWN, WATCH=EXACT DURATION='30s' | NULL       |
 +------+------------+----------+-----------+----------------------------------------------------------------+------------+
 1 rows in set (1.30 sec)
 ```
@@ -166,11 +166,11 @@ SELECT * FROM information_schema.resource_groups WHERE NAME ='default';
 ```
 
 ```sql
-+---------+------------+----------+----------------+-------------+------------+
-| NAME    | RU_PER_SEC | PRIORITY | BURSTABLE      | QUERY_LIMIT | BACKGROUND |
-+---------+------------+----------+----------------+-------------+------------+
-| default | UNLIMITED  | MEDIUM   | YES(UNLIMITED) | NULL        | NULL       |
-+---------+------------+----------+----------------+-------------+------------+
++---------+------------+----------+-----------+-------------+------------+
+| NAME    | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT | BACKGROUND |
++---------+------------+----------+-----------+-------------+------------+
+| default | UNLIMITED  | MEDIUM   | UNLIMITED | NULL        | NULL       |
++---------+------------+----------+-----------+-------------+------------+
 1 rows in set (1.30 sec)
 ```
 
