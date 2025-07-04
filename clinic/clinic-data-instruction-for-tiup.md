@@ -151,4 +151,4 @@ Clinic Server 是部署在云端的云服务，根据数据存储的位置不同
 - `std`：文件名中包含 `stderr` 的日志文件。
 - `rocksdb`：以 `rocksdb` 为前缀、以 `.info` 为后缀的日志文件。
 - `slow`：慢查询日志文件。
-- `unknown`：不属于以上类型的日志文件。
+- `unknown`：不属于以上任何类型的日志文件。
