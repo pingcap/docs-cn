@@ -702,6 +702,13 @@ opentracing.reporter 相关的设置。
 + reporter 向 jaeger-agent 发送 span 的地址。
 + 默认值：""
 
+## pd-client
+
+### `pd-server-timeout`
+
++ TiDB 通过 PD Client 向 PD 节点发送请求的超时时间，单位是秒。
++ 默认值：3
+
 ## tikv-client
 
 ### `grpc-connection-count`
