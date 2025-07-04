@@ -9,7 +9,8 @@ from __future__ import print_function, unicode_literals
 
 import re
 import os
-
+import json
+import unicodedata
 
 followups = []
 in_toc = False
@@ -23,9 +24,40 @@ level_pattern = re.compile(r'(\s*[\-\+]+)\s')
 heading_patthern = re.compile(r'(^#+|\n#+)\s')
 # match copyable snippet code
 copyable_snippet_pattern = re.compile(r'{{< copyable .* >}}')
-
+# match variable pattern
+variable_pattern = re.compile(r'{{{\s*\.(.+?)\s*}}}')
 
 entry_file = "TOC.md"
+
+def load_variables():
+    """Load variables from variables.json file"""
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    variables_path = os.path.join(current_dir, "../variables.json")
+    try:
+        with open(variables_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Warning: Could not load variables.json: {e}")
+        return {}
+
+def get_value_by_path(obj, path):
+    """Get value from nested dictionary using dot notation path"""
+    keys = path.split(".")
+    for key in keys:
+        if isinstance(obj, dict) and key in obj:
+            obj = obj[key]
+        else:
+            return ""
+    return str(obj)
+
+def replace_variables(text, variables):
+    """Replace variables in text with values from variables dictionary"""
+    def replacer(match):
+        path = match.group(1).strip()
+        value = get_value_by_path(variables, path)
+        return str(value) if value != "" else match.group(0)
+    return variable_pattern.sub(replacer, text)
+
 
 # stage 1, parse toc
 with open(entry_file) as fp:
@@ -123,6 +155,9 @@ def replace_heading_func(diff_level=0):
 def remove_copyable(match):
     return ''
 
+# Load variables
+variables = load_variables()
+
 # stage 3, concat files
 for type_, level, name in followups:
     if type_ == 'TOC':
@@ -133,6 +168,8 @@ for type_, level, name in followups:
         try:
             with open(name) as fp:
                 chapter = fp.read()
+                # Apply variable replacement first
+                chapter = replace_variables(chapter, variables)
                 chapter = replace_link_wrap(chapter, name)
                 chapter = copyable_snippet_pattern.sub(remove_copyable, chapter)
 
