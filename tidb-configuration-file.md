@@ -707,8 +707,9 @@ opentracing.reporter 相关的设置。
 
 ### `pd-server-timeout`
 
-+ TiDB 通过 PD Client 向 PD 节点发送请求的超时时间，单位是秒。
++ TiDB 通过 PD Client 向 PD 节点发送请求的超时时间。
 + 默认值：3
++ 单位：秒
 
 ## tikv-client
 
