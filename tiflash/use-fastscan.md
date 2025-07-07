@@ -60,6 +60,7 @@ show variables like 'tiflash_fastscan';
 | tiflash_fastscan | OFF   |
 +------------------+-------+
 ```
+
 ```
 show global variables like 'tiflash_fastscan';
 ```
