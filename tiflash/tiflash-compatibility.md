@@ -17,12 +17,16 @@ TiFlash 在以下情况与 TiDB 存在不兼容问题：
         ```sql
         mysql> CREATE TABLE t (a DECIMAL(3,0), b DECIMAL(10, 0));
         Query OK, 0 rows affected (0.07 sec)
+
         mysql> INSERT INTO t VALUES (43, 1044774912);
         Query OK, 1 row affected (0.03 sec)
+
         mysql> ALTER TABLE t SET TIFLASH REPLICA 1;
         Query OK, 0 rows affected (0.07 sec)
+
         mysql> SET SESSION tidb_isolation_read_engines='tikv';
         Query OK, 0 rows affected (0.00 sec)
+
         mysql> SELECT a/b, a/b + 0.0000000000001 FROM t WHERE a/b;
         +--------+-----------------------+
         | a/b    | a/b + 0.0000000000001 |
@@ -30,8 +34,10 @@ TiFlash 在以下情况与 TiDB 存在不兼容问题：
         | 0.0000 |       0.0000000410001 |
         +--------+-----------------------+
         1 row in set (0.00 sec)
+
         mysql> SET SESSION tidb_isolation_read_engines='tiflash';
         Query OK, 0 rows affected (0.00 sec)
+
         mysql> SELECT a/b, a/b + 0.0000000000001 FROM t WHERE a/b;
         Empty set (0.01 sec)
         ```
