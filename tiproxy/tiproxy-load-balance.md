@@ -38,18 +38,19 @@ TiProxy 定时通过 SQL 端口和状态端口检查 TiDB 是否已下线或正�
 例如，若应用包含交易和 BI 两类业务，为了避免相互影响，可以按照如下方式配置集群：
 
 1. 在 TiProxy 上配置 [`balance.label-name`](/tiproxy/tiproxy-configuration.md#label-name) 为 `"app"`，表示将按照标签名 `"app"` 匹配 TiDB server，并将连接路由到相同标签值的 TiDB server 上。
-2. 配置 2 台 TiProxy 实例，分别为配置项 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 加上 `"app"="Order"` 和 `"app"="BI"`。
-3. 将 TiDB 实例分为 2 组，分别为配置项 [`labels`](/tidb-configuration-file.md#labels) 加上 `"app"="Order"` 和 `"app"="BI"`。 
-4. 如果需要同时隔离存储层的资源，可配置 [Placement Rules](/configure-placement-rules.md) 或[资源管控 (Resource Control)](/tidb-resource-control-ru-groups.md)。
-5. 交易和 BI 业务的客户端分别连接到 2 台 TiProxy 的地址。
+2. 配置至少 2 台 TiProxy 实例，用于交易业务的 TiProxy 实例配置 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 为 `{"app": "Order"}`；用于 BI 业务的实例配置 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 为 `{"app": "BI"}`。
+3. 如果同时需要 TiProxy 的高可用，配置至少 4 台 TiProxy 实例，不同业务的实例配置不同的虚拟 IP。例如用于交易业务的 2 台 TiProxy 实例配置虚拟 IP `10.0.1.10/24`，用于 BI 业务的 2 台 TiProxy 实例配置虚拟 IP `10.0.1.20/24`。TiProxy 从 v1.3.1 开始支持配置多个虚拟 IP，请确保升级到 v1.3.1 及以上版本。
+4. 将 TiDB 实例分为 2 组，分别为配置项 [`labels`](/tidb-configuration-file.md#labels) 加上 `"app": "Order"` 和 `"app": "BI"`。 
+5. 如果需要同时隔离存储层的资源，可配置 [Placement Rules](/configure-placement-rules.md) 或[资源管控](/tidb-resource-control-ru-groups.md)。
+6. 如果配置了虚拟 IP，交易和 BI 业务的客户端分别连接到 2 个虚拟 IP 地址。如果没有配置虚拟 IP，交易和 BI 业务的客户端分别连接到 2 个 TiProxy 的地址。
 
-<img src="https://docs-download.pingcap.com/media/images/docs-cn/tiproxy/tiproxy-balance-label.png" alt="基于标签的负载均衡" width="600" />
+<img src="https://docs-download.pingcap.com/media/images/docs-cn/tiproxy/tiproxy-balance-label-v2.png" alt="基于标签的负载均衡" width="600" />
 
 上述拓扑图的配置示例如下：
 
 ```yaml
 component_versions:
-  tiproxy: "v1.1.0"
+  tiproxy: "v1.3.1"
 server_configs:
   tiproxy:
     balance.label-name: "app"
@@ -58,23 +59,37 @@ server_configs:
 tiproxy_servers:
   - host: tiproxy-host-1
     config:
-      labels: {app: "Order"}
+      labels: {"app": "Order"}
+      ha.virtual-ip: "10.0.1.10/24"
+      ha.interface: "eth0"
   - host: tiproxy-host-2
     config:
-      labels: {app: "BI"}
+      labels: {"app": "Order"}
+      ha.virtual-ip: "10.0.1.10/24"
+      ha.interface: "eth0"
+  - host: tiproxy-host-3
+    config:
+      labels: {"app": "BI"}
+      ha.virtual-ip: "10.0.1.20/24"
+      ha.interface: "eth0"
+  - host: tiproxy-host-4
+    config:
+      labels: {"app": "BI"}
+      ha.virtual-ip: "10.0.1.20/24"
+      ha.interface: "eth0"
 tidb_servers:
   - host: tidb-host-1
     config:
-      labels: {app: "Order"}
+      labels: {"app": "Order"}
   - host: tidb-host-2
     config:
-      labels: {app: "Order"}
+      labels: {"app": "Order"}
   - host: tidb-host-3
     config:
-      labels: {app: "BI"}
+      labels: {"app": "BI"}
   - host: tidb-host-4
     config:
-      labels: {app: "BI"}
+      labels: {"app": "BI"}
 tikv_servers:
   - host: tikv-host-1
   - host: tikv-host-2
