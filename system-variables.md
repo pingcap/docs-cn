@@ -1170,7 +1170,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 > **注意：**
 >
-> 这一变量不适用于异步获取 TSO 请求，如果需要调整获取 TSO 的超时，请使用 [pd-server-timeout](/tidb-configuration-file.md#pd-server-timeout) 进行配置。
+> 该系统变量**不适用**于异步获取 TSO 请求。如果需要调整获取 TSO 的超时，请使用 [`pd-server-timeout`](/tidb-configuration-file.md#pd-server-timeout) 进行配置。
 
 ### `tidb_batch_commit`
 
