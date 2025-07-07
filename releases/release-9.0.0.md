@@ -198,7 +198,7 @@ TiDB 版本：9.0.0
 
     需要注意的是，旧版本升级上来的资源组默认保留原行为 (`UNLIMITED`)。如果要调整到 `MODERATED` 模式，需要通过 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 修改定义。
 
-    `BURSTABLE` 的 `MODERATED` 资源分配模式适用于系统中多个资源组优先级相当的场景。允许部分资源组安全地“溢出” ，从而在保证服务质量的前提下，更高效地利用资源。
+    `BURSTABLE` 的 `MODERATED` 资源分配模式适用于系统中多个资源组优先级相当的场景。允许部分资源组安全地“溢出”，从而在保证服务质量的前提下，更高效地利用资源。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-create-resource-group.md)。
 
