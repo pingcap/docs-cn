@@ -1162,7 +1162,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：整数型
 - 默认值：`2`
 - 范围：`[0, 2147483647]`
-- 这个变量用来给 TiDB 的 `backoff` 最大重试等待时间增加权重，即内部遇到网络或其他组件 (TiKV, PD) 故障时，发送重试请求的最大重试等待时间。可以通过这个变量来调整最大重试等待时间，最小值为 1。
+- 这个变量用来给 TiDB 的 `backoff` 最大重试等待时间增加权重，即内部遇到网络或其他组件 (TiKV, PD) 故障时，发送重试请求的最大重试等待时间。可以通过这个变量来调整最大重试等待时间，最小值为 `1`。
 
     例如，TiDB 向 TiKV 取 KV 的基础重试等待时间是 15 秒，当 `tidb_backoff_weight = 2` 时，取 KV 的最大重试等待时间为：基础时间 \* 2 等于 30 秒。
 
