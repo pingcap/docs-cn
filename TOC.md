@@ -415,6 +415,7 @@
     - [使用系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md)
   - 最佳实践
     - [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
+    - [多列索引优化最佳实践](/best-practices/multi-column-index-best-practices.md)
     - [Java 应用开发最佳实践](/best-practices/java-app-best-practices.md)
     - [HAProxy 最佳实践](/best-practices/haproxy-best-practices.md)
     - [高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)
