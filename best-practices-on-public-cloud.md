@@ -136,14 +136,6 @@ tikv:
 
 要减少跨可用区的读取流量，你可以启用 [Follower Read 功能](/follower-read.md)，该功能允许 TiDB 优先选择在同一可用区内的副本进行读取。要启用该功能，请将 [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) 变量设置为 `closest-replicas` 或 `closest-adaptive`。
 
-要减少 TiKV 实例中跨可用区的写入流量，你可以启用 gRPC 压缩功能，该功能在网络传输数据之前会对其进行压缩。以下配置示例展示了如何为 TiKV 启用 gzip gRPC 压缩：
-
-```
-server_configs:
-  tikv:
-    server.grpc-compression-type: gzip
-```
-
 要减少 TiFlash MPP 任务中数据交换（data shuffle 过程）所带来的网络流量，建议在同一可用区内部署多个 TiFlash 实例。
 
 ## 缓解 Google Cloud 上的实时迁移维护事件带来的性能影响
