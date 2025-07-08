@@ -47,6 +47,8 @@
     - Ruby
       - [mysql2](/develop/dev-guide-sample-application-ruby-mysql2.md)
       - [Rails](/develop/dev-guide-sample-application-ruby-rails.md)
+    - C#
+      - [C#](/develop/dev-guide-sample-application-cs.md)
   - 连接到 TiDB
     - GUI 数据库工具
       - [MySQL Workbench](/develop/dev-guide-gui-mysql-workbench.md)
