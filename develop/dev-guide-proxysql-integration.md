@@ -221,7 +221,7 @@ systemctl start docker
 
     </SimpleTab>
 
-    当出现提示时，输入集群的 `Endpoint` 作为 `Serverless Tier Host`，然后输入集群的 `Port` 与 `User`。
+    当出现提示时，输入集群的 `Endpoint` 作为 `Starter Tier Host`，然后输入集群的 `Port` 与 `User`。
 
     下面是一个输出示例。可以看到，在当前的 `tidb-cloud-connect` 目录下生成了三个配置文件。
 
