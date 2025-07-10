@@ -66,7 +66,7 @@ TiDB Cloud 核心特性与应用场景简介
 
 </DocHomeCard>
 
-<DocHomeCard href="/tidbcloud/tidb-cloud-quickstart" label="快速上手 {{{ .starter }}}" icon="cloud-getstarted-mauve">
+<DocHomeCard href="/tidbcloud/tidb-cloud-quickstart" label="快速上手 TiDB Cloud" icon="cloud-getstarted-mauve">
 
 快速了解和使用 TiDB Cloud
 
