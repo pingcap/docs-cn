@@ -83,8 +83,8 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 - TiFlash 临时文件的存放路径。
 - 默认使用 \[[`path`](#path) 或者 [`storage.latest.dir`](#dir-1) 的第一个目录\] + "/tmp"
-- 从 v9.0.0 版本开始，不推荐使用 `tmp_path`。推荐使用 [`storage.temp`](#storage.temp-从-v900-版本开始引入)下的配置项代替，因为新的配置项支持设置 capacity 限制临时文件使用的空间。
-- 当 `storage.temp` 配置存在时，会忽略 `tmp_path`。
+- 从 v9.0.0 开始，不推荐使用 `tmp_path`。建议使用 [`storage.temp`](#storage.temp-从-v900-版本开始引入) 中的配置项替代，因其支持设置容量限制，控制临时文件的空间使用。
+- 当 `storage.temp` 配置存在时，`tmp_path` 配置会被忽略。
 
 <!-- 示例值：`"/tidb-data/tiflash-9000/tmp"` -->
 
