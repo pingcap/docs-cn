@@ -667,7 +667,7 @@ label store zone cn
 
 > **注意：**
 >
-> member delete 不要在生产环境中用于缩容 PD 节点，扩缩容操作请参考 [使用 tiup 扩缩容](./scale-tidb-using-tiup.md) 和 [使用 tidb-operator 扩缩容](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster/) 。
+> 不要使用 `member delete` 命令在生产环境中缩容 PD 节点。如需缩容 PD 节点，请参考[使用 TiUP 扩容缩容 TiDB 集群](/scale-tidb-using-tiup.md)和[手动扩缩容 Kubernetes 上的 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster/)。
 
 用于显示 PD 成员信息，删除指定成员，设置成员的 leader 优先级。示例如下。
 
