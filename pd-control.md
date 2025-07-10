@@ -665,6 +665,10 @@ label store zone cn
 
 ### `member [delete | leader_priority | leader [show | resign | transfer <member_name>]]`
 
+> **注意：**
+>
+> member delete 不要在生产环境中用于缩容 PD 节点，扩缩容操作请参考 [使用 tiup 扩缩容](./scale-tidb-using-tiup.md) 和 [使用 tidb-operator 扩缩容](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster/) 。
+
 用于显示 PD 成员信息，删除指定成员，设置成员的 leader 优先级。示例如下。
 
 显示所有成员的信息：
