@@ -134,7 +134,7 @@ tiup br restore full \
 
 > **注意：**
 >
-> 从 v9.0.0 开始，当参数 `--load-stats` 设置为 `false` 时，br 不再向 `mysql.stats_meta` 表写入恢复表的统计信息。你可以在恢复完成后手动执行 `ANALYZE TABLE`，以更新相关统计信息。
+> 从 v9.0.0 开始，当参数 `--load-stats` 设置为 `false` 时，br 不再向 `mysql.stats_meta` 表写入恢复表的统计信息。你可以在恢复完成后手动执行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)，以更新相关统计信息。
 
 备份恢复功能在备份时，将统计信息通过 JSON 格式存储在 `backupmeta` 文件中。在恢复时，将 JSON 格式的统计信息导入到集群中。详情请参考 [LOAD STATS](/sql-statements/sql-statement-load-stats.md)。
 
@@ -197,7 +197,7 @@ Download&Ingest SST <-----------------------------------------------------------
 Restore Pipeline <-------------------------/...............................................> 17.12%
 ```
 
-自 TiDB v9.0.0 开始，你可以通过指定参数 `--fast-load-sys-tables` 在全新的集群上进行物理恢复系统表：
+从 TiDB v9.0.0 开始，你可以通过指定参数 `--fast-load-sys-tables` 在全新的集群上进行物理恢复系统表：
 
 ```shell
 tiup br restore full \
