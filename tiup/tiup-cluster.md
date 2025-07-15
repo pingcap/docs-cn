@@ -561,11 +561,11 @@ tiup cluster audit
 Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.12.3/cluster audit
 ID      Time                       Command
 --      ----                       -------
-4BLhr0  2024-12-17T23:55:09+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test {{{ .tidb-version }}} /tmp/topology.yaml
-4BKWjF  2024-12-17T23:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test {{{ .tidb-version }}} /tmp/topology.yaml
-4BKVwH  2024-12-17T23:02:08+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test {{{ .tidb-version }}} /tmp/topology.yaml
-4BKKH1  2024-12-17T16:39:04+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster destroy test
-4BKKDx  2024-12-17T16:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test {{{ .tidb-version }}} /tmp/topology.yaml
+4BLhr0  {{{ .tidb-release-date }}}T23:55:09+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test {{{ .tidb-version }}} /tmp/topology.yaml
+4BKWjF  {{{ .tidb-release-date }}}T23:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test {{{ .tidb-version }}} /tmp/topology.yaml
+4BKVwH  {{{ .tidb-release-date }}}T23:02:08+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test {{{ .tidb-version }}} /tmp/topology.yaml
+4BKKH1  {{{ .tidb-release-date }}}T16:39:04+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster destroy test
+4BKKDx  {{{ .tidb-release-date }}}T16:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test {{{ .tidb-version }}} /tmp/topology.yaml
 ```
 
 第一列为 audit-id，如果想看某个命令的执行日志，则传入这个 audit-id：
