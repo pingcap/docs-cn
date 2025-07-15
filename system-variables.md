@@ -2419,16 +2419,16 @@ Query OK, 0 rows affected (0.09 sec)
 
 > **警告：**
 >
-> 在 TiDB v8.1.0 之前，TiDB 会定期向 PingCAP 上报遥测信息。
->
-> 从 TiDB v8.5.3 和 v9.0.0 起，TiDB 重新引入了遥测功能，但其行为已调整为仅将遥测相关信息输出到日志文件，不再通过网络上报。
+> - 在 v8.1.0 之前的版本中，TiDB 会定期向 PingCAP 上报遥测信息。
+> - 在 v8.1.0 到 v8.5.1 及其之间的版本中，TiDB 已移除遥测功能，`tidb_enable_telemetry` 变量不再生效。保留该变量仅用于与之前版本兼容。
+> - 从 v8.5.3 开始，TiDB 重新引入遥测功能，但其行为已更改为仅将遥测相关信息输出到日志文件，不再通过网络发送给 PingCAP。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
-- 默认值：`ON`
-- 该变量用于动态控制 TiDB 遥测功能是否开启。仅当 TiDB 实例的配置项 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 设置为 `true` 时，该变量才会生效。
+- 默认值：`ON`，从 v8.5.3 开始，默认值由 `OFF` 改为 `ON`。
+- 该变量用于动态控制 TiDB 遥测功能是否开启。从 v8.5.3 开始，该变量仅在 TiDB 实例的配置项 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 设置为 `true` 时生效。
 
 ### `tidb_enable_tiflash_read_for_write_stmt` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
