@@ -1,19 +1,23 @@
 ---
-title: UUID 最佳实践
-summary: 了解在 TiDB 中使用 UUID 的最佳实践和策略。
+title: 将 UUID 用作主键的最佳实践
+summary: 了解在 TiDB 中将 UUID 用作主键的最佳实践。
 ---
 
-# UUID 最佳实践
+# 将 UUID 用作主键的最佳实践
+
+通用唯一标识符 (UUID) 是分布式数据库中常用的主键替代方案，相较于自增整数，它具有独特优势。本文将介绍在 TiDB 中使用 UUID 的优势，并提供高效存储和索引 UUID 的最佳实践。
 
 ## UUID 概述
 
-通用唯一标识符 (UUID) 用作主键而不是 [`AUTO_INCREMENT`](/auto-increment.md) 整数值时，可以提供以下好处：
+当用作主键时，UUID 相较于 [`AUTO_INCREMENT`](/auto-increment.md) 整数具有以下优势：
 
 - UUID 可以在多个系统生成，而不会产生冲突。某些情况下可以减少到 TiDB 的网络往返次数，从而提高性能。
 - 绝大多数编程语言和数据库系统都支持 UUID。
 - 用在 URL 中时，UUID 不容易被枚举攻击。相比之下，使用 `AUTO_INCREMENT` 数字，则很容易让发票 ID 或用户 ID 被猜出。
 
 ## 最佳实践
+
+本节介绍在 TiDB 中存储和索引 UUID 的最佳实践。
 
 ### 二进制存储
 
