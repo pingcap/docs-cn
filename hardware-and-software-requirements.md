@@ -103,11 +103,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 | **组件** | **CPU** | **内存** | **本地存储** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
-<<<<<<< HEAD
-| TiDB | 8 核+ | 16 GB+ | 无特殊要求 | 千兆网卡 | 1（可与 PD 同机器） |
-=======
 | TiDB | 8 核+ | 16 GB+ | [存储要求](#存储要求) | 千兆网卡 | 1（可与 PD 同机器） |
->>>>>>> fbb9009811 (hardware-and-software-requirements: Add note about supported filesystems (#20653))
 | PD | 4 核+ | 8 GB+ | SAS, 200 GB+ | 千兆网卡 | 1（可与 TiDB 同机器） |
 | TiKV | 8 核+ | 32 GB+ | SSD, 200 GB+ | 千兆网卡 | 3 |
 | TiFlash | 32 核+ | 64 GB+ | SSD, 200 GB+ | 千兆网卡 | 1 |
