@@ -153,10 +153,10 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
     tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
     ```
 
-    > 上述命令中，需要将 `v<CLUSTER_VERSION>` 替换为该集群版本，例如 `v8.5.1`，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
+    > 上述命令中，需要将 `v<CLUSTER_VERSION>` 替换为该集群版本，例如 `{{{ .tidb-version }}}`，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
     >
     > ```shell
-    > tiup ctl:v8.5.1 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer
+    > tiup ctl:{{{ .tidb-version }}} pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer
     > ```
 
     如果集群中已经有大量的 Region 存在旧的 TiFlash 节点，需要将 Region 从旧的 TiFlash 节点均衡调度到新的 TiFlash 节点，则需要同时修改 `remove-peer` 的限制。

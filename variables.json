@@ -1,6 +1,7 @@
 {
   "tidb": "TiDB",
   "tidb-version": "v8.5.2",
+  "tidb-release-date": "2025-06-12",
   "starter": "TiDB Cloud Serverless",
   "essential": "TiDB Cloud Essential",
   "dedicated": "TiDB Cloud Dedicated"
