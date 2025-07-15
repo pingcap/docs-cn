@@ -1,6 +1,6 @@
 ---
 title: 将 UUID 用作主键的最佳实践
-summary: 了解在 TiDB 中使用 UUID 的最佳实践和策略。
+summary: 了解在 TiDB 中将 UUID 用作主键的最佳实践。
 ---
 
 # 将 UUID 用作主键的最佳实践
