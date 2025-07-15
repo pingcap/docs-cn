@@ -38,7 +38,7 @@ summary: 了解如何使用 TiUP Playground 快速部署试用 TiDB Data Migrati
 2. 启动包含目标数据库 TiDB 和 DM 组件的 TiUP Playground：
 
     ```shell
-    tiup playground v8.5.1 --dm-master 1 --dm-worker 1 --tiflash 0 --without-monitor
+    tiup playground {{{ .tidb-version }}} --dm-master 1 --dm-worker 1 --tiflash 0 --without-monitor
     ```
 
 3. 验证环境，查看输出中 TiDB 和 DM 是否已启动：

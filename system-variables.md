@@ -4839,7 +4839,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 单位：字节
-- 默认值：`0`，表示统计信息缓存的内存使用上限为 TiDB 实例总内存的 20%。在 v8.5.1 之前，`0` 表示该上限为 TiDB 实例总内存的 50%。
+- 默认值：`0`，表示统计信息缓存的内存使用上限为 TiDB 实例总内存的 20%。在 {{{ .tidb-version }}} 之前，`0` 表示该上限为 TiDB 实例总内存的 50%。
 - 范围：`[0, 1099511627776]`
 - 这个变量用于控制 TiDB 统计信息缓存的内存使用上限。
 
@@ -5599,7 +5599,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：NONE
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`8.0.11-TiDB-(tidb version)`
-- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '8.0.11-TiDB-v8.5.1'。
+- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '8.0.11-TiDB-{{{ .tidb-version }}}'。
 
 ### `version_comment`
 
