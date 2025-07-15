@@ -14,6 +14,7 @@ TiDB 版本：8.5.3
 ## 兼容性变更
 
 - note [#issue](https://github.com/pingcap/${repo-name}/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+- 重新引入了 telemetry 功能支持，但对其实现方式进行了优化：将原有的网络上报机制调整为本地日志输出方式 [#61766](https://github.com/pingcap/tidb/issues/61766) @[Defined2014](https://github.com/Defined2014)
 
 ## 改进提升
 
