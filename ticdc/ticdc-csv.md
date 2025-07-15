@@ -52,7 +52,9 @@ CSV 文件中，单行的每一列定义如下：
 - 第四列：`commit ts`，即原始事务的 commit ts。该列为可选配置。
 - 第五列：`is-update`，该列仅在 `output-old-value` 为 true 时存在，用于标识该行变更来自 Update 事件（值为 true），还是来自 Insert/Delete 事件（值为 false）。
 - 第六列至最后一列：变更数据的列，可为一列或多列。
+
 当配置中 `output-field-header = true` 时，CSV 文件将包含一个表头行，表头行的列名如下：
+
 | 第一列 | 第二列 | 第三列 | 第四列（可选） | 第五列（可选） | 第六列 | ... | 最后一列 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `ticdc-meta$operation` | `ticdc-meta$table` | `ticdc-meta$schema` | `ticdc-meta$commit-ts` | `ticdc-meta$is-update` | 涉及数据变更的第一列的列名 | ... | 涉及数据变更的最后一列的列名 |
