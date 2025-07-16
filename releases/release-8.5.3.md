@@ -23,7 +23,15 @@ TiDB 版本：8.5.3
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-7.5.5.md > 改进提升> TiDB - 当某个统计信息完全由 TopN 构成，且对应表的统计信息中修改行数不为 0 时，对于未命中 TopN 的等值条件，估算结果从 0 调整为 1 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell)
-
+    - 提升使用全局排序添加唯一索引的性能，并优化添加重复唯一索引的报错信息 [#61689](https://github.com/pingcap/tidb/issues/61689) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - import into 使用全局排序时，禁用 TiKV 切换到导入模式 [#60361](https://github.com/pingcap/tidb/issues/60361) @[D3Hunter](https://github.com/D3Hunter)
+    - 新增加索引的导入速度监控 [#60925](https://github.com/pingcap/tidb/issues/60925) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 优化预读缓冲区的使用，提升读取效率 [#59754](https://github.com/pingcap/tidb/issues/59754) @[lance6716](https://github.com/lance6716)
+    - 优化 merge sort 子任务的分发逻辑，提升速度 [#60375](https://github.com/pingcap/tidb/issues/60375) @[tangenta](https://github.com/tangenta)
+    - 提升创建大量外建表的建表速度并优化内存使用 [#61126](https://github.com/pingcap/tidb/issues/61126) @[GMHDBJD](https://github.com/GMHDBJD)
+    - 优化读取 tables 系统表的速度 [#62020](https://github.com/pingcap/tidb/issues/62020) @[tangenta](https://github.com/tangenta)
+    - 新增导入期间分裂 region 和 ingest 数据的流控接口 [#61553](https://github.com/pingcap/tidb/issues/61553) @[tangenta](https://github.com/tangenta)
+    
 + TiKV
 
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
@@ -93,6 +101,13 @@ TiDB 版本：8.5.3
     - (dup): release-9.0.0.md > 错误修复> TiDB - 修复启用 `tidb_enable_dist_task` 导致 TiDB 升级失败的问题 [#54061](https://github.com/pingcap/tidb/issues/54061) @[tangenta](https://github.com/tangenta)
     - (dup): release-7.5.6.md > 错误修复> TiDB - 修复对统计信息的异常处理不当导致后台任务超时的时候，内存内的统计信息被误删除的问题 [#57901](https://github.com/pingcap/tidb/issues/57901) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-9.0.0.md > 错误修复> TiDB - 修复在分布式执行框架下执行添加索引操作没有正确更新行数的问题 [#58573](https://github.com/pingcap/tidb/issues/58573) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复执行有损 DDL 后，查询 TiFlash 数据不一致的问题 [#61455](https://github.com/pingcap/tidb/issues/61455) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 修复使用全局排序加索引时，merge sort 阶段监控缺失的问题 [#61025](https://github.com/pingcap/tidb/issues/61025) @[fzzf678](https://github.com/fzzf678)
+    - 修复使用 GCS 遇到 EOF 错误没有重试的问题 [#59754](https://github.com/pingcap/tidb/issues/59754) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复使用全局排序时遇到不合法的 KV 范围问题 [#59841](https://github.com/pingcap/tidb/issues/59841) @[GMHDBJD](https://github.com/GMHDBJD)
+    - 修复`CREATE INDEX IF NOT EXISTS`语句生成空索引名的问题 [#61265](https://github.com/pingcap/tidb/issues/61265) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复禁用 MDL 后，DDL 更新 schema 版本失败后卡住的问题 [#61210](https://github.com/pingcap/tidb/issues/61210) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复统计信息系统表展示非 public 索引的问题 [#60430](https://github.com/pingcap/tidb/issues/60430) @[tangenta](https://github.com/tangenta)
 
 + TiKV
 
@@ -137,7 +152,7 @@ TiDB 版本：8.5.3
     + TiDB Lightning
 
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复 lightning 向 TiKV 发起的 RPC 请求超时后返回 context deadline 的问题 [#61326](https://github.com/pingcap/tidb/issues/61326) @[OliverS929](https://github.com/OliverS929)
 
     + Dumpling
 
