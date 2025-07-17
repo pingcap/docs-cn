@@ -7,6 +7,10 @@ summary: 介绍使用 BR 在外部存储 S3 上进行备份与恢复时的方法
 
 TiDB 的备份恢复功能 Backup & Restore (BR) 支持将 Amazon S3 或支持 S3 协议的其他文件存储作为外部存储。
 
+> **注意：**
+>
+> 如果要查阅 TiDB v7.5 的相关文档，请点击 [TiDB 备份与恢复实践示例](https://docs.pingcap.com/zh/tidb/v7.5/backup-and-restore-use-cases/)。
+
 ## 使用场景
 
 使用 AWS S3 保存备份数据，方便你将部署在 AWS EC2 上的 TiDB 集群数据快速备份到 AWS S3 中，或者从 S3 中快速恢复出来一个 TiDB 集群。
