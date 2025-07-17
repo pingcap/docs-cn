@@ -1,7 +1,7 @@
 ---
 title: TiDB 备份与恢复实践示例
 summary: 介绍 TiDB 备份与恢复的具体使用示例，包括推荐环境配置、存储配置、备份策略及如何进行备份与恢复。
-aliases: ['/zh/tidb/stable/backup-and-restore-use-cases-for-maintain/']
+aliases: ['/zh/tidb/stable/backup-and-restore-use-cases-for-maintain/','/zh/tidb/v6.1/backup-storage-S3']
 ---
 
 # TiDB 备份与恢复实践示例
