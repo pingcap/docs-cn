@@ -9,7 +9,7 @@ TiDB 的备份恢复功能 Backup & Restore (BR) 支持将 Amazon S3 或支持 S
 
 > **Tip:**
 >
-> 如果要查阅 TiDB v7.5 的相关文档，请点击 [TiDB 备份与恢复实践示例](https://docs.pingcap.com/zh/tidb/v7.5/backup-and-restore-use-cases/)。
+> 如需查阅 TiDB v7.5 的相关 BR 文档，请点击 [TiDB 备份与恢复实践示例](https://docs.pingcap.com/zh/tidb/v7.5/backup-and-restore-use-cases/)。
 
 ## 使用场景
 
