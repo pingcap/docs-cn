@@ -456,7 +456,7 @@ SELECT * FROM `t` WHERE `id` > 'a" + string([]byte{0xff}) + "a';
 
 上述语句中的 `0xff` 为非法的 UTF-8 字节。在处理该类字符时，TiDB 的行为会受到排序规则 (collation) 的影响：
 
-* 非二进制排序规则（如 `utf8mb4_general_ci`）：TiDB 会在遇到非法字节时截断字符串，截断后的内容不参与比较。
+* 非二进制排序规则（如 `utf8mb4_general_ci`）：TiDB 会在遇到非法字节时截断字符串，截断后的部分不参与比较。
 
 * `gbk_bin` 和 `gb18030_bin`：TiDB 会将非法字节替换为字符 `?`，并继续执行后续的比较操作。
 
