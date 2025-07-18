@@ -77,6 +77,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：-1
 + 当 `tmp-storage-path` 的剩余可用容量低于 `tmp-storage-quota` 所定义的值时，TiDB server 启动时将会报出错误并退出。
 
+### `tikv-worker-url` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 此配置项目前未被使用，可能会在未事先通知的情况下发生变化或删除。
+
++ 指定 `tikv-worker` 的 URL。
+
 ### `lease`
 
 + DDL 租约超时时间。
