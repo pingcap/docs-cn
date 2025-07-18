@@ -2,7 +2,7 @@
 
 ### First-time contributors' checklist <!--Remove this section if you're not a first-time contributor.-->
 
-- [ ] I've signed [**Contributor License Agreement**](https://cla.pingcap.net/pingcap/docs-cn) that's required for repo owners to accept my contribution.
+- [ ] I've signed the [**Contributor License Agreement**](https://cla.pingcap.net/pingcap/docs), which is required for the repository owners to accept my contribution.
 
 ### What is changed, added or deleted? (Required)
 
