@@ -450,8 +450,8 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
 在某些 SQL 语句中，可能涉及与非法 UTF-8 字符的比较。例如：
 
-```golang
-"select * from `t` where `id` > 'a" + string([]byte{0xff}) + "a'"
+```sql
+SELECT * FROM `t` WHERE `id` > 'a" + string([]byte{0xff}) + "a';
 ```
 
 上述语句中的 `0xff` 为非法的 UTF-8 字节。在处理该类字符时，TiDB 的行为会受到排序规则 (collation) 的影响：
