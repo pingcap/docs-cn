@@ -81,7 +81,7 @@ TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些
 
 ### 第 0 步：签署 Contributor License Agreement
 
-首次在本仓库提 PR 时，请务必签署 [Contributor License Agreement](https://cla-assistant.io/pingcap/docs-cn) (CLA)，否则我们将无法合并你的 PR。成功签署 CLA 后，可继续进行后续操作。
+首次在本仓库提 PR 时，请务必签署 [Contributor License Agreement](https://cla.pingcap.net/pingcap/docs-cn) (CLA)，否则我们将无法合并你的 PR。成功签署 CLA 后，可继续进行后续操作。
 
 ### 第 1 步：Fork pingcap/docs-cn 仓库
 
