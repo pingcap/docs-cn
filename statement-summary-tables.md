@@ -387,8 +387,8 @@ SQL 的基础信息：
 
 和存储引擎相关的字段：
 
-- `STORAGE_KV`：表示该类 SQL 语句上一次执行是否从 TiKV 读取了数据。
-- `STORAGE_MPP`：表示该类 SQL 语句上一次执行是否从 TiFlash 读取了数据。
+- `STORAGE_KV`：从 v9.0.0 开始引入，表示该类 SQL 语句上一次执行是否从 TiKV 读取了数据。
+- `STORAGE_MPP`：从 v9.0.0 开始引入，表示该类 SQL 语句上一次执行是否从 TiFlash 读取了数据。
 
 ### `statements_summary_evicted` 字段介绍
 
