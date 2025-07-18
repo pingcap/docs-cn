@@ -110,7 +110,7 @@ mydumpers:                           # dump 处理单元的运行配置参数
   global:                            # 配置名称
     threads: 4                       # dump 处理单元从上游数据库实例导出数据和 check-task 访问上游的线程数量，默认值为 4
     chunk-filesize: 64               # dump 处理单元生成的数据文件大小，默认值为 64，单位为 MB
-    extra-args: "--consistency none" # dump 处理单元的其他参数，不需要在 extra-args 中配置 table-list，DM 会自动生成
+    extra-args: "--consistency auto" # dump 处理单元的其他参数，不需要在 extra-args 中配置 table-list，DM 会自动生成
 
 loaders:                             # load 处理单元的运行配置参数
   global:                            # 配置名称
