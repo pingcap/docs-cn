@@ -454,7 +454,7 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 SELECT * FROM `t` WHERE `id` > 'a" + string([]byte{0xff}) + "a';
 ```
 
-上述语句中的 `0xff` 为非法的 UTF-8 字节。在处理该类字符时，TiDB 的行为会受到排序规则 (collation) 的影响：
+上述语句中的 `0xff` 为非法的 UTF-8 字节。在处理该类字符时，TiDB 的行为会受到排序规则 (collation) 的影响 <span class="version-mark">从 v9.0.0 版本开始引入</span>：
 
 * 非二进制排序规则（如 `utf8mb4_general_ci`）：TiDB 会在遇到非法字节时截断字符串，截断后的部分不参与比较。
 
