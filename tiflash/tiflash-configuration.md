@@ -143,11 +143,11 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 ##### `capacity`
 
-- 限制临时文件目录的总空间使用量。如果查询过程中生成的临时落盘文件超过该限制，将导致查询报错。
+- 限制临时文件目录的总空间使用量。如果查询过程中生成的临时落盘文件大小超过该限制，将导致查询报错。
 - 单位：Byte。目前不支持类似 `"10GB"` 的格式。
 - 范围：`[0, 9223372036854775807]`
 - 如果未设置该值或将其设置为 `0`，表示不限制临时文件的空间使用，落盘文件可以使用整个硬盘的容量。
-- 如果设置了大于 `0` 的值，TiFlash 在启动时会执行以下检查：
+- 如果设置为大于 `0` 的值，TiFlash 在启动时会执行以下检查：
     - `storage.temp.capacity` 必须小于等于 `storage.temp.dir` 所在硬盘的总空间。
     - 如果 `storage.temp.dir` 是 `storage.main.dir` 的子目录，且 `storage.main.capacity` 大于 `0`，则 `storage.temp.capacity` 必须小于等于 `storage.main.capacity`。同理，如果是 `storage.latest.dir` 的子目录，也会进行类似检查。
 - 该配置项不支持热加载，修改后需要重启 TiFlash 进程才能生效。
