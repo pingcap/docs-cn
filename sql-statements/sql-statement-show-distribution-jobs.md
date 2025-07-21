@@ -5,6 +5,8 @@ summary: 介绍 TiDB 数据库中 SHOW DISTRIBUTION JOBS 的使用概况。
 
 # SHOW DISTRIBUTION JOBS
 
+<!-- New in v9.0.0 -->
+
 `SHOW DISTRIBUTION JOBS` 语句用于显示当前所有的 Region 调度任务。
 
 ## 语法图
