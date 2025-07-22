@@ -725,7 +725,7 @@ opentracing.reporter 相关的设置。
 
 ### `overload-threshold`
 
-+ TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
++ TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。该配置项仅在 [`tikv-client.max-batch-size`](#max-batch-size) 和 [`tikv-client.max-batch-wait-time`](#max-batch-wait-time) 的值均大于 0 时有效，不推荐修改该值。
 + 默认值：200
 
 ### `copr-req-timeout` <span class="version-mark">从 v7.5.0 版本开始引入</span>
