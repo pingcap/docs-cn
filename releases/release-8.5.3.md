@@ -140,7 +140,7 @@ TiDB 版本：8.5.3
     - 修复关闭 Titan 后，Blob 索引可能导致快照应用失败的问题 [#18434](https://github.com/tikv/tikv/issues/18434) @[v01dstar](https://github.com/v01dstar)
     - 修复 slowlog 中 `StoreMsg` 的误导性日志问题 [#18561](https://github.com/tikv/tikv/issues/18561) @[LykxSassinator](https://github.com/LykxSassinator)
     - 修复高并发场景下 TiKV 过量放行 SST 导入请求的问题 [#18452](https://github.com/tikv/tikv/issues/18452) @[hbisheng](https://github.com/hbisheng)
-
+    - 修复扫描 lock 可能返回导致重复结果导致 tikv panic 问题 [#16818](https://github.com/tikv/tikv/issues/16818) @[cfzjywxk](https://github.com/cfzjywxk)
 + PD
 
     - 修复了慢节点检测机制中 `recovery-duration` 没有生效的问题 [#9384](https://github.com/tikv/pd/issues/9384) @[rleungx](https://github.com/rleungx)
