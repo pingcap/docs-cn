@@ -4,5 +4,5 @@
   "starter": "TiDB Cloud Serverless",
   "essential": "TiDB Cloud Essential",
   "dedicated": "TiDB Cloud Dedicated",
-  "console-url": "https://tidbcloud.com"
+  "console-url": "tidbcloud.com"
 }
