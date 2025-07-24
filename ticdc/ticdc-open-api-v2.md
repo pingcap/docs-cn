@@ -153,7 +153,6 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
       "max_log_size": 0,
       "storage": "string"
     },
-    "enable_old_value": true,
     "enable_sync_point": true,
     "filter": {
       "event_filters": [
@@ -400,7 +399,6 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
       "max_log_size": 0,
       "storage": "string"
     },
-    "enable_old_value": true,
     "enable_sync_point": true,
     "filter": {
       "event_filters": [
@@ -586,7 +584,6 @@ curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
       "max_log_size": 0,
       "storage": "string"
     },
-    "enable_old_value": true,
     "enable_sync_point": true,
     "filter": {
       "event_filters": [
