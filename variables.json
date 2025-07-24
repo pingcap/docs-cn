@@ -4,5 +4,10 @@
   "tidb-release-date": "2025-06-12",
   "starter": "TiDB Cloud Serverless",
   "essential": "TiDB Cloud Essential",
+<<<<<<< HEAD
   "dedicated": "TiDB Cloud Dedicated"
+=======
+  "dedicated": "TiDB Cloud Dedicated",
+  "console-url": "tidbcloud.com"
+>>>>>>> 578eb72d76 (variables.json: add a variable for TiDB Cloud console URL  (#20698))
 }
