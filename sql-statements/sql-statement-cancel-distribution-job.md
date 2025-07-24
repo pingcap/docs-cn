@@ -1,13 +1,13 @@
 ---
-title: CANCEL DISTRIBUTION
-summary: TiDB 数据库中 CANCEL DISTRIBUTION 的使用情况。
+title: CANCEL DISTRIBUTION JOB
+summary: TiDB 数据库中 CANCEL DISTRIBUTION JOB 的使用情况。
 ---
 
-# CANCEL DISTRIBUTION
+# CANCEL DISTRIBUTION JOB
 
 <!-- New in v9.0.0 -->
 
-`CANCEL DISTRIBUTION` 语句用于取消 TiDB 中通过 [`DISTRIBUTE TABLE`](sql-statements/sql-statement-distribute-table.md) 语句创建的 Region 调度任务。
+`CANCEL DISTRIBUTION JOB` 语句用于取消 TiDB 中通过 [`DISTRIBUTE TABLE`](/sql-statements/sql-statement-distribute-table.md) 语句创建的 Region 调度任务。
 
 ## 语法图
 
@@ -37,4 +37,4 @@ Query OK, 0 rows affected (0.01 sec)
 ## 另请参阅
 
 * [`DISTRIBUTE TABLE`](/sql-statements/sql-statement-distribute-table.md)
-* [`SHOW DISTRIBUTION JOB`](/sql-statements/sql-statement-show-distribution-jobs.md)
+* [`SHOW DISTRIBUTION JOBS`](/sql-statements/sql-statement-show-distribution-jobs.md)
