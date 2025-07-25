@@ -131,7 +131,6 @@ TiDB 版本：7.5.7
 
 + PD
 
-    - 修复配置 `split-merge-interval` 不生效问题 [#issue](https://github.com/tikv/pd/issues/8404) @[lhy1024](https://github.com/lhy1024)
     - 修复反复修改 `split-merge-interval` 的值，可能导致该配置不生效的问题 [#8404](https://github.com/tikv/pd/issues/8404) @[lhy1024](https://github.com/lhy1024)
     - 修复 `lease` 默认值未被正确设置的问题 [#9156](https://github.com/tikv/pd/issues/9156) @[rleungx](https://github.com/rleungx)
     - 修复了 TiDB Dashboard 导致的 pd goroutine 泄露问题 [#9402](https://github.com/tikv/pd/issues/9402) @[baurine](https://github.com/baurine)
@@ -141,7 +140,7 @@ TiDB 版本：7.5.7
 + TiFlash
 
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 修复在运行 `IMPORT INTO` 或 `BR restore` 的时候，部分 SST 文件可能被意外删除导致 TiFlash panic 的问题 [#10141](https://github.com/pingcap/tiflash/issues/10141) @[CalvinNeo](https://github.com/CalvinNeo)
     - (dup): release-8.5.3.md > 错误修复> TiFlash - 修复创建 `((NULL))` 形式的表达式索引会导致 TiFlash panic 的问题 [#9891](https://github.com/pingcap/tiflash/issues/9891) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-8.5.2.md > 错误修复> TiFlash - 修复 TiFlash 处理带有不规则 key-range 的 Region snapshot 时可能 panic 的问题 [#10147](https://github.com/pingcap/tiflash/issues/10147) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-8.5.2.md > 错误修复> TiFlash - 修复当集群的表中存在大量 `ENUM` 类型列时，TiFlash 的内存可能会大量消耗问题 [#9947](https://github.com/pingcap/tiflash/issues/9947) @[JaySon-Huang](https://github.com/JaySon-Huang)
