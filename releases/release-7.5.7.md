@@ -44,10 +44,9 @@ TiDB 版本：7.5.7
 
 + PD
 
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - (dup): release-8.5.3.md > 改进提升> PD - 优化了 balance region 调度器的算分公式 [#9145](https://github.com/tikv/pd/issues/9145) @[bufferflies](https://github.com/bufferflies)
-    - (dup): release-8.5.3.md > 改进提升> PD - 增加了 GO Runtime 相关监控 [#8931](https://github.com/tikv/pd/issues/8931) @[bufferflies](https://github.com/bufferflies)
+    - 支持更全面的 golang runtime 监控, 可以 pd cluster 中 Runtime 看到更多 runtime 监控 [#9037](https://github.com/tikv/pd/issues/8931) @[bufferflies](https://github.com/bufferflies)
+    - 减少一些非必要 error 日志 [#9370](https://github.com/tikv/pd/issues/9370) @[bufferflies](https://github.com/bufferflies)
+
 
 + TiFlash
 
@@ -132,11 +131,12 @@ TiDB 版本：7.5.7
 
 + PD
 
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - (dup): release-8.5.2.md > 错误修复> PD - 修复 `lease` 默认值未被正确设置的问题 [#9156](https://github.com/tikv/pd/issues/9156) @[rleungx](https://github.com/rleungx)
-    - (dup): release-8.3.0.md > 错误修复> PD - 修复反复修改 `split-merge-interval` 的值（例如从 `1s` 改为 `1h`，再改回 `1s`）可能导致该配置不生效的问题 [#8404](https://github.com/tikv/pd/issues/8404) @[lhy1024](https://github.com/lhy1024)
-    - (dup): release-8.5.3.md > 错误修复> PD - 修复了 TiDB Dashboard 导致的 goroutine 泄露问题 [#9402](https://github.com/tikv/pd/issues/9402) @[baurine](https://github.com/baurine)
+    - 修复配置 `split-merge-interval` 不生效问题 [#issue](https://github.com/tikv/pd/issues/8404) @[lhy1024](https://github.com/lhy1024)
+    - 修复反复修改 `split-merge-interval` 的值，可能导致该配置不生效的问题 [#8404](https://github.com/tikv/pd/issues/8404) @[lhy1024](https://github.com/lhy1024)
+    - 修复 `lease` 默认值未被正确设置的问题 [#9156](https://github.com/tikv/pd/issues/9156) @[rleungx](https://github.com/rleungx)
+    - 修复了 TiDB Dashboard 导致的 pd goroutine 泄露问题 [#9402](https://github.com/tikv/pd/issues/9402) @[baurine](https://github.com/baurine)
+    - 修复新上线节点可能无法被调度问题 [#9145](https://github.com/tikv/pd/issues/9145)@[bufferflies](https://github.com/bufferflies)
+    - 修复开启 tidb_enable_tso_follower_proxy 后，tso 服务不可用问题 [#9188]https://github.com/tikv/pd/issues/9188 @[Tema](https://github.com/Tema)
 
 + TiFlash
 
