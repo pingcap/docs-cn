@@ -46,7 +46,7 @@ TiDB 版本：8.5.3
 
     - 增加了 GO Runtime 相关监控 [#8931](https://github.com/tikv/pd/issues/8931) @[bufferflies](https://github.com/bufferflies)
     - 延长了触发慢节点驱逐 leader 后的恢复时间 [#9329](https://github.com/tikv/pd/issues/9329) @[rleungx](https://github.com/rleungx)
-    - 优化了 balance region 调度器的算分公式 [#9145](https://github.com/tikv/pd/issues/9145) @[bufferflies](https://github.com/bufferflies)
+    - 修复新上线节点可能无法被调度问题 [#9145](https://github.com/tikv/pd/issues/9145) @[bufferflies](https://github.com/bufferflies)
 
 + TiFlash <!--tw@lilin90: 2 notes-->
 
@@ -139,7 +139,7 @@ TiDB 版本：8.5.3
 
     - 修复了慢节点检测机制中 `recovery-duration` 没有生效的问题 [#9384](https://github.com/tikv/pd/issues/9384) @[rleungx](https://github.com/rleungx)
     - 修复了 evict leader 调度器可能在集群升级后被错误暂停的问题 [#9416](https://github.com/tikv/pd/issues/9416) @[rleungx](https://github.com/rleungx)
-    - 修复了 TiDB Dashboard 导致的 goroutine 泄露问题 [#9402](https://github.com/tikv/pd/issues/9402) @[baurine](https://github.com/baurine)
+    - 修复了 TiDB Dashboard tcp 链接未正确关闭， 导致 pd goroutine 泄露问题 [#9402](https://github.com/tikv/pd/issues/9402) @[baurine](https://github.com/baurine)
 
 + TiFlash <!--tw@hfxsd: 3 notes-->
 
