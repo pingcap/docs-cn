@@ -24,7 +24,7 @@ aliases: ['/docs-cn/dev/shard-row-id-bits/']
 |--------|--------|--------------|
 | 1 bit | `S` bits | `63-S` bits |
 
-- 自增位的值保存在 TiKV 中，由 TiKV 按顺序分配，每次分配后值会自增 1。自增位确保了 `_tidb_rowid` 列值全局唯一。当自增位的值耗尽后（即达到最大值时），再次自动分配时会报 `Failed to read auto-increment value from storage engine` 错误。
+- 自增位的值保存在 TiKV 中，TiDB 按顺序分配，每次分配后值会自增 1。自增位确保了 `_tidb_rowid` 列值全局唯一。当自增位的值耗尽后（即达到最大值时），再次自动分配时会报 `Failed to read auto-increment value from storage engine` 错误。
 - 关于 `_tidb_rowid` 取值范围：最终生成值包含的最大位数 = 分片位 + 自增位，最大值为 `(2^63)-1`。
 
 > **注意：**
