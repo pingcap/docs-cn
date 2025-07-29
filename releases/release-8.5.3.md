@@ -21,14 +21,14 @@ TiDB 版本：8.5.3
 + TiDB <!--tw@qiancai: 8 notes-->
 
     - (dup): release-7.5.5.md > 改进提升> TiDB - 当某个统计信息完全由 TopN 构成，且对应表的统计信息中修改行数不为 0 时，对于未命中 TopN 的等值条件，估算结果从 0 调整为 1 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell)
-    - 提升使用全局排序添加唯一索引的性能，并优化添加重复唯一索引的报错信息 [#61689](https://github.com/pingcap/tidb/issues/61689) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - import into 使用全局排序时，禁用 TiKV 切换到导入模式 [#60361](https://github.com/pingcap/tidb/issues/60361) @[D3Hunter](https://github.com/D3Hunter)
-    - 新增加索引的导入速度监控 [#60925](https://github.com/pingcap/tidb/issues/60925) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - 优化预读缓冲区的使用，提升读取效率 [#59754](https://github.com/pingcap/tidb/issues/59754) @[lance6716](https://github.com/lance6716)
-    - 优化 merge sort 子任务的分发逻辑，提升速度 [#60375](https://github.com/pingcap/tidb/issues/60375) @[tangenta](https://github.com/tangenta)
-    - 提升创建大量外建表的建表速度并优化内存使用 [#61126](https://github.com/pingcap/tidb/issues/61126) @[GMHDBJD](https://github.com/GMHDBJD)
-    - 优化读取 tables 系统表的速度 [#62020](https://github.com/pingcap/tidb/issues/62020) @[tangenta](https://github.com/tangenta)
-    - 新增导入期间分裂 region 和 ingest 数据的流控接口 [#61553](https://github.com/pingcap/tidb/issues/61553) @[tangenta](https://github.com/tangenta)
+    - 提升使用全局排序添加唯一索引的性能，并优化添加重复唯一索引时的报错信息 [#61689](https://github.com/pingcap/tidb/issues/61689) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 当 `IMPORT INTO` 启用全局排序时，禁用 TiKV 切换到导入模式 [#60361](https://github.com/pingcap/tidb/issues/60361) @[D3Hunter](https://github.com/D3Hunter)
+    - 为索引添加过程新增监控指标，便于观察写入 TiKV 的速度 [#60925](https://github.com/pingcap/tidb/issues/60925) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 新增针对 EOF 异常的重试机制，提高数据读取的稳定性 [#59754](https://github.com/pingcap/tidb/issues/59754) @[lance6716](https://github.com/lance6716)
+    - 优化 `merge sort` 子任务的调度逻辑，提升排序性能 [#60375](https://github.com/pingcap/tidb/issues/60375) @[tangenta](https://github.com/tangenta)
+    - 提升创建大量带外键的表时的建表速度，并优化内存使用效率 [#61126](https://github.com/pingcap/tidb/issues/61126) @[GMHDBJD](https://github.com/GMHDBJD)
+    - 提升 `information_schema.tables` 表的读取效率 [#62020](https://github.com/pingcap/tidb/issues/62020) @[tangenta](https://github.com/tangenta)
+    - 新增数据导入期间 Region 分裂与数据 ingest 的流控接口 [#61553](https://github.com/pingcap/tidb/issues/61553) @[tangenta](https://github.com/tangenta)
     
 + TiKV <!--tw@Oreoxmt: 8 notes-->
 
@@ -58,9 +58,8 @@ TiDB 版本：8.5.3
     + Backup & Restore (BR) <!--tw@qiancai: 3 notes-->
 
         - (dup): release-9.0.0.md > 改进提升> Tools> Backup & Restore (BR) - 采用并行方式，提升 PITR 恢复过程中的索引修复速度 [#59158](https://github.com/pingcap/tidb/issues/59158) @[Leavrth](https://github.com/Leavrth)
-        - 如今，TiKV 的 Download API 支持裁切掉 SST 中某段时间的数据 [#18399](https://github.com/tikv/tikv/issues/18399) @[3pointer](https://github.com/3pointer)
-        - 通过过滤元数据文件，优化了 PiTR 恢复读取元数据的耗时 [#61318](https://github.com/pingcap/tidb/issues/61318) @[3pointer](https://github.com/3pointer)
-        - 如今即便指定了 `-f` 来过滤表，BR 也会对集群内是否存在表进行检查 [#61592](https://github.com/pingcap/tidb/issues/61592) @[RidRisR](https://github.com/RidRisR)
+        - TiKV 的 Download API 支持在下载备份文件时，支持过滤掉某段时间范围内的数据，以避免恢复时导入过旧或过新的数据版本 [#18399](https://github.com/tikv/tikv/issues/18399) @[3pointer](https://github.com/3pointer)
+        - 支持按时间戳过滤日志备份的元数据文件，以缩短 PITR 恢复读取元数据的耗时 [#61318](https://github.com/pingcap/tidb/issues/61318) @[3pointer](https://github.com/3pointer)
 
     + TiCDC <!--tw@lilin90: 4 notes-->
 
@@ -153,10 +152,11 @@ TiDB 版本：8.5.3
 
         - (dup): release-9.0.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复在断点恢复时额外检查存储节点可用空间的问题 [#54316](https://github.com/pingcap/tidb/issues/54316) @[Leavrth](https://github.com/Leavrth)
         - 修复 PITR 无法恢复大于 3072 字节的索引的问题 [#58430](https://github.com/pingcap/tidb/issues/58430) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复在全量备份过程中 RangeTree 结构内存使用效率低下的问题 [#58587](https://github.com/pingcap/tidb/issues/58587) @[3pointer](https://github.com/3pointer)
-        - 增加了和 External Storage 交互时对 HTTP/2 GOAWAY 错误的容忍度 [#60143](https://github.com/pingcap/tidb/issues/60143) @[joechenrh](https://github.com/joechenrh)
-        - 修复了恢复过程中因为 swtich mode 导致的 “keepalive watchdog timedout” 的问题 [#18541](https://github.com/tikv/tikv/issues/18541) @[Leavrth](https://github.com/Leavrth)
-        - 修复了日志备份上传较大数据到 Azure Blob Storage 时会非常缓慢的问题。 [#18410](https://github.com/tikv/tikv/issues/18410) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复对大量表进行全量备份时 RangeTree 结构内存使用效率低的问题 [#58587](https://github.com/pingcap/tidb/issues/58587) @[3pointer](https://github.com/3pointer)
+        - 修复从外部存储导入数据时，遇到 HTTP/2 GOAWAY 报错未自动重试的问题 [#60143](https://github.com/pingcap/tidb/issues/60143) @[joechenrh](https://github.com/joechenrh)
+        - 修复恢复过程中因导入模式切换导致的 “keepalive watchdog timedout” 问题 [#18541](https://github.com/tikv/tikv/issues/18541) @[Leavrth](https://github.com/Leavrth)
+        - 修复日志备份上传大量数据至 Azure Blob Storage 时速度缓慢的问题 [#18410](https://github.com/tikv/tikv/issues/18410) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复了当指定了 `-f` 来过滤表时，BR 未检查集群内是否已存在对应表的问题 [#61592](https://github.com/pingcap/tidb/issues/61592) @[RidRisR](https://github.com/RidRisR)
         - (dup): release-9.0.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复 PITR 无法恢复大于 3072 字节的索引的问题 [#58430](https://github.com/pingcap/tidb/issues/58430) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-9.0.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复在全量备份过程中 RangeTree 结果内存使用效率低下的问题 [#58587](https://github.com/pingcap/tidb/issues/58587) @[3pointer](https://github.com/3pointer)
 
@@ -172,7 +172,7 @@ TiDB 版本：8.5.3
 
     + TiDB Lightning <!--tw@qiancai: 1 note-->
 
-        - 修复 lightning 向 TiKV 发起的 RPC 请求超时后返回 context deadline 的问题 [#61326](https://github.com/pingcap/tidb/issues/61326) @[OliverS929](https://github.com/OliverS929)
+        - 修复 TiDB Lightning 向 TiKV 发起的 RPC 请求超时后返回 `context deadline exceeded` 的问题 [#61326](https://github.com/pingcap/tidb/issues/61326) @[OliverS929](https://github.com/OliverS929)
 
     + Dumpling
 
