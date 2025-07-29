@@ -13,8 +13,8 @@ TiDB 版本：8.5.3
 
 ## 兼容性变更
 
-- note [#issue](https://github.com/pingcap/${repo-name}/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-- 重新引入了 telemetry 功能支持，但对其实现方式进行了优化：将原有的网络上报机制调整为本地日志输出方式 [#61766](https://github.com/pingcap/tidb/issues/61766) @[Defined2014](https://github.com/Defined2014) <!--tw@Oreoxmt-->
+- 新增以下用于[代价模型](/cost-model.md)内部使用的系统变量，**不建议**修改这些变量的值：`tidb_opt_hash_agg_cost_factor`、`tidb_opt_hash_join_cost_factor`、`tidb_opt_index_join_cost_factor`、`tidb_opt_index_lookup_cost_factor`、`tidb_opt_index_merge_cost_factor`、`tidb_opt_index_reader_cost_factor`、`tidb_opt_index_scan_cost_factor`、`tidb_opt_limit_cost_factor`、`tidb_opt_merge_join_cost_factor`、`tidb_opt_sort_cost_factor`、`tidb_opt_stream_agg_cost_factor`、`tidb_opt_table_full_scan_cost_factor`、`tidb_opt_table_range_scan_cost_factor`、`tidb_opt_table_reader_cost_factor`、`tidb_opt_table_rowid_cost_factor`、`tidb_opt_table_tiflash_scan_cost_factor`、`tidb_opt_topn_cost_factor` [#60357](https://github.com/pingcap/tidb/issues/60357) @[terry1purcell](https://github.com/terry1purcell) <!--tw@Oreoxmt-->
+- 重新引入对遥测功能的支持，但其行为已更改为仅将遥测相关信息输出到日志文件，不再通过网络发送给 PingCAP [#61766](https://github.com/pingcap/tidb/issues/61766) @[Defined2014](https://github.com/Defined2014) <!--tw@Oreoxmt-->
 
 ## 改进提升
 
@@ -33,14 +33,13 @@ TiDB 版本：8.5.3
 
 + TiKV <!--tw@Oreoxmt: 8 notes-->
 
-    - 支持在不阻塞前台写入的情况下导入 SST 文件，降低延迟影响 [#18081](https://github.com/tikv/tikv/issues/18081) @[hhwyt](https://github.com/hhwyt)
-    - 修复 flow controller 引发的延迟抖动问题 [#18625](https://github.com/tikv/tikv/issues/18625) @[hhwyt](https://github.com/hhwyt)
-    - 优化 TiDB 执行 `ADD INDEX` 操作期间的尾延迟 [#18081](https://github.com/tikv/tikv/issues/18081) @[overvenus](https://github.com/overvenus)
-    - 修复 TiKV 正常退出时未能中止正在进行的手动 Compaction 任务的问题 [#18396](https://github.com/tikv/tikv/issues/18396) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 优化 raftstore 中 `CompactedEvent` 的处理逻辑，将其移至 `split-check` worker 执行 [#18532](https://github.com/tikv/tikv/issues/18532) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 移除 “sst ingest is too slow” 的日志，避免引发性能抖动 [#18549](https://github.com/tikv/tikv/issues/18549) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 改进分盘部署场景下 kvdb 磁盘 I/O 抖动的检测机制 [#18463](https://github.com/tikv/tikv/issues/18463) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 优化 Raft-Engine 中 `fetch_entries_to` 的性能，减少竞争，提升混合负载下的执行性能 [#18605](https://github.com/tikv/tikv/issues/18605) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 支持在不阻塞前台写入的情况下导入 SST 文件，降低延迟带来的影响 [#18081](https://github.com/tikv/tikv/issues/18081) @[hhwyt](https://github.com/hhwyt)
+    - 降低流量控制 (flow controller) 引发的性能抖动 [#18625](https://github.com/tikv/tikv/issues/18625) @[hhwyt](https://github.com/hhwyt)
+    - 优化 TiDB 在执行 `ADD INDEX` 操作期间的尾延迟 [#18081](https://github.com/tikv/tikv/issues/18081) @[overvenus](https://github.com/overvenus)
+    - 优化 Raftstore 中 `CompactedEvent` 的处理逻辑，将其移至 `split-check` worker 中执行 [#18532](https://github.com/tikv/tikv/issues/18532) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 移除 `sst ingest is too slow` 的日志，避免引发性能抖动 [#18549](https://github.com/tikv/tikv/issues/18549) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 优化分盘部署场景下 KvDB 磁盘 I/O 抖动的检测机制 [#18463](https://github.com/tikv/tikv/issues/18463) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 优化 Raft Engine 中 `fetch_entries_to` 的性能，减少竞争，提升混合负载下的执行性能 [#18605](https://github.com/tikv/tikv/issues/18605) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-9.0.0.md > 改进提升> TiKV - 优化残留数据清理机制，减少对请求延迟的影响 [#18107](https://github.com/tikv/tikv/issues/18107) @[LykxSassinator](https://github.com/LykxSassinator)
 
 + PD <!--tw@hfxsd: 3 notes-->
@@ -126,18 +125,19 @@ TiDB 版本：8.5.3
 
 + TiKV <!--tw@Oreoxmt: 6 notes-->
 
-    - 修复集群升级导致默认 Region 大小被意外更改的问题 [#18503](https://github.com/tikv/tikv/issues/18503) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 修复 TiKV 在正常退出时未能终止正在进行的手动 compaction 任务的问题 [#18396](https://github.com/tikv/tikv/issues/18396) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 修复升级集群后，默认 Region 大小被意外更改的问题 [#18503](https://github.com/tikv/tikv/issues/18503) @[LykxSassinator](https://github.com/LykxSassinator)
     - 修复 TiKV 可能使用客户端无法解码的压缩算法的问题 [#18079](https://github.com/tikv/tikv/issues/18079) @[ekexium](https://github.com/ekexium)
-    - 修复关闭 Titan 后，Blob 索引可能导致快照应用失败的问题 [#18434](https://github.com/tikv/tikv/issues/18434) @[v01dstar](https://github.com/v01dstar)
-    - 修复 slowlog 中 `StoreMsg` 的误导性日志问题 [#18561](https://github.com/tikv/tikv/issues/18561) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 修复关闭 Titan 后，Blob 索引可能导致 apply snapshot 失败的问题 [#18434](https://github.com/tikv/tikv/issues/18434) @[v01dstar](https://github.com/v01dstar)
+    - 修复慢日志中 `StoreMsg` 日志信息存在误导性描述的问题 [#18561](https://github.com/tikv/tikv/issues/18561) @[LykxSassinator](https://github.com/LykxSassinator)
     - 修复高并发场景下 TiKV 过量放行 SST 导入请求的问题 [#18452](https://github.com/tikv/tikv/issues/18452) @[hbisheng](https://github.com/hbisheng)
-    - 修复扫描 lock 可能返回导致重复结果导致 tikv panic 问题 [#16818](https://github.com/tikv/tikv/issues/16818) @[cfzjywxk](https://github.com/cfzjywxk)
+    - 修复扫描锁时可能出现重复结果导致 TiKV panic 问题 [#16818](https://github.com/tikv/tikv/issues/16818) @[cfzjywxk](https://github.com/cfzjywxk)
 
 + PD <!--tw@Oreoxmt: 3 notes-->
 
-    - 修复了慢节点检测机制中 `recovery-duration` 没有生效的问题 [#9384](https://github.com/tikv/pd/issues/9384) @[rleungx](https://github.com/rleungx)
-    - 修复了 evict leader 调度器可能在集群升级后被错误暂停的问题 [#9416](https://github.com/tikv/pd/issues/9416) @[rleungx](https://github.com/rleungx)
-    - 修复了 TiDB Dashboard tcp 链接未正确关闭， 导致 pd goroutine 泄露问题 [#9402](https://github.com/tikv/pd/issues/9402) @[baurine](https://github.com/baurine)
+    - 修复慢节点检测机制中 `recovery-duration` 未生效的问题 [#9384](https://github.com/tikv/pd/issues/9384) @[rleungx](https://github.com/rleungx)
+    - 修复 Evict Leader 调度器可能在集群升级后被错误暂停的问题 [#9416](https://github.com/tikv/pd/issues/9416) @[rleungx](https://github.com/rleungx)
+    - 修复 TiDB Dashboard tcp 链接未正确关闭， 导致 pd goroutine 泄露问题 [#9402](https://github.com/tikv/pd/issues/9402) @[baurine](https://github.com/baurine)
     - 修复新上线的 TiKV 节点可能无法被调度问题 [#9145](https://github.com/tikv/pd/issues/9145) @[bufferflies](https://github.com/bufferflies)
 
 + TiFlash <!--tw@hfxsd: 3 notes-->
