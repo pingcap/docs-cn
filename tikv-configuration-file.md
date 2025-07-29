@@ -2070,38 +2070,38 @@ Raft Engine 相关的配置项。
 
 ## gc.auto-compaction
 
-### `check-interval` <span class="version-mark">从 v7.5.7 版本开始引入</span>
+### `check-interval` <span class="version-mark">从 v7.5.7、v9.0.0 版本开始引入</span>
 
 + TiKV auto compaction 检查间隔时间。在此时间段内，满足 auto compaction 条件的 region 会按优先级进行处理。在时间到达时， TiKV 会重新检查 region 信息，并重新计算优先级。
 + 默认值：`"300s"`
 
-### `tombstone-num-threshold` <span class="version-mark">从 v7.5.7 版本开始引入</span>
+### `tombstone-num-threshold` <span class="version-mark">从 v7.5.7、v9.0.0 版本开始引入</span>
 
 + 触发 TiKV auto compaction 需要的 RocksDB tombstone 个数 (或满足 perent-threshold）。仅在关闭 compaction filter 时生效。
 + 默认值：`10000`
 + 最小值：`0`
 
-### `tombstone-percent-threshold` <span class="version-mark">从 v7.5.7 版本开始引入</span>
+### `tombstone-percent-threshold` <span class="version-mark">从 v7.5.7、v9.0.0 版本开始引入</span>
 
 + 触发 TiKV auto compaction 需要的 RocksDB tombstone 所占比例（或满足 num-threshold）。仅在关闭 compaction filter 时生效。
 + 默认值：`30`
 + 最小值：`0`
 + 最大值：`100`
 
-### `redundant-rows-threshold`  <span class="version-mark">从 v7.5.7 版本开始引入</span>
+### `redundant-rows-threshold`  <span class="version-mark">从 v7.5.7、v9.0.0 版本开始引入</span>
 
 + 触发 TiKV auto compaction 需要的冗余的 MVCC 数据行数 （或满足 percent-threshold），包含 RocksDB tombstone， TiKV stale versions 和 TiKV deletion tombstones。仅在开启 compaction filter 时生效。
 + 默认值：`50000`
 + 最小值：`0`
 
-### `redundant-rows-percent-threshold` <span class="version-mark">从 v7.5.7 版本开始引入</span>
+### `redundant-rows-percent-threshold` <span class="version-mark">从 v7.5.7、v9.0.0 版本开始引入</span>
 
 + 触发 TiKV auto compaction 需要的冗余的 MVCC 数据行数所占比例（或满足 num-threshold），包含 RocksDB tombstone， TiKV stale versions 和 TiKV deletion tombstones。仅在开启 compaction filter 时生效。
 + 默认值：`20`
 + 最小值：`0`
 + 最大值：`100`
 
-### `bottommost-level-force` <span class="version-mark">从 v7.5.7 版本开始引入</span>
+### `bottommost-level-force` <span class="version-mark">从 v7.5.7、v9.0.0 版本开始引入</span>
 
 + 是否强制 RocksDB 最底层的文件参与 compact。
 + 默认值：`true`
