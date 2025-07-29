@@ -752,45 +752,6 @@ raftstore 相关的配置项。
 + 默认值：Region 大小的 1/16
 + 最小值：0
 
-### `region-compact-check-interval`
-
-+ 检查是否需要人工触发 RocksDB compaction 的时间间隔，0 表示不启用。
-+ 默认值：5m
-+ 最小值：0
-
-### `region-compact-check-step`
-
-+ 每轮校验人工 compaction 时，一次性检查的 Region 个数。
-+ 默认值：
-    + 当 `storage.engine="raft-kv"` 时，默认值为 100。
-    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 5。
-
-### `region-compact-min-tombstones`
-
-+ 触发 RocksDB compaction 需要的 tombstone 个数。
-+ 默认值：10000
-+ 最小值：0
-
-### `region-compact-tombstones-percent`
-
-+ 触发 RocksDB compaction 需要的 tombstone 所占比例。
-+ 默认值：30
-+ 最小值：1
-+ 最大值：100
-
-### `region-compact-min-redundant-rows` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-+ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。
-+ 默认值：`50000`
-+ 最小值：`0`
-
-### `region-compact-redundant-rows-percent` <span class="version-mark">从 v7.1.0 版本开始引入</span>
-
-+ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。
-+ 默认值：`20`
-+ 最小值：`1`
-+ 最大值：`100`
-
 ### `report-region-buckets-tick-interval` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 > **警告：**
@@ -2106,6 +2067,46 @@ Raft Engine 相关的配置项。
 
 + 当 `enable-compaction-filter` 为 `false` 时 GC 线程个数。
 + 默认值：1
+
+## gc.auto-compaction
+
+### `check-interval` <span class="version-mark">从 v7.5.7 版本开始引入</span>
+
++ TiKV auto compaction 检查间隔时间。在此时间段内，满足 auto compaction 条件的 region 会按优先级进行处理。在时间到达时， TiKV 会重新检查 region 信息，并重新计算优先级。
++ 默认值：`"300s"`
+
+### `tombstone-num-threshold` <span class="version-mark">从 v7.5.7 版本开始引入</span>
+
++ 触发 TiKV auto compaction 需要的 RocksDB tombstone 个数 (或满足 perent-threshold）。仅在关闭 compaction filter 时生效。
++ 默认值：`10000`
++ 最小值：`0`
+
+### `tombstone-percent-threshold` <span class="version-mark">从 v7.5.7 版本开始引入</span>
+
++ 触发 TiKV auto compaction 需要的 RocksDB tombstone 所占比例（或满足 num-threshold）。仅在关闭 compaction filter 时生效。
++ 默认值：`30`
++ 最小值：`0`
++ 最大值：`100`
+
+### `redundant-rows-threshold`  <span class="version-mark">从 v7.5.7 版本开始引入</span>
+
++ 触发 TiKV auto compaction 需要的冗余的 MVCC 数据行数 （或满足 percent-threshold），包含 RocksDB tombstone， TiKV stale versions 和 TiKV deletion tombstones。仅在开启 compaction filter 时生效。
++ 默认值：`50000`
++ 最小值：`0`
+
+### `redundant-rows-percent-threshold` <span class="version-mark">从 v7.5.7 版本开始引入</span>
+
++ 触发 TiKV auto compaction 需要的冗余的 MVCC 数据行数所占比例（或满足 num-threshold），包含 RocksDB tombstone， TiKV stale versions 和 TiKV deletion tombstones。仅在开启 compaction filter 时生效。
++ 默认值：`20`
++ 最小值：`0`
++ 最大值：`100`
+
+### `bottommost-level-force` <span class="version-mark">从 v7.5.7 版本开始引入</span>
+
++ 是否强制 RocksDB 最底层的文件参与 compact。
++ 默认值：`true`
+
++ 是否强制
 
 ## backup
 
