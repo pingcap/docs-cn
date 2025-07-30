@@ -111,14 +111,14 @@ TiDB 版本：8.5.3
     - 修复 HashAgg 算子 memory tracker 内存信息收集错误导致大量 ERROR 日志打印的问题 [#58822](https://github.com/pingcap/tidb/issues/58822) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复 HashAgg 算子 spill 过程中, basePartialResult4GroupConcat 中 buffer 为 nil 导致的 panic [#61749](https://github.com/pingcap/tidb/issues/61749) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复聚合表达式计算过程中编码逻辑返回值问题导致的查询 panic  [#61735](https://github.com/pingcap/tidb/issues/61735) @[YangKeao](https://github.com/YangKeao) <!--tw@hfxsd: the following 12 notes-->
-    - 修复 HashJoin 算子因为内存超限导致的 Goroutine leak 问题 [#60926](https://github.com/pingcap/tidb/issues/60926) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复 IndexMerge 和 IndexLookUp 算子下发查询时共享 KV Request 导致的数据竞争 (Data Race) 问题 [#60175](https://github.com/pingcap/tidb/issues/60175) @[you06](https://github.com/you06)
+    - 修复 HashJoin 算子因为内存超限导致的 Goroutine 泄露的问题 [#60926](https://github.com/pingcap/tidb/issues/60926) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复 IndexMerge 和 IndexLookUp 算子下发查询时共享 KV Request 导致数据竞争 (Data Race) 的问题 [#60175](https://github.com/pingcap/tidb/issues/60175) @[you06](https://github.com/you06)
     - 修复包含 `_charset(xxx), _charset(xxx2), ...` 的 SQL 生成不同 Digest 的问题 [#58447](https://github.com/pingcap/tidb/issues/58447) @[xhebox](https://github.com/xhebox)
     - 修复处理非法 UTF8 字符时可能 panic 的问题 [#47521](https://github.com/pingcap/tidb/issues/47521) @[Defined2014](https://github.com/Defined2014)
-    - 修复插入夏令时间戳时，非法时间戳正常插入的问题，使其变为 `0000-00-00` [#61334](https://github.com/pingcap/tidb/issues/61334) @[mjonss](https://github.com/mjonss)
-    - 修复使用 `INSERT IGNORE` 插入非法夏令时间戳且 `sql_mode` 为严格模式时，产生的时间戳和 MySQL 不一致的问题 [#61439](https://github.com/pingcap/tidb/issues/61439) @[mjonss](https://github.com/mjonss)
+    - 修复插入夏令时间戳时，非法时间戳变为 `0000-00-00` 的问题 [#61334](https://github.com/pingcap/tidb/issues/61334) @[mjonss](https://github.com/mjonss)
+    - 修复使用 `INSERT IGNORE` 插入非法夏令时间戳且 `sql_mode` 为严格模式时，产生的时间戳与 MySQL 不一致的问题 [#61439](https://github.com/pingcap/tidb/issues/61439) @[mjonss](https://github.com/mjonss)
     - 修复频繁合并 Region 导致 TTL 任务无法启动的问题 [#61512](https://github.com/pingcap/tidb/issues/61512) @[YangKeao](https://github.com/YangKeao)
-    - 修复 TiDB 在类型未知时，于网络协议中返回长度零的问题 [#60503](https://github.com/pingcap/tidb/issues/60503) @[xhebox](https://github.com/xhebox)
+    - 修复 TiDB 在网络协议中返回的列信息长度可能为零的问题，若为零，则返回各字段类型的默认长度 [#60503](https://github.com/pingcap/tidb/issues/60503) @[xhebox](https://github.com/xhebox)
     - 修复网络协议中为 `blob` 类型返回的类型与 MySQL 不一致的问题 [#60195](https://github.com/pingcap/tidb/issues/60195) @[dveeden](https://github.com/dveeden)
     - 修复 `CAST()` 函数返回的长度与 MySQL 不兼容的问题 [#61350](https://github.com/pingcap/tidb/issues/61350) @[YangKeao](https://github.com/YangKeao)
     - 修复 `latin1_bin` 与 `utf8mb4_bin`、`utf8_bin` 的比较方式不相同的问题 [#60701](https://github.com/pingcap/tidb/issues/60701) @[hawkingrei](https://github.com/hawkingrei)
@@ -143,8 +143,8 @@ TiDB 版本：8.5.3
 + TiFlash <!--tw@hfxsd: 3 notes-->
 
     - 修复创建 `((NULL))` 形式的表达式索引会导致 TiFlash panic 的问题 [#9891](https://github.com/pingcap/tiflash/issues/9891) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复 Join 算子中因为 mutex 没有对齐导致 tiflash 在特定系统环境下 crash 的问题 [#10163](https://github.com/pingcap/tiflash/issues/10163) @[windtalker](https://github.com/windtalker)
-    - 修复 resource control low token signal 丢失导致查询被限速的问题 [#10137](https://github.com/pingcap/tiflash/issues/10137) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复 Join 算子中因为 mutex 没有对齐导致 TiFlash 在特定系统环境下 crash 的问题 [#10163](https://github.com/pingcap/tiflash/issues/10163) @[windtalker](https://github.com/windtalker)
+    - 修复 Resource Control Low Token Signal 丢失导致查询被限速的问题 [#10137](https://github.com/pingcap/tiflash/issues/10137) @[guo-shaoge](https://github.com/guo-shaoge)
 
 + Tools
 
