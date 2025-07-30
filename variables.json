@@ -3,5 +3,6 @@
   "tidb-version": "v8.5.0",
   "starter": "TiDB Cloud Serverless",
   "essential": "TiDB Cloud Essential",
-  "dedicated": "TiDB Cloud Dedicated"
+  "dedicated": "TiDB Cloud Dedicated",
+  "console-url": "tidbcloud.com"
 }
