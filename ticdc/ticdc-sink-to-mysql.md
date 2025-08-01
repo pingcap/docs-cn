@@ -65,6 +65,7 @@ URI 中可配置的参数如下：
 | `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）。       |
 | `cache-prep-stmts` | 向下游执行 SQL 时是否使用 prepared statement 并且开启客户端的 prepared statement 缓存（可选，默认值为 `true`）。 |
 | `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`）。 |
+| `multi-stmt-enable` | 向下游执行的 SQL 语句是否支持通过分号分隔多个 SQL 语句（可选，默认值为 `true`）。如果设置为 `false`，则每个 SQL 语句都作为独立的事务执行。如果设置为 `true`，`cache-prep-stmts` 不会生效。 |
 | `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选）。 |
 | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选）。 |
 | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选）。 |
