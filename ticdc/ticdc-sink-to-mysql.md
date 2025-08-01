@@ -64,6 +64,7 @@ URI 中可配置的参数如下：
 | `3306`         | 下游数据库的连接端口。                                 |
 | `worker-count` | 向下游执行 SQL 语句的并发度（可选，默认值为 `16`，最大值为 `1024`）。       |
 | `cache-prep-stmts` | 向下游执行 SQL 时是否使用 prepared statement 并且开启客户端的 prepared statement 缓存（可选，默认值为 `true`）。 |
+| `multi-stmt-enable` | 向下游执行的 SQL 语句是否支持通过分号分隔多个 SQL 语句（可选，默认值为 `true`）。如果设置为 `false`，则每个 SQL 语句都作为独立的事务执行。如果设置为 `true`，`cache-prep-stmts` 不会生效。 |
 | `max-txn-row`  | 向下游执行 SQL 语句的 batch 大小（可选，默认值为 `256`，最大值为 `2048`）。 |
 | `max-multi-update-row`  | 开启批量写入时，向下游执行 `UPDATE ROWS` SQL 语句的 batch 大小，总是小于 `max-txn-row`（可选，默认值为 `40`，最大值为 `256`）。|
 | `max-multi-update-row-size` | 开启批量写入时，向下游执行 `UPDATE ROWS` SQL 语句的 size 大小，如果超过这个 size，每个 row 会作为独立的 SQL（可选，默认值为 `1024`，最大值为 `8192`）。|
