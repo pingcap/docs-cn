@@ -8,7 +8,17 @@ summary: TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Gra
 
 使用 TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
-目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview、Performance\_overview 等。
+目前 Grafana Dashboard 分为:
+
+- 综合诊断面板：Overview、Performance\_Overview、Performance\_Read、Performance\_Write。
+- 组件面板：
+
+    - Data Transfer：Backup & Import、Binlog、Lightning、TiCDC。
+    - PD：PD。
+    - TiDB：TiDB、TiDB\_Runtime、TiDB\_Summary。
+    - TiKV：TiKV\_Summary、TiKV\_Details、TiKV\_FastTune、TiKV\_Raw、TiKV\_Trouble\_Shooting。
+    - TiFlash：TiFlash\_Summary、TiFlash\_Proxy\_Summary、TiFlash\_Proxy\_Details。
+    - Other：Node\_exporter、Blackbox\_exporter、Disk\_Performance、Kafka\_Overview。
 
 对于日常运维，我们单独挑选出重要的 Metrics 放在 Overview 页面，方便日常运维人员观察集群组件 (PD, TiDB, TiKV) 使用状态以及集群使用状态。
 
