@@ -170,7 +170,7 @@ snap-io-max-bytes-per-sec = "300MiB"
 
 本节对比了默认配置（基线）与基于前文[常见负载的关键配置](#常见负载的关键配置)优化后的性能表现。
 
-### Sysbench workloads on 1000 tables
+### 在 1000 张表上运行的 Sysbench 负载
 
 #### 测试环境
 
@@ -266,6 +266,7 @@ sysbench oltp_read_only run --mysql-host={host} --mysql-port={port} --mysql-user
 - 3 台 TiKV 服务器（16 核 CPU，64 GiB 内存）
 - TiDB 版本：v8.4.0
 - 测试负载：[go-ycsb workloada](https://github.com/pingcap/go-ycsb/blob/master/workloads/workloada)
+
 #### 性能对比
 
 下表对比了基线配置与优化配置下的吞吐量（每秒操作数，OPS）。
@@ -274,6 +275,7 @@ sysbench oltp_read_only run --mysql-host={host} --mysql-port={port} --mysql-user
 | ---------| ---- | ----| ----|
 | 加载数据 | 2858.5 | 5074.3 | +77.59% |
 | workloada | 2243.0 | 12804.3 | +470.86% |
+
 #### 性能分析
 
 自 v7.6.0 起，Titan 默认启用，TiDB v8.4.0 中 Titan 的默认 `min-blob-size` 为 `32KiB`。基线配置采用 `31KiB` 的记录大小，确保数据存储在 RocksDB 中。而在关键配置中，将 `min-blob-size` 设置为 `1KiB`，使数据存储在 Titan。
@@ -341,6 +343,7 @@ go-ycsb run mysql -P /ycsb/workloads/workloada -p {host} -p mysql.port={port} -p
 
 - 对于不需要严格一致性的读操作，启用低精度 TSO（[`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso)）。详见 [方案 1：低精度 TSO](#方案-1-低精度-TSO)。
 - 尽量将多个小事务合并为较大的事务。详见 [方案 2：TSO 请求并行模式](#方案-2-TSO-请求并行模式)。
+
 #### 方案 1：低精度 TSO
 
 你可以通过启用低精度 TSO 功能（[`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso)）来减少 TSO 等待时间。启用后，TiDB 会使用缓存的时间戳进行读取，从而降低 TSO 等待，但可能会读取到略微过时的数据。
@@ -361,6 +364,7 @@ go-ycsb run mysql -P /ycsb/workloads/workloada -p {host} -p mysql.port={port} -p
 ```sql
 SET GLOBAL tidb_low_resolution_tso=ON;
 ```
+
 #### 方案 2：TSO 请求并行模式
 
 [`tidb_tso_client_rpc_mode`](/system-variables.md#tidb_tso_client_rpc_mode-从-v840-版本开始引入) 系统变量用于切换 TiDB 向 PD 发送 TSO RPC 请求的模式。默认值为 `DEFAULT`。当满足以下条件时，可以考虑将该变量切换为 `PARALLEL` 或 `PARALLEL-FAST`，以获得潜在的性能提升：
@@ -428,6 +432,7 @@ admission-min-process-ms = 0
 ### 针对不同负载优化事务模式与 DML 类型
 
 TiDB 提供多种事务模式和 DML 执行类型，你可以根据不同负载模式优化性能。
+
 #### 事务模式
 
 你可以通过 [`tidb_txn_mode`](/system-variables.md#tidb_txn_mode) 系统变量设置事务模式。
@@ -450,6 +455,7 @@ TiDB 提供多种事务模式和 DML 执行类型，你可以根据不同负载�
   ```sql
   SET SESSION tidb_txn_mode = "optimistic";
   ```
+
 #### DML 类型
 
 你可以通过 [`tidb_dml_type`](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) 系统变量（自 v8.0.0 引入）控制 DML 语句的执行模式。
