@@ -342,8 +342,8 @@ go-ycsb run mysql -P /ycsb/workloads/workloada -p {host} -p mysql.port={port} -p
 
 如果你的业务负载包含大量高频小事务或频繁请求时间戳的查询，[TSO（Timestamp Oracle）](/glossary.md#timestamp-oracle-tso) 可能成为性能瓶颈。你可以通过 [**Performance Overview > SQL Execute Time Overview**](/grafana-performance-overview-dashboard.md#sql-execute-time-overview) 面板检查 TSO 等待时间是否占据 SQL 执行时间的较大比例。如果 TSO 等待时间较高，可考虑以下优化措施：
 
-- 对于不需要严格一致性的读操作，启用低精度 TSO（[`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso)）。详见 [方案 1：低精度 TSO](#方案-1低精度-TSO)。
-- 尽量将多个小事务合并为较大的事务。详见 [方案 2：TSO 请求并行模式](#方案-2TSO-请求并行模式)。
+- 对于不需要严格一致性的读操作，启用低精度 TSO（[`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso)）。详见 [方案 1：低精度 TSO](#方案-1低精度-tso)。
+- 尽量将多个小事务合并为较大的事务。详见 [方案 2：TSO 请求并行模式](#方案-2tso-请求并行模式)。
 
 #### 方案 1：低精度 TSO
 
@@ -464,7 +464,7 @@ TiDB 提供多种事务模式和 DML 执行类型，你可以根据不同负载�
 如需使用批量 DML 执行模式，将 `tidb_dml_type` 设置为 `"bulk"`。该模式适用于无冲突的大批量数据写入，可降低大规模写入时的内存消耗。使用前请确保：
 
 - 已开启自动提交（auto-commit）。
-- [`pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit-从-v600-版本开始引入) 配置项设置为 `false`。
+- [`pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit) 配置项设置为 `false`。
 
 ```sql
 SET SESSION tidb_dml_type = "bulk";
