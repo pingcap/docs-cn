@@ -74,7 +74,7 @@ SET GLOBAL tidb_opt_fix_control = '44262:ON,44389:ON,44823:10000,44830:ON,44855:
 
 以下为优化器控制配置项的详细说明，这些配置项可启用额外的优化能力：
 
-- [`44262:ON`](/optimizer-fix-controls.md#44262-从-v653-和-v720-版本开始引入)：当分区表缺少 [GlobalStats](/statistics.md#收集动态裁剪模式下的分区表统计信息) 时，使用 [动态裁剪模式](/partitioned-table.md#动态裁剪模式) 访问分区表。
+- [`44262:ON`](/optimizer-fix-controls.md#44262-从-v653-和-v720-版本开始引入)：当分区表缺少 [GlobalStats](/statistics.md#收集动态裁剪模式下的分区表统计信息) 时，使用[动态裁剪模式](/partitioned-table.md#动态裁剪模式)访问分区表。
 - [`44389:ON`](/optimizer-fix-controls.md#44389-从-v653-和-v720-版本开始引入)：对于如 `c = 10 and (a = 'xx' or (a = 'kk' and b = 1))` 这样的过滤条件，为 `IndexRangeScan` 构建更全面的扫描范围。
 - [`44823:10000`](/optimizer-fix-controls.md#44823-从-v730-版本开始引入)：为节省内存，计划缓存不会缓存参数数量超过该变量值的查询。将参数上限从默认的 `200` 提高到 `10000`，使带有超长 in-list 的查询也能命中计划缓存。
 - [`44830:ON`](/optimizer-fix-controls.md#44830-从-v657-和-v730-版本开始引入)：允许计划缓存缓存物理优化阶段生成的包含 `PointGet` 算子的执行计划。
