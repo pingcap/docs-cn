@@ -61,7 +61,7 @@ SET GLOBAL tidb_opt_fix_control = '44262:ON,44389:ON,44823:10000,44830:ON,44855:
 | [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 和 [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) | 启用实例级计划缓存，适合高并发连接或频繁使用预处理语句的场景。 | 实验性特性，建议先在测试环境验证，并关注内存占用。 |
 | [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 启用非预处理计划缓存，降低不使用预处理语句应用的编译开销。 | 无 |
 | [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt-从-v600-版本开始引入) | 针对每次执行后关闭计划的应用，缓存其计划。 | 无 |
-| [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-new-in-v830) | 收集所有列的统计信息，避免因缺失统计导致执行计划不佳。 | 设为 `'ALL'` 会增加 `ANALYZE TABLE` 的资源消耗。 |
+| [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) | 收集所有列的统计信息，避免因缺失统计导致执行计划不佳。 | 设为 `'ALL'` 会增加 `ANALYZE TABLE` 的资源消耗。 |
 | [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 将同步加载统计信息的超时时间从默认 100ms 提高到 2s，确保编译前加载完毕。 | 超时时间增加，编译等待时间变长。 |
 | [`tidb_opt_limit_push_down_threshold`](/system-variables.md#tidb_opt_limit_push_down_threshold) | 提高 `Limit` 或 `TopN` 下推到 TiKV 的阈值。 | 提高后优化器更倾向选择能优化 `ORDER BY` 和 `Limit` 的索引。 |
 | [`tidb_opt_derive_topn`](/system-variables.md#tidb_opt_derive_topn-从-v700-版本开始引入) | 启用从窗口函数派生 TopN/Limit 的优化，仅适用于 `ROW_NUMBER()`。 | 仅支持 `ROW_NUMBER()`。 |
@@ -74,7 +74,7 @@ SET GLOBAL tidb_opt_fix_control = '44262:ON,44389:ON,44823:10000,44830:ON,44855:
 
 以下为优化器控制配置项的详细说明，这些配置项可启用额外的优化能力：
 
-- [`44262:ON`](/optimizer-fix-controls.md#44262-从-v653-和-v720-版本开始引入)：当分区表缺少 [GlobalStats](/statistics.md#collect-statistics-of-partitioned-tables-in-dynamic-pruning-mode) 时，使用 [动态裁剪模式](/partitioned-table.md#dynamic-pruning-mode) 访问分区表。
+- [`44262:ON`](/optimizer-fix-controls.md#44262-从-v653-和-v720-版本开始引入)：当分区表缺少 [GlobalStats](/statistics.md#收集动态裁剪模式下的分区表统计信息) 时，使用 [动态裁剪模式](/partitioned-table.md#动态裁剪模式) 访问分区表。
 - [`44389:ON`](/optimizer-fix-controls.md#44389-从-v653-和-v720-版本开始引入)：对于如 `c = 10 and (a = 'xx' or (a = 'kk' and b = 1))` 这样的过滤条件，为 `IndexRangeScan` 构建更全面的扫描范围。
 - [`44823:10000`](/optimizer-fix-controls.md#44823-从-v730-版本开始引入)：为节省内存，计划缓存不会缓存参数数量超过该变量值的查询。将参数上限从默认的 `200` 提高到 `10000`，使带有超长 in-list 的查询也能命中计划缓存。
 - [`44830:ON`](/optimizer-fix-controls.md#44830-从-v657-和-v730-版本开始引入)：允许计划缓存缓存物理优化阶段生成的包含 `PointGet` 算子的执行计划。
@@ -342,8 +342,8 @@ go-ycsb run mysql -P /ycsb/workloads/workloada -p {host} -p mysql.port={port} -p
 
 如果你的业务负载包含大量高频小事务或频繁请求时间戳的查询，[TSO（Timestamp Oracle）](/glossary.md#timestamp-oracle-tso) 可能成为性能瓶颈。你可以通过 [**Performance Overview > SQL Execute Time Overview**](/grafana-performance-overview-dashboard.md#sql-execute-time-overview) 面板检查 TSO 等待时间是否占据 SQL 执行时间的较大比例。如果 TSO 等待时间较高，可考虑以下优化措施：
 
-- 对于不需要严格一致性的读操作，启用低精度 TSO（[`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso)）。详见 [方案 1：低精度 TSO](#方案-1-低精度-TSO)。
-- 尽量将多个小事务合并为较大的事务。详见 [方案 2：TSO 请求并行模式](#方案-2-TSO-请求并行模式)。
+- 对于不需要严格一致性的读操作，启用低精度 TSO（[`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso)）。详见 [方案 1：低精度 TSO](#方案-1低精度-TSO)。
+- 尽量将多个小事务合并为较大的事务。详见 [方案 2：TSO 请求并行模式](#方案-2TSO-请求并行模式)。
 
 #### 方案 1：低精度 TSO
 
@@ -392,7 +392,7 @@ SET GLOBAL tidb_tso_client_rpc_mode=PARALLEL-FAST;
 
 通过优化[下推计算结果缓存](/coprocessor-cache.md)，可以提升读密集型负载下的查询性能。该缓存用于存储协处理器请求的结果，减少对热点数据的重复计算。优化建议如下：
 
-1. 通过[下推计算结果缓存](/coprocessor-cache.md#view-the-grafana-monitoring-panel)监控面板观察缓存命中率。
+1. 通过[下推计算结果缓存](/coprocessor-cache.md#查看-grafana-监控面板)监控面板观察缓存命中率。
 2. 增大缓存容量，以提升大工作集下的命中率。
 3. 根据查询模式调整缓存准入阈值。
 
@@ -464,7 +464,7 @@ TiDB 提供多种事务模式和 DML 执行类型，你可以根据不同负载�
 如需使用批量 DML 执行模式，将 `tidb_dml_type` 设置为 `"bulk"`。该模式适用于无冲突的大批量数据写入，可降低大规模写入时的内存消耗。使用前请确保：
 
 - 已开启自动提交（auto-commit）。
-- [`pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit-new-in-v600) 配置项设置为 `false`。
+- [`pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit-从-v600-版本开始引入) 配置项设置为 `false`。
 
 ```sql
 SET SESSION tidb_dml_type = "bulk";
