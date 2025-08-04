@@ -14,7 +14,7 @@ TiDB 版本：8.5.3
 ## 兼容性变更
 
 - 新增以下用于[代价模型](/cost-model.md)内部使用的系统变量，**不建议**修改这些变量的值：`tidb_opt_hash_agg_cost_factor`、`tidb_opt_hash_join_cost_factor`、`tidb_opt_index_join_cost_factor`、`tidb_opt_index_lookup_cost_factor`、`tidb_opt_index_merge_cost_factor`、`tidb_opt_index_reader_cost_factor`、`tidb_opt_index_scan_cost_factor`、`tidb_opt_limit_cost_factor`、`tidb_opt_merge_join_cost_factor`、`tidb_opt_sort_cost_factor`、`tidb_opt_stream_agg_cost_factor`、`tidb_opt_table_full_scan_cost_factor`、`tidb_opt_table_range_scan_cost_factor`、`tidb_opt_table_reader_cost_factor`、`tidb_opt_table_rowid_cost_factor`、`tidb_opt_table_tiflash_scan_cost_factor`、`tidb_opt_topn_cost_factor` [#60357](https://github.com/pingcap/tidb/issues/60357) @[terry1purcell](https://github.com/terry1purcell) <!--tw@Oreoxmt-->
-- 重新引入对遥测功能的支持，但其行为已更改为仅将遥测相关信息输出到日志文件，不再通过网络发送给 PingCAP [#61766](https://github.com/pingcap/tidb/issues/61766) @[Defined2014](https://github.com/Defined2014) <!--tw@Oreoxmt-->
+- 重新引入对[遥测](https://docs.pingcap.com/zh/tidb/v8.5/telemetry)功能的支持，但其行为已更改为仅将遥测相关信息输出到日志文件，不再通过网络发送给 PingCAP [#61766](https://github.com/pingcap/tidb/issues/61766) @[Defined2014](https://github.com/Defined2014) <!--tw@Oreoxmt-->
 
 ## 改进提升
 
@@ -36,9 +36,9 @@ TiDB 版本：8.5.3
     - 支持在不阻塞前台写入的情况下导入 SST 文件，降低延迟带来的影响 [#18081](https://github.com/tikv/tikv/issues/18081) @[hhwyt](https://github.com/hhwyt)
     - 降低流量控制 (flow controller) 引发的性能抖动 [#18625](https://github.com/tikv/tikv/issues/18625) @[hhwyt](https://github.com/hhwyt)
     - 优化 TiDB 在执行 `ADD INDEX` 操作期间的尾延迟 [#18081](https://github.com/tikv/tikv/issues/18081) @[overvenus](https://github.com/overvenus)
-    - 优化 Raftstore 中 `CompactedEvent` 的处理逻辑，将其移至 `split-check` worker 中执行 [#18532](https://github.com/tikv/tikv/issues/18532) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 移除 `sst ingest is too slow` 的日志，避免引发性能抖动 [#18549](https://github.com/tikv/tikv/issues/18549) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 优化分盘部署场景下 KvDB 磁盘 I/O 抖动的检测机制 [#18463](https://github.com/tikv/tikv/issues/18463) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 优化 Raftstore 中 `CompactedEvent` 的处理逻辑，将其移至 `split-check` worker 中执行，减少对 Raftstore 主线程的阻塞 [#18532](https://github.com/tikv/tikv/issues/18532) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 在 SST ingest 太慢时，仅输出 `SST ingest is experiencing slowdowns` 日志，不再调用 `get_sst_key_ranges` 打印详细 key range，以避免引发性能抖动 [#18549](https://github.com/tikv/tikv/issues/18549) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 优化 KvDB 和 RaftDB 分盘部署场景下 KvDB 磁盘 I/O 抖动的检测机制 [#18463](https://github.com/tikv/tikv/issues/18463) @[LykxSassinator](https://github.com/LykxSassinator)
     - 优化 Raft Engine 中 `fetch_entries_to` 的性能，减少竞争，提升混合负载下的执行性能 [#18605](https://github.com/tikv/tikv/issues/18605) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-9.0.0.md > 改进提升> TiKV - 优化残留数据清理机制，减少对请求延迟的影响 [#18107](https://github.com/tikv/tikv/issues/18107) @[LykxSassinator](https://github.com/LykxSassinator)
 
