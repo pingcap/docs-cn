@@ -151,8 +151,6 @@ TiDB 版本：8.5.3
     + Backup & Restore (BR) <!--tw@qiancai: 5 notes-->
 
         - (dup): release-9.0.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复在断点恢复时额外检查存储节点可用空间的问题 [#54316](https://github.com/pingcap/tidb/issues/54316) @[Leavrth](https://github.com/Leavrth)
-        - 修复 PITR 无法恢复大于 3072 字节的索引的问题 [#58430](https://github.com/pingcap/tidb/issues/58430) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复对大量表进行全量备份时 RangeTree 结构内存使用效率低的问题 [#58587](https://github.com/pingcap/tidb/issues/58587) @[3pointer](https://github.com/3pointer)
         - 修复从外部存储导入数据时，遇到 HTTP/2 GOAWAY 报错未自动重试的问题 [#60143](https://github.com/pingcap/tidb/issues/60143) @[joechenrh](https://github.com/joechenrh)
         - 修复恢复过程中因导入模式切换导致的 `keepalive watchdog timedout` 问题 [#18541](https://github.com/tikv/tikv/issues/18541) @[Leavrth](https://github.com/Leavrth)
         - 修复日志备份上传大量数据至 Azure Blob Storage 时速度缓慢的问题 [#18410](https://github.com/tikv/tikv/issues/18410) @[YuJuncen](https://github.com/YuJuncen)
