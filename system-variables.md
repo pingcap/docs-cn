@@ -885,7 +885,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 类型：Duration
 - 默认值：`48h0m0s`
 - 范围：`[1s, 8760h0m0s]`
-- 这个变量用于控制日志备份任务 Checkpoint 的滞后时间限制。如果日志备份任务 Checkpoint 的滞后时间超过了该限制，该任务将会被 TiDB Advancer 暂停。
+- 这个变量用于控制日志备份任务 Checkpoint 的滞后时间限制。如果日志备份任务 Checkpoint 的滞后时间超过了该限制，TiDB Advancer 会暂停该任务。
 
 ### `tidb_allow_tiflash_cop` <span class="version-mark">从 v7.3.0 版本开始引入</span>
 
