@@ -28,7 +28,7 @@ TiDB 版本：8.5.3
     - 提升创建大量带外键的表时的建表速度，并优化内存使用效率 [#61126](https://github.com/pingcap/tidb/issues/61126) @[GMHDBJD](https://github.com/GMHDBJD)
     - 提升 `information_schema.tables` 表的读取效率 [#62020](https://github.com/pingcap/tidb/issues/62020) @[tangenta](https://github.com/tangenta)
     - 新增数据导入期间 Region 分裂与数据 ingest 的流控接口 [#61553](https://github.com/pingcap/tidb/issues/61553) @[tangenta](https://github.com/tangenta)
-    - 通过减少 `fmt.Sprintf()` 调用，优化 IndexScan 的计划构造流程 [#56649](https://github.com/pingcap/tidb/issues/56649) @[crazycs520](https://github.com/crazycs520)
+    - 通过减少 `fmt.Sprintf()` 调用，优化 IndexScan 的计划构造流程 [#56649](https://github.com/pingcap/tidb/issues/56649) @[crazycs520](https://github.com/crazycs520) <!--tw@lilin90: the following 2 notes-->
     - 使用全局排序加索引时，增加 Merge Sort 阶段的监控信息 [#61025](https://github.com/pingcap/tidb/issues/61025) @[fzzf678](https://github.com/fzzf678)
     - 删除 IndexLookup 算子发生 `context canceled` 错误时冗余的日志信息 [#61072](https://github.com/pingcap/tidb/issues/61072) @[yibin87](https://github.com/yibin87)
 
@@ -101,8 +101,8 @@ TiDB 版本：8.5.3
     - 修复禁用元数据锁 (Metadata Locking, MDL) 后，DDL 更新 schema 版本失败后卡住的问题 [#61210](https://github.com/pingcap/tidb/issues/61210) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复统计信息系统表展示非 `public` 索引的问题 [#60430](https://github.com/pingcap/tidb/issues/60430) @[tangenta](https://github.com/tangenta)
     - 修复 HashAgg 算子的 Memory Tracker 内存信息收集错误导致出现大量 ERROR 日志的问题 [#58822](https://github.com/pingcap/tidb/issues/58822) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复 HashAgg 算子落盘过程中, `basePartialResult4GroupConcat` 中 buffer 为 `nil` 导致 panic 的问题 [#61749](https://github.com/pingcap/tidb/issues/61749) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复聚合表达式计算过程中编码逻辑返回值问题导致的查询 panic 的问题 [#61735](https://github.com/pingcap/tidb/issues/61735) @[YangKeao](https://github.com/YangKeao) <!--tw@hfxsd: the following 12 notes-->
+    - 修复 HashAgg 算子落盘过程中，`basePartialResult4GroupConcat` 中 buffer 为 `nil` 导致 panic 的问题 [#61749](https://github.com/pingcap/tidb/issues/61749) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复聚合表达式计算过程中，编码逻辑返回值问题导致查询 panic 的问题 [#61735](https://github.com/pingcap/tidb/issues/61735) @[YangKeao](https://github.com/YangKeao) <!--tw@hfxsd: the following 12 notes-->
     - 修复 HashJoin 算子因为内存超限导致的 Goroutine 泄露的问题 [#60926](https://github.com/pingcap/tidb/issues/60926) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复 IndexMerge 和 IndexLookUp 算子下发查询时共享 KV Request 导致数据竞争 (Data Race) 的问题 [#60175](https://github.com/pingcap/tidb/issues/60175) @[you06](https://github.com/you06)
     - 修复包含 `_charset(xxx), _charset(xxx2), ...` 的 SQL 生成不同 Digest 的问题 [#58447](https://github.com/pingcap/tidb/issues/58447) @[xhebox](https://github.com/xhebox)
