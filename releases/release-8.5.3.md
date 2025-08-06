@@ -24,7 +24,6 @@ TiDB 版本：8.5.3
     - 提升使用全局排序添加唯一索引的性能，并优化添加重复唯一索引时的报错信息 [#61689](https://github.com/pingcap/tidb/issues/61689) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 当 `IMPORT INTO` 启用全局排序时，禁用 TiKV 切换到导入模式 [#60361](https://github.com/pingcap/tidb/issues/60361) @[D3Hunter](https://github.com/D3Hunter)
     - 为索引添加过程新增监控指标，便于观察写入 TiKV 的速度 [#60925](https://github.com/pingcap/tidb/issues/60925) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - 新增针对 EOF 异常的重试机制，提高数据读取的稳定性 [#59754](https://github.com/pingcap/tidb/issues/59754) @[lance6716](https://github.com/lance6716)
     - 优化 `merge sort` 子任务的调度逻辑，提升排序性能 [#60375](https://github.com/pingcap/tidb/issues/60375) @[tangenta](https://github.com/tangenta)
     - 提升创建大量带外键的表时的建表速度，并优化内存使用效率 [#61126](https://github.com/pingcap/tidb/issues/61126) @[GMHDBJD](https://github.com/GMHDBJD)
     - 提升 `information_schema.tables` 表的读取效率 [#62020](https://github.com/pingcap/tidb/issues/62020) @[tangenta](https://github.com/tangenta)
