@@ -116,6 +116,12 @@ TiDB 版本：7.5.7
     - (dup): release-8.5.2.md > 错误修复> TiDB - 修复执行 `ADD UNIQUE INDEX` 可能导致数据不一致的问题  [#60339](https://github.com/pingcap/tidb/issues/60339) @[tangenta](https://github.com/tangenta)
     - (dup): release-8.5.3.md > 错误修复> TiDB - 修复统计信息系统表展示非 public 索引的问题 [#60430](https://github.com/pingcap/tidb/issues/60430) @[tangenta](https://github.com/tangenta)
     - (dup): release-8.5.3.md > 错误修复> TiDB - 修复 HashJoin 算子因为内存超限导致的 goroutine leak 问题 [#60926](https://github.com/pingcap/tidb/issues/60926) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复 PhysicalExchangeSender.HashCol 浅拷贝导致的 TiFlash crash 或者结果错误的问题 [#60517](https://github.com/pingcap/tidb/issues/60517) @[windtalker](https://github.com/windtalker)
+    - 减少 IndexLookUp 算子在查询被 cancel 时打印的无用日志 [#61072](https://github.com/pingcap/tidb/issues/61072) @[yibin87](https://github.com/yibin87)
+    - 修复 Aggregation 算子在发生内存超限时导致的 goroutine 泄漏问题 [#58004](https://github.com/pingcap/tidb/issues/58004) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复 bit 类型表的 stats 无法加载的问题 [#62289](https://github.com/pingcap/tidb/issues/62289) @[YangKeao](https://github.com/YangKeao)
+    - 修复 hashjoin v1 算子 Close() 方法没有 recovery panic 的问题 [#60926](https://github.com/pingcap/tidb/issues/60926) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复 index merge/index lookup 算子下发查询时共享 kv request 导致的 data race [#60175](https://github.com/pingcap/tidb/issues/60175) @[you06](https://github.com/you06)
 
 + TiKV
 
@@ -147,6 +153,10 @@ TiDB 版本：7.5.7
     - (dup): release-8.5.2.md > 错误修复> TiFlash - 修复插入单行超过 16 MiB 的数据后，TiFlash 可能无法正常重启的问题 [#10052](https://github.com/pingcap/tiflash/issues/10052) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-8.5.3.md > 错误修复> TiFlash - 修复 resource control low token signal 丢失导致查询被限速的问题 [#10137](https://github.com/pingcap/tiflash/issues/10137) @[guo-shaoge](https://github.com/guo-shaoge)
     - (dup): release-8.5.2.md > 错误修复> TiFlash - 修复执行包含 `GROUP BY ... WITH ROLLUP` 的 SQL 语句时，可能会出现 `Exception: Block schema mismatch` 报错的问题 [#10110](https://github.com/pingcap/tiflash/issues/10110) @[gengliqi](https://github.com/gengliqi)
+    - 降低因为 SSL 重新加载导致 TiFlash crash 的可能性(#8535) [#8535](https://github.com/pingcap/tiflash/issues/8535) @[windtalker](https://github.com/windtalker)
+    - 修复 TiFlash 报错 fmt::v10::format_error unmatched '}' in format string [#9087](https://github.com/pingcap/tiflash/issues/9087) @[windtalker](https://github.com/windtalker)
+    - 修复执行包含 `GROUP BY ... WITH ROLLUP` 的 SQL 语句时，可能会出现 `Exception: Block schema mismatch` 报错的问题 [#10110](https://github.com/pingcap/tiflash/issues/10110) @[gengliqi](https://github.com/gengliqi)
+    - 修复 TiFlash resource control 信号丢失导致的非预期的查询受限问题 [#10137](https://github.com/pingcap/tiflash/issues/10137) @[guo-shaoge](https://github.com/guo-shaoge)
 
 + Tools
 
