@@ -31,7 +31,7 @@ TiDB 版本：8.5.3
     - 新增数据导入期间 Region 分裂与数据 ingest 的流控接口 [#61553](https://github.com/pingcap/tidb/issues/61553) @[tangenta](https://github.com/tangenta)
     - 通过减少 `fmt.Sprintf()` 调用，优化 IndexScan 的计划构造流程 [#56649](https://github.com/pingcap/tidb/issues/56649) @[crazycs520](https://github.com/crazycs520)
     - 使用全局排序加索引时，增加 Merge Sort 阶段的监控信息 [#61025](https://github.com/pingcap/tidb/issues/61025) @[fzzf678](https://github.com/fzzf678)
-    - 删除 IndexLookup 算子发生 `context cancel` 错误时冗余的日志信息 [#61072](https://github.com/pingcap/tidb/issues/61072) @[yibin87](https://github.com/yibin87)
+    - 删除 IndexLookup 算子发生 `context canceled` 错误时冗余的日志信息 [#61072](https://github.com/pingcap/tidb/issues/61072) @[yibin87](https://github.com/yibin87)
 
 + TiKV <!--tw@Oreoxmt: 8 notes-->
 
