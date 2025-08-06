@@ -325,7 +325,7 @@ SHOW BUILTINS;
 | year                        |
 | yearweek                    |
 +-----------------------------+
-299 rows in set (0.00 sec)
+299 rows in set (0.001 sec)
 ```
 
 ## MySQL 兼容性
