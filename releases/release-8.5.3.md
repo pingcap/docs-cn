@@ -83,7 +83,7 @@ TiDB 版本：8.5.3
 
 ## 错误修复
 
-+ TiDB <!--tw@lilin90: the following 12 notes-->
++ TiDB <!--tw@lilin90: the following 10 notes-->
 
     - 修复 `ALTER RANGE meta SET PLACEMENT POLICY` 的 key 范围错误的问题 [#60888](https://github.com/pingcap/tidb/issues/60888) @[nolouch](https://github.com/nolouch)
     - (dup): release-9.0.0.md > 错误修复> TiDB - 修复在添加索引过程中减少 Worker 数量可能导致任务卡住的问题 [#59267](https://github.com/pingcap/tidb/issues/59267) @[D3Hunter](https://github.com/D3Hunter)
