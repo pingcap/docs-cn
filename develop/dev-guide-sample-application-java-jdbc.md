@@ -15,7 +15,7 @@ TiDB 是一个兼容 MySQL 的数据库。JDBC 是 Java 的数据访问 API。[M
 
 > **注意**
 >
-> - 本文档适用于 {{{ .starter }}}、TiDB Cloud Dedicated 和本地部署的 TiDB。
+> - 本文档适用于 {{{ .starter }}}、{{{ .essential }}}、TiDB Cloud Dedicated 和本地部署的 TiDB。
 > - 从 TiDB v7.4 起，如果 JDBC URL 中未配置 `connectionCollation`，且 `characterEncoding` 未配置或配置为 `UTF-8`，JDBC 连接所使用的排序规则取决于 JDBC 驱动版本。详情请参考 [JDBC 连接所使用的排序规则](/faq/sql-faq.md#jdbc-连接所使用的排序规则)。
 
 ## 前置需求
@@ -46,7 +46,7 @@ cd tidb-java-jdbc-quickstart
 
 <SimpleTab>
 
-<div label="{{{ .starter }}}">
+<div label="{{{ .starter }}} or Essential">
 
 1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 {{{ .starter }}} 集群，进入集群的 **Overview** 页面。
 
