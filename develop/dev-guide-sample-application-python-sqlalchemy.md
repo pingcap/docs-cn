@@ -58,7 +58,7 @@ SQLAlchemy 是一个支持多种数据库的 ORM 库。它是对数据库的高�
 
 <SimpleTab>
 
-<div label="{{{ .starter }}} or Essential">
+<div label="{{{ .starter }}} 或 Essential">
 
 > **注意：**
 >
