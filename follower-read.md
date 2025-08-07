@@ -13,6 +13,11 @@ Follower Read 功能适用于以下场景：
 - 希望通过 follower 打散读热点。
 - 希望通过读取本地副本节省流量。
 
+> **说明：**
+>
+> TiDB 使用 `zone` label 来判断本地副本，当目标 TiKV 和 TiDB 的 `zone` label 相同时，TiDB 认为这是一个本地的 TiKV，详情可以参考[通过拓扑 label 进行副本调度](schedule-replicas-by-topology-labels.md)文档。
+
+
 ## 概述
 
 Follower Read 功能是指在强一致性读的前提下使用 Region 的 follower 副本来承载数据读取的任务，从而提升 TiDB 集群的吞吐能力并降低 leader 负载。Follower Read 包含一系列将 TiKV 读取负载从 Region 的 leader 副本上 offload 到 follower 副本的负载均衡机制。TiKV 的 Follower Read 可以保证数据读取的一致性，可以为用户提供强一致的数据读取能力。
@@ -88,7 +93,7 @@ TiKV follower 节点处理读取请求时，首先使用 Raft `ReadIndex` 协议
 
 ### Follower 副本选择策略
 
-由于 TiKV 的 Follower Read 不会破坏 TiDB 的 Snapshot Isolation 事务隔离级别，因此 TiDB 会根据 `tidb_replica_read` 选择满足要求的副本进行读取。当选中的 follower 节点出现无法访问的故障或其他错误时，会切换到 leader 提供服务。
+由于 TiKV 的 Follower Read 不会破坏 TiDB 的 Snapshot Isolation 事务隔离级别，因此 TiDB 在第一次选取副本时会根据 `tidb_replica_read` 的要求进行选择。从第二次重试开始，TiDB 会以完成读取为优先目标，因此当选中的 follower 节点出现无法访问的故障或其他错误时，会切换到 leader 提供服务。
 
 #### `leader`
 - 选择 leader 副本进行读取，不考虑副本位置。
