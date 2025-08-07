@@ -15,7 +15,7 @@ TiDB 是一个兼容 MySQL 的数据库。[SQLAlchemy](https://www.sqlalchemy.or
 
 > **注意**
 >
-> 本文档适用于 {{{ .starter }}}、TiDB Cloud Dedicated 和本地部署的 TiDB。
+> 本文档适用于 {{{ .starter }}}、{{{ .essential }}}、TiDB Cloud Dedicated 和本地部署的 TiDB。
 
 ## 前置需求
 
@@ -58,7 +58,7 @@ SQLAlchemy 是一个支持多种数据库的 ORM 库。它是对数据库的高�
 
 <SimpleTab>
 
-<div label="{{{ .starter }}}">
+<div label="{{{ .starter }}} or Essential">
 
 > **注意：**
 >
