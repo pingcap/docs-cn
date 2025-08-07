@@ -27,7 +27,7 @@ summary: 了解如何通过配置关键参数和应对边缘场景来优化 TiDB
 以下配置项常用于优化 TiDB 性能：
 
 - 增强执行计划缓存，如 [SQL 预处理执行计划缓存](/sql-prepared-plan-cache.md)、[非预处理计划缓存](/sql-non-prepared-plan-cache.md)和[实例级执行计划缓存](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入)。
-- 通过 [Optimizer Fix Controls ](/optimizer-fix-controls.md) 优化 TiDB 优化器行为。
+- 通过 [Optimizer Fix Controls](/optimizer-fix-controls.md) 优化 TiDB 优化器行为。
 - 更积极地使用 [Titan](/storage-engine/titan-overview.md) 存储引擎。
 - 微调 TiKV 的压缩与流控配置，确保写入密集型负载下的性能与稳定性。
 
