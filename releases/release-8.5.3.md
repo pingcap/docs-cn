@@ -43,7 +43,7 @@ TiDB 版本：8.5.3
     - 优化 Raft Engine 中 `fetch_entries_to` 的性能，减少竞争，提升混合负载下的执行性能 [#18605](https://github.com/tikv/tikv/issues/18605) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-9.0.0.md > 改进提升> TiKV - 优化残留数据清理机制，减少对请求延迟的影响 [#18107](https://github.com/tikv/tikv/issues/18107) @[LykxSassinator](https://github.com/LykxSassinator)
 
-+ PD <!--tw@hfxsd: 3 notes-->
++ PD <!--tw@hfxsd: 2 notes-->
 
     - 在 Prometheues 中新增 GO Runtime 相关监控指标 [#8931](https://github.com/tikv/pd/issues/8931) @[bufferflies](https://github.com/bufferflies)
     - 将触发慢节点驱逐 leader 后的恢复时间从 600 秒延长到 900 秒（15 分钟）[#9329](https://github.com/tikv/pd/issues/9329) @[rleungx](https://github.com/rleungx)
@@ -104,13 +104,13 @@ TiDB 版本：8.5.3
     - 修复 HashAgg 算子落盘过程中，`basePartialResult4GroupConcat` 中 buffer 为 `nil` 导致 panic 的问题 [#61749](https://github.com/pingcap/tidb/issues/61749) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复聚合表达式计算过程中，编码逻辑返回值问题导致查询 panic 的问题 [#61735](https://github.com/pingcap/tidb/issues/61735) @[YangKeao](https://github.com/YangKeao) <!--tw@hfxsd: the following 12 notes-->
     - 修复 HashJoin 算子因为内存超限导致的 Goroutine 泄露的问题 [#60926](https://github.com/pingcap/tidb/issues/60926) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复 IndexMerge 和 IndexLookUp 算子下发查询时共享 KV Request 导致数据竞争 (Data Race) 的问题 [#60175](https://github.com/pingcap/tidb/issues/60175) @[you06](https://github.com/you06)
-    - 修复包含 `_charset(xxx), _charset(xxx2), ...` 的 SQL 生成不同 Digest 的问题 [#58447](https://github.com/pingcap/tidb/issues/58447) @[xhebox](https://github.com/xhebox)
-    - 修复处理非法 UTF8 字符时可能 panic 的问题 [#47521](https://github.com/pingcap/tidb/issues/47521) @[Defined2014](https://github.com/Defined2014)
+    - 修复 `IndexMerge` 和 `IndexLookUp` 算子下发查询时，共享 KV Request 导致数据竞争 (Data Race) 的问题 [#60175](https://github.com/pingcap/tidb/issues/60175) @[you06](https://github.com/you06)
+    - 修复包含 `_charset(xxx), _charset(xxx2), ...` 的 SQL 语句生成不同 Digest 的问题 [#58447](https://github.com/pingcap/tidb/issues/58447) @[xhebox](https://github.com/xhebox)
+    - 修复处理非法 UTF-8 字符时可能 panic 的问题 [#47521](https://github.com/pingcap/tidb/issues/47521) @[Defined2014](https://github.com/Defined2014)
     - 修复插入夏令时间戳时，非法时间戳变为 `0000-00-00` 的问题 [#61334](https://github.com/pingcap/tidb/issues/61334) @[mjonss](https://github.com/mjonss)
     - 修复使用 `INSERT IGNORE` 插入非法夏令时间戳且 `sql_mode` 为严格模式时，产生的时间戳与 MySQL 不一致的问题 [#61439](https://github.com/pingcap/tidb/issues/61439) @[mjonss](https://github.com/mjonss)
     - 修复频繁合并 Region 导致 TTL 任务无法启动的问题 [#61512](https://github.com/pingcap/tidb/issues/61512) @[YangKeao](https://github.com/YangKeao)
-    - 修复 TiDB 在网络协议中返回的列信息长度可能为零的问题，若为零，则返回各字段类型的默认长度 [#60503](https://github.com/pingcap/tidb/issues/60503) @[xhebox](https://github.com/xhebox)
+    - 修复 TiDB 在网络协议中返回的列信息长度可能为零的问题；若为零，则返回各字段类型的默认长度 [#60503](https://github.com/pingcap/tidb/issues/60503) @[xhebox](https://github.com/xhebox)
     - 修复网络协议中为 `blob` 类型返回的类型与 MySQL 不一致的问题 [#60195](https://github.com/pingcap/tidb/issues/60195) @[dveeden](https://github.com/dveeden)
     - 修复 `CAST()` 函数返回的长度与 MySQL 不兼容的问题 [#61350](https://github.com/pingcap/tidb/issues/61350) @[YangKeao](https://github.com/YangKeao)
     - 修复 `latin1_bin` 与 `utf8mb4_bin`、`utf8_bin` 的比较方式不相同的问题 [#60701](https://github.com/pingcap/tidb/issues/60701) @[hawkingrei](https://github.com/hawkingrei)
