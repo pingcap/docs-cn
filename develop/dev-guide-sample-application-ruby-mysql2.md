@@ -68,7 +68,7 @@ bundle add mysql2 dotenv
 根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB 集群。
 
 <SimpleTab>
-<div label="{{{ .starter }}} or Essential">
+<div label="{{{ .starter }}} 或 Essential">
 
 1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，点击你的目标集群的名称，进入集群的 **Overview** 页面。
 

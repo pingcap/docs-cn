@@ -46,7 +46,7 @@ cd tidb-java-springboot-jpa-quickstart
 
 <SimpleTab>
 
-<div label="{{{ .starter }}} or Essential">
+<div label="{{{ .starter }}} 或 Essential">
 
 1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 {{{ .starter }}} 集群，进入集群的 **Overview** 页面。
 

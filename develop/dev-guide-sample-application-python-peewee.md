@@ -56,7 +56,7 @@ peewee 是一个支持多种数据库的 ORM 库。它是对数据库的高层�
 
 <SimpleTab>
 
-<div label="{{{ .starter }}} or Essential">
+<div label="{{{ .starter }}} 或 Essential">
 
 1. 在 TiDB Cloud 的 [**Clusters**](https://{{{.console-url}}}/project/clusters) 页面中，选择你的 {{{ .starter }}} 集群，进入集群的 **Overview** 页面。
 
