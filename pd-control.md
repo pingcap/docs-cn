@@ -1569,8 +1569,32 @@ store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"en
 ```
 
 ```
-{"id":1,"address":"127.0.0.1:20161""state_name":"Up"}
-{"id":5,"address":"127.0.0.1:20162""state_name":"Up"}
+{"id":1,"address":"127.0.0.1:20161","state_name":"Up"}
+{"id":5,"address":"127.0.0.1:20162","state_name":"Up"}
+...
+```
+
+### 查询存算分离架构下的 TiFlash 节点
+
+查找[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Write Node：
+
+```bash
+store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}, {"key":"engine_role","value":"write"}])) | {id, address, labels, state_name}'
+```
+
+```
+{"id":130,"address":"172.31.8.1:10161","labels":[{"key":"engine_role","value":"write"},{"key":"engine","value":"tiflash"}],"state_name":"Up"}
+...
+```
+
+查找[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Compute Node：
+
+```bash
+store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash_compute"}])) | {id, address, labels, state_name}'
+```
+
+```
+{"id":131,"address":"172.31.9.1:10161","labels":[{"key":"engine","value":"tiflash_compute"}],"state_name":"Up"}
 ...
 ```
 
