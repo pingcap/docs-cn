@@ -16,7 +16,7 @@ TiDB 是一个兼容 MySQL 的数据库。[AWS Lambda 函数](https://aws.amazon
 
 > **Note**
 >
-> 本文档适用于 {{{ .starter }}} 和本地部署的 TiDB。
+> 本文档适用于 {{{ .starter }}}、{{{ .essential }}} 和本地部署的 TiDB。
 
 ## 前置需求
 
@@ -67,7 +67,7 @@ npm install
 
 <SimpleTab>
 
-<div label="{{{ .starter }}}">
+<div label="{{{ .starter }}} 或 Essential">
 
 1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 {{{ .starter }}} 集群，进入集群的 **Overview** 页面。
 

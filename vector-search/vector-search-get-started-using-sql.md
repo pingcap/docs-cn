@@ -50,7 +50,7 @@ mysql --comments --host 127.0.0.1 --port 4000 -u root
 
 </div>
 
-<div label="{{{ .starter }}}">
+<div label="{{{ .starter }}} 或 Essential">
 
 对于 {{{ .starter }}} 集群，可以按照以下步骤连接到集群：
 
