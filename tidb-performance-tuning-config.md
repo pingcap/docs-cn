@@ -274,7 +274,7 @@ sysbench oltp_read_only run --mysql-host={host} --mysql-port={port} --mysql-user
 
 | 指标 | 基线配置 (OPS) | 优化配置 (OPS) | 提升幅度 |
 | ---------| ---- | ----| ----|
-| 加载数据   | 2858.5 | 5074.3  | +77.59%  |
+| Load data | 2858.5 | 5074.3  | +77.59%  |
 | Workloada | 2243.0 | 12804.3 | +470.86% |
 
 #### 性能分析
