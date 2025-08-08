@@ -24,6 +24,7 @@ TiDB 版本：7.5.7
     - (dup): release-8.5.3.md > 改进提升> TiDB - 新增导入期间分裂 region 和 ingest 数据的流控接口 [#61553](https://github.com/pingcap/tidb/issues/61553) @[tangenta](https://github.com/tangenta)
     - (dup): release-8.2.0.md > 改进提升> TiDB - 优化对大数据量的表进行简单查询时获取数据分布信息的性能 [#53850](https://github.com/pingcap/tidb/issues/53850) @[you06](https://github.com/you06)
     - (dup): release-8.5.3.md > 改进提升> TiDB - 新增加索引的导入速度监控 [#60925](https://github.com/pingcap/tidb/issues/60925) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 优化了 DML 在 DDL 执行期间的加锁逻辑，减少了 DML 和 DDL 操作的锁冲突，提高了某些场景下 DDL 的性能。但是由于在此过程中也会引入额外的二级索引加锁操作，可能会造成 DML 性能轻微下降 [#62337](https://github.com/pingcap/tidb/issues/62337) @[lcwangchao](https://github.com/lcwangchao)
 
 + TiKV
 
