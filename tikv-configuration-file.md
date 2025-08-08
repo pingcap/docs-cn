@@ -787,6 +787,69 @@ raftstore 相关的配置项。
 + 默认值：Region 大小的 1/16
 + 最小值：0
 
+### `region-compact-check-interval`
+
+> **警告：**
+>
+> 从 v7.5.7 和 v9.0.0 开始，此配置项已被弃用，其功能被移动至 `gc.auto-compaction.check-interval` 。
+
++ 检查是否需要人工触发 RocksDB compaction 的时间间隔，0 表示不启用。
++ 默认值：5m
++ 最小值：0
+
+### `region-compact-check-step`
+
+> **警告：**
+>
+> 从 v7.5.7 和 v9.0.0 开始，此配置项已被弃用。
+
++ 每轮校验人工 compaction 时，一次性检查的 Region 个数。
++ 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 100。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 5。
+
+### `region-compact-min-tombstones`
+
+> **警告：**
+>
+> 从 v7.5.7 和 v9.0.0 开始，此配置项已被弃用，其功能被移动至 `gc.auto-compaction.tombstone-num-threshold` 。
+
++ 触发 RocksDB compaction 需要的 tombstone 个数。
++ 默认值：10000
++ 最小值：0
+
+### `region-compact-tombstones-percent`
+
+> **警告：**
+>
+> 从 v7.5.7 和 v9.0.0 开始，此配置项已被弃用，其功能被移动至 `gc.auto-compaction.tombstone-percent-threshold` 。
+
++ 触发 RocksDB compaction 需要的 tombstone 所占比例。
++ 默认值：30
++ 最小值：1
++ 最大值：100
+
+### `region-compact-min-redundant-rows` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+> **警告：**
+>
+> 从 v7.5.7 和 v9.0.0 开始，此配置项已被弃用，其功能被移动至 `gc.auto-compaction.redundant-rows-threshold` 。
+
++ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。
++ 默认值：`50000`
++ 最小值：`0`
+
+### `region-compact-redundant-rows-percent` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+> **警告：**
+>
+> 从 v7.5.7 和 v9.0.0 开始，此配置项已被弃用，其功能被移动至 `gc.auto-compaction.redundant-rows-percent-threshold` 。
+
++ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。
++ 默认值：`20`
++ 最小值：`1`
++ 最大值：`100`
+
 ### `report-region-buckets-tick-interval` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 > **警告：**
