@@ -12,13 +12,13 @@ summary: 了解如何通过配置关键参数和应对边缘场景来优化 TiDB
 
 > **注意：**
 >
-> 本文介绍的优化技术有助于提升 TiDB 的性能，但性能调优通常需要在多个因素之间权衡，并不存在一劳永逸的方案解决所有的性能问题。部分优化方法涉及实验性特性，已在文中标注。虽然这些优化可以显著提升性能，但可能并不适合生产环境，实施前请充分评估。
+> 本文介绍的优化技术有助于提升 TiDB 的性能，但性能调优通常需要在多个因素之间权衡，并不存在一劳永逸的方案解决所有的性能问题。部分优化方法涉及实验特性，已在文中标注。虽然这些优化可以显著提升性能，但可能并不适合生产环境，实施前请充分评估。
 
 ## 概述
 
 要实现 TiDB 的最佳性能，需要对多项配置进行细致调优。很多情况下，达到最佳性能需要调大默认值的配置。
 
-默认的配置优先考虑的是稳定性而不是性能。若要最大化性能，可能需要配置更激进的参数，甚至启用实验性特性。本文推荐的配置基于生产环境经验和对性能优化的研究。
+默认的配置优先考虑的是稳定性而不是性能。若要最大化性能，可能需要配置更激进的参数，甚至启用实验特性。本文推荐的配置基于生产环境经验和对性能优化的研究。
 
 本文档详细说明了非默认配置项，包括其优势和潜在权衡。请根据实际业务需求合理调整。
 
@@ -58,7 +58,7 @@ SET GLOBAL tidb_opt_fix_control = '44262:ON,44389:ON,44823:10000,44830:ON,44855:
 
 | 系统变量 | 说明 | 注意事项 |
 | ---------| ---- | ----|
-| [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 和 [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) | 启用实例级计划缓存而不是会话级缓存，适合高并发连接或频繁使用预处理语句的场景。 | 实验性特性，建议先在测试环境验证，并关注内存占用。 |
+| [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 和 [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) | 启用实例级计划缓存而不是会话级缓存，适合高并发连接或频繁使用预处理语句的场景。 | 实验特性，建议先在测试环境验证，并关注内存占用。 |
 | [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 启用[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)，降低不使用预处理语句应用的编译开销。 | 无 |
 | [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt-从-v600-版本开始引入) | 针对每次执行后关闭计划的应用，缓存其计划。 | 无 |
 | [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) | 收集所有列的统计信息，避免因缺失统计导致执行计划不佳。默认情况下，TiDB 仅收集 [`PREDICATE COLUMNS`](/statistics.md#收集部分列的统计信息) 的统计信息。 | 默认值为 `'PREDICATE'`。如果设为 `'ALL'` 会增加 `ANALYZE TABLE` 的资源消耗。 |
