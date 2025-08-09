@@ -92,9 +92,7 @@ backend = "local"
 
     - TiDB Lightning 在 v5.4.0 之前不支持导入 `charset=GBK` 的表。
 
-- TiDB Lightning 与 TiCDC 一起使用时需要注意：
-
-    - TiCDC 无法捕获物理导入模式插入的数据。
+- TiDB Lightning 与 TiCDC 一起使用时的注意事项可以参考[TiDB Lightning 物理导入模式与 TiCDC 的兼容性存在哪些限制](/ticdc/ticdc-faq.md#TiDB Lightning 物理导入模式与 TiCDC 的兼容性存在哪些限制？)。
 
 - TiDB Lightning 与 BR 一起使用时需要注意：
 
