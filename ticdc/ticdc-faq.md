@@ -284,7 +284,7 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 * 如果只存在 `"d"` 字段则为 `DELETE` 事件
 
 更多信息请参考 [Open protocol Row Changed Event 格式定义](/ticdc/ticdc-open-protocol.md#row-changed-event)。
-
+ 
 ## TiCDC 占用多少 PD 的存储空间？
 
 在使用 TiCDC 的过程中，你可能会遇到 `etcdserver: mvcc: database space exceeded` 错误，该错误主要与 TiCDC 使用 PD 内部的 etcd 来存储元数据的机制相关。
@@ -360,21 +360,27 @@ TiCDC 提供至少一次的数据同步保证，当下游有重复数据时，�
 
 TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆积的数据。TiCDC 正常运行期间都需要写入磁盘，但这通常不是同步吞吐和同步延时的瓶颈，写磁盘对延时影响在百毫秒内。TiCDC 也利用了内存来提升加速读取磁盘中的数据，以提升同步性能。
 
-## 为什么在上游使用了 TiDB Lightning 物理导入模式和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住？
+## TiDB Lightning 物理导入模式与 TiCDC 的兼容性存在哪些限制？
 
-目前 TiCDC 尚未完全适配 TiDB Lightning [物理导入模式 (Physical Import Mode)](/tidb-lightning/tidb-lightning-physical-import-mode.md) 和 BR，请避免在使用 TiCDC 同步的表上使用 TiDB Lightning 物理导入模式和 BR。否则，可能会出现未知的错误，例如 TiCDC 同步卡住、同步延迟大幅增加、或者同步数据丢失。
+TiDB Lightning [物理导入模式 (Physical Import Mode)](/tidb-lightning/tidb-lightning-physical-import-mode.md) 是直接将数据生成为 SST 文件并导入 TiKV 集群。由于这种导入方式不涉及常规的数据写入流程，因此不会产生 change log 记录。在大多数情况下，changefeed 无法观察到这部分数据的变更。只有在 changefeed 初始化阶段，或者 region 发生变更（如 split/merge/leader 迁移等）触发增量扫描时，才有可能看到这部分数据，因此 changefeed 并不保证能够完整捕获通过 TiDB Lightning 物理导入模式导入的数据。
 
-如果有某些使用 TiCDC 同步的表需要使用 TiDB Lightning 物理导入模式或者 BR 恢复数据，可以这么做：
+如果 TiDB Lightning 物理导入模式操作的表与 changefeed 监听的表存在重叠，可能由于数据捕获不完整发生各种未知的错误，例如 changefeed 同步卡住，上下游数据不一致等。如需对 TiCDC 同步的表需要使用 TiDB Lightning 物理导入模式，可以按照以下步骤操作
 
 1. 删除涉及这些表的 TiCDC 同步任务。
 
-2. 使用 TiDB Lightning 物理导入模式或 BR 在 TiCDC 的上游集群和下游集群分别恢复数据。
+2. 使用 TiDB Lightning 物理导入模式在 TiCDC 的上游集群和下游集群分别恢复数据。
 
-3. 恢复完成并检查了上下游集群对应表的数据一致性之后，使用上游备份的时间点 (TSO) 作为 TiCDC 同步任务的 `start-ts`，创建新的 TiCDC 同步任务，进行增量同步。例如，假设上游集群的 BR 备份的 snapshot 时间点为 `431434047157698561`，那么可以使用以下命令创建新的 TiCDC 同步任务：
+3. 恢复完成并检查了上下游集群对应表的数据一致性之后，使用TiDB Lightning 物理导入模式完成后的时间点 (TSO) 作为 TiCDC 同步任务的 `start-ts`，创建新的 TiCDC 同步任务，进行增量同步。
 
     ```shell
     cdc cli changefeed create -c "upstream-to-downstream-some-tables" --start-ts=431434047157698561 --sink-uri="mysql://root@127.0.0.1:4000? time-zone="
     ```
+
+如果可以确认 TiDB Lightning 物理导入模式操作的表与 changefeed 监听的表不存在重叠关系，可以将 [TiDB Lightning 配置文件](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 的 `check-requirements` 设置为 false，强制执行数据导入操作。
+
+## BR（Backup & Restore） 和 TiCDC 的兼容性存在哪些限制？
+
+BR（Backup & Restore）工具也是直接将数据生成为 SST 文件并导入 TiKV 集群，如上一节所述，changefeed 并不保证能够完整捕获通过这类方式导入的数据。对于 v8.2.0 之前（不包括 v8.2.0）的版本，如果集群上已存在 changefeed 任务，BR 将拒绝创建恢复任务。对于 v8.2.0 及之后的版本，仅当 BR 恢复数据的 backupTs 小于集群上所有 changefeed 的 checkpointTs 时，才允许创建恢复任务。
 
 ## 为什么恢复暂停的 changefeed 后，changefeed 同步延迟越来越高，数分钟后才恢复正常？
 
