@@ -284,7 +284,7 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 * 如果只存在 `"d"` 字段则为 `DELETE` 事件
 
 更多信息请参考 [Open protocol Row Changed Event 格式定义](/ticdc/ticdc-open-protocol.md#row-changed-event)。
- 
+
 ## TiCDC 占用多少 PD 的存储空间？
 
 在使用 TiCDC 的过程中，你可能会遇到 `etcdserver: mvcc: database space exceeded` 错误，该错误主要与 TiCDC 使用 PD 内部的 etcd 来存储元数据的机制相关。
