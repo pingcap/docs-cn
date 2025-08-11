@@ -25,6 +25,7 @@ TiDB 版本：7.5.7
     - (dup): release-8.2.0.md > 改进提升> TiDB - 优化对大数据量的表进行简单查询时获取数据分布信息的性能 [#53850](https://github.com/pingcap/tidb/issues/53850) @[you06](https://github.com/you06)
     - (dup): release-8.5.3.md > 改进提升> TiDB - 新增加索引的导入速度监控 [#60925](https://github.com/pingcap/tidb/issues/60925) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 优化了 DML 在 DDL 执行期间的加锁逻辑，减少了 DML 和 DDL 操作的锁冲突，提高了某些场景下 DDL 的性能。但是由于在此过程中也会引入额外的二级索引加锁操作，可能会造成 DML 性能轻微下降 [#62337](https://github.com/pingcap/tidb/issues/62337) @[lcwangchao](https://github.com/lcwangchao)
+    - 优化在 DML 与 DDL 存在较多锁冲突时，合并 temp index 的性能 [#61433](https://github.com/pingcap/tidb/issues/61433) @[tangenta](https://github.com/tangenta)
 
 + TiKV
 
@@ -125,6 +126,9 @@ TiDB 版本：7.5.7
     - 修复 bit 类型表的 stats 无法加载的问题 [#62289](https://github.com/pingcap/tidb/issues/62289) @[YangKeao](https://github.com/YangKeao)
     - 修复 hashjoin v1 算子 Close() 方法没有 recovery panic 的问题 [#60926](https://github.com/pingcap/tidb/issues/60926) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复 index merge/index lookup 算子下发查询时共享 kv request 导致的 data race [#60175](https://github.com/pingcap/tidb/issues/60175) @[you06](https://github.com/you06)
+    - 修复加索引时 cancel ddl job 导致加索引卡住的问题  [#61087](https://github.com/pingcap/tidb/issues/61087) @[tangenta](https://github.com/tangenta)
+    - 修复 fast admin check 在一些内部 SQL 执行失败后仍然返回成功的问题 [#61612](https://github.com/pingcap/tidb/issues/61612) @[joechenrh](https://github.com/joechenrh)
+    - 修复通过 multi-schema change 加索引之后数据索引不一致的问题 [#61255](https://github.com/pingcap/tidb/issues/61255) @[tangenta](https://github.com/tangenta)
 
 + TiKV
 
