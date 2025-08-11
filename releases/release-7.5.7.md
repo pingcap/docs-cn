@@ -69,7 +69,7 @@ TiDB 版本：7.5.7
     + Backup & Restore (BR)
 
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 在 Amazon EC2 上部署 TiDB 时，BR 支持 AWS 的 Instance Metadata Service Version 2 (IMDSv2)。你可以在 EC2 实例上进行相关配置，使 BR 可以使用与实例关联的 IAM 角色以适当的权限访问 Amazon S3 [#16443](https://github.com/tikv/tikv/issues/16443) @[pingyu](https://github.com/pingyu)
         - (dup): release-8.5.3.md > 改进提升> Tools> Backup & Restore (BR) - 如今即便指定了 `-f` 来过滤表，BR 也会对集群内是否存在表进行检查 [#61592](https://github.com/pingcap/tidb/issues/61592) @[RidRisR](https://github.com/RidRisR)
         - (dup): release-8.5.3.md > 改进提升> Tools> Backup & Restore (BR) - 如今，TiKV 的 Download API 支持裁切掉 SST 中某段时间的数据 [#18399](https://github.com/tikv/tikv/issues/18399) @[3pointer](https://github.com/3pointer)
 
