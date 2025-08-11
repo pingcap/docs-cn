@@ -207,7 +207,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [密码管理](/password-management.md) |  Y |  Y |  Y  | Y | Y | N | N | N | N | N |
 | [与 MySQL 兼容的 `GRANT` 权限管理](/privilege-management.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [动态权限](/privilege-management.md#动态权限) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
-| [安全增强模式](/system-variables.md#tidb_enable_enhanced_security) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [安全增强模式](/security-enhanced-mode.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [日志脱敏](/log-redaction.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 
 ## 数据导入和导出
