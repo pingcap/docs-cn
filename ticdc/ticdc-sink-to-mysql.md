@@ -67,7 +67,7 @@ URI 中可配置的参数如下：
 | `multi-stmt-enable` | 向下游执行的 SQL 语句是否支持通过分号分隔多个 SQL 语句（可选，默认值为 `true`）。如果设置为 `false`，则每个 SQL 语句都作为独立的事务执行。如果设置为 `true`，`cache-prep-stmts` 不会生效。 |
 | `max-txn-row`  | 向下游执行 SQL 语句的 batch 大小（可选，默认值为 `256`，最大值为 `2048`）。 |
 | `max-multi-update-row`  | 开启批量写入时，向下游执行 `UPDATE ROWS` SQL 语句的 batch 大小，总是小于 `max-txn-row`（可选，默认值为 `40`，最大值为 `256`）。|
-| `max-multi-update-row-size` | 开启批量写入时，向下游执行 `UPDATE ROWS` SQL 语句的 size 大小，如果超过这个 size，每个 row 会作为独立的 SQL（可选，默认值为 `1024`，最大值为 `8192`）。|
+| `max-multi-update-row-size` | 开启批量写入特性时 (`batch-dml-enable`)，此参数用于控制向下游执行 `UPDATE ROWS` SQL 语句的批量处理大小（单位：字节）。若单行数据平均大小超过该阈值，则每行数据会作为独立的 SQL 执行（可选，默认值为 `1024`，最大值为 `8192`）。|
 | `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选）。 |
 | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选）。 |
 | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选）。 |
