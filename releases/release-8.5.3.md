@@ -31,6 +31,8 @@ TiDB 版本：8.5.3
     - 通过减少 `fmt.Sprintf()` 调用，优化 IndexScan 的计划构造流程 [#56649](https://github.com/pingcap/tidb/issues/56649) @[crazycs520](https://github.com/crazycs520) <!--tw@lilin90: the following 2 notes-->
     - 使用全局排序加索引时，增加 Merge Sort 阶段的监控信息 [#61025](https://github.com/pingcap/tidb/issues/61025) @[fzzf678](https://github.com/fzzf678)
     - 删除 IndexLookup 算子发生 `context canceled` 错误时冗余的日志信息 [#61072](https://github.com/pingcap/tidb/issues/61072) @[yibin87](https://github.com/yibin87)
+    - 优化 `tidb_replica_read` 设置为 `closest-adaptive` 时的性能 [#61745](https://github.com/pingcap/tidb/issues/61745) @[you06](https://github.com/you06)
+    - 通过减少大规模集群中监控指标 (metrics) 的数据量，降低运维成本 [#59990](https://github.com/pingcap/tidb/issues/59990) @[zimulala](https://github.com/zimulala)
 
 + TiKV <!--tw@Oreoxmt: 8 notes-->
 
@@ -94,6 +96,8 @@ TiDB 版本：8.5.3
     - 修复网络协议中为 `blob` 类型返回的类型与 MySQL 不一致的问题 [#60195](https://github.com/pingcap/tidb/issues/60195) @[dveeden](https://github.com/dveeden)
     - 修复 `CAST()` 函数返回的长度与 MySQL 不兼容的问题 [#61350](https://github.com/pingcap/tidb/issues/61350) @[YangKeao](https://github.com/YangKeao)
     - 修复 `latin1_bin` 与 `utf8mb4_bin`、`utf8_bin` 的比较方式不相同的问题 [#60701](https://github.com/pingcap/tidb/issues/60701) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复在查询被终止时可能遗留下悲观锁的问题 [#61454](https://github.com/pingcap/tidb/issues/61454) @[zyguan](https://github.com/zyguan)
+    - 修复 TiDB 在执行大查询时，可能因为单次从 PD 加载的 Region 数量过多而报错的问题 [#1704](https://github.com/tikv/client-go/issues/1704) @[you06](https://github.com/you06)
 
 + TiKV <!--tw@Oreoxmt: 6 notes-->
 
