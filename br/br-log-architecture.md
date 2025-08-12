@@ -87,7 +87,7 @@ PITR 的流程如下：
 
 日志备份会产生如下类型文件：
 
-- `{resolved_ts}-{uuid}.meta` 文件：每个 TiKV 节点每次上传日志备份数据时会生成一个该文件，保存本次上传的所有日志备份数据文件。其中 `{resolved_ts}` 是本节点的日志备份的 Resolved Timestamp，所有 TiKV 节点最小的 Resolved Timestamp 就是日志备份任务最新的 `resolved_ts`；`{uuid}` 是在生成该文件时随机生成的。
+- `{flushTs}-{minDefaultTs}-{minTs}-{maxTs}.meta` 文件：每个 TiKV 节点每次上传日志备份数据时会生成一个该文件，保存本次上传的所有日志备份数据文件。文件名中的字段含义请参考[备份文件目录结构](#备份文件目录结构)。
 - `{store_id}.ts` 文件：每个 TiKV 节点每次上传日志备份数据时会使用 global checkpoint ts 更新该文件。其中 `{store_id}` 是 TiKV 的 store ID。
 - `{min_ts}-{uuid}.log` 文件：存储备份下来的 kv 数据变更记录。其中 `{min_ts}` 是该文件中所有 kv 数据变更记录数对应的最小 ts；`{uuid}` 是在生成该文件时随机生成的。
 - `v1_stream_truncate_safepoint.txt` 文件：保存最近一次通过 `br log truncate` 删除日志备份数据后，存储中最早的日志备份数据对应的 ts。
