@@ -221,6 +221,7 @@
     - [静态加密](/encryption-at-rest.md)
     - [为 TiDB 落盘文件开启加密](/enable-disk-spill-encrypt.md)
     - [日志脱敏](/log-redaction.md)
+    - [安全增强模式](/security-enhanced-mode.md)
   - 升级 TiDB 版本
     - [使用 TiUP 升级](/upgrade-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)

@@ -1834,15 +1834,17 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：NONE
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：布尔型
+- 类型：字符串
 - 默认值：`OFF`
-- 这个变量表示所连接的 TiDB 服务器是否启用了安全增强模式 (SEM)。若要改变该变量值，你需要在 TiDB 服务器的配置文件中修改 `enable-sem` 项的值，并重启 TiDB 服务器。
+- 可选值：`OFF`，`ON`，`CONFIG`
+- 这个变量表示所连接的 TiDB 服务器是否启用了安全增强模式 (SEM)。若要改变该变量值，你需要在 TiDB 服务器的配置文件中修改 `enable-sem` 项和 `sem-config` 的值，并重启 TiDB 服务器。
 - 安全增强模式受[安全增强式 Linux](https://zh.wikipedia.org/wiki/安全增强式Linux) 等系统设计的启发，削减拥有 MySQL `SUPER` 权限的用户能力，转而使用细粒度的 `RESTRICTED` 权限作为替代。这些细粒度的 `RESTRICTED` 权限如下：
     - `RESTRICTED_TABLES_ADMIN`：能够写入 `mysql` 库中的系统表，能查看 `information_schema` 表上的敏感列。
     - `RESTRICTED_STATUS_ADMIN`：能够在 `SHOW STATUS` 命令中查看敏感内容。
     - `RESTRICTED_VARIABLES_ADMIN`：能够在 `SHOW [GLOBAL] VARIABLES` 和 `SET` 命令中查看和设置包含敏感内容的变量。
     - `RESTRICTED_USER_ADMIN`：能够阻止其他用户更改或删除用户帐户。
     - `RESTRICTED_CONNECTION_ADMIN`：能够阻止其它用户使用 `KILL` 语句终止连接。
+- 更多与此功能有关的配置，请参考文档：[安全增强模式（SEM）](/security-enhanced-mode.md)的。
 
 ### `tidb_enable_exchange_partition`
 
