@@ -20,47 +20,47 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 
 ## 数据类型，函数和操作符
 
-| 数据类型，函数，操作符 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 | 
+| 数据类型，函数，操作符 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| [数值类型](/data-type-numeric.md) |  Y |  Y |  Y  | Y | Y | Y | Y | 
+| [数值类型](/data-type-numeric.md) |  Y |  Y |  Y  | Y | Y | Y | Y |
 | [日期和时间类型](/data-type-date-and-time.md) |  Y |  Y |  Y  | Y | Y | Y | Y |
-| [字符串类型](/data-type-string.md) |  Y |  Y |  Y  | Y | Y | Y | Y | 
-| [JSON 类型](/data-type-json.md) |  Y |  Y |  Y  | Y | Y | E | E | 
-| [向量数据类型](/vector-search/vector-search-data-types.md) |  E |  N |  N  | N | N | N | N | 
-| [控制流程函数](/functions-and-operators/control-flow-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | 
-| [字符串函数](/functions-and-operators/string-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | 
+| [字符串类型](/data-type-string.md) |  Y |  Y |  Y  | Y | Y | Y | Y |
+| [JSON 类型](/data-type-json.md) |  Y |  Y |  Y  | Y | Y | E | E |
+| [向量数据类型](/vector-search/vector-search-data-types.md) |  E |  N |  N  | N | N | N | N |
+| [控制流程函数](/functions-and-operators/control-flow-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y |
+| [字符串函数](/functions-and-operators/string-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y |
 | [数值函数与操作符](/functions-and-operators/numeric-functions-and-operators.md) |  Y |  Y |  Y  | Y | Y | Y | Y |
-| [日期和时间函数](/functions-and-operators/date-and-time-functions.md)|  Y  |  Y |  Y  | Y | Y | Y | Y | 
-| [位函数和操作符](/functions-and-operators/bit-functions-and-operators.md) |  Y |  Y |  Y  | Y | Y | Y | Y | 
+| [日期和时间函数](/functions-and-operators/date-and-time-functions.md)|  Y  |  Y |  Y  | Y | Y | Y | Y |
+| [位函数和操作符](/functions-and-operators/bit-functions-and-operators.md) |  Y |  Y |  Y  | Y | Y | Y | Y |
 | [Cast 函数和操作符](/functions-and-operators/cast-functions-and-operators.md) |  Y |  Y |  Y  | Y | Y | Y | Y |
-| [加密和压缩函数](/functions-and-operators/encryption-and-compression-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | 
+| [加密和压缩函数](/functions-and-operators/encryption-and-compression-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y |
 | [向量函数和操作符](/vector-search/vector-search-functions-and-operators.md) |  E |  N |  N  | N | N | N | N |
 | [信息函数](/functions-and-operators/information-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y |
 | [JSON 函数](/functions-and-operators/json-functions.md) |  Y |  Y |  Y  | Y | Y | E | E |
 | [聚合函数](/functions-and-operators/aggregate-group-by-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y |
 | [窗口函数](/functions-and-operators/window-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y |
-| [其他函数](/functions-and-operators/miscellaneous-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | 
+| [其他函数](/functions-and-operators/miscellaneous-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y |
 | [操作符](/functions-and-operators/operators.md) |  Y |  Y |  Y  | Y | Y | Y | Y |
 | [字符集和排序规则](/character-set-and-collation.md) [^1] |  Y |  Y |  Y  | Y | Y | Y | Y |
 | [用户级别锁](/functions-and-operators/locking-functions.md) |  Y |  Y |  Y  | Y | Y | Y | N |
 
 ## 索引和约束
 
-| 索引和约束 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 | 
+| 索引和约束 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引) [^2] | Y |  Y |  Y  | Y | Y | E | E |
 | [列式存储 (TiFlash)](/tiflash/tiflash-overview.md) | Y |  Y |  Y  | Y | Y | Y | Y |
 | [使用 FastScan 加速 OLAP 场景下的查询](/tiflash/use-fastscan.md) | Y |  Y |  Y  | Y | E | N | N |
 | [RocksDB 引擎](/storage-engine/rocksdb-overview.md) | Y |  Y |  Y  | Y | Y | Y | Y |
 | [Titan 插件](/storage-engine/titan-overview.md) | Y |  Y |  Y  | Y | Y | Y | Y |
-| [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge实验功能) | E |  E |  E  | E | E | E | E | 
+| [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge实验功能) | E |  E |  E  | E | E | E | E |
 | [使用 bucket 提高数据扫描并发度](/tune-region-performance.md#使用-bucket-增加并发) | E |  E |  E  | E | E | E | N |
-| [不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引) | Y |  Y |  Y  | Y | Y | Y | Y | 
+| [不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引) | Y |  Y |  Y  | Y | Y | Y | Y |
 | [复合主键](/constraints.md#主键约束) | Y |  Y |  Y  | Y | Y | Y | Y |
 | [`CHECK` 约束](/constraints.md#check-约束) | Y |  Y |  Y  | N | N | N | N |
-| [唯一约束](/constraints.md#唯一约束) | Y |  Y |  Y  | Y | Y | Y | Y | 
+| [唯一约束](/constraints.md#唯一约束) | Y |  Y |  Y  | Y | Y | Y | Y |
 | [整型主键上的聚簇索引](/clustered-indexes.md) | Y |  Y |  Y  | Y | Y | Y | Y |
-| [复合或非整型主键上的聚簇索引](/clustered-indexes.md) | Y |  Y |  Y  | Y | Y | Y | Y | 
+| [复合或非整型主键上的聚簇索引](/clustered-indexes.md) | Y |  Y |  Y  | Y | Y | Y | Y |
 | [多值索引](/sql-statements/sql-statement-create-index.md#多值索引) | Y |  Y |  Y  | Y | N | N | N |
 | [外键约束](/foreign-key.md) | Y |  E |  E  | E | N | N | N |
 | [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md) | Y |  Y |  Y  | Y | N | N | N |
@@ -88,7 +88,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [用户自定义变量](/user-defined-variables.md) | E |  E |  E  | E | E | E | E |
 | [`BATCH [ON COLUMN] LIMIT INTEGER DELETE`](/sql-statements/sql-statement-batch.md) | Y |  Y |  Y  | Y | Y | Y | N |
 | [`BATCH [ON COLUMN] LIMIT INTEGER INSERT/UPDATE/REPLACE`](/sql-statements/sql-statement-batch.md) | Y |  Y |  Y  | Y | Y | N | N |
-| [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | Y |  Y |  Y  | Y | Y | E | N | 
+| [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | Y |  Y |  Y  | Y | Y | E | N |
 | [表级锁 (Table Lock)](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md) | E |  E  |  E  | E | E | E | E |
 | [物化列式存储的查询结果](/tiflash/tiflash-results-materialization.md) | Y |  Y |  Y  | Y | E | N | N |
 
@@ -151,7 +151,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [乐观事务](/optimistic-transaction.md) |  Y |  Y  |  Y  | Y | Y | Y | Y |
 | [可重复读隔离（快照隔离）](/transaction-isolation-levels.md) |  Y |  Y  |  Y  | Y | Y | Y | Y |
 | [读已提交隔离](/transaction-isolation-levels.md) |  Y |  Y  |  Y  | Y | Y | Y | Y |
-| [自动终止长时间未提交的空闲事务](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) |  Y |  Y  | N | N | N | N | N | 
+| [自动终止长时间未提交的空闲事务](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) |  Y |  Y  | N | N | N | N | N |
 | [批量 DML 语句的执行方式 (`tidb_dml_type = "bulk"`)](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) | E |  E | N | N | N | N | N |
 
 ## 分区
