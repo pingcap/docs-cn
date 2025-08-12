@@ -1,13 +1,8 @@
 {
   "tidb": "TiDB",
-<<<<<<< HEAD
   "tidb-version": "v7.5.6",
   "tidb-release-date": "2025-03-14",
-  "starter": "TiDB Cloud Serverless",
-=======
-  "tidb-version": "v8.5.0",
   "starter": "TiDB Cloud Starter",
->>>>>>> 5b914804a5 (variables.json: update the value of the starter variable (#20737))
   "essential": "TiDB Cloud Essential",
   "dedicated": "TiDB Cloud Dedicated",
   "console-url": "tidbcloud.com"
