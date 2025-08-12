@@ -7,11 +7,7 @@ summary: 使用 {{{ .starter }}} 构建 TiDB 集群，并连接 {{{ .starter }}}
 
 # 使用 {{{ .starter }}} 构建 TiDB 集群
 
-<<<<<<< HEAD
-本文将介绍如何以最快的方式开始使用 TiDB。你将创建并启动一个 [{{{ .starter }}}](https://www.pingcap.com/tidb-serverless/) 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
-=======
 本文将介绍如何以最快的方式开始使用 TiDB。你将创建并启动一个 [{{{ .starter }}}](https://www.pingcap.com/tidb-cloud-serverless/)（原名 Serverless）集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
->>>>>>> 238bff0605 (develop: update serverless to starter (#20635))
 
 若你需要在本地计算机上启动 TiDB，请参阅[本地启动 TiDB](/quick-start-with-tidb.md)。
 
