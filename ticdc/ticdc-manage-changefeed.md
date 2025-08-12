@@ -300,10 +300,10 @@ Unified Sorter 是 TiCDC 中的排序引擎功能，用于缓解以下场景造�
 要确定一个 changefeed 上是否开启了 Unified Sorter 功能，可执行以下示例命令查看（假设 PD 实例的 IP 地址为 `http://10.0.10.25:2379`）：
 
 ```shell
-cdc cli --server="http://10.0.10.25:8300" changefeed query --changefeed-id=simple-replication-task | grep 'sort-engine'
+cdc cli --server="http://10.0.10.25:8300" changefeed query --changefeed-id=simple-replication-task | grep 'sort_engine'
 ```
 
-以上命令的返回结果中，如果 `sort-engine` 的值为 "unified"，则说明 Unified Sorter 已在该 changefeed 上开启。
+以上命令的返回结果中，如果 `sort_engine` 的值为 "unified"，则说明 Unified Sorter 已在该 changefeed 上开启。
 
 > **注意：**
 >
