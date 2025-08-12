@@ -13,6 +13,7 @@ summary: 介绍 TiDB 版本发布历史。
 
 ## 8.5
 
+- [8.5.3](/releases/release-8.5.3.md): 2025-08-14
 - [8.5.2](/releases/release-8.5.2.md): 2025-06-12
 - [8.5.1](/releases/release-8.5.1.md): 2025-01-17
 - [8.5.0](/releases/release-8.5.0.md): 2024-12-19
