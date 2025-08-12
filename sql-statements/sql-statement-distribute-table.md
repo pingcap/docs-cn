@@ -32,8 +32,7 @@ PartitionNameList ::=
 
 - `RULE`：指定针对哪个 Raft 角色所在的 Region 进行均衡调度，可选值为 `"leader-scatter"`、`"peer-scatter"` 和 `"learner-scatter"`。
 - `ENGINE`：指定存储引擎，可选值为 `"tikv"` 和 `"tiflash"`。
-- `TIMEOUT`：指定打散操作的超时限制。 如果 PD 未在该时间内进行打散，打散任务将会自动退出。当未指定该参数时，默认值为 `"30m"`。
-
+- `TIMEOUT`：指定打散操作的超时限制。如果 PD 未在该时间内进行打散，打散任务将会自动退出。当未指定该参数时，默认值为 `"30m"`。
 
 ## 示例
 
@@ -42,7 +41,7 @@ PartitionNameList ::=
 ```sql
 CREATE TABLE t1 (a INT);
 ...
-DISTRIBUTE TABLE t1 RULE= "leader-scatter" ENGINE = "tikv" TIMEOUT="1h"
+DISTRIBUTE TABLE t1 RULE = "leader-scatter" ENGINE = "tikv" TIMEOUT = "1h";
 ```
 
 ```
@@ -58,7 +57,7 @@ DISTRIBUTE TABLE t1 RULE= "leader-scatter" ENGINE = "tikv" TIMEOUT="1h"
 ```sql
 CREATE TABLE t2 (a INT);
 ...
-DISTRIBUTE TABLE t2  RULE = "learner-scatter" ENGINE = "tiflash";
+DISTRIBUTE TABLE t2 RULE = "learner-scatter" ENGINE = "tiflash";
 ```
 
 ```
@@ -95,6 +94,7 @@ CREATE TABLE t4 ( a INT, b INT, INDEX idx(b)) PARTITION BY RANGE( a ) (
     PARTITION p1 VALUES LESS THAN (10000),
     PARTITION p2 VALUES LESS THAN (20000),
     PARTITION p3 VALUES LESS THAN (MAXVALUE) );
+...
 DISTRIBUTE TABLE t4 PARTITION (p1, p2) RULE = "learner-scatter" ENGINE="tiflash";
 ```
 
@@ -119,4 +119,4 @@ DISTRIBUTE TABLE t4 PARTITION (p1, p2) RULE = "learner-scatter" ENGINE="tiflash"
 - [`SHOW DISTRIBUTION JOBS`](/sql-statements/sql-statement-show-distribution-jobs.md)
 - [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql-statement-show-table-distribution.md)
 - [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md)
-- [`CANCEL DISTRIBUTION JOBS`] (/sql-statements/sql-statement-cancel-distribution-job.md)
+- [`CANCEL DISTRIBUTION JOB`](/sql-statements/sql-statement-cancel-distribution-job.md)
