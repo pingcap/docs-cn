@@ -56,13 +56,13 @@ tikv-server --labels region=<region>,zone=<zone>,host=<host>
 
 ```sql
 SHOW PLACEMENT LABELS;
-+--------+----------------+
-| Key    | Values         |
-+--------+----------------+
-| disk   | ["ssd"]        |
-| region | ["us-east-1"]  |
-| zone   | ["us-east-1a"] |
-+--------+----------------+
++--------+----------------------------+
+| Key    | Values                     |
++--------+----------------------------+
+| disk   | ["ssd"]                    |
+| region | ["us-east-1", "us-west-1"] |
+| zone   | ["us-east-1a"]             |
++--------+----------------------------+
 3 rows in set (0.00 sec)
 ```
 
