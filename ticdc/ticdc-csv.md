@@ -95,7 +95,7 @@ CREATE TABLE `employee` (
 
 当配置中 `include-commit-ts = true` 且 `output-old-value = true` 且 `output-field-header = true` 时，该表上的 DML 事件以 CSV 格式存储后如下所示：
 
-```
+```csv
 ticdc-meta$operation,ticdc-meta$table,ticdc-meta$schema,ticdc-meta$commit-ts,ticdc-meta$is-update,Id,LastName,FirstName,HireDate,OfficeLocation
 "I","employee","hr",433305438660591626,false,101,"Smith","Bob","2014-06-04","New York"
 "D","employee","hr",433305438660591627,true,101,"Smith","Bob","2015-10-08","Shanghai"
