@@ -13,11 +13,13 @@ TiDB 版本：7.5.7
 
 ## 兼容性变更
 
+<!--tw@Oreoxmt: 1 notes-->
+
 - 将系统变量 `tidb_enable_historical_stats` 的默认值从 `ON` 修改为 `OFF`，即默认关闭历史统计信息，避免潜在的稳定性问题 [#53048](https://github.com/pingcap/tidb/issues/53048) @[hawkingrei](https://github.com/hawkingrei)
 
 ## 改进提升
 
-+ TiDB
++ TiDB <!--tw@Oreoxmt: 6 notes-->
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
@@ -31,7 +33,7 @@ TiDB 版本：7.5.7
     - 优化器支持更多 JOIN 的常量传播 [#51700](https://github.com/pingcap/tidb/issues/51700) @[hawkingrei](https://github.com/hawkingrei)
     - 优化在 DML 与 DDL 存在较多锁冲突时，合并 temp index 的性能 [#61433](https://github.com/pingcap/tidb/issues/61433) @[tangenta](https://github.com/tangenta)
 
-+ TiKV
++ TiKV <!--tw@Oreoxmt: 2 notes-->
 
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - 优化 TiKV compaction 触发逻辑，按回收效率排序对所有数据段依序处理，降低 MVCC 冗余数据对性能的影响 [#18571](https://github.com/tikv/tikv/issues/18571) @[v01dstar](https://github.com/v01dstar)
@@ -49,7 +51,7 @@ TiDB 版本：7.5.7
     - (dup): release-8.5.3.md > 改进提升> TiKV - 优化 KvDB 和 RaftDB 分盘部署场景下 KvDB 磁盘 I/O 抖动的检测机制 [#18463](https://github.com/tikv/tikv/issues/18463) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-6.5.9.md > 改进提升> TiKV - 增加 peer 和 store 消息的 slow log [#16600](https://github.com/tikv/tikv/issues/16600) @[Connor1996](https://github.com/Connor1996)
 
-+ PD
++ PD <!--tw@Oreoxmt: 2 notes-->
 
     - 支持更全面的 golang runtime 监控, 可以 pd cluster 中 Runtime 看到更多 runtime 监控 [#9037](https://github.com/tikv/pd/issues/8931) @[bufferflies](https://github.com/bufferflies)
     - 减少一些非必要 error 日志 [#9370](https://github.com/tikv/pd/issues/9370) @[bufferflies](https://github.com/bufferflies)
@@ -64,7 +66,7 @@ TiDB 版本：7.5.7
 
 + Tools
 
-    + Backup & Restore (BR)
+    + Backup & Restore (BR) <!--tw@Oreoxmt: 1 note-->
 
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - 在 Amazon EC2 上部署 TiDB 时，BR 支持 AWS 的 Instance Metadata Service Version 2 (IMDSv2)。你可以在 EC2 实例上进行相关配置，使 BR 可以使用与实例关联的 IAM 角色以适当的权限访问 Amazon S3 [#16443](https://github.com/tikv/tikv/issues/16443) @[pingyu](https://github.com/pingyu)
@@ -97,7 +99,7 @@ TiDB 版本：7.5.7
 
 ## 错误修复
 
-+ TiDB
++ TiDB <!--tw@lilin90: the following 12 notes-->
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
@@ -129,7 +131,7 @@ TiDB 版本：7.5.7
     - 修复可能无法将 BIT 类型的列的统计信息加载入内存的问题 [#59759](https://github.com/pingcap/tidb/issues/59759) @[YangKeao](https://github.com/YangKeao)
     - 修复 `explain format="cost_trace"` 展示的估算代价可能有错的问题 [#61155](https://github.com/pingcap/tidb/issues/61155) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 `explain format="cost_trace"` 展示的代价计算公式中可能包含空括号的问题 [#61127](https://github.com/pingcap/tidb/issues/61127) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复外键定义成环时的死循坏问题 [#60985](https://github.com/pingcap/tidb/issues/60985) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复外键定义成环时的死循坏问题 [#60985](https://github.com/pingcap/tidb/issues/60985) @[hawkingrei](https://github.com/hawkingrei) <!--tw@hfxsd: the following 13 notes-->
     - 修复内部查询在使用 `NULL` 构造索引范围查询时可能构造能力不足的问题 [#62196](https://github.com/pingcap/tidb/issues/62196) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 Plan Cache 缓存了错误的执行计划导致执行报错的问题 [#56772](https://github.com/pingcap/tidb/issues/56772) @[dash12653](https://github.com/dash12653)
     - 修复跨月、跨年的行数估算可能过分偏大的问题 [#50080](https://github.com/pingcap/tidb/issues/50080) @[terry1purcell](https://github.com/terry1purcell)
@@ -144,7 +146,7 @@ TiDB 版本：7.5.7
     - 修复 fast admin check 在一些内部 SQL 执行失败后仍然返回成功的问题 [#61612](https://github.com/pingcap/tidb/issues/61612) @[joechenrh](https://github.com/joechenrh)
     - 修复通过 multi-schema change 加索引之后数据索引不一致的问题 [#61255](https://github.com/pingcap/tidb/issues/61255) @[tangenta](https://github.com/tangenta)
 
-+ TiKV
++ TiKV <!--tw@qiancai: 1 note-->
 
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - 修复 Unsafe Recovery 被某些 TiFlash 副本阻塞，导致无法推进的问题 [18197](https://github.com/tikv/tikv/issues/18197) @[v01dstar](https://github.com/v01dstar)
@@ -157,7 +159,7 @@ TiDB 版本：7.5.7
     - (dup): release-9.0.0.md > 错误修复> TiKV - 修复错误的线程内存监控指标 [#18125](https://github.com/tikv/tikv/issues/18125) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-8.5.3.md > 错误修复> TiKV - 修复 TiKV 在正常退出时未能终止正在进行的手动 compaction 任务的问题 [#18396](https://github.com/tikv/tikv/issues/18396) @[LykxSassinator](https://github.com/LykxSassinator)
 
-+ PD
++ PD <!--tw@qiancai: 5 notes-->
 
     - 修复反复修改 `split-merge-interval` 的值，可能导致该配置不生效的问题 [#8404](https://github.com/tikv/pd/issues/8404) @[lhy1024](https://github.com/lhy1024)
     - 修复 `lease` 默认值未被正确设置的问题 [#9156](https://github.com/tikv/pd/issues/9156) @[rleungx](https://github.com/rleungx)
@@ -165,7 +167,7 @@ TiDB 版本：7.5.7
     - 修复新上线节点可能无法被调度问题 [#9145](https://github.com/tikv/pd/issues/9145)@[bufferflies](https://github.com/bufferflies)
     - 修复开启 tidb_enable_tso_follower_proxy 后，tso 服务不可用问题 [#9188]https://github.com/tikv/pd/issues/9188 @[Tema](https://github.com/Tema)
 
-+ TiFlash
++ TiFlash <!--tw@qiancai: 5 notes-->
 
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - 修复在运行 `IMPORT INTO` 或 `BR restore` 的时候，部分 SST 文件可能被意外删除导致 TiFlash panic 的问题 [#10141](https://github.com/pingcap/tiflash/issues/10141) @[CalvinNeo](https://github.com/CalvinNeo)
@@ -190,7 +192,7 @@ TiDB 版本：7.5.7
         - (dup): release-8.5.3.md > 错误修复> Tools> Backup & Restore (BR) - 修复日志备份上传大量数据至 Azure Blob Storage 时速度缓慢的问题 [#18410](https://github.com/tikv/tikv/issues/18410) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-8.5.3.md > 错误修复> Tools> Backup & Restore (BR) - 修复当指定了 `-f` 来过滤表时，BR 未检查集群内是否已存在对应表的问题 [#61592](https://github.com/pingcap/tidb/issues/61592) @[RidRisR](https://github.com/RidRisR)
 
-    + TiCDC
+    + TiCDC <!--tw@qiancai: 1 note-->
 
         - Fix a bug that may cause changefeed with storage sink getting stuck [#9162](https://github.com/pingcap/tiflow/issues/9162) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-8.5.2.md > 错误修复> Tools> TiCDC - 修复同步流量超过了下游 Kafka 的流量阀值后，Changefeed 可能会卡住的问题 [#12110](https://github.com/pingcap/tiflow/issues/12110) @[3AceShowHand](https://github.com/3AceShowHand)
