@@ -42,7 +42,6 @@ TiDB 版本：7.5.7
     - (dup): release-8.5.3.md > 改进提升> TiKV - 在 SST ingest 太慢时，仅输出 `SST ingest is experiencing slowdowns` 日志，不再调用 `get_sst_key_ranges` 打印详细 key range，以避免引发性能抖动 [#18549](https://github.com/tikv/tikv/issues/18549) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-7.1.6.md > 改进提升> TiKV - 优化 TiKV 重启时由于需要等待应用之前的日志而造成访问延时抖动的情况，提升了 TiKV 的稳定性 [#15874](https://github.com/tikv/tikv/issues/15874) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-8.5.3.md > 改进提升> TiKV - 优化残留数据清理机制，减少对请求延迟的影响 [#18107](https://github.com/tikv/tikv/issues/18107) @[LykxSassinator](https://github.com/LykxSassinator)
-    - (dup): release-8.5.3.md > 错误修复> TiKV - 修复 TiKV 在正常退出时未能终止正在进行的手动 compaction 任务的问题 [#18396](https://github.com/tikv/tikv/issues/18396) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-8.5.3.md > 改进提升> TiKV - 优化 Raft Engine 中 `fetch_entries_to` 的性能，减少竞争，提升混合负载下的执行性能 [#18605](https://github.com/tikv/tikv/issues/18605) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-8.4.0.md > 改进提升> TiKV - 支持在线更改写入流量控制 (flow-control) 的相关配置 [#17395](https://github.com/tikv/tikv/issues/17395) @[glorv](https://github.com/glorv)
     - (dup): release-8.5.3.md > 改进提升> TiKV - 支持在不阻塞前台写入的情况下导入 SST 文件，降低延迟带来的影响 [#18081](https://github.com/tikv/tikv/issues/18081) @[hhwyt](https://github.com/hhwyt)
@@ -54,7 +53,6 @@ TiDB 版本：7.5.7
 
     - 支持更全面的 golang runtime 监控, 可以 pd cluster 中 Runtime 看到更多 runtime 监控 [#9037](https://github.com/tikv/pd/issues/8931) @[bufferflies](https://github.com/bufferflies)
     - 减少一些非必要 error 日志 [#9370](https://github.com/tikv/pd/issues/9370) @[bufferflies](https://github.com/bufferflies)
-
 
 + TiFlash
 
@@ -70,16 +68,12 @@ TiDB 版本：7.5.7
 
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - 在 Amazon EC2 上部署 TiDB 时，BR 支持 AWS 的 Instance Metadata Service Version 2 (IMDSv2)。你可以在 EC2 实例上进行相关配置，使 BR 可以使用与实例关联的 IAM 角色以适当的权限访问 Amazon S3 [#16443](https://github.com/tikv/tikv/issues/16443) @[pingyu](https://github.com/pingyu)
-        - (dup): release-8.5.3.md > 错误修复> Tools> Backup & Restore (BR) - 修复当指定了 `-f` 来过滤表时，BR 未检查集群内是否已存在对应表的问题 [#61592](https://github.com/pingcap/tidb/issues/61592) @[RidRisR](https://github.com/RidRisR)
         - (dup): release-8.5.3.md > 改进提升> Tools> Backup & Restore (BR) - TiKV 的 Download API 在下载备份文件时，支持过滤掉某段时间范围内的数据，以避免恢复时导入过旧或过新的数据版本 [#18399](https://github.com/tikv/tikv/issues/18399) @[3pointer](https://github.com/3pointer)
 
     + TiCDC
 
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - (dup): release-8.5.3.md > 错误修复> Tools> TiCDC - 修复在包含虚拟列的表中计算事件过滤表达式时 panic 的问题 [#12206](https://github.com/pingcap/tiflow/issues/12206) @[lidezhu](https://github.com/lidezhu)
-        - (dup): release-8.5.3.md > 错误修复> Tools> TiCDC - 修复 dispatcher 配置中列名和索引名大小写敏感匹配的问题 [#12103](https://github.com/pingcap/tiflow/issues/12103) @[wk989898](https://github.com/wk989898)
-        - (dup): release-8.5.3.md > 错误修复> Tools> TiCDC - 修复在相同 IP 地址上扩缩容 TiKV 节点后，因使用过期的 store ID 导致 resolved ts 延迟持续上升的问题 [#12162](https://github.com/pingcap/tiflow/issues/12162) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Data Migration (DM)
 
@@ -161,6 +155,7 @@ TiDB 版本：7.5.7
     - (dup): release-6.5.9.md > 错误修复> TiKV - 修复巴西和埃及时区转换错误的问题 [#16220](https://github.com/tikv/tikv/issues/16220) @[overvenus](https://github.com/overvenus)
     - (dup): release-8.5.3.md > 错误修复> TiKV - 修复慢日志中 `StoreMsg` 日志信息存在误导性描述的问题 [#18561](https://github.com/tikv/tikv/issues/18561) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-9.0.0.md > 错误修复> TiKV - 修复错误的线程内存监控指标 [#18125](https://github.com/tikv/tikv/issues/18125) @[Connor1996](https://github.com/Connor1996)
+    - (dup): release-8.5.3.md > 错误修复> TiKV - 修复 TiKV 在正常退出时未能终止正在进行的手动 compaction 任务的问题 [#18396](https://github.com/tikv/tikv/issues/18396) @[LykxSassinator](https://github.com/LykxSassinator)
 
 + PD
 
@@ -193,13 +188,16 @@ TiDB 版本：7.5.7
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-8.5.2.md > 错误修复> Tools> Backup & Restore (BR) - 修复 PITR 无法恢复大于 3072 字节的索引的问题 [#58430](https://github.com/pingcap/tidb/issues/58430) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-8.5.3.md > 错误修复> Tools> Backup & Restore (BR) - 修复日志备份上传大量数据至 Azure Blob Storage 时速度缓慢的问题 [#18410](https://github.com/tikv/tikv/issues/18410) @[YuJuncen](https://github.com/YuJuncen)
+        - (dup): release-8.5.3.md > 错误修复> Tools> Backup & Restore (BR) - 修复当指定了 `-f` 来过滤表时，BR 未检查集群内是否已存在对应表的问题 [#61592](https://github.com/pingcap/tidb/issues/61592) @[RidRisR](https://github.com/RidRisR)
 
     + TiCDC
 
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - Fix a bug that may cause changefeed with storage sink getting stuck [#9162](https://github.com/pingcap/tiflow/issues/9162) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-8.5.2.md > 错误修复> Tools> TiCDC - 修复同步流量超过了下游 Kafka 的流量阀值后，Changefeed 可能会卡住的问题 [#12110](https://github.com/pingcap/tiflow/issues/12110) @[3AceShowHand](https://github.com/3AceShowHand)
         - (dup): release-6.5.12.md > 错误修复> Tools> TiCDC - 修复使用 `--overwrite-checkpoint-ts` 参数执行 `changefeed pause` 命令可能导致 Changefeed 卡住的问题 [#12055](https://github.com/pingcap/tiflow/issues/12055) @[hongyunyan](https://github.com/hongyunyan)
+        - (dup): release-8.5.3.md > 错误修复> Tools> TiCDC - 修复在包含虚拟列的表中计算事件过滤表达式时 panic 的问题 [#12206](https://github.com/pingcap/tiflow/issues/12206) @[lidezhu](https://github.com/lidezhu)
+        - (dup): release-8.5.3.md > 错误修复> Tools> TiCDC - 修复 dispatcher 配置中列名和索引名大小写敏感匹配的问题 [#12103](https://github.com/pingcap/tiflow/issues/12103) @[wk989898](https://github.com/wk989898)
+        - (dup): release-8.5.3.md > 错误修复> Tools> TiCDC - 修复在相同 IP 地址上扩缩容 TiKV 节点后，因使用过期的 store ID 导致 resolved ts 延迟持续上升的问题 [#12162](https://github.com/pingcap/tiflow/issues/12162) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Data Migration (DM)
 
