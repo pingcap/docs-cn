@@ -107,14 +107,14 @@ public class Tutorial1
 $ dotnet run
 Connecting to TiDB...
 
-Connected to: 8.0.11-TiDB-v8.5.2
+Connected to: 8.0.11-TiDB-{{{ .tidb-version }}}
 
 Version details:
-Release Version: v8.5.2
+Release Version: {{{ .tidb-version }}}
 Edition: Community
 Git Commit Hash: f43a13324440f92209e2a9f04c0bbe9cf763978d
 Git Branch: HEAD
-UTC Build Time: 2025-05-29 03:30:55
+UTC Build Time: {{{ .tidb-release-date }}} 03:30:55
 GoVersion: go1.23.8
 Race Enabled: false
 Check Table Before Drop: false
