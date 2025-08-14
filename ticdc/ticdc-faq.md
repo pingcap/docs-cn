@@ -362,7 +362,7 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 ## TiDB Lightning 物理导入模式与 TiCDC 的兼容性存在哪些限制？
 
-TiDB Lightning [物理导入模式 (Physical Import Mode)](/tidb-lightning/tidb-lightning-physical-import-mode.md) 是直接将数据生成为 SST 文件并导入 TiKV 集群。由于这种导入方式不涉及常规的数据写入流程，因此不会产生 change log 记录。在大多数情况下，changefeed 无法观察到这部分数据的变更。只有在 changefeed 初始化阶段，或者 region 发生变更（如 split/merge/leader 迁移等）触发增量扫描时，才有可能看到这部分数据，因此 changefeed 并不保证能够完整捕获通过 TiDB Lightning 物理导入模式导入的数据。
+TiDB Lightning [物理导入模式 (Physical Import Mode)](/tidb-lightning/tidb-lightning-physical-import-mode.md) 是直接将数据生成为 SST 文件并导入 TiKV 集群。由于这种导入方式不涉及常规的数据写入流程，因此不会产生 change log 记录。在大多数情况下，changefeed 无法观察到这部分数据的变更。只有在 changefeed 初始化阶段，或者 region 发生变更（如 split/merge/leader 迁移等）触发增量扫描时，才有可能看到这部分数据，因此 changefeed 并不能完整捕获通过 TiDB Lightning 物理导入模式导入的数据。
 
 如果 TiDB Lightning 物理导入模式操作的表与 changefeed 监听的表存在重叠，可能由于数据捕获不完整发生各种未知的错误，例如 changefeed 同步卡住，上下游数据不一致等。如需对 TiCDC 同步的表需要使用 TiDB Lightning 物理导入模式，可以按照以下步骤操作
 
