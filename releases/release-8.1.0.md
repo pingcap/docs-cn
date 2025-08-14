@@ -173,7 +173,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 变量名  | 修改类型 | 描述 |
 |--------|------------------------------|------|
-| [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入从-v810-版本开始废弃) | 废弃 | 从 TiDB v8.1.0 开始，TiDB 移除了遥测功能，该变量已不再生效。保留该变量仅用于与之前版本兼容。 |
+| [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) | 废弃 | 从 TiDB v8.1.0 开始，TiDB 移除了遥测功能，该变量已不再生效。保留该变量仅用于与之前版本兼容。 |
 | [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) | 修改 | 取值范围从 `[0, 18446744073709551615]` 修改为 `(0, 1]`。 |
 | [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) | 修改 | 默认值从 `OFF` 修改为 `ON`，代表默认开启分布式执行框架，从而充分利用 TiDB 集群的资源，大幅提升 `ADD INDEX` 和 `IMPORT INTO` 任务的性能。如果要从低版本的集群升级到 v8.1.0 或更高版本，且该集群已开启分布式执行框架，为了避免升级期间 `ADD INDEX` 操作可能导致数据索引不一致的问题，请在升级前关闭分布式执行框架（即将 `tidb_enable_dist_task` 设置为 `OFF`），升级后再手动开启。|
 | [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | 修改 | 该变量的可选值从 `""` 或 `background` 修改为长度小于或等于 64 的字符串，可用合法字符包括数字 `0-9`、字母 `a-zA-Z`、下划线 `_` 和连字符 `-`，从而更灵活地控制各 TiDB 节点的服务范围。分布式执行框架会根据该变量的值决定将分布式任务调度到哪些 TiDB 节点上执行，具体规则请参考[任务调度](/tidb-distributed-execution-framework.md#任务调度)。 |
@@ -182,7 +182,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 配置文件           | 配置项                | 修改类型 | 描述                                 |
 |----------------|--------------------|------|------------------------------------|
-| TiDB | [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入从-v810-版本开始废弃) | 废弃 | 从 v8.1.0 开始，TiDB 移除了遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。 |
+| TiDB | [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) | 废弃 | 从 v8.1.0 开始，TiDB 移除了遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。 |
 | TiDB| [`concurrently-init-stats`](/tidb-configuration-file.md#concurrently-init-stats-从-v810-和-v752-版本开始引入) | 新增 | 用于控制 TiDB 启动时是否并发初始化统计信息。默认值为 `false`。 |
 | PD | [`enable-telemetry`](/pd-configuration-file.md#enable-telemetry) | 废弃 | 从 TiDB v8.1.0 开始，TiDB Dashboard 移除了遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。 |
 | TiDB Lightning | [`conflict.max-record-rows`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 修改 | 从 v8.1.0 开始，TiDB Lightning 会自动将 `conflict.max-record-rows` 的值设置为 `conflict.threshold` 的值，并忽略用户输入，因此无需再单独配置 `conflict.max-record-rows`。`conflict.max-record-rows` 将在未来版本中废弃。 |
@@ -199,7 +199,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 从 TiDB v8.1.0 开始，TiDB 和 TiDB Dashboard 移除了遥测功能：
 
-    * 废弃系统变量 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入从-v810-版本开始废弃)、TiDB 配置项 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入从-v810-版本开始废弃) 和 PD 配置项 [`enable-telemetry`](/pd-configuration-file.md#enable-telemetry)。这些变量和配置项的值已不再生效。
+    * 废弃系统变量 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入)、TiDB 配置项 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 和 PD 配置项 [`enable-telemetry`](/pd-configuration-file.md#enable-telemetry)。这些变量和配置项的值已不再生效。
     * 移除 `ADMIN SHOW TELEMETRY` 语法。
     * 删除 `TELEMETRY` 和 `TELEMETRY_ID` 关键字。
 

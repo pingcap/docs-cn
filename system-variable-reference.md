@@ -1932,7 +1932,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
-- [系统变量](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入从-v810-版本开始废弃)
+- [系统变量](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入)
 - [TiDB 8.1.0 Release Notes](/releases/release-8.1.0.md)
 - [TiDB 6.6.0 Release Notes](/releases/release-6.6.0.md)
 - [TiDB 6.5.1 Release Notes](/releases/release-6.5.1.md)
