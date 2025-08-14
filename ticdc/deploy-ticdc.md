@@ -129,15 +129,15 @@ tiup cluster upgrade <cluster-name> <version> --transfer-timeout 600
 
     以上把 TiCDC 的 `gc-ttl` 的值设置为 48 小时。
 
-3. 执行 `tiup cluster reload -R cdc` 命令重新加载配置。
+3. 执行 `tiup cluster reload <cluster-name> -R cdc` 命令重新加载配置。
 
 ## 使用 TiUP 终止和启动 TiCDC 节点
 
 使用 TiUP 可以方便地终止和启动 TiCDC 节点，命令如下：
 
-- 终止 TiCDC 节点：`tiup cluster stop -R cdc`
-- 启动 TiCDC 节点：`tiup cluster start -R cdc`
-- 重启 TiCDC 节点：`tiup cluster restart -R cdc`
+- 终止 TiCDC 节点：`tiup cluster stop <cluster-name> -R cdc`
+- 启动 TiCDC 节点：`tiup cluster start <cluster-name> -R cdc`
+- 重启 TiCDC 节点：`tiup cluster restart <cluster-name> -R cdc`
 
 ## 使用加密传输 (TLS) 功能
 
