@@ -190,7 +190,7 @@ TiDB 版本：7.5.7
 
     + TiCDC <!--tw@qiancai: 1 note-->
 
-        - Fix a bug that may cause changefeed with storage sink getting stuck [#9162](https://github.com/pingcap/tiflow/issues/9162) @[asddongmen](https://github.com/asddongmen)
+        - 修复当使用外部存储作为下游时 Changefeed 可能会卡住的问题 [#9162](https://github.com/pingcap/tiflow/issues/9162) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-8.5.2.md > 错误修复> Tools> TiCDC - 修复同步流量超过了下游 Kafka 的流量阀值后，Changefeed 可能会卡住的问题 [#12110](https://github.com/pingcap/tiflow/issues/12110) @[3AceShowHand](https://github.com/3AceShowHand)
         - (dup): release-6.5.12.md > 错误修复> Tools> TiCDC - 修复使用 `--overwrite-checkpoint-ts` 参数执行 `changefeed pause` 命令可能导致 Changefeed 卡住的问题 [#12055](https://github.com/pingcap/tiflow/issues/12055) @[hongyunyan](https://github.com/hongyunyan)
         - (dup): release-8.5.3.md > 错误修复> Tools> TiCDC - 修复在包含虚拟列的表中计算事件过滤表达式时 panic 的问题 [#12206](https://github.com/pingcap/tiflow/issues/12206) @[lidezhu](https://github.com/lidezhu)
