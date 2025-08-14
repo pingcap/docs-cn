@@ -112,11 +112,7 @@ PITR 的流程如下：
 
 备份文件目录结构的说明如下：
 
-<<<<<<< HEAD
 - `backupmeta` 目录：存储备份的元数据文件。从 v8.5.3 和 v9.0.0 起，该文件命名格式从 `{resolved_ts}-{uuid}.meta` 修改为 `{flushTs}-{minDefaultTs}-{minTs}-{maxTs}.meta`。文件名中包含以下时间戳字段：
-=======
-- `backupmeta` 目录：存储备份的元数据文件。从 v8.5.3 起，该文件命名格式从 `{resolved_ts}-{uuid}.meta` 修改为 `{flushTs}-{minDefaultTs}-{minTs}-{maxTs}.meta`。文件名中包含以下时间戳字段：
->>>>>>> f25c4101a8 (v8.5.3: log backup: update metafile format (#20455) (#20758))
 
     - `flushTs`：该备份文件被定期上传至外部存储的时间戳。该值从 PD 获取，具有全局唯一性。
     - `minDefaultTs`：仅针对 Write CF 文件，表示该备份所覆盖的最早事务起始时间。
