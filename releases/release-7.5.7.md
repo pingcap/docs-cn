@@ -53,6 +53,7 @@ TiDB 版本：7.5.7
 
 + PD <!--tw@Oreoxmt: 2 notes-->
 
+    - (dup): release-8.5.3.md > 改进提升> PD - 增加了 GO Runtime 相关监控 [#8931](https://github.com/tikv/pd/issues/8931) @[bufferflies](https://github.com/bufferflies)
     - 支持更全面的 golang runtime 监控, 可以 pd cluster 中 Runtime 看到更多 runtime 监控 [#9037](https://github.com/tikv/pd/issues/8931) @[bufferflies](https://github.com/bufferflies)
     - 减少一些非必要 error 日志 [#9370](https://github.com/tikv/pd/issues/9370) @[bufferflies](https://github.com/bufferflies)
 
