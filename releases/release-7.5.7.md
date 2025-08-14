@@ -149,7 +149,7 @@ TiDB 版本：7.5.7
 + TiKV <!--tw@qiancai: 1 note-->
 
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - 修复 Online Unsafe Recovery 可能被某些 TiFlash 副本阻塞，导致无法推进的问题 [18197](https://github.com/tikv/tikv/issues/18197) @[v01dstar](https://github.com/v01dstar)
+    - 修复 Online Unsafe Recovery 可能被某些 TiFlash 副本阻塞，导致 commit index 无法推进的问题 [18197](https://github.com/tikv/tikv/issues/18197) @[v01dstar](https://github.com/v01dstar)
     - (dup): release-8.5.3.md > 错误修复> TiKV - 修复 TiKV 可能使用客户端无法解码的压缩算法的问题 [#18079](https://github.com/tikv/tikv/issues/18079) @[ekexium](https://github.com/ekexium)
     - (dup): release-8.5.3.md > 错误修复> TiKV - 修复高并发场景下 TiKV 过量放行 SST 导入请求的问题 [#18452](https://github.com/tikv/tikv/issues/18452) @[hbisheng](https://github.com/hbisheng)
     - (dup): release-8.3.0.md > 错误修复> TiKV - 修复 Grafana TiKV 组件中的 `Ingestion picked level` 和 `Compaction Job Size(files)` 显示不正确的问题 [#15990](https://github.com/tikv/tikv/issues/15990) @[Connor1996](https://github.com/Connor1996)
