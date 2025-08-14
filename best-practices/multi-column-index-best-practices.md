@@ -32,7 +32,7 @@ CREATE TABLE listings (
 );
 ```
 
-假设该表在全美国有 2000 万条房源。如果你想查找租金低于 2000 美元的房源，可以在 `price` 列上建索引。这样优化器只需扫描 `[-inf, 2000.00)` 范围的数据，假设 70% 房源高于 2000 美元，实际扫描量约为 1400 万行。执行计划如下：
+假设该表在全美国有 2000 万条房源。如果你想查找租金低于 2000 元的房源，可以在 `price` 列上建索引。这样优化器只需扫描 `[-inf, 2000.00)` 范围的数据，假设 70% 房源高于 2000 元，实际扫描量约为 1400 万行。执行计划如下：
 
 ```sql
 -- 查询 1：查找租金低于 2000 的房源
@@ -49,7 +49,7 @@ EXPLAIN FORMAT = "brief" SELECT * FROM listings WHERE price < 2000;
 +-----------------------------+---------+----------------------------------------------+---------------------------+
 ```
 
-虽然这样能提升性能，但返回的结果仍然数量庞大。若你需要更精确的房源，可以增加过滤条件，如指定城市、卧室数和最高租金。例如，查找旧金山两居室且租金低于 2000 美元的房源，结果会大大缩小，可能只剩几十条。
+虽然这样能提升性能，但返回的结果仍然数量庞大。若你需要更精确的房源，可以增加过滤条件，如指定城市、卧室数和最高租金。例如，查找北京两居室且租金低于 2000 元的房源，结果会大大缩小，可能只剩几十条。
 
 为优化此类查询，可以为 `city`、`bedrooms` 和 `price` 建多列索引：
 
@@ -67,30 +67,30 @@ SQL 中的多列索引按字典序排序。以 `(city, bedrooms, price)` 为例�
 
 下表展示了多列索引如何细化搜索结果：
 
-| 城市           | 卧室数 | 租金  |
-| -------------- | ------ | ----- |
-| San Diego      | 1      | 1000  |
-| San Diego      | 1      | 1500  |
-| San Diego      | 2      | 1000  |
-| San Diego      | 2      | 2500  |
-| San Diego      | 3      | 1000  |
-| San Diego      | 3      | 2500  |
-| San Francisco  | 1      | 1000  |
-| San Francisco  | 1      | 1500  |
-| San Francisco  | 2      | 1000  |
-| San Francisco  | 2      | 1500  |
-| San Francisco  | 3      | 2500  |
-| San Francisco  | 3      | 3000  |
+| 城市     | 卧室数  | 租金  |
+| -------- | ------ | ----- |
+| Shanghai | 1      | 1000  |
+| Shanghai | 1      | 1500  |
+| Shanghai | 2      | 1000  |
+| Shanghai | 2      | 2500  |
+| Shanghai | 3      | 1000  |
+| Shanghai | 3      | 2500  |
+| Beijing  | 1      | 1000  |
+| Beijing  | 1      | 1500  |
+| Beijing  | 2      | 1000  |
+| Beijing  | 2      | 1500  |
+| Beijing  | 3      | 2500  |
+| Beijing  | 3      | 3000  |
 
 ## 优化查询与结果
 
-利用多列索引，TiDB 能高效定位旧金山两居室且租金低于 2000 美元的房源：
+利用多列索引，TiDB 能高效定位北京两居室且租金低于 2000 元的房源：
 
 ```sql
--- 查询 2：查找旧金山两居室且租金低于 2000 的房源
+-- 查询 2：查找北京两居室且租金低于 2000 的房源
 EXPLAIN FORMAT = "brief"
     SELECT * FROM listings
-    WHERE city = 'San Francisco' AND bedrooms = 2 AND price < 2000;
+    WHERE city = 'Beijing' AND bedrooms = 2 AND price < 2000;
 ```
 
 ```
@@ -98,17 +98,17 @@ EXPLAIN FORMAT = "brief"
 | id                     | task | access object                                                                               | operator info                   |
 +------------------------+------+---------------------------------------------------------------------------------------------+---------------------------------+
 | IndexLookUp            | root |                                                                                             |                                 |
-| ├─IndexRangeScan(Build)| root |table:listings,index:idx_city_bedrooms_price ["San Francisco" 2 -inf,(city, bedrooms, price)]|range:["San Francisco" 2 2000.00)|
+| ├─IndexRangeScan(Build)| root |table:listings,index:idx_city_bedrooms_price ["Beijing" 2 -inf,(city, bedrooms, price)]|range:["Beijing" 2 2000.00)|
 | └─TableRowIDScan(Probe)| root |table:listings                                                                               |                                 |
 +------------------------+------+---------------------------------------------------------------------------------------------+---------------------------------+
 ```
 
 该查询在示例数据中返回：
 
-| 城市           | 卧室数 | 租金  |
+| 城市            | 卧室数 | 租金  |
 | -------------- | ------ | ----- |
-| San Francisco  | 2      | 1000  |
-| San Francisco  | 2      | 1500  |
+| Beijing        | 2      | 1000  |
+| Beijing        | 2      | 1500  |
 
 通过多列索引，TiDB 避免了不必要的行扫描，大幅提升查询性能。
 
@@ -132,10 +132,10 @@ TiDB 优化器内置了强大的范围推导组件。它会根据查询条件和
 
 ### 示例 1：重叠范围
 
-假设要查找纽约两居室，租金在以下两个重叠区间的房源：
+假设要查找杭州两居室，租金在以下两个重叠区间的房源：
 
-- 租金在 1000~2000 美元之间
-- 租金在 1500~2500 美元之间
+- 租金在 1000~2000 元之间
+- 租金在 1500~2500 元之间
 
 优化器会将两个区间合并为 1000 ~ 2500。查询及执行计划如下：
 
@@ -143,8 +143,8 @@ TiDB 优化器内置了强大的范围推导组件。它会根据查询条件和
 -- 查询 3：重叠租金区间
 EXPLAIN FORMAT = "brief"
     SELECT * FROM listings
-    WHERE (city = 'New York' AND bedrooms = 2 AND price >= 1000 AND price < 2000)
-       OR (city = 'New York' AND bedrooms = 2 AND price >= 1500 AND price < 2500);
+    WHERE (city = 'Hangzhou' AND bedrooms = 2 AND price >= 1000 AND price < 2000)
+       OR (city = 'Hangzhou' AND bedrooms = 2 AND price >= 1500 AND price < 2500);
 ```
 
 ```
@@ -152,17 +152,17 @@ EXPLAIN FORMAT = "brief"
 | id                      | task | access object                                                        | operator info                                    |
 +-------------------------+------+----------------------------------------------------------------------+--------------------------------------------------+
 | IndexLookUp             | root |                                                                      |                                                  |
-| ├─IndexRangeScan(Build) | root | table:listings,index:idx_city_bedrooms_price(city, bedrooms, price)  | range:["New York" 2 1000.00,"New York" 2 2500.00)|
+| ├─IndexRangeScan(Build) | root | table:listings,index:idx_city_bedrooms_price(city, bedrooms, price)  | range:["Hangzhou" 2 1000.00,"Hangzhou" 2 2500.00)|
 | └─TableRowIDScan(Probe) | root | table:listings                                                       |                                                  |
 +-------------------------+------+----------------------------------------------------------------------+--------------------------------------------------+
 ```
 
 ### 示例 2：不重叠范围
 
-再比如查找旧金山或圣地亚哥的一居室，分别在不同租金区间：
+再比如查找北京或上海的一居室，分别在不同租金区间：
 
-- 旧金山一居室，租金 1500 ~ 2500
-- 圣地亚哥一居室，租金 1000 ~ 1500
+- 北京一居室，租金 1500 ~ 2500
+- 上海一居室，租金 1000 ~ 1500
 
 由于区间不重叠，执行计划中会保留两个独立范围：
 
@@ -172,8 +172,8 @@ EXPLAIN FORMAT = "brief"
 EXPLAIN FORMAT = "brief"
     SELECT * FROM listings
     WHERE
-        (city = 'San Francisco' AND bedrooms = 1 AND price >= 1500 AND price < 2500)
-     OR (city = 'San Diego' AND bedrooms = 1 AND price >= 1000 AND price < 1500);
+        (city = 'Beijing' AND bedrooms = 1 AND price >= 1500 AND price < 2500)
+     OR (city = 'Shanghai' AND bedrooms = 1 AND price >= 1000 AND price < 1500);
 ```
 
 ```
@@ -181,8 +181,8 @@ EXPLAIN FORMAT = "brief"
 | id                      | task | access object                                                      | operator info                                              |
 +-------------------------+------+--------------------------------------------------------------------+------------------------------------------------------------+
 | IndexLookUp             | root |                                                                    |                                                            |
-| ├─IndexRangeScan(Build) | root | table:listings,index:idx_city_bedrooms_price(city, bedrooms, price)| range:["San Francisco" 1 1500.00,"San Francisco" 1 2500.00)|
-| └─TableRowIDScan(Probe) | root | table:listings                                                     |       ["San Diego" 1 1000.00,"San Diego" 1 1500.00)        |
+| ├─IndexRangeScan(Build) | root | table:listings,index:idx_city_bedrooms_price(city, bedrooms, price)| range:["Beijing" 1 1500.00,"Beijing" 1 2500.00)|
+| └─TableRowIDScan(Probe) | root | table:listings                                                     |       ["Shanghai" 1 1000.00,"Shanghai" 1 1500.00)        |
 +-------------------------+------+--------------------------------------------------------------------+------------------------------------------------------------+
 ```
 
