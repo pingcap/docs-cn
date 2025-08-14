@@ -161,11 +161,11 @@ TiDB 版本：7.5.7
 
 + PD <!--tw@qiancai: 5 notes-->
 
-    - 修复反复修改 `split-merge-interval` 的值，可能导致该配置不生效的问题 [#8404](https://github.com/tikv/pd/issues/8404) @[lhy1024](https://github.com/lhy1024)
-    - 修复 `lease` 默认值未被正确设置的问题 [#9156](https://github.com/tikv/pd/issues/9156) @[rleungx](https://github.com/rleungx)
-    - 修复了 TiDB Dashboard 导致的 pd goroutine 泄露问题 [#9402](https://github.com/tikv/pd/issues/9402) @[baurine](https://github.com/baurine)
-    - 修复新上线节点可能无法被调度问题 [#9145](https://github.com/tikv/pd/issues/9145)@[bufferflies](https://github.com/bufferflies)
-    - 修复开启 tidb_enable_tso_follower_proxy 后，tso 服务不可用问题 [#9188]https://github.com/tikv/pd/issues/9188 @[Tema](https://github.com/Tema)
+    - (dup): release-8.3.0.md > 错误修复> PD - 修复反复修改 `split-merge-interval` 的值（例如从 `1s` 改为 `1h`，再改回 `1s`）可能导致该配置不生效的问题 [#8404](https://github.com/tikv/pd/issues/8404) @[lhy1024](https://github.com/lhy1024)
+    - (dup): release-8.5.2.md > 错误修复> PD - 修复 `lease` 默认值未被正确设置的问题 [#9156](https://github.com/tikv/pd/issues/9156) @[rleungx](https://github.com/rleungx)
+    - (dup): release-8.5.3.md > 错误修复> PD - 修复 TiDB Dashboard TCP 链接未正确关闭，导致 PD goroutine 泄露的问题 [#9402](https://github.com/tikv/pd/issues/9402) @[baurine](https://github.com/baurine)
+    - (dup): release-8.5.3.md > 错误修复> PD - 修复新上线的 TiKV 节点可能无法被调度问题 [#9145](https://github.com/tikv/pd/issues/9145) @[bufferflies](https://github.com/bufferflies)
+    - 修复开启 `tidb_enable_tso_follower_proxy` 后，TSO 服务可能不可用的问题 [#9188](https://github.com/tikv/pd/issues/9188) @[Tema](https://github.com/Tema)
 
 + TiFlash <!--tw@qiancai: 5 notes-->
 
