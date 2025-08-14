@@ -63,7 +63,6 @@ TiDB 版本：7.5.7
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-8.5.3.md > 改进提升> TiFlash - 增强 TiFlash 在宽表场景下 OOM 风险相关的监测指标 [#10272](https://github.com/pingcap/tiflash/issues/10272) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-8.5.3.md > 改进提升> TiFlash - 增加 TiFlash 获取存储层快照的重试次数，以增强大表上查询的稳定性 [#10300](https://github.com/pingcap/tiflash/issues/10300) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - (dup): release-8.1.0.md > 改进提升> TiFlash - 降低 TiFlash 在开启 TLS 后因更新证书而导致 panic 的概率 [#8535](https://github.com/pingcap/tiflash/issues/8535) @[windtalker](https://github.com/windtalker)
 
 + Tools
 
@@ -178,10 +177,6 @@ TiDB 版本：7.5.7
     - (dup): release-8.5.2.md > 错误修复> TiFlash - 修复插入单行超过 16 MiB 的数据后，TiFlash 可能无法正常重启的问题 [#10052](https://github.com/pingcap/tiflash/issues/10052) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-8.5.3.md > 错误修复> TiFlash - 修复 Resource Control Low Token Signal 丢失导致查询被限速的问题 [#10137](https://github.com/pingcap/tiflash/issues/10137) @[guo-shaoge](https://github.com/guo-shaoge)
     - (dup): release-8.5.2.md > 错误修复> TiFlash - 修复执行包含 `GROUP BY ... WITH ROLLUP` 的 SQL 语句时，可能会出现 `Exception: Block schema mismatch` 报错的问题 [#10110](https://github.com/pingcap/tiflash/issues/10110) @[gengliqi](https://github.com/gengliqi)
-    - 降低因为 SSL 重新加载导致 TiFlash crash 的可能性(#8535) [#8535](https://github.com/pingcap/tiflash/issues/8535) @[windtalker](https://github.com/windtalker)
-    - 修复 TiFlash 报错 fmt::v10::format_error unmatched '}' in format string [#9087](https://github.com/pingcap/tiflash/issues/9087) @[windtalker](https://github.com/windtalker)
-    - 修复执行包含 `GROUP BY ... WITH ROLLUP` 的 SQL 语句时，可能会出现 `Exception: Block schema mismatch` 报错的问题 [#10110](https://github.com/pingcap/tiflash/issues/10110) @[gengliqi](https://github.com/gengliqi)
-    - 修复 TiFlash resource control 信号丢失导致的非预期的查询受限问题 [#10137](https://github.com/pingcap/tiflash/issues/10137) @[guo-shaoge](https://github.com/guo-shaoge)
 
 + Tools
 
