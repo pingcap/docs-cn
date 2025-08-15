@@ -136,7 +136,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的语句。下面使
     QUERY WATCH REMOVE 1;
     ```
 
-- 批量删除指定资源组的所有监控项（从 v9.0.0 开始引入）：
+- <span class="version-mark">从 v9.0.0 开始引入</span> 批量删除指定资源组的所有监控项：
 
     ```sql
     QUERY WATCH REMOVE RESOURCE GROUP rg1;
