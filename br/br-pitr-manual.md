@@ -517,3 +517,77 @@ tiup br restore point --pd="${PD_IP}:2379"
 > **注意：**
 >
 > 当恢复记录了快照（全量）恢复数据的日志备份时，需要使用 v9.0.0 及之后版本的 BR，否则可能导致记录下来的全量恢复数据无法被恢复。
+
+### 使用表库过滤功能恢复部分数据
+
+从 v9.0.0 开始，你可以使用参数 `--filter` 来使用库表过滤功能恢复部分数据。
+
+示例如下：
+
+```shell
+tiup br restore point --pd="${PD_IP}:2379"
+--storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
+--full-backup-storage='s3://backup-101/snapshot-202205120000?access-key=${access-key}&secret-access-key=${secret-access-key}'
+--filter "test.*"
+--filter "test2.t1"
+--restored-ts ${restored_ts}
+```
+
+该恢复任务会恢复在 `restored-ts` 时刻表名匹配正则表达式 `test.*` 和 `test2.t1` 的表。有下面三种情况：
+
+1. 表 A (table id = 1) 在 `restored-ts` 时刻及以前的表名始终匹配 `--filter` 正则表达式，则 PITR 会恢复这张表。
+2. 表 B (table id = 2) 在 `restored-ts` 前的某个时刻的表名不匹配 `--filter` 正则表达式，但在 `restored-ts` 时刻的表名匹配，则 PITR 会恢复这张表。
+3. 表 C (table id = 3) 在 `restored-ts` 前的某个时刻的表名匹配 `--filter` 正则表达式，但在 `restored-ts` 时刻的表名不匹配，则 PITR 不会恢复这张表。
+
+你可以通过使用库表过滤功能来在线恢复部分数据。在线恢复过程中，注意不要创建与恢复表库表名相同的表，避免因冲突而失败。在该恢复过程中由 PITR 创建的表的状态都会被设置成 `import` 模式，避免在恢复过程中对该表产生读写操作。在恢复结束时，这些表会在 TiDB Domain 内存缓存中更新，并且它们的状态会被设置成 `normal` 模式，从而可以对该表产生读写操作。
+
+### 并发恢复
+
+从 v9.0.0 开始，你可以在同一集群上同时进行多个恢复任务。
+
+示例如下：
+
+```shell
+tiup br restore point --pd="${PD_IP}:2379"
+--storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
+--full-backup-storage='s3://backup-101/snapshot-202205120000?access-key=${access-key}&secret-access-key=${secret-access-key}'
+--filter "test1.*"
+--restored-ts ${restored_ts}
+```
+
+```shell
+tiup br restore point --pd="${PD_IP}:2379"
+--storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
+--full-backup-storage='s3://backup-101/snapshot-202205120000?access-key=${access-key}&secret-access-key=${secret-access-key}'
+--filter "test2.*"
+--restored-ts ${restored_ts}
+```
+
+对上述每个任务，都会将任务信息记录在系统表 `mysql.tidb_restore_registry` 中，如下所示：
+
+```
+mysql> select * from mysql.tidb_restore_registry;
++---------+----------------+----------------------------------+--------------------+--------------------+---------------------+----------------+---------+---------------+----------------------------+----------------------------+
+| id      | filter_strings | filter_hash                      | start_ts           | restored_ts        | upstream_cluster_id | with_sys_table | status  | cmd           | task_start_time            | last_heartbeat_time        |
++---------+----------------+----------------------------------+--------------------+--------------------+---------------------+----------------+---------+---------------+----------------------------+----------------------------+
+|       1 | test1.*        | a476a09096fd87b7863ff3800094bbbc | 459748599085400074 | 459748693889777665 | 7537195022406545574 |              1 | running | Point Restore | 2025-08-11 18:46:25.416819 | 2025-08-11 18:46:25.422316 |
+| 2000001 | test2.*        | 6ab86da703ab4df756ba3050be9a894b | 459748599085400074 | 459748693889777665 | 7537195022406545574 |              1 | running | Point Restore | 2025-08-11 18:48:17.400659 | 2025-08-11 18:48:17.406057 |
++---------+----------------+----------------------------------+--------------------+--------------------+---------------------+----------------+---------+---------------+----------------------------+----------------------------+
+2 rows in set (0.00 sec)
+```
+
+系统表 `mysql.tidb_restore_registry` 中的 id 不仅用于唯一标识恢复任务，也用于标识该恢复任务对应的断点数据。如果断点存储在集群中，则会创建库 `__TiDB_BR_Temporary_Snapshot_Restore_Checkpoint_{id}` 存放该任务的断点数据；如果断点存储在外部存储中，则会创建目录 `checkpoints/restore-{downstream-cluster-id}/{snapshot or log}_{id}` 记录断点数据。
+
+当任务失败时，如果你打算终止本次恢复，则需要使用 br 命令行工具清除该任务，但仍需手动删除未恢复完的库表。
+
+示例如下：
+
+```shell
+tiup br abort restore point --pd="${PD_IP}:2379"
+--storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
+--full-backup-storage='s3://backup-101/snapshot-202205120000?access-key=${access-key}&secret-access-key=${secret-access-key}'
+--filter "test2.*"
+--restored-ts ${restored_ts}
+```
+
+只需要在原命令的 `restore` 命令前插入 `abort` 命令即可。
