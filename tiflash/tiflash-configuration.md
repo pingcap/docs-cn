@@ -470,6 +470,13 @@ I/O 限流功能相关配置。
 - 默认值：`false`
 - 可选值：`true`、`false`
 
+##### `enable_version_chain` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 用于控制 TiFlash 实现 MVCC 过滤的算法。如果设置为 `1`，则使用 VersionChain 算法；如果设置为 `0`，则使用 DeltaIndex 算法。
+- 通常情况下，采用 VersionChain 算法的扫表性能要明显优于 DeltaIndex 算法，因为 VersionChain 算法可以通过避免对数据进行排序来提升 MVCC 过滤的性能。
+- 默认值：`1`
+- 可选值：`1`、`0`
+
 #### security <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
 安全相关配置。
