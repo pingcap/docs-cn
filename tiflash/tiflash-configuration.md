@@ -97,6 +97,14 @@ summary: 介绍 TiFlash 的配置参数，包括 tiflash.toml 和 tiflash-learne
 - 单位：Byte。目前不支持如 `"10GB"` 的设置。
 - `capacity` 列表的长度应当与 [`storage.main.dir`](#dir) 列表长度保持一致。
 
+#### `storage.api_version` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- TiFlash 与 PD、TiKV 进行通讯时的接口版本。
+- 可选值：
+    - `1`：TiFlash 使用 API V1 与 PD、TiKV 进行通信。
+    - `2`：TiFlash 使用 API V2 与 PD、TiKV 进行通信，为多租户特性提供支持。
+- 默认值：`1`
+
 #### storage.latest
 
 ##### `dir`
@@ -413,6 +421,13 @@ I/O 限流功能相关配置。
 
 - 表示 PageStorage 单个数据文件中有效数据的最低比例。当某个数据文件的有效数据比例低于该值时，会触发 GC 对该文件的数据进行整理。
 - 默认值：`0.5`
+
+##### `disagg_blocklist_wn_store_id` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 控制在存算分离架构下，TiFlash Compute Node 不会将请求分发至哪些 TiFlash Write Node。
+- 其值为使用 `,` 分隔的 store_id 字符串。例如，设置为 `"140,141"` 表示 TiFlash Compute Node 不会将请求分发至 store_id 为 `140` 或 `141` 的 TiFlash Write Node。可以使用 [pd-ctl](/pd-control.md#查询存算分离架构下的-tiflash-节点) 查找集群中 TiFlash Write Node 的 store_id。
+- 如果其值为空字符串 `""`，表示 TiFlash Compute Node 会将请求分发至所有 TiFlash Write Node。
+- 默认值：`""`
 
 ##### `max_bytes_before_external_group_by` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
