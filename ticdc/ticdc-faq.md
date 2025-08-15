@@ -385,7 +385,7 @@ BR (Backup & Restore) 工具也是直接将数据生成为 SST 文件并导入 T
 不同版本的 BR 处理方式不同：
 
 - 对于 v8.2.0 之前的版本，如果集群上已存在 changefeed 任务，BR 将拒绝创建恢复任务。
-- 从 v8.2.0 开始，仅当 BR 恢复数据的 backupTs 小于集群上所有 changefeed 的 checkpointTs 时，才允许创建恢复任务。
+- 从 v8.2.0 开始，仅当 BR 恢复数据的 `backupTs` 小于集群上所有 changefeed 的 `checkpointTs` 时，才允许创建恢复任务。
 
 ## 为什么恢复暂停的 changefeed 后，changefeed 同步延迟越来越高，数分钟后才恢复正常？
 
