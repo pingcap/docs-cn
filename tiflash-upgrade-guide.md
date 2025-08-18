@@ -81,7 +81,7 @@ TiFlash 在 v6.1.0 对 Proxy 做了升级（与 TiKV v6.0.0 对齐）。新的 P
 
 ## 从 v5.x, v6.0 或 v6.1 升级至 v6.2 或以上版本
 
-TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，因此，从 v5.x 或 v6.0 升级至 v6.2 时，除了需要注意 [TiFlash Proxy](#tiflash-proxy) 和[动态分区裁剪](#动态分区裁剪)的变化，还应注意 PageStorage 变更数据版本带来的影响，具体如下：
+TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，减少数据的写放大，提升 TiFlash 稳定性。因此，从 v5.x, v6.0 或 v6.1 升级至 v6.2 或以上版本时，除了需要注意 [TiFlash Proxy](#tiflash-proxy) 和[动态分区裁剪](#动态分区裁剪)的变化，还应注意 PageStorage 变更数据版本带来的影响，具体如下：
 
 - 已有节点升级 v6.2 后，随着数据不断写入，旧版本的数据会逐步转换成新版本数据。
 - 新旧版本的数据格式不能做到完全的转换，这会带来一定系统开销（通常不影响业务，但需要注意）。因此升级完成后，建议使用 [`COMPACT` 命令](/sql-statements/sql-statement-alter-table-compact.md)触发数据整理 (Compaction) 将相关表的数据转成新版本格式。操作步骤如下：
@@ -101,21 +101,23 @@ TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，因此，从 v5.x 或 v6
 - Mix Mode：从 V2 迁移到 V3 的表数量（包括分区数）
 
 **注意**
-如果目标版本为下列 patch 版本，有已知 issue [#9039](https://github.com/pingcap/tiflash/issues/9039) 可能引起升级后 TiFlash 数据损坏
 
-* v6.5.0~v6.5.9
-* v7.1.0~v7.1.5
-* v7.5.0~v7.5.1
+如果目标版本为下列 patch 版本，存在已知 issue [#9039](https://github.com/pingcap/tiflash/issues/9039) 可能引起升级后 TiFlash 数据损坏
 
-建议升级到修复后的 v6.5.10, v7.1.6, v7.5.2 或更新的版本。
+- v6.5.0~v6.5.9
+- v6.6.0
+- v7.0.0
+- v7.1.0~v7.1.5
+- v7.2.0
+- v7.3.0
+- v7.4.0
+- v7.5.0~v7.5.1
+
+建议选择修复后的 v6.5.10, v7.1.6, v7.5.2 或更新的版本作为升级的目标版本。
 
 **测试环境及特殊回退需求下的对策**
 
 强制缩容 TiFlash 节点，并重新同步数据。操作步骤详见[缩容 TiFlash 节点](/scale-tidb-using-tiup.md#缩容-tiflash-节点)。
-
-## 从 v6.1 升级至 v6.2
-
-从 v6.1 升级至 v6.2 时，需要注意 PageStorage 变更数据版本带来的影响。具体请参考[从 v5.x 或 v6.0 升级至 v6.2](#从-v5x-或-v60-升级至-v62) 中关于 PageStorage 的描述。
 
 ## 从 v6.x 或 v7.x 升级至 v7.3，并且设置了 `storage.format_version = 5`
 
