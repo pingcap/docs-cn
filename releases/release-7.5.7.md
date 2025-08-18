@@ -134,17 +134,17 @@ TiDB 版本：7.5.7
     - 修复外键定义成环时的死循坏问题 [#60985](https://github.com/pingcap/tidb/issues/60985) @[hawkingrei](https://github.com/hawkingrei) <!--tw@hfxsd: the following 13 notes-->
     - 修复内部查询在使用 `NULL` 构造索引范围查询时可能构造能力不足的问题 [#62196](https://github.com/pingcap/tidb/issues/62196) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 Plan Cache 缓存了错误的执行计划导致执行报错的问题 [#56772](https://github.com/pingcap/tidb/issues/56772) @[dash12653](https://github.com/dash12653)
-    - 修复跨月、跨年的行数估算可能过分偏大的问题 [#50080](https://github.com/pingcap/tidb/issues/50080) @[terry1purcell](https://github.com/terry1purcell)
-    - 修复 ANALYZE 子任务并发数过于超出设置参数的问题 [#61785](https://github.com/pingcap/tidb/issues/61785) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复在 TopN 下推过程中错误生成带表达式的TopN排序项 [#60655](https://github.com/pingcap/tidb/issues/60655) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复没有列、索引的统计信息时，TiDB 可能在后台打印 panic 日志的问题 [#61733](https://github.com/pingcap/tidb/issues/61733) @[winoros](https://github.com/winoros)
-    - 正确设置内部会话的系统变量的 `tidb_cost_model_version` 的默认值 [#61565](https://github.com/pingcap/tidb/issues/61565) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复估算跨月或跨年的行数时，结果可能过分偏大的问题 [#50080](https://github.com/pingcap/tidb/issues/50080) @[terry1purcell](https://github.com/terry1purcell)
+    - 修复 `ANALYZE` 子任务并发数大幅超出设置的上限的问题 [#61785](https://github.com/pingcap/tidb/issues/61785) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复在 TopN 下推过程中错误地生成带表达式的 TopN 排序项 [#60655](https://github.com/pingcap/tidb/issues/60655) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复当缺少列或索引的统计信息时，TiDB 可能在后台打印 panic 日志的问题 [#61733](https://github.com/pingcap/tidb/issues/61733) @[winoros](https://github.com/winoros)
+    - 修复当缺少列或索引的统计信息时，`JOIN` 的行数估算可能偏差过大的问题 [#61602](https://github.com/pingcap/tidb/issues/61602) @[qw4990](https://github.com/qw4990)
+    - 修复系统变量 `tidb_cost_model_version` 的默认值设置错误的问题 [#61565](https://github.com/pingcap/tidb/issues/61565) @[hawkingrei](https://github.com/hawkingrei)
     - 修复当表的第一列为虚拟生成列时，统计信息可能出错的问题 [#61606](https://github.com/pingcap/tidb/issues/61606) @[winoros](https://github.com/winoros)
-    - 修复错误的跳过 plan cache，当进行谓词简化 [#61513](https://github.com/pingcap/tidb/issues/61513) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复特定情况下当缺少列、索引的统计信息时，JOIN 的行数估算可能偏差过大的问题 [#61602](https://github.com/pingcap/tidb/issues/61602) @[qw4990](https://github.com/qw4990)
-    - 修复加索引时 cancel ddl job 导致加索引卡住的问题  [#61087](https://github.com/pingcap/tidb/issues/61087) @[tangenta](https://github.com/tangenta)
-    - 修复 fast admin check 在一些内部 SQL 执行失败后仍然返回成功的问题 [#61612](https://github.com/pingcap/tidb/issues/61612) @[joechenrh](https://github.com/joechenrh)
-    - 修复通过 multi-schema change 加索引之后数据索引不一致的问题 [#61255](https://github.com/pingcap/tidb/issues/61255) @[tangenta](https://github.com/tangenta)
+    - 修复错误地跳过 Plan Cache，并出现谓词简化的问题 [#61513](https://github.com/pingcap/tidb/issues/61513) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复加索引时执行 `ADMIN CANCEL DDL JOBS` 导致加索引卡住的问题 [#61087](https://github.com/pingcap/tidb/issues/61087) @[tangenta](https://github.com/tangenta)
+    - 修复在某些内部 SQL 执行失败后，`ADMIN CHECK` 仍然返回成功的问题 [#61612](https://github.com/pingcap/tidb/issues/61612) @[joechenrh](https://github.com/joechenrh)
+    - 修复通过 multi-schema change 加索引后，数据索引不一致的问题 [#61255](https://github.com/pingcap/tidb/issues/61255) @[tangenta](https://github.com/tangenta)
 
 + TiKV <!--tw@qiancai: 1 note-->
 
