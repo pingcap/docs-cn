@@ -80,7 +80,7 @@ TiFlash 在 v6.1.0 对 Proxy 做了升级（与 TiKV v6.0.0 对齐）。新的 P
 
     升级完成之后，如果要启用动态分区裁剪特性，请确保 `tidb_partition_prune_mode` 的值为 `dynamic`，并手动更新分区表的全局统计信息。关于如何手动更新统计信息，参见[动态裁剪模式](/partitioned-table.md#动态裁剪模式)。
 
-## 从 v5.x 或 v6.0 升级至 v6.2
+## 从 v5.x, v6.0 或 v6.1 升级至 v6.2 或以上版本
 
 TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，因此，从 v5.x 或 v6.0 升级至 v6.2 时，除了需要注意 [TiFlash Proxy](#tiflash-proxy) 和[动态分区裁剪](#动态分区裁剪)的变化，还应注意 PageStorage 变更数据版本带来的影响，具体如下：
 
@@ -100,6 +100,15 @@ TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，因此，从 v5.x 或 v6
 - Only V2：使用 PageStorage V2 的表数量（包括分区数）
 - Only V3：使用 PageStorage V3 的表数量（包括分区数）
 - Mix Mode：从 V2 迁移到 V3 的表数量（包括分区数）
+
+**注意**
+如果目标版本为下列 patch 版本，有已知 issue [#9039](https://github.com/pingcap/tiflash/issues/9039) 可能引起升级后 TiFlash 数据损坏
+
+* v6.5.0~v6.5.9
+* v7.1.0~v7.1.5
+* v7.5.0~v7.5.1
+
+建议升级到修复后的 v6.5.10, v7.1.6, v7.5.2 或更新的版本。
 
 **测试环境及特殊回退需求下的对策**
 
