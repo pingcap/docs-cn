@@ -144,7 +144,7 @@ TiDB 版本：7.5.7
     - 修复错误地跳过 Plan Cache，并出现谓词简化的问题 [#61513](https://github.com/pingcap/tidb/issues/61513) @[hawkingrei](https://github.com/hawkingrei)
     - 修复加索引时执行 `ADMIN CANCEL DDL JOBS` 导致加索引卡住的问题 [#61087](https://github.com/pingcap/tidb/issues/61087) @[tangenta](https://github.com/tangenta)
     - 修复在某些内部 SQL 执行失败后，`ADMIN CHECK` 仍然返回成功的问题 [#61612](https://github.com/pingcap/tidb/issues/61612) @[joechenrh](https://github.com/joechenrh)
-    - 修复通过 multi-schema change 加索引后，数据索引不一致的问题 [#61255](https://github.com/pingcap/tidb/issues/61255) @[tangenta](https://github.com/tangenta)
+    - 修复通过 multi-schema change 加多个索引后，数据索引不一致的问题 [#61255](https://github.com/pingcap/tidb/issues/61255) @[tangenta](https://github.com/tangenta)
 
 + TiKV <!--tw@qiancai: 1 note-->
 
