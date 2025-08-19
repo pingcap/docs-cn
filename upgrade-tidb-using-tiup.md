@@ -61,7 +61,7 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 
 查阅 TiDB release notes 中的兼容性变更。如果有任何变更影响到了你的升级，请采取相应的措施。
 
-以下为从 v8.4.0 升级至当前版本 ({{{ .tidb-version }}}) 所需查阅的 release notes。如果从 v8.3.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本的 [Release Notes](/releases/release-notes.md)。
+以下为从 v8.4.0 升级至当前版本 (v{{{ .tidb-version }}}) 所需查阅的 release notes。如果从 v8.3.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本的 [Release Notes](/releases/release-notes.md)。
 
 - TiDB v8.5.0 [兼容性变更](/releases/release-8.5.0.md#兼容性变更)
 - TiDB v8.5.1 [Release Notes](/releases/release-8.5.1.md)
@@ -143,7 +143,7 @@ tiup update cluster
 > 以下情况可跳过此步骤：
 >
 > - 原集群没有修改过配置参数，或通过 tiup cluster 修改过参数但不需要调整。
-> - 升级后对未修改过的配置项希望使用 `{{{ .tidb-version }}}` 默认参数。
+> - 升级后对未修改过的配置项希望使用 `v{{{ .tidb-version }}}` 默认参数。
 
 1. 进入拓扑文件的 `vi` 编辑模式：
 
@@ -196,12 +196,12 @@ tiup cluster check <cluster-name> --cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 {{{ .tidb-version }}} 版本为例：
+以升级到 v{{{ .tidb-version }}} 版本为例：
 
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> {{{ .tidb-version }}}
+tiup cluster upgrade <cluster-name> v{{{ .tidb-version }}}
 ```
 
 > **注意：**
@@ -244,7 +244,7 @@ tiup cluster upgrade -h | grep "version"
 tiup cluster stop <cluster-name>
 ```
 
-之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级，其中 `<cluster-name>` 为集群名，`<version>` 为升级的目标版本，例如 `{{{ .tidb-version }}}`。
+之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级，其中 `<cluster-name>` 为集群名，`<version>` 为升级的目标版本，例如 `v{{{ .tidb-version }}}`。
 
 {{< copyable "shell-regular" >}}
 
@@ -273,7 +273,7 @@ tiup cluster display <cluster-name>
 ```
 Cluster type:       tidb
 Cluster name:       <cluster-name>
-Cluster version:    {{{ .tidb-version }}}
+Cluster version:    v{{{ .tidb-version }}}
 ```
 
 ## 4. 升级 FAQ
@@ -328,7 +328,7 @@ Cluster version:    {{{ .tidb-version }}}
 
 ### 4.3 升级过程中 evict leader 等待时间过长，如何跳过该步骤快速升级
 
-可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下，其中 `<version>` 为升级的目标版本，例如 `{{{ .tidb-version }}}`：
+可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下，其中 `<version>` 为升级的目标版本，例如 `v{{{ .tidb-version }}}`：
 
 {{< copyable "shell-regular" >}}
 
@@ -343,5 +343,5 @@ tiup cluster upgrade <cluster-name> <version> --force
 {{< copyable "" >}}
 
 ```
-tiup install ctl:{{{ .tidb-version }}}
+tiup install ctl:v{{{ .tidb-version }}}
 ```

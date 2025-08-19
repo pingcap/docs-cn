@@ -107,10 +107,10 @@ public class Tutorial1
 $ dotnet run
 Connecting to TiDB...
 
-Connected to: 8.0.11-TiDB-{{{ .tidb-version }}}
+Connected to: 8.0.11-TiDB-v{{{ .tidb-version }}}
 
 Version details:
-Release Version: {{{ .tidb-version }}}
+Release Version: v{{{ .tidb-version }}}
 Edition: Community
 Git Commit Hash: f43a13324440f92209e2a9f04c0bbe9cf763978d
 Git Branch: HEAD
