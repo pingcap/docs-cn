@@ -1,7 +1,6 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
-- [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
   - [TiDB 8.5 Release Notes](/releases/release-8.5.0.md)
@@ -18,7 +17,7 @@
 - 应用开发
   - [概览](/develop/dev-guide-overview.md)
   - 快速开始
-    - [使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+    - [使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
   - 示例程序
     - Java
@@ -47,6 +46,8 @@
     - Ruby
       - [mysql2](/develop/dev-guide-sample-application-ruby-mysql2.md)
       - [Rails](/develop/dev-guide-sample-application-ruby-rails.md)
+    - C#
+      - [C#](/develop/dev-guide-sample-application-cs.md)
   - 连接到 TiDB
     - GUI 数据库工具
       - [MySQL Workbench](/develop/dev-guide-gui-mysql-workbench.md)
@@ -413,24 +414,9 @@
       - [使用系统变量 `tidb_read_staleness` 读取历史数据](/tidb-read-staleness.md)
       - [使用系统变量 `tidb_external_ts` 读取历史数据](/tidb-external-ts.md)
     - [使用系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md)
-  - 最佳实践
-    - [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
-    - [多列索引优化最佳实践](/best-practices/multi-column-index-best-practices.md)
-    - [Java 应用开发最佳实践](/best-practices/java-app-best-practices.md)
-    - [HAProxy 最佳实践](/best-practices/haproxy-best-practices.md)
-    - [高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)
-    - [Grafana 监控最佳实践](/best-practices/grafana-monitor-best-practices.md)
-    - [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md)
-    - [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md)
-    - [三节点混合部署最佳实践](/best-practices/three-nodes-hybrid-deployment.md)
-    - [在三数据中心下就近读取数据](/best-practices/three-dc-local-read.md)
-    - [使用 UUID](/best-practices/uuid.md)
-    - [只读存储节点最佳实践](/best-practices/readonly-nodes.md)
-    - [SaaS 多租户场景下处理百万张表](/best-practices/saas-best-practices.md)
   - [Placement Rules 使用文档](/configure-placement-rules.md)
   - [Load Base Split 使用文档](/configure-load-base-split.md)
   - [Store Limit 使用文档](/configure-store-limit.md)
-  - [DDL 执行原理及最佳实践](/ddl-introduction.md)
   - [数据批量处理](/batch-processing.md)
   - PD 微服务使用文档
     - [PD 微服务概览](/pd-microservices.md)
@@ -439,6 +425,21 @@
     - [TSO 配置参数](/command-line-flags-for-tso-configuration.md)
     - [Scheduling 配置文件描述](/scheduling-configuration-file.md)
     - [Scheduling 配置参数](/command-line-flags-for-scheduling-configuration.md)
+- 最佳实践
+  - [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
+  - [DDL 最佳实践](/ddl-introduction.md)
+  - [多列索引优化最佳实践](/best-practices/multi-column-index-best-practices.md)
+  - [SaaS 多租户场景下处理百万张表](/best-practices/saas-best-practices.md)
+  - [将 UUID 用作主键的最佳实践](/best-practices/uuid.md)
+  - [Java 应用开发最佳实践](/best-practices/java-app-best-practices.md)
+  - [高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)
+  - [海量 Region 集群调优最佳实践](/best-practices/massive-regions-best-practices.md)
+  - [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md)
+  - [只读存储节点最佳实践](/best-practices/readonly-nodes.md)
+  - [HAProxy 最佳实践](/best-practices/haproxy-best-practices.md)
+  - [Grafana 监控最佳实践](/best-practices/grafana-monitor-best-practices.md)
+  - [三节点混合部署最佳实践](/best-practices/three-nodes-hybrid-deployment.md)
+  - [在三数据中心下就近读取数据](/best-practices/three-dc-local-read.md)
 - TiDB 工具
   - [功能概览](/ecosystem-tool-user-guide.md)
   - [使用场景](/ecosystem-tool-user-case.md)
@@ -1098,6 +1099,7 @@
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
   - v8.5
+    - [8.5.3](/releases/release-8.5.3.md)
     - [8.5.2](/releases/release-8.5.2.md)
     - [8.5.1](/releases/release-8.5.1.md)
     - [8.5.0](/releases/release-8.5.0.md)

@@ -401,7 +401,7 @@ Top SQL 用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较
 
 ### Universally Unique Identifier (UUID)
 
-通用唯一标识符 (Universally Unique Identifier, UUID) 是一种 128 位（16 字节）的生成 ID，用于在数据库中唯一地标识记录。更多信息，请参见 [UUID](/best-practices/uuid.md)。
+通用唯一标识符 (Universally Unique Identifier, UUID) 是一种 128 位（16 字节）的生成 ID，用于在数据库中唯一地标识记录。更多信息，请参见[将 UUID 用作主键的最佳实践](/best-practices/uuid.md)。
 
 ## V
 

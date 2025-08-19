@@ -66,7 +66,7 @@ TiDB Cloud 核心特性与应用场景简介
 
 </DocHomeCard>
 
-<DocHomeCard href="/tidbcloud/tidb-cloud-quickstart" label="快速上手 TiDB Cloud Serverless" icon="cloud-getstarted-mauve">
+<DocHomeCard href="/tidbcloud/tidb-cloud-quickstart" label="快速上手 TiDB Cloud" icon="cloud-getstarted-mauve">
 
 快速了解和使用 TiDB Cloud
 
@@ -74,7 +74,7 @@ TiDB Cloud 核心特性与应用场景简介
 
 <DocHomeCard href="/tidbcloud/dev-guide-overview" label="开发者指南" icon="cloud-developer-mauve">
 
-使用你熟悉的语言或框架连接到 TiDB Cloud Serverless
+用熟悉的语言或框架连接到 TiDB Cloud
 
 </DocHomeCard>
 

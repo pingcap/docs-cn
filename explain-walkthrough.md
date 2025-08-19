@@ -67,7 +67,7 @@ EXPLAIN ANALYZE SELECT count(*) FROM trips WHERE start_date BETWEEN '2017-07-01 
 5 rows in set (1.03 sec)
 ```
 
-执行以上示例查询耗时 `1.03` 秒，说明执行性能较为理想。
+执行以上示例查询耗时 `1.03` 秒，说明执行性能不太理想。
 
 以上 `EXPLAIN ANALYZE` 的结果中，`actRows` 表明一些 `estRows` 预估数不准确（预估返回 10000 行数据但实际返回 19117643 行）。`└─TableFullScan_18` 算子的 `operator info` 列 (`stats:pseudo`) 信息也表明该算子的预估数不准确。
 

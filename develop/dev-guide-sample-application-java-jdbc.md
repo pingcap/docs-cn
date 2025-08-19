@@ -16,7 +16,7 @@ TiDB 是一个兼容 MySQL 的数据库。JDBC 是 Java 的数据访问 API。[M
 
 > **注意**
 >
-> - 本文档适用于 TiDB Cloud Serverless、TiDB Cloud Dedicated 和本地部署的 TiDB。
+> - 本文档适用于 {{{ .starter }}}、{{{ .essential }}}、TiDB Cloud Dedicated 和本地部署的 TiDB。
 > - 从 TiDB v7.4 起，如果 JDBC URL 中未配置 `connectionCollation`，且 `characterEncoding` 未配置或配置为 `UTF-8`，JDBC 连接所使用的排序规则取决于 JDBC 驱动版本。详情请参考 [JDBC 连接所使用的排序规则](/faq/sql-faq.md#jdbc-连接所使用的排序规则)。
 
 ## 前置需求
@@ -25,7 +25,7 @@ TiDB 是一个兼容 MySQL 的数据库。JDBC 是 Java 的数据访问 API。[M
 - [Maven](https://maven.apache.org/install.html) **3.8** 及以上版本。
 - [Git](https://git-scm.com/downloads)。
 - TiDB 集群。如果你还没有 TiDB 集群，可以按照以下方式创建：
-    - （推荐方式）参考[创建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-cloud-serverless-集群)，创建你自己的 TiDB Cloud 集群。
+    - （推荐方式）参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)，创建你自己的 TiDB Cloud 集群。
     - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
 ## 运行代码并连接到 TiDB
@@ -47,9 +47,9 @@ cd tidb-java-jdbc-quickstart
 
 <SimpleTab>
 
-<div label="TiDB Cloud Serverless">
+<div label="{{{ .starter }}} 或 Essential">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Cloud Serverless 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 {{{ .starter }}} 集群，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
@@ -89,7 +89,7 @@ cd tidb-java-jdbc-quickstart
 
     注意替换 `{}` 中的占位符为连接对话框中获得的值。
 
-    TiDB Cloud Serverless 要求使用 TLS (SSL) connection，因此 `USE_SSL` 的值应为 `true`。
+    {{{ .starter }}} 要求使用 TLS (SSL) connection，因此 `USE_SSL` 的值应为 `true`。
 
 7. 保存 `env.sh` 文件。
 

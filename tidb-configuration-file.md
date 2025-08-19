@@ -171,13 +171,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：64
 + 目前的合法值范围 `[64, 512]`。
 
-### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入，从 v8.1.0 版本开始废弃</span>
+### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
 > **警告：**
 >
-> 从 TiDB v8.1.0 开始，TiDB 已移除遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。
+> - 在 v8.1.0 到 v8.5.1 及其之间的版本中，TiDB 已移除遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。
+> - 从 v8.5.3 开始，TiDB 重新引入遥测功能，但其行为已更改为仅将遥测相关信息输出到日志文件，不再通过网络发送给 PingCAP。
 
-+ 在 v8.1.0 之前，用于控制是否在 TiDB 实例上开启遥测功能。
++ 用于控制是否在 TiDB 实例上开启遥测功能。
 + 默认值：false
 
 ### `deprecate-integer-display-length`
@@ -703,6 +704,14 @@ opentracing.reporter 相关的设置。
 + reporter 向 jaeger-agent 发送 span 的地址。
 + 默认值：""
 
+## pd-client
+
+### `pd-server-timeout`
+
++ TiDB 通过 PD Client 向 PD 节点发送请求的超时时间。
++ 默认值：3
++ 单位：秒
+
 ## tikv-client
 
 ### `grpc-connection-count`
@@ -769,7 +778,7 @@ opentracing.reporter 相关的设置。
 
 ### `overload-threshold`
 
-+ TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
++ TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。该配置项仅在 [`tikv-client.max-batch-size`](#max-batch-size) 和 [`tikv-client.max-batch-wait-time`](#max-batch-wait-time) 的值均大于 0 时有效，不推荐修改该值。
 + 默认值：200
 
 ### `copr-req-timeout` <span class="version-mark">从 v7.5.0 版本开始引入</span>
