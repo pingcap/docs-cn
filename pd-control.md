@@ -215,7 +215,7 @@ config show cluster-version
 ```
 
 ```
-"5.2.2"
+"{{{ .tidb-version }}}"
 ```
 
 - `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。当需要加快补副本或 balance 速度时可以调大这个值。
@@ -425,12 +425,12 @@ config show cluster-version
 
 - `cluster-version` 集群的版本，用于控制某些 Feature 是否开启，处理兼容性问题。通常是集群正常运行的所有 TiKV 节点中的最低版本，需要回滚到更低的版本时才进行手动设置。
 
-    设置 cluster version 为 1.0.8：
+    设置 cluster version 为 {{{ .tidb-version }}}：
 
     {{< copyable "" >}}
 
     ```bash
-    config set cluster-version 1.0.8
+    config set cluster-version {{{ .tidb-version }}}
     ```
 
 - `leader-schedule-policy` 用于选择 Leader 的调度策略，可以选择按照 `size` 或者 `count` 来进行调度。
