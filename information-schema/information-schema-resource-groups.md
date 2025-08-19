@@ -79,7 +79,7 @@ SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1'; -- 查看�
 * `NAME`：资源组名称。
 * `RU_PER_SEC`：资源组的回填速度，单位为每秒回填的 [Request Unit (RU)](/tidb-resource-control-ru-groups.md#什么是-request-unit-ru) 数量。
 * `PRIORITY`：任务在 TiKV 上处理的绝对优先级。不同的资源按照 `PRIORITY` 的设置进行调度，`PRIORITY` 高的任务会被优先调度。如果资源组的 `PRIORITY` 相同，则会根据 `RU_PER_SEC` 的配置按比例调度。如果不指定 `PRIORITY`，资源组的默认优先级为 `MEDIUM`。
-* `BURSTABLE`：是否允许此资源组超额使用剩余的系统资源。支持以下三种模式，如果没有为 `BURSTABLE` 指定目标值，将默认启用 `MODERATED` 模式。
+* `BURSTABLE`：是否允许此资源组超额使用剩余的系统资源。从 v9.0.0 开始，支持以下三种模式，如果没有为 `BURSTABLE` 指定目标值，将默认启用 `MODERATED` 模式。
     - `OFF`：表示不允许此资源组超额使用剩余的系统资源；
     - `MODERATED`：表示**有限度**地允许此资源组超额使用剩余的系统资源，优先保证资源组限额内的资源得到分配；
     - `UNLIMITED`：表示**无限度**地允许此资源组超额使用剩余的系统资源，与限额内资源同等竞争。
