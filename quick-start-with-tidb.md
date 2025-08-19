@@ -103,7 +103,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     - 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
 
         ```shell
-        tiup playground {{{ .tidb-version }}} --db 2 --pd 3 --kv 3
+        tiup playground v{{{ .tidb-version }}} --db 2 --pd 3 --kv 3
         ```
 
         执行该命令时，建议使用内存 10 GiB、4 CPU 及以上配置。配置过低可能会导致系统崩溃。
@@ -225,7 +225,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground {{{ .tidb-version }}} --db 2 --pd 3 --kv 3
+        tiup playground v{{{ .tidb-version }}} --db 2 --pd 3 --kv 3
         ```
 
         如果要查看当前支持部署的所有 TiDB 版本，执行 `tiup list tidb`。
@@ -443,7 +443,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     ```
 
     - 参数 `<cluster-name>` 表示设置集群名称
-    - 参数 `<version>` 表示设置集群版本，例如 `{{{ .tidb-version }}}`。可以通过 `tiup list tidb` 命令来查看当前支持部署的 TiDB 版本
+    - 参数 `<version>` 表示设置集群版本，例如 `v{{{ .tidb-version }}}`。可以通过 `tiup list tidb` 命令来查看当前支持部署的 TiDB 版本
     - 参数 `--user` 表示初始化环境的用户
     - 参数 `-p` 表示在连接目标机器时使用密码登录
 
