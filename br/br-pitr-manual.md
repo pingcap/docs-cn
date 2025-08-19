@@ -496,6 +496,81 @@ tiup br restore point --pd="${PD_IP}:2379"
 --master-key "local:///path/to/master.key"
 ```
 
+### 使用过滤器恢复
+
+从 TiDB v9.0.0 开始，在按时间点恢复 (PITR) 过程中，你可以使用过滤器恢复特定的数据库或表，从而更精细地控制要恢复的数据。
+
+过滤器采用与其他 BR 操作相同的[表库过滤语法](/table-filter.md)：
+
+- `'*.*'`：匹配所有数据库和表。
+- `'db1.*'`：匹配数据库 `db1` 中的所有表。
+- `'db1.table1'`：匹配数据库 `db1` 中的特定表 `table1`。
+- `'db*.tbl*'`：匹配以 `db` 开头的数据库和以 `tbl` 开头的表。
+- `'!mysql.*'`：排除 `mysql` 数据库中的所有表。
+
+使用示例：
+
+```shell
+# 恢复特定数据库
+tiup br restore point --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--full-backup-storage='s3://backup-101/snapshot-20250602000000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--start-ts "2025-06-02 00:00:00+0800" \
+--restored-ts "2025-06-03 18:00:00+0800" \
+--filter 'db1.*' --filter 'db2.*'
+
+# 恢复特定表
+tiup br restore point --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--full-backup-storage='s3://backup-101/snapshot-20250602000000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--start-ts "2025-06-02 00:00:00+0800" \
+--restored-ts "2025-06-03 18:00:00+0800" \
+--filter 'db1.users' --filter 'db1.orders'
+
+# 使用模式匹配恢复
+tiup br restore point --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--full-backup-storage='s3://backup-101/snapshot-20250602000000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--start-ts "2025-06-02 00:00:00+0800" \
+--restored-ts "2025-06-03 18:00:00+0800" \
+--filter 'db*.tbl*'
+```
+
+> **注意：**
+>
+> - 使用过滤器恢复前，请确保目标集群中不存在与过滤器匹配的数据库或表，否则恢复将失败并报错。 
+> - 过滤器选项适用于快照备份和日志备份的恢复阶段。
+> - 可以指定多个 `--filter` 选项来包含或排除不同的模式。
+> - PITR 过滤暂不支持系统表。如果需要恢复特定的系统表，请使用 `br restore full` 命令并配合过滤器，注意该命令仅恢复快照备份数据（而非日志备份数据）。
+
+### 并发恢复操作
+
+从 TiDB v9.0.0 开始，你可以同时执行多个 PITR 恢复任务。该功能允许你并行恢复不同的数据集，从而提升大规模恢复场景下的效率。
+
+并发恢复的使用示例：
+
+```shell
+# 终端 1 - 恢复数据库 db1
+tiup br restore point --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--full-backup-storage='s3://backup-101/snapshot-20250602000000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--start-ts "2025-06-02 00:00:00+0800" \
+--restored-ts "2025-06-03 18:00:00+0800" \
+--filter 'db1.*'
+
+# 终端 2 - 恢复数据库 db2（可同时运行）
+tiup br restore point --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--full-backup-storage='s3://backup-101/snapshot-20250602000000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--start-ts "2025-06-02 00:00:00+0800" \
+--restored-ts "2025-06-03 18:00:00+0800" \
+--filter 'db2.*'
+```
+
+> **注意：**
+>
+> 每个并发恢复操作必须作用于不同的数据库或不重叠的表集合。尝试并发恢复重叠数据集将导致错误。
+
 ### 进行中的日志备份与快照恢复的兼容性
 
 从 v9.0.0 开始，当存在日志备份任务时，如果**同时满足**以下条件，则可以正常进行快照恢复 (`br restore [full|database|table]`)，并且恢复的数据可以被进行中的日志备份（下称“日志备份”）正常记录：
@@ -507,9 +582,9 @@ tiup br restore point --pd="${PD_IP}:2379"
 - 待恢复的数据与日志备份的目标存储拥有相同的外部存储类型。
 - 待恢复的数据和日志备份均未开启本地加密，参考[日志备份加密](#加密日志备份数据)和[快照备份加密](/br/br-snapshot-manual.md#备份数据加密)。
 
-如果不能同时满足上述条件或者要恢复到时间点，当存在日志备份任务时，BR 会拒绝恢复数据。此时，可以通过以下步骤完成数据恢复：
+如果不能同时满足上述条件，你可以通过以下步骤完成数据恢复：
 
-1. [停止备份任务](#停止日志备份任务)。
+1. [停止日志备份任务](#停止日志备份任务)。
 2. 进行数据恢复。
 3. 恢复完成后，重新进行快照备份。
 4. [重新启动备份任务](#重新启动备份任务)。
@@ -517,3 +592,53 @@ tiup br restore point --pd="${PD_IP}:2379"
 > **注意：**
 >
 > 当恢复记录了快照（全量）恢复数据的日志备份时，需要使用 v9.0.0 及之后版本的 BR，否则可能导致记录下来的全量恢复数据无法被恢复。
+
+### 进行中的日志备份与 PITR 操作的兼容性
+
+从 TiDB v9.0.0 开始，默认情况下，你可以在日志备份任务运行期间执行 PITR 操作。系统会自动处理这些操作之间的兼容性。
+
+#### 进行中的日志备份与 PITR 的重要限制
+
+当在运行日志备份的同时执行 PITR 操作时，恢复的数据也会被记录到日志备份中。但是，在恢复操作的时间窗口内，由于日志恢复操作的特性，可能存在数据不一致的风险。系统会将元数据写入外部存储，以标记无法保证一致性的时间范围和数据范围。
+
+如果在时间范围 `[t1, t2)` 期间发生此类不一致，你无法直接恢复该时间段的数据，需选择以下替代方案：
+
+- 恢复到 `t1` 时间点（获取不一致时期之前的数据）
+- 或在 `t2` 时间点后执行新的快照备份，并基于此备份进行后续 PITR 操作
+
+### 中止恢复操作
+
+当恢复操作失败时，你可以使用 `tiup br abort` 命令来清理注册表条目和检查点数据。该命令会根据提供的原始恢复参数自动找到并删除相关的元数据，包括 `mysql.tidb_restore_registry` 表中的条目以及检查点数据（无论存储在本地数据库还是外部存储中）。
+
+> **注意：**
+>
+> `abort` 命令仅清理元数据，任何实际恢复的数据需要手动从集群中删除。
+
+使用与原始恢复命令相同的参数来中止恢复操作的示例如下：
+
+```shell
+# 中止 PITR 操作
+tiup br abort restore point --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--full-backup-storage='s3://backup-101/snapshot-20250602000000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}'
+
+# 中止带过滤器的 PITR 操作
+tiup br abort restore point --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--full-backup-storage='s3://backup-101/snapshot-20250602000000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--filter 'db1.*'
+
+# 中止全量恢复
+tiup br abort restore full --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/snapshot-20250602000000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}'
+
+# 中止数据库恢复
+tiup br abort restore db --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/snapshot-20250602000000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--db database_name
+
+# 中止表恢复
+tiup br abort restore table --pd="${PD_IP}:2379" \
+--storage='s3://backup-101/snapshot-20250602000000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+--db database_name --table table_name
+```
