@@ -197,7 +197,7 @@ config show cluster-version
 ```
 
 ```
-"8.5.1"
+"8.5.3"
 ```
 
 - `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。当需要加快补副本或 balance 速度时可以调大这个值。
@@ -375,10 +375,10 @@ config show cluster-version
 
 - `cluster-version` 集群的版本，用于控制某些 Feature 是否开启，处理兼容性问题。通常是集群正常运行的所有 TiKV 节点中的最低版本，需要回滚到更低的版本时才进行手动设置。
 
-    设置 cluster version 为 8.5.1：
+    设置 cluster version 为 8.5.3：
 
     ```bash
-    config set cluster-version 8.5.1
+    config set cluster-version 8.5.3
     ```
 
 - `leader-schedule-policy` 用于选择 Leader 的调度策略，可以选择按照 `size` 或者 `count` 来进行调度。

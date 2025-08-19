@@ -48,7 +48,7 @@ TABLE SESSION_CONNECT_ATTRS;
 | PROCESSLIST_ID | ATTR_NAME       | ATTR_VALUE | ORDINAL_POSITION |
 +----------------+-----------------+------------+------------------+
 |        2097154 | _client_name    | libmysql   |                0 |
-|        2097154 | _client_version | 8.5.1      |                1 |
+|        2097154 | _client_version | 8.5.3      |                1 |
 |        2097154 | _os             | Linux      |                2 |
 |        2097154 | _pid            | 1299203    |                3 |
 |        2097154 | _platform       | x86_64     |                4 |
