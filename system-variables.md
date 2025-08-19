@@ -1763,7 +1763,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
-- 目前 cascades 优化器默认为 `OFF`, 我们将在临近几个 DMR 版本之内收敛新优化器的相关问题，并且在下个 LTS 默认开启 cascades planner。
+- 这个变量用于控制是否开启 cascades planner。
 
 ### `tidb_enable_check_constraint` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
