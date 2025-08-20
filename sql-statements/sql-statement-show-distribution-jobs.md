@@ -3,9 +3,7 @@ title: SHOW DISTRIBUTION JOBS
 summary: 介绍 TiDB 数据库中 SHOW DISTRIBUTION JOBS 的使用概况。
 ---
 
-# SHOW DISTRIBUTION JOBS
-
-<span class="version-mark">从 v9.0.0 开始引入</span>
+# SHOW DISTRIBUTION JOBS <span class="version-mark">从 v9.0.0 开始引入</span>
 
 `SHOW DISTRIBUTION JOBS` 语句用于显示当前所有的 Region 调度任务。
 

@@ -3,9 +3,7 @@ title: SHOW TABLE DISTRIBUTION
 summary: 介绍 TiDB 数据库中 SHOW TABLE DISTRIBUTION 的使用概况。
 ---
 
-# SHOW TABLE DISTRIBUTION
-
-<span class="version-mark">从 v9.0.0 开始引入</span>
+# SHOW TABLE DISTRIBUTION <span class="version-mark">从 v9.0.0 开始引入</span>
 
 `SHOW TABLE DISTRIBUTION` 语句用于显示指定表的 Region 分布情况。
 

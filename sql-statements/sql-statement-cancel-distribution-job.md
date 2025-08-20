@@ -3,9 +3,7 @@ title: CANCEL DISTRIBUTION JOB
 summary: TiDB 数据库中 CANCEL DISTRIBUTION JOB 的使用情况。
 ---
 
-# CANCEL DISTRIBUTION JOB
-
-<span class="version-mark">从 v9.0.0 开始引入</span>
+# CANCEL DISTRIBUTION JOB <span class="version-mark">从 v9.0.0 开始引入</span>
 
 `CANCEL DISTRIBUTION JOB` 语句用于取消 TiDB 中通过 [`DISTRIBUTE TABLE`](/sql-statements/sql-statement-distribute-table.md) 语句创建的 Region 调度任务。
 
