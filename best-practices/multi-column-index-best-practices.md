@@ -181,8 +181,8 @@ EXPLAIN FORMAT = "brief"
 | id                      | task | access object                                                      | operator info                                              |
 +-------------------------+------+--------------------------------------------------------------------+------------------------------------------------------------+
 | IndexLookUp             | root |                                                                    |                                                            |
-| ├─IndexRangeScan(Build) | root | table:listings,index:idx_city_bedrooms_price(city, bedrooms, price)| range:["Beijing" 1 1500.00,"Beijing" 1 2500.00)|
-| └─TableRowIDScan(Probe) | root | table:listings                                                     |       ["Shanghai" 1 1000.00,"Shanghai" 1 1500.00)        |
+| ├─IndexRangeScan(Build) | root | table:listings,index:idx_city_bedrooms_price(city, bedrooms, price)| range:["Beijing" 1 1500.00,"Beijing" 1 2500.00) ["Shanghai" 1 1000, "Shanghai" 1 1500) |
+| └─TableRowIDScan(Probe) | root | table:listings                                                     |           |
 +-------------------------+------+--------------------------------------------------------------------+------------------------------------------------------------+
 ```
 
