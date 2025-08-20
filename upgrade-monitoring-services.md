@@ -35,7 +35,7 @@ summary: 介绍如何升级 TiDB 集群监控组件 Prometheus、Grafana 和 Ale
     tar -xzf prometheus-v{version}-linux-{arch}.tar.gz
     ```
 
-    `{version}` 表示 TiDB 的版本号，`{arch}` 表示系统的架构，可以是 `amd64` 或 `arm64`（取决于你下载 `TiDB-community-server` 软件包时选择的架构）。例如，`amd64` 架构下 {{{ .tidb-version }}} 的 Prometheus 安装包名为 `prometheus-{{{ .tidb-version }}}-linux-amd64.tar.gz`。
+    `{version}` 表示 TiDB 的版本号，`{arch}` 表示系统的架构，可以是 `amd64` 或 `arm64`（取决于你下载 `TiDB-community-server` 软件包时选择的架构）。例如，`amd64` 架构下 v{{{ .tidb-version }}} 的 Prometheus 安装包名为 `prometheus-v{{{ .tidb-version }}}-linux-amd64.tar.gz`。
 
 ### 第 3 步：构造新的适用于 TiUP 的 Prometheus 组件包
 
@@ -77,7 +77,7 @@ tiup cluster patch <cluster-name> prometheus-v{new-version}.tar.gz -R prometheus
     tar -xzf grafana-v{version}-linux-{arch}.tar.gz
     ```
     
-    `{version}` 表示 TiDB 的版本号，`{arch}` 表示系统的架构，可以是 `amd64` 或 `arm64`（取决于你下载 `TiDB-community-server` 软件包时选择的架构）。例如，`amd64` 架构下 {{{ .tidb-version }}} 的 Grafana 安装包名为 `grafana-{{{ .tidb-version }}}-linux-amd64.tar.gz`。
+    `{version}` 表示 TiDB 的版本号，`{arch}` 表示系统的架构，可以是 `amd64` 或 `arm64`（取决于你下载 `TiDB-community-server` 软件包时选择的架构）。例如，`amd64` 架构下 v{{{ .tidb-version }}} 的 Grafana 安装包名为 `grafana-v{{{ .tidb-version }}}-linux-amd64.tar.gz`。
 
 ### 第 3 步：构造新的适用于 TiUP 的 Grafana 组件包
 
