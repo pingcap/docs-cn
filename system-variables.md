@@ -2504,7 +2504,7 @@ Query OK, 0 rows affected (0.09 sec)
 > - 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，打开 TSO Follower Proxy 可能会导致 TiDB 的语句执行延迟上升，从而影响集群的 QPS 表现。
 > - 该功能与 [`tidb_tso_client_rpc_mode`](#tidb_tso_client_rpc_mode-从-v840-版本开始引入) 不兼容。启用该功能将导致 [`tidb_tso_client_rpc_mode`](#tidb_tso_client_rpc_mode-从-v840-版本开始引入) 不生效。
 
-### `tidb_enable_ts_validation`
+### `tidb_enable_ts_validation` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
