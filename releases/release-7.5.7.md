@@ -26,18 +26,18 @@ TiDB 版本：7.5.7
     - (dup): release-8.5.3.md > 改进提升> TiDB - 新增数据导入期间 Region 分裂与数据 ingest 的流控接口 [#61553](https://github.com/pingcap/tidb/issues/61553) @[tangenta](https://github.com/tangenta)
     - (dup): release-8.2.0.md > 改进提升> TiDB - 优化对大数据量的表进行简单查询时获取数据分布信息的性能 [#53850](https://github.com/pingcap/tidb/issues/53850) @[you06](https://github.com/you06)
     - (dup): release-8.5.3.md > 改进提升> TiDB - 为索引添加过程新增监控指标，便于观察写入 TiKV 的速度 [#60925](https://github.com/pingcap/tidb/issues/60925) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - 优化了 DML 在 DDL 执行期间的加锁逻辑，减少了 DML 和 DDL 操作的锁冲突，提高了某些场景下 DDL 的性能。但是由于在此过程中也会引入额外的二级索引加锁操作，可能会造成 DML 性能轻微下降 [#62337](https://github.com/pingcap/tidb/issues/62337) @[lcwangchao](https://github.com/lcwangchao)
-    - 调整 `tidb_opt_ordering_index_selectivity_threshold` 值为 1 时的行为，增强变量的控制能力 [#60242](https://github.com/pingcap/tidb/issues/60242) @[time-and-fate](https://github.com/time-and-fate)
-    - 避免 ANALYZE 执行完成后需要刷新整个集群的统计信息，从而导致 ANALYZE 执行时间过长的情况 [#57631](https://github.com/pingcap/tidb/issues/57631) @[0xPoe](https://github.com/0xPoe)
-    - 常量折叠可以将带有 NOT NULL 约束的列上进行的 IS NULL 计算折叠为 FALSE [#62050](https://github.com/pingcap/tidb/issues/62050) @[hawkingrei](https://github.com/hawkingrei)
-    - 优化器支持更多 JOIN 的常量传播 [#51700](https://github.com/pingcap/tidb/issues/51700) @[hawkingrei](https://github.com/hawkingrei)
-    - 优化在 DML 与 DDL 存在较多锁冲突时，合并 temp index 的性能 [#61433](https://github.com/pingcap/tidb/issues/61433) @[tangenta](https://github.com/tangenta)
+    - 优化 DML 在 DDL 执行期间的加锁逻辑，减少 DML 与 DDL 的锁冲突，提高部分场景下 DDL 的性能。但是由于引入了额外的二级索引加锁操作，可能会导致 DML 性能轻微下降 [#62337](https://github.com/pingcap/tidb/issues/62337) @[lcwangchao](https://github.com/lcwangchao)
+    - 改进当系统变量 `tidb_opt_ordering_index_selectivity_threshold` 的值设置为 `1` 时的行为，增强该变量的控制能力 [#60242](https://github.com/pingcap/tidb/issues/60242) @[time-and-fate](https://github.com/time-and-fate)
+    - 避免 `ANALYZE` 语句执行完成后需要刷新整个集群的统计信息，从而缩短 `ANALYZE` 的执行时间 [#57631](https://github.com/pingcap/tidb/issues/57631) @[0xPoe](https://github.com/0xPoe)
+    - 常量折叠支持在带有 `NOT NULL` 约束的列上，将 `IS NULL` 计算折叠为 `FALSE` [#62050](https://github.com/pingcap/tidb/issues/62050) @[hawkingrei](https://github.com/hawkingrei)
+    - 优化器支持在更多类型的 `JOIN` 中进行常量传播 [#51700](https://github.com/pingcap/tidb/issues/51700) @[hawkingrei](https://github.com/hawkingrei)
+    - 优化在 DML 与 DDL 存在大量锁冲突时，合并临时索引 (temp index) 的性能 [#61433](https://github.com/pingcap/tidb/issues/61433) @[tangenta](https://github.com/tangenta)
 
 + TiKV <!--tw@Oreoxmt: 2 notes-->
 
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - 优化 TiKV compaction 触发逻辑，按回收效率排序对所有数据段依序处理，降低 MVCC 冗余数据对性能的影响 [#18571](https://github.com/tikv/tikv/issues/18571) @[v01dstar](https://github.com/v01dstar)
-    - 优化 async snapshot 和 write 在有大量 SST 文件的环境中的尾延迟 [#18743](https://github.com/tikv/tikv/issues/18743) @[Connor1996](https://github.com/Connor1996)
+    - 优化 TiKV compaction 的触发逻辑，按回收效率排序对所有数据段依次处理，降低 MVCC 冗余数据对性能的影响 [#18571](https://github.com/tikv/tikv/issues/18571) @[v01dstar](https://github.com/v01dstar)
+    - 优化在存在大量 SST 文件的环境中 async snapshot 和 write 的尾延迟 [#18743](https://github.com/tikv/tikv/issues/18743) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-8.1.2.md > 改进提升> TiKV - 优化空表和小 Region 场景下 Region Merge 的速度 [#17376](https://github.com/tikv/tikv/issues/17376) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-8.5.3.md > 改进提升> TiKV - 优化 Raftstore 中 `CompactedEvent` 的处理逻辑，将其移至 `split-check` worker 中执行，减少对 Raftstore 主线程的阻塞 [#18532](https://github.com/tikv/tikv/issues/18532) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-8.1.0.md > 改进提升> TiKV - 增加每个线程内存使用量的监控指标 [#15927](https://github.com/tikv/tikv/issues/15927) @[Connor1996](https://github.com/Connor1996)
@@ -53,9 +53,8 @@ TiDB 版本：7.5.7
 
 + PD <!--tw@Oreoxmt: 2 notes-->
 
-    - (dup): release-8.5.3.md > 改进提升> PD - 增加了 GO Runtime 相关监控 [#8931](https://github.com/tikv/pd/issues/8931) @[bufferflies](https://github.com/bufferflies)
-    - 支持更全面的 golang runtime 监控, 可以 pd cluster 中 Runtime 看到更多 runtime 监控 [#9037](https://github.com/tikv/pd/issues/8931) @[bufferflies](https://github.com/bufferflies)
-    - 减少一些非必要 error 日志 [#9370](https://github.com/tikv/pd/issues/9370) @[bufferflies](https://github.com/bufferflies)
+    - (dup): release-8.5.3.md > 改进提升> PD - 在 Prometheus 中新增 GO Runtime 相关监控指标 [#8931](https://github.com/tikv/pd/issues/8931) @[bufferflies](https://github.com/bufferflies)
+    - 减少非必要的错误日志 [#9370](https://github.com/tikv/pd/issues/9370) @[bufferflies](https://github.com/bufferflies)
 
 + TiFlash
 
