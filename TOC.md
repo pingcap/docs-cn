@@ -8,7 +8,10 @@
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)
+<<<<<<< HEAD
   - [路线图](https://docs.pingcap.com/zh/tidb/dev/tidb-roadmap)
+=======
+>>>>>>> d1d93801ab (*: remove TiDB roadmap from TOC, home, index, add warning (#20799))
 - 快速上手
   - [快速上手 TiDB](/quick-start-with-tidb.md)
   - [快速上手 HTAP](/quick-start-with-htap.md)
