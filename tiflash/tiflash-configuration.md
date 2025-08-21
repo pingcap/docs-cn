@@ -373,7 +373,7 @@ I/O 限流功能相关配置。
 
 ##### `cop_pool_size` <span class="version-mark">从 v5.0 版本开始引入</span>
 
-- 表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 `0` 或不设置，则使用默认值，即物理核数的两倍。
+- 表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。当请求数量超过该配置值但未超过其 10 倍时，多出的请求会排队等待；当请求数量超过该配置值的 10 倍时，多出来的请求会被 TiFlash 拒绝。如果设为 `0` 或不设置，则使用默认值，即物理核数的两倍。
 - 默认值：物理核数的两倍
 
 ##### `cop_pool_handle_limit` <span class="version-mark">从 v5.0 版本开始引入</span>
