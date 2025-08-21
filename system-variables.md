@@ -1818,7 +1818,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
-- 默认值：`OFF`
+- 默认值：`ON`，在 v8.3.0 之前，默认值为 `OFF`。
 - 这个变量用于控制是否开启 TiDB 对 `PREDICATE COLUMNS` 的收集。关闭该变量后，之前收集的 `PREDICATE COLUMNS` 会被清除。详情见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
 
 ### `tidb_enable_ddl` <span class="version-mark">从 v6.3.0 版本开始引入</span>
@@ -2446,18 +2446,20 @@ Query OK, 0 rows affected (0.09 sec)
 - 类型：枚举型
 - 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用[分区表](/partitioned-table.md)。
 
-### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入，从 v8.1.0 版本开始废弃</span>
+### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
 > **警告：**
 >
-> 从 TiDB v8.1.0 开始，TiDB 已移除遥测功能，该变量已不再生效。保留该变量仅用于与之前版本兼容。
+> - 在 v8.1.0 之前的版本中，TiDB 会定期向 PingCAP 上报遥测信息。
+> - 在 v8.1.0 到 v8.5.1 及其之间的版本中，TiDB 已移除遥测功能，`tidb_enable_telemetry` 变量不再生效。保留该变量仅用于与之前版本兼容。
+> - 从 v8.5.3 开始，TiDB 重新引入遥测功能，但其行为已更改为仅将遥测相关信息输出到日志文件，不再通过网络发送给 PingCAP。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
-- 默认值：`OFF`
-- 在 v8.1.0 之前，这个变量用于动态地控制 TiDB 遥测功能是否开启。
+- 默认值：`ON`，从 v8.5.3 开始，默认值由 `OFF` 改为 `ON`。
+- 该变量用于动态控制 TiDB 遥测功能是否开启。从 v8.5.3 开始，该变量仅在 TiDB 实例的配置项 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 设置为 `true` 时生效。
 
 ### `tidb_enable_tiflash_read_for_write_stmt` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
@@ -4251,6 +4253,210 @@ SHOW WARNINGS;
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置是否允许 `INSERT`、`REPLACE` 和 `UPDATE` 操作 `_tidb_rowid` 列，默认是不允许操作。该选项仅用于 TiDB 工具导数据时使用。
+
+### `tidb_opt_hash_agg_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_hash_join_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_index_join_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_index_lookup_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_index_merge_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_index_reader_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_index_scan_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_limit_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_merge_join_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_sort_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_stream_agg_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_table_full_scan_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_table_range_scan_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_table_reader_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_table_rowid_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_table_tiflash_scan_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_topn_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
 
 ### `tidb_optimizer_selectivity_level`
 

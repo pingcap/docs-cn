@@ -97,6 +97,14 @@ summary: 介绍 TiFlash 的配置参数，包括 tiflash.toml 和 tiflash-learne
 - 单位：Byte。目前不支持如 `"10GB"` 的设置。
 - `capacity` 列表的长度应当与 [`storage.main.dir`](#dir) 列表长度保持一致。
 
+#### `storage.api_version` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- TiFlash 与 PD、TiKV 进行通讯时的接口版本。
+- 可选值：
+    - `1`：TiFlash 使用 API V1 与 PD、TiKV 进行通信。
+    - `2`：TiFlash 使用 API V2 与 PD、TiKV 进行通信，为多租户特性提供支持。
+- 默认值：`1`
+
 #### storage.latest
 
 ##### `dir`
@@ -414,6 +422,13 @@ I/O 限流功能相关配置。
 - 表示 PageStorage 单个数据文件中有效数据的最低比例。当某个数据文件的有效数据比例低于该值时，会触发 GC 对该文件的数据进行整理。
 - 默认值：`0.5`
 
+##### `disagg_blocklist_wn_store_id` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 控制在存算分离架构下，TiFlash Compute Node 不会将请求分发至哪些 TiFlash Write Node。
+- 其值为使用 `,` 分隔的 store_id 字符串。例如，设置为 `"140,141"` 表示 TiFlash Compute Node 不会将请求分发至 store_id 为 `140` 或 `141` 的 TiFlash Write Node。可以使用 [pd-ctl](/pd-control.md#查询存算分离架构下的-tiflash-节点) 查找集群中 TiFlash Write Node 的 store_id。
+- 如果其值为空字符串 `""`，表示 TiFlash Compute Node 会将请求分发至所有 TiFlash Write Node。
+- 默认值：`""`
+
 ##### `max_bytes_before_external_group_by` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 - 表示带 `GROUP BY` key 的 Hash Aggregation 算子在触发 spill 之前的最大可用内存，超过该阈值之后 Hash Aggregation 会采用[数据落盘](/tiflash/tiflash-spill-disk.md)的方式来减小内存使用。
@@ -454,6 +469,13 @@ I/O 限流功能相关配置。
 - magic hash 生成的哈希值分布更加均匀，能够有效减少哈希冲突，但其计算速度比 CRC32 慢。建议在 `GROUPBY` 键的 NDV（number of distinct values，不同值的数量）较高时启用该配置，以优化聚合性能。
 - 默认值：`false`
 - 可选值：`true`、`false`
+
+##### `enable_version_chain` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 用于控制 TiFlash 实现 MVCC 过滤的算法。如果设置为 `1`，则使用 VersionChain 算法；如果设置为 `0`，则使用 DeltaIndex 算法。
+- 通常情况下，采用 VersionChain 算法的扫表性能要明显优于 DeltaIndex 算法，因为 VersionChain 算法可以通过避免对数据进行排序来提升 MVCC 过滤的性能。
+- 默认值：`1`
+- 可选值：`1`、`0`
 
 #### security <span class="version-mark">从 v4.0.5 版本开始引入</span>
 

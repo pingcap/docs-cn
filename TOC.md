@@ -1,7 +1,6 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
-- [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
   - [TiDB 8.5 Release Notes](/releases/release-8.5.0.md)
@@ -1099,6 +1098,7 @@
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
   - v8.5
+    - [8.5.3](/releases/release-8.5.3.md)
     - [8.5.2](/releases/release-8.5.2.md)
     - [8.5.1](/releases/release-8.5.1.md)
     - [8.5.0](/releases/release-8.5.0.md)
