@@ -1,6 +1,5 @@
 ---
 title: TiFlash 配置参数
-aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/tiflash/configuration/']
 summary: 介绍 TiFlash 的配置参数，包括 tiflash.toml 和 tiflash-learner.toml，用于配置 TiFlash TCP/HTTP 服务的监听和存储路径。另外，通过拓扑 label 进行副本调度和多盘部署也是可行的。
 ---
 
