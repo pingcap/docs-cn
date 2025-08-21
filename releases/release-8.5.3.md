@@ -47,7 +47,7 @@ TiDB 版本：8.5.3
 
 + PD
 
-    - 在 Prometheues 中新增 GO Runtime 相关监控指标 [#8931](https://github.com/tikv/pd/issues/8931) @[bufferflies](https://github.com/bufferflies)
+    - 在 Prometheus 中新增 GO Runtime 相关监控指标 [#8931](https://github.com/tikv/pd/issues/8931) @[bufferflies](https://github.com/bufferflies)
     - 将触发慢节点驱逐 leader 后的恢复时间从 600 秒延长到 900 秒（15 分钟）[#9329](https://github.com/tikv/pd/issues/9329) @[rleungx](https://github.com/rleungx)
 
 + TiFlash
