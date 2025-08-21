@@ -154,15 +154,13 @@ soft-pending-compaction-bytes-limit = "192GiB"
 >
 > TiKV 在调度层实现了流控机制，以保障系统稳定性。当关键阈值（如待压缩字节数或写入队列大小）被突破时，TiKV 会拒绝新的写入请求，并返回 `ServerIsBusy` 错误。这通常意味着后台压缩进程无法跟上前台写入的速度。流控触发后，系统会出现延迟抖动和 QPS（吞吐量）下降等现象。为避免此类性能退化，建议提前做好容量规划，并合理配置压缩参数和存储设置。
 
-### TiFlash 配置
+### TiFlash-learner 配置
 
-在 TiFlash 配置文件中添加如下内容：
+在 TiFlash-learner 配置文件中添加如下内容：
 
 ```toml
-[raftstore-proxy.server]
+[server]
 snap-io-max-bytes-per-sec = "300MiB"
-```
-
 | 配置项 | 说明 | 注意事项 |
 | ---------| ---- | ----|
 | [`snap-io-max-bytes-per-sec`](/tikv-configuration-file.md#snap-io-max-bytes-per-sec) | 控制从 TiKV 到 TiFlash 的数据复制时允许使用的最大磁盘带宽。提高该值可以加快初始数据加载和追赶同步的速度。 | 带宽占用增加可能影响在线业务性能，请在同步速度与系统稳定性之间进行合理权衡。 |
