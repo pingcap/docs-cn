@@ -69,7 +69,7 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
   > 
   > `ignore-sql = ["^drop"]` 不仅会过滤掉 `DROP TABLE test.t1`，还会因为 `matcher` 中包含了 `test` 数据库名而同时过滤掉 `DROP DATABASE test`。
   >
-  > 如果需要精确过滤表，而不过滤数据库，`ignore-sql` 写成 `["drop table"]` 即可。
+  > 如果只需要过滤掉指定表而不是整个数据库，请将 `ignore-sql` 值修改为 `["drop table"]`。
 
 - `ignore-event`：要过滤掉的事件类型，它是一个字符串数组，可以配置多个事件类型。目前支持的类型如下表所示:
 
