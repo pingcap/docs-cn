@@ -576,12 +576,14 @@ TiCDC 同步数据到 Kafka 时使用了 Sarama 客户端。出于防止数据�
 
 虽然 Changefeed 会因为报错而失败，但 TiCDC 会自动重启该 Changefeed，任务仍可继续正常运行。需要注意的是，在重启的过程中，Changefeed 的同步延迟（lag）可能会出现一次性的小幅增加，通常在 30 秒以内，之后会自动恢复正常。
 
-如果用户对 Changefeed 的延迟非常敏感的话，建议将 Kafka 的连接空闲超时时间调大，例如配置：
+如果业务对 Changefeed 的延迟非常敏感，建议进行以下操作：
 
-```properties
-connections.max.idle.ms=86400000  # 设置为 1 天
-```
+1. 在 Kafka broker 的配置文件中调大 Kafka 的连接空闲超时时间，例如：
 
-然后重启 Kafka 以使配置生效，从而避免连接被提前关闭，减少 broken pipe 报错。
+    ```properties
+    connections.max.idle.ms=86400000  # 设置为 1 天
+    ```
 
-具体设置多长时间，建议根据业务实际的数据同步情况进行调整：如果 TiCDC Changefeed 在几十分钟内一定会有数据同步发生，那么可以将 `connections.max.idle.ms` 设置为几十分钟即可，无需设置过大。
+    建议结合业务的实际同步情况来调整 `connections.max.idle.ms` 值。如果 TiCDC Changefeed 在几十分钟内一定会有数据同步发生，可以将 `connections.max.idle.ms` 设置为几十分钟即可，无需设置过大。
+
+2. 重启 Kafka 以使配置生效，避免连接被提前关闭，从而减少 `broken pipe` 报错。
