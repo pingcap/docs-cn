@@ -2133,6 +2133,8 @@ Raft Engine 相关的配置项。
 
 ## gc.auto-compaction
 
+用于配置 TiKV 自动 compaction 的行为。
+
 ### `check-interval` <span class="version-mark">从 v7.5.7、v9.0.0 版本开始引入</span>
 
 + TiKV auto compaction 检查间隔时间。在此时间段内，满足 auto compaction 条件的 region 会按优先级进行处理。在时间到达时， TiKV 会重新检查 region 信息，并重新计算优先级。
