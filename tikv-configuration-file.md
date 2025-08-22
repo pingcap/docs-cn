@@ -2166,7 +2166,7 @@ Raft Engine 相关的配置项。
 + 最小值：`0`
 + 最大值：`100`
 
-### `bottommost-level-force` <span class="version-mark">从 v7.5.7、v9.0.0 版本开始引入</span>
+### `bottommost-level-force` <span class="version-mark">从 v7.5.7 和 v9.0.0 版本开始引入</span>
 
 + 控制是否强制 RocksDB 最底层的文件参与 compaction。
 + 默认值：`true`
