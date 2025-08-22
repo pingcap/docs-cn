@@ -2248,7 +2248,7 @@ Raft Engine 相关的配置项。
 + TiKV auto compaction 检查间隔时间。在此时间段内，满足 auto compaction 条件的 region 会按优先级进行处理。在时间到达时， TiKV 会重新检查 region 信息，并重新计算优先级。
 + 默认值：`"300s"`
 
-### `tombstone-num-threshold` <span class="version-mark">从 v7.5.7、v9.0.0 版本开始引入</span>
+### `tombstone-num-threshold` <span class="version-mark">从 v7.5.7 和 v9.0.0 版本开始引入</span>
 
 + 触发 TiKV 自动 compaction 需要的 RocksDB tombstone 个数。当 tombstone 数量达到此阈值，或满足 [`tombstone-percent-threshold`](#tombstone-percent-threshold-从-v757-和-v900-版本开始引入) 条件之一时，TiKV 将触发自动 compaction。
 + 仅在关闭 [Compaction Filter](/garbage-collection-configuration.md) 时生效。
