@@ -183,12 +183,12 @@ show warnings;
 | gc.max-write-bytes-per-sec | 一秒可写入 RocksDB 的最大字节数 |
 | gc.enable-compaction-filter | 是否使用 compaction filter |
 | gc.compaction-filter-skip-version-check | 是否跳过 compaction filter 的集群版本检查（未 release）|
-| gc.auto-compaction.check-interval | 检查是否需要触发 TiKV auto (RocksDB) compaction 的时间间隔 |
-| gc.auto-compaction.tombstone-num-threshold | 触发 TiKV auto (RocksDB) compaction 需要的 RocksDB tombstone 个数 |
-| gc.auto-compaction.tombstone-percent-threshold | 触发 TiKV auto (RocksDB) compaction 需要的 tombstone 所占比例 |
-| gc.auto-compaction.redundant-rows-threshold | 触发 TiKV auto (RocksDB) compaction 需要的冗余行个数 |
-| gc.auto-compaction.redundant-rows-percent-threshold | 触发 TiKV auto (RocksDB) compaction 需要的冗余行所占比例 |
-| gc.auto-compaction.bottommost-level-force | 是否强制 RocksDB 最底层的文件参与 compact |
+| gc.auto-compaction.check-interval | 检查是否需要触发 TiKV 自动 (RocksDB) compaction 的时间间隔 |
+| gc.auto-compaction.tombstone-num-threshold | 触发 TiKV 自动 (RocksDB) compaction 需要的 RocksDB tombstone 个数 |
+| gc.auto-compaction.tombstone-percent-threshold | 触发 TiKV 自动 (RocksDB) compaction 需要的 RocksDB tombstone 所占比例 |
+| gc.auto-compaction.redundant-rows-threshold | 触发 TiKV 自动 (RocksDB) compaction 需要的冗余的 MVCC 数据行数 |
+| gc.auto-compaction.redundant-rows-percent-threshold | 触发 TiKV 自动 (RocksDB) compaction 需要的冗余的 MVCC 数据行数所占比例 |
+| gc.auto-compaction.bottommost-level-force | 是否强制 RocksDB 最底层的文件参与 compaction |
 | {db-name}.max-total-wal-size | WAL 总大小限制 |
 | {db-name}.max-background-jobs | RocksDB 后台线程个数 |
 | {db-name}.max-background-flushes | RocksDB flush 线程个数 |
