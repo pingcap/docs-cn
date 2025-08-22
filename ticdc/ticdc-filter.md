@@ -67,7 +67,7 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
   > ignore-sql = ["^drop"]
   > ```
   > 
-  > 不仅是 `DROP TABLE test.t1` 会被过滤，`DROP DATABASE test` 也会因为匹配到 `matcher` 中的 `test` 数据库名而被过滤掉。
+  > `ignore-sql = ["^drop"]` 不仅会过滤掉 `DROP TABLE test.t1`，还会因为 `matcher` 中包含了 `test` 数据库名而同时过滤掉 `DROP DATABASE test`。
   >
   > 如果需要精确过滤表，而不过滤数据库，`ignore-sql` 写成 `["drop table"]` 即可。
 
