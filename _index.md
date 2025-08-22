@@ -118,8 +118,6 @@ hide_commit: true
 
 <LearningPath label="参考" icon="cloud-dev">
 
-[TiDB 路线图](https://docs.pingcap.com/zh/tidb/dev/tidb-roadmap)
-
 [TiDB 配置文件参数](https://docs.pingcap.com/zh/tidb/v7.1/tidb-configuration-file)
 
 [TiDB 命令行参数](https://docs.pingcap.com/zh/tidb/v7.1/command-line-flags-for-tidb-configuration)
