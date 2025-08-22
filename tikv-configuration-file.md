@@ -2299,7 +2299,8 @@ Raft Engine 相关的配置项。
 
 ### `tombstone-percent-threshold` <span class="version-mark">从 v7.5.7、v9.0.0 版本开始引入</span>
 
-+ 触发 TiKV auto compaction 需要的 RocksDB tombstone 所占比例（或满足 num-threshold）。仅在关闭 compaction filter 时生效。
++ 触发 TiKV 自动 compaction 需要的 RocksDB tombstone 所占比例。当 tombstone 所占比例达到此阈值，或满足 [`tombstone-num-threshold`](#tombstone-num-threshold-从-v757-和-v900-版本开始引入) 条件之一时，TiKV 将触发自动 compaction。
++ 仅在关闭 [Compaction Filter](/garbage-collection-configuration.md) 时生效。
 + 默认值：`30`
 + 最小值：`0`
 + 最大值：`100`
