@@ -28,10 +28,12 @@ summary: 了解 TiCDC 兼容性相关限制和问题处理。
 
 ## TiCDC 与 TiFlash 的兼容性
 
-目前，使用 TiCDC 同步表到下游 TiDB 集群时，不支持为表创建 TiFlash 副本。即 TiCDC 不支持同步 TiFlash 相关的 DDL，例如:
+目前，TiCDC 在同步表到下游 TiDB 集群时，不会同步与 TiFlash 相关的 DDL 语句，例如：
 
 * `ALTER TABLE table_name SET TIFLASH REPLICA count;`
 * `ALTER DATABASE db_name SET TIFLASH REPLICA count;`
+
+因此，无法通过 TiCDC 为下游集群中的表创建 TiFlash 副本。
 
 ## 命令行参数和配置文件兼容性
 
