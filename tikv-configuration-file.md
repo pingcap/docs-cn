@@ -756,7 +756,7 @@ raftstore 相关的配置项。
 
 > **警告：**
 >
-> 从 v7.5.7 和 v9.0.0 开始，此配置项已被弃用，其功能被移动至 `gc.auto-compaction.check-interval` 。
+> 从 v7.5.7 和 v9.0.0 开始，该配置项被废弃，其功能由 [`gc.auto-compaction.check-interval`](#check-interval-从-v757-和-v900-版本开始引入) 代替。
 
 + 检查是否需要人工触发 RocksDB compaction 的时间间隔，0 表示不启用。
 + 默认值：5m
