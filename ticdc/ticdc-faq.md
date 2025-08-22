@@ -493,7 +493,6 @@ mysql://user:password@host:port/?safe-mode=true
 
 ## 为什么 TiCDC 同步到 Kafka 的任务经常因 `broken pipe` 报错而失败？
 
-
 TiCDC 同步数据到 Kafka 时使用了 Sarama 客户端。为了避免数据乱序，TiCDC 禁用了 Sarama 的自动重试机制（将重试次数设为 0）。因此，如果 TiCDC 和 Kafka 之间的连接在空闲一段时间后被 Kafka 主动关闭，后续写入数据时就会触发 `write: broken pipe` 错误，导致同步任务失败。
 
 虽然 Changefeed 会因为报错而失败，但 TiCDC 会自动重启该 Changefeed，任务仍可继续正常运行。需要注意的是，在重启过程中，Changefeed 的同步延迟（lag）可能会出现一次性的小幅增加，通常在 30 秒以内，之后会自动恢复正常。
