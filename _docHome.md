@@ -31,21 +31,6 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 
 </DocHomeCard>
 
-<<<<<<< HEAD
-=======
-<DocHomeCard href="/zh/tidb/stable/dev-guide-overview" label="开发者指南" icon="oss-developer-blue">
-
-为应用程序开发者编写的开发者手册
-
-</DocHomeCard>
-
-<DocHomeCard href="/zh/tidb/stable/mysql-compatibility" label="与 MySQL 兼容性对比" icon="oss-mysql-blue">
-
-TiDB 高度兼容 MySQL 协议，以及 MySQL 5.7 和 MySQL 8.0 常用的功能及语法
-
-</DocHomeCard>
-
->>>>>>> 42708d2b1a (*: remove TiDB roadmap from TOC, home, index, add warning (#20799) (#20810))
 </DocHomeCardContainer>
 
 体验全新的一栈式实时 HTAP 数据库
