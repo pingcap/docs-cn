@@ -2278,7 +2278,7 @@ Raft Engine 相关的配置项。
 + 最小值：`0`
 + 最大值：`100`
 
-### `redundant-rows-threshold`  <span class="version-mark">从 v7.5.7、v9.0.0 版本开始引入</span>
+### `redundant-rows-threshold` <span class="version-mark">从 v7.5.7 和 v9.0.0 版本开始引入</span>
 
 + 触发 TiKV auto compaction 需要的冗余的 MVCC 数据行数 （或满足 percent-threshold），包含 RocksDB tombstone， TiKV stale versions 和 TiKV deletion tombstones。仅在开启 compaction filter 时生效。
 + 默认值：`50000`
