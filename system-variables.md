@@ -1560,10 +1560,10 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 示例：
 
-假设当前有 4 个 TiDB 和 6 个 TiKV，每个 TiDB 均可以执行索引回填任务，Region 均匀分布在所有 TiKV 节点上，`tidb_ddl_reorg_max_write_speed` 被设置为 `100MiB`
+假设集群中有 4 个 TiDB 节点和 6 个 TiKV 节点，每个 TiDB 均可以执行索引回填任务，Region 均匀分布在所有 TiKV 节点上，且 `tidb_ddl_reorg_max_write_speed` 被设置为 `100MiB`：
 
-* 当全局排序关闭时，同一时刻只有 1 个 TiDB 向 TiKV 写入，此时每个 TiKV 节点的最大写入带宽为 `100MiB`
-* 当全局排序开启时，同一时刻所有 4 个 TiDB 都能向 TiKV 写入，此时每个 TiKV 节点的最大写入带宽为 `4 * 100MiB = 400MiB`
+* 当全局排序关闭时，同一时刻只有 1 个 TiDB 节点向 TiKV 写入，此时每个 TiKV 节点的最大写入带宽为 `100MiB`。
+* 当全局排序开启时，同一时刻所有 4 个 TiDB 节点都能向 TiKV 写入，此时每个 TiKV 节点的最大写入带宽为 `4 * 100MiB = 400MiB`。
 
 ### `tidb_ddl_reorg_worker_cnt`
 
