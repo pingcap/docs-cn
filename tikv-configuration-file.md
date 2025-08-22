@@ -2294,8 +2294,6 @@ Raft Engine 相关的配置项。
 + 是否强制 RocksDB 最底层的文件参与 compact。
 + 默认值：`true`
 
-+ 是否强制
-
 ## backup
 
 用于 BR 备份相关的配置项。
