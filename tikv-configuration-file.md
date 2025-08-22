@@ -2135,7 +2135,7 @@ Raft Engine 相关的配置项。
 
 用于配置 TiKV 自动 compaction 的行为。
 
-### `check-interval` <span class="version-mark">从 v7.5.7、v9.0.0 版本开始引入</span>
+### `check-interval` <span class="version-mark">从 v7.5.7 和 v9.0.0 版本开始引入</span>
 
 + 检查是否需要触发 TiKV 检查自动 compaction 的时间间隔。在此时间段内，满足自动 compaction 条件的 Region 会按优先级进行处理。当到达此间隔时，TiKV 会重新扫描 Region 信息并重新计算优先级。
 + 默认值：`"300s"`
