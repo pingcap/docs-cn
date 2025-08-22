@@ -58,7 +58,7 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 
   > **注意：**
   >
-  > `macher` 会匹配数据库名，这在某些情况下需要额外注意。例如 Event Filter 配置如下时：
+  > `macher` 会匹配数据库名，因此在配置时需要额外注意。例如 `event-filters` 配置如下时：
   > 
   > ```toml
   > [filter]
