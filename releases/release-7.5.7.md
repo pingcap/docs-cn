@@ -121,11 +121,11 @@ TiDB 版本：7.5.7
     - 修复 `IndexLookUp` 算子在查询被取消时打印无用日志的问题 [#61072](https://github.com/pingcap/tidb/issues/61072) @[yibin87](https://github.com/yibin87)
     - 修复 `Aggregation` 算子在发生内存超限时导致的 Goroutine 泄漏问题 [#58004](https://github.com/pingcap/tidb/issues/58004) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复 `BIT` 类型表的统计信息无法加载的问题 [#62289](https://github.com/pingcap/tidb/issues/62289) @[YangKeao](https://github.com/YangKeao)
+    - 修复无法将 `BIT` 类型的列的统计信息加载入内存的问题 [#59759](https://github.com/pingcap/tidb/issues/59759) @[YangKeao](https://github.com/YangKeao)
     - 修复 Hash Join v1 算子的 `Close()` 方法 panic 时没有恢复的问题 [#60926](https://github.com/pingcap/tidb/issues/60926) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复 `Index Merge` 和 `Index Lookup` 算子下发查询时共享 KV Request 导致数据竞争 (Data Race) 的问题 [#60175](https://github.com/pingcap/tidb/issues/60175) @[you06](https://github.com/you06)
     - 修复极端情况下当 `ANALYZE` 语句的落盘操作耗时太长时，可能导致其他 TiDB 节点无法更新最新统计信息的问题 [#54552](https://github.com/pingcap/tidb/issues/54552) @[0xPoe](https://github.com/0xPoe)
     - 修复当收集的列统计信息完全为 TopN 时，即使有后续写入操作，估算也有可能一直为 0 的问题 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell)
-    - 修复无法将 `BIT` 类型的列的统计信息加载入内存的问题 [#59759](https://github.com/pingcap/tidb/issues/59759) @[YangKeao](https://github.com/YangKeao)
     - 修复 `explain format="cost_trace"` 展示的估算代价可能有误的问题 [#61155](https://github.com/pingcap/tidb/issues/61155) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 `explain format="cost_trace"` 展示的代价计算公式中可能包含空括号的问题 [#61127](https://github.com/pingcap/tidb/issues/61127) @[hawkingrei](https://github.com/hawkingrei)
     - 修复外键定义成环时的死循坏问题 [#60985](https://github.com/pingcap/tidb/issues/60985) @[hawkingrei](https://github.com/hawkingrei) <!--tw@hfxsd: the following 13 notes-->
