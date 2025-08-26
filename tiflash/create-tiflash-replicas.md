@@ -223,7 +223,8 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
       information_schema.tikv_region_status r,
       information_schema.tikv_region_peers p,
       information_schema.tikv_store_status s
-    where r.db_name = 'test' and r.table_name = 'table_to_check'
+    where
+      r.db_name = 'test' and r.table_name = 'table_to_check'
       and r.region_id = p.region_id and p.store_id = s.store_id
       and json_extract(s.label, "$[0].value") = "tiflash" 
     group by TABLE_ID, p.STORE_ID, ADDRESS;
@@ -234,8 +235,8 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
       information_schema.tikv_region_status r,
       information_schema.tikv_region_peers p,
       information_schema.tikv_store_status s
-    where r.db_name = 'test' and r.table_name = 'table_to_check'
-      and r.PARTITION_NAME like 'p202312%'
+    where 
+      r.db_name = 'test' and r.table_name = 'table_to_check' and r.PARTITION_NAME like 'p202312%'
       and r.region_id = p.region_id and p.store_id = s.store_id
       and json_extract(s.label, "$[0].value") = "tiflash"
     group by TABLE_ID, r.PARTITION_NAME, p.STORE_ID, ADDRESS
