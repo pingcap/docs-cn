@@ -55,7 +55,23 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 配置参数说明：
 
 - `matcher`：该事件过滤器所要匹配的数据库名和表名，其匹配规则和[表库过滤规则](/table-filter.md#表库过滤语法)相一致。
-- `ignore-event`：要过滤的事件类型，它是一个字符串数组，可以配置多个事件类型。目前支持的类型如下表所示:
+
+    > **注意：**
+    >
+    > `macher` 会匹配数据库名，因此在配置时需要额外注意。例如 `event-filters` 配置如下时：
+    >
+    > ```toml
+    > [filter]
+    > [[filter.event-filters]]
+    > matcher = ["test.t1"]
+    > ignore-sql = ["^drop"]
+    > ```
+    >
+    > `ignore-sql = ["^drop"]` 不仅会过滤掉 `DROP TABLE test.t1`，还会因为 `matcher` 中包含了 `test` 数据库名而同时过滤掉 `DROP DATABASE test`。
+    >
+    > 如果只需要过滤掉指定表而不是整个数据库，请将 `ignore-sql` 值修改为 `["drop table"]`。
+
+- `ignore-event`：要过滤掉的事件类型，它是一个字符串数组，可以配置多个事件类型。目前支持的类型如下表所示:
 
 | Event           | 分类 | 别名 |说明                    |
 | --------------- | ---- | -|--------------------------|
