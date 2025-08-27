@@ -5,7 +5,7 @@ summary: tiup cluster tls 命令用于开启、或关闭集群组件之间的 TL
 
 # tiup cluster tls
 
-命令 `tiup cluster tls` 用于开启集群组件之间的 TLS，会自签发证书下发到各个机器。
+命令 `tiup cluster tls` 用于开启集群组件之间的 TLS (Transport Layer Security)，会自签发证书下发到各个机器。
 
 ## 语法
 

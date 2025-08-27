@@ -118,7 +118,7 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 
 - 指定滚动升级之间的间隔，即在升级组件后等待一段时间。
 - 数据类型: `STRINGS`
-- 不指定该选项时, 不会等待。
+- 不指定该选项时，升级组件后不会等待。
 
 ### -h, --help
 
