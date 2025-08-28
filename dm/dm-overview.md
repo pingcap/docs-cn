@@ -61,7 +61,7 @@ tiup install dm dmctl
 
 + 向量类型数据同步
 
-    - DM 不支持迁移或同步 MySQL 9.0 的向量数据类型到 TiDB。
+    - DM 不支持迁移或同步 MySQL 的向量数据类型到 TiDB。
 
 ## Contributing
 
@@ -82,9 +82,9 @@ DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/bl
 
 在 v5.4 之前，DM 工具的文档独立于 TiDB 文档。要访问这些早期版本的 DM 文档，请点击以下链接：
 
-- [DM v5.3 文档](https://docs.pingcap.com/zh/tidb-data-migration/v5.3)
-- [DM v2.0 文档](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/)
-- [DM v1.0 文档](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/)
+- [DM v5.3 文档](https://docs-archive.pingcap.com/zh/tidb-data-migration/v5.3)
+- [DM v2.0 文档](https://docs-archive.pingcap.com/zh/tidb-data-migration/v2.0/)
+- [DM v1.0 文档](https://docs-archive.pingcap.com/zh/tidb-data-migration/v1.0/)
 
 > **注意：**
 >
