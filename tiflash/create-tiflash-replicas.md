@@ -214,7 +214,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
     ALTER TABLE t SET TIFLASH REPLICA 2;
     ```
 
-3. 此时 PD 会根据 TiFlash 节点 `learner_config` 的 `server.labels` 以及表的副本数 count 进行调度，将表 `t` 的副本分别调度到不同的可用区中，保证可用性。具体可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)。可以通过下列 SQL 来验证某个表 Region 在 TiFlash 节点上的分布：
+3. 此时 PD 会根据 TiFlash 节点 `learner_config` 的 `server.labels` 以及表的副本数 `count` 进行调度，将表 `t` 的副本分别调度到不同的可用区中，保证可用性。详情请参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)。可以通过下列 SQL 来验证某个表 Region 在 TiFlash 节点上的分布：
 
     ```SQL
     -- Non-partitioned table
@@ -254,5 +254,5 @@ TiFlash 支持设置不同区域的副本选择策略，具体请参考变量 [`
 
 > **注意：**
 >
-> `ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels;` 语法中的 `location_labels` 如果涉及多个 label，无法被正确解析并设置 Placement-rule 规则。不建议使用 `LOCATION LABELS` 进行 TiFlash 副本的配置。
+> `ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels;` 语法中的 `location_labels` 如果涉及多个 label，无法被正确解析并设置 Placement Rule 规则。不建议使用 `LOCATION LABELS` 配置 TiFlash 副本。
 > 
