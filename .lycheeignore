@@ -25,7 +25,8 @@ https://dev\.mysql\.com/doc/dev/mysql-server/.*
 https://dev\.mysql\.com/downloads/.*
 https://bugs\.mysql\.com/bug\.php.*
 https://www\.mysql\.com/products/.*
-https://platform\.openai\.com/docs/.*
+https://help.openai.com/en/articles/.*
+https://platform.openai.com/docs/.*
 https://openai\.com/.*
 https://jwt\.io/
 https://typeorm\.io/.*
