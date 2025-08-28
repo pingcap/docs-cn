@@ -250,7 +250,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
       r.db_name = 'test' 
       AND r.table_name = 'table_to_check' 
       AND r.partition_name LIKE 'p202312%'
-     AND r.region_id = p.region_id 
+      AND r.region_id = p.region_id 
       AND p.store_id = s.store_id
       AND JSON_EXTRACT(s.label, '$[0].value') = 'tiflash'
     GROUP BY table_id, r.partition_name, p.store_id, address
