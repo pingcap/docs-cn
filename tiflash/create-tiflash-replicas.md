@@ -226,30 +226,35 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 3. 此时 PD 会根据 TiFlash 节点 `learner_config` 的 `server.labels` 以及表的副本数 count 进行调度，将表 `t` 的副本分别调度到不同的可用区中，保证可用性。具体可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)。可以通过下列 SQL 来验证某个表 Region 在 TiFlash 节点上的分布：
 
     ```SQL
-    -- non-partitioned table
-    select TABLE_ID, p.STORE_ID, ADDRESS, count(p.REGION_ID) 
-    from
+    -- Non-partitioned table
+    SELECT table_id, p.store_id, address, COUNT(p.region_id) 
+    FROM
       information_schema.tikv_region_status r,
       information_schema.tikv_region_peers p,
       information_schema.tikv_store_status s
-    where
-      r.db_name = 'test' and r.table_name = 'table_to_check'
-      and r.region_id = p.region_id and p.store_id = s.store_id
-      and json_extract(s.label, "$[0].value") = "tiflash" 
-    group by TABLE_ID, p.STORE_ID, ADDRESS;
+    WHERE
+      r.db_name = 'test' 
+      AND r.table_name = 'table_to_check'
+      AND r.region_id = p.region_id 
+      AND p.store_id = s.store_id
+      AND JSON_EXTRACT(s.label, '$[0].value') = 'tiflash'
+    GROUP BY table_id, p.store_id, address;
 
     -- Partitioned table
-    select TABLE_ID, r.PARTITION_NAME, p.STORE_ID, ADDRESS, count(p.REGION_ID)
-    from
+    SELECT table_id, r.partition_name, p.store_id, address, COUNT(p.region_id)
+    FROM
       information_schema.tikv_region_status r,
       information_schema.tikv_region_peers p,
       information_schema.tikv_store_status s
-    where 
-      r.db_name = 'test' and r.table_name = 'table_to_check' and r.PARTITION_NAME like 'p202312%'
-      and r.region_id = p.region_id and p.store_id = s.store_id
-      and json_extract(s.label, "$[0].value") = "tiflash"
-    group by TABLE_ID, r.PARTITION_NAME, p.STORE_ID, ADDRESS
-    order by TABLE_ID, r.PARTITION_NAME, p.STORE_ID;
+    WHERE 
+      r.db_name = 'test' 
+      AND r.table_name = 'table_to_check' 
+      AND r.partition_name LIKE 'p202312%'
+     AND r.region_id = p.region_id 
+      AND p.store_id = s.store_id
+      AND JSON_EXTRACT(s.label, '$[0].value') = 'tiflash'
+    GROUP BY table_id, r.partition_name, p.store_id, address
+    ORDER BY table_id, r.partition_name, p.store_id;
     ```
 
 关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
