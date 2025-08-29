@@ -220,12 +220,12 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
     注：旧版本中的 `flash.proxy.labels` 配置无法处理可用区名字中的特殊字符，建议使用 `learner_config` 中的 `server.labels` 来进行配置。
 
-2. 启动集群后，在创建副本时为副本调度指定 label，语法如下：
+2. 启动集群后，在创建副本时指定满足高可用需求的 TiFlash 副本个数，语法如下：
 
     {{< copyable "sql" >}}
 
     ```sql
-    ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels;
+    ALTER TABLE table_name SET TIFLASH REPLICA count;
     ```
 
     例如：
@@ -233,44 +233,47 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
     {{< copyable "sql" >}}
 
     ```sql
-    ALTER TABLE t SET TIFLASH REPLICA 2 LOCATION LABELS "zone";
+    ALTER TABLE t SET TIFLASH REPLICA 2;
     ```
 
-3. 此时 PD 会根据设置的 label 进行调度，将表 `t` 的两个副本分别调度到两个可用区中。可以通过监控或 pd-ctl 来验证这一点：
+3. 此时 PD 会根据 TiFlash 节点 `learner_config` 的 `server.labels` 以及表的副本数 `count` 进行调度，将表 `t` 的副本分别调度到不同的可用区中，保证可用性。详情请参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)。可以通过下列 SQL 来验证某个表 Region 在 TiFlash 节点上的分布：
 
-    ```shell
-    > tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store
+    ```sql
+    -- Non-partitioned table
+    SELECT table_id, p.store_id, address, COUNT(p.region_id) 
+    FROM
+      information_schema.tikv_region_status r,
+      information_schema.tikv_region_peers p,
+      information_schema.tikv_store_status s
+    WHERE
+      r.db_name = 'test' 
+      AND r.table_name = 'table_to_check'
+      AND r.region_id = p.region_id 
+      AND p.store_id = s.store_id
+      AND JSON_EXTRACT(s.label, '$[0].value') = 'tiflash'
+    GROUP BY table_id, p.store_id, address;
 
-        ...
-
-        "address": "172.16.5.82:23913",
-        "labels": [
-          { "key": "engine", "value": "tiflash"},
-          { "key": "zone", "value": "z1" }
-        ],
-        "region_count": 4,
-
-        ...
-
-        "address": "172.16.5.81:23913",
-        "labels": [
-          { "key": "engine", "value": "tiflash"},
-          { "key": "zone", "value": "z1" }
-        ],
-        "region_count": 5,
-
-        ...
-
-        "address": "172.16.5.85:23913",
-        "labels": [
-          { "key": "engine", "value": "tiflash"},
-          { "key": "zone", "value": "z2" }
-        ],
-        "region_count": 9,
-
-        ...
+    -- Partitioned table
+    SELECT table_id, r.partition_name, p.store_id, address, COUNT(p.region_id)
+    FROM
+      information_schema.tikv_region_status r,
+      information_schema.tikv_region_peers p,
+      information_schema.tikv_store_status s
+    WHERE 
+      r.db_name = 'test' 
+      AND r.table_name = 'table_to_check' 
+      AND r.partition_name LIKE 'p202312%'
+      AND r.region_id = p.region_id 
+      AND p.store_id = s.store_id
+      AND JSON_EXTRACT(s.label, '$[0].value') = 'tiflash'
+    GROUP BY table_id, r.partition_name, p.store_id, address
+    ORDER BY table_id, r.partition_name, p.store_id;
     ```
 
 关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
 
 TiFlash 支持设置不同区域的副本选择策略，具体请参考变量 [`tiflash_replica_read`](/system-variables.md#tiflash_replica_read-从-v730-版本开始引入)。
+
+> **注意：**
+>
+> `ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels;` 语法中的 `location_labels` 如果涉及多个 label，无法被正确解析并设置 Placement Rule 规则，因此不建议使用 `LOCATION LABELS` 配置 TiFlash 副本。
