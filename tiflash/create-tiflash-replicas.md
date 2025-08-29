@@ -263,4 +263,4 @@ TiFlash 支持设置不同区域的副本选择策略，具体请参考变量 [`
 
 > **注意：**
 >
-> `ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels;` 语法中的 `location_labels` 如果涉及多个 label，无法被正确解析并设置 Placement Rule 规则。不建议使用 `LOCATION LABELS` 配置 TiFlash 副本。
+> `ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels;` 语法中的 `location_labels` 如果涉及多个 label，无法被正确解析并设置 Placement Rule 规则，因此不建议使用 `LOCATION LABELS` 配置 TiFlash 副本。
