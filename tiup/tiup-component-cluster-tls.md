@@ -21,18 +21,21 @@ tiup cluster tls <cluster-name> <enable/disable> [flags]
 
 - 当 TLS 关闭时，指定此选项可清理之前生成的证书。
 - 数据类型：`BOOLEAN`
+- 默认值：`false`
 - 如果不指定该选项，之后开启 TLS 时，可能沿用旧证书。
 
 ### --force
 
 - 强制执行开启或关闭 TLS 的流程，不管当前集群是否开启 TLS。
 - 数据类型：`BOOLEAN`
+- 默认值：`false`
 - 如果不指定该选项，开关状态相同时跳过执行。
 
 ### --reload-certificate
 
 - 当 TLS 开启时，指定此选项可重新生成证书。
 - 数据类型：`BOOLEAN`
+- 默认值：`false`
 - 如果不指定该选项，已经生成过证书后，不会再生成新证书。
 
 ### -h, --help
