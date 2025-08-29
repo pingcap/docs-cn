@@ -242,6 +242,7 @@
         - [tiup cluster start](/tiup/tiup-component-cluster-start.md)
         - [tiup cluster stop](/tiup/tiup-component-cluster-stop.md)
         - [tiup cluster template](/tiup/tiup-component-cluster-template.md)
+        - [tiup cluster tls](/tiup/tiup-component-cluster-tls.md)
         - [tiup cluster upgrade](/tiup/tiup-component-cluster-upgrade.md)
       - TiUP DM 命令
         - [TiUP DM 命令概览](/tiup/tiup-component-dm.md)
