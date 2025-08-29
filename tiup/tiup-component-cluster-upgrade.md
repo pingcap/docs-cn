@@ -48,6 +48,73 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
+### --pd-version
+
+- 指定 PD 的版本。指定后，PD 的版本将不再与集群版本保持一致。
+- 数据类型：`STRINGS`
+- 不指定该选项时，PD 的版本与集群版本保持一致。
+
+### --tikv-version
+
+- 指定 TiKV 的版本。指定后，TiKV 的版本将不再与集群版本保持一致。
+- 数据类型：`STRINGS`
+- 不指定该选项时，TiKV 的版本与集群版本保持一致。
+
+### --tikv-cdc-version
+
+- 指定 TiKV CDC 的版本。指定后，TiKV CDC 的版本将不再与集群版本保持一致。
+- 数据类型：`STRINGS`
+- 不指定该选项时，TiKV CDC 的版本与集群版本保持一致。
+
+### --tiflash-version
+
+- 指定 TiFlash 的版本。指定后，TiFlash 的版本将不再与集群版本保持一致。
+- 数据类型：`STRINGS`
+- 不指定该选项时，TiFlash 的版本与集群版本保持一致。
+
+### --cdc-version
+
+- 指定 TiCDC 的版本。指定后，TiCDC 的版本将不再与集群版本保持一致。
+- 数据类型：`STRINGS`
+- 不指定该选项时，TiCDC 的版本与集群版本保持一致。
+
+### --tiproxy-version
+
+- 指定 TiProxy 的版本。指定后，TiProxy 的版本将不再与集群版本保持一致。
+- 数据类型：`STRINGS`
+- 不指定该选项时，TiProxy 的版本与集群版本保持一致。
+
+### --tidb-dashboard-version
+
+- 指定 TiDB Dashboard 的版本。指定后，TiDB Dashboard 的版本将不再与集群版本保持一致。
+- 数据类型：`STRINGS`
+- 不指定该选项时，TiDB Dashboard 的版本与集群版本保持一致。
+
+### --alertmanager-version
+
+- 指定 alert manager 的版本。指定后，alert manager 的版本将不再与集群版本保持一致。
+- 数据类型：`STRINGS`
+- 不指定该选项时，alert manager 的版本与集群版本保持一致。
+
+### --blackbox-exporter-version
+
+- 指定 Blackbox Exporter 的版本。指定后，Blackbox Exporter 的版本将不再与集群版本保持一致。
+- 数据类型：`STRINGS`
+- 不指定该选项时，Blackbox Exporter 的版本与集群版本保持一致。
+
+### --node-exporter-version
+
+- 指定 Node Exporter 的版本。指定后，Node Exporter 的版本将不再与集群版本保持一致。
+- 数据类型：`STRINGS`
+- 不指定该选项时，Node Exporter 的版本与集群版本保持一致。
+
+### --restart-timeout
+
+- 指定滚动升级之间的间隔，即在升级组件后等待一段时间。
+- 数据类型: `STRINGS`。支持所有 [`golang time.ParseDuration`](https://pkg.go.dev/time#ParseDuration) 能够解析的数据类型。
+- 默认值：`0`
+- 不指定该选项时，升级组件后不会等待。
+
 ### -h, --help
 
 - 输出帮助信息。
