@@ -28,7 +28,7 @@ summary: 了解 TiDB 向量搜索功能的限制。
 ## 工具兼容性
 
 - 确保使用 BR v8.4.0 及以上版本进行备份与恢复。不支持将带有向量数据类型的表恢复至 v8.4.0 之前的 TiDB 集群。
-- TiDB Data Migration (DM) 不支持迁移或同步 MySQL 9.0 的向量数据类型到 TiDB。
+- TiDB Data Migration (DM) 不支持迁移或同步 MySQL 的向量数据类型到 TiDB。
 - TiCDC 在同步向量数据到不支持向量数据类型的下游时会修改数据类型。详情参考[向量数据类型兼容性说明](/ticdc/ticdc-compatibility.md#向量数据类型兼容性说明)。
 
 ## 反馈
