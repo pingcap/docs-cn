@@ -89,7 +89,7 @@ TiKV 和 PD 推荐的硬件配置如下：
     - 100 万张表：使用 32 GiB 或更高内存的 BR 实例
     - 300 万张表：使用 64 GiB 或更高内存的 BR 实例
 * BR 日志备份和快照恢复会额外消耗 TiKV 内存，建议 TiKV 使用 32 GiB 或更高规格的内存。
-* 可根据业务需求，适当增加 BR 的 [`pitr-batch-count` 和 `pitr-concurrency`](/br/use-br-command-line-tool.md#常用选项) 配置以提升 BR 日志恢复速度。
+* 可根据业务需求，适当增加 BR 的 [`pitr-batch-count` 和 `pitr-concurrency`](/br/br-pitr-manual.md#恢复到指定时间点-pitr) 配置以提升 BR 日志恢复速度。
 
 ## TiDB Lightning 数据导入
 
