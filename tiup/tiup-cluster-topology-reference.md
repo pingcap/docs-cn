@@ -65,6 +65,8 @@ summary: 介绍通过 TiUP 部署或扩容 TiDB 集群时提供的拓扑文件�
     - `io_read_bandwidth_max`：读磁盘 I/O 的最大带宽，例如："/dev/disk/by-path/pci-0000:00:1f.2-scsi-0:0:0:0 100M"
     - `io_write_bandwidth_max`：写磁盘 I/O 的最大带宽，例如："/dev/disk/by-path/pci-0000:00:1f.2-scsi-0:0:0:0 100M"
     - `limit_core`：控制 core dump 的大小
+    - `timeout_stop_sec`：控制 systemd 服务停止的超时时间
+    - `timeout_start_sec`：控制 systemd 服务启动的超时时间
 
 `global` 配置示例：
 
