@@ -47,8 +47,6 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-<<<<<<< HEAD
-=======
 ### --pd-version
 
 - 指定 PD 的版本。指定后，PD 的版本将不再与集群版本保持一致。
@@ -116,7 +114,6 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 - 默认值：`0`
 - 不指定该选项时，升级组件后不会等待。
 
->>>>>>> f46aa36760 (tiup: add `tiup cluster tls` (#20831))
 ### -h, --help
 
 - 输出帮助信息。
