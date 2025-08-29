@@ -131,10 +131,6 @@ show warnings;
 | raftstore.max-apply-unpersisted-log-limit | 允许 apply 已 commit 但尚未持久化的 Raft 日志的最大数量 |
 | raftstore.split-region-check-tick-interval | 检查 Region 是否需要分裂的时间间隔 |
 | raftstore.region-split-check-diff | 允许 Region 数据超过指定大小的最大值 |
-| raftstore.region-compact-check-interval | 检查是否需要人工触发 RocksDB compaction 的时间间隔 |
-| raftstore.region-compact-check-step | 每轮校验人工 compaction 时，一次性检查的 Region 个数 |
-| raftstore.region-compact-min-tombstones | 触发 RocksDB compaction 需要的 tombstone 个数 |
-| raftstore.region-compact-tombstones-percent | 触发 RocksDB compaction 需要的 tombstone 所占比例 |
 | raftstore.pd-heartbeat-tick-interval | 触发 Region 对 PD 心跳的时间间隔 |
 | raftstore.pd-store-heartbeat-tick-interval | 触发 store 对 PD 心跳的时间间隔 |
 | raftstore.snap-mgr-gc-tick-interval | 触发回收过期 snapshot 文件的时间间隔 |
@@ -188,6 +184,12 @@ show warnings;
 | gc.max-write-bytes-per-sec | 一秒可写入 RocksDB 的最大字节数 |
 | gc.enable-compaction-filter | 是否使用 compaction filter |
 | gc.compaction-filter-skip-version-check | 是否跳过 compaction filter 的集群版本检查（未 release）|
+| gc.auto-compaction.check-interval | TiKV 检查是否需要触发自动 RocksDB compaction 的时间间隔 |
+| gc.auto-compaction.tombstone-num-threshold | 触发 TiKV 自动 (RocksDB) compaction 需要的 RocksDB tombstone 个数 |
+| gc.auto-compaction.tombstone-percent-threshold | 触发 TiKV 自动 (RocksDB) compaction 需要的 RocksDB tombstone 所占比例 |
+| gc.auto-compaction.redundant-rows-threshold | 触发 TiKV 自动 (RocksDB) compaction 需要的冗余的 MVCC 数据行数 |
+| gc.auto-compaction.redundant-rows-percent-threshold | 触发 TiKV 自动 (RocksDB) compaction 需要的冗余的 MVCC 数据行数所占比例 |
+| gc.auto-compaction.bottommost-level-force | 控制是否强制对 RocksDB 最底层文件进行 compaction |
 | {db-name}.max-total-wal-size | WAL 总大小限制 |
 | {db-name}.max-background-jobs | RocksDB 后台线程个数 |
 | {db-name}.max-background-flushes | RocksDB flush 线程个数 |
