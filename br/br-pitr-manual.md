@@ -354,6 +354,9 @@ Usage:
 Flags:
   --full-backup-storage string specify the backup full storage. fill it if want restore full backup before restore log.
   -h, --help                   help for point
+  --pitr-batch-count uint32    specify the batch count to restore log. (default 8)
+  --pitr-batch-size uint32     specify the batch size to retore log. (default 16777216)
+  --pitr-concurrency uint32    specify the concurrency to restore log. (default 16)
   --restored-ts string         the point of restore, used for log restore. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23+0800'
   --start-ts string            the start timestamp which log restore from. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23+0800'
 
@@ -369,6 +372,9 @@ Global Flags:
 以上示例只展示了常用的参数，这些参数作用如下：
 
 - `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PITR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。需要注意的是，第一次初始化恢复集群时，必须指定快照备份，快照备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
+- `--pitr-batch-count`：指定日志恢复时单个批次包含的最大文件数。一旦达到该阈值，当前批次会立即结束并开始下一个批次。
+- `--pitr-batch-size`：指定日志恢复时单个批次的最大数据量（字节数）。一旦达到该阈值，当前批次会立即结束并开始下一个批次。
+- `--pitr-concurrency`：指定日志恢复过程中的并发任务数。每个并发任务对应一个批次的日志数据恢复。
 - `--restored-ts`：指定恢复到的时间点。如果没有指定该参数，则恢复到日志备份数据最后的可恢复时间点（备份数据的 checkpoint）。
 - `--start-ts`：指定日志备份恢复的起始时间点。如果你只恢复日志备份数据，不恢复快照备份，需要指定这个参数。
 - `ca`、`cert`、`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
