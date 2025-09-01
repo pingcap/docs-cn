@@ -141,7 +141,13 @@ Restore KV Files <--------------------------------------------------------------
 >
 > 外部存储中只存放单个副本中的 KV 数据，因此外部存储上的数据量并不代表集群实际恢复后的数据量。BR 恢复数据时会根据集群设置的副本数来恢复全部副本，当副本数越多时，实际恢复的数据量也就越多。
 > 所有测试集群默认设置 3 副本。
-> 如果想提升整体恢复的性能，可以通过根据实际情况调整 TiKV 配置文件中的 [`import.num-threads`](/tikv-configuration-file.md#import) 配置项以及 BR 命令的 [`pitr-concurrency`](/br/use-br-command-line-tool.md#常用选项) 参数。
+> 如果想提升整体恢复的性能，可以通过根据实际情况调整 TiKV 配置文件中的 [`import.num-threads`](/tikv-configuration-file.md#import) 配置项以及 BR 命令的 [`pitr-concurrency`](/br/br-pitr-manual.md#恢复到指定时间点-pitr) 参数。
+> 当上游集群有**大量 Region** 且 **flush 间隔较短**时，PITR 会生成大量小文件，这会增加恢复过程中的批处理和分发开销。如需提高每个批次处理的文件数量，可以**适度**调高以下参数值：
+>
+> - `pitr-batch-size`：每个批次的累计**字节数**（默认为 **16 MiB**）。
+> - `pitr-batch-count`：每个批次的**文件数量**（默认为 **8**）。
+>
+> 在判断是否开启下一个批次时，这两个阈值会被分别评估：一旦任意一个阈值先达到，当前批次就会结束并开启下一个批次，另一个阈值在该批次中则不再生效。
 
 测试场景 1（[TiDB Cloud](https://tidbcloud.com) 上部署）如下：
 
