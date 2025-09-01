@@ -57,6 +57,7 @@ summary: TiUP 可用于将 TiDB 4.0 版本及更高版本升级至 TiDB 8.0。�
 - TiDB v7.5.4 release notes 中的[兼容性变更](/releases/release-7.5.4.md#兼容性变更)
 - TiDB v7.5.5 release notes 中的[兼容性变更](/releases/release-7.5.5.md#兼容性变更)
 - TiDB v7.5.6 release notes 中的[兼容性变更](/releases/release-7.5.6.md#兼容性变更)
+- TiDB v7.5.7 release notes 中的[兼容性变更](/releases/release-7.5.7.md#兼容性变更)
 
 ### 2.2 升级 TiUP 或更新 TiUP 离线镜像
 
