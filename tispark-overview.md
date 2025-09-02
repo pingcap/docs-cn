@@ -5,15 +5,10 @@ summary: 使用 TiSpark 一站式解决用户的 HTAP 需求。
 
 # TiSpark 用户指南
 
-![TiSpark 架构](/media/tispark-architecture.png)
-
-## TiSpark vs TiFlash
-
-[TiSpark](https://github.com/pingcap/tispark) 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。它借助 Spark 平台，同时融合 TiKV 分布式集群的优势，和 TiDB 一起为用户一站式解决 HTAP (Hybrid Transactional/Analytical Processing) 的需求。
-
-[TiFlash](/tiflash/tiflash-overview.md) 也是一个解决 HTAP 需求的产品。TiFlash 和 TiSpark 都允许使用多个主机在 OLTP 数据上执行 OLAP 查询。TiFlash 是列式存储，这提供了更高效的分析查询。TiFlash 和 TiSpark 可以同时使用。
-
-## TiSpark 是什么
+> **注意：**
+>
+> TiSpark 不保证与 TiDB v7.0.0 及之后版本兼容。
+> TiSpark 不保证与 Spark v3.4.0 及之后版本兼容。
 
 TiSpark 依赖于 TiKV 集群和 Placement Driver (PD)，也需要你搭建一个 Spark 集群。本文简单介绍如何部署和使用 TiSpark。本文假设你对 Spark 有基本认知。你可以参阅 [Apache Spark 官网](https://spark.apache.org/docs/latest/index.html)了解 Spark 的相关信息。
 
@@ -34,6 +29,16 @@ TiSpark 和 TiDB 可以让用户无需创建和维护 ETL，直接在同一个�
 > **警告：**
 >
 > 由于 TiSpark 直接访问 TiKV，所以 TiDB Server 使用的访问控制机制并不适用于 TiSpark。TiSpark v2.5.0 及以上版本实现了部分鉴权与授权功能，具体信息请参考[安全](/tispark-overview.md#安全)。
+
+TiSpark 的架构图如下所示：
+
+![TiSpark 架构](/media/tispark-architecture.png)
+
+## TiSpark vs TiFlash
+
+[TiSpark](https://github.com/pingcap/tispark) 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。它借助 Spark 平台，同时融合 TiKV 分布式集群的优势，和 TiDB 一起为用户一站式解决 HTAP (Hybrid Transactional/Analytical Processing) 的需求。
+
+[TiFlash](/tiflash/tiflash-overview.md) 也是一个解决 HTAP 需求的产品。TiFlash 和 TiSpark 都允许使用多个主机在 OLTP 数据上执行 OLAP 查询。TiFlash 是列式存储，这提供了更高效的分析查询。TiFlash 和 TiSpark 可以同时使用。
 
 ## 版本要求
 
@@ -98,10 +103,13 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 
 推荐使用 TiSpark 的最新稳定版本，包括 2.4.4、2.5.2、3.0.2、3.1.1 和 3.2.3。
 
+<<<<<<< HEAD
 > **Note:**
 >
 > TiSpark 不保证与 TiDB v7.0.0 及之后版本兼容。
 
+=======
+>>>>>>> f1b2129d5a (TiSpark: highlight compatibility and restructure overview (#20856))
 ## 获取 TiSpark jar 包
 
 你能用以下方式获取 jar 包：
