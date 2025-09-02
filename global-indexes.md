@@ -13,6 +13,9 @@ summary: 介绍 TiDB 全局索引的适用场景、优势、使用方法、实�
 
 ![Global Index vs. Local Index](/media/global-index-vs-local-index.png)
 
+<img src="https://github.com/hfxsd/docs-cn/blob/global-index-best-practices/media/global-index-vs-local-index.png" alt="Global Index vs. Local Index" width="300" height="200"/>
+
+
 ## 全局索引和本地索引的适用场景
 
 **全局索引的适用场景**：
