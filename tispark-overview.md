@@ -5,10 +5,10 @@ summary: 使用 TiSpark 一站式解决用户的 HTAP 需求。
 
 # TiSpark 用户指南
 
-> **注意：**
+> **警告：**
 >
-> TiSpark 不保证与 TiDB v7.0.0 及之后版本兼容。
-> TiSpark 不保证与 Spark v3.4.0 及之后版本兼容。
+> - TiSpark 不保证与 TiDB v7.0.0 及之后版本兼容。
+> - TiSpark 不保证与 Spark v3.4.0 及之后版本兼容。
 
 TiSpark 依赖于 TiKV 集群和 Placement Driver (PD)，也需要你搭建一个 Spark 集群。本文简单介绍如何部署和使用 TiSpark。本文假设你对 Spark 有基本认知。你可以参阅 [Apache Spark 官网](https://spark.apache.org/docs/latest/index.html)了解 Spark 的相关信息。
 
