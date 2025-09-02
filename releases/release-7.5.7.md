@@ -16,7 +16,7 @@ TiDB 版本：7.5.7
 <!--tw@Oreoxmt: 2 notes-->
 
 - 将系统变量 [`tidb_enable_historical_stats`](https://docs.pingcap.com/zh/tidb/v7.5/system-variables/#tidb_enable_historical_stats) 的默认值从 `ON` 修改为 `OFF`，即默认关闭历史统计信息，避免潜在的稳定性问题 [#53048](https://github.com/pingcap/tidb/issues/53048) @[hawkingrei](https://github.com/hawkingrei)
-- TiKV 废弃以下配置项，并由新的 [`gc.auto-compaction`](/tikv-configuration-file.md#gc.auto-compaction) 配置项替代，用于控制自动 compaction 行为：
+- TiKV 废弃以下配置项，并由新的 [`gc.auto-compaction`](/tikv-configuration-file.md#gc.auto-compaction) 配置项替代，用于控制自动 compaction 行为 [#18727](https://github.com/tikv/tikv/issues/18727) @[v01dstar](https://github.com/v01dstar)
 
     - 废弃配置项：[`region-compact-check-interval`](/tikv-configuration-file.md#region-compact-check-interval)、[`region-compact-check-step`](/tikv-configuration-file.md#region-compact-check-step)、[`region-compact-min-tombstones`](/tikv-configuration-file.md#region-compact-min-tombstones)、[`region-compact-tombstones-percent`](/tikv-configuration-file.md#region-compact-tombstones-percent)、[`region-compact-min-redundant-rows`](/tikv-configuration-file.md#region-compact-min-redundant-rows-从-v710-版本开始引入) 和 [`region-compact-redundant-rows-percent`](/tikv-configuration-file.md#region-compact-redundant-rows-percent-从-v710-版本开始引入)。
     - 新增配置项：`gc.auto-compaction.check-interval`、`gc.auto-compaction.tombstone-num-threshold`、`gc.auto-compaction.tombstone-percent-threshold`、`gc.auto-compaction.redundant-rows-threshold`、`gc.auto-compaction.redundant-rows-percent-threshold` 和 `gc.auto-compaction.bottommost-level-force`。
