@@ -25,8 +25,6 @@ TiDB 版本：7.5.7
 
 + TiDB <!--tw@Oreoxmt: 6 notes-->
 
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-8.5.3.md > 改进提升> TiDB - 新增数据导入期间 Region 分裂与数据 ingest 的流控接口 [#61553](https://github.com/pingcap/tidb/issues/61553) @[tangenta](https://github.com/tangenta)
     - (dup): release-8.2.0.md > 改进提升> TiDB - 优化对大数据量的表进行简单查询时获取数据分布信息的性能 [#53850](https://github.com/pingcap/tidb/issues/53850) @[you06](https://github.com/you06)
     - (dup): release-8.5.3.md > 改进提升> TiDB - 为索引添加过程新增监控指标，便于观察写入 TiKV 的速度 [#60925](https://github.com/pingcap/tidb/issues/60925) @[CbcWestwolf](https://github.com/CbcWestwolf)
@@ -39,7 +37,6 @@ TiDB 版本：7.5.7
 
 + TiKV <!--tw@Oreoxmt: 2 notes-->
 
-    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - 优化 TiKV compaction 的触发逻辑，按回收效率排序对所有数据段依次处理，降低 MVCC 冗余数据对性能的影响 [#18571](https://github.com/tikv/tikv/issues/18571) @[v01dstar](https://github.com/v01dstar)
     - 优化在存在大量 SST 文件的环境中 async snapshot 和 write 的尾延迟 [#18743](https://github.com/tikv/tikv/issues/18743) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-8.1.2.md > 改进提升> TiKV - 优化空表和小 Region 场景下 Region Merge 的速度 [#17376](https://github.com/tikv/tikv/issues/17376) @[LykxSassinator](https://github.com/LykxSassinator)
@@ -62,8 +59,6 @@ TiDB 版本：7.5.7
 
 + TiFlash
 
-    - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-8.5.3.md > 改进提升> TiFlash - 增强 TiFlash 在宽表场景下 OOM 风险相关的监测指标 [#10272](https://github.com/pingcap/tiflash/issues/10272) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-8.5.3.md > 改进提升> TiFlash - 增加 TiFlash 获取存储层快照的重试次数，以增强大表上查询的稳定性 [#10300](https://github.com/pingcap/tiflash/issues/10300) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
@@ -71,34 +66,8 @@ TiDB 版本：7.5.7
 
     + Backup & Restore (BR) <!--tw@Oreoxmt: 1 note-->
 
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - 在 Amazon EC2 上部署 TiDB 时，BR 支持 AWS 的 Instance Metadata Service Version 2 (IMDSv2)。你可以在 EC2 实例上进行相关配置，使 BR 可以使用与实例关联的 IAM 角色以适当的权限访问 Amazon S3 [#16443](https://github.com/tikv/tikv/issues/16443) @[pingyu](https://github.com/pingyu)
         - (dup): release-8.5.3.md > 改进提升> Tools> Backup & Restore (BR) - TiKV 的 Download API 在下载备份文件时，支持过滤掉某段时间范围内的数据，以避免恢复时导入过旧或过新的数据版本 [#18399](https://github.com/tikv/tikv/issues/18399) @[3pointer](https://github.com/3pointer)
-
-    + TiCDC
-
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + TiDB Data Migration (DM)
-
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + TiDB Lightning
-
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + Dumpling
-
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + TiUP
-
-        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
 ## 错误修复
 
@@ -149,7 +118,6 @@ TiDB 版本：7.5.7
 
 + TiKV <!--tw@qiancai: 1 note-->
 
-    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - 修复 CPU profiling 期间可能触发死锁的问题 [#18474](https://github.com/tikv/tikv/issues/18474) @[YangKeao](https://github.com/YangKeao)
     - 修复 Online Unsafe Recovery 可能被某些 TiFlash 副本阻塞，导致 commit index 无法推进的问题 [18197](https://github.com/tikv/tikv/issues/18197) @[v01dstar](https://github.com/v01dstar)
     - (dup): release-8.5.3.md > 错误修复> TiKV - 修复 TiKV 可能使用客户端无法解码的压缩算法的问题 [#18079](https://github.com/tikv/tikv/issues/18079) @[ekexium](https://github.com/ekexium)
@@ -171,7 +139,6 @@ TiDB 版本：7.5.7
 
 + TiFlash <!--tw@qiancai: 5 notes-->
 
-    - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - 修复在运行 `IMPORT INTO` 或 `BR restore` 的时候，部分 SST 文件可能被意外删除导致 TiFlash panic 的问题 [#10141](https://github.com/pingcap/tiflash/issues/10141) @[CalvinNeo](https://github.com/CalvinNeo)
     - (dup): release-8.5.3.md > 错误修复> TiFlash - 修复创建 `((NULL))` 形式的表达式索引会导致 TiFlash panic 的问题 [#9891](https://github.com/pingcap/tiflash/issues/9891) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-8.5.2.md > 错误修复> TiFlash - 修复 TiFlash 处理带有不规则 key-range 的 Region snapshot 时可能 panic 的问题 [#10147](https://github.com/pingcap/tiflash/issues/10147) @[JaySon-Huang](https://github.com/JaySon-Huang)
@@ -184,8 +151,6 @@ TiDB 版本：7.5.7
 
     + Backup & Restore (BR)
 
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-8.5.2.md > 错误修复> Tools> Backup & Restore (BR) - 修复 PITR 无法恢复大于 3072 字节的索引的问题 [#58430](https://github.com/pingcap/tidb/issues/58430) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-8.5.3.md > 错误修复> Tools> Backup & Restore (BR) - 修复日志备份上传大量数据至 Azure Blob Storage 时速度缓慢的问题 [#18410](https://github.com/tikv/tikv/issues/18410) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-8.5.3.md > 错误修复> Tools> Backup & Restore (BR) - 修复当指定了 `-f` 来过滤表时，BR 未检查集群内是否已存在对应表的问题 [#61592](https://github.com/pingcap/tidb/issues/61592) @[RidRisR](https://github.com/RidRisR)
@@ -199,27 +164,10 @@ TiDB 版本：7.5.7
         - (dup): release-8.5.3.md > 错误修复> Tools> TiCDC - 修复 dispatcher 配置中列名和索引名大小写敏感匹配的问题 [#12103](https://github.com/pingcap/tiflow/issues/12103) @[wk989898](https://github.com/wk989898)
         - (dup): release-8.5.3.md > 错误修复> Tools> TiCDC - 修复在相同 IP 地址上扩缩容 TiKV 节点后，因使用过期的 store ID 导致 resolved ts 延迟持续上升的问题 [#12162](https://github.com/pingcap/tiflow/issues/12162) @[3AceShowHand](https://github.com/3AceShowHand)
 
-    + TiDB Data Migration (DM)
-
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
     + TiDB Lightning
 
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-8.5.2.md > 错误修复> Tools> TiDB Lightning - 修复将 Parquet 文件从云存储导入到 TiDB 时，TiDB Lightning 可能会卡住达数小时的问题 [#60224](https://github.com/pingcap/tidb/issues/60224) @[joechenrh](https://github.com/joechenrh)
         - (dup): release-8.5.3.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 向 TiKV 发起的 RPC 请求超时后返回 `context deadline exceeded` 的问题 [#61326](https://github.com/pingcap/tidb/issues/61326) @[OliverS929](https://github.com/OliverS929)
-
-    + Dumpling
-
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + TiUP
-
-        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
     + NG Monitoring
 
