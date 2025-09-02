@@ -409,7 +409,7 @@ CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 * 表达式索引与视图存在兼容性问题。通过视图进行查询时，无法使用上表达式索引。
 * 表达式索引与 Binding 存在兼容性问题。当表达式索引中的表达式存在常量时，对应查询所建的 Binding 会扩大范围。假设表达式索引中的表达式为 `a+1`，对应的查询条件为 `a+1 > 2`。则建立的 Binding 为 `a+? > ?`，这会导致像 `a+2 > 2` 这样的查询也会强制使用表达式索引，得到一个较差的执行计划。这同样影响 SQL Plan Management (SPM) 中的捕获和演进功能。
 * 多值索引写入的数据必须与定义类型完全匹配，否则数据写入失败。详见[创建多值索引](/sql-statements/sql-statement-create-index.md#创建多值索引)。
-* TiDB 对[分区表](/partitioned-table.md)进行了扩展。你可以指定 `GLOBAL` 索引选项将 `UNIQUE INDEX` 设置为[全局索引](/partitioned-table.md#全局索引)。该扩展与 MySQL 不兼容。
+* TiDB 对[分区表](/partitioned-table.md)进行了扩展。你可以指定 `GLOBAL` 索引选项将 `UNIQUE INDEX` 设置为[全局索引](/global-indexes.md)。该扩展与 MySQL 不兼容。
 
 ## 另请参阅
 
