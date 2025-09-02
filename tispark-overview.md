@@ -103,13 +103,6 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 
 推荐使用 TiSpark 的最新稳定版本，包括 2.4.4、2.5.2、3.0.2、3.1.1 和 3.2.3。
 
-<<<<<<< HEAD
-> **Note:**
->
-> TiSpark 不保证与 TiDB v7.0.0 及之后版本兼容。
-
-=======
->>>>>>> f1b2129d5a (TiSpark: highlight compatibility and restructure overview (#20856))
 ## 获取 TiSpark jar 包
 
 你能用以下方式获取 jar 包：
