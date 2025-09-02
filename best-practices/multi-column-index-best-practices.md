@@ -258,6 +258,6 @@ EXPLAIN FORMAT = "brief"
 
 ## 总结
 
-TiDB 优化器通过多列索引和高级范围推导，可大幅降低复杂 SQL 查询的数据访问代价。无论是合取（`AND`）还是析取（`OR`）条件，TiDB 都能将行表达式转化为最优访问路径，缩短查询时间，提升性能。与 MySQL 不同，TiDB 支持多列索引上的并集与交集操作，能高效处理复杂过滤条件。在实际应用中，优化后查询可在几毫秒内完成，而未优化时可能需两分钟以上，极大降低了延迟。
+TiDB 优化器通过多列索引和高级范围推导，可大幅降低复杂 SQL 查询的数据访问代价。无论是合取 (`AND`) 还是析取 (`OR`) 条件，TiDB 都能将行表达式转化为最优访问路径，缩短查询时间，提升性能。与 MySQL 不同，TiDB 支持多列索引上的并集与交集操作，能高效处理复杂过滤条件。在实际应用中，优化后查询可在几毫秒内完成，而未优化时可能需两分钟以上，极大降低了延迟。
 
 更多 TiDB 与 MySQL 架构差异及其对可扩展性、可靠性和 HTAP 工作负载的影响，详见 [MySQL vs. TiDB: A Guide to Open Source Database Selection](https://www.pingcap.com/ebook-whitepaper/tidb-vs-mysql-product-comparison-guide/)。
