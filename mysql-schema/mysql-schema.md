@@ -112,7 +112,8 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 
 ## 备份和恢复相关系统表
 
-* `tidb_pitr_id_map` 存储时间点恢复 (Point-in-time recovery, PITR) 操作的 ID 映射信息
+* `tidb_pitr_id_map`：存储时间点恢复 (Point-in-time recovery, PITR) 操作的 ID 映射信息
+* `tidb_restore_registry` <span class="version-mark">从 v9.0.0 开始引入</span>：存储恢复任务的注册表，该表给每个恢复任务分配唯一的恢复 ID 以防止不同的恢复操作发生冲突
 
 ## 其它系统表
 
