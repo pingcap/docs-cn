@@ -426,6 +426,7 @@
 - 最佳实践
   - [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
   - [DDL 最佳实践](/ddl-introduction.md)
+  - [多列索引优化最佳实践](/best-practices/multi-column-index-best-practices.md)
   - [SaaS 多租户场景下处理百万张表](/best-practices/saas-best-practices.md)
   - [将 UUID 用作主键的最佳实践](/best-practices/uuid.md)
   - [Java 应用开发最佳实践](/best-practices/java-app-best-practices.md)
