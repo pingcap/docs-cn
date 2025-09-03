@@ -84,7 +84,7 @@ TiDB 版本：7.5.7
     - 修复当 Fix Control #44855 开启时，TiDB 的会话可能崩溃的问题 [#59762](https://github.com/pingcap/tidb/issues/59762) @[winoros](https://github.com/winoros)
     - 删除 IndexLookup 算子发生 `context canceled` 错误时冗余的日志信息 [#61072](https://github.com/pingcap/tidb/issues/61072) @[yibin87](https://github.com/yibin87)
     - 修复对统计信息的异常处理不当导致后台任务超时的时候，内存内的统计信息被误删除的问题 [#57901](https://github.com/pingcap/tidb/issues/57901) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复执行 `ADD UNIQUE INDEX` 可能导致数据不一致的问题  [#60339](https://github.com/pingcap/tidb/issues/60339) @[tangenta](https://github.com/tangenta)
+    - 修复执行 `ADD UNIQUE INDEX` 可能导致数据不一致的问题 [#60339](https://github.com/pingcap/tidb/issues/60339) @[tangenta](https://github.com/tangenta)
     - 修复统计信息系统表展示非 `public` 索引的问题 [#60430](https://github.com/pingcap/tidb/issues/60430) @[tangenta](https://github.com/tangenta)
     - 修复 HashJoin 算子因为内存超限导致的 Goroutine 泄露的问题 [#60926](https://github.com/pingcap/tidb/issues/60926) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复 `PhysicalExchangeSender.HashCol` 浅拷贝 (Shallow Copy) 导致的 TiFlash crash 或者结果错误的问题 [#60517](https://github.com/pingcap/tidb/issues/60517) @[windtalker](https://github.com/windtalker)
