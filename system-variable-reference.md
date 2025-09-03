@@ -263,6 +263,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
+- [SQL 操作常见问题](/faq/sql-faq.md)
 - [VIEWS](/information-schema/information-schema-views.md)
 - [字符串函数](/functions-and-operators/string-functions.md)
 - [字符集和排序规则](/character-set-and-collation.md)
@@ -372,6 +373,8 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
+- [Pipelined DML](/pipelined-dml.md)
+- [TiCDC 数据同步能力详解](/ticdc/ticdc-data-replication-capabilities.md)
 - [外键约束](/foreign-key.md)
 - [系统变量](/system-variables.md#foreign_key_checks)
 - [TiDB 6.6.0 Release Notes](/releases/release-6.6.0.md)
@@ -436,6 +439,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 - [TiDB 中的各种超时](/develop/dev-guide-timeouts-in-tidb.md)
 - [TiDB 集群管理常见问题](/faq/manage-cluster-faq.md)
+- [开发 Java 应用使用 TiDB 的最佳实践](/best-practices/java-app-best-practices.md)
 - [系统变量](/system-variables.md#interactive_timeout)
 - [TiDB 3.0 Beta Release Notes](/releases/release-3.0-beta.md)
 - [TiDB 3.0 GA Release Notes](/releases/release-3.0-ga.md)
@@ -537,6 +541,15 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [TiDB OOM 故障排查](/troubleshoot-tidb-oom.md)
 - [系统变量](/system-variables.md#max_prepared_stmt_count)
 - [TiDB 6.5.2 Release Notes](/releases/release-6.5.2.md)
+
+### max_user_connections
+
+引用该变量的文档：
+
+- [ALTER USER](/sql-statements/sql-statement-alter-user.md)
+- [CREATE USER](/sql-statements/sql-statement-create-user.md)
+- [`mysql.user`](/mysql-schema/mysql-schema-user.md)
+- [系统变量](/system-variables.md#max_user_connections-从-v900-版本开始引入)
 
 ### mpp_exchange_compression_mode
 
@@ -660,6 +673,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [精度数学](/functions-and-operators/precision-math.md)
 - [系统变量](/system-variables.md#sql_mode)
 - [结果集不稳定](/develop/dev-guide-unstable-result-set.md)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
 - [TiDB 8.5.0 Release Notes](/releases/release-8.5.0.md)
 - [TiDB 8.1.0 Release Notes](/releases/release-8.1.0.md)
 - [TiDB 8.0.0 Release Notes](/releases/release-8.0.0.md)
@@ -734,6 +748,12 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [时区支持](/configure-time-zone.md)
 - [系统变量](/system-variables.md#system_time_zone)
 - [TiDB 3.0.8 Release Notes](/releases/release-3.0.8.md)
+
+### tidb_accelerate_user_creation_update
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_accelerate_user_creation_update-从-v900-版本开始引入)
 
 ### tidb_adaptive_closest_read_threshold
 
@@ -860,6 +880,8 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
+- [SaaS 多租户场景下处理百万张表的最佳实践](/best-practices/saas-best-practices.md)
+- [常规统计信息](/statistics.md)
 - [系统变量](/system-variables.md#tidb_auto_analyze_concurrency-从-v840-版本开始引入)
 - [TiDB 8.4.0 Release Notes](/releases/release-8.4.0.md)
 
@@ -880,6 +902,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 - [常规统计信息](/statistics.md)
 - [系统变量](/system-variables.md#tidb_auto_analyze_partition_batch_size-从-v640-版本开始引入)
+- [TiDB 8.2.0 Release Notes](/releases/release-8.2.0.md)
 - [TiDB 7.6.0 Release Notes](/releases/release-7.6.0.md)
 - [TiDB 6.4.0 Release Notes](/releases/release-6.4.0.md)
 
@@ -913,6 +936,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
+- [SaaS 多租户场景下处理百万张表的最佳实践](/best-practices/saas-best-practices.md)
 - [系统变量](/system-variables.md#tidb_auto_build_stats_concurrency-从-v650-版本开始引入)
 - [TiDB 6.5.0 Release Notes](/releases/release-6.5.0.md)
 
@@ -937,6 +961,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 引用该变量的文档：
 
 - [SHOW [GLOBAL|SESSION] VARIABLES](/sql-statements/sql-statement-show-variables.md)
+- [数据批量处理](/batch-processing.md)
 - [系统变量](/system-variables.md#tidb_batch_commit)
 - [TiDB 3.0 Beta Release Notes](/releases/release-3.0-beta.md)
 - [TiDB 3.0 GA Release Notes](/releases/release-3.0-ga.md)
@@ -946,12 +971,14 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 引用该变量的文档：
 
 - [SHOW [GLOBAL|SESSION] VARIABLES](/sql-statements/sql-statement-show-variables.md)
+- [数据批量处理](/batch-processing.md)
 - [系统变量](/system-variables.md#tidb_batch_delete)
 
 ### tidb_batch_insert
 
 引用该变量的文档：
 
+- [数据批量处理](/batch-processing.md)
 - [系统变量](/system-variables.md#tidb_batch_insert)
 - [TiDB 2.0.6 Release Notes](/releases/release-2.0.6.md)
 
@@ -959,6 +986,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
+- [构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)
 - [系统变量](/system-variables.md#tidb_batch_pending_tiflash_count-从-v60-版本开始引入)
 
 ### tidb_broadcast_join_threshold_count
@@ -985,6 +1013,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
+- [SaaS 多租户场景下处理百万张表的最佳实践](/best-practices/saas-best-practices.md)
 - [常规统计信息](/statistics.md)
 - [系统变量](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入)
 - [TiDB 7.5.0 Release Notes](/releases/release-7.5.0.md)
@@ -1107,13 +1136,14 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [TiDB 特有的函数](/functions-and-operators/tidb-functions.md)
 - [基于主备集群的容灾方案](/dr-secondary-cluster.md)
 - [系统变量](/system-variables.md#tidb_current_ts)
+- [迁移升级 TiDB 集群](/tidb-upgrade-migration-guide.md)
 - [通过系统变量 `tidb_external_ts` 读取历史数据](/tidb-external-ts.md)
 
 ### tidb_ddl_disk_quota
 
 引用该变量的文档：
 
-- [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)
+- [TiDB 分布式执行框架 (DXF)](/tidb-distributed-execution-framework.md)
 - [系统变量](/system-variables.md#tidb_ddl_disk_quota-从-v630-版本开始引入)
 - [TiDB 6.3.0 Release Notes](/releases/release-6.3.0.md)
 
@@ -1124,7 +1154,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [ADMIN SHOW DDL [JOBS|JOB QUERIES]](/sql-statements/sql-statement-admin-show-ddl.md)
 - [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
 - [IMPORT INTO](/sql-statements/sql-statement-import-into.md)
-- [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)
+- [TiDB 分布式执行框架 (DXF)](/tidb-distributed-execution-framework.md)
 - [TiDB 功能概览](/basic-features.md)
 - [TiDB 环境与系统配置检查](/check-before-deployment.md)
 - [TiDB 软件和硬件环境需求](/hardware-and-software-requirements.md)
@@ -1146,7 +1176,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 - [SHOW [GLOBAL|SESSION] VARIABLES](/sql-statements/sql-statement-show-variables.md)
 - [SQL 操作常见问题](/faq/sql-faq.md)
-- [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)
+- [TiDB 分布式执行框架 (DXF)](/tidb-distributed-execution-framework.md)
 - [系统变量](/system-variables.md#tidb_ddl_error_count_limit)
 
 ### tidb_ddl_flashback_concurrency
@@ -1167,7 +1197,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [DDL 语句的执行原理及最佳实践](/ddl-introduction.md)
 - [SHOW [GLOBAL|SESSION] VARIABLES](/sql-statements/sql-statement-show-variables.md)
 - [SQL 操作常见问题](/faq/sql-faq.md)
-- [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)
+- [TiDB 分布式执行框架 (DXF)](/tidb-distributed-execution-framework.md)
 - [使用 `EXPLAIN` 解读执行计划](/explain-walkthrough.md)
 - [性能调优最佳实践](/develop/dev-guide-optimize-sql-best-practices.md)
 - [系统变量](/system-variables.md#tidb_ddl_reorg_batch_size)
@@ -1186,6 +1216,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [系统变量](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v6512v755-和-v850-版本开始引入)
 - [TiDB 8.5.0 Release Notes](/releases/release-8.5.0.md)
 - [TiDB 7.5.5 Release Notes](/releases/release-7.5.5.md)
+- [TiDB 6.5.12 Release Notes](/releases/release-6.5.12.md)
 
 ### tidb_ddl_reorg_priority
 
@@ -1194,7 +1225,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
 - [SHOW [GLOBAL|SESSION] VARIABLES](/sql-statements/sql-statement-show-variables.md)
 - [SQL 操作常见问题](/faq/sql-faq.md)
-- [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)
+- [TiDB 分布式执行框架 (DXF)](/tidb-distributed-execution-framework.md)
 - [系统变量](/system-variables.md#tidb_ddl_reorg_priority)
 - [读写延迟增加](/troubleshoot-cpu-issues.md)
 - [TiDB 2.1 RC1 Release Notes](/releases/release-2.1-rc.1.md)
@@ -1209,7 +1240,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [DDL 语句的执行原理及最佳实践](/ddl-introduction.md)
 - [SHOW [GLOBAL|SESSION] VARIABLES](/sql-statements/sql-statement-show-variables.md)
 - [SQL 操作常见问题](/faq/sql-faq.md)
-- [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)
+- [TiDB 分布式执行框架 (DXF)](/tidb-distributed-execution-framework.md)
 - [使用 `EXPLAIN` 解读执行计划](/explain-walkthrough.md)
 - [性能调优最佳实践](/develop/dev-guide-optimize-sql-best-practices.md)
 - [系统变量](/system-variables.md#tidb_ddl_reorg_worker_cnt)
@@ -1266,6 +1297,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 - [LOAD DATA](/sql-statements/sql-statement-load-data.md)
 - [SHOW [GLOBAL|SESSION] VARIABLES](/sql-statements/sql-statement-show-variables.md)
+- [数据批量处理](/batch-processing.md)
 - [系统变量](/system-variables.md#tidb_dml_batch_size)
 - [TiDB 7.6.0 Release Notes](/releases/release-7.6.0.md)
 - [TiDB 7.0.0 Release Notes](/releases/release-7.0.0.md)
@@ -1277,6 +1309,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 引用该变量的文档：
 
 - [IMPORT INTO 和 TiDB Lightning 对比](/tidb-lightning/import-into-vs-tidb-lightning.md)
+- [Pipelined DML](/pipelined-dml.md)
 - [TiDB 内存控制文档](/configure-memory-usage.md)
 - [TiDB 功能概览](/basic-features.md)
 - [TiDB 配置文件描述](/tidb-configuration-file.md)
@@ -1362,6 +1395,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
+- [数据批量处理](/batch-processing.md)
 - [系统变量](/system-variables.md#tidb_enable_batch_dml)
 
 ### tidb_enable_cascades_planner
@@ -1446,9 +1480,10 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [ADMIN SHOW DDL [JOBS|JOB QUERIES]](/sql-statements/sql-statement-admin-show-ddl.md)
 - [IMPORT INTO](/sql-statements/sql-statement-import-into.md)
 - [TiDB 全局排序](/tidb-global-sort.md)
-- [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)
+- [TiDB 分布式执行框架 (DXF)](/tidb-distributed-execution-framework.md)
 - [平滑升级 TiDB](/smooth-upgrade-tidb.md)
 - [系统变量](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
 - [TiDB 8.1.0 Release Notes](/releases/release-8.1.0.md)
 - [TiDB 7.5.0 Release Notes](/releases/release-7.5.0.md)
 - [TiDB 7.3.0 Release Notes](/releases/release-7.3.0.md)
@@ -1458,10 +1493,12 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
+- [BACKUP](/sql-statements/sql-statement-backup.md)
 - [IMPORT INTO](/sql-statements/sql-statement-import-into.md)
 - [TiDB Dashboard 用户管理](/dashboard/dashboard-user.md)
 - [TiDB 功能概览](/basic-features.md)
 - [TiDB 配置文件描述](/tidb-configuration-file.md)
+- [术语表](/glossary.md)
 - [系统变量](/system-variables.md#tidb_enable_enhanced_security)
 - [TiDB 5.1 Release Notes](/releases/release-5.1.0.md)
 
@@ -1484,6 +1521,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
+- [Stale Read 功能的使用场景](/stale-read.md)
 - [TiDB 主从集群数据校验和快照读](/ticdc/ticdc-upstream-downstream-check.md)
 - [基于主备集群的容灾方案](/dr-secondary-cluster.md)
 - [系统变量](/system-variables.md#tidb_enable_external_ts_read-从-v640-版本开始引入)
@@ -1791,6 +1829,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [使用 PLAN REPLAYER 保存和恢复集群现场信息](/sql-plan-replayer.md)
 - [系统变量](/system-variables.md#tidb_enable_plan_replayer_capture)
 - [TiDB 6.6.0 Release Notes](/releases/release-6.6.0.md)
+- [TiDB 6.5.0 Release Notes](/releases/release-6.5.0.md)
 
 ### tidb_enable_plan_replayer_continuous_capture
 
@@ -1799,6 +1838,12 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [使用 PLAN REPLAYER 保存和恢复集群现场信息](/sql-plan-replayer.md)
 - [系统变量](/system-variables.md#tidb_enable_plan_replayer_continuous_capture-从-v700-版本开始引入)
 - [TiDB 7.0.0 Release Notes](/releases/release-7.0.0.md)
+
+### tidb_enable_point_get_cache
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_enable_point_get_cache)
 
 ### tidb_enable_prepared_plan_cache
 
@@ -1898,6 +1943,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 引用该变量的文档：
 
 - [TiDB 配置文件描述](/tidb-configuration-file.md)
+- [常规统计信息](/statistics.md)
 - [系统变量](/system-variables.md#tidb_enable_stats_owner-从-v840-版本开始引入)
 - [TiDB 8.4.0 Release Notes](/releases/release-8.4.0.md)
 
@@ -1975,7 +2021,11 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [PD 微服务](/pd-microservices.md)
 - [TiDB 功能概览](/basic-features.md)
 - [系统变量](/system-variables.md#tidb_enable_tso_follower_proxy-从-v530-版本开始引入)
+- [TiDB 8.5.2 Release Notes](/releases/release-8.5.2.md)
+- [TiDB 8.5.1 Release Notes](/releases/release-8.5.1.md)
 - [TiDB 8.5.0 Release Notes](/releases/release-8.5.0.md)
+- [TiDB 7.5.6 Release Notes](/releases/release-7.5.6.md)
+- [TiDB 6.5.12 Release Notes](/releases/release-6.5.12.md)
 - [TiDB 5.3 Release Notes](/releases/release-5.3.0.md)
 
 ### tidb_enable_unsafe_substitute
@@ -2003,6 +2053,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 引用该变量的文档：
 
 - [SHOW [GLOBAL|SESSION] VARIABLES](/sql-statements/sql-statement-show-variables.md)
+- [关键字](/keywords.md)
 - [窗口函数](/functions-and-operators/window-functions.md)
 - [系统变量](/system-variables.md#tidb_enable_window_function)
 - [TiDB 3.0.8 Release Notes](/releases/release-3.0.8.md)
@@ -2148,6 +2199,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [使用 Dumpling 导出数据](/dumpling-overview.md)
 - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
 - [系统变量](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)
+- [迁移升级 TiDB 集群](/tidb-upgrade-migration-guide.md)
 - [通过系统变量 tidb_snapshot 读取历史数据](/read-historical-data.md)
 - [错误码与故障诊断](/error-codes.md)
 - [TiDB 6.1.1 Release Notes](/releases/release-6.1.1.md)
@@ -2158,6 +2210,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 引用该变量的文档：
 
 - [GC 配置](/garbage-collection-configuration.md)
+- [Pipelined DML](/pipelined-dml.md)
 - [系统变量](/system-variables.md#tidb_gc_max_wait_time-从-v610-版本开始引入)
 - [TiDB 6.1.0 Release Notes](/releases/release-6.1.0.md)
 
@@ -2204,6 +2257,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 引用该变量的文档：
 
 - [系统变量](/system-variables.md#tidb_gogc_tuner_max_value-从-v750-版本开始引入)
+- [TiDB 8.5.1 Release Notes](/releases/release-8.5.1.md)
 - [TiDB 7.5.5 Release Notes](/releases/release-7.5.5.md)
 - [TiDB 7.5.0 Release Notes](/releases/release-7.5.0.md)
 
@@ -2212,6 +2266,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 引用该变量的文档：
 
 - [系统变量](/system-variables.md#tidb_gogc_tuner_min_value-从-v750-版本开始引入)
+- [TiDB 8.5.1 Release Notes](/releases/release-8.5.1.md)
 - [TiDB 7.5.5 Release Notes](/releases/release-7.5.5.md)
 - [TiDB 7.5.0 Release Notes](/releases/release-7.5.0.md)
 
@@ -2251,6 +2306,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
+- [EXPLAIN ANALYZE](/sql-statements/sql-statement-explain-analyze.md)
 - [系统变量](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入)
 - [TiDB 8.4.0 Release Notes](/releases/release-8.4.0.md)
 
@@ -2284,6 +2340,13 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [TiDB 集群管理常见问题](/faq/manage-cluster-faq.md)
 - [系统变量](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入)
 - [连接池与连接参数](/develop/dev-guide-connection-parameters.md)
+- [TiDB 7.6.0 Release Notes](/releases/release-7.6.0.md)
+
+### tidb_ignore_inlist_plan_digest
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_ignore_inlist_plan_digest-从-v760-版本开始引入)
 - [TiDB 7.6.0 Release Notes](/releases/release-7.6.0.md)
 
 ### tidb_ignore_prepared_cache_close_stmt
@@ -2416,6 +2479,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
+- [Pipelined DML](/pipelined-dml.md)
 - [系统变量](/system-variables.md#tidb_last_txn_info-从-v409-版本开始引入)
 
 ### tidb_load_based_replica_read_threshold
@@ -2523,6 +2587,12 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [TiDB 3.0.5 Release Notes](/releases/release-3.0.5.md)
 - [TiDB 2.1.18 Release Notes](/releases/release-2.1.18.md)
 
+### tidb_max_dist_task_nodes
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_max_dist_task_nodes-从-v900-版本开始引入)
+
 ### tidb_max_paging_size
 
 引用该变量的文档：
@@ -2582,6 +2652,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 引用该变量的文档：
 
 - [Optimizer Hints](/optimizer-hints.md)
+- [Pipelined DML](/pipelined-dml.md)
 - [SHOW [GLOBAL|SESSION] VARIABLES](/sql-statements/sql-statement-show-variables.md)
 - [TiDB OOM 故障排查](/troubleshoot-tidb-oom.md)
 - [TiDB 内存控制文档](/configure-memory-usage.md)
@@ -2885,6 +2956,55 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [TiDB 7.3.0 Release Notes](/releases/release-7.3.0.md)
 - [TiDB 6.3.0 Release Notes](/releases/release-6.3.0.md)
 
+### tidb_opt_hash_agg_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_hash_agg_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
+
+### tidb_opt_hash_join_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_hash_join_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
+
+### tidb_opt_index_join_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_index_join_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
+
+### tidb_opt_index_lookup_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_index_lookup_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
+
+### tidb_opt_index_merge_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_index_merge_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
+
+### tidb_opt_index_reader_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_index_reader_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
+
+### tidb_opt_index_scan_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_index_scan_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
+
 ### tidb_opt_insubq_to_join_and_agg
 
 引用该变量的文档：
@@ -2905,6 +3025,13 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [TiDB 6.4.0 Release Notes](/releases/release-6.4.0.md)
 - [TiDB 3.0.0-rc.1 Release Notes](/releases/release-3.0.0-rc.1.md)
 
+### tidb_opt_limit_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_limit_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
+
 ### tidb_opt_limit_push_down_threshold
 
 引用该变量的文档：
@@ -2918,6 +3045,13 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 - [SHOW [GLOBAL|SESSION] VARIABLES](/sql-statements/sql-statement-show-variables.md)
 - [系统变量](/system-variables.md#tidb_opt_memory_factor)
+
+### tidb_opt_merge_join_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_merge_join_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
 
 ### tidb_opt_mpp_outer_join_fixed_build_side
 
@@ -3006,6 +3140,55 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [系统变量](/system-variables.md#tidb_opt_skew_distinct_agg-从-v620-版本开始引入)
 - [TiDB 6.2.0 Release Notes](/releases/release-6.2.0.md)
 
+### tidb_opt_sort_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_sort_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
+
+### tidb_opt_stream_agg_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_stream_agg_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
+
+### tidb_opt_table_full_scan_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_table_full_scan_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
+
+### tidb_opt_table_range_scan_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_table_range_scan_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
+
+### tidb_opt_table_reader_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_table_reader_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
+
+### tidb_opt_table_rowid_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_table_rowid_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
+
+### tidb_opt_table_tiflash_scan_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_table_tiflash_scan_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
+
 ### tidb_opt_three_stage_distinct_agg
 
 引用该变量的文档：
@@ -3018,6 +3201,13 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 引用该变量的文档：
 
 - [系统变量](/system-variables.md#tidb_opt_tiflash_concurrency_factor)
+
+### tidb_opt_topn_cost_factor
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_opt_topn_cost_factor-从-v853-和-v900-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
 
 ### tidb_opt_write_row_id
 
@@ -3065,6 +3255,13 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [系统变量](/system-variables.md#tidb_pessimistic_txn_fair_locking-从-v700-版本开始引入)
 - [TiDB 7.1.0 Release Notes](/releases/release-7.1.0.md)
 - [TiDB 7.0.0 Release Notes](/releases/release-7.0.0.md)
+
+### tidb_pipelined_dml_resource_policy
+
+引用该变量的文档：
+
+- [Pipelined DML](/pipelined-dml.md)
+- [系统变量](/system-variables.md#tidb_pipelined_dml_resource_policy-从-v900-版本开始引入)
 
 ### tidb_placement_mode
 
@@ -3237,6 +3434,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [在三数据中心下就近读取数据](/best-practices/three-dc-local-read.md)
 - [在公有云上部署 TiDB 的最佳实践](/best-practices-on-public-cloud.md)
 - [系统变量](/system-variables.md#tidb_replica_read-从-v40-版本开始引入)
+- [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
 - [TiDB 7.0.0 Release Notes](/releases/release-7.0.0.md)
 - [TiDB 6.6.0 Release Notes](/releases/release-6.6.0.md)
 - [TiDB 6.5.0 Release Notes](/releases/release-6.5.0.md)
@@ -3330,6 +3528,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
+- [SaaS 多租户场景下处理百万张表的最佳实践](/best-practices/saas-best-practices.md)
 - [Schema 缓存](/schema-cache.md)
 - [系统变量](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)
 - [TiDB 8.5.0 Release Notes](/releases/release-8.5.0.md)
@@ -3341,6 +3540,8 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
+- [SaaS 多租户场景下处理百万张表的最佳实践](/best-practices/saas-best-practices.md)
+- [Schema 缓存](/schema-cache.md)
 - [系统变量](/system-variables.md#tidb_schema_version_cache_limit-从-v740-版本开始引入)
 - [TiDB 7.4.0 Release Notes](/releases/release-7.4.0.md)
 
@@ -3389,7 +3590,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [ADMIN SHOW DDL [JOBS|JOB QUERIES]](/sql-statements/sql-statement-admin-show-ddl.md)
 - [IMPORT INTO 和 TiDB Lightning 对比](/tidb-lightning/import-into-vs-tidb-lightning.md)
 - [TiDB 全局排序](/tidb-global-sort.md)
-- [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)
+- [TiDB 分布式执行框架 (DXF)](/tidb-distributed-execution-framework.md)
 - [TiDB 功能概览](/basic-features.md)
 - [TiDB 配置参数](/command-line-flags-for-tidb-configuration.md)
 - [系统变量](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)
@@ -3497,6 +3698,13 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [慢查询日志](/identify-slow-queries.md)
 - [系统变量](/system-variables.md#tidb_slow_query_file)
 
+### tidb_slow_txn_log_threshold
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_slow_txn_log_threshold-从-v700-版本开始引入)
+- [TiDB 7.0.0 Release Notes](/releases/release-7.0.0.md)
+
 ### tidb_snapshot
 
 引用该变量的文档：
@@ -3536,8 +3744,10 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
+- [SaaS 多租户场景下处理百万张表的最佳实践](/best-practices/saas-best-practices.md)
 - [TiDB OOM 故障排查](/troubleshoot-tidb-oom.md)
 - [系统变量](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入)
+- [TiDB 8.5.1 Release Notes](/releases/release-8.5.1.md)
 - [TiDB 7.4.0 Release Notes](/releases/release-7.4.0.md)
 - [TiDB 6.1.0 Release Notes](/releases/release-6.1.0.md)
 
@@ -3659,6 +3869,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [系统变量](/system-variables.md#tidb_store_batch_size)
 - [TiDB 7.1.0 Release Notes](/releases/release-7.1.0.md)
 - [TiDB 6.6.0 Release Notes](/releases/release-6.6.0.md)
+- [TiDB 6.5.0 Release Notes](/releases/release-6.5.0.md)
 
 ### tidb_store_limit
 
@@ -3680,6 +3891,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 引用该变量的文档：
 
 - [系统变量](/system-variables.md#tidb_super_read_only-从-v531-版本开始引入)
+- [迁移升级 TiDB 集群](/tidb-upgrade-migration-guide.md)
 - [TiDB 5.4.1 Release Notes](/releases/release-5.4.1.md)
 - [TiDB 5.3.1 Release Notes](/releases/release-5.3.1.md)
 
@@ -3763,6 +3975,8 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 引用该变量的文档：
 
 - [系统变量](/system-variables.md#tidb_ttl_delete_rate_limit-从-v650-版本开始引入)
+- [TiDB 8.5.1 Release Notes](/releases/release-8.5.1.md)
+- [TiDB 7.5.6 Release Notes](/releases/release-7.5.6.md)
 - [TiDB 6.5.0 Release Notes](/releases/release-6.5.0.md)
 
 ### tidb_ttl_delete_worker_count
@@ -3849,6 +4063,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [TiDB 配置文件描述](/tidb-configuration-file.md)
 - [事务限制](/develop/dev-guide-transaction-restraints.md)
 - [系统变量](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入)
+- [TiDB 8.5.2 Release Notes](/releases/release-8.5.2.md)
 - [TiDB 7.6.0 Release Notes](/releases/release-7.6.0.md)
 
 ### tidb_txn_mode
@@ -3860,6 +4075,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [TiDB 悲观事务模式](/pessimistic-transaction.md)
 - [TiDB 配置文件描述](/tidb-configuration-file.md)
 - [乐观事务和悲观事务](/develop/dev-guide-optimistic-and-pessimistic-transaction.md)
+- [同步数据到 MySQL 兼容数据库](/ticdc/ticdc-sink-to-mysql.md)
 - [系统变量](/system-variables.md#tidb_txn_mode)
 - [TiDB 6.0.0 Release Notes](/releases/release-6.0.0-dmr.md)
 - [TiDB 5.0 Release Notes](/releases/release-5.0.0.md)
@@ -3898,24 +4114,32 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [SHOW [GLOBAL|SESSION] VARIABLES](/sql-statements/sql-statement-show-variables.md)
 - [系统变量](/system-variables.md#tidb_window_concurrency-从-v40-版本开始引入)
 
-### tidb_workload_repository_dest
-
-- [TiDB Workload Repository](/workload-repository.md#启用-workload-repository)
-- [系统变量](/system-variables.md#tidb_workload_repository_dest-从-v900-版本开始引入)
-
 ### tidb_workload_repository_active_sampling_interval
 
-- [TiDB Workload Repository](/workload-repository.md#基于时间的采样过程默认每-5-秒)
+引用该变量的文档：
+
+- [TiDB Workload Repository](/workload-repository.md)
 - [系统变量](/system-variables.md#tidb_workload_repository_active_sampling_interval-从-v900-版本开始引入)
+
+### tidb_workload_repository_dest
+
+引用该变量的文档：
+
+- [TiDB Workload Repository](/workload-repository.md)
+- [系统变量](/system-variables.md#tidb_workload_repository_dest-从-v900-版本开始引入)
 
 ### tidb_workload_repository_retention_days
 
-- [TiDB Workload Repository](/workload-repository.md#数据保留)
+引用该变量的文档：
+
+- [TiDB Workload Repository](/workload-repository.md)
 - [系统变量](/system-variables.md#tidb_workload_repository_retention_days-从-v900-版本开始引入)
 
 ### tidb_workload_repository_snapshot_interval
 
-- [TiDB Workload Repository](/workload-repository.md#快照采样过程默认每小时)
+引用该变量的文档：
+
+- [TiDB Workload Repository](/workload-repository.md)
 - [系统变量](/system-variables.md#tidb_workload_repository_snapshot_interval-从-v900-版本开始引入)
 
 ### tiflash_fastscan
@@ -4005,6 +4229,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 引用该变量的文档：
 
 - [SET TRANSACTION](/sql-statements/sql-statement-set-transaction.md)
+- [TiDB 事务隔离级别](/transaction-isolation-levels.md)
 - [已知的第三方工具兼容问题](/develop/dev-guide-third-party-tools-compatibility.md)
 - [系统变量](/system-variables.md#transaction_isolation)
 - [TiDB 6.0.0 Release Notes](/releases/release-6.0.0-dmr.md)
