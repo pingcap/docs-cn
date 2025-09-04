@@ -172,7 +172,7 @@ TiDB 支持在会话或全局作用域上修改 [`sql_mode`](/system-variables.m
         --batch
     ```
 
-- 也可以选择增大 TiDB 的单个事物语句数量限制，不过此操作会导致内存增加。详情参见 [SQL 语句的限制](/tidb-limitations.md#sql-statements-的限制)。
+- 也可以选择增大 TiDB 单个事务允许的语句条数限制，不过这样会占用更多内存。详情参见 [SQL 语句的限制](/tidb-limitations.md#sql-statements-的限制)。
 
 ## TiDB 有像 Oracle 那样的 Flashback Query 功能么，DDL 支持么？
 
