@@ -98,7 +98,7 @@ TiDB 版本：7.5.7
     - 修复当收集的列统计信息完全为 TopN 时，即使有后续写入操作，估算也有可能一直为 0 的问题 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell)
     - 修复 `explain format="cost_trace"` 展示的估算代价可能有误的问题 [#61155](https://github.com/pingcap/tidb/issues/61155) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 `explain format="cost_trace"` 展示的代价计算公式中可能包含空括号的问题 [#61127](https://github.com/pingcap/tidb/issues/61127) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复外键定义成环时的死循坏问题 [#60985](https://github.com/pingcap/tidb/issues/60985) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复外键定义成环时的死循环问题 [#60985](https://github.com/pingcap/tidb/issues/60985) @[hawkingrei](https://github.com/hawkingrei)
     - 修复内部查询在使用 `NULL` 构造索引范围查询时可能构造能力不足的问题 [#62196](https://github.com/pingcap/tidb/issues/62196) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 Plan Cache 缓存了错误的执行计划导致执行报错的问题 [#56772](https://github.com/pingcap/tidb/issues/56772) @[dash12653](https://github.com/dash12653)
     - 修复估算跨月或跨年的行数时，结果可能过分偏大的问题 [#50080](https://github.com/pingcap/tidb/issues/50080) @[terry1purcell](https://github.com/terry1purcell)
@@ -116,7 +116,7 @@ TiDB 版本：7.5.7
 + TiKV
 
     - 修复 CPU profiling 期间可能触发死锁的问题 [#18474](https://github.com/tikv/tikv/issues/18474) @[YangKeao](https://github.com/YangKeao)
-    - 修复 Online Unsafe Recovery 可能被某些 TiFlash 副本阻塞，导致 commit index 无法推进的问题 [18197](https://github.com/tikv/tikv/issues/18197) @[v01dstar](https://github.com/v01dstar)
+    - 修复 Online Unsafe Recovery 可能被某些 TiFlash 副本阻塞，导致 commit index 无法推进的问题 [#18197](https://github.com/tikv/tikv/issues/18197) @[v01dstar](https://github.com/v01dstar)
     - 修复 TiKV 可能使用客户端无法解码的压缩算法的问题 [#18079](https://github.com/tikv/tikv/issues/18079) @[ekexium](https://github.com/ekexium)
     - 修复高并发场景下 TiKV 过量放行 SST 导入请求的问题 [#18452](https://github.com/tikv/tikv/issues/18452) @[hbisheng](https://github.com/hbisheng)
     - 修复 Grafana TiKV 组件中的 `Ingestion picked level` 和 `Compaction Job Size(files)` 显示不正确的问题 [#15990](https://github.com/tikv/tikv/issues/15990) @[Connor1996](https://github.com/Connor1996)
