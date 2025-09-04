@@ -129,10 +129,6 @@ show warnings;
 | raftstore.raft-entry-cache-life-time | 内存中日志 cache 允许的最长残留时间 |
 | raftstore.split-region-check-tick-interval | 检查 Region 是否需要分裂的时间间隔 |
 | raftstore.region-split-check-diff | 允许 Region 数据超过指定大小的最大值 |
-| raftstore.region-compact-check-interval | 检查是否需要人工触发 RocksDB compaction 的时间间隔 |
-| raftstore.region-compact-check-step | 每轮校验人工 compaction 时，一次性检查的 Region 个数 |
-| raftstore.region-compact-min-tombstones | 触发 RocksDB compaction 需要的 tombstone 个数 |
-| raftstore.region-compact-tombstones-percent | 触发 RocksDB compaction 需要的 tombstone 所占比例 |
 | raftstore.pd-heartbeat-tick-interval | 触发 Region 对 PD 心跳的时间间隔 |
 | raftstore.pd-store-heartbeat-tick-interval | 触发 store 对 PD 心跳的时间间隔 |
 | raftstore.snap-mgr-gc-tick-interval | 触发回收过期 snapshot 文件的时间间隔 |
@@ -181,6 +177,12 @@ show warnings;
 | gc.max-write-bytes-per-sec | 一秒可写入 RocksDB 的最大字节数 |
 | gc.enable-compaction-filter | 是否使用 compaction filter |
 | gc.compaction-filter-skip-version-check | 是否跳过 compaction filter 的集群版本检查（未 release）|
+| gc.auto-compaction.check-interval | TiKV 检查是否需要触发自动 RocksDB compaction 的时间间隔 |
+| gc.auto-compaction.tombstone-num-threshold | 触发 TiKV 自动 (RocksDB) compaction 需要的 RocksDB tombstone 个数 |
+| gc.auto-compaction.tombstone-percent-threshold | 触发 TiKV 自动 (RocksDB) compaction 需要的 RocksDB tombstone 所占比例 |
+| gc.auto-compaction.redundant-rows-threshold | 触发 TiKV 自动 (RocksDB) compaction 需要的冗余的 MVCC 数据行数 |
+| gc.auto-compaction.redundant-rows-percent-threshold | 触发 TiKV 自动 (RocksDB) compaction 需要的冗余的 MVCC 数据行数所占比例 |
+| gc.auto-compaction.bottommost-level-force | 控制是否强制对 RocksDB 最底层文件进行 compaction |
 | {db-name}.max-total-wal-size | WAL 总大小限制 |
 | {db-name}.max-background-jobs | RocksDB 后台线程个数 |
 | {db-name}.max-background-flushes | RocksDB flush 线程个数 |
@@ -211,6 +213,11 @@ show warnings;
 | server.concurrent-send-snap-limit | 同时发送 snapshot 的最大个数 |
 | server.concurrent-recv-snap-limit | 同时接受 snapshot 的最大个数 |
 | storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
+| storage.flow-control.enable | 是否开启流量控制机制（自 v7.5.7 起支持在线修改） |
+| storage.flow-control.memtables-threshold | 触发流量控制的 KvDB memtable 数量阈值（自 v7.5.7 起支持在线修改） |
+| storage.flow-control.l0-files-threshold | 触发流量控制的 KvDB L0 文件数量阈值（自 v7.5.7 起支持在线修改） |
+| storage.flow-control.soft-pending-compaction-bytes-limit | 触发流控机制开始拒绝部分写入请求的 KvDB pending compaction bytes 阈值（自 v7.5.7 起支持在线修改） |
+| storage.flow-control.hard-pending-compaction-bytes-limit | 触发流控机制拒绝所有新写入请求的 KvDB pending compaction bytes 阈值（自 v7.5.7 起支持在线修改） |
 | storage.scheduler-worker-pool-size | Scheduler 线程池中线程的数量 |
 | backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
 | split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果连续 10s 内，某个 Region 的读请求的 QPS 超过 qps-threshold，则尝试切分该 Region |
