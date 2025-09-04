@@ -111,6 +111,10 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
 如果你还没有创建备份数据保存目录，可以参考[创建存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的区域中创建一个 S3 存储桶。如果需要使用文件夹，可以参考[使用文件夹在 Amazon S3 控制台中组织对象](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在存储桶中创建一个文件夹。
 
+> **注意：**
+>
+> AWS 在 2024 年改变了默认行为，新创建的实例默认设置仅支持 IMDSv2，详情请参考[将 IMDSv2 设为账户中所有新实例启动的默认设置](https://aws.amazon.com/cn/about-aws/whats-new/2024/03/set-imdsv2-default-new-instance-launches/)。因此从 v7.5.7 开始，BR 支持在仅开启 IMDSv2 的 Amazon EC2 实例上获取 IAM role 权限。在使用 v7.5.7 之前版本的 BR 时，需要设置实例为同时支持 IMDSv1 和 IMDSv2。
+
 配置访问 Amazon S3 的账户可以通过以下两种方式：
 
 - 方式一：指定访问密钥
