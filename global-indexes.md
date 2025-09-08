@@ -9,11 +9,11 @@ summary: 介绍 TiDB 全局索引的适用场景、优势、使用方法、实�
 
 为解决这些问题，TiDB 从 v8.3.0 开始引入全局索引。全局索引能覆盖整个表的数据，使得主键和唯一键在不包含分区键的情况下仍能保持全局唯一性。此外，全局索引可以在一次操作中访问多个分区的索引数据，而无需对每个分区的局部索引逐一查找，显著提升了针对非分区键的查询性能。<!--从 v9.0.0 开始，非唯一索引也可以创建为全局索引。-->
 
+## 全局索引和本地索引的适用场景
+
 下图展示了本地索引和全局索引的区别。
 
 <img src="https://github.com/hfxsd/docs-cn/blob/global-index-best-practices/media/global-index-vs-local-index.png" alt="Global Index vs. Local Index" width="60%" height="60%"/>
-
-## 全局索引和本地索引的适用场景
 
 **全局索引的适用场景**：
 
