@@ -9,7 +9,42 @@ summary: 介绍 TiDB 全局索引的适用场景、优势、使用方法、实�
 
 为解决这些问题，TiDB 从 v8.3.0 开始引入全局索引。全局索引能覆盖整个表的数据，使得主键和唯一键在不包含分区键的情况下仍能保持全局唯一性。此外，全局索引可以在一次操作中访问多个分区的索引数据，而无需对每个分区的局部索引逐一查找，显著提升了针对非分区键的查询性能。<!--从 v9.0.0 开始，非唯一索引也可以创建为全局索引。-->
 
-## 全局索引和本地索引的适用场景
+## 优势
+
+### 提升查询性能
+
+全局索引能够有效提高检索非分区列的效率。当查询涉及非分区列时，全局索引可以快速定位相关数据，避免了对所有分区的全表扫描，可以显著降低协处理任务 (Coprocessor Task) 的数量，这对于分区数量庞大的场景尤为有效。
+
+经过测试，在分区数量为 100 的情况下，sysbench `select_random_points` 场景的性能提升了 53 倍。
+
+### 增强应用灵活性
+
+全局索引的引入，消除了分区表上唯一键必须包含所有分区列的限制。这使得用户在设计索引时更加灵活，可以根据实际的查询需求和业务逻辑来创建索引，而不再受限于表的分区方案。这种灵活性有助于更好地优化查询性能，满足多样化的业务需求。
+
+### 减少应用修改工作量
+
+在数据迁移和应用修改过程中，全局索引可以减少对应用的修改工作量。如果没有全局索引，在迁移数据或修改应用时，可能需要调整分区方案，或者重写查询语句以适应索引的限制。有了全局索引之后，可以避免这些修改，从而降低开发和维护成本。
+
+如在将 Oracle 数据库中的某张表迁移到 TiDB 时，因为 Oracle 支持全局索引，可能在某些表上存在一些不包含分区列的唯一索引，在迁移过程需要对表结构进行调整，以适应 TiDB 的分区表限制。然而，随着 TiDB 对全局索引的支持，你只需简单地修改索引定义，将其设置为全局索引，即可与 Oracle 保持一致，从而显著降低迁移成本。
+
+## 使用限制
+
+- 如果索引定义中未显式指定 `GLOBAL` 关键字，TiDB 将默认创建局部索引 (Local Index)。
+- `GLOBAL` 和 `LOCAL` 关键字仅适用于分区表，对非分区表没有影响。即在非分区表中，全局索引和局部索引之间没有区别。
+- 以下 DDL 操作会触发全局索引的更新：`DROP PARTITION`、`TRUNCATE PARTITION` 和 `REORGANIZE PARTITION`。这些 DDL 需等待全局索引更新完成后才会返回结果，耗时会相应增加。尤其是在数据归档场景下，如 `DROP PARTITION` 和 `TRUNCATE PARTITION`，若没有全局索引，通常可以立即完成；但使用全局索引后，耗时会随着所需更新的索引数量的增加而增加。
+- 包含全局索引的表不支持 `EXCHANGE PARTITION`。
+- 默认情况下，分区表的主键为聚簇索引，且必须包含分区键。如果要求主键不包含分区建，可以在建表时显式指定主键为非聚簇的全局索引，例如：`PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
+- 如果在表达式列上添加了全局索引，或者一个全局索引同时也是前缀索引（如 `UNIQUE KEY idx_id_prefix (id(10)) GLOBAL`），你需要为该全局索引手动收集统计信息。
+
+## 发展历程
+
+- **v7.6.0 版本之前**：TiDB 仅支持分区表的本地索引。这意味着，对于分区表上的唯一键，必须包含表分区表达式中的所有列。如果查询条件中没有使用分区键，那么查询将不得不扫描所有分区，这会导致查询性能下降。
+- **v7.6.0 版本**：引入了系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入)，用于开启全局索引功能。然而，当时该功能仍在开发中，不推荐启用。
+- **v8.3.0 版本**：全局索引功能作为实验性特性发布。你可以在创建索引时使用 `GLOBAL` 关键字来显式创建全局索引。
+- **v8.4.0 版本**：全局索引功能正式成为一般可用 (GA) 特性。你可以直接使用 `GLOBAL` 关键字创建全局索引，而无需再设置系统变量 `tidb_enable_global_index`。从该版本开始，该系统变量被弃用，并且始终为 `ON`。
+- **v8.5.0 版本**：全局索引功能支持包含分区表达式中的所有列。<!-- - **v9.0.0 版本**：全局索引功能支持非唯一索引的情况。在分区表中，除聚簇索引外都可以被创建为全局索引。-->
+
+## 全局索引和本地索引
 
 下图展示了本地索引和全局索引的区别。
 
@@ -25,40 +60,43 @@ summary: 介绍 TiDB 全局索引的适用场景、优势、使用方法、实�
 - **数据归档需求**：如果数据归档操作很频繁，且主要查询集中在单个分区内，本地索引可以提供更好的性能。
 - **需要使用分区交换功能**：在银行等行业，可能会将处理后的数据先写入普通表，确认无误后再交换到分区表，以减少对分区表性能的影响。此时，本地索引更为适用，因为在使用了全局索引之后，分区表将不再支持分区交换功能。
 
-## 全局索引的优势
+## 全局索引和聚簇索引
 
-### 提升查询性能
+由于聚簇索引和全局索引的原理限制，一个索引不能同时作为聚簇索引和全局索引。然而，这两种索引在不同查询场景中能提供不同的性能优化。在遇到需要同时兼顾两者的需求时，你可以将分区列添加到聚簇索引中，同时创建一个不包含分区列的全局索引。
 
-全局索引能够有效提高检索非分区列的效率。当查询涉及非分区列时，全局索引可以快速定位相关数据，避免了对所有分区的全表扫描，可以显著降低协处理任务 ( Coprocessor Task) 的数量，这对于分区数量庞大的场景尤为有效。
+假设有如下表结构：
 
-经过测试，在分区数量为 100 的情况下，sysbench `select_random_points` 场景的性能提升了 53 倍。
+```sql
+CREATE TABLE `t` (
+  `id` int DEFAULT NULL,
+  `ts` timestamp NULL DEFAULT NULL,
+  `data` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+PARTITION BY RANGE (UNIX_TIMESTAMP(`ts`))
+(PARTITION `p0` VALUES LESS THAN (1735660800)
+ PARTITION `p1` VALUES LESS THAN (1738339200)
+ ...)
+```
 
-### 增强应用灵活性
+在上面的 `t` 表中，`id` 列的值是唯一的。为了优化点查和范围查询的性能，可以选择在建表语句中定义一个聚簇索引 `PRIMARY KEY(id, ts)` 和一个不包含分区列的全局索引 `UNIQUE KEY id(id)`。这样在进行基于 `id` 的点查询时，会采用全局索引 `id`，选择 `PointGet` 的执行计划；而在进行范围查询时，聚簇索引则会被选中，因为聚簇索引相比全局索引少了一次回表操作，从而提升查询效率。
 
-全局索引的引入，消除了分区表上唯一键必须包含所有分区列的限制。这使得用户在设计索引时更加灵活，可以根据实际的查询需求和业务逻辑来创建索引，而不再受限于表的分区方案。这种灵活性有助于更好地优化查询性能，满足多样化的业务需求。
+修改后的表结构如下所示：
 
-### 减少应用修改工作量
+```sql
+CREATE TABLE `t` (
+  `id` int NOT NULL,
+  `ts` timestamp NOT NULL,
+  `data` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`, `ts`) /*T![clustered_index] CLUSTERED */,
+  UNIQUE KEY `id` (`id`) /*T![global_index] GLOBAL */
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+PARTITION BY RANGE (UNIX_TIMESTAMP(`ts`))
+(PARTITION `p0` VALUES LESS THAN (1735660800),
+ PARTITION `p1` VALUES LESS THAN (1738339200)
+ ...)
+```
 
-在数据迁移和应用修改过程中，全局索引可以减少对应用的修改工作量。如果没有全局索引，在迁移数据或修改应用时，可能需要调整分区方案，或者重写查询语句以适应索引的限制。有了全局索引之后，可以避免这些修改，从而降低开发和维护成本。
-
-如在将 Oracle 数据库中的某张表迁移到 TiDB 时，因为 Oracle 支持全局索引，可能在某些表上存在一些不包含分区列的唯一索引，在迁移过程需要对表结构进行调整，以适应 TiDB 的分区表限制。然而，随着 TiDB 对全局索引的支持，你只需简单地修改索引定义，将其设置为全局索引，即可与 Oracle 保持一致，从而显著降低迁移成本。
-
-## 全局索引的限制
-
-- 如果索引定义中未显式指定 `GLOBAL` 关键字，TiDB 将默认创建局部索引 (Local Index)。
-- `GLOBAL` 和 `LOCAL` 关键字仅适用于分区表，对非分区表没有影响。即在非分区表中，全局索引和局部索引之间没有区别。
-- 以下 DDL 操作会触发全局索引的更新：`DROP PARTITION`、`TRUNCATE PARTITION` 和 `REORGANIZE PARTITION`。这些 DDL 需等待全局索引更新完成后才会返回结果，耗时会相应增加。尤其是在数据归档场景下，如 `DROP PARTITION` 和 `TRUNCATE PARTITION`，若没有全局索引，通常可以立即完成；但使用全局索引后，耗时会随着所需更新的索引数量的增加而增加。
-- 包含全局索引的表不支持 `EXCHANGE PARTITION`。
-- 默认情况下，分区表的主键为聚簇索引，且必须包含分区键。如果要求主键不包含分区建，可以在建表时显式指定主键为非聚簇的全局索引，例如：`PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
-- 如果在表达式列上添加了全局索引，或者一个全局索引同时也是前缀索引（如 `UNIQUE KEY idx_id_prefix (id(10)) GLOBAL`），你需要为该全局索引手动收集统计信息。
-
-## 全局索引的发展历程
-
-- **v7.6.0 版本之前**：TiDB 仅支持分区表的本地索引。这意味着，对于分区表上的唯一键，必须包含表分区表达式中的所有列。如果查询条件中没有使用分区键，那么查询将不得不扫描所有分区，这会导致查询性能下降。
-- **v7.6.0 版本**：引入了系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入)，用于开启全局索引功能。然而，当时该功能仍在开发中，不推荐启用。
-- **v8.3.0 版本**：全局索引功能作为实验性特性发布。你可以在创建索引时使用 `GLOBAL` 关键字来显式创建全局索引。
-- **v8.4.0 版本**：全局索引功能正式成为一般可用（GA）特性。你可以直接使用 `GLOBAL` 关键字创建全局索引，而无需再设置系统变量 `tidb_enable_global_index`。从该版本开始，该系统变量被弃用，并且始终为 `ON`。
-- **v8.5.0 版本**：全局索引功能支持包含分区表达式中的所有列。<!-- - **v9.0.0 版本**：全局索引功能支持非唯一索引的情况。在分区表中，除聚簇索引外都可以被创建为全局索引。-->
+这种方式既能优化基于 `id` 的点查询，又能提升范围查询的性能，同时确保表的分区列在基于时间戳的查询中能得到有效的利用。
 
 ## 使用方法
 
@@ -147,7 +185,7 @@ SELECT * FROM information_schema.tidb_indexes WHERE table_name='t1';
 ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCAL, uidx3 GLOBAL, idx1 LOCAL);
 ```
 
-## 全局索引的工作原理
+## 工作原理
 
 ### 基本思想
 
@@ -272,41 +310,3 @@ Hash Partition (100 partitions)
 | Clustered table hash partitioned by PK, with Global Index on `k`,`c` | 156           | 18,233         | 15,581         | 10.77      |
 
 通过上述测试可以看出，在高并发环境下，全局索引能够显著提升分区表查询性能，提升幅度可达 50 倍。同时，全局索引还能够显著降低资源（RU）消耗。随着分区数量的增加，这种性能提升的效果将愈加明显。
-
-## 全局索引和聚簇索引
-
-由于聚簇索引和全局索引的原理限制，一个索引不能同时作为聚簇索引和全局索引。然而，这两种索引在不同查询场景中能提供不同的性能优化。在遇到需要同时兼顾两者的需求时，你可以将分区列添加到聚簇索引中，同时创建一个不包含分区列的全局索引。
-
-假设有如下表结构：
-
-```sql
-CREATE TABLE `t` (
-  `id` int DEFAULT NULL,
-  `ts` timestamp NULL DEFAULT NULL,
-  `data` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
-PARTITION BY RANGE (UNIX_TIMESTAMP(`ts`))
-(PARTITION `p0` VALUES LESS THAN (1735660800)
- PARTITION `p1` VALUES LESS THAN (1738339200)
- ...)
-```
-
-在上面的 `t` 表中，`id` 列的值是唯一的。为了优化点查和范围查询的性能，可以选择在建表语句中定义一个聚簇索引 `PRIMARY KEY(id, ts)` 和一个不包含分区列的全局索引 `UNIQUE KEY id(id)`。这样在进行基于 `id` 的点查询时，会采用全局索引 `id`，选择 `PointGet` 的执行计划；而在进行范围查询时，聚簇索引则会被选中，因为聚簇索引相比全局索引少了一次回表操作，从而提升查询效率。
-
-修改后的表结构如下所示：
-
-```sql
-CREATE TABLE `t` (
-  `id` int NOT NULL,
-  `ts` timestamp NOT NULL,
-  `data` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`, `ts`) /*T![clustered_index] CLUSTERED */,
-  UNIQUE KEY `id` (`id`) /*T![global_index] GLOBAL */
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
-PARTITION BY RANGE (UNIX_TIMESTAMP(`ts`))
-(PARTITION `p0` VALUES LESS THAN (1735660800),
- PARTITION `p1` VALUES LESS THAN (1738339200)
- ...)
-```
-
-这种方式既能优化基于 `id` 的点查询，又能提升范围查询的性能，同时确保表的分区列在基于时间戳的查询中能得到有效的利用。
