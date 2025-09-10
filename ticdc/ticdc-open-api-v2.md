@@ -387,7 +387,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 以下请求会创建一个 ID 为 `test5`，sink_uri 为 `blackhole://` 的同步任务。
 
 ```shell
-curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2/changefeeds -d '{"changefeed_id":"test5","sink_uri":"blackhole://"}'
+curl -X POST -H "Content-type: application/json" http://127.0.0.1:8300/api/v2/changefeeds -d '{"changefeed_id":"test5","sink_uri":"blackhole://"}'
 ```
 
 如果请求成功，则返回 `200 OK`。如果请求失败，则返回错误信息和错误码。
@@ -721,7 +721,7 @@ curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
 以下请求会更新 ID 为 `test1` 的同步任务的 `target_ts` 为 `32`。
 
 ```shell
- curl -X PUT -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2/changefeeds/test1 -d '{"target_ts":32}'
+curl -X PUT -H "Content-type: application/json" http://127.0.0.1:8300/api/v2/changefeeds/test1 -d '{"target_ts":32}'
 ```
 
 若是请求成功，则返回 `200 OK`，若请求失败，则返回错误信息和错误码。响应的 JSON 格式以及字段含义与[创建同步任务](#创建同步任务)中的响应参数相同，此处不再赘述。
@@ -1111,7 +1111,7 @@ curl -X POST http://127.0.0.1:8300/api/v2/owner/resign
 ### 使用样例
 
 ```shell
-curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2/log -d '{"log_level":"debug"}'
+curl -X POST -H "Content-type: application/json" http://127.0.0.1:8300/api/v2/log -d '{"log_level":"debug"}'
 ```
 
 如果请求成功，则返回 `200 OK`。如果请求失败，则返回错误信息和错误码。
