@@ -165,7 +165,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
         + TiDB v3.0.8 ~ v3.0.10：索引长度限制固定为 3072 字节。
     + TiDB v3.0.11 及之后版本：新增了 `max-index-length` 配置项，用于兼容不同 TiDB 版本和 MySQL 的限制。
 
-
 ### `table-column-count-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 用于设置单个表中列的数量限制
