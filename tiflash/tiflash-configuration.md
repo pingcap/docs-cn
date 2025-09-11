@@ -241,9 +241,10 @@ I/O 限流功能相关配置。
 
 ##### `graceful_wait_shutdown_timeout` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 表示在关闭 TiFlash 服务器时，TiFlash 等待的最大秒数。在此期间，TiFlash 允许尚未完成的 MPP 任务继续执行，但不会接收新的 MPP 任务。如果所有 MPP 任务在超时时间之前完成，TiFlash 将立即关闭。
+- 控制在关闭 TiFlash 服务器时的最长等待时间。在此期间，TiFlash 允许尚未完成的 MPP 任务继续执行，但不再接收新的 MPP 任务。如果那些所有正在运行的 MPP 任务都在此超时时间之前完成，TiFlash 将立即关闭；否则将在等待时间结束后强制关闭。 
 - 默认值：`600`
-- 当 TiFlash 等待服务器关闭期间，TiDB 不会再向该 TiFlash 服务器发送新的 MPP 任务。
+- 单位：秒
+- 在等待 TiFlash 服务器关闭期间，TiDB 不会再向该 TiFlash 服务器发送新的 MPP 任务。
 
 #### flash.proxy
 
