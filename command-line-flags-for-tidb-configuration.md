@@ -54,7 +54,7 @@ summary: TiDB 配置参数包括启动参数和环境变量。启动参数包括
 
 ## `--initialize-secure`
 
-- 在安全模式下启动 tidb-server
+- 控制在 tidb-server 初始化过程中是否使用 `auth_socket` 认证方式创建 `root` 账户。如果设置为 `true`，首次连接 TiDB 时必须使用 socket 连接，这样安全性更高。
 - 默认：false
 
 ## `--initialize-sql-file`
