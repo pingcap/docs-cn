@@ -621,6 +621,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `concurrently-init-stats` <span class="version-mark">从 v8.1.0 和 v7.5.2 版本开始引入</span>
 
+> **警告：**
+>
+> 从 v9.0.0 开始，`concurrently-init-stats` 配置项被废弃，TiDB 启动时始终并发初始化统计信息。
+
 + 用于控制 TiDB 启动时是否并发初始化统计信息。该配置项仅在 [`lite-init-stats`](#lite-init-stats-从-v710-版本开始引入) 为 `false` 时生效。
 + 默认值：在 v8.2.0 之前版本中为 `false`，在 v8.2.0 及之后版本中为 `true`。
 
