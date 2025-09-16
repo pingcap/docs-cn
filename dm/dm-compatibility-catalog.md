@@ -19,8 +19,8 @@ TiDB Data Migration (DM) 数据迁移工具可以将数据从不同类型的数�
 | MySQL ≤ 5.5 | 未测试 |
 | MySQL 5.6 | 正式支持 | |
 | MySQL 5.7 | 正式支持 | |
-| MySQL 8.0 | 正式支持 | 不支持 binlog 事务压缩 [Transaction_payload_event](https://dev.mysql.com/doc/refman/8.0/en/binary-log-transaction-compression.html) |
-| MariaDB < 10.1.2 | 不兼容 | 与时间类型的 binlog 不兼容 |
+| MySQL 8.0 | 正式支持 | 不支持 binlog 事务压缩 [Transaction_payload_event](https://dev.mysql.com/doc/refman/8.0/en/binary-log-transaction-compression.html)。 |
+| MariaDB < 10.1.2 | 不兼容 | 与时间类型的 binlog 不兼容。 |
 | MariaDB 10.1.2 ~ 10.5.10 | 实验支持 | |
 | MariaDB > 10.5.10 | 未测试 | 在绕过前置检查后，理论上大多数情况下可以正常工作。参见 [MariaDB 说明](#mariadb-说明)。 |
 
