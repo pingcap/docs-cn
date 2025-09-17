@@ -447,6 +447,8 @@ I/O 限流功能相关配置。
 ##### `enable_resource_control` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
 - 表示是否开启 TiFlash 资源管控功能。当设置为 `true` 时，TiFlash 会使用 [Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)。
+- 默认值：`true`
+- 可选值：`true`、`false`
 
 ##### `task_scheduler_thread_soft_limit` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
