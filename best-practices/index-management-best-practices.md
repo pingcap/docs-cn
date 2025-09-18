@@ -129,12 +129,6 @@ SELECT * FROM INFORMATION_SCHEMA.TIDB_INDEX_USAGE INTO OUTFILE '/backup/index_us
 
 TiDB 为分布式 SQL 数据库，查询负载分布于多个节点。每个节点独立追踪本地索引使用。若需全局视角，TiDB 提供 [`CLUSTER_TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md#cluster_tidb_index_usage) 系统表，汇总所有节点的索引使用数据，便于优化分布式环境下的索引策略。
 
-与在单节点提供洞察的 `TIDB_INDEX_USAGE` 不同，提供集群级视图的 `CLUSTER_TIDB_INDEX_USAGE` 支持下列功能：
-
-- 检测索引使用不一致。例如，某索引在部分节点常用，其他节点未用。
-- 分析分布式查询的全局索引模式，确保索引决策反映实际负载分布。
-- 优化全节点索引策略，提升多节点部署下的查询效率。
-
 不同的 TiDB 节点的查询负载可能不同。某索引在部分节点未用，但在其他节点可能至关重要。你可以使用如下 SQL 按实例分组分析：
 
 ```sql
