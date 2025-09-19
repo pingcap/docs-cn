@@ -24,6 +24,9 @@ LoadDataStmt ::=
 
 LocalOpt ::= ('LOCAL')?
 
+DuplicateOpt ::=
+    ( 'IGNORE' | 'REPLACE' )?
+
 Fields ::=
     ('TERMINATED' 'BY' stringLit
     | ('OPTIONALLY')? 'ENCLOSED' 'BY' stringLit
@@ -36,6 +39,15 @@ Fields ::=
 ### `LOCAL`
 
 你可以使用 `LOCAL` 来指定导入位于客户端的数据文件，此时传入文件参数必须为客户端文件系统路径。
+
+### `REPLACE` 和 `IGNORE`
+
+你可以使用 `REPLACE` 和 `IGNORE` 参数来指定遇到重复数据时的处理方式。
+
+- `REPLACE`：遇到重复数据时，覆盖现有数据。
+- `IGNORE`：遇到重复数据时，忽略新导入的行，保留已存在的数据。
+
+默认情况下，遇到重复数据会报错。
 
 ### S3/GCS 路径
 
