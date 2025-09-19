@@ -33,7 +33,7 @@ set [session | global] tidb_replica_read = '<目标值>';
 该变量用于设置期待的数据读取方式。
 
 - 当设置为默认值 `leader` 或者空字符串时，TiDB 会维持原有行为方式，将所有的读取操作都发送给 leader 副本处理。
-- 当设置为 `follower` 时，TiDB 会选择 Region 的 follower 副本完成所有的数据读取操作。当 Region 存在 learner 副本时，TiDB 也会考虑从 learner 副本读取数据，此时 follower 副本和 learner 副本具有相同优先级。若当前 Region 无可用 follower 副本和 learner 副本，TiDB 会从 leader 副本读取数据。
+- 当设置为 `follower` 时，TiDB 会选择 Region 的 follower 副本完成所有的数据读取操作。当 Region 存在 learner 副本时，TiDB 也会考虑从 learner 副本读取数据，此时 follower 副本和 learner 副本具有相同优先级。若当前 Region 无可用的 follower 副本或 learner 副本，TiDB 会从 leader 副本读取数据。
 - 当设置为 `leader-and-follower` 时，TiDB 可以选择任意副本来执行读取操作，此时读请求会在 leader 和 follower 之间负载均衡。
 - 当设置为 `prefer-leader` 时，TiDB 会优先选择 leader 副本执行读取操作。当 leader 副本的处理速度明显变慢时，例如由于磁盘或网络性能抖动，TiDB 将选择其他可用的 follower 副本来执行读取操作。
 - 当设置为 `closest-replicas` 时，TiDB 会优先选择分布在同一可用区的副本执行读取操作，对应的副本可以是 leader 或 follower。如果同一可用区内没有副本分布，则会从 leader 执行读取。
@@ -46,9 +46,9 @@ set [session | global] tidb_replica_read = '<目标值>';
 
 > **注意：**
 >
-> 当 `tidb_replica_read` 设置为 `closest-replicas` 或 `closest-adaptive` 时，你需要配置集群以确保副本按照指定的设置分布在各个可用区。请参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)为 PD 配置 `location-labels` 并为 TiDB 和 TiKV 设置正确的 `labels`。TiDB 依赖 `zone` 标签匹配位于同一可用区的 TiKV，因此请**务必**在 PD 的 `location-labels` 配置中包含 `zone` 并确保每个 TiDB 和 TiKV 节点的 `labels` 配置中包含 `zone`。如果是使用 TiDB Operator 部署的集群，请参考[数据的高可用](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster/#数据的高可用)进行配置。
+> 当 `tidb_replica_read` 设置为 `closest-replicas` 或 `closest-adaptive` 时，为了确保副本按照指定的设置分布在各个可用区，请参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)为 PD 配置 `location-labels` 并为 TiDB 和 TiKV 设置正确的 `labels`。TiDB 依赖 `zone` 标签匹配位于同一可用区的 TiKV，因此请**务必**在 PD 的 `location-labels` 配置中包含 `zone` 并确保每个 TiDB 和 TiKV 节点的 `labels` 配置中包含 `zone`。如果是使用 TiDB Operator 部署的集群，请参考[数据的高可用](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster/#数据的高可用)进行配置。
 >
-> 对于 v7.5 及之前的 TiDB 版本：
+> 对于 v7.5.0 及之前的 TiDB 版本：
 >
 > - 当 `tidb_replica_read` 设置为 `follower` 且无可用 follower 副本及 learner 副本时，TiDB 会报错。
 > - 当 `tidb_replica_read` 设置为 `learner` 且无可用 learner 副本时，TiDB 会报错。
