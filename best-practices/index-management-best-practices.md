@@ -127,9 +127,9 @@ SELECT * FROM INFORMATION_SCHEMA.TIDB_INDEX_USAGE INTO OUTFILE '/backup/index_us
 
 ## 使用 `CLUSTER_TIDB_INDEX_USAGE` 汇总全集群索引数据
 
-TiDB 为分布式 SQL 数据库，查询负载分布于多个节点。每个节点独立追踪本地索引使用。若需全局视角，TiDB 提供 [`CLUSTER_TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md#cluster_tidb_index_usage) 系统表，汇总所有节点的索引使用数据，便于优化分布式环境下的索引策略。
+由于 TiDB 是分布式 SQL 数据库，查询负载会分布于多个节点。每个 TiDB 节点独立追踪本地索引使用情况。为获得全局索引性能，TiDB 提供了 [`CLUSTER_TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md#cluster_tidb_index_usage) 系统表，汇总了所有节点的索引使用数据，确保在优化索引策略时充分考虑分布式查询负载。
 
-不同的 TiDB 节点的查询负载可能不同。某索引在部分节点未用，但在其他节点可能至关重要。你可以使用如下 SQL 按实例分组分析：
+不同 TiDB 节点的查询负载可能不同。某个索引在部分节点看似未被使用，但在其他节点可能仍然至关重要。如果要按查询负载对索引分析进行划分，执行以下 SQL 语句：
 
 ```sql
 SELECT INSTANCE, TABLE_NAME, INDEX_NAME, SUM(QUERY_TOTAL) AS total_queries
@@ -138,11 +138,11 @@ GROUP BY INSTANCE, TABLE_NAME, INDEX_NAME
 ORDER BY total_queries DESC;
 ```
 
-帮助判断索引是否在所有节点都未用，辅助安全移除。
+这样可以帮助判断一个索引是在所有节点上都未被使用，还是仅在特定节点未被使用，从而帮助你在删除索引时做出更明智的决策。
 
 ### `TIDB_INDEX_USAGE` 与 `CLUSTER_TIDB_INDEX_USAGE` 的区别
 
-`TIDB_INDEX_USAGE` 与 `CLUSTER_TIDB_INDEX_USAGE` 的区别如下表所示。
+`TIDB_INDEX_USAGE` 与 `CLUSTER_TIDB_INDEX_USAGE` 的区别如下表所示：
 
 | 功能           | `TIDB_INDEX_USAGE`                        | `CLUSTER_TIDB_INDEX_USAGE`                   |
 | -------------- | ----------------------------------------- | -------------------------------------------- |
