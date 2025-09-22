@@ -56,7 +56,7 @@ TiDB 通过以下手段简化了索引优化：
 
 ### `TIDB_INDEX_USAGE` 关键指标
 
-如需查看 `TIDB_INDEX_USAGE` 表字段，可执行以下 SQL 语句：
+如需查看 `TIDB_INDEX_USAGE` 系统表字段，可执行以下 SQL 语句：
 
 ```sql
 USE INFORMATION_SCHEMA;
@@ -85,45 +85,45 @@ DESC TIDB_INDEX_USAGE;
 共 14 行
 ```
 
-各字段说明，请详见 [`TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md)。
+关于这些列的详细说明，参见 [`TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md)。
 
-### 利用 `TIDB_INDEX_USAGE` 识别未使用和低效的索引
+### 利用 `TIDB_INDEX_USAGE` 识别未使用和低效索引
 
-本节介绍如何利用 `TIDB_INDEX_USAGE` 系统表识别未使用和低效的索引。
+本节介绍如何利用 `TIDB_INDEX_USAGE` 系统表识别未使用和低效索引。
 
 - 未使用索引：
 
-    - `QUERY_TOTAL = 0` 表示该索引未被任何查询使用。
-    - `LAST_ACCESS_TIME` 距今较久，说明索引可能已无用。
+    - 如果 `QUERY_TOTAL = 0`，说明该索引未被任何查询使用。
+    - 如果 `LAST_ACCESS_TIME` 显示的时间距今较久，说明该索引可能已无用。
 
 - 低效索引：
 
-    - `PERCENTAGE_ACCESS_100` 数值较大，说明存在全索引扫描，可能为低效索引。
-    - 对比 `ROWS_ACCESS_TOTAL` 与 `QUERY_TOTAL`，判断索引每次使用时扫描的行数是否过多。
+    - 如果 `PERCENTAGE_ACCESS_100` 数值较大，说明存在全索引扫描，可能为低效索引。
+    - 对比 `ROWS_ACCESS_TOTAL` 与 `QUERY_TOTAL`，判断索引在查询中扫描的行数是否过多。
 
-通过 `TIDB_INDEX_USAGE`，你可详细了解索引性能，便于移除冗余索引、优化查询执行。
+通过 `TIDB_INDEX_USAGE` 系统表，你可以详细了解索引性能，以便移除冗余索引、优化查询执行。
 
 ### 高效使用 `TIDB_INDEX_USAGE`
 
 以下要点可以帮助你正确理解并使用 `TIDB_INDEX_USAGE` 系统表。
 
-#### 数据更新有延迟
+#### 数据更新存在延迟
 
-为降低性能影响，`TIDB_INDEX_USAGE` 的数据并非实时更新，索引使用指标可能会有最多 5 分钟的延迟。在分析查询时请注意这一时效性。
+为降低性能影响，`TIDB_INDEX_USAGE` 的数据并非实时更新，索引使用指标可能会有最多 5 分钟的延迟。在分析查询时，需要考虑这一延迟。
 
 #### 索引使用数据不持久化
 
-`TIDB_INDEX_USAGE` 数据存储于每个 TiDB 实例的内存中，不会持久化，在节点重启后数据会丢失。
+`TIDB_INDEX_USAGE` 系统表的数据存储在每个 TiDB 实例的内存中，不会持久化，在节点重启后数据会丢失。
 
 #### 跟踪历史数据
 
-你可以定期导出索引使用快照：
+你可以定期使用以下 SQL 语句导出索引使用快照：
 
 ```sql
 SELECT * FROM INFORMATION_SCHEMA.TIDB_INDEX_USAGE INTO OUTFILE '/backup/index_usage_snapshot.csv';
 ```
 
-通过对比快照，可以跟踪索引使用趋势，辅助决策。
+通过比较不同时间的快照，可以进行历史追踪，帮助你发现索引使用趋势，从而做出更有依据的索引优化或清理决策。
 
 ## 使用 `CLUSTER_TIDB_INDEX_USAGE` 汇总全集群索引数据
 
