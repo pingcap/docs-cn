@@ -272,23 +272,23 @@ ALTER TABLE bookshop.users ALTER INDEX nickname INVISIBLE;
 
 为保持高性能和资源高效，索引优化应成为数据库维护的常规工作。TiDB 索引管理建议如下：
 
-1. **定期监控索引使用**
+1. **定期监控索引使用**。
 
-    - 利用 [`TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md) 和 [`CLUSTER_TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md#cluster_tidb_index_usage) 追踪索引活动。
-    - 通过 [`schema_unused_indexes`](/sys-schema/sys-schema-unused-indexes.md) 识别未用索引，评估是否可移除。
-    - 监控查询执行计划，发现可能导致高 I/O 的低效索引。
+    - 使用 [`TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md) 和 [`CLUSTER_TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md#cluster_tidb_index_usage) 追踪索引使用情况。
+    - 通过 [`schema_unused_indexes`](/sys-schema/sys-schema-unused-indexes.md) 识别未使用的索引，并评估是否可删除。
+    - 监控查询执行计划，识别可能导致高 I/O 的低效索引。
 
-2. **移除索引前务必验证**
+2. **在删除索引前，务必进行验证**。
 
-    - 使用 [`ALTER TABLE ... INVISIBLE`](/sql-statements/sql-statement-alter-table.md) 将索引设为暂时不可见，观察影响后再决定是否永久删除。
-    - 若查询性能稳定，可考虑移除索引。
-    - 观察期应覆盖所有业务场景，确保安全。
+    - 使用 [`ALTER TABLE ... INVISIBLE`](/sql-statements/sql-statement-alter-table.md) 将索引设为不可见，临时禁用索引，观察影响后再决定是否永久删除。
+    - 若查询性能保持稳定，可考虑删除索引。
+    - 确保有足够的观察周期，以覆盖所有业务场景或查询模式后再做最终决策。
 
 3. **优化现有索引**
 
-    - 合并冗余索引，减少存储和写入开销。若多个索引服务类似查询，可合并为更高效的复合索引。
+    - 合并冗余索引。合并冗余索引可以减少存储开销、提升写入性能。如果多个索引服务于相似的查询，可以考虑将它们合并为单个更高效的复合索引。
 
-        - 查找前缀重叠的索引，可执行：
+        - 执行以下 SQL 语句，查找前缀重叠的索引（表明可能存在冗余）：
 
             ```sql
             SELECT TABLE_SCHEMA, TABLE_NAME, INDEX_NAME, COLUMN_NAME, SEQ_IN_INDEX
@@ -297,24 +297,24 @@ ALTER TABLE bookshop.users ALTER INDEX nickname INVISIBLE;
             ORDER BY TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, SEQ_IN_INDEX;
             ```
 
-        - 若两个索引前导列相同，建议合并为复合索引。
+        - 若两个索引的前导列相同，建议考虑将它们合并为复合索引。
 
     - 提高选择性。可以通过以下方式优化低选择性索引（即那些过滤行数过多的索引）：
 
         - 增加额外的列，以提升过滤效率。
         - 调整索引结构（如前缀索引、复合索引）。
 
-    - 利用 `TIDB_INDEX_USAGE` 的 `PERCENTAGE_ACCESS_*` 字段分析索引选择性。
+    - 分析索引选择性。利用 `TIDB_INDEX_USAGE` 的 `PERCENTAGE_ACCESS_*` 字段评估索引过滤数据的效果。
 
-4. **关注 DML 性能影响**
+4. **关注 DML 性能影响**。
 
-    - 避免过度索引。每增加一个索引，`INSERT`、`UPDATE`、`DELETE` 的维护成本都会上升。
-    - 仅为查询必要字段建索引，降低写入负担。
+    - 避免过度索引。每增加一个索引，`INSERT`、`UPDATE` 和 `DELETE` 操作的开销都会增加。
+    - 仅为查询所必需的字段建立索引，以减少写入密集型负载的维护成本。
 
-5. **定期测试与调优**
+5. **定期测试与调优**。
 
-    - 定期进行索引审计，尤其在业务负载变化后。
+    - 定期进行索引审计，尤其在业务负载发生重大变化后。
     - 利用 TiDB 执行计划分析工具，验证索引是否被高效使用。
-    - 新增索引建议先在隔离环境测试，避免性能回退。
+    - 新增索引时，建议先在隔离环境中测试，避免出现意外的性能回退。
 
-遵循以上最佳实践，可确保查询高效、存储开销最小、数据库性能最优。
+通过遵循以上这些最佳实践，你可以确保查询高效执行，减少不必要的存储开销，并保持数据库性能最优。
