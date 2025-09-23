@@ -222,7 +222,7 @@ SELECT * FROM sys.schema_unused_indexes;
 
 对于从较早版本升级到 TiDB v8.0.0 或更高版本的集群，需要手动创建系统 schema 及相关视图。
 
-详见[手动创建 `schema_unused_indexes` 视图](/sys-schema/sys-schema-unused-indexes.md#manually-create-the-schema_unused_indexes-view)。
+详见[手动创建 `schema_unused_indexes` 视图](/sys-schema/sys-schema-unused-indexes.md#手动创建-schema_unused_indexes-视图)。
 
 ## 使用不可见索引安全移除测试索引
 
