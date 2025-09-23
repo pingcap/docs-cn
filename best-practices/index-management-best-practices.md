@@ -244,7 +244,6 @@ SELECT * FROM sys.schema_unused_indexes;
 
 要在不删除索引的情况下使其不可见，可执行以下 SQL 语句：
 
-
 ```sql
 ALTER TABLE bookshop.users ALTER INDEX nickname INVISIBLE;
 ```
