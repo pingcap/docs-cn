@@ -216,7 +216,7 @@ SELECT * FROM sys.schema_unused_indexes;
 
 如果索引在重要但不频繁的查询中出现，建议先保留或设为不可见。
 
-你可以使用[不可见索引](#使用不可见索引安全移除测试索引)来安全地验证某个索引是否可以删除，而不会影响系统性能。
+你可以使用[不可见索引](#使用不可见索引安全测试索引移除)来安全地验证某个索引是否可以删除，而不会影响系统性能。
 
 ### 手动创建 `schema_unused_indexes` 视图
 
@@ -224,7 +224,7 @@ SELECT * FROM sys.schema_unused_indexes;
 
 详见[手动创建 `schema_unused_indexes` 视图](/sys-schema/sys-schema-unused-indexes.md#手动创建-schema_unused_indexes-视图)。
 
-## 使用不可见索引安全移除测试索引
+## 使用不可见索引安全测试索引移除
 
 在未经充分验证的情况下直接删除索引可能带来性能风险，尤其是那些虽不常用但对特定查询仍至关重要的索引。
 
