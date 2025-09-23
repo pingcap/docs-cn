@@ -272,19 +272,19 @@ ALTER TABLE bookshop.users ALTER INDEX nickname INVISIBLE;
 
 为了保持高性能和高效的资源利用，定期进行索引优化是数据库运维的常规工作。以下是 TiDB 中有效管理索引的最佳实践：
 
-1. **定期监控索引使用**。
+1. **定期监控索引使用。**
 
     - 使用 [`TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md) 和 [`CLUSTER_TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md#cluster_tidb_index_usage) 追踪索引使用情况。
     - 通过 [`schema_unused_indexes`](/sys-schema/sys-schema-unused-indexes.md) 识别未使用的索引，并评估是否可删除。
     - 监控查询执行计划，识别可能导致高 I/O 的低效索引。
 
-2. **在删除索引前，务必进行验证**。
+2. **在删除索引前，务必进行验证。**
 
     - 使用 [`ALTER TABLE ... INVISIBLE`](/sql-statements/sql-statement-alter-table.md) 将索引设为不可见，临时禁用索引，观察影响后再决定是否永久删除。
     - 若查询性能保持稳定，可考虑删除索引。
     - 确保有足够的观察周期，以覆盖所有业务场景或查询模式后再做最终决策。
 
-3. **优化现有索引**
+3. **优化现有索引。**
 
     - 合并冗余索引。合并冗余索引可以减少存储开销、提升写入性能。如果多个索引服务于相似的查询，可以考虑将它们合并为单个更高效的复合索引。
 
@@ -306,12 +306,12 @@ ALTER TABLE bookshop.users ALTER INDEX nickname INVISIBLE;
 
     - 分析索引选择性。利用 `TIDB_INDEX_USAGE` 的 `PERCENTAGE_ACCESS_*` 字段评估索引过滤数据的效果。
 
-4. **关注 DML 性能影响**。
+4. **关注 DML 性能影响。**
 
     - 避免过度索引。每增加一个索引，`INSERT`、`UPDATE` 和 `DELETE` 操作的开销都会增加。
     - 仅为查询所必需的字段建立索引，以减少写入密集型负载的维护成本。
 
-5. **定期测试与调优**。
+5. **定期测试与调优。**
 
     - 定期进行索引审计，尤其在业务负载发生重大变化后。
     - 利用 TiDB 执行计划分析工具，验证索引是否被高效使用。
