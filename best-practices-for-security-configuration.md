@@ -20,6 +20,8 @@ TiDB 的安全性对于保护数据完整性和机密性至关重要。本文提
 - 使用 TiUP 部署时，参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md#第-7-步启动集群)为 root 用户生成随机密码。
 - 使用 TiDB Operator 部署时，参考[初始化账号和密码设置](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/initialize-a-cluster#初始化账号和密码设置)为 root 用户设置密码。
 
+你也可以使用 [`--initialize-secure`](/command-line-flags-for-tidb-configuration.md#--initialize-secure) 选项来限制初始 root 用户的网络访问。
+
 ## 启用密码复杂性检查
 
 默认情况下，TiDB 未启用密码复杂性策略，这可能导致使用弱密码或空密码，增加安全风险。

@@ -82,7 +82,7 @@ export TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<D
 
 </div>
 
-<div label="{{{ .starter }}}">
+<div label="{{{ .starter }}} 或 Essential">
 
 对于 {{{ .starter }}} 集群，请按照以下步骤配置 TiDB 连接参数：
 

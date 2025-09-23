@@ -212,6 +212,7 @@ TiDB 版本：8.3.0
 |--------|------------------------------|------|
 | [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size)     | 修改   | 增加 SESSION 作用域。     |
 | [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt)    | 修改   | 增加 SESSION 作用域。     |
+| [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) | 修改 | 经进一步的测试，默认值从 `OFF` 修改为 `ON`，即 TiDB 默认开启对 `PREDICATE COLUMNS` 的收集。|
 | [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入) | 修改 | 从 v8.3.0 起，该变量可以控制[垃圾回收 (GC)](/garbage-collection-overview.md) 过程中 [Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)和 [Delete Range（删除区间）](/garbage-collection-overview.md#delete-ranges删除区间)的并发线程数。在 v8.3.0 之前，该变量只能控制 Resolve Locks（清理锁）的线程数。|
 | [`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso) | 修改 | 增加 GLOBAL 作用域。|
 | [`tidb_opt_projection_push_down`](/system-variables.md#tidb_opt_projection_push_down-从-v610-版本开始引入) | 修改 | 增加 GLOBAL 作用域，变量值可以持久化到集群。经进一步的测试，默认值从 `OFF` 修改为 `ON`，即默认允许优化器将 `Projection` 算子下推到 TiKV。|

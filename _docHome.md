@@ -44,12 +44,6 @@ TiDB 高度兼容 MySQL 协议，以及 MySQL 5.7 和 MySQL 8.0 常用的功能�
 
 </DocHomeCard>
 
-<DocHomeCard href="/zh/tidb/dev/tidb-roadmap" label="TiDB 路线图" icon="oss-roadmap-blue">
-
-提前了解 TiDB 的未来规划，关注开发进展，了解关键里程碑，并对开发工作提出反馈
-
-</DocHomeCard>
-
 </DocHomeCardContainer>
 
 </DocHomeSection>
@@ -66,7 +60,7 @@ TiDB Cloud 核心特性与应用场景简介
 
 </DocHomeCard>
 
-<DocHomeCard href="/tidbcloud/tidb-cloud-quickstart" label="快速上手 {{{ .starter }}}" icon="cloud-getstarted-mauve">
+<DocHomeCard href="/tidbcloud/tidb-cloud-quickstart" label="快速上手 TiDB Cloud" icon="cloud-getstarted-mauve">
 
 快速了解和使用 TiDB Cloud
 
@@ -74,7 +68,7 @@ TiDB Cloud 核心特性与应用场景简介
 
 <DocHomeCard href="/tidbcloud/dev-guide-overview" label="开发者指南" icon="cloud-developer-mauve">
 
-使用你熟悉的语言或框架连接到 {{{ .starter }}}
+用熟悉的语言或框架连接到 TiDB Cloud
 
 </DocHomeCard>
 

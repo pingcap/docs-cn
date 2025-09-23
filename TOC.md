@@ -1,7 +1,6 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
-- [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
   - [TiDB 8.5 Release Notes](/releases/release-8.5.0.md)
@@ -9,7 +8,6 @@
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)
-  - [路线图](/tidb-roadmap.md)
 - 快速上手
   - [快速上手 TiDB](/quick-start-with-tidb.md)
   - [快速上手 HTAP](/quick-start-with-htap.md)
@@ -47,6 +45,8 @@
     - Ruby
       - [mysql2](/develop/dev-guide-sample-application-ruby-mysql2.md)
       - [Rails](/develop/dev-guide-sample-application-ruby-rails.md)
+    - C#
+      - [C#](/develop/dev-guide-sample-application-cs.md)
   - 连接到 TiDB
     - GUI 数据库工具
       - [MySQL Workbench](/develop/dev-guide-gui-mysql-workbench.md)
@@ -427,6 +427,7 @@
 - 最佳实践
   - [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
   - [DDL 最佳实践](/ddl-introduction.md)
+  - [多列索引优化最佳实践](/best-practices/multi-column-index-best-practices.md)
   - [SaaS 多租户场景下处理百万张表](/best-practices/saas-best-practices.md)
   - [将 UUID 用作主键的最佳实践](/best-practices/uuid.md)
   - [Java 应用开发最佳实践](/best-practices/java-app-best-practices.md)
@@ -502,6 +503,7 @@
         - [tiup cluster start](/tiup/tiup-component-cluster-start.md)
         - [tiup cluster stop](/tiup/tiup-component-cluster-stop.md)
         - [tiup cluster template](/tiup/tiup-component-cluster-template.md)
+        - [tiup cluster tls](/tiup/tiup-component-cluster-tls.md)
         - [tiup cluster upgrade](/tiup/tiup-component-cluster-upgrade.md)
       - TiUP DM 命令
         - [TiUP DM 命令概览](/tiup/tiup-component-dm.md)
@@ -811,6 +813,7 @@
       - [`BATCH`](/sql-statements/sql-statement-batch.md)
       - [`BEGIN`](/sql-statements/sql-statement-begin.md)
       - [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md)
+      - [`CANCEL DISTRIBUTION JOB`](/sql-statements/sql-statement-cancel-distribution-job.md)
       - [`CANCEL IMPORT JOB`](/sql-statements/sql-statement-cancel-import-job.md)
       - [`CANCEL TRAFFIC JOBS`](/sql-statements/sql-statement-cancel-traffic-jobs.md)
       - [`COMMIT`](/sql-statements/sql-statement-commit.md)
@@ -829,6 +832,7 @@
       - [`DELETE`](/sql-statements/sql-statement-delete.md)
       - [`DESC`](/sql-statements/sql-statement-desc.md)
       - [`DESCRIBE`](/sql-statements/sql-statement-describe.md)
+      - [`DISTRIBUTE TABLE`](/sql-statements/sql-statement-distribute-table.md)
       - [`DO`](/sql-statements/sql-statement-do.md)
       - [`DROP BINDING`](/sql-statements/sql-statement-drop-binding.md)
       - [`DROP DATABASE`](/sql-statements/sql-statement-drop-database.md)
@@ -893,6 +897,7 @@
       - [`SHOW CREATE DATABASE`](/sql-statements/sql-statement-show-create-database.md)
       - [`SHOW CREATE USER`](/sql-statements/sql-statement-show-create-user.md)
       - [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md)
+      - [`SHOW DISTRIBUTION JOBS`](/sql-statements/sql-statement-show-distribution-jobs.md)
       - [`SHOW ENGINES`](/sql-statements/sql-statement-show-engines.md)
       - [`SHOW ERRORS`](/sql-statements/sql-statement-show-errors.md)
       - [`SHOW FIELDS FROM`](/sql-statements/sql-statement-show-fields-from.md)
@@ -915,6 +920,7 @@
       - [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md)
       - [`SHOW STATS_TOPN`](/sql-statements/sql-statement-show-stats-topn.md)
       - [`SHOW STATUS`](/sql-statements/sql-statement-show-status.md)
+      - [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql-statement-show-table-distribution.md)
       - [`SHOW TABLE NEXT_ROW_ID`](/sql-statements/sql-statement-show-table-next-rowid.md)
       - [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md)
       - [`SHOW TABLE STATUS`](/sql-statements/sql-statement-show-table-status.md)
@@ -1097,6 +1103,7 @@
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
   - v8.5
+    - [8.5.3](/releases/release-8.5.3.md)
     - [8.5.2](/releases/release-8.5.2.md)
     - [8.5.1](/releases/release-8.5.1.md)
     - [8.5.0](/releases/release-8.5.0.md)
@@ -1115,6 +1122,7 @@
   - v7.6
     - [7.6.0-DMR](/releases/release-7.6.0.md)
   - v7.5
+    - [7.5.7](/releases/release-7.5.7.md)
     - [7.5.6](/releases/release-7.5.6.md)
     - [7.5.5](/releases/release-7.5.5.md)
     - [7.5.4](/releases/release-7.5.4.md)
