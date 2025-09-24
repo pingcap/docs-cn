@@ -477,6 +477,46 @@ EXPLAIN SELECT /*+ NO_ORDER_INDEX(t, a) */ a FROM t ORDER BY a LIMIT 10;
 
 和 `ORDER_INDEX` Hint 的示例相同，优化器对该查询会生成两类计划：`Limit + IndexScan(keep order: true)` 和 `TopN + IndexScan(keep order: false)`，当使用了 `NO_ORDER_INDEX` Hint，优化器会选择后一种不按照顺序读取索引的计划。
 
+### INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...])
+
+`INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并下推 `IndexLookUp` 算子到 TiKV。
+
+以下示例展示了使用此 Hint 的查询计划:
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t1(a INT, b INT, key(a));
+EXPLAIN SELECT /*+ INDEX_LOOKUP_PUSHDOWN(t1, a) */ a, b FROM t1;
+```
+
+```sql
++-----------------------------+----------+-----------+----------------------+--------------------------------+
+| id                          | estRows  | task      | access object        | operator info                  |
++-----------------------------+----------+-----------+----------------------+--------------------------------+
+| IndexLookUp_7               | 10000.00 | root      |                      |                                |
+| ├─LocalIndexLookUp(Build)   | 10000.00 | cop[tikv] |                      | index handle offsets:[1]       |
+| │ ├─IndexFullScan_5(Build)  | 10000.00 | cop[tikv] | table:t1, index:a(a) | keep order:false, stats:pseudo |
+| │ └─TableRowIDScan_8(Probe) | 10000.00 | cop[tikv] | table:t1             | keep order:false, stats:pseudo |
+| └─TableRowIDScan_6(Probe)   | 0.00     | cop[tikv] | table:t1             | keep order:false, stats:pseudo |
++-----------------------------+----------+-----------+----------------------+--------------------------------+
+```
+
+在启用 `INDEX_LOOKUP_PUSHDOWN` hint 后，下推计划中的最外层 Build 算子会变为 `LocalIndexLookUp`。这意味着 TiKV 在扫描索引的同时，会尝试在本地回表查询对应的行数据。然而，由于索引和行数据可能分布在不同的 Region，下推请求无法保证覆盖所有目标行。因此，TiDB 端仍需保留 `TableRowIDScan`，用于补充查询那些下推无法命中的行。此 hint 受系统变量 [`tidb_enable_index_lookup_pushdown`](/system-variables.md#tidb_enable_index_lookup_pushdown-从-v90-版本开始引入) 影响。
+
+`INDEX_LOOKUP_PUSHDOWN` 当前的使用限制如下：
+
+- 不支持缓存表（cache table）和临时表。
+- 暂不支持分区表查询。
+- 暂不支持复合主键或主键为非整型的聚簇索引表。
+- 暂不支持除 `REPEATABLE-READ` 之外的其他隔离级别。
+- 暂不支持[多值索引](/choose-index.md#使用多值索引)的查询。
+- 暂不支持 [Follower Read](/follower-read.md)。
+- 暂不支持 [Stale Read](/stale-read.md) 或 [使用 `tidb_snapshot` 来读取历史数据](/read-historical-data.md)。
+- 下推的 `LocalIndexLookUp` 算子暂不支持 keep order。若执行计划中包含基于索引列的 `ORDER BY`，则会退化为普通的 `LocalIndexLookUp` 查询。
+- 下推的 `LocalIndexLookUp` 算子暂不支持以分页 (paging)方式发送 Coprocessor 请求。
+- 下推的 `LocalIndexLookUp` 算子暂不支持对[下推计算结果进行缓存](/coprocessor-cache.md)
+
 ### AGG_TO_COP()
 
 `AGG_TO_COP()` 提示优化器将指定查询块中的聚合函数下推到 coprocessor。如果优化器没有下推某些适合下推的聚合函数，建议尝试使用。例如：
