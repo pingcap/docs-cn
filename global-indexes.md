@@ -41,10 +41,10 @@ summary: 介绍 TiDB 全局索引的适用场景、优势、使用方法、实�
 ## 功能演进
 
 - **v7.6.0 之前**：TiDB 仅支持分区表的本地索引。这意味着，分区表上的唯一键必须包含分区表达式中的所有列。如果查询条件中没有使用分区键，则查询需要扫描所有分区，导致查询性能下降。
-- **v7.6.0 版本**：引入了系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入)，用于开启全局索引功能。然而，当时该功能仍在开发中，不推荐启用。
-- **v8.3.0 版本**：全局索引功能作为实验性特性发布。你可以在创建索引时使用 `GLOBAL` 关键字来显式创建全局索引。
-- **v8.4.0 版本**：全局索引功能正式成为一般可用 (GA) 特性。你可以直接使用 `GLOBAL` 关键字创建全局索引，而无需再设置系统变量 `tidb_enable_global_index`。从该版本开始，该系统变量被弃用，并且始终为 `ON`。
-- **v8.5.0 版本**：全局索引功能支持包含分区表达式中的所有列。<!-- - **v9.0.0 版本**：全局索引功能支持非唯一索引的情况。在分区表中，除聚簇索引外都可以被创建为全局索引。-->
+- **[v7.6.0](/releases/release-7.6.0.md)**：引入了系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入)，用于开启全局索引功能。然而，当时该功能仍在开发中，不推荐启用。
+- **[v8.3.0](/releases/release-8.3.0.md)**：全局索引作为实验特性发布。你可以在创建索引时使用 `GLOBAL` 关键字来显式创建全局索引。
+- **[v8.4.0](/releases/release-8.4.0.md)**：全局索引功能正式发布 (GA)。你可以直接使用 `GLOBAL` 关键字创建全局索引，无需再设置系统变量 `tidb_enable_global_index`。从该版本开始，该系统变量被废弃，且变量值固定为 `ON`，即默认启用全局索引。
+- **[v8.5.0](/releases/release-8.5.0.md)**：全局索引支持包含分区表达式中的所有列。<!-- - **v9.0.0 版本**：全局索引功能支持非唯一索引的情况。在分区表中，除聚簇索引外都可以被创建为全局索引。-->
 
 ## 全局索引和本地索引
 
@@ -60,7 +60,7 @@ summary: 介绍 TiDB 全局索引的适用场景、优势、使用方法、实�
 **本地索引的适用场景**：
 
 - **数据归档需求**：如果数据归档操作很频繁，且主要查询集中在单个分区内，本地索引可以提供更好的性能。
-- **需要使用分区交换功能**：在银行等行业，可能会将处理后的数据先写入普通表，确认无误后再交换到分区表，以减少对分区表性能的影响。此时，本地索引更为适用，因为在使用了全局索引之后，分区表将不再支持分区交换功能。
+- **需要使用分区交换功能**：在银行等行业，可能会将处理后的数据先写入普通表，确认无误后再交换到分区表，以减少对分区表性能的影响。此时，本地索引更为适用，因为一旦使用了全局索引，分区表将不再支持分区交换功能。
 
 ## 全局索引和聚簇索引
 
@@ -98,15 +98,15 @@ PARTITION BY RANGE (UNIX_TIMESTAMP(`ts`))
  ...)
 ```
 
-这种方式既能优化基于 `id` 的点查询，又能提升范围查询的性能，同时确保表的分区列在基于时间戳的查询中能得到有效的利用。
+这种方式既能优化基于 `id` 的点查询，又能提升范围查询的性能，同时确保表的分区列在基于时间戳的查询中能得到有效利用。
 
 ## 使用方法
 
-如果你需要创建全局索引，可以通过在索引定义中添加 `GLOBAL` 关键字来实现。
+如果你需要创建全局索引，则在索引定义中添加 `GLOBAL` 关键字。
 
 > **注意：**
 >
-> 全局索引对分区管理有影响，执行 `DROP`、`TRUNCATE` 和 `REORGANIZE PARTITION` 操作也会触发表级别全局索引的更新，这意味着这些 DDL 操作只有在对应表的全局索引完全更新后才会返回结果。
+> 全局索引会影响分区管理。执行 `DROP`、`TRUNCATE` 和 `REORGANIZE PARTITION` 操作会触发表级别全局索引的更新，这意味着这些 DDL 操作只有在对应表的全局索引更新完成后才会返回结果，耗时可能会增加。
 
 ```sql
 CREATE TABLE t1 (
@@ -122,9 +122,9 @@ PARTITION BY HASH(col3)
 PARTITIONS 4;
 ```
 
-在上面示例中，唯一索引 `uidx12` 和非唯一索引 `idx1` 将成为全局索引，但 `uidx3` 仍是常规的唯一索引。
+在上述示例中，唯一索引 `uidx12` 和非唯一索引 `idx1` 将成为全局索引，但 `uidx3` 仍是常规的唯一索引。
 
-请注意，**聚簇索引**不能成为全局索引，如下例所示：
+请注意，**聚簇索引**不能成为全局索引，示例如下：
 
 ```sql
 CREATE TABLE t2 (
@@ -138,7 +138,7 @@ CREATE TABLE t2 (
 ERROR 1503 (HY000): A CLUSTERED INDEX must include all columns in the table's partitioning function
 ```
 
-聚簇索引不能成为全局索引，是因为如果聚簇索引是全局索引，则表将不再分区。这是因为聚簇索引的键是分区级别的行数据的键，但全局索引是表级别的，这就造成了冲突。如果需要将主键设置为全局索引，则需要显式设置该主键为非聚簇索引，如 `PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
+聚簇索引不能同时作为全局索引。原因在于，如果聚簇索引是全局索引，则表将不再分区。聚簇索引的键是分区级别的行数据的键，但全局索引是表级别的，这就产生了冲突。如果需要将主键设置为全局索引，则需要显式设置该主键为非聚簇索引，如 `PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
 
 你可以通过 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 输出中的 `GLOBAL` 索引选项来识别全局索引。
 
@@ -189,9 +189,11 @@ ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCA
 
 ## 工作原理
 
-### 基本思想
+本节介绍全局索引的工作机制，包括其设计理念与编码方式。
 
-在 TiDB 的分区表中，本地索引的键值前缀是分区表的 ID，而全局索引的前缀是表的 ID。这样的改进能够确保全局索引的数据在 TiKV 上分布是连续的，降低了查询索引时 RPC 的数量。
+### 设计理念
+
+在 TiDB 的分区表中，本地索引的键值前缀是分区表的 ID，而全局索引的前缀是表的 ID。这样的改进能够确保全局索引的数据在 TiKV 上连续分布，从而减少查询索引时的 RPC 请求数量。
 
 ```sql
 CREATE TABLE `sbtest` (
@@ -203,17 +205,17 @@ CREATE TABLE `sbtest` (
 ) partition by hash(id) partitions 5;
 ```
 
-以上面的表结构为例，`idx` 为普通索引，`global_idx` 为全局索引。索引 `idx` 的数据会分布在 5 个不同的 Range 中，如 `PartitionID1_i_xxx`、`PartitionID2_i_xxx` 等，而索引 `global_idx` 的数据则会集中在一个 Range (`TableID_i_xxx`) 内。
+以上述表结构为例，`idx` 为普通索引，`global_idx` 为全局索引。索引 `idx` 的数据会分布在 5 个不同的 Range 中，如 `PartitionID1_i_xxx`、`PartitionID2_i_xxx` 等，而索引 `global_idx` 的数据则会集中在一个 Range (`TableID_i_xxx`) 内。
 
-当进行与 `k` 相关的查询时，如 `SELECT * FROM sbtest WHERE k > 1`，通过索引 `idx` 会构造 5 个不同的 Range，而通过全局索引 `global_idx` 则只会构造 1 个 Range，每个 Range 在 TiDB 中对应一个或多个 RPC 请求，这样使用全局索引可以降低数倍的 RPC 请求数，从而提升查询索引的性能。
+当执行与 `k` 相关的查询时，如 `SELECT * FROM sbtest WHERE k > 1`，通过普通索引 `idx` 会构造 5 个不同的 Range，而通过全局索引 `global_idx` 则只会构造 1 个 Range。每个 Range 在 TiDB 中对应一个或多个 RPC 请求。因此，使用全局索引可以降低数倍的 RPC 请求数，从而提升查询索引的性能。
 
-下图直观地展示了在使用 `idx` 和 `global_idx` 两个不同索引执行 `SELECT * FROM sbtest WHERE k > 1` 查询语句在 RPC 请求和数据流转过程中的差异。
+下图直观地展示了在使用 `idx` 和 `global_idx` 两个不同索引执行 `SELECT * FROM sbtest WHERE k > 1` 查询语句时，在 RPC 请求和数据流转过程中的差异：
 
 ![Mechanism of Global Indexes](/media/global-index-mechanism.png)
 
 ### 编码方式
 
-在 TiDB 中，索引项被编码为键值对。对于分区表，每个分区在 TiKV 层被视为一个独立的物理表，拥有自己的 `partitionID`。因此，分区表的索引项也被编码为：
+在 TiDB 中，索引项被编码为键值对。对于分区表，每个分区在 TiKV 层被视为一个独立的物理表，拥有自己的 `partitionID`。因此，分区表的索引项编码如下：
 
 ```
 唯一键
@@ -239,7 +241,7 @@ Value:
  - TailLen_IndexVersion
 ```
 
-在全局索引中，索引项的编码方式有所不同。为了使全局索引的键布局与当前索引键编码保持兼容，新的索引编码布局为：
+在全局索引中，索引项的编码方式有所不同。为了使全局索引的键布局与当前索引键编码保持兼容，新的索引编码布局如下：
 
 ```
 唯一键
@@ -265,13 +267,13 @@ Value:
  - TailLen_IndexVersion_PartitionID
 ```
 
-这种编码方式使得全局索引的键以 `TableID` 开头，而 `PartitionID` 被放置在 Value 中。这样设计的优点是，它与现有的索引键编码方式兼容，但同时也带来了一些挑战，例如，在执行 `DROP PARTITION`、`TRUNCATE PARTITION` 等 DDL 操作时，由于索引项不连续，需要进行额外的处理。
+这种编码方式使得全局索引的键以 `TableID` 开头，而 `PartitionID` 被放置在 Value 中。这样设计的优点是与现有的索引键编码方式兼容。然而，这也带来了一些挑战，例如在执行 `DROP PARTITION`、`TRUNCATE PARTITION` 等 DDL 操作时，由于索引项不连续，需要进行额外处理。
 
 ## 性能测试数据
 
-以下测试基于 sysbench 的 `select_random_points` 场景，主要用于对比不同分区策略与索引方式下的查询性能。测试表结构和配置如下：
+以下测试基于 sysbench 的 `select_random_points` 场景，主要用于对比不同分区策略与索引方式下的查询性能。
 
-示例表结构如下：
+测试表的表结构如下：
 
 ```sql
 CREATE TABLE `sbtest` (
@@ -295,7 +297,7 @@ FROM sbtest1
 WHERE k IN (xx, xx, xx)
 ```
 
-Range Partition (100 partitions)
+Range Partition (100 partitions)：
 
 | Table type                                                            | Concurrency 1 | Concurrency 32 | Concurrency 64 | Average RU |
 | --------------------------------------------------------------------- | ------------- | -------------- | -------------- | ---------- |
@@ -303,7 +305,7 @@ Range Partition (100 partitions)
 | Clustered table range partitioned by PK                               | 68            | 480            | 511            | 114.87     |
 | Clustered table range partitioned by PK, with Global Index on `k`,`c` | 207           | 17,798         | 27,707         | 11.73      |
 
-Hash Partition (100 partitions)
+Hash Partition (100 partitions)：
 
 | Table type                                                           | Concurrency 1 | Concurrency 32 | Concurrency 64 | Average RU |
 | -------------------------------------------------------------------- | ------------- | -------------- | -------------- | ---------- |
@@ -311,4 +313,4 @@ Hash Partition (100 partitions)
 | Clustered table hash partitioned by PK                               | 60            | 244            | 283            | 119.73     |
 | Clustered table hash partitioned by PK, with Global Index on `k`,`c` | 156           | 18,233         | 15,581         | 10.77      |
 
-通过上述测试可以看出，在高并发环境下，全局索引能够显著提升分区表查询性能，提升幅度可达 50 倍。同时，全局索引还能够显著降低资源（RU）消耗。随着分区数量的增加，这种性能提升的效果将愈加明显。
+通过上述测试可以看出，在高并发环境下，全局索引能够显著提升分区表查询性能，提升幅度可达 50 倍。同时，全局索引还能够显著降低资源 (RU) 消耗。随着分区数量的增加，这种性能提升的效果将愈加明显。
