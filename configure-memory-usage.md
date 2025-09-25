@@ -249,9 +249,9 @@ SQL 运行过程中会动态地向仲裁者订阅内存资源，仲裁者根据 
 
 ### 手动保障内存安全
 
-通过系统变量 [tidb_mem_arbitrator_soft_limit](/system-variables.md#tidb_mem_arbitrator_soft_limit-从-v900-版本开始引入) 可以设置 TiDB 实例的内存资源份额上限。上限越小，全局内存越安全，但内存资源利用率也越低。该变量可用于手动快速收敛内存风险。
+通过系统变量 [tidb_mem_arbitrator_soft_limit](/system-variables.md#tidb_mem_arbitrator_soft_limit-从-v900-版本开始引入) 可以设置 TiDB 实例的内存资源份额上限。上限越小，全局内存越安全，但内存资源利用率越低。该变量可用于手动快速收敛内存风险。
 
-框架内部会缓存部分 SQL 的历史最大内存资源用量，并在 SQL 下次执行前预先订阅足量内存资源份额。如果已知 SQL 存在大量内存使用不受控制的问题，可通过 session 变量 [tidb_mem_arbitrator_query_reserved](/system-variables.md#tidb_mem_arbitrator_query_reserved-从-v900-版本开始引入) 令 SQL 执行前预先订阅指定数量的内存资源份额。该值越大，全局内存越安全。预先订阅足量或超量的份额可以有效地保障 SQL 的内存资源隔离性。
+框架内部会缓存部分 SQL 的历史最大内存资源用量，并在 SQL 下次执行前预先订阅足量内存资源份额。如果已知 SQL 存在大量内存使用不受控制的问题，可通过 session 变量 [tidb_mem_arbitrator_query_reserved](/system-variables.md#tidb_mem_arbitrator_query_reserved-从-v900-版本开始引入) 令 SQL 订阅指定数量份额。该值越大，全局内存越安全，但内存资源利用率越低。预先订阅足量或超量的份额可以有效地保障 SQL 的内存资源隔离性。
 
 ### 监控和观测指标
 
@@ -266,9 +266,9 @@ SQL 运行过程中会动态地向仲裁者订阅内存资源，仲裁者根据 
 - Runtime Mem Pressure：内存压力值（实际内存使用和内存资源份额使用的比率）
 - Waiting Tasks：排队等待中的各类任务数量
 
-[SLOW_QUERY](/information-schema-slow-query.md) 新增字段 `Mem_arbitration` 表示 SQL 等待内存资源的总耗时。
+[SLOW_QUERY](/information-schema/information-schema-slow-query.md) 新增字段 `Mem_arbitration` 表示 SQL 等待内存资源的总耗时。
 
-[PROCESSLIST](/information-schema-processlist.md) 新增字段：
+[PROCESSLIST](/information-schema/information-schema-processlist.md) 新增字段：
 
 - `MEM_ARBITRATION`：目前为止 SQL 等待内存资源的总耗时
 - `MEM_WAIT_ARBITRATE_START`：当前内存资源订阅请求的开始时间（没有则为 NULL）
