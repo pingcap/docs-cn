@@ -3328,7 +3328,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：线程
 - TiFlash 中 request 执行的最大并发度。默认值为 `-1`，表示该系统变量无效，此时最大并发度取决于 TiFlash 配置项 `profiles.default.max_threads` 的设置。`0` 表示由 TiFlash 系统自动设置该值。
 
-
 ### `tidb_mem_arbitrator_mode` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
 > **警告：**
@@ -3342,7 +3341,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`disable`
 - 可选值：`disable`，`standard`, `priority`
 - 该变量用于设置 TiDB 实例的全局内存管理模式，详见 [TiDB 内存控制](/configure-memory-usage.md)：
-  - `disable` 为默认模式, [控制行为同上](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入)：内存资源先使用后上报
+  - `disable` 为默认模式，[控制行为同上](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入)：内存资源先使用后上报
   - `standard` 和 `priority` 为先订阅后分配模式：
     - `standard`：SQL 订阅内存资源失败后终止执行
     - `priority`：TiDB 根据 SQL 的 [资源组优先级](/information-schema/information-schema-resource-groups.md) 处理内存资源订阅任务
