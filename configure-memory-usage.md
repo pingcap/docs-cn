@@ -236,8 +236,8 @@ SQL 运行过程中会动态地向仲裁者订阅内存资源，仲裁者根据 
 
 - 所有请求按照优先级从高到低排队等待资源，同级别请求按照发起顺序排序
 - 当全局内存资源不足时，仲裁者按顺序（优先级从低到高，内存使用量从大到小）终止低优先级 SQL，回收资源来满足高优先级 SQL
-  - 如果所有 SQL 的优先级相同，仲裁者会调度资源直到所有 SQL 运行完，可能因此导致部分 SQL 延迟明显增大
-  - 返回错误中 `reason` 字段为 `CANCEL(out-of-quota & priority-mode)`
+    - 如果所有 SQL 的优先级相同，仲裁者会调度资源直到所有 SQL 运行完，可能因此导致部分 SQL 延迟明显增大
+    - 返回错误中 `reason` 字段为 `CANCEL(out-of-quota & priority-mode)`
 
 如果需要 SQL 避免因等待内存资源所带来的延迟开销，可以设置 session 变量 [tidb_mem_arbitrator_wait_averse](/system-variables.md#tidb_mem_arbitrator_wait_averse-从-v900-版本开始引入) 为 `1`。该参数令 SQL 自动绑定 `HIGH` 优先级。当全局内存资源不足时，仲裁者直接终止 SQL。返回错误中 `reason` 字段为 `CANCEL(out-of-quota & wait-averse)`。
 
@@ -295,14 +295,14 @@ SQL 运行过程中会动态地向仲裁者订阅内存资源，仲裁者根据 
 部署多节点 TiDB 场景
 
 - [1] 开启 `standard` 模式
-  - 遇到 `8180` 错误则重试 SQL 到其他 TiDB 节点
+    - 遇到 `8180` 错误则重试 SQL 到其他 TiDB 节点
 
 - [2] 开启 `priority` 模式
-  - 为 OLTP 相关或重要 SQL 绑定高优先级
-  - 按需绑定其他 SQL 到中/低优先级
-  - 通过 [max_execution_time](/system-variables.md#max_execution_time) 限制 SQL 最大执行时间
-  - 遇到超时或 `8180` 错误则重试 SQL 到其他 TiDB 节点
-  - 可通过 [tidb_mem_arbitrator_wait_averse](/system-variables.md#tidb_mem_arbitrator_wait_averse-从-v900-版本开始引入) 令 SQL 尽快重试到内存资源充足的节点
+    - 为 OLTP 相关或重要 SQL 绑定高优先级
+    - 按需绑定其他 SQL 到中/低优先级
+    - 通过 [max_execution_time](/system-variables.md#max_execution_time) 限制 SQL 最大执行时间
+    - 遇到超时或 `8180` 错误则重试 SQL 到其他 TiDB 节点
+    - 可通过 [tidb_mem_arbitrator_wait_averse](/system-variables.md#tidb_mem_arbitrator_wait_averse-从-v900-版本开始引入) 令 SQL 尽快重试到内存资源充足的节点
 
 保障重要 SQL 执行
 
