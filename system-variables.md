@@ -3340,7 +3340,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：枚举型
 - 默认值：`disable`
 - 可选值：`disable`，`standard`, `priority`
-- 该变量用于设置 TiDB 实例的全局内存管理模式，详见 [TiDB 内存控制](/configure-memory-usage.md)：
+- 该变量用于设置 TiDB 实例的全局内存管理模式，详见 [TiDB 内存控制](/configure-memory-usage.md#全局内存管理架构)：
   - `disable` 为默认模式，[控制行为同上](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入)：内存资源先使用后上报
   - `standard` 和 `priority` 为先订阅后分配模式：
     - `standard`：SQL 订阅内存资源失败后终止执行
@@ -3358,7 +3358,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`0`
 - 单位：字节
 - 范围：`[0, 9223372036854775807]`
-- 当启用先订阅后分配的 [全局内存管理模式](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 后，该变量设置 SQL 执行前预先订阅指定数量的内存资源份额，详见 [TiDB 内存控制](/configure-memory-usage.md)
+- 当启用先订阅后分配的 [全局内存管理模式](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 后，该变量设置 SQL 执行前预先订阅指定数量的内存资源份额，详见 [TiDB 内存控制](/configure-memory-usage.md#全局内存管理架构)
 
 ### `tidb_mem_arbitrator_soft_limit` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
@@ -3372,7 +3372,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：字符串
 - 默认值：`0`
 - 可选值：`0`，浮点数 `(0, 1]`，整数 `(1, 9223372036854775807]`
-- 当启用先订阅后分配的 [全局内存管理模式](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 后，该变量设置 TiDB 实例的内存资源份额上限，详见 [TiDB 内存控制](/configure-memory-usage.md)
+- 当启用先订阅后分配的 [全局内存管理模式](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 后，该变量设置 TiDB 实例的内存资源份额上限，详见 [TiDB 内存控制](/configure-memory-usage.md#全局内存管理架构)
   - `0`：默认资源份额上限 `95%` [tidb_server_memory_limit](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入)
   - 浮点数 `(0, 1]`：指定比率，资源份额上限为 `tidb_mem_arbitrator_soft_limit *` [tidb_server_memory_limit](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入)
   - 整数 `(1, 9223372036854775807]`：指定字节数
@@ -3388,7 +3388,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：枚举型
 - 默认值：`0`
 - 可选值：`0`，`1`，`nolimit`
-- 当启用先订阅后分配的 [全局内存管理模式](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 后，该变量控制 SQL 避免阻塞式等待内存资源的相关属性，详见 [TiDB 内存控制](/configure-memory-usage.md)
+- 当启用先订阅后分配的 [全局内存管理模式](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 后，该变量控制 SQL 避免阻塞式等待内存资源的相关属性，详见 [TiDB 内存控制](/configure-memory-usage.md#全局内存管理架构)
   - `0`：无相关属性
   - `1`：`priority` 模式下，SQL 订阅内存资源时自动绑定高优先级，全局内存资源不足时就执行取消 (Cancel) 操作而非等待
   - `nolimit`：SQL 使用内存资源不受限制，可能导致 TiDB 实例内存风险
