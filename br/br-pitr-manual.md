@@ -549,9 +549,9 @@ tiup br restore point --pd="${PD_IP}:2379" \
 > - 可以指定多个 `--filter` 选项来包含或排除不同的模式。
 > - PITR 过滤暂不支持系统表。如果需要恢复特定的系统表，请使用 `br restore full` 命令并配合过滤器，注意该命令仅恢复快照备份数据（而非日志备份数据）。
 > - 恢复任务匹配正则表达式匹配的是 `restored-ts` 时刻的表的名字，因此有以下三种情况：
-> - - 1. 表 A (table id = 1) 在 `restored-ts` 时刻及以前的表名始终匹配 `--filter` 正则表达式，则 PITR 会恢复这张表。
-> - - 2. 表 B (table id = 2) 在 `restored-ts` 前的某个时刻的表名不匹配 `--filter` 正则表达式，但在 `restored-ts` 时刻的表名匹配，则 PITR 会恢复这张表。
-> - - 3. 表 C (table id = 3) 在 `restored-ts` 前的某个时刻的表名匹配 `--filter` 正则表达式，但在 `restored-ts` 时刻的表名不匹配，则 PITR 不会恢复这张表。
+>     - 表 A (table id = 1) 在 `restored-ts` 时刻及以前的表名始终匹配 `--filter` 正则表达式，则 PITR 会恢复这张表。
+>     - 表 B (table id = 2) 在 `restored-ts` 前的某个时刻的表名不匹配 `--filter` 正则表达式，但在 `restored-ts` 时刻的表名匹配，则 PITR 会恢复这张表。
+>     - 表 C (table id = 3) 在 `restored-ts` 前的某个时刻的表名匹配 `--filter` 正则表达式，但在 `restored-ts` 时刻的表名不匹配，则 PITR 不会恢复这张表。
 > - 你可以通过使用库表过滤功能来在线恢复部分数据。在线恢复过程中，注意不要创建与恢复表库表名相同的表，避免因冲突而失败。在该恢复过程中由 PITR 创建的表都是不可读写的，避免在恢复过程中出现数据不一致。在恢复结束时，这些表会在 TiDB Domain 内存缓存中更新，并且被允许进行读写操作。
 
 ### 并发恢复操作
