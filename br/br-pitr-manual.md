@@ -548,7 +548,7 @@ tiup br restore point --pd="${PD_IP}:2379" \
 > - 过滤器选项适用于快照备份和日志备份的恢复阶段。
 > - 可以指定多个 `--filter` 选项来包含或排除不同的模式。
 > - PITR 过滤暂不支持系统表。如果需要恢复特定的系统表，请使用 `br restore full` 命令并配合过滤器，注意该命令仅恢复快照备份数据（而非日志备份数据）。
-> - 恢复任务匹配正则表达式匹配的是 `restored-ts` 时刻的表的名字，因此有以下三种情况：
+> - 恢复任务中的正则表达式匹配的是 `restored-ts` 时刻的表名，有以下三种情况：
 >     - 表 A (table id = 1) 在 `restored-ts` 时刻及之前，表名始终匹配 `--filter` 正则表达式，则 PITR 会恢复这张表。
 >     - 表 B (table id = 2) 在 `restored-ts` 前的某个时刻，表名不匹配 `--filter` 正则表达式，但在 `restored-ts` 时刻匹配，则 PITR 会恢复这张表。
 >     - 表 C (table id = 3) 在 `restored-ts` 前的某个时刻，表名匹配 `--filter` 正则表达式，但在 `restored-ts` 时刻**不**匹配，则 PITR **不会**恢复这张表。
