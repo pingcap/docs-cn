@@ -297,7 +297,7 @@ FROM sbtest1
 WHERE k IN (xx, xx, xx)
 ```
 
-Range Partition (100 partitions)：
+Range Partition (100 partitions):
 
 | Table type                                                            | Concurrency 1 | Concurrency 32 | Concurrency 64 | Average RU |
 | --------------------------------------------------------------------- | ------------- | -------------- | -------------- | ---------- |
@@ -305,7 +305,7 @@ Range Partition (100 partitions)：
 | Clustered table range partitioned by PK                               | 68            | 480            | 511            | 114.87     |
 | Clustered table range partitioned by PK, with Global Index on `k`,`c` | 207           | 17,798         | 27,707         | 11.73      |
 
-Hash Partition (100 partitions)：
+Hash Partition (100 partitions):
 
 | Table type                                                           | Concurrency 1 | Concurrency 32 | Concurrency 64 | Average RU |
 | -------------------------------------------------------------------- | ------------- | -------------- | -------------- | ---------- |
