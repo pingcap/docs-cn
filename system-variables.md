@@ -1601,7 +1601,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：浮点数
 - 取值范围：`[0, 1]`
 - 默认值：`0.8`
-- 该变量用于指定 TiDB 优化器的伪选择率。在某些情况下，当优化器无法根据统计信息推导出谓词选择率时，优化器将使用此伪选择率作为替代值。**不建议**修改此值。
+- 该变量用于指定 TiDB 优化器的默认选择率。在某些情况下，当优化器无法根据统计信息推导出谓词选择率时，优化器将使用此默认选择率作为替代值。**不建议**修改此值。
 
 ### `tidb_default_string_match_selectivity` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
