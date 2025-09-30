@@ -134,7 +134,7 @@ SELECT * FROM INFORMATION_SCHEMA.TIFLASH_INDEXES;
 
 - 可以通过 `ROWS_DELTA_NOT_INDEXED` 列查看 Delta 层中的行数。TiFlash 存储层的数据主要存放在 Delta 层和 Stable 层。Delta 层存储最近插入或更新的行，并根据写入工作量定期将这些行合并到 Stable 层。这个合并过程称为“压缩”。
 
-    Delta 层本身是不包含索引的。为了达到最佳性能，你可以强制将 Delta 层合并到 Stable 层，以确保所有的数据都能够被索引：
+    Delta 层可能仅有部分数据是包含索引的，为了达到最佳性能，你可以强制将 Delta 层合并到 Stable 层，以确保所有的数据都能够被索引：
 
     ```sql
     ALTER TABLE <TABLE_NAME> COMPACT;
