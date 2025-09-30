@@ -38,7 +38,7 @@ SHOW PROCESSLIST;
 
 ## 权限
 
-如果当前用户没有 `PROCESS` 权限，`SHOW PROCESSLIST` 仅显示该用户自己会话的请求。
+如果当前用户没有 `PROCESS` 权限，`SHOW PROCESSLIST` 仅显示该用户自己的会话请求。
 
 ## MySQL 兼容性
 
