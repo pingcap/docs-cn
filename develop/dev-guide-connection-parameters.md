@@ -139,7 +139,7 @@ TiDB 中同时支持两种方式，但更推荐使用第一种将 **FetchSize** 
 
 ### MySQL JDBC 参数
 
-JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置。这里以 MySQL 官方的 Connector/J 来介绍[参数配置](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-configuration-properties.html)（如果使用的是 MariaDB，可以参考 [MariaDB 的类似配置](https://mariadb.com/kb/en/library/about-mariadb-connector-j/#optional-url-parameters)）。因为配置项较多，这里主要关注几个可能影响到性能的参数。
+JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置。这里以 MySQL 官方的 Connector/J 来介绍[参数配置](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-configuration-properties.html)（如果使用的是 MariaDB，可以参考 [MariaDB 的类似配置](https://mariadb.com/docs/connectors/mariadb-connector-j/about-mariadb-connector-j#optional-url-parameters)）。因为配置项较多，这里主要关注几个可能影响到性能的参数。
 
 #### Prepare 相关参数
 
