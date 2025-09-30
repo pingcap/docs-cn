@@ -308,6 +308,14 @@ Empty set (0.002 sec)
 1 row in set (0.002 sec)
 ```
 
+## SQL 语句截断
+
+当你使用 `CREATE BINDING ... FROM HISTORY USING PLAN DIGEST` 时，如果该 digest 对应的 SQL 语句在 [Statement Summary Tables](/statement-summary-tables.md) 中由于长度超过了 [`tidb_stmt_summary_max_sql_length`](/system-variables.md#tidb_stmt_summary_max_sql_length-从-v40-版本开始引入) 而被截断，绑定可能会失败。此时，你需要增大 `tidb_stmt_summary_max_sql_length` 的值。
+
+## 权限
+
+执行 `CREATE BINDING` 语句需要 `SUPER` 权限。
+
 ## MySQL 兼容性
 
 `CREATE [GLOBAL|SESSION] BINDING` 语句是 TiDB 对 MySQL 语法的扩展。
