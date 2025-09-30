@@ -17,6 +17,10 @@ TiDB Dashboard 支持基于 [OIDC](https://openid.net/connect/) 协议的单点�
 
 3. 在**单点登录** (Single Sign-On) 区域下，开启**允许使用 SSO 登录到 TiDB Dashboard** (Enable to use SSO when sign into TiDB Dashboard)。
 
+    > **注意：**
+    >
+    > 如果你的账号没有 `SYSTEM_VARIABLES_ADMIN` 权限，**允许使用 SSO 登录到 TiDB Dashboard** (Enable to use SSO when sign into TiDB Dashboard) 选项会被禁用。有关权限的更多信息，请参考 [TiDB Dashboard 用户管理](/dashboard/dashboard-user.md)。
+
 4. 在表单中填写 **OIDC Client ID** 和 **OIDC Discovery URL** 字段。
 
     一般可以从 SSO 服务的提供商处获取到这两个字段信息：
