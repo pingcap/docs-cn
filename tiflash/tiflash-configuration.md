@@ -138,7 +138,7 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 ##### `dir`
 
-- 指定用于存储查询的临时落盘文件路径。
+- 指定查询执行过程中临时落盘文件的存储路径。
 - 默认使用 \[[`storage.latest.dir`](#dir-1) 的第一个目录\] + "/tmp"
 
 ##### `capacity`
