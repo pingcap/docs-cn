@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/subquery-optimization/']
 
 有时，子查询中包含了非子查询中的列，如 `select * from t where t.a in (select * from t2 where t.b=t2.b)` 中，子查询中的 `t.b` 不是子查询中的列，而是从子查询外面引入的列。这种子查询通常会被称为`关联子查询`，外部引入的列会被称为`关联列`，关联子查询相关的优化参见[关联子查询去关联](/correlated-subquery-optimization.md)。本文主要关注不涉及关联列的子查询。
 
-子查询默认会以[理解 TiDB 执行计划](/explain-overview.md)中提到的 `semi join` 作为默认的执行方式，同时对于一些特殊的子查询，TiDB 会做一些逻辑上的替换使得查询可以获得更好的执行性能。
+子查询默认会以 [Semi Join（关联查询）](/explain-subqueries.md#semi-join关联查询)中提到的 `Semi Join` 作为默认的执行方式，同时对于一些特殊的子查询，TiDB 会做一些逻辑上的替换使得查询可以获得更好的执行性能。
 
 ## `... < ALL (SELECT ... FROM ...)` 或者 `... > ANY (SELECT ... FROM ...)`
 
