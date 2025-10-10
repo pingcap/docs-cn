@@ -4209,7 +4209,7 @@ SHOW WARNINGS;
 
 ### `tidb_opt_risk_range_skew_ratio` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-> **Warning:**
+> **警告：**
 >
 > TiDB 查询优化器会使用该变量。如果没有 TiDB 支持或工程师指导，请不要调整该变量。
 
