@@ -85,8 +85,6 @@ TiDB 的默认安装中存在许多用于组件间通信的特权接口。这些
 | TiDB Lightning    | 8289         | HTTP       |
 | TiDB Operator     | 6060         | HTTP       |
 | TiDB Dashboard    | 2379         | HTTP       |
-| TiDB Binlog       | 8250         | HTTP       |
-| TiDB Binlog       | 8249         | HTTP       |
 | TMS               | 8082         | HTTP       |
 | TEM               | 8080         | HTTP       |
 | TEM               | 8000         | HTTP       |
