@@ -19,7 +19,7 @@ TableName ::=
 
 ## 示例
 
-显示当前表 `t1` 的 Region 分布情况：
+显示当前表 `t` 的 Region 分布情况：
 
 ```sql
 CREATE TABLE `t` (
@@ -29,8 +29,8 @@ CREATE TABLE `t` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin 
 PARTITION BY RANGE (`a`)
 (PARTITION `p1` VALUES LESS THAN (10000),
- PARTITION `p2` VALUES LESS THAN (MAXVALUE)) |
-SHOW TABLE t1 DISTRIBUTIONS;
+ PARTITION `p2` VALUES LESS THAN (MAXVALUE));
+SHOW TABLE t DISTRIBUTIONS;
 ```
 
 ```
