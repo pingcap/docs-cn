@@ -211,7 +211,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
 ## 验证 TiDB 组件间的 TLS 配置
 
-在为 TiDB 组件间通信配置 TLS 后，可以使用以下命令验证 TLS 是否已成功启用。这些命令会打印各组件的证书和 TLS 握手详情。
+在为 TiDB 组件间通信配置 TLS 后，可以使用以下命令验证 TLS 是否已成功启用。这些命令会输出每个组件的证书和 TLS 握手详细信息。
 
 - TiDB
 
