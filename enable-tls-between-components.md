@@ -209,6 +209,40 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
         cert-allowed-cn = ["tiproxy", "tidb", "test-client", "prometheus"]
     ```
 
+## 验证 TiDB 组件间的 TLS 配置
+
+在为 TiDB 组件间通信配置 TLS 后，可以使用以下命令验证 TLS 是否已成功启用。这些命令会打印各组件的证书和 TLS 握手详情。
+
+- TiDB
+
+    ```sh
+    openssl s_client -connect <tidb_host>:10080 -cert /path/to/client.pem -key /path/to/client-key.pem -CAfile ./ca.crt < /dev/null
+    ```
+
+- PD
+
+    ```sh
+    openssl s_client -connect <pd_host>:2379 -cert /path/to/client.pem -key /path/to/client-key.pem -CAfile ./ca.crt < /dev/null
+    ```
+
+- TiKV
+
+    ```sh
+    openssl s_client -connect <tikv_host>:20160 -cert /path/to/client.pem -key /path/to/client-key.pem -CAfile ./ca.crt < /dev/null
+    ```
+
+- TiFlash (在 v4.0.5 版本引入)
+
+    ```sh
+    openssl s_client -connect <tiflash_host>:<tiflash_port> -cert /path/to/client.pem -key /path/to/client-key.pem -CAfile ./ca.crt < /dev/null
+    ```
+
+- TiProxy
+
+    ```sh
+    openssl s_client -connect <tiproxy_host>:3080 -cert /path/to/client.pem -key /path/to/client-key.pem -CAfile ./ca.crt < /dev/null
+    ```
+
 ## 证书重新加载
 
 - 如果 TiDB 集群部署在本地的数据中心，TiDB、PD、TiKV、TiFlash、TiCDC、TiProxy 和各种 client 在每次新建相互通讯的连接时都会重新读取当前的证书和密钥文件内容，实现证书和密钥的重新加载，无需重启 TiDB 集群。
