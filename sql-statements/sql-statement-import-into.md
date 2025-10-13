@@ -126,7 +126,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 
 ### Format
 
-`IMPORT INTO` 支持 3 种数据文件格式，包括 `CSV`、`SQL` 和 `PARQUET`。当不指定该参数时，根据文件名特征自动识别文件类型，如果文件名不包含文件后缀，会使用默认格式 `CSV`。
+`IMPORT INTO` 支持 3 种数据文件格式，包括 `CSV`、`SQL` 和 `PARQUET`。如果未显式指定该参数，TiDB 会根据文件名的后缀自动识别文件类型。若文件名不包含后缀，则默认使用 `CSV` 格式。
 
 ### WithOptions
 
