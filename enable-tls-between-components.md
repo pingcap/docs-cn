@@ -186,18 +186,6 @@ summary: 了解如何为 TiDB 集群内各组件间开启加密传输。
     cert-allowed-cn = ["tidb", "tikv", "tiflash", "prometheus"]
     ```
 
-<<<<<<< HEAD
-=======
-- TiProxy（从 v1.4.0 版本开始引入）
-
-    在 `config` 文件中设置：
-
-    ```toml
-    [security]
-        [server-http-tls]
-        cert-allowed-cn = ["tiproxy", "tidb", "test-client", "prometheus"]
-    ```
-
 ## 验证 TiDB 组件间的 TLS 配置
 
 在为 TiDB 组件间通信配置 TLS 后，可以使用以下命令验证 TLS 是否已成功启用。这些命令会输出每个组件的证书和 TLS 握手详细信息。
@@ -232,7 +220,6 @@ summary: 了解如何为 TiDB 集群内各组件间开启加密传输。
     openssl s_client -connect <tiproxy_host>:3080 -cert /path/to/client.pem -key /path/to/client-key.pem -CAfile ./ca.crt < /dev/null
     ```
 
->>>>>>> dd189e0cc3 (security: add steps to validate TLS between components (#20986))
 ## 证书重新加载
 
 - 如果 TiDB 集群部署在本地的数据中心，TiDB、PD、TiKV、TiFlash、TiCDC 和各种 client 在每次新建相互通讯的连接时都会重新读取当前的证书和密钥文件内容，实现证书和密钥的重新加载，无需重启 TiDB 集群。
