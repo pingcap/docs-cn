@@ -45,6 +45,7 @@ IndexOption ::=
 |   'COMMENT' stringLit
 |   ("VISIBLE" | "INVISIBLE")
 |   ("GLOBAL" | "LOCAL")
+|   'WHERE' Expression
 
 IndexTypeName ::=
     'BTREE'
@@ -382,6 +383,138 @@ Query OK, 1 row affected (0.00 sec)
 - 由于多值索引是一种特殊的表达式索引，因此具有表达式索引的限制。
 - 使用备份恢复工具 (BR)、同步工具 (TiCDC)、导入工具 (TiDB Lightning) 无法将定义了多值索引的表备份、同步、导入到低于 v6.6.0 版本的 TiDB。
 - 条件复杂的查询有可能无法选择到多值索引，多值索引支持的条件模式请参考[使用多值索引](/choose-index.md#使用多值索引)。
+
+## 部分索引
+
+部分索引是在表中行的子集上构建的索引，由条件表达式（称为部分索引的谓词）定义。该索引仅包含满足谓词的行的条目。
+
+### 创建部分索引
+
+你可以通过在索引定义中添加 `WHERE` 子句来创建部分索引。例如：
+
+```sql
+CREATE TABLE t1 (c1 INT, c2 INT, c3 TEXT);
+CREATE INDEX idx1 ON t1 (c1) WHERE c2 > 10;
+```
+
+你也可以使用 `ALTER TABLE` 来创建部分索引：
+
+```sql
+ALTER TABLE t1 ADD INDEX idx2 (c1, c2) WHERE c3 = 'abc';
+```
+
+或者在创建表时指定部分索引：
+
+```sql
+CREATE TABLE t2 (
+    id INT PRIMARY KEY,
+    status VARCHAR(20),
+    created_at DATETIME,
+    INDEX idx_active_status (status) WHERE status = 'active'
+);
+```
+
+### 使用示例
+
+以下示例演示如何有效地使用部分索引：
+
+```sql
+-- 创建包含用户数据的表
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100),
+    status varchar(20),
+    created_at DATETIME,
+    score INT
+);
+
+-- 为常见查询模式创建部分索引
+CREATE INDEX idx_active_users ON users (name) WHERE status = 'active';
+CREATE INDEX idx_high_score_users ON users (created_at) WHERE score > 1000;
+CREATE INDEX idx_pending_status ON users (created_at) WHERE status = 'pending';
+```
+
+然后以下查询可以使用部分索引：
+
+```
+mysql> explain SELECT * FROM users WHERE status = 'active' AND name = 'John';
++-------------------------------+---------+-----------+-------------------------------------------+-------------------------------------------------------+
+| id                            | estRows | task      | access object                             | operator info                                         |
++-------------------------------+---------+-----------+-------------------------------------------+-------------------------------------------------------+
+| IndexLookUp_9                 | 1.00    | root      |                                           |                                                       |
+| ├─IndexRangeScan_6(Build)     | 10.00   | cop[tikv] | table:users, index:idx_active_users(name) | range:["John","John"], keep order:false, stats:pseudo |
+| └─Selection_8(Probe)          | 1.00    | cop[tikv] |                                           | eq(test.users.status, "active")                       |
+|   └─TableRowIDScan_7          | 10.00   | cop[tikv] | table:users                               | keep order:false, stats:pseudo                        |
++-------------------------------+---------+-----------+-------------------------------------------+-------------------------------------------------------+
+4 rows in set (0.00 sec)
+
+mysql> explain SELECT * FROM users WHERE status = 'active' ORDER BY name;
++-------------------------------+----------+-----------+-------------------------------------------+---------------------------------+
+| id                            | estRows  | task      | access object                             | operator info                   |
++-------------------------------+----------+-----------+-------------------------------------------+---------------------------------+
+| IndexLookUp_18                | 10.00    | root      |                                           |                                 |
+| ├─IndexFullScan_15(Build)     | 10000.00 | cop[tikv] | table:users, index:idx_active_users(name) | keep order:true, stats:pseudo   |
+| └─Selection_17(Probe)         | 10.00    | cop[tikv] |                                           | eq(test.users.status, "active") |
+|   └─TableRowIDScan_16         | 10000.00 | cop[tikv] | table:users                               | keep order:false, stats:pseudo  |
++-------------------------------+----------+-----------+-------------------------------------------+---------------------------------+
+4 rows in set (0.00 sec)
+
+mysql> explain SELECT * FROM users WHERE score > 10000 ORDER BY created_at;
++-------------------------------+----------+-----------+-----------------------------------------------------+--------------------------------+
+| id                            | estRows  | task      | access object                                       | operator info                  |
++-------------------------------+----------+-----------+-----------------------------------------------------+--------------------------------+
+| IndexLookUp_18                | 3333.33  | root      |                                                     |                                |
+| ├─IndexFullScan_15(Build)     | 10000.00 | cop[tikv] | table:users, index:idx_high_score_users(created_at) | keep order:true, stats:pseudo  |
+| └─Selection_17(Probe)         | 3333.33  | cop[tikv] |                                                     | gt(test.users.score, 10000)     |
+|   └─TableRowIDScan_16         | 10000.00 | cop[tikv] | table:users                                         | keep order:false, stats:pseudo |
++-------------------------------+----------+-----------+-----------------------------------------------------+--------------------------------+
+4 rows in set (0.00 sec)
+
+mysql> explain SELECT * FROM users WHERE status = 'pending';
++-------------------------+----------+-----------+---------------+----------------------------------+
+| id                      | estRows  | task      | access object | operator info                    |
++-------------------------+----------+-----------+---------------+----------------------------------+
+| TableReader_8           | 10.00    | root      |               | data:Selection_7                 |
+| └─Selection_7           | 10.00    | cop[tikv] |               | eq(test.users.status, "pending") |
+|   └─TableFullScan_6     | 10000.00 | cop[tikv] | table:users   | keep order:false, stats:pseudo   |
++-------------------------+----------+-----------+---------------+----------------------------------+
+3 rows in set (0.00 sec)
+```
+
+如果查询中的谓词不满足索引定义，即使使用 hint 也不会选择该索引：
+
+```
+mysql> explain SELECT * FROM users use index(idx_high_score_users) WHERE score > 100 ORDER BY created_at;
++---------------------------+----------+-----------+---------------+--------------------------------+
+| id                        | estRows  | task      | access object | operator info                  |
++---------------------------+----------+-----------+---------------+--------------------------------+
+| Sort_5                    | 3333.33  | root      |               | test.users.created_at          |
+| └─TableReader_11          | 3333.33  | root      |               | data:Selection_10              |
+|   └─Selection_10          | 3333.33  | cop[tikv] |               | gt(test.users.score, 100)      |
+|     └─TableFullScan_9     | 10000.00 | cop[tikv] | table:users   | keep order:false, stats:pseudo |
++---------------------------+----------+-----------+---------------+--------------------------------+
+```
+
+### 何时使用部分索引
+
+部分索引在以下场景中特别有用：
+
+- **选择性过滤**：当你经常基于特定条件查询一小部分行时
+- **条件唯一性**：当你需要只在某些条件下应用唯一约束时
+
+### 限制
+
+- 部分索引的 `WHERE` 子句支持基本比较运算符（`=`、`!=`、`<`、`<=`、`>`、`>=`）和具有常量值的 `IN` 谓词
+- 列和常量值的类型应该相同
+- 谓词只能引用同一表中的列
+- 部分索引不能用于表达式索引
+
+### 性能优势
+
+部分索引提供几个优势：
+
+1. **减少存储**：只有匹配谓词的行被索引，节省存储空间
+2. **更快的 DML**：在 INSERT、UPDATE 和 DELETE 操作期间维护数据子集的索引会更快
 
 ## 不可见索引
 
