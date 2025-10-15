@@ -44,14 +44,14 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 可复制的 DDL 包括：
 
-- [`ALTER TABLE ... ADD COLUMN`](/sql-statements/sql-statement-add-column.md): the column can be `null`, or has `not null` and `default value` at the same time
+- [`ALTER TABLE ... ADD COLUMN`](/sql-statements/sql-statement-add-column.md)：添加的列必须可以为 `null`，或者是同时带有 `not null` 和 `default value`
 - [`ALTER TABLE ... ADD INDEX`](/sql-statements/sql-statement-add-index.md) (non-unique)
 - [`ALTER TABLE ... ADD PARTITION`](/sql-statements/sql-statement-alter-table.md)
 - [`ALTER TABLE ... ALTER COLUMN DROP DEFAULT`](/sql-statements/sql-statement-alter-table.md)
 - [`ALTER TABLE ... ALTER COLUMN SET DEFAULT`](/sql-statements/sql-statement-alter-table.md)
 - [`ALTER TABLE ... COMMENT=...`](/sql-statements/sql-statement-alter-table.md)
 - [`ALTER TABLE ... DROP PRIMARY KEY`](/sql-statements/sql-statement-alter-table.md)
-- [`ALTER TABLE ... MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md): you can only modify the `default value` and `comment` of the column
+- [`ALTER TABLE ... MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md)：仅能修改列的 `default value` 和 `comment`
 - [`ALTER TABLE ... RENAME INDEX`](/sql-statements/sql-statement-rename-index.md)
 - [`ALTER TABLE ... ALTER INDEX ... INVISIBLE`](/sql-statements/sql-statement-alter-table.md)
 - [`ALTER TABLE ... ALTER INDEX ... VISIBLE`](/sql-statements/sql-statement-alter-table.md)
@@ -71,7 +71,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 不可复制的 DDL 包括：
 
 - [`ALTER DATABASE CHARACTER SET`](/sql-statements/sql-statement-alter-table.md)
-- [`ALTER TABLE ... ADD COLUMN`](/sql-statements/sql-statement-alter-table.md): the column is `not null` and does not have a `default value`
+- [`ALTER TABLE ... ADD COLUMN`](/sql-statements/sql-statement-alter-table.md)：添加的列为 `not null` 且不带有 `default value`
 - [`ALTER TABLE ... ADD PRIMARY KEY`](/sql-statements/sql-statement-alter-table.md)
 - [`ALTER TABLE ... ADD UNIQUE INDEX`](/sql-statements/sql-statement-alter-table.md)
 - [`ALTER TABLE ... AUTO_INCREMENT=...`](/sql-statements/sql-statement-alter-table.md)
@@ -80,7 +80,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 - [`ALTER TABLE ... DROP COLUMN`](/sql-statements/sql-statement-alter-table.md)
 - [`ALTER TABLE ... DROP PARTITION`](/sql-statements/sql-statement-alter-table.md)
 - [`ALTER TABLE ... EXCHANGE PARTITION`](/sql-statements/sql-statement-alter-table.md)
-- [`ALTER TABLE ... MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md): you can modify the attributes of the column except `default value` and `comment`
+- [`ALTER TABLE ... MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md):：修改列除 `default value` 和 `comment` 以外的属性
 - [`ALTER TABLE ... REORGANIZE PARTITION`](/sql-statements/sql-statement-alter-table.md)
 - [`ALTER TABLE ... TRUNCATE PARTITION`](/sql-statements/sql-statement-alter-table.md)
 - [`DROP DATABASE`](/sql-statements/sql-statement-drop-database.md)
