@@ -44,22 +44,25 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 可复制的 DDL 包括：
 
-- `CREATE DATABASE`
-- `CREATE TABLE`
-- `ADD COLUMN`：添加的列必须可以为 `null`，或者是同时带有 `not null` 和 `default value`
-- `ADD NON-UNIQUE INDEX`
-- `DROP INDEX`
-- `MODIFY COLUMN`：仅能修改列的 `default value` 和 `comment`
-- `ALTER COLUMN DEFAULT VALUE`
-- `MODIFY TABLE COMMENT`
-- `RENAME INDEX`
-- `ADD TABLE PARTITION`
-- `DROP PRIMARY KEY`
-- `ALTER TABLE INDEX VISIBILITY`
-- `ALTER TABLE TTL`
-- `ALTER TABLE REMOVE TTL`
-- `CREATE VIEW`
-- `DROP VIEW`
+- [`ALTER TABLE ... ADD COLUMN`](/sql-statements/sql-statement-add-column.md)：添加的列必须可以为 `null`，或者是同时带有 `not null` 和 `default value`
+- [`ALTER TABLE ... ADD INDEX`](/sql-statements/sql-statement-add-index.md) (non-unique)
+- [`ALTER TABLE ... ADD PARTITION`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE ... ALTER COLUMN DROP DEFAULT`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE ... ALTER COLUMN SET DEFAULT`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE ... COMMENT=...`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE ... DROP PRIMARY KEY`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE ... MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md)：仅能修改列的 `default value` 和 `comment`
+- [`ALTER TABLE ... RENAME INDEX`](/sql-statements/sql-statement-rename-index.md)
+- [`ALTER TABLE ... ALTER INDEX ... INVISIBLE`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE ... ALTER INDEX ... VISIBLE`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE REMOVE TTL`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE TTL`](/sql-statements/sql-statement-alter-table.md)
+- [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md)
+- [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md)
+- [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md)
+- [`CREATE VIEW`](/sql-statements/sql-statement-create-view.md)
+- [`DROP INDEX`](/sql-statements/sql-statement-drop-index.md)
+- [`DROP VIEW`](/sql-statements/sql-statement-drop-view.md)
 
 ### 不可复制的 DDL
 
@@ -67,23 +70,24 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 不可复制的 DDL 包括：
 
-- `DROP DATABASE`
-- `DROP TABLE`
-- `ADD COLUMN`：添加的列为 `not null` 且不带有 `default value`
-- `DROP COLUMN`
-- `ADD UNIQUE INDEX`
-- `TRUNCATE TABLE`
-- `MODIFY COLUMN`：修改列除 `default value` 和 `comment` 以外的属性
-- `RENAME TABLE`
-- `DROP PARTITION`
-- `TRUNCATE PARTITION`
-- `ALTER TABLE CHARACTER SET`
-- `ALTER DATABASE CHARACTER SET`
-- `RECOVER TABLE`
-- `ADD PRIMARY KEY`
-- `REBASE AUTO ID`
-- `EXCHANGE PARTITION`
-- `REORGANIZE PARTITION`
+- [`ALTER DATABASE CHARACTER SET`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE ... ADD COLUMN`](/sql-statements/sql-statement-alter-table.md)：添加的列为 `not null` 且不带有 `default value`
+- [`ALTER TABLE ... ADD PRIMARY KEY`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE ... ADD UNIQUE INDEX`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE ... AUTO_INCREMENT=...`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE ... AUTO_RANDOM_BASE=...`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE ... CHARACTER SET=...`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE ... DROP COLUMN`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE ... DROP PARTITION`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE ... EXCHANGE PARTITION`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE ... MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md):：修改列除 `default value` 和 `comment` 以外的属性
+- [`ALTER TABLE ... REORGANIZE PARTITION`](/sql-statements/sql-statement-alter-table.md)
+- [`ALTER TABLE ... TRUNCATE PARTITION`](/sql-statements/sql-statement-alter-table.md)
+- [`DROP DATABASE`](/sql-statements/sql-statement-drop-database.md)
+- [`DROP TABLE`](/sql-statements/sql-statement-drop-table.md)
+- [`RECOVER TABLE`](/sql-statements/sql-statement-recover-table.md)
+- [`RENAME TABLE`](/sql-statements/sql-statement-rename-table.md)
+- [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md)
 
 ## DDL 同步
 
@@ -102,6 +106,9 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
     ```sql
     ADMIN SET BDR ROLE PRIMARY;
+    ```
+
+    ```
     Query OK, 0 rows affected
     Time: 0.003s
 
@@ -152,7 +159,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
     >
     > 请勿将 BDR role 设置为其他情况，例如，既存在设置了 `PRIMARY`、`SECONDARY` 的集群，又存在没有设置 BDR role 的集群。如果错误地设置了 BDR role，TiCDC 同步数据期间无法保证数据正确性和一致性。
 
-- 一般情况下，禁止在同步的表中使用 `AUTO_INCREMENT` 或 `AUTO_RANDOM` 键，以免产生数据冲突的问题。如果需要使用 `AUTO_INCREMENT` 或 `AUTO_RANDOM` 键，可以通过在不同的集群设置 `auto_increment_increment` 和 `auto_increment_offset` 来使得不同的集群都能够分配到不同的主键。假设有三个 TiDB 集群（A、B、C）处于双向同步中，那么你可以采取如下设置：
+- 一般情况下，禁止在同步的表中使用 [`AUTO_INCREMENT`](/auto-increment.md) 或 [`AUTO_RANDOM`](/auto-random.md) 键，以免产生数据冲突的问题。如果需要使用 `AUTO_INCREMENT` 或 `AUTO_RANDOM` 键，可以通过在不同的集群设置 `auto_increment_increment` 和 `auto_increment_offset` 来使得不同的集群都能够分配到不同的主键。假设有三个 TiDB 集群（A、B、C）处于双向同步中，那么你可以采取如下设置：
 
     - 在 A 中设置 `auto_increment_increment=3`，`auto_increment_offset=2000`
     - 在 B 中设置 `auto_increment_increment=3`，`auto_increment_offset=2001`
