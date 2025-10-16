@@ -502,7 +502,7 @@ EXPLAIN SELECT /*+ INDEX_LOOKUP_PUSHDOWN(t1, a) */ a, b FROM t1;
 +-----------------------------+----------+-----------+----------------------+--------------------------------+
 ```
 
-在启用 `INDEX_LOOKUP_PUSHDOWN` hint 后，下推计划中的最外层 Build 算子会变为 `LocalIndexLookUp`。这意味着 TiKV 在扫描索引的同时，会尝试在本地回表查询对应的行数据。然而，由于索引和行数据可能分布在不同的 Region，下推请求无法保证覆盖所有目标行。因此，TiDB 端仍需保留 `TableRowIDScan`，用于补充查询那些下推无法命中的行。此 hint 受系统变量 [`tidb_enable_index_lookup_pushdown`](/system-variables.md#tidb_enable_index_lookup_pushdown-从-v90-版本开始引入) 影响。
+在启用 `INDEX_LOOKUP_PUSHDOWN` hint 后，下推计划中的最外层 Build 算子会变为 `LocalIndexLookUp`。这意味着 TiKV 在扫描索引的同时，会尝试在本地回表查询对应的行数据。然而，由于索引和行数据可能分布在不同的 Region，下推请求无法保证覆盖所有目标行。因此，TiDB 端仍需保留 `TableRowIDScan`，用于补充查询那些下推无法命中的行。
 
 `INDEX_LOOKUP_PUSHDOWN` 当前的使用限制如下：
 
