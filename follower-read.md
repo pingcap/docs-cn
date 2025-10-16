@@ -6,25 +6,30 @@ aliases: ['/docs-cn/dev/follower-read/','/docs-cn/dev/reference/performance/foll
 
 # Follower Read
 
-为了高可用和数据安全，TiKV 中的数据有多个副本，其中有一个 leader 和多个 follower，默认情况下读写都发生在 leader 上，Follower Read 功能使得 follower 可以提供读取能力。
+在 TiDB 中，为了实现高可用和数据安全，TiKV 会为每个 Region 保存多个副本，其中一个为 leader，其余为 follower。默认情况下，所有读写请求都由 leader 处理。Follower Read功能允许在保持强一致性的前提下，从 Region 的 follower 副本读取数据，从而分担 leader 的读取压力，提升集群整体的读吞吐量。
 
-Follower Read 功能适用于以下场景：
+通过让 follower 参与数据读取，Follower Read 可以实现以下目标：
 
-- 希望通过 follower 打散读热点。
-- 希望通过读取本地副本节省流量。
+- 分散读热点，减轻 leader 负载。
+- 在多可用区或多机房部署中，通过读取同一区的本地副本降低跨区流量和访问延迟。
 
-> **说明：**
->
-> TiDB 使用 `zone` label 来判断本地副本，当目标 TiKV 和 TiDB 的 `zone` label 相同时，TiDB 认为这是一个本地的 TiKV，详情可以参考[通过拓扑 label 进行副本调度](schedule-replicas-by-topology-labels.md)文档。
+## 工作原理
 
+Follower Read 包含一系列将 TiKV 读取负载从 Region 的 leader 副本上 offload 到 follower 副本的负载均衡机制。
 
-## 概述
+在执行 Follower Read 时，TiDB 会根据拓扑信息选择合适的副本。具体来说，TiDB 使用 `zone` label 判断一个副本是否为本地副本：当 TiDB 与目标 TiKV 的 `zone` label 相同时，TiDB 认为该副本是本地副本。更多信息可参考[通过拓扑 label 进行副本调度](schedule-replicas-by-topology-labels.md)。
 
-Follower Read 功能是指在强一致性读的前提下使用 Region 的 follower 副本来承载数据读取的任务，从而提升 TiDB 集群的吞吐能力并降低 leader 负载。Follower Read 包含一系列将 TiKV 读取负载从 Region 的 leader 副本上 offload 到 follower 副本的负载均衡机制。TiKV 的 Follower Read 可以保证数据读取的一致性，可以为用户提供强一致的数据读取能力。
+## 适用场景
+
+Follower Read 适用于以下场景：
+
+- 读请求量大、存在明显读热点的业务。
+- 多可用区部署中，希望优先读取本地副本以节省带宽和降低延迟的场景。
+- 希望在读写分离的架构下，进一步提高集群整体吞吐量的场景。
 
 > **注意：**
 >
-> 为了获得强一致读取的能力，在当前的实现中，follower 节点需要向 leader 节点询问当前的执行进度（即 `ReadIndex`），这会产生一次额外的网络请求开销，因此目前 Follower Read 的主要优势在于大量读取数据场景以及将集群中的读请求与写请求隔离开，并提升整体的读吞吐量。
+> 为了获得强一致读取的能力，Follower Read 在读取前需要与 leader 通信确认当前的执行进度（即 `ReadIndex`）。该过程会产生一次额外的网络交互。因此，当业务以大量读取为主或需要读写隔离时，Follower Read 的优势最为明显；对于低延迟的单次查询场景，其效果可能不明显。
 
 ## 使用方式
 
