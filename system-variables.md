@@ -2070,15 +2070,6 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`OFF`
 - 这个变量用来控制 `PLAN REPLAYER CAPTURE` 抓取的内容是否默认带历史统计信息。默认值为 `OFF`，表示默认不带历史统计信息。
 
-### `tidb_enable_index_lookup_pushdown` <span class="version-mark">从 v9.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：布尔型
-- 默认值：`OFF`
-- 这个变量用于控制是否启用 IndexLookUp 下推。当变量值为 `ON` 且查询中显式使用了 hint [`INDEX_LOOKUP_PUSHDOWN`](/optimizer-hints.md#index_lookup_pushdownt1_name-idx1_name--idx2_name-) 时，TiDB 会将相应的 IndexLookUp 查询下推至 TiKV 执行。若变量值为 `OFF`，则即使在查询中指定了 `INDEX_LOOKUP_PUSHDOWN` Hint，也不会生效。
-
 ### `tidb_enable_index_merge` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 > **注意：**
