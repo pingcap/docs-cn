@@ -6,14 +6,14 @@ aliases: ['/docs-cn/dev/follower-read/','/docs-cn/dev/reference/performance/foll
 
 # Follower Read
 
-在 TiDB 中，为了实现高可用和数据安全，TiKV 会为每个 Region 保存多个副本，其中一个为 leader，其余为 follower。默认情况下，所有读写请求都由 leader 处理。Follower Read 功能允许在保持强一致性的前提下，从 Region 的 follower 副本读取数据，从而分担 leader 的读取压力，提升集群整体的读吞吐量。
+在 TiDB 中，为了保证高可用和数据安全，TiKV 会为每个 Region 保存多个副本，其中一个为 leader，其余为 follower。默认情况下，所有读写请求都由 leader 处理。Follower Read 功能允许在保持强一致性的前提下，从 Region 的 follower 副本读取数据，从而分担 leader 的读取压力，提升集群整体的读吞吐量。
 
 在执行 Follower Read 时，TiDB 会根据拓扑信息选择合适的副本。具体来说，TiDB 使用 `zone` label 判断一个副本是否为本地副本：当 TiDB 与目标 TiKV 的 `zone` label 相同时，TiDB 认为该副本是本地副本。更多信息可参考[通过拓扑 label 进行副本调度](schedule-replicas-by-topology-labels.md)。
 
 通过让 follower 参与数据读取，Follower Read 可以实现以下目标：
 
 - 分散读热点，减轻 leader 负载。
-- 在多可用区或多机房部署中，通过读取同一区的本地副本降低跨区流量。
+- 在多可用区或多机房部署中，优先读取本地副本以减少跨区流量。
 
 ## 适用场景
 
@@ -21,11 +21,11 @@ Follower Read 适用于以下场景：
 
 - 读请求量大、存在明显读热点的业务。
 - 多可用区部署中，希望优先读取本地副本以节省带宽的场景。
-- 希望在读写分离的架构下，进一步提高集群整体吞吐量的场景。
+- 在读写分离架构下，希望进一步提升集群整体读性能的场景。
 
 > **注意：**
 >
-> 为了获得强一致读取的能力，Follower Read 在读取前需要与 leader 通信确认当前的执行进度（即 `ReadIndex`）。该过程会产生一次额外的网络交互。因此，当业务以大量读取为主或需要读写隔离时，Follower Read 的优势最为明显；对于低延迟的单次查询场景，其效果可能不明显。
+> 为确保读取结果的强一致性，Follower Read 在读取前需要与 leader 通信以确认当前的提交进度（即执行 Raft `ReadIndex` 操作），该过程会带来一次额外的网络交互。因此，当业务中存在大量读请求或需要读写隔离时，Follower Read 的效果最为显著；但对于低延迟的单次查询，性能提升可能不明显。
 
 ## 使用方式
 
@@ -41,15 +41,15 @@ set [session | global] tidb_replica_read = '<目标值>';
 
 默认值：leader
 
-该变量用于设置期待的数据读取方式。从 v8.5.4 开始只对只读 SQL 生效。
+该变量用于设置期待的数据读取方式。从 v8.5.4 开始，该变量仅对只读 SQL 语句生效。
 
-通过读取本地副本节省流量的使用场景推荐的设置为：
+在需要通过读取本地副本节省跨区流量的场景下，推荐如下配置：
 
 - 默认值 `leader` 的性能最好。
 - `closest-adaptive` 在最小性能损失的前提下尽可能节省流量。
-- `closest-replicas` 可以节省最多的流量。
+- `closest-replicas` 可以最大程度地节省网络流量。
 
-对于其他正在使用的其他配置，可参照下表映射关系修改为推荐配置。
+如果当前正在使用其他配置，可参考下表修改为推荐配置：
 
 | 正在使用配置 | 推荐修改的配置 |
 | ------------- | ------------- |
@@ -83,7 +83,7 @@ set [session | global] tidb_replica_read = '<目标值>';
 
 ## 基本监控
 
-通过观察相关监控，可以帮助判断是否需要使用 Follower Read 和打开 Follower Read 之后的效果。
+通过观察相关监控，可以帮助判断是否需要使用 Follower Read 以及开启 Follower Read 后的效果。
 
 ## 实现机制
 
@@ -99,22 +99,25 @@ TiKV follower 节点处理读取请求时，首先使用 Raft `ReadIndex` 协议
 
 ### Follower 副本选择策略
 
-由于 TiKV 的 Follower Read 不会破坏 TiDB 的 Snapshot Isolation 事务隔离级别，因此 TiDB 在第一次选取副本时会根据 `tidb_replica_read` 的要求进行选择。从第二次重试开始，TiDB 会以完成读取为优先目标，因此当选中的 follower 节点出现无法访问的故障或其他错误时，会切换到 leader 提供服务。
+Follower Read 不会破坏 TiDB 的事务隔离级别（Snapshot Isolation）。TiDB 在第一次选取副本时会根据 `tidb_replica_read` 的配置进行选择。从第二次重试开始，TiDB 会优先保证读取成功，因此当选中的 follower 节点出现无法访问的故障或其他错误时，会切换到 leader 提供服务。
 
 #### `leader`
+
 - 选择 leader 副本进行读取，不考虑副本位置。
 
 #### `closest-replicas`
+
 - 当和 TiDB 同一个 AZ 的副本是 leader 节点时，不使用 Follower Read。
 - 当和 TiDB 同一个 AZ 的副本不是 leader 节点时，使用 Follower Read。
 
 #### `closest-adaptive`
+
 - 如果预估的返回结果不够大，使用 `leader` 策略，不进行 Follower Read。
 - 如果预估的返回结果足够大，使用 `closest-replicas` 策略。
 
 ### Follower Read 的性能开销
 
 因为 Follower Read 需要一次额外的 `ReadIndex` 来保证强一致，所以会不可避免的消耗更多的 TiKV CPU。
-因为一次 Follower Read 不管读取多少数据，都需要一次 `ReadIndex`，所以在小的 worklo查询ad 中，Follower Read 的性能损耗较为明显，同时因为对小查询进行本地读取能节省的流量有限，所以我们更加推荐在较大查询的场景使用 Follower Read。
+为了保证数据强一致性， Follower Read 不管读取多少数据，都需要执行一次 `ReadIndex`，这将不可避免的消耗更多的 TiKV CPU 资源。因此，在小查询（如点查）场景下，Follower Read 的性能损耗相对更明显。同时，因为对小查询进行本地读取能节省的流量有限，更推荐在大查询或批量读取场景中使用 Follower Read。
 
 使用 `closest-adaptive` 时，会自动对较小的查询不使用 Follower Read，在各种 workload 中相比 `leader` 策略的 TiKV CPU 的额外开销一般在 +10% 之内。
