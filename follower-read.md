@@ -99,7 +99,7 @@ TiKV follower 节点处理读取请求时，首先使用 Raft `ReadIndex` 协议
 
 ### Follower 副本选择策略
 
-Follower Read 不会破坏 TiDB 的事务隔离级别（Snapshot Isolation）。TiDB 在第一次选取副本时会根据 `tidb_replica_read` 的配置进行选择。从第二次重试开始，TiDB 会优先保证读取成功，因此当选中的 follower 节点出现无法访问的故障或其他错误时，会切换到 leader 提供服务。
+Follower Read 不会破坏 TiDB 的 Snapshot Isolation 事务隔离级别。TiDB 在第一次选取副本时会根据 `tidb_replica_read` 的配置进行选择。从第二次重试开始，TiDB 会优先保证读取成功，因此当选中的 follower 节点出现无法访问的故障或其他错误时，会切换到 leader 提供服务。
 
 #### `leader`
 
