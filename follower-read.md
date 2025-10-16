@@ -83,7 +83,7 @@ set [session | global] tidb_replica_read = '<目标值>';
 
 ## 基本监控
 
-通过观察 [**TiDB** > **KV Request** > **Read Req Traffic**（v8.5.4 新增） 面板](/grafana-tidb-dashboard.md#kv-request)，可以帮助判断是否需要使用 Follower Read 以及开启 Follower Read 后查看节省流量的效果。
+通过观察 [**TiDB** > **KV Request** > **Read Req Traffic** 面板（v8.5.4 新增）](/grafana-tidb-dashboard.md#kv-request)，可以帮助判断是否需要使用 Follower Read 以及开启 Follower Read 后查看节省流量的效果。
 
 ## 实现机制
 
