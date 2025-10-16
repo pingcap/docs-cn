@@ -54,21 +54,6 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 
 新架构支持在 MySQL sink 中启用表级任务拆分。您可以通过在 changefeed 配置中设置 `scheduler.enable-table-across-nodes = true` 来开启此功能。开启后，所有有且仅有一个主键或非空唯一键的表，当超过配置的 region 个数阈值 （默认为`100000`）或者写流量阈值（默认未开启）时，会对表会进行拆分，并分发到多个不同节点上执行，从而提升同步效率与资源利用率。Region 个数阈值可以通过 `scheduler.region-threshold` 配置。写流量阈值可以通过 `scheduler.write-key-threshold` 配置。
 
-## 新增配置项
-
-newarch
-
-控制是否开启 TiCDC 新架构，默认值 true。
-
-- 当设置为 true 时，表示开启 TiCDC 新架构。
-- 当设置为 false 时，表示使用 TiCDC 老架构。
-
-debug.puller.pending-region-request-queue-size
-
-控制一个 TiCDC 节点同时向上游单个 TiKV 节点发送增量扫请求的 region 数量，默认值为 256 。
-
-比如，现在集群里有 3 个 cdc 节点和 3 个 TiKV 节点，每个 cdc 节点都会同时向每个 TiKV 节点发起 256 个 region 增量扫描请求，这样一个 TiKV 节点上就会同时有 256 * 3 = 768 个 region 的增量扫描请求。
-
 ## 兼容性介绍
 
 ### Server 级别错误的处理机制
