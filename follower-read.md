@@ -117,8 +117,6 @@ Follower Read 不会破坏 TiDB 的事务隔离级别（Snapshot Isolation）。
 
 ### Follower Read 的性能开销
 
-因为 Follower Read 需要一次额外的 `ReadIndex` 来保证强一致，所以会不可避免的消耗更多的 TiKV CPU。
-
 为了保证数据强一致性， Follower Read 不管读取多少数据，都需要执行一次 `ReadIndex`，这将不可避免的消耗更多的 TiKV CPU 资源。因此，在小查询（如点查）场景下，Follower Read 的性能损耗相对更明显。同时，因为对小查询进行本地读取能节省的流量有限，更推荐在大查询或批量读取场景中使用 Follower Read。
 
 当 `tidb_replica_read` 为 `closest-adaptive` 时，TiDB 针对小查询时不会使用 Follower Read，从而在各种工作负载下中相比 `leader` 策略的 TiKV CPU 的额外开销一般在 +10% 之内。
