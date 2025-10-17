@@ -68,9 +68,14 @@ summary: 了解 TiDB 的乐观事务模型。
 >
 > 从 v8.0.0 开始，[`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry) 被废弃，不再支持乐观事务的自动重试。推荐使用[悲观事务模式](/pessimistic-transaction.md)。如果使用乐观事务模式发生冲突，请在应用里捕获错误并重试。
 
-使用乐观事务模型时，在高冲突率的场景中，事务容易发生写写冲突而导致提交失败。MySQL 使用悲观事务模型，在执行写入类型的 SQL 语句的过程中进行加锁并且在 Repeatable Read 隔离级别下使用了当前读的机制，能够读取到最新的数据，所以提交时一般不会出现异常。为了降低应用改造难度，TiDB 提供了数据库内部自动重试机制。
+使用乐观事务模型时，在高冲突率的场景中，事务容易发生写写冲突而导致提交失败。从 v3.0.8 开始，TiDB 默认使用[悲观事务模型](/pessimistic-transaction.md)，与 MySQL 一致。这意味着 TiDB 和 MySQL 在执行写入类型的 SQL 语句的过程中会进行加锁，并且在 Repeatable Read 隔离级别下使用了当前读的机制，能够读取到最新的数据，所以提交时一般不会出现异常。
 
 ### 重试机制
+
+> **注意：**
+>
+> - 从 TiDB v3.0.0 开始，事务的自动重试功能默认为禁用状态，因为该功能可能导致**事务隔离级别遭到破坏**。
+> - 从 TiDB v8.0.0 开始，不再支持乐观事务的自动重试。
 
 当事务提交时，如果发现写写冲突，TiDB 内部重新执行包含写操作的 SQL 语句。你可以通过设置 `tidb_disable_txn_auto_retry = OFF` 开启自动重试，并通过 `tidb_retry_limit` 设置重试次数：
 
