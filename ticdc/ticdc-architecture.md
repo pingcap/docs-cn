@@ -5,7 +5,7 @@ summary: 介绍 TiCDC 新架构的主要特性、架构设计、升级部署指�
 
 # TiCDC 新架构
 
-自 v8.5.4-release.1 版本起，TiCDC 引入新架构，显著提升了实时数据复制的性能、可扩展性与稳定性，同时降低了资源成本。新架构重新设计了 TiCDC 的核心组件并优化了数据处理流程，具有以下优势：
+自 TiCDC v8.5.4-release.1 版本起，TiCDC 引入新架构，显著提升了实时数据复制的性能、可扩展性与稳定性，同时降低了资源成本。新架构重新设计了 TiCDC 的核心组件并优化了数据处理流程，具有以下优势：
 
 - **更高的单节点性能**：单节点最高可支持 50 万张表的同步任务，宽表场景下单节点同步流量最高可达 190 MB/s。
 - **更强的扩展能力**：集群同步能力接近线性扩展，单集群可扩展至超过 100 个节点，支持超 1 万个 Changefeed；单个 Changefeed 可支持百万级表的同步任务。
@@ -43,24 +43,29 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 
 ## 新老架构选择
 
-如果您的业务存在以下任一情况，我们建议您从老架构切换至新架构，以获得更优的性能与稳定性：
+如果你的业务满足以下任一条件，建议从 TiCDC 老架构切换至新架构，以获得更优的性能与稳定性：
 
-- 增量扫性能瓶颈：增量扫任务长期无法完成，据同步延迟持续升高。
-- MySQL Sink 写入超大流量单表：目标表结构满足“有且仅有一个主键或非空唯一键”。
+- 增量扫描性能瓶颈：增量扫描任务长时间无法完成，导致同步延迟持续上升。
+- MySQL Sink 中存在超高流量写入的单表：目标表结构满足**有且仅有一个主键或非空唯一键**。
 - 海量表同步场景：同步的表数量超过 10 万张。
 - 高频 DDL 操作引发延迟：频繁执行 DDL 语句导致同步延迟显著上升。
 
 ## 新功能介绍
 
-新架构支持在 MySQL sink 中启用表级任务拆分。您可以通过在 changefeed 配置中设置 `scheduler.enable-table-across-nodes = true` 来开启此功能。开启后，所有有且仅有一个主键或非空唯一键的表，当超过配置的 region 个数阈值 （默认为`100000`）或者写流量阈值（默认未开启）时，会对表会进行拆分，并分发到多个不同节点上执行，从而提升同步效率与资源利用率。Region 个数阈值可以通过 `scheduler.region-threshold` 配置。写流量阈值可以通过 `scheduler.write-key-threshold` 配置。
+新架构支持为 MySQL sink 启用**表级任务拆分**。你可以通过在 Changefeed 配置中设置 `scheduler.enable-table-across-nodes = true` 来启用该功能。
+
+启用后，当**有且仅有一个主键或非空唯一键**的表满足以下任一条件时，TiCDC 会自动将其拆分并分发到多个节点并行执行同步，从而提升同步效率与资源利用率：
+
+- 表的 Region 数超过配置的阈值（默认 `100000`，可通过 `scheduler.region-threshold` 调整）。
+- 表的写入流量超过配置的阈值（默认未开启，可通过 `scheduler.write-key-threshold` 设置）。
 
 ## 兼容性介绍
 
 ### Server 级别错误的处理机制
 
-在 TiCDC 的老架构中，如果 CDC 出现 Server 级别的错误，比如 ErrEtcdSessionDone，CDC 会自动重启主线程，进程不会退出。
+在 TiCDC 老架构中，若出现 Server 级别错误（如 `ErrEtcdSessionDone`），TiCDC 会自动重启主线程，进程不会退出。
 
-而在新架构中，如果出现 CDC Server 级别的错误，进程会直接退出，需要借助外部运维工具（如 TiUP 或 TiDB Operator）来重新启动 TiCDC 进程。
+在新架构中，若发生 Server 级别错误，TiCDC 进程会直接退出，需要借助运维工具（如 TiUP 或 TiDB Operator）自动重启 TiCDC 实例。
 
 ### DDL 进度表
 
@@ -68,24 +73,30 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 
 ### DDL 同步行为变更
 
-1. TiCDC 老架构不支持同步对表名进行交换的 rename table DDL（例如：RENAME TABLE a TO c, b TO a, c TO b;） ，TiCDC 新架构已支持同步该类型的 DDL。
-2. TiCDC 新架构统一并简化了 Rename DDL 的过滤规则。
-  1. 在老架构中，单表与多表 Rename 操作的过滤逻辑不一致： 
-    1. 单表 RENAME：仅需旧表名符合过滤规则，即会同步。 
-    2. 多表 RENAME：则要求所有表的旧表名与新表名均符合规则，才会同步。 
-  2. 新架构将此行为统一：无论单表还是多表 Rename，只要语句中涉及的旧表名符合过滤规则，整个 DDL 语句就会被同步。
-  3. 例如：changefeed 的配置文件如下时
-    ```
-    [filter]
-    rules = ['test.t*']
-    ```
-    1. 在老架构中，对于一条语句内 rename 单个表的 DDL，如 `RENAME TABLE test.t1 TO ignore.t1`，因旧表库名 `test.t1` 符合 filter 过滤规则，该 DDL 会被同步。
-    2. 在老架构中，对于一条语句内 rename 多个表的 DDL，如 `RENAME TABLE test.t1 TO ignore.t1, test.t2 TO test.t22;`，由于新的表库名 `ignore.t1` 不符合 filter 过滤规则，该 DDL 不会被同步。
-    3. 在新架构中，由于旧表库名（如 `test.t1`，`test.t2`）符合 filter 过滤规则，上述两条 DDL 均会被同步。
+- TiCDC 老架构不支持同步互换表名的 DDL（例如 `RENAME TABLE a TO c, b TO a, c TO b;`），TiCDC 新架构已支持此类 DDL 的同步。
+
+- TiCDC 新架构统一并简化了 Rename DDL 的过滤规则。
+
+    - 在 TiCDC 老架构中，过滤逻辑如下
+
+        - 单表 Rename：仅要求旧表名符合过滤规则即可同步。
+        - 多表 Rename：必须所有旧表名和新表名均符合过滤规则，才会同步。
+
+    - 在新架构中，无论单表还是多表 Rename，只要语句中的旧表名符合过滤规则，该 DDL 即会被同步。
+
+        以下面的过滤规则为例：
+
+        ```toml
+        [filter]
+        rules = ['test.t*']
+        ```
+
+        - 在 TiCDC 老架构中：对于单表 Rename，如 `RENAME TABLE test.t1 TO ignore.t1`，因旧表名 `test.t1` 匹配规则，会被同步。对于多表 Rename，如 `RENAME TABLE test.t1 TO ignore.t1, test.t2 TO test.t22;`，由于新表名 `ignore.t1` 不匹配规则，不会被同步。
+        - 在 TiCDC 新架构中：由于 `RENAME TABLE test.t1 TO ignore.t1` 和 `RENAME TABLE test.t1 TO ignore.t1, test.t2 TO test.t22;` 中的旧表名均匹配规则，这两条 DDL 均会被同步。
 
 ## 使用限制
 
-目前，TiCDC 新架构已完整实现了旧架构的全部功能，但其中部分功能尚未通过全面的测试验证。因此，我们建议您在非核心生产环境中谨慎使用以下功能：
+目前，TiCDC 新架构已完整实现旧架构的全部功能，但其中部分功能尚未通过全面的测试验证。为确保系统稳定性，暂不建议在核心生产环境中使用以下功能：
 
 - [Redo Log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制)
 - [Pulsar Sink](/ticdc/ticdc-sink-to-pulsar.md)
@@ -93,36 +104,41 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 
 此外，TiCDC 新架构目前暂不支持将大事务拆分为多个批次同步至下游，因此在处理超大事务时仍存在 OOM 风险，请在实际使用中注意评估相关影响。
 
-# 部署指南
+## 部署指南
 
-TiCDC 新架构仅支持 v7.5.0 或者以上版本的 TiDB 集群，使用之前需要确保 TiDB 集群版本满足要求。
+TiCDC 新架构仅支持 v7.5.0 或者以上版本的 TiDB 集群，使用之前需要确保 TiDB 集群版本满足该要求。
 
-## TiUP
+你可以通过 TiUP 或 TiDB Operator 部署 TiCDC 新架构。
+
+<SimpleTab>
+<div label="TiUP">
 
 1. 如果你的 TiDB 集群中尚无 TiCDC 节点，参考[扩容 TiCDC 节点](/scale-tidb-using-tiup.md#扩容-ticdc-节点)在集群中扩容新的 TiCDC 节点，否则跳过该步骤。
 
-2. 手动下载 TiCDC 新架构离线包。文件下载链接格式为 `https://tiup-mirrors.pingcap.com/cdc-${version}-${os}-${arch}.tar.gz`。其中，`${version}` 为 TiCDC 版本号，`${os}` 为你的操作系统，`${arch}` 为组件运行的平台（`amd64` 或 `arm64`）。。
+2. 下载 TiCDC 新架构离线包。
 
-    例如，可以使用以下命令下载 Linux 系统 x86-64 架构的 TiCDC v9.0.0-beta.1 的二进制文件：
+    离线包下载链接格式为 `https://tiup-mirrors.pingcap.com/cdc-${version}-${os}-${arch}.tar.gz`。其中，`${version}` 为 TiCDC 版本号，`${os}` 为你的操作系统，`${arch}` 为组件运行的平台（`amd64` 或 `arm64`）。
+
+    例如，可以使用以下命令下载 Linux 系统 x86-64 架构的 TiCDC v8.5.4-release.1 的离线包：
 
     ```shell
     wget https://tiup-mirrors.pingcap.com/cdc-v8.5.4-release.1-linux-amd64.tar.gz
     ```
 
 3. 如果集群中已经有 Changefeed，请参考[停止同步任务](/ticdc/ticdc-manage-changefeed.md#停止同步任务)暂停所有的 Changefeed 同步任务。例如：
-    
+
     ```shell
     # cdc 默认服务端口为 8300
     cdc cli changefeed pause --server=http://<ticdc-host>:8300 --changefeed-id <changefeed-name>
     ```
 
-2. 使用 [`tiup cluster patch`](/tiup/tiup-component-cluster-patch.md) 命令将下载的 TiCDC 二进制文件动态替换到你的 TiDB 集群中：
+4. 使用 [`tiup cluster patch`](/tiup/tiup-component-cluster-patch.md) 命令将下载的 TiCDC 二进制文件动态替换到你的 TiDB 集群中：
 
     ```shell
     tiup cluster patch <cluster-name> ./cdc-v8.5.4-release.1-linux-amd64.tar.gz -R cdc
     ```
 
-4. 通过 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令更新 TiCDC 配置：
+5. 通过 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令更新 TiCDC 配置以启用 TiCDC 新架构：
 
     ```shell
     tiup cluster edit-config <cluster-name>
@@ -134,43 +150,19 @@ TiCDC 新架构仅支持 v7.5.0 或者以上版本的 TiDB 集群，使用之前
         newarch: true
     ```
 
-5. 参考[恢复同步任务](/ticdc/ticdc-manage-changefeed.md#恢复同步任务)恢复所有的 Changefeed 同步任务。例如：
-    
+6. 参考[恢复同步任务](/ticdc/ticdc-manage-changefeed.md#恢复同步任务)恢复所有的 Changefeed 同步任务。
+
     ```shell
     # cdc 默认服务端口为 8300
     cdc cli changefeed resume --server=http://<ticdc-host>:8300 --changefeed-id <changefeed-name>
     ```
 
-## TiDB Operator
+</div>
+<div label="TiDB Operator">
 
-1. 如果现有 TiDB 集群中没有 TiCDC 组件，参考在现有 TiDB 集群上新增 TiCDC 组件在集群中扩容新的 TiCDC 节点，操作时，只需在集群配置文件中将 TiCDC 的镜像版本指定为新架构版本即可。以下是一个示例：
+- 如果现有 TiDB 集群中没有 TiCDC 组件，参考在现有 TiDB 集群上新增 TiCDC 组件在集群中扩容新的 TiCDC 节点。操作时，只需在集群配置文件中将 TiCDC 的镜像版本指定为新架构版本即可。
 
-```
-spec:
-  ticdc:
-    baseImage: pingcap/ticdc
-    version: v8.5.4-release.1
-    replicas: 3
-    config:
-      newarch = true
-```
-
-2. 如果现有 TiDB 集群中已有 TiCDC 组件，
-    1. 如果集群中已经有 Changefeed，暂停所有的 Changefeed 同步任务。
-    
-    ```shell
-    kubectl exec -it ${pod_name} -n ${namespace} -- sh
-    ```
-
-    ```shell
-    # 通过 TiDB operator 部署的 TiCDC 服务器的默认端口为 8301 
-    /cdc cli changefeed pause --server=http://127.0.0.1:8301 --changefeed-id <changefeed-name>
-    ```
-
-    2. 修改集群配置文件中 TiCDC 组件的镜像版本为新架构版本。
-    ```shell
-    kubectl edit tc ${cluster_name} -n ${namespace}
-    ```
+    示例如下：
 
     ```
     spec:
@@ -178,24 +170,56 @@ spec:
         baseImage: pingcap/ticdc
         version: v8.5.4-release.1
         replicas: 3
+        config:
+          newarch = true
     ```
 
-    ```shell
-    kubectl apply -f ${cluster_name} -n ${namespace}
-    ```
+- 如果现有 TiDB 集群中已有 TiCDC 组件，请进行以下操作：
+
+    1. 如果集群中已经有 Changefeed，暂停所有的 Changefeed 同步任务。
+
+        ```shell
+        kubectl exec -it ${pod_name} -n ${namespace} -- sh
+        ```
+
+        ```shell
+        # 通过 TiDB Operator 部署的 TiCDC 服务器的默认端口为 8301
+        /cdc cli changefeed pause --server=http://127.0.0.1:8301 --changefeed-id <changefeed-name>
+        ```
+
+    2. 修改集群配置文件中 TiCDC 组件的镜像版本为新架构版本。
+
+        ```shell
+        kubectl edit tc ${cluster_name} -n ${namespace}
+        ```
+
+        ```
+        spec:
+          ticdc:
+            baseImage: pingcap/ticdc
+            version: v8.5.4-release.1
+            replicas: 3
+        ```
+
+        ```shell
+        kubectl apply -f ${cluster_name} -n ${namespace}
+        ```
 
     3. 恢复所有的 Changefeed 同步任务。
 
-    ```shell
-    kubectl exec -it ${pod_name} -n ${namespace} -- sh
-    ```
+        ```shell
+        kubectl exec -it ${pod_name} -n ${namespace} -- sh
+        ```
 
-    ```shell
-    # 通过 TiDB operator 部署的 TiCDC 服务器的默认端口为 8301 
-    /cdc cli changefeed resume --server=http://127.0.0.1:8301 --changefeed-id <changefeed-name>
-    ```
+        ```shell
+        # 通过 TiDB Operator 部署的 TiCDC 服务器的默认端口为 8301
+        /cdc cli changefeed resume --server=http://127.0.0.1:8301 --changefeed-id <changefeed-name>
+        ```
 
-# 使用指南
+</div>
+</SimpleTab>
+
+## 使用指南
 
 在 TiCDC 新架构的节点部署完成后，即可使用相应的命令进行操作。新架构沿用了旧架构的 TiCDC 使用方式，因此无需额外学习新的命令，也无需修改旧架构中使用到的命令。
 
@@ -212,3 +236,9 @@ cdc cli changefeed query -s --server=http://127.0.0.1:8300 --changefeed-id=simpl
 ```
 
 更多命令的使用方法和细节，可以参考[管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)。
+
+## 监控
+
+目前，TiUP 尚未集成 TiCDC 新架构的监控面板 **TiCDC-New-Arch**。要在 Grafana 中查看该面板，你需要手动导入 [TiCDC 监控指标文件](https://github.com/pingcap/ticdc/blob/master/metrics/grafana/ticdc_new_arch.json)。
+
+各监控指标的详细说明，请参考 [TiCDC 新架构监控指标](/ticdc/monitor-ticdc.md#ticdc-新架构监控指标)。
