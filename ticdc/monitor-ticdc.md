@@ -94,7 +94,6 @@ TiCDC 新架构主要监控面板说明如下：
 - Sink Error Count / m: Sink 模块该分钟报错信息的数目
 - Output DDL Count / Minutes: 当前节点上对应 Changefeed 每分钟执行的 DDL 个数
 
-
 ## TiCDC 老架构监控指标
 
 使用 TiUP 部署 TiDB 集群时，一键部署的监控系统面板包含 TiCDC 老架构监控面板。TiCDC 老架构主要监控面板说明如下：
