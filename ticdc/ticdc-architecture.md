@@ -98,6 +98,7 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 
 目前，TiCDC 新架构已完整实现旧架构的全部功能，但其中部分功能尚未通过全面的测试验证。为确保系统稳定性，暂不建议在核心生产环境中使用以下功能：
 
+- [Syncpoint](/ticdc/ticdc-upstream-downstream-check.md)
 - [Redo Log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制)
 - [Pulsar Sink](/ticdc/ticdc-sink-to-pulsar.md)
 - [Storage Sink](/ticdc/ticdc-sink-to-cloud-storage.md)
@@ -160,7 +161,7 @@ TiCDC 新架构仅支持 v7.5.0 或者以上版本的 TiDB 集群，使用之前
 </div>
 <div label="TiDB Operator">
 
-- 如果现有 TiDB 集群中没有 TiCDC 组件，参考在现有 TiDB 集群上新增 TiCDC 组件在集群中扩容新的 TiCDC 节点。操作时，只需在集群配置文件中将 TiCDC 的镜像版本指定为新架构版本即可。
+- 如果现有 TiDB 集群中没有 TiCDC 组件，参考[在现有 TiDB 集群上新增 TiCDC 组件](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-ticdc/#在现有-tidb-集群上新增-ticdc-组件)在集群中扩容新的 TiCDC 节点。操作时，只需在集群配置文件中将 TiCDC 的镜像版本指定为新架构版本即可。
 
     示例如下：
 

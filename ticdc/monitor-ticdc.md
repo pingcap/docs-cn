@@ -69,7 +69,7 @@ TiCDC 新架构的监控面板主要包括以下部分：
 **Log Puller** 面板的各指标说明如下：
 
 - Input Events/s：TiCDC 每秒收到的事件数
-- Unresolved Region Request Count：TiCDC 已经发送但尚未完成的 Region 增量扫描请求数（该监控会动态变化）
+- Unresolved Region Request Count：TiCDC 已经发送但尚未完成的 Region 增量扫描请求数
 - Region Request Finish Scan Duration：Region 增量扫描的耗时
 - Subscribed Region Count：订阅的 Region 总数
 - Memory Quota：Log Puller 内存配额及使用量，使用量过大会导致限流
