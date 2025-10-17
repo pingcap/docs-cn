@@ -52,7 +52,7 @@ TiCDC 提供了以下核心能力：
 >
 > 从 v6.2 版本起，你可以通过配置 sink URI 参数 [`transaction-atomicity`](/ticdc/ticdc-sink-to-mysql.md#sink-uri-配置-mysqltidb) 来控制 TiCDC 是否拆分单表事务。拆分事务可以大幅降低 MySQL sink 同步大事务的延时和内存消耗。
 
-## TiCDC 架构
+## TiCDC 架构概览
 
 TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现高可用，通过多个 TiCDC 进程获取 TiKV 节点上的数据改变，在内部进行排序、合并等处理之后，通过多个同步任务 (Changefeed)，同时向多个下游系统进行数据同步。
 
@@ -63,6 +63,8 @@ TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现�
 - TiKV Server：代表 TiDB 集群中的 TiKV 节点，当数据发生改变时 TiKV 节点会主动将发生的数据改变以变更日志（KV change logs，简称 change logs）的方式发送给 TiCDC 节点。当然，当 TiCDC 节点发现收到的 change logs 并不是连续的，也会主动发起请求，获得需要的 change logs。
 - TiCDC：代表运行了 TiCDC 进程的各个节点。每个节点都运行一个 TiCDC 进程，每个进程会从 TiKV 节点中拉取一个或者多个表中的数据改变，并通过 Sink 模块同步到下游系统。
 - PD：代表 TiDB 集群中的调度模块，负责集群数据的事实调度，这个模块通常是由 3 个 PD 节点构成的，内部通过 etcd 集群来实现选举等高可用相关的能力。 TiCDC 集群使用了 PD 集群内置的 etcd 集群来保存自己的元数据信息，例如：节点的状态信息，changefeed 配置信息等。
+
+在具体实现上，TiCDC 的[新架构](/ticdc/ticdc-architecture.md)和[老架构](/ticdc/ticdc-classic-architecture.md)均基于上述模型实现增量数据同步。相比之下，新架构在任务调度和同步机制上进行了重构与优化，显著提升了实时数据复制的性能、可扩展性与稳定性，同时降低了资源成本。
 
 另外，从上面的架构图中也可以看到，目前 TiCDC 支持将数据同步到 TiDB、MySQL 数据库、Kafka 以及存储服务等。
 
