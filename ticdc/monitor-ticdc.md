@@ -100,8 +100,8 @@ TiCDC 新架构的监控面板主要包括以下部分：
 - Input Event Count/s：Event Store 每秒处理的事件数
 - Input Bytes/s：Event Store 每秒处理的数据量
 - Write Requests/s：Event Store 每秒执行的写入请求数量
-- Write Worker Busy Ratio：Event Store 写线程的 IO 时间占总运行时间的比例
-- Compressed Rows/s： Event Store 每秒压缩的数据行数（仅当行大小超过设定阈值时触发压缩）
+- Write Worker Busy Ratio：Event Store 写线程的 I/O 时间占总运行时间的比例
+- Compressed Rows/s：Event Store 每秒压缩的数据行数（仅当行大小超过设定阈值时触发压缩）
 - Write Duration：Event Store 写入操作的耗时
 - Write Batch Size：单次写入操作的批量数据大小
 - Write Batch Event Count：单次写入批次中包含的数据行数
@@ -119,7 +119,7 @@ TiCDC 新架构的监控面板主要包括以下部分：
 **Sink** 面板的各指标说明如下：
 
 - Output Row Batch Count：Sink 每批次写入 DML 的平均行数。
-- Output Row Count(per second)：每秒向下游写入的 DML 行数
+- Output Row Count (per second)：每秒向下游写入的 DML 行数
 - Output DDL Executing Duration：当前节点上对应 Changefeed 执行 DDL Event 的耗时
 - Sink Error Count / m：Sink 模块每分钟的报错信息数量
 - Output DDL Count / Minutes：当前节点上对应 Changefeed 每分钟执行的 DDL 数量
