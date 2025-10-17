@@ -16,7 +16,17 @@ cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://ro
 
 ## TiCDC 新架构监控指标
 
-[TiCDC 新架构](/ticdc/ticdc-architecture.md)的监控面板 **TiCDC-New-Arch** 暂时未集成到 TiUP 中。要在 Grafana 中查看相关监控信息，你需要手动导入 [TiCDC 监控指标文件](https://github.com/pingcap/ticdc/blob/master/metrics/grafana/ticdc_new_arch.json)。
+[TiCDC 新架构](/ticdc/ticdc-architecture.md)的监控面板 **TiCDC-New-Arch** 暂时未集成到 TiUP 中。要在 Grafana 中查看相关监控信息，你需要手动导入TiCDC 监控指标文件：
+
+1. 下载 TiCDC 新架构监控指标文件
+
+```shell
+wget https://raw.githubusercontent.com/pingcap/ticdc/refs/heads/release-8.5/metrics/grafana/ticdc_new_arch.json
+```
+
+2. 在 Grafana 页面导入下载的监控指标文件
+
+![导入监控指标文件](/media/ticdc/ticdc-new-arch-import-grafana.png)
 
 TiCDC 新架构的监控面板主要包括以下部分：
 
