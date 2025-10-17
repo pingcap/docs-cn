@@ -9,7 +9,7 @@ summary: 了解 TiCDC 老架构的设计和运行原理。
 
 > **注意：**
 >
-> 从 v8.5.4-release.1 开始，TiCDC 引入了全新架构，在提升实时数据复制性能、可扩展性及稳定性的同时，有效降低了资源成本。更多信息请参阅。 更多信息请参阅 [TiCDC 新架构](/ticdc/ticdc-architecture.md).
+> 从 v8.5.4-release.1 开始，TiCDC 引入了全新架构，在提升实时数据复制性能、可扩展性及稳定性的同时，有效降低了资源成本。更多信息请参阅 [TiCDC 新架构](/ticdc/ticdc-architecture.md).
 
 ## TiCDC 老架构介绍
 
