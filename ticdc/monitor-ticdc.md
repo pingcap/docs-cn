@@ -104,7 +104,7 @@ TiCDC 新架构的监控面板主要包括以下部分：
 - Compressed Rows/s：Event Store 每秒压缩的数据行数（仅当行大小超过设定阈值时触发压缩）
 - Write Duration：Event Store 写入操作的耗时
 - Write Batch Size：单次写入操作的批量数据大小
-- Write Batch Event Count：单次写入批次中包含的数据行数
+- Write Batch Event Count：单次写入批次中包含的行变更数
 - Data Size On Disk：Event Store 在磁盘上占用的数据总量
 - Data Size In Memory：Event Store 在内存中占用的数据总量
 - Scan Requests/s：Event Store 每秒执行的扫描请求数量

@@ -33,8 +33,8 @@ summary: 了解 TiCDC 详细的命令行参数和配置文件定义。
 ### `newarch` <span class="version-mark">从 v8.5.4-release.1 版本开始引入</span>
 
 - 控制是否开启 [TiCDC 新架构](/ticdc/ticdc-architecture.md)。
+- 默认值：`false`，表示使用 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)。
 - 当设置为 `true` 时，表示开启 TiCDC 新架构。
-- 当设置为 `false` 时，表示使用 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)。
 
 <!-- 下面的字段的配置含义与命令行参数相同，但是命令行参数优先级更高 -->
 
