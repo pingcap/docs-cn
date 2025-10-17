@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/ticdc-grafana-dashboard']
 
 # TiCDC 详细监控指标
 
-使用 TiUP 部署 TiDB 集群时，一键部署的监控系统面板包含 TiCDC 面板。本文档对 TiCDC 监控面板上的各项指标进行详细说明。在日常运维中，运维人员可通过观察 TiCDC 面板上的指标了解 TiCDC 当前的状态。
+本文档对 TiCDC 监控面板上的各项指标进行详细说明。在日常运维中，运维人员可通过观察 TiCDC 面板上的指标了解 TiCDC 当前的状态。
 
 本文档的对指标的介绍基于以下同步任务，即使用默认配置同步数据到 MySQL。
 
@@ -14,11 +14,90 @@ aliases: ['/zh/tidb/dev/ticdc-grafana-dashboard']
 cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
 ```
 
-下图显示了 TiCDC Dashboard 各监控面板：
+## TiCDC 新架构监控指标
 
-![TiCDC Dashboard - Overview](/media/ticdc/ticdc-dashboard-overview.png)
+TiCDC 新架构面板暂时没有集成到 TiUP 中，需要用户手动导入[监控指标](https://github.com/pingcap/ticdc/blob/master/metrics/grafana/ticdc_new_arch.json)。
 
-各监控面板说明如下：
+TiCDC 新架构主要监控面板说明如下：
+
+- [**Summary**](#summary-面板)：TiCDC 集群的概要信息
+- [**Server**](#server-面板)：TiDB 集群中 TiKV 节点和 TiCDC 节点的概要信息
+- [**Log Puller**](#log-puller-面板)：TiCDC Log Puller 模块的详细信息
+- [**Event Store**](#event-store-面板)：TiCDC Event Store 模块的详细信息
+- [**Sink**](#sink-面板)：TiCDC Sink 模块的详细信息
+
+## Summary 面板
+
+![Summary](/media/ticdc/ticdc-new-arch-metric-1.png)
+
+- Changefeed Checkpoint Lag：同步任务在下游与上游之间的时序差距。
+- Changefeed ResolvedTs Lag：TiCDC 节点内部处理进度与上游数据库的时序差距。
+- Upstream Write Bytes/s：上游数据库的写入吞吐量。
+- TiCDC Input Bytes/s：TiCDC 从上游接收数据的写入吞吐量。
+- Sink Event Row Count/s：TiCDC 向下游每秒写入的数据行数。
+- Sink Write Bytes/s：TiCDC 向下游每秒写入的数据量。
+- The Status of Changefeeds：Changefeed 的状态。
+- Table Dispatcher Count：不同 Changefeed 对应的 Dispatcher 数量。
+- Memory Quota：Event Collector 内存配额及使用量，使用量过大会导致限流。
+
+## Server 面板
+
+![Server](/media/ticdc/ticdc-new-arch-metric-2.png)
+
+- Uptime：TiKV 节点和 TiCDC 节点已经运行的时间
+- Goroutine Count：TiCDC 节点 Goroutine 的个数
+- Open FD Count：TiCDC 节点打开的文件句柄个数
+- CPU Usage：TiCDC 节点使用的 CPU
+- Memory Usage：TiCDC 节点使用的内存
+- Ownership History：TiCDC 集群中 Owner 节点的历史记录
+- PD Leader History：上游 TiDB 集群中 PD Leader 节点的历史记录
+
+## Log Puller 面板
+
+![Log Puller](/media/ticdc/ticdc-new-arch-metric-3.png)
+
+- Input Events/s: TiCDC 每秒收到的事件数
+- Unresolved Region Request Count: TiCDC 已经发送但是没有结束的 region 增量扫请求数量，该监控会动态变化。
+- Region Request Finish Scan Duration: region 增量扫的耗时。
+- Subscribed Region Count: 订阅的 Region 总数
+- Memory Quota: Log Puller 内存配额及使用量，使用量过大会导致限流。
+- Resolved Ts Batch Size (Regions): 单个 Resolved Ts 事件包含的 Region 数量
+
+## Event Store 面板
+
+![Event Store](/media/ticdc/ticdc-new-arch-metric-4.png)
+
+- Resolved Ts Lag: Event Store 处理进度与上游数据库的时序差距。
+- Register Dispatcher StartTs Lag: Dispatcher 注册请求的 StartTs 与当前时间点之间的时序差距。
+- Subscriptions Resolved Ts Lag: Subscription 处理进度与上游数据库的时序差距。
+- Subscriptions Data GC Lag: Subscription 数据 GC 进度与当前时间点的时序差距。
+- Input Event Count/s: Event Store 每秒处理的事件数。
+- Input Bytes/s: Event Store 每秒处理的数据量大小。
+- Write Requests/s: Event Store 每秒执行的写入操作数。
+- Write Worker Busy Ratio: Event Store 写线程的 IO 时间占总运行时间的比例。
+- Compressed Rows/s:  Event Store 每秒压缩的数据行数（仅当行大小超过设定阈值时触发压缩）。
+- Write Duration: Event Store 写入操作耗时。
+- Write Batch Size: 单次写入操作的批量数据大小。
+- Write Batch Event Count: 单次写入批次中包含的数据行数。
+- Data Size On Disk: Event Store 占用的磁盘数据总量。
+- Data Size In Memory: Event Store 占用的内存数据总量。
+- Scan Requests/s: Event Store 每秒处理的扫描操作数。
+- Scan Bytes/s: Event Store 每秒扫描的数据量。
+
+## Sink 面板
+
+![Sink](/media/ticdc/ticdc-new-arch-metric-5.png)
+
+- Output Row Batch Count: Sink 每批次写入 DML 的平均行数。
+- Output Row Count(per second): 每秒钟往下游写的 DML 总行数
+- Output DDL Executing Duration: 当前节点上对应 Changefeed 执行 DDL Event 的耗时
+- Sink Error Count / m: Sink 模块该分钟报错信息的数目
+- Output DDL Count / Minutes: 当前节点上对应 Changefeed 每分钟执行的 DDL 个数
+
+
+## TiCDC 老架构监控指标
+
+使用 TiUP 部署 TiDB 集群时，一键部署的监控系统面板包含 TiCDC 老架构监控面板。TiCDC 老架构主要监控面板说明如下：
 
 - [**Server**](#server-面板)：TiDB 集群中 TiKV 节点和 TiCDC 节点的概要信息
 - [**Changefeed**](#changefeed-面板)：TiCDC 同步任务的详细信息
