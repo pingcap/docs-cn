@@ -7,7 +7,7 @@ summary: 介绍 TiCDC 新架构的主要特性、架构设计、升级部署指�
 
 自 TiCDC v8.5.4-release.1 版本起，TiCDC 引入新架构，显著提升了实时数据复制的性能、可扩展性与稳定性，同时降低了资源成本。新架构重新设计了 TiCDC 的核心组件并优化了数据处理流程，具有以下优势：
 
-- **更高的单节点性能**：单节点最高可支持 50 万张表的同步任务，宽表场景下单节点同步流量最高可达 190 MB/s。
+- **更高的单节点性能**：单节点可支持最多 50 万张表的同步任务，宽表场景下单节点同步流量最高可达 190 MB/s。
 - **更强的扩展能力**：集群同步能力接近线性扩展，单集群可扩展至超过 100 个节点，支持超 1 万个 Changefeed；单个 Changefeed 可支持百万级表的同步任务。
 - **更高的稳定性**：在高流量、频繁 DDL 操作及集群扩缩容等场景下，Changefeed 的延迟更低且更加稳定。通过资源隔离和优先级调度，减少了多个 Changefeed 任务之间的相互干扰。
 - **更低的资源成本**：通过改进资源利用率，减少冗余开销。在典型场景下，CPU 和内存等资源的使用量降低高达 50%。
@@ -45,21 +45,21 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 
 如果你的业务满足以下任一条件，建议从 TiCDC 老架构切换至新架构，以获得更优的性能与稳定性：
 
-- 增量扫描性能瓶颈：增量扫描任务长时间无法完成，导致同步延迟持续上升。
+- 增量扫描存在性能瓶颈：增量扫描任务长时间无法完成，导致同步延迟持续上升。
 - MySQL Sink 中存在超高流量写入的单表：目标表结构满足**有且仅有一个主键或非空唯一键**。
 - 海量表同步场景：同步的表数量超过 10 万张。
 - 高频 DDL 操作引发延迟：频繁执行 DDL 语句导致同步延迟显著上升。
 
 ## 新功能介绍
 
-新架构支持为 MySQL sink 启用**表级任务拆分**。你可以通过在 Changefeed 配置中设置 `scheduler.enable-table-across-nodes = true` 来启用该功能。
+新架构支持为 MySQL Sink 启用**表级任务拆分**。你可以通过在 Changefeed 配置中设置 `scheduler.enable-table-across-nodes = true` 来启用该功能。
 
 启用后，当**有且仅有一个主键或非空唯一键**的表满足以下任一条件时，TiCDC 会自动将其拆分并分发到多个节点并行执行同步，从而提升同步效率与资源利用率：
 
 - 表的 Region 数超过配置的阈值（默认 `100000`，可通过 `scheduler.region-threshold` 调整）。
 - 表的写入流量超过配置的阈值（默认未开启，可通过 `scheduler.write-key-threshold` 设置）。
 
-## 兼容性介绍
+## 兼容性说明
 
 ### Server 级别错误的处理机制
 
@@ -69,7 +69,7 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 
 ### DDL 进度表
 
-在 TiCDC 的老架构中，DDL 的同步是完全串行进行的，因此同步进度仅需通过 Changefeed 的 CheckpointTs 来标识。然而，在新架构中，为了提高 DDL 同步效率，TiCDC 会尽可能并行同步不同表的 DDL 变更。为了在下游 MySQL 兼容数据库中准确记录各表的 DDL 同步进度，TiCDC 新架构会在下游数据库中创建一张名为 tidb_cdc.ddl_ts_v1 的表，专门用于存储 Changefeed 的 DDL 同步进度信息。
+在 TiCDC 的老架构中，DDL 的同步是完全串行进行的，因此同步进度仅需通过 Changefeed 的 CheckpointTs 来标识。然而，在新架构中，为了提高 DDL 同步效率，TiCDC 会尽可能并行同步不同表的 DDL 变更。为了在下游 MySQL 兼容数据库中准确记录各表的 DDL 同步进度，TiCDC 新架构会在下游数据库中创建一张名为 `tidb_cdc.ddl_ts_v1` 的表，专门用于存储 Changefeed 的 DDL 同步进度信息。
 
 ### DDL 同步行为变更
 
@@ -96,14 +96,14 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 
 ## 使用限制
 
-目前，TiCDC 新架构已完整实现旧架构的全部功能，但其中部分功能尚未通过全面的测试验证。为确保系统稳定性，暂不建议在核心生产环境中使用以下功能：
+目前，TiCDC 新架构已完整实现旧架构的全部功能，但其中部分功能尚未经过全面的测试验证。为确保系统稳定性，暂不建议在核心生产环境中使用以下功能：
 
 - [Syncpoint](/ticdc/ticdc-upstream-downstream-check.md)
 - [Redo Log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制)
 - [Pulsar Sink](/ticdc/ticdc-sink-to-pulsar.md)
 - [Storage Sink](/ticdc/ticdc-sink-to-cloud-storage.md)
 
-此外，TiCDC 新架构目前暂不支持将大事务拆分为多个批次同步至下游，因此在处理超大事务时仍存在 OOM 风险，请在实际使用中注意评估相关影响。
+此外，TiCDC 新架构目前暂不支持将大事务拆分为多个批次同步至下游，因此在处理超大事务时仍存在 OOM 风险，请在使用前评估相关影响。
 
 ## 部署指南
 
@@ -165,7 +165,7 @@ TiCDC 新架构仅支持 v7.5.0 或者以上版本的 TiDB 集群，使用之前
 
     示例如下：
 
-    ```
+    ```yaml
     spec:
       ticdc:
         baseImage: pingcap/ticdc
@@ -175,7 +175,7 @@ TiCDC 新架构仅支持 v7.5.0 或者以上版本的 TiDB 集群，使用之前
           newarch = true
     ```
 
-- 如果现有 TiDB 集群中已有 TiCDC 组件，请进行以下操作：
+- 如果现有 TiDB 集群中已有 TiCDC 组件，请按以下步骤操作：
 
     1. 如果集群中已经有 Changefeed，暂停所有的 Changefeed 同步任务。
 
@@ -194,7 +194,7 @@ TiCDC 新架构仅支持 v7.5.0 或者以上版本的 TiDB 集群，使用之前
         kubectl edit tc ${cluster_name} -n ${namespace}
         ```
 
-        ```
+        ```yaml
         spec:
           ticdc:
             baseImage: pingcap/ticdc
