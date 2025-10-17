@@ -40,7 +40,7 @@ TiCDC 新架构的监控面板主要包括以下部分：
 
 **Summary** 面板示例如下：
 
-![Summary](/media/ticdc/ticdc-new-arch-metric-1.png)
+![Summary](/media/ticdc/ticdc-new-arch-metric-summary.png)
 
 **Summary** 面板的各指标说明如下：
 
@@ -58,7 +58,7 @@ TiCDC 新架构的监控面板主要包括以下部分：
 
 **Server** 面板示例如下：
 
-![Server](/media/ticdc/ticdc-new-arch-metric-2.png)
+![Server](/media/ticdc/ticdc-new-arch-metric-server.png)
 
 **Server** 面板的各指标说明如下：
 
@@ -74,7 +74,7 @@ TiCDC 新架构的监控面板主要包括以下部分：
 
 **Log Puller** 面板示例如下：
 
-![Log Puller](/media/ticdc/ticdc-new-arch-metric-3.png)
+![Log Puller](/media/ticdc/ticdc-new-arch-metric-log-puller.png)
 
 **Log Puller** 面板的各指标说明如下：
 
@@ -89,7 +89,7 @@ TiCDC 新架构的监控面板主要包括以下部分：
 
 **Event Store** 面板示例如下：
 
-![Event Store](/media/ticdc/ticdc-new-arch-metric-4.png)
+![Event Store](/media/ticdc/ticdc-new-arch-metric-event-store.png)
 
 **Event Store** 面板的各指标说明如下：
 
@@ -114,7 +114,7 @@ TiCDC 新架构的监控面板主要包括以下部分：
 
 **Sink** 面板示例如下：
 
-![Sink](/media/ticdc/ticdc-new-arch-metric-5.png)
+![Sink](/media/ticdc/ticdc-new-arch-metric-sink.png)
 
 **Sink** 面板的各指标说明如下：
 
