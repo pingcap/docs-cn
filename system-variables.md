@@ -5072,6 +5072,28 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 单位：毫秒
 - 输出慢日志的耗时阈值，默认为 300 ms。如果查询耗时大于这个值，会视作一个慢查询，并记录到慢查询日志。注意，当日志的输出级别 [`log.level`](/tidb-configuration-file.md#level) 是 `"debug"` 时，所有查询都会记录到慢日志，不受该变量的限制。
 
+### `tidb_slow_log_rules`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 默认值：""
+- 类型：字符串
+- 用于定义慢日志的触发规则，支持基于多维度指标的组合条件，实现更加灵活和精细化的日志记录控制。
+> **注意:**
+>
+> 建议在启用 [`tidb_slow_log_rules`](#tidb_slow_log_rules) 后，同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec) 以限制慢日志打印频率，防止基于规则的慢日志触发过于频繁。
+
+### `tidb_slow_log_max_per_sec`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 默认值：`0`
+- 类型：整数型
+- 范围：`[0, 1000000]`
+- 控制每秒打印慢日志每秒的次数上限，默认值 0。当该变量值为 0 时，则表示不限制每秒打印的慢日志数量。当该变量值大于 0 时，TiDB 会限制每秒打印的慢日志数量不超过该值，超过部分的慢日志将被丢弃，不会写入慢日志文件。该变量常与 [`tidb_slow_log_rules`](#tidb_slow_log_rules) 结合使用，以防止在高负载情况下产生过多的慢日志。
+
 ### `tidb_slow_query_file`
 
 - 作用域：SESSION
