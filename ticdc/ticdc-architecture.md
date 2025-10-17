@@ -46,6 +46,7 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 如果你的业务满足以下任一条件，建议从 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)切换至TiCDC 新架构，以获得更优的性能与稳定性：
 
 - 增量扫描存在性能瓶颈：增量扫描任务长时间无法完成，导致同步延迟持续上升。
+- 超高流量场景：Changefeed 总体流量超过 700MB/s。
 - MySQL Sink 中存在超高流量写入的单表：目标表结构满足**有且仅有一个主键或非空唯一键**。
 - 海量表同步场景：同步的表数量超过 10 万张。
 - 高频 DDL 操作引发延迟：频繁执行 DDL 语句导致同步延迟显著上升。
@@ -60,12 +61,6 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 - 表的写入流量超过配置的阈值（默认未开启，可通过 `scheduler.write-key-threshold` 设置）。
 
 ## 兼容性说明
-
-### Server 级别错误的处理机制
-
-在 TiCDC 老架构中，若出现 Server 级别错误（如 `ErrEtcdSessionDone`），TiCDC 会自动重启主线程，进程不会退出。
-
-在新架构中，若发生 Server 级别错误，TiCDC 进程会直接退出，需要借助运维工具（如 TiUP 或 TiDB Operator）自动重启 TiCDC 实例。
 
 ### DDL 进度表
 
