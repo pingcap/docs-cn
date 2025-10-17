@@ -28,7 +28,11 @@ TiCDC 新架构的监控面板主要包括以下部分：
 
 ### Summary 面板
 
+**Summary** 面板示例如下：
+
 ![Summary](/media/ticdc/ticdc-new-arch-metric-1.png)
+
+**Summary** 面板的各指标说明如下：
 
 - Changefeed Checkpoint Lag：同步任务在下游与上游之间的时序差距
 - Changefeed ResolvedTs Lag：TiCDC 节点内部处理进度与上游数据库的时序差距
@@ -42,7 +46,11 @@ TiCDC 新架构的监控面板主要包括以下部分：
 
 ### Server 面板
 
+**Server** 面板示例如下：
+
 ![Server](/media/ticdc/ticdc-new-arch-metric-2.png)
+
+**Server** 面板的各指标说明如下：
 
 - Uptime：TiKV 节点和 TiCDC 节点已经运行的时间
 - Goroutine Count：TiCDC 节点 Goroutine 的个数
@@ -54,7 +62,11 @@ TiCDC 新架构的监控面板主要包括以下部分：
 
 ### Log Puller 面板
 
+**Log Puller** 面板示例如下：
+
 ![Log Puller](/media/ticdc/ticdc-new-arch-metric-3.png)
+
+**Log Puller** 面板的各指标说明如下：
 
 - Input Events/s：TiCDC 每秒收到的事件数
 - Unresolved Region Request Count：TiCDC 已经发送但尚未完成的 Region 增量扫描请求数（该监控会动态变化）
@@ -65,7 +77,11 @@ TiCDC 新架构的监控面板主要包括以下部分：
 
 ### Event Store 面板
 
+**Event Store** 面板示例如下：
+
 ![Event Store](/media/ticdc/ticdc-new-arch-metric-4.png)
+
+**Event Store** 面板的各指标说明如下：
 
 - Resolved Ts Lag：Event Store 处理进度与上游数据库的时序差距
 - Register Dispatcher StartTs Lag：Dispatcher 注册请求的 StartTs 与当前时间点之间的时序差距
@@ -86,7 +102,11 @@ TiCDC 新架构的监控面板主要包括以下部分：
 
 ### Sink 面板
 
+**Sink** 面板示例如下：
+
 ![Sink](/media/ticdc/ticdc-new-arch-metric-5.png)
+
+**Sink** 面板的各指标说明如下：
 
 - Output Row Batch Count：Sink 每批次写入 DML 的平均行数。
 - Output Row Count(per second)：每秒向下游写入的 DML 行数
