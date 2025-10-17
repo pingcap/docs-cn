@@ -1,11 +1,17 @@
 ---
-title: TiCDC 架构设计与原理
-summary: 了解 TiCDC 软件的架构设计和运行原理。
+title: TiCDC 老架构设计与原理
+summary: 了解 TiCDC 老架构的设计和运行原理。
 ---
 
-# TiCDC 架构设计与原理
+# TiCDC 老架构
 
-## TiCDC 软件架构
+本文档介绍了 TiCDC 老架构的设计与工作原理。
+
+> **注意：**
+>
+> 从 v8.5.4-release.1 开始，TiCDC 引入了全新架构，在提升实时数据复制性能、可扩展性及稳定性的同时，有效降低了资源成本。更多信息请参阅。 更多信息请参阅 [TiCDC 新架构](/ticdc/ticdc-architecture.md).
+
+## TiCDC 老架构介绍
 
 TiCDC 集群由多个 TiCDC 对等节点组成，是一种分布式无状态的架构设计。TiCDC 集群及节点内部组件的设计如下图所示：
 
