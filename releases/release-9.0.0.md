@@ -458,6 +458,8 @@ TiDB 版本：9.0.0
 * 算子 `indexMergeJoin` 是表连接的一种方式，目前已经被其他连接方式取代，`indexMergeJoin` 计划在未来版本废弃。对应的系统变量[`tidb_enable_index_merge_join`](/system-variables.md#tidb_enable_index_merge_join) 也将被一同废弃。
 * 作为测试用途的优化器提示 [`NTH_PLAN(N)`](/optimizer-hints.md#nth_plann) 计划在未来版本废弃。
 * 优化器代价估算已经全面转向 [代价模型 V2](/cost-model.md#cost-model-version-2)。因此，系统变量 [`tidb_enable_new_cost_interface`](/system-variables.md#tidb_enable_new_cost_interface-从-v620-版本开始引入) 将会在未来版本被移除。
+* [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) 将在未来版本被移出。只要统计信息存在，TiDB 就不会去使用 pseudo 统计信息。
+* "统计信息 Version 2" 提高了大数据量场景下估算的准确性，TiDB 将会在未来版本废弃 "统计信息 Version 1"。版本间的区别参见 [统计信息版本](/statistics.md#统计信息版本)。
 
 ## 改进提升
 
