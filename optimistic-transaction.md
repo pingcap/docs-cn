@@ -75,7 +75,7 @@ aliases: ['/docs-cn/dev/optimistic-transaction/','/docs-cn/dev/reference/transac
 
 > **注意：**
 >
-> - 从 TiDB v3.0.0 开始，事务的自动重试功能默认为禁用状态，因为可能导致**事务隔离级别遭到破坏**。
+> - 从 TiDB v3.0.0 开始，事务的自动重试功能默认为禁用状态，因为该功能可能导致**事务隔离级别遭到破坏**。
 > - 从 TiDB v8.0.0 开始，不再支持乐观事务的自动重试。
 
 当事务提交时，如果发现写写冲突，TiDB 内部重新执行包含写操作的 SQL 语句。你可以通过设置 `tidb_disable_txn_auto_retry = OFF` 开启自动重试，并通过 `tidb_retry_limit` 设置重试次数：
