@@ -10,7 +10,7 @@ summary: TiDB 配置参数包括启动参数和环境变量。启动参数包括
 
 要快速了解 TiDB 的参数体系与参数作用域，建议先观看下面的培训视频（时长 17 分钟）。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson10_config.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson10.png"></video>
+<video src="https://docs-download.pingcap.com/media/videos/docs-cn%2FLesson10_config.mp4" width="600px" height="450px" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson10.png"></video>
 
 本文将详细介绍 TiDB 的命令行启动参数。TiDB 的默认端口为 4000（客户端请求）与 10080（状态报告）。
 
@@ -54,7 +54,7 @@ summary: TiDB 配置参数包括启动参数和环境变量。启动参数包括
 
 ## `--initialize-secure`
 
-- 在安全模式下启动 tidb-server
+- 控制在 tidb-server 初始化过程中是否使用 `auth_socket` 认证方式创建 `root` 账户。如果设置为 `true`，首次连接 TiDB 时必须使用 socket 连接，这样安全性更高。
 - 默认：false
 
 ## `--initialize-sql-file`

@@ -21,20 +21,20 @@ summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在
 |  操作系统   |   支持的 CPU 架构   |
 |   :---   |   :---   |
 | Red Hat Enterprise Linux 8.4 及以上的 8.x 版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
-|  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-|  Amazon Linux 2023      |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-|  Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
-| 麒麟欧拉版 V10 SP1/SP2/SP3（从 v7.5.5 开始支持 SP3）   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+| Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+| Amazon Linux 2023      |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+| Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
+| 银河麒麟 V10 SP1/SP2/SP3（从 v7.5.5 开始支持 SP3）   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | 统信操作系统 (UOS) V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | openEuler 22.03 LTS SP1/SP3 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| macOS 12 (Monterey) 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
-|  Oracle Enterprise Linux 8 及以上的版本  |  x86_64           |
-|   Ubuntu LTS 20.04 及以上的版本  |  x86_64           |
-| CentOS 8 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
-|  Debian 10 (Buster) 及以上的版本  |  x86_64           |
-|  Fedora 38 及以上的版本   |  x86_64           |
-|  openSUSE Leap 15.5 以上的版本（不包含 Tumbleweed） |  x86_64           |
-|  SUSE Linux Enterprise Server 15  |  x86_64                        |
+| macOS 13 (Ventura) 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+| Oracle Enterprise Linux 8 及以上的版本  |  x86_64           |
+| Ubuntu LTS 22.04 及以上的版本  |  x86_64           |
+| CentOS 9 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
+| Debian 11 (Bullseye) 及以上的版本  |  x86_64           |
+| Fedora 40 及以上的版本   |  x86_64           |
+| openSUSE Leap 15.6 以上的版本（不包含 Tumbleweed） |  x86_64           |
+| SUSE Linux Enterprise Server 15.6  |  x86_64                        |
 
 > **警告：**
 >
@@ -97,7 +97,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 | **组件** | **CPU** | **内存** | **本地存储** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
-| TiDB | 8 核+ | 16 GB+ | [磁盘空间要求](#磁盘空间要求) | 千兆网卡 | 1（可与 PD 同机器） |
+| TiDB | 8 核+ | 16 GB+ | [存储要求](#存储要求) | 千兆网卡 | 1（可与 PD 同机器） |
 | PD | 4 核+ | 8 GB+ | SAS, 200 GB+ | 千兆网卡 | 1（可与 TiDB 同机器） |
 | TiKV | 8 核+ | 32 GB+ | SSD, 200 GB+ | 千兆网卡 | 3 |
 | TiFlash | 32 核+ | 64 GB+ | SSD, 200 GB+ | 千兆网卡 | 1 |
@@ -172,7 +172,7 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 | Alertmanager | 9093 | 告警 web 服务端口 |
 | Alertmanager | 9094 | 告警通信端口 |
 
-## 磁盘空间要求
+## 存储要求
 
 | 组件 | 磁盘空间要求 | 健康水位使用率 |
 | :-- | :-- | :-- |
@@ -182,6 +182,8 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 | TiFlash | 数据盘建议最少预留 100 GB，日志盘建议最少预留 30 GB | 低于 80% |
 | TiUP | <ul><li>中控机：部署一个版本的 TiDB 集群占用不超过 1 GB 空间，部署多个版本集群所占用的空间会相应增加 </li> <li>部署服务器（实际运行 TiDB 各组件的机器）：TiFlash 占用约 700 MB 空间，其他组件（PD、TiDB、TiKV 等）各占用约 200 MB 空间。同时，部署过程会占用小于 1 MB 临时空间（/tmp）存放临时文件 </li></ul> | 不涉及|
 | Ngmonitoring | <ul><li>Conprof：3 x 1 GB x 组件数量（表示每个组件每天占用约 1 GB，总共 3 天） + 20 GB 预留空间 </li><li> Top SQL：30 x 50 MB x 组件数量（每个组件每天占用约 50 MB，总共 30 天） </li><li> Top SQL 和 Conprof 共享预留空间</li></ul> | 不涉及 |
+
+TiDB 支持 XFS 和 Ext4 文件系统。其他文件系统不推荐用于生产环境。
 
 ## 客户端 Web 浏览器要求
 

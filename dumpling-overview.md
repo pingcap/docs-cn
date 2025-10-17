@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/
 
 要快速了解 Dumpling 的基本功能，建议先观看下面的培训视频（时长 28 分钟）。注意本视频只作为功能介绍、学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson18_dumpling.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson18.png"></video>
+<video src="https://docs-download.pingcap.com/media/videos/docs-cn%2FLesson18_dumpling.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson18.png"></video>
 
 你可以通过下列任意方式获取 Dumpling：
 
@@ -29,7 +29,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 
 > **注意：**
 >
-> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。从 v7.5.0 开始，[Mydumper](https://docs.pingcap.com/tidb/v4.0/mydumper-overview) 废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
+> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。从 v7.5.0 开始，[Mydumper](https://docs-archive.pingcap.com/tidb/v4.0/mydumper-overview) 废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
 
 Dumpling 具有以下优势：
 
@@ -57,8 +57,8 @@ Dumpling 具有以下优势：
 
 - PROCESS：需要该权限用于查询集群信息以获取 PD 地址，从而通过 PD 控制 GC。
 - SELECT：导出目标表时需要。
-- RELOAD：使用 consistency flush 时需要。注意，只有 TiDB 支持该权限，当上游为 RDS 或采用托管服务时，可忽略该权限。
-- LOCK TABLES：使用 consistency lock 时需要，需要导出的库表都有该权限。
+- RELOAD：`consistency` 级别为 `flush` 时需要，当上游为 RDS 或采用托管服务时，可忽略该权限。
+- LOCK TABLES：`consistency` 级别为 `lock` 时需要，需要导出的库表都有该权限。
 - REPLICATION CLIENT：导出 metadata 记录数据快照点时需要，可选，如果不需要导出 metadata，可忽略该权限。
 
 ### 导出为 SQL 文件
@@ -78,7 +78,11 @@ tiup dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o /tmp/test -r 2
 - `-h`、`-P`、`-u` 分别代表地址、端口、用户。如果需要密码验证，可以使用 `-p $YOUR_SECRET_PASSWORD` 将密码传给 Dumpling。
 - `-o`（或 `--output`）用于选择存储导出文件的目录，支持本地文件的绝对路径或[外部存储服务的 URI 格式](#存储服务的-uri-格式说明)。
 - `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大。一般不超过 64。
-- `-r` 用于开启表内并发加速导出。默认值是 `0`，表示不开启。取值大于 0 表示开启，取值是 INT 类型。当数据源为 TiDB 时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分区间，同时减少内存使用。具体取值不影响划分算法。对数据源为 MySQL 且表的主键或复合主键首列是 INT 的场景，该参数也有表内并发效果。
+- `-r` 选项用于开启表内并发以加速导出，默认关闭（默认值为 `0`）。当设置为大于 `0` 时，不同数据库的行为如下：
+
+    - 对于 TiDB，Dumpling 会根据 Region 信息进行分割，同时减少内存使用，`-r` 的具体数值不会影响分割算法。  
+    - 对于 MySQL，当主键（或复合主键的首列）为 `INT` 或 `STRING` 类型时，该选项也支持表内并发。
+
 - `-F` 选项用于指定单个文件的最大大小，单位为 `MiB`，可接受类似 `5GiB` 或 `8KB` 的输入。如果你想使用 TiDB Lightning 将该文件加载到 TiDB 实例中，建议将 `-F` 选项的值保持在 256 MiB 或以下。
 
 > **注意：**
@@ -271,7 +275,7 @@ Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表�
 
 Dumpling 通过 `--consistency <consistency level>` 标志控制导出数据“一致性保证”的方式。在使用 snapshot 来保证一致性的时候，可以使用 `--snapshot` 选项指定要备份的时间戳。还可以使用以下的一致性级别：
 
-- `flush`：使用 [`FLUSH TABLES WITH READ LOCK`](https://dev.mysql.com/doc/refman/8.0/en/flush.html#flush-tables-with-read-lock) 短暂地中断备份库的 DML 和 DDL 操作、保证备份连接的全局一致性和记录 POS 信息。所有的备份连接启动事务后释放该锁。推荐在业务低峰或者 MySQL 备份库上进行全量备份。
+- `flush`：使用 [`FLUSH TABLES WITH READ LOCK`](https://dev.mysql.com/doc/refman/8.0/en/flush.html#flush-tables-with-read-lock) 短暂地中断备份库的 DML 和 DDL 操作、保证备份连接的全局一致性和记录 POS 信息。所有的备份连接启动事务后释放该锁。推荐在业务低峰或者 MySQL 备份库上进行全量备份。注意 TiDB 不支持该值。
 - `snapshot`：获取指定时间戳的一致性快照并导出。
 - `lock`：为待导出的所有表上读锁。
 - `none`：不做任何一致性保证。

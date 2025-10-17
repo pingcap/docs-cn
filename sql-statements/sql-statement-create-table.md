@@ -126,6 +126,37 @@ OnCommitOpt ::=
 PlacementPolicyOption ::=
     "PLACEMENT" "POLICY" EqOpt PolicyName
 |   "PLACEMENT" "POLICY" (EqOpt | "SET") "DEFAULT"
+
+DefaultValueExpr ::=
+    NowSymOptionFractionParentheses
+|   SignedLiteral
+|   NextValueForSequenceParentheses
+|   BuiltinFunction
+
+BuiltinFunction ::=
+    '(' BuiltinFunction ')'
+|   identifier '(' ')'
+|   identifier '(' ExpressionList ')'
+|   "REPLACE" '(' ExpressionList ')'
+
+NowSymOptionFractionParentheses ::=
+    '(' NowSymOptionFractionParentheses ')'
+|   NowSymOptionFraction
+
+NowSymOptionFraction ::=
+    NowSym
+|   NowSymFunc '(' ')'
+|   NowSymFunc '(' NUM ')'
+|   CurdateSym '(' ')'
+|   "CURRENT_DATE"
+
+NextValueForSequenceParentheses ::=
+    '(' NextValueForSequenceParentheses ')'
+|   NextValueForSequence
+
+NextValueForSequence ::=
+    "NEXT" "VALUE" forKwd TableName
+|   "NEXTVAL" '(' TableName ')'
 ```
 
 TiDB 支持以下 `table_option`。TiDB 会解析并忽略其他 `table_option` 参数，例如 `AVG_ROW_LENGTH`、`CHECKSUM`、`COMPRESSION`、`CONNECTION`、`DELAY_KEY_WRITE`、`ENGINE`、`KEY_BLOCK_SIZE`、`MAX_ROWS`、`MIN_ROWS`、`ROW_FORMAT` 和 `STATS_PERSISTENT`。此外，TiDB 会解析 `ENGINE_ATTRIBUTE`，但总是返回 `ERROR 3981 (HY000): Storage engine does not support ENGINE_ATTRIBUTE` 错误。这是一个保留参数，供未来使用。

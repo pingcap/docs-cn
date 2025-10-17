@@ -43,10 +43,10 @@ global:
   deploy_dir: "/tidb-deploy"
   data_dir: "/tidb-data"
 component_versions:
-  tiproxy: "v1.2.0"
+  tiproxy: "v1.3.2"
 server_configs:
   tidb:
-    graceful-wait-before-shutdown: 15
+    graceful-wait-before-shutdown: 30
   tiproxy:
     ha.virtual-ip: "10.0.1.10/24"
     ha.interface: "eth0"

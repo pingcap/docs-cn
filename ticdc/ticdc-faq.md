@@ -285,9 +285,17 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 
 更多信息请参考 [Open protocol Row Changed Event 格式定义](/ticdc/ticdc-open-protocol.md#row-changed-event)。
 
-## TiCDC 占用多少 PD 的存储空间
+## TiCDC 占用多少 PD 的存储空间？
 
-TiCDC 使用 PD 内部的 etcd 来存储元数据并定期更新。因为 etcd 的多版本并发控制 (MVCC) 以及 PD 默认的 compaction 间隔是 1 小时，TiCDC 占用的 PD 存储空间与 1 小时内元数据的版本数量成正比。在 v4.0.5、v4.0.6、v4.0.7 三个版本中 TiCDC 存在元数据写入频繁的问题，如果 1 小时内有 1000 张表创建或调度，就会用尽 etcd 的存储空间，出现 `etcdserver: mvcc: database space exceeded` 错误。出现这种错误后需要清理 etcd 存储空间，参考 [etcd maintenance space-quota](https://etcd.io/docs/v3.4.0/op-guide/maintenance/#space-quota)。如果你的 TiCDC 版本为 v4.0.5、v4.0.6 或 v4.0.7，建议升级到 v4.0.9 及以后版本。
+在使用 TiCDC 的过程中，你可能会遇到 `etcdserver: mvcc: database space exceeded` 错误，该错误主要与 TiCDC 使用 PD 内部的 etcd 来存储元数据的机制相关。
+
+etcd 采用多版本并发控制 (Multi-Version Concurrency Control, MVCC) 机制存储数据，且 PD 默认的 compaction 间隔为 1 小时。这意味着在 1 小时内，etcd 会保留所有数据的多个版本，直至进行压缩操作。
+
+在 v6.0.0 之前，TiCDC 使用 PD 内部的 etcd 来存储和更新 changefeed 内部所有表的元数据。因此，TiCDC 占用的 PD 存储空间与 changefeed 所同步的表的数量成正比。当同步表数量较多时，etcd 的存储空间会被更快耗尽，更易出现 `etcdserver: mvcc: database space exceeded` 错误。
+
+出现这种错误后，需要参考 [etcd maintenance space-quota](https://etcd.io/docs/v3.4.0/op-guide/maintenance/#space-quota) 清理 etcd 存储空间。
+
+从 v6.0.0 起，TiCDC 对元数据存储机制进行了优化，可有效避免因上述原因导致的 etcd 存储空间问题。如果你的 TiCDC 版本低于 v6.0.0，建议升级到 v6.0.0 或更高版本。
 
 ## TiCDC 支持同步大事务吗？有什么风险吗？
 
@@ -344,7 +352,9 @@ mysql root@127.0.0.1:test> show create table test;
 
 TiCDC 提供至少一次的数据同步保证，当下游有重复数据时，会引起写冲突。为了避免该问题，TiCDC 会将 `INSERT` 和 `UPDATE` 语句转成 `REPLACE INTO` 语句。该行为由 `safe-mode` 参数来控制。
 
-在 v6.1.3 版本之前，`safe-mode` 默认为 `true`，即所有的 `INSERT` 和 `UPDATE` 语句都转成 `REPLACE INTO` 语句。在 v6.1.3 及之后版本，系统能自动判断下游是否存在重复数据，`safe-mode` 默认更改为 `false`，当系统判断下游无重复数据时，会直接同步 `INSERT` 和 `UPDATE` 语句。
+在 v6.1.3 版本之前，`safe-mode` 的默认值为 `true`，即所有的 `INSERT` 和 `UPDATE` 语句都转成 `REPLACE INTO` 语句。
+
+在 v6.1.3 及之后版本，`safe-mode` 的默认值更改为 `false`，而且 TiCDC 能自动判断下游是否存在重复数据。当 TiCDC 判断下游无重复数据时，会直接同步 `INSERT` 和 `UPDATE` 语句；否则，TiCDC 会将 `INSERT` 和 `UPDATE` 语句都转成 `REPLACE INTO` 语句再进行同步。
 
 ## 为什么 TiCDC 需要使用磁盘，什么时候会写磁盘，TiCDC 能否利用内存缓存提升同步性能？
 
@@ -388,7 +398,7 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 ## 单表数据同步只能在一个 TiCDC 节点上运行，TiCDC 是否考虑使用多个节点同步多表数据？
 
-从 v7.1.0 起，TiCDC 支持 MQ sink 按照 TiKV Region 粒度来同步数据变更日志，实现处理能力上的可扩展性，使得 TiCDC 能够同步 Region 数量庞大的单表。如需开启，请在 [TiCDC 配置文件](/ticdc/ticdc-changefeed-config.md)中配置以下参数：
+从 v7.1.0 起，TiCDC 支持 MQ sink 按照 TiKV Region 粒度来同步数据变更日志，实现处理能力上的可扩展性，使得 TiCDC 能够同步 Region 数量庞大的单表。如需开启，请在 [TiCDC Changefeed 配置文件](/ticdc/ticdc-changefeed-config.md)中配置以下参数：
 
 ```toml
 [scheduler]
@@ -436,3 +446,65 @@ TiDB 有事务超时的机制，当事务运行超过 [`max-txn-ttl`](/tidb-conf
 > **注意：**
 >
 > 当同步存储生成列到 Kafka 或存储服务后，再将其写回 MySQL 时，可能会遇到 `Error 3105 (HY000): The value specified for generated column 'xx' in table 'xxx' is not allowed` 错误。为避免该错误，你可以使用 [Open Protocol](/ticdc/ticdc-open-protocol.md) 进行同步。该协议的输出包含[列的 flag 值](/ticdc/ticdc-open-protocol.md#列标志位)，可以区分是否为生成列。
+
+## 当频繁出现 `CDC:ErrMySQLDuplicateEntryCDC` 错误时，如何解决？
+
+使用 TiCDC 将数据同步到 TiDB 或 MySQL 时，如果上游以特定模式执行 SQL ，可能会遇到如下错误：
+
+`CDC:ErrMySQLDuplicateEntryCDC`
+
+出现该错误的原因：TiDB 会将同一事务内对同一行的 `DELETE + INSERT` 操作提交为一个 `UPDATE` 行变更，当 TiCDC 以 UPDATE 的形式向下游同步数据时，尝试交换唯一键值的 `UPDATE` 操作可能会出现冲突。
+
+以下表为例：
+
+```sql
+CREATE TABLE data_table (
+    id BIGINT(20) NOT NULL PRIMARY KEY,
+    value BINARY(16) NOT NULL,
+    UNIQUE KEY value_index (value)
+) CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+```
+
+如果上游事务尝试交换该表中两行的 `value` 字段：
+
+```sql
+DELETE FROM data_table WHERE id = 1;
+DELETE FROM data_table WHERE id = 2;
+INSERT INTO data_table (id, value) VALUES (1, 'v3');
+INSERT INTO data_table (id, value) VALUES (2, 'v1');
+```
+
+TiDB 内部将会产生两条 `UPDATE` 行变更，因此 TiCDC 会将其转化成两条 `UPDATE` 语句同步到下游：
+
+```sql
+UPDATE data_table SET value = 'v3' WHERE id = 1;
+UPDATE data_table SET value = 'v1' WHERE id = 2;
+```
+
+在执行第二条 `UPDATE` 语句时，如果下游的表中仍然存在 `v1`，会破坏 `value` 列的唯一键约束，从而导致 `CDC:ErrMySQLDuplicateEntryCDC` 错误。
+
+如果你频繁遇到 `CDC:ErrMySQLDuplicateEntryCDC` 错误，可以在 [`sink-uri`](/ticdc/ticdc-sink-to-mysql.md#sink-uri-配置-mysqltidb) 配置中设置 `safe-mode=true` 参数启用 TiCDC 安全模式：
+
+```
+mysql://user:password@host:port/?safe-mode=true
+```
+
+在安全模式下，TiCDC 会将 `UPDATE` 操作拆分为 `DELETE + REPLACE INTO` 进行执行，从而避免唯一键冲突错误。
+
+## 为什么 TiCDC 同步到 Kafka 的任务经常因 `broken pipe` 报错而失败？
+
+TiCDC 同步数据到 Kafka 时使用了 Sarama 客户端。为了避免数据乱序，TiCDC 禁用了 Sarama 的自动重试机制（将重试次数设为 0）。因此，如果 TiCDC 和 Kafka 之间的连接在空闲一段时间后被 Kafka 主动关闭，后续 TiCDC 写入数据时就会触发 `write: broken pipe` 错误，导致同步任务失败。
+
+虽然 Changefeed 可能会因该报错而失败，但 TiCDC 会自动重启该 Changefeed，因此同步任务仍可继续正常运行。需要注意的是，在重启过程中，Changefeed 的同步延迟 (lag) 可能会出现一次性的小幅增加，通常在 30 秒以内，之后会自动恢复正常。
+
+如果业务对 Changefeed 的延迟非常敏感，建议进行以下操作：
+
+1. 在 Kafka broker 的配置文件中调大 Kafka 的连接空闲超时时间，例如：
+
+    ```properties
+    connections.max.idle.ms=86400000  # 设置为 1 天
+    ```
+
+    建议结合业务的实际同步情况来调整 `connections.max.idle.ms` 值。如果 TiCDC Changefeed 在几十分钟内一定会有数据同步发生，可以将 `connections.max.idle.ms` 设置为几十分钟即可，无需设置过大。
+
+2. 重启 Kafka 以使配置生效，避免连接被提前关闭，从而减少 `broken pipe` 报错。

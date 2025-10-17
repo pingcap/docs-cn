@@ -248,7 +248,7 @@ TiDB 版本：7.0.0
 * [DBeaver](https://dbeaver.io/) v23.0.1 默认支持 TiDB [#17396](https://github.com/dbeaver/dbeaver/issues/17396) @[Icemap](https://github.com/Icemap)
 
     - 提供独立的 TiDB 模块、Icon 和标识。
-    - 默认配置支持 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless)，你可以更方便地连接 TiDB Cloud Serverless。
+    - 默认配置支持 [{{{ .starter }}}](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless)，你可以更方便地连接 {{{ .starter }}}。
     - 支持识别 TiDB 版本，从而显示或隐藏外键 Tab。
     - 支持 Explain SQL 计划显示。
     - 支持 TiDB 语法高亮，如 `PESSIMISTIC`、`OPTIMISTIC`、`AUTO_RANDOM`、`PLACEMENT`、`POLICY`、`REORGANIZE`、`EXCHANGE`、`CACHE`、`NONCLUSTERED`、`CLUSTERED` 等。
@@ -345,6 +345,7 @@ TiDB 版本：7.0.0
 | [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-从-v700-版本开始引入) | 新增 | 这个变量用来控制是否启用 [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)功能。默认值为 `OFF`，即未开启 TiFlash 延迟物化功能。|
 | [`tidb_opt_ordering_index_selectivity_threshold`](/system-variables.md#tidb_opt_ordering_index_selectivity_threshold-从-v700-版本开始引入) | 新增 | 该变量用于当 SQL 中存在 `ORDER BY` 和 `LIMIT` 子句且带有过滤条件时，控制优化器选择索引的行为。 |
 |[`tidb_pessimistic_txn_fair_locking`](/system-variables.md#tidb_pessimistic_txn_fair_locking-从-v700-版本开始引入) | 新增 | 是否对悲观锁启用加强的悲观锁唤醒模型，以降低单行冲突场景下事务的尾延迟。默认值为 `ON`，从旧版本升级到 v7.0.0 或之后版本，该变量会被设置成 `OFF`。 |
+| [`tidb_slow_txn_log_threshold`](/system-variables.md#tidb_slow_txn_log_threshold-从-v700-版本开始引入) | 新增 | 这个变量用于设置慢事务日志阈值。当事务执行时间超过该阈值时，TiDB 会在日志中记录该事务的详细信息。默认值 `0` 表示关闭该功能。 |
 | [`tidb_ttl_running_tasks`](/system-variables.md#tidb_ttl_running_tasks-从-v700-版本开始引入) | 新增 | 这个变量用于限制整个集群内 TTL 任务的并发量。默认值 `-1` 表示与 TiKV 节点的数量相同。 |
 
 ### 配置文件参数

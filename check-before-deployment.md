@@ -152,9 +152,13 @@ TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运
     >
     > 如果目录不存在，TiDB 在启动时会自动创建该目录。如果目录创建失败，或者 TiDB 对该目录没有读写权限，[Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 在运行时会被禁用。
 
-## 检测及关闭目标部署机器的防火墙
+## 检测目标部署机器的防火墙
 
-本段介绍如何关闭目标主机防火墙配置，因为在 TiDB 集群中，需要将节点间的访问端口打通才可以保证读写请求、数据心跳等信息的正常的传输。在普遍线上场景中，数据库到业务服务和数据库节点的网络联通都是在安全域内完成数据交互。如果没有特殊安全的要求，建议将目标节点的防火墙进行关闭。否则建议[按照端口使用规则](/hardware-and-software-requirements.md#网络要求)，将端口信息配置到防火墙服务的白名单中。
+在 TiDB 集群中，必须将节点间的访问端口打通才可以保证读写请求、数据心跳等信息的正常的传输。在普遍线上场景中，数据库到业务服务和数据库节点的网络联通都是在安全域内完成数据交互。如果没有特殊安全的要求，建议将目标节点的防火墙进行关闭。如不关闭防火墙，建议[按照端口使用规则](/hardware-and-software-requirements.md#网络要求)，将端口信息配置到防火墙服务的白名单中。
+
+### 停止并禁用防火墙
+
+本节介绍如何停止并禁用目标部署机器的防火墙服务。
 
 1. 检查防火墙状态（以 CentOS Linux release 7.7.1908 (Core) 为例）
 
@@ -163,13 +167,13 @@ TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运
     sudo systemctl status firewalld.service
     ```
 
-2. 关闭防火墙服务
+2. 停止防火墙服务
 
     ```bash
     sudo systemctl stop firewalld.service
     ```
 
-3. 关闭防火墙自动启动服务
+3. 禁用防火墙自动启动服务
 
     ```bash
     sudo systemctl disable firewalld.service
@@ -180,6 +184,93 @@ TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运
     ```bash
     sudo systemctl status firewalld.service
     ```
+
+### 更改防火墙区域
+
+如果不希望完全禁用防火墙，可以使用限制较少的区域。默认的 `public` 区域仅允许特定的服务和端口，而 `trusted` 区域默认允许所有流量。
+
+将默认区域设置为 `trusted`：
+
+```bash
+firewall-cmd --set-default-zone trusted
+```
+
+查看默认区域：
+
+```bash
+firewall-cmd --get-default-zone
+# trusted
+```
+
+列出某个区域的策略：
+
+```bash
+firewall-cmd --zone=trusted --list-all
+# trusted
+#   target: ACCEPT
+#   icmp-block-inversion: no
+#   interfaces:
+#   sources:
+#   services:
+#   ports:
+#   protocols:
+#   forward: yes
+#   masquerade: no
+#   forward-ports:
+#   source-ports:
+#   icmp-blocks:
+#   rich rules:
+```
+
+### 配置防火墙
+
+使用以下命令为 TiDB 集群组件配置防火墙。这些示例仅供参考，请根据实际环境调整区域名称、端口和服务。
+
+为 TiDB 组件配置防火墙：
+
+```bash
+firewall-cmd --permanent --new-service tidb
+firewall-cmd --permanent --service tidb --set-description="TiDB Server"
+firewall-cmd --permanent --service tidb --set-short="TiDB"
+firewall-cmd --permanent --service tidb --add-port=4000/tcp
+firewall-cmd --permanent --service tidb --add-port=10080/tcp
+firewall-cmd --permanent --zone=public --add-service=tidb
+```
+
+为 TiKV 组件配置防火墙：
+
+```bash
+firewall-cmd --permanent --new-service tikv
+firewall-cmd --permanent --service tikv --set-description="TiKV Server"
+firewall-cmd --permanent --service tikv --set-short="TiKV"
+firewall-cmd --permanent --service tikv --add-port=20160/tcp
+firewall-cmd --permanent --service tikv --add-port=20180/tcp
+firewall-cmd --permanent --zone=public --add-service=tikv
+```
+
+为 PD 组件配置防火墙：
+
+```bash
+firewall-cmd --permanent --new-service pd
+firewall-cmd --permanent --service pd --set-description="PD Server"
+firewall-cmd --permanent --service pd --set-short="PD"
+firewall-cmd --permanent --service pd --add-port=2379/tcp
+firewall-cmd --permanent --service pd --add-port=2380/tcp
+firewall-cmd --permanent --zone=public --add-service=pd
+```
+
+为 Prometheus 配置防火墙：
+
+```bash
+firewall-cmd --permanent --zone=public --add-service=prometheus
+firewall-cmd --permanent --service=prometheus --add-port=12020/tcp
+```
+
+为 Grafana 配置防火墙：
+
+```bash
+firewall-cmd --permanent --zone=public --add-service=grafana
+```
 
 ## 检测及安装 NTP 服务
 
@@ -589,29 +680,33 @@ sudo systemctl enable ntpd.service
     ```bash
     echo "fs.file-max = 1000000">> /etc/sysctl.conf
     echo "net.core.somaxconn = 32768">> /etc/sysctl.conf
-    echo "net.ipv4.tcp_tw_recycle = 0">> /etc/sysctl.conf
     echo "net.ipv4.tcp_syncookies = 0">> /etc/sysctl.conf
     echo "vm.overcommit_memory = 1">> /etc/sysctl.conf
     echo "vm.min_free_kbytes = 1048576">> /etc/sysctl.conf
     sysctl -p
     ```
 
+    > **警告：**
+    >
+    > 不建议在内存小于 16 GiB 的系统上调大 `vm.min_free_kbytes` 的值，否则可能导致系统不稳定或启动失败。
+
     > **注意：**
     >
     > - `vm.min_free_kbytes` 是 Linux 内核的一个参数，用于控制系统预留的最小空闲内存量，单位为 KiB。
     > - `vm.min_free_kbytes` 的设置会影响内存回收机制。设置得过大，会导致可用内存变少，设置得过小，可能会导致内存的申请速度超过后台的回收速度，进而导致内存回收并引起内存分配延迟。
     > - 建议将 `vm.min_free_kbytes` 最小设置为 `1048576` KiB（即 1 GiB）。如果[安装了 NUMA](/check-before-deployment.md#安装-numactl-工具)，建议设置为 `NUMA 节点个数 * 1048576` KiB。
-    > - 对于内存小于 16 GiB 的小规格服务器，保持 `vm.min_free_kbytes` 的默认值即可。
-    > - `tcp_tw_recycle` 从 Linux 4.12 内核版本开始移除，在使用高版本内核时无需配置该项。
+    > - 对于运行 Linux 内核 4.11 或更早版本的系统，建议将 `net.ipv4.tcp_tw_recycle` 设置为 `0`。
 
 10. 执行以下命令配置用户的 limits.conf 文件。
 
     ```bash
     cat << EOF >>/etc/security/limits.conf
-    tidb           soft    nofile          1000000
-    tidb           hard    nofile          1000000
+    tidb           soft    nofile         1000000
+    tidb           hard    nofile         1000000
     tidb           soft    stack          32768
     tidb           hard    stack          32768
+    tidb           soft    core           unlimited
+    tidb           hard    core           unlimited
     EOF
     ```
 
@@ -698,4 +793,8 @@ sudo yum -y install numactl
 
 ## 关闭 SELinux
 
-使用 [getenforce(8)](https://linux.die.net/man/8/getenforce) 工具检查是否已禁用 SELinux 或设置为宽容模式 (Permissive)。处于强制模式 (Enforcing) 的 SELinux 可能会导致部署失败。有关禁用 SELinux 的说明，请参阅操作系统的文档。
+SELinux 必须关闭或设置为 `permissive` 模式。你可以使用 [getenforce(8)](https://linux.die.net/man/8/getenforce) 工具来检查 SELinux 的当前状态。
+
+如果 SELinux 未关闭，请打开 `/etc/selinux/config` 文件，找到以 `SELINUX=` 开头的行，并将其修改为 `SELINUX=disabled`。修改完成后，你需要重启系统，因为从 `enforcing` 或 `permissive` 切换到 `disabled` 模式只有在重启后才会生效。
+
+在某些系统（如 Ubuntu）上，`/etc/selinux/config` 文件可能不存在，且 getenforce 工具可能未安装。在这种情况下，可以跳过此检查步骤。

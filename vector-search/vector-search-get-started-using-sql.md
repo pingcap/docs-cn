@@ -28,7 +28,7 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/vector-search/vector-search-
 如果你还没有 TiDB 集群，可以按照以下任一种方式创建：
 
 - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
-- 参考[创建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-cloud-serverless-集群)，创建 TiDB Cloud 集群。
+- 参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)，创建 TiDB Cloud 集群。
 
 ## 快速开始
 
@@ -50,11 +50,11 @@ mysql --comments --host 127.0.0.1 --port 4000 -u root
 
 </div>
 
-<div label="TiDB Cloud Serverless">
+<div label="{{{ .starter }}} 或 Essential">
 
-对于 TiDB Cloud Serverless 集群，可以按照以下步骤连接到集群：
+对于 {{{ .starter }}} 集群，可以按照以下步骤连接到集群：
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，单击你的 TiDB Cloud Serverless 集群名，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，单击你的 {{{ .starter }}} 集群名，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
@@ -143,7 +143,7 @@ SELECT * FROM embedded_documents;
 
 ### 第 5 步：执行向量搜索查询
 
-与全文搜索类似，在使用向量搜索时，你需要提供搜索词。
+与全文检索类似，在使用向量搜索时，你需要提供搜索词。
 
 在本例中，搜索词是“一种会游泳的动物”，假设其对应的向量是 `[1,2,3]`。在实际应用中，你需要使用[嵌入模型](/vector-search/vector-search-overview.md#嵌入模型)将用户的搜索词转换为向量。
 

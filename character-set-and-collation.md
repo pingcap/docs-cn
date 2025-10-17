@@ -104,7 +104,7 @@ SHOW CHARACTER SET;
 +---------+-------------------------------------+-------------------+--------+
 | ascii   | US ASCII                            | ascii_bin         |      1 |
 | binary  | binary                              | binary            |      1 |
-| gbk     | Chinese Internal Code Specification | gbk_bin           |      2 |
+| gbk     | Chinese Internal Code Specification | gbk_chinese_ci    |      2 |
 | latin1  | Latin1                              | latin1_bin        |      1 |
 | utf8    | UTF-8 Unicode                       | utf8_bin          |      3 |
 | utf8mb4 | UTF-8 Unicode                       | utf8mb4_bin       |      4 |
@@ -158,16 +158,16 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 ```
 
 ```
-+--------------------+---------+------+---------+----------+---------+
-| Collation          | Charset | Id   | Default | Compiled | Sortlen |
-+--------------------+---------+------+---------+----------+---------+
-| utf8mb4_0900_ai_ci | utf8mb4 |  255 |         | Yes      |       1 |
-| utf8mb4_0900_bin   | utf8mb4 |  309 |         | Yes      |       1 |
-| utf8mb4_bin        | utf8mb4 |   46 | Yes     | Yes      |       1 |
-| utf8mb4_general_ci | utf8mb4 |   45 |         | Yes      |       1 |
-| utf8mb4_unicode_ci | utf8mb4 |  224 |         | Yes      |       1 |
-+--------------------+---------+------+---------+----------+---------+
-5 rows in set (0.00 sec)
++--------------------+---------+-----+---------+----------+---------+---------------+
+| Collation          | Charset | Id  | Default | Compiled | Sortlen | Pad_attribute |
++--------------------+---------+-----+---------+----------+---------+---------------+
+| utf8mb4_0900_ai_ci | utf8mb4 | 255 |         | Yes      |       0 | NO PAD        |
+| utf8mb4_0900_bin   | utf8mb4 | 309 |         | Yes      |       1 | NO PAD        |
+| utf8mb4_bin        | utf8mb4 |  46 | Yes     | Yes      |       1 | PAD SPACE     |
+| utf8mb4_general_ci | utf8mb4 |  45 |         | Yes      |       1 | PAD SPACE     |
+| utf8mb4_unicode_ci | utf8mb4 | 224 |         | Yes      |       8 | PAD SPACE     |
++--------------------+---------+-----+---------+----------+---------+---------------+
+5 rows in set (0.001 sec)
 ```
 
 TiDB 对 GBK 字符集的支持详情见 [GBK](/character-set-gbk.md)。

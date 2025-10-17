@@ -20,6 +20,8 @@ TiDB 的安全性对于保护数据完整性和机密性至关重要。本文提
 - 使用 TiUP 部署时，参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md#第-7-步启动集群)为 root 用户生成随机密码。
 - 使用 TiDB Operator 部署时，参考[初始化账号和密码设置](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/initialize-a-cluster#初始化账号和密码设置)为 root 用户设置密码。
 
+你也可以使用 [`--initialize-secure`](/command-line-flags-for-tidb-configuration.md#--initialize-secure) 选项来限制初始 root 用户的网络访问。
+
 ## 启用密码复杂性检查
 
 默认情况下，TiDB 未启用密码复杂性策略，这可能导致使用弱密码或空密码，增加安全风险。
@@ -64,7 +66,7 @@ TiDB Dashboard 的账号体系与 TiDB SQL 用户一致，并基于 TiDB SQL 用
 
 TiDB 的默认安装中存在许多用于组件间通信的特权接口。这些端口通常不需要向用户端开放，因为它们主要用于内部通信。当这些端口直接暴露在公共网络上时，会增加潜在的攻击面，违反了安全最小化原则，增加了安全风险的产生。下表列出了 TiDB 集群默认监听端口的详细情况：
 
-| 组件                | 默认监听端口  | 协议       |
+| 组件              | 默认监听端口   | 协议       |
 |-------------------|--------------|------------|
 | TiDB              | 4000         | MySQL      |
 | TiDB              | 10080        | HTTP       |
@@ -76,14 +78,13 @@ TiDB 的默认安装中存在许多用于组件间通信的特权接口。这些
 | TiFlash           | 20170        | Protocol   |
 | TiFlash           | 20292        | HTTP       |
 | TiFlash           | 8234         | HTTP       |
-| TiFlow            |  8261/8291 | HTTP  |
-| TiFlow            |  8262      | HTTP  |
-| TiFlow            |  8300     | HTTP       |
+| DM master         | 8261         | HTTP       |
+| DM master         | 8291         | HTTP       |
+| DM worker         | 8262         | HTTP       |
+| TiCDC             | 8300         | HTTP       |
 | TiDB Lightning    | 8289         | HTTP       |
 | TiDB Operator     | 6060         | HTTP       |
 | TiDB Dashboard    | 2379         | HTTP       |
-| TiDB Binlog       |  8250   | HTTP       |
-| TiDB Binlog       |  8249 | HTTP      |
 | TMS               | 8082         | HTTP       |
 | TEM               | 8080         | HTTP       |
 | TEM               | 8000         | HTTP       |
@@ -97,7 +98,7 @@ TiDB 的默认安装中存在许多用于组件间通信的特权接口。这些
 | AlertManager      | 9093         | HTTP       |
 | AlertManager      | 9094         | Protocol   |
 | Node Exporter     | 9100         | HTTP       |
-| Blackbox Exporter | 9115        | HTTP       |
+| Blackbox Exporter | 9115         | HTTP       |
 | NG Monitoring     | 12020        | HTTP       |
 
 建议向普通用户只公开数据库的 `4000` 端口和 Grafana 面板的 `9000` 端口，并通过网络安全策略组或防火墙限制其他端口。以下是使用 `iptables` 限制端口访问的示例：
