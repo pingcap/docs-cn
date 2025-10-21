@@ -97,7 +97,15 @@ TiDB 版本：8.5.4
     - 修复预处理语句中处理 decimal 与 mysql 不一致的问题 [#62602](https://github.com/pingcap/tidb/issues/62602) @[ChangRui-Ryan](https://github.com/ChangRui-Ryan)
     - 修复 `truncate` 函数中短路径处理错误的问题 [#57608](https://github.com/pingcap/tidb/issues/57608) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复当 `Out Of Quota For Local Temporary Space` 触发时，spill 文件可能未被全部删除的问题 [#63216](https://github.com/pingcap/tidb/issues/63216) @[xzhangxian1008](https://github.com/xzhangxian1008)
-
+- 修复 apply 并发设置后，query 带 index join 导致无法生成 plan 的问题 [#59863](https://github.com/pingcap/tidb/issues/59863) @[hawkingrei](https://github.com/hawkingrei)
+- 修复查询使用 ATAN2 函数可能导致的结果错误问题 [#60093](https://github.com/pingcap/tidb/issues/60093) @[guo-shaoge](https://github.com/guo-shaoge)
+- 修复了 select 1 from duml 不可使用 instance 级别 plan cache 的问题 [#63075](https://github.com/pingcap/tidb/issues/63075) @[time-and-fate](https://github.com/time-and-fate)
+- 修复了 join order 变更顺序后可能导致的无法规划问题 [#61715](https://github.com/pingcap/tidb/issues/61715) @[hawkingrei](https://github.com/hawkingrei)
+- 修复了 set_var hint 使用 binding 后有可能无法恢复回原始 variable 设置的问题 [#59822](https://github.com/pingcap/tidb/issues/59822) @[wddevries](https://github.com/wddevries)
+- 修复了 ONLY_FULL_GROUP_BY 在取值为负时可能会检查错误的问题 [#62617]([https://github.com/pingcap/tidb/issues/62617](https://github.com/pingcap/tidb/issues/62617))[)](https://github.com/pingcap/tidb/issues/62617)) @[AilinKid]([https://github.com/AilinKid](https://github.com/AilinKid))[)](https://github.com/AilinKid))
+- 修复了 ONLY_FULL_GROUP_BY 检查大小写不敏感问题 [#62672](https://github.com/pingcap/tidb/issues/62672) @[AilinKid](https://github.com/AilinKid)
+- 修复 DP join order 算法可能产生的错误 plan 问题 [#63353](https://github.com/pingcap/tidb/issues/63353) @[winoros](https://github.com/winoros)
+- 修复了 outer join 改写为 inner join 可能产生的错误 [#61327](https://github.com/pingcap/tidb/issues/61327) @[hawkingrei](https://github.com/hawkingrei)
 + TiKV
 
 
