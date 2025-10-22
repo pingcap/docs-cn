@@ -42,7 +42,6 @@ TiDB 版本：8.5.4
     - 将部分 TiKV 的错误日志从 ERROR 级别调整为 WARN 级别，避免产生过多不必要的告警。[#18745]([https://github.com/tikv/tikv/issues/18745](https://github.com/tikv/tikv/issues/18745))[)](https://github.com/tikv/tikv/issues/18745)) @[exit-code-1]([https://github.com/exit-code-1](https://github.com/exit-code-1))[)](https://github.com/exit-code-1))
     - 将 Region MVCC 的 GC 处理逻辑改由 GC worker 线程执行，统一 GC 的处理逻辑。 [#18727]([https://github.com/tikv/tikv/issues/18727](https://github.com/tikv/tikv/issues/18727))[)](https://github.com/tikv/tikv/issues/18727)) @[v01dstar]([https://github.com/v01dstar](https://github.com/v01dstar))[)](https://github.com/v01dstar))
     - 优化 gRPC 线程池线程数量默认值的计算方式，将原来的固定数据调整为根据总的 CPU 配置动态计算，避免 gRPC 线程数量太小产生的性能瓶颈。 [#18613](https://github.com/tikv/tikv/issues/18613) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 优化 rocksdb 获取 snapshot 的性能，大幅降低在 rocksdb SST 文件数据很多场景的读写延迟。[#18743]([https://github.com/tikv/tikv/issues/18743](https://github.com/tikv/tikv/issues/18743))[)](https://github.com/tikv/tikv/issues/18743)) @[Connor1996]([https://github.com/Connor1996](https://github.com/Connor1996))[)](https://github.com/Connor1996))
     - (dup): release-7.5.7.md > 改进提升> TiKV - 优化在存在大量 SST 文件的环境中 async snapshot 和 write 的尾延迟 [#18743](https://github.com/tikv/tikv/issues/18743) @[Connor1996](https://github.com/Connor1996)
 
 + PD
