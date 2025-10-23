@@ -126,10 +126,10 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - **local-in**：尝试在本地可用区执行 Stale Read 的请求的响应的传入流量
     - **local-out**：尝试在本地可用区执行 Stale Read 的请求的响应的传出流量
 - Read Req Traffic
-    - **leader-local**: leader read 在本地读的流量
-    - **leader-cross-zone**: leader read 跨 AZ 读的流量
-    - **follower-local**: follower read 在本地读的流量
-    - **follower-cross-zone**: follower read 跨 AZ 读的流量
+    - **leader-local**: Leader Read 在本地可用区处理读请求产生的流量
+    - **leader-cross-zone**: Leader Read 在远程可用区处理读请求产生的流量
+    - **follower-local**: Follower Read 在本地可用区处理读请求产生的流量
+    - **follower-cross-zone**: Follower Read 在远程可用区处理读请求产生的流量
 
 ### PD Client
 
