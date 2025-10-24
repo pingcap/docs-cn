@@ -41,7 +41,7 @@ set [session | global] tidb_replica_read = '<目标值>';
 
 默认值：leader
 
-该变量用于设置期待的数据读取方式。从 v8.5.4 开始，该变量仅对只读 SQL 语句生效。
+该变量用于设置期待的数据读取方式。从 v8.5.4 和 v9.0.0 开始，该变量仅对只读 SQL 语句生效。
 
 在需要通过读取本地副本节省跨区流量的场景下，推荐如下配置：
 
@@ -83,7 +83,7 @@ set [session | global] tidb_replica_read = '<目标值>';
 
 ## 基本监控
 
-通过观察 [**TiDB** > **KV Request** > **Read Req Traffic** 面板（v8.5.4 新增）](/grafana-tidb-dashboard.md#kv-request)，可以帮助判断是否需要使用 Follower Read 以及开启 Follower Read 后查看节省流量的效果。
+通过观察 [**TiDB** > **KV Request** > **Read Req Traffic** 面板（从 v8.5.4 和 v9.0.0 开始引入）](/grafana-tidb-dashboard.md#kv-request)，可以帮助判断是否需要使用 Follower Read 以及开启 Follower Read 后查看节省流量的效果。
 
 ## 实现机制
 
