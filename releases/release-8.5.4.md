@@ -27,7 +27,7 @@ TiDB 版本：8.5.4
     - (dup): release-9.0.0.md(beta.1) > 改进提升> TiDB - 支持由 `IN` 子查询而来的 Semi Join 使用 `semi_join_rewrite` 的 Hint [#58829](https://github.com/pingcap/tidb/issues/58829) @[qw4990](https://github.com/qw4990)
     - 微调了参数 tidb_opt_ordering_index_selectivity_ratio 生效时的估算策略 [#62817](https://github.com/pingcap/tidb/issues/62817) @[terry1purcell](https://github.com/terry1purcell)
     - 新增配置项 tidb_opt_enable_semi_join_rewrite 去控制 exists 子查询是否需要被改写 [#44850](https://github.com/pingcap/tidb/issues/44850) @[terry1purcell](https://github.com/terry1purcell)
-    - 微调了优化器选择逻辑，在某些情况下新索引更容易被选中 [#57948]([https://github.com/pingcap/tidb/issues/57948](https://github.com/pingcap/tidb/issues/57948))[)](https://github.com/pingcap/tidb/issues/57948)) @[terry1purcell]([https://github.com/terry1purcell](https://github.com/terry1purcell))[)](https://github.com/terry1purcell))
+    - 微调了优化器选择逻辑，在某些情况下新索引更容易被选中 [#57948](https://github.com/pingcap/tidb/issues/57948) @[terry1purcell](https://github.com/terry1purcell)
     - 优化了 NDV 较小的列的查询估算逻辑 [#61792](https://github.com/pingcap/tidb/issues/61792) @[terry1purcell](https://github.com/terry1purcell)
     - 微调了 limit offset 出现在 Index Join 查询中的估算策略 [#45077](https://github.com/pingcap/tidb/issues/45077) @[qw4990](https://github.com/qw4990)
     - 新增 session variable “tidb_opt_enable_no_decorrelate_in_select” 去控制 select list 中的子查询是否需要被解关联  [#51116](https://github.com/pingcap/tidb/issues/51116) @[terry1purcell](https://github.com/terry1purcell)
@@ -36,11 +36,11 @@ TiDB 版本：8.5.4
 
 + TiKV
 
-    - 将部分 BR 模块的可自动恢复的错误的日志级别从ERROR 调整为 WARN [#18493]([https://github.com/tikv/tikv/issues/18493](https://github.com/tikv/tikv/issues/18493))[)](https://github.com/tikv/tikv/issues/18493)) @[YuJuncen]([https://github.com/YuJuncen](https://github.com/YuJuncen))[)](https://github.com/YuJuncen))
-    - 将 Raft 模块检查 GC 的流程拆分为两个阶段，提升 Region 冗余 MVCC 版本 GC 的效率。[#18695]([https://github.com/tikv/tikv/issues/18695](https://github.com/tikv/tikv/issues/18695))[)](https://github.com/tikv/tikv/issues/18695)) @[v01dstar]([https://github.com/v01dstar](https://github.com/v01dstar))[)](https://github.com/v01dstar))
+    - 将部分 BR 模块的可自动恢复的错误的日志级别从ERROR 调整为 WARN [#18493](https://github.com/tikv/tikv/issues/18493) @[YuJuncen](https://github.com/YuJuncen)
+    - 将 Raft 模块检查 GC 的流程拆分为两个阶段，提升 Region 冗余 MVCC 版本 GC 的效率。[#18695](https://github.com/tikv/tikv/issues/18695) @[v01dstar](https://github.com/v01dstar)
     - 基于 GC safe point 和 Rocksdb 的统计信息计算 MVCC 的冗余读，提升 compaction 的效率和准确性。[#18697](https://github.com/tikv/tikv/issues/18697) @[v01dstar](https://github.com/v01dstar)
-    - 将部分 TiKV 的错误日志从 ERROR 级别调整为 WARN 级别，避免产生过多不必要的告警。[#18745]([https://github.com/tikv/tikv/issues/18745](https://github.com/tikv/tikv/issues/18745))[)](https://github.com/tikv/tikv/issues/18745)) @[exit-code-1]([https://github.com/exit-code-1](https://github.com/exit-code-1))[)](https://github.com/exit-code-1))
-    - 将 Region MVCC 的 GC 处理逻辑改由 GC worker 线程执行，统一 GC 的处理逻辑。 [#18727]([https://github.com/tikv/tikv/issues/18727](https://github.com/tikv/tikv/issues/18727))[)](https://github.com/tikv/tikv/issues/18727)) @[v01dstar]([https://github.com/v01dstar](https://github.com/v01dstar))[)](https://github.com/v01dstar))
+    - 将部分 TiKV 的错误日志从 ERROR 级别调整为 WARN 级别，避免产生过多不必要的告警。[#18745](https://github.com/tikv/tikv/issues/18745) @[exit-code-1](https://github.com/exit-code-1)
+    - 将 Region MVCC 的 GC 处理逻辑改由 GC worker 线程执行，统一 GC 的处理逻辑。 [#18727](https://github.com/tikv/tikv/issues/18727) @[v01dstar](https://github.com/v01dstar)
     - 优化 gRPC 线程池线程数量默认值的计算方式，将原来的固定数据调整为根据总的 CPU 配置动态计算，避免 gRPC 线程数量太小产生的性能瓶颈。 [#18613](https://github.com/tikv/tikv/issues/18613) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-7.5.7.md > 改进提升> TiKV - 优化在存在大量 SST 文件的环境中 async snapshot 和 write 的尾延迟 [#18743](https://github.com/tikv/tikv/issues/18743) @[Connor1996](https://github.com/Connor1996)
 
@@ -88,7 +88,7 @@ TiDB 版本：8.5.4
     - 修复了 select 1 from duml 不可使用 instance 级别 plan cache 的问题 [#63075](https://github.com/pingcap/tidb/issues/63075) @[time-and-fate](https://github.com/time-and-fate)
     - 修复了 join order 变更顺序后可能导致的无法规划问题 [#61715](https://github.com/pingcap/tidb/issues/61715) @[hawkingrei](https://github.com/hawkingrei)
     - 修复了 set_var hint 使用 binding 后有可能无法恢复回原始 variable 设置的问题 [#59822](https://github.com/pingcap/tidb/issues/59822) @[wddevries](https://github.com/wddevries)
-    - 修复了 ONLY_FULL_GROUP_BY 在取值为负时可能会检查错误的问题 [#62617]([https://github.com/pingcap/tidb/issues/62617](https://github.com/pingcap/tidb/issues/62617))[)](https://github.com/pingcap/tidb/issues/62617)) @[AilinKid]([https://github.com/AilinKid](https://github.com/AilinKid))[)](https://github.com/AilinKid))
+    - 修复了 ONLY_FULL_GROUP_BY 在取值为负时可能会检查错误的问题 [#62617](https://github.com/pingcap/tidb/issues/62617) @[AilinKid](https://github.com/AilinKid)
     - 修复了 ONLY_FULL_GROUP_BY 检查大小写不敏感问题 [#62672](https://github.com/pingcap/tidb/issues/62672) @[AilinKid](https://github.com/AilinKid)
     - 修复 DP join order 算法可能产生的错误 plan 问题 [#63353](https://github.com/pingcap/tidb/issues/63353) @[winoros](https://github.com/winoros)
     - 修复了 outer join 改写为 inner join 可能产生的错误 [#61327](https://github.com/pingcap/tidb/issues/61327) @[hawkingrei](https://github.com/hawkingrei)
