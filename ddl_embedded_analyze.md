@@ -76,6 +76,9 @@ mysql> insert into s values(1),(2),(3);
 Query OK, 3 rows affected (0.003 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 
+mysql> set @@tidb_stats_update_during_ddl=1;
+Query OK, 0 rows affected (0.001 sec)
+
 mysql> alter table s add index idx(a);
 Query OK, 0 rows affected (0.049 sec)
 
