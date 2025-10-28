@@ -1477,6 +1477,14 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 >
 > * 在升级到 v6.5.0 及以上版本时，请确保 TiDB 的 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 路径已正确挂载了 SSD 磁盘，并确保运行 TiDB 的操作系统用户对该目录有读写权限，否则在运行时可能产生不可预知的问题。该参数是 TiDB 的配置参数，设置后需要重启 TiDB 才能生效。因此，在升级前提前进行设置，可以避免再次重启。
 
+### `tidb_stats_update_during_ddl` <span class="version-mark">从 v8.5.4 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 默认值：`OFF`
+- 这个变量用于控制是否开启 DDL 内联 Analyze 的行为。开启 DDL Embedded Analyze 之后，相关涉及 Index 添加和重建的 DDL 将会附带 Analyze 的 stats 分析行为，详见 [TiDB DDL Embedded Analyze](/ddl_embedded_analyze.md)。
+
 ### `tidb_enable_dist_task` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
