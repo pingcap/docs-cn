@@ -91,7 +91,7 @@ TiDB 版本：8.5.4
     - 修复查询使用 `ATAN2` 函数可能导致结果错误的问题 [#60093](https://github.com/pingcap/tidb/issues/60093) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复 `select 1 from duml` 无法使用实例级别的计划缓存的问题 [#63075](https://github.com/pingcap/tidb/issues/63075) @[time-and-fate](https://github.com/time-and-fate)
     - 修复 Join Order 变更顺序后可能导致无法规划的问题 [#61715](https://github.com/pingcap/tidb/issues/61715) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复 `set_var hint` 使用 Binding 导致无法恢复回原始变量设置的问题 [#59822](https://github.com/pingcap/tidb/issues/59822) @[wddevries](https://github.com/wddevries)
+    - 修复 `set_var` Hint 使用 Binding 导致无法恢复回原始变量设置的问题 [#59822](https://github.com/pingcap/tidb/issues/59822) @[wddevries](https://github.com/wddevries)
     - 修复 `ONLY_FULL_GROUP_BY` 取值为负数时导致检查失败的问题 [#62617](https://github.com/pingcap/tidb/issues/62617) @[AilinKid](https://github.com/AilinKid)
     - 修复 `ONLY_FULL_GROUP_BY` 检查时大小写不敏感的问题 [#62672](https://github.com/pingcap/tidb/issues/62672) @[AilinKid](https://github.com/AilinKid)
     - 修复 DP Join Order 算法可能产生错误 Plan 的问题 [#63353](https://github.com/pingcap/tidb/issues/63353) @[winoros](https://github.com/winoros)
