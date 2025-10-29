@@ -63,7 +63,6 @@ mysql> admin show ddl jobs;
 
 从 `Add Index` 事例来看， 在设置完 `@@tidb_stats_update_during_ddl` 之后的 DDL 运行结束之后，我们可以从之后的 SQL 运行中看到相关 `idx` 索引的统计信息已经被加载到了内存，并且已经被用于 Range 构造。我们从 `show stats_histograms` 语句中可以得到验证，相关索引的统计信息已经被分析已经全部加在加载到了内存中。对于时间较长的 Reorg 过程和 Analyze 过程，我们可以在相关的 DDL Job 状态语句中看到相关索引正在被 `Analyzing` 的字段，该提示表明该 DDL Job 已经处于 stats 收集过程中了。
 
-
 ## Reorg Existed Index
 
 当 `tidb_stats_update_during_ddl` 变量为 `ON` 时，Reorg 已经存在的索引 [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) / [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 的 DDL，可以在 Reorg 阶段结束之后，内联性发起 Analyze 命令，该命令可以在该新索引 Public 之前，分析相关新建索引的统计信息，然后再完成 DDL。考虑到 Analyze 命令可能会带来一定的耗时，TiDB 取第一次 Reorg 的时间作为内联 Analyze 的超时机制，在相关 timeout 触发之后，`Modify Column` / `Change Column` 将不再同步等待内联 Analyze 的完成，直接继续推进 Public 该索引，这意味着，后续该新索引的 stats 的就绪将异步等待该 Analyze 的完成。
@@ -131,4 +130,5 @@ mysql> admin show ddl jobs;
 +--------+---------+------------------+---------------+----------------------+-----------+----------+-----------+----------------------------+----------------------------+----------------------------+---------+-----------------------------+
 11 rows in set (0.001 sec)
 ```
+
 从 `Modify Colunn` 有损 DDL 示例来看， 在设置完 `@@tidb_stats_update_during_ddl` 之后的相关列类型有损变更 DDL 运行结束之后，我们可以从之后的 SQL 运行中 explain 看到相关 `idx` 索引的统计信息已经被加载到了内存，并且已经被用于 Range 构造。我们从 `show stats_histograms` 语句中可以得到验证，相关索引的统计信息已经被分析已经全部加在加载到了内存中。对于时间较长的 Reorg 过程和 Analyze 过程，我们可以在相关的 DDL Job 状态语句中看到相关索引正在被 `Analyzing` 的字段，该提示表明该 DDL Job 已经处于 stats 收集过程中了。
