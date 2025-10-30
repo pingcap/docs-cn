@@ -68,7 +68,7 @@ mysql> admin show ddl jobs;
 当 `tidb_stats_update_during_ddl` 变量为 `ON` 时，Reorg 已经存在的索引 [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) / [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 的 DDL，可以在 Reorg 阶段结束之后，内联性发起 Analyze 命令，该命令可以在该新索引对用户可见之前，分析相关新建索引的统计信息，然后再完成 DDL。考虑到 Analyze 命令可能会带来一定的耗时，TiDB 取第一次 Reorg 的时间作为内联 Analyze 的超时机制，在相关 timeout 触发之后，`Modify Column` / `Change Column` 将不再同步等待内联 Analyze 的完成，直接继续推进对用户可见该索引，这意味着，后续该新索引的 stats 的就绪将异步等待该 Analyze 的完成。
 
 ```sql
-mysql> create table s(a int, index idx(a));
+mysql> create table s(a varchar(10), index idx(a));
 Query OK, 0 rows affected (0.012 sec)
 
 mysql> insert into s values(1),(2),(3);
@@ -78,46 +78,30 @@ Records: 3  Duplicates: 0  Warnings: 0
 mysql> set @@tidb_stats_update_during_ddl=1;
 Query OK, 0 rows affected (0.001 sec)
 
-mysql> explain select * from s use index(idx);
-+-----------------------+---------+-----------+-----------------------+-----------------------+
-| id                    | estRows | task      | access object         | operator info         |
-+-----------------------+---------+-----------+-----------------------+-----------------------+
-| IndexReader_6         | 3.00    | root      |                       | index:IndexFullScan_5 |
-| └─IndexFullScan_5     | 3.00    | cop[tikv] | table:s, index:idx(a) | keep order:false      |
-+-----------------------+---------+-----------+-----------------------+-----------------------+
-2 rows in set (0.002 sec)
-
-mysql> alter table s modify column a varchar(10);
+mysql> alter table s modify column a int;
 Query OK, 0 rows affected (0.056 sec)
 
-mysql> explain select * from s use index(idx);
-+-----------------------+---------+-----------+-----------------------+-----------------------+
-| id                    | estRows | task      | access object         | operator info         |
-+-----------------------+---------+-----------+-----------------------+-----------------------+
-| IndexReader_6         | 3.00    | root      |                       | index:IndexFullScan_5 |
-| └─IndexFullScan_5     | 3.00    | cop[tikv] | table:s, index:idx(a) | keep order:false      |
-+-----------------------+---------+-----------+-----------------------+-----------------------+
-2 rows in set (0.003 sec)
+mysql> explain select * from s where a > 1;
++------------------------+---------+-----------+-----------------------+----------------------------------+
+| id                     | estRows | task      | access object         | operator info                    |
++------------------------+---------+-----------+-----------------------+----------------------------------+
+| IndexReader_7          | 2.00    | root      |                       | index:IndexRangeScan_6           |
+| └─IndexRangeScan_6     | 2.00    | cop[tikv] | table:s, index:idx(a) | range:(1,+inf], keep order:false |
++------------------------+---------+-----------+-----------------------+----------------------------------+
+2 rows in set (0.005 sec)
   
 mysql> show stats_histograms where table_name="s";
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+-------------+-----------------+----------------+----------------+---------------+
 | Db_name | Table_name | Partition_name | Column_name | Is_index | Update_time         | Distinct_count | Null_count | Avg_col_size | Correlation | Load_status | Total_mem_usage | Hist_mem_usage | Topn_mem_usage | Cms_mem_usage |
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+-------------+-----------------+----------------+----------------+---------------+
-| test    | s          |                | a           |        0 | 2025-10-29 00:32:43 |              3 |          0 |          0.5 |           1 | allLoaded   |             155 |              0 |            155 |             0 |
-| test    | s          |                | a           |        0 | 2025-10-29 00:32:43 |              3 |          0 |            1 |           1 | allLoaded   |             158 |              0 |            158 |             0 |
-| test    | s          |                | idx         |        1 | 2025-10-29 00:32:43 |              3 |          0 |            0 |           0 | allLoaded   |             155 |              0 |            155 |             0 |
-| test    | s          |                | idx         |        1 | 2025-10-29 00:32:43 |              3 |          0 |            0 |           0 | allLoaded   |             158 |              0 |            158 |             0 |
+| test    | s          |                | a           |        0 | 2025-10-30 20:10:18 |              3 |          0 |            2 |           1 | allLoaded   |             158 |              0 |            158 |             0 |
+| test    | s          |                | a           |        0 | 2025-10-30 20:10:18 |              3 |          0 |            1 |           1 | allLoaded   |             155 |              0 |            155 |             0 |
+| test    | s          |                | idx         |        1 | 2025-10-30 20:10:18 |              3 |          0 |            0 |           0 | allLoaded   |             158 |              0 |            158 |             0 |
+| test    | s          |                | idx         |        1 | 2025-10-30 20:10:18 |              3 |          0 |            0 |           0 | allLoaded   |             155 |              0 |            155 |             0 |
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+-------------+-----------------+----------------+----------------+---------------+
-4 rows in set (0.010 sec)
+4 rows in set (0.008 sec)
 
-mysql> insert into s select * from s;     // run multi times.
-Query OK, 3145728 rows affected (6.138 sec)
-Records: 3145728  Duplicates: 0  Warnings: 0
-
-mysql> alter table s modify column a varchar(5);
-Query OK, 0 rows affected (19.403 sec)
-
-mysql> admin show ddl jobs 1;
+mysql> admin show ddl jobs 1;    // during ddl is running, we can tell from the comment field, that this index is under analyzing.
 +--------+---------+------------------+---------------+----------------------+-----------+----------+-----------+----------------------------+----------------------------+----------------------------+---------+-----------------------------+
 | JOB_ID | DB_NAME | TABLE_NAME       | JOB_TYPE      | SCHEMA_STATE         | SCHEMA_ID | TABLE_ID | ROW_COUNT | CREATE_TIME                | START_TIME                 | END_TIME                   | STATE   | COMMENTS                    |
 +--------+---------+------------------+---------------+----------------------+-----------+----------+-----------+----------------------------+----------------------------+----------------------------+---------+-----------------------------+
