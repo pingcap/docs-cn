@@ -45,9 +45,9 @@ set [session | global] tidb_replica_read = '<目标值>';
 
 在需要通过读取本地副本以减少跨区流量的场景下，推荐如下配置：
 
-- 默认值 `leader` 的性能最好。
-- `closest-adaptive` 在最小性能损失的前提下尽可能节省流量。
-- `closest-replicas` 可以最大程度地节省网络流量。
+- `leader`：默认值，提供最佳性能。
+- `closest-adaptive`：在最小性能损失的前提下，尽可能节省跨区流量。
+- `closest-replicas`：可最大限度地节省跨区流量，但可能带来一定的性能损耗。
 
 如果当前正在使用其他配置，可参考下表修改为推荐配置：
 
