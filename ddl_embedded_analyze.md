@@ -9,7 +9,7 @@ summary: 本章介绍了对于特定涉及索引创建或者更新 DDL 下的内
 
 ## New Create Index 
 
-当 `tidb_stats_update_during_ddl` 变量为 `ON` 时，新建索引 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 的 DDL，可以在 Reorg 阶段结束之后，内联性发起 Analyze 命令，该命令可以在该新索引 Public 之前，分析相关新建索引的统计信息，然后再完成 DDL。考虑到 Analyze 命令可能会带来一定的耗时，TiDB 取第一次 Reorg 的时间作为内联 Analyze 的超时机制，在相关 timeout 触发之后，`Add Index` 将不再同步等待内联 Analyze 的完成，直接继续推进 Public 该索引，这意味着，后续该新索引的 stats 的就绪将异步等待该 Analyze 的完成。
+当 `tidb_stats_update_during_ddl` 变量为 `ON` 时，新建索引 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 的 DDL，可以在 Reorg 阶段结束之后，内联性发起 Analyze 命令，该命令可以在该新索引对用户可见之前，分析相关新建索引的统计信息，然后再完成 DDL。考虑到 Analyze 命令可能会带来一定的耗时，TiDB 取第一次 Reorg 的时间作为内联 Analyze 的超时机制，在相关 timeout 触发之后，`Add Index` 将不再同步等待内联 Analyze 的完成，直接继续推进对用户可见该索引，这意味着，后续该新索引的 stats 的就绪将异步等待该 Analyze 的完成。
 
 ```sql
 mysql> create table t(a int, b int, c int);
@@ -65,7 +65,7 @@ mysql> admin show ddl jobs;
 
 ## Reorg Existed Index
 
-当 `tidb_stats_update_during_ddl` 变量为 `ON` 时，Reorg 已经存在的索引 [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) / [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 的 DDL，可以在 Reorg 阶段结束之后，内联性发起 Analyze 命令，该命令可以在该新索引 Public 之前，分析相关新建索引的统计信息，然后再完成 DDL。考虑到 Analyze 命令可能会带来一定的耗时，TiDB 取第一次 Reorg 的时间作为内联 Analyze 的超时机制，在相关 timeout 触发之后，`Modify Column` / `Change Column` 将不再同步等待内联 Analyze 的完成，直接继续推进 Public 该索引，这意味着，后续该新索引的 stats 的就绪将异步等待该 Analyze 的完成。
+当 `tidb_stats_update_during_ddl` 变量为 `ON` 时，Reorg 已经存在的索引 [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) / [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 的 DDL，可以在 Reorg 阶段结束之后，内联性发起 Analyze 命令，该命令可以在该新索引对用户可见之前，分析相关新建索引的统计信息，然后再完成 DDL。考虑到 Analyze 命令可能会带来一定的耗时，TiDB 取第一次 Reorg 的时间作为内联 Analyze 的超时机制，在相关 timeout 触发之后，`Modify Column` / `Change Column` 将不再同步等待内联 Analyze 的完成，直接继续推进对用户可见该索引，这意味着，后续该新索引的 stats 的就绪将异步等待该 Analyze 的完成。
 
 ```sql
 mysql> create table s(a int);
