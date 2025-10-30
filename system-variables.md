@@ -1483,7 +1483,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`OFF`
-- 这个变量用于控制是否开启 DDL 内联 Analyze 的行为。开启 DDL Embedded Analyze 之后，相关涉及 Index 添加和重建的 DDL 将会附带 Analyze 的 stats 分析行为，详见 [TiDB DDL Embedded Analyze](/ddl_embedded_analyze.md)。
+- 这个变量用于控制是否开启 DDL 的内嵌 Analyze 的行为。开启后，涉及索引添加和重建的 DDL 将会自动执行统计信息分析，详见 [DDL Embedded Analyze](/ddl_embedded_analyze.md)。
 
 ### `tidb_enable_dist_task` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
