@@ -214,7 +214,7 @@ TiDB 支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 
 
 ## 全局内存管理架构
 
-TiDB 从 v9.0.0 开始引入全局内存管理框架 `Global Memory Arbitrator`，可通过系统变量 [`tidb_mem_arbitrator_mode`](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 开启。
+TiDB 从 v9.0.0 开始引入全局内存管理框架 `Global Memory Arbitrator`，可通过系统变量 [`tidb_mem_arbitrator_mode`](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 或 TiDB 配置文件参数 `instance.tidb_mem_arbitrator_mode` 开启。
 
 `tidb_mem_arbitrator_mode` 默认为 `disable`。该模式下内存资源先使用后上报，[相关控制行为同上](#如何配置-tidb-server-实例使用内存的阈值)。
 
@@ -249,7 +249,7 @@ SQL 运行过程中会动态地向仲裁者订阅内存资源，仲裁者根据 
 
 ### 手动保障内存安全
 
-通过系统变量 [`tidb_mem_arbitrator_soft_limit`](/system-variables.md#tidb_mem_arbitrator_soft_limit-从-v900-版本开始引入) 可以设置 TiDB 实例的内存资源份额上限。上限越小，全局内存越安全，但内存资源利用率越低。该变量可用于手动快速收敛内存风险。
+通过系统变量 [`tidb_mem_arbitrator_soft_limit`](/system-variables.md#tidb_mem_arbitrator_soft_limit-从-v900-版本开始引入) 或 TiDB 配置文件参数 `instance.tidb_mem_arbitrator_soft_limit` 可以设置 TiDB 实例的内存资源份额上限。上限越小，全局内存越安全，但内存资源利用率越低。该变量可用于手动快速收敛内存风险。
 
 框架内部会缓存部分 SQL 的历史最大内存资源用量，并在 SQL 下次执行前预先订阅足量内存资源份额。如果已知 SQL 存在大量内存使用不受控制的问题，可通过 session 变量 [`tidb_mem_arbitrator_query_reserved`](/system-variables.md#tidb_mem_arbitrator_query_reserved-从-v900-版本开始引入) 指定 SQL 订阅数量的份额。该值越大，全局内存越安全，但内存资源利用率越低。预先订阅足量或超量的份额可以有效地保障 SQL 的内存资源隔离性。
 
@@ -303,6 +303,11 @@ SQL 运行过程中会动态地向仲裁者订阅内存资源，仲裁者根据 
     - 通过 [`max_execution_time`](/system-variables.md#max_execution_time) 限制 SQL 最大执行时间
     - 遇到超时或 `8180` 错误则重试 SQL 到其他 TiDB 节点
     - 可通过设置 [`tidb_mem_arbitrator_wait_averse`](/system-variables.md#tidb_mem_arbitrator_wait_averse-从-v900-版本开始引入) 使 SQL 尽快重试到内存资源充足的节点
+
+- [3] TiDB 实例分组
+    - 各组内通过配置文件参数 `instance.tidb_mem_arbitrator_mode` 设置 TiDB 实例内存管理模式
+    - 各组内通过配置文件参数 `instance.tidb_mem_arbitrator_soft_limit` 按需设置 TiDB 实例内存资源份额上限
+    - 按需分发 SQL 到不同组，并按照上述不同模式处理
 
 保障重要 SQL 执行
 
