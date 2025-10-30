@@ -70,7 +70,7 @@ mysql> show stats_histograms where table_name="t";
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+-------------+-----------------+----------------+----------------+---------------+
 2 rows in set (0.013 sec)
 
-mysql> admin show ddl jobs 1;   // during ddl is running, we can tell from the comment field, that this index is under analyzing.
+mysql> admin show ddl jobs 1;   
 +--------+---------+--------------------------+---------------+----------------------+-----------+----------+-----------+----------------------------+----------------------------+----------------------------+---------+----------------------------------------+
 | JOB_ID | DB_NAME | TABLE_NAME               | JOB_TYPE      | SCHEMA_STATE         | SCHEMA_ID | TABLE_ID | ROW_COUNT | CREATE_TIME                | START_TIME                 | END_TIME                   | STATE   | COMMENTS                               |
 +--------+---------+--------------------------+---------------+----------------------+-----------+----------+-----------+----------------------------+----------------------------+----------------------------+---------+----------------------------------------+
@@ -79,7 +79,7 @@ mysql> admin show ddl jobs 1;   // during ddl is running, we can tell from the c
 1 rows in set (0.001 sec)
 ```
 
-从 `Add Index` 事例来看， 在设置完 `@@tidb_stats_update_during_ddl` 之后的 DDL 运行结束之后，我们可以从之后的 SQL 运行中看到相关 `idx` 索引的统计信息已经被加载到了内存，并且已经被用于 Range 构造。我们从 `show stats_histograms` 语句中可以得到验证，相关索引的统计信息已经被分析已经全部加在加载到了内存中。对于时间较长的 Reorg 过程和 Analyze 过程，我们可以在相关的 DDL Job 状态语句中看到相关索引正在被 `Analyzing` 的字段，该提示表明该 DDL Job 已经处于 stats 收集过程中了。
+从 `Add Index` 事例来看， 在设置完 `@@tidb_stats_update_during_ddl` 之后的 DDL 运行结束之后，我们可以从之后的 SQL 运行中看到相关 `idx` 索引的统计信息已经被加载到了内存，并且已经被用于 Range 构造。我们从 `show stats_histograms` 语句中可以得到验证，相关索引的统计信息已经被分析已经全部加在加载到了内存中。对于时间较长的索引添加或者重组过程和 Analyze 过程，我们可以在相关的 DDL Job 状态语句中看到相关索引正在被 `Analyzing` 的字段，该提示表明该 DDL Job 已经处于 stats 收集过程中了。
 
 ## Reorg Existed Index
 
@@ -119,7 +119,7 @@ mysql> show stats_histograms where table_name="s";
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+-------------+-----------------+----------------+----------------+---------------+
 4 rows in set (0.008 sec)
 
-mysql> admin show ddl jobs 1;    // during ddl is running, we can tell from the comment field, that this index is under analyzing.
+mysql> admin show ddl jobs 1; 
 +--------+---------+------------------+---------------+----------------------+-----------+----------+-----------+----------------------------+----------------------------+----------------------------+---------+-----------------------------+
 | JOB_ID | DB_NAME | TABLE_NAME       | JOB_TYPE      | SCHEMA_STATE         | SCHEMA_ID | TABLE_ID | ROW_COUNT | CREATE_TIME                | START_TIME                 | END_TIME                   | STATE   | COMMENTS                    |
 +--------+---------+------------------+---------------+----------------------+-----------+----------+-----------+----------------------------+----------------------------+----------------------------+---------+-----------------------------+
@@ -128,4 +128,4 @@ mysql> admin show ddl jobs 1;    // during ddl is running, we can tell from the 
 1 rows in set (0.001 sec)
 ```
 
-从 `Modify Column` 有损 DDL 示例来看， 在设置完 `@@tidb_stats_update_during_ddl` 之后的相关列类型有损变更 DDL 运行结束之后，我们可以从之后的 SQL 运行中 explain 看到相关 `idx` 索引的统计信息已经被加载到了内存，并且已经被用于 Range 构造。我们从 `show stats_histograms` 语句中可以得到验证，相关索引的统计信息已经被分析已经全部加在加载到了内存中。对于时间较长的 Reorg 过程和 Analyze 过程，我们可以在相关的 DDL Job 状态语句中看到相关索引正在被 `Analyzing` 的字段，该提示表明该 DDL Job 已经处于 stats 收集过程中了。
+从 `Modify Column` 有损 DDL 示例来看， 在设置完 `@@tidb_stats_update_during_ddl` 之后的相关列类型有损变更 DDL 运行结束之后，我们可以从之后的 SQL 运行中 explain 看到相关 `idx` 索引的统计信息已经被加载到了内存，并且已经被用于 Range 构造。我们从 `show stats_histograms` 语句中可以得到验证，相关索引的统计信息已经被分析已经全部加在加载到了内存中。对于时间较长的索引添加或者重组过程和 Analyze 过程，我们可以在相关的 DDL Job 状态语句中看到相关索引正在被 `Analyzing` 的字段，该提示表明该 DDL Job 已经处于 stats 收集过程中了。
