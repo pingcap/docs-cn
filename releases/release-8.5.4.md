@@ -82,7 +82,7 @@ TiDB 版本：8.5.4
     - 修复当 `Out Of Quota For Local Temporary Space` 触发时，落盘文件可能未被全部删除的问题 [#63216](https://github.com/pingcap/tidb/issues/63216) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复使用正则表达式查询 `INFORMATION_SCHEMA` 表，结果不正确的问题 [#62347](https://github.com/pingcap/tidb/issues/62347) @[River2000i](https://github.com/River2000i)
     - 修复从 PD 获取时间戳异常时没有返回错误的问题 [#58871](https://github.com/pingcap/tidb/issues/58871) @[joechenrh](https://github.com/joechenrh)
-    - 修复 `MODIFY COLUMN` 时，owner TiDB 和非 owner TiDB 查询数据不一致的问题 [#60264](https://github.com/pingcap/tidb/issues/60264) @[tangenta](https://github.com/tangenta)
+    - 修复执行 `MODIFY COLUMN` 时，owner TiDB 和非 owner TiDB 查询数据不一致的问题 [#60264](https://github.com/pingcap/tidb/issues/60264) @[tangenta](https://github.com/tangenta)
     - 修复动态调参后 `ADMIN ALTER DDL JOBS` 显示参数不正确的问题 [#63201](https://github.com/pingcap/tidb/issues/63201) @[fzzf678](https://github.com/fzzf678)
     - 修复通过事务加索引时 GC savepoint 不推进的问题 [#62424](https://github.com/pingcap/tidb/issues/62424) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复过大的 SST 文件 Ingest 到 L0 中导致流控的问题 [#63466](https://github.com/pingcap/tidb/issues/63466) @[CbcWestwolf](https://github.com/CbcWestwolf)
