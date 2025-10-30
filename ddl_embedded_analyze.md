@@ -7,6 +7,32 @@ summary: 本章介绍了对于特定涉及索引创建或者更新 DDL 下的内
 
 本文档介绍内嵌于 DDL 的 Analyze 特性，相关变量  [`tidb_stats_update_during_ddl`](/system-variables.md#tidb_stats_update_during_ddl-从-v854-版本开始引入) 可用于控制相关 DDL 在涉及索引数据新建或者重组的时候，是否做内嵌的 Analyze。该值默认为 `OFF`。
 
+## Scenario
+
+在一些穿插索引新增和变更的 DDL 查询场景中，很多已经稳定的查询，可能会因为一些新的索引的路径构建，并且由于没有及时收集统计信息，而导致该索引代价低估或者高估致使计划变更。可见相关 [issue](https://github.com/pingcap/tidb/issues/57948)。一般
+
+```sql
+
+mysql> create table t(a int, b int);
+mysql> insert into t values(1,1),(2,2),(3,3);
+mysql> insert into t select * from t; // * N times
+
+mysql> alter table t add index idx_a(a);
+explain select * from t where a>1;
+
+mysql> explain select * from x where a>4;
++-------------------------+-----------+-----------+---------------+--------------------------------+
+| id                      | estRows   | task      | access object | operator info                  |
++-------------------------+-----------+-----------+---------------+--------------------------------+
+| TableReader_8           | 131072.00 | root      |               | data:Selection_7               |
+| └─Selection_7           | 131072.00 | cop[tikv] |               | gt(test.x.a, 4)                |
+|   └─TableFullScan_6     | 393216.00 | cop[tikv] | table:x       | keep order:false, stats:pseudo |
++-------------------------+-----------+-----------+---------------+--------------------------------+
+3 rows in set (0.002 sec)
+```
+
+SQL 计划中可以看到，由于添加索引之后其没有 stats，在路径估算的时候除非是一些简单的不用回表的启发式比较可以胜出之外，基本会选中估算确定性比较现有的路径，上述示例选择的是默认的全表扫描。但是其实从宏观视角来看，`x.a > 4` 在实际数据分布中只有 0 行，走 `idx_a` 可以更快的定位到相关的行，从而避免全表扫描。这里主要是由于在 DDL 创建索引之后，索引统计信息没有及时收集导致的计划不优，但是至少计划能够跟以往保持一致，不存在计划跳变问题。然而在上述 `issues/57948` 中，新建的索引可能会和已经存在的索引进行启发式的比较，导致原有计划所依赖的索引被裁减，最终剩下的索引路径又最后又由于没有统计信息，从而默认选择了全表扫描。在后续 v8.5 和之后的版本中，我们对索引的启发式比较和统计信息的有无做了很大的权衡和改善，但是在除此之外一些复杂场景中，在 DDL 中嵌套完成索引统计信息的分析仍然是防止计划变更最保险的选择。
+
 ## New Create Index 
 
 当 `tidb_stats_update_during_ddl` 变量为 `ON` 时，新建索引 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 的 DDL，可以在 Reorg 阶段结束之后，内联性发起 Analyze 命令，该命令可以在该新索引对用户可见之前，分析相关新建索引的统计信息，然后再完成 DDL。考虑到 Analyze 命令可能会带来一定的耗时，TiDB 取第一次 Reorg 的时间作为内联 Analyze 的超时机制，在相关 timeout 触发之后，`Add Index` 将不再同步等待内联 Analyze 的完成，直接继续推进对用户可见该索引，这意味着，后续该新索引的 stats 的就绪将异步等待该 Analyze 的完成。
@@ -25,40 +51,32 @@ Query OK, 0 rows affected (0.001 sec)
 mysql> alter table t add index idx(a,b);
 Query OK, 0 rows affected (0.049 sec)
 
-mysql> explain select * from t use index(idx);
-+-------------------------------+---------+-----------+--------------------------+------------------+
-| id                            | estRows | task      | access object            | operator info    |
-+-------------------------------+---------+-----------+--------------------------+------------------+
-| IndexLookUp_7                 | 3.00    | root      |                          |                  |
-| ├─IndexFullScan_5(Build)      | 3.00    | cop[tikv] | table:t, index:idx(a, b) | keep order:false |
-| └─TableRowIDScan_6(Probe)     | 3.00    | cop[tikv] | table:t                  | keep order:false |
-+-------------------------------+---------+-----------+--------------------------+------------------+
-3 rows in set (0.001 sec)
+mysql> explain select a from t where a > 1;
++------------------------+---------+-----------+--------------------------+----------------------------------+
+| id                     | estRows | task      | access object            | operator info                    |
++------------------------+---------+-----------+--------------------------+----------------------------------+
+| IndexReader_7          | 4.00    | root      |                          | index:IndexRangeScan_6           |
+| └─IndexRangeScan_6     | 4.00    | cop[tikv] | table:t, index:idx(a, b) | range:(1,+inf], keep order:false |
++------------------------+---------+-----------+--------------------------+----------------------------------+
+2 rows in set (0.002 sec)
+
 
 mysql> show stats_histograms where table_name="t";
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+-------------+-----------------+----------------+----------------+---------------+
 | Db_name | Table_name | Partition_name | Column_name | Is_index | Update_time         | Distinct_count | Null_count | Avg_col_size | Correlation | Load_status | Total_mem_usage | Hist_mem_usage | Topn_mem_usage | Cms_mem_usage |
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+-------------+-----------------+----------------+----------------+---------------+
-| test    | t          |                | a           |        0 | 2025-10-29 00:07:25 |              3 |          0 |            1 |           1 | allLoaded   |             155 |              0 |            155 |             0 |
-| test    | t          |                | idx         |        1 | 2025-10-29 00:07:25 |              3 |          0 |            0 |           0 | allLoaded   |             182 |              0 |            182 |             0 |
+| test    | t          |                | a           |        0 | 2025-10-30 20:17:57 |              3 |          0 |          0.5 |           1 | allLoaded   |             155 |              0 |            155 |             0 |
+| test    | t          |                | idx         |        1 | 2025-10-30 20:17:57 |              3 |          0 |            0 |           0 | allLoaded   |             182 |              0 |            182 |             0 |
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+-------------+-----------------+----------------+----------------+---------------+
-2 rows in set (0.012 sec)
+2 rows in set (0.013 sec)
 
-mysql> insert into t select * from t;     // run multi times.
-Query OK, 3145728 rows affected (6.138 sec)
-Records: 3145728  Duplicates: 0  Warnings: 0
-
-mysql> alter table t add index idx_2(a,b,c);
-Query OK, 0 rows affected (19.403 sec)
-
-mysql> admin show ddl jobs;
+mysql> admin show ddl jobs 1;   // during ddl is running, we can tell from the comment field, that this index is under analyzing.
 +--------+---------+--------------------------+---------------+----------------------+-----------+----------+-----------+----------------------------+----------------------------+----------------------------+---------+----------------------------------------+
 | JOB_ID | DB_NAME | TABLE_NAME               | JOB_TYPE      | SCHEMA_STATE         | SCHEMA_ID | TABLE_ID | ROW_COUNT | CREATE_TIME                | START_TIME                 | END_TIME                   | STATE   | COMMENTS                               |
 +--------+---------+--------------------------+---------------+----------------------+-----------+----------+-----------+----------------------------+----------------------------+----------------------------+---------+----------------------------------------+
 |    151 | test    | t                        | add index     | write reorganization |         2 |      148 |   6291456 | 2025-10-29 00:14:47.181000 | 2025-10-29 00:14:47.183000 | NULL                       | running | analyzing, txn-merge, max_node_count=3 |
-|    150 | test    | t                        | add index     | public               |         2 |      148 |         3 | 2025-10-29 00:07:25.492000 | 2025-10-29 00:07:25.494000 | 2025-10-29 00:07:25.534000 | synced  | txn-merge, max_node_count=3            |
 +--------+---------+--------------------------+---------------+----------------------+-----------+----------+-----------+----------------------------+----------------------------+----------------------------+---------+----------------------------------------+
-11 rows in set (0.001 sec)
+1 rows in set (0.001 sec)
 ```
 
 从 `Add Index` 事例来看， 在设置完 `@@tidb_stats_update_during_ddl` 之后的 DDL 运行结束之后，我们可以从之后的 SQL 运行中看到相关 `idx` 索引的统计信息已经被加载到了内存，并且已经被用于 Range 构造。我们从 `show stats_histograms` 语句中可以得到验证，相关索引的统计信息已经被分析已经全部加在加载到了内存中。对于时间较长的 Reorg 过程和 Analyze 过程，我们可以在相关的 DDL Job 状态语句中看到相关索引正在被 `Analyzing` 的字段，该提示表明该 DDL Job 已经处于 stats 收集过程中了。
