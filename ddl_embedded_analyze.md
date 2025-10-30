@@ -1,6 +1,6 @@
 ---
 title: DDL Embedded Analyze
-summary: 本章介绍了对于特定涉及索引创建或者更新 DDL 下的内嵌式 Analyze 的集成，主要包含了 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) / [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)，该功能主要是防止新建或者 Reorg 索引之后一段时间内索引统计信息不可用导致的估算差异，从而造成的计划变更。
+summary: 本章介绍了对于特定涉及索引创建或者更新 DDL 下的内嵌式 Analyze 的集成，主要包含了 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) / [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)，该功能主要是防止新建或者重组索引之后一段时间内索引统计信息不可用导致的估算差异，从而造成的计划变更。
 ---
 
 # Embedded Analyze
