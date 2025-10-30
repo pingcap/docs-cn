@@ -5,7 +5,7 @@ summary: 本章介绍了对于特定涉及索引创建或者更新 DDL 下的内
 
 # Embedded Analyze
 
-本文档介绍可用于 `DDL Embedded Analyze` 的优化，相关变量  [`tidb_stats_update_during_ddl`](/system-variables.md#tidb_stats_update_during_ddl-从-v854-版本开始引入) 可用于控制相关 DDL 在涉及索引数据新建或者 Reorg 时候，是否考虑做内联性 Analyze, 该值默认为 `OFF`。
+本文档介绍内嵌于 DDL 的 Analyze 特性，相关变量  [`tidb_stats_update_during_ddl`](/system-variables.md#tidb_stats_update_during_ddl-从-v854-版本开始引入) 可用于控制相关 DDL 在涉及索引数据新建或者重组的时候，是否做内嵌的 Analyze。该值默认为 `OFF`。
 
 ## New Create Index 
 
