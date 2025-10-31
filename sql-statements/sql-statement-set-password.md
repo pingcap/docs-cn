@@ -8,16 +8,22 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-password/','/docs-cn/de
 
 `SET PASSWORD` 语句用于更改 TiDB 系统数据库中的用户密码。
 
+> **注意：**
+>
+> 建议使用 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句更改密码，如下所示：
+>
+> ```sql
+> ALTER USER myuser IDENTIFIED BY 'mypassword';
+> ```
+
 ## 语法图
 
 ```ebnf+diagram
 SetPasswordStmt ::=
-    "SET" "PASSWORD" ( "FOR" Username )? "=" ( stringLit | "PASSWORD" "(" stringLit ")" )
+    "SET" "PASSWORD" ( "FOR" Username )? "=" stringLit
 ```
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 SET PASSWORD='test';
@@ -27,8 +33,6 @@ SET PASSWORD='test';
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE USER 'newuser' IDENTIFIED BY 'test';
 ```
@@ -37,8 +41,6 @@ CREATE USER 'newuser' IDENTIFIED BY 'test';
 Query OK, 1 row affected (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 SHOW CREATE USER 'newuser';
 ```
@@ -51,8 +53,6 @@ SHOW CREATE USER 'newuser';
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SET PASSWORD FOR 'newuser' = 'test';
@@ -61,35 +61,6 @@ SET PASSWORD FOR 'newuser' = 'test';
 ```
 Query OK, 0 rows affected (0.01 sec)
 ```
-
-{{< copyable "sql" >}}
-
-```sql
-SHOW CREATE USER 'newuser';
-```
-
-```
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| CREATE USER for newuser@%                                                                                                                                            |
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| CREATE USER 'newuser'@'%' IDENTIFIED WITH 'mysql_native_password' AS '*94BDCEBE19083CE2A1F959FD02F964C7AF4CFC29' REQUIRE NONE PASSWORD EXPIRE DEFAULT ACCOUNT UNLOCK |
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-1 row in set (0.00 sec)
-```
-
-{{< copyable "sql" >}}
-
-```sql
-SET PASSWORD FOR 'newuser' = PASSWORD('test');
-```
-
-上述语法是早期 MySQL 版本的过时语法。
-
-```
-Query OK, 0 rows affected (0.00 sec)
-```
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW CREATE USER 'newuser';
