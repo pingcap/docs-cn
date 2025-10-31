@@ -8,16 +8,17 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-stats-meta/']
 
 你可以通过 `SHOW STATS_META` 来查看表的总行数以及修改的行数等信息，可以通过 ShowLikeOrWhere 来筛选需要的信息。
 
-目前 `SHOW STATS_META` 会输出 6 列，具体如下：
+目前 `SHOW STATS_META` 会输出以下列：
 
 | 列名 | 说明            |
 | -------- | ------------- |
-| db_name  |  数据库名    |
-| table_name | 表名 |
-| partition_name| 分区名 |
-| update_time | 更新时间 |
-| modify_count | 修改的行数 |
-| row_count | 总行数 |
+| Db_name  |  数据库名    |
+| Table_name | 表名 |
+| Partition_name| 分区名 |
+| Update_time | 更新时间 |
+| Modify_count | 修改的行数 |
+| Row_count | 总行数 |
+| Last_analyze_time | 表上次被分析的时间 |
 
 > **注意：**
 >
