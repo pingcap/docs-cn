@@ -17,7 +17,6 @@ insert into t values(1,1),(2,2),(3,3);
 insert into t select * from t; // * N times
 
 alter table t add index idx_a(a);
-explain select * from t where a>1;
 
 explain select * from x where a>4;
 ```
