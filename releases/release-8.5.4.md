@@ -58,11 +58,11 @@ TiDB 版本：8.5.4
 
 + TiFlash <!--tw@qiancai: 4 notes-->
 
-    - 跳过不必要读取的数据，优化 TableScan 的读取性能 [#9875](https://github.com/pingcap/tiflash/issues/9875) @[gengliqi](https://github.com/gengliqi)
-    - 优化 TiFlash 在宽且稀疏的表上 TableScan 的性能 [#10361](https://github.com/pingcap/tiflash/issues/10361) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 优化当集群存在大量表时，添加向量索引时的 TiFlash CPU 开销 [#10357](https://github.com/pingcap/tiflash/issues/10357) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
-    - 减少不必要的处理 raft commands 时的日志 [#10467](https://github.com/pingcap/tiflash/issues/10467) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 优化小数据量分区表的 TableScan 读取性能 [#10487](https://github.com/pingcap/tiflash/issues/10487) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 跳过不必要数据读取，提升 `TableScan` 读取性能 [#9875](https://github.com/pingcap/tiflash/issues/9875) @[gengliqi](https://github.com/gengliqi)
+    - 优化 TiFlash 在列多且稀疏（大量 `NULL` 或空值）的宽表上执行 `TableScan` 的性能 [#10361](https://github.com/pingcap/tiflash/issues/10361) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 在集群存在大量表的场景中，降低添加向量索引时 TiFlash 的 CPU 开销 [#10357](https://github.com/pingcap/tiflash/issues/10357) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 减少处理无用 Raft 命令时产生的不必要日志输出，降低日志量 [#10467](https://github.com/pingcap/tiflash/issues/10467) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 优化 TiFlash 在小数据量分区表上执行 `TableScan` 的性能 [#10487](https://github.com/pingcap/tiflash/issues/10487) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
 
@@ -106,14 +106,14 @@ TiDB 版本：8.5.4
 
 + PD <!--tw@qiancai: 8 notes-->
 
-    - 修复 PD Client 重试策略没有正确初始化的问题 [#9013](https://github.com/tikv/pd/issues/9013) @[rleungx](https://github.com/rleungx)
-    - 修复 /config 和 /members API 的错误输出 [#9797](https://github.com/tikv/pd/issues/9797) @[lhy1024](https://github.com/lhy1024) 
-    - 修复 tso proxy 错误处理 #[9188](https://github.com/tikv/pd/issues/9188) @[Tema](https://github.com/Tema)
-    - 修复在关闭 bucket 上报后， split bucket 依然生效 #[9726](https://github.com/tikv/pd/issues/9726) @[bufferflies](https://github.com/bufferflies)
-    - 修复 resource manager 错误分配 token 问题 #[9455](https://github.com/tikv/pd/issues/9455)  @[JmPotato](https://github.com/JmPotato)
-    - 修复 pd leader 变更后, placement rule 不生效问题 #[9602](https://github.com/tikv/pd/issues/9602) @[okJiang](https://github.com/okJiang)
-    - 修复 backoff 初始化错误问题 #[9013](https://github.com/tikv/pd/issues/9013)  @[rleungx](https://github.com/rleungx)
-    - 修复 ttl 配置不生效问题 #[9343](https://github.com/tikv/pd/issues/9343) @[lhy1024](https://github.com/lhy1024)
+    - 修复 PD Client 重试策略未正确初始化的问题 [#9013](https://github.com/tikv/pd/issues/9013) @[rleungx](https://github.com/rleungx)
+    - 修复 TSO HTTP API `/config` 和 `/members` 的错误输出 [#9797](https://github.com/tikv/pd/issues/9797) @[lhy1024](https://github.com/lhy1024) 
+    - 修复 TSO Follower Proxy 的错误处理逻辑 [#9188](https://github.com/tikv/pd/issues/9188) @[Tema](https://github.com/Tema)
+    - 修复在关闭 bucket 上报功能后， split bucket 依然生效的问题 [#9726](https://github.com/tikv/pd/issues/9726) @[bufferflies](https://github.com/bufferflies)
+    - 修复 Resource Manager 错误分配 token 导致查询卡住的问题 [#9455](https://github.com/tikv/pd/issues/9455)  @[JmPotato](https://github.com/JmPotato)
+    - 修复 PD leader 切换后, Placement Rule 未生效问题 [#9602](https://github.com/tikv/pd/issues/9602) @[okJiang](https://github.com/okJiang)
+    - 修复 backoff 初始化错误问题 [#9013](https://github.com/tikv/pd/issues/9013)  @[rleungx](https://github.com/rleungx)
+    - 修复 TTL 配置未生效问题 [#9343](https://github.com/tikv/pd/issues/9343) @[lhy1024](https://github.com/lhy1024)
 
 + TiFlash <!--tw@hfxsd: 5 notes-->
 
@@ -127,13 +127,13 @@ TiDB 版本：8.5.4
 
     + Backup & Restore (BR) <!--tw@qiancai: 7 notes-->
 
-        - Fix the issue where Zstd compression did not take effect in log backup, resulting in uncompressed output. [#18836](https://github.com/tikv/tikv/issues/18836) @[3pointer](https://github.com/3pointer)
-        - Fixed a bug that may cause flush operation slow in azure blob storage. [#18410](https://github.com/tikv/tikv/issues/18410) @[YuJuncen](https://github.com/YuJuncen)
-        - Fixed a bug that may cause `log truncate` panic when failed to delete file. [#63358](https://github.com/pingcap/tidb/issues/63358) @[YuJuncen](https://github.com/YuJuncen)
-        - Fixed a bug that may cause `stats_meta` be zero when checksumming disabled. [#60978](https://github.com/pingcap/tidb/issues/60978) @[Leavrth](https://github.com/Leavrth)
-        - Reduced chance of BR restore failure from S3-compatible storage when the S3 server limits bandwidth through traffic shaping. [#18846](https://github.com/tikv/tikv/issues/18846) @[kennytm](https://github.com/kennytm)
-        - Fix the issue that the log backup observer loses observation of a region. [#18243](https://github.com/tikv/tikv/issues/18243) @[Leavrth](https://github.com/Leavrth)
-        - Fixed a bug that may cause `restore point` fail when there are some special sized table schemas [#63663](https://github.com/pingcap/tidb/issues/63663) @[RidRisR](https://github.com/RidRisR)
+        - 修复了日志备份中 zstd 压缩未生效，导致输出未被压缩的问题 [#18836](https://github.com/tikv/tikv/issues/18836) @[3pointer](https://github.com/3pointer)
+        - 修复备份数据到 Azure Blob Storage 时可能导致 flush 操作变慢的问题 [#18410](https://github.com/tikv/tikv/issues/18410) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复删除文件失败时可能 `log truncate` 的问题 [#63358](https://github.com/pingcap/tidb/issues/63358) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复在备份数据时如果设置 `--checksum` 为 `false` 可能导致恢复后 `stats_meta` 表为空的问题 [#60978](https://github.com/pingcap/tidb/issues/60978) @[Leavrth](https://github.com/Leavrth)
+        - 降低了 S3 兼容存储服务在启用带宽限制时使用 BR 恢复数据失败的概率 [#18846](https://github.com/tikv/tikv/issues/18846) @[kennytm](https://github.com/kennytm)
+        - 修复 `log backup observer` 可能丢失对某个 Region 的监听，从而导致备份数据不完整的问题  [#18243](https://github.com/tikv/tikv/issues/18243) @[Leavrth](https://github.com/Leavrth)
+        - 修复当备份的表中存在一些特殊的 schema 时，可能导致恢复时 `restore point` 创建失败的问题 [#63663](https://github.com/pingcap/tidb/issues/63663) @[RidRisR](https://github.com/RidRisR)
 
     + TiCDC <!--tw@Oreoxmt: 7 notes-->
 
