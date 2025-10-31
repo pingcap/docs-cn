@@ -12,13 +12,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-stats-meta/']
 
 | 列名 | 说明            |
 | -------- | ------------- |
-| db_name  |  数据库名    |
-| table_name | 表名 |
-| partition_name| 分区名 |
-| update_time | 更新时间 |
-| modify_count | 修改的行数 |
-| row_count | 总行数 |
-| last_analyze_time | 表上次被分析的时间 |
+| Db_name  |  数据库名    |
+| Table_name | 表名 |
+| Partition_name| 分区名 |
+| Update_time | 更新时间 |
+| Modify_count | 修改的行数 |
+| Row_count | 总行数 |
+| Last_analyze_time | 表上次被分析的时间 |
 
 > **注意：**
 >
