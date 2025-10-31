@@ -60,6 +60,7 @@ Dumpling 具有以下优势：
 - RELOAD：`consistency` 级别为 `flush` 时需要，当上游为 RDS 或采用托管服务时，可忽略该权限。
 - LOCK TABLES：`consistency` 级别为 `lock` 时需要，需要导出的库表都有该权限。
 - REPLICATION CLIENT：导出 metadata 记录数据快照点时需要，可选，如果不需要导出 metadata，可忽略该权限。
+- SHOW VIEW：需要该权限收集用于导出的视图元数据。
 
 ### 导出为 SQL 文件
 
