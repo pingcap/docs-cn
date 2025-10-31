@@ -112,7 +112,6 @@ TiDB 版本：8.5.4
     - 修复在关闭 bucket 上报功能后， split bucket 依然生效的问题 [#9726](https://github.com/tikv/pd/issues/9726) @[bufferflies](https://github.com/bufferflies)
     - 修复 Resource Manager 错误分配 token 导致查询卡住的问题 [#9455](https://github.com/tikv/pd/issues/9455)  @[JmPotato](https://github.com/JmPotato)
     - 修复 PD leader 切换后, Placement Rule 未生效问题 [#9602](https://github.com/tikv/pd/issues/9602) @[okJiang](https://github.com/okJiang)
-    - 修复 backoff 初始化错误问题 [#9013](https://github.com/tikv/pd/issues/9013)  @[rleungx](https://github.com/rleungx)
     - 修复 TTL 配置未生效问题 [#9343](https://github.com/tikv/pd/issues/9343) @[lhy1024](https://github.com/lhy1024)
 
 + TiFlash <!--tw@hfxsd: 5 notes-->
@@ -127,12 +126,12 @@ TiDB 版本：8.5.4
 
     + Backup & Restore (BR) <!--tw@qiancai: 7 notes-->
 
-        - 修复了日志备份中 zstd 压缩未生效，导致输出未被压缩的问题 [#18836](https://github.com/tikv/tikv/issues/18836) @[3pointer](https://github.com/3pointer)
+        - 修复日志备份中 zstd 压缩未生效，导致输出未被压缩的问题 [#18836](https://github.com/tikv/tikv/issues/18836) @[3pointer](https://github.com/3pointer)
         - 修复备份数据到 Azure Blob Storage 时可能导致 flush 操作变慢的问题 [#18410](https://github.com/tikv/tikv/issues/18410) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复删除文件失败时可能 `log truncate` 的问题 [#63358](https://github.com/pingcap/tidb/issues/63358) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复删除文件失败时可能出现 `log truncate` 的问题 [#63358](https://github.com/pingcap/tidb/issues/63358) @[YuJuncen](https://github.com/YuJuncen)
         - 修复在备份数据时如果设置 `--checksum` 为 `false` 可能导致恢复后 `stats_meta` 表为空的问题 [#60978](https://github.com/pingcap/tidb/issues/60978) @[Leavrth](https://github.com/Leavrth)
         - 降低了 S3 兼容存储服务在启用带宽限制时使用 BR 恢复数据失败的概率 [#18846](https://github.com/tikv/tikv/issues/18846) @[kennytm](https://github.com/kennytm)
-        - 修复 `log backup observer` 可能丢失对某个 Region 的监听，从而导致备份数据不完整的问题  [#18243](https://github.com/tikv/tikv/issues/18243) @[Leavrth](https://github.com/Leavrth)
+        - 修复 `log backup observer` 可能丢失对某个 Region 的监听，从而导致备份数据不完整的问题 [#18243](https://github.com/tikv/tikv/issues/18243) @[Leavrth](https://github.com/Leavrth)
         - 修复当备份的表中存在一些特殊的 schema 时，可能导致恢复时 `restore point` 创建失败的问题 [#63663](https://github.com/pingcap/tidb/issues/63663) @[RidRisR](https://github.com/RidRisR)
 
     + TiCDC <!--tw@Oreoxmt: 7 notes-->
