@@ -112,7 +112,7 @@ TiDB 版本：8.5.4
     - 修复在关闭 bucket 上报功能后， split bucket 依然生效的问题 [#9726](https://github.com/tikv/pd/issues/9726) @[bufferflies](https://github.com/bufferflies)
     - 修复 Resource Manager 错误分配 token 导致查询卡住的问题 [#9455](https://github.com/tikv/pd/issues/9455)  @[JmPotato](https://github.com/JmPotato)
     - 修复 PD leader 切换后, Placement Rule 未生效问题 [#9602](https://github.com/tikv/pd/issues/9602) @[okJiang](https://github.com/okJiang)
-    - 修复 TTL 配置未生效问题 [#9343](https://github.com/tikv/pd/issues/9343) @[lhy1024](https://github.com/lhy1024)
+    - 修复 PD 在解析以科学计数法表示的大数值时可能失败，从而导致部分 TTL 相关的配置不生效的问题 [#9343](https://github.com/tikv/pd/issues/9343) @[lhy1024](https://github.com/lhy1024)
 
 + TiFlash <!--tw@hfxsd: 5 notes-->
 
