@@ -17,6 +17,8 @@ TiDB 版本：8.5.4
 
 - 废弃配置项：[`region-compact-check-interval`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#region-compact-check-interval)、[`region-compact-check-step`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#region-compact-check-step)、[`region-compact-min-tombstones`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#region-compact-min-tombstones)、[`region-compact-tombstones-percent`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#region-compact-tombstones-percent)、[`region-compact-min-redundant-rows`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#region-compact-min-redundant-rows-从-v710-版本开始引入) 和 [`region-compact-redundant-rows-percent`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#region-compact-redundant-rows-percent-从-v710-版本开始引入)。
 
+- 从 v8.5.4 开始，系统变量 [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) 仅对只读 SQL 语句生效，以提高数据读取的安全性并减少与其他功能的重叠 [#62856](https://github.com/pingcap/tidb/issues/62856) @[you06](https://github.com/you06)
+ 
 - 新增系统变量 [`tidb_stats_update_during_ddl`](/system-variables.md#tidb_stats_update_during_ddl)，用于控制是否开启 DDL 的内嵌 Analyze 的行为 [#57948](https://github.com/pingcap/tidb/issues/57948) @[terry1purcell](https://github.com/terry1purcell) @[AilinKid](https://github.com/AilinKid) <!--tw@hfxsd -->
 
 - 新增系统变量 [`tidb_enable_binding_usage`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables.md#tidb_enable_binding_usage-从-v854-版本开始引入)，用于控制是否收集 SQL 执行计划绑定的使用统计信息 [#63407](https://github.com/pingcap/tidb/issues/63407) @[hawkingrei](https://github.com/hawkingrei) <!--tw@qiancai -->
