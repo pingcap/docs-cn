@@ -730,7 +730,7 @@ raftstore 相关的配置项。
 ### `raft-log-gc-count-limit`
 
 + 允许残余的 Raft 日志个数，这是一个硬限制。
-+ 默认值：3/4 Region 大小所能容纳的日志个数，按照每个日志 1 MiB 计算
++ 默认值：3/4 Region 大小所能容纳的日志个数，按照每个日志 1 KiB 计算
 + 最小值：0
 
 ### `raft-log-gc-size-limit`
