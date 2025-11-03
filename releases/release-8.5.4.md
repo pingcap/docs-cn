@@ -17,6 +17,8 @@ TiDB 版本：8.5.4
 
 - 废弃配置项：[`region-compact-check-interval`](https://docs.pingcap.com/zh/tidb/v7.5/tikv-configuration-file#region-compact-check-interval)、[`region-compact-check-step`](https://docs.pingcap.com/zh/tidb/v7.5/tikv-configuration-file#region-compact-check-step)、[`region-compact-min-tombstones`](https://docs.pingcap.com/zh/tidb/v7.5/tikv-configuration-file#region-compact-min-tombstones)、[`region-compact-tombstones-percent`](https://docs.pingcap.com/zh/tidb/v7.5/tikv-configuration-file#region-compact-tombstones-percent)、[`region-compact-min-redundant-rows`](https://docs.pingcap.com/zh/tidb/v7.5/tikv-configuration-file#region-compact-min-redundant-rows-从-v710-版本开始引入) 和 [`region-compact-redundant-rows-percent`](https://docs.pingcap.com/zh/tidb/v7.5/tikv-configuration-file#region-compact-redundant-rows-percent-从-v710-版本开始引入)。
 
+- 新增系统变量 [`tidb_enable_binding_usage`](/system-variables.md#tidb_enable_binding_usage-new-in-v854-and-v900)，用于控制是否收集 SQL 执行计划绑定的使用统计信息 [#63407](https://github.com/pingcap/tidb/issues/63407) @[hawkingrei](https://github.com/hawkingrei) <!--tw@qiancai -->
+
 - 新增系统变量 `tidb_opt_enable_no_decorrelate_in_select`，用于控制是否对 `SELECT` 列表中的子查询进行解关联操作 [#51116](https://github.com/pingcap/tidb/issues/51116) @[terry1purcell](https://github.com/terry1purcell) <!--tw@Oreoxmt -->
 
 - 新增系统变量 `tidb_opt_enable_semi_join_rewrite`，用于控制是否改写 `EXISTS` 子查询 [#44850](https://github.com/pingcap/tidb/issues/44850) @[terry1purcell](https://github.com/terry1purcell) <!--tw@Oreoxmt -->
