@@ -23,9 +23,9 @@ TiDB 版本：8.5.4
 
 - 新增系统变量 [`tidb_enable_binding_usage`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables.md#tidb_enable_binding_usage-从-v854-版本开始引入)，用于控制是否收集 SQL 执行计划绑定的使用统计信息 [#63407](https://github.com/pingcap/tidb/issues/63407) @[hawkingrei](https://github.com/hawkingrei) <!--tw@qiancai -->
 
-- 新增系统变量 `tidb_opt_enable_no_decorrelate_in_select`，用于控制是否对 `SELECT` 列表中的子查询进行解关联操作 [#51116](https://github.com/pingcap/tidb/issues/51116) @[terry1purcell](https://github.com/terry1purcell) <!--tw@Oreoxmt -->
+- 新增系统变量 [`tidb_opt_enable_no_decorrelate_in_select`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables.md#tidb_opt_enable_no_decorrelate_in_select-从-v854-版本开始引入)，用于控制是否对 `SELECT` 列表中的子查询进行解关联操作 [#51116](https://github.com/pingcap/tidb/issues/51116) @[terry1purcell](https://github.com/terry1purcell) <!--tw@Oreoxmt -->
 
-- 新增系统变量 `tidb_opt_enable_semi_join_rewrite`，用于控制是否改写 `EXISTS` 子查询 [#44850](https://github.com/pingcap/tidb/issues/44850) @[terry1purcell](https://github.com/terry1purcell) <!--tw@Oreoxmt -->
+- 新增系统变量 [`tidb_opt_enable_semi_join_rewrite`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables.md#tidb_opt_enable_semi_join_rewrite-从-v854-版本开始引入)，用于控制是否改写 `EXISTS` 子查询 [#44850](https://github.com/pingcap/tidb/issues/44850) @[terry1purcell](https://github.com/terry1purcell) <!--tw@Oreoxmt -->
 
 - 新增配置项：[`gc.auto-compaction.check-interval`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#check-interval-从-v757-和-v854-版本开始引入)、[`gc.auto-compaction.tombstone-num-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#tombstone-num-threshold-从-v757-和-v854-版本开始引入)、[`gc.auto-compaction.tombstone-percent-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#tombstone-percent-threshold-从-v757-和-v854-版本开始引入)、[`gc.auto-compaction.redundant-rows-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#redundant-rows-threshold-从-v757-和-v854-版本开始引入)、[`gc.auto-compaction.redundant-rows-percent-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#redundant-rows-percent-threshold-从-v757-和-v854-版本开始引入) 和 [`gc.auto-compaction.bottommost-level-force`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#bottommost-level-force-从-v757-和-v854-版本开始引入)。
 
@@ -109,6 +109,7 @@ TiDB 版本：8.5.4
     - 修复 `character_set_results` 在遇到错误字符时进行截断而不是进行替换的问题 [#61085](https://github.com/pingcap/tidb/issues/61085) @[xhebox](https://github.com/xhebox)
     - 修复 `ADD COLUMN` 与 `UPDATE` 并发执行时出错的问题 [#60047](https://github.com/pingcap/tidb/issues/60047) @[L-maple](https://github.com/L-maple)
     - 修复 Merge Join 在计算成本时可能遗漏过滤条件的问题 [#62917](https://github.com/pingcap/tidb/issues/62917) @[qw4990](https://github.com/qw4990) <!--tw@Oreoxmt-->
+
 + PD <!--tw@qiancai: 8 notes-->
 
     - 修复 PD Client 重试策略未正确初始化的问题 [#9013](https://github.com/tikv/pd/issues/9013) @[rleungx](https://github.com/rleungx)
