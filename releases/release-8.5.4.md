@@ -35,6 +35,8 @@ TiDB 版本：8.5.4
 
 + TiDB <!--tw@Oreoxmt: 11 notes-->
 
+    - 支持表级别数据打散（实验特性）：你可以通过 [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql-statement-show-distribution-jobs.md) 语句查看某张表在集群中所有 TiKV 节点上的数据分布情况。如果存在数据分布不均衡，可以通过 [`DISTRIBUTE TABLE`](/sql-statements/sql-statement-distribute-table.md) 语句对该表进行数据打散，以提升负载均衡性 [#63260](https://github.com/pingcap/tidb/issues/63260) @[bufferflies](https://github.com/bufferflies) <!--tw@qiancai-->
+
     - (dup): release-9.0.0.md(beta.1) > # SQL 功能 - 支持对分区表的非唯一列创建[全局索引](/partitioned-table.md#全局索引)，以提升全局索引的易用性 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014) @[mjonss](https://github.com/mjonss)
     - (dup): release-9.0.0.md(beta.1) > 改进提升> TiDB - 支持由 `IN` 子查询而来的 Semi Join 使用 `semi_join_rewrite` 的 Hint [#58829](https://github.com/pingcap/tidb/issues/58829) @[qw4990](https://github.com/qw4990)
     - 优化系统变量 `tidb_opt_ordering_index_selectivity_ratio` 生效时的估算策略 [#62817](https://github.com/pingcap/tidb/issues/62817) @[terry1purcell](https://github.com/terry1purcell)
@@ -61,7 +63,7 @@ TiDB 版本：8.5.4
     - 将 Golang 版本升级至 1.23.12，并更新相关依赖项 [#9788](https://github.com/tikv/pd/issues/9788) @[JmPotato](https://github.com/JmPotato)
     - 支持按表级别维度打散 Region 数量，以在 `scatter-role` 和 `engine` 维度实现均衡分布 [#8986](https://github.com/tikv/pd/issues/8986) @[bufferflies](https://github.com/bufferflies)
 
-+ TiFlash <!--tw@qiancai: 4 notes-->
++ TiFlash <!--tw@qiancai: 5 notes-->
 
     - 跳过不必要数据读取，提升 `TableScan` 读取性能 [#9875](https://github.com/pingcap/tiflash/issues/9875) @[gengliqi](https://github.com/gengliqi)
     - 优化 TiFlash 在列多且稀疏（大量 `NULL` 或空值）的宽表上执行 `TableScan` 的性能 [#10361](https://github.com/pingcap/tiflash/issues/10361) @[JaySon-Huang](https://github.com/JaySon-Huang)
@@ -110,14 +112,15 @@ TiDB 版本：8.5.4
     - 修复 `ADD COLUMN` 与 `UPDATE` 并发执行时出错的问题 [#60047](https://github.com/pingcap/tidb/issues/60047) @[L-maple](https://github.com/L-maple)
     - 修复 Merge Join 在计算成本时可能遗漏过滤条件的问题 [#62917](https://github.com/pingcap/tidb/issues/62917) @[qw4990](https://github.com/qw4990) <!--tw@Oreoxmt-->
 
+
 + PD <!--tw@qiancai: 8 notes-->
 
     - 修复 PD Client 重试策略未正确初始化的问题 [#9013](https://github.com/tikv/pd/issues/9013) @[rleungx](https://github.com/rleungx)
-    - 修复 TSO HTTP API `/config` 和 `/members` 的错误输出 [#9797](https://github.com/tikv/pd/issues/9797) @[lhy1024](https://github.com/lhy1024) 
+    - 修复 TSO HTTP API `/config` 和 `/members` 的错误输出 [#9797](https://github.com/tikv/pd/issues/9797) @[lhy1024](https://github.com/lhy1024)
     - 修复 TSO Follower Proxy 的错误处理逻辑 [#9188](https://github.com/tikv/pd/issues/9188) @[Tema](https://github.com/Tema)
-    - 修复在关闭 bucket 上报功能后， split bucket 依然生效的问题 [#9726](https://github.com/tikv/pd/issues/9726) @[bufferflies](https://github.com/bufferflies)
-    - 修复 Resource Manager 错误分配 token 导致查询卡住的问题 [#9455](https://github.com/tikv/pd/issues/9455)  @[JmPotato](https://github.com/JmPotato)
-    - 修复 PD leader 切换后, Placement Rule 未生效问题 [#9602](https://github.com/tikv/pd/issues/9602) @[okJiang](https://github.com/okJiang)
+    - 修复在关闭 bucket 上报功能后，split bucket 依然生效的问题 [#9726](https://github.com/tikv/pd/issues/9726) @[bufferflies](https://github.com/bufferflies)
+    - 修复 Resource Manager 错误分配 token 导致查询卡住的问题 [#9455](https://github.com/tikv/pd/issues/9455) @[JmPotato](https://github.com/JmPotato)
+    - 修复 PD leader 切换后，Placement Rule 未生效问题 [#9602](https://github.com/tikv/pd/issues/9602) @[okJiang](https://github.com/okJiang)
     - 修复 PD 在解析以科学计数法表示的大数值时可能失败，从而导致部分 TTL 相关的配置不生效的问题 [#9343](https://github.com/tikv/pd/issues/9343) @[lhy1024](https://github.com/lhy1024)
 
 + TiFlash <!--tw@hfxsd: 5 notes-->
@@ -133,11 +136,11 @@ TiDB 版本：8.5.4
     + Backup & Restore (BR) <!--tw@qiancai: 7 notes-->
 
         - 修复日志备份中 zstd 压缩未生效，导致输出未被压缩的问题 [#18836](https://github.com/tikv/tikv/issues/18836) @[3pointer](https://github.com/3pointer)
-        - 修复备份数据到 Azure Blob Storage 时可能导致 flush 操作变慢的问题 [#18410](https://github.com/tikv/tikv/issues/18410) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复备份数据到 Azure Blob Storage 时 flush 偶尔会很慢的问题 [#18410](https://github.com/tikv/tikv/issues/18410) @[YuJuncen](https://github.com/YuJuncen)
         - 修复删除文件失败时可能出现 `log truncate` 的问题 [#63358](https://github.com/pingcap/tidb/issues/63358) @[YuJuncen](https://github.com/YuJuncen)
         - 修复在备份数据时如果设置 `--checksum` 为 `false` 可能导致 `stats_meta` 表为空的问题 [#60978](https://github.com/pingcap/tidb/issues/60978) @[Leavrth](https://github.com/Leavrth)
         - 降低了 S3 兼容存储服务在启用带宽限制时使用 BR 恢复数据失败的概率 [#18846](https://github.com/tikv/tikv/issues/18846) @[kennytm](https://github.com/kennytm)
-        - 修复 `log backup observer` 可能丢失对某个 Region 的监听，从而导致备份数据不完整的问题 [#18243](https://github.com/tikv/tikv/issues/18243) @[Leavrth](https://github.com/Leavrth)
+        - 修复 `log backup observer` 可能丢失对某个 Region 的监听，从而导致日志备份进度无法推进的问题 [#18243](https://github.com/tikv/tikv/issues/18243) @[Leavrth](https://github.com/Leavrth)
         - 修复当备份的表中存在一些特殊的 schema 时，可能导致 `restore point` 创建失败的问题 [#63663](https://github.com/pingcap/tidb/issues/63663) @[RidRisR](https://github.com/RidRisR)
 
     + TiCDC <!--tw@Oreoxmt: 7 notes-->
