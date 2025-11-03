@@ -60,7 +60,7 @@ TiDB 版本：8.5.4
 + PD <!--tw@Oreoxmt: 3 notes-->
 
     - 减少非必要的错误日志 [#9370](https://github.com/tikv/pd/issues/9370) @[bufferflies](https://github.com/bufferflies)
-    - 将 Golang 版本升级至 1.23.12，并更新相关依赖项 [#9788](https://github.com/tikv/pd/issues/9788) @[JmPotato](https://github.com/JmPotato)
+    - 将 Golang 版本从 1.23.0 升级至 1.23.12，并更新相关依赖项 [#9788](https://github.com/tikv/pd/issues/9788) @[JmPotato](https://github.com/JmPotato)
     - 支持按表级别维度打散 Region 数量，以在 `scatter-role` 和 `engine` 维度实现均衡分布 [#8986](https://github.com/tikv/pd/issues/8986) @[bufferflies](https://github.com/bufferflies)
 
 + TiFlash <!--tw@qiancai: 5 notes-->
@@ -148,7 +148,7 @@ TiDB 版本：8.5.4
         - 修复在配置包含虚拟列的 Column 类型分区分发器时可能导致的 panic 问题 [#12241](https://github.com/pingcap/tiflow/issues/12241) @[wk989898](https://github.com/wk989898)
         - 修复在关闭 DDL puller 时可能引发的 panic 问题 [#12244](https://github.com/pingcap/tiflow/issues/12244) @[wk989898](https://github.com/wk989898)
         - 支持在 `filter` 配置中通过 `ignore-txn-start-ts` 参数过滤不支持的 DDL 类型 [#12286](https://github.com/pingcap/tiflow/issues/12286) @[asddongmen](https://github.com/asddongmen)
-        - 修复使用 Azure Blob Storage 作为下游时可能出现的 Changefeed 任务卡住的问题 [#12277](https://github.com/pingcap/tiflow/issues/12277) @[zurakutsia](https://github.com/zurakutsia)
+        - 修复使用 Azure Blob Storage 作为下游时可能出现数据同步任务卡住的问题 [#12277](https://github.com/pingcap/tiflow/issues/12277) @[zurakutsia](https://github.com/zurakutsia)
         - 修复 `DROP FOREIGN KEY` DDL 没有同步到下游的问题 [#12328](https://github.com/pingcap/tiflow/issues/12328) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复订阅 Region 时遇到回滚和预写条目导致 TiCDC panic 的问题 [#19048](https://github.com/tikv/tikv/issues/19048) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复 TiKV 中的断言错误可能导致 TiCDC panic 的问题 [#18498](https://github.com/tikv/tikv/issues/18498) @[tharanga](https://github.com/tharanga)
