@@ -35,13 +35,13 @@ TiDB 版本：8.5.4
 
 + TiDB <!--tw@Oreoxmt: 11 notes-->
 
-    - (dup): release-9.0.0.md(beta.1) > # SQL 功能 * 支持对分区表的非唯一列创建全局索引 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014) @[mjonss](https://github.com/mjonss)
+    - (dup): release-9.0.0.md(beta.1) > # SQL 功能 - 支持对分区表的非唯一列创建[全局索引](/partitioned-table.md#全局索引)，以提升全局索引的易用性 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014) @[mjonss](https://github.com/mjonss)
     - (dup): release-9.0.0.md(beta.1) > 改进提升> TiDB - 支持由 `IN` 子查询而来的 Semi Join 使用 `semi_join_rewrite` 的 Hint [#58829](https://github.com/pingcap/tidb/issues/58829) @[qw4990](https://github.com/qw4990)
     - 优化系统变量 `tidb_opt_ordering_index_selectivity_ratio` 生效时的估算策略 [#62817](https://github.com/pingcap/tidb/issues/62817) @[terry1purcell](https://github.com/terry1purcell)
     - 调整优化器的选择逻辑，使新创建的索引在某些情况下更容易被选中 [#57948](https://github.com/pingcap/tidb/issues/57948) @[terry1purcell](https://github.com/terry1purcell)
     - 优化 NDV (number of distinct values) 较小的列的查询估算逻辑 [#61792](https://github.com/pingcap/tidb/issues/61792) @[terry1purcell](https://github.com/terry1purcell)
     - 优化 Index Join 查询中包含 `LIMIT OFFSET` 时的估算策略 [#45077](https://github.com/pingcap/tidb/issues/45077) @[qw4990](https://github.com/qw4990)
-    - 优化 Merge Join 在计算成本时可能遗漏过滤条件的情况 [#62917](https://github.com/pingcap/tidb/issues/62917) @[qw4990](https://github.com/qw4990)
+    - 修复 Merge Join 在计算成本时可能遗漏过滤条件的问题 [#62917](https://github.com/pingcap/tidb/issues/62917) @[qw4990](https://github.com/qw4990)
     - 优化统计信息未及时收集时的越界估算策略 [#58068](https://github.com/pingcap/tidb/issues/58068) @[terry1purcell](https://github.com/terry1purcell)
     - 在执行时间概览中新增 Backoff 时间指标，便于调试 [#61441](https://github.com/pingcap/tidb/issues/61441) @[dbsid](https://github.com/dbsid)
     - 在审计日志插件中新增语句 ID 信息 [#63525](https://github.com/pingcap/tidb/issues/63525) @[YangKeao](https://github.com/YangKeao)
