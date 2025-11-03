@@ -41,7 +41,6 @@ TiDB 版本：8.5.4
     - 调整优化器的选择逻辑，使新创建的索引在某些情况下更容易被选中 [#57948](https://github.com/pingcap/tidb/issues/57948) @[terry1purcell](https://github.com/terry1purcell)
     - 优化 NDV (number of distinct values) 较小的列的查询估算逻辑 [#61792](https://github.com/pingcap/tidb/issues/61792) @[terry1purcell](https://github.com/terry1purcell)
     - 优化 Index Join 查询中包含 `LIMIT OFFSET` 时的估算策略 [#45077](https://github.com/pingcap/tidb/issues/45077) @[qw4990](https://github.com/qw4990)
-    - 修复 Merge Join 在计算成本时可能遗漏过滤条件的问题 [#62917](https://github.com/pingcap/tidb/issues/62917) @[qw4990](https://github.com/qw4990)
     - 优化统计信息未及时收集时的越界估算策略 [#58068](https://github.com/pingcap/tidb/issues/58068) @[terry1purcell](https://github.com/terry1purcell)
     - 在执行时间概览中新增 Backoff 时间指标，便于调试 [#61441](https://github.com/pingcap/tidb/issues/61441) @[dbsid](https://github.com/dbsid)
     - 在审计日志插件中新增语句 ID 信息 [#63525](https://github.com/pingcap/tidb/issues/63525) @[YangKeao](https://github.com/YangKeao)
@@ -109,7 +108,7 @@ TiDB 版本：8.5.4
     - 修复全局索引在某些情况下返回错误结果的问题 [#61083](https://github.com/pingcap/tidb/issues/61083) @[Defined2014](https://github.com/Defined2014)
     - 修复 `character_set_results` 在遇到错误字符时进行截断而不是进行替换的问题 [#61085](https://github.com/pingcap/tidb/issues/61085) @[xhebox](https://github.com/xhebox)
     - 修复 `ADD COLUMN` 与 `UPDATE` 并发执行时出错的问题 [#60047](https://github.com/pingcap/tidb/issues/60047) @[L-maple](https://github.com/L-maple)
-
+    - 修复 Merge Join 在计算成本时可能遗漏过滤条件的问题 [#62917](https://github.com/pingcap/tidb/issues/62917) @[qw4990](https://github.com/qw4990) <!--tw@Oreoxmt-->
 + PD <!--tw@qiancai: 8 notes-->
 
     - 修复 PD Client 重试策略未正确初始化的问题 [#9013](https://github.com/tikv/pd/issues/9013) @[rleungx](https://github.com/rleungx)
