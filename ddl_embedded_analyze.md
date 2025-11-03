@@ -12,13 +12,13 @@ summary: 本章介绍了对于特定涉及索引创建或者更新 DDL 下的内
 在一些穿插索引新增和变更的 DDL 查询场景中，很多已经稳定的查询，可能会因为一些新的索引的路径构建，以及没有及时收集统计信息，导致该索引代价低估或者高估致使计划变更。详情请参考 [Issue #57948](https://github.com/pingcap/tidb/issues/57948)。
 
 ```sql
-create table t(a int, b int);
-insert into t values(1,1),(2,2),(3,3);
-insert into t select * from t; // * N times
+CREATE TABLE t (a INT, b INT);
+INSERT INTO t VALUES (1, 1), (2, 2), (3, 3);
+INSERT INTO t SELECT * FROM t; -- * N times
 
-alter table t add index idx_a(a);
+ALTER TABLE t ADD INDEX idx_a (a);
 
-explain select * from x where a>4;
+EXPLAIN SELECT * FROM x WHERE a > 4;
 ```
 
 ```
@@ -43,22 +43,22 @@ explain select * from x where a>4;
 考虑到 Analyze 命令可能会带来一定的耗时，TiDB 取第一次 Reorg 的时间作为内联 Analyze 的超时机制，在相关 timeout 触发之后，`ADD INDEX` 将不再同步等待内联 Analyze 的完成，直接继续推进对用户可见该索引，这意味着，需要异步等待该 Analyze 完成后，该新索引的 stats 才能就绪。
 
 ```sql
-create table t(a int, b int, c int);
+CREATE TABLE t (a INT, b INT, c INT);
 Query OK, 0 rows affected (0.011 sec)
 
-insert into t values(1,1,1),(2,2,2),(3,3,3);
+INSERT INTO t VALUES (1, 1, 1), (2, 2, 2), (3, 3, 3);
 Query OK, 3 rows affected (0.003 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 
-set @@tidb_stats_update_during_ddl=1;
+SET @@tidb_stats_update_during_ddl = 1;
 Query OK, 0 rows affected (0.001 sec)
 
-alter table t add index idx(a,b);
+ALTER TABLE t ADD INDEX idx (a, b);
 Query OK, 0 rows affected (0.049 sec)
 ```
 
 ```sql
-explain select a from t where a > 1;
+EXPLAIN SELECT a FROM t WHERE a > 1;
 ```
 
 ```
@@ -81,7 +81,7 @@ show stats_histograms where table_name="t";
 ```
 
 ```sql
-admin show ddl jobs 1; 
+ADMIN SHOW DDL JOBS 1;
 ```
 
 ```
@@ -100,20 +100,23 @@ admin show ddl jobs 1;
 当 `tidb_stats_update_during_ddl` 变量为 `ON` 时，重组已经存在的索引 [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) / [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 的 DDL，可以在重组阶段结束之后，内联性发起 Analyze 命令，该命令可以在该新索引对用户可见之前，分析相关新建索引的统计信息，然后再完成 DDL。考虑到 Analyze 命令可能会带来一定的耗时，TiDB 取第一次 Reorg 的时间作为内联 Analyze 的超时机制，在相关 timeout 触发之后，`Modify Column` / `Change Column` 将不再同步等待内联 Analyze 的完成，直接继续推进对用户可见该索引，这意味着，需要异步等待该 Analyze 完成后，该新索引的 stats 才能就绪。
 
 ```sql
-mysql> create table s(a varchar(10), index idx(a));
+CREATE TABLE s (a VARCHAR(10), INDEX idx (a));
 Query OK, 0 rows affected (0.012 sec)
 
-mysql> insert into s values(1),(2),(3);
+INSERT INTO s VALUES (1), (2), (3);
 Query OK, 3 rows affected (0.003 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 
-mysql> set @@tidb_stats_update_during_ddl=1;
+SET @@tidb_stats_update_during_ddl = 1;
 Query OK, 0 rows affected (0.001 sec)
 
-mysql> alter table s modify column a int;
+ALTER TABLE s MODIFY COLUMN a INT;
 Query OK, 0 rows affected (0.056 sec)
 
-mysql> explain select * from s where a > 1;
+EXPLAIN SELECT * FROM s WHERE a > 1;
+```
+
+```
 +------------------------+---------+-----------+-----------------------+----------------------------------+
 | id                     | estRows | task      | access object         | operator info                    |
 +------------------------+---------+-----------+-----------------------+----------------------------------+
@@ -121,8 +124,13 @@ mysql> explain select * from s where a > 1;
 | └─IndexRangeScan_6     | 2.00    | cop[tikv] | table:s, index:idx(a) | range:(1,+inf], keep order:false |
 +------------------------+---------+-----------+-----------------------+----------------------------------+
 2 rows in set (0.005 sec)
+```
   
-mysql> show stats_histograms where table_name="s";
+```sql
+SHOW STATS_HISTOGRAMS WHERE table_name = "s";
+```
+
+```
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+-------------+-----------------+----------------+----------------+---------------+
 | Db_name | Table_name | Partition_name | Column_name | Is_index | Update_time         | Distinct_count | Null_count | Avg_col_size | Correlation | Load_status | Total_mem_usage | Hist_mem_usage | Topn_mem_usage | Cms_mem_usage |
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+-------------+-----------------+----------------+----------------+---------------+
@@ -132,8 +140,13 @@ mysql> show stats_histograms where table_name="s";
 | test    | s          |                | idx         |        1 | 2025-10-30 20:10:18 |              3 |          0 |            0 |           0 | allLoaded   |             155 |              0 |            155 |             0 |
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+-------------+-----------------+----------------+----------------+---------------+
 4 rows in set (0.008 sec)
+```
 
-mysql> admin show ddl jobs 1; 
+```sql
+ADMIN SHOW DDL JOBS 1;
+```
+
+```
 +--------+---------+------------------+---------------+----------------------+-----------+----------+-----------+----------------------------+----------------------------+----------------------------+---------+-----------------------------+
 | JOB_ID | DB_NAME | TABLE_NAME       | JOB_TYPE      | SCHEMA_STATE         | SCHEMA_ID | TABLE_ID | ROW_COUNT | CREATE_TIME                | START_TIME                 | END_TIME                   | STATE   | COMMENTS                    |
 +--------+---------+------------------+---------------+----------------------+-----------+----------+-----------+----------------------------+----------------------------+----------------------------+---------+-----------------------------+
