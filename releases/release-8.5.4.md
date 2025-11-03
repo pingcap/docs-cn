@@ -29,6 +29,8 @@ TiDB 版本：8.5.4
 
 - 新增配置项：[`gc.auto-compaction.check-interval`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#check-interval-从-v757-和-v854-版本开始引入)、[`gc.auto-compaction.tombstone-num-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#tombstone-num-threshold-从-v757-和-v854-版本开始引入)、[`gc.auto-compaction.tombstone-percent-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#tombstone-percent-threshold-从-v757-和-v854-版本开始引入)、[`gc.auto-compaction.redundant-rows-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#redundant-rows-threshold-从-v757-和-v854-版本开始引入)、[`gc.auto-compaction.redundant-rows-percent-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#redundant-rows-percent-threshold-从-v757-和-v854-版本开始引入) 和 [`gc.auto-compaction.bottommost-level-force`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#bottommost-level-force-从-v757-和-v854-版本开始引入)。
 
+- 新增 TiFlash 配置项 [`graceful_wait_shutdown_timeout`](https://docs.pingcap.com/zh/tidb/v8.5/tiflash-configuration#graceful_wait_shutdown_timeout-从-v854-版本开始引入)，用于控制在关闭 TiFlash 服务器时的最长等待时间 [#10266](https://github.com/pingcap/tiflash/issues/10266) @[gengliqi](https://github.com/gengliqi) <!--tw@qiancai -->
+
 ## 改进提升
 
 + TiDB <!--tw@Oreoxmt: 11 notes-->
