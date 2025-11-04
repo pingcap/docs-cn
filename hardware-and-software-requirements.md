@@ -38,7 +38,7 @@ summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在
     >     - 为了更好地服务仍在使用 CentOS Linux 7 的用户，TiDB 从 v8.5.1 版本起重新适配 glibc 2.17，恢复了对 CentOS Linux 7 的兼容性支持和测试。然而，由于 CentOS Linux 7 已到达 EOL，强烈建议用户参考该系统的[官方声明和安全建议](https://www.redhat.com/en/blog/centos-linux-has-reached-its-end-life-eol)，将生产环境迁移到 TiDB 支持的操作系统版本，如 Rocky Linux 9.1 及以上版本。
     > - 根据 [Red Hat Enterprise Linux Life Cycle](https://access.redhat.com/support/policy/updates/errata/#Life_Cycle_Dates)，Red Hat Enterprise Linux 7 的 Maintenance Support 于 2024 年 6 月 30 日终止。从 8.4 DMR 版本开始，TiDB 已结束对 Red Hat Enterprise Linux 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。如果将运行在 Red Hat Enterprise Linux 7 上的 TiDB 集群升级到 v8.4.0 或之后版本，将存在导致集群不可用的风险。升级 TiDB 前，请务必检查你的操作系统版本。
 
-+ 在以下操作系统以及对应的 CPU 架构组合上，你可以编译、构建和部署 TiDB，可使用 OLTP 和 OLAP 以及数据工具的基本功能。但是 TiDB **不保障企业级生产质量要求**：
++ 在以下操作系统以及对应的 CPU 架构组合上，你可以编译、构建和部署 TiDB，可使用 OLTP 和 OLAP 以及数据工具的基本功能。但由于这些组合尚未经过全面且系统的测试验证，TiDB **不保证企业级生产质量要求**：
 
     |  操作系统   |   支持的 CPU 架构   |
     |   :---   |   :---   |
