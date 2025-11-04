@@ -5,7 +5,7 @@ summary: 本章介绍了对于特定涉及索引创建或者更新 DDL 下的内
 
 # 内嵌于 DDL 的 Analyze
 
-本文档介绍内嵌于 DDL 的 Analyze 特性。你可以使用系统变量 [`tidb_stats_update_during_ddl`](/system-variables.md#tidb_stats_update_during_ddl-从-v854-版本开始引入) 控制相关 DDL 在新建或重组索引数据时，是否使用内嵌的 Analyze。该值默认为 `OFF`。
+本文档介绍内嵌于 DDL 的 Analyze 特性。该功能主要是防止新建或者重组索引之后一段时间内索引统计信息不可用导致的估算差异，从而造成的计划变更。
 
 ## 使用场景
 
@@ -32,15 +32,15 @@ EXPLAIN SELECT * FROM x WHERE a > 4;
 3 rows in set (0.002 sec)
 ```
 
-从 SQL 计划中可以看到，由于添加索引之后没有 stats，在路径估算的时候，除非是一些简单的不用回表的启发式比较可以胜出之外，基本会选中估算确定性比较高现有的路径，上述示例选择的是默认的全表扫描。但是从宏观视角来看，`x.a > 4` 在实际数据分布中只有 0 行，通过索引 `idx_a` 访问可以更快的定位到相关的行，从而避免全表扫描。这里主要是由于在 DDL 创建索引之后，TiDB 自身没有及时收集索引统计信息导致计划不优，但是至少计划可以和以往保持一致，不存在计划跳变问题。然而在上述 [Issue #57948](https://github.com/pingcap/tidb/issues/57948) 中，新建的索引可能会和已经存在的索引进行启发式的比较，导致原有计划所依赖的索引被裁减，最终剩下的索引路径由于没有统计信息，从而默认选择了全表扫描。
+从 SQL 计划中可以看到，由于添加索引之后没有统计信息，在路径估算的时候，除了一些简单的不用回表的启发式的比较可以胜出之外，基本会选中估算确定性比较高的现有的路径，上述示例选择的是默认的全表扫描。但是从宏观视角来看，`x.a > 4` 在实际数据分布中只有 0 行，通过索引 `idx_a` 访问可以更快的定位到相关的行，从而避免全表扫描。在该示例中，由于在 DDL 创建索引之后，TiDB 自身没有及时收集索引统计信息导致计划不优，但是至少计划可以和以往保持一致，不存在计划跳变问题。然而由于 [Issue #57948](https://github.com/pingcap/tidb/issues/57948)，新建的索引可能会和已经存在的索引进行启发式的比较，导致原有计划所依赖的索引被裁减，剩下的索引路径由于没有统计信息，从而默认选择了全表扫描。
 
-在 v8.5 及之后的版本中，TiDB 在索引的启发式比较和统计信息有无中做了很大的权衡和改善。但在一些复杂场景中，在 DDL 中嵌套完成索引统计信息的分析仍然是防止计划变更最保险的选择。
+在 v8.5.0 及之后的版本中，TiDB 对索引的启发式比较和统计信息有无方面进行了优化。但在一些复杂场景中，在 DDL 中嵌套完成索引统计信息的分析仍然是防止计划变更的最佳选择。你可以使用系统变量 [`tidb_stats_update_during_ddl`](/system-variables.md#tidb_stats_update_during_ddl-从-v854-版本开始引入) 控制相关 DDL 在新建或重组索引数据时，是否使用内嵌的 Analyze。该值默认为 `OFF`。
 
 ## 新建索引 `ADD INDEX` 的 DDL
 
-当 `tidb_stats_update_during_ddl` 变量为 `ON` 时，新建索引 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 的 DDL，可以在 Reorg 阶段结束之后，内联性发起 Analyze 命令，该命令可以在该新索引对用户可见之前，分析相关新建索引的统计信息，然后再完成执行 DDL。
+当 `tidb_stats_update_during_ddl` 变量为 `ON` 时，新建索引 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 的 DDL，可以在 Reorg 阶段结束之后，内联性发起 Analyze 命令，该命令可以在该新索引对用户可见之前，分析相关新建索引的统计信息，然后再执行 DDL。
 
-考虑到 Analyze 命令可能会带来一定的耗时，TiDB 取第一次 Reorg 的时间作为内联 Analyze 的超时机制，在相关 timeout 触发之后，`ADD INDEX` 将不再同步等待内联 Analyze 的完成，直接继续推进对用户可见该索引，这意味着，需要异步等待该 Analyze 完成后，该新索引的 stats 才能就绪。
+考虑到 Analyze 命令可能会带来一定的耗时，TiDB 取第一次 Reorg 的时间作为内联 Analyze 的超时机制，在超时机制触发之后，`ADD INDEX` 将不再同步等待内联 Analyze 的完成，而是直接继续推进，使该索引对用户可见，这意味着，需要异步等待该 Analyze 完成后，该新索引的统计信息才能就绪。
 
 ```sql
 CREATE TABLE t (a INT, b INT, c INT);
@@ -93,11 +93,11 @@ ADMIN SHOW DDL JOBS 1;
 1 rows in set (0.001 sec)
 ```
 
-从 `ADD INDEX` 事例来看，当 `tidb_stats_update_during_ddl` 变量为 `ON`，在 DDL 运行结束之后，可以从之后的 SQL 运行中看到相关 `idx` 索引的统计信息已经被加载到了内存，并且已经用于 Range 构造。从 `show stats_histograms` 语句中可以得到验证，相关索引的统计信息已经被分析，全部加载到了内存中。对于时间较长的索引添加或者重组过程和 Analyze 过程，你可以在相关的 DDL Job 状态语句中看到相关索引正在被分析 (`Analyzing`)，表明该 DDL Job 已经处于 stats 收集过程中了。
+从 `ADD INDEX` 示例来看，当 `tidb_stats_update_during_ddl` 变量设置为 `ON` 时，在 DDL 运行结束之后，可以看到之后的 SQL 运行中，相关 `idx` 索引的统计信息已经被加载到了内存，并且已经用于 Range 构造。从 `SHOW STATS_HISTOGRAMS` 语句中可以得到验证，相关索引的统计信息已经被分析，全部加载到了内存中。如果索引添加或者重组过程和 Analyze 过程耗时较长，你可以在相关的 DDL Job 状态语句中看到相关索引正在被分析 (`Analyzing`)，表明该 DDL Job 已经在收集统计信息了。
 
 ## 重组已有索引的 DDL
 
-当 `tidb_stats_update_during_ddl` 变量为 `ON` 时，重组已经存在的索引 [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) / [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 的 DDL，可以在重组阶段结束之后，内联性发起 Analyze 命令，该命令可以在该新索引对用户可见之前，分析相关新建索引的统计信息，然后再完成 DDL。考虑到 Analyze 命令可能会带来一定的耗时，TiDB 取第一次 Reorg 的时间作为内联 Analyze 的超时机制，在相关 timeout 触发之后，`Modify Column` / `Change Column` 将不再同步等待内联 Analyze 的完成，直接继续推进对用户可见该索引，这意味着，需要异步等待该 Analyze 完成后，该新索引的 stats 才能就绪。
+当 `tidb_stats_update_during_ddl` 变量设置为 `ON` 时，重组已经存在的索引 [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) / [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 的 DDL，可以在重组阶段结束之后，内联性发起 Analyze 命令，该命令可以在该新索引对用户可见之前，分析相关新建索引的统计信息，然后再完成 DDL。考虑到 Analyze 命令可能会带来一定的耗时，TiDB 取第一次 Reorg 的时间作为内联 Analyze 的超时机制，在超时机制触发之后，`MODIFY COLUMN` / `CHANGE COLUMN` 将不再同步等待内联 Analyze 的完成，而是直接继续推进，使该索引对用户可见，这意味着，需要异步等待该 Analyze 完成后，该新索引的统计信息才能就绪。
 
 ```sql
 CREATE TABLE s (a VARCHAR(10), INDEX idx (a));
@@ -155,6 +155,4 @@ ADMIN SHOW DDL JOBS 1;
 1 rows in set (0.001 sec)
 ```
 
-从 `Modify Column` 有损 DDL 示例来看， 当 `tidb_stats_update_during_ddl` 变量为 `ON` 时，相关列类型有损变更 DDL 运行结束之后，你可以从之后的 SQL 运行中 Explain 看到相关 `idx` 索引的统计信息已经被加载到了内存，并且已经被用于 Range 构造。从 `show stats_histograms` 语句中可以得到验证，相关索引的统计信息已经被分析，全部加载到了内存中。
-
-对于时间较长的索引添加或者重组过程和 Analyze 过程，可以在相关的 DDL Job 状态语句中看到相关索引正在被分析 (`Analyzing`)，表明该 DDL Job 已经处于 stats 收集过程中了。
+从 `MODIFY COLUMN` 有损 DDL 示例来看， 当 `tidb_stats_update_during_ddl` 变量设置为 `ON` 时，相关列类型有损变更 DDL 运行结束之后，你可以从之后的 SQL 运行中的 Explain 看到相关 `idx` 索引的统计信息已经被加载到了内存，并且已经被用于 Range 构造。从 `SHOW STATS_HISTOGRAMS` 语句中可以得到验证，相关索引的统计信息已经被分析，全部加载到了内存中。如果索引添加或者重组过程和 Analyze 过程耗时较长，你可以在相关的 DDL Job 状态语句中看到相关索引正在被分析 (`Analyzing`)，表明该 DDL Job 已经在收集统计信息了。
