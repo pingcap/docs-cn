@@ -3702,7 +3702,7 @@ mysql> desc select count(distinct a) from test.t;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
-- 该变量控制优化器是否在会话级别或全局范围对 `SELECT` 列表中包含子查询的所有查询应用 [`NO_DECORRELATE()`](/optimizer-hints.md#no_decorrelate) Hint。
+- 该变量控制优化器是否对 `SELECT` 列表中包含子查询的所有查询应用 [`NO_DECORRELATE()`](/optimizer-hints.md#no_decorrelate) Hint。
 
 ### `tidb_opt_enable_semi_join_rewrite` <span class="version-mark">从 v8.5.4 和 v9.0.0 版本开始引入</span>
 
@@ -3711,7 +3711,7 @@ mysql> desc select count(distinct a) from test.t;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 该变量控制优化器是否在会话级别或全局范围对包含子查询的所有查询应用 [`SEMI_JOIN_REWRITE()`](/optimizer-hints.md#semi_join_rewrite) Hint。
+- 该变量控制优化器是否对包含子查询的所有查询应用 [`SEMI_JOIN_REWRITE()`](/optimizer-hints.md#semi_join_rewrite) Hint。
 
 ### `tidb_opt_fix_control` <span class="version-mark">从 v6.5.3 和 v7.1.0 版本开始引入</span>
 
