@@ -15,6 +15,8 @@ TiDB 版本：8.5.4
 
 ### 系统变量
 
+- 系统变量 [`tidb_mpp_store_fail_ttl`](/system-variables.md#tidb_mpp_store_fail_ttl) 默认值从 `60s` 修改为 `0s`，意味着 TiDB 不再需要额外等待即可向新启动的 TiFlash 节点发送查询请求，无需再通过延迟来避免查询失败 [#61826](https://github.com/pingcap/tidb/issues/61826) @[gengliqi](https://github.com/gengliqi)
+
 - 系统变量 [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) 从 v8.5.4 开始仅对只读 SQL 语句生效，以提高数据读取的安全性并减少与其他功能的重叠 [#62856](https://github.com/pingcap/tidb/issues/62856) @[you06](https://github.com/you06)
 
 - 新增以下系统变量：
