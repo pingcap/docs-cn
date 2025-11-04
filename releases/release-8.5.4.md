@@ -140,7 +140,7 @@ TiDB 版本：8.5.4
         - 修复日志备份中 zstd 压缩未生效，导致输出未被压缩的问题 [#18836](https://github.com/tikv/tikv/issues/18836) @[3pointer](https://github.com/3pointer)
         - 修复备份数据到 Azure Blob Storage 时 flush 偶尔会很慢的问题 [#18410](https://github.com/tikv/tikv/issues/18410) @[YuJuncen](https://github.com/YuJuncen)
         - 修复删除文件失败时可能出现 `log truncate` 的问题 [#63358](https://github.com/pingcap/tidb/issues/63358) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复在备份数据时如果设置 `--checksum` 为 `false` 可能导致 `stats_meta` 表为空的问题 [#60978](https://github.com/pingcap/tidb/issues/60978) @[Leavrth](https://github.com/Leavrth)
+        - 修复在备份数据时如果设置 `--checksum` 为 `false` 可能导致恢复后 `mysql.stats_meta` 表的 count 列为 `0` 的问题 [#60978](https://github.com/pingcap/tidb/issues/60978) @[Leavrth](https://github.com/Leavrth)
         - 降低了 S3 兼容存储服务在启用带宽限制时使用 BR 恢复数据失败的概率 [#18846](https://github.com/tikv/tikv/issues/18846) @[kennytm](https://github.com/kennytm)
         - 修复 `log backup observer` 可能丢失对某个 Region 的监听，从而导致日志备份进度无法推进的问题 [#18243](https://github.com/tikv/tikv/issues/18243) @[Leavrth](https://github.com/Leavrth)
         - 修复当备份的表中存在一些特殊的 schema 时，可能导致 `restore point` 创建失败的问题 [#63663](https://github.com/pingcap/tidb/issues/63663) @[RidRisR](https://github.com/RidRisR)
