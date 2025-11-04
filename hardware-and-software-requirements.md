@@ -30,7 +30,7 @@ summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在
 | macOS 14 (Sonoma) 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
 | Oracle Enterprise Linux 8 及以上的版本  |  x86_64           |
 | Ubuntu LTS 22.04 及以上的版本  |  x86_64           |
-| CentOS 9 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
+| CentOS Stream 9 | <ul><li>x86_64</li><li>ARM 64</li></ul> |
 | Debian 12 (Bookworm) 及以上的版本  |  x86_64           |
 | Fedora 42 及以上的版本   |  x86_64           |
 | openSUSE Leap 15.6 以上的版本（不包含 Tumbleweed） |  x86_64           |
