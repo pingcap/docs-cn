@@ -20,7 +20,7 @@ TiDB 对每个表分配一个 TableID，每一个索引都会分配一个 IndexI
 每行数据按照如下规则进行编码成 Key-Value pair：
 
 ```text
-Key: tablePrefix{tableID}_recordPrefixSep{rowID}
+Key: tablePrefix{TableID}_recordPrefixSep{RowID}
 Value: [col1, col2, col3, col4]
 ```
 
@@ -29,14 +29,14 @@ Value: [col1, col2, col3, col4]
 对于 Index 数据，会按照如下规则编码成 Key-Value pair：
 
 ```text
-Key: tablePrefix{tableID}_indexPrefixSep{indexID}_indexedColumnsValue
+Key: tablePrefix{TableID}_indexPrefixSep{IndexID}_indexedColumnsValue
 Value: rowID
 ```
 
-Index 数据还需要考虑 Unique Index 和非 Unique Index 两种情况，对于 Unique Index，可以按照上述编码规则。但是对于非 Unique Index，通过这种编码并不能构造出唯一的 Key，因为同一个 Index 的 `tablePrefix{tableID}_indexPrefixSep{indexID}` 都一样，可能有多行数据的 `ColumnsValue` 是一样的，所以对于非 Unique Index 的编码做了一点调整：
+Index 数据还需要考虑 Unique Index 和非 Unique Index 两种情况，对于 Unique Index，可以按照上述编码规则。但是对于非 Unique Index，通过这种编码并不能构造出唯一的 Key，因为同一个 Index 的 `tablePrefix{TableID}_indexPrefixSep{IndexID}` 都一样，可能有多行数据的 `ColumnsValue` 是一样的，所以对于非 Unique Index 的编码做了一点调整：
 
 ```text
-Key: tablePrefix{tableID}_indexPrefixSep{indexID}_indexedColumnsValue_rowID
+Key: tablePrefix{TableID}_indexPrefixSep{IndexID}_indexedColumnsValue_rowID
 Value: null
 ```
 
