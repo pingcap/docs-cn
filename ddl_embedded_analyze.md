@@ -73,8 +73,13 @@ EXPLAIN SELECT a FROM t WHERE a > 1;
 | └─IndexRangeScan_6     | 4.00    | cop[tikv] | table:t, index:idx(a, b) | range:(1,+inf], keep order:false |
 +------------------------+---------+-----------+--------------------------+----------------------------------+
 2 rows in set (0.002 sec)
+```
 
-show stats_histograms where table_name="t";
+```sql
+SHOW STATS_HISTOGRAMS WHERE table_name = "t";
+```
+
+```
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+-------------+-----------------+----------------+----------------+---------------+
 | Db_name | Table_name | Partition_name | Column_name | Is_index | Update_time         | Distinct_count | Null_count | Avg_col_size | Correlation | Load_status | Total_mem_usage | Hist_mem_usage | Topn_mem_usage | Cms_mem_usage |
 +---------+------------+----------------+-------------+----------+---------------------+----------------+------------+--------------+-------------+-------------+-----------------+----------------+----------------+---------------+
@@ -97,7 +102,7 @@ ADMIN SHOW DDL JOBS 1;
 1 rows in set (0.001 sec)
 ```
 
-从 `ADD INDEX` 示例来看，当 `tidb_stats_update_during_ddl` 变量设置为 `ON` 时，在 DDL 运行结束之后，可以看到之后的 SQL 运行中，相关 `idx` 索引的统计信息已经被加载到了内存，并且已经用于 Range 构造。从 `SHOW STATS_HISTOGRAMS` 语句中可以得到验证，相关索引的统计信息已经被分析，全部加载到了内存中。如果索引添加或者重组过程和 Analyze 过程耗时较长，你可以在相关的 DDL Job 状态语句中看到相关索引正在被分析 (`Analyzing`)，表明该 DDL Job 已经在收集统计信息了。
+从 `ADD INDEX` 示例来看，当 `tidb_stats_update_during_ddl` 设置为 `ON` 时，在 `ADD INDEX` DDL 执行结束后，可以看到其之后运行的 `EXPLAIN` 查询中，相关索引 `idx` 的统计信息已经被自动收集并加载到内存中（可通过 `SHOW STATS_HISTOGRAMS` 语句的输出结果得到验证）。因此，优化器可以立即在范围扫描（Range Scan）中使用这些统计信息。如果索引的创建或重组以及 Analyze 过程耗时较长，可以通过 `ADMIN SHOW DDL JOBS` 查看 DDL Job 的状态。当输出结果中的 `COMMENTS` 列包含 `analyzing` 时，表示该 DDL Job 正在执行统计信息收集。
 
 ## 重组已有索引的 DDL
 
@@ -162,4 +167,4 @@ ADMIN SHOW DDL JOBS 1;
 1 rows in set (0.001 sec)
 ```
 
-从 `MODIFY COLUMN` 有损 DDL 示例来看， 当 `tidb_stats_update_during_ddl` 变量设置为 `ON` 时，相关列类型有损变更 DDL 运行结束之后，你可以从之后的 SQL 运行中的 Explain 看到相关 `idx` 索引的统计信息已经被加载到了内存，并且已经被用于 Range 构造。从 `SHOW STATS_HISTOGRAMS` 语句中可以得到验证，相关索引的统计信息已经被分析，全部加载到了内存中。如果索引添加或者重组过程和 Analyze 过程耗时较长，你可以在相关的 DDL Job 状态语句中看到相关索引正在被分析 (`Analyzing`)，表明该 DDL Job 已经在收集统计信息了。
+从 `MODIFY COLUMN` 示例来看，当 `tidb_stats_update_during_ddl` 设置为 `ON` 时，在 `MODIFY COLUMN` DDL 执行结束后，可以看到其之后运行的 `EXPLAIN` 查询中，相关索引 `idx` 的统计信息已经被自动收集并加载到内存中（可通过 `SHOW STATS_HISTOGRAMS` 语句的输出结果得到验证），因此优化器能够立即在范围扫描（Range Scan）中使用这些统计信息。如果索引的创建或重组以及 Analyze 过程耗时较长，可以通过 `ADMIN SHOW DDL JOBS` 查看 DDL Job 的状态。当输出结果中的 `COMMENTS` 列包含 `analyzing` 时，表示该 DDL Job 正在执行统计信息收集。
