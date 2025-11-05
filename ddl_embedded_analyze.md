@@ -3,7 +3,7 @@ title: 内嵌于 DDL 的 Analyze
 summary: 本文介绍内嵌式 Analyze 在涉及索引创建或重组的 DDL 中的集成机制。
 ---
 
-# 内嵌于 DDL 的 Analyze
+# 内嵌于 DDL 的 Analyze <span class="version-mark">从 v8.5.4 和 v9.0.0 开始引入</span>
 
 本文档介绍内嵌于 DDL 的 Analyze 特性。该功能主要是防止新建或者重组索引之后一段时间内索引统计信息不可用导致的估算差异，从而造成的计划变更。
 
