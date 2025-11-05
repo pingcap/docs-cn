@@ -53,12 +53,12 @@ TiDB 版本：8.5.4
 
 + TiKV <!--tw@lilin90: 6 notes-->
 
-    - 将部分 BR 模块的可自动恢复的错误的日志级别从 `ERROR` 调整为 `WARN`，减少不必要的告警 [#18493](https://github.com/tikv/tikv/issues/18493) @[YuJuncen](https://github.com/YuJuncen)
-    - 将部分 TiKV 的错误日志从 `ERROR` 调整为 `WARN`，减少不必要的告警 [#18745](https://github.com/tikv/tikv/issues/18745) @[exit-code-1](https://github.com/exit-code-1)
-    - 将 Raft 模块检查 GC 的流程拆分为两个阶段，提升 Region 冗余 MVCC 版本 GC 的效率 [#18695](https://github.com/tikv/tikv/issues/18695) @[v01dstar](https://github.com/v01dstar)
-    - 基于 GC safe point 和 Rocksdb 的统计信息计算 MVCC 的冗余读，提升 Compaction 的效率和准确性 [#18697](https://github.com/tikv/tikv/issues/18697) @[v01dstar](https://github.com/v01dstar)
-    - 将 Region MVCC 的 GC 处理逻辑更改为由 GC Worker 线程执行，统一 GC 的处理逻辑 [#18727](https://github.com/tikv/tikv/issues/18727) @[v01dstar](https://github.com/v01dstar)
-    - 优化 gRPC 线程池线程数量默认值的计算方式，将原来的固定数据调整为根据总的 CPU 配置动态计算，避免由于 gRPC 线程数量太小导致的性能瓶颈 [#18613](https://github.com/tikv/tikv/issues/18613) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 将 BR 模块中部分可自动恢复的错误日志级别从 `ERROR` 调整为 `WARN`，减少不必要的告警 [#18493](https://github.com/tikv/tikv/issues/18493) @[YuJuncen](https://github.com/YuJuncen)
+    - 将 TiKV 的部分错误日志级别从 `ERROR` 调整为 `WARN`，减少不必要的告警 [#18745](https://github.com/tikv/tikv/issues/18745) @[exit-code-1](https://github.com/exit-code-1)
+    - 将 Raft 模块检查 GC 的流程拆分为两个阶段，以提升 Region 中冗余的 MVCC 版本 GC 的效率 [#18695](https://github.com/tikv/tikv/issues/18695) @[v01dstar](https://github.com/v01dstar)
+    - 基于 GC safe point 和 RocksDB 的统计信息计算 MVCC 的冗余度，提升 Compaction 的效率和准确性 [#18697](https://github.com/tikv/tikv/issues/18697) @[v01dstar](https://github.com/v01dstar)
+    - 将 Region MVCC 的 GC 处理逻辑更改为由 GC Worker 线程执行，从而统一 GC 的处理逻辑 [#18727](https://github.com/tikv/tikv/issues/18727) @[v01dstar](https://github.com/v01dstar)
+    - 优化 gRPC 线程池线程数量默认值的计算方式，将原固定值调整为根据总的 CPU 配置动态计算，避免因 gRPC 线程数量过小导致的性能瓶颈 [#18613](https://github.com/tikv/tikv/issues/18613) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-7.5.7.md > 改进提升> TiKV - 优化在存在大量 SST 文件的环境中 async snapshot 和 write 的尾延迟 [#18743](https://github.com/tikv/tikv/issues/18743) @[Connor1996](https://github.com/Connor1996)
 
 + PD <!--tw@Oreoxmt: 3 notes-->
@@ -90,29 +90,29 @@ TiDB 版本：8.5.4
     - (dup): release-7.5.7.md > 错误修复> TiDB - 修复估算跨月或跨年的行数时，结果可能过分偏大的问题 [#50080](https://github.com/pingcap/tidb/issues/50080) @[terry1purcell](https://github.com/terry1purcell)
     - 修复预处理语句中处理 `Decimal` 的方式与 MySQL 不一致的问题 [#62602](https://github.com/pingcap/tidb/issues/62602) @[ChangRui-Ryan](https://github.com/ChangRui-Ryan)
     - 修复 `TRUNCATE()` 函数中短路径处理错误的问题 [#57608](https://github.com/pingcap/tidb/issues/57608) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复当 `Out Of Quota For Local Temporary Space` 触发时，落盘文件可能未被全部删除的问题 [#63216](https://github.com/pingcap/tidb/issues/63216) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复使用正则表达式查询 `INFORMATION_SCHEMA` 表，结果不正确的问题 [#62347](https://github.com/pingcap/tidb/issues/62347) @[River2000i](https://github.com/River2000i)
-    - 修复从 PD 获取时间戳异常时没有返回错误的问题 [#58871](https://github.com/pingcap/tidb/issues/58871) @[joechenrh](https://github.com/joechenrh)
-    - 修复执行 `MODIFY COLUMN` 时，owner TiDB 和非 owner TiDB 查询数据不一致的问题 [#60264](https://github.com/pingcap/tidb/issues/60264) @[tangenta](https://github.com/tangenta)
-    - 修复动态调参后 `ADMIN ALTER DDL JOBS` 显示参数不正确的问题 [#63201](https://github.com/pingcap/tidb/issues/63201) @[fzzf678](https://github.com/fzzf678)
-    - 修复通过事务加索引时 GC savepoint 不推进的问题 [#62424](https://github.com/pingcap/tidb/issues/62424) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复当触发 `Out Of Quota For Local Temporary Space` 错误时，落盘文件可能未被全部删除的问题 [#63216](https://github.com/pingcap/tidb/issues/63216) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复使用正则表达式查询 `INFORMATION_SCHEMA` 表时，结果不正确的问题 [#62347](https://github.com/pingcap/tidb/issues/62347) @[River2000i](https://github.com/River2000i)
+    - 修复从 PD 获取时间戳异常时，没有返回错误的问题 [#58871](https://github.com/pingcap/tidb/issues/58871) @[joechenrh](https://github.com/joechenrh)
+    - 修复在执行 `MODIFY COLUMN` 操作时，owner TiDB 与非 owner TiDB 查询结果不一致的问题 [#60264](https://github.com/pingcap/tidb/issues/60264) @[tangenta](https://github.com/tangenta)
+    - 修复动态调参后，`ADMIN ALTER DDL JOBS` 显示参数不正确的问题 [#63201](https://github.com/pingcap/tidb/issues/63201) @[fzzf678](https://github.com/fzzf678)
+    - 修复通过事务加索引时，GC savepoint 不推进的问题 [#62424](https://github.com/pingcap/tidb/issues/62424) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复过大的 SST 文件 Ingest 到 L0 中导致流控的问题 [#63466](https://github.com/pingcap/tidb/issues/63466) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - 修复当 CPU 和内存比例为 1:2 时阻塞全局排序的问题 [#60951](https://github.com/pingcap/tidb/issues/60951) @[wjhuang2016](https://github.com/wjhuang2016)
-    - 修复超过 16 个分布式执行框架 (Distributed eXecution Framework, DXF) 任务上限时无法取消 Pending 任务的问题 [#63896](https://github.com/pingcap/tidb/issues/63896) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复当 CPU 和内存比例为 1:2 时，阻塞全局排序的问题 [#60951](https://github.com/pingcap/tidb/issues/60951) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复超过 16 个分布式执行框架 (Distributed eXecution Framework, DXF) 任务上限时，无法取消 Pending 任务的问题 [#63896](https://github.com/pingcap/tidb/issues/63896) @[D3Hunter](https://github.com/D3Hunter)
     - 修复取消 DXF 任务后，其他任务无法退出的问题 [#63927](https://github.com/pingcap/tidb/issues/63927) @[D3Hunter](https://github.com/D3Hunter) <!--tw@hfxsd: the following 14 notes-->
     - 修复开启 `Apply` 算子并发后 (`tidb_enable_parallel_apply = on`)，由于缺少实现 Clone 导致计划生成失败的问题 [#59863](https://github.com/pingcap/tidb/issues/59863) @[hawkingrei](https://github.com/hawkingrei)
     - 修复查询使用 `ATAN2` 函数可能导致结果错误的问题 [#60093](https://github.com/pingcap/tidb/issues/60093) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复 `select 1 from duml` 无法使用实例级别的计划缓存的问题 [#63075](https://github.com/pingcap/tidb/issues/63075) @[time-and-fate](https://github.com/time-and-fate)
     - 修复 Join Order 变更顺序后可能导致无法规划的问题 [#61715](https://github.com/pingcap/tidb/issues/61715) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复 `set_var` Hint 使用 Binding 导致无法恢复回原始变量设置的问题 [#59822](https://github.com/pingcap/tidb/issues/59822) @[wddevries](https://github.com/wddevries)
+    - 修复 `set_var` Hint 使用 Binding 导致无法恢复为原始变量设置的问题 [#59822](https://github.com/pingcap/tidb/issues/59822) @[wddevries](https://github.com/wddevries)
     - 修复 `ONLY_FULL_GROUP_BY` 取值为负数时导致检查失败的问题 [#62617](https://github.com/pingcap/tidb/issues/62617) @[AilinKid](https://github.com/AilinKid)
-    - 修复 `ONLY_FULL_GROUP_BY` 检查时大小写不敏感的问题 [#62672](https://github.com/pingcap/tidb/issues/62672) @[AilinKid](https://github.com/AilinKid)
+    - 修复 `ONLY_FULL_GROUP_BY` 检查大小写不敏感的问题 [#62672](https://github.com/pingcap/tidb/issues/62672) @[AilinKid](https://github.com/AilinKid)
     - 修复 DP Join Order 算法可能产生错误 Plan 的问题 [#63353](https://github.com/pingcap/tidb/issues/63353) @[winoros](https://github.com/winoros)
     - 修复 Outer Join 改写为 Inner Join 可能出错的问题 [#61327](https://github.com/pingcap/tidb/issues/61327) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复查询执行可能导致内部 panic 的问题 [#58600](https://github.com/pingcap/tidb/issues/58600) @[Defined2014](https://github.com/Defined2014)
+    - 修复执行查询可能导致内部 panic 的问题 [#58600](https://github.com/pingcap/tidb/issues/58600) @[Defined2014](https://github.com/Defined2014)
     - 修复全局索引在某些 `ALTER PARTITION` 状态下获取错误数据的问题 [#64084](https://github.com/pingcap/tidb/pull/64084) @[mjonss](https://github.com/mjonss)
     - 修复全局索引在某些情况下返回错误结果的问题 [#61083](https://github.com/pingcap/tidb/issues/61083) @[Defined2014](https://github.com/Defined2014)
-    - 修复 `character_set_results` 在遇到错误字符时进行截断而不是进行替换的问题 [#61085](https://github.com/pingcap/tidb/issues/61085) @[xhebox](https://github.com/xhebox)
+    - 修复 `character_set_results` 在遇到错误字符时进行截断而非替换的问题 [#61085](https://github.com/pingcap/tidb/issues/61085) @[xhebox](https://github.com/xhebox)
     - 修复 `ADD COLUMN` 与 `UPDATE` 并发执行时出错的问题 [#60047](https://github.com/pingcap/tidb/issues/60047) @[L-maple](https://github.com/L-maple)
     - 修复 Merge Join 在计算成本时可能遗漏过滤条件的问题 [#62917](https://github.com/pingcap/tidb/issues/62917) @[qw4990](https://github.com/qw4990) <!--tw@Oreoxmt-->
 
@@ -131,8 +131,8 @@ TiDB 版本：8.5.4
 
     - 修复当查询的列存储大量 `NULL` 值时，可能导致查询失败的问题 [#10340](https://github.com/pingcap/tiflash/issues/10340) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复 TiFlash 消耗 RU 的统计数据不准确的问题 [#10380](https://github.com/pingcap/tiflash/issues/10380) @[JinheLin](https://github.com/JinheLin)
-    - 修复在存算分离架构下，在存在慢查询时 TiFlash 容易发生 OOM 的问题 [#10278](https://github.com/pingcap/tiflash/issues/10278) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复在存算分离架构下，TiFlash 遇到与 S3 网络分区时可能无限重试的问题 [#10424](https://github.com/pingcap/tiflash/issues/10424) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复在存算分离架构下，当存在慢查询时 TiFlash 容易发生 OOM 的问题 [#10278](https://github.com/pingcap/tiflash/issues/10278) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复在存算分离架构下，TiFlash 遇到与 S3 的网络分区时可能无限重试的问题 [#10424](https://github.com/pingcap/tiflash/issues/10424) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复当参数为 `DECIMAL` 类型时，`FLOOR()` 和 `CEIL()` 函数结果可能不正确的问题 [#10365](https://github.com/pingcap/tiflash/issues/10365) @[ChangRui-Ryan](https://github.com/ChangRui-Ryan) 
 
 + Tools
