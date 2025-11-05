@@ -5,11 +5,13 @@ summary: 本文介绍内嵌式 Analyze 在涉及索引创建或重组的 DDL 中
 
 # 内嵌于 DDL 的 Analyze <span class="version-mark">从 v8.5.4 和 v9.0.0 开始引入</span>
 
-本文档介绍内嵌于 DDL 的 Analyze 特性。该功能主要是防止新建或者重组索引之后一段时间内索引统计信息不可用导致的估算差异，从而造成的计划变更。
+本文介绍内嵌于 DDL 的 Analyze 特性，主要应用于新建索引的 DDL [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)，以及重组已有索引的 DDL（[`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) 和 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)）。该特性旨在避免新建或重组索引后，因统计信息暂不可用而导致优化器估算不准，从而引起执行计划变更的问题。
 
 ## 使用场景
 
-在一些穿插索引新增和变更的 DDL 查询场景中，很多已经稳定的查询，可能会因为一些新的索引的路径构建，以及没有及时收集统计信息，导致该索引代价低估或者高估致使计划变更。详情请参考 [Issue #57948](https://github.com/pingcap/tidb/issues/57948)。
+在一些交替执行索引新增或修改的 DDL 操作场景中，已有的稳定查询可能因为新索引缺乏统计信息而出现代价估算偏差，导致优化器生成次优计划。详情可参考 [Issue #57948](https://github.com/pingcap/tidb/issues/57948)。
+
+例如：
 
 ```sql
 CREATE TABLE t (a INT, b INT);
@@ -32,15 +34,17 @@ EXPLAIN SELECT * FROM x WHERE a > 4;
 3 rows in set (0.002 sec)
 ```
 
-从 SQL 计划中可以看到，由于添加索引之后没有统计信息，在路径估算的时候，除了一些简单的不用回表的启发式的比较可以胜出之外，基本会选中估算确定性比较高的现有的路径，上述示例选择的是默认的全表扫描。但是从宏观视角来看，`x.a > 4` 在实际数据分布中只有 0 行，通过索引 `idx_a` 访问可以更快的定位到相关的行，从而避免全表扫描。在该示例中，由于在 DDL 创建索引之后，TiDB 自身没有及时收集索引统计信息导致计划不优，但是至少计划可以和以往保持一致，不存在计划跳变问题。然而由于 [Issue #57948](https://github.com/pingcap/tidb/issues/57948)，新建的索引可能会和已经存在的索引进行启发式的比较，导致原有计划所依赖的索引被裁减，剩下的索引路径由于没有统计信息，从而默认选择了全表扫描。
+从以上执行计划可以看到，由于新建索引尚未生成统计信息，TiDB 在路径估算时只能依赖启发式规则。除非索引访问路径无需回表且代价显著更低，否则优化器倾向于选择估算更稳定的现有路径，因此上述示例中使用了全表扫描。然而，从数据分布角度来看，`x.a > 4` 实际返回 0 行，如果能使用新建索引 `idx_a`，查询可以快速定位到相关行，从而避免全表扫描。在该示例中，由于 DDL 创建索引后 TiDB 未能及时收集索引统计信息，生成的执行计划不是最优的，但优化器会继续沿用原有计划，因此查询性能不会出现突变或退化。然而，根据 [Issue #57948](https://github.com/pingcap/tidb/issues/57948)，在某些情况下，启发式规则可能会导致新旧索引进行不合理的比较，从而裁剪原查询计划依赖的索引，最终 fallback 到全表扫描。
 
-在 v8.5.0 及之后的版本中，TiDB 对索引的启发式比较和统计信息有无方面进行了优化。但在一些复杂场景中，在 DDL 中嵌套完成索引统计信息的分析仍然是防止计划变更的最佳选择。你可以使用系统变量 [`tidb_stats_update_during_ddl`](/system-variables.md#tidb_stats_update_during_ddl-从-v854-版本开始引入) 控制相关 DDL 在新建或重组索引数据时，是否使用内嵌的 Analyze。该值默认为 `OFF`。
+从 v8.5.0 起，TiDB 对索引的启发式比较和统计信息缺失时的行为进行了优化。但在部分复杂场景中，在 DDL 执行过程中内嵌 Analyze 仍是防止执行计划变更的最佳方案。你可以通过系统变量 [`tidb_stats_update_during_ddl`](/system-variables.md#tidb_stats_update_during_ddl-从-v854-版本开始引入) 控制在索引创建或重组阶段是否执行内嵌 Analyze。该变量默认值为 `OFF`。
 
 ## 新建索引 `ADD INDEX` 的 DDL
 
-当 `tidb_stats_update_during_ddl` 变量为 `ON` 时，新建索引 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 的 DDL，可以在 Reorg 阶段结束之后，内联性发起 Analyze 命令，该命令可以在该新索引对用户可见之前，分析相关新建索引的统计信息，然后再执行 DDL。
+当 `tidb_stats_update_during_ddl` 设置为 `ON` 时，执行 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 操作将在 Reorg 阶段结束后自动执行内嵌的 Analyze 命令。此 Analyze 命令会在新索引对用户可见前，分析相关新建索引的统计信息，然后再执行 DDL。
 
-考虑到 Analyze 命令可能会带来一定的耗时，TiDB 取第一次 Reorg 的时间作为内联 Analyze 的超时机制，在超时机制触发之后，`ADD INDEX` 将不再同步等待内联 Analyze 的完成，而是直接继续推进，使该索引对用户可见，这意味着，需要异步等待该 Analyze 完成后，该新索引的统计信息才能就绪。
+考虑到 Analyze 可能会有一定的耗时，TiDB 会以首次 Reorg 的执行时间为参考设置超时阈值。若 Analyze 超时，`ADD INDEX` 将不再同步等待 Analyze 完成，而是继续执行后续流程，使索引提前对用户可见。这意味着，该新索引的统计信息会在 Analyze 异步完成后更新。
+
+示例：
 
 ```sql
 CREATE TABLE t (a INT, b INT, c INT);
@@ -97,7 +101,10 @@ ADMIN SHOW DDL JOBS 1;
 
 ## 重组已有索引的 DDL
 
-当 `tidb_stats_update_during_ddl` 变量设置为 `ON` 时，重组已经存在的索引 [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) / [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 的 DDL，可以在重组阶段结束之后，内联性发起 Analyze 命令，该命令可以在该新索引对用户可见之前，分析相关新建索引的统计信息，然后再完成 DDL。考虑到 Analyze 命令可能会带来一定的耗时，TiDB 取第一次 Reorg 的时间作为内联 Analyze 的超时机制，在超时机制触发之后，`MODIFY COLUMN` / `CHANGE COLUMN` 将不再同步等待内联 Analyze 的完成，而是直接继续推进，使该索引对用户可见，这意味着，需要异步等待该 Analyze 完成后，该新索引的统计信息才能就绪。
+当 `tidb_stats_update_during_ddl` 设置为 `ON` 时，执行 [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) 或 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 操作重组索引时，TiDB 也会在 Reorg 阶段结束后执行内嵌的 Analyze 命令。其机制与 `ADD INDEX` 相同：
+
+- 在索引可见前开始进行统计信息收集。
+- 若 Analyze 超时，[`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) 和 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 将不会同步等待 Analyze 完成，而是继续执行后续流程，使索引提前对用户可见。这意味着，该新索引的统计信息会在 Analyze 异步完成后更新。
 
 ```sql
 CREATE TABLE s (a VARCHAR(10), INDEX idx (a));
