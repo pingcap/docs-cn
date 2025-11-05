@@ -116,7 +116,6 @@ TiDB 版本：8.5.4
     - 修复 `ADD COLUMN` 与 `UPDATE` 并发执行时出错的问题 [#60047](https://github.com/pingcap/tidb/issues/60047) @[L-maple](https://github.com/L-maple)
     - 修复 Merge Join 在计算成本时可能遗漏过滤条件的问题 [#62917](https://github.com/pingcap/tidb/issues/62917) @[qw4990](https://github.com/qw4990) <!--tw@Oreoxmt-->
 
-
 + PD <!--tw@qiancai: 8 notes-->
 
     - 修复 PD Client 重试策略未正确初始化的问题 [#9013](https://github.com/tikv/pd/issues/9013) @[rleungx](https://github.com/rleungx)
@@ -133,7 +132,7 @@ TiDB 版本：8.5.4
     - 修复 TiFlash 消耗 RU 的统计数据不准确的问题 [#10380](https://github.com/pingcap/tiflash/issues/10380) @[JinheLin](https://github.com/JinheLin)
     - 修复在存算分离架构下，当存在慢查询时 TiFlash 容易发生 OOM 的问题 [#10278](https://github.com/pingcap/tiflash/issues/10278) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复在存算分离架构下，TiFlash 遇到与 S3 的网络分区时可能无限重试的问题 [#10424](https://github.com/pingcap/tiflash/issues/10424) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复当参数为 `DECIMAL` 类型时，`FLOOR()` 和 `CEIL()` 函数结果可能不正确的问题 [#10365](https://github.com/pingcap/tiflash/issues/10365) @[ChangRui-Ryan](https://github.com/ChangRui-Ryan) 
+    - 修复当参数为 `DECIMAL` 类型时，`FLOOR()` 和 `CEIL()` 函数结果可能不正确的问题 [#10365](https://github.com/pingcap/tiflash/issues/10365) @[ChangRui-Ryan](https://github.com/ChangRui-Ryan)
 
 + Tools
 
