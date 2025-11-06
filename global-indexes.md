@@ -138,7 +138,11 @@ CREATE TABLE t2 (
 ERROR 1503 (HY000): A CLUSTERED INDEX must include all columns in the table's partitioning function
 ```
 
-聚簇索引不能同时作为全局索引。原因在于，如果聚簇索引是全局索引，则表将不再分区。聚簇索引的键是分区级别的行数据的键，但全局索引是表级别的，这就产生了冲突。如果需要将主键设置为全局索引，则需要显式设置该主键为非聚簇索引，如 `PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
+聚簇索引不能同时作为全局索引。原因在于，如果聚簇索引是全局索引，则表将不再分区。聚簇索引的键是分区级别的行数据的键，但全局索引是表级别的，这就产生了冲突。如果需要将主键设置为全局索引，则需要显式设置该主键为非聚簇索引，例如：
+
+```sql
+PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL
+```
 
 你可以通过 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 输出中的 `GLOBAL` 索引选项来识别全局索引。
 
