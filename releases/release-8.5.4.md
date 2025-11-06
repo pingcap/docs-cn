@@ -81,7 +81,7 @@ TiDB 版本：8.5.4
 
         - 获取上游 `GTID_MODE` 时，支持兼容大小写 [#12167](https://github.com/pingcap/tiflow/issues/12167) @[OliverS929](https://github.com/OliverS929)
 
-+ TiCDC
+    + TiCDC
 
         - 引入 [TiCDC 新架构]，显著提升性能、可扩展性和稳定性 (/ticdc/ticdc-architecture.md) [#442](https://github.com/pingcap/ticdc/issues/442) @[CharlesCheung96](https://github.com/CharlesCheung96) <!--tw@qiancai-->
 
