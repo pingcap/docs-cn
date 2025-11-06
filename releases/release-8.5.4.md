@@ -141,7 +141,7 @@ TiDB 版本：8.5.4
 + TiFlash <!--tw@hfxsd: 5 notes-->
 
     - 修复当查询的列存储大量 `NULL` 值时，可能导致查询失败的问题 [#10340](https://github.com/pingcap/tiflash/issues/10340) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
-    - 修复 TiFlash 消耗 RU 的统计数据不准确的问题 [#10380](https://github.com/pingcap/tiflash/issues/10380) @[JinheLin](https://github.com/JinheLin)
+    - 修复 TiFlash 消耗 RU 的统计数据偏高的问题 [#10380](https://github.com/pingcap/tiflash/issues/10380) @[JinheLin](https://github.com/JinheLin)
     - 修复在存算分离架构下，当存在慢查询时 TiFlash 容易发生 OOM 的问题 [#10278](https://github.com/pingcap/tiflash/issues/10278) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复在存算分离架构下，TiFlash 遇到与 S3 的网络分区时可能无限重试的问题 [#10424](https://github.com/pingcap/tiflash/issues/10424) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复当参数为 `DECIMAL` 类型时，`FLOOR()` 和 `CEIL()` 函数结果可能不正确的问题 [#10365](https://github.com/pingcap/tiflash/issues/10365) @[ChangRui-Ryan](https://github.com/ChangRui-Ryan)
