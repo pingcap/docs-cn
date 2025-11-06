@@ -114,6 +114,7 @@ TiCDC 新架构仅支持 v7.5.0 或者以上版本的 TiDB 集群，使用之前
 - [使用 TiUP 部署启用新架构 TiCDC 的全新 TiDB 集群](#使用-tiup-部署启用新架构-ticdc-的全新-tidb-集群)
 
 - [使用 TiUP 在原有 TiDB 集群中部署启用新架构的 TiCDC 组件](#使用-tiup-在原有-tidb-集群中部署启用新架构的-ticdc-组件)
+
 ### 使用 TiUP 部署启用新架构 TiCDC 的全新 TiDB 集群
 
 在使用 TiUP 部署 v8.5.4 或者以上版本的全新 TiDB 集群时，支持同时部署启用新架构的 TiCDC 组件。你需要在 TiUP 启动 TiDB 集群时的配置文件中加入 TiCDC 组件相关的部分并启用新架构，以下是一个示例：
