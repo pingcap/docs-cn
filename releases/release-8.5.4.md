@@ -81,6 +81,18 @@ TiDB 版本：8.5.4
 
         - 获取上游 `GTID_MODE` 时，支持兼容大小写 [#12167](https://github.com/pingcap/tiflow/issues/12167) @[OliverS929](https://github.com/OliverS929)
 
++ TiCDC
+
+        - 引入 [TiCDC 新架构]，显著提升性能、可扩展性和稳定性 (/ticdc/ticdc-architecture.md) [#442](https://github.com/pingcap/ticdc/issues/442) @[CharlesCheung96](https://github.com/CharlesCheung96) <!--tw@qiancai-->
+
+            新架构在完全兼容 [TiCDC 老架构](/ticdc/ticdc-classic-architecture)的配置项、使用方式和 API 的基础上，对 TiCDC 核心组件与数据处理流程进行了重构与优化。
+
+            使用新架构时，TiCDC 同步能力接近线性扩展，并能以更低的资源成本完成百万级表的同步任务。在高写入负载、频繁 DDL 操作以及集群扩缩容的场景下，Changefeed 的延迟更低且更加稳定。需要注意的是，该新架构目前存在一些[使用限制](/ticdc/ticdc-architecture.md#limitations)。
+
+            如需启用新架构，可将 TiCDC 配置项 [`newarch`](/ticdc/ticdc-server-config.md#newarch-new-in-v854-release1) 设置为 `true`。
+
+            更多信息，请参考[用户文档](/ticdc/ticdc-architecture.md)。
+
 ## 错误修复
 
 + TiDB <!--tw@lilin90: the following 14 notes-->
