@@ -218,7 +218,7 @@ TiDB 从 v9.0.0 开始引入全局内存管理框架 `Global Memory Arbitrator`�
 
 `tidb_mem_arbitrator_mode` 默认为 `disable`。该模式下内存资源先使用后上报，[相关控制行为同上](#如何配置-tidb-server-实例使用内存的阈值)。
 
-设置 `tidb_mem_arbitrator_mode` 为 `standard` 或 `priority` 启用先订阅后分配模式，由 TiDB 实例中唯一的仲裁者统筹内存资源。
+设置 `tidb_mem_arbitrator_mode` 为 `standard` 或 `priority` 启用先订阅后分配模式，由各个 TiDB 实例中唯一的仲裁者统筹内存资源。
 
 仲裁者会通过终止 SQL 来回收内存资源，并向客户端返回编号为 `8180` 的错误。错误格式为：`Query execution was stopped by the global memory arbitrator [reason=?, path=?] [conn=?]`：
 
@@ -251,7 +251,7 @@ SQL 运行过程中会动态地向仲裁者订阅内存资源，仲裁者根据 
 
 通过系统变量 [`tidb_mem_arbitrator_soft_limit`](/system-variables.md#tidb_mem_arbitrator_soft_limit-从-v900-版本开始引入) 或 TiDB 配置文件参数 `instance.tidb_mem_arbitrator_soft_limit` 可以设置 TiDB 实例的内存资源份额上限。上限越小，全局内存越安全，但内存资源利用率越低。该变量可用于手动快速收敛内存风险。
 
-框架内部会缓存部分 SQL 的历史最大内存资源用量，并在 SQL 下次执行前预先订阅足量内存资源份额。如果已知 SQL 存在大量内存使用不受控制的问题，可通过 session 变量 [`tidb_mem_arbitrator_query_reserved`](/system-variables.md#tidb_mem_arbitrator_query_reserved-从-v900-版本开始引入) 指定 SQL 订阅数量的份额。该值越大，全局内存越安全，但内存资源利用率越低。预先订阅足量或超量的份额可以有效地保障 SQL 的内存资源隔离性。
+框架内部会缓存部分 SQL 的历史最大内存资源用量，并在 SQL 下次执行前预先订阅足量内存资源份额。如果已知 SQL 存在大量内存使用不受控制的问题，可通过 session 变量 [`tidb_mem_arbitrator_query_reserved`](/system-variables.md#tidb_mem_arbitrator_query_reserved-从-v900-版本开始引入) 指定 SQL 订阅的份额。该值越大，全局内存越安全，但内存资源利用率越低。预先订阅足量或超量的份额可以有效地保障 SQL 的内存资源隔离性。
 
 ### 监控和观测指标
 
@@ -312,6 +312,7 @@ SQL 运行过程中会动态地向仲裁者订阅内存资源，仲裁者根据 
 保障重要 SQL 执行
 
 - 通过 [`tidb_mem_arbitrator_query_reserved`](/system-variables.md#tidb_mem_arbitrator_query_reserved-从-v900-版本开始引入) 保障 SQL 的内存资源隔离性
+- 绑定高优先级的资源组
 - 设置 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 为较大值以免 SQL 执行被中断
 - 保底方案为设置 [`tidb_mem_arbitrator_wait_averse`](/system-variables.md#tidb_mem_arbitrator_wait_averse-从-v900-版本开始引入) 为 `nolimit` 并承担内存风险
 
