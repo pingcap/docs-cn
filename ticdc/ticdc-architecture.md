@@ -281,6 +281,6 @@ cdc cli changefeed query -s --server=http://127.0.0.1:8300 --changefeed-id=simpl
 
 ## 监控
 
-目前，TiUP 尚未集成 TiCDC 新架构的监控面板 **TiCDC-New-Arch**。要在 Grafana 中查看该面板，你需要手动导入 [TiCDC 监控指标文件](https://github.com/pingcap/ticdc/blob/master/metrics/grafana/ticdc_new_arch.json)。
+TiCDC 新架构的监控面板为 **TiCDC-New-Arch**。对于 v8.5.4 及以上版本的新建或现有集群，TiUP 或 TiDB Operator 将自动完成面板集成，无需手动操作。而对于现有低于 v8.5.4 版本的集群，需手动导入[TiCDC 监控指标文件](https://github.com/pingcap/ticdc/blob/master/metrics/grafana/ticdc_new_arch.json) 以启用监控。
 
 各监控指标的详细说明，请参考 [TiCDC 新架构监控指标](/ticdc/monitor-ticdc.md#ticdc-新架构监控指标)。
