@@ -68,7 +68,7 @@ URI 中可配置的的参数如下：
 | `kafka-version`      | 下游 Kafka 版本号。该值需要与下游 Kafka 的实际版本保持一致。 |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`）。 |
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）。|
-| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10 MB。|
+| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`，最大值为 `100MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 `64MB` 和 `256MB` 调整至 `10MB`。|
 | `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`），需要大于等于 Kafka 中 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 的值。 |
 | `compression`        | 设置发送消息时使用的压缩算法（可选值为 `none`、`lz4`、`gzip`、`snappy` 和 `zstd`，默认值为 `none`）。|
 | `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol` 和 `avro`。 |
@@ -266,4 +266,100 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 >
 > 当开启 [Old Value 功能](/ticdc/ticdc-manage-changefeed.md#输出行变更的历史值-从-v405-版本开始引入)时 (`enable-old-value = true`)，使用 index-value 分发器可能导致无法确保相同索引值的行变更顺序。因此，建议使用 default 分发器。
 >
+<<<<<<< HEAD
 > 具体原因请参考 [TiCDC 在开启 Old Value 功能后更新事件格式有何变化？](/ticdc/ticdc-faq.md#ticdc-在开启-old-value-功能后更新事件格式有何变化)
+=======
+> 在 Kafka 消费者处理数据并查询 TiDB 时，可能发生数据已经被 GC 的情况。你需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 为一个较大的值，以避免该情况。
+
+### 发送大消息到外部存储
+
+从 v7.4.0 开始，TiCDC Kafka sink 支持在消息大小超过限制时将该条消息发送到外部存储服务，同时向 Kafka 发送一条含有该大消息在外部存储服务中地址的消息。这样可以避免因为消息大小超过 Kafka Topic 限制而导致 changefeed 失败的情况。
+
+配置样例如下所示：
+
+```toml
+[sink.kafka-config.large-message-handle]
+# large-message-handle-option 从 v7.3.0 开始引入
+# 默认为 "none"，即消息超过大小限制后，同步任务失败
+# 设置为 "handle-key-only" 时，如果消息超过大小，data 字段内容只发送 Handle Key。如果依旧超过大小，同步任务失败
+# 设置为 "claim-check" 时，如果消息超过大小，将该条消息发送到外部存储服务
+large-message-handle-option = "claim-check"
+claim-check-storage-uri = "s3://claim-check-bucket"
+```
+
+当指定 `large-message-handle-option` 为 `claim-check` 时，`claim-check-storage-uri` 必须设置为一个有效的外部存储服务地址，否则创建 changefeed 将会报错。
+
+> **建议：**
+>
+> 关于 Amazon S3、GCS 以及 Azure Blob Storage 的 URI 参数的详细参数说明，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
+
+TiCDC 不会清理外部存储服务上的消息，数据消费者需要自行管理外部存储服务。
+
+### 消费外部存储中的大消息
+
+Kafka 消费者会收到一条含有大消息在外部存储服务中的地址的消息，格式如下：
+
+```json
+{
+    "id": 0,
+    "database": "test",
+    "table": "tp_int",
+    "pkNames": [
+        "id"
+    ],
+    "isDdl": false,
+    "type": "INSERT",
+    "es": 1639633141221,
+    "ts": 1639633142960,
+    "sql": "",
+    "sqlType": {
+        "id": 4
+    },
+    "mysqlType": {
+        "id": "int"
+    },
+    "data": [
+        {
+          "id": "2"
+        }
+    ],
+    "old": null,
+    "_tidb": {     // TiDB 的扩展字段
+        "commitTs": 429918007904436226,  // TiDB TSO 时间戳
+        "claimCheckLocation": "s3:/claim-check-bucket/${uuid}.json"
+    }
+}
+```
+
+如果收到的消息有 `claimCheckLocation` 字段，Kafka 消费者根据该字段提供的地址读取以 JSON 格式存储的大消息数据。消息格式如下：
+
+```json
+{
+  key: "xxx",
+  value: "xxx",
+}
+```
+
+`key` 和 `value` 分别对应 Kafka 消息中的同名字段。消费者可以通过解析这两部分的数据，还原大消息的内容。只有 Open Protocol 编码的 Kafka 消息的 `key` 字段包含有效内容，TiCDC 将 `key` 和 `value` 编码到同一个 JSON 对象中，一次性发送完整的消息。对于其他协议，`key` 字段始终为空。
+
+#### 只发送 `value` 部分到外部存储
+
+从 v8.4.0 开始，TiCDC 支持仅将 Kafka 消息的 `value` 部分发送到外部存储，该功能仅适用于非 Open Protocol 协议。你可以通过设置 `claim-check-raw-value` 参数控制是否开启该功能，该参数默认值为 `false`。
+
+> **注意：**
+>
+> 当使用 Open Protocol 协议时，将 `claim-check-raw-value` 参数设置为 `true` 会报错。
+
+当 `claim-check-raw-value` 设置为 `true` 时，changefeed 会直接将 Kafka 消息的 `value` 部分发送到外部存储，而无需对 `key` 和 `value` 进行额外的 JSON 序列化。这样可以降低 CPU 开销。此外，消费端可以从外部存储读取可直接消费的数据，减少了反序列化过程的开销。
+
+配置样例如下所示：
+
+```toml
+protocol = "simple"
+
+[sink.kafka-config.large-message-handle]
+large-message-handle-option = "claim-check"
+claim-check-storage-uri = "s3://claim-check-bucket"
+claim-check-raw-value = true
+```
+>>>>>>> ced629291c (cdc: add the maximum value (`100MB`) for `max-message-bytes` (#21049))
