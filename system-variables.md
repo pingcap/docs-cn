@@ -3388,9 +3388,9 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：枚举型
 - 默认值：`0`
 - 可选值：`0`，`1`，`nolimit`
-- 当通过 [`tidb_mem_arbitrator_mode`](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 启用先订阅后分配的全局内存管理模式后，该变量控制 SQL 避免阻塞式等待内存资源的相关属性，详见 [TiDB 内存控制](/configure-memory-usage.md#全局内存管理架构)。
-    - `0`：无相关属性
-    - `1`：`priority` 模式下，SQL 订阅内存资源时自动绑定高优先级，全局内存资源不足时就执行取消 (Cancel) 操作而非等待
+- 当通过 [`tidb_mem_arbitrator_mode`](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 启用先订阅后分配的全局内存管理模式后，该变量控制 SQL 避免阻塞式等待内存资源的相关行为，详见 [TiDB 内存控制](/configure-memory-usage.md#全局内存管理架构)。
+    - `0`：无
+    - `1`：`priority` 模式下，SQL 订阅内存资源时自动绑定高优先级，全局内存资源不足时就终止执行而非等待
     - `nolimit`：SQL 使用内存资源不受限制，可能导致 TiDB 实例内存风险
 
 ### `tidb_mem_oom_action` <span class="version-mark">从 v6.1.0 版本开始引入</span>
