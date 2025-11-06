@@ -77,7 +77,7 @@ URI 中可配置的的参数如下：
 | `kafka-version`      | 下游 Kafka 版本号。该值需要与下游 Kafka 的实际版本保持一致。 |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`）。 |
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）。|
-| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10 MB。|
+| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`，最大值为 `100MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 `64MB` 和 `256MB` 调整至 `10MB`。|
 | `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`），需要大于等于 Kafka 中 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 的值。 |
 | `required-acks`      | 在 `Produce` 请求中使用的配置项，用于告知 broker 需要收到多少副本确认后才进行响应。可选值有：`0`（`NoResponse`：不发送任何响应，只有 TCP ACK），`1`（`WaitForLocal`：仅等待本地提交成功后再响应）和 `-1`（`WaitForAll`：等待所有同步副本提交后再响应。最小同步副本数量可通过 broker 的 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 配置项进行配置）。（可选，默认值为 `-1`）。                      |
 | `compression`        | 设置发送消息时使用的压缩算法（可选值为 `none`、`lz4`、`gzip`、`snappy` 和 `zstd`，默认值为 `none`）。注意 Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。|
@@ -548,4 +548,29 @@ Kafka 消费者会收到一条含有大消息在外部存储服务中的地址�
 }
 ```
 
+<<<<<<< HEAD
 `key` 和 `value` 分别存有编码后的大消息，该消息原本应该发送到 Kafka 消息中的对应字段。消费者可以通过解析这两部分的数据，还原大消息的内容。
+=======
+`key` 和 `value` 分别对应 Kafka 消息中的同名字段。消费者可以通过解析这两部分的数据，还原大消息的内容。只有 Open Protocol 编码的 Kafka 消息的 `key` 字段包含有效内容，TiCDC 将 `key` 和 `value` 编码到同一个 JSON 对象中，一次性发送完整的消息。对于其他协议，`key` 字段始终为空。
+
+#### 只发送 `value` 部分到外部存储
+
+从 v8.4.0 开始，TiCDC 支持仅将 Kafka 消息的 `value` 部分发送到外部存储，该功能仅适用于非 Open Protocol 协议。你可以通过设置 `claim-check-raw-value` 参数控制是否开启该功能，该参数默认值为 `false`。
+
+> **注意：**
+>
+> 当使用 Open Protocol 协议时，将 `claim-check-raw-value` 参数设置为 `true` 会报错。
+
+当 `claim-check-raw-value` 设置为 `true` 时，changefeed 会直接将 Kafka 消息的 `value` 部分发送到外部存储，而无需对 `key` 和 `value` 进行额外的 JSON 序列化。这样可以降低 CPU 开销。此外，消费端可以从外部存储读取可直接消费的数据，减少了反序列化过程的开销。
+
+配置样例如下所示：
+
+```toml
+protocol = "simple"
+
+[sink.kafka-config.large-message-handle]
+large-message-handle-option = "claim-check"
+claim-check-storage-uri = "s3://claim-check-bucket"
+claim-check-raw-value = true
+```
+>>>>>>> ced629291c (cdc: add the maximum value (`100MB`) for `max-message-bytes` (#21049))
