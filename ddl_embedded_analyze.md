@@ -1,11 +1,16 @@
 ---
 title: 内嵌于 DDL 的 Analyze
-summary: 本文介绍内嵌式 Analyze 在涉及索引创建或重组的 DDL 中的集成机制。
+summary: 本文介绍内嵌于新建或重组索引的 DDL 中的 Analyze 特性，用于确保新索引的统计信息及时更新。
 ---
 
 # 内嵌于 DDL 的 Analyze <span class="version-mark">从 v8.5.4 和 v9.0.0 开始引入</span>
 
-本文介绍内嵌于 DDL 的 Analyze 特性，主要应用于新建索引的 DDL [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)，以及重组已有索引的 DDL（[`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) 和 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)）。该特性旨在避免新建或重组索引后，因统计信息暂不可用而导致优化器估算不准，从而引起执行计划变更的问题。
+本文介绍内嵌于以下两类 DDL 的 Analyze 特性：
+
+- 新建索引的 DDL：[`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
+- 重组已有索引的 DDL：[`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) 和 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)
+
+开启该特性后，TiDB 会在新索引对用户可见前自动执行一次 Analyze（统计信息收集），以避免新建或重组索引后因统计信息暂不可用而导致优化器估算不准，从而引起执行计划变更的问题。
 
 ## 使用场景
 
@@ -40,7 +45,7 @@ EXPLAIN SELECT * FROM x WHERE a > 4;
 
 ## 新建索引 `ADD INDEX` 的 DDL
 
-当 `tidb_stats_update_during_ddl` 设置为 `ON` 时，执行 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 操作将在 Reorg 阶段结束后自动执行内嵌的 Analyze 命令。此 Analyze 命令会在新索引对用户可见前，分析相关新建索引的统计信息，然后再执行 DDL。
+当 `tidb_stats_update_during_ddl` 设置为 `ON` 时，执行 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 操作将在 Reorg 阶段结束后自动执行内嵌的 Analyze 命令。此 Analyze 命令会在新索引对用户可见前，分析相关新建索引的统计信息，然后再继续执行 `ADD INDEX` 的剩余阶段。
 
 考虑到 Analyze 可能会有一定的耗时，TiDB 会以首次 Reorg 的执行时间为参考设置超时阈值。若 Analyze 超时，`ADD INDEX` 将不再同步等待 Analyze 完成，而是继续执行后续流程，使索引提前对用户可见。这意味着，该新索引的统计信息会在 Analyze 异步完成后更新。
 
