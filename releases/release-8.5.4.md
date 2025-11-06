@@ -21,7 +21,6 @@ TiDB 版本：8.5.4
 
 - 新增以下系统变量：
 
-    - [`tidb_enable_binding_usage`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables.md#tidb_enable_binding_usage-从-v854-版本开始引入)：控制是否收集 SQL 执行计划绑定的使用统计信息，默认值为 `OFF` [#63407](https://github.com/pingcap/tidb/issues/63407) @[hawkingrei](https://github.com/hawkingrei) <!--tw@qiancai -->
     - [`tidb_opt_enable_no_decorrelate_in_select`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables.md#tidb_opt_enable_no_decorrelate_in_select-从-v854-版本开始引入)：控制是否对 `SELECT` 列表中的子查询进行解关联操作，默认值为 `OFF` [#51116](https://github.com/pingcap/tidb/issues/51116) @[terry1purcell](https://github.com/terry1purcell) <!--tw@Oreoxmt -->
     - [`tidb_opt_enable_semi_join_rewrite`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables.md#tidb_opt_enable_semi_join_rewrite-从-v854-版本开始引入)：控制是否改写 `EXISTS` 子查询，默认值为 `OFF` [#44850](https://github.com/pingcap/tidb/issues/44850) @[terry1purcell](https://github.com/terry1purcell) <!--tw@Oreoxmt -->
     - [`tidb_stats_update_during_ddl`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables.md#tidb_stats_update_during_ddl-从-v854-版本开始引入)：控制是否开启 DDL 的内嵌 Analyze 的行为，默认值为 `OFF` [#57948](https://github.com/pingcap/tidb/issues/57948) @[terry1purcell](https://github.com/terry1purcell) @[AilinKid](https://github.com/AilinKid) <!--tw@hfxsd -->
@@ -40,7 +39,6 @@ TiDB 版本：8.5.4
 + TiDB <!--tw@Oreoxmt: 11 notes-->
 
     - 支持表级别数据打散（实验特性）：你可以通过 [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql-statement-show-distribution-jobs.md) 语句查看某张表在集群中所有 TiKV 节点上的数据分布情况。如果存在数据分布不均衡，可以通过 [`DISTRIBUTE TABLE`](/sql-statements/sql-statement-distribute-table.md) 语句对该表进行数据打散，以提升负载均衡性 [#63260](https://github.com/pingcap/tidb/issues/63260) @[bufferflies](https://github.com/bufferflies) <!--tw@qiancai-->
-
     - (dup): release-9.0.0.md(beta.1) > # SQL 功能 - 支持对分区表的非唯一列创建[全局索引](/partitioned-table.md#全局索引)，以提升全局索引的易用性 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014) @[mjonss](https://github.com/mjonss)
     - (dup): release-9.0.0.md(beta.1) > 改进提升> TiDB - 支持由 `IN` 子查询而来的 Semi Join 使用 `semi_join_rewrite` 的 Hint [#58829](https://github.com/pingcap/tidb/issues/58829) @[qw4990](https://github.com/qw4990)
     - 优化系统变量 `tidb_opt_ordering_index_selectivity_ratio` 生效时的估算策略 [#62817](https://github.com/pingcap/tidb/issues/62817) @[terry1purcell](https://github.com/terry1purcell)
