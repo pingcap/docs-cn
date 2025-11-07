@@ -16,7 +16,9 @@ cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://ro
 
 ## TiCDC 新架构监控指标
 
-TiCDC 新架构的监控面板为 **TiCDC-New-Arch**。对于 v8.5.4 及以上版本的新建或现有集群，TiUP 或 TiDB Operator 将自动完成面板集成，无需手动操作。而对于现有低于 v8.5.4 版本的集群，需要手动导入 TiCDC 监控指标文件：
+TiCDC 新架构的监控面板为 **TiCDC-New-Arch**。对于 v8.5.4 及以上版本的 TiDB 集群，该监控面板已在集群部署或升级时集成到 Grafana，无需手动操作。
+
+如果你的集群版本低于 v8.5.4，需要手动导入 TiCDC 监控指标文件：
 
 1. 下载 TiCDC 新架构监控指标文件
 
