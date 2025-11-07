@@ -89,7 +89,7 @@ _tidb 即 TiDB 扩展字段，其子字段说明如下：
 
 | 字段                | 类型   | 说明                                                                      | 
 |:-------------------|:-------|:-------------------------------------------------------------------------|
-| commitTs           | Number | 产生事件变更的事务提交使用的 TSO。设置于 DDL 和 DML 事件              |
+| commitTs           | Number | 提交产生事件变更的事务使用的 TSO。用于 DDL 和 DML 事件。              |
 | watermarkTs        | Number | TiCDC 周期性发送的 Watermark Ts，其类型也是 TSO。设置于 Watermark 事件|
 | tableId            | Number | 事件所属表的 ID。设置于 DML 事件 |
 | partitionId        | Number | 事件如果来自于分区表，消息会携带该字段，表示所属分区的 ID。设置于 DML 事件 |
