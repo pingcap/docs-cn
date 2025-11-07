@@ -297,7 +297,7 @@ CREATE TABLE `sbtest` (
 
 ```sql
 SELECT id, k, c, pad
-FROM sbtest1
+FROM sbtest
 WHERE k IN (xx, xx, xx)
 ```
 
