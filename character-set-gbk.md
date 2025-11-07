@@ -45,6 +45,7 @@ MySQL 的 GBK 字符集默认排序规则是 `gbk_chinese_ci`。TiDB 的 GBK 字
 另外，TiDB 支持的 `gbk_bin` 与 MySQL 支持的 `gbk_bin` 排序规则也不一致，TiDB 是将 GBK 转换成 `utf8mb4`，然后再进行二进制排序。
 
 开启新的排序规则框架后，如果查看 GBK 字符集对应的排序规则，你可以看到 TiDB GBK 默认排序规则已经切换为 `gbk_chinese_ci`。
+
 从 TiDB v6.0.0 开始，[新的排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)默认启用，即 TiDB GBK 字符集的默认排序规则为 `gbk_chinese_ci`，与 MySQL 保持一致。
 
 ```sql
