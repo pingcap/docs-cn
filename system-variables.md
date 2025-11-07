@@ -415,9 +415,11 @@ mysql> SELECT * FROM t1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：枚举型
 - 默认值：`mysql_native_password`
-- 可选值：`mysql_native_password`，`caching_sha2_password`，`tidb_sm3_password`，`tidb_auth_token`，`authentication_ldap_sasl` 或 `authentication_ldap_simple`。
-- 服务器和客户端建立连接时，这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
-- 若要在用户登录时使用 `tidb_sm3_password` 插件，需要使用 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3) 进行连接。
+- 可选值：`mysql_native_password`，`caching_sha2_password`，`tidb_sm3_password`，`authentication_ldap_sasl` 或 `authentication_ldap_simple`。
+- 该变量用于设置默认身份验证方式。它会影响以下行为：
+    - 在使用 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 创建用户时，如果语句中没有显式指定身份认证方式，将使用该变量指定的身份认证方式创建用户。
+    - 在服务器和客户端建立连接时，该变量用于设置服务器对外通告的默认身份验证方式。
+- 如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
 
 ### `default_collation_for_utf8mb4` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
