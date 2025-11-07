@@ -83,7 +83,7 @@ Full Restore <------------------------------------------------------------------
 *** ["Full Restore success summary"] *** [total-take=4.344617542s] [total-kv=5] [total-kv-size=327B] [average-speed=75.27B/s] [restore-data-size(after-compressed)=4.813kB] [Size=4813] [BackupTS=435844901803917314]
 ```
 
-在恢复期间，恢复的表的 Table Mode 会被自动设置为 `restore`，处于 Restore Mode 的表会禁止用户执行任何读写操作。当数据恢复完成时，Table Mode 会被自动恢复到 `normal` 状态，用户可以正常读写该表，从而提升数据恢复期间的任务稳定性和数据一致性。
+在数据恢复期间，目标表的 Table Mode 会自动设置为 `restore`，处于 `restore` 模式的表禁止用户执行任何读写操作。当数据恢复完成后，Table Mode 会自动切换为 `normal` 状态，用户可以正常读写该表，从而确保数据恢复期间的任务稳定性和数据一致性。
 
 ### 恢复备份数据中指定库表的数据
 
