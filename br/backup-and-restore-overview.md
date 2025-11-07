@@ -120,7 +120,7 @@ TiDB 支持将数据备份到 Amazon S3、Google Cloud Storage (GCS)、Azure Blo
 | New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 `mysql.tidb` 表中 `new_collation_enabled` 变量值和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。更多信息，请参考 [FAQ - BR 为什么会报 `new_collations_enabled_on_first_bootstrap` 不匹配？](/faq/backup-and-restore-faq.md#恢复时为什么会报-new_collation_enabled-不匹配)。 |
 | 全局临时表 | | 确保使用 BR v5.3.0 及以上版本进行备份和恢复，否则会导致全局临时表的表定义错误。 |
 | TiDB Lightning 物理导入模式| |上游数据库使用 TiDB Lightning 物理导入模式导入的数据，无法作为数据日志备份下来。推荐在数据导入后执行一次全量备份，细节参考[上游数据库使用 TiDB Lightning 物理导入模式导入数据的恢复](/faq/backup-and-restore-faq.md#上游数据库使用-tidb-lightning-物理导入模式导入数据时为什么无法使用日志备份功能)。|
-| TiCDC | | BR v8.2.0 及以上版本：如果在恢复的目标集群有 [CheckpointTS](/ticdc/ticdc-architecture.md#checkpointts) 早于 BackupTS 的 Changefeed，BR 会拒绝执行恢复。BR v8.2.0 之前的版本：如果在恢复的目标集群有任何活跃的 TiCDC Changefeed，BR 会拒绝执行恢复。 |
+| TiCDC | | BR v8.2.0 及以上版本：如果在恢复的目标集群有 [CheckpointTS](/ticdc/ticdc-classic-architecture.md#checkpointts) 早于 BackupTS 的 Changefeed，BR 会拒绝执行恢复。BR v8.2.0 之前的版本：如果在恢复的目标集群有任何活跃的 TiCDC Changefeed，BR 会拒绝执行恢复。 |
 | 向量搜索 | | 确保使用 BR v8.4.0 及以上版本进行备份与恢复。不支持将带有[向量数据类型](/vector-search/vector-search-data-types.md)的表恢复至 v8.4.0 之前的 TiDB 集群。 |
 
 ### 版本间兼容性
@@ -148,29 +148,31 @@ TiDB v6.6.0 版本之前的 BR 版本兼容性矩阵：
 
 > **注意：**
 >
-> 已知问题：在 v7.2.0 版本中，部分系统表字段改为大小写敏感，可能导致跨版本备份恢复失败。详见 [Issue #43717](https://github.com/pingcap/tidb/issues/43717)。
+> 已知问题：从 v7.2.0 版本开始，新建集群的部分系统表字段变为大小写不敏感。然而，对于从 v7.2.0 之前的版本**在线升级**到 v7.2.0 及以上版本的集群，对应的系统表字段仍然大小写敏感。如果在这两类集群之间进行包含系统表的备份和恢复操作，可能会失败。详情参见 [Issue #43717](https://github.com/pingcap/tidb/issues/43717)。
 
-下表列出了全量备份的兼容性矩阵：
-
-| 备份集群版本 | 兼容的恢复目标集群版本 | 不兼容的恢复目标集群版本 |
-|:---------|:------------|:--------------|
-| v6.5.0    | v7.1.0       | v7.5.0 及以上   |
-| v7.1.0    | -           | v7.5.0 及以上   |
-| v7.5.0    | v7.5.0 及以上 | -             |
-| v8.1.0    | v8.1.0 及以上 | -             |
-
-下表列出了日志备份的兼容性矩阵：
+下表列出了全量备份的兼容性矩阵，表格中所有信息均适用于新建集群。如果备份集群是从 v7.2.0 之前升级过来的集群，行为等同于 v7.1.0：
 
 | 备份集群版本 | 兼容的恢复目标集群版本 | 不兼容的恢复目标集群版本 |
-|:---------|:------------|:--------------|
-| v6.5.0    | v7.1.0       | v7.5.0 及以上   |
-| v7.1.0    | -           | v7.5.0 及以上   |
-| v7.5.0    | v7.5.0 及以上 | -             |
-| v8.1.0    | v8.1.0 及以上 | -             |
+|:--|:--|:--|
+| v6.5.0 | v7.1.0 | v7.5.0 及以上 |
+| v7.1.0 | - | v7.5.0 及以上 |
+| v7.5.0 | v7.5.0 及以上 | - |
+| v8.1.0 | v8.1.0 及以上 | - |
+| v8.5.0 | v8.5.0 及以上 | - |
+
+下表列出了日志备份的兼容性矩阵，表格中所有信息均适用于新建集群。如果备份集群是从 v7.2.0 之前升级过来的集群，行为等同于 v7.1.0：
+
+| 备份集群版本 | 兼容的恢复目标集群版本 | 不兼容的恢复目标集群版本 |
+|:--|:--|:--|
+| v6.5.0 | v7.1.0 | v7.5.0 及以上 |
+| v7.1.0 | - | v7.5.0 及以上 |
+| v7.5.0 | v7.5.0 及以上 | - |
+| v8.1.0 | v8.1.0 及以上 | - |
+| v8.5.0 | v8.5.0 及以上 | - |
 
 > **注意：**
 >
-> - 当仅备份用户数据时（全量备份或日志备份），所有版本之间均兼容。
+> - 当仅备份非系统表的业务数据时（全量备份或日志备份），所有版本之间均兼容。
 > - 在恢复 `mysql` 系统表时，可能会出现不兼容情况。为避免此问题，你可以通过设置 `--with-sys-table=false` 跳过恢复所有系统表，或者使用更精细的过滤器仅仅跳过不兼容的系统表，例如：`--filter '*.*' --filter "__TiDB_BR_Temporary_*.*" --filter '!mysql.*' --filter 'mysql.bind_info' --filter 'mysql.user' --filter 'mysql.global_priv' --filter 'mysql.global_grants' --filter 'mysql.default_roles' --filter 'mysql.role_edges' --filter '!sys.*' --filter '!INFORMATION_SCHEMA.*' --filter '!PERFORMANCE_SCHEMA.*' --filter '!METRICS_SCHEMA.*' --filter '!INSPECTION_SCHEMA.*'`。
 > - "-" 表示该版本在对应场景下没有兼容性限制。
 

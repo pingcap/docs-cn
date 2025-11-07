@@ -304,6 +304,7 @@ Column 的类型码用于标识 Row Changed Event 中列的数据类型。
 | LONGTEXT/LONGBLOB     | 251  | {"t":251,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
 | TEXT/BLOB             | 252  | {"t":252,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
 | CHAR/BINARY           | 254  | {"t":254,"v":"测试"} / {"t":254,"v":"\\\\x89PNG\\\\r\\\\n\\\\x1a\\\\n"} | value 编码为 UTF-8；当上游类型为 BINARY 时，将对不可见的字符转义 |
+| TiDBVectorFloat32     | 225  | {"t":225,"v":"[1.23, -0.4]"} | |
 | GEOMETRY              | 255  |  | 尚不支持 |
 
 ## DDL 的类型码

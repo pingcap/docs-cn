@@ -81,9 +81,9 @@ iperf Done.
 - 参考 [MySQL 使用 mysqldump 导出某个表的部分数据](https://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出。
 - 使用 MySQL client 将 select 的结果输出到一个文件。
 
-### 如何从 DB2、Oracle 数据库迁移到 TiDB？
+### 如何从 Db2、Oracle 数据库迁移到 TiDB？
 
-DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
+Db2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 - 使用 Oracle 官方迁移工具，如 OGG、Gateway（透明网关）、CDC (Change Data Capture)。
 - 自研数据导出导入程序实现。
@@ -109,7 +109,7 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
         --batch
     ```
 
-- 也可以选择增大 tidb 的单个事物语句数量限制，不过这个会导致内存上涨。
+- 也可以选择增大 TiDB 单个事务允许的语句条数限制，不过这样会占用更多内存。
 
 ### Dumpling 导出时引发上游数据库 OOM 或报错“磁盘空间不足”
 

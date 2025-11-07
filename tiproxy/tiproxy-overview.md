@@ -11,7 +11,7 @@ TiProxy 是可选组件，你也可以使用第三方的代理组件，或者直
 
 TiProxy 示意图如下：
 
-<img src="https://download.pingcap.com/images/docs-cn/tiproxy/tiproxy-architecture.png" alt="TiProxy 架构" width="500" />
+<img src="https://docs-download.pingcap.com/media/images/docs-cn/tiproxy/tiproxy-architecture.png" alt="TiProxy 架构" width="500" />
 
 ## 主要功能
 
@@ -23,7 +23,7 @@ TiProxy 在保持客户端连接不变的情况下，能将一台 TiDB server �
 
 如下图所示，原先客户端通过 TiProxy 连接到 TiDB 1 上，连接迁移之后，客户端实际连接到 TiDB 2 上。在 TiDB 1 即将下线或 TiDB 1 上的连接数比 TiDB 2 上的连接数超过设定阈值时，会触发连接迁移。连接迁移对客户端无感知。
 
-<img src="https://download.pingcap.com/images/docs-cn/tiproxy/tiproxy-session-migration.png" alt="TiProxy 连接迁移" width="400" />
+<img src="https://docs-download.pingcap.com/media/images/docs-cn/tiproxy/tiproxy-session-migration.png" alt="TiProxy 连接迁移" width="400" />
 
 连接迁移通常发生在以下场景：
 
@@ -53,7 +53,7 @@ TiProxy 适用于以下场景：
 
 TiProxy 不适用于以下场景：
 
-- 对性能敏感：TiProxy 的性能低于 HAProxy 等负载均衡器，因此使用 TiProxy 会降低 QPS。请参阅 [TiProxy 性能测试报告](/tiproxy/tiproxy-performance-test.md)。
+- 对性能敏感：TiProxy 的性能低于 HAProxy 等负载均衡器，因此使用 TiProxy 需要预留更多 CPU 资源。请参阅 [TiProxy 性能测试报告](/tiproxy/tiproxy-performance-test.md)。
 - 对成本敏感：如果 TiDB 集群使用了硬件负载均衡、虚拟 IP 或 Kubernetes 自带的负载均衡器，此时增加 TiProxy 组件会增加成本。另外，如果在云上跨可用区部署 TiDB 集群，增加 TiProxy 组件也会增加跨可用区的流量费用。
 - TiDB server 意外下线时的故障转移：只有当 TiDB server 在计划内的下线或重启操作时，TiProxy 才能保持连接。如果 TiDB server 意外下线，则连接仍然会断开。
 
@@ -61,44 +61,42 @@ TiProxy 不适用于以下场景：
 
 ## 安装和使用
 
-本节介绍使用 TiUP 部署和变更 TiProxy 的步骤。
+本节介绍使用 TiUP 部署和变更 TiProxy 的步骤。你可以在[创建新集群时部署 TiProxy](#创建带有-tiproxy-的集群)，也可以通过扩容的方式[为已有集群启用 TiProxy](#为已有集群启用-tiproxy)。
+
+> **注意：**
+>
+> 请确保 TiUP 为 v1.16.1 或之后版本。
 
 其他部署方式，请参考以下文档：
 
 - 使用 TiDB Operator 部署 TiProxy，请参见 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tiproxy) 文档。
 - 使用 TiUP 本地快速部署 TiProxy，请参见[部署 TiProxy](/tiup/tiup-playground.md#部署-tiproxy)。
 
-### 部署 TiProxy
+### 创建带有 TiProxy 的集群
 
-1. 对于 TiUP v1.15.0 之前的版本，需要手动生成自签名证书。
+以下步骤介绍如何在创建新集群时部署 TiProxy。
 
-    为 TiDB 实例生成自签名证书，并把该证书放置到所有 TiDB 实例上，确保所有 TiDB 实例上有完全相同的证书。生成步骤请参阅[生成自签名证书](/generate-self-signed-certificates.md)。
+1. 配置 TiDB 实例。
 
-2. 配置 TiDB 实例。
-
-    使用 TiProxy 时，还需要给 TiDB 实例做如下配置：
-
-    - 对于 TiUP v1.15.0 之前的版本，将 TiDB 实例的 [`security.session-token-signing-cert`](/tidb-configuration-file.md#session-token-signing-cert-从-v640-版本开始引入) 和 [`security.session-token-signing-key`](/tidb-configuration-file.md#session-token-signing-key-从-v640-版本开始引入) 配置为上述证书的路径，否则连接不能迁移。
-    - 配置 TiDB 实例的 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)，它的值要大于应用程序最长的事务的持续时间，否则 TiDB server 下线时客户端可能断连。你可以通过 [TiDB 监控面板的 Transaction 指标](/grafana-tidb-dashboard.md#transaction)查看事务的持续时间。更多信息，请参阅[使用限制](#使用限制)。
+    使用 TiProxy 时，需要为 TiDB 配置 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)。该值应比应用程序最长事务的持续时间大 10 秒以上，以避免 TiDB server 下线时客户端连接中断。你可以通过 [TiDB 监控面板的 Transaction 指标](/grafana-tidb-dashboard.md#transaction) 查看事务持续时间。更多信息，请参阅[使用限制](#使用限制)。
 
     配置示例：
 
     ```yaml
     server_configs:
       tidb:
-        security.session-token-signing-cert: "/var/sess/cert.pem"
-        security.session-token-signing-key: "/var/sess/key.pem"
-        graceful-wait-before-shutdown: 15
+        graceful-wait-before-shutdown: 30
     ```
 
-3. 定义 TiProxy 实例。
+2. 配置 TiProxy 实例。
 
-    选择 TiProxy 的机型和实例数时需要考虑以下因素：
+    为了保证 TiProxy 的高可用，建议部署至少 2 个 TiProxy 实例，并配置虚拟 IP [`ha.virtual-ip`](/tiproxy/tiproxy-configuration.md#virtual-ip) 和 [`ha.interface`](/tiproxy/tiproxy-configuration.md#interface)，以便流量能够路由到可用的 TiProxy 实例。
 
-    - 要考虑负载类型和最大 QPS，请参阅 [TiProxy 性能测试报告](/tiproxy/tiproxy-performance-test.md)。
-    - 由于 TiProxy 的实例数比 TiDB server 少，TiProxy 的网络带宽相比 TiDB server 更可能成为瓶颈，因此还需要考虑网络带宽。例如，AWS 相同系列的 EC2 的基准网络带宽与 CPU 核数是不成正比的，请参阅[计算实例网络性能](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/compute-optimized-instances.html#compute-network-performance)。这种情况下，当网络带宽成为瓶颈时，把 TiProxy 实例拆分为更多更小规格的实例能提高 QPS。
+    注意事项：
 
-    建议在拓扑配置里指定 TiProxy 的版本号，这样通过 [`tiup cluster upgrade`](/tiup/tiup-component-cluster-upgrade.md) 升级 TiDB 集群时不会升级 TiProxy，否则升级 TiProxy 会导致客户端连接断开。
+    - 要根据负载类型和最大 QPS 选择 TiProxy 的机型和实例数。更多详情，请参阅 [TiProxy 性能测试报告](/tiproxy/tiproxy-performance-test.md)。
+    - 由于 TiProxy 实例通常少于 TiDB server 实例，TiProxy 的网络带宽更容易成为瓶颈。例如，在 AWS 上，同系列 EC2 的基准网络带宽与 CPU 核数并不成正比。当网络带宽成为瓶颈时，可以把 TiProxy 实例拆分为更多更小规格的实例，从而提高 QPS。更多详情，请参阅[网络规格](https://docs.aws.amazon.com/zh_cn/ec2/latest/instancetypes/co.html#co_network)。
+    - 建议在拓扑配置中指定 TiProxy 的版本号。这样在执行 [`tiup cluster upgrade`](/tiup/tiup-component-cluster-upgrade.md) 升级 TiDB 集群时，可以避免 TiProxy 被一并升级，从而避免因 TiProxy 升级导致客户端连接断开。
 
     关于 TiProxy 的配置模板，请参见 [TiProxy 配置模板](/tiproxy/tiproxy-deployment-topology.md)。
 
@@ -108,7 +106,11 @@ TiProxy 不适用于以下场景：
 
     ```yaml
     component_versions:
-      tiproxy: "v1.2.0"
+      tiproxy: "v1.3.2"
+    server_configs:
+      tiproxy:
+        ha.virtual-ip: "10.0.1.10/24"
+        ha.interface: "eth0"
     tiproxy_servers:
       - host: 10.0.1.11
         port: 6000
@@ -118,28 +120,73 @@ TiProxy 不适用于以下场景：
         status_port: 3080
     ```
 
-4. 配置 TiProxy 实例。
+3. 启动集群。
 
-    为了保证 TiProxy 的高可用，建议部署至少 2 台 TiProxy 实例，并配置虚拟 IP [`ha.virtual-ip`](/tiproxy/tiproxy-configuration.md#virtual-ip) 和 [`ha.interface`](/tiproxy/tiproxy-configuration.md#interface)，使流量路由到可用的 TiProxy 实例上。
+    使用 TiUP 启动集群的方式，请参阅 [TiUP](/tiup/tiup-documentation-guide.md) 文档。
 
-    如需配置 TiProxy 配置项，请参阅 [TiProxy 配置](/tiproxy/tiproxy-configuration.md)。更多 TiProxy 部署拓扑配置参数，请参阅 [tiproxy-servers 配置参数](/tiup/tiup-cluster-topology-reference.md#tiproxy_servers)。
+4. 连接到 TiProxy。
+
+    集群部署完成后，会同时暴露 TiDB server 端口和 TiProxy 端口。客户端应当连接到 TiProxy 的端口，而不是直接连接 TiDB server。
+
+### 为已有集群启用 TiProxy
+
+对于未启用 TiProxy 的集群，可以通过扩容的方式启用 TiProxy。
+
+1. 配置 TiProxy 实例。
+
+    在单独的拓扑文件中配置 TiProxy，例如 `tiproxy.toml`：
+
+    ```yaml
+    component_versions:
+      tiproxy: "v1.3.2"
+    server_configs:
+      tiproxy:
+        ha.virtual-ip: "10.0.1.10/24"
+        ha.interface: "eth0"
+    tiproxy_servers:
+      - host: 10.0.1.11
+        deploy_dir: "/tiproxy-deploy"
+        port: 6000
+        status_port: 3080
+      - host: 10.0.1.12
+        deploy_dir: "/tiproxy-deploy"
+        port: 6000
+        status_port: 3080
+    ```
+
+2. 扩容 TiProxy。
+
+    使用 [`tiup cluster scale-out`](/tiup/tiup-component-cluster-scale-out.md) 命令扩容 TiProxy 实例，例如：
+
+    ```shell
+    tiup cluster scale-out <cluster-name> tiproxy.toml
+    ```
+
+    扩容 TiProxy 时，TiUP 会自动为 TiDB 配置自签名证书 [`security.session-token-signing-cert`](/tidb-configuration-file.md#session-token-signing-cert-从-v640-版本开始引入) 和 [`security.session-token-signing-key`](/tidb-configuration-file.md#session-token-signing-key-从-v640-版本开始引入)，该证书用于迁移连接。
+
+3. 修改 TiDB 配置。
+
+    使用 TiProxy 时，需要为 TiDB 配置 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)。该值应比应用程序最长事务的持续时间大 10 秒以上，以避免 TiDB server 下线时客户端连接中断。你可以通过 [TiDB 监控面板的 Transaction 指标](/grafana-tidb-dashboard.md#transaction) 查看事务持续时间。更多信息，请参阅[使用限制](#使用限制)。
 
     配置示例：
 
     ```yaml
     server_configs:
-      tiproxy:
-        ha.virtual-ip: "10.0.1.10/24"
-        ha.interface: "eth0"
+      tidb:
+        graceful-wait-before-shutdown: 30
     ```
 
-5. 启动集群。
+4. 重新加载 TiDB 配置。
 
-    使用 TiUP 启动集群的方式请参阅 [TiUP](/tiup/tiup-documentation-guide.md) 文档。
+    由于 TiDB 配置了自签名证书和 `graceful-wait-before-shutdown`，需要使用 [`tiup cluster reload`](/tiup/tiup-component-cluster-reload.md) 命令重新加载配置使它们生效。注意，重新加载配置后，TiDB 会滚动重启，此时客户端连接会断开。
 
-6. 连接到 TiProxy。
+    ```shell
+    tiup cluster reload <cluster-name> -R tidb
+    ```
 
-    部署集群之后，集群同时暴露了 TiDB server 的端口和 TiProxy 端口。客户端应当连接到 TiProxy 的端口，不再连接 TiDB server 的端口。
+5. 连接到 TiProxy。
+
+    启用 TiProxy 后，客户端应连接 TiProxy 端口，而不是 TiDB server 端口。
 
 ### 更改 TiProxy 配置
 
@@ -156,6 +203,10 @@ TiProxy 不适用于以下场景：
 ```shell
 tiup cluster upgrade <cluster-name> <version> --tiproxy-version <tiproxy-version>
 ```
+
+> **注意：**
+>
+> 该命令将会同时升级 TiDB 集群。即使 TiDB 版本没有变化，也会重启 TiDB 集群。
 
 ### 重启 TiDB 集群
 
@@ -197,10 +248,10 @@ TiProxy 的以下行为与 TiDB 不兼容：
 - TiProxy 进行缩容、升级、重启等下线操作。一旦 TiProxy 下线，客户端连接也会断开。
 - TiDB 主动断开连接。例如会话超过 `wait_timeout` 的时间没有发送请求时，TiDB 会主动断开连接，此时 TiProxy 也会断开客户端连接。
 
-以下情况下，TiProxy 无法进行连接迁移，因此无法正常地保持客户端连接或负载均衡：
+在以下情况下，TiProxy 将无法完成连接迁移，会导致客户端连接中断或负载均衡失效：
 
-- 单条语句或单个事务持续时间超过 TiDB server 配置的 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入) 时间。
-- 会话使用了游标读取数据，且超过 TiDB server 配置的 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入) 时间没有读完数据或关闭游标。
+- 长时间运行的单条语句或单个事务：其执行时间超过了 TiDB Server 配置的 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入) 的值减去 10 秒的时间窗口。
+- 使用游标且未及时完成：会话使用游标读取数据，但超过 TiDB Server 配置的 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入) 的值减去 10 秒后，仍未完成数据读取或关闭游标。
 - 会话创建了[本地临时表](/temporary-tables.md#本地临时表)。
 - 会话持有了[用户级锁](/functions-and-operators/locking-functions.md)。
 - 会话持有了[表锁](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md)。

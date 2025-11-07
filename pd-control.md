@@ -666,6 +666,10 @@ label store zone cn
 
 ### `member [delete | leader_priority | leader [show | resign | transfer <member_name>]]`
 
+> **注意：**
+>
+> 不要使用 `member delete` 命令在生产环境中缩容 PD 节点。如需缩容 PD 节点，请参考[使用 TiUP 扩容缩容 TiDB 集群](/scale-tidb-using-tiup.md)和[手动扩缩容 Kubernetes 上的 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster/)。
+
 用于显示 PD 成员信息，删除指定成员，设置成员的 leader 优先级。示例如下。
 
 显示所有成员的信息：
@@ -1565,8 +1569,32 @@ store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"en
 ```
 
 ```
-{"id":1,"address":"127.0.0.1:20161""state_name":"Up"}
-{"id":5,"address":"127.0.0.1:20162""state_name":"Up"}
+{"id":1,"address":"127.0.0.1:20161","state_name":"Up"}
+{"id":5,"address":"127.0.0.1:20162","state_name":"Up"}
+...
+```
+
+### 查询存算分离架构下的 TiFlash 节点
+
+查找[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Write Node：
+
+```bash
+store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}, {"key":"engine_role","value":"write"}])) | {id, address, labels, state_name}'
+```
+
+```
+{"id":130,"address":"172.31.8.1:10161","labels":[{"key":"engine_role","value":"write"},{"key":"engine","value":"tiflash"}],"state_name":"Up"}
+...
+```
+
+查找[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Compute Node：
+
+```bash
+store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash_compute"}])) | {id, address, labels, state_name}'
+```
+
+```
+{"id":131,"address":"172.31.9.1:10161","labels":[{"key":"engine","value":"tiflash_compute"}],"state_name":"Up"}
 ...
 ```
 

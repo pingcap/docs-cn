@@ -22,7 +22,7 @@ summary: 了解如何在 peewee 中通过 TiDB 向量搜索功能存储向量并
 如果你还没有 TiDB 集群，可以按照以下任一种方式创建：
 
 - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
-- 参考[创建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-cloud-serverless-集群)，创建 TiDB Cloud 集群。
+- 参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)，创建 TiDB Cloud 集群。
 
 ## 运行示例应用程序
 
@@ -90,11 +90,11 @@ TIDB_DATABASE=test
 
 </div>
 
-<div label="TiDB Cloud Serverless">
+<div label="{{{ .starter }}} 或 Essential">
 
-对于 TiDB Cloud Serverless 集群，请按照以下步骤获取集群的连接字符串，然后配置环境变量：
+对于 {{{ .starter }}} 集群，请按照以下步骤获取集群的连接字符串，然后配置环境变量：
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，单击你的 TiDB Cloud Serverless 集群名，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，单击你的 {{{ .starter }}} 集群名，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
@@ -190,7 +190,7 @@ connect_kwargs = {
 #     'ssl_mode': 'VERIFY_IDENTITY',
 #     'ssl': {
 #         # Root certificate default path.
-#         # If you are using a tidb serverless cluster, 
+#         # If you are using a {{{ .starter }}} cluster,
 #         # you can refer to the following link to configure "TIDB_CA_PATH".
 #         # https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-clusters/#root-certificate-default-path
 #         'ca': os.environ.get('TIDB_CA_PATH', '/path/to/ca.pem'),

@@ -228,7 +228,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | 变量名  | 修改类型    | 描述 |
 |--------|------------------------------|------|
 | [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入) | 修改 | 经进一步的测试后，默认值从 `OFF` 修改为 `ON`，即默认开启 [TiDB 加速建表](/accelerated-table-creation.md)。|
-| [`tidb_ddl_reorg_max_write_speed`](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v755-和-v850-版本开始引入) | 新增 | 限制每个 TiKV 节点写入的带宽，仅在开启添加索引加速功能时生效（由变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。例如，当该值设置为 `200MiB` 时，最大写入速度限制为 200 MiB/s。 |
+| [`tidb_ddl_reorg_max_write_speed`](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v6512v755-和-v850-版本开始引入) | 新增 | 限制每个 TiKV 节点写入的带宽，仅在开启添加索引加速功能时生效（由变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。例如，当该值设置为 `200MiB` 时，最大写入速度限制为 200 MiB/s。 |
 
 ### 配置参数
 
@@ -236,6 +236,10 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | -------- | -------- | -------- | -------- |
 | TiDB | [`deprecate-integer-display-length`](/tidb-configuration-file.md#deprecate-integer-display-length) | 修改 | 从 v8.5.0 开始，整数显示宽度功能已废弃，该配置项的默认值从 `false` 修改为 `true`。 |
 | TiKV | [`raft-client-queue-size`](/tikv-configuration-file.md#raft-client-queue-size) | 修改 | 默认值从 `8192` 修改为 `16384`。|
+| TiKV | [`in-memory-engine.capacity`](/tikv-configuration-file.md#capacity-从-v850-版本开始引入) | 新增 | 配置 TiKV MVCC 内存引擎 (In-Memory Engine) 可使用的内存大小。默认值为系统内存的 10%，最大值为 5 GiB。|
+| TiKV | [`in-memory-engine.enable`](/tikv-configuration-file.md#enable-从-v850-版本开始引入) | 新增 | 控制是否开启 TiKV MVCC 内存引擎 (In-Memory Engine) 以加速多版本查询。默认值为 `false`，即关闭内存引擎。 |
+| TiKV | [`in-memory-engine.gc-run-interval`](/tikv-configuration-file.md#gc-run-interval-从-v850-版本开始引入) | 新增 | 控制内存引擎 GC 缓存 MVCC 版本的时间间隔。默认值为 `"3m"`。|
+| TiKV | [`in-memory-engine.mvcc-amplification-threshold`](/tikv-configuration-file.md#mvcc-amplification-threshold-从-v850-版本开始引入) | 新增 | 控制内存引擎选取加载 Region 时 MVCC 读放大的阈值。默认为 `10`，表示在某个 Region 中读一行记录需要处理的 MVCC 版本数量超过 10 个时，有可能会被加载到内存引擎中。|
 | PD | [`patrol-region-worker-count`](/pd-configuration-file.md#patrol-region-worker-count-从-v850-版本开始引入) | 新增 | 控制 checker 检查 Region 健康状态时，创建 [operator](/glossary.md#operator) 的并发数。|
 | BR | [`--checksum`](/br/br-snapshot-manual.md) | 修改 | 默认值从 `true` 修改为 `false`，即 BR 进行全量备份时，默认不计算表级别的校验和，以提升备份性能。 |
 

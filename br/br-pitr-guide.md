@@ -26,6 +26,8 @@ tiup br log start --task-name=pitr --pd "${PD_IP}:2379" \
 --storage 's3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
 ```
 
+### 查询日志备份状态
+
 日志备份任务启动后，会在 TiDB 集群后台持续地运行，直到你手动将其暂停。在这过程中，TiDB 变更数据将以小批量的形式定期备份到指定存储中。如果你需要查询日志备份任务当前状态，执行如下命令：
 
 ```shell
@@ -37,14 +39,51 @@ tiup br log status --task-name=pitr --pd "${PD_IP}:2379"
 ```
 ● Total 1 Tasks.
 > #1 <
-    name: pitr
-    status: ● NORMAL
-    start: 2022-05-13 11:09:40.7 +0800
-      end: 2035-01-01 00:00:00 +0800
-    storage: s3://backup-101/log-backup
+           name: pitr
+         status: ● NORMAL
+          start: 2022-05-13 11:09:40.7 +0800
+            end: 2035-01-01 00:00:00 +0800
+        storage: s3://backup-101/log-backup
     speed(est.): 0.00 ops/s
 checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 ```
+
+其中，各个字段含义如下：
+
+- `name`：Log Backup 任务的名字。
+- `status`：Log Backup 的状态，包括 `NORMAL`、`PAUSED`、`ERROR`。
+- `start`：Log Backup 的起始时间戳。
+- `end`：Log Backup 的结束时间戳，目前这个字段并不会生效。
+- `storage`：Log Backup 的外部存储的 URI。
+- `speed(est.)`：Log Backup 目前的流量。这个值是取最近数秒内的流量采样估算而成。如需更加精确的流量统计，你可以通过 Grafana 的 **[TiKV-Details](/grafana-tikv-dashboard.md#tikv-details-面板)** 监控面板中的 `Log Backup` 行查看。
+- `checkpoint[global]`：Log Backup 目前的进度。你可以使用 PiTR 恢复到这个时间戳前的时间点。
+
+如果 Log Backup 任务暂停，`log status` 会输出额外的字段来展示暂停的细节，例如：
+
+```
+● Total 1 Tasks.
+> #1 <
+              name: pitr
+            status: ○ ERROR
+               <......>
+        pause-time: 2025-03-14T14:35:06+08:00
+    pause-operator: atelier.local
+pause-operator-pid: 64618
+     pause-payload: The checkpoint is at 2025-03-14T14:34:54+08:00, now it is 2025-03-14T14:35:06+08:00, the lag is too huge (11.956113s) hence pause the task to avoid impaction to the cluster
+```
+
+其中，这些额外的字段含义如下：
+
+- `pause-time`：执行暂停操作的时间。
+- `pause-operator`：执行暂停操作的机器的 hostname。
+- `pause-operator-pid`：执行暂停操作的进程的 PID。
+- `pause-payload`：暂停时所附带的额外信息。
+
+如果 Log Backup 任务的暂停是由于 TiKV 发生错误导致的，你可能还会额外看到 TiKV 上报的错误：
+
+- `error[store=*]`：TiKV 处的错误代码。
+- `error-happen-at[store=*]`：在 TiKV 处发生错误的时间。
+- `error-message[store=*]`：在 TiKV 处的错误消息。
 
 ### 定期执行全量备份
 
@@ -69,7 +108,9 @@ tiup br restore point --pd "${PD_IP}:2379" \
 恢复期间，可通过终端中的进度条查看进度，如下。恢复分为两个阶段：全量恢复 (Full Restore) 和日志恢复（Restore Meta Files 和 Restore KV Files）。每个阶段完成恢复后，br 命令行工具都会输出恢复耗时和恢复数据大小等信息。
 
 ```shell
-Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
+Split&Scatter Region <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
+Download&Ingest SST <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
+Restore Pipeline <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
 *** ["Full Restore success summary"] ****** [total-take=xxx.xxxs] [restore-data-size(after-compressed)=xxx.xxx] [Size=xxxx] [BackupTS={TS}] [total-kv=xxx] [total-kv-size=xxx] [average-speed=xxx]
 Restore Meta Files <--------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
 Restore KV Files <----------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
@@ -117,7 +158,13 @@ Restore KV Files <--------------------------------------------------------------
 >
 > 外部存储中只存放单个副本中的 KV 数据，因此外部存储上的数据量并不代表集群实际恢复后的数据量。BR 恢复数据时会根据集群设置的副本数来恢复全部副本，当副本数越多时，实际恢复的数据量也就越多。
 > 所有测试集群默认设置 3 副本。
-> 如果想提升整体恢复的性能，可以通过根据实际情况调整 TiKV 配置文件中的 [`import.num-threads`](/tikv-configuration-file.md#import) 配置项以及 BR 命令的 [`pitr-concurrency`](/br/use-br-command-line-tool.md#常用选项) 参数。
+> 如果想提升整体恢复的性能，可以通过根据实际情况调整 TiKV 配置文件中的 [`import.num-threads`](/tikv-configuration-file.md#import) 配置项以及 BR 命令的 [`pitr-concurrency`](/br/br-pitr-manual.md#恢复到指定时间点-pitr) 参数。
+> 当上游集群有**大量 Region** 且 **flush 间隔较短**时，PITR 会生成大量小文件，这会增加恢复过程中的批处理和分发开销。如需提高每个批次处理的文件数量，可以**适度**调高以下参数值：
+>
+> - `pitr-batch-size`：每个批次的累计**字节数**（默认为 **16 MiB**）。
+> - `pitr-batch-count`：每个批次的**文件数量**（默认为 **8**）。
+>
+> 在判断是否开启下一个批次时，这两个阈值会被分别评估：一旦任意一个阈值先达到，当前批次就会结束并开启下一个批次，另一个阈值在该批次中则不再生效。
 
 测试场景 1（[TiDB Cloud](https://tidbcloud.com) 上部署）如下：
 

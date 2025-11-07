@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 要快速了解 TiUP 的基本功能、使用 TiUP 快速搭建 TiDB 集群的方法与连接 TiDB 集群并执行 SQL 的方法，建议先观看下面的培训视频（时长 15 分钟）。注意本视频只作为学习参考，如需了解 [TiUP](/tiup/tiup-overview.md) 的具体使用方法和 [TiDB 快速上手具体操作步骤](#部署本地测试集群)，请以文档内容为准。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson07_quick_start.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson7.png"></video>
+<video src="https://docs-download.pingcap.com/media/videos/docs-cn%2FLesson07_quick_start.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson7.png"></video>
 
 ## 部署本地测试集群
 
@@ -103,11 +103,11 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
     - 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         tiup playground v8.5.0 --db 2 --pd 3 --kv 3
         ```
+
+        执行该命令时，建议使用内存 10 GiB、4 CPU 及以上配置。配置过低可能会导致系统崩溃。
 
         如果要查看当前支持部署的所有 TiDB 版本，执行 `tiup list tidb`。
 
@@ -304,7 +304,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 部署主机软件和环境要求如下：
 
 - 部署需要使用部署主机的 root 用户及密码
-- 部署主机[关闭防火墙](/check-before-deployment.md#检测及关闭目标部署机器的防火墙)或者开放 TiDB 集群的节点间所需端口
+- 部署主机[关闭防火墙](/check-before-deployment.md#检测目标部署机器的防火墙)或者开放 TiDB 集群的节点间所需端口
 - 目前 TiUP Cluster 支持在 x86_64（AMD64）和 ARM 架构上部署 TiDB 集群
     - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
     - 在 ARM 架构下，建议使用 CentOS 7.6 (1810) 版本 Linux 操作系统
@@ -529,7 +529,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 如果你是应用开发者，想要快速使用 TiDB 构建应用，可参阅以下文档：
 
 - [开发者手册概览](/develop/dev-guide-overview.md)
-- [使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+- [使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
 - [示例程序](/develop/dev-guide-sample-application-java-jdbc.md)
 
 如果你想使用 TiFlash 作为数据分析的解决方案，可参阅以下文档：

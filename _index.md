@@ -74,7 +74,7 @@ summary: TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型
 
 <LearningPath label="监控" icon="cloud6">
 
-[使用 Prometheus 和 Grafana](https://docs.pingcap.com/zh/tidb/dev/tidb-monitoring-framework)
+[使用 Prometheus、Grafana 和 TiDB Dashboard](https://docs.pingcap.com/zh/tidb/dev/tidb-monitoring-framework)
 
 [监控 API](https://docs.pingcap.com/zh/tidb/dev/tidb-monitoring-api)
 
@@ -119,8 +119,6 @@ summary: TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型
 </LearningPath>
 
 <LearningPath label="参考" icon="cloud-dev">
-
-[TiDB 路线图](https://docs.pingcap.com/zh/tidb/dev/tidb-roadmap)
 
 [TiDB 配置文件参数](https://docs.pingcap.com/zh/tidb/dev/tidb-configuration-file)
 

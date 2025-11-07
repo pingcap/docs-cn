@@ -91,7 +91,7 @@ summary: TiKV 监控指标详解：TiUP 部署 TiDB 集群时，一键部署监�
 - CDC Worker CPU：CDC Worker 线程的 CPU 使用率
 - CDC endpoint CPU：CDC endpoint 的 CPU 使用率
 - Raftlog fetch worker CPU：Async raft log fetcher worker 的 CPU 使用率
-- TSO Worker CPU: TSO Worker 线程的 CPU 使用率
+- TSO Worker CPU：TSO Worker 线程的 CPU 使用率
 
 ### PD
 
@@ -408,6 +408,35 @@ summary: TiKV 监控指标详解：TiUP 部署 TiDB 集群时，一键部署监�
 - Blob GC input file size：Titan GC 输入文件的大小
 - Blob GC output file size：Titan GC 输出文件的大小
 - Blob GC file count：Titan GC 涉及的 blob 文件数量
+
+### In Memory Engine
+
+以下为 [TiKV MVCC 内存引擎](/tikv-in-memory-engine.md) (In-Memory Engine, IME) 的监控指标。
+
+- Ops：每秒列族操作次数
+- Read MBps：RocksDB 和内存引擎的总体读流量（字节）
+- Coprocessor Handle duration：处理 coprocessor 请求的耗时
+- Region Cache Hit：从 Region 缓存中成功读取数据的次数
+- Region Cache Hit Rate：Region 缓存的命中率
+- Region Cache Miss Reason：从 Region 缓存中读取数据失败的原因
+- Memory Usage：内存引擎的内存使用情况
+- Region Count：不同类型的 Region 的数量
+- GC Filter：垃圾回收 (GC) 过程中过滤相关的信息
+- Region GC Duration：Region 垃圾回收的耗时
+- Region Load Duration：加载 Region 的耗时
+- Region Load Count：每秒加载的 Region 的数量
+- Region Eviction Duration：驱逐 Region 的耗时
+- Region Eviction Count：每秒驱逐的 Region 的数量
+- Write duration：写操作的耗时
+- 99% In-memory engine write duration per server：内存引擎每秒写操作的 99% 耗时
+- Prepare for write duration：准备写操作的耗时
+- 99% In-memory engine prepare for write duration per server：内存引擎每秒准备写操作的 99% 耗时
+- Iterator operations：不同类型的 iterator 操作的数量
+- Seek duration：seek 操作的耗时
+- Oldest Auto GC SafePoint：内存引擎缓存的 Region 中，最早的自动 GC safepoint
+- Newest Auto GC SafePoint：内存引擎缓存的 Region 中，最新的自动 GC safepoint
+- Auto GC SafePoint Gap：内存引擎缓存的 Region 中，最新的自动 GC safepoint 和最早的自动 GC safepoint 之间的时间差
+- Auto GC SafePoint Gap With TiKV：TiKV 的自动 GC safepoint 和内存引擎缓存的 Region 中最早的自动 GC safepoint 之间的时间差
 
 ### Pessimistic Locking
 

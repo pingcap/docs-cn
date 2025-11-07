@@ -292,6 +292,8 @@ SHOW GRANTS FOR `rw_user`@`192.168.%`;
 * `RESTRICTED_USER_ADMIN` 不允许在 SEM 打开的情况下使用 `SUPER` 用户撤销访问权限。
 * `RESTRICTED_CONNECTION_ADMIN` 允许 KILL 属于 `RESTRICTED_USER_ADMIN` 用户的连接。该权限对 `KILL` 和 `KILL TIDB` 语句生效。
 * `RESTRICTED_REPLICA_WRITER_ADMIN` 允许权限拥有者在 TiDB 集群开启了只读模式的情况下不受影响地执行写入或更新操作，详见 [`tidb_restricted_read_only` 配置项](/system-variables.md#tidb_restricted_read_only-从-v520-版本开始引入)。
+* `TRAFFIC_CAPTURE_ADMIN` 允许执行、查看和取消流量捕获任务。详见 [TiProxy 流量回放](/tiproxy/tiproxy-traffic-replay.md)。
+* `TRAFFIC_REPLAY_ADMIN` 允许执行、查看和取消流量回放任务。详见 [TiProxy 流量回放](/tiproxy/tiproxy-traffic-replay.md)。
 
 若要查看全部的动态权限，请执行 `SHOW PRIVILEGES` 语句。由于用户可使用插件来添加新的权限，因此可分配的权限列表可能因用户的 TiDB 安装情况而异。
 
@@ -505,6 +507,26 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 ### SET RESOURCE GROUP
 
 当系统变量 [`tidb_resource_control_strict_mode`](/system-variables.md#tidb_resource_control_strict_mode-从-v820-版本开始引入) 设置为 `ON` 时，你需要有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 权限才能执行该语句。
+
+### TRAFFIC CAPTURE
+
+需要拥有 `SUPER` 或者 `TRAFFIC_CAPTURE_ADMIN` 权限。
+
+### TRAFFIC REPLAY
+
+需要拥有 `SUPER` 或者 `TRAFFIC_REPLAY_ADMIN` 权限。
+
+### CANCEL TRAFFIC JOBS
+
+取消捕获任务，需要拥有 `SUPER` 或者 `TRAFFIC_CAPTURE_ADMIN` 权限。
+
+取消回放任务，需要拥有 `SUPER` 或者 `TRAFFIC_REPLAY_ADMIN` 权限。
+
+### SHOW TRAFFIC JOBS
+
+查看捕获任务，需要拥有 `SUPER` 或者 `TRAFFIC_CAPTURE_ADMIN` 权限。
+
+查看回放任务，需要拥有 `SUPER` 或者 `TRAFFIC_REPLAY_ADMIN` 权限。
 
 ## 权限系统的实现
 

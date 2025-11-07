@@ -157,7 +157,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 用于设置新建索引的长度限制。
 + 默认值：3072
 + 单位：Byte
-+ 目前的合法值范围 `[3072, 3072*4]`。MySQL 和 TiDB v3.0.11 之前版本（不包含 v3.0.11）没有此配置项，不过都对新建索引的长度做了限制。MySQL 对此的长度限制为 `3072`，TiDB 在 v3.0.7 以及之前版本该值为 `3072*4`，在 v3.0.7 之后版本（包含 v3.0.8、v3.0.9 和 v3.0.10）的该值为 `3072`。为了与 MySQL 和 TiDB 之前版本的兼容，添加了此配置项。
++ 取值范围：`[3072, 3072*4]`
++ 兼容性：
+    + MySQL：索引长度限制固定为 3072 字节。
+    + TiDB 早期版本：
+        + TiDB v3.0.7 及之前版本：索引长度限制固定为 3072 × 4 字节。
+        + TiDB v3.0.8 ~ v3.0.10：索引长度限制固定为 3072 字节。
+    + TiDB v3.0.11 及之后版本：新增了 `max-index-length` 配置项，用于兼容不同 TiDB 版本和 MySQL 的限制。
 
 ### `table-column-count-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -171,13 +177,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：64
 + 目前的合法值范围 `[64, 512]`。
 
-### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入，从 v8.1.0 版本开始废弃</span>
+### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
 > **警告：**
 >
-> 从 TiDB v8.1.0 开始，TiDB 已移除遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。
+> - 在 v8.1.0 到 v8.5.1 及其之间的版本中，TiDB 已移除遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。
+> - 从 v8.5.3 开始，TiDB 重新引入遥测功能，但其行为已更改为仅将遥测相关信息输出到日志文件，不再通过网络发送给 PingCAP。
 
-+ 在 v8.1.0 之前，用于控制是否在 TiDB 实例上开启遥测功能。
++ 用于控制是否在 TiDB 实例上开启遥测功能。
 + 默认值：false
 
 ### `deprecate-integer-display-length`
@@ -261,7 +268,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 > **注意：**
 >
-> - 标签 `zone` 在 TiDB 中具有特殊用途，用于指定服务器所在的区域信息，当设置 `zone` 为非空值时，对应的值会被自动用于 [`txn-score`](/system-variables.md#txn_scope) 和 [`Follower read`](/follower-read.md) 等功能。
+> - 标签 `zone` 在 TiDB 中具有特殊用途，用于指定服务器所在的区域信息，当设置 `zone` 为非空值时，对应的值会被自动用于 [`Follower read`](/follower-read.md) 功能。
 > - 标签 `group` 在 TiDB Operator 中具有特殊用途。对于使用 [TiDB Operator](/tidb-operator-overview.md) 部署的集群，建议不要手动指定此标签。
 
 ## log
@@ -420,6 +427,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + ssl 私钥文件路径，用于用 tls 连接 TiKV/PD
 + 默认值：""
+
+### `cluster-verify-cn`
+
++ 客户端提供的证书中，可接受的 X.509 通用名称列表。仅当提供的通用名称与列表中的条目之一完全匹配时，才会允许其请求。
++ 默认值：[]，表示禁用客户端证书 CN 检查。
 
 ### `spilled-file-encryption-method`
 
@@ -609,14 +621,18 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `concurrently-init-stats` <span class="version-mark">从 v8.1.0 和 v7.5.2 版本开始引入</span>
 
-+ 用于控制 TiDB 启动时是否并发初始化统计信息。
-+ 默认值：`false`
+> **警告：**
+>
+> 从 v9.0.0 开始，`concurrently-init-stats` 配置项被废弃，TiDB 启动时始终并发初始化统计信息。
+
++ 用于控制 TiDB 启动时是否并发初始化统计信息。该配置项仅在 [`lite-init-stats`](#lite-init-stats-从-v710-版本开始引入) 为 `false` 时生效。
++ 默认值：在 v8.2.0 之前版本中为 `false`，在 v8.2.0 及之后版本中为 `true`。
 
 ### `lite-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 + 用于控制 TiDB 启动时是否采用轻量级的统计信息初始化。
 + 默认值：在 v7.2.0 之前版本中为 `false`，在 v7.2.0 及之后的版本中为 `true`。
-+ 当 `lite-init-stats` 为 `true` 时，统计信息初始化时列和索引的直方图、TopN、Count-Min Sketch 均不会加载到内存中。当 `lite-init-stats` 为 `false` 时，统计信息初始化时索引和主键的直方图、TopN、Count-Min Sketch 会被加载到内存中，非主键列的直方图、TopN、Count-Min Sketch 不会加载到内存中。当优化器需要某一索引或者列的直方图、TopN、Count-Min Sketch 时，这些统计信息会被同步或异步加载到内存中（由 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) 控制）。
++ 当 `lite-init-stats` 为 `true` 时，统计信息初始化时列和索引的直方图、TopN、Count-Min Sketch 均不会加载到内存中。当 `lite-init-stats` 为 `false` 时，统计信息初始化时索引的直方图、TopN、Count-Min Sketch 会被加载到内存中，主键和列的直方图、TopN、Count-Min Sketch 不会加载到内存中。当优化器需要某一主键或列的直方图、TopN、Count-Min Sketch 时，这些统计信息会被同步或异步加载到内存中（由 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) 控制）。
 + 将 `lite-init-stats` 设置为 true，可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。详情请参考[统计信息的加载](/statistics.md#加载统计信息)。
 
 ### `force-init-stats` <span class="version-mark">从 v6.5.7 和 v7.1.0 版本开始引入</span>
@@ -698,6 +714,14 @@ opentracing.reporter 相关的设置。
 + reporter 向 jaeger-agent 发送 span 的地址。
 + 默认值：""
 
+## pd-client
+
+### `pd-server-timeout`
+
++ TiDB 通过 PD Client 向 PD 节点发送请求的超时时间。
++ 默认值：3
++ 单位：秒
+
 ## tikv-client
 
 ### `grpc-connection-count`
@@ -764,7 +788,7 @@ opentracing.reporter 相关的设置。
 
 ### `overload-threshold`
 
-+ TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
++ TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。该配置项仅在 [`tikv-client.max-batch-size`](#max-batch-size) 和 [`tikv-client.max-batch-wait-time`](#max-batch-wait-time) 的值均大于 0 时有效，不推荐修改该值。
 + 默认值：200
 
 ### `copr-req-timeout` <span class="version-mark">从 v7.5.0 版本开始引入</span>
@@ -788,7 +812,7 @@ opentracing.reporter 相关的设置。
 
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
-本部分介绍 Coprocessor Cache 相关的配置项。
+本部分介绍 [Coprocessor Cache](/coprocessor-cache.md) 相关的配置项。
 
 ### `capacity-mb`
 
