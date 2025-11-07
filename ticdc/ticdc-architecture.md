@@ -150,7 +150,7 @@ spec:
 <SimpleTab>
 <div label="TiUP">
 
-使用 TiUP 在原有 TiDB 集群中部署启用新架构的 TiCDC 组件可以参考以下步骤：
+以下为通过 TiUP 在原有 TiDB 集群中部署启用新架构的 TiCDC 组件的步骤：
 
 1. 如果你的 TiDB 集群中尚无 TiCDC 节点，参考[扩容 TiCDC 节点](/scale-tidb-using-tiup.md#扩容-ticdc-节点)在集群中扩容新的 TiCDC 节点，否则跳过该步骤。
 
@@ -199,7 +199,7 @@ spec:
 </div>
 <div label="TiDB Operator">
 
-使用 TiDB Operator 在原有 TiDB 集群中部署启用新架构的 TiCDC 组件可以参考以下步骤：
+以下为通过 TiDB Operator 在原有 TiDB 集群中部署启用新架构的 TiCDC 组件的步骤：
 
 - 如果现有 TiDB 集群中没有 TiCDC 组件，参考[在现有 TiDB 集群上新增 TiCDC 组件](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-ticdc/#在现有-tidb-集群上新增-ticdc-组件)在集群中扩容新的 TiCDC 节点。操作时，只需在集群配置文件中将 TiCDC 的镜像版本指定为新架构版本即可。
 
