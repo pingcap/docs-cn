@@ -154,6 +154,12 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | `CLOUD_STORAGE_URI` | 所有文件格式 | 指定编码后的 KV 数据[全局排序](/tidb-global-sort.md)的目标存储地址。未指定该参数时，`IMPORT INTO` 会根据系统变量 [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) 的值来确定是否使用全局排序，如果该系统变量指定了目标存储地址，就使用指定的地址进行全局排序。当指定该参数时，如果参数值不为空，`IMPORT INTO` 会使用该参数值作为目标存储地址；如果参数值为空，则表示强制使用本地排序。目前目标存储地址仅支持 Amazon S3，具体 Amazon S3 URI 格式配置，请参见 [Amazon S3 URI 格式](/external-storage-uri.md#amazon-s3-uri-格式)。注意当使用该功能时，所有 TiDB 节点都需要有目标 Amazon S3 bucket 的读写权限，至少包括 `s3:ListBucket`、`s3:GetObject`、`s3:DeleteObject`、`s3:PutObject`、`s3:AbortMultipartUpload`。 |
 | `DISABLE_PRECHECK` | 所有文件格式、`SELECT` 语句的查询结果 | 设置该选项后会关闭非 critical 的前置检查项，如检查是否存在 CDC 或 PITR 等任务。 |
 
+<CustomContent plan="premium">
+> **注意：**
+>
+> 在 TiDB Cloud Premium 中，`DISK_QUOTA=`，`THREAD`, `MAX_WRITE_SPEED`, `CLOUD_STORAGE_URI` 这 4 个参数的值由系统自动计算与管理，且无法手动修改。如需将其设置为特定值，请联系 [TiDB Cloud support](/tidb-cloud/tidb-cloud-support.md)。
+</CustomContent>
+
 ## `IMPORT INTO ... FROM FILE` 使用说明
 
 `IMPORT INTO ... FROM FILE` 支持导入存储在 Amazon S3、GCS 和 TiDB 本地的数据文件。

@@ -1429,6 +1429,12 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 单位：字节
 - 这个变量仅在 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 开启的情况下生效，用于设置创建索引的回填过程中本地存储空间的使用限制。
 
+<CustomContent plan="premium">
+> **注意：**
+>
+> 在 TiDB Cloud Premium 中，使用云存储存储回填过程中的索引数据，因此不再使用该参数.
+</CustomContent>
+
 ### `tidb_ddl_enable_fast_reorg` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -1539,6 +1545,12 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 * 当全局排序关闭时，同一时刻只有 1 个 TiDB 节点向 TiKV 写入，此时每个 TiKV 节点的最大写入带宽为 `100MiB`。
 * 当全局排序开启时，同一时刻所有 4 个 TiDB 节点都能向 TiKV 写入，此时每个 TiKV 节点的最大写入带宽为 `4 * 100MiB = 400MiB`。
 
+<CustomContent plan="premium">
+> **注意：**
+>
+> 在 TiDB Cloud Premium 中，该参数的值由系统自动计算与管理，且无法手动修改。如需将其设置为特定值，请联系 [TiDB Cloud support](/tidb-cloud/tidb-cloud-support.md)。
+</CustomContent>
+
 ### `tidb_ddl_reorg_worker_cnt`
 
 - 作用域：SESSION | GLOBAL
@@ -1551,6 +1563,12 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的并发度。
 - 从 v8.3.0 版本开始，该参数支持 SESSION 级别的设置，因此修改 GLOBAL 级别的参数值不会影响当前正在运行的 DDL，而只会对新建 SESSION 中提交的 DDL 生效。
 - 从 v8.5.0 版本开始，该参数可以通过 `ADMIN ALTER DDL JOBS <job_id> BATCH_SIZE = <new_batch_size>;` 来修改。不支持修改开启了 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 的 `ADD INDEX` DDL。更多详情，请见 [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md)。
+
+<CustomContent plan="premium">
+> **注意：**
+>
+> 在 TiDB Cloud Premium 中，对于创建索引的 DDL 作业该变量的取值由系统自动计算与管理，手动修改不会生效。如需将其设置为特定值并生效，请联系 [TiDB Cloud support](/tidb-cloud/tidb-cloud-support.md)。
+</CustomContent>
 
 ### `tidb_enable_fast_create_table` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 

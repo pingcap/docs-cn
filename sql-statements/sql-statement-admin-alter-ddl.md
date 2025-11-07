@@ -29,6 +29,12 @@ ADMIN ALTER DDL JOBS 101 THREAD = 8;
 
   以上设置，当前仅对关闭 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 后，提交并运行中的 `ADD INDEX` 的作业生效。
 
+<CustomContent plan="premium">
+> **注意：**
+>
+> 在 TiDB Cloud Premium 中，添加索引或修改运行中的索引作业时 `THREAD` 和 `MAX_WRITE_SPEED` 参数的值由系统自动计算与管理，且无法手动修改。如需将其设置为特定值，请联系 [TiDB Cloud support](/tidb-cloud/tidb-cloud-support.md)。
+</CustomContent>
+
 - `MODIFY COLUMN`：
     - `THREAD`：并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
     - `BATCH_SIZE`：批大小，初始值由系统变量 `tidb_ddl_reorg_batch_size` 设置。
