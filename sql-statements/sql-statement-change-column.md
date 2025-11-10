@@ -34,7 +34,7 @@ ColumnOption
            | 'AUTO_INCREMENT'
            | 'PRIMARY'? 'KEY' ( 'CLUSTERED' | 'NONCLUSTERED' )?
            | 'UNIQUE' 'KEY'?
-           | 'DEFAULT' ( NowSymOptionFraction | SignedLiteral | NextValueForSequence )
+           | 'DEFAULT' DefaultValueExpr
            | 'SERIAL' 'DEFAULT' 'VALUE'
            | 'ON' 'UPDATE' NowSymOptionFraction
            | 'COMMENT' stringLit
@@ -48,6 +48,13 @@ ColumnOption
 
 ColumnName ::=
     Identifier ( '.' Identifier ( '.' Identifier )? )?
+
+DefaultValueExpr ::=
+    NowSymOptionFractionParentheses
+|   SignedLiteral
+|   NextValueForSequenceParentheses
+|   BuiltinFunction
+|   '(' SignedLiteral ')'
 ```
 
 ## 示例
