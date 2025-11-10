@@ -128,7 +128,7 @@ cdc_servers:
 </div>
 <div label="TiDB Operator">
 
-在使用 TiDB Operator 部署 v8.5.4 或者以上版本的全新 TiDB 集群时，支持同时部署启用新架构的 TiCDC 组件。你需要在集群配置文件中加入 TiCDC 组件相关的部分并设置 `newarch: true` 以启用新架构，以下是一个示例：
+在使用 TiDB Operator 部署 v8.5.4 或者以上版本的全新 TiDB 集群时，支持同时部署启用新架构的 TiCDC 组件。你需要在集群配置文件中加入 TiCDC 组件相关的部分并设置 `newarch = true` 以启用新架构，以下是一个示例：
 
 ```yaml
 spec:
