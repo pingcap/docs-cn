@@ -116,6 +116,8 @@ ADMIN SHOW DDL JOBS 1;
 - 在索引可见前开始进行统计信息收集。
 - 若 Analyze 超时，[`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) 和 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 将不会同步等待 Analyze 完成，而是继续执行后续流程，使索引提前对用户可见。这意味着，该新索引的统计信息会在 Analyze 异步完成后更新。
 
+示例：
+
 ```sql
 CREATE TABLE s (a VARCHAR(10), INDEX idx (a));
 Query OK, 0 rows affected (0.012 sec)
