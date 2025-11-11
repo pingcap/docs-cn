@@ -101,9 +101,9 @@ SHOW COLLATION WHERE CHARSET = 'gb18030';
 
 * TiFlash、TiDB Data Migration (DM) 和 TiCDC 目前不支持 GB18030 字符集。
 
-* Dumpling 在 v9.0.0 之前不支持导出 charset=GB18030 的表，TiDB Lightning 在 v9.0.0 之前不支持导入 charset=GB18030 的表。
+* 在 v9.0.0 之前，Dumpling 不支持导出 `charset=GB18030` 的表，TiDB Lightning 不支持导入 `charset=GB18030` 的表。
 
-* TiDB Backup & Restore（BR）在 v9.0.0 之前不支持备份恢复 charset=GB18030 的表。另外，任何版本的 BR 都不支持恢复 charset=GB18030 的表到 v9.0.0 之前的平凯数据库集群。
+* 在 v9.0.0 之前，TiDB Backup & Restore（BR）不支持备份恢复 `charset=GB18030` 的表。另外，任何版本的 BR 都不支持恢复 `charset=GB18030` 的表到 v9.0.0 之前的平凯数据库集群。
 
 ## 另请参阅
 
