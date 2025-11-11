@@ -3342,7 +3342,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 可选值：`disable`，`standard`, `priority`
 - 该变量用于设置 TiDB 实例的全局内存管理模式，详见 [TiDB 内存控制](/configure-memory-usage.md#全局内存管理架构)：
     - `disable` 表示禁用内存仲裁模式，保持内存资源 [先使用后上报](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的机制。
-    - `standard` 和 `priority` 为先订阅后分配模式：
     - `standard` 表示启用标准内存仲裁模式。使用内存资源时，先向内存仲裁者进行订阅，成功后再分配内存资源。当订阅内存资源失败后，查询请求终止执行。
         - `priority`：TiDB 根据 SQL 的[资源组优先级](/information-schema/information-schema-resource-groups.md) 处理内存资源订阅任务
 
