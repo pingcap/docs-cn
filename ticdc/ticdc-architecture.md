@@ -111,7 +111,7 @@ TiCDC 新架构仅支持 v7.5.0 或者以上版本的 TiDB 集群，使用之前
 <SimpleTab>
 <div label="TiUP">
 
-在使用 TiUP 部署 v8.5.4 或者以上版本的全新 TiDB 集群时，支持同时部署启用新架构的 TiCDC 组件。你需要在 TiUP 启动 TiDB 集群时的配置文件中加入 TiCDC 组件相关的部分并设置 `newarch: true` 以启用新架构，以下是一个示例：
+使用 TiUP 部署 v8.5.4 或者以上版本的全新 TiDB 集群时，可以同时部署启用新架构的 TiCDC 组件。你需要在 TiUP 启动 TiDB 集群时的配置文件中添加 TiCDC 组件相关配置，并设置 `newarch: true` 以启用新架构，以下是一个示例：
 
 ```yaml
 cdc_servers:
@@ -128,7 +128,7 @@ cdc_servers:
 </div>
 <div label="TiDB Operator">
 
-在使用 TiDB Operator 部署 v8.5.4 或者以上版本的全新 TiDB 集群时，支持同时部署启用新架构的 TiCDC 组件。你需要在集群配置文件中加入 TiCDC 组件相关的部分并设置 `newarch = true` 以启用新架构，以下是一个示例：
+使用 TiDB Operator 部署 v8.5.4 或者以上版本的全新 TiDB 集群时，可以同时部署启用新架构的 TiCDC 组件。你需要在集群配置文件中添加 TiCDC 组件配置，并设置 `newarch = true` 以启用新架构，以下是一个示例：
 
 ```yaml
 spec:
@@ -201,7 +201,7 @@ spec:
 
 以下为通过 TiDB Operator 在原有 TiDB 集群中部署启用新架构的 TiCDC 组件的步骤：
 
-- 如果现有 TiDB 集群中没有 TiCDC 组件，参考[在现有 TiDB 集群上新增 TiCDC 组件](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-ticdc/#在现有-tidb-集群上新增-ticdc-组件)在集群中扩容新的 TiCDC 节点。操作时，只需在集群配置文件中将 TiCDC 的镜像版本指定为新架构版本即可。版本号信息可参考 [TiCDC 新架构版本发布列表](https://github.com/pingcap/ticdc/releases)。
+- 如果现有 TiDB 集群中没有 TiCDC 组件，参考[在现有 TiDB 集群上新增 TiCDC 组件](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-ticdc/#在现有-tidb-集群上新增-ticdc-组件)在集群中添加新的 TiCDC 节点。操作时，只需在集群配置文件中将 TiCDC 的镜像版本指定为新架构版本即可。版本号信息可参考 [TiCDC 新架构版本发布列表](https://github.com/pingcap/ticdc/releases)。
 
     示例如下：
 
@@ -280,6 +280,6 @@ cdc cli changefeed query -s --server=http://127.0.0.1:8300 --changefeed-id=simpl
 
 ## 监控
 
-TiCDC 新架构的监控面板为 **TiCDC-New-Arch**。对于 v8.5.4 及以上版本的 TiDB 集群，该监控面板已在集群部署或升级时集成到 Grafana，无需手动操作。如果你的集群版本低于 v8.5.4，需手动导入 [TiCDC 监控指标文件](https://github.com/pingcap/ticdc/blob/master/metrics/grafana/ticdc_new_arch.json) 以启用监控。
+TiCDC 新架构的监控面板为 **TiCDC-New-Arch**。对于 v8.5.4 及以上版本的 TiDB 集群，该监控面板已在集群部署或升级时自动集成到 Grafana 中，无需手动操作。如果你的集群版本低于 v8.5.4，需手动导入 [TiCDC 监控指标文件](https://github.com/pingcap/ticdc/blob/master/metrics/grafana/ticdc_new_arch.json) 以启用监控。
 
 导入步骤以及各监控指标的详细说明，请参考 [TiCDC 新架构监控指标](/ticdc/monitor-ticdc.md#ticdc-新架构监控指标)。
