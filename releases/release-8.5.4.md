@@ -34,11 +34,16 @@ TiDB 版本：8.5.4
 
 - 新增 TiFlash 配置项 [`graceful_wait_shutdown_timeout`](https://docs.pingcap.com/zh/tidb/v8.5/tiflash-configuration#graceful_wait_shutdown_timeout-从-v854-版本开始引入)，用于控制在关闭 TiFlash 服务器时的最长等待时间，默认值为 `600` 秒。在此期间，TiFlash 允许尚未完成的 MPP 任务继续执行，但不再接收新的 MPP 任务。如果所有正在运行的 MPP 任务都在此超时时间之前完成，TiFlash 将立即关闭；否则将在等待时间结束后强制关闭。 [#10266](https://github.com/pingcap/tiflash/issues/10266) @[gengliqi](https://github.com/gengliqi) <!--tw@qiancai -->
 
+### MySQL 兼容性
+
+从 v8.5.4 开始，当写入 `DECIMAL` 类型的数据时，TiDB 的行为和 MySQL 保持一致：如果小数位数超过字段定义的小数位数，无论超出多少，TiDB 都会自动截断多余的位数并成功插入。在之前的 TiDB 版本中，如果写入的 `DECIMAL` 类型数据的小数位数超过 72 位，写入会失败并报错。更多信息，请参考[使用 JDBC 连接到 TiDB](/develop/dev-guide-sample-application-java-jdbc.md#mysql-兼容性)。
+
 ## 改进提升
 
 + TiDB <!--tw@Oreoxmt: 11 notes-->
 
     - 支持表级别数据打散（实验特性）：你可以通过 [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql-statement-show-distribution-jobs.md) 语句查看某张表在集群中所有 TiKV 节点上的数据分布情况。如果存在数据分布不均衡，可以通过 [`DISTRIBUTE TABLE`](/sql-statements/sql-statement-distribute-table.md) 语句对该表进行数据打散，以提升负载均衡性 [#63260](https://github.com/pingcap/tidb/issues/63260) @[bufferflies](https://github.com/bufferflies) <!--tw@qiancai-->
+    - 支持[内嵌于 DDL 的 Analyze](/ddl_embedded_analyze.md) 特性，以避免新建或重组索引后因统计信息暂不可用而导致优化器估算不准，从而引起执行计划变更的问题 [#57948](https://github.com/pingcap/tidb/issues/57948) @[terry1purcell](https://github.com/terry1purcell) @[AilinKid](https://github.com/AilinKid) <!--tw@hfxsd -->
     - (dup): release-9.0.0.md(beta.1) > # SQL 功能 - 支持对分区表的非唯一列创建[全局索引](/partitioned-table.md#全局索引)，以提升全局索引的易用性 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014) @[mjonss](https://github.com/mjonss)
     - (dup): release-9.0.0.md(beta.1) > 改进提升> TiDB - 支持由 `IN` 子查询而来的 Semi Join 使用 `semi_join_rewrite` 的 Hint [#58829](https://github.com/pingcap/tidb/issues/58829) @[qw4990](https://github.com/qw4990)
     - 优化系统变量 `tidb_opt_ordering_index_selectivity_ratio` 生效时的估算策略 [#62817](https://github.com/pingcap/tidb/issues/62817) @[terry1purcell](https://github.com/terry1purcell)
