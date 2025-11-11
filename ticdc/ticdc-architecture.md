@@ -132,12 +132,12 @@ cdc_servers:
 
 ```yaml
 spec:
-    ticdc:
+  ticdc:
     baseImage: pingcap/ticdc
     version: v8.5.4
     replicas: 3
     config:
-        newarch = true
+      newarch = true
 ```
 
 更多 TiCDC 部署信息，请参考[全新部署 TiDB 集群同时部署 TiCDC](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-ticdc/#在现有-tidb-集群上新增-ticdc-组件)。
