@@ -98,7 +98,7 @@ SELECT
 SHOW CHARACTER SET;
 ```
 
-```sql
+```
 +---------+-------------------------------------+--------------------+--------+
 | Charset | Description                         | Default collation  | Maxlen |
 +---------+-------------------------------------+--------------------+--------+
@@ -119,7 +119,7 @@ TiDB 支持以下排序规则：
 SHOW COLLATION;
 ```
 
-```sql
+```
 +--------------------+---------+-----+---------+----------+---------+---------------+
 | Collation          | Charset | Id  | Default | Compiled | Sortlen | Pad_attribute |
 +--------------------+---------+-----+---------+----------+---------+---------------+
@@ -525,7 +525,6 @@ SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled
 在新的排序规则框架下，TiDB 能够支持 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci`、`utf8mb4_unicode_ci`、`utf8mb4_0900_bin`、`utf8mb4_0900_ai_ci`、`gbk_chinese_ci`、`gbk_bin`、`gb18030_chinese_ci` 和 `gb18030_bin` 这几种排序规则，与 MySQL 兼容。
 
 使用 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci`、`utf8mb4_unicode_ci`、`utf8mb4_0900_ai_ci`、`gbk_chinese_ci` 和 `gb18030_chinese_ci` 中任一种时，字符串之间的比较是大小写不敏感 (case-insensitive) 和口音不敏感 (accent-insensitive) 的。同时，TiDB 还修正了排序规则的 `PADDING` 行为：
-
 
 ```sql
 CREATE TABLE t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci PRIMARY KEY);
