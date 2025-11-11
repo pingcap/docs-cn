@@ -37,7 +37,7 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 
 ### 排序规则兼容性
 
-MySQL 的 GBK 字符集默认排序规则是 `gbk_chinese_ci`。TiDB 的 GBK 字符集的默认排序规则取决于 TiDB 配置项[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 的值：
+MySQL 的 GBK 字符集默认排序规则是 `gbk_chinese_ci`。TiDB 的 GBK 字符集的默认排序规则取决于 TiDB 配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 的值：
 
 - 默认情况下，TiDB 配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 为 `true`，表示开启[新的排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)。GBK 字符集的默认排序规则是 `gbk_chinese_ci`。
 - 当 TiDB 配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 为 `false` 时，表示关闭新的排序规则框架，GBK 字符集的默认排序规则是 `gbk_bin`。
