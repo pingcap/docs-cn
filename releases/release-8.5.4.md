@@ -15,9 +15,9 @@ TiDB 版本：8.5.4
 
 ### 系统变量
 
-- 系统变量 [`tidb_mpp_store_fail_ttl`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables/#tidb_mpp_store_fail_ttl) 默认值从 `60s` 修改为 `0s`，意味着 TiDB 不再需要额外等待即可向新启动的 TiFlash 节点发送查询请求，无需再通过延迟来避免查询失败 [#61826](https://github.com/pingcap/tidb/issues/61826) @[gengliqi](https://github.com/gengliqi) <!--tw@qiancai -->
+- 系统变量 [`tidb_mpp_store_fail_ttl`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables/#tidb_mpp_store_fail_ttl) 默认值从 `60s` 修改为 `0s`，意味着 TiDB 不再需要额外等待即可向新启动的 TiFlash 节点发送查询请求，无需再通过延迟来避免查询失败 [#61826](https://github.com/pingcap/tidb/issues/61826) @[gengliqi](https://github.com/gengliqi) <!--tw@qiancai-->
 
-- 系统变量 [`tidb_replica_read`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables/#tidb_replica_read-从-v40-版本开始引入) 从 v8.5.4 开始仅对只读 SQL 语句生效，以提高数据读取的安全性并减少与其他功能的重叠 [#62856](https://github.com/pingcap/tidb/issues/62856) @[you06](https://github.com/you06) <!--tw@qiancai -->
+- 系统变量 [`tidb_replica_read`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables/#tidb_replica_read-从-v40-版本开始引入) 从 v8.5.4 开始仅对只读 SQL 语句生效，以提高数据读取的安全性并减少与其他功能的重叠 [#62856](https://github.com/pingcap/tidb/issues/62856) @[you06](https://github.com/you06) <!--tw@qiancai-->
 
 - 新增以下系统变量：
 
@@ -32,7 +32,7 @@ TiDB 版本：8.5.4
     - 废弃配置项：[`region-compact-check-interval`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#region-compact-check-interval)、[`region-compact-check-step`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#region-compact-check-step)、[`region-compact-min-tombstones`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#region-compact-min-tombstones)、[`region-compact-tombstones-percent`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#region-compact-tombstones-percent)、[`region-compact-min-redundant-rows`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#region-compact-min-redundant-rows-从-v710-版本开始引入) 和 [`region-compact-redundant-rows-percent`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#region-compact-redundant-rows-percent-从-v710-版本开始引入)。
     - 新增配置项：[`gc.auto-compaction.check-interval`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#check-interval-从-v757-和-v854-版本开始引入)、[`gc.auto-compaction.tombstone-num-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#tombstone-num-threshold-从-v757-和-v854-版本开始引入)、[`gc.auto-compaction.tombstone-percent-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#tombstone-percent-threshold-从-v757-和-v854-版本开始引入)、[`gc.auto-compaction.redundant-rows-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#redundant-rows-threshold-从-v757-和-v854-版本开始引入)、[`gc.auto-compaction.redundant-rows-percent-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#redundant-rows-percent-threshold-从-v757-和-v854-版本开始引入) 和 [`gc.auto-compaction.bottommost-level-force`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#bottommost-level-force-从-v757-和-v854-版本开始引入)。
 
-- 新增 TiFlash 配置项 [`graceful_wait_shutdown_timeout`](https://docs.pingcap.com/zh/tidb/v8.5/tiflash-configuration#graceful_wait_shutdown_timeout-从-v854-版本开始引入)，用于控制在关闭 TiFlash 服务器时的最长等待时间，默认值为 `600` 秒。在此期间，TiFlash 允许尚未完成的 MPP 任务继续执行，但不再接收新的 MPP 任务。如果所有正在运行的 MPP 任务都在此超时时间之前完成，TiFlash 将立即关闭；否则将在等待时间结束后强制关闭。 [#10266](https://github.com/pingcap/tiflash/issues/10266) @[gengliqi](https://github.com/gengliqi) <!--tw@qiancai -->
+- 新增 TiFlash 配置项 [`graceful_wait_shutdown_timeout`](https://docs.pingcap.com/zh/tidb/v8.5/tiflash-configuration#graceful_wait_shutdown_timeout-从-v854-版本开始引入)，用于控制在关闭 TiFlash 服务器时的最长等待时间，默认值为 `600` 秒。在此期间，TiFlash 允许尚未完成的 MPP 任务继续执行，但不再接收新的 MPP 任务。如果所有正在运行的 MPP 任务都在此超时时间之前完成，TiFlash 将立即关闭；否则将在等待时间结束后强制关闭。 [#10266](https://github.com/pingcap/tiflash/issues/10266) @[gengliqi](https://github.com/gengliqi) <!--tw@qiancai-->
 
 ### MySQL 兼容性
 
