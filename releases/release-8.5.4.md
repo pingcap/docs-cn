@@ -36,7 +36,7 @@ TiDB 版本：8.5.4
 
 ### MySQL 兼容性
 
-从 v8.5.4 开始，当写入 `DECIMAL` 类型的数据时，TiDB 的行为和 MySQL 保持一致：如果小数位数超过字段定义的小数位数，无论超出多少，TiDB 都会自动截断多余的位数并成功插入。在之前的 TiDB 版本中，如果写入的 `DECIMAL` 类型数据的小数位数超过 72 位，写入会失败并报错。更多信息，请参考[使用 JDBC 连接到 TiDB](/develop/dev-guide-sample-application-java-jdbc.md#mysql-兼容性)。
+从 v8.5.4 开始，当写入 `DECIMAL` 类型的数据时，TiDB 的行为和 MySQL 保持一致：如果小数位数超过字段定义的小数位数，无论超出多少，TiDB 都会自动截断多余的位数并成功插入。在之前的 TiDB 版本中，如果写入的 `DECIMAL` 类型数据的小数位数超过 72 位，写入会失败并报错。更多信息，请参考[使用 JDBC 连接到 TiDB](https://docs.pingcap.com/zh/tidb/v8.5/dev-guide-sample-application-java-jdbc/#mysql-兼容性)。
 
 ## 改进提升
 
