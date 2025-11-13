@@ -427,7 +427,7 @@ CA 证书是客户端和服务端相互校验的依据，所以如果需要替�
     sudo openssl x509 -req -in server-req.new.pem -days 365000 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 -out server-cert.new.pem
     ```
 
-3. 配置 TiDB 使用上面新生成的服务端密钥和证书并重启。将文件放置在[配置 TiDB 服务端](#配置-tidb-服务端)一节中指定的位置。
+3. 配置 TiDB 使用上面新生成的服务端密钥和证书并重启。将文件放置在[配置 TiDB 服务端](#配置-tidb-服务端)一节中指定的目录中。
 
     ```sql
     ALTER INSTANCE RELOAD TLS;
