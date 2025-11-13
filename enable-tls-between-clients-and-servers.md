@@ -49,7 +49,7 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的安全连接�
 
 ## 配置 TiProxy 使用 TLS 连接
 
-如需启用 [TiProxy](/tiproxy/tiproxy-overview.md) 的 TLS 连接支持，可以在 TiProxy 配置文件中指定 [`sql-tls`](/tiproxy/tiproxy-configuration.md#sql-tls) 配置项。关于该配置项的详细说明，以及如何为后端连接启用 TLS，请参考 [TiProxy 安全性](/tiproxy/tiproxy-overview.md#security)。
+如需启用 [TiProxy](/tiproxy/tiproxy-overview.md) 的 TLS 连接支持，可以在 TiProxy 配置文件中指定 [`sql-tls`](/tiproxy/tiproxy-configuration.md#sql-tls) 配置项。关于该配置项的详细说明，以及如何为后端连接启用 TLS，请参考 [TiProxy 安全性](/tiproxy/tiproxy-overview.md#安全)。
 
 ## 配置 MySQL Client 使用 TLS 连接
 
