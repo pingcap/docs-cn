@@ -194,7 +194,7 @@ client-cert.pem: OK
 
 修改 TiDB 配置文件中的 `[security]` 段。这一步指定 CA 证书、服务端密钥和服务端证书存放的路径。可将 `path/to/server-cert.pem`、`path/to/server-key.pem` 和 `path/to/ca-cert.pem` 替换成实际的路径。
 
-```
+```toml
 [security]
 ssl-cert = "path/to/server-cert.pem"
 ssl-key = "path/to/server-key.pem"
