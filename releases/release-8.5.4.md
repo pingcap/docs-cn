@@ -90,7 +90,7 @@ TiDB 版本：8.5.4
 
             新架构在完全兼容 [TiCDC 老架构](/ticdc/ticdc-classic-architecture)的配置项、使用方式和 API 的基础上，对 TiCDC 核心组件与数据处理流程进行了重构与优化。
 
-            使用新架构时，TiCDC 同步能力接近线性扩展，并能以更低的资源成本完成百万级表的同步任务。在高写入负载、频繁 DDL 操作以及集群扩缩容的场景下，Changefeed 的延迟更低且更加稳定。需要注意的是，该新架构目前存在一些[使用限制](/ticdc/ticdc-architecture.md#limitations)。
+            启用新架构后，TiCDC 的同步能力可实现接近线性的扩展，并能以更低的资源成本完成百万级表的同步任务。在高写入负载、频繁 DDL 操作以及集群扩缩容的场景下，Changefeed 的延迟更低且更加稳定。需要注意的是，该新架构目前存在一些[使用限制](/ticdc/ticdc-architecture.md#使用限制)。
 
             如需启用新架构，可将 TiCDC 配置项 [`newarch`](/ticdc/ticdc-server-config.md#newarch-new-in-v854-release1) 设置为 `true`。
 
