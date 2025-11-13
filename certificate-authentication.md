@@ -45,7 +45,7 @@ TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不�
 
 3. 输入证书细节信息，示例如下：
 
-  ```bash
+    ```bash
     Country Name (2 letter code) [AU]:US
     State or Province Name (full name) [Some-State]:California
     Locality Name (eg, city) []:San Francisco
