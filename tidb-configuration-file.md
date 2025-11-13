@@ -1015,7 +1015,7 @@ TiDB 服务状态相关配置。
 ### `tidb_stats_cache_mem_quota` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
 + 这个变量用于控制 TiDB 统计信息缓存的内存使用上限。
-+ 该值作为系统变量 [`tidb_stats_cache_mem_quota`](/system-variables.md#tidb_stats_cache_mem_quota-从-v640-版本开始引入) 的初始值。
++ 该值作为系统变量 [`tidb_stats_cache_mem_quota`](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入) 的初始值。
 + 默认值: 0
 + 取值范围: `[0, 1099511627776]`
 + 单位：字节
