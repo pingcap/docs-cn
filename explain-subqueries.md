@@ -276,7 +276,7 @@ CREATE TABLE order_details (
     order_id INT,
     product_id INT,
     quantity INT,
-    discount_price DECIMAL(10, 2) -- 这笔交易中，该产品享受的折扣价
+    discount_price DECIMAL(10, 2)
 );
 ```
 
@@ -287,6 +287,21 @@ tidb> EXPLAIN SELECT product_id, product_name, unit_price FROM products WHERE un
 +------------------------------+----------+-----------+---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | HashJoin_27                  | 10000.00 | root      |                     | CARTESIAN inner join, other cond:or(and(lt(test.products.unit_price, Column#9), if(ne(Column#10, 0), NULL, 1)), or(eq(Column#11, 0), if(isnull(test.products.unit_price), NULL, 0))) |
 | ├─HashAgg_55(Build)          | 1.00     | root      |                     | funcs:min(Column#16)->Column#9, funcs:sum(Column#17)->Column#10, funcs:count(1)->Column#11                                                                                           |
+| │ └─Projection_82            | 8000.00  | root      |                     | test.order_details.discount_price->Column#16, cast(isnull(test.order_details.discount_price), decimal(20,0) BINARY)->Column#17                                                       |
+| │   └─HashAgg_66             | 8000.00  | root      |                     | group by:test.order_details.discount_price, funcs:firstrow(test.order_details.discount_price)->test.order_details.discount_price                                                     |
+| │     └─TableReader_67       | 8000.00  | root      |                     | data:HashAgg_59                                                                                                                                                                      |
+| │       └─HashAgg_59         | 8000.00  | cop[tikv] |                     | group by:test.order_details.discount_price,                                                                                                                                          |
+| │         └─TableFullScan_65 | 10000.00 | cop[tikv] | table:order_details | keep order:false, stats:pseudo                                                                                                                                                       |
+| └─TableReader_30(Probe)      | 10000.00 | root      |                     | data:TableFullScan_29                                                                                                                                                                |
+|   └─TableFullScan_29         | 10000.00 | cop[tikv] | table:products      | keep order:false, stats:pseudo                                                                                                                                                       |
++------------------------------+----------+-----------+---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+tidb> EXPLAIN SELECT product_id, product_name, unit_price FROM products WHERE unit_price > ALL (SELECT DISTINCT discount_price FROM order_details  ); 
++------------------------------+----------+-----------+---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                           | estRows  | task      | access object       | operator info                                                                                                                                                                        |
++------------------------------+----------+-----------+---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| HashJoin_27                  | 10000.00 | root      |                     | CARTESIAN inner join, other cond:or(and(gt(test.products.unit_price, Column#9), if(ne(Column#10, 0), NULL, 1)), or(eq(Column#11, 0), if(isnull(test.products.unit_price), NULL, 0))) |
+| ├─HashAgg_55(Build)          | 1.00     | root      |                     | funcs:max(Column#16)->Column#9, funcs:sum(Column#17)->Column#10, funcs:count(1)->Column#11                                                                                           |
 | │ └─Projection_82            | 8000.00  | root      |                     | test.order_details.discount_price->Column#16, cast(isnull(test.order_details.discount_price), decimal(20,0) BINARY)->Column#17                                                       |
 | │   └─HashAgg_66             | 8000.00  | root      |                     | group by:test.order_details.discount_price, funcs:firstrow(test.order_details.discount_price)->test.order_details.discount_price                                                     |
 | │     └─TableReader_67       | 8000.00  | root      |                     | data:HashAgg_59                                                                                                                                                                      |
