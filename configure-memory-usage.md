@@ -212,6 +212,24 @@ TiDB 支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 
     9 rows in set (1 min 37.428 sec)
     ```
 
+### 设置环境变量 `GOMEMLIMIT` 缓解 OOM 问题
+
+Golang 自 Go 1.19 版本开始引入 [`GOMEMLIMIT`](https://pkg.go.dev/runtime@go1.19#hdr-Environment_Variables) 环境变量，该变量用来设置触发 Go GC 的内存上限。
+
+对于 v6.1.3 <= TiDB < v6.5.0 的版本，你可以通过手动设置 Go `GOMEMLIMIT` 环境变量的方式来缓解一类 OOM 问题。该类 OOM 问题具有一个典型特征：观察 Grafana 监控，OOM 前的时刻，TiDB-Runtime > Memory Usage 面板中 **estimate-inuse** 立柱部分在整个立柱中仅仅占一半。如下图所示：
+
+![normal OOM case example](/media/configure-memory-usage-oom-example.png)
+
+为了验证 `GOMEMLIMIT` 在该类场景下的效果，以下通过一个对比实验进行说明：
+
+- 在 TiDB v6.1.2 下，模拟负载在持续运行几分钟后，TiDB server 会发生 OOM（系统内存约 48 GiB）：
+
+    ![v6.1.2 workload oom](/media/configure-memory-usage-612-oom.png)
+
+- 在 TiDB v6.1.3 下，设置 `GOMEMLIMIT` 为 40000 MiB，模拟负载长期稳定运行、TiDB server 未发生 OOM 且进程最高内存用量稳定在 40.8 GiB 左右：
+
+    ![v6.1.3 workload no oom with GOMEMLIMIT](/media/configure-memory-usage-613-no-oom.png)
+
 ## 全局内存管理架构
 
 TiDB 从 v9.0.0 开始引入全局内存管理框架 `Global Memory Arbitrator`，可通过系统变量 [`tidb_mem_arbitrator_mode`](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 或 TiDB 配置文件参数 `instance.tidb_mem_arbitrator_mode` 开启。
@@ -315,23 +333,3 @@ SQL 运行过程中会动态地向仲裁者订阅内存资源，仲裁者根据 
 - 绑定高优先级的资源组
 - 设置 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 为较大值以免 SQL 执行被中断
 - 保底方案为设置 [`tidb_mem_arbitrator_wait_averse`](/system-variables.md#tidb_mem_arbitrator_wait_averse-从-v900-版本开始引入) 为 `nolimit` 并承担内存风险
-
-## 其它
-
-### 设置环境变量 `GOMEMLIMIT` 缓解 OOM 问题
-
-Golang 自 Go 1.19 版本开始引入 [`GOMEMLIMIT`](https://pkg.go.dev/runtime@go1.19#hdr-Environment_Variables) 环境变量，该变量用来设置触发 Go GC 的内存上限。
-
-对于 v6.1.3 <= TiDB < v6.5.0 的版本，你可以通过手动设置 Go `GOMEMLIMIT` 环境变量的方式来缓解一类 OOM 问题。该类 OOM 问题具有一个典型特征：观察 Grafana 监控，OOM 前的时刻，TiDB-Runtime > Memory Usage 面板中 **estimate-inuse** 立柱部分在整个立柱中仅仅占一半。如下图所示：
-
-![normal OOM case example](/media/configure-memory-usage-oom-example.png)
-
-为了验证 `GOMEMLIMIT` 在该类场景下的效果，以下通过一个对比实验进行说明：
-
-- 在 TiDB v6.1.2 下，模拟负载在持续运行几分钟后，TiDB server 会发生 OOM（系统内存约 48 GiB）：
-
-    ![v6.1.2 workload oom](/media/configure-memory-usage-612-oom.png)
-
-- 在 TiDB v6.1.3 下，设置 `GOMEMLIMIT` 为 40000 MiB，模拟负载长期稳定运行、TiDB server 未发生 OOM 且进程最高内存用量稳定在 40.8 GiB 左右：
-
-    ![v6.1.3 workload no oom with GOMEMLIMIT](/media/configure-memory-usage-613-no-oom.png)
