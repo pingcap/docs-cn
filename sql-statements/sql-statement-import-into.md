@@ -123,7 +123,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 - 导入指定路径下所有以 `foo` 为前缀的文件：`s3://<bucket-name>/path/to/data/foo*`
 - 导入指定路径下以 `foo` 为前缀、以 `.csv` 结尾的文件：`s3://<bucket-name>/path/to/data/foo*.csv`
 - 导入指定路径下的 `1.csv` 和 `2.csv`：`s3://<bucket-name>/path/to/data/[12].csv`，适用于导入特定的非连续文件
-- 使用 range 导入 `1.csv`、`2.csv` 和 `3.csv`：`s3://<bucket-name>/path/to/data/[1-3].csv`
+- 导入指定名称范围 (range) 的文件 `1.csv`、`2.csv` 和 `3.csv`：`s3://<bucket-name>/path/to/data/[1-3].csv`
 - 导入名称为单字符的文件，使用 `^` 进行排除操作，例如导入除 `1.csv` 和 `2.csv` 之外的单字符文件名文件：`s3://<bucket-name>/path/to/data/[^12].csv`
 
 > **注意：**
