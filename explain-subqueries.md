@@ -256,6 +256,48 @@ tidb> EXPLAIN SELECT * FROM t WHERE (a, b) NOT IN (SELECT * FROM s);
 >
 > `Not Exists` 操作符也会被转成 Anti Semi Join，但是 `Not Exists` 符号本身不具有集合运算 Null-Aware 的性质。
 
+## `... < ALL (SELECT ... FROM ...)` 或者 `... > ANY (SELECT ... FROM ...)`
+
+对于这种情况，可以将 `ALL` 或者 `ANY` 用 `MAX` 以及 `MIN` 来代替。不过由于在表为空时，`MAX(EXPR)` 以及 `MIN(EXPR)` 的结果会为 `NULL`，其表现形式和 `EXPR` 是有 `NULL` 值的结果一样。以及外部表达式结果为 `NULL` 时也会影响表达式的最终结果，因此这里完整的改写会是如下的形式：
+
+- `t.id < all(select s.id from s)` 会被改写为 `t.id < min(s.id) and if(sum(s.id is null) != 0, null, true)`。
+- `t.id > any (select s.id from s)` 会被改写为 `t.id > max(s.id) or if(sum(s.id is null) != 0, null, false)`。
+
+以下为例子：
+
+```
+CREATE TABLE products (
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(100),
+    unit_price DECIMAL(10, 2)
+);
+
+CREATE TABLE order_details (
+    order_id INT,
+    product_id INT,
+    quantity INT,
+    discount_price DECIMAL(10, 2) -- 这笔交易中，该产品享受的折扣价
+);
+```
+
+```
+tidb> EXPLAIN SELECT product_id, product_name, unit_price FROM products WHERE unit_price < ALL (SELECT DISTINCT discount_price FROM order_details  ); 
++------------------------------+----------+-----------+---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                           | estRows  | task      | access object       | operator info                                                                                                                                                                        |
++------------------------------+----------+-----------+---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| HashJoin_27                  | 10000.00 | root      |                     | CARTESIAN inner join, other cond:or(and(lt(test.products.unit_price, Column#9), if(ne(Column#10, 0), NULL, 1)), or(eq(Column#11, 0), if(isnull(test.products.unit_price), NULL, 0))) |
+| ├─HashAgg_55(Build)          | 1.00     | root      |                     | funcs:min(Column#16)->Column#9, funcs:sum(Column#17)->Column#10, funcs:count(1)->Column#11                                                                                           |
+| │ └─Projection_82            | 8000.00  | root      |                     | test.order_details.discount_price->Column#16, cast(isnull(test.order_details.discount_price), decimal(20,0) BINARY)->Column#17                                                       |
+| │   └─HashAgg_66             | 8000.00  | root      |                     | group by:test.order_details.discount_price, funcs:firstrow(test.order_details.discount_price)->test.order_details.discount_price                                                     |
+| │     └─TableReader_67       | 8000.00  | root      |                     | data:HashAgg_59                                                                                                                                                                      |
+| │       └─HashAgg_59         | 8000.00  | cop[tikv] |                     | group by:test.order_details.discount_price,                                                                                                                                          |
+| │         └─TableFullScan_65 | 10000.00 | cop[tikv] | table:order_details | keep order:false, stats:pseudo                                                                                                                                                       |
+| └─TableReader_30(Probe)      | 10000.00 | root      |                     | data:TableFullScan_29                                                                                                                                                                |
+|   └─TableFullScan_29         | 10000.00 | cop[tikv] | table:products      | keep order:false, stats:pseudo                                                                                                                                                       |
++------------------------------+----------+-----------+---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+```
+
+
 ## 其他类型查询的执行计划
 
 + [MPP 模式查询的执行计划](/explain-mpp.md)
