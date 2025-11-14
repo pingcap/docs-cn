@@ -312,6 +312,31 @@ tidb> EXPLAIN SELECT product_id, product_name, unit_price FROM products WHERE un
 +------------------------------+----------+-----------+---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
+## `... IN (SELECT ... FROM ...)`
+
+对于这种情况，会将其 `IN` 的子查询改写为 `SELECT ... FROM ... GROUP ...` 的形式，然后将 `IN` 改写为普通的 `JOIN` 的形式。如 `select * from t1 where t1.a in (select t2.a from t2)` 会被改写为 `select t1.* from t1, (select distinct(a) a from t2) t2 where t1.a = t2.a` 的形式。同时这里的 `DISTINCT` 可以在 `t2.a` 具有 `UNIQUE` 属性时被自动消去。
+
+{{< copyable "sql" >}}
+
+```sql
+explain select * from t1 where t1.a in (select t2.a from t2);
+```
+
+```sql
++------------------------------+---------+-----------+------------------------+----------------------------------------------------------------------------+
+| id                           | estRows | task      | access object          | operator info                                                              |
++------------------------------+---------+-----------+------------------------+----------------------------------------------------------------------------+
+| IndexJoin_12                 | 9990.00 | root      |                        | inner join, inner:TableReader_11, outer key:test.t2.a, inner key:test.t1.a |
+| ├─HashAgg_21(Build)          | 7992.00 | root      |                        | group by:test.t2.a, funcs:firstrow(test.t2.a)->test.t2.a                   |
+| │ └─IndexReader_28           | 9990.00 | root      |                        | index:IndexFullScan_27                                                     |
+| │   └─IndexFullScan_27       | 9990.00 | cop[tikv] | table:t2, index:idx(a) | keep order:false, stats:pseudo                                             |
+| └─TableReader_11(Probe)      | 7992.00 | root      |                        | data:TableRangeScan_10                                                     |
+|   └─TableRangeScan_10        | 7992.00 | cop[tikv] | table:t1               | range: decided by [test.t2.a], keep order:false, stats:pseudo              |
++------------------------------+---------+-----------+------------------------+----------------------------------------------------------------------------+
+```
+
+这个改写会在 `IN` 子查询相对较小，而外部查询相对较大时产生更好的执行性能。因为不经过改写的情况下，我们无法使用以 t2 为驱动表的 `index join`。同时这里的弊端便是，当改写生成的聚合无法被自动消去且 `t2` 表比较大时，反而会影响查询的性能。目前 TiDB 中使用 [tidb\_opt\_insubq\_to\_join\_and\_agg](/system-variables.md#tidb_opt_insubq_to_join_and_agg) 变量来控制这个优化的打开与否。当遇到不合适这个优化的情况可以手动关闭。
+
 
 ## 其他类型查询的执行计划
 
