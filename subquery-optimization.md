@@ -10,9 +10,10 @@ aliases: ['/docs-cn/dev/subquery-optimization/']
 
 通常会遇到如下情况的子查询：
 
+- `... </=/!=/>/ ALL (SELECT ... FROM ...)`
 - `NOT IN (SELECT ... FROM ...)`
-- `NOT EXISTS (SELECT ... FROM ...)`
 - `IN (SELECT ... FROM ..)`
+- `NOT EXISTS (SELECT ... FROM ...)`
 - `EXISTS (SELECT ... FROM ...)`
 - `... >/>=/</<=/=/!= (SELECT ... FROM ...)`
 
