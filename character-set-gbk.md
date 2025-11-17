@@ -1,9 +1,9 @@
 ---
-title: GBK
+title: GBK 字符集
 summary: 本文介绍 TiDB 对 GBK 字符集的支持情况。
 ---
 
-# GBK
+# GBK 字符集
 
 TiDB 从 v5.4.0 开始支持 GBK 字符集。本文档介绍 TiDB 对 GBK 字符集的支持和兼容情况。
 
