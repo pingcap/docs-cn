@@ -230,32 +230,35 @@ Golang 自 Go 1.19 版本开始引入 [`GOMEMLIMIT`](https://pkg.go.dev/runtime@
 
     ![v6.1.3 workload no oom with GOMEMLIMIT](/media/configure-memory-usage-613-no-oom.png)
 
-## 全局内存管理架构
+## 内存仲裁模式
 
-TiDB 从 v9.0.0 开始引入新的全局内存管理机制，可通过系统变量 [`tidb_mem_arbitrator_mode`](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 或 TiDB 配置文件参数 `instance.tidb_mem_arbitrator_mode` 开启。
+TiDB 从 v9.0.0 开始引入新的内存管理机制，可通过系统变量 [`tidb_mem_arbitrator_mode`](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 或 TiDB 配置文件参数 `instance.tidb_mem_arbitrator_mode` 开启。
 
-`tidb_mem_arbitrator_mode` 默认为 `disable`，表示禁用内存仲裁模式，保持内存资源先使用后上报的机制以及相关[内存控制行为](#如何配置-tidb-server-实例使用内存的阈值)。
+`tidb_mem_arbitrator_mode` 默认为 `disable`，表示禁用内存仲裁模式，保持内存资源先使用后上报的机制以及相关 [内存控制行为](#如何配置-tidb-server-实例使用内存的阈值)。
 
-设置 `tidb_mem_arbitrator_mode` 为 `standard` 或 `priority` 表示启用内存仲裁模式。内存资源的使用按照先订阅后分配的机制，由各个 TiDB 实例中唯一的仲裁者统筹。预期 TiDB 实例的整体内存使用量不会超过 `tidb_server_memory_limit` 的限制，且[内存占用过高时的报警](#tidb-server-内存占用过高时的报警)将不再生效。
+设置 `tidb_mem_arbitrator_mode` 为 `standard` 或 `priority` 表示启用内存仲裁模式。内存资源的使用按照先订阅后分配的机制，由各个 TiDB 实例中唯一的仲裁者统筹。预期 TiDB 实例的整体内存使用量不会超过 `tidb_server_memory_limit` 的限制，且 [内存占用过高时的报警](#tidb-server-内存占用过高时的报警) 将不再生效。
 
 仲裁者可通过终止 SQL 来回收内存资源（不可终止 `DDL`|`DCL`|`TCL` 类型 SQL），并向客户端返回编号为 `8180` 的错误。错误格式为：`Query execution was stopped by the global memory arbitrator [reason=?, path=?] [conn=?]`：
 
 - `conn`：连接（会话）ID
 - `reason`：终止 SQL 的具体原因
-- `path`：SQL 被终止的阶段：无 `path` 字段则默认为执行阶段；`ParseSQL`（解析）；`CompilePlan`（编译执行计划）；
+- `path`：SQL 被终止的阶段
+    - 无 `path` 字段则默认为执行阶段
+    - `ParseSQL`（解析）
+    - `CompilePlan`（编译执行计划）
 
 ### `standard` 模式
 
 SQL 运行过程中会动态地向仲裁者订阅内存资源并阻塞式等待，仲裁者按先来先服务原则处理订阅请求
 
-- 解析 SQL 或编译执行计划时，需要订阅的内存份额与 SQL 关键字数量呈正相关
+- 解析 SQL 或编译执行计划时，需要订阅的内存份额由 TiDB 估算，与 SQL 关键字数量成正比
 - 如果全局内存资源不足，仲裁者令请求失败并终止 SQL，返回错误中 `reason` 字段为 `CANCEL(out-of-quota & standard-mode)`
 
 ### `priority` 模式
 
-SQL 运行过程中会动态地向仲裁者订阅内存资源并阻塞式等待，仲裁者根据 SQL 的[资源组优先级](/information-schema/information-schema-resource-groups.md) (`LOW | MEDIUM | HIGH`) 处理订阅请求
+SQL 运行过程中会动态地向仲裁者订阅内存资源并阻塞式等待，仲裁者根据 SQL 的 [资源组优先级](/information-schema/information-schema-resource-groups.md) (`LOW | MEDIUM | HIGH`) 处理订阅请求
 
-- 解析 SQL 或编译执行计划时，需要订阅的内存份额与 SQL 关键字数量呈正相关
+- 解析 SQL 或编译执行计划时，需要订阅的内存份额由 TiDB 估算，与 SQL 关键字数量成正比
     - 不同于 `standard` 模式，`priority` 模式下除非面临内存溢出 (OOM) 风险，否则订阅失败后不会立刻终止 SQL
 - 所有订阅请求按照优先级从高到低排队等待资源，同级别请求按照发起顺序排序
 - 全局内存资源不足时
@@ -270,7 +273,7 @@ SQL 运行过程中会动态地向仲裁者订阅内存资源并阻塞式等待�
 
 ### 内存风险控制
 
-当 TiDB 实例的内存用量达到 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的 95% 这一阈值时，仲裁者开始处理内存风险。如果面临 `OOM` 风险（内存用量短期无法低于到安全线或者全局内存使用速率过小），仲裁者会按顺序（优先级从低到高，内存使用量从大到小）强制终止 SQL，返回错误中 `reason` 字段为 `KILL(out-of-memory)`。
+当 TiDB 实例的内存用量达到 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的 95% 这一阈值时，仲裁者开始处理内存风险。如果面临 `OOM` 风险（内存用量短期无法降低到安全线或者全局内存使用速率过小），仲裁者会按顺序（优先级从低到高，内存使用量从大到小）强制终止 SQL，返回错误中 `reason` 字段为 `KILL(out-of-memory)`。
 
 如果需要在内存资源不足时强制运行 SQL，可以设置 session 变量 [`tidb_mem_arbitrator_wait_averse`](/system-variables.md#tidb_mem_arbitrator_wait_averse-从-v900-版本开始引入) 为 `nolimit`。该参数令相关 SQL 使用内存不受限制，但可能导致 TiDB 实例 `OOM`。
 
@@ -293,7 +296,7 @@ TiDB 内部会缓存部分 SQL 的历史最大内存资源用量，并在 SQL �
 - Runtime Mem Pressure：内存压力值（实际内存使用和内存资源份额使用的比率）
 - Waiting Tasks：排队等待中的各类任务数量
 
-[`SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 新增 `Mem_arbitration` 字段表示 SQL 等待内存资源的总耗时。[TiDB Dashboard 慢查询页面](/dashboard/dashboard-slow-query.md)中的 `Mem Arbitration` 列也会显示该信息。
+[`SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 新增 `Mem_arbitration` 字段表示 SQL 等待内存资源的总耗时。[TiDB Dashboard 慢查询页面](/dashboard/dashboard-slow-query.md) 中的 `Mem Arbitration` 列也会显示该信息。
 
 [`PROCESSLIST`](/information-schema/information-schema-processlist.md) 新增以下字段：
 
@@ -305,7 +308,7 @@ TiDB 内部会缓存部分 SQL 的历史最大内存资源用量，并在 SQL �
 
 - `cost_time 2.1s, wait_start 1970-01-02 10:17:36.789 UTC, wait_bytes 123456789123 Bytes (115.0 GB)`
 
-[`STATEMENTS_SUMMARY`](/statement-summary-tables.md)：表 `statements_summary`、`statements_summary_history`、`cluster_statements_summary`、`cluster_statements_summary_history` 新增字段以下字段，[TiDB Dashboard SQL 语句分析执行详情页面](/dashboard/dashboard-statement-list.md)中的 `Mean Mem Arbitration` 列也会显示该信息：
+[`STATEMENTS_SUMMARY`](/statement-summary-tables.md)：表 `statements_summary`、`statements_summary_history`、`cluster_statements_summary`、`cluster_statements_summary_history` 新增以下字段，[TiDB Dashboard SQL 语句分析执行详情页面](/dashboard/dashboard-statement-list.md) 中的 `Mean Mem Arbitration` 列也会显示该信息：
 
 - `AVG_MEM_ARBITRATION`：平均 SQL 等待内存资源耗时
 - `MAX_MEM_ARBITRATION`：最大 SQL 等待内存资源耗时
