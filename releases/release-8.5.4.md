@@ -40,7 +40,7 @@ TiDB 版本：8.5.4
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/partitioned-table#全局索引)。
 
-* TiFlash 支持优雅关闭 (graceful shutdown)  [#10266](https://github.com/pingcap/tiflash/issues/10266) @[gengliqi](https://github.com/gengliqi) <!--tw@qiancai-->
+* TiFlash 支持优雅关闭 (graceful shutdown) [#10266](https://github.com/pingcap/tiflash/issues/10266) @[gengliqi](https://github.com/gengliqi) <!--tw@qiancai-->
 
     在关闭 TiFlash 服务器时，TiFlash 允许当前正在执行的 MPP 任务在指定的等待期内继续运行，但不再接收新的 MPP 任务请求。该等待期默认为 600 秒，可通过 [`graceful_wait_shutdown_timeout`](https://docs.pingcap.com/zh/tidb/v8.5/tiflash-configuration#graceful_wait_shutdown_timeout-从-v854-版本开始引入) 配置项进行调整。
 
