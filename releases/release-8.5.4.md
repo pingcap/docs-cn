@@ -11,6 +11,54 @@ TiDB 版本：8.5.4
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v8.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v8.5.4#version-list)
 
+## 新功能
+
+* 支持表级别数据打散功能（实验特性）[#63260](https://github.com/pingcap/tidb/issues/63260) @[bufferflies](https://github.com/bufferflies) <!--tw@qiancai-->
+
+    PD 会自动调度数据，将整个集群的数据尽可能均匀地分布到所有 TiKV 节点上。然而，这种自动调度是基于集群全局的。在某些场景下，尽管整个集群的数据分布是均衡的，但某张表在各个 TiKV 节点上的数据分布可能仍然不均匀。
+
+    从 v8.5.4 开始，你可以通过 [`SHOW TABLE DISTRIBUTION`](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-show-distribution-jobs) 语句查看某张表在集群中所有 TiKV 节点上的数据分布情况。如果存在数据分布不均衡，可以通过 [`DISTRIBUTE TABLE`](https://docs.pingcap.com/zh/tidb/v8.5/sql-statements/sql-statement-distribute-table) 语句对该表进行数据打散（实验特性），以提升负载均衡性。
+
+    表级数据打散功能属于一次性执行任务，并设有超时时间限制。如果到达超时时间后，打散任务未还未完成，则会自动退出。
+
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-distribute-table)。
+
+* 支持内嵌于 DDL 的 Analyze 特性 [#57948](https://github.com/pingcap/tidb/issues/57948) @[terry1purcell](https://github.com/terry1purcell) @[AilinKid](https://github.com/AilinKid) <!--tw@hfxsd -->
+
+    该特性适用于以下两类 DDL:
+
+    - 新建索引的 DDL：[`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
+    - 重组已有索引的 DDL：[`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) 和 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)
+
+    开启该特性后，TiDB 会在新索引对用户可见前自动执行一次 Analyze（统计信息收集），以避免新建或重组索引后因统计信息暂不可用而导致优化器估算不准，从而引起执行计划变更的问题。
+
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/ddl_embedded_analyze)。
+
+* 支持对分区表的非唯一列创建全局索引 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014) @[mjonss](https://github.com/mjonss)  <!--tw@qiancai-->
+
+    从 v8.3.0 开始，TiDB 支持用户在分区表的唯一列上创建全局索引以提高查询性能，但不支持在非唯一列上创建全局索引。从 v8.5.4 起，TiDB 取消了这一限制，允许用户在分区表的非唯一列上创建全局索引，提升了全局索引的易用性。
+
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/partitioned-table#全局索引)。
+
+* TiFlash 支持优雅关闭 (graceful shutdown)  [#10266](https://github.com/pingcap/tiflash/issues/10266) @[gengliqi](https://github.com/gengliqi) <!--tw@qiancai-->
+
+    在关闭 TiFlash 服务器时，TiFlash 允许当前正在执行的 MPP 任务在指定的等待期内继续运行，但不再接收新的 MPP 任务请求。该等待期默认为 600 秒，可通过 [`graceful_wait_shutdown_timeout`](https://docs.pingcap.com/zh/tidb/v8.5/tiflash-configuration#graceful_wait_shutdown_timeout-从-v854-版本开始引入) 配置项进行调整。
+
+    - 如果所有正在运行的 MPP 任务都在该等待期到达前完成，TiFlash 将立即关闭。
+    - 如果到达该等待期后仍有 MPP 任务未完成，TiFlash 会强制关闭。
+
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/tiflash-configuration#graceful_wait_shutdown_timeout-从-v854-版本开始引入)。
+
+* 引入TiCDC 新架构，显著提升性能、可扩展性和稳定性 [#442](https://github.com/pingcap/ticdc/issues/442) @[CharlesCheung96](https://github.com/CharlesCheung96) <!--tw@qiancai-->
+
+    新架构在完全兼容 [TiCDC 老架构](/ticdc/ticdc-classic-architecture)的配置项、使用方式和 API 的基础上，对 TiCDC 核心组件与数据处理流程进行了重构与优化。
+
+    启用新架构后，TiCDC 的同步能力可实现接近线性的扩展，并能以更低的资源成本完成百万级表的同步任务。在高写入负载、频繁 DDL 操作以及集群扩缩容的场景下，Changefeed 的延迟更低且更加稳定。需要注意的是，该新架构目前存在一些[使用限制](/ticdc/ticdc-architecture.md#使用限制)。
+
+    如需启用新架构，可将 TiCDC 配置项 [`newarch`](https://docs.pingcap.com/zh/tidb/v8.5/ticdc-server-config#newarch-new-in-v854-release1) 设置为 `true`。
+
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/ticdc/ticdc-architecture)。
+
 ## 兼容性变更
 
 ### 系统变量
@@ -42,9 +90,6 @@ TiDB 版本：8.5.4
 
 + TiDB <!--tw@Oreoxmt: 11 notes-->
 
-    - 支持表级别数据打散（实验特性）：你可以通过 [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql-statement-show-distribution-jobs.md) 语句查看某张表在集群中所有 TiKV 节点上的数据分布情况。如果存在数据分布不均衡，可以通过 [`DISTRIBUTE TABLE`](/sql-statements/sql-statement-distribute-table.md) 语句对该表进行数据打散，以提升负载均衡性 [#63260](https://github.com/pingcap/tidb/issues/63260) @[bufferflies](https://github.com/bufferflies) <!--tw@qiancai-->
-    - 支持[内嵌于 DDL 的 Analyze](/ddl_embedded_analyze.md) 特性，以避免新建或重组索引后因统计信息暂不可用而导致优化器估算不准，从而引起执行计划变更的问题 [#57948](https://github.com/pingcap/tidb/issues/57948) @[terry1purcell](https://github.com/terry1purcell) @[AilinKid](https://github.com/AilinKid) <!--tw@hfxsd -->
-    - (dup): release-9.0.0.md(beta.1) > # SQL 功能 - 支持对分区表的非唯一列创建[全局索引](/partitioned-table.md#全局索引)，以提升全局索引的易用性 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014) @[mjonss](https://github.com/mjonss) <!--tw@qiancai-->
     - (dup): release-9.0.0.md(beta.1) > 改进提升> TiDB - 支持由 `IN` 子查询而来的 Semi Join 使用 `semi_join_rewrite` 的 Hint [#58829](https://github.com/pingcap/tidb/issues/58829) @[qw4990](https://github.com/qw4990)
     - 优化系统变量 `tidb_opt_ordering_index_selectivity_ratio` 生效时的估算策略 [#62817](https://github.com/pingcap/tidb/issues/62817) @[terry1purcell](https://github.com/terry1purcell)
     - 调整优化器的选择逻辑，使新创建的索引在某些情况下更容易被选中 [#57948](https://github.com/pingcap/tidb/issues/57948) @[terry1purcell](https://github.com/terry1purcell)
@@ -83,18 +128,6 @@ TiDB 版本：8.5.4
     + TiDB Data Migration (DM) <!--tw@hfxsd: 1 note-->
 
         - 获取上游 `GTID_MODE` 时，支持兼容大小写 [#12167](https://github.com/pingcap/tiflow/issues/12167) @[OliverS929](https://github.com/OliverS929)
-
-    + TiCDC
-
-        - 引入 [TiCDC 新架构](/ticdc/ticdc-architecture.md)，显著提升性能、可扩展性和稳定性 [#442](https://github.com/pingcap/ticdc/issues/442) @[CharlesCheung96](https://github.com/CharlesCheung96) <!--tw@qiancai-->
-
-            新架构在完全兼容 [TiCDC 老架构](/ticdc/ticdc-classic-architecture)的配置项、使用方式和 API 的基础上，对 TiCDC 核心组件与数据处理流程进行了重构与优化。
-
-            启用新架构后，TiCDC 的同步能力可实现接近线性的扩展，并能以更低的资源成本完成百万级表的同步任务。在高写入负载、频繁 DDL 操作以及集群扩缩容的场景下，Changefeed 的延迟更低且更加稳定。需要注意的是，该新架构目前存在一些[使用限制](/ticdc/ticdc-architecture.md#使用限制)。
-
-            如需启用新架构，可将 TiCDC 配置项 [`newarch`](/ticdc/ticdc-server-config.md#newarch-new-in-v854-release1) 设置为 `true`。
-
-            更多信息，请参考[用户文档](/ticdc/ticdc-architecture.md)。
 
 ## 错误修复
 
