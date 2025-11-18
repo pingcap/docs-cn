@@ -57,7 +57,7 @@ TiDB 版本：8.5.4
 
     如需启用新架构，可将 TiCDC 配置项 [`newarch`](https://docs.pingcap.com/zh/tidb/v8.5/ticdc-server-config#newarch-从-v854-release1-版本开始引入) 设置为 `true`。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/ticdc/ticdc-architecture)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/ticdc-architecture)。
 
 ## 兼容性变更
 
@@ -89,6 +89,7 @@ TiDB 版本：8.5.4
 ## 改进提升
 
 + TiDB
+
     - 优化 ` MODIFY COLUMN` 和 `CHANGE COLUMN` 的性能，将部分有损 DDL（例如将 `BIGINT` 修改为 `INT`，或将 `CHAR(128)` 修改为 `VARCHAR(64)`）的执行耗时从小时级缩短至分钟级甚至毫秒级，整体性能提升可达到数十倍至上万倍 [#63366](https://github.com/pingcap/tidb/issues/63366) @[wjhuang2016](https://github.com/wjhuang2016) @[tangenta](https://github.com/tangenta) @[fzzf678](https://github.com/fzzf678)
     - 支持由 `IN` 子查询而来的 Semi Join 使用 `semi_join_rewrite` 的 Hint [#58829](https://github.com/pingcap/tidb/issues/58829) @[qw4990](https://github.com/qw4990)
     - 优化系统变量 `tidb_opt_ordering_index_selectivity_ratio` 生效时的估算策略 [#62817](https://github.com/pingcap/tidb/issues/62817) @[terry1purcell](https://github.com/terry1purcell)
