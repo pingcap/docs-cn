@@ -25,7 +25,7 @@ ShowLikeOrWhere ::=
 
 ## 示例
 
-若开启了[新排序规则框架](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap)，则在二进制排序规则之外，额外支持以下排序规则：
+如果启用了[新的排序规则框架](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap)，则除二进制排序规则外，TiDB 还支持以下排序规则：
 
 * 7 种大小写和口音不敏感的排序规则，以 `_ci` 结尾
 * `utf8mb4_0900_bin`

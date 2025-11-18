@@ -173,7 +173,7 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 5 rows in set (0.001 sec)
 ```
 
-TiDB 对 GBK 字符集的支持详情见 [GBK](/character-set-gbk.md)，对 GB18030 字符集的支持详情见 [GB18030](/character-set-gb18030.md)。
+TiDB 对 GBK 字符集的支持详情参见 [GBK 字符集](/character-set-gbk.md)，对 GB18030 字符集的支持详情参见 [GB18030 字符集](/character-set-gb18030.md)。
 
 ## TiDB 中的 `utf8` 和 `utf8mb4`
 

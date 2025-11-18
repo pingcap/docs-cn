@@ -167,7 +167,7 @@ TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写�
 
 * 关于 GBK 字符集与 MySQL 的兼容情况，详见 [GBK 兼容情况](/character-set-gbk.md#与-mysql-的兼容性)。
 
-* 关于 GB18030 字符集与 MySQL 的兼容情况，详见 [GB18030 兼容情况](/character-set-gb18030.md#与-mysql-的兼容性)。
+* 关于 GB18030 字符集与 MySQL 的兼容情况，详见 [GB18030 与 MySQL 的兼容性](/character-set-gb18030.md#与-mysql-的兼容性)。
 
 * TiDB 继承表中使用的字符集作为国家字符集。
 
