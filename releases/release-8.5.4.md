@@ -15,11 +15,11 @@ TiDB 版本：8.5.4
 
 * 支持表级别数据打散功能（实验特性）[#63260](https://github.com/pingcap/tidb/issues/63260) @[bufferflies](https://github.com/bufferflies)
 
-    PD 会自动调度数据，将整个集群的数据尽可能均匀地分布到所有 TiKV 节点上。然而，这种自动调度是基于集群全局的。在某些场景下，尽管整个集群的数据分布是均衡的，但某张表在各个 TiKV 节点上的数据分布可能仍然不均匀。
+    PD 会自动调度数据，将整个集群的数据尽可能均匀地分布到所有 TiKV 节点上。然而，这种自动调度是基于集群全局的。在某些场景下，尽管整个集群的数据分布是均衡的，但某张表在各个 TiKV 节点上的数据分布仍然可能不均匀。
 
     从 v8.5.4 开始，你可以通过 [`SHOW TABLE DISTRIBUTION`](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-show-distribution-jobs) 语句查看某张表在集群中所有 TiKV 节点上的数据分布情况。如果存在数据分布不均衡，可以通过 [`DISTRIBUTE TABLE`](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-distribute-table) 语句对该表进行数据打散（实验特性），以提升负载均衡性。
 
-    表级数据打散功能属于一次性执行任务，并设有超时时间限制。如果到达超时时间后，打散任务未还未完成，则会自动退出。
+    表级数据打散功能属于一次性执行任务，并设有超时时间限制。如果到达超时时间后，打散任务还未完成，则会自动退出。
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-distribute-table)。
 
@@ -30,7 +30,7 @@ TiDB 版本：8.5.4
     - 新建索引的 DDL：[`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
     - 重组已有索引的 DDL：[`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) 和 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)
 
-  开启该特性后，TiDB 会在新索引对用户可见前自动执行一次 Analyze（统计信息收集），以避免新建或重组索引后因统计信息暂不可用而导致优化器估算不准，从而引起执行计划变更的问题。
+  开启该特性后，TiDB 会在新索引对用户可见前自动执行一次 Analyze（统计信息收集）。这样可以避免在新建或重组索引后，由于统计信息暂不可用而导致优化器估算不准确，从而引起执行计划变更的问题。
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/ddl_embedded_analyze)。
 
