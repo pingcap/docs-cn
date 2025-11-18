@@ -47,7 +47,7 @@ TiDB 版本：8.5.4
     - 如果所有正在运行的 MPP 任务都在该等待期到达前完成，TiFlash 将立即关闭。
     - 如果到达该等待期后仍有 MPP 任务未完成，TiFlash 会强制关闭。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/tiflash-configuration#graceful_wait_shutdown_timeout-从-v854-版本开始引入)。
+  更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/tiflash-configuration#graceful_wait_shutdown_timeout-从-v854-版本开始引入)。
 
 * 引入 TiCDC 新架构，显著提升性能、可扩展性和稳定性 [#442](https://github.com/pingcap/ticdc/issues/442) @[CharlesCheung96](https://github.com/CharlesCheung96) <!--tw@qiancai-->
 
