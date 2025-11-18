@@ -25,12 +25,12 @@ TiDB 版本：8.5.4
 
 * 支持内嵌于 DDL 的 Analyze 特性 [#57948](https://github.com/pingcap/tidb/issues/57948) @[terry1purcell](https://github.com/terry1purcell) @[AilinKid](https://github.com/AilinKid)
 
-    该特性适用于以下两类 DDL:
+    该特性适用于以下两类 DDL：
 
     - 新建索引的 DDL：[`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
     - 重组已有索引的 DDL：[`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) 和 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)
 
-    开启该特性后，TiDB 会在新索引对用户可见前自动执行一次 Analyze（统计信息收集），以避免新建或重组索引后因统计信息暂不可用而导致优化器估算不准，从而引起执行计划变更的问题。
+  开启该特性后，TiDB 会在新索引对用户可见前自动执行一次 Analyze（统计信息收集），以避免新建或重组索引后因统计信息暂不可用而导致优化器估算不准，从而引起执行计划变更的问题。
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/ddl_embedded_analyze)。
 
