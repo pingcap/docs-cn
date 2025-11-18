@@ -1,6 +1,6 @@
 ---
 title: TiDB 8.5.4 Release Notes
-summary: 了解 TiDB 8.5.4 版本的兼容性变更、改进提升，以及错误修复。
+summary: 了解 TiDB 8.5.4 版本的新功能、兼容性变更、改进提升，以及错误修复。
 ---
 
 # TiDB 8.5.4 Release Notes
