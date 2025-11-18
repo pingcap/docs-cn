@@ -1006,6 +1006,7 @@
     - 字符集和排序规则
       - [概述](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)
+      - [GB18030](/character-set-gb18030.md)
     - [Placement Rules in SQL](/placement-rules-in-sql.md)
     - 系统表
       - `mysql` Schema
