@@ -25,7 +25,7 @@ TiDB 支持使用 MySQL 8.0 中提供的大部分[加密和压缩函数](https:/
 | [`UNCOMPRESSED_LENGTH()`](#uncompressed_length)               | 返回字符串压缩前的长度       |
 | [`VALIDATE_PASSWORD_STRENGTH()`](#validate_password_strength) | 计算密码强度            |
 
-### [`AES_DECRYPT()`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-decrypt)
+### `AES_DECRYPT()`
 
 `AES_DECRYPT(data, key [,iv])` 函数使用相同的 `key` 解密之前由 [`AES_ENCRYPT()`](#aes_encrypt) 函数加密的 `data`。
 
@@ -46,7 +46,7 @@ SELECT AES_DECRYPT(0x28409970815CD536428876175F1A4923, 'secret');
 1 row in set (0.00 sec)
 ```
 
-### [`AES_ENCRYPT()`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-encrypt)
+### `AES_ENCRYPT()`
 
 `AES_ENCRYPT(data, key [,iv])` 函数使用[高级加密标准 (AES)](https://zh.wikipedia.org/wiki/高级加密标准) 算法和 `key` 加密 `data`。
 
@@ -67,7 +67,7 @@ SELECT AES_ENCRYPT(0x616263,'secret');
 1 row in set (0.00 sec)
 ```
 
-### [`COMPRESS()`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_compress)
+### `COMPRESS()`
 
 `COMPRESS(expr)` 函数返回输入参数 `expr` 的压缩版本。
 
@@ -121,7 +121,7 @@ SELECT LENGTH(a),LENGTH(COMPRESS(a)) FROM x;
 1 row in set (0.00 sec)
 ```
 
-### [`MD5()`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_md5)
+### `MD5()`
 
 `MD5(expr)` 函数为给定参数 `expr` 计算 128 位 [MD5](https://zh.wikipedia.org/wiki/MD5) 哈希值。
 
@@ -138,7 +138,7 @@ SELECT MD5('abc');
 1 row in set (0.00 sec)
 ```
 
-### [`PASSWORD()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_password)
+### `PASSWORD()`
 
 > **警告：**
 >
@@ -161,7 +161,7 @@ SELECT PASSWORD('secret');
 Warning (Code 1681): PASSWORD is deprecated and will be removed in a future release.
 ```
 
-### [`RANDOM_BYTES()`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_random-bytes)
+### `RANDOM_BYTES()`
 
 `RANDOM_BYTES(n)` 函数返回 `n` 个随机字节。
 
@@ -178,11 +178,11 @@ SELECT RANDOM_BYTES(3);
 1 row in set (0.00 sec)
 ```
 
-### [`SHA()`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_sha1)
+### `SHA()`
 
 `SHA()` 函数是 [`SHA1`](#sha1) 的别名。
 
-### [`SHA1()`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_sha1)
+### `SHA1()`
 
 `SHA1(expr)` 函数为给定参数 `expr` 计算 160 位 [SHA-1](https://zh.wikipedia.org/wiki/SHA-1) 哈希值。
 
@@ -199,7 +199,7 @@ SELECT SHA1('abc');
 1 row in set (0.00 sec)
 ```
 
-### [`SHA2()`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_sha2)
+### `SHA2()`
 
 `SHA2(str, n)` 函数使用 [SHA-2](https://zh.wikipedia.org/wiki/SHA-2) 系列中的算法计算哈希值。参数 `n` 用于选择算法。如果任一参数为 `NULL` 或 `n` 指定的算法未知或不受支持，`SHA2()` 返回 `NULL`。
 
@@ -247,7 +247,7 @@ SELECT SM3('abc');
 1 row in set (0.00 sec)
 ```
 
-### [`UNCOMPRESS()`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_uncompress)
+### `UNCOMPRESS()`
 
 `UNCOMPRESS(data)` 函数解压缩使用 [`COMPRESS()`](#compress) 函数压缩的数据。
 
@@ -264,7 +264,7 @@ SELECT UNCOMPRESS(0x03000000789C72747206040000FFFF018D00C7);
 1 row in set (0.00 sec)
 ```
 
-### [`UNCOMPRESSED_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_uncompressed-length)
+### `UNCOMPRESSED_LENGTH()`
 
 `UNCOMPRESSED_LENGTH(data)` 函数返回压缩数据的前 4 个字节，即字符串在使用 [`COMPRESS()`](#compress) 函数压缩之前的长度。
 
@@ -281,7 +281,7 @@ SELECT UNCOMPRESSED_LENGTH(0x03000000789C72747206040000FFFF018D00C7);
 1 row in set (0.00 sec)
 ```
 
-### [`VALIDATE_PASSWORD_STRENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_validate-password-strength)
+### `VALIDATE_PASSWORD_STRENGTH()`
 
 `VALIDATE_PASSWORD_STRENGTH(str)` 函数用作 [TiDB 密码管理](/password-management.md)的一部分，它计算密码的强度并返回一个 0 到 100 之间的整数值。
 
