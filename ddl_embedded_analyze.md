@@ -3,7 +3,7 @@ title: 内嵌于 DDL 的 Analyze
 summary: 本文介绍内嵌于新建或重组索引的 DDL 中的 Analyze 特性，用于确保新索引的统计信息及时更新。
 ---
 
-# 内嵌于 DDL 的 Analyze <span class="version-mark">从 v8.5.4</span>
+# 内嵌于 DDL 的 Analyze <span class="version-mark">从 v8.5.4 开始引入</span>
 
 本文介绍内嵌于以下两类 DDL 的 Analyze 特性：
 
