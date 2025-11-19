@@ -90,19 +90,19 @@ TiDB 版本：8.5.4
 
 + TiDB
 
--本次优化针对特定有损DDL操作（如BIGINT转INT、CHAR(120)转VARCHAR(60)）实现了性能的跨越式提升，执行时间从数小时大幅缩短至分钟级、秒级甚至毫秒级，性能提升数十倍至数十万倍。
--优化内容
-**严格SQL模式下的数据截断检测**
-在执行类型转换前，系统预先校验是否存在数据截断。若无截断风险，则仅更新列元数据，避免数据迁移与索引重建。
-**基于Ingest的索引重组**
-需重建索引时，采用高效的 Ingest 方式替代传统事务方式，大幅提升索引重建性能。
--性能提升（基于100GB表基准测试）
-| 场景 | 操作类型 | 优化前 | 优化后 | 性能提升 |
-|------|----------|--------|--------|----------|
-| **无索引列** | `BIGINT` → `INT` | 2小时43分 | 1分5秒 | **143倍** |
-| **有索引列** | `BIGINT` → `INT` | 6小时25分 | 0.05秒 | **46万倍** |
-| **有索引列** | `CHAR(120)` → `VARCHAR(60)` | 7小时16分 | 12分56秒 | **34倍** |
-注：上述性能提升基于操作过程中未发生数据截断的前提。 [#63366](https://github.com/pingcap/tidb/issues/63366) @[wjhuang2016](https://github.com/wjhuang2016) @[tangenta](https://github.com/tangenta) @[fzzf678](https://github.com/fzzf678)
+    -本次优化针对特定有损DDL操作（如BIGINT转INT、CHAR(120)转VARCHAR(60)）实现了性能的跨越式提升，执行时间从数小时大幅缩短至分钟级、秒级甚至毫秒级，性能提升数十倍至数十万倍。
+    -优化内容
+    **严格SQL模式下的数据截断检测**
+    在执行类型转换前，系统预先校验是否存在数据截断。若无截断风险，则仅更新列元数据，避免数据迁移与索引重建。
+    **基于Ingest的索引重组**
+    需重建索引时，采用高效的 Ingest 方式替代传统事务方式，大幅提升索引重建性能。
+    -性能提升（基于100GB表基准测试）
+    | 场景 | 操作类型 | 优化前 | 优化后 | 性能提升 |
+    |------|----------|--------|--------|----------|
+    | **无索引列** | `BIGINT` → `INT` | 2小时43分 | 1分5秒 | **143倍** |
+    | **有索引列** | `BIGINT` → `INT` | 6小时25分 | 0.05秒 | **46万倍** |
+    | **有索引列** | `CHAR(120)` → `VARCHAR(60)` | 7小时16分 | 12分56秒 | **34倍** |
+    注：上述性能提升基于操作过程中未发生数据截断的前提。 [#63366](https://github.com/pingcap/tidb/issues/63366) @[wjhuang2016](https://github.com/wjhuang2016) @[tangenta](https://github.com/tangenta) @[fzzf678](https://github.com/fzzf678)
     - 支持由 `IN` 子查询而来的 Semi Join 使用 `semi_join_rewrite` 的 Hint [#58829](https://github.com/pingcap/tidb/issues/58829) @[qw4990](https://github.com/qw4990)
     - 优化系统变量 `tidb_opt_ordering_index_selectivity_ratio` 生效时的估算策略 [#62817](https://github.com/pingcap/tidb/issues/62817) @[terry1purcell](https://github.com/terry1purcell)
     - 调整优化器的选择逻辑，使新创建的索引在某些情况下更容易被选中 [#57948](https://github.com/pingcap/tidb/issues/57948) @[terry1purcell](https://github.com/terry1purcell)
