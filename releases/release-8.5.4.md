@@ -17,7 +17,7 @@ TiDB 版本：8.5.4
 
     PD 会自动调度数据，将整个集群的数据尽可能均匀地分布到所有 TiKV 节点上。然而，这种自动调度是基于集群全局的。在某些场景下，尽管整个集群的数据分布是均衡的，但某张表在各个 TiKV 节点上的数据分布仍然可能不均匀。
 
-    从 v8.5.4 开始，你可以通过 [`SHOW TABLE DISTRIBUTION`](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-show-distribution-jobs) 语句查看某张表在集群中所有 TiKV 节点上的数据分布情况。如果存在数据分布不均衡，可以通过 [`DISTRIBUTE TABLE`](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-distribute-table) 语句对该表进行数据打散（实验特性），以提升负载均衡性。
+    从 v8.5.4 开始，你可以通过 [`SHOW TABLE DISTRIBUTION`](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-show-table-distribution/) 语句查看某张表在集群中所有 TiKV 节点上的数据分布情况。如果存在数据分布不均衡，可以通过 [`DISTRIBUTE TABLE`](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-distribute-table) 语句对该表进行数据打散（实验特性），以提升负载均衡性。
 
     表级数据打散功能属于一次性执行任务，并设有超时时间限制。如果到达超时时间后，打散任务还未完成，则会自动退出。
 
@@ -53,7 +53,7 @@ TiDB 版本：8.5.4
 
     新架构在完全兼容 [TiCDC 老架构](/ticdc/ticdc-classic-architecture)的配置项、使用方式和 API 的基础上，对 TiCDC 核心组件与数据处理流程进行了重构与优化。
 
-    启用新架构后，TiCDC 的同步能力可实现接近线性的扩展，并能以更低的资源成本完成百万级表的同步任务。在高写入负载、频繁 DDL 操作以及集群扩缩容的场景下，Changefeed 的延迟更低且更加稳定。需要注意的是，该新架构目前存在一些[使用限制](/ticdc/ticdc-architecture.md#使用限制)。
+    启用新架构后，TiCDC 的同步能力可实现接近线性的扩展，并能以更低的资源成本完成百万级表的同步任务。在高写入负载、频繁 DDL 操作以及集群扩缩容的场景下，Changefeed 的延迟更低且更加稳定。需要注意的是，该新架构目前存在一些[使用限制](https://docs.pingcap.com/zh/tidb/v8.5/ticdc-architecture#使用限制)。
 
     如需启用新架构，可将 TiCDC 配置项 [`newarch`](https://docs.pingcap.com/zh/tidb/v8.5/ticdc-server-config#newarch-从-v854-release1-版本开始引入) 设置为 `true`。
 
@@ -71,7 +71,7 @@ TiDB 版本：8.5.4
 
     - [`tidb_opt_enable_no_decorrelate_in_select`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables/#tidb_opt_enable_no_decorrelate_in_select-从-v854-版本开始引入)：控制是否对 `SELECT` 列表中的子查询进行解关联操作，默认值为 `OFF` [#51116](https://github.com/pingcap/tidb/issues/51116) @[terry1purcell](https://github.com/terry1purcell)
     - [`tidb_opt_enable_semi_join_rewrite`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables/#tidb_opt_enable_semi_join_rewrite-从-v854-版本开始引入)：控制是否改写 `EXISTS` 子查询，默认值为 `OFF` [#44850](https://github.com/pingcap/tidb/issues/44850) @[terry1purcell](https://github.com/terry1purcell)
-    - [`tidb_stats_update_during_ddl`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables/#tidb_stats_update_during_ddl-从-v854-版本开始引入)：控制是否开启 DDL 的内嵌 Analyze 的行为，默认值为 `OFF` [#57948](https://github.com/pingcap/tidb/issues/57948) @[terry1purcell](https://github.com/terry1purcell) @[AilinKid](https://github.com/AilinKid)
+    - [`tidb_stats_update_during_ddl`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables/#tidb_stats_update_during_ddl-从-v854-版本开始引入)：控制是否开启内嵌于 DDL 的 Analyze 特性，默认值为 `OFF` [#57948](https://github.com/pingcap/tidb/issues/57948) @[terry1purcell](https://github.com/terry1purcell) @[AilinKid](https://github.com/AilinKid)
 
 ### 配置参数
 
@@ -96,8 +96,8 @@ TiDB 版本：8.5.4
 
         性能提升示例（基于 100 GiB 表的基准测试）：
 
-        - 无索引列：`BIGINT` → `INT` 的执行时间从 2 小时 34 分 缩短至 1 分 5 秒，性能提升达 142 倍
-        - 有索引列：`BIGINT` → `INT` 的执行时间从 6 小时 25 分 缩短至 0.05 秒，性能提升达 46 万倍
+        - 无索引列：`BIGINT` → `INT` 的执行时间从 2 小时 34 分缩短至 1 分 5 秒，性能提升达 142 倍
+        - 有索引列：`BIGINT` → `INT` 的执行时间从 6 小时 25 分缩短至 0.05 秒，性能提升达 46 万倍
         - 有索引列：`CHAR(120)` → `VARCHAR(60)` 的执行时间从 7 小时 16 分缩短至 12 分 56 秒，性能提升达 34 倍
 
       注：以上数据基于 DDL 执行过程中未发生数据截断的前提。
@@ -162,7 +162,7 @@ TiDB 版本：8.5.4
     - 修复取消 DXF 任务后，其他任务无法退出的问题 [#63927](https://github.com/pingcap/tidb/issues/63927) @[D3Hunter](https://github.com/D3Hunter)
     - 修复开启 `Apply` 算子并发后 (`tidb_enable_parallel_apply = on`)，由于缺少实现 Clone 导致计划生成失败的问题 [#59863](https://github.com/pingcap/tidb/issues/59863) @[hawkingrei](https://github.com/hawkingrei)
     - 修复查询使用 `ATAN2` 函数可能导致结果错误的问题 [#60093](https://github.com/pingcap/tidb/issues/60093) @[guo-shaoge](https://github.com/guo-shaoge)
-    - 修复 `select 1 from duml` 无法使用实例级别的计划缓存的问题 [#63075](https://github.com/pingcap/tidb/issues/63075) @[time-and-fate](https://github.com/time-and-fate)
+    - 修复 `select 1 from dual` 无法使用实例级别的计划缓存的问题 [#63075](https://github.com/pingcap/tidb/issues/63075) @[time-and-fate](https://github.com/time-and-fate)
     - 修复 Join Order 变更顺序后可能导致无法规划的问题 [#61715](https://github.com/pingcap/tidb/issues/61715) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 `set_var` Hint 使用 Binding 导致无法恢复为原始变量设置的问题 [#59822](https://github.com/pingcap/tidb/issues/59822) @[wddevries](https://github.com/wddevries)
     - 修复 `ONLY_FULL_GROUP_BY` 取值为负数时导致检查失败的问题 [#62617](https://github.com/pingcap/tidb/issues/62617) @[AilinKid](https://github.com/AilinKid)
