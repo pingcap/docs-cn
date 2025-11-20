@@ -232,11 +232,19 @@ Golang 自 Go 1.19 版本开始引入 [`GOMEMLIMIT`](https://pkg.go.dev/runtime@
 
 ## 内存仲裁模式
 
-TiDB 从 v9.0.0 开始引入新的内存管理机制，可通过系统变量 [`tidb_mem_arbitrator_mode`](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 或 TiDB 配置文件参数 `instance.tidb_mem_arbitrator_mode` 开启。
+原先的 [内存控制机制](#如何配置-tidb-server-实例使用内存的阈值) 存在下列问题：
 
-`tidb_mem_arbitrator_mode` 默认为 `disable`，表示禁用内存仲裁模式，保持内存资源先使用后上报的机制以及相关 [内存控制行为](#如何配置-tidb-server-实例使用内存的阈值)。
+- 内存超限后 SQL 随机被终止
+- 内存资源先使用后上报，且 SQL 间存在信息孤岛，难以全局管控
+- 内存压力较大时 Golang 垃圾回收 (GC) 开销过高，严重时则引起内存溢出 (OOM) 问题
 
-设置 `tidb_mem_arbitrator_mode` 为 `standard` 或 `priority` 表示启用内存仲裁模式。内存资源的使用按照先订阅后分配的机制，由各个 TiDB 实例中唯一的仲裁者统筹。预期 TiDB 实例的整体内存使用量不会超过 `tidb_server_memory_limit` 的限制，且 [内存占用过高时的报警](#tidb-server-内存占用过高时的报警) 将不再生效。
+TiDB 从 v9.0.0 开始引入新机制（内存仲裁模式），自顶向下地集中化管理/调度内存资源来解决上述问题。
+
+内存仲裁模式可通过系统变量 [`tidb_mem_arbitrator_mode`](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 或 TiDB 配置文件参数 `instance.tidb_mem_arbitrator_mode` 开启。
+
+- `tidb_mem_arbitrator_mode` 为 `disable` 表示禁用内存仲裁模式，保持原先的内存控制机制
+
+- 设置 `tidb_mem_arbitrator_mode` 为 `standard` 或 `priority` 表示启用内存仲裁模式。内存资源的使用按照先订阅后分配的机制，由各个 TiDB 实例中唯一的仲裁者统筹。预期 TiDB 实例的整体内存使用量不会超过 `tidb_server_memory_limit` 的限制，且 [内存占用过高时的报警](#tidb-server-内存占用过高时的报警) 将不再生效。
 
 仲裁者可通过终止 SQL 来回收内存资源（不可终止 `DDL`|`DCL`|`TCL` 类型 SQL），并向客户端返回编号为 `8180` 的错误。错误格式为：`Query execution was stopped by the global memory arbitrator [reason=?, path=?] [conn=?]`：
 
@@ -249,17 +257,17 @@ TiDB 从 v9.0.0 开始引入新的内存管理机制，可通过系统变量 [`t
 
 ### `standard` 模式
 
-SQL 运行过程中会动态地向仲裁者订阅内存资源并阻塞式等待，仲裁者按先来先服务原则处理订阅请求
+SQL 运行过程中会动态地向仲裁者申请订阅内存资源并阻塞式等待，仲裁者按先来先服务原则处理订阅请求
 
 - 解析 SQL 或编译执行计划时，需要订阅的内存份额由 TiDB 估算，与 SQL 关键字数量成正比
 - 如果全局内存资源不足，仲裁者令请求失败并终止 SQL，返回错误中 `reason` 字段为 `CANCEL(out-of-quota & standard-mode)`
 
 ### `priority` 模式
 
-SQL 运行过程中会动态地向仲裁者订阅内存资源并阻塞式等待，仲裁者根据 SQL 的 [资源组优先级](/information-schema/information-schema-resource-groups.md) (`LOW | MEDIUM | HIGH`) 处理订阅请求
+SQL 运行过程中会动态地向仲裁者申请订阅内存资源并阻塞式等待，仲裁者根据 SQL 的 [资源组优先级](/information-schema/information-schema-resource-groups.md) (`LOW | MEDIUM | HIGH`) 处理订阅请求
 
 - 解析 SQL 或编译执行计划时，需要订阅的内存份额由 TiDB 估算，与 SQL 关键字数量成正比
-    - 不同于 `standard` 模式，`priority` 模式下除非面临内存溢出 (OOM) 风险，否则订阅失败后不会立刻终止 SQL
+    - 不同于 `standard` 模式，`priority` 模式下除非面临 `OOM` 风险，否则订阅失败后不会立刻终止 SQL
 - 所有订阅请求按照优先级从高到低排队等待资源，同级别请求按照发起顺序排序
 - 全局内存资源不足时
     - 仲裁者按顺序（优先级从低到高，内存使用量从大到小）终止低优先级 SQL，回收资源来满足高优先级 SQL
