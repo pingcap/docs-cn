@@ -21,7 +21,7 @@ TiDB 高度兼容 MySQL 协议，以及 MySQL 5.7 和 MySQL 8.0 常用的功能�
 
 > **注意：**
 >
-> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/security-compatibility-with-mysql.md)、[悲观事务模式](/pessimistic-transaction.md#和-mysql-innodb-的差异)相关的兼容信息，请查看各自具体页面。
+> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于安全特性相关的兼容信息，请查看[TiDB 与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)。
 
 ## 不支持的功能特性
 
@@ -31,7 +31,7 @@ TiDB 高度兼容 MySQL 协议，以及 MySQL 5.7 和 MySQL 8.0 常用的功能�
 * 自定义函数
 * 全文语法与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 空间类型的函数（即 `GIS`/`GEOMETRY`）、数据类型和索引 [#6347](https://github.com/pingcap/tidb/issues/6347)
-* 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk` 的字符集
+* 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk`、`gb18030` 的字符集
 * MySQL 追踪优化器
 * XML 函数
 * X-Protocol [#1109](https://github.com/pingcap/tidb/issues/1109)
@@ -167,6 +167,8 @@ TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写�
 
 * 关于 GBK 字符集与 MySQL 的兼容情况，详见 [GBK 兼容情况](/character-set-gbk.md#与-mysql-的兼容性)。
 
+* 关于 GB18030 字符集与 MySQL 的兼容情况，详见 [GB18030 与 MySQL 的兼容性](/character-set-gb18030.md#与-mysql-的兼容性)。
+
 * TiDB 继承表中使用的字符集作为国家字符集。
 
 ### 存储引擎
@@ -242,3 +244,7 @@ TiDB 资源组创建与修改语句的语法与 MySQL 官方不同，详情参�
 - [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md)
 - [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md)
 - [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md)
+
+## 悲观事务（锁）方面与 MySQL InnoDB 的差异
+
+关于 TiDB 与 MySQL InnoDB 处理悲观事务（锁）的差异，请参阅[和 MySQL InnoDB 的差异](/pessimistic-transaction.md#和-mysql-innodb-的差异)。

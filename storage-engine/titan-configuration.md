@@ -141,7 +141,7 @@ level-merge = false
 - 当设置为 `read-only` 时，新写入的 value 不论大小均会写入 RocksDB。
 - 当设置为 `fallback` 时，新写入的 value 不论大小均会写入 RocksDB，并且当 RocksDB 进行 compaction 时，会自动把所碰到的存储在 Titan blob file 中的 value 移回 RocksDB。
 
-如果现有数据和未来数据均不再需要 Titan，可执行以下步骤完全关闭 Titan。一般情况下，只需要执行以下步骤 1 和步骤 3、步骤 4 即可。步骤 2 虽然可以加快数据迁移速度，但会严重影响用户 SQL 的性能。事实上，即使跳过步骤 2，由于在 Compaction 过程中会将数据从 Titan 迁移到 RocksDB，会占用额外的 I/O 和 CPU 资源，因此仍然可以观察到一定的性能损失，在资源紧张的情况下吞吐可以下降 50% 以上。
+如果现有数据和未来数据均不再需要 Titan，可执行以下步骤关闭 Titan。一般情况下，只需要执行以下步骤 1 和步骤 3、步骤 4 即可。步骤 2 虽然可以加快数据迁移速度，但会严重影响用户 SQL 的性能。事实上，即使跳过步骤 2，由于在 Compaction 过程中会将数据从 Titan 迁移到 RocksDB，会占用额外的 I/O 和 CPU 资源，因此仍然可以观察到一定的性能损失，在资源紧张的情况下吞吐可以下降 50% 以上。
 
 1. 更新需要关闭 Titan 的 TiKV 节点的配置。你可以通过以下两种方式之一更新 TiKV 配置：
 
@@ -170,7 +170,11 @@ level-merge = false
 
 3. 等待数据整理结束，通过 **TiKV-Details**/**Titan - kv** 监控面板确认 **Blob file count** 指标降为 0。
 
-4. 更新 TiKV 节点的配置，关闭 Titan。
+4. 对于 v8.5.0 及之后的 TiDB 版本，更新 TiKV 节点的配置，关闭 Titan。
+
+    > **警告：**
+    >
+    > 对于 v8.5.0 之前的版本，建议跳过该步骤，因为在这些版本中该步骤可能导致 TiKV crash。v8.5.0 之前的版本，可以直接通过步骤 1 来达到关闭 Titan 的目的，步骤 1 中的设置和下面的设置，在数据迁移完成后，不会有性能上的差异。
 
     ```toml
     [rocksdb.titan]

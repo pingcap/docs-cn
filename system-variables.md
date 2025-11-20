@@ -415,9 +415,11 @@ mysql> SELECT * FROM t1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：枚举型
 - 默认值：`mysql_native_password`
-- 可选值：`mysql_native_password`，`caching_sha2_password`，`tidb_sm3_password`，`tidb_auth_token`，`authentication_ldap_sasl` 或 `authentication_ldap_simple`。
-- 服务器和客户端建立连接时，这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
-- 若要在用户登录时使用 `tidb_sm3_password` 插件，需要使用 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3) 进行连接。
+- 可选值：`mysql_native_password`，`caching_sha2_password`，`tidb_sm3_password`，`authentication_ldap_sasl` 或 `authentication_ldap_simple`。
+- 该变量用于设置默认身份验证方式。它会影响以下行为：
+    - 在使用 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 创建用户时，如果语句中没有显式指定身份认证方式，将使用该变量指定的身份认证方式创建用户。
+    - 在服务器和客户端建立连接时，该变量用于设置服务器对外通告的默认身份验证方式。
+- 如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
 
 ### `default_collation_for_utf8mb4` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
@@ -617,7 +619,7 @@ mysql> SELECT * FROM t1;
 
 > **注意：**
 >
-> - 在 v6.4.0 之前，`max_execution_time` 对所有类型的语句生效。从 v6.4.0 开始，该变量只用于控制只读语句的最大执行时长。实际精度在 100ms 级别，而非更准确的毫秒级别。
+> - 在 v6.4.0 之前，`max_execution_time` 对所有类型的语句生效。从 v6.4.0 开始，该变量仅用于控制 `SELECT` 语句的最长执行时间。实际精度在 100ms 级别，而非更准确的毫秒级别。
 > - 对于使用了 [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) Hint 的 SQL 语句，这些语句的最长执行时间将不受该变量限制，而是由该 Hint 进行限制。你也可以使用该 Hint 来创建 SQL 绑定，详情请参考 [SQL 操作常见问题](/faq/sql-faq.md#如何阻止特定的-sql-语句执行或者将某个-sql-语句加入黑名单)。
 
 ### `max_prepared_stmt_count`
@@ -1162,11 +1164,15 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：整数型
 - 默认值：`2`
 - 范围：`[0, 2147483647]`
-- 这个变量用来给 TiDB 的 `backoff` 最大时间增加权重，即内部遇到网络或其他组件 (TiKV, PD) 故障时，发送重试请求的最大重试时间。可以通过这个变量来调整最大重试时间，最小值为 1。
+- 这个变量用来给 TiDB 的 `backoff` 最大重试等待时间增加权重，即内部遇到网络或其他组件 (TiKV, PD) 故障时，发送重试请求的最大重试等待时间。可以通过这个变量来调整最大重试等待时间，最小值为 `1`。
 
-    例如，TiDB 向 PD 取 TSO 的基础超时时间是 15 秒，当 `tidb_backoff_weight = 2` 时，取 TSO 的最大超时时间为：基础时间 \* 2 等于 30 秒。
+    例如，TiDB 向 TiKV 取 KV 的基础重试等待时间是 15 秒，当 `tidb_backoff_weight = 2` 时，取 KV 的最大重试等待时间为：基础时间 \* 2 等于 30 秒。
 
     在网络环境较差的情况下，适当增大该变量值可以有效缓解因为超时而向应用端报错的情况；而如果应用端希望更快地接到报错信息，则应该尽量减小该变量的值。
+
+> **注意：**
+>
+> 该系统变量**不适用**于异步获取 TSO 请求。如果需要调整获取 TSO 的超时时间，请使用 [`pd-server-timeout`](/tidb-configuration-file.md#pd-server-timeout) 进行配置。
 
 ### `tidb_batch_commit`
 
@@ -1271,6 +1277,15 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`OFF`
 - 这个变量用于控制是否开启[自动捕获绑定](/sql-plan-management.md#自动捕获绑定-baseline-capturing)功能。该功能依赖 Statement Summary，因此在使用自动绑定之前需打开 Statement Summary 开关。
 - 开启该功能后会定期遍历一次 Statement Summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动创建绑定。
+
+### `tidb_cb_pd_metadata_error_rate_threshold_ratio` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 默认值：`0`
+- 取值范围：`[0, 1]`
+- 该变量用于控制 TiDB 何时触发熔断器。设置为 `0`（默认值）表示禁用熔断器。设置为 `0.01` 到 `1` 之间的值时，表示启用熔断器，当发送到 PD 的特定请求的错误率达到或超过该阈值时，熔断器会被触发。
 
 ### `tidb_cdc_write_source` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
@@ -1473,6 +1488,14 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 >
 > * 在升级到 v6.5.0 及以上版本时，请确保 TiDB 的 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 路径已正确挂载了 SSD 磁盘，并确保运行 TiDB 的操作系统用户对该目录有读写权限，否则在运行时可能产生不可预知的问题。该参数是 TiDB 的配置参数，设置后需要重启 TiDB 才能生效。因此，在升级前提前进行设置，可以避免再次重启。
 
+### `tidb_stats_update_during_ddl` <span class="version-mark">从 v8.5.4 和 v9.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 默认值：`OFF`
+- 这个变量用于控制是否开启 DDL 内嵌的 Analyze 的行为。开启后，涉及新建索引的 DDL [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)，以及重组已有索引的 DDL（[`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) 和 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)）将会在索引可见前自动执行统计信息收集。详情请参考[内嵌于 DDL 的 Analyze](/ddl_embedded_analyze.md)。
+
 ### `tidb_enable_dist_task` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -1534,6 +1557,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
     - 当设置 `tidb_ddl_enable_fast_reorg` 为 `OFF` 时，`ADD INDEX` 会通过事务的方式执行，执行时如果 `ADD INDEX` 的目标列有较多 `UPDATE` 或者 `REPLACE` 等更新操作，batch size 设置的值越大，事务冲突的概率也会越大。此时建议调小 batch size 的值，最小值是 32。
     - 在没有事务冲突的情况下，或者当 `tidb_ddl_enable_fast_reorg` 为 `ON` 时，batch size 可设为较大值，这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。设置 batch size 时需要参考 `tidb_ddl_reorg_worker_cnt` 的设置值，详情见[线上负载与 `ADD INDEX` 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)。
     - 从 v8.3.0 版本开始，该参数支持 SESSION 级别的设置，因此修改 GLOBAL 级别的参数值不会影响当前正在运行的 DDL，而只会对新建 SESSION 中提交的 DDL 生效。
+    - 从 v8.5.0 版本开始，该参数可以通过 `ADMIN ALTER DDL JOBS <job_id> BATCH_SIZE = <new_batch_size>;` 来修改。不支持修改开启了 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 的 `ADD INDEX` DDL。更多详情，请见 [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md)。
 
 ### `tidb_ddl_reorg_priority`
 
@@ -1552,11 +1576,18 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：字符串
 - 默认值：`0`
 - 范围：`[0, 1PiB]`
-- 这个变量用于限制每个 TiKV 节点写入的带宽，仅在开启添加索引加速功能时生效（由变量 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。在数据量特别大的情况下（如数十亿行数据），降低加索引时写入 TiKV 节点的带宽可以有效减少对业务负载的影响。
+- 这个变量用于限制索引回填过程中**单个 TiDB 节点向单个 TiKV 节点**写入的带宽，仅在开启添加索引加速功能时生效（由变量 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。注意在开启[全局排序](/tidb-global-sort.md)时，多个 TiDB 节点可以同时向 TiKV 写入数据。在数据量特别大的情况下（如数十亿行数据），降低加索引时写入 TiKV 节点的带宽可以有效减少对业务负载的影响。
 - 默认值 `0` 表示不限制写入带宽。
 - 该变量可设置为带单位的格式或不带单位的格式。
     - 当该变量值不带单位时，默认单位为字节每秒。例如 `67108864` 表示 `64MiB` 每秒。
     - 当该变量值带单位时，支持的单位包括 KiB、MiB、GiB、TiB。例如，`'1GiB'` 表示 1 GiB 每秒， `'256MiB'` 表示 256 MiB 每秒。
+
+示例：
+
+假设集群中有 4 个 TiDB 节点和若干个 TiKV 节点，每个 TiDB 均可以执行索引回填任务，Region 均匀分布在所有 TiKV 节点上，且 `tidb_ddl_reorg_max_write_speed` 被设置为 `100MiB`：
+
+* 当全局排序关闭时，同一时刻只有 1 个 TiDB 节点向 TiKV 写入，此时每个 TiKV 节点的最大写入带宽为 `100MiB`。
+* 当全局排序开启时，同一时刻所有 4 个 TiDB 节点都能向 TiKV 写入，此时每个 TiKV 节点的最大写入带宽为 `4 * 100MiB = 400MiB`。
 
 ### `tidb_ddl_reorg_worker_cnt`
 
@@ -1569,6 +1600,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 单位：线程
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的并发度。
 - 从 v8.3.0 版本开始，该参数支持 SESSION 级别的设置，因此修改 GLOBAL 级别的参数值不会影响当前正在运行的 DDL，而只会对新建 SESSION 中提交的 DDL 生效。
+- 从 v8.5.0 版本开始，该参数可以通过 `ADMIN ALTER DDL JOBS <job_id> BATCH_SIZE = <new_batch_size>;` 来修改。不支持修改开启了 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 的 `ADD INDEX` DDL。更多详情，请见 [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md)。
 
 ### `tidb_enable_fast_create_table` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
@@ -1814,7 +1846,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
-- 默认值：`OFF`
+- 默认值：`ON`，在 v8.3.0 之前，默认值为 `OFF`。
 - 这个变量用于控制是否开启 TiDB 对 `PREDICATE COLUMNS` 的收集。关闭该变量后，之前收集的 `PREDICATE COLUMNS` 会被清除。详情见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
 
 ### `tidb_enable_ddl` <span class="version-mark">从 v6.3.0 版本开始引入</span>
@@ -2442,18 +2474,20 @@ Query OK, 0 rows affected (0.09 sec)
 - 类型：枚举型
 - 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用[分区表](/partitioned-table.md)。
 
-### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入，从 v8.1.0 版本开始废弃</span>
+### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
 > **警告：**
 >
-> 从 TiDB v8.1.0 开始，TiDB 已移除遥测功能，该变量已不再生效。保留该变量仅用于与之前版本兼容。
+> - 在 v8.1.0 之前的版本中，TiDB 会定期向 PingCAP 上报遥测信息。
+> - 在 v8.1.0 到 v8.5.1 及其之间的版本中，TiDB 已移除遥测功能，`tidb_enable_telemetry` 变量不再生效。保留该变量仅用于与之前版本兼容。
+> - 从 v8.5.3 开始，TiDB 重新引入遥测功能，但其行为已更改为仅将遥测相关信息输出到日志文件，不再通过网络发送给 PingCAP。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
-- 默认值：`OFF`
-- 在 v8.1.0 之前，这个变量用于动态地控制 TiDB 遥测功能是否开启。
+- 默认值：`ON`，从 v8.5.3 开始，默认值由 `OFF` 改为 `ON`。
+- 该变量用于动态控制 TiDB 遥测功能是否开启。从 v8.5.3 开始，该变量仅在 TiDB 实例的配置项 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 设置为 `true` 时生效。
 
 ### `tidb_enable_tiflash_read_for_write_stmt` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
@@ -2932,6 +2966,18 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用来控制用户会话中事务的空闲超时。当用户会话处于事务状态且空闲时间超过该变量设定的值时，会话会被 Kill 掉。用户会话空闲是指没有正在执行的请求，处于等待请求的状态。
 - 默认值 `0` 表示没有时间限制。
 
+### `tidb_ignore_inlist_plan_digest` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用来控制 TiDB 在生成执行计划摘要 (Plan Digest) 时，是否忽略不同查询中 `IN` 列表的元素差异。
+
+    - 当为默认值 `OFF` 时，TiDB 在生成执行计划摘要时，不会忽略 `IN` 列表中的元素差异（包括元素数量差异）。`IN` 列表的元素差异将导致生成的执行计划摘要不同。
+    - 当设置为 `ON` 时，TiDB 会忽略 `IN` 列表中的元素差异（包括元素数量差异），在执行计划摘要中使用 `...` 代替 `IN` 列表中的元素。此时，相同类型的 `IN` 查询会生成相同的执行计划摘要。
+
 ### `tidb_ignore_prepared_cache_close_stmt` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -3274,7 +3320,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 该变量用于定义分布式框架任务可使用的 TiDB 节点数上限。默认值为 `-1`，表示启用自动模式。在自动模式下，TiDB 将按照 `min(3, tikv_nodes / 3)` 动态地计算该值，其中 `tikv_nodes` 表示集群中 TiKV 节点的数量。
 
 > **注意：**
-> 
+>
 > 如果部分 TiDB 节点显式设置了 [`tidb_service_scope`](#tidb_service_scope-从-v740-版本开始引入)，则分布式执行框架仅会将任务调度到这些节点中执行。此时，即使 `tidb_max_dist_task_nodes` 设置了更大的值，实际使用的 TiDB 节点数也不会超过显式设置了 `tidb_service_scope` 的 TiDB 节点数。
 >
 > 例如，集群有 10 个 TiDB 节点，其中 4 个节点均设置了 `tidb_service_scope = group1`。此时即使设置 `tidb_max_dist_task_nodes = 5`，实际参与任务执行的节点数仍为 4。
@@ -3477,11 +3523,15 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_mpp_store_fail_ttl`
 
+> **警告：**
+>
+> 从 v9.0.0 开始，该变量被废弃，其值将固定为 `0s`，意味着 TiDB 不再需要额外等待即可向新启动的 TiFlash 节点发送查询请求，无需再通过延迟来避免查询失败。
+
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：Duration
-- 默认值：`60s`
+- 默认值：`0s`。在 v8.5.3 及之前版本中默认值为 `60s`。
 - 刚重启的 TiFlash 可能不能正常提供服务。为了防止查询失败，TiDB 会限制 tidb-server 向刚重启的 TiFlash 节点发送查询。这个变量表示刚重启的 TiFlash 不被发送请求的时间范围。
 
 ### `tidb_multi_statement_mode` <span class="version-mark">从 v4.0.11 版本开始引入</span>
@@ -3709,6 +3759,24 @@ mysql> desc select count(distinct a) from test.t;
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量控制是否开启[跨数据库绑定执行计划](/sql-plan-management.md#跨数据库绑定执行计划-cross-db-binding)功能。
+
+### `tidb_opt_enable_no_decorrelate_in_select` <span class="version-mark">从 v8.5.4 和 v9.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量控制优化器是否对 `SELECT` 列表中包含子查询的所有查询应用 [`NO_DECORRELATE()`](/optimizer-hints.md#no_decorrelate) Hint。
+
+### `tidb_opt_enable_semi_join_rewrite` <span class="version-mark">从 v8.5.4 和 v9.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量控制优化器是否对包含子查询的所有查询应用 [`SEMI_JOIN_REWRITE()`](/optimizer-hints.md#semi_join_rewrite) Hint。
 
 ### `tidb_opt_fix_control` <span class="version-mark">从 v6.5.3 和 v7.1.0 版本开始引入</span>
 
@@ -4236,6 +4304,210 @@ SHOW WARNINGS;
 - 默认值：`OFF`
 - 这个变量用来设置是否允许 `INSERT`、`REPLACE` 和 `UPDATE` 操作 `_tidb_rowid` 列，默认是不允许操作。该选项仅用于 TiDB 工具导数据时使用。
 
+### `tidb_opt_hash_agg_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_hash_join_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_index_join_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_index_lookup_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_index_merge_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_index_reader_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_index_scan_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_limit_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_merge_join_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_sort_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_stream_agg_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_table_full_scan_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_table_range_scan_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_table_reader_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_table_rowid_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_table_tiflash_scan_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
+### `tidb_opt_topn_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1`
+
 ### `tidb_optimizer_selectivity_level`
 
 - 作用域：SESSION
@@ -4542,7 +4814,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 ### `tidb_redact_log`
 
-- 作用域：SESSION | GLOBAL
+- 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：枚举型
@@ -4582,7 +4854,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 类型：枚举型
 - 默认值：`leader`
 - 可选值：`leader`、`follower`、`leader-and-follower`、`prefer-leader`、`closest-replicas`、`closest-adaptive` 和 `learner`。其中，`learner` 从 v6.6.0 开始引入。
-- 这个变量用于控制 TiDB 的 Follower Read 功能的行为。
+- 这个变量用于控制 TiDB 的 Follower Read 功能的行为。从 v8.5.4 和 v9.0.0 开始，该变量仅对只读 SQL 语句生效。
 - 关于使用方式与实现原理，见 [Follower Read](/follower-read.md)。
 
 ### `tidb_request_source_type` <span class="version-mark">从 v7.4.0 版本开始引入</span>
@@ -4851,7 +5123,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tidb_slow_txn_log_threshold` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否 
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：无符号整数型
 - 默认值：`0`
 - 范围：`[0, 9223372036854775807]`
@@ -4881,7 +5153,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 单位：字节
-- 默认值：`0`，表示自动设置统计信息缓存的内存使用上限为总内存的一半。
+- 默认值：`0`，表示统计信息缓存的内存使用上限为 TiDB 实例总内存的 20%。在 v8.5.1 之前，`0` 表示该上限为 TiDB 实例总内存的 50%。
 - 范围：`[0, 1099511627776]`
 - 这个变量用于控制 TiDB 统计信息缓存的内存使用上限。
 
@@ -5005,7 +5277,11 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数型
 - 默认值：`3000`
 - 范围：`[1, 32767]`
-- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 在内存中保存的语句的最大数量。
+- 这个变量用于限制 [`statements_summary`](/statement-summary-tables.md#statements_summary) 和 [`statements_summary_history`](/statement-summary-tables.md#statements_summary_history) 这两张表在内存中可存储的 SQL digest 总数。
+
+> **注意:**
+>
+> 当启用 [`tidb_stmt_summary_enable_persistent`](/statement-summary-tables.md#持久化-statements-summary) 时，`tidb_stmt_summary_max_stmt_count` 仅限制 [`statements_summary`](/statement-summary-tables.md#statements_summary) 表在内存中可存储的 SQL digest 数量。
 
 ### `tidb_stmt_summary_refresh_interval` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -5512,6 +5788,25 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
     - `force_preagg`：TiFlash 在第一阶段的 HashAgg 中强制进行预聚合操作，与 v8.3.0 之前版本的行为一致
     - `force_streaming`：TiFlash 直接将数据发送到下一阶段的 HashAgg，不进行预聚合操作
     - `auto`：TiFlash 根据当前工作负载的聚合度自动选择是否进行预聚合操作
+
+### `tiflash_hash_join_version` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：枚举型
+- 默认值：`legacy`
+- 可选值：`legacy`、`optimized`
+- 控制 TiFlash 是否使用 Hash Join 算子的优化版。默认值为 `legacy`，代表不使用优化版。若设置为 `optimized`，TiFlash 在执行 Hash Join 算子时将使用其优化版，以提升 Hash Join 性能。
+
+> **注意：**
+>
+> - 目前，仅 Inner Join 类型的连接操作支持优化版的 Hash Join。对于其他类型的连接操作，即使将该变量设成 `optimized`，TiFlash 也不会使用优化版的 Hash Join。
+> - 目前，TiFlash 中优化版的 Hash Join 不支持在内存使用超限时落盘内存数据。如果 [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_mem_quota_query_per_node-从-v740-版本开始引入) 和 [`tiflash_query_spill_ratio`](/system-variables.md#tiflash_query_spill_ratio-从-v740-版本开始引入) 均大于 `0`，或者 [`tidb_max_bytes_before_tiflash_external_join`](/system-variables.md#tidb_max_bytes_before_tiflash_external_join-从-v700-版本开始引入) 大于 `0`，TiFlash 将不会使用优化版的 Hash Join。
 
 ### `tikv_client_read_timeout` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 

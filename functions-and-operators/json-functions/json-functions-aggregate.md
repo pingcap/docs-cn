@@ -7,7 +7,9 @@ summary: 了解聚合 JSON 值的 JSON 函数。
 
 本文档介绍 TiDB [聚合函数](/functions-and-operators/aggregate-group-by-functions.md) 中专门用于处理 JSON 的聚合函数。
 
-## [JSON_ARRAYAGG()](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_json-arrayagg)
+TiDB 支持使用 MySQL 8.0 中提供的[两个 JSON 聚合函数](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html)。
+
+## `JSON_ARRAYAGG()`
 
 `JSON_ARRAYAGG(key)` 函数可以根据给定的 `key` 将 `key` 值聚合到一个 JSON 数组中。`key` 通常为表达式或列名。
 
@@ -28,7 +30,7 @@ SELECT JSON_ARRAYAGG(v) FROM (SELECT 1 'v' UNION SELECT 2);
 1 row in set (0.00 sec)
 ```
 
-## [JSON_OBJECTAGG()](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_json-objectagg)
+## `JSON_OBJECTAGG()`
 
 `JSON_OBJECTAGG(key,value)` 函数可以根据给定的 `key` 和 `value` 将 `key` 值和 `value` 值聚合成一个 JSON 对象。`key` 和 `value` 通常为表达式或列名。
 

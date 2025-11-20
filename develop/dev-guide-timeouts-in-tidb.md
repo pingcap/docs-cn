@@ -36,7 +36,7 @@ TiDB 的事务的实现采用了 MVCC（多版本并发控制）机制，当新�
 >
 > 在这些场景中，你必须使用 `tikv_gc_life_time` 提前手动调长 GC 时间，以避免因为导出过程中发生 GC 导致导出失败。详见 TiDB 工具 Dumpling 的[手动设置 TiDB GC 时间](/dumpling-overview.md#手动设置-tidb-gc-时间)。
 
-更多关于 GC 的信息，请参考 [GC 机制简介](https://pingcap.com/docs-cn/stable/reference/garbage-collection/overview/)文档。
+更多关于 GC 的信息，请参考 [GC 机制简介](/garbage-collection-overview.md)文档。
 
 ## 事务超时
 
@@ -48,16 +48,20 @@ TiDB 的事务的实现采用了 MVCC（多版本并发控制）机制，当新�
 
 ## SQL 执行时间超时
 
-TiDB 还提供了一个系统变量来限制单条 SQL 语句的执行时间，仅对“只读”语句生效：`max_execution_time`，它的默认值为 0，表示无限制。`max_execution_time` 的单位为 ms，但实际精度在 100ms 级别，而非更准确的毫秒级别。
+TiDB 还提供了一个系统变量来限制单条 SQL 语句的执行时间，仅对 `SELECT` 语句（包括 `SELECT ... FOR UPDATE`）生效：`max_execution_time`，它的默认值为 0，表示无限制。`max_execution_time` 的单位为 ms，但实际精度在 100ms 级别，而非更准确的毫秒级别。
 
 ## JDBC 查询超时
 
-MySQL jdbc 的查询超时设置 `setQueryTimeout()` 对 TiDB 不起作用。这是因为现实客户端感知超时时，向数据库发送一个 KILL 命令。但是由于 tidb-server 是负载均衡的，为防止在错误的 tidb-server 上终止连接，tidb-server 不会执行这个 KILL。这时就要用 `MAX_EXECUTION_TIME` 实现查询超时的效果。
+从 v6.1.0 起，当 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入) 配置项为默认值 `true` 时，你可以使用 MySQL JDBC 提供的 `setQueryTimeout()` 方法来控制查询的超时时间。
+
+>**注意:**
+>
+> 当 TiDB 版本低于 v6.1.0 或 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入) 为 `false` 时，`setQueryTimeout()` 对 TiDB 不起作用。这是因为查询超时后，客户端会向数据库发送一条 `KILL` 命令。但是由于 TiDB 服务是负载均衡的，为防止 `KILL` 命令在错误的 TiDB 节点上终止连接，TiDB 不会执行该命令。此时，可以通过设置 `max_execution_time` 实现查询超时控制。
 
 TiDB 提供了三个与 MySQL 兼容的超时控制参数：
 
 - **wait_timeout**，控制与 Java 应用连接的非交互式空闲超时时间。在 TiDB v5.4 及以上版本中，默认值为 `28800` 秒，即空闲超时为 8 小时。在 v5.4 之前，默认值为 `0`，即没有时间限制。
 - **interactive_timeout**，控制与 Java 应用连接的交互式空闲超时时间，默认值为 8 小时。
-- **max_execution_time**，控制连接中 SQL 执行的超时时间，仅对“只读”语句生效，默认值是 0，即允许连接无限忙碌（一个 SQL 语句执行无限的长的时间）。
+- **max_execution_time**，控制连接中 SQL 执行的超时时间，仅对 `SELECT` 语句（包括 `SELECT ... FOR UPDATE`）生效，默认值是 0，即允许连接无限忙碌（一个 SQL 语句执行无限的长的时间）。
 
 但在实际生产环境中，空闲连接和一直无限执行的 SQL 对数据库和应用都有不好的影响。你可以通过在应用的连接字符串中配置这两个 session 级的变量来避免空闲连接和执行时间过长的 SQL 语句。例如，设置 `sessionVariables=wait_timeout=3600（1 小时）`和 `sessionVariables=max_execution_time=300000（5 分钟）`。

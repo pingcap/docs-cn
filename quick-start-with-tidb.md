@@ -103,11 +103,11 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
     - 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         tiup playground v8.5.0 --db 2 --pd 3 --kv 3
         ```
+
+        执行该命令时，建议使用内存 10 GiB、4 CPU 及以上配置。配置过低可能会导致系统崩溃。
 
         如果要查看当前支持部署的所有 TiDB 版本，执行 `tiup list tidb`。
 
@@ -529,7 +529,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 如果你是应用开发者，想要快速使用 TiDB 构建应用，可参阅以下文档：
 
 - [开发者手册概览](/develop/dev-guide-overview.md)
-- [使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+- [使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
 - [示例程序](/develop/dev-guide-sample-application-java-jdbc.md)
 
 如果你想使用 TiFlash 作为数据分析的解决方案，可参阅以下文档：

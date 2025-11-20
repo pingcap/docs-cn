@@ -1,15 +1,17 @@
 ---
-title: SaaS 多租户场景最佳实践
+title: SaaS 多租户场景下处理百万张表的最佳实践
 summary: 介绍 TiDB 在 SaaS (Software as a service) 多租户场景的最佳实践，特别适用于单集群表数量超过百万级别的场景。
 ---
 
-# SaaS 多租户场景最佳实践
+# SaaS 多租户场景下处理百万张表的最佳实践
 
 本文档介绍 TiDB 在 SaaS (Software as a service) 多租户环境中的最佳实践，特别适用于**单集群表数量超过百万级别**的场景。通过合理的配置和选择，可以实现 TiDB 在 SaaS 场景下的高效稳定运行，同时降低资源消耗和成本。
 
 > **注意：**
 > 
 > 推荐使用 TiDB v8.5.0 及以上版本。
+
+关于该最佳实践的实操案例，请参阅博客 [Scaling 3 Million Tables: How TiDB Powers Atlassian Forge's SaaS Platform](https://www.pingcap.com/blog/scaling-3-million-tables-how-tidb-powers-atlassian-forge-saas-platform/)。
 
 ## 硬件配置建议
 
@@ -87,7 +89,7 @@ TiKV 和 PD 推荐的硬件配置如下：
     - 100 万张表：使用 32 GiB 或更高内存的 BR 实例
     - 300 万张表：使用 64 GiB 或更高内存的 BR 实例
 * BR 日志备份和快照恢复会额外消耗 TiKV 内存，建议 TiKV 使用 32 GiB 或更高规格的内存。
-* 可根据业务需求，适当增加 BR 的 [`pitr-batch-count` 和 `pitr-concurrency`](/br/use-br-command-line-tool.md#常用选项) 配置以提升 BR 日志恢复速度。
+* 可根据业务需求，适当增加 BR 的 [`pitr-batch-count` 和 `pitr-concurrency`](/br/br-pitr-manual.md#恢复到指定时间点-pitr) 配置以提升 BR 日志恢复速度。
 
 ## TiDB Lightning 数据导入
 

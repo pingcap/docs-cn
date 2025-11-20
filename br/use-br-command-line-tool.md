@@ -57,7 +57,7 @@ tiup br backup full --pd "${PD_IP}:2379" \
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。
 * `--status-addr`：向 Prometheus 提供统计数据的监听地址。
-* `--concurrency`：备份阶段的任务并发数。
+* `--concurrency`：控制备份阶段如何将任务拆分为多个请求，并以指定的并发数 (Concurrency) 发送到同一个 TiKV 节点。该参数主要影响 BR 发送给 TiKV 的请求拆分粒度，而不再直接决定备份的吞吐性能。通常无需修改默认值，如需提升备份性能，建议通过调整 [`tikv.backup.num-threads`](/tikv-configuration-file.md#num-threads-1) 参数来优化。
 * `--pitr-concurrency`：日志恢复阶段的任务并发数。
 * `--tikv-max-restore-concurrency`：快照恢复阶段的单个 TiKV 节点的任务最大并发数。
 * `--compression`：备份生成文件的压缩算法，支持 `lz4`、`snappy`、`zstd`，默认 `zstd`（多数情况下无须修改）。如何选择不同的压缩算法，可以参考[文档](https://github.com/EighteenZi/rocksdb_wiki/blob/master/Compression.md)。

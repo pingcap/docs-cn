@@ -1,32 +1,12 @@
 ---
 title: TiFlash 配置参数
 aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/tiflash/configuration/']
-summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD 调度参数可通过 pd-ctl 调整，包括 replica-schedule-limit 和 store-balance-rate。TiFlash 配置参数包括 tiflash.toml 和 tiflash-learner.toml，用于配置 TiFlash TCP/HTTP 服务的监听和存储路径。另外，通过拓扑 label 进行副本调度和多盘部署也是可行的。
+summary: 介绍 TiFlash 的配置参数，包括 tiflash.toml 和 tiflash-learner.toml，用于配置 TiFlash TCP/HTTP 服务的监听和存储路径。另外，通过拓扑 label 进行副本调度和多盘部署也是可行的。
 ---
 
 # TiFlash 配置参数
 
 本文介绍了与部署使用 TiFlash 相关的配置参数。
-
-## PD 调度参数
-
-可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 TiUP 部署，可以用 `tiup ctl:v<CLUSTER_VERSION> pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
-
-- [`replica-schedule-limit`](/pd-configuration-file.md#replica-schedule-limit)：用来控制 replica 相关 operator 的产生速度（涉及到下线、补副本的操作都与该参数有关）
-
-  > **注意：**
-  >
-  > 不要超过 `region-schedule-limit`，否则会影响正常 TiKV 之间的 Region 调度。
-
-- `store-balance-rate`：用于限制每个 TiKV store 或 TiFlash store 的 Region 调度速度。注意这个参数只对新加入集群的 store 有效，如果想立刻生效请用下面的方式。
-
-  > **注意：**
-  >
-  > 4.0.2 版本之后（包括 4.0.2 版本）废弃了 `store-balance-rate` 参数且 `store limit` 命令有部分变化。该命令变化的细节请参考 [store-limit 文档](/configure-store-limit.md)。
-
-    - 使用 `pd-ctl -u <pd_ip:pd_port> store limit <store_id> <value>` 命令单独设置某个 store 的 Region 调度速度。（`store_id` 可通过 `pd-ctl -u <pd_ip:pd_port> store` 命令获得）如果没有单独设置，则继承 `store-balance-rate` 的设置。你也可以使用 `pd-ctl -u <pd_ip:pd_port> store limit` 命令查看当前设置值。
-
-- [`replication.location-labels`](/pd-configuration-file.md#location-labels)：用来表示 TiKV 实例的拓扑关系，其中 key 的顺序代表了不同标签的层次关系。在 TiFlash 开启的情况下需要使用 [`pd-ctl config placement-rules`](/pd-control.md#config-show--set-option-value--placement-rules) 来设置默认值，详细可参考 [geo-distributed-deployment-topology](/geo-distributed-deployment-topology.md)。
 
 ## TiFlash 配置参数
 
@@ -83,6 +63,8 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 
 - TiFlash 临时文件的存放路径。
 - 默认使用 \[[`path`](#path) 或者 [`storage.latest.dir`](#dir-1) 的第一个目录\] + "/tmp"
+- 从 v9.0.0 开始，不推荐使用 `tmp_path`。建议使用 [`storage.temp`](#storagetemp-从-v900-版本开始引入) 中的配置项替代，因其支持设置容量限制，控制临时文件的空间使用。
+- 当 `storage.temp` 配置存在时，`tmp_path` 配置会被忽略。
 
 <!-- 示例值：`"/tidb-data/tiflash-9000/tmp"` -->
 
@@ -117,6 +99,14 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - 单位：Byte。目前不支持如 `"10GB"` 的设置。
 - `capacity` 列表的长度应当与 [`storage.main.dir`](#dir) 列表长度保持一致。
 
+#### `storage.api_version` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- TiFlash 与 PD、TiKV 进行通讯时的接口版本。
+- 可选值：
+    - `1`：TiFlash 使用 API V1 与 PD、TiKV 进行通信。
+    - `2`：TiFlash 使用 API V2 与 PD、TiKV 进行通信，为多租户特性提供支持。
+- 默认值：`1`
+
 #### storage.latest
 
 ##### `dir`
@@ -131,6 +121,24 @@ summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD
 - [`storage.latest.dir`](#dir-1) 存储目录列表中，每个目录的最大可用容量。
 
 <!-- 示例值：`[10737418240, 10737418240]` -->
+
+#### storage.temp <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+##### `dir`
+
+- 指定查询执行过程中临时落盘文件的存储路径。
+- 默认使用 \[[`storage.latest.dir`](#dir-1) 的第一个目录\] + "/tmp"
+
+##### `capacity`
+
+- 限制临时文件目录的总空间使用量。如果查询过程中生成的临时落盘文件大小超过该限制，将导致查询报错。
+- 单位：Byte。目前不支持类似 `"10GB"` 的格式。
+- 范围：`[0, 9223372036854775807]`
+- 如果未设置该值或将其设置为 `0`，表示不限制临时文件的空间使用，落盘文件可以使用整个硬盘的容量。
+- 如果设置为大于 `0` 的值，TiFlash 在启动时会执行以下检查：
+    - `storage.temp.capacity` 必须小于等于 `storage.temp.dir` 所在硬盘的总空间。
+    - 如果 `storage.temp.dir` 是 `storage.main.dir` 的子目录，且 `storage.main.capacity` 大于 `0`，则 `storage.temp.capacity` 必须小于等于 `storage.main.capacity`。同理，如果是 `storage.latest.dir` 的子目录，也会进行类似检查。
+- 该配置项不支持热加载，修改后需要重启 TiFlash 进程才能生效。
 
 #### storage.io_rate_limit <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
@@ -261,6 +269,13 @@ I/O 限流功能相关配置。
 - 该配置只针对存算分离模式生效，详细请参考 [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md)。
 - 可选值：`"tiflash_write"`、`"tiflash_compute"`
 
+##### `graceful_wait_shutdown_timeout` <span class="version-mark">从 v8.5.4 和 v9.0.0 版本开始引入</span>
+
+- 控制在关闭 TiFlash 服务器时的最长等待时间。在此期间，TiFlash 允许尚未完成的 MPP 任务继续执行，但不再接收新的 MPP 任务。如果所有正在运行的 MPP 任务都在此超时时间之前完成，TiFlash 将立即关闭；否则将在等待时间结束后强制关闭。
+- 默认值：`600`
+- 单位：秒
+- 在等待 TiFlash 服务器关闭期间，TiDB 不会再向该 TiFlash 服务器发送新的 MPP 任务。
+
 #### flash.proxy
 
 ##### `addr`
@@ -363,7 +378,7 @@ I/O 限流功能相关配置。
 
 ##### `max_threads`
 
-- `max_threads` 指的是执行一个 MMP Task 的内部线程并发度。当值为 `0` 时，TiFlash 执行 MMP Task 的线程并发度为 CPU 逻辑核数。
+- `max_threads` 指的是执行一个 MPP Task 的内部线程并发度。当值为 `0` 时，TiFlash 执行 MPP Task 的线程并发度为 CPU 逻辑核数。
 - 该参数只有在系统变量 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) 设置为 `-1` 时才会生效。
 - 默认值：`0`
 
@@ -378,14 +393,14 @@ I/O 限流功能相关配置。
 ##### `max_memory_usage_for_all_queries`
 
 - 所有查询过程中，节点对中间数据的内存限制。
-- 设置为整数时，单位为 byte，比如 `34359738368` 表示 32 GiB 的内存限制，`0` 表示无限制。
-- 设置为 `[0.0, 1.0)` 之间的浮点数时，指节点总内存的比值，比如 `0.8` 表示总内存的 80%，`0.0` 表示无限制。
-- 当查询试图申请超过限制的内存时，查询终止执行并且报错
-- 默认值：`0.8`，表示总内存的 80%
+- 设置为整数时，单位为 byte，例如 `34359738368` 表示 32 GiB 的内存限制，`0` 表示无限制。
+- 从 v6.6.0 开始，支持设置为 `[0.0, 1.0)` 之间的浮点数，表示节点总内存的比值。例如，`0.8` 表示总内存的 80%，`0.0` 表示无限制。
+- 当查询试图申请超过限制的内存时，查询终止执行并且报错。
+- 默认值：`0.8`，表示总内存的 80%。在 v6.6.0 之前，默认值为 `0`，表示不限制。
 
 ##### `cop_pool_size` <span class="version-mark">从 v5.0 版本开始引入</span>
 
-- 表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 `0` 或不设置，则使用默认值，即物理核数的两倍。
+- 表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。当请求数量超过该配置值但未超过其 10 倍时，多出的请求会排队等待；当请求数量超过该配置值的 10 倍时，多出来的请求会被 TiFlash 拒绝。如果设为 `0` 或不设置，则使用默认值，即物理核数的两倍。
 - 默认值：物理核数的两倍
 
 ##### `cop_pool_handle_limit` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -434,6 +449,13 @@ I/O 限流功能相关配置。
 - 表示 PageStorage 单个数据文件中有效数据的最低比例。当某个数据文件的有效数据比例低于该值时，会触发 GC 对该文件的数据进行整理。
 - 默认值：`0.5`
 
+##### `disagg_blocklist_wn_store_id` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 控制在存算分离架构下，TiFlash Compute Node 不会将请求分发至哪些 TiFlash Write Node。
+- 其值为使用 `,` 分隔的 store_id 字符串。例如，设置为 `"140,141"` 表示 TiFlash Compute Node 不会将请求分发至 store_id 为 `140` 或 `141` 的 TiFlash Write Node。可以使用 [pd-ctl](/pd-control.md#查询存算分离架构下的-tiflash-节点) 查找集群中 TiFlash Write Node 的 store_id。
+- 如果其值为空字符串 `""`，表示 TiFlash Compute Node 会将请求分发至所有 TiFlash Write Node。
+- 默认值：`""`
+
 ##### `max_bytes_before_external_group_by` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 - 表示带 `GROUP BY` key 的 Hash Aggregation 算子在触发 spill 之前的最大可用内存，超过该阈值之后 Hash Aggregation 会采用[数据落盘](/tiflash/tiflash-spill-disk.md)的方式来减小内存使用。
@@ -452,6 +474,8 @@ I/O 限流功能相关配置。
 ##### `enable_resource_control` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
 - 表示是否开启 TiFlash 资源管控功能。当设置为 `true` 时，TiFlash 会使用 [Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)。
+- 默认值：`true`
+- 可选值：`true`、`false`
 
 ##### `task_scheduler_thread_soft_limit` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
@@ -466,7 +490,7 @@ I/O 限流功能相关配置。
 ##### `task_scheduler_active_set_soft_limit` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 用于 MinTSO 调度器，表示一个 TiFlash 实例中最多可同时运行的查询数量。关于 MinTSO 调度器，详见 [TiFlash MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)。
-- 默认值：`0`，即两倍的 CPU 逻辑核数
+- 默认值：在 v7.4.0 之前，默认值为 `vcpu * 0.25`，即 vCPU 数量的四分之一。从 v7.4.0 开始，默认值为 `vcpu * 2`，即两倍的 vCPU 数量。
 
 ##### `hashagg_use_magic_hash` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
@@ -474,6 +498,13 @@ I/O 限流功能相关配置。
 - magic hash 生成的哈希值分布更加均匀，能够有效减少哈希冲突，但其计算速度比 CRC32 慢。建议在 `GROUPBY` 键的 NDV（number of distinct values，不同值的数量）较高时启用该配置，以优化聚合性能。
 - 默认值：`false`
 - 可选值：`true`、`false`
+
+##### `enable_version_chain` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 用于控制 TiFlash 实现 MVCC 过滤的算法。如果设置为 `1`，则使用 VersionChain 算法；如果设置为 `0`，则使用 DeltaIndex 算法。
+- 通常情况下，采用 VersionChain 算法的扫表性能要明显优于 DeltaIndex 算法，因为 VersionChain 算法可以通过避免对数据进行排序来提升 MVCC 过滤的性能。
+- 默认值：`1`
+- 可选值：`1`、`0`
 
 #### security <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
@@ -589,27 +620,18 @@ I/O 限流功能相关配置。
 
 - 指定轮换新主密钥时的旧主密钥。旧主密钥的配置格式与主密钥相同。若要了解如何配置主密钥，可以参考[静态加密 - 配置加密](/encryption-at-rest.md#配置加密)。
 
-### 通过拓扑 label 进行副本调度
+#### server
 
-[TiFlash 设置可用区](/tiflash/create-tiflash-replicas.md#设置可用区)
+##### `labels`
+
+- 指定服务器属性，例如 `{ zone = "us-west-1", disk = "ssd" }`。要了解如何使用 label 实现副本的拓扑调度，请参考 [TiFlash 设置可用区](/tiflash/create-tiflash-replicas.md#设置可用区)。
+- 默认值：`{}`
 
 ### 多盘部署
 
 TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘，可以通过以下的方式配置参数，提高节点的硬盘 I/O 利用率。TiUP 中参数配置格式参照[详细 TiFlash 配置模版](/tiflash-deployment-topology.md#拓扑模版)。
 
-#### TiDB 集群版本低于 v4.0.9
-
-TiDB v4.0.9 之前的版本中，TiFlash 只支持将存储引擎中的主要数据分布在多盘上。通过 `path`（TiUP 中为 `data_dir`）和 `path_realtime_mode` 这两个参数配置多盘部署。
-
-多个数据存储目录在 `path` 中以英文逗号分隔，比如 `/nvme_ssd_a/data/tiflash,/sata_ssd_b/data/tiflash,/sata_ssd_c/data/tiflash`。如果你的节点上有多块硬盘，推荐把性能最好的硬盘目录放在最前面，以更好地利用节点性能。
-
-如果节点上有多块相同规格的硬盘，可以把 `path_realtime_mode` 参数留空（或者把该值明确地设为 `false`）。这表示数据会在所有的存储目录之间进行均衡。但由于最新的数据仍然只会被写入到第一个目录，因此该目录所在的硬盘会较其他硬盘繁忙。
-
-如果节点上有多块规格不一致的硬盘，推荐把 `path_relatime_mode` 参数设置为 `true`，并且把性能最好的硬盘目录放在 `path` 参数内的最前面。这表示第一个目录只会存放最新数据，较旧的数据会在其他目录之间进行均衡。注意此情况下，第一个目录规划的容量大小需要占总容量的约 10%。
-
-#### TiDB 集群版本为 v4.0.9 及以上
-
-TiDB v4.0.9 及之后的版本中，TiFlash 支持将存储引擎的主要数据和新数据都分布在多盘上。多盘部署时，推荐使用 `[storage]` 中的参数，以更好地利用节点的 I/O 性能。但 TiFlash 仍然支持 [TiDB 集群版本低于 v4.0.9](#tidb-集群版本低于-v409) 中的参数。
+TiDB v4.0.9 及之后的版本中，TiFlash 支持将存储引擎的主要数据和新数据都分布在多盘上。多盘部署时，推荐使用 `[storage]` 中的参数，以更好地利用节点的 I/O 性能。
 
 如果节点上有多块相同规格的硬盘，推荐把硬盘目录填到 `storage.main.dir` 列表中，`storage.latest.dir` 列表留空。TiFlash 会在所有存储目录之间分摊 I/O 压力以及进行数据均衡。
 

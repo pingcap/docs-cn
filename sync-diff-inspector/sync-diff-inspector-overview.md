@@ -59,23 +59,15 @@ sync-diff-inspector 的安装方法取决于 TiDB 版本。
 
 ## sync-diff-inspector 所需的数据库权限
 
-sync-diff-inspector 需要获取表结构信息、查询数据，需要的数据库权限如下：
+sync-diff-inspector 需要具备特定的数据库权限以获取表结构信息、查询数据。你需要在上游数据库和下游数据库中授予以下权限：
 
-- 上游数据库
+- `SELECT`：用于对比数据。
+- `RELOAD`：用于查看表结构。
 
-    - SELECT（查数据进行对比）
-
-    - SHOW_DATABASES（查看库名）
-
-    - RELOAD（查看表结构）
-
-- 下游数据库
-
-    - SELECT（查数据进行对比）
-
-    - SHOW_DATABASES（查看库名）
-
-    - RELOAD（查看表结构）
+> **注意：**
+>
+> - **请勿**在所有数据库 (`*.*`) 上授予 [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md) 权限。否则，sync-diff-inspector 会尝试访问无权限的数据库，导致报错。
+> - 对于 MySQL 数据源，请确保系统变量 [`skip_show_database`](https://dev.mysql.com/doc/refman/8.4/en/server-system-variables.html#sysvar_skip_show_database) 设置为 `OFF`。如果该变量设置为 `ON`，检查可能会失败。
 
 ## 配置文件说明
 

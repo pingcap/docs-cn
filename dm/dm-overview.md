@@ -52,9 +52,9 @@ tiup install dm dmctl
 
     - DM 不会将视图的 DDL 语句同步到下游的 TiDB 集群，也不会将针对视图的 DML 语句同步到下游。在该场景下，建议用户在下游 TiDB 集群中自行创建视图。
 
-+ GBK 字符集兼容性限制
++ GBK 和 GB18030 字符集兼容性限制
 
-    - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB。
+    - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB，在 v9.0.0 之前不支持将 `charset=GB18030` 的表迁移到 TiDB。
 
 + Binlog 兼容性限制
 
@@ -62,7 +62,7 @@ tiup install dm dmctl
 
 + 向量类型数据同步
 
-    - DM 不支持迁移或同步 MySQL 9.0 的向量数据类型到 TiDB。
+    - DM 不支持迁移或同步 MySQL 的向量数据类型到 TiDB。
 
 ## Contributing
 
@@ -83,9 +83,9 @@ DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/bl
 
 在 v5.4 之前，DM 工具的文档独立于 TiDB 文档。要访问这些早期版本的 DM 文档，请点击以下链接：
 
-- [DM v5.3 文档](https://docs.pingcap.com/zh/tidb-data-migration/v5.3)
-- [DM v2.0 文档](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/)
-- [DM v1.0 文档](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/)
+- [DM v5.3 文档](https://docs-archive.pingcap.com/zh/tidb-data-migration/v5.3)
+- [DM v2.0 文档](https://docs-archive.pingcap.com/zh/tidb-data-migration/v2.0/)
+- [DM v1.0 文档](https://docs-archive.pingcap.com/zh/tidb-data-migration/v1.0/)
 
 > **注意：**
 >
