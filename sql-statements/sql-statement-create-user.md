@@ -19,15 +19,6 @@ IfNotExists ::=
 UserSpecList ::=
     UserSpec ( ',' UserSpec )*
 
-<<<<<<< HEAD
-RequireClauseOpt ::=
-    ( 'REQUIRE' 'NONE' | 'REQUIRE' 'SSL' | 'REQUIRE' 'X509' | 'REQUIRE' RequireList )?  
-    
-RequireList ::=
-    ( "ISSUER" stringLit | "SUBJECT" stringLit | "CIPHER" stringLit | "SAN" stringLit | "TOKEN_ISSUER" stringLit )*
-
-=======
->>>>>>> ab5d7f2b64 (Fix duplicate items in CREATE USER and ALTER USER (#21089))
 UserSpec ::=
     Username AuthOption
 
