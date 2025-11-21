@@ -62,6 +62,7 @@ tiup br backup full --pd "${PD_IP}:2379" \
 * `--tikv-max-restore-concurrency`：快照恢复阶段的单个 TiKV 节点的任务最大并发数。
 * `--compression`：备份生成文件的压缩算法，支持 `lz4`、`snappy`、`zstd`，默认 `zstd`（多数情况下无须修改）。如何选择不同的压缩算法，可以参考[文档](https://github.com/EighteenZi/rocksdb_wiki/blob/master/Compression.md)。
 * `--compression-level`：备份选择的压缩算法对应的压缩级别，`zstd` 默认为 3。大多数情况下无需设置。
+* `--checksum`：在备份和恢复期间是否执行表级别的校验和验证。默认值为 `false`，表示不启用校验和验证。详细信息参见[校验和](/br/br-snapshot-manual.md#校验和)。
 
 ## 全量备份命令行
 
