@@ -1,6 +1,6 @@
 ---
 title: TIFLASH_INDEXES
-summary: 了解 information_schema 表 `TIFLASH_INDEXES`。
+summary: 了解 INFORMATION_SCHEMA 表 `TIFLASH_INDEXES`。
 ---
 
 # TIFLASH_INDEXES
@@ -12,9 +12,11 @@ summary: 了解 information_schema 表 `TIFLASH_INDEXES`。
 `TIFLASH_INDEXES` 表提供有关 TiFlash 副本上索引构建的的统计信息。
 
 ```sql
-USE information_schema;
-DESC tiflash_indexes;
+USE INFORMATION_SCHEMA;
+DESC TIFLASH_INDEXES;
 ```
+
+输出结果如下：
 
 ```sql
 +-------------------------+---------------+------+------+---------+-------+
@@ -47,9 +49,9 @@ DESC tiflash_indexes;
 - `COLUMN_ID`：索引所在的列 ID
 - `INDEX_ID`：索引的 ID
 - `INDEX_KIND`：索引的类型
-- `ROWS_STABLE_INDEXED`：TiFlash 副本中 Stable 层已经构建完索引的行数
-- `ROWS_STABLE_NOT_INDEXED`：TiFlash 副本中 Stable 层未构建索引的行数
-- `ROWS_DELTA_INDEXED`：TiFlash 副本中 Delta 层已经构建完索引的行数
-- `ROWS_DELTA_NOT_INDEXED`：TiFlash 副本中 Delta 层未构建索引的行数
-- `ERROR_MESSAGE`：索引构建过程中遇到不可恢复的错误信息
-- `TIFLASH_INSTANCE`：TiFlash 实例地址。
+- `ROWS_STABLE_INDEXED`：TiFlash 副本中 Stable 层已完成索引构建的行数。
+- `ROWS_STABLE_NOT_INDEXED`：TiFlash 副本中 Stable 层尚未构建索引的行数。
+- `ROWS_DELTA_INDEXED`：TiFlash 副本中 Delta 层已完成索引构建的行数。
+- `ROWS_DELTA_NOT_INDEXED`：TiFlash 副本中 Delta 层尚未构建索引的行数。
+- `ERROR_MESSAGE`：索引构建过程中出现的不可恢复错误的信息
+- `TIFLASH_INSTANCE`：执行索引构建任务的 TiFlash 实例地址
