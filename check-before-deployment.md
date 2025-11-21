@@ -395,7 +395,7 @@ sudo systemctl enable ntpd.service
 
 在生产系统的 TiDB 中，建议对操作系统进行如下的配置优化：
 
-- 参考[内存——透明大页](/tune-operating-system.md#内存透明大页)，关闭透明大页 (Transparent Huge Pages, THP)。数据库的内存访问模式通常较为稀疏。当高阶内存出现明显碎片化时，系统在分配 THP 页面时会产生较高的延迟。
+- 关闭[内存——透明大页](/tune-operating-system.md#内存透明大页) (Transparent Huge Pages, THP)。数据库的内存访问通常较为稀疏，当高阶内存出现明显碎片化时，THP 分配可能导致较高的内存分配延迟，因此建议关闭 THP 以避免性能抖动。
 - 设置存储介质的 [I/O 调度器](/tune-operating-system.md#io-调度器)。
 
     - 对于高速 SSD 存储介质，内核默认的 I/O 调度器可能会导致性能损失。建议将闪存存储的 I/O 调度器设置为先入先出 (First-in-first-out, FIFO) 的调度器，如 `noop` 或 `none`，这样内核将不做调度操作，直接将 I/O 请求传递给硬件，从而提升性能。
