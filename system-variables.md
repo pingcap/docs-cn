@@ -5072,7 +5072,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 单位：毫秒
 - 输出慢日志的耗时阈值，默认为 300 ms。如果查询耗时大于这个值，会视作一个慢查询，并记录到慢查询日志。注意，当日志的输出级别 [`log.level`](/tidb-configuration-file.md#level) 是 `"debug"` 时，所有查询都会记录到慢日志，不受该变量的限制。
 
-### `tidb_slow_log_rules`
+### `tidb_slow_log_rules` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -5085,7 +5085,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > 建议在启用 [`tidb_slow_log_rules`](#tidb_slow_log_rules) 后，同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec) 以限制慢日志打印频率，防止基于规则的慢日志触发过于频繁。
 
-### `tidb_slow_log_max_per_sec`
+### `tidb_slow_log_max_per_sec` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
