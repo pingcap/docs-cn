@@ -97,7 +97,7 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | [`TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md)        | 提供 TiDB 节点上有关访问索引的统计信息。 ｜
 | [`TIDB_SERVERS_INFO`](/information-schema/information-schema-tidb-servers-info.md)      | 提供 TiDB 服务器的列表。                                        |
 | [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)                        | 提供 TiDB 节点上正在执行的事务的信息。                          |
-| [`TIFLASH_INDEXES`](/information-schema/information-schema-tiflash-indexes.md)          | 提供有关 TiFlash 副本上索引构建的的统计信息。                    |
+| [`TIFLASH_INDEXES`](/information-schema/information-schema-tiflash-indexes.md)          | 提供有关 TiFlash 副本上索引构建的统计信息。                    |
 | [`TIFLASH_REPLICA`](/information-schema/information-schema-tiflash-replica.md)          | 提供有关 TiFlash 副本的详细信息。                              |
 | [`TIFLASH_SEGMENTS`](/information-schema/information-schema-tiflash-segments.md)        | 提供有关 TiFlash 内部数据表内分片 (Segment) 的统计信息。           |
 | [`TIFLASH_TABLES`](/information-schema/information-schema-tiflash-tables.md)            | 提供有关 TiFlash 内部数据表的统计信息。                         |

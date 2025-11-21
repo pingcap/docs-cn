@@ -9,7 +9,7 @@ summary: 了解 INFORMATION_SCHEMA 表 `TIFLASH_INDEXES`。
 >
 > 该表目前为实验特性，不建议在生产环境中使用。该表的字段目前尚未稳定，未来 TiDB 版本中可能发生变更。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-`TIFLASH_INDEXES` 表提供有关 TiFlash 副本上索引构建的的统计信息。
+`TIFLASH_INDEXES` 表提供有关 TiFlash 副本上索引构建的统计信息。
 
 ```sql
 USE INFORMATION_SCHEMA;
