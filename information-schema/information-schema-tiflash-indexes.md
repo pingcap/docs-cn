@@ -44,14 +44,14 @@ DESC TIFLASH_INDEXES;
 - `TIDB_DATABASE`：表所属的数据库的名称。
 - `TIDB_TABLE`：表的名称。
 - `TABLE_ID`：表的内部 ID，该 ID 在一个 TiDB 集群内部唯一。
-- `COLUMN_NAME`：索引所在的列名
-- `INDEX_NAME`：索引的名称
-- `COLUMN_ID`：索引所在的列 ID
-- `INDEX_ID`：索引的 ID
-- `INDEX_KIND`：索引的类型
+- `COLUMN_NAME`：索引所在的列名。
+- `INDEX_NAME`：索引的名称。
+- `COLUMN_ID`：索引所在的列 ID。
+- `INDEX_ID`：索引的 ID。
+- `INDEX_KIND`：索引的类型。
 - `ROWS_STABLE_INDEXED`：TiFlash 副本中 Stable 层已完成索引构建的行数。
 - `ROWS_STABLE_NOT_INDEXED`：TiFlash 副本中 Stable 层尚未构建索引的行数。
 - `ROWS_DELTA_INDEXED`：TiFlash 副本中 Delta 层已完成索引构建的行数。
 - `ROWS_DELTA_NOT_INDEXED`：TiFlash 副本中 Delta 层尚未构建索引的行数。
-- `ERROR_MESSAGE`：索引构建过程中出现的不可恢复错误的信息
-- `TIFLASH_INSTANCE`：执行索引构建任务的 TiFlash 实例地址
+- `ERROR_MESSAGE`：索引构建过程中出现的不可恢复错误的信息。
+- `TIFLASH_INSTANCE`：执行索引构建任务的 TiFlash 实例地址。
