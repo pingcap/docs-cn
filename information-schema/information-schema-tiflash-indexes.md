@@ -7,7 +7,7 @@ summary: 了解 INFORMATION_SCHEMA 表 `TIFLASH_INDEXES`。
 
 > **警告：**
 >
-> 请不要在生产环境中使用该系统表，因为该表字段信息尚未固定下来，可能会在 TiDB 未来版本中发生变化。
+> 该表目前为实验特性，不建议在生产环境中使用。该表的字段目前尚未稳定，未来 TiDB 版本中可能发生变更。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 `TIFLASH_INDEXES` 表提供有关 TiFlash 副本上索引构建的的统计信息。
 
