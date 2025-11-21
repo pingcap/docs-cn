@@ -451,6 +451,20 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 >
 > 跳过字符检查可能会使 TiDB 检测不到应用写入的非法 UTF-8 字符，进一步导致执行 `ANALYZE` 时解码错误，以及引入其他未知的编码问题。如果应用不能保证写入字符串的合法性，不建议跳过该检查。
 
+在某些 SQL 语句中，可能涉及与非法 UTF-8 字符的比较。例如：
+
+```sql
+SELECT * FROM `t` WHERE `id` > 'a" + string([]byte{0xff}) + "a';
+```
+
+上述语句中的 `0xff` 为非法的 UTF-8 字节。在处理该类字符时，TiDB 的行为会受到排序规则 (collation) 的影响 <span class="version-mark">从 v9.0.0 版本开始引入</span>：
+
+* 非二进制排序规则（如 `utf8mb4_general_ci`）：TiDB 会在遇到非法字节时截断字符串，截断后的部分不参与比较。
+
+* `gbk_bin` 和 `gb18030_bin`：TiDB 会将非法字节替换为字符 `?`，并继续执行后续的比较操作。
+
+* 其他二进制排序规则（如 `utf8_bin`）：TiDB 会将非法字节视为普通字节，按其原始二进制值参与比较。
+
 ## 排序规则支持
 
 排序规则的语法支持和语义支持受到配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 的影响。这里语法支持和语义支持有所区别。语法支持是指 TiDB 能够解析和设置排序规则；而语义支持是指 TiDB 能够在比较字符串时正确地使用排序规则。
