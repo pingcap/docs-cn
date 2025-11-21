@@ -642,6 +642,16 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 当 `force-init-stats` 为 `true` 时，TiDB 启动时会等到统计信息初始化完成后再对外提供服务。需要注意的是，在表和分区数量较多且 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 为 `false` 的情况下，`force-init-stats` 为 `true` 可能会导致 TiDB 从启动到开始对外提供服务的时间变长。
 + 当 `force-init-stats` 为 `false` 时，TiDB 在统计信息初始化未完成时即可对外提供服务，但由于统计信息初始化未完成，优化器会用 pseudo 统计信息进行决策，可能会产生不合理的执行计划。
 
+### `skip-init-stats` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该配置项仅用于维护目的，请勿在处理常规工作负载的 TiDB 实例上启用。
+
++ 控制 TiDB 启动时是否跳过统计信息初始化。
++ 默认值：`false`
++ 当 `skip-init-stats` 的值为 `true` 时，TiDB 在启动过程中会跳过统计信息初始化，并且在启动后不会加载统计信息。当需要快速启动 TiDB 且不想等待统计信息初始化时（尤其是在有大量表和分区的情况下），该配置项非常有用。但是，该配置项仅用于维护目的。在大多数情况下，请勿将该配置项设置为 `true`；否则，优化器可能会因为缺少统计信息而生成非最优的执行计划。
+
 ## opentracing
 
 opentracing 的相关的设置。
