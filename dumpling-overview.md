@@ -210,12 +210,18 @@ export AWS_ACCESS_KEY_ID=${AccessKey}
 export AWS_SECRET_ACCESS_KEY=${SecretKey}
 ```
 
-Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多参数描述，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
+Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件并使用 AWS profile 进行认证。更多参数描述，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
-{{< copyable "shell-regular" >}}
+使用 `~/.aws/credentials` 中的默认凭证：
 
 ```shell
 tiup dumpling -u root -P 4000 -h 127.0.0.1 -r 200000 -o "s3://${Bucket}/${Folder}"
+```
+
+使用指定的 AWS profile：
+
+```shell
+tiup dumpling -u root -P 4000 -h 127.0.0.1 -r 200000 -o "s3://${Bucket}/${Folder}" --s3.profile=my.profile
 ```
 
 ### 筛选导出的数据
