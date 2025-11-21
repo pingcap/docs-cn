@@ -395,15 +395,15 @@ sudo systemctl enable ntpd.service
 
 在生产系统的 TiDB 中，建议对操作系统进行如下的配置优化：
 
-1. 参考[内存——透明大页](/tune-operating-system.md#内存透明大页)关闭透明大页 (Transparent Huge Pages, THP)。数据库的内存访问模式通常较为稀疏。当高阶内存出现明显碎片化时，系统在分配 THP 页面时会产生较高的延迟。
-2. 参考 [I/O 调度器](/tune-operating-system.md#io-调度器)设置存储介质的 I/O 调度器。
+- 参考[内存——透明大页](/tune-operating-system.md#内存透明大页)，关闭透明大页 (Transparent Huge Pages, THP)。数据库的内存访问模式通常较为稀疏。当高阶内存出现明显碎片化时，系统在分配 THP 页面时会产生较高的延迟。
+- 参考 [I/O 调度器](/tune-operating-system.md#io-调度器)，设置存储介质的 I/O 调度器。
 
     - 对于高速 SSD 存储介质，内核默认的 I/O 调度器可能会导致性能损失。建议将闪存存储的 I/O 调度器设置为先入先出 (First-in-first-out, FIFO) 的调度器，如 `noop` 或 `none`，这样内核将不做调度操作，直接将 I/O 请求传递给硬件，从而提升性能。
     - 对于 NVMe 存储介质，默认的 I/O 调度器为 `none`，无需进行调整。
 
-3. 参考[处理器——动态节能技术](/tune-operating-system.md#处理器动态节能技术)，调整 CPU 频率的 cpufreq 模块，选用 `performance` 模式。该模式将 CPU 频率固定在其支持的最高运行频率上，不进行动态调节，因此可获得最佳性能。
+- 参考[处理器——动态节能技术](/tune-operating-system.md#处理器动态节能技术)，调整 CPU 频率的 cpufreq 模块，选用 `performance` 模式。该模式将 CPU 频率固定在其支持的最高运行频率上，不进行动态调节，因此可获得最佳性能。
 
-采用如下步骤检查操作系统的当前配置，并配置系统优化参数：
+具体的检查和配置步骤如下：
 
 1. 执行以下命令查看透明大页的开启状态。
 
