@@ -1095,7 +1095,11 @@
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
+<<<<<<< HEAD
   - [版本周期支持策略](https://cn.pingcap.com/tidb-release-support-policy/)
+=======
+  - [版本周期支持策略](https://pingkai.cn/tidb-release-support-policy)
+>>>>>>> 21518aa60a (toc: add TiDB Release Support Policy to toc (#21105))
   - [TiDB 离线包](/binary-package.md)
   - v8.5
     - [8.5.3](/releases/release-8.5.3.md)
