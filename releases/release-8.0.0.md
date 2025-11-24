@@ -9,7 +9,7 @@ summary: 了解 TiDB 8.0.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：8.0.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.0/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v8.0.0-DMR#version-list)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.0/quick-start-with-tidb)
 
 在 8.0.0 版本中，你可以获得以下关键特性：
 

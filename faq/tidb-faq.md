@@ -74,9 +74,9 @@ Usage of ./bin/tidb-server:
 ### 1.1.10 除了官方文档，有没有其他 TiDB 知识获取途径？
 
 - [官方文档](https://docs.pingcap.com/zh/)：获取 TiDB 相关知识最主要、最及时的途径。
-- [官方博客](https://cn.pingcap.com/blog/)：了解产品技术解读、观点洞察、案例实践。
+- [博客文章](https://tidb.net/blog)：了解产品技术解读、观点洞察、案例实践。
 - [AskTUG 社区论坛](https://asktug.com)：与社区用户、技术专家互动交流。
-- [PingCAP Education](https://cn.pingcap.com/education/)：学习线上课程，获得数据库能力认证。
+- [视频课程](https://learn.pingcap.cn/learner/course)：学习线上课程，获得数据库能力认证。
 
 ### 1.1.11 TiDB 用户名长度限制？
 
@@ -110,12 +110,12 @@ TiFlash 默认保持数据强一致性。Raft Learner 流程会更新数据。�
 
 ### 1.2.1 存储 TiKV 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 说存储](https://cn.pingcap.com/blog/tidb-internal-1)
+[三篇文章了解 TiDB 技术内幕 - 说存储](https://tidb.net/blog/dbe4f467)
 
 ### 1.2.2 计算 TiDB 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 说计算](https://cn.pingcap.com/blog/tidb-internal-2)
+[三篇文章了解 TiDB 技术内幕 - 说计算](https://tidb.net/blog/59bde89a)
 
 ### 1.2.3 调度 PD 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 谈调度](https://cn.pingcap.com/blog/tidb-internal-3)
+[三篇文章了解 TiDB 技术内幕 - 谈调度](https://tidb.net/blog/a558961f)

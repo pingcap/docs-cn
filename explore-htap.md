@@ -29,7 +29,7 @@ TiDB HTAP 可以满足企业海量数据的增产需求、降低运维的风险�
 
     当将 TiDB 应用于数据中枢场景时，TiDB 作为数据中枢可以无缝连接数据业务层和数据仓库层，满足不同业务的需求。
 
-如果想了解更多关于 TiDB HTAP 场景信息，请参阅 [PingCAP 官网中关于 HTAP 的博客](https://pingcap.com/zh/blog/?tag=HTAP)。
+如果想了解更多关于 TiDB HTAP 场景信息，请参阅 [TiDB HTAP 用户案例合集](https://tidb.net/blog/tag/htap)。
 
 当遇到以下技术场景时，建议使用 TiDB HTAP 提升 TiDB 数据库整体表现：
 

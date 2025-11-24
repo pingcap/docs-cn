@@ -9,7 +9,7 @@ summary: 了解 TiDB 6.1.4 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：6.1.4
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.1.4#version-list)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.1/production-deployment-using-tiup)
 
 ## 兼容性变更
 

@@ -10,7 +10,7 @@ summary: 介绍 TiDB 版本发布历史。
 
 本文列出了所有已发布的 TiDB 版本，按版本号降序排序。
 
-关于 TiDB 长期支持版本 (Long-Term Support, LTS) 的支持时间表，请参阅 [TiDB 版本周期支持策略](https://cn.pingcap.com/tidb-release-support-policy/)。
+关于 TiDB 长期支持版本 (Long-Term Support, LTS) 的支持时间表，请参阅 [TiDB 版本周期支持策略](https://pingkai.cn/tidb-release-support-policy)。
 
 ## 8.5
 
