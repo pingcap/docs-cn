@@ -114,7 +114,7 @@ TiFlash 默认保持数据强一致性。Raft Learner 流程会更新数据。�
 
 ### 1.2.2 计算 TiDB 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 说计算](https://tidb.net/blog/59bde89a)
+[三篇文章了解 TiDB 技术内幕 - 说计算](https://tidb.net/blog/8427565a)
 
 ### 1.2.3 调度 PD 详细解读
 

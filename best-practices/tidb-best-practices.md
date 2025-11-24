@@ -8,7 +8,7 @@ summary: TiDB 最佳实践总结了使用 TiDB 的一些优化技巧，包括 Ra
 
 本文档总结使用 TiDB 时的一些最佳实践，主要涉及 SQL 使用和 OLAP/OLTP 优化技巧，特别是一些 TiDB 专有的优化开关。
 
-建议先阅读讲解 TiDB 原理的三篇文章（[讲存储](https://tidb.net/blog/dbe4f467)，[说计算](https://tidb.net/blog/59bde89a)，[谈调度](https://tidb.net/blog/a558961f)），再来看这篇文章。
+建议先阅读讲解 TiDB 原理的三篇文章（[讲存储](https://tidb.net/blog/dbe4f467)，[说计算](https://tidb.net/blog/8427565a)，[谈调度](https://tidb.net/blog/a558961f)），再来看这篇文章。
 
 ## 前言
 
@@ -58,7 +58,7 @@ PD 会根据整个 TiKV 集群的状态，对集群的负载进行调度。调�
 
 ### SQL on KV
 
-TiDB 自动将 SQL 结构映射为 KV 结构。具体的可以参考[《三篇文章了解 TiDB 技术内幕 - 说计算》](https://tidb.net/blog/59bde89a)这篇文档。简单来说，TiDB 执行了以下操作：
+TiDB 自动将 SQL 结构映射为 KV 结构。具体的可以参考[《三篇文章了解 TiDB 技术内幕 - 说计算》](https://tidb.net/blog/8427565a)这篇文档。简单来说，TiDB 执行了以下操作：
 
 + 一行数据映射为一个 KV，Key 以 `TableID` 构造前缀，以行 ID 为后缀
 + 一条索引映射为一个 KV，Key 以 `TableID+IndexID` 构造前缀，以索引值构造后缀
