@@ -12,7 +12,7 @@ summary: 了解 TiDB 9.0.0 版本的新功能、兼容性变更、改进提升�
 TiDB 版本：9.0.0
 
 <!--
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v9.0/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v9.0/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v9.0.0#version-list)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v9.0/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v9.0/production-deployment-using-tiup) | [下载离线包](https://pingkai.cn/download#tidb-community)
 -->
 
 在 9.0.0 版本中，你可以获得以下关键特性：
@@ -41,7 +41,7 @@ TiDB 版本：9.0.0
     <td>在进行集群升级、迁移或部署变更等重要操作之前，使用 TiProxy 捕获 TiDB 生产集群的真实负载，并在测试的目标集群中重现该工作负载，从而验证性能，确保变更成功。</td>
   </tr>
   <tr>
-    <td rowspan="3">数据库管理与可观测性</td>
+    <td rowspan="5">数据库管理与可观测性</td>
     <td>新增 <a href="https://docs.pingcap.com/zh/tidb/dev/workload-repository/">TiDB Workload Repository</a> 功能，支持将历史工作负载数据持久化存储到 TiKV 中</td>
     <td>TiDB Workload Repository 可以将数据库运行时的历史状态持久化，能够显著提升历史故障和性能问题的诊断效率，帮助你快速定位和解决问题，同时为健康检查和自动调优提供关键的数据基础。</td>
   </tr>
@@ -49,9 +49,17 @@ TiDB 版本：9.0.0
     <td>TiDB 索引推荐 (Index Advisor)</td>
     <td>TiDB 索引推荐 (Index Advisor) 通过分析实际查询负载，自动识别缺失或冗余的索引，帮助你在无需深入了解业务的情况下完成索引优化。该功能可降低手动分析和调优的成本，并提升查询性能和系统稳定性。</td>
   </tr>
+    <tr>
+    <td>执行计划绑定推荐 **tw@Oreoxmt**</td>
+    <td>当遭遇突发的 SQL 性能问题时，TiDB 可以根据历史负载向用户推荐执行计划绑定( SQL Binding )，提升 SQL 性能问题的解决速度，降低系统影响。</td>
+  </tr>
   <tr>
     <td>SQL 跨可用区流量观测</td>
     <td>跨可用区流量观测可用于识别 TiDB 集群中 SQL 查询产生的跨可用区网络流量，帮助你分析流量来源、优化部署架构，并控制云服务中的跨区传输成本，从而提升资源使用效率和成本可见性。</td>
+  </tr>
+  <tr>
+    <td> 支持表级别数据打散功能（实验特性）**tw@qiancai** </td>
+    <td>数据热点是最常见的造成数据库性能问题的根本原因。表级数据打散功能让用户能够在集群整体均衡的基础上，进一步主动优化单表在各 TiKV 节点上的数据分布，提升负载均衡性和查询性能。</td>
   </tr>
   <tr>
     <td rowspan="3">数据迁移</td>
@@ -87,6 +95,12 @@ TiDB 版本：9.0.0
     更多信息，请参考[用户文档](/pd-microservices.md)。
 
 ### 性能
+
+* 优化包含外键表场景下的建库建表和加列性能 [#61126](https://github.com/pingcap/tidb/issues/61126) @[GMHDBJD](https://github.com/GMHDBJD) @[River2000i](https://github.com/River2000i) **tw@hfxsd** <!--1896 beta.2-->
+
+    在 v9.0.0 之前，在部分 SaaS 场景下，当集群中的表数量达到千万级别时，创建包含外键的表会出现明显的性能瓶颈。同时，大量外键关系还会进一步拖慢 `CREATE TABLE` 和 `ADD COLUMN` 等 DDL 操作的执行效率。
+
+    从 v9.0.0 开始，TiDB 优化了相关元信息的处理逻辑，显著提升了在超大表规模场景下的 DDL 性能。根据内部测试数据，在集群空负载、连接至 DDL Owner 节点的情况下，建表速度最高可达每秒 126 张表，`ADD COLUMN` 操作的平均执行速度约为每秒 45.5 张表。
 
 * 在几十万甚至上百万用户数的场景下，创建用户、修改用户信息的性能提升了 77 倍 [#55563](https://github.com/pingcap/tidb/issues/55563) @[tiancaiamao](https://github.com/tiancaiamao)
 
@@ -141,7 +155,18 @@ TiDB 版本：9.0.0
 
   更多信息，请参考[用户文档](/br/br-compact-log-backup.md)。
 
+* 推荐执行计划绑定（预览版） [#60148](https://github.com/pingcap/tidb/issues/60148) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--2225-->
+
+    通过“执行计划绑定 ([SQL Binding](/sql-plan-management.md#执行计划绑定-sql-binding))” 来稳定执行计划，是 SQL 调优过程中最重要的手段之一。当用户遇到 SQL 性能问题时，通常会在系统中寻找更优的执行计划，并将其绑定，以求快速修复问题。为简化这一流程，TiDB 引入了 `EXPLAIN EXPLORE` 命令，自动遍历并分析某条 SQL 语句的可能执行计划，并推荐可能更优的方案。这一能力可以加快 SQL 性能问题的定位与恢复，降低故障带来的影响。
+
+
 ### 高可用
+
+* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234 beta.2-->
+
+    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+
+    更多信息，请参考[用户文档](链接)。
 
 * TiProxy 支持流量回放功能正式发布 (GA) [#642](https://github.com/pingcap/tiproxy/issues/642) @[djshow832](https://github.com/djshow832)
 
@@ -151,13 +176,44 @@ TiDB 版本：9.0.0
 
 ### 稳定性
 
+* 引入连接中断检测机制，在客户端断连后，Server 端会自动终止仍在执行的 SQL 语句 [#60685](https://github.com/pingcap/tidb/pull/60685) @[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--2060 beta.2-->
+
+    为提升资源利用率和系统稳定性，TiDB v9.0.0 引入了连接中断检测机制。当客户端连接异常断开时，TiDB 会主动终止该连接上仍在执行的 SQL 语句，及时释放资源，避免无效语句长期运行，影响系统性能。
+
+* 引入 Table Mode，在数据恢复阶段限制用户对目标表进行读写操作，提升备份恢复任务的稳定性和数据一致性 [#59008](https://github.com/pingcap/tidb/issues/59008) @[fishiu](https://github.com/fishiu) @[River2000i](https://github.com/River2000i) @[Tristan1900](https://github.com/Tristan1900) @[Leavrth](https://github.com/Leavrth)   **tw@hfxsd** <!--2056 beta.2-->
+
+    TiDB v9.0.0 引入了 Table Mode。当你执行快照恢复或者 PITR 时，目标表的 Table Mode 会被自动设置为 `restore`，处于 Restore Mode 的表会禁止执行任何读写操作。当数据恢复完成时，Table Mode 会被自动恢复到 `normal` 状态，你可以正常读写该表，从而提升数据恢复期间的任务稳定性和数据一致性。
+
+    更多信息，请参考[用户文档](/br/br-pitr-guide.md)。
+
 * 新增系统变量 `MAX_USER_CONNECTIONS`，用于限制不同用户可以建立的连接数 [#59203](https://github.com/pingcap/tidb/issues/59203) @[joccau](https://github.com/joccau)
 
     从 v9.0.0 版本开始，你可通过设置系统变量 `MAX_USER_CONNECTIONS` ，来限制单个用户对单个 TiDB 节点可建立的连接数，避免由于单个用户消耗过多的 [token](/tidb-configuration-file.md#token-limit) 导致其他用户提交的请求得不到及时响应的问题。 
 
     更多信息，请参考[用户文档](/system-variables.md#max_user_connections-从-v900-版本开始引入)。
 
+* 限制资源组超额使用系统资源 [#9057](https://github.com/tikv/pd/issues/9057) [#59389](https://github.com/pingcap/tidb/issues/59389) @[lhy1024](https://github.com/lhy1024) **tw@lilin90** <!--1940 beta.2-->
+
+    在 v9.0.0 之前，为资源组 (Resource Group) 设置 `BURSTABLE` 属性之后，TiDB 允许这个资源组的应用超额使用系统资源。但超额的申请可能会挤占其他资源组的资源分配，影响其他资源组的 SLA。从 v9.0.0 开始，为 `BURSTABLE` 增加了支持的模式。如果没有为 `BURSTABLE` 指定目标值，将默认启用相对温和的 `MODERATED` 模式，TiDB 会动态调整超额资源申请的上限，尽量满足各个资源组限额内的资源。从前的“无限模式“仍旧保留，通过设置 `BURSTABLE=UNLIMITED` 来指定。
+
+    需要注意的是，旧版本升级上来的资源组默认保留原行为 (`UNLIMITED`)。如果要调整到 `MODERATED` 模式，需要通过 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 修改定义。
+
+    `BURSTABLE` 的 `MODERATED` 资源分配模式适用于系统中多个资源组优先级相当的场景。允许部分资源组安全地“溢出”，从而在保证服务质量的前提下，更高效地利用资源。
+
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-create-resource-group.md)。
+
 ### SQL 功能
+
+* 支持 `gb18030` 字符集和 `gb18030_bin`、`gb18030_chinese_ci` 排序规则 [#17470](https://github.com/tikv/tikv/issues/17470) [#55791](https://github.com/pingcap/tidb/issues/55791) @[cbcwestwolf](https://github.com/cbcwestwolf) *tw@hfxsd* <!--1962 beta.2--> 
+ 
+    从 v9.0.0 开始，TiDB 支持 `gb18030` 字符集和 `gb18030_bin`、`gb18030_chinese_ci` 排序规则，以确保 TiDB 能够更好地处理中文相关的数据存储和查询需求。 
+    
+    - `gb18030` 字符集是一个广泛用于中文字符编码的标准。
+    - `gb18030_bin` 提供了基于二进制的精准排序，而 `gb18030_chinese_ci` 则支持大小写不敏感的通用排序规则。这两种排序规则使得对 `gb18030` 编码文本的排序和比较更加灵活高效。 
+
+  通过支持 `gb18030` 字符集及其排序规则，TiDB v9.0.0 增强了与中文应用场景的兼容性，特别是在涉及多种语言和字符编码的场景下，可以更方便地进行字符集的选择和操作，提升了数据库的使用体验。 
+
+    更多信息，请参考[用户文档](/character-set-gb18030.md)。
 
 * 支持对分区表的非唯一列创建全局索引 [#58650](https://github.com/pingcap/tidb/issues/58650) @[Defined2014](https://github.com/Defined2014) @[mjonss](https://github.com/mjonss)
 
@@ -180,6 +236,16 @@ TiDB 版本：9.0.0
     从 v9.0.0 开始，当日志备份任务正在运行时，在满足特定条件的情况下，仍然可以执行快照恢复，并且恢复的数据可以被进行中的日志备份正常记录。这样，日志备份可以持续进行，无需在恢复数据期间中断。
 
     更多信息，请参考[用户文档](/br/br-pitr-manual.md#进行中的日志备份与快照恢复的兼容性)。
+
+* 支持表级别数据打散功能（实验特性）[#8986](https://github.com/tikv/pd/issues/8986) @[bufferflies](https://github.com/bufferflies) **tw@qiancai** <!--1724 beta.2-->
+
+    PD 会自动调度数据，将整个集群的数据尽可能均匀地分布到所有 TiKV 节点上。然而，这种自动调度是基于集群全局的。在某些场景下，尽管整个集群的数据分布是均衡的，但某张表在各个 TiKV 节点上的数据分布可能仍然不均匀。
+
+    从 v9.0.0 开始，你可以通过 [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql-statement-show-distribution-jobs.md) 语句查看某张表在集群中所有 TiKV 节点上的数据分布情况。如果存在数据分布不均衡，可以通过 [`DISTRIBUTE TABLE`](/sql-statements/sql-statement-distribute-table.md) 语句对该表进行数据打散（实验特性），以提升负载均衡性。
+
+    表级数据打散功能属于一次性执行任务，并设有超时时间限制。如果到达超时时间后，打散任务未还未完成，则会自动退出。
+
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-distribute-table.md)。
 
 ### 可观测性
 
@@ -233,9 +299,39 @@ TiDB 版本：9.0.0
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-explain-analyze.md)。
 
+* 在 Statement Summary Tables 和慢日志中增加存储引擎标识 [#61736](https://github.com/pingcap/tidb/issues/61736) @[henrybw](https://github.com/henrybw) **tw@Oreoxmt**<!--2034 beta.2-->
+
+    当集群中同时部署了 TiKV 和 TiFlash 时，用户在数据库诊断和性能优化过程中经常需要根据存储引擎筛选 SQL 语句。例如，当用户发现 TiFlash 负载较高时，需要筛选出在 TiFlash 上运行的 SQL 语句，以便识别可能导致 TiFlash 负载过高的查询语句。为解决此需求，TiDB 从 v9.0.0 开始，在 Statement Summary Tables 和慢日志中新增了存储引擎标识字段。
+
+    在 [Statement Summary Tables](/statement-summary-tables.md) 中新增的字段：
+
+    * `STORAGE_KV`：值为 `1` 时表示该 SQL 语句访问了 TiKV。
+    * `STORAGE_MPP`：值为 `1` 时表示该 SQL 语句访问了 TiFlash。
+
+    在[慢日志](/identify-slow-queries.md)中新增的字段：
+
+    * `Storage_from_kv`：值为 `true` 时表示该 SQL 语句访问了 TiKV。
+    * `Storage_from_mpp`：值为 `true` 时表示该 SQL 语句访问了 TiFlash。
+
+    该功能可以简化部分诊断和性能优化场景的工作流程，提升问题诊断效率。
+
+    更多信息，请参考 [Statement Summary Tables](/statement-summary-tables.md) 和[慢日志](/identify-slow-queries.md)。
+
 ### 安全
 
+* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234 beta.2-->
+
+    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+
+    更多信息，请参考[用户文档](链接)。
+
 ### 数据迁移
+
+* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234 beta.2-->
+
+    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+
+    更多信息，请参考[用户文档](链接)。
 
 * TiCDC 引入新架构，显著提升性能、可扩展性和稳定性（实验特性）[#442](https://github.com/pingcap/ticdc/issues/442) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
@@ -361,6 +457,9 @@ TiDB 版本：9.0.0
 * 配置项 [`concurrently-init-stats`](/tidb-configuration-file.md#concurrently-init-stats-从-v810-和-v752-版本开始引入) 用于控制初始化统计信息缓存的并发模式，并从 v8.2 开始默认启用。计划在后续版本中仅支持并发模式，因此该配置项将被移除。
 * 算子 `indexMergeJoin` 是表连接的一种方式，目前已经被其他连接方式取代，`indexMergeJoin` 计划在未来版本废弃。对应的系统变量[`tidb_enable_index_merge_join`](/system-variables.md#tidb_enable_index_merge_join) 也将被一同废弃。
 * 作为测试用途的优化器提示 [`NTH_PLAN(N)`](/optimizer-hints.md#nth_plann) 计划在未来版本废弃。
+* 优化器代价估算已经全面转向 [代价模型 V2](/cost-model.md#cost-model-version-2)。因此，系统变量 [`tidb_enable_new_cost_interface`](/system-variables.md#tidb_enable_new_cost_interface-从-v620-版本开始引入) 将会在未来版本被移除。
+* [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) 将在未来版本被移出。统计信息存在的情况下，TiDB 不会使用 pseudo 统计信息。
+* "统计信息 Version 2" 提高了大数据量场景下估算的准确性，TiDB 将会在未来版本废弃 "统计信息 Version 1"。版本间的区别参见 [统计信息版本](/statistics.md#统计信息版本)。
 
 ## 改进提升
 
