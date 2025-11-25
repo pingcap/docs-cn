@@ -353,7 +353,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
 ## 离线包变更
 
-TiDB 提供两个[离线包下载](https://pingkai.cn/download)：`v6.0.0 TiDB-community-server` 软件包和 `v6.0.0 TiDB-community-toolkit` 软件包。
+TiDB 提供两个[离线包下载](https://pingkai.cn/download#tidb-community)：`v6.0.0 TiDB-community-server` 软件包和 `v6.0.0 TiDB-community-toolkit` 软件包。
 
 在 6.0.0-DMR 版本中，两个离线包的内容物做了一些调整。在 `v6.0.0 TiDB-community-server` 软件包中，离线包的内容物包含：
 
