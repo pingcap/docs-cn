@@ -16,7 +16,7 @@ summary: 了解 TiProxy 的命令行参数。
 + 指定 TiProxy 配置文件的路径。
 + 类型：`string`
 + 默认值：`""`
-+ 必须指定配置文件。有关详细配置项，请参见[配置 TiProxy](/tiproxy/tiproxy-configuration.md)。注意，修改配置文件时 TiProxy 会自动重新加载配置，因此不要直接修改配置文件，建议通过 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 或 [`kubectl edit tc`](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/modify-tidb-configuration) 修改配置。
++ 必须指定配置文件。有关详细配置项，请参见[配置 TiProxy](/tiproxy/tiproxy-configuration.md)。注意，修改配置文件时 TiProxy 会自动重新加载配置，因此不要直接修改配置文件，建议通过 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 或 [`kubectl edit tc`](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.6/modify-tidb-configuration) 修改配置。
 
 ## TiProxy Control
 

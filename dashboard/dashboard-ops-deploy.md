@@ -9,7 +9,7 @@ TiDB Dashboard 界面内置于 TiDB 4.0 或更高版本的 PD 组件中，无需
 
 > **注意：**
 >
-> TiDB v6.5.0 且 TiDB Operator v1.4.0 之后，在 Kubernetes 上支持将 TiDB Dashboard 作为独立的 Pod 部署。具体信息，参考 [TiDB Operator 部署独立的 TiDB Dashboard](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/get-started#部署独立的-tidb-dashboard)。
+> TiDB v6.5.0 且 TiDB Operator v1.4.0 之后，在 Kubernetes 上支持将 TiDB Dashboard 作为独立的 Pod 部署。具体信息，参考 [TiDB Operator 部署独立的 TiDB Dashboard](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.6/get-started#部署独立的-tidb-dashboard)。
 
 请参阅下列文档了解如何部署标准 TiDB 集群：
 
