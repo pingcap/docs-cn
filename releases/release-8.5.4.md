@@ -102,7 +102,7 @@ TiDB 版本：8.5.4
         | 有索引列 | `BIGINT` → `INT` | 6 小时 25 分 | 0.05 秒 | 46 万倍 |
         | 有索引列 | `CHAR(120)` → `VARCHAR(60)` | 7 小时 16 分 | 12 分 56 秒 | 34倍 |
 
-      注：以上数据基于 DDL 执行过程中未发生数据截断的前提。
+        注：以上数据基于 DDL 执行过程中未发生数据截断的前提。
 
     - 支持由 `IN` 子查询而来的 Semi Join 使用 `semi_join_rewrite` 的 Hint [#58829](https://github.com/pingcap/tidb/issues/58829) @[qw4990](https://github.com/qw4990)
     - 优化系统变量 `tidb_opt_ordering_index_selectivity_ratio` 生效时的估算策略 [#62817](https://github.com/pingcap/tidb/issues/62817) @[terry1purcell](https://github.com/terry1purcell)
