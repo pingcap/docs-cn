@@ -23,7 +23,7 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 
 ### 下载步骤
 
-1. 访问 [软件下载中心](https://pingkai.cn/download#tidb-community)页面。
+1. 访问[软件下载中心](https://pingkai.cn/download#tidb-community)页面。
 2. 选择你所需的 TiDB 版本和架构，选择 **TiDB 工具集 TiDB-community-toolkit**，确认隐私政策，然后点击**立即下载**。
 
 > **注意：**
