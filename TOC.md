@@ -427,7 +427,7 @@
       - [使用 TiUP 联网部署（推荐）](/dm/deploy-a-dm-cluster-using-tiup.md)
       - [使用 TiUP 离线部署](/dm/deploy-a-dm-cluster-using-tiup-offline.md)
       - [使用 Binary 部署](/dm/deploy-a-dm-cluster-using-binary.md)
-      - [在 Kubernetes 环境中部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm)
+      - [在 Kubernetes 环境中部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.5/deploy-tidb-dm)
     - 入门指南
       - [创建数据源](/dm/quick-start-create-source.md)
       - [数据源操作](/dm/dm-manage-source.md)
