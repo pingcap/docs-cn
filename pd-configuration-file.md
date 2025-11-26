@@ -14,7 +14,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 > **Tip:**
 >
-> 如果你需要调整配置项的值，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)进行操作。
+> PD 初始化后，如果你需要调整配置项的值，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数) 和 [PD Control 使用说明](/pd-control.md)进行操作。
 
 ### `name`
 
