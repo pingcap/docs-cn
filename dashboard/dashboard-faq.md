@@ -56,7 +56,7 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
 
 ### 界面提示 `集群中未启动必要组件 NgMonitoring`
 
-NgMonitoring 是 TiDB v5.4.0 及以上集群中内置的高级监控组件，用于支撑 TiDB Dashboard 的 **持续性能分析** 和 **Top SQL** 等功能。使用较新版本 TiUP 部署或升级集群时，NgMonitoring 会自动部署；使用 TiDB Operator 部署集群时，需要依据[启用持续性能分析](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/access-dashboard#启用持续性能分析)手动部署 NgMonitoring。
+NgMonitoring 是 TiDB v5.4.0 及以上集群中内置的高级监控组件，用于支撑 TiDB Dashboard 的 **持续性能分析** 和 **Top SQL** 等功能。使用较新版本 TiUP 部署或升级集群时，NgMonitoring 会自动部署；使用 TiDB Operator 部署集群时，需要依据[启用持续性能分析](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.6/access-dashboard#启用持续性能分析)手动部署 NgMonitoring。
 
 如果界面提示 `集群中未启动必要组件 NgMonitoring`，可按以下方式排查部署问题。
 
@@ -122,7 +122,7 @@ NgMonitoring 是 TiDB v5.4.0 及以上集群中内置的高级监控组件，用
 <details>
   <summary>使用 TiDB Operator 部署的集群</summary>
 
-请参见 TiDB Operator 文档中[启用持续性能分析](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/access-dashboard#启用持续性能分析)的步骤部署 NgMonitoring 组件。
+请参见 TiDB Operator 文档中[启用持续性能分析](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.6/access-dashboard#启用持续性能分析)的步骤部署 NgMonitoring 组件。
 
 </details>
 
