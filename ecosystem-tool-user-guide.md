@@ -60,7 +60,7 @@ TiUniManager 不仅提供对 TiDB 集群的全生命周期的可视化管理，�
 - TiDB DM 的输入：MySQL/MariaDB
 - TiDB DM 的输出：TiDB 集群
 - 适用 TiDB 版本：所有版本
-- Kubernetes 支持：使用 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm) 在 Kubernetes 上部署 TiDB DM。
+- Kubernetes 支持：使用 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/deploy-tidb-dm) 在 Kubernetes 上部署 TiDB DM。
 
 如果数据量在 TB 级别以下，推荐直接使用 TiDB DM 迁移 MySQL/MariaDB 数据到 TiDB（迁移的过程包括全量数据的导出导入和增量数据的复制）。
 
