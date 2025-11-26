@@ -9,7 +9,7 @@ TiDB 支持完整的分布式事务，提供[乐观事务](/optimistic-transacti
 
 ## 拓展学习视频
 
-[TiDB 特有功能与事务控制 - TiDB v6](https://learn.pingcap.com/learner/course/750002/?utm_source=docs-cn-dev-guide)：了解可用于应用程序的 TiDB 独特功能，如 `AUTO_RANDOM` 及 `AUTO_INCREMENT` 特别注意事项、全局临时表、如何使用 TiFlash 启用 HTAP 以及放置策略等。
+[TiDB 特有功能与事务控制 - TiDB v6](https://learn.pingcap.cn/learner/course/750002?utm_source=docs-cn-dev-guide)：了解可用于应用程序的 TiDB 独特功能，如 `AUTO_RANDOM` 及 `AUTO_INCREMENT` 特别注意事项、全局临时表、如何使用 TiFlash 启用 HTAP 以及放置策略等。
 
 ## 通用语句
 
