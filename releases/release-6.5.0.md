@@ -60,7 +60,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     在大批量的数据处理场景，单一大事务 SQL 处理可能对集群稳定性和性能造成影响。非事务 DML 语句将一个 DML 语句拆成多个 SQL 语句在内部执行。拆分后的语句将牺牲事务原子性和隔离性，但是对于集群的稳定性有很大提升。TiDB 从 v6.1.0 开始支持非事务 `DELETE` 语句，v6.5.0 新增对非事务 `INSERT`、`REPLACE` 和 `UPDATE` 语句的支持。
 
-    更多信息，请参考[非事务 DML 语句](/non-transactional-dml.md) 和 [`BATCH` 语句](/sql-statements/sql-statement-batch.md)。
+    更多信息，请参考[非事务 DML 语句](/non-transactional-dml.md)和 [`BATCH` 语句](/sql-statements/sql-statement-batch.md)。
 
 * 支持 Time to live (TTL)（实验特性）[#39262](https://github.com/pingcap/tidb/issues/39262) @[lcwangchao](https://github.com/lcwangchao)
 

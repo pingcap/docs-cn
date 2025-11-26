@@ -189,7 +189,7 @@ server_configs:
 + 默认值：`tidb`
 + 可选值：
 
-    + `tidb`：TiDB 使用的格式。有关详细信息，请参见 [统一日志格式](https://github.com/tikv/rfcs/blob/master/text/0018-unified-log-format.md)。
+    + `tidb`：TiDB 使用的格式。有关详细信息，请参见[统一日志格式](https://github.com/tikv/rfcs/blob/master/text/0018-unified-log-format.md)。
     + `json`：结构化 JSON 格式。
     + `console`：易读的日志格式。
 

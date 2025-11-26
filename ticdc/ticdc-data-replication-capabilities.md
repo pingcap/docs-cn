@@ -40,7 +40,7 @@ TiCDC 对上游数据变更的支持范围如下：
 
     - 系统表（如 `mysql.*` 和 `information_schema.*`）的 DDL 和 DML 语句。
     - 临时表的 DDL 和 DML 语句。
-    - DQL (Data Query Language) 语句 和 DCL (Data Control Language) 语句。
+    - DQL (Data Query Language) 语句和 DCL (Data Control Language) 语句。
 
 ## 使用限制
 
