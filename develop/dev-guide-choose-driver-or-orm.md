@@ -45,7 +45,7 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容或有差异的�
 
 基于 SM3 的认证仅在 TiDB 的 TiDB-JDBC 中支持。
 
-如果你使用的是 Maven，请将以下内容添加到你的 `<dependencies></dependencies>`：
+如果你使用的是 Maven，请将以下内容添加到你的 `<dependencies> </dependencies>`：
 
 ```xml
 <dependency>
