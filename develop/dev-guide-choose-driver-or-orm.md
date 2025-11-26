@@ -51,7 +51,7 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容或有差异的�
 <dependency>
   <groupId>io.github.lastincisor</groupId>
   <artifactId>mysql-connector-java</artifactId>
-  <version>8.0.29-tidb-1.0.0</version>
+  <version>8.0.29-tidb-1.0.2</version>
 </dependency>
 ```
 
