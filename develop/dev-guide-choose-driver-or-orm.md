@@ -185,7 +185,7 @@ implementation 'mysql:mysql-connector-java:8.0.33'
 <dependency>
   <groupId>io.github.lastincisor</groupId>
   <artifactId>mysql-connector-java</artifactId>
-  <version>8.0.29-tidb-1.0.0</version>
+  <version>8.0.29-tidb-1.0.2</version>
 </dependency>
 <dependency>
   <groupId>io.github.lastincisor</groupId>
@@ -197,7 +197,7 @@ implementation 'mysql:mysql-connector-java:8.0.33'
 如果你使用的是 Gradle，请将以下内容添加到你的 `dependencies`：
 
 ```gradle
-implementation group: 'io.github.lastincisor', name: 'mysql-connector-java', version: '8.0.29-tidb-1.0.0'
+implementation group: 'io.github.lastincisor', name: 'mysql-connector-java', version: '8.0.29-tidb-1.0.2'
 implementation group: 'io.github.lastincisor', name: 'tidb-loadbalance', version: '0.0.5'
 ```
 
