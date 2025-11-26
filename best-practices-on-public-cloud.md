@@ -148,7 +148,7 @@ Google Cloud 的[实时迁移功能](https://cloud.google.com/compute/docs/insta
 - TiKV：在维护期间驱逐受影响的 TiKV 存储上的 Leader。
 - PD：如果当前 PD 实例是 PD Leader，则会重新分配 Leader。
 
-需要注意的是，此监控脚本是专门为 [TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/dev/tidb-operator-overview) 部署的 TiDB 集群设计的，TiDB Operator 为 Kubernetes 环境中的 TiDB 提供了增强的管理功能。
+需要注意的是，此监控脚本是专门为 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.6/tidb-operator-overview) 部署的 TiDB 集群设计的，TiDB Operator 为 Kubernetes 环境中的 TiDB 提供了增强的管理功能。
 
 通过使用该监控脚本，并在维护事件期间采取必要的措施，TiDB 集群可以更好地应对 Google Cloud 上的实时迁移事件，确保对查询处理和响应时间的影响最小以及系统的平稳运行。
 
