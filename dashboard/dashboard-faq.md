@@ -137,4 +137,4 @@ NgMonitoring 是 TiDB v5.4.0 及以上集群中内置的高级监控组件，用
 
 #### 使用 TiDB Operator 部署的集群
 
-参考[启用持续性能分析](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/access-dashboard/#%E5%90%AF%E7%94%A8%E6%8C%81%E7%BB%AD%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90)中的步骤部署 NgMonitoring。
+参考[启用持续性能分析](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/access-dashboard/#%E5%90%AF%E7%94%A8%E6%8C%81%E7%BB%AD%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90)中的步骤部署 NgMonitoring。
