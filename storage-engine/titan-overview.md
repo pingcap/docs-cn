@@ -31,7 +31,7 @@ Titan 适合在以下场景中使用：
 
 从 v7.6.0 开始，TiDB 对 Titan 性能进行了优化，并将 Titan 作为默认的存储引擎。由于 TiKV 在 Value 较小时会直接存在 RocksDB 中，因此即便是小 Value 也可以打开 Titan。
 
-性能提升请参考 [Titan 的设计与实现](https://pingcap.com/blog-cn/titan-design-and-implementation/#%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95)。
+性能提升请参考 [Titan 的设计与实现](https://tidb.net/blog/4e8fd304)。
 
 ## 架构与实现
 
