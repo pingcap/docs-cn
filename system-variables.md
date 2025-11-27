@@ -1446,6 +1446,14 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 >
 > * 在升级到 v6.5.0 及以上版本时，请确保 TiDB 的 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 路径已正确挂载了 SSD 磁盘，并确保运行 TiDB 的操作系统用户对该目录有读写权限，否则在运行时可能产生不可预知的问题。该参数是 TiDB 的配置参数，设置后需要重启 TiDB 才能生效。因此，在升级前提前进行设置，可以避免再次重启。
 
+### `tidb_stats_update_during_ddl` <span class="version-mark">从 v8.5.4 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 默认值：`OFF`
+- 这个变量用于控制是否开启 DDL 内嵌的 Analyze 的行为。开启后，涉及新建索引的 DDL [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)，以及重组已有索引的 DDL（[`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) 和 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)）将会在索引可见前自动执行统计信息收集。详情请参考[内嵌于 DDL 的 Analyze](/ddl_embedded_analyze.md)。
+
 ### `tidb_enable_dist_task` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -3466,7 +3474,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：Duration
-- 默认值：`60s`
+- 默认值：`0s`。在 v8.5.3 及之前版本中默认值为 `60s`。
 - 刚重启的 TiFlash 可能不能正常提供服务。为了防止查询失败，TiDB 会限制 tidb-server 向刚重启的 TiFlash 节点发送查询。这个变量表示刚重启的 TiFlash 不被发送请求的时间范围。
 
 ### `tidb_multi_statement_mode` <span class="version-mark">从 v4.0.11 版本开始引入</span>
@@ -3694,6 +3702,24 @@ mysql> desc select count(distinct a) from test.t;
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量控制是否开启[跨数据库绑定执行计划](/sql-plan-management.md#跨数据库绑定执行计划-cross-db-binding)功能。
+
+### `tidb_opt_enable_no_decorrelate_in_select` <span class="version-mark">从 v8.5.4 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量控制优化器是否对 `SELECT` 列表中包含子查询的所有查询应用 [`NO_DECORRELATE()`](/optimizer-hints.md#no_decorrelate) Hint。
+
+### `tidb_opt_enable_semi_join_rewrite` <span class="version-mark">从 v8.5.4 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量控制优化器是否对包含子查询的所有查询应用 [`SEMI_JOIN_REWRITE()`](/optimizer-hints.md#semi_join_rewrite) Hint。
 
 ### `tidb_opt_fix_control` <span class="version-mark">从 v6.5.3 和 v7.1.0 版本开始引入</span>
 
@@ -4755,7 +4781,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 类型：枚举型
 - 默认值：`leader`
 - 可选值：`leader`、`follower`、`leader-and-follower`、`prefer-leader`、`closest-replicas`、`closest-adaptive` 和 `learner`。其中，`learner` 从 v6.6.0 开始引入。
-- 这个变量用于控制 TiDB 的 Follower Read 功能的行为。
+- 这个变量用于控制 TiDB 的 Follower Read 功能的行为。从 v8.5.4 开始，该变量仅对只读 SQL 语句生效。
 - 关于使用方式与实现原理，见 [Follower Read](/follower-read.md)。
 
 ### `tidb_request_source_type` <span class="version-mark">从 v7.4.0 版本开始引入</span>
@@ -5024,7 +5050,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tidb_slow_txn_log_threshold` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否 
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：无符号整数型
 - 默认值：`0`
 - 范围：`[0, 9223372036854775807]`
