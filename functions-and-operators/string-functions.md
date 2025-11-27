@@ -11,7 +11,7 @@ TiDB 支持使用 MySQL 8.0 中提供的大部分[字符串函数](https://dev.m
 
 ## 支持的函数
 
-### [`ASCII()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ascii)
+### `ASCII()`
 
 `ASCII()` 函数用于获取输入的参数中最左字符的 ASCII 值。该参数可以为字符串或数字。
 
@@ -39,7 +39,7 @@ SELECT ASCII('A'), ASCII('TiDB'), ASCII(23);
 +------------+---------------+-----------+
 ```
 
-### [`BIN()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_bin)
+### `BIN()`
 
 `BIN()` 函数用于将输入的参数转换为其二进制值的字符串表示形式。该参数可以为字符串或数字。
 
@@ -82,7 +82,7 @@ SELECT BIN(-7);
 +------------------------------------------------------------------+
 ```
 
-### [`BIT_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_bit-length)
+### `BIT_LENGTH()`
 
 `BIT_LENGTH()` 函数用于返回输入参数的长度，单位为 bit。
 
@@ -127,7 +127,7 @@ SELECT CustomerName, BIT_LENGTH(CustomerName) AS BitLengthOfName FROM Customers;
 >
 > 上面这个示例假设数据库中存在一个名为 `Customers` 的表，表中有一个名为 `CustomerName` 的列。
 
-### [`CHAR()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_char)
+### `CHAR()`
 
 `CHAR()` 函数用于获取指定 ASCII 值的对应字符。该函数执行的操作与 `ASCII()` 相反，`ASCII()` 用于返回指定字符的 ASCII 值。如果提供了多个参数，`CHAR()` 函数将作用于所有参数并将它们的结果拼接在一起返回。
 
@@ -196,7 +196,7 @@ SELECT CHAR(65,66,67);
 1 row in set (0.00 sec)
 ```
 
-### [`CHAR_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_char-length)
+### `CHAR_LENGTH()`
 
 `CHAR_LENGTH()` 函数用于获取输入参数中字符的总数。
 
@@ -227,11 +227,11 @@ SELECT CustomerName, CHAR_LENGTH(CustomerName) AS LengthOfName FROM Customers;
 >
 > 上面这个示例假设数据库中存在一个名为 `Customers` 的表，表中有一个名为 `CustomerName` 的列。
 
-### [`CHARACTER_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_character-length)
+### `CHARACTER_LENGTH()`
 
 `CHARACTER_LENGTH()` 函数与 `CHAR_LENGTH()` 函数功能相同，返回结果相同，可以互换使用。
 
-### [`CONCAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat)
+### `CONCAT()`
 
 `CONCAT()` 函数用于将输入的参数连接成一个字符串。
 
@@ -293,7 +293,7 @@ SELECT 'Ti' 'DB' ' ' 'Server';
 +-------------+
 ```
 
-### [`CONCAT_WS()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat-ws)
+### `CONCAT_WS()`
 
 `CONCAT_WS()` 函数是一种带分隔符的 [`CONCAT()`](#concat)，返回由分隔符连接的字符串。
 
@@ -412,7 +412,7 @@ SELECT CONCAT_WS(',', 'TiDB Server', 'TiKV', 'PD');
     +-----------------------------------------+
     ```
 
-### [`ELT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_elt)
+### `ELT()`
 
 `ELT()` 函数返回索引号对应的元素。
 
@@ -431,7 +431,7 @@ SELECT ELT(3, 'This', 'is', 'TiDB');
 
 在以上示例中，该函数返回第三个元素，即 `'TiDB'`。
 
-### [`EXPORT_SET()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_export-set)
+### `EXPORT_SET()`
 
 `EXPORT_SET()` 函数返回一个由指定数量 (`number_of_bits`) 的 `on`/`off` 值组成的字符串，各个值之间可以用 `separator` 分隔（可选）。这些值将基于输入的 `bits` 参数中的相应 bit 是否为 `1` 而确定，其中第一个值对应于 `bits` 中的最右边（即最低）的 bit。
 
@@ -494,7 +494,7 @@ SELECT EXPORT_SET(b'01010101', 'x', '_', '', 8);
 1 row in set (0.00 sec)
 ```
 
-### [`FIELD()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_field)
+### `FIELD()`
 
 返回参数在后续参数中出现的第一个位置
 
@@ -510,7 +510,7 @@ SELECT FIELD('needle', 'A', 'needle', 'in', 'a', 'haystack');
 1 row in set (0.00 sec)
 ```
 
-### [`FIND_IN_SET()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_find-in-set)
+### `FIND_IN_SET()`
 
 返回第一个参数在第二个参数中出现的位置
 
@@ -528,7 +528,7 @@ SELECT FIND_IN_SET('Go', 'COBOL,BASIC,Rust,Go,Java,Fortran');
 1 row in set (0.00 sec)
 ```
 
-### [`FORMAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_format)
+### `FORMAT()`
 
 `FORMAT(X,D[,locale])` 函数用于将数字 `X` 格式化为类似于 `“#,###,###.##”` 的格式，四舍五入保留 `D` 位小数，并将结果作为字符串返回。
 
@@ -578,7 +578,7 @@ mysql> SELECT FORMAT(1234.56, 1, 'en_US');
 +-----------------------------+
 ```
 
-### [`FROM_BASE64()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_from-base64)
+### `FROM_BASE64()`
 
 `FROM_BASE64(str)` 函数用于对 [Base64](https://datatracker.ietf.org/doc/html/rfc4648) 编码的字符串进行解码，并将解码结果以十六进制字符串的形式返回。
 
@@ -625,7 +625,7 @@ mysql> SELECT FROM_BASE64('MTIzNDU2');
 +--------------------------------------------------+
 ```
 
-### [`HEX()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_hex)
+### `HEX()`
 
 `HEX()` 函数用于将输入的参数转换为其十六进制值的字符串表示形式。该参数可以为字符串或数字。
 
@@ -675,7 +675,7 @@ SELECT HEX(NULL);
 +-----------+
 ```
 
-### [`INSERT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_insert)
+### `INSERT()`
 
 `INSERT(str, pos, len, newstr)` 函数用于将字符串 `str` 中的一个子字符串（从位置 `pos` 开始，长度为 `len`）替换为字符串 `newstr`。该函数是多字节安全的。
 
@@ -730,7 +730,7 @@ SELECT INSERT('PingCAP 数据库', 1, 7, 'TiDB');
 +-------------------------------------------+
 ```
 
-### [`INSTR()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_instr)
+### `INSTR()`
 
 `INSTR(str, substr)` 函数用于获取子字符串 `substr` 在字符串 `str` 中第一次出现的位置。`substr` 和 `str` 均可以为字符串或数字。该函数与 [`LOCATE(substr, str)`](#locate) 函数的两参数版本功能相同，但参数顺序相反。
 
@@ -789,11 +789,11 @@ SELECT INSTR(0123, "12");
 +-------------------+
 ```
 
-### [`LCASE()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_lcase)
+### `LCASE()`
 
 `LCASE(str)`函数与 [`LOWER(str)`](#lower) 函数功能相同，都是返回输入参数的小写形式。
 
-### [`LEFT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_left)
+### `LEFT()`
 
 `LEFT()` 函数用于返回字符串左侧指定数量的字符。
 
@@ -868,7 +868,7 @@ SELECT LEFT(NULL, 3);
 +------------------------------+
 ```
 
-### [`LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_length)
+### `LENGTH()`
 
 `LENGTH()` 函数用于返回字符串的字节长度。`LENGTH()` 将单个多字节字符视为多个字节，而 `CHAR_LENGTH()` 将单个多字节字符视为单个字符。
 
@@ -908,7 +908,7 @@ SELECT LENGTH(NULL);
 +--------------+
 ```
 
-### [`LIKE`](https://dev.mysql.com/doc/refman/8.0/en/string-comparison-functions.html#operator_like)
+### `LIKE`
 
 `LIKE` 用于进行简单字符串匹配。表达式 `expr LIKE pat [ESCAPE 'escape_char']` 返回 `1` (`TRUE`) 或 `0` (`FALSE`)。如果 `expr` 或 `pat` 中任一个为 `NULL`，结果为 `NULL`。
 
@@ -1045,7 +1045,7 @@ SELECT '🍣🍺Sushi🍣🍺' COLLATE utf8mb4_unicode_ci LIKE '%SUSHI%' AS resu
 +--------+
 ```
 
-### [`LOCATE()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_locate)
+### `LOCATE()`
 
 `LOCATE(substr, str[, pos])` 函数用于返回子字符串 `substr` 在字符串 `str` 中第一次出现的位置。`pos` 参数是可选的，用于指定查找的起始位置。
 
@@ -1224,7 +1224,7 @@ SELECT LOCATE(_binary'B', 'aBcde');
 +-----------------------------+
 ```
 
-### [`LOWER()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_lower)
+### `LOWER()`
 
 `LOWER(str)` 函数用于将输入的参数 `str` 中的所有字符转换为小写。该参数可以为字符串或数字。
 
@@ -1254,7 +1254,7 @@ SELECT LOWER(-012);
 +-------------+
 ```
 
-### [`LPAD()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_lpad)
+### `LPAD()`
 
 `LPAD(str, len, padstr)` 函数返回字符串参数，左侧填充指定字符串 `padstr`，直到字符串长度达到 `len` 个字符。
 
@@ -1294,7 +1294,7 @@ SELECT LPAD('TiDB',-2,'>');
 1 row in set (0.00 sec)
 ```
 
-### [`LTRIM()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ltrim)
+### `LTRIM()`
 
 `LTRIM()` 函数用于删除给定的字符串中的前导空格（即字符串开头的连续空格）。
 
@@ -1336,7 +1336,7 @@ SELECT CONCAT('«',LTRIM('    hello'),'»');
 1 row in set (0.00 sec)
 ```
 
-### [`MAKE_SET()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_make-set)
+### `MAKE_SET()`
 
 `MAKE_SET()` 函数根据输入的 `bits` 参数中相应的 bit 是否为 `1` 返回一组由逗号分隔的字符串。
 
@@ -1426,7 +1426,7 @@ SELECT MAKE_SET(b'111','foo','bar','baz');
 1 row in set (0.0002 sec)
 ```
 
-### [`MID()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_mid)
+### `MID()`
 
 `MID(str, pos[, len])` 函数返回从指定的 `pos` 位置开始的长度为 `len` 的子字符串。
 
@@ -1466,7 +1466,7 @@ SELECT MID('abcdef',2);
 1 row in set (0.00 sec)
 ```
 
-### [`NOT LIKE`](https://dev.mysql.com/doc/refman/8.0/en/string-comparison-functions.html#operator_not-like)
+### `NOT LIKE`
 
 否定简单模式匹配。
 
@@ -1504,11 +1504,11 @@ SELECT 'aaa' LIKE 'b%', 'aaa' NOT LIKE 'b%';
 1 row in set (0.00 sec)
 ```
 
-### [`NOT REGEXP`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#operator_not-regexp)
+### `NOT REGEXP`
 
 [`REGEXP`](#regexp) 的否定形式
 
-### [`OCT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_oct)
+### `OCT()`
 
 `OCT()` 函数用于返回一个数值的[八进制](https://zh.wikipedia.org/wiki/八进制)表示，形式为字符串。
 
@@ -1554,11 +1554,11 @@ SELECT n, OCT(n) FROM nr;
 20 rows in set (0.00 sec)
 ```
 
-### [`OCTET_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_octet-length)
+### `OCTET_LENGTH()`
 
 与 [`LENGTH()`](#length) 功能相同
 
-### [`ORD()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ord)
+### `ORD()`
 
 返回给定的参数中最左侧字符的字符编码。
 
@@ -1611,11 +1611,11 @@ SELECT ORD('e'), ORD('ë'), HEX('e'), HEX('ë');
 1 row in set (0.00 sec)
 ```
 
-### [`POSITION()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_position)
+### `POSITION()`
 
 与 [`LOCATE()`](#locate) 功能相同
 
-### [`QUOTE()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_quote)
+### `QUOTE()`
 
 `QUOTE()` 函数用于转义字符串，使其可以在 SQL 语句中使用。
 
@@ -1640,7 +1640,7 @@ SELECT QUOTE(0x002774657374);
 1 row in set (0.00 sec)
 ```
 
-### [`REGEXP`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#operator_regexp)
+### `REGEXP`
 
 使用正则表达式匹配模式
 
@@ -1699,7 +1699,7 @@ WHERE
 1 row in set (0.01 sec)
 ```
 
-### [`REGEXP_INSTR()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-instr)
+### `REGEXP_INSTR()`
 
 返回满足正则的子字符串的第一个索引位置（与 MySQL 不完全兼容，具体请参考[正则函数与 MySQL 的兼容性](#正则函数与-mysql-的兼容性)）
 
@@ -1838,7 +1838,7 @@ SELECT REGEXP_INSTR('abcabc','A' COLLATE utf8mb4_bin);
 1 row in set (0.00 sec)
 ```
 
-### [`REGEXP_LIKE()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-like)
+### `REGEXP_LIKE()`
 
 判断字符串是否满足正则表达式（与 MySQL 不完全兼容，具体请参考[正则函数与 MySQL 的兼容性](#正则函数与-mysql-的兼容性)）
 
@@ -1891,7 +1891,7 @@ SELECT REGEXP_LIKE('abc','^A','i');
 1 row in set (0.00 sec)
 ```
 
-### [`REGEXP_REPLACE()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-replace)
+### `REGEXP_REPLACE()`
 
 替换满足正则表达式的子字符串（与 MySQL 不完全兼容，具体请参考[正则函数与 MySQL 的兼容性](#正则函数与-mysql-的兼容性)）
 
@@ -1985,7 +1985,7 @@ SELECT REGEXP_REPLACE('TooDB', 'O{2}','i',1,1,'i');
 1 row in set (0.00 sec)
 ```
 
-### [`REGEXP_SUBSTR()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-substr)
+### `REGEXP_SUBSTR()`
 
 返回满足正则表达式的子字符串（与 MySQL 不完全兼容，具体请参考[正则函数与 MySQL 的兼容性](#正则函数与-mysql-的兼容性)）
 
@@ -2006,7 +2006,7 @@ SELECT REGEXP_SUBSTR('This is TiDB','Ti.{2}');
 1 row in set (0.00 sec)
 ```
 
-### [`REPEAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_repeat)
+### `REPEAT()`
 
 `REPEAT()` 函数用于以指定次数重复一个字符串。
 
@@ -2066,47 +2066,47 @@ SELECT REPEAT('ha',3);
 1 row in set (0.00 sec)
 ```
 
-### [`REPLACE()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_replace)
+### `REPLACE()`
 
 替换所有出现的指定字符串
 
-### [`REVERSE()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_reverse)
+### `REVERSE()`
 
 反转字符串里的所有字符
 
-### [`RIGHT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_right)
+### `RIGHT()`
 
 返回指定数量的最右侧的字符
 
-### [`RLIKE`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#operator_regexp)
+### `RLIKE`
 
 与 [`REGEXP`](#regexp) 功能相同
 
-### [`RPAD()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_rpad)
+### `RPAD()`
 
 以指定次数添加字符串
 
-### [`RTRIM()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_rtrim)
+### `RTRIM()`
 
 去掉后缀空格
 
-### [`SPACE()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_space)
+### `SPACE()`
 
 返回指定数量的空格，形式为字符串
 
-### [`STRCMP()`](https://dev.mysql.com/doc/refman/8.0/en/string-comparison-functions.html#function_strcmp)
+### `STRCMP()`
 
 比较两个字符串
 
-### [`SUBSTR()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_substr)
+### `SUBSTR()`
 
 返回指定的子字符串
 
-### [`SUBSTRING()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_substring)
+### `SUBSTRING()`
 
 返回指定的子字符串
 
-### [`SUBSTRING_INDEX()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_substring-index)
+### `SUBSTRING_INDEX()`
 
 `SUBSTRING_INDEX()` 函数用于按照指定的分隔符和次数从字符串中提取子字符串。该函数在处理以特定分隔符分隔的数据时特别有用，例如解析 CSV 数据或处理日志文件。
 
@@ -2155,7 +2155,7 @@ SELECT SUBSTRING_INDEX('www.tidbcloud.com', '.', -1);
 +------------------------------------------+
 ```
 
-### [`TO_BASE64()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_to-base64)
+### `TO_BASE64()`
 
 `TO_BASE64()` 函数用于将输入的参数转换为 base-64 编码形式的字符串，并按照当前连接的字符集和排序规则返回结果。base-64 编码的字符串可以使用 [`FROM_BASE64()`](#from_base64) 函数进行解码。
 
@@ -2200,15 +2200,15 @@ SELECT TO_BASE64(6);
 +--------------+
 ```
 
-### [`TRANSLATE()`](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlrf/TRANSLATE.html#GUID-80F85ACB-092C-4CC7-91F6-B3A585E3A690)
+### `TRANSLATE()`
 
 将字符串中出现的所有指定字符替换为其它字符。这个函数不会像 Oracle 一样将空字符串视为`NULL`
 
-### [`TRIM()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_trim)
+### `TRIM()`
 
 去掉前缀和后缀空格
 
-### [`UCASE()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ucase)
+### `UCASE()`
 
 `UCASE()` 函数将字符串转换为大写字母，此函数等价于 `UPPER()` 函数。
 
@@ -2232,7 +2232,7 @@ SELECT UCASE('bigdata') AS result_upper, UCASE(null) AS result_null;
 +--------------+-------------+
 ```
 
-### [`UNHEX()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_unhex)
+### `UNHEX()`
 
 `UNHEX()` 函数执行 `HEX()` 函数的逆运算，将参数中的每对字符视为十六进制数字，并将其转换为该数字表示的字符，返回值为二进制字符串。
 
@@ -2257,7 +2257,7 @@ SELECT UNHEX('54694442');
 +--------------------------------------+
 ```
 
-### [`UPPER()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_upper)
+### `UPPER()`
 
 `UPPER()` 函数将字符串转换为大写字母，此函数等价于 `UCASE()` 函数。
 
@@ -2281,7 +2281,7 @@ SELECT UPPER('bigdata') AS result_upper, UPPER(null) AS result_null;
 +--------------+-------------+
 ```
 
-### [`WEIGHT_STRING()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_weight-string)
+### `WEIGHT_STRING()`
 
 `WEIGHT_STRING()` 函数返回字符串的权重（二进制字符），主要用于多字符集场景下的排序和比较操作。如果参数为 `NULL`，则返回 `NULL`。语法示例如下：
 

@@ -49,7 +49,7 @@ TiDB 提供了 TiUP 和 TiDB Operator 部署运维工具，满足你在不同系
 - TiDB DM 的输入：MySQL/MariaDB
 - TiDB DM 的输出：TiDB 集群
 - 适用 TiDB 版本：所有版本
-- Kubernetes 支持：使用 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm) 在 Kubernetes 上部署 TiDB DM。
+- Kubernetes 支持：使用 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.6/deploy-tidb-dm) 在 Kubernetes 上部署 TiDB DM。
 
 如果数据量在 TB 级别以下，推荐直接使用 TiDB DM 迁移 MySQL/MariaDB 数据到 TiDB（迁移的过程包括全量数据的导出导入和增量数据的复制）。
 

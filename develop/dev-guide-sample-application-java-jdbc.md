@@ -280,12 +280,23 @@ Java 驱动程序提供对数据库的底层访问，但要求开发者：
 - 减少管理连接和事务的[模板代码](https://en.wikipedia.org/wiki/Boilerplate_code)
 - 使用数据对象代替大量 SQL 语句来操作数据
 
+### MySQL 兼容性
+
+在 MySQL 中，当写入 `DECIMAL` 类型的数据时，如果小数位数超过字段定义的小数位数，无论超出多少，都会自动截断多余的位数并成功插入。
+
+在 TiDB v8.5.3 及之前版本中：
+
+- 如果小数位数超过字段定义的小数位数但未超过 72 位，同样会自动截断多余的位数并成功插入。
+- 如果小数位数超过 72 位，写入会失败并报错。
+
+从 TiDB v8.5.4 开始，TiDB 的行为和 MySQL 保持一致：无论小数位数超过多少，都会自动截断多余的位数并成功插入。
+
 ## 下一步
 
 - 关于 MySQL Connector/J 的更多使用方法，可以参考 [MySQL Connector/J 官方文档](https://dev.mysql.com/doc/connector-j/en/)。
 - 你可以继续阅读开发者文档，以获取更多关于 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)、[删除数据](/develop/dev-guide-delete-data.md)、[单表读取](/develop/dev-guide-get-data-from-single-table.md)、[事务](/develop/dev-guide-transaction-overview.md)、[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
-- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/category/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
-- 我们还额外提供针对 Java 开发者的课程：[使用 Connector/J - TiDB v6](https://learn.pingcap.com/learner/course/840002/?utm_source=docs-cn-dev-guide) 及[在 TiDB 上开发应用的最佳实践 - TiDB v6](https://learn.pingcap.com/learner/course/780002/?utm_source=docs-cn-dev-guide)。
+- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://pingkai.cn/learn)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.cn/learner/certification-center)。
+- 我们还额外提供针对 Java 开发者的课程：[使用 Connector/J - TiDB v6](https://learn.pingcap.cn/learner/course/840002?utm_source=docs-cn-dev-guide) 及[在 TiDB 上开发应用的最佳实践 - TiDB v6](https://learn.pingcap.cn/learner/course/780002?utm_source=docs-cn-dev-guide)。
 
 ## 需要帮助?
 

@@ -24,15 +24,11 @@ TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不�
 
 1. 执行以下命令生成 CA 密钥：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     sudo openssl genrsa 2048 > ca-key.pem
     ```
 
     命令执行后输出以下结果：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     Generating RSA private key, 2048 bit long modulus (2 primes)
@@ -43,15 +39,11 @@ TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不�
 
 2. 执行以下命令生成该密钥对应的证书：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     sudo openssl req -new -x509 -nodes -days 365000 -key ca-key.pem -out ca-cert.pem
     ```
 
 3. 输入证书细节信息，示例如下：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     Country Name (2 letter code) [AU]:US
@@ -71,15 +63,11 @@ TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不�
 
 1. 执行以下命令生成服务端的密钥：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     sudo openssl req -newkey rsa:2048 -days 365000 -nodes -keyout server-key.pem -out server-req.pem
     ```
 
 2. 输入证书细节信息，示例如下：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     Country Name (2 letter code) [AU]:US
@@ -98,8 +86,6 @@ TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不�
 
 3. 执行以下命令生成服务端的 RSA 密钥：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     sudo openssl rsa -in server-key.pem -out server-key.pem
     ```
@@ -111,8 +97,6 @@ TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不�
     ```
 
 4. 使用 CA 证书签名来生成服务端的证书：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     sudo openssl x509 -req -in server-req.pem -days 365000 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 -out server-cert.pem
@@ -136,15 +120,11 @@ TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不�
 
 1. 执行以下命令生成客户端的密钥：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     sudo openssl req -newkey rsa:2048 -days 365000 -nodes -keyout client-key.pem -out client-req.pem
     ```
 
 2. 输入证书细节信息，示例如下：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     Country Name (2 letter code) [AU]:US
@@ -163,8 +143,6 @@ TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不�
 
 3. 执行以下命令生成客户端 RSA 证书：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     sudo openssl rsa -in client-key.pem -out client-key.pem
     ```
@@ -176,8 +154,6 @@ TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不�
     ```
 
 4. 执行以下命令，使用 CA 证书签名来生成客户端证书：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     sudo openssl x509 -req -in client-req.pem -days 365000 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 -out client-cert.pem
@@ -193,13 +169,11 @@ TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不�
 
     > **注意：**
     >
-    > 以上结果中，`subject` 部分后的信息会被用来在 `require` 中配置和要求验证。
+    > 以上结果中，`subject` 部分后的信息会被用来在 `REQUIRE` 中配置和要求验证。
 
 ### 验证证书
 
 执行以下命令验证证书：
-
-{{< copyable "shell-regular" >}}
 
 ```bash
 openssl verify -CAfile ca-cert.pem server-cert.pem client-cert.pem
@@ -220,13 +194,11 @@ client-cert.pem: OK
 
 修改 TiDB 配置文件中的 `[security]` 段。这一步指定 CA 证书、服务端密钥和服务端证书存放的路径。可将 `path/to/server-cert.pem`、`path/to/server-key.pem` 和 `path/to/ca-cert.pem` 替换成实际的路径。
 
-{{< copyable "" >}}
-
-```
+```toml
 [security]
-ssl-cert ="path/to/server-cert.pem"
-ssl-key ="path/to/server-key.pem"
-ssl-ca="path/to/ca-cert.pem"
+ssl-cert = "path/to/server-cert.pem"
+ssl-key = "path/to/server-key.pem"
+ssl-ca = "path/to/ca-cert.pem"
 ```
 
 启动 TiDB 日志。如果日志中有以下内容，即代表配置生效：
@@ -241,10 +213,8 @@ ssl-ca="path/to/ca-cert.pem"
 
 以 MySQL 客户端为例，可以通过指定 `ssl-cert`、`ssl-key`、`ssl-ca` 来使用新的 CA 证书、客户端密钥和证书：
 
-{{< copyable "shell-regular" >}}
-
 ```bash
-mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key /path/to/client-key.new.pem --ssl-ca /path/to/ca-cert.pem
+mysql -u test -h 0.0.0.0 -P 4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key /path/to/client-key.new.pem --ssl-ca /path/to/ca-cert.pem
 ```
 
 > **注意：**
@@ -259,11 +229,9 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 用户证书信息可由 `REQUIRE SUBJECT`、`REQUIRE ISSUER`、`REQUIRE SAN` 和 `REQUIRE CIPHER` 来指定，用于检查 X.509 certificate attributes。
 
-+ `REQUIRE SUBJECT`：指定用户在连接时需要提供客户端证书的 `subject` 内容。指定该选项后，不需要再配置 `require ssl` 或 x509。配置内容对应[生成客户端密钥和证书](#生成客户端密钥和证书)中的录入信息。
++ `REQUIRE SUBJECT`：指定用户在连接时需要提供客户端证书的 `subject` 内容。指定该选项后，不需要再配置 `REQUIRE SSL` 或 `REQUIRE X509`。配置内容对应[生成客户端密钥和证书](#生成客户端密钥和证书)中的录入信息。
 
     可以执行以下命令来获取该项的信息：
-
-    {{< copyable "shell-regular" >}}
 
     ```
     openssl x509 -noout -subject -in client-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'
@@ -273,8 +241,6 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
     可以执行以下命令来获取该项的信息：
 
-    {{< copyable "shell-regular" >}}
-
     ```
     openssl x509 -noout -subject -in ca-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'
     ```
@@ -282,8 +248,6 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 + `REQUIRE SAN`：指定签发用户证书的 CA 证书的 `Subject Alternative Name` 内容。配置内容对应生成客户端证书使用的 [openssl.cnf 配置文件的 `alt_names` 信息](/generate-self-signed-certificates.md)。
 
     + 可以执行以下命令来获取已生成证书中的 `REQUIRE SAN` 项的信息：
-
-        {{< copyable "shell-regular" >}}
 
         ```shell
         openssl x509 -noout -extensions subjectAltName -in client.crt
@@ -296,8 +260,6 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
         - DNS
 
     + 多个检查项可通过逗号连接后进行配置。例如，对用户 `u1` 进行以下配置：
-
-        {{< copyable "sql" >}}
 
         ```sql
         CREATE USER 'u1'@'%' REQUIRE SAN 'DNS:d1,URI:spiffe://example.org/myservice1,URI:spiffe://example.org/myservice2';
@@ -317,15 +279,11 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 + 可以在创建用户 (`CREATE USER`) 时配置登录时需要校验的证书信息：
 
-    {{< copyable "sql" >}}
-
     ```sql
     CREATE USER 'u1'@'%' REQUIRE ISSUER '<replaceable>' SUBJECT '<replaceable>' SAN '<replaceable>' CIPHER '<replaceable>';
     ```
 
 + 可以在修改已有用户 (`ALTER USER`) 时配置登录时需要校验的证书信息：
-
-    {{< copyable "sql" >}}
 
     ```sql
     ALTER USER 'u1'@'%' REQUIRE ISSUER '<replaceable>' SUBJECT '<replaceable>' SAN '<replaceable>' CIPHER '<replaceable>';
@@ -335,7 +293,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 + 使用 SSL 登录，且证书为服务器配置的 CA 证书所签发
 + 证书的 `issuer` 信息和权限配置里的 `REQUIRE ISSUER` 信息相匹配
-+ 证书的 `subject` 信息和权限配置里的 `REQUIRE CIPHER` 信息相匹配
++ 连接使用的加密套件与 `REQUIRE CIPHER` 中指定的套件一致。
 + 证书的 `Subject Alternative Name` 信息和权限配置里的 `REQUIRE SAN` 信息相匹配
 
 全部验证通过后用户才能登录，否则会报 `ERROR 1045 (28000): Access denied` 错误。登录后，可以通过以下命令来查看当前链接是否使用证书登录、TLS 版本和 Cipher 算法。
@@ -390,8 +348,6 @@ CA 证书是客户端和服务端相互校验的依据，所以如果需要替�
 
 1. 以替换 CA 密钥为例（假设 `ca-key.pem` 被盗），将旧的 CA 密钥和证书进行备份：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     mv ca-key.pem ca-key.old.pem && \
     mv ca-cert.pem ca-cert.old.pem
@@ -399,15 +355,11 @@ CA 证书是客户端和服务端相互校验的依据，所以如果需要替�
 
 2. 生成新的 CA 密钥：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     sudo openssl genrsa 2048 > ca-key.pem
     ```
 
 3. 用新的密钥生成新的 CA 证书：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     sudo openssl req -new -x509 -nodes -days 365000 -key ca-key.pem -out ca-cert.new.pem
@@ -415,11 +367,9 @@ CA 证书是客户端和服务端相互校验的依据，所以如果需要替�
 
     > **注意：**
     >
-    > 生成新的 CA 证书是为了替换密钥和证书，保证在线用户不受影响。所以以上命令中填写的附加信息必须与已配置的 `require issuer` 信息一致。
+    > 生成新的 CA 证书是为了替换密钥和证书，保证在线用户不受影响。所以以上命令中填写的附加信息必须与已配置的 `REQUIRE ISSUER` 信息一致。
 
 4. 生成组合 CA 证书：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     cat ca-cert.new.pem ca-cert.old.pem > ca-cert.pem
@@ -437,8 +387,6 @@ CA 证书是客户端和服务端相互校验的依据，所以如果需要替�
 
 1. 生成新的客户端 RSA 密钥：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     sudo openssl req -newkey rsa:2048 -days 365000 -nodes -keyout client-key.new.pem -out client-req.new.pem && \
     sudo openssl rsa -in client-key.new.pem -out client-key.new.pem
@@ -446,11 +394,9 @@ CA 证书是客户端和服务端相互校验的依据，所以如果需要替�
 
     > **注意：**
     >
-    > 以上命令是为了替换密钥和证书，保证在线用户不受影响，所以以上命令中填写的附加信息必须与已配置的 `require subject` 信息一致。
+    > 以上命令是为了替换密钥和证书，保证在线用户不受影响，所以以上命令中填写的附加信息必须与已配置的 `REQUIRE SUBJECT` 信息一致。
 
 2. 使用新的组合 CA 证书和新 CA 密钥生成新客户端证书：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     sudo openssl x509 -req -in client-req.new.pem -days 365000 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 -out client-cert.new.pem
@@ -458,10 +404,8 @@ CA 证书是客户端和服务端相互校验的依据，所以如果需要替�
 
 3. 让客户端使用新的客户端密钥和证书来连接 TiDB （以 MySQL 客户端为例）：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
-    mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key /path/to/client-key.new.pem --ssl-ca /path/to/ca-cert.pem
+    mysql -u test -h 0.0.0.0 -P 4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key /path/to/client-key.new.pem --ssl-ca /path/to/ca-cert.pem
     ```
 
     > **注意：**
@@ -472,8 +416,6 @@ CA 证书是客户端和服务端相互校验的依据，所以如果需要替�
 
 1. 生成新的服务端 RSA 密钥：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     sudo openssl req -newkey rsa:2048 -days 365000 -nodes -keyout server-key.new.pem -out server-req.new.pem && \
     sudo openssl rsa -in server-key.new.pem -out server-key.new.pem
@@ -481,13 +423,15 @@ CA 证书是客户端和服务端相互校验的依据，所以如果需要替�
 
 2. 使用新的组合 CA 证书和新 CA 密钥生成新服务端证书：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     sudo openssl x509 -req -in server-req.new.pem -days 365000 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 -out server-cert.new.pem
     ```
 
-3. 配置 TiDB 使用上面新生成的服务端密钥和证书并重启。参见[配置 TiDB 服务端](#配置-tidb-服务端)。
+3. 配置 TiDB 使用上面新生成的服务端密钥和证书并重启。将文件放置在[配置 TiDB 服务端](#配置-tidb-服务端)一节中指定的目录中。
+
+    ```sql
+    ALTER INSTANCE RELOAD TLS;
+    ```
 
 ## 基于策略的证书访问控制
 

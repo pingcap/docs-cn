@@ -94,9 +94,12 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | [`TIDB_HOT_REGIONS_HISTORY`](/information-schema/information-schema-tidb-hot-regions-history.md)| 提供有关哪些 Region 访问次数最多的历史统计信息。                   |
 | [`TIDB_INDEXES`](/information-schema/information-schema-tidb-indexes.md)                | 提供有关 TiDB 表的索引信息。                                   |
 | [`TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md)        | 提供 TiDB 节点上有关访问索引的统计信息。 ｜
-| [`TIDB_SERVERS_INFO`](/information-schema/information-schema-tidb-servers-info.md)      | 提供 TiDB 服务器的列表                                         |
-| [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)                        | 提供 TiDB 节点上正在执行的事务的信息。                         |
+| [`TIDB_SERVERS_INFO`](/information-schema/information-schema-tidb-servers-info.md)      | 提供 TiDB 服务器的列表。                                        |
+| [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)                        | 提供 TiDB 节点上正在执行的事务的信息。                          |
+| [`TIFLASH_INDEXES`](/information-schema/information-schema-tiflash-indexes.md)          | 提供有关 TiFlash 副本上索引构建的统计信息。                    |
 | [`TIFLASH_REPLICA`](/information-schema/information-schema-tiflash-replica.md)          | 提供有关 TiFlash 副本的详细信息。                              |
+| [`TIFLASH_SEGMENTS`](/information-schema/information-schema-tiflash-segments.md)        | 提供有关 TiFlash 内部数据表内分片 (Segment) 的统计信息。           |
+| [`TIFLASH_TABLES`](/information-schema/information-schema-tiflash-tables.md)            | 提供有关 TiFlash 内部数据表的统计信息。                         |
 | [`TIKV_REGION_PEERS`](/information-schema/information-schema-tikv-region-peers.md)      | 提供 Region 存储位置的详细信息。                               |
-| [`TIKV_REGION_STATUS`](/information-schema/information-schema-tikv-region-status.md)    | 提供 Region 的统计信息。                                       |
+| [`TIKV_REGION_STATUS`](/information-schema/information-schema-tikv-region-status.md)    | 提供 Region 的统计信息。                                      |
 | [`TIKV_STORE_STATUS`](/information-schema/information-schema-tikv-store-status.md)      | 提供 TiKV 服务器的基本信息。                                   |
