@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/telemetry/','/zh/tidb/dev/sql-statement-admin-show-telem
 
 > **注意：**
 >
-> 在**任何情况**下，集群中用户存储的数据都**不会**被收集。另请参阅 [PingCAP 隐私声明](https://pingcap.com/zh/privacy-policy/)。
+> 在**任何情况**下，集群中用户存储的数据都**不会**被收集。另请参阅[隐私政策](https://pingkai.cn/legal/privacy-policy)。
 
 ### TiUP
 
@@ -94,4 +94,4 @@ tiup telemetry status
 - 若为中国大陆 IP 地址，使用情况信息将会发送并存储于中国大陆境内的公有云服务器。
 - 若为中国大陆以外 IP 地址，使用情况信息将会发送并存储于美国的公有云服务器。
 
-可参阅 [PingCAP 隐私声明](https://pingcap.com/zh/privacy-policy/)了解详情。
+可参阅[隐私政策](https://pingkai.cn/legal/privacy-policy)了解详情。
