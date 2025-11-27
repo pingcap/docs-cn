@@ -351,7 +351,6 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --ca | 用于 TLS 连接的 certificate authority 文件的地址 |
 | --cert | 用于 TLS 连接的 client certificate 文件的地址 |
 | --key | 用于 TLS 连接的 client private key 文件的地址 |
-<<<<<<< HEAD
 | --csv-delimiter | csv 文件中字符类型变量的定界符 | '"' |
 | --csv-separator | csv 文件中各值的分隔符。如果数据中包含逗号，建议导出源文件时，使用非常见组合字符作为分隔符。支持不可见字符作为分隔符，如：`--csv-separator $'\001'` | ','|
 | --csv-null-value | csv 文件空值的表示 | "\\N" |
