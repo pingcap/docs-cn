@@ -90,20 +90,6 @@ TiDB 版本：8.5.4
 
 + TiDB
 
-    - 大幅提升特定有损 DDL 操作（例如 `BIGINT` → `INT` 或 `CHAR(120)` → `VARCHAR(60)`）的执行效率，执行耗时从数小时缩短至分钟级、秒级甚至毫秒级，性能提升可达到数十倍至数十万倍 [#63366](https://github.com/pingcap/tidb/issues/63366) @[wjhuang2016](https://github.com/wjhuang2016) @[tangenta](https://github.com/tangenta) @[fzzf678](https://github.com/fzzf678)
-
-        优化策略包括：在严格 SQL 模式下预先检查类型转换是否存在数据截断风险；若无风险，则仅更新元数据并尽量避免索引重建；如需重建索引，则采用更高效的 Ingest 流程，从而大幅提升索引重建性能。
-
-        性能提升示例（基于 100 GiB 表的基准测试）：
-
-        | 场景 | 操作类型 | 优化前 | 优化后 | 性能提升 |
-        |------|----------|--------|--------|----------|
-        | 无索引列 | `BIGINT` → `INT` | 2 小时 34 分 | 1 分 5 秒 | 142 倍 |
-        | 有索引列 | `BIGINT` → `INT` | 6 小时 25 分 | 0.05 秒 | 46 万倍 |
-        | 有索引列 | `CHAR(120)` → `VARCHAR(60)` | 7 小时 16 分 | 12 分 56 秒 | 34倍 |
-
-        注：以上数据基于 DDL 执行过程中未发生数据截断的前提。
-
     - 支持由 `IN` 子查询而来的 Semi Join 使用 `semi_join_rewrite` 的 Hint [#58829](https://github.com/pingcap/tidb/issues/58829) @[qw4990](https://github.com/qw4990)
     - 优化系统变量 `tidb_opt_ordering_index_selectivity_ratio` 生效时的估算策略 [#62817](https://github.com/pingcap/tidb/issues/62817) @[terry1purcell](https://github.com/terry1purcell)
     - 调整优化器的选择逻辑，使新创建的索引在某些情况下更容易被选中 [#57948](https://github.com/pingcap/tidb/issues/57948) @[terry1purcell](https://github.com/terry1purcell)
