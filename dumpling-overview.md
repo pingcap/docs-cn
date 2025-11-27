@@ -352,7 +352,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --cert | 用于 TLS 连接的 client certificate 文件的地址 |
 | --key | 用于 TLS 连接的 client private key 文件的地址 |
 | --csv-delimiter | csv 文件中字符类型变量的定界符 | '"' |
-| --csv-separator | csv 文件中各值的分隔符，如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符| ','|
+| --csv-separator | csv 文件中各值的分隔符。如果数据中包含逗号，建议导出源文件时，使用非常见组合字符作为分隔符。支持不可见字符作为分隔符，如：`--csv-separator $'\001'` | ','|
 | --csv-null-value | csv 文件空值的表示 | "\\N" |
 | --escape-backslash | 使用反斜杠 (`\`) 来转义导出文件中的特殊字符 | true |
 | --output-filename-template | 以 [golang template](https://golang.org/pkg/text/template/#hdr-Arguments) 格式表示的数据文件名格式 <br/> 支持 `{{.DB}}`、`{{.Table}}`、`{{.Index}}` 三个参数 <br/> 分别表示数据文件的库名、表名、分块 ID | '{{.DB}}.{{.Table}}.{{.Index}}' |
