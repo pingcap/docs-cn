@@ -41,7 +41,7 @@ EXPLAIN SELECT * FROM t WHERE a > 4;
 
 从以上执行计划可以看到，由于新建索引尚未生成统计信息，TiDB 在路径估算时只能依赖启发式规则。除非索引访问路径无需回表且代价显著更低，否则优化器倾向于选择估算更稳定的现有路径，因此上述示例中使用了全表扫描。然而，从数据分布角度来看，`t.a > 4` 实际返回 0 行，如果能使用新建索引 `idx_a`，查询可以快速定位到相关行，从而避免全表扫描。在该示例中，由于 DDL 创建索引后 TiDB 未能及时收集索引统计信息，生成的执行计划不是最优的，但优化器会继续沿用原有计划，因此查询性能不会出现突变或退化。然而，根据 [Issue #57948](https://github.com/pingcap/tidb/issues/57948)，在某些情况下，启发式规则可能会导致新旧索引进行不合理的比较，从而裁剪原查询计划依赖的索引，最终 fallback 到全表扫描。
 
-从 v8.5.0 起，TiDB 对索引的启发式比较和统计信息缺失时的行为进行了优化。但在部分复杂场景中，在 DDL 执行过程中内嵌 Analyze 仍是防止执行计划变更的最佳方案。你可以通过系统变量 [`tidb_stats_update_during_ddl`](/system-variables.md#tidb_stats_update_during_ddl-从-v854-和-v900-版本开始引入) 控制在索引创建或重组阶段是否执行内嵌 Analyze。该变量默认值为 `OFF`。
+从 v8.5.0 起，TiDB 对索引的启发式比较和统计信息缺失时的行为进行了优化。但在部分复杂场景中，在 DDL 执行过程中内嵌 Analyze 仍是防止执行计划变更的最佳方案。你可以通过系统变量 [`tidb_stats_update_during_ddl`](/system-variables.md#tidb_stats_update_during_ddl-从-v854-版本开始引入) 控制在索引创建或重组阶段是否执行内嵌 Analyze。该变量默认值为 `OFF`。
 
 ## 新建索引 `ADD INDEX` 的 DDL
 
