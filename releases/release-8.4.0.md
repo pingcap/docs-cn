@@ -134,7 +134,7 @@ TiDB 版本：8.4.0
 
     在 v8.4.0 中，全局索引成为正式功能 (GA)。你无需再设置系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 开启全局索引特性，可以直接使用关键字 `GLOBAL` 创建全局索引。从 v8.4.0 开始，该系统变量被废弃，并总是设置为 `ON`。
 
-    更多信息，请参考[用户文档](/partitioned-table.md#全局索引)。
+    更多信息，请参考[用户文档](/global-indexes.md)。
 
 * 优化缓存表在部分场景下的查询性能 [#43249](https://github.com/pingcap/tidb/issues/43249) @[tiancaiamao](https://github.com/tiancaiamao)
 
@@ -282,7 +282,7 @@ TiDB 版本：8.4.0
 |--------|------------------------------|------|
 | `log_bin` | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 被移除。该变量表示是否使用 TiDB Binlog，从 v8.4.0 开始被删除。|
 | `sql_log_bin` | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 被移除。该变量表示是否将更改写入 TiDB Binlog，从 v8.4.0 开始被删除。|
-| [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) | 废弃 | 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用[全局索引](/partitioned-table.md#全局索引)。你只需在执行 `CREATE TABLE` 或 `ALTER TABLE` 时给对应的列加上关键字 `GLOBAL` 即可创建全局索引。|
+| [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) | 废弃 | 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用[全局索引](/global-indexes.md)。你只需在执行 `CREATE TABLE` 或 `ALTER TABLE` 时给对应的列加上关键字 `GLOBAL` 即可创建全局索引。|
 | [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入) | 废弃 | 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用 [List 分区](/partitioned-table.md#list-分区)。|
 | [`tidb_enable_table_partition`](/system-variables.md#tidb_enable_table_partition) | 废弃 |  从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用[分区表](/partitioned-table.md)。|
 | [`tidb_analyze_partition_concurrency`](/system-variables.md#tidb_analyze_partition_concurrency) | 修改 | 取值范围从 `[1, 18446744073709551615]` 修改为 `[1, 128]`。|
