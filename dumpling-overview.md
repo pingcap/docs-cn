@@ -372,7 +372,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --cert | 用于 TLS 连接的 client certificate 文件的地址 |
 | --key | 用于 TLS 连接的 client private key 文件的地址 |
 | --csv-delimiter | CSV 文件中字符类型变量的定界符 | '"' |
-| --csv-separator | CSV 文件中各值的分隔符，如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符| ','|
+| --csv-separator | CSV 文件中各值的分隔符。如果数据中包含逗号，建议导出源文件时，使用非常见组合字符作为分隔符。支持不可见字符作为分隔符，如：`--csv-separator $'\001'` | ','|
 | --csv-null-value | CSV 文件空值的表示 | "\\N" |
 | --csv-line-terminator | CSV 文件中表示行尾的换行符。将数据导出为 CSV 文件时，可以通过该选项传入所需的换行符。该选项支持 "\\r\\n" 和 "\\n"，默认值为 "\\r\\n"，和历史版本保持一致。由于 bash 中不同的引号会应用不同的转义规则，如需指定 LF 为换行符，可使用类似 `--csv-line-terminator $'\n'` 的语法。| "\\r\\n" |
 | --escape-backslash | 使用反斜杠 (`\`) 来转义导出文件中的特殊字符 | true |
