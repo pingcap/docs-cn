@@ -124,6 +124,11 @@ summary: 了解 Grafana Dashboard 中展示的关键指标。
     - **cross-zone-out**：尝试在远程可用区执行 Stale Read 的请求的响应的传出流量
     - **local-in**：尝试在本地可用区执行 Stale Read 的请求的响应的传入流量
     - **local-out**：尝试在本地可用区执行 Stale Read 的请求的响应的传出流量
+- Read Req Traffic
+    - **leader-local**：Leader Read 在本地可用区处理读请求产生的流量
+    - **leader-cross-zone**：Leader Read 在远程可用区处理读请求产生的流量
+    - **follower-local**：Follower Read 在本地可用区处理读请求产生的流量
+    - **follower-cross-zone**：Follower Read 在远程可用区处理读请求产生的流量
 
 ### PD Client
 
