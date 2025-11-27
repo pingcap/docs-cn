@@ -126,3 +126,9 @@ curl http://127.0.0.1:3080/api/debug/health
 ```bash
 curl http://127.0.0.1:3080/metrics/
 ```
+
+## 访问控制
+
+你可以通过启用 [`server-http-tls`](/tiproxy/tiproxy-configuration.md#server-http-tls)，并在 [security](/tiproxy/tiproxy-configuration.md#security) 部分的 `server-http-tls` 子配置中设置 `cert-allowed-cn` 选项，来限制对 TiProxy API 的访问。TiProxy 会使用客户端证书中的通用名 (Common Name, CN) 来[认证组件调用者身份](/enable-tls-between-components.md#认证组件调用者身份)。
+
+如果未启用 TLS，你可以通过防火墙规则来控制访问。
