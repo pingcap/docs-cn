@@ -5,9 +5,9 @@ summary: 在使用 TiDB 时遇到问题，如何获取支持。
 
 # 支持资源
 
-如果你在使用 TiDB 的过程中遇到了问题，你可以通过以下方式向 PingCAP 或 TiDB 社区寻求帮助：
+如果你在使用 TiDB 的过程中遇到了问题，你可以通过以下方式向平凯星辰公司或 TiDB 社区寻求帮助：
 
-+ 从 PingCAP 获取支持（需要订阅 [TiDB 企业版](https://cn.pingcap.com/product-enterprise/)）：
++ 从平凯星辰公司获取支持（需要订阅 [TiDB 企业版](https://pingkai.cn/)）：
 
     - [提交工单](https://support.pingcap.cn/)
 
