@@ -185,7 +185,7 @@ TiDB [使用 Grafana + Prometheus 监控系统状态](/tidb-monitoring-framework
 
 + 公众号：微信搜索 PingCAP
 + 知乎专栏：[TiDB 的后花园](https://zhuanlan.zhihu.com/newsql)
-+ [官方博客](https://tidb.net/blog)
++ [博客文章](https://tidb.net/blog)
 
 ## TiDB 的最佳适用场景
 
