@@ -716,7 +716,7 @@ TiDB 不支持 savepoint 机制，因此也不支持 PROPAGATION_NESTED 传播�
 
 ## 自动提交的 `SELECT FOR UPDATE` 语句不会等锁
 
-目前，自动提交下的 `SELECT FOR UPDATE` 不会加锁。效果如下图所示，图中左侧和右侧是两个不同的会话。
+目前，自动提交下的 `SELECT FOR UPDATE` 不会加锁。下图显示了在两个不同会话中的效果：
 
 ![TiDB中的情况](/media/develop/autocommit_selectforupdate_nowaitlock.png)
 
