@@ -13,7 +13,7 @@ summary: TiFlash 是 TiDB HTAP 形态的关键组件，提供了良好的隔离�
 
 上图为 TiDB HTAP 形态架构，其中包含 TiFlash 节点。
 
-TiFlash 提供列式存储，且拥有借助 ClickHouse 高效实现的协处理器层。除此以外，它与 TiKV 非常类似，依赖同样的 Multi-Raft 体系，以 Region 为单位进行数据复制和分散（详情见[《说存储》](https://pingcap.com/blog-cn/tidb-internal-1/)一文）。
+TiFlash 提供列式存储，且拥有借助 ClickHouse 高效实现的协处理器层。除此以外，它与 TiKV 非常类似，依赖同样的 Multi-Raft 体系，以 Region 为单位进行数据复制和分散（详情见[《说存储》](https://tidb.net/blog/dbe4f467)一文）。
 
 TiFlash 以低消耗不阻塞 TiKV 写入的方式，实时复制 TiKV 集群中的数据，并同时提供与 TiKV 一样的一致性读取，且可以保证读取到最新的数据。TiFlash 中的 Region 副本与 TiKV 中完全对应，且会跟随 TiKV 中的 Leader 副本同时进行分裂与合并。
 
