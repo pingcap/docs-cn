@@ -9,7 +9,7 @@ summary: 了解 TiDB 在高并发写入场景下的最佳实践。
 
 ## 目标读者
 
-本文假设你已对 TiDB 有一定的了解，推荐先阅读 TiDB 原理相关的三篇文章（[讲存储](https://pingcap.com/blog-cn/tidb-internal-1/)，[说计算](https://pingcap.com/blog-cn/tidb-internal-2/)，[谈调度](https://pingcap.com/blog-cn/tidb-internal-3/)），以及 [TiDB Best Practice](https://pingcap.com/blog-cn/tidb-best-practice/)。
+本文假设你已对 TiDB 有一定的了解，推荐先阅读 TiDB 原理相关的三篇文章（[讲存储](https://tidb.net/blog/dbe4f467)，[说计算](https://tidb.net/blog/8427565a)，[谈调度](https://tidb.net/blog/a558961f)），以及 [TiDB 最佳实践](https://tidb.net/blog/7f818fc0)。
 
 ## 高并发批量插入场景
 
@@ -28,7 +28,7 @@ summary: 了解 TiDB 在高并发写入场景下的最佳实践。
 
 ## TiDB 数据分布原理
 
-如果要解决以上挑战，需要从 TiDB 数据切分以及调度的原理开始讲起。这里只作简单说明，详情可参阅[谈调度](https://pingcap.com/blog-cn/tidb-internal-3/)。
+如果要解决以上挑战，需要从 TiDB 数据切分以及调度的原理开始讲起。这里只作简单说明，详情可参阅[谈调度](https://tidb.net/blog/a558961f)。
 
 TiDB 以 Region 为单位对数据进行切分，每个 Region 有大小限制（默认 96M）。Region 的切分方式是范围切分。每个 Region 会有多副本，每一组副本，称为一个 Raft Group。每个 Raft Group 中由 Leader 负责执行这块数据的读 & 写（TiDB 支持 [Follower-Read](/follower-read.md)）。Leader 会自动地被 PD 组件均匀调度在不同的物理节点上，用以均分读写压力。
 
