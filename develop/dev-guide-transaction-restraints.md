@@ -722,7 +722,7 @@ mysql> SELECT * FROM T2;
 
 ## 自动提交的 SELECT FOR UPDATE 语句不会等锁
 
-自动提交下的 SELECT FOR UPDATE 目前不会加锁。效果如下图所示：
+自动提交下的 SELECT FOR UPDATE 目前不会加锁。效果如下图所示，图中左侧和右侧是两个不同的会话。
 
 ![TiDB中的情况](/media/develop/autocommit_selectforupdate_nowaitlock.png)
 
