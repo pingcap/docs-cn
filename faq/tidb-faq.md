@@ -1,6 +1,6 @@
 ---
 title: TiDB 产品常见问题
-summary: TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库，支持在线事务处理与在线分析处理，具备水平扩容、高可用、实时 HTAP、云原生的特性。TiDB 不是基于 MySQL 开发的，而是由 PingCAP 团队完全自主开发的产品。TiDB 易用性很高，支持绝大部分 MySQL 8.0 的语法，但不支持触发器、存储过程、自定义函数等。TiDB 支持分布式事务，兼容 MySQL Client/Driver 的编程语言，支持其他存储引擎，如 TiKV、UniStore 和 MockTiKV。获取 TiDB 知识的途径包括官方文档、官方博客、AskTUG 社区论坛和 PingCAP Education。用户名长度限制为 32 个字符，最大列数为 1017，单行大小不超过 6MB。TiDB 不支持 XA，但支持对列存储引擎的高并发 INSERT 或 UPDATE 操作。
+summary: TiDB 是平凯星辰公司自主设计、研发的开源分布式关系型数据库，支持在线事务处理与在线分析处理，具备水平扩容、高可用、实时 HTAP、云原生的特性。TiDB 不是基于 MySQL 开发的，而是由平凯星辰团队完全自主开发的产品。TiDB 易用性很高，支持绝大部分 MySQL 8.0 的语法，但不支持触发器、存储过程、自定义函数等。TiDB 支持分布式事务，兼容 MySQL Client/Driver 的编程语言，支持其他存储引擎，如 TiKV、UniStore 和 MockTiKV。获取 TiDB 知识的途径包括官方文档、官方博客、AskTUG 社区论坛和 PingCAP Education。用户名长度限制为 32 个字符，最大列数为 1017，单行大小不超过 6MB。TiDB 不支持 XA，但支持对列存储引擎的高并发 INSERT 或 UPDATE 操作。
 ---
 
 # TiDB 产品常见问题
@@ -9,7 +9,7 @@ summary: TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型
 
 ### 1.1.1 TiDB 是什么？
 
-[TiDB](https://github.com/pingcap/tidb) 是 [PingCAP](https://pingcap.com/about-cn/) 公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 的融合型分布式数据库产品，具备水平扩容或者缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等重要特性。目标是为用户提供一站式 OLTP (Online Transactional Processing)、OLAP (Online Analytical Processing)、HTAP 解决方案。TiDB 适合高可用、强一致要求较高、数据规模较大等各种应用场景。更多详细信息，请参阅 [TiDB 简介](/overview.md)。
+[TiDB](https://github.com/pingcap/tidb) 是[平凯星辰](https://pingkai.cn/about)公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 的融合型分布式数据库产品，具备水平扩容或者缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等重要特性。目标是为用户提供一站式 OLTP (Online Transactional Processing)、OLAP (Online Analytical Processing)、HTAP 解决方案。TiDB 适合高可用、强一致要求较高、数据规模较大等各种应用场景。更多详细信息，请参阅 [TiDB 简介](/overview.md)。
 
 ### 1.1.2 TiDB 整体架构
 
@@ -17,7 +17,7 @@ summary: TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型
 
 ### 1.1.3 TiDB 是基于 MySQL 开发的吗？
 
-不是。虽然 TiDB 支持 MySQL 语法和协议，但是 TiDB 是由 PingCAP 团队完全自主开发的产品。
+不是。虽然 TiDB 支持 MySQL 语法和协议，但是 TiDB 是由平凯星辰团队完全自主开发的产品。
 
 ### 1.1.4 TiDB、TiKV、Placement Driver (PD) 主要作用？
 
@@ -73,9 +73,9 @@ Usage of ./bin/tidb-server:
 ### 1.1.10 除了官方文档，有没有其他 TiDB 知识获取途径？
 
 - [官方文档](https://docs.pingcap.com/zh/)：获取 TiDB 相关知识最主要、最及时的途径。
-- [官方博客](https://cn.pingcap.com/blog/)：了解产品技术解读、观点洞察、案例实践。
+- [博客文章](https://tidb.net/blog)：了解产品技术解读、观点洞察、案例实践。
 - [AskTUG 社区论坛](https://asktug.com)：与社区用户、技术专家互动交流。
-- [PingCAP Education](https://cn.pingcap.com/education/)：学习线上课程，获得数据库能力认证。
+- [视频课程](https://learn.pingcap.cn/learner/course)：学习线上课程，获得数据库能力认证。
 
 ### 1.1.11 TiDB 用户名长度限制？
 
@@ -109,12 +109,12 @@ TiFlash 默认保持数据强一致性。Raft Learner 流程会更新数据。�
 
 ### 1.2.1 存储 TiKV 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 说存储](https://cn.pingcap.com/blog/tidb-internal-1)
+[三篇文章了解 TiDB 技术内幕 - 说存储](https://tidb.net/blog/dbe4f467)
 
 ### 1.2.2 计算 TiDB 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 说计算](https://cn.pingcap.com/blog/tidb-internal-2)
+[三篇文章了解 TiDB 技术内幕 - 说计算](https://tidb.net/blog/8427565a)
 
 ### 1.2.3 调度 PD 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 谈调度](https://cn.pingcap.com/blog/tidb-internal-3)
+[三篇文章了解 TiDB 技术内幕 - 谈调度](https://tidb.net/blog/a558961f)

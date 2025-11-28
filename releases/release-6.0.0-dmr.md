@@ -269,7 +269,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     TiDB Enterprise Manager 不仅为 TiDB 集群提供全生命周期的可视化管理，也同时一站式提供 TiDB 数据库的参数管理、数据库版本升级、克隆集群、主备集群切换、数据导入导出、数据同步、数据备份恢复服务，能有效提高 TiDB 集群运维效率，降低企业运维成本。
 
-    TiDB Enterprise Manager 当前为企业版特性。要获取 TiDB Enterprise Manager 及其文档，请在 [TiDB 产品页面](https://pingcap.com/zh/product/#SelectProduct)**企业版**下点击**立即咨询**与 PingCAP 取得联系。
+    TiDB Enterprise Manager 当前为企业版特性。要获取 TiDB Enterprise Manager 及其文档，请[联系我们](https://pingkai.cn/contact)。
 
 - 支持监控组件的自定义配置
 
@@ -353,7 +353,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
 ## 离线包变更
 
-TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：`v6.0.0 TiDB-community-server` 软件包和 `v6.0.0 TiDB-community-toolkit` 软件包。
+TiDB 提供两个[离线包下载](https://pingkai.cn/download)：`v6.0.0 TiDB-community-server` 软件包和 `v6.0.0 TiDB-community-toolkit` 软件包。
 
 在 6.0.0-DMR 版本中，两个离线包的内容物做了一些调整。在 `v6.0.0 TiDB-community-server` 软件包中，离线包的内容物包含：
 
