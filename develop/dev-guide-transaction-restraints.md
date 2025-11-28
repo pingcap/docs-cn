@@ -723,9 +723,9 @@ mysql> SELECT * FROM T2;
 
 另外注意，无论是大小限制还是行数限制，还要考虑事务执行过程中，TiDB 做编码以及事务额外 Key 的开销。在使用的时候，为了使性能达到最优，建议每 100 ～ 500 行写入一个事务。
 
-## 自动提交的 SELECT FOR UPDATE 语句不会等锁
+## 自动提交的 `SELECT FOR UPDATE` 语句不会等锁
 
-自动提交下的 SELECT FOR UPDATE 目前不会加锁。效果如下图所示，图中左侧和右侧是两个不同的会话。
+目前，自动提交下的 `SELECT FOR UPDATE` 不会加锁。效果如下图所示，图中左侧和右侧是两个不同的会话。
 
 ![TiDB中的情况](/media/develop/autocommit_selectforupdate_nowaitlock.png)
 
