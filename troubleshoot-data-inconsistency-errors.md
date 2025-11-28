@@ -7,7 +7,7 @@ summary: 了解如何处理数据索引一致性检查的报错。
 
 当执行事务或执行 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 命令时，TiDB 会对数据索引的一致性进行检查。如果检查发现 record key-value 和 index key-value 不一致，即存储行数据的键值对和存储其对应索引的键值对之间不一致（例如多索引或缺索引），TiDB 会报数据索引一致性错误，并在日志文件中打印相关错误日志。
 
-本文对数据索引一致性的报错信息进行了说明，并提供了一些绕过检查的方法。遇到报错时，你可以前往 [AskTUG 论坛](https://asktug.com/)，与社区用户交流；如果是订阅用户，请联系 [PingCAP 服务与支持](https://cn.pingcap.com/support/)。
+本文对数据索引一致性的报错信息进行了说明，并提供了一些绕过检查的方法。遇到报错时，你可以前往 [AskTUG 论坛](https://asktug.com/)，与社区用户交流；如果是订阅用户，请[联系我们](https://pingkai.cn/contact)。
 
 ## 错误样例解读
 
