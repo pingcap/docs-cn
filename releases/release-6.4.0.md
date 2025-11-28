@@ -323,7 +323,7 @@ TiDB 版本：6.4.0-DMR
 
 ### 其他
 
-- 从 v6.4.0 开始，`mysql.user` 表新增 `User_attributes` 和 `Token_issuer` 两个字段。如果从 v6.4.0 之前版本的备份数据[恢复 `mysql` schema 下的系统表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表) 到 v6.4.0 集群，BR 将返回 `mysql.user` 表的 `column count mismatch` 错误。如果你未选择恢复 `mysql` schema 下的系统表，则不会报错。
+- 从 v6.4.0 开始，`mysql.user` 表新增 `User_attributes` 和 `Token_issuer` 两个字段。如果从 v6.4.0 之前版本的备份数据[恢复 `mysql` schema 下的系统表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)到 v6.4.0 集群，BR 将返回 `mysql.user` 表的 `column count mismatch` 错误。如果你未选择恢复 `mysql` schema 下的系统表，则不会报错。
 - 针对命名规则符合 Dumpling [输出文件格式](/dumpling-overview.md#输出文件格式)但后缀名并非 gzip 压缩格式的文件（例如 `test-schema-create.sql.origin` 和 `test.table-schema.sql.origin`），Lightning 的处理方式发生了变化。在 v6.4.0 之前的版本中，如果待导入的文件中包含这类文件，Lightning 将跳过对这类文件的导入。从 v6.4.0 起，Lightning 将认为这些文件使用了不支持的压缩格式，导致导入失败。
 - 从 v6.4.0 开始，TiCDC 使用 Syncpoint 功能需要同步任务拥有下游集群的 `SYSTEM_VARIABLES_ADMIN` 或者 `SUPER` 权限。
 

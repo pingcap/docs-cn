@@ -5,7 +5,7 @@ summary: 了解聚合 JSON 值的 JSON 函数。
 
 # 聚合 JSON 值的 JSON 函数
 
-本文档介绍 TiDB [聚合函数](/functions-and-operators/aggregate-group-by-functions.md) 中专门用于处理 JSON 的聚合函数。
+本文档介绍 TiDB [聚合函数](/functions-and-operators/aggregate-group-by-functions.md)中专门用于处理 JSON 的聚合函数。
 
 TiDB 支持使用 MySQL 8.0 中提供的[两个 JSON 聚合函数](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html)。
 

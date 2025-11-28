@@ -236,7 +236,7 @@ TiDB 版本：6.1.0
 | [`tidb_committer_concurrency`](/system-variables.md#tidb_committer_concurrency-从-v610-版本开始引入) | 新增 | 由 TiDB 配置项 `committer-concurrency` 转化而来。 |
 | [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) | 新增 | 由 TiDB 配置项 `run-auto-analyze` 转化而来。 |
 | [`tidb_enable_new_only_full_group_by_check`](/system-variables.md#tidb_enable_new_only_full_group_by_check-从-v610-版本开始引入) | 新增 | 控制 TiDB 执行 `ONLY_FULL_GROUP_BY` 检查时的行为。 |
-| [`tidb_enable_outer_join_reorder`](/system-variables.md#tidb_enable_outer_join_reorder-从-v610-版本开始引入) | 新增 | 控制 TiDB 的 [Join Reorder 算法](/join-reorder.md) 支持 Outer Join，默认开启。对于从旧版本升级上来的集群，该变量的默认值也会是 `TRUE`。 |
+| [`tidb_enable_outer_join_reorder`](/system-variables.md#tidb_enable_outer_join_reorder-从-v610-版本开始引入) | 新增 | 控制 TiDB 的 [Join Reorder 算法](/join-reorder.md)支持 Outer Join，默认开启。对于从旧版本升级上来的集群，该变量的默认值也会是 `TRUE`。 |
 | [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入) | 新增 | 由 TiDB 配置项 `prepared-plan-cache.enabled` 转化而来。 |
 | [`tidb_gc_max_wait_time`](/system-variables.md#tidb_gc_max_wait_time-从-v610-版本开始引入) | 新增 | 用于指定活跃事务阻碍 GC safe point 推进的最大时间。 |
 | [`tidb_max_auto_analyze_time`](/system-variables.md#tidb_max_auto_analyze_time-从-v610-版本开始引入) | 新增 | 用于指定自动 ANALYZE 的最大执行时间。 |

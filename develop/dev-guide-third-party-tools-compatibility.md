@@ -139,7 +139,7 @@ TiDB 暂不支持 `UpdatableResultSet`，即请勿指定 `ResultSet.CONCUR_UPDAT
 
 > **注意：**
 >
-> `maxPerformance` 配置中包含多个参数，其中包括 `useLocalSessionState` 参数。要查看当前 MySQL Connector/J  中 `maxPerformance` 包含的具体参数，可参考 MySQL Connector/J [8.0 版本](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties) 或 [5.1 版本](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties) 的配置文件。在使用 `maxPerformance` 时，请关闭 `useLocalTransactionState`，即 `useConfigs=maxPerformance&useLocalTransactionState=false`。
+> `maxPerformance` 配置中包含多个参数，其中包括 `useLocalSessionState` 参数。要查看当前 MySQL Connector/J  中 `maxPerformance` 包含的具体参数，可参考 MySQL Connector/J [8.0 版本](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties)或 [5.1 版本](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties)的配置文件。在使用 `maxPerformance` 时，请关闭 `useLocalTransactionState`，即 `useConfigs=maxPerformance&useLocalTransactionState=false`。
 
 MySQL Connector/J 已在 8.0.33 版本修复此问题。请使用 8.0.33 或更高版本。基于稳定性和性能考量，并结合到 8.0.x 版本已经停止更新，强烈建议升级 MySQL Connector/J 到[最新的 GA 版本](https://dev.mysql.com/downloads/connector/j/)。
 

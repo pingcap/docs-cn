@@ -402,7 +402,7 @@ sudo systemctl enable ntpd.service
     - 对于高速 SSD 存储介质，内核默认的 I/O 调度器可能会导致性能损失。建议将闪存存储的 I/O 调度器设置为先入先出 (First-in-first-out, FIFO) 的调度器，如 `noop` 或 `none`，这样内核将不做调度操作，直接将 I/O 请求传递给硬件，从而提升性能。
     - 对于 NVMe 存储介质，默认的 I/O 调度器为 `none`，无需进行调整。
 
-- 将动态调整 CPU 频率的 [cpufreq 模块](/tune-operating-system.md#处理器动态节能技术) 设置为 `performance` 模式。该模式会将 CPU 频率固定在其支持的最高运行频率上，不进行动态调节，因此可获得最佳性能。
+- 将动态调整 CPU 频率的 [cpufreq 模块](/tune-operating-system.md#处理器动态节能技术)设置为 `performance` 模式。该模式会将 CPU 频率固定在其支持的最高运行频率上，不进行动态调节，因此可获得最佳性能。
 
 具体的检查和配置步骤如下：
 

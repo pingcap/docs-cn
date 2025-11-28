@@ -39,7 +39,7 @@ aliases: ['/zh/tidb/dev/use-follower-read']
 SET [GLOBAL] tidb_replica_read = 'follower';
 ```
 
-你可以通过 [Follower Read 使用方式](/follower-read.md#使用方式) 了解该变量的更多细节。
+你可以通过 [Follower Read 使用方式](/follower-read.md#使用方式)了解该变量的更多细节。
 
 </div>
 <div label="Java">
