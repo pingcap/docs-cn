@@ -83,7 +83,7 @@ MySQL 的 Read Committed 隔离级别大部分符合一致性读特性，但其�
 
 ## 更多阅读
 
-- [TiDB 的乐观事务模型](https://pingcap.com/blog-cn/best-practice-optimistic-transaction/)
-- [TiDB 新特性漫谈-悲观事务](https://pingcap.com/blog-cn/pessimistic-transaction-the-new-features-of-tidb/)
-- [TiDB 新特性-白话悲观锁](https://pingcap.com/blog-cn/tidb-4.0-pessimistic-lock/)
-- [TiKV 的 MVCC (Multi-Version Concurrency Control) 机制](https://pingcap.com/blog-cn/mvcc-in-tikv/)
+- [TiDB 的乐观事务模型](https://tidb.net/blog/48d7f732)
+- [TiDB 新特性漫谈-悲观事务](https://tidb.net/blog/37596251)
+- [TiDB 新特性-白话悲观锁](https://tidb.net/blog/1f4a7e8f)
+- [TiKV 的 MVCC (Multi-Version Concurrency Control) 机制](https://tidb.net/blog/e51d71b2)

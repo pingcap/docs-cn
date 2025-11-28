@@ -11,7 +11,7 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：7.1.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v7.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v7.1/production-deployment-using-tiup)
 
 TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
@@ -76,7 +76,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>TiDB 支持与 <a href="https://dev.mysql.com/doc/refman/8.0/en/ldap-pluggable-authentication.html" target="_blank"> MySQL 8.0</a> 兼容的 LDAP 身份认证。</td>
   </tr>
   <tr>
-    <td>增强数据库审计功能（<a href="https://pingcap.com/zh/product/#SelectProduct" target="_blank">企业版</a>）</td>
+    <td>增强数据库审计功能（<a href="https://pingkai.cn/docs/pingkaidb/stable/upgrade-compatibility/" target="_blank">企业版</a>）</td>
     <td>TiDB 企业版增强了数据库审计功能，通过更细粒度的事件过滤控制、更友好的过滤条件设置方式、新增的 JSON 文件输出格式、审计日志的生命周期管理，大幅提升了系统的审计能力。</td>
   </tr>
 </tbody>
@@ -285,7 +285,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
   数据库审计是 TiDB 企业版的重要功能之一，为企业提供了强大的监管和审计工具，以保证数据安全和合规性。TiDB 企业版的数据库审计功能可以帮助企业管理人员追踪数据库操作的来源和影响，确保数据不被非法窃取或篡改。同时，数据库审计还可以帮助企业遵守各种法规和合规要求，确保企业在法律和道德方面的合规性。该功能对企业信息安全具有非常重要的应用价值。
 
-    该功能为企业版特性，要获取数据库审计功能及其文档，请在 [TiDB 产品页面](https://pingcap.com/zh/product/#SelectProduct)**企业版**区域点击**立即咨询**联系 PingCAP。
+    该功能为企业版特性，要获取数据库审计功能及其文档，请[联系我们](https://pingkai.cn/contact)。
 
 ## 兼容性变更
 
