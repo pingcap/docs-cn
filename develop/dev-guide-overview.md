@@ -9,14 +9,14 @@ summary: 整体叙述了开发者手册，罗列了开发者手册的大致脉�
 
 本手册将展示如何使用 TiDB 来快速构建一个应用，并且阐述使用 TiDB 期间可能出现的场景以及可能会遇到的问题。因此，在阅读此页面之前，建议你先行阅读 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)。
 
-此外，你还可以通过视频的形式学习免费的 [TiDB SQL 开发在线课程](https://cn.pingcap.com/courses-catalog/category/back-end-developer/?utm_source=docs-cn-dev-guide)。
+此外，你还可以通过视频的形式学习免费的 [TiDB SQL 开发在线课程](https://pingkai.cn/learn)。
 
 ## TiDB 基础
 
 在你开始使用 TiDB 之前，你需要了解一些关于 TiDB 数据库的一些重要工作机制：
 
 - 阅读 [TiDB 事务概览](/transaction-overview.md)来了解 TiDB 的事务运作方式或查看[为应用开发程序员准备的事务说明](/develop/dev-guide-transaction-overview.md)查看应用开发程序员需要了解的事务部分。
-- 学习免费在线课程 [TiDB 架构与特点](https://learn.pingcap.com/learner/course/600003/?utm_source=docs-cn-dev-guide)，了解构建 TiDB 分布式数据库集群的核心组件及其概念。
+- 学习免费在线课程 [TiDB 架构与特点](https://learn.pingcap.cn/learner/course/600003?utm_source=docs-cn-dev-guide)，了解构建 TiDB 分布式数据库集群的核心组件及其概念。
 - 了解[应用程序与 TiDB 交互的方式](#应用程序与-tidb-交互的方式)。
 
 ## TiDB 事务机制
