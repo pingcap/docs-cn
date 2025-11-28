@@ -4,7 +4,7 @@ hide_sidebar: true
 hide_commit: true
 ---
 
-<LearningPathContainer platform="tidb" title="TiDB" subTitle="TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库。您可以在这里查看概念介绍、操作指南、应用开发、参考等产品文档。">
+<LearningPathContainer platform="tidb" title="TiDB" subTitle="TiDB 是平凯星辰公司自主设计、研发的开源分布式关系型数据库。您可以在这里查看概念介绍、操作指南、应用开发、参考等产品文档。">
 
 <LearningPath label="了解" icon="cloud1">
 

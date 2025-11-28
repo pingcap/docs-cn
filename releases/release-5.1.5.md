@@ -8,7 +8,7 @@ title: TiDB 5.1.5 Release Notes
 
 TiDB 版本：5.1.5
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v5.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v5.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v5.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v5.1/production-deployment-using-tiup) | [下载离线包](https://pingkai.cn/download#tidb-community)
 
 ## 兼容性变更
 
