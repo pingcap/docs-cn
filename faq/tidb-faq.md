@@ -18,7 +18,7 @@ TiDB 是一个分布式 NewSQL 数据库。它支持水平弹性扩展、ACID �
 
 #### 1.1.3 TiDB 是基于 MySQL 开发的吗？
 
-不是，虽然 TiDB 支持 MySQL 语法和协议，但是 TiDB 是由 PingCAP 团队完全自主开发的产品。
+不是，虽然 TiDB 支持 MySQL 语法和协议，但是 TiDB 是由平凯星辰团队完全自主开发的产品。
 
 #### 1.1.4 TiDB、TiKV、Placement Driver (PD) 主要作用？
 
@@ -95,19 +95,19 @@ MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiD
 
 ##### 1.2.1.1 TiKV 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 说存储](https://pingcap.com/blog-cn/tidb-internal-1/)
+[三篇文章了解 TiDB 技术内幕 - 说存储](https://tidb.net/blog/dbe4f467)
 
 #### 1.2.2 计算 TiDB
 
 ##### 1.2.2.1 TiDB 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 说计算](https://pingcap.com/blog-cn/tidb-internal-2/)
+[三篇文章了解 TiDB 技术内幕 - 说计算](https://tidb.net/blog/8427565a)
 
 #### 1.2.3 调度 PD
 
 ##### 1.2.3.1 PD 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 谈调度](https://pingcap.com/blog-cn/tidb-internal-3/)
+[三篇文章了解 TiDB 技术内幕 - 谈调度](https://tidb.net/blog/a558961f)
 
 ## 二、云上部署
 
