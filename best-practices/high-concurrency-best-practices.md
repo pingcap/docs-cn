@@ -9,7 +9,7 @@ summary: 了解 TiDB 在高并发写入场景下的最佳实践。
 
 ## 目标读者
 
-本文假设你已对 TiDB 有一定的了解，推荐先阅读 TiDB 原理相关的三篇文章（[讲存储](https://tidb.net/blog/dbe4f467)，[说计算](https://tidb.net/blog/8427565a)，[谈调度](https://tidb.net/blog/a558961f)），以及 [TiDB Best Practice](https://tidb.net/blog/7f818fc0)。
+本文假设你已对 TiDB 有一定的了解，推荐先阅读 TiDB 原理相关的三篇文章（[讲存储](https://tidb.net/blog/dbe4f467)，[说计算](https://tidb.net/blog/8427565a)，[谈调度](https://tidb.net/blog/a558961f)），以及 [TiDB 最佳实践](https://tidb.net/blog/7f818fc0)。
 
 ## 高并发批量插入场景
 
