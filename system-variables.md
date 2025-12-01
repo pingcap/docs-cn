@@ -1972,7 +1972,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：布尔型
 - 默认值：`ON`
 - 该变量控制是否支持为分区表创建[全局索引](/global-indexes.md)。启用此变量后，你可以通过在索引定义中添加 `GLOBAL` 选项创建不包含分区表达式中所有列的唯一索引。
-- 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用[全局索引](/global-indexes.md)。
+- 从 v8.4.0 开始，该变量被废弃。其值固定为默认值 `ON`，即默认启用[全局索引](/global-indexes.md)。
 
 ### `tidb_enable_lazy_cursor_fetch` <span class="version-mark">从 v8.3.0 版本开始引入</span>
 

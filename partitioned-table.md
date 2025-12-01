@@ -1687,7 +1687,7 @@ ERROR 8264 (HY000): Global Index is needed for index 'a', since the unique index
 
 ### 全局索引
 
-关于全局索引的介绍，请参考[全局索引](/global-indexes.md)。 
+关于全局索引的详细介绍，参见[全局索引](/global-indexes.md)。 
 
 ### 关于函数的分区限制
 
