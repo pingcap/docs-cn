@@ -138,7 +138,11 @@ CREATE TABLE t2 (
 ERROR 1503 (HY000): A CLUSTERED INDEX must include all columns in the table's partitioning function
 ```
 
-聚簇索引不能同时作为全局索引。原因在于，如果聚簇索引是全局索引，则表将不再分区。聚簇索引的键是分区级别的行数据的键，但全局索引是表级别的，这就产生了冲突。如果需要将主键设置为全局索引，则需要显式设置该主键为非聚簇索引，如 `PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
+聚簇索引不能同时作为全局索引。原因在于，如果聚簇索引是全局索引，则表将不再分区。聚簇索引的键是分区级别的行数据的键，但全局索引是表级别的，这就产生了冲突。如果需要将主键设置为全局索引，则需要显式设置该主键为非聚簇索引，例如：
+
+```sql
+PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL
+```
 
 你可以通过 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 输出中的 `GLOBAL` 索引选项来识别全局索引。
 
@@ -293,7 +297,7 @@ CREATE TABLE `sbtest` (
 
 ```sql
 SELECT id, k, c, pad
-FROM sbtest1
+FROM sbtest
 WHERE k IN (xx, xx, xx)
 ```
 
@@ -303,7 +307,7 @@ Range Partition (100 partitions):
 | --------------------------------------------------------------------- | ------------- | -------------- | -------------- | ---------- |
 | Clustered non-partitioned table                                       | 225           | 19,999         | 30,293         | 7.92       |
 | Clustered table range partitioned by PK                               | 68            | 480            | 511            | 114.87     |
-| Clustered table range partitioned by PK, with Global Index on `k`,`c` | 207           | 17,798         | 27,707         | 11.73      |
+| Clustered table range partitioned by PK, with Global Index on `k`, `c` | 207           | 17,798         | 27,707         | 11.73      |
 
 Hash Partition (100 partitions):
 
@@ -311,6 +315,6 @@ Hash Partition (100 partitions):
 | -------------------------------------------------------------------- | ------------- | -------------- | -------------- | ---------- |
 | Clustered non-partitioned table                                      | 166           | 20,361         | 28,922         | 7.86       |
 | Clustered table hash partitioned by PK                               | 60            | 244            | 283            | 119.73     |
-| Clustered table hash partitioned by PK, with Global Index on `k`,`c` | 156           | 18,233         | 15,581         | 10.77      |
+| Clustered table hash partitioned by PK, with Global Index on `k`, `c` | 156           | 18,233         | 15,581         | 10.77      |
 
 通过上述测试可以看出，在高并发环境下，全局索引能够显著提升分区表查询性能，提升幅度可达 50 倍。同时，全局索引还能够显著降低资源 (RU) 消耗。随着分区数量的增加，这种性能提升的效果将愈加明显。
