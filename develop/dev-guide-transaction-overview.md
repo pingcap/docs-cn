@@ -155,4 +155,4 @@ mysql> SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 ERROR 8048 (HY000): The isolation level 'SERIALIZABLE' is not supported. Set tidb_skip_isolation_level_check=1 to skip this error
 ```
 
-TiDB 实现了快照隔离 (Snapshot Isolation, SI) 级别的一致性。为与 MySQL 保持一致，又称其为“可重复读”。该隔离级别不同于 [ANSI 可重复读隔离级别](/transaction-isolation-levels.md#与-ansi-可重复读隔离级别的区别) 和 [MySQL 可重复读隔离级别](/transaction-isolation-levels.md#与-mysql-可重复读隔离级别的区别)。更多细节请阅读 [TiDB 事务隔离级别](/transaction-isolation-levels.md)。
+TiDB 实现了快照隔离 (Snapshot Isolation, SI) 级别的一致性。为与 MySQL 保持一致，又称其为“可重复读”。该隔离级别不同于 [ANSI 可重复读隔离级别](/transaction-isolation-levels.md#与-ansi-可重复读隔离级别的区别)和 [MySQL 可重复读隔离级别](/transaction-isolation-levels.md#与-mysql-可重复读隔离级别的区别)。更多细节请阅读 [TiDB 事务隔离级别](/transaction-isolation-levels.md)。

@@ -391,7 +391,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 
 ## 输出文件名模板
 
-`--output-filename-template` 参数用于定义输出文件的命名规则，不包括文件扩展名。它接受符合 [Go `text/template` 语法](https://golang.org/pkg/text/template/) 的字符串。
+`--output-filename-template` 参数用于定义输出文件的命名规则，不包括文件扩展名。它接受符合 [Go `text/template` 语法](https://golang.org/pkg/text/template/)的字符串。
 
 模板中可定义的字段如下：
 
