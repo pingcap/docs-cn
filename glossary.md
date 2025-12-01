@@ -257,7 +257,7 @@ Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表
 
 ### Placement Driver (PD)
 
-PD 是 [TiDB 架构](/tidb-architecture.md) 中的核心组件之一，负责存储元数据，为事务时间戳分配[时间戳服务 (TSO)](/tso.md)，协调 TiKV 上的数据分布，并运行 [TiDB Dashboard](/dashboard/dashboard-overview.md)。更多信息，请参见 [TiDB 调度](/tidb-scheduling.md)。
+PD 是 [TiDB 架构](/tidb-architecture.md)中的核心组件之一，负责存储元数据，为事务时间戳分配[时间戳服务 (TSO)](/tso.md)，协调 TiKV 上的数据分布，并运行 [TiDB Dashboard](/dashboard/dashboard-overview.md)。更多信息，请参见 [TiDB 调度](/tidb-scheduling.md)。
 
 ### Placement Rules
 

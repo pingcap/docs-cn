@@ -180,7 +180,7 @@ Signature 用于对 Header 和 Payload 这两部分数据进行签名。
 > **警告：**
 >
 > - Header 与 Payload 使用 base64 进行编码的过程是可逆的，请勿在 Payload 中携带敏感数据。
-> - `tidb_auth_token` 认证方式要求客户端支持 [`mysql_clear_password`](https://dev.mysql.com/doc/refman/8.0/en/cleartext-pluggable-authentication.html) 插件，并将 token 以明文的方式发送至 TiDB，因此请[为 TiDB 开启加密传输](/enable-tls-between-clients-and-servers.md) 后再使用 `tidb_auth_token` 进行认证。
+> - `tidb_auth_token` 认证方式要求客户端支持 [`mysql_clear_password`](https://dev.mysql.com/doc/refman/8.0/en/cleartext-pluggable-authentication.html) 插件，并将 token 以明文的方式发送至 TiDB，因此请[为 TiDB 开启加密传输](/enable-tls-between-clients-and-servers.md)后再使用 `tidb_auth_token` 进行认证。
 
 #### 使用方法
 
@@ -240,7 +240,7 @@ Signature 用于对 Header 和 Payload 这两部分数据进行签名。
     mycli -h 127.0.0.1 -P 4000 -u 'user@pingcap.com' -p '<the-token-generated>'
     ```
 
-    注意这里使用的 mysql 客户端必须支持 `mysql_clear_password` 插件。[mycli](https://www.mycli.net/) 默认开启这一插件，如果使用 [mysql 命令行客户端](https://dev.mysql.com/doc/refman/8.0/en/mysql.html) 则需要 `--enable-cleartext-plugin` 选项来开启这个插件：
+    注意这里使用的 mysql 客户端必须支持 `mysql_clear_password` 插件。[mycli](https://www.mycli.net/) 默认开启这一插件，如果使用 [mysql 命令行客户端](https://dev.mysql.com/doc/refman/8.0/en/mysql.html)则需要 `--enable-cleartext-plugin` 选项来开启这个插件：
 
     ```Shell
     mysql -h 127.0.0.1 -P 4000 -u 'user@pingcap.com' -p'<the-token-generated>' --enable-cleartext-plugin

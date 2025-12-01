@@ -477,7 +477,7 @@ Kafka 消费者收到消息之后，首先检查 `onlyHandleKey` 字段。如果
 
 > **警告：**
 >
-> 在 Kafka 消费者处理数据并查询 TiDB 时，可能发生数据已经被 GC 的情况。你需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 为一个较大的值，以避免该情况。
+> 在 Kafka 消费者处理数据并查询 TiDB 时，可能发生数据已经被 GC 的情况。你需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)为一个较大的值，以避免该情况。
 
 ### 发送大消息到外部存储
 

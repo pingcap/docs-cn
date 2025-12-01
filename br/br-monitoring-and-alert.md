@@ -58,7 +58,7 @@ summary: 了解备份恢复的监控告警。
 
 告警规则配置可以参考下面的步骤：
 
-1. 在 Prometheus 所在节点上创建告警规则的配置文件（例如 `pitr.rules.yml`），参考 [Prometheus 文档](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) 和下列推荐的告警项及配置样例填写告警规则。
+1. 在 Prometheus 所在节点上创建告警规则的配置文件（例如 `pitr.rules.yml`），参考 [Prometheus 文档](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/)和下列推荐的告警项及配置样例填写告警规则。
 2. 在 Prometheus 配置文件中的 `rule_files` 字段填入告警规则文件的路径。
 3. 通过向 Prometheus 进程发送 `SIGHUP` 信号（`kill -HUP pid`）或向 `http://prometheus-addr/-/reload` 发送 HTTP `POST` 请求（使用 HTTP 请求方式前需要在启动 Prometheus 时指定 `--web.enable-lifecycle` 参数）。
 

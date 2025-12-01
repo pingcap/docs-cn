@@ -48,7 +48,7 @@ TiDB DM 在全量导入与增量复制过程中的断点信息，用于在重新
 - 对于全量导入，Checkpoint 信息对应于每个数据文件已经被成功导入的数据对应的文件内偏移量等信息，其在每个导入数据的事务中迁移更新；
 - 对于增量复制，Checkpoint 信息对应于已经成功解析并导入到下游的 [Binlog event](#binlog-event) 对应的 [Binlog position](#binlog-position) 等信息，其在 DDL 导入成功后或距上次更新时间超过 30 秒等条件下更新。
 
-另外，[Relay 处理单元](#relay-处理单元) 对应的 `relay.meta` 内记录的信息也相当于 Checkpoint，其对应于 Relay 处理单元已经成功从上游拉取并写入到 [Relay log](#relay-log) 的 [Binlog event](#binlog-event) 对应的 [Binlog position](#binlog-position) 或 [GTID](#gtid) 信息。
+另外，[Relay 处理单元](#relay-处理单元)对应的 `relay.meta` 内记录的信息也相当于 Checkpoint，其对应于 Relay 处理单元已经成功从上游拉取并写入到 [Relay log](#relay-log) 的 [Binlog event](#binlog-event) 对应的 [Binlog position](#binlog-position) 或 [GTID](#gtid) 信息。
 
 ## D
 

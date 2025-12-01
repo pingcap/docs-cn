@@ -255,7 +255,7 @@ with get_connection(autocommit=True) as connection:
 
 ## 主键为 `AUTO_RANDOM` 表插入数据
 
-在插入的表主键为 `AUTO_RANDOM` 时，这时默认情况下，不能指定主键。例如 [bookshop](/develop/dev-guide-bookshop-schema-design.md) 数据库中，可以看到 [users 表](/develop/dev-guide-bookshop-schema-design.md#users-表) 的 `id` 字段含有 `AUTO_RANDOM` 属性。
+在插入的表主键为 `AUTO_RANDOM` 时，这时默认情况下，不能指定主键。例如 [bookshop](/develop/dev-guide-bookshop-schema-design.md) 数据库中，可以看到 [users 表](/develop/dev-guide-bookshop-schema-design.md#users-表)的 `id` 字段含有 `AUTO_RANDOM` 属性。
 
 此时，不可使用类似以下 SQL 进行插入：
 

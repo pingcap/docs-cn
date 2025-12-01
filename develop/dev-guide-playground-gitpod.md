@@ -25,7 +25,7 @@ Gitpod 是一个开源 Kubernetes 应用程序（GitHub 仓库地址 <https://gi
 
 ## 使用默认的 Gitpod 配置和环境
 
-完成[快速开始](#快速开始) 的步骤之后，Gitpod 会需要一段时间来设置你的工作区。
+完成[快速开始](#快速开始)的步骤之后，Gitpod 会需要一段时间来设置你的工作区。
 
 以 [Spring Boot Web](/develop/dev-guide-sample-application-java-spring-boot.md) 应用程序为例，通过 URL `https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java` 可以创建一个新工作区。
 
