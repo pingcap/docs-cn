@@ -55,7 +55,7 @@ summary: 了解如何处理错误索引问题。
 
 为了提升查询性能，TiDB 会将某些函数下推到 TiKV 或 TiFlash 存储引擎中执行。然而，部分函数不支持下推，这可能会限制可用的执行计划，进而影响查询性能。
 
-关于支持下推的表达式，请参考 [TiKV 支持的下推计算](/functions-and-operators/expressions-pushed-down.md) 和 [TiFlash 支持的下推计算](/tiflash/tiflash-supported-pushdown-calculations.md)。
+关于支持下推的表达式，请参考 [TiKV 支持的下推计算](/functions-and-operators/expressions-pushed-down.md)和 [TiFlash 支持的下推计算](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
 需要注意的是，你也可以禁用特定表达式的下推。更多信息，请参考[优化规则和表达式下推的黑名单](/blocklist-control-plan.md)。
 

@@ -5,7 +5,7 @@ summary: 本文档介绍了 TiDB Lightning 并行导入的概念、使用场景�
 
 # TiDB Lightning 并行导入
 
-TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md) 从 v5.3.0 版本开始支持单表或多表数据的并行导入。你可以同时启动多个 TiDB Lightning 实例，并行导入不同的单表或多表数据，从而使 TiDB Lightning 具备水平扩展的能力，大大降低导入大量数据所需的时间。
+TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)从 v5.3.0 版本开始支持单表或多表数据的并行导入。你可以同时启动多个 TiDB Lightning 实例，并行导入不同的单表或多表数据，从而使 TiDB Lightning 具备水平扩展的能力，大大降低导入大量数据所需的时间。
 
 在技术实现上，TiDB Lightning 通过在目标 TiDB 中记录各个实例以及每个导入表导入数据的元信息，协调不同实例的 Row ID 分配范围、全局 Checksum 的记录和 TiKV 及 PD 的配置变更与恢复。
 
@@ -63,7 +63,7 @@ TiDB Lightning 在运行时，需要独占部分资源，因此如果需要在�
     - 如果设置 checkpoint.driver = "file"（默认值），需要确保每个实例设置的 checkpoint 的路径不同。
     - 如果设置 checkpoint.driver = "mysql"，需要为每个实例设置不同的 schema。
 - 每个 TiDB Lightning 的 log 文件应该设置为不同的路径。共享同一个 log 文件将不利于日志的查询和排查问题。
-- 如果开启 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md) 或 Debug API，需要为每个实例的 `lightning.status-addr` 设置不同地址，否则，TiDB Lightning 进程会由于端口冲突无法启动。
+- 如果开启 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)或 Debug API，需要为每个实例的 `lightning.status-addr` 设置不同地址，否则，TiDB Lightning 进程会由于端口冲突无法启动。
 
 ## 示例 1：使用 Dumpling + TiDB Lightning 并行导入分库分表数据至 TiDB
 

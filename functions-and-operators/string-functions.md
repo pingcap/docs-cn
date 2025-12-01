@@ -1810,7 +1810,7 @@ SELECT REGEXP_INSTR('abcabc','A',1,1,0,'i');
 1 row in set (0.00 sec)
 ```
 
-除了 `match_type`，[排序规则](/character-set-and-collation.md) 也会影响匹配。在下面的示例中，使用了区分大小写和不区分大小写的排序规则来展示这种影响。
+除了 `match_type`，[排序规则](/character-set-and-collation.md)也会影响匹配。在下面的示例中，使用了区分大小写和不区分大小写的排序规则来展示这种影响。
 
 ```sql
 SELECT REGEXP_INSTR('abcabc','A' COLLATE utf8mb4_general_ci);

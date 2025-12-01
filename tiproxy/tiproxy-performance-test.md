@@ -71,7 +71,7 @@ defaults                                    # 默认配置。
     timeout server 30000s                   # 服务器端非活动连接的超时时间。
 
 listen tidb-cluster                         # 配置 database 负载均衡。
-    bind 0.0.0.0:3390                       # 浮动 IP 和 监听端口。
+    bind 0.0.0.0:3390                       # 浮动 IP 和监听端口。
     mode tcp                                # HAProxy 要使用第 4 层的传输层。
     balance leastconn                       # 连接数最少的服务器优先接收连接。`leastconn` 建议用于长会话服务，例如 LDAP、SQL、TSE 等，而不是短会话协议，如 HTTP。该算法是动态的，对于启动慢的服务器，服务器权重会在运行中作调整。
     server tidb-1 10.9.18.229:4000 check inter 2000 rise 2 fall 3       # 检测 4000 端口，检测频率为每 2000 毫秒一次。如果 2 次检测为成功，则认为服务器可用；如果 3 次检测为失败，则认为服务器不可用。

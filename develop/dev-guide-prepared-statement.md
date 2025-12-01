@@ -27,11 +27,11 @@ PREPARE {prepared_statement_name} FROM '{prepared_statement_sql}';
 | `{prepared_statement_name}` |             预处理语句名称             |
 | `{prepared_statement_sql}`  | 预处理语句 SQL，以英文半角问号做占位符 |
 
-你可查看 [PREPARE 语句](/sql-statements/sql-statement-prepare.md) 获得更多信息。
+你可查看 [PREPARE 语句](/sql-statements/sql-statement-prepare.md)获得更多信息。
 
 ### 使用预处理语句
 
-预处理语句仅可使用用户变量作为参数，因此，需先使用 [SET 语句](/sql-statements/sql-statement-set-variable.md) 设置变量后，供 [EXECUTE 语句](/sql-statements/sql-statement-execute.md) 调用预处理语句。
+预处理语句仅可使用用户变量作为参数，因此，需先使用 [SET 语句](/sql-statements/sql-statement-set-variable.md)设置变量后，供 [EXECUTE 语句](/sql-statements/sql-statement-execute.md)调用预处理语句。
 
 ```sql
 SET @{parameter_name} = {parameter_value};
@@ -44,7 +44,7 @@ EXECUTE {prepared_statement_name} USING @{parameter_name};
 |     `{parameter_value}`     |                              用户参数值                               |
 | `{prepared_statement_name}` | 预处理语句名称，需和[创建预处理语句](#创建预处理语句)中定义的名称一致 |
 
-你可查看 [EXECUTE 语句](/sql-statements/sql-statement-execute.md) 获得更多信息。
+你可查看 [EXECUTE 语句](/sql-statements/sql-statement-execute.md)获得更多信息。
 
 ### 删除预处理语句
 
@@ -56,7 +56,7 @@ DEALLOCATE PREPARE {prepared_statement_name};
 | :-------------------------: | :-------------------------------------------------------------------: |
 | `{prepared_statement_name}` | 预处理语句名称，需和[创建预处理语句](#创建预处理语句)中定义的名称一致 |
 
-你可查看 [DEALLOCATE 语句](/sql-statements/sql-statement-deallocate.md) 获得更多信息。
+你可查看 [DEALLOCATE 语句](/sql-statements/sql-statement-deallocate.md)获得更多信息。
 
 ## 例子
 
@@ -64,7 +64,7 @@ DEALLOCATE PREPARE {prepared_statement_name};
 
 ### 查询示例
 
-例如，需要查询 [Bookshop 应用](/develop/dev-guide-bookshop-schema-design.md#books-表) 中，`id` 为 1 的书籍信息。
+例如，需要查询 [Bookshop 应用](/develop/dev-guide-bookshop-schema-design.md#books-表)中，`id` 为 1 的书籍信息。
 
 <SimpleTab groupId="language">
 
@@ -139,7 +139,7 @@ try (Connection connection = ds.getConnection()) {
 
 ### 插入示例
 
-还是使用 [books 表](/develop/dev-guide-bookshop-schema-design.md#books-表) 为例，需要插入一个 `title` 为 `TiDB Developer Guide`, `type` 为 `Science & Technology`, `stock` 为 `100`, `price` 为 `0.0`, `published_at` 为 `插入的当前时间` 的书籍信息。需要注意的是，`books` 表的主键包含 `AUTO_RANDOM` 属性，无需指定它。如果你对插入数据还不了解，可以在[插入数据](/develop/dev-guide-insert-data.md)一节了解更多数据插入的相关信息。
+还是使用 [books 表](/develop/dev-guide-bookshop-schema-design.md#books-表)为例，需要插入一个 `title` 为 `TiDB Developer Guide`, `type` 为 `Science & Technology`, `stock` 为 `100`, `price` 为 `0.0`, `published_at` 为 `插入的当前时间` 的书籍信息。需要注意的是，`books` 表的主键包含 `AUTO_RANDOM` 属性，无需指定它。如果你对插入数据还不了解，可以在[插入数据](/develop/dev-guide-insert-data.md)一节了解更多数据插入的相关信息。
 
 <SimpleTab groupId="language">
 

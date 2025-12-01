@@ -447,7 +447,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8263
 
-    该 DDL 无法在特定的 BDR role 下执行。请确定该集群是否处于[双向复制](/ticdc/ticdc-bidirectional-replication.md) 中。如果集群没有在双向复制中，可以通过 `ADMIN UNSET BDR ROLE;` 使 DDL 恢复正常使用。
+    该 DDL 无法在特定的 BDR role 下执行。请确定该集群是否处于[双向复制](/ticdc/ticdc-bidirectional-replication.md)中。如果集群没有在双向复制中，可以通过 `ADMIN UNSET BDR ROLE;` 使 DDL 恢复正常使用。
 
 * Error Number: 9001
 

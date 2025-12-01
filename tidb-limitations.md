@@ -9,7 +9,7 @@ summary: TiDB 中的使用限制包括标识符长度限制、数据库、表、
 
 > **注意：**
 >
-> TiDB 高度兼容 MySQL 协议，也兼容了很多 MySQL 本身的限制，比如单个索引最多可包含 16 列。详细请参考[与 MySQL 兼容性对比](/mysql-compatibility.md) 和 MySQL 官方文档。
+> TiDB 高度兼容 MySQL 协议，也兼容了很多 MySQL 本身的限制，比如单个索引最多可包含 16 列。详细请参考[与 MySQL 兼容性对比](/mysql-compatibility.md)和 MySQL 官方文档。
 
 ## 标识符长度限制
 

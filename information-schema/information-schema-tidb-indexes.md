@@ -36,7 +36,7 @@ DESC tidb_indexes;
 
 `INDEX_ID` 是 TiDB 为每个索引分配的唯一 ID。它可以与从另一个表或 API 获得的 `INDEX_ID` 一起执行 `join` 操作。
 
-例如，你可以在 [`SLOW_QUERY` 表](/information-schema/information-schema-slow-query.md) 中获取某些慢查询所涉及的 `TABLE_ID` 和 `INDEX_ID`，然后使用以下 SQL 语句获取特定索引信息：
+例如，你可以在 [`SLOW_QUERY` 表](/information-schema/information-schema-slow-query.md)中获取某些慢查询所涉及的 `TABLE_ID` 和 `INDEX_ID`，然后使用以下 SQL 语句获取特定索引信息：
 
 ```sql
 SELECT
