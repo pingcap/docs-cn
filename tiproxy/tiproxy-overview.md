@@ -78,7 +78,7 @@ TiProxy 不适用于以下场景：
 
 1. 配置 TiDB 实例。
 
-    使用 TiProxy 时，需要为 TiDB 配置 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)。该值应比应用程序最长事务的持续时间大 10 秒以上，以避免 TiDB server 下线时客户端连接中断。你可以通过 [TiDB 监控面板的 Transaction 指标](/grafana-tidb-dashboard.md#transaction) 查看事务持续时间。更多信息，请参阅[使用限制](#使用限制)。
+    使用 TiProxy 时，需要为 TiDB 配置 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)。该值应比应用程序最长事务的持续时间大 10 秒以上，以避免 TiDB server 下线时客户端连接中断。你可以通过 [TiDB 监控面板的 Transaction 指标](/grafana-tidb-dashboard.md#transaction)查看事务持续时间。更多信息，请参阅[使用限制](#使用限制)。
 
     配置示例：
 
@@ -106,7 +106,7 @@ TiProxy 不适用于以下场景：
 
     ```yaml
     component_versions:
-      tiproxy: "v1.2.0"
+      tiproxy: "v1.3.2"
     server_configs:
       tiproxy:
         ha.virtual-ip: "10.0.1.10/24"
@@ -138,7 +138,7 @@ TiProxy 不适用于以下场景：
 
     ```yaml
     component_versions:
-      tiproxy: "v1.2.0"
+      tiproxy: "v1.3.2"
     server_configs:
       tiproxy:
         ha.virtual-ip: "10.0.1.10/24"
@@ -166,7 +166,7 @@ TiProxy 不适用于以下场景：
 
 3. 修改 TiDB 配置。
 
-    使用 TiProxy 时，需要为 TiDB 配置 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)。该值应比应用程序最长事务的持续时间大 10 秒以上，以避免 TiDB server 下线时客户端连接中断。你可以通过 [TiDB 监控面板的 Transaction 指标](/grafana-tidb-dashboard.md#transaction) 查看事务持续时间。更多信息，请参阅[使用限制](#使用限制)。
+    使用 TiProxy 时，需要为 TiDB 配置 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)。该值应比应用程序最长事务的持续时间大 10 秒以上，以避免 TiDB server 下线时客户端连接中断。你可以通过 [TiDB 监控面板的 Transaction 指标](/grafana-tidb-dashboard.md#transaction)查看事务持续时间。更多信息，请参阅[使用限制](#使用限制)。
 
     配置示例：
 

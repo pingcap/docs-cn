@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-processlist/','/docs-c
 
 # SHOW [FULL] PROCESSLIST
 
-`SHOW [FULL] PROCESSLIST` 语句列出连接到相同 TiDB 服务器的当前会话。
+`SHOW [FULL] PROCESSLIST` 语句列出连接到相同 TiDB 服务器的当前会话。`Info` 列包含查询文本，除非指定了可选的 `FULL` 关键字，否则该文本将被截断。如需查看整个集群的进程列表，请使用 [`INFORMATION_SCHEMA.CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md#cluster_processlist) 表。
 
 ## 语法图
 
@@ -36,6 +36,10 @@ SHOW PROCESSLIST;
 - `Time`：SQL 语句开始执行的时间。
 - `State`：SQL 语句的状态。常见的值是 `autocommit`，表示该 SQL 语句是自动提交的。`in transaction` 表示该 SQL 语句处于事务中。
 - `Info`：表示具体的 SQL 文本。除非指定可选关键字 `FULL`，否则文本会被截断。
+
+## 权限
+
+如果当前用户没有 `PROCESS` 权限，`SHOW PROCESSLIST` 仅显示该用户自己的会话请求。
 
 ## MySQL 兼容性
 

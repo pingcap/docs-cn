@@ -409,7 +409,8 @@ tiup br log metadata --storage='s3://backup-101/logbackup?access-key=${access-ke
 
 > **注意：**
 >
-> 如果 `restore point` 指定 `--full-backup-storage` 为增量备份地址，那么需要保证该备份以及之前的任意增量备份的恢复，均将参数 `--allow-pitr-from-incremental` 设置为 `true`，使增量备份兼容后续的日志备份。
+> - 如果 `restore point` 指定 `--full-backup-storage` 为增量备份地址，那么要保证该备份以及之前的任意增量备份的恢复，需将参数 `--allow-pitr-from-incremental` 设置为 `true`，以使这些增量备份兼容后续的日志备份。
+> - 关于校验和 (checksum) 的配置，参见[校验和配置](/br/br-snapshot-manual.md#校验和)。
 
 执行 `tiup br restore point` 命令，你可以在新集群上进行 PITR，或者只恢复日志备份数据。
 
@@ -425,6 +426,9 @@ Usage:
 Flags:
   --full-backup-storage string specify the backup full storage. fill it if want restore full backup before restore log.
   -h, --help                   help for point
+  --pitr-batch-count uint32    specify the batch count to restore log. (default 8)
+  --pitr-batch-size uint32     specify the batch size to retore log. (default 16777216)
+  --pitr-concurrency uint32    specify the concurrency to restore log. (default 16)
   --restored-ts string         the point of restore, used for log restore. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23+0800'
   --start-ts string            the start timestamp which log restore from. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23+0800'
 
@@ -440,6 +444,9 @@ Global Flags:
 以上示例只展示了常用的参数，这些参数作用如下：
 
 - `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PITR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。需要注意的是，第一次初始化恢复集群时，必须指定快照备份，快照备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
+- `--pitr-batch-count`：指定日志恢复时单个批次包含的最大文件数。一旦达到该阈值，当前批次会立即结束并开始下一个批次。
+- `--pitr-batch-size`：指定日志恢复时单个批次的最大数据量（字节数）。一旦达到该阈值，当前批次会立即结束并开始下一个批次。
+- `--pitr-concurrency`：指定日志恢复过程中的并发任务数。每个并发任务对应一个批次的日志数据恢复。
 - `--restored-ts`：指定恢复到的时间点。如果没有指定该参数，则恢复到日志备份数据最后的可恢复时间点（备份数据的 checkpoint）。
 - `--start-ts`：指定日志备份恢复的起始时间点。如果你只恢复日志备份数据，不恢复快照备份，需要指定这个参数。
 - `ca`、`cert`、`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
@@ -542,6 +549,11 @@ tiup br restore point --pd="${PD_IP}:2379" \
 > - 过滤器选项适用于快照备份和日志备份的恢复阶段。
 > - 可以指定多个 `--filter` 选项来包含或排除不同的模式。
 > - PITR 过滤暂不支持系统表。如果需要恢复特定的系统表，请使用 `br restore full` 命令并配合过滤器，注意该命令仅恢复快照备份数据（而非日志备份数据）。
+> - 恢复任务中的正则表达式匹配的是 `restored-ts` 时刻的表名，有以下三种情况：
+>     - 表 A (table id = 1) 在 `restored-ts` 时刻及之前，表名始终匹配 `--filter` 正则表达式，则 PITR 会恢复这张表。
+>     - 表 B (table id = 2) 在 `restored-ts` 前的某个时刻，表名不匹配 `--filter` 正则表达式，但在 `restored-ts` 时刻匹配，则 PITR 会恢复这张表。
+>     - 表 C (table id = 3) 在 `restored-ts` 前的某个时刻，表名匹配 `--filter` 正则表达式，但在 `restored-ts` 时刻**不**匹配，则 PITR **不会**恢复这张表。
+> - 你可以使用库表过滤功能在线恢复部分数据。在线恢复过程中，不要创建与恢复对象同名的库表，否则恢复任务会因冲突而失败。在该恢复过程中，由 PITR 创建的表都不可读写，直至恢复完成后，这些表才可正常读写。
 
 ### 并发恢复操作
 
@@ -569,7 +581,8 @@ tiup br restore point --pd="${PD_IP}:2379" \
 
 > **注意：**
 >
-> 每个并发恢复操作必须作用于不同的数据库或不重叠的表集合。尝试并发恢复重叠数据集将导致错误。
+> - 每个并发恢复操作必须作用于不同的数据库或不重叠的表集合。尝试并发恢复重叠数据集将导致错误。
+> - 多个恢复任务会占用大量系统资源。仅在 CPU 和 I/O 资源充足时，才建议并行执行恢复任务。
 
 ### 进行中的日志备份与快照恢复的兼容性
 

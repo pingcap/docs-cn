@@ -10,7 +10,7 @@ summary: TiDB 中的使用限制包括标识符长度限制、数据库、表、
 
 > **注意：**
 >
-> TiDB 高度兼容 MySQL 协议，也兼容了很多 MySQL 本身的限制，比如单个索引最多可包含 16 列。详细请参考[与 MySQL 兼容性对比](/mysql-compatibility.md) 和 MySQL 官方文档。
+> TiDB 高度兼容 MySQL 协议，也兼容了很多 MySQL 本身的限制，比如单个索引最多可包含 16 列。详细请参考[与 MySQL 兼容性对比](/mysql-compatibility.md)和 MySQL 官方文档。
 
 ## 标识符长度限制
 
@@ -71,8 +71,8 @@ summary: TiDB 中的使用限制包括标识符长度限制、数据库、表、
 | BINARY     | 255 字节      |
 | VARBINARY  | 65535 字节    |
 | VARCHAR    | 16383 字符    |
-| TEXT       | 默认为 6291456 字节（即 6 MiB），可调至 125829120 字节（即 120 MiB）      |
-| BLOB       | 默认为 6291456 字节（即 6 MiB），可调至 125829120 字节（即 120 MiB）      |
+| TEXT       | 65535 字节    |
+| BLOB       | 65535 字节    |
 
 ## SQL Statements 的限制
 
