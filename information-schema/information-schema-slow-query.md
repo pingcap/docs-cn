@@ -96,6 +96,8 @@ DESC slow_query;
 74 rows in set (0.001 sec)
 ```
 
+`Query` 列的语句长度上限由系统变量 [`tidb_stmt_summary_max_sql_length`](/system-variables.md#tidb_stmt_summary_max_sql_length-从-v40-版本开始引入) 控制。
+
 ## CLUSTER_SLOW_QUERY table
 
 `CLUSTER_SLOW_QUERY` 表中提供了集群所有节点的慢查询相关的信息，其内容通过解析 TiDB 慢查询日志而来，该表使用上和 `SLOW_QUERY` 表一样。`CLUSTER_SLOW_QUERY` 表结构上比 `SLOW_QUERY` 多一列 `INSTANCE`，表示该行慢查询信息来自的 TiDB 节点地址。关于如何使用该表调查和改善慢查询，请参考[慢查询日志文档](/identify-slow-queries.md)。
