@@ -101,7 +101,7 @@ DESC slow_query;
 79 rows in set (0.00 sec)
 ```
 
-`Query` 列的语句长度上限由系统变量 [`tidb_stmt_summary_max_sql_length`](/system-variables.md#tidb_stmt_summary_max_sql_length-new-in-v40) 决定。
+`Query` 列的语句长度上限由系统变量 [`tidb_stmt_summary_max_sql_length`](/system-variables.md#tidb_stmt_summary_max_sql_length-从-v40-版本开始引入) 决定。
 
 ## CLUSTER_SLOW_QUERY table
 
