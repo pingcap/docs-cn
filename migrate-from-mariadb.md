@@ -186,7 +186,9 @@ WHERE
 
 TiDB 不支持 MariaDB 中常用的 `latin1_swedish_ci` 排序规则。
 
-执行下列语句检查你正在使用的排序规则：
+TiDB 也不支持 `utf8mb4_uca1400_ai_ci`，该排序规则为 MariaDB 11.6 及之后版本默认使用的排序规则。请使用 `utf8mb4_0900_ai_ci`。这两个排序规则的区别在于所使用的 [Unicode Collation Algorithm (UCA)](http://www.unicode.org/reports/tr10/) 版本不同：`utf8mb4_0900_ai_ci` 使用的是 UCA 9.0.0，而 `utf8mb4_uca1400_ai_ci` 使用的是 UCA 14.0.0。
+
+执行下列语句检查 TiDB 支持的排序规则：
 
 ```sql
 SHOW COLLATION;
