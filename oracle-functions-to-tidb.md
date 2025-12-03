@@ -27,7 +27,7 @@ summary: 了解 Oracle 与 TiDB 函数和语法差异对照。
 | 日期增加/减少 n 天 | `DATEVAL + n` | `DATE_ADD(dateVal,INTERVAL n DAY)` | `n` 可为负数。|
 | 日期增加/减少 n 月 | `ADD_MONTHS(dateVal,n)`| `DATE_ADD(dateVal,INTERVAL n MONTH)` | `n` 可为负数。|
 | 获取日期到日 | `TRUNC(SYSDATE)` |  <ul><li>`CAST(NOW() AS DATE)`</li><li>`DATE_FORMAT(NOW(),'%Y-%m-%d')`</li></ul> | TiDB 中 `CAST` 与 `DATE_FORMAT` 结果一致。|
-| 获取日期当月第一天 | `TRUNC(SYSDATE,'mm')` | <ul><li>`DATE_ADD(CURDATE(),interval - day(CURDATE()) + 1 day)`</li></ul> | |
+| 获取日期当月第一天 | `TRUNC(SYSDATE,'mm')` | `DATE_ADD(CURDATE(),interval - day(CURDATE()) + 1 day)` | |
 | 截取数据 | `TRUNC(2.136) = 2`<br/> `TRUNC(2.136,2) = 2.13` | `TRUNCATE(2.136,0) = 2`<br/> `TRUNCATE(2.136,2) = 2.13` | 数据精度保留，直接截取相应小数位，不涉及四舍五入。 |
 | 获取序列下一个值 | `sequence_name.NEXTVAL` | `NEXTVAL(sequence_name)` | |
 | 获取随机序列值 | `SYS_GUID()` | `UUID()` | TiDB 返回一个通用唯一识别码 (UUID)。|
