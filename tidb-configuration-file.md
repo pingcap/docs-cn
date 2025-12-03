@@ -644,7 +644,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `enable-async-batch-get` <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
 
-+ 用于控制 TiDB 是否使用 Async KV API 来执行 Batch Get 操作。
++ 用于控制 TiDB 是否在内部使用异步方式执行 Batch Get 操作。该开关仅影响实现方式，不改变 Batch Get 的行为或查询结果。一般情况下无需调整。
 + 默认值：`true`
 
 ## opentracing
