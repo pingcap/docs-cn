@@ -29,7 +29,7 @@ null = '\N'
 include-commit-ts = true
 binary-encoding-method = 'base64'
 output-old-value = false
-output-field-header = false # 从 v9.0.0 开始引入
+output-field-header = false # 从 v8.5.5 开始引入
 ```
 
 ## 数据保存的事务性约束
