@@ -51,7 +51,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>实例级执行计划缓存允许同一个 TiDB 实例的所有会话共享执行计划缓存。与现有的会话级执行计划缓存相比，实例级执行计划缓存能够在内存中缓存更多执行计划，减少 SQL 编译时间，从而降低 SQL 整体运行时间，提升 OLTP 的性能和吞吐，同时更好地控制内存使用，提升数据库稳定性。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/partitioned-table#全局索引">分区表全局索引</a>（从 v8.4.0 开始成为正式功能）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/global-indexes">分区表全局索引</a>（从 v8.4.0 开始成为正式功能）</td>
     <td>全局索引可以有效提高检索非分区列的效率，并且消除了唯一键必须包含分区键的限制。该功能扩展了 TiDB 分区表的使用场景，提升了分区表的性能，降低了分区表在一些查询场景的资源消耗。</td>
   </tr>
   <tr>
