@@ -44,13 +44,14 @@ summary: 介绍 TiDB 全局索引的适用场景、优势、使用方法、工�
 - **[v7.6.0](/releases/release-7.6.0.md)**：引入了系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入)，用于开启全局索引功能。然而，当时该功能仍在开发中，不推荐启用。
 - **[v8.3.0](/releases/release-8.3.0.md)**：全局索引作为实验特性发布。你可以在创建索引时使用 `GLOBAL` 关键字来显式创建全局索引。
 - **[v8.4.0](/releases/release-8.4.0.md)**：全局索引功能正式发布 (GA)。你可以直接使用 `GLOBAL` 关键字创建全局索引，无需再设置系统变量 `tidb_enable_global_index`。从该版本开始，该系统变量被废弃，且变量值固定为 `ON`，即默认启用全局索引。
-- **[v8.5.0](/releases/release-8.5.0.md)**：全局索引支持包含分区表达式中的所有列。<!-- - **v9.0.0 版本**：全局索引功能支持非唯一索引的情况。在分区表中，除聚簇索引外都可以被创建为全局索引。-->
+- **[v8.5.0](/releases/release-8.5.0.md)**：全局索引支持包含分区表达式中的所有列。
+- **v9.0.0 版本**：全局索引功能支持非唯一索引的情况。在分区表中，除聚簇索引外都可以被创建为全局索引。
 
 ## 全局索引和本地索引
 
-下图展示了本地索引和全局索引的区别。
+下图展示了本地索引和全局索引的区别：
 
-<img src="https://github.com/hfxsd/docs-cn/blob/global-index-best-practices/media/global-index-vs-local-index.png" alt="Global Index vs. Local Index" width="60%" height="60%"/>
+![Global Index vs. Local Index](/media/global-index-vs-local-index.png)
 
 **全局索引的适用场景**：
 
