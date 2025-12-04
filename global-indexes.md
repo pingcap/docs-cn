@@ -210,7 +210,7 @@ CREATE TABLE `sbtest` (
 ) partition by hash(id) partitions 5;
 ```
 
-以上述表结构为例，`idx` 为普通索引，`global_idx` 为全局索引。索引 `idx` 的数据会分布在 5 个不同的 Range 中，如 `PartitionID1_i_xxx`、`PartitionID2_i_xxx` 等，而索引 `global_idx` 的数据则会集中在一个 Range (`TableID_i_xxx`) 内。
+以上述表结构为例，`idx` 为本地索引（普通索引），`global_idx` 为全局索引。索引 `idx` 的数据会分布在 5 个不同的 Range 中，如 `PartitionID1_i_xxx`、`PartitionID2_i_xxx` 等，而索引 `global_idx` 的数据则会集中在一个 Range (`TableID_i_xxx`) 内。
 
 当执行与 `k` 相关的查询时，如 `SELECT * FROM sbtest WHERE k > 1`，通过普通索引 `idx` 会构造 5 个不同的 Range，而通过全局索引 `global_idx` 则只会构造 1 个 Range。每个 Range 在 TiDB 中对应一个或多个 RPC 请求。因此，使用全局索引可以降低数倍的 RPC 请求数，从而提升查询索引的性能。
 
