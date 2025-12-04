@@ -234,9 +234,9 @@ Golang 自 Go 1.19 版本开始引入 [`GOMEMLIMIT`](https://pkg.go.dev/runtime@
 
 在 TiDB v9.0.0 之前的版本中，[内存控制机制](#如何配置-tidb-server-实例使用内存的阈值)存在下列问题：
 
-- TiDB 实例内存超限后 SQL 随机被终止
+- TiDB 实例内存超限后，SQL 随机被终止
 - 内存资源先使用后上报，且 SQL 间存在信息孤岛，难以全局控制
-- 内存压力较大时 Golang 垃圾回收 (GC) 开销过高，严重时则引起内存溢出 (OOM) 问题
+- 内存压力较大时，Golang 垃圾回收 (Garbage Collection, GC) 开销过高，严重时导致内存溢出 (OOM) 问题
 
 从 v9.0.0 开始，TiDB  引入了内存仲裁模式这种新机制，通过自上向下地集中化管理和调度内存资源来解决上述问题。
 
