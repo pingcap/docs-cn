@@ -3340,10 +3340,10 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：枚举型
 - 默认值：`disable`
 - 可选值：`disable`，`standard`, `priority`
-- 该变量用于设置 TiDB 实例的全局内存管理模式，详见 [TiDB 内存控制](/configure-memory-usage.md#内存仲裁模式)：
-    - `disable` 表示禁用内存仲裁模式，保持内存资源 [先使用后上报](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的机制。
-    - `standard` 表示启用标准内存仲裁模式。SQL 需要使用内存资源时，先向内存仲裁者进行订阅，成功后再分配内存资源。当订阅内存资源失败后，SQL 终止执行。
-    - `priority` 表示启用基于优先级的内存仲裁模式。SQL 需要使用内存资源时，先向内存仲裁者进行订阅，成功后再分配内存资源。TiDB 根据 SQL 的 [资源组优先级](/information-schema/information-schema-resource-groups.md) 处理内存资源订阅请求。
+- 该变量用于设置 TiDB 实例的全局内存管理模式，详见 [TiDB 内存控制](/configure-memory-usage.md#内存仲裁模式)。有以下取值：
+    - `disable`：表示禁用内存仲裁模式，保持内存资源[先使用后上报](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入)的机制。
+    - `standard`：表示启用标准内存仲裁模式。SQL 需要使用内存资源时，先向内存仲裁者进行订阅，成功后再分配内存资源。当订阅内存资源失败后，SQL 终止执行。
+    - `priority`：表示启用基于优先级的内存仲裁模式。SQL 需要使用内存资源时，先向内存仲裁者进行订阅，成功后再分配内存资源。TiDB 根据 SQL 的 [资源组优先级](/information-schema/information-schema-resource-groups.md) 处理内存资源订阅请求。
 
 ### `tidb_mem_arbitrator_query_reserved` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
@@ -3357,7 +3357,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`0`
 - 单位：字节
 - 范围：`[0, 9223372036854775807]`
-- 当启用内存仲裁模式后，该变量设置 SQL 执行前预先订阅指定数量的内存资源份额，详见 [TiDB 内存控制](/configure-memory-usage.md#手动保障内存安全)。
+- 当启用[内存仲裁模式](/configure-memory-usage.md#内存仲裁模式)后，该变量设置 SQL 执行前预先订阅指定数量的内存资源份额，详见 [TiDB 内存控制](/configure-memory-usage.md#手动保障内存安全)。
 
 ### `tidb_mem_arbitrator_soft_limit` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
@@ -3371,7 +3371,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：字符串
 - 默认值：`0`
 - 可选值：`0`，浮点数 `(0, 1]`，整数 `(1, 9223372036854775807]`
-- 当启用内存仲裁模式后，该变量设置 TiDB 实例的内存资源份额上限，详见 [TiDB 内存控制](/configure-memory-usage.md#手动保障内存安全)。
+- 当启用[内存仲裁模式](/configure-memory-usage.md#内存仲裁模式)后，该变量设置 TiDB 实例的内存资源份额上限，详见 [TiDB 内存控制](/configure-memory-usage.md#手动保障内存安全)。
     - `0`：默认资源份额上限为 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 值的 `95%`
     - 浮点数 `(0, 1]`：指定比率，资源份额上限为 `tidb_mem_arbitrator_soft_limit *` [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入)
     - 整数 `(1, 9223372036854775807]`：指定字节数

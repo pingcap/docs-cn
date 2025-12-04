@@ -232,24 +232,27 @@ Golang 自 Go 1.19 版本开始引入 [`GOMEMLIMIT`](https://pkg.go.dev/runtime@
 
 ## 内存仲裁模式
 
-TiDB < v9.0.0 版本的 [内存控制机制](#如何配置-tidb-server-实例使用内存的阈值) 存在下列问题：
+在 TiDB v9.0.0 之前的版本中，[内存控制机制](#如何配置-tidb-server-实例使用内存的阈值)存在下列问题：
 
 - TiDB 实例内存超限后 SQL 随机被终止
 - 内存资源先使用后上报，且 SQL 间存在信息孤岛，难以全局控制
 - 内存压力较大时 Golang 垃圾回收 (GC) 开销过高，严重时则引起内存溢出 (OOM) 问题
 
-TiDB 从 v9.0.0 开始引入新机制（内存仲裁模式），通过自顶向下地集中化管理/调度内存资源来解决上述问题。
+从 v9.0.0 开始，TiDB  引入了内存仲裁模式这种新机制，通过自上向下地集中化管理和调度内存资源来解决上述问题。
 
-内存仲裁模式可通过系统变量 [`tidb_mem_arbitrator_mode`](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 或 TiDB 配置文件参数 `instance.tidb_mem_arbitrator_mode` 开启
+你可以通过系统变量 [`tidb_mem_arbitrator_mode`](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 或 TiDB 配置文件参数 `instance.tidb_mem_arbitrator_mode` 开启内存仲裁模式。
 
-- 设置为 `disable` 表示禁用内存仲裁模式
+- `disable`：表示禁用内存仲裁模式
 
-- 设置为 `standard` 或 `priority` 表示启用内存仲裁模式：
+- `standard` 或 `priority`：表示启用内存仲裁模式。启用后：
     - 内存资源的使用按照先订阅后分配的机制，由各个 TiDB 实例中唯一的仲裁者统筹
     - 预期 TiDB 实例的整体内存使用量不会超过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的限制，且 [内存占用过高时的报警](#tidb-server-内存占用过高时的报警) 不再生效
-    - [`tidb_mem_oom_action`](/system-variables.md#tidb_mem_oom_action-从-v610-版本开始引入)，[`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 以及 [`max_execution_time`](/system-variables.md#max_execution_time) 的控制行为依旧生效
+    - 以下系统变量的控制行为依旧有效：
+        - [`tidb_mem_oom_action`](/system-variables.md#tidb_mem_oom_action-从-v610-版本开始引入)
+        - [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)
+        - [`max_execution_time`](/system-variables.md#max_execution_time)
 
-仲裁者可通过终止 SQL 来回收内存资源（不可终止 `DDL`|`DCL`|`TCL` 类型 SQL），并向客户端返回编号为 `8180` 的错误。错误格式为：`Query execution was stopped by the global memory arbitrator [reason=?, path=?] [conn=?]`：
+仲裁者可通过终止 SQL 来回收内存资源（不可终止 `DDL`|`DCL`|`TCL` 类型 SQL），并向客户端返回编号为 `8180` 的错误。错误格式为：`Query execution was stopped by the global memory arbitrator [reason=?, path=?] [conn=?]`。相关字段解释如下：
 
 - `conn`：连接（会话）ID
 - `reason`：终止 SQL 的具体原因
@@ -273,39 +276,37 @@ TiDB 从 v9.0.0 开始引入新机制（内存仲裁模式），通过自顶向�
 
 ### `standard` 模式
 
-SQL 运行过程中会动态地向仲裁者订阅内存资源并阻塞式等待，仲裁者按先来先服务原则处理订阅请求
+在 `standard` 模式下，SQL 运行过程中会动态地向仲裁者订阅内存资源并阻塞式等待，仲裁者按先来先服务原则处理订阅请求。
 
 - 解析 SQL 或编译执行计划时，需要订阅的内存份额由 TiDB 估算，与 SQL 关键字数量成正比
 - 如果全局内存资源不足，仲裁者令请求失败并终止 SQL，返回错误中 `reason` 字段为 `CANCEL(out-of-quota & standard-mode)`
 
 ### `priority` 模式
 
-SQL 运行过程中会动态地向仲裁者订阅内存资源并阻塞式等待，仲裁者根据 SQL 的 [资源组优先级](/information-schema/information-schema-resource-groups.md) (`LOW | MEDIUM | HIGH`) 处理订阅请求
+在 `priority` 模式下，SQL 运行过程中会动态地向仲裁者订阅内存资源并阻塞式等待，仲裁者根据 SQL 的 [资源组优先级](/information-schema/information-schema-resource-groups.md) (`LOW | MEDIUM | HIGH`) 处理订阅请求。
 
-- 解析 SQL 或编译执行计划时，需要订阅的内存份额由 TiDB 估算，与 SQL 关键字数量成正比
-    - 不同于 `standard` 模式，`priority` 模式下除非面临 `OOM` 风险，否则订阅失败后不会立刻终止 SQL
-- 所有订阅请求按照优先级从高到低排队等待资源，同级别请求按照发起顺序排序
-- 全局内存资源不足时
-    - 仲裁者按顺序（优先级从低到高，内存份额占用量从大到小）终止低优先级 SQL，回收资源来满足高优先级 SQL
-        - 返回错误中 `reason` 字段为 `CANCEL(out-of-quota & priority-mode)`
-    - 没有可终止的 SQL，则等待现有 SQL 执行完后释放资源
+- 解析 SQL 或编译执行计划时，需要订阅的内存份额由 TiDB 估算，与 SQL 关键字数量成正比。不同于 `standard` 模式，在 `priority` 模式下，除非面临 `OOM` 风险，否则订阅失败后不会立刻终止 SQL。
+- 所有订阅请求按照优先级从高到低排队等待资源，同级别请求按照发起顺序排序。
+- 全局内存资源不足时：
+    - 仲裁者按顺序（优先级从低到高，内存份额占用量从大到小）终止低优先级 SQL，回收资源来满足高优先级 SQL。返回错误中 `reason` 字段为 `CANCEL(out-of-quota & priority-mode)`。
+    - 如果没有可终止的 SQL，则等待现有 SQL 执行完后释放资源。
 
-如果要让 SQL 避免等待内存资源所造成的延迟开销，可以设置 session 变量 [`tidb_mem_arbitrator_wait_averse`](/system-variables.md#tidb_mem_arbitrator_wait_averse-从-v900-版本开始引入) 为 `1`
+如果想要 SQL 避免等待内存资源所造成的延迟开销，可以将系统变量 [`tidb_mem_arbitrator_wait_averse`](/system-variables.md#tidb_mem_arbitrator_wait_averse-从-v900-版本开始引入) 设置为 `1`。
 
-- 相关 SQL 的订阅请求自动绑定优先级 `HIGH`
-- 全局内存资源不足时仲裁者直接终止相关 SQL，返回错误中 `reason` 字段为 `CANCEL(out-of-quota & wait-averse)`
+- 相关 SQL 的订阅请求自动绑定优先级 `HIGH`。
+- 全局内存资源不足时，仲裁者直接终止相关 SQL，返回的错误中 `reason` 字段为 `CANCEL(out-of-quota & wait-averse)`。
 
 ### 内存风险控制
 
-当 TiDB 实例的内存使用量达到 `tidb_server_memory_limit` 的 `95%` 这一阈值时，仲裁者开始处理内存风险。如果面临 `OOM` 风险（实际内存使用量短期无法降低到安全线或者实际内存释放速率过小），仲裁者会按顺序（优先级从低到高，内存份额占用量从大到小）强制终止 SQL，返回错误中 `reason` 字段为 `KILL(out-of-memory)`。
+当 TiDB 实例的内存使用量达到 `tidb_server_memory_limit` 的 `95%` 这一阈值时，仲裁者开始处理内存风险。如果实际内存使用量短期无法降低到安全线或者实际内存释放速率过小，将面临 `OOM` 风险，仲裁者会按顺序（优先级从低到高，内存份额占用量从大到小）强制终止 SQL，返回错误中 `reason` 字段为 `KILL(out-of-memory)`。
 
-如果需要在内存资源不足时强制运行 SQL，可以设置 session 变量 [`tidb_mem_arbitrator_wait_averse`](/system-variables.md#tidb_mem_arbitrator_wait_averse-从-v900-版本开始引入) 为 `nolimit`。该参数令相关 SQL 使用内存不受仲裁者限制，但可能导致 TiDB 实例 `OOM`。
+如果需要在内存资源不足时强制运行 SQL，可以将系统变量 [`tidb_mem_arbitrator_wait_averse`](/system-variables.md#tidb_mem_arbitrator_wait_averse-从-v900-版本开始引入) 设置为 `nolimit`。该变量使相关 SQL 使用内存不受仲裁者限制，但可能导致 TiDB 实例 `OOM`。
 
 ### 手动保障内存安全
 
-通过系统变量 [`tidb_mem_arbitrator_soft_limit`](/system-variables.md#tidb_mem_arbitrator_soft_limit-从-v900-版本开始引入) 或 TiDB 配置文件参数 `instance.tidb_mem_arbitrator_soft_limit` 可以设置 TiDB 实例中仲裁者的内存份额上限。上限越小，全局内存越安全，但内存资源利用率越低。该变量可用于手动快速收敛内存风险。
+你可以通过系统变量 [`tidb_mem_arbitrator_soft_limit`](/system-variables.md#tidb_mem_arbitrator_soft_limit-从-v900-版本开始引入) 或 TiDB 配置文件参数 `instance.tidb_mem_arbitrator_soft_limit` 设置 TiDB 实例中仲裁者的内存份额上限。上限越小，全局内存越安全，但内存资源利用率越低。该变量可用于手动快速收敛内存风险。
 
-TiDB 内部会缓存部分 SQL 的历史最大内存使用量，并在 SQL 下次执行前预先订阅足量内存份额。如果已知 SQL 存在大量内存使用不受控制的问题，可通过 session 变量 [`tidb_mem_arbitrator_query_reserved`](/system-variables.md#tidb_mem_arbitrator_query_reserved-从-v900-版本开始引入) 指定 SQL 订阅的份额。该值越大，全局内存越安全，但内存资源利用率越低。预先订阅足量或超量的份额可以有效地保障 SQL 的内存资源隔离性。
+TiDB 内部会缓存部分 SQL 的历史最大内存使用量，并在 SQL 下次执行前预先订阅足量内存份额。如果已知 SQL 存在大量内存使用不受控制的问题，可通过系统变量 [`tidb_mem_arbitrator_query_reserved`](/system-variables.md#tidb_mem_arbitrator_query_reserved-从-v900-版本开始引入) 指定 SQL 订阅的份额。该值越大，全局内存越安全，但内存资源利用率越低。预先订阅足量或超量的份额可以有效地保障 SQL 的内存资源隔离性。
 
 ### 监控和观测指标
 
@@ -313,13 +314,11 @@ TiDB 内部会缓存部分 SQL 的历史最大内存使用量，并在 SQL 下�
 
 - `Work Mode`：TiDB 实例的内存管理模式
 - `Arbitration Exec`：仲裁处理各类请求的统计
-- `Events`：仲裁模式内各类事件的统计
-    - **重点关注** `mem-risk`（内存风险），`oom-risk`（`OOM` 风险）
-- `Mem Quota Stats`：各类内存份额占用
-    - **重点关注** `out-of-control`，`wait-alloc`（订阅等待中的总内存份额），`mem-inuse`（实际内存使用量）
+- `Events`：仲裁模式内各类事件的统计。需要重点关注 `mem-risk`（内存风险）、`oom-risk`（`OOM` 风险）
+- `Mem Quota Stats`：各类内存份额占用。需要重点关注 `out-of-control`、`wait-alloc`（订阅等待中的总内存份额）、`mem-inuse`（实际内存使用量）
 - `Mem Quota Arbitration`：内存资源订阅请求处理耗时
 - `Mem Pool Stats`：各类内存池的数量
-- `Runtime Mem Pressure`：内存压力值（实际内存使用量和已分配内存份额的比率）
+- `Runtime Mem Pressure`：内存压力值，即实际内存使用量和已分配内存份额的比率
 - `Waiting Tasks`：排队等待内存分配的各类任务数量
 
 [`SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 新增 `Mem_arbitration` 字段表示 SQL 等待内存资源的总耗时。[TiDB Dashboard 慢查询页面](/dashboard/dashboard-slow-query.md) 中的 `Mem Arbitration` 列也会显示该信息。
@@ -327,8 +326,8 @@ TiDB 内部会缓存部分 SQL 的历史最大内存使用量，并在 SQL 下�
 [`PROCESSLIST`](/information-schema/information-schema-processlist.md) 新增以下字段：
 
 - `MEM_ARBITRATION`：目前为止 SQL 等待内存资源的总耗时
-- `MEM_WAIT_ARBITRATE_START`：当前内存资源订阅请求的开始时间（没有则为 NULL）
-- `MEM_WAIT_ARBITRATE_BYTES`：当前内存资源订阅请求的申请字节数（没有则为 NULL）
+- `MEM_WAIT_ARBITRATE_START`：当前内存资源订阅请求的开始时间，没有数据则为 NULL
+- `MEM_WAIT_ARBITRATE_BYTES`：当前内存资源订阅请求的申请字节数，没有数据则为 NULL
 
 [`Expensive query`](/identify-expensive-queries.md) 新增字段 `mem_arbitration`，用于记录 SQL 等待资源耗时和当前订阅请求的信息，例如：
 
@@ -339,32 +338,31 @@ TiDB 内部会缓存部分 SQL 的历史最大内存使用量，并在 SQL 下�
 - `AVG_MEM_ARBITRATION`：平均 SQL 等待内存资源耗时
 - `MAX_MEM_ARBITRATION`：最大 SQL 等待内存资源耗时
 
-### 实践
+### 最佳实践
 
-系统变量 `tidb_server_memory_limit` 的默认值 (`80%`) 较小，启用内存仲裁模式后建议设置为 `95%`。
+系统变量 `tidb_server_memory_limit` 的默认值 `80%` 较小，启用内存仲裁模式后建议设置为 `95%`。
 
-部署单节点 TiDB 场景
+在部署单节点 TiDB 的场景中：
 
 - 开启 `priority` 模式：绑定 OLTP 相关或重要 SQL 到高优先级，按需绑定其他 SQL 到中或低优先级
-- 开启 `standard` 模式：遇到 `8180` 错误需等待并重试 SQL
+- 开启 `standard` 模式：遇到 `8180` 错误，需等待并重试 SQL
 
-部署多节点 TiDB 场景
+在部署多节点 TiDB 的场景中：
 
-- [1] 开启 `standard` 模式
-    - 遇到 `8180` 错误则重试 SQL 到其他 TiDB 节点
+- 如果开启 `standard` 模式，遇到 `8180` 错误，则重试 SQL 到其他 TiDB 节点
 
-- [2] 开启 `priority` 模式
+- 如果开启 `priority` 模式：
     - 为 OLTP 相关或重要 SQL 绑定高优先级，按需绑定其他 SQL 到中或低优先级
     - 通过 `max_execution_time` 限制 SQL 最大执行时间
-    - 遇到超时或 `8180` 错误则重试 SQL 到其他 TiDB 节点
+    - 遇到超时或 `8180` 错误，则重试 SQL 到其他 TiDB 节点
     - 可通过设置 `tidb_mem_arbitrator_wait_averse` 使 SQL 尽快重试到内存资源充足的节点
 
-- [3] TiDB 实例分组
+- TiDB 实例分组
     - 各组内通过配置文件参数 `instance.tidb_mem_arbitrator_mode` 设置 TiDB 实例内存管理模式
     - 各组内通过配置文件参数 `instance.tidb_mem_arbitrator_soft_limit` 按需设置 TiDB 实例内存份额上限
     - 按需分发 SQL 到不同组，并按照上述不同模式处理
 
-保障重要 SQL 执行
+可以采取以下措施保障重要 SQL 执行：
 
 - 通过 `tidb_mem_arbitrator_query_reserved` 保障 SQL 的内存资源隔离性
 - 绑定高优先级的资源组
