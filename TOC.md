@@ -981,6 +981,7 @@
       - [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)          
       - [Oracle 与 TiDB 函数和语法差异对照](/oracle-functions-to-tidb.md)
     - [聚簇索引](/clustered-indexes.md)
+    - [全局索引](/global-indexes.md)
     - [向量索引](/vector-search/vector-search-index.md)
     - [约束](/constraints.md)
     - [生成列](/generated-columns.md)

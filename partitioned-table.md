@@ -1175,7 +1175,7 @@ ALTER TABLE member_level PARTITION BY RANGE(level)
  PARTITION pMax VALUES LESS THAN (MAXVALUE));
 ```
 
-对普通表进行分区或者对分区表进行重新分区时，可以根据需要将索引更新为全局索引或普通索引：
+对普通表进行分区或者对分区表进行重新分区时，可以根据需要将索引更新为[全局索引](/global-indexes.md)或普通索引：
 
 ```sql
 CREATE TABLE t1 (
@@ -1473,7 +1473,7 @@ SELECT store_id, COUNT(department_id) AS c
 
 > **注意：**
 >
-> 使用[全局索引](#全局索引)时，可以忽略该规则。
+> 使用[全局索引](/global-indexes.md)时，可以忽略该规则。
 
 这里所指的唯一也包含了主键，因为根据主键的定义，主键必须是唯一的。例如，下面这些建表语句就是无效的：
 
@@ -1686,6 +1686,7 @@ ERROR 8264 (HY000): Global Index is needed for index 'a', since the unique index
 
 ### 全局索引
 
+<<<<<<< HEAD
 在引入全局索引 (Global Index) 之前，TiDB 会为每个分区创建一个局部索引 (Local Index)，即一个分区对应一个局部索引。这种索引方式存在一个[使用限制](#分区键主键和唯一键)：主键和唯一键必须包含所有的分区键，以确保数据的全局唯一性。此外，当查询的数据跨越多个分区时，TiDB 需要扫描各个分区的数据才能返回结果。
 
 为解决这些问题，TiDB 从 v8.3.0 开始引入全局索引。全局索引能覆盖整个表的数据，使得主键和唯一键在不包含分区键的情况下仍能保持全局唯一性。此外，全局索引可以在一次操作中访问多个分区的索引数据，而无需对每个分区的局部索引逐一查找，显著提升了针对非分区键的查询性能。从 v8.5.4 开始，非唯一索引也可以创建为全局索引。
@@ -1783,6 +1784,9 @@ ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCA
 - 包含全局索引的表不支持 `EXCHANGE PARTITION`。
 - 默认情况下，分区表的主键为聚簇索引，且必须包含分区键。如果要求主键不包含分区建，可以在建表时显式指定主键为非聚簇的全局索引，例如：`PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
 - 如果在表达式列上添加了全局索引，或者一个全局索引同时也是前缀索引（如 `UNIQUE KEY idx_id_prefix (id(10)) GLOBAL`），你需要为该全局索引手动收集统计信息。
+=======
+关于全局索引的详细介绍，参见[全局索引](/global-indexes.md)。 
+>>>>>>> c9c2c4ea8a (sql: make global indexes a new doc and add more contents (#20855))
 
 ### 关于函数的分区限制
 
