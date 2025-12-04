@@ -190,11 +190,11 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
 
 ### 相关系统变量
 
-* [tidb_slow_log_threshold](/system-variables.md#tidb_slow_log_threshold)：设置慢日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢日志中。默认值是 300 ms。
-* [tidb_slow_log_rules](/system-variables.md#tidb_slow_log_rules)：用于定义慢日志的触发规则，支持多维度指标组合条件，实现更加灵活和精细化的日志记录控制。此变量在 v9.0.0 版本中引入，逐步替代传统的单一阈值控制方式，即替代 `tidb_slow_log_threshold` 的使用。
-    * 未设置 tidb_slow_log_rules
+* [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold)：设置慢查询日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢日志中。默认值是 300 ms。
+* [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules)：用于定义慢查询日志的触发规则，支持多维度指标组合条件，实现更加灵活和精细化的日志记录控制。此变量在 v9.0.0 版本中引入，逐步替代传统的单一阈值控制方式，即替代 `tidb_slow_log_threshold` 的使用。
+    * 未设置 `tidb_slow_log_rules`：
         * 慢日志触发仍依赖 tidb_slow_log_threshold，Query_time 阈值取自该变量，以保持向后兼容。
-    * 已设置 tidb_slow_log_rules
+    * 已设置 `tidb_slow_log_rules`：
         * 配置的规则优先生效，tidb_slow_log_threshold 将被忽略。
         * 若希望规则中仍包含 Query_time 的触发条件，可在设置规则时指定。
         * 规则匹配逻辑（多条规则之间采用 OR 关系）：
@@ -203,30 +203,31 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
                 * 若规则指定 ConnID 并与当前 Session 的 ConnID 匹配，则使用该规则。
                 * 若规则未指定 ConnID（全局通用规则），则使用该规则。
         * 显示变量的行为与普通系统变量一致。
+
+  > 说明：`tidb_slow_log_rules` 用于替换单一阈值的方式，实现更灵活和精细化的慢查询日志控制，支持多维度指标组合条件。
   >
-  > 说明：`tidb_slow_log_rules` 用于替换单一阈值的方式，实现更灵活和精细化的慢日志控制，支持多维度指标组合条件。
-  >
-  > 建议：在资源充足的测试环境（1 TiDB：16C/48G，3 TiKV：16C/48G）中，多次 sysbench 测试结果表明：当多维慢日志规则生成的慢日志量处于半小时内数百万级时，对性能影响较小；但若日志量达到千万级，则会导致 TPS、延迟出现明显下降。在业务负载较高或 CPU/内存接近瓶颈时，应谨慎配置 `tidb_slow_log_rules`，避免规则过宽导致日志洪泛。建议结合 `tidb_slow_log_max_per_sec` 限制日志打印速率，以降低对业务性能的影响。
+  > 建议：在资源充足的测试环境（1 TiDB：16C/48G，3 TiKV：16C/48G）中，多次 sysbench 测试结果表明：当多维慢查询日志规则生成的慢查询日志量处于半小时内数百万级时，对性能影响较小；但若日志量达到千万级，则会导致 TPS、延迟出现明显下降。在业务负载较高或 CPU/内存接近瓶颈时，应谨慎配置 `tidb_slow_log_rules`，避免规则过宽导致日志洪泛。建议结合 `tidb_slow_log_max_per_sec` 限制日志打印速率，以降低对业务性能的影响。
+
 * [tidb_slow_log_max_per_sec](/system-variables.md#tidb_slow_log_max_per_sec)：设置控制每秒打印慢日志的上限，默认值为 0。
     * 当值为 0，其表示不限制每秒打印的慢日志数量。
-    * 当值大于 0 时，TiDB 每秒最多打印指定数量的慢日志，超过部分将被丢弃，不会写入慢日志文件。
+    * 当值大于 0 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢日志文件。
     * 建议在启用了 tidb_slow_log_rules 后配置该变量，以防规则触发频繁打印慢日志。
-* [tidb_query_log_max_len](/system-variables.md#tidb_query_log_max_len)：设置慢日志记录 SQL 语句的最大长度。默认值是 4096 byte。
-* [tidb_redact_log](/system-variables.md#tidb_redact_log)：设置慢日志记录 SQL 时是否将用户数据脱敏用 `?` 代替。默认值是 `0`，即关闭该功能。
-* [tidb_enable_collect_execution_info](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的物理执行信息，默认值是 `1`。该功能对性能的影响约为 3%。开启该项后查看 `Plan` 的示例如下：
+* [`tidb_query_log_max_len`](/system-variables.md#tidb_query_log_max_len)：设置慢查询日志记录 SQL 语句的最大长度。默认值是 4096 byte。
+* [`tidb_redact_log`](/system-variables.md#tidb_redact_log)：设置慢查询日志记录 SQL 时是否将用户数据脱敏用 `?` 代替。默认值是 `0`，即关闭该功能。
+* [`tidb_enable_collect_execution_info`](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的物理执行信息，默认值是 `1`。该功能对性能的影响约为 3%。开启该项后查看 `Plan` 的示例如下：
 
-  ```sql
-  > select tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMgk1BWM2zwAAMRnIADcVyAAxHcEQNQlOL0EBBPBbCjMJMTNfMTYJMQkzMTI4MS44NTc4MTk5MDUyMTcJdGFibGU6dCwgaW5kZXg6aWR4KGEpLCByYW5nZTpbLWluZiw1MDAwMCksIGtlZXAgb3JkZXI6ZmFsc2UJMjUBrgnQVnsA');
-  +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-  | tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMg |
-  +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-  |     id                    task    estRows               operator info                                                  actRows    execution info                                                                  memory       disk                              |
-  |     StreamAgg_17          root    1                     funcs:count(Column#7)->Column#5                                1          time:10.931505ms, loops:2                                                       372 Bytes    N/A                               |
-  |     └─IndexReader_18      root    1                     index:StreamAgg_9                                              1          time:10.927685ms, loops:2, rpc num: 1, rpc time:10.884355ms, proc keys:25007    206 Bytes    N/A                               |
-  |       └─StreamAgg_9       cop     1                     funcs:count(1)->Column#7                                       1          time:11ms, loops:25                                                             N/A          N/A                               |
-  |         └─IndexScan_16    cop     31281.857819905217    table:t, index:idx(a), range:[-inf,50000), keep order:false    25007      time:11ms, loops:25                                                             N/A          N/A                               |
-  +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-  ```
+    ```sql
+    > select tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMgk1BWM2zwAAMRnIADcVyAAxHcEQNQlOL0EBBPBbCjMJMTNfMTYJMQkzMTI4MS44NTc4MTk5MDUyMTcJdGFibGU6dCwgaW5kZXg6aWR4KGEpLCByYW5nZTpbLWluZiw1MDAwMCksIGtlZXAgb3JkZXI6ZmFsc2UJMjUBrgnQVnsA');
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+    | tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMg |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+    |     id                    task    estRows               operator info                                                  actRows    execution info                                                                  memory       disk                              |
+    |     StreamAgg_17          root    1                     funcs:count(Column#7)->Column#5                                1          time:10.931505ms, loops:2                                                       372 Bytes    N/A                               |
+    |     └─IndexReader_18      root    1                     index:StreamAgg_9                                              1          time:10.927685ms, loops:2, rpc num: 1, rpc time:10.884355ms, proc keys:25007    206 Bytes    N/A                               |
+    |       └─StreamAgg_9       cop     1                     funcs:count(1)->Column#7                                       1          time:11ms, loops:25                                                             N/A          N/A                               |
+    |         └─IndexScan_16    cop     31281.857819905217    table:t, index:idx(a), range:[-inf,50000), keep order:false    25007      time:11ms, loops:25                                                             N/A          N/A                               |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+    ```
 
 在性能测试中可以关闭自动收集算子的执行信息：
 
