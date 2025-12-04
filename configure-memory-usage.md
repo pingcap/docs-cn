@@ -238,7 +238,7 @@ Golang 自 Go 1.19 版本开始引入 [`GOMEMLIMIT`](https://pkg.go.dev/runtime@
 - 内存资源先使用后上报，且 SQL 间存在信息孤岛，难以全局控制
 - 内存压力较大时，Golang 垃圾回收 (Garbage Collection, GC) 开销过高，严重时导致内存溢出 (OOM) 问题
 
-从 v9.0.0 开始，TiDB  引入了内存仲裁模式这种新机制，通过自上向下地集中化管理和调度内存资源来解决上述问题。
+从 v9.0.0 开始，TiDB 引入了内存仲裁模式这种新机制，通过自上向下地集中化管理和调度内存资源来解决上述问题。
 
 你可以通过系统变量 [`tidb_mem_arbitrator_mode`](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 或 TiDB 配置文件参数 `instance.tidb_mem_arbitrator_mode` 开启内存仲裁模式。
 
