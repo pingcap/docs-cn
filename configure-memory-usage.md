@@ -256,7 +256,7 @@ Golang 自 Go 1.19 版本开始引入 [`GOMEMLIMIT`](https://pkg.go.dev/runtime@
 
 - `conn`：连接（会话）ID
 - `reason`：终止 SQL 的具体原因
-- `path`：SQL 被终止的阶段（无 `path` 字段则默认为执行阶段）
+- `path`：SQL 被终止的阶段，无 `path` 字段则默认为执行阶段
     - `ParseSQL`：解析
     - `CompilePlan`：编译执行计划
 
