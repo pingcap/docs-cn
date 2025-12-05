@@ -5083,7 +5083,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **注意:**
 >
-> 建议在启用 [`tidb_slow_log_rules`](#tidb_slow_log_rules) 后，同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec) 以限制慢日志打印频率，防止基于规则的慢日志触发过于频繁。
+> 建议在启用 [`tidb_slow_log_rules`](#tidb_slow_log_rules-从-v900-版本开始引入) 后，同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v900-版本开始引入) 以限制慢日志打印频率，防止基于规则的慢日志触发过于频繁。
 
 ### `tidb_slow_log_max_per_sec` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
@@ -5093,7 +5093,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：`0`
 - 类型：整数型
 - 范围：`[0, 1000000]`
-- 控制每个 TiDB 每秒打印慢日志的次数上限，默认值 0。当该变量值为 0 时，表示不限制每个节点每秒打印的慢日志数量。当该变量值大于 0 时，会限制每个节点每秒打印的慢日志数量不超过该值，超过部分的慢日志将被丢弃，不会写入慢日志文件。该变量常与 [`tidb_slow_log_rules`](#tidb_slow_log_rules) 结合使用，以防止在高负载情况下产生过多的慢日志。
+- 控制每个 TiDB 每秒打印慢日志的次数上限，默认值 0。当该变量值为 0 时，表示不限制每个节点每秒打印的慢日志数量。当该变量值大于 0 时，会限制每个节点每秒打印的慢日志数量不超过该值，超过部分的慢日志将被丢弃，不会写入慢日志文件。该变量常与 [`tidb_slow_log_rules`](#tidb_slow_log_rules-从-v900-版本开始引入) 结合使用，以防止在高负载情况下产生过多的慢日志。
 
 ### `tidb_slow_query_file`
 
