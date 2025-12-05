@@ -175,12 +175,14 @@ Slow Query 基础信息：
 
 ## 相关变量
 
+本节介绍慢查询日志相关的 Hint 与系统变量。
+
 ### 相关 Hint
 
-通过 Hit `WRITE_SLOW_LOG` 强制控制输出慢日志。
+你可以通过 Hint `WRITE_SLOW_LOG` 强制控制输出慢查询日志。
 
-- 不受任何阈值或触发规则限制，即无论该 SQL 是否达到慢日志打印阈值，都会打印慢日志。
-- 暂不支持强制关闭打印慢日志的方式（如 `WRITE_SLOW_LOG(FALSE)`）。
+- 该 Hint 不受任何阈值或触发规则限制，即无论该 SQL 查询是否达到慢查询日志打印阈值，都会打印慢查询日志。
+- 目前只支持强制开启打印慢查询日志，暂不支持通过 `WRITE_SLOW_LOG(FALSE)`）强制关闭打印慢查询日志。
 
 使用示例：
 
@@ -209,10 +211,10 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
   > - `tidb_slow_log_rules` 用于替换单一阈值的方式，实现更灵活和精细化的慢查询日志控制，支持多维度指标组合条件。
   > - 在资源充足的测试环境（1 TiDB：16C/48G，3 TiKV：16C/48G）中，多次 sysbench 测试结果表明：当多维慢查询日志规则生成的慢查询日志量处于半小时内数百万级时，对性能影响较小；但若日志量达到千万级，则会导致 TPS、延迟出现明显下降。在业务负载较高或 CPU/内存接近瓶颈时，应谨慎配置 `tidb_slow_log_rules`，避免规则过宽导致日志洪泛。建议结合 `tidb_slow_log_max_per_sec` 限制日志打印速率，以降低对业务性能的影响。
 
-* [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec)：用于设置控制每秒打印慢日志的上限，默认值为 0。
+* [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec)：用于设置每秒打印慢日志的上限，默认值为 0。
     * 当值为 0 时，表示不限制每秒打印的慢日志数量。
     * 当值大于 0 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢日志文件。
-    * 建议在启用了 tidb_slow_log_rules 后配置该变量，以防规则触发频繁打印慢日志。
+    * 建议在启用了 `tidb_slow_log_rules` 后配置该变量，以防规则触发频繁打印慢日志。
 * [`tidb_query_log_max_len`](/system-variables.md#tidb_query_log_max_len)：设置慢查询日志记录 SQL 语句的最大长度。默认值是 4096 byte。
 * [`tidb_redact_log`](/system-variables.md#tidb_redact_log)：设置慢查询日志记录 SQL 时是否将用户数据脱敏用 `?` 代替。默认值是 `0`，即关闭该功能。
 * [`tidb_enable_collect_execution_info`](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的物理执行信息，默认值是 `1`。该功能对性能的影响约为 3%。开启该项后查看 `Plan` 的示例如下：
