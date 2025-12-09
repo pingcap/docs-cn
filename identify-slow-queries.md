@@ -214,7 +214,7 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
 * [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v900-版本开始引入)：用于设置每秒打印慢日志的上限，默认值为 0。
     * 当值为 0 时，表示不限制每秒打印的慢日志数量。
     * 当值大于 0 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢日志文件。
-    * 建议在启用了 `tidb_slow_log_rules` 后配置该变量，以防规则触发频繁打印慢日志。
+    * 建议在启用了 `tidb_slow_log_rules` 后配置该变量，以避免规则触发频繁打印慢日志。
 * [`tidb_query_log_max_len`](/system-variables.md#tidb_query_log_max_len)：设置慢查询日志记录 SQL 语句的最大长度。默认值是 4096 byte。
 * [`tidb_redact_log`](/system-variables.md#tidb_redact_log)：设置慢查询日志记录 SQL 时是否将用户数据脱敏用 `?` 代替。默认值是 `0`，即关闭该功能。
 * [`tidb_enable_collect_execution_info`](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的物理执行信息，默认值是 `1`。该功能对性能的影响约为 3%。开启该项后查看 `Plan` 的示例如下：
