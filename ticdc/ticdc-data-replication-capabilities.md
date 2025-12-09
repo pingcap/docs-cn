@@ -50,7 +50,6 @@ TiCDC 对上游数据变更的支持范围如下：
     例如：当通过 changefeed 配置了过滤所有 DDL 事件后，如果上游执行 `DROP COLUMN` 操作后继续写入涉及该列的 `INSERT` 语句，TiCDC 同步这些 DML 变更到下游时，会因下游表结构不同而导致数据写入失败。
 
 - 对于 TiCDC [老架构](/ticdc/ticdc-classic-architecture.md)，当单个 TiCDC 集群同步的表数量超过以下建议值时，TiCDC 可能无法稳定工作：
-
   
     |  TiCDC 集群版本 | 同步表的数量建议值 |
     |---|:---:|
