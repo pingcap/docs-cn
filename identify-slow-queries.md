@@ -217,7 +217,7 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
     * 建议在启用了 `tidb_slow_log_rules` 后配置该变量，以避免规则触发频繁打印慢日志。
 * [`tidb_query_log_max_len`](/system-variables.md#tidb_query_log_max_len)：设置慢查询日志记录 SQL 语句的最大长度。默认值是 4096 byte。
 * [`tidb_redact_log`](/system-variables.md#tidb_redact_log)：设置慢查询日志记录 SQL 时，是否将用户数据脱敏用 `?` 代替。默认值是 `0`，即关闭该功能。
-* [`tidb_enable_collect_execution_info`](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的物理执行信息，默认值是 `1`。该功能对性能的影响约为 3%。开启该项后查看 `Plan` 的示例如下：
+* [`tidb_enable_collect_execution_info`](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的物理执行信息，默认值是 `1`。开启该功能会导致性能降低约 3%。开启后查看 `Plan` 的示例如下：
 
     ```sql
     > select tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMgk1BWM2zwAAMRnIADcVyAAxHcEQNQlOL0EBBPBbCjMJMTNfMTYJMQkzMTI4MS44NTc4MTk5MDUyMTcJdGFibGU6dCwgaW5kZXg6aWR4KGEpLCByYW5nZTpbLWluZiw1MDAwMCksIGtlZXAgb3JkZXI6ZmFsc2UJMjUBrgnQVnsA');
