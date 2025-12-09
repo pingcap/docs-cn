@@ -5083,7 +5083,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **注意**
 >
-> 建议在启用 [`tidb_slow_log_rules`](#tidb_slow_log_rules-从-v900-版本开始引入) 后，同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v900-版本开始引入) 以限制慢日志打印频率，防止基于规则的慢日志触发过于频繁。
+> 建议在启用 [`tidb_slow_log_rules`](#tidb_slow_log_rules-从-v900-版本开始引入) 后，同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v900-版本开始引入)，以限制慢日志打印频率，防止基于规则的慢日志触发过于频繁。
 
 ### `tidb_slow_log_max_per_sec` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
