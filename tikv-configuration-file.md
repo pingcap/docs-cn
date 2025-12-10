@@ -202,7 +202,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `graceful-shutdown-timeout`
 
-+ graceful shutdown的超时时长，达到该时间后未完成转移的leader会跳过转移，节点直接进入停机流程。该值为0s时表示不启用graceful shutdown功能。
++ graceful shutdown的超时时长。当graceful shutdown功能被启用，TIKV节点在收到SIGTERM信号后会先尽可能将leader转移到其他节点再进入停机流程。若达到该超时时间后未完成转移的leader会跳过转移，节点直接进入停机流程。该值为0s时表示不启用graceful shutdown功能。
 + 默认值：20s
 + 最小值：0s
 
