@@ -5061,16 +5061,15 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > 跳过字符检查可能会使 TiDB 检测不到应用写入的非法 UTF-8 字符，进一步导致执行 `ANALYZE` 时解码错误，以及引入其他未知的编码问题。如果应用不能保证写入字符串的合法性，不建议跳过该检查。
 
-### `tidb_slow_log_threshold`
+### `tidb_slow_log_max_per_sec` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
+- 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`300`
+- 默认值：`0`
 - 类型：整数型
-- 范围：`[-1, 9223372036854775807]`
-- 单位：毫秒
-- 输出慢日志的耗时阈值，默认为 300 ms。如果查询耗时大于这个值，会视作一个慢查询，并记录到慢查询日志。注意，当日志的输出级别 [`log.level`](/tidb-configuration-file.md#level) 是 `"debug"` 时，所有查询都会记录到慢日志，不受该变量的限制。
+- 范围：`[0, 1000000]`
+- 控制每个 TiDB 节点每秒打印慢日志的次数上限，默认值为 `0`。当该变量值为 `0` 时，表示不限制每个节点每秒打印的慢日志数量。当该变量值大于 `0` 时，会限制每个节点每秒打印的慢日志数量不超过该值，超过部分的慢日志将被丢弃，不会写入慢日志文件。该变量常与 [`tidb_slow_log_rules`](#tidb_slow_log_rules-从-v900-版本开始引入) 结合使用，以防止在高负载情况下产生过多的慢日志。
 
 ### `tidb_slow_log_rules` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
@@ -5085,15 +5084,16 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > 建议在启用 [`tidb_slow_log_rules`](#tidb_slow_log_rules-从-v900-版本开始引入) 后，同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v900-版本开始引入)，以限制慢日志打印频率，防止基于规则的慢日志触发过于频繁。
 
-### `tidb_slow_log_max_per_sec` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+### `tidb_slow_log_threshold`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：是
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`0`
+- 默认值：`300`
 - 类型：整数型
-- 范围：`[0, 1000000]`
-- 控制每个 TiDB 节点每秒打印慢日志的次数上限，默认值为 `0`。当该变量值为 `0` 时，表示不限制每个节点每秒打印的慢日志数量。当该变量值大于 `0` 时，会限制每个节点每秒打印的慢日志数量不超过该值，超过部分的慢日志将被丢弃，不会写入慢日志文件。该变量常与 [`tidb_slow_log_rules`](#tidb_slow_log_rules-从-v900-版本开始引入) 结合使用，以防止在高负载情况下产生过多的慢日志。
+- 范围：`[-1, 9223372036854775807]`
+- 单位：毫秒
+- 输出慢日志的耗时阈值，默认为 300 ms。如果查询耗时大于这个值，会视作一个慢查询，并记录到慢查询日志。注意，当日志的输出级别 [`log.level`](/tidb-configuration-file.md#level) 是 `"debug"` 时，所有查询都会记录到慢日志，不受该变量的限制。
 
 ### `tidb_slow_query_file`
 
