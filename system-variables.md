@@ -1245,7 +1245,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 这个变量用于控制是否开启[自动捕获绑定](/sql-plan-management.md#自动捕获绑定-baseline-capturing)功能。该功能依赖 Statement Summary，因此在使用自动绑定之前需打开 Statement Summary 开关。
 - 开启该功能后会定期遍历一次 Statement Summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动创建绑定。
 
-### `tidb_cb_pd_metadata_error_rate_threshold_ratio` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+### `tidb_cb_pd_metadata_error_rate_threshold_ratio` <span class="version-mark">从 v8.5.5 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
