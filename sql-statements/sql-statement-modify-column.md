@@ -14,6 +14,15 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-modify-column/','/docs-cn/d
 - `DECIMAL` 精度修改
 - 从 `VARCHAR(10)` 到 `VARCHAR(5)` 的长度压缩
 
+从 v8.5.5 和 v9.0.0 版本起，TiDB 优化了部分 Reorg-Data 类型变更的执行效率。在 [SQL 模式](/sql-mode.md)严格模式（即 `sql_mode` 值包含 `STRICT_TRANS_TABLES` 或 `STRICT_ALL_TABLES`），以下类型变更将不再进行表数据重建，只进行部分索引的重建：
+
+- 整数类型之间的变更（例如 `BIGINT` 到 `INT`）
+- 字符串类型之间的变更（例如 `VARCHAR(200)` 到 `VARCHAR(100)`）
+
+> **注意：**
+>
+> 当 `VARCHAR` 转换为 `CHAR` 时，要求所有原数据的末尾均不包含空格；若不满足该条件，TiDB 仍会执行 Reorg-Data。
+
 ## 语法图
 
 ```ebnf+diagram
@@ -168,7 +177,7 @@ CREATE TABLE `t1` (
 >   ERROR 1406 (22001): Data Too Long, field len 4, data len 5
 >   ```
 >
-> - 由于和 Async Commit 功能兼容，DDL 在开始进入到 Reorg Data 前会有一定时间（约 2.5s）的等待处理：
+> - 由于和 Async Commit 功能兼容，在关闭[元数据锁](/metadata-lock.md)的情况下，DDL 在开始进入到 Reorg Data 前会有一定时间（约 2.5s）的等待处理：
 >
 >   ```
 >   Query OK, 0 rows affected (2.52 sec)
