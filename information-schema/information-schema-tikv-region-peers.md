@@ -55,6 +55,6 @@ WHERE
 * `IS_LEADER`：Peer 是否是 LEADER。
 * `STATUS`：Peer 的状态，一共有 3 种状态：
     * `PENDING`：暂时不可用状态。
-    * `DOWN`：下线转态，该 Peer 不再提供服务。
+    * `DOWN`：下线状态，该 Peer 不再提供服务。
     * `NORMAL`：正常状态。
 * `DOWN_SECONDS`：处于下线状态的时间，单位是秒。
