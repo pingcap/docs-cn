@@ -14,6 +14,7 @@ summary: TiDB 数据库中 MODIFY COLUMN 的使用概况。
 - 从 `VARCHAR(10)` 到 `VARCHAR(5)` 的长度压缩
 
 从 v8.5.5 版本起，TiDB 优化了部分 Reorg-Data 类型变更的执行效率。在 [SQL 模式](/sql-mode.md)严格模式（即 `sql_mode` 值包含 `STRICT_TRANS_TABLES` 或 `STRICT_ALL_TABLES`），以下类型变更将不再进行表数据重建，只进行部分索引的重建：
+
 - 整数类型之间的变更（例如 `BIGINT` 到 `INT`）
 - 字符串类型之间的变更（例如 `VARCHAR(200)` 到 `VARCHAR(100)`）
 
