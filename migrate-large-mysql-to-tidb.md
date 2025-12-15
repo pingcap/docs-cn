@@ -115,15 +115,18 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
     关于更多 TiDB Lightning 的配置，请参考 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
 
-2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具，如：
+2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出。不推荐在命令行中直接使用 nohup 启动进程。编辑以下脚本内容，如：
 
-    若从 Amazon S3 导入，则需将有权限访问该 S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
+    若从 Amazon S3 导入，则需将有权限访问该 S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 TiDB Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 
     ```shell
+    #!/bin/bash
     export AWS_ACCESS_KEY_ID=${access_key}
     export AWS_SECRET_ACCESS_KEY=${secret_key}
     nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
     ```
+
+    再使用脚本启动 tidb-lightning。
 
 3. 导入开始后，可以采用以下任意方式查看进度：
 
