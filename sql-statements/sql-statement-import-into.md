@@ -212,7 +212,7 @@ SET GLOBAL tidb_server_memory_limit='75%';
 
 #### 冲突解决
 
-从 v8.5.5 起，当使用 [Global Sort](/tidb-global-sort.md) 时，`IMPORT INTO` 会移除所有冲突行以自动解决主键或唯一索引冲突。
+从 v8.5.5 起，当使用[全局排序](/tidb-global-sort.md)功能且导入任务中存在冲突行时，`IMPORT INTO` 会移除所有冲突行以自动解决主键或唯一索引冲突。
 
 例如，在启用全局排序的情况下，如果将以下数据文件 `conflicts.csv` 导入到通过 `CREATE TABLE t(id INT PRIMARY KEY, v INT);` 语句创建的表：
 
