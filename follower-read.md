@@ -32,13 +32,8 @@ set [session | global] tidb_replica_read = '<目标值>';
 该变量用于设置期待的数据读取方式。
 
 - 当设置为默认值 `leader` 或者空字符串时，TiDB 会维持原有行为方式，将所有的读取操作都发送给 leader 副本处理。
-<<<<<<< HEAD
 - 当设置为 `follower` 时，TiDB 会选择 Region 的 follower 副本完成所有的数据读取操作。
-- 当设置为 `leader-and-follower` 时，TiDB 可以选择任意副本来执行读取操作，此时读请求会在 leader 和 follower 之间负载均衡。
-=======
-- 当设置为 `follower` 时，TiDB 会选择 Region 的 follower 副本完成所有的数据读取操作。当 Region 存在 learner 副本时，TiDB 也会考虑从 learner 副本读取数据，此时 follower 副本和 learner 副本具有相同优先级。若当前 Region 无可用的 follower 副本或 learner 副本，TiDB 会从 leader 副本读取数据。
 - 当设置为 `leader-and-follower` 时，TiDB 可以选择任意副本来执行读取操作，此时读请求会在 leader、follower 和 learner 之间负载均衡。
->>>>>>> 32ccac0a62 (Clarify ReplicaReadMixed also uses learner replicas (#21186))
 - 当设置为 `prefer-leader` 时，TiDB 会优先选择 leader 副本执行读取操作。当 leader 副本的处理速度明显变慢时，例如由于磁盘或网络性能抖动，TiDB 将选择其他可用的 follower 副本来执行读取操作。
 - 当设置为 `closest-replicas` 时，TiDB 会优先选择分布在同一可用区的副本执行读取操作，对应的副本可以是 leader、follower 或 learner。如果同一可用区内没有副本分布，则会从 leader 执行读取。
 - 当设置为 `closest-adaptive` 时：
