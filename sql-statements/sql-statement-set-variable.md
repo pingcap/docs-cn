@@ -139,7 +139,7 @@ SELECT @myvar, @myvar + 1;
 
 * 在 MySQL 中，使用 `SET GLOBAL` 所作的修改不会应用于副本。而 TiDB 中，`SET GLOBAL` 语句的作用范围取决于具体的系统变量：
 
-    * 全局生效的变量：对于部分系统变量（例如与集群行为、优化器行为相关的变量），`SET GLOBAL` 所作的修改会应用于集群中的全部 TiDB 实例。
+    * 全局生效的变量：对于大部分系统变量（例如与集群行为、优化器行为相关的变量），`SET GLOBAL` 所作的修改会应用于集群中的全部 TiDB 实例。
     * 仅当前实例生效的变量：对于一些系统变量（例如 `max_connections` 等），`SET GLOBAL` 所作的修改仅适用于当前连接的 TiDB 实例。
 
     因此，在使用 `SET GLOBAL` 修改变量时，请务必查阅该变量的文档，特别是其 Persists to cluster 属性，以确认其作用范围。
