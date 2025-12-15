@@ -196,9 +196,9 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
         * 配置的规则优先生效，`tidb_slow_log_threshold` 将被忽略。
         * 若希望规则中仍包含 `query_time` 的触发条件，可在设置规则时指定。
         * 规则匹配逻辑（多条规则之间采用 OR 关系）：
-            * Session 作用域规则：优先匹配，如果匹配成功，则打印慢查询日志。
-            * Global 作用域规则：仅在 Session 规则未匹配时考虑：
-                * 若规则指定了 `ConnID` 并与当前 Session 的 `ConnID` 匹配，则使用该规则。
+            * SESSION 作用域规则：优先匹配，如果匹配成功，则打印慢查询日志。
+            * GLOBAL 作用域规则：仅在 SESSION 作用域规则未匹配时考虑：
+                * 若规则指定了 `ConnID` 并与当前会话的 `ConnID` 匹配，则使用该规则。
                 * 若规则未指定 `ConnID`（全局通用规则），则使用该规则。
         * 显示变量的行为与普通系统变量一致。
 
