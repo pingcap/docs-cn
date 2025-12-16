@@ -1105,6 +1105,13 @@ raftstore 相关的配置项。
 + 默认值：100ms
 + 最小值：1ms
 
+### `inspect-network-interval`
+
++ 控制 TiKV HealthChecker 主动向 PD 以及其他 TiKV 节点发起网络探测的周期，用于计算 `NetworkSlowScore` 并向 PD 上报慢节点的网络状态。
++ 设置为 `0` 表示关闭网络探测。数值越小，采样频率越高，能够更快放大网络抖动，但也会消耗更多网络与 CPU 资源。
++ 默认值：100ms
++ 取值范围：0 或 `[10ms, +∞)`
+
 ### `raft-write-size-limit` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 + 触发 Raft 数据写入的阈值。当数据大小超过该配置项值，数据会被写入磁盘。当 `store-io-pool-size` 的值为 `0` 时，该配置项不生效。
