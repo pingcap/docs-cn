@@ -26,7 +26,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)至少需要有 90 GiB 的可用空间。建议预留大于等于所需导入数据的存储空间，以保证最佳导入性能。
 - 一个导入任务只支持导入数据到一张目标表中。
 - TiDB 集群升级期间不支持使用该语句。
-- 当未使用[全局排序](/tidb-global-sort.md)功能或 TiDB 版本低于 v8.5.5 时，务必确保所需导入的数据不存在主键或非空唯一索引冲突的记录，因为此类冲突会导致导入任务失败。从 v8.5.5 起，当使用[全局排序](/tidb-global-sort.md)功能时，`IMPORT INTO` 将移除所有冲突行以自动解决冲突问题。
+- 当未使用[全局排序](/tidb-global-sort.md)功能或 TiDB 版本低于 v8.5.5 时，请务必确保所需导入的数据不存在主键或非空唯一索引冲突的记录，因为此类冲突会导致导入任务失败。从 v8.5.5 起，当使用[全局排序](/tidb-global-sort.md)功能时，`IMPORT INTO` 将移除所有冲突行以自动解决冲突问题。
 - 已知问题：在 TiDB 节点配置文件中的 PD 地址与当前集群 PD 拓扑不一致时（如曾经缩容过 PD，但没有对应更新 TiDB 配置文件或者更新该文件后未重启 TiDB 节点），执行 `IMPORT INTO` 会失败。
 
 ### `IMPORT INTO ... FROM FILE` 使用限制
@@ -212,7 +212,7 @@ SET GLOBAL tidb_server_memory_limit='75%';
 
 #### 冲突解决
 
-从 v8.5.5 起，当使用[全局排序](/tidb-global-sort.md)功能且导入任务中存在主键或唯一索引冲突时，`IMPORT INTO` 会移除所有冲突行以自动解决冲突。
+从 v8.5.5 起，当使用[全局排序](/tidb-global-sort.md)功能导入数据时，如果发生主键或唯一索引冲突，`IMPORT INTO` 将通过移除所有冲突行来自动解决冲突。
 
 例如，在启用全局排序的情况下，如果将以下数据文件 `conflicts.csv` 导入到通过 `CREATE TABLE t(id INT PRIMARY KEY, v INT);` 语句创建的表：
 
@@ -285,7 +285,7 @@ IMPORT INTO t FROM '/path/to/small.csv' WITH DETACHED;
 
 #### 使用全局排序时冲突行的信息
 
-从 v8.5.5 起，当使用[全局排序](/tidb-global-sort.md)功能且导入任务中存在主键或唯一索引冲突时，你可以通过 [`SHOW IMPORT`](/sql-statements/sql-statement-show-import-job.md) 语句输出结果中的 `Result_Message` 列来查看冲突行的数量，示例如下：
+从 v8.5.5 起，当使用[全局排序](/tidb-global-sort.md)功能导入数据时，如果发生主键或唯一索引冲突，你可以通过 [`SHOW IMPORT`](/sql-statements/sql-statement-show-import-job.md) 语句输出结果中的 `Result_Message` 列来查看冲突行的数量，示例如下：
 
 ```sql
 IMPORT INTO t FROM 's3://mybucket/conflicts.csv' WITH THREAD=8, SKIP_ROWS=1;
