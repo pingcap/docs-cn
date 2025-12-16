@@ -191,7 +191,7 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
 * [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold)：用于设置慢查询日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢查询日志中。默认值是 300 ms。
 * [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入)：用于定义慢查询日志的触发规则，支持多维度指标组合条件，以实现更加灵活和精细化的日志记录控制。该变量在 v9.0.0 版本中引入，逐步替代传统的单一阈值控制方式，即替代 `tidb_slow_log_threshold` 的使用。
     * 如果未设置 `tidb_slow_log_rules`：
-        * 慢查询日志触发仍依赖 `tidb_slow_log_threshold`，`query_time` 阈值取自该变量，以保持向后兼容。
+        * 慢查询日志触发仍依赖 `tidb_slow_log_threshold`。注：`query_time` 阈值的含义同该变量，均表示 SQL 执行时长阈值，以保持向后兼容。
     * 如果已设置 `tidb_slow_log_rules`：
         * 配置的规则优先生效，`tidb_slow_log_threshold` 将被忽略。
         * 若希望规则中仍使用 `SQL 执行时间` 作为输出慢日志的条件之一，可在设置规则时使用`query_time` 并设置阈值。
