@@ -3003,6 +3003,19 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用来设置 index lookup join 算法的并发度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
+### `tidb_index_lookup_pushdown_policy` <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：枚举型
+- 默认值：`hint-only`
+- 可选值：`hint-only`，`affinity-force`，`force`
+- 该变量用于控制是否以及如何将 `IndexLookUp` 算子下推到 TiKV。可选值说明如下：
+    - `hint-only`（默认）：仅在显式设置了 hint [`INDEX_LOOKUP_PUSHDOWN`](/optimizer-hints.md#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-和-v900-版本开始引入) 时下推。
+    - `affinity-force`：仅对设置了 `AFFINITY` 选项的表自动下推。
+    - `force`：对所有表开启 `IndexLookUp` 的下推。
+
 ### `tidb_index_merge_intersection_concurrency` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
