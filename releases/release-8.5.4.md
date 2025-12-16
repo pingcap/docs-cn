@@ -38,7 +38,7 @@ TiDB 版本：8.5.4
 
     从 v8.3.0 开始，TiDB 支持用户在分区表的唯一列上创建全局索引以提高查询性能，但不支持在非唯一列上创建全局索引。从 v8.5.4 起，TiDB 取消了这一限制，允许用户在分区表的非唯一列上创建全局索引，提升了全局索引的易用性。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/partitioned-table#全局索引)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/global-indexes/)。
 
 * TiFlash 支持优雅关闭 (graceful shutdown) [#10266](https://github.com/pingcap/tiflash/issues/10266) @[gengliqi](https://github.com/gengliqi)
 
