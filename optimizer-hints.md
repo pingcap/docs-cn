@@ -477,11 +477,11 @@ EXPLAIN SELECT /*+ NO_ORDER_INDEX(t, a) */ a FROM t ORDER BY a LIMIT 10;
 
 和 `ORDER_INDEX` Hint 的示例相同，优化器对该查询会生成两类计划：`Limit + IndexScan(keep order: true)` 和 `TopN + IndexScan(keep order: false)`，当使用了 `NO_ORDER_INDEX` Hint，优化器会选择后一种不按照顺序读取索引的计划。
 
-### INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...])
+### INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...]) <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
 
-`INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并下推 `IndexLookUp` 算子到 TiKV。
+`INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并将 `IndexLookUp` 算子下推到 TiKV。
 
-以下示例展示了使用此 Hint 的查询计划:
+以下示例展示了使用该 Hint 时生成的执行计划：
 
 {{< copyable "sql" >}}
 
@@ -502,20 +502,36 @@ EXPLAIN SELECT /*+ INDEX_LOOKUP_PUSHDOWN(t1, a) */ a, b FROM t1;
 +-----------------------------+----------+-----------+----------------------+--------------------------------+
 ```
 
-在启用 `INDEX_LOOKUP_PUSHDOWN` hint 后，下推计划中的最外层 Build 算子会变为 `LocalIndexLookUp`。这意味着 TiKV 在扫描索引的同时，会尝试在本地回表查询对应的行数据。然而，由于索引和行数据可能分布在不同的 Region，下推请求无法保证覆盖所有目标行。因此，TiDB 端仍需保留 `TableRowIDScan`，用于补充查询那些下推无法命中的行。
+开启 `INDEX_LOOKUP_PUSHDOWN` hint 后，下推计划中的最外层 Build 算子会变为 `LocalIndexLookUp`。TiKV 在扫描索引的同时，会尝试在本地回表取数。但索引和行数据可能分布在不同 Region，下推请求无法覆盖所有目标行，因此 TiDB 端仍需保留 `TableRowIDScan` 来补齐未命中的行。
 
 `INDEX_LOOKUP_PUSHDOWN` 当前的使用限制如下：
 
 - 不支持缓存表（cache table）和临时表。
-- 暂不支持分区表查询。
-- 暂不支持复合主键或主键为非整型的聚簇索引表。
+- 暂不支持使用[全局索引](/global-indexes.md)的查询。
+- 暂不支持使用[多值索引](/choose-index.md#使用多值索引)的查询。
 - 暂不支持除 `REPEATABLE-READ` 之外的其他隔离级别。
-- 暂不支持[多值索引](/choose-index.md#使用多值索引)的查询。
 - 暂不支持 [Follower Read](/follower-read.md)。
 - 暂不支持 [Stale Read](/stale-read.md) 或 [使用 `tidb_snapshot` 来读取历史数据](/read-historical-data.md)。
 - 下推的 `LocalIndexLookUp` 算子暂不支持 keep order。若执行计划中包含基于索引列的 `ORDER BY`，则会退化为普通的 `LocalIndexLookUp` 查询。
-- 下推的 `LocalIndexLookUp` 算子暂不支持以分页 (paging)方式发送 Coprocessor 请求。
-- 下推的 `LocalIndexLookUp` 算子暂不支持对[下推计算结果进行缓存](/coprocessor-cache.md)
+- 下推的 `LocalIndexLookUp` 算子暂不支持以分页 (paging) 方式发送 Coprocessor 请求。
+- 下推的 `LocalIndexLookUp` 算子暂不支持对[下推计算结果进行缓存](/coprocessor-cache.md)。
+
+### NO_INDEX_LOOKUP_PUSHDOWN(t1_name) <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
+
+`NO_INDEX_LOOKUP_PUSHDOWN(t1_name)` 用于关闭指定表的 IndexLookUp 下推。它常与系统变量 `tidb_index_lookup_pushdown_policy` 一起使用，在该变量值不是 `hint-only` 时按需阻止下推。下面的示例将变量设置为 `force`，会自动下推当前会话的所有 `IndexLookUp` 算子，但如果在查询中指定了 `NO_INDEX_LOOKUP_PUSHDOWN`，则不会下推：
+
+{{< copyable "sql" >}}
+
+```sql
+SET @@tidb_index_lookup_pushdown_policy = 'force';
+
+-- 不会下推 IndexLookUp 算子
+SELECT /*+ NO_INDEX_LOOKUP_PUSHDOWN(t) */ * FROM t WHERE a > 1;
+```
+
+> **注意：**
+>
+> - `NO_INDEX_LOOKUP_PUSHDOWN` 优先级高于 `INDEX_LOOKUP_PUSHDOWN`。当两类 Hint 同时存在时，以 `NO_INDEX_LOOKUP_PUSHDOWN` 为准。
 
 ### AGG_TO_COP()
 
