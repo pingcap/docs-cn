@@ -239,7 +239,7 @@ I/O 限流功能相关配置。
 - 该配置只针对存算分离模式生效，详细请参考 [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md)。
 - 可选值：`"tiflash_write"`、`"tiflash_compute"`
 
-##### `graceful_wait_shutdown_timeout` <span class="version-mark">从 v8.5.4 开始引入</span>
+##### `graceful_wait_shutdown_timeout` <span class="version-mark">从 v8.5.4 版本开始引入</span>
 
 - 控制在关闭 TiFlash 服务器时的最长等待时间。在此期间，TiFlash 允许尚未完成的 MPP 任务继续执行，但不再接收新的 MPP 任务。如果所有正在运行的 MPP 任务都在此超时时间之前完成，TiFlash 将立即关闭；否则将在等待时间结束后强制关闭。
 - 默认值：`600`
