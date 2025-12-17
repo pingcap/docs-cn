@@ -503,7 +503,7 @@ EXPLAIN SELECT /*+ INDEX_LOOKUP_PUSHDOWN(t1, a) */ a, b FROM t1;
 
 `INDEX_LOOKUP_PUSHDOWN` Hint 目前存在以下限制：
 
-- 不支持缓存表（cache table）和临时表。
+- 不支持缓存表 (cached table) 和临时表。
 - 暂不支持使用[全局索引](/global-indexes.md)的查询。
 - 暂不支持使用[多值索引](/choose-index.md#使用多值索引)的查询。
 - 暂不支持除 `REPEATABLE-READ` 之外的其他隔离级别。
