@@ -519,8 +519,6 @@ EXPLAIN SELECT /*+ INDEX_LOOKUP_PUSHDOWN(t1, a) */ a, b FROM t1;
 
 以下示例将 `tidb_index_lookup_pushdown_policy` 变量设置为 `force`，使当前会话中的所有 `IndexLookUp` 算子自动下推。如果在查询中指定了 `NO_INDEX_LOOKUP_PUSHDOWN` Hint，则对应表不会下推：
 
-{{< copyable "sql" >}}
-
 ```sql
 SET @@tidb_index_lookup_pushdown_policy = 'force';
 
