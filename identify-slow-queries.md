@@ -189,7 +189,30 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
 ## 相关系统变量
 
 * [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold)：用于设置慢查询日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢查询日志中。默认值是 300 ms。
-* [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入)：用于定义慢查询日志的触发规则，支持多维度指标组合条件，以实现更加灵活和精细化的日志记录控制。该变量在 v9.0.0 版本中引入，逐步替代传统的单一阈值控制方式，即替代 `tidb_slow_log_threshold` 的使用。
+* [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入)：用于定义慢查询日志的触发规则，支持多维度指标组合条件，以实现更加灵活和精细化的日志记录控制。该变量在 v9.0.0 版本中引入，逐步替代传统的单一阈值控制方式，即替代 `tidb_slow_log_threshold` 的使用。该变量下，支持把以下字段作为筛选条件，来设置输出慢查询日志的条件：
+    * 支持的筛选字段(下面字段说明可以参考：[字段含义说明](/#字段含义说明))：
+        * Slow Query 基础信息：
+            * `Query_time`、`Parse_time`、`Compile_time`、`Optimize_time`、`Wait_TS`、`Rewrite_time`
+            * `Digest`、`Plan_digest`、`Is_internal`、`Succ`
+            * `Exec_retry_count`、`Backoff_time`、`Write_sql_response_total`
+        * 和事务执行相关的字段：
+            * `Prewrite_time`、`Commit_time`、`Write_keys`、`Write_size`、`Prewrite_region`
+        * 和 SQL 执行的用户相关的字段：
+            * `Conn_ID`、`DB`、`Session_alias`
+        * 和 TiKV Coprocessor Task 相关的字段：
+            * `Process_time`、`Total_keys`、`Process_keys`、`Num_cop_tasks`
+        * 和内存使用相关的字段：
+            * `Mem_max`
+        * 和硬盘使用相关的字段：
+            * `Disk_max`
+        * 和资源管控相关的字段：
+            * `Resource_group`
+        * 和网络传输相关的字段：
+            * `KV_total`、`PD_total`
+            * `Unpacked_bytes_sent_tikv_total`、`Unpacked_bytes_received_tikv_total`
+            * `Unpacked_bytes_sent_tikv_cross_zone`、`Unpacked_bytes_received_tikv_cross_zone`
+            * `Unpacked_bytes_sent_tiflash_total`、`Unpacked_bytes_received_tiflash_total`
+            * `Unpacked_bytes_sent_tiflash_cross_zone`、`Unpacked_bytes_received_tiflash_cross_zone`
     * 如果未设置 `tidb_slow_log_rules`：
         * 慢查询日志触发仍依赖 `tidb_slow_log_threshold`。注：`query_time` 阈值的含义同该变量，均表示 SQL 执行时长阈值，以保持向后兼容。
     * 如果已设置 `tidb_slow_log_rules`：
@@ -201,6 +224,30 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
                 * 若规则指定了 `ConnID` 并与当前会话的 `ConnID` 匹配，则使用该规则。
                 * 若规则未指定 `ConnID`（全局通用规则），则使用该规则。
         * 使用 `SHOW VARIABLES`、`SELECT @@GLOBAL.tidb_slow_log_rules`、 `SELECT @@SESSION.tidb_slow_log_rules` 显示该变量的行为与其他系统变量一致。
+    * 使用示例：
+        * 标准格式（SESSION 作用域）：
+
+          ```sql
+          SET SESSION tidb_slow_log_rules = 'Query_time: 500, Is_internal: false';
+          ```
+
+        * 错误格式（SESSION 作用域不支持 ConnID）：
+
+          ```sql
+          SET SESSION tidb_slow_log_rules = 'ConnID: 12, Query_time: 500, Is_internal: false';
+          ```
+
+        * 全局规则（适用于所有连接）：
+
+          ```sql
+          SET GLOBAL tidb_slow_log_rules = 'Query_time: 500, Is_internal: false';
+          ```
+
+        * 指定特定连接的全局规则（分别适用于 `ConnID:11` 和 `ConnID:11` 的两个连接）：
+
+          ```sql
+          SET GLOBAL tidb_slow_log_rules = 'ConnID: 11, Query_time: 500, Is_internal: false; ConnID: 12, Query_time: 600, Process_time: 300, DB: db1';
+          ```
 
     > **Tip**
     >
