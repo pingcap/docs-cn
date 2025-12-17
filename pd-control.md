@@ -1198,7 +1198,7 @@ pd-ctl resource-manager config controller set ltb-max-wait-duration 30m
 >> scheduler config evict-slow-store-scheduler set recovery-duration 600
 ```
 
-当你需要开启网络的慢节点探测时，可以通过 `scheduler config evict-slow-store-scheduler set enable-network-slow-store true` 来开启。
+要启用网络慢节点探测，你需要同时进行以下配置：首先，通过 `scheduler config evict-slow-store-scheduler set enable-network-slow-store true` 在 PD 侧开启调度器对网络慢节点的处理；其次，确保 TiKV 侧的 [`raftstore.inspect-network-interval`](/tikv-configuration-file.md#inspect-network-interval) 配置项大于 `0` 以启用网络探测。若要直接关闭 TiKV 内部的网络探测，可将该配置项设置为 `0`。
 当你需要直接关闭 tikv 内部的网络探测时，可将 TiKV 侧 [`raftstore.inspect-network-interval`](/tikv-configuration-file.md#inspect-network-interval) 设置为 `0`。
 
 ### `scheduler config balance-leader-scheduler`
