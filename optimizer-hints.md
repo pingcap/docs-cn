@@ -479,7 +479,7 @@ EXPLAIN SELECT /*+ NO_ORDER_INDEX(t, a) */ a FROM t ORDER BY a LIMIT 10;
 
 ### INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...]) <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
 
-`INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引，并将 `IndexLookUp` 算子下推到 TiKV。
+`INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...])` 提示优化器仅使用指定的索引访问指定的表，并将 `IndexLookUp` 算子下推到 TiKV 执行。
 
 以下示例展示了使用该 Hint 时生成的执行计划：
 
