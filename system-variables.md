@@ -3049,10 +3049,10 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：枚举型
 - 默认值：`hint-only`
 - 可选值：`hint-only`，`affinity-force`，`force`
-- 该变量用于控制是否以及如何将 `IndexLookUp` 算子下推到 TiKV。可选值说明如下：
-    - `hint-only`（默认）：仅在显式设置了 hint [`INDEX_LOOKUP_PUSHDOWN`](/optimizer-hints.md#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-和-v900-版本开始引入) 时下推。
-    - `affinity-force`：仅对设置了 `AFFINITY` 选项的表自动下推。
-    - `force`：对所有表开启 `IndexLookUp` 的下推。
+- 该变量用于控制 TiDB 是否以及如何将 `IndexLookUp` 算子下推到 TiKV。可选值的含义如下：
+    - `hint-only`（默认值）：仅在 SQL 中显式指定 [`INDEX_LOOKUP_PUSHDOWN`](/optimizer-hints.md#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-和-v900-版本开始引入) Hint 时，才将 `IndexLookUp` 算子下推到 TiKV。
+    - `affinity-force`：仅对配置了 `AFFINITY` 选项的表自动启用下推。
+    - `force`：对所有表开启 `IndexLookUp` 算子下推。
 
 ### `tidb_index_merge_intersection_concurrency` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
