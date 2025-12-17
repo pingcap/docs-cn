@@ -531,7 +531,7 @@ SELECT /*+ NO_INDEX_LOOKUP_PUSHDOWN(t) */ * FROM t WHERE a > 1;
 
 > **注意：**
 >
-> - `NO_INDEX_LOOKUP_PUSHDOWN` 优先级高于 `INDEX_LOOKUP_PUSHDOWN`。当两类 Hint 同时存在时，以 `NO_INDEX_LOOKUP_PUSHDOWN` 为准。
+> `NO_INDEX_LOOKUP_PUSHDOWN` 的优先级高于 [`INDEX_LOOKUP_PUSHDOWN`](#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-和-v900-版本开始引入)。当两个 Hint 同时存在时，`NO_INDEX_LOOKUP_PUSHDOWN` 生效。
 
 ### AGG_TO_COP()
 
