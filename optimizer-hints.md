@@ -481,9 +481,7 @@ EXPLAIN SELECT /*+ NO_ORDER_INDEX(t, a) */ a FROM t ORDER BY a LIMIT 10;
 
 `INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...])` 提示优化器仅使用指定的索引访问指定的表，并将 `IndexLookUp` 算子下推到 TiKV 执行。
 
-以下示例展示了使用该 Hint 时生成的执行计划：
-
-{{< copyable "sql" >}}
+以下示例展示了使用该 Hint 后生成的执行计划：
 
 ```sql
 CREATE TABLE t1(a INT, b INT, key(a));
