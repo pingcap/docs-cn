@@ -288,6 +288,12 @@ pd-server 相关配置项。
 + 控制 Region Merge 的 key 上限，当 Region key 大于指定值时 PD 不会将其与相邻的 Region 合并。
 + 默认：540000。在 v8.4.0 之前，默认值为 200000；从 v8.4.0 开始，默认值为 540000。
 
+### `max-affinity-merge-region-size` <span class="version-mark">从 v8.5.5 版本开始引入</span>
+
++ 当 Region 属于亲和性分组且大小小于该值时，PD 会尝试将其与相邻的同一亲和性分组的 Region 合并。设置为 `0` 表示关闭配置了亲和性的 Region 合并。
++ 默认：256
++ 单位：MiB
+
 ### `patrol-region-interval`
 
 + 控制 checker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整
@@ -362,6 +368,11 @@ pd-server 相关配置项。
 
 + 同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。
 + 默认值：8
+
+### `affinity-schedule-limit` <span class="version-mark">从 v8.5.5 版本开始引入</span>
+
++ 控制同时进行的亲和性调度任务数量。设置为 `0` 表示禁用亲和性调度。
++ 默认值：0
 
 ### `high-space-ratio`
 
