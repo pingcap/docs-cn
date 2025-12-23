@@ -32,6 +32,13 @@ TiDB 版本：8.5.5
     - 在确保 RTO (Recovery Time Objective) 的前提下，你可以设置更长的全量备份间隔，从而**降低对业务的影响**。
 
   更多信息，请参考[用户文档](/br/br-compact-log-backup.md)。
+* 提供索引下推到TiKV到通过hint INDEX_LOOKUP_PUSHDOWN/NO_INDEX_LOOKUP_PUSHDOWN功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
+
+    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+
+    功能描述2（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+
+    更多信息，请参考[用户文档](链接)。
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
 
@@ -39,6 +46,36 @@ TiDB 版本：8.5.5
 
     更多信息，请参考[用户文档](链接)。
 
+* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
+
+    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+
+    更多信息，请参考[用户文档](链接)。
+* 大幅提升特定有损 DDL 操作的执行效率，例如 `BIGINT → INT`、`CHAR(120) → VARCHAR(60)`。在未发生数据截断的前提下，执行耗时可从数小时缩短至分钟级、秒级甚至毫秒级，性能提升可达到数十倍至数十万倍。  [#63366](https://github.com/pingcap/tidb/issues/63366)  [@wjhuang2016](https://github.com/wjhuang2016), [@tangenta](https://github.com/tangenta), [@fzzf678](https://github.com/fzzf678)**tw@qiancai** <!--2292-->
+
+  优化策略包括：
+  - 在严格 SQL 模式下，预先检查类型转换过程中是否存在数据截断风险；
+  - 若不存在数据截断风险，则仅更新元数据，尽量避免索引重建；
+  - 如需重建索引，则采用更高效的 Ingest 流程，大幅提升索引重建性能。
+
+  性能提升示例（基于 100 GiB 表的基准测试）：
+
+  | 场景 | 操作类型 | 优化前 | 优化后 | 性能提升 |
+  |------|----------|--------|--------|----------|
+  | 无索引列 | `BIGINT → INT` | 2 小时 34 分 | 1 分 5 秒 | 142× |
+  | 有索引列 | `BIGINT → INT` | 6 小时 25 分 | 0.05 秒 | 460,000× |
+  | 有索引列 | `CHAR(120) → VARCHAR(60)` | 7 小时 16 分 | 12 分 56 秒 | 34× |
+
+  > 注：以上数据基于 DDL 执行过程中未发生数据截断的前提。以上优化对于有 TiFlash 副本的表，以及 sign <--> unsign 数据类型修改的场景不会生效。
+  
+      更多信息，请参考[用户文档](链接)。
+ 
+ * 优化了存在大量外键场景下的 DDL 性能，逻辑 DDL 性能最高可提升 25 倍 [#61126](https://github.com/pingcap/tidb/issues/61126) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1896-->
+
+    在 v8.5.5 版本之前，当一些用户单个集群的表数量达到 1000 万级别，且其中有几十万张表有外键的场景，创建表，给表加列这些逻辑 DDL 的性能 QPS 会降低到 4，使得一些多租户的 SaaS 场景下的运维操作变得非常低效。在 v8.5.5 对该场景做了优化。经测试，1000 万张表，其中 20 万张表有外键的场景下，创建表，加列这类逻辑 DDL 的性能 QPS 稳定保持在 100，性能有 25 倍的提升。
+    
+    更多信息，请参考[用户文档](链接)。
+ 
 ### 稳定性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -62,6 +99,12 @@ TiDB 版本：8.5.5
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+
+* 支持在线修改分布式 ADD Index 任务的并发和吞吐 [#62120](https://github.com/pingcap/tidb/pull/62120) @[joechenrh](https://github.com/joechenrh) **tw@qiancai** <!--2326-->
+
+   在 v8.5.5 版本之前，当集群开启了分布式执行框架 [tidb_enable_dist_task](/system-variables/#tidb_enable_dist_task-从-v710-版本开始引入) ，在 ADD Index 任务执行期间，是无法修改该任务的 `THREAD`， `BATCH_SIZE`，`MAX_WRITE_SPEED`  参数。需要取消该 DDL 任务，重新设置参数后再提交，效率较低。支持该功能后，用户可以根据业务负载和对 ADD Index 的性能要求，在线灵活调整这些参数。
+
+    更多信息，请参考[ADMIN ALTER DDL JOBS](/sql-statement-admin-alter-ddl/#admin-alter-ddl-jobs)。
 
 ### 数据库管理
 
