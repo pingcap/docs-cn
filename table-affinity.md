@@ -25,8 +25,8 @@ summary: 通过表或分区的亲和性约束，控制 Region 的副本分布并
 ## 支持的亲和性级别
 
 - 非分区表：`AFFINITY='table'`。
-- 分区表：`AFFINITY='partition'`，每个分区会生成独立的亲和性分组。
-- 取消亲和性：设置为 `AFFINITY=''` 或 `AFFINITY='none'`。
+- 分区表：`AFFINITY='partition'`，每个分区会生成独立的亲和性分组。如若表有4个分区，则会分别针对每个分区生成亲和性分组，故总共有4个独立的亲和性分组。
+- 取消亲和性：设置为 `AFFINITY=''` 或 `AFFINITY='none'`。当表从affinity='table' or 'partition' 修改为 'none' 后， PD 会删除该表或分区的亲和性分组，不再受到亲和性相关的调度约束，但是 TiKV 的 Split 状态会在最迟 10 分钟内恢复。
 - 不支持在临时表、视图上开启亲和性。
 
 ## 基本用法
