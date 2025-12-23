@@ -65,10 +65,12 @@ summary: 通过表或分区的亲和性约束，控制 Region 的副本分布并
 
 - 开启亲和性后，**不支持修改分区方案**（如新增/删除/重组/交换分区）。如需调整分区，请先移除亲和性。
 - 临时表、视图不支持亲和性。
+- **数据量较大时需注意磁盘空间**：开启亲和性后，PD 会将表或分区的 Region 调度到指定的少数 Store 上。如果表数据量较大，可能导致这些 Store 的磁盘占用显著增加，需提前评估磁盘容量并做好监控。
 - 亲和性调度依赖 PD 调度参数：
   - `schedule.affinity-schedule-limit` 默认 0（关闭）。需显式配置后，PD 才会为亲和性分组创建调度任务。
   - `schedule.max-affinity-merge-region-size` 为亲和性 Region 的合并阈值；设置为 0 关闭亲和性合并。
 - 亲和性生效时，小于阈值的 Region 默认不进行自动分裂，手工 `ADMIN SPLIT` 仍可执行。
+- 不支持 Learner 副本的亲和性调度：如果表配置了包含 Learner 副本的放置规则（比如 TiFlash），亲和性调度不会对 Learner 副本生效，但不影响现有 Learner 副本的分布。
 - 当目标 Store 处于不可用、被驱逐 Leader、或与放置规则冲突时，PD 会将分组标记为降级或过期，亲和性调度暂停。恢复后可通过 `SHOW AFFINITY` 观察状态，必要时重新更新分组的 Leader/Voter。
 
 ## 相关语句与配置
