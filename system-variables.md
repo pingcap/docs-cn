@@ -543,7 +543,7 @@ mysql> SELECT * FROM t1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 默认值：`50`
-- 范围：`[1, 3600]`
+- 范围：`[1, 1073741824]`
 - 单位：秒
 - 悲观事务语句等锁时间。
 
