@@ -2488,7 +2488,7 @@ Raft Engine 相关的配置项。
 
 ### `wait-for-lock-timeout`
 
-+ 悲观事务在 TiKV 中等待其他事务释放锁的最长时间。若超时则会返回错误给 TiDB 并由 TiDB 重试加锁，语句最长等锁时间由 `innodb_lock_wait_timeout` 控制。
++ 悲观事务在 TiKV 中等待其他事务释放锁的最长时间。若超时则会返回错误给 TiDB 并由 TiDB 重试加锁，语句最长等锁时间由 [`innodb_lock_wait_timeout`](/system-variables.md#innodb_lock_wait_timeout) 控制。
 + 默认值：1s
 + 最小值：1ms
 
