@@ -23,15 +23,6 @@ TiDB 版本：8.5.5
 
 ### 性能
 
-* 按时间点恢复 (Point-in-time recovery, PITR) 支持从压缩后的日志备份中恢复，以加快恢复速度 [#56522](https://github.com/pingcap/tidb/issues/56522) @[YuJuncen](https://github.com/YuJuncen)
-
-    从 v9.0.0 开始，压缩日志备份功能提供了离线压缩能力，将非结构化的日志备份数据转换为结构化的 SST 文件，从而实现以下改进：
-
-    - SST 可以被快速导入集群，从而**提升恢复性能**。
-    - 压缩过程中消除重复记录，从而**减少空间消耗**。
-    - 在确保 RTO (Recovery Time Objective) 的前提下，你可以设置更长的全量备份间隔，从而**降低对业务的影响**。
-
-  更多信息，请参考[用户文档](/br/br-compact-log-backup.md)。
 * 提供索引下推到TiKV到通过hint INDEX_LOOKUP_PUSHDOWN/NO_INDEX_LOOKUP_PUSHDOWN功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
 
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
@@ -73,10 +64,30 @@ TiDB 版本：8.5.5
  * 优化了存在大量外键场景下的 DDL 性能，逻辑 DDL 性能最高可提升 25 倍 [#61126](https://github.com/pingcap/tidb/issues/61126) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1896-->
 
     在 v8.5.5 版本之前，当一些用户单个集群的表数量达到 1000 万级别，且其中有几十万张表有外键的场景，创建表，给表加列这些逻辑 DDL 的性能 QPS 会降低到 4，使得一些多租户的 SaaS 场景下的运维操作变得非常低效。在 v8.5.5 对该场景做了优化。经测试，1000 万张表，其中 20 万张表有外键的场景下，创建表，加列这类逻辑 DDL 的性能 QPS 稳定保持在 100，性能有 25 倍的提升。
-    
+
     更多信息，请参考[用户文档](链接)。
- 
+
+* 按时间点恢复 (Point-in-time recovery, PITR) 支持从压缩后的日志备份中恢复，以加快恢复速度 [#56522](https://github.com/pingcap/tidb/issues/56522) @[YuJuncen](https://github.com/YuJuncen) **tw@lilin90** <!--2001-->
+
+    从 v9.0.0 开始，压缩日志备份功能提供了离线压缩能力，将非结构化的日志备份数据转换为结构化的 SST 文件，从而实现以下改进：
+
+    - SST 可以被快速导入集群，从而**提升恢复性能**。
+    - 压缩过程中消除重复记录，从而**减少空间消耗**。
+    - 在确保 RTO (Recovery Time Objective) 的前提下，你可以设置更长的全量备份间隔，从而**降低对业务的影响**。
+
+  更多信息，请参考[用户文档](/br/br-compact-log-backup.md)。
+
+* Accelerated recovery of system tables from backups [#58757](https://github.com/pingcap/tidb/issues/58757) @[Leavrth](https://github.com/Leavrth) **tw@lilin90** <!--2109-->
+
+    When restoring system tables from a backup, BR now introduces a new `--fast-load-sys-tables` parameter to use physical restoration instead of logical restoration. This option completely overwrites/replaces the existing tables, instead of restoring into them, for faster restoration for large scale deployments.
+
+    For more information, see [Documentation](/br/br-snapshot-guide.md#restore-tables-in-the-mysql-schema).
+
 ### 稳定性
+
+* Improved store scheduling in presence of network jitter [#9359](https://github.com/tikv/pd/issues/9359) @[okJiang](https://github.com/okJiang) **tw@qiancai** <!--2260-->
+
+    Provides a network status feedback mechanism to PD to avoid re-scheduling the leaders back to a problematic node (experiencing network jitter) after the leaders had been transferred off the node by TiKV raft mechanism. If the network continues to jitter, PD will actively evict leader from jittering node.
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
 
@@ -85,6 +96,12 @@ TiDB 版本：8.5.5
     更多信息，请参考[用户文档](链接)。
 
 ### 高可用
+
+* Introduce Client Circuit Breaker Pettern for PD [#8678](https://github.com/tikv/pd/issues/8678) @[Tema](https://github.com/Tema) **tw@hfxsd** <!--2051-->
+
+    To protect the PD leader from overloading due to retry storms or similar feedback loops, a circuit breaker pattern is introduced to limit incoming traffic (when a threshold of errors is reached) to enable the system to stabilize. The `tidb_cb_pd_metadata_error_rate_threshold_ratio` system variable is used to control the application of the circuit breaker.
+
+    For more information, see [Documentation](https://docs.pingcap.com/tidb/v8.5/system-variables#tidb_cb_pd_metadata_error_rate_threshold_ratio-new-in-v855).
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
 
@@ -114,17 +131,17 @@ TiDB 版本：8.5.5
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#graceful-shutdown-timeout-从-v855-版本开始引入)。
 
-* 提升进行中的日志备份与快照恢复的兼容性 [#58685](https://github.com/pingcap/tidb/issues/58685) @[BornChanger](https://github.com/BornChanger)
+* 提升进行中的日志备份与快照恢复的兼容性 [#58685](https://github.com/pingcap/tidb/issues/58685) @[BornChanger](https://github.com/BornChanger) **tw@lilin90** <!--2000-->
 
     从 v9.0.0 开始，当日志备份任务正在运行时，在满足特定条件的情况下，仍然可以执行快照恢复，并且恢复的数据可以被进行中的日志备份正常记录。这样，日志备份可以持续进行，无需在恢复数据期间中断。
 
     更多信息，请参考[用户文档](/br/br-pitr-manual.md#进行中的日志备份与快照恢复的兼容性)。
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
+* Table level restores from Log Backups [#57613](https://github.com/pingcap/tidb/issues/57613) @[Tristan1900](https://github.com/Tristan1900) **tw@lilin90** <!--2005-->
 
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+    Starting from v8.5.5, individual table level point in time recoveries can now be performed from log backups using filters. Being able to restore individual tables, instead of the full cluster, to a specific point in time enables much more flexible, and less impactful, recovery options.
 
-    更多信息，请参考[用户文档](链接)。
+    For more information, see [documentation](/br/br-pitr-manual.md#restore-data-using-filters).
 
 ### 可观测性
 
