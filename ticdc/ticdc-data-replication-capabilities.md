@@ -49,7 +49,7 @@ TiCDC 对上游数据变更的支持范围如下：
 
     例如：当通过 changefeed 配置了过滤所有 DDL 事件后，如果上游执行 `DROP COLUMN` 操作后继续写入涉及该列的 `INSERT` 语句，TiCDC 同步这些 DML 变更到下游时，会因下游表结构不同而导致数据写入失败。
 
-- 对于 TiCDC [老架构](/ticdc/ticdc-classic-architecture.md)，当单个 TiCDC 集群同步的表数量超过以下建议值时，TiCDC 可能无法稳定工作：
+- 对于 TiCDC [老架构](https://docs.pingcap.com/zh/tidb/stable/ticdc-classic-architecture/)，当单个 TiCDC 集群同步的表数量超过以下建议值时，TiCDC 可能无法稳定工作：
   
     |  TiCDC 集群版本 | 同步表的数量建议值 |
     |---|:---:|
@@ -61,4 +61,4 @@ TiCDC 对上游数据变更的支持范围如下：
     >
     > 如果同步的是分区表，TiCDC 会将每个分区视为一张独立的表，因此在计算同步表的数量时会将分区数量也计算在内。
 
-    如果需要同步的表数量超过以上建议值，建议使用 [TiCDC 新架构](/ticdc/ticdc-architecture.md)。新架构单个 Changefeed 支持同步超过百万张表，适用于大规模同步场景。
+    如果需要同步的表数量超过以上建议值，建议使用 [TiCDC 新架构](https://docs.pingcap.com/zh/tidb/stable/ticdc-architecture/)。新架构单个 Changefeed 支持同步超过百万张表，适用于大规模同步场景。
