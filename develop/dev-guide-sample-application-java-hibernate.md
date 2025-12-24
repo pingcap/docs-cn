@@ -5,7 +5,7 @@ summary: 了解如何使用 Hibernate 连接到 TiDB。本文提供了使用 Hib
 
 # 使用 Hibernate 连接到 TiDB
 
-TiDB 是一个兼容 MySQL 的数据库。[Hibernate](https://hibernate.org/orm/) 是当前比较流行的开源 Java 应用持久层框架。由于 TiDB 与 MySQL 高度兼容，建议长期使用 `org.hibernate.dialect.MySQLDialect` 作为 Hibernate 的方言（Dialect），以获得更好的兼容性。或者，也可以使用 TiDB 特定的方言（`org.hibernate.community.dialect.TiDBDialect`），该方言位于 [Hibernate community dialects](https://github.com/hibernate/hibernate-orm/tree/main/hibernate-community-dialects) 项目中，但该项目并非由 PingCAP 维护。如果你在使用 `MySQLDialect` 时遇到兼容性问题，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+TiDB 是一个兼容 MySQL 的数据库。[Hibernate](https://hibernate.org/orm/) 是当前比较流行的开源 Java 应用持久层框架。由于 TiDB 与 MySQL 高度兼容，建议长期使用 `org.hibernate.dialect.MySQLDialect` 作为 Hibernate 的方言(Dialect)，以获得更好的兼容性。或者，也可以使用 TiDB 特定的方言 (`org.hibernate.community.dialect.TiDBDialect`)，该方言位于 [Hibernate community dialects](https://github.com/hibernate/hibernate-orm/tree/main/hibernate-community-dialects) 项目中，但该项目并非由 PingCAP 维护。如果你在使用 `MySQLDialect` 时遇到兼容性问题，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
 
 本文档将展示如何使用 TiDB 和 Hibernate 来完成以下任务：
 
@@ -279,7 +279,7 @@ Hibernate 的 [`@Check`](https://docs.hibernate.org/orm/6.5/javadocs/org/hiberna
 SET GLOBAL tidb_enable_check_constraint=ON;
 ```
 
-在未启用该设置的情况下，TiDB 会接受 `CHECK` 约束的语法但不会强制执行，这可能导致意外的数据完整性问题。更多信息，请参见 [`CHECK` 约束](/constraints.md#check)。
+如果未启用该设置，TiDB 会接受 `CHECK` 约束的语法但不会强制执行，这可能导致意外的数据完整性问题。更多信息，请参见 [`CHECK` 约束](/constraints.md#check)。
 
 ## 下一步
 
