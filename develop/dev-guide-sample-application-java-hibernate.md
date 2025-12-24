@@ -5,7 +5,7 @@ summary: 了解如何使用 Hibernate 连接到 TiDB。本文提供了使用 Hib
 
 # 使用 Hibernate 连接到 TiDB
 
-TiDB 是一个兼容 MySQL 的数据库。[Hibernate](https://hibernate.org/orm/) 是当前比较流行的开源 Java 应用持久层框架，且 Hibernate 在版本 `6.0.0.Beta2` 及以上支持了 TiDB 方言，完美适配了 TiDB 的特性。
+TiDB 是一个兼容 MySQL 的数据库。[Hibernate](https://hibernate.org/orm/) 是当前比较流行的开源 Java 应用持久层框架。由于 TiDB 与 MySQL 高度兼容，建议使用 `org.hibernate.dialect.MySQLDialect` 作为 Hibernate 的方言 (Dialect)，以获得更好的长期兼容性。或者，也可以使用 TiDB 特定的方言 (`org.hibernate.community.dialect.TiDBDialect`)，该方言位于 [Hibernate community dialects](https://github.com/hibernate/hibernate-orm/tree/main/hibernate-community-dialects) 项目中，但该项目并非由 PingCAP 维护。如果你在使用 `MySQLDialect` 时遇到兼容性问题，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
 
 本文档将展示如何使用 TiDB 和 Hibernate 来完成以下任务：
 
@@ -185,7 +185,7 @@ cd tidb-java-hibernate-quickstart
 
         <!-- Database connection settings -->
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.TiDBDialect</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.url">${tidb_jdbc_url}</property>
         <property name="hibernate.connection.username">${tidb_user}</property>
         <property name="hibernate.connection.password">${tidb_password}</property>
@@ -244,6 +244,42 @@ try (Session session = sessionFactory.openSession()) {
 ```
 
 更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
+
+## 与 `MySQLDialect` 的兼容性
+
+在 TiDB 中使用 `MySQLDialect` 时，请注意以下行为：
+
+### `SERIALIZABLE` 隔离级别
+
+如果应用尝试将事务隔离级别设置为 `SERIALIZABLE`，TiDB 会返回如下错误：
+
+```
+The isolation level 'SERIALIZABLE' is not supported. Set tidb_skip_isolation_level_check=1 to skip this error
+```
+
+要避免该错误，请在服务端设置以下 TiDB 系统变量：
+
+```sql
+SET GLOBAL tidb_skip_isolation_level_check=1;
+```
+
+启用该变量后，TiDB 会接受请求中指定 `SERIALIZABLE` 而不返回错误。TiDB 内部仍然使用 `REPEATABLE-READ`，这是 TiDB 所支持的最强事务隔离级别。更多信息，请参见 [`tidb_skip_isolation_level_check`](/system-variables.md#tidb_skip_isolation_level_check)。
+
+> **注意：**
+>
+> 社区版的 `TiDBDialect` 会自动处理此行为，通过跳过依赖 `SERIALIZABLE` 隔离级别的相关特性来避免问题。
+
+### `CHECK` 约束
+
+Hibernate 的 [`@Check`](https://docs.hibernate.org/orm/6.5/javadocs/org/hibernate/annotations/Check.html) 注解会生成 DDL `CHECK` 约束。[MySQL 8.0.16 及之后版本](https://dev.mysql.com/doc/refman/8.0/en/create-table-check-constraints.html) 默认会强制执行这些约束。但在 TiDB 中，如果没有显式启用，则不会强制执行。
+
+要在 TiDB 中启用 `CHECK` 约束的强制执行，请设置以下系统变量：
+
+```sql
+SET GLOBAL tidb_enable_check_constraint=ON;
+```
+
+如果未启用该设置，TiDB 会接受 `CHECK` 约束的语法但不会强制执行，这可能导致数据完整性问题。更多信息，请参见 [`CHECK` 约束](/constraints.md#check-约束)。
 
 ## 下一步
 
