@@ -79,7 +79,7 @@ tiup ctl:v<CLUSTER_VERSION> pd -u https://127.0.0.1:2379 tso {TIMESTAMP}
 {{< copyable "" >}}
 
 ```shell
-curl http://{TiDBIP}:10080/db-table/{tableID}
+curl http://{TiDBIP}:10080/db-table/{TableID}
 ```
 
 通过 indexID 查找具体的索引名：

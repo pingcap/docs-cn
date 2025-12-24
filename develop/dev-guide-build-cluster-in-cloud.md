@@ -8,7 +8,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
 # 使用 {{{ .starter }}} 构建 TiDB 集群
 
-本文将介绍如何以最快的方式开始使用 TiDB。你将创建并启动一个 [{{{ .starter }}}](https://www.pingcap.com/tidb-cloud-serverless/)（原名 Serverless）集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
+本文将介绍如何以最快的方式开始使用 TiDB。你将创建并启动一个 [{{{ .starter }}}](https://www.pingcap.com/tidb-cloud-starter/) 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
 
 若你需要在本地计算机上启动 TiDB，请参阅[本地启动 TiDB](/quick-start-with-tidb.md)。
 
@@ -34,7 +34,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
     > **注意：**
     >
-    > 在连接到 [{{{ .starter }}}](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 集群时，你需要给用户名加上前缀并使用单引号包裹用户名。你可以在 [{{{ .starter }}} 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix) 中获得更多信息。
+    > 在连接到 [{{{ .starter }}}](https://docs.pingcap.com/tidbcloud/select-cluster-tier#starter) 集群时，你需要给用户名加上前缀并使用单引号包裹用户名。你可以在 [{{{ .starter }}} 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix)中获得更多信息。
 
 ## 第 2 步：连接到集群
 
@@ -118,7 +118,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 > **注意：**
 >
 > - 在连接 {{{ .starter }}} 集群时，[必须使用 TLS 连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)。
-> - 如果你在连接时遇到问题，可阅读 [{{{ .starter }}} 集群安全连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters) 来获得更多信息。
+> - 如果你在连接时遇到问题，可阅读 [{{{ .starter }}} 集群安全连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)来获得更多信息。
 
 3. 填写密码，完成登录。
 

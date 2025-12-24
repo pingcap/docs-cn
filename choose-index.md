@@ -82,7 +82,7 @@ Skyline-Pruning 是一个针对索引的启发式过滤规则，能降低错误�
 
 - 选择该索引是否能满足一定的顺序。因为索引的读取可以保证某些列集合的顺序，所以满足查询要求顺序的索引在这个维度上优于不满足的索引。
 
-- 该索引是否为[全局索引](/partitioned-table.md#全局索引)。在分区表中，全局索引相比普通索引能有效的降低一个 SQL 的 cop task 数量，进而提升整体性能。
+- 该索引是否为[全局索引](/global-indexes.md)。在分区表中，全局索引相比普通索引能有效的降低一个 SQL 的 cop task 数量，进而提升整体性能。
 
 对于上述维度，如果索引 `idx_a` 在这四个维度上都不比 `idx_b` 差，且有一个维度比 `idx_b` 好，那么 TiDB 会优先选择 `idx_a`。在执行 `EXPLAIN FORMAT = 'verbose' ...` 语句时，如果 Skyline-Pruning 排除了某些索引，TiDB 会输出一条 NOTE 级别的 warning 提示哪些索引在 Skyline-Pruning 排除之后保留下来。
 

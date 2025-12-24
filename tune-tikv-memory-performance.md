@@ -186,7 +186,7 @@ level0-slowdown-writes-trigger = 20
 level0-stop-writes-trigger = 36
 
 # 当 level1 的数据量大小达到 max-bytes-for-level-base 限定的值的时候，会触发 level1 的
-# sst 和 level2 种有 overlap 的 sst 进行 compaction。
+# sst 和 level2 中有 overlap 的 sst 进行 compaction。
 # 黄金定律：max-bytes-for-level-base 的设置的第一参考原则就是保证和 level0 的数据量大致相
 # 等，这样能够减少不必要的 compaction。例如压缩方式为"no:no:lz4:lz4:lz4:lz4:lz4"，那么
 # max-bytes-for-level-base 的值应该是 write-buffer-size 的大小乘以 4，因为 level0 和

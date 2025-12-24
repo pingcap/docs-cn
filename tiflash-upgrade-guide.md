@@ -19,7 +19,7 @@ aliases: ['/zh/tidb/dev/tiflash-620-upgrade-guide']
 >
 > - 不推荐跨主干版本升级包含 TiFlash 的 TiDB 集群，如从 v4.x 升级至 v6.x，请先升级至 v5.x，然后再升级至 v6.x。
 >
-> - v4.x. 已接近产品周期尾声，请尽早升级到 v5.x 及以上版本。具体的版本周期请参考 [TiDB 版本周期支持策略](https://pingcap.com/zh/tidb-release-support-policy)。
+> - v6.x. 已接近产品周期尾声，请尽早升级到 v7.x 及以上版本。具体的版本周期请参考 [TiDB 版本周期支持策略](https://pingkai.cn/tidb-release-support-policy)。
 >
 > - v6.0 作为非 LTS 版本，不会推出后续的 bug 修复版，请尽量使用 v6.1 及之后的 LTS 版本。
 
