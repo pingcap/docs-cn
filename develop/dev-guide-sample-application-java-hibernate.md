@@ -279,7 +279,7 @@ Hibernate 的 [`@Check`](https://docs.hibernate.org/orm/6.5/javadocs/org/hiberna
 SET GLOBAL tidb_enable_check_constraint=ON;
 ```
 
-如果未启用该设置，TiDB 会接受 `CHECK` 约束的语法但不会强制执行，这可能导致数据完整性问题。更多信息，请参见 [`CHECK` 约束](/constraints.md#check)。
+如果未启用该设置，TiDB 会接受 `CHECK` 约束的语法但不会强制执行，这可能导致数据完整性问题。更多信息，请参见 [`CHECK` 约束](/constraints.md#check-约束)。
 
 ## 下一步
 
