@@ -497,9 +497,6 @@ tiup br restore point --pd="${PD_IP}:2379"
 --crypter.key 0123456789abcdef0123456789abcdef
 --master-key-crypter-method aes128-ctr
 --master-key "local:///path/to/master.key"
-<<<<<<< HEAD
-```
-=======
 ```
 
 ### 使用过滤器恢复
@@ -648,4 +645,3 @@ tiup br abort restore table --pd="${PD_IP}:2379" \
 --storage='s3://backup-101/snapshot-20250602000000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
 --db database_name --table table_name
 ```
->>>>>>> 937be29a70 (br: pitr filter feature release doc (#20450))
