@@ -85,9 +85,6 @@ br 工具暂停 GC 的原理是通过执行 `SET config tikv gc.ratio-threshold 
 
 在第一次执行恢复并且进入日志恢复阶段时，br 工具会在恢复集群中创建 `__TiDB_BR_Temporary_Log_Restore_Checkpoint` 数据库，用于记录断点数据，以及这次恢复的上游集群 ID 和恢复的时间范围 `start-ts` 与 `restored-ts`。如果在此阶段恢复失败，重新执行恢复命令时，你需要指定与断点记录相同的 `start-ts` 和 `restored-ts` 参数，否则 br 工具会报错，并提示上游集群 ID 或恢复的时间范围与断点记录不同。如果恢复集群已被清理，你可以手动删除 `__TiDB_BR_Temporary_Log_Restore_Checkpoint` 数据库，然后使用其他备份重试。
 
-<<<<<<< HEAD
-在第一次执行恢复并且进入日志恢复阶段前，br 工具会构造出在 `restored-ts` 时间点的上下游集群库表 ID 映射关系，并将其持久化到系统表 `mysql.tidb_pitr_id_map` 中，以避免库表 ID 被重复分配。如果删除 `mysql.tidb_pitr_id_map` 中的数据，可能会导致 PITR 恢复数据不一致。
-=======
 注意在第一次执行恢复并且进入日志恢复阶段前，br 工具会构造出在 `restored-ts` 时间点的上下游集群库表 ID 映射关系，并将其持久化到系统表 `mysql.tidb_pitr_id_map` 中，以避免库表 ID 被重复分配。**如果随意删除 `mysql.tidb_pitr_id_map` 中的数据，可能会导致 PITR 恢复数据不一致。**
 
 > **注意：**
@@ -159,4 +156,3 @@ br 工具暂停 GC 的原理是通过执行 `SET config tikv gc.ratio-threshold 
 > **注意：**
 >
 > 为了兼容旧版本集群，从 v9.0.0 开始，当恢复集群不存在系统表 `mysql.tidb_pitr_id_map` 且未指定参数 `--checkpoint-storage` 时，`pitr_id_map` 数据会写到日志备份目录下，文件名为 `pitr_id_maps/pitr_id_map.cluster_id:{downstream-cluster-ID}.restored_ts:{restored-ts}`。
->>>>>>> 542e7ece71 (restore: update the definition of the parameter `--load-stats` and the usage of pitr id map (#20346))
