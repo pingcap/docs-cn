@@ -77,6 +77,20 @@ TiDB 版本：8.5.5
 
   更多信息，请参考[用户文档](/br/br-compact-log-backup.md)。
 
+* 提示索引下推到TiKV提升查询性能 [#62575](https://github.com/pingcap/tidb/issues/62575) @[lcwangchao](https://github.com/lcwangchao) **tw@qiancai** <!--1899-->
+
+    通过hint INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...]) 提示优化器将指定索引查询下推到TiKV，减少远程调用的次数，经过测试数据对比显示性能可提升约20%左右，最优可提升到40%。本特性一般建议结合表 affinity 属性使用，即表属性 AFFINITY="table" 或者 分区表属性 AFFINITY="partition" 。
+
+    通过hint NO_INDEX_LOOKUP_PUSHDOWN(t1_name) 明确提示优化器不要将对应表的索引查询下推到TiKV执行。
+
+    更多信息，请参考[optimizer-hints.md](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints/)。
+
+* 表级和分区级亲和性属性 AFFINITY [#9764](https://github.com/tikv/pd/issues/9764) @[lhy1024](https://github.com/lhy1024) **tw@qiancai** <!--2317-->
+
+    为表或者分区表新增亲和性属性，设置亲和性属性后，PD会将表或分区的Region归为相同的一个亲和性分组中，这些Region的Leader、Voter 会被优先调度到指定TiKV Store上。有AFFNITY属性的表和分区在查询时，由于索引、表数据的Region都在一个TiKV Store上，因此优化器可结合 hint INDEX_LOOKUP_PUSHDOWN 指定将对应索引查询下推，减少跨节点分散查询带来的延迟，根据测试数据对比性能可约提升20%。
+
+    更多信息，请参考[table-affinity.md](table-affinity.md)。
+
 * Accelerated recovery of system tables from backups [#58757](https://github.com/pingcap/tidb/issues/58757) @[Leavrth](https://github.com/Leavrth) **tw@lilin90** <!--2109-->
 
     When restoring system tables from a backup, BR now introduces a new `--fast-load-sys-tables` parameter to use physical restoration instead of logical restoration. This option completely overwrites/replaces the existing tables, instead of restoring into them, for faster restoration for large scale deployments.
