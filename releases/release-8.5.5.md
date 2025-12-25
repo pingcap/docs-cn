@@ -135,6 +135,13 @@ TiDB 版本：8.5.5
 
 ## 兼容性变更
 
+### 系统变量
+
+
+### 配置参数
+
+- 新增 BR 配置项 [`--checkpoint-storage`](/br/br-checkpoint-restore.md#实现细节将断点数据存储在下游集群)，用于指定断点数据存储的外部存储。 
+
 ### 行为变更
 
 * When using [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) with [Global Sort](/tidb-global-sort.md) enabled, primary key or unique index conflicts are now automatically resolved by removing all conflicting rows (none of the conflicting rows are preserved), instead of causing the task to fail. The number of conflicted rows appears in the `Result_Message` column of `SHOW IMPORT JOBS` output, and detailed conflict information is stored in cloud storage. For more information, see [`IMPORT INTO` conflict resolution](/sql-statements/sql-statement-import-into.md#conflict-resolution).
