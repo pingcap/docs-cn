@@ -69,7 +69,7 @@ br 工具暂停 GC 的原理是通过执行 `SET config tikv gc.ratio-threshold 
 
 > **注意：**
 >
-> 从 v9.0.0 开始，默认将断点数据存储在下游集群。你可以通过参数 `--checkpoint-storage` 来指定断点数据存储的外部存储。
+> 从 v8.5.5 开始，默认将断点数据存储在下游集群。你可以通过参数 `--checkpoint-storage` 来指定断点数据存储的外部存储。
 
 断点恢复的具体操作细节分为快照恢复和 PITR 恢复两部分。
 
@@ -95,7 +95,7 @@ br 工具暂停 GC 的原理是通过执行 `SET config tikv gc.ratio-threshold 
 
 > **注意：**
 >
-> 从 v9.0.0 开始，默认将断点数据存储在下游集群。你可以通过参数 `--checkpoint-storage` 来指定断点数据存储的外部存储。例如：
+> 从 v8.5.5 开始，默认将断点数据存储在下游集群。你可以通过参数 `--checkpoint-storage` 来指定断点数据存储的外部存储。例如：
 >
 > ```shell
 > ./br restore full -s "s3://backup-bucket/backup-prefix" --checkpoint-storage "s3://temp-bucket/checkpoints"
