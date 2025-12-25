@@ -43,7 +43,7 @@ TiDB 版本：8.5.5
 
 * 提示索引下推到TiKV提升查询性能 [#62575](https://github.com/pingcap/tidb/issues/62575) @[lcwangchao](https://github.com/lcwangchao) **tw@Oreoxmt** <!--1899-->
 
-    通过hint INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...]) 提示优化器将指定索引查询下推到TiKV，减少远程调用的次数，经过测试数据对比显示性能可提升约20%左右，最优可提升到40%。本特性一般建议结合表 affinity 属性使用，即表属性 AFFINITY="table" 或者 分区表属性 AFFINITY="partition" 。
+    通过hint INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...]) 提示优化器将指定索引查询下推到TiKV，减少远程调用的次数，性能在理论上有提升，但具体提升比例需要结合业务场景实际测试。本特性一般建议结合表 affinity 属性使用，即表属性 AFFINITY="table" 或者 分区表属性 AFFINITY="partition" 。
 
     通过hint NO_INDEX_LOOKUP_PUSHDOWN(t1_name) 明确提示优化器不要将对应表的索引查询下推到TiKV执行。
 
