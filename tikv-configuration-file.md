@@ -1279,7 +1279,7 @@ RocksDB 相关的配置项。
 ### `max-manifest-file-size`
 
 + RocksDB Manifest 文件最大大小。
-+ 默认值：128MiB
++ 默认值：256MiB。在 v8.5.4 和 v9.0.0 之前，默认值为 `128MiB`。
 + 最小值：0
 + 单位：B|KiB|MiB|GiB
 
