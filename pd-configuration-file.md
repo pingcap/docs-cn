@@ -287,7 +287,7 @@ pd-server 相关配置项。
 + 控制 Region Merge 的 key 上限，当 Region key 大于指定值时 PD 不会将其与相邻的 Region 合并。
 + 默认：540000。在 v8.4.0 之前，默认值为 200000；从 v8.4.0 开始，默认值为 540000。
 
-### `max-affinity-merge-region-size` <span class="version-mark">从 v8.5.5 版本开始引入</span>
+### `max-affinity-merge-region-size` <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
 
 + 当 Region 属于亲和性分组且大小小于该值时，PD 会尝试将其与相邻的同一亲和性分组的 Region 合并。设置为 `0` 表示关闭配置了亲和性的 Region 合并。
 + 默认：256
