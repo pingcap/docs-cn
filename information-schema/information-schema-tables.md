@@ -123,7 +123,7 @@ SHOW TABLES
 * `CREATE_OPTIONS`：创建选项。
 * `TABLE_COMMENT`：表的注释、备注。
 
-表中的信息大部分定义自 MySQL，以下列为 TiDB 新增：
+表中的大部分列都和 MySQL 相同，除了以下列是 TiDB 新增的：
 
 * `TIDB_TABLE_ID`：标识表的内部 ID，该 ID 在一个 TiDB 集群内部唯一。
 * `TIDB_ROW_ID_SHARDING_INFO`：标识表的 Sharding 类型，可能的值为：
