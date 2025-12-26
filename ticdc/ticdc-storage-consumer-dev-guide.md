@@ -182,3 +182,13 @@ func (tc *TableVersionConsumer) ExecuteDML() {}
 在处理完 DDL 事件后，可以在 `{schema}/{table}/{table-version-separator}/` 目录下，根据具体的文件格式（CSV 或 Canal-JSON）并按照文件序号依次处理 DML 事件。
 
 因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况，所以需要在消费程序中比较数据事件的 commit ts 和 consumer checkpoint，并在 commit ts 小于 consumer checkpoint 的情况下进行去重处理。
+
+在处理文件时，可能会遇到某个文件还没有写入完成就进行读取的情况，这会导致部分数据没有成功读取。我们需要先读取 Index 文件来获取可以进行处理的文件来避免这种情况发生。消费逻辑为：
+- 读取目录下的 meta/CDC.index 文件，获取当前已经完成写入的文件名。
+- 依次处理文件序号小于等于该文件名的 DML 事件。
+
+> **注意：**
+>
+> 在新架构下开启 enable-table-across-nodes 后，文件名变为 CDC\_{uuid}\_000001.json 的形式。此时，该目录下会存在 uuid 不同，序号相同的文件。消费时，读取对应的 Index 文件来获取已经完成写入的文件名，依次处理文件序号小于等于对应文件名的 DML 事件，对这些文件按 DML 事件的 commit-ts 进行排序后统一进行处理。
+
+
