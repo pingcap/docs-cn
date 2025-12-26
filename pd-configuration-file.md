@@ -368,7 +368,7 @@ pd-server 相关配置项。
 + 同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。
 + 默认值：8
 
-### `affinity-schedule-limit` <span class="version-mark">从 v8.5.5 版本开始引入</span>
+### `affinity-schedule-limit` <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
 
 + 控制同时进行的亲和性调度任务数量。设置为 `0` 表示禁用亲和性调度。
 + 默认值：0
