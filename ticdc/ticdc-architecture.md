@@ -57,12 +57,12 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 
 新架构支持为 MySQL Sink 和 Storage Sink 启用**表级任务拆分**。你可以通过在 Changefeed 配置中设置 `scheduler.enable-table-across-nodes = true` 来启用该功能。
 
-对于 MySQL Sink 来说，**有且仅有一个主键或非空唯一键**的表满足以下任一条件时，TiCDC 会自动将其拆分并分发到多个节点并行执行同步，从而提升同步效率与资源利用率：
+对于 **MySQL Sink** 来说，**有且仅有一个主键或非空唯一键**的表满足以下任一条件时，TiCDC 会自动将其拆分并分发到多个节点并行执行同步，从而提升同步效率与资源利用率：
 
 - 表的 Region 数超过配置的阈值（默认 `100000`，可通过 `scheduler.region-threshold` 调整）。
 - 表的写入流量超过配置的阈值（默认未开启，可通过 `scheduler.write-key-threshold` 设置）。
 
-对于 Storage Sink 来说，文件名会变为 CDC\_{uuid}\_{num}.{extension} 的形式，Index 文件名会变为 CDC\_{uuid}.index 的形式。
+对于 **Storage Sink** 来说，文件名会变为 CDC\_{uuid}\_{num}.{extension} 的形式，Index 文件名会变为 CDC\_{uuid}.index 的形式。
 
 - 数据变更记录路径
   ```
