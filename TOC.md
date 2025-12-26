@@ -884,6 +884,7 @@
       - [`SET ROLE`](/sql-statements/sql-statement-set-role.md)
       - [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
       - [`SET <variable>`](/sql-statements/sql-statement-set-variable.md)
+      - [`SHOW AFFINITY`](/sql-statements/sql-statement-show-affinity.md)
       - [`SHOW [BACKUPS|RESTORES]`](/sql-statements/sql-statement-show-backups.md)
       - [`SHOW ANALYZE STATUS`](/sql-statements/sql-statement-show-analyze-status.md)
       - [`SHOW BINDINGS`](/sql-statements/sql-statement-show-bindings.md)
@@ -1004,6 +1005,7 @@
     - [临时表](/temporary-tables.md)
     - [缓存表](/cached-tables.md)
     - [外键约束](/foreign-key.md)
+    - [表级数据亲和性](/table-affinity.md)
     - 字符集和排序规则
       - [概述](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)
