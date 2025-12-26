@@ -11,7 +11,7 @@ summary: 通过表或分区的亲和性约束，控制 Region 的副本分布并
 
 表级数据亲和性是 PD 在表级别上的数据分布调度机制，用于控制同一个表或分区中 Region 的 Leader 和 Voter 副本在 TiKV 集群中的分布。
 
-开启 PD 数据亲和性调度并设置表的 `AFFINITY` 选项为 `table` 或 `partition` 后，PD 会将同一张表或同一个分区的 Region 归入同一个亲和性分组，并在调度过程中优先将这些 Region 的 Leader 和 Voter 副本放置到相同或物理相邻的少数 TiKV 节点上，从而减少查询过程中跨节点访问带来的网络延迟，提升查询性能。
+开启 PD 数据亲和性调度并设置表的 `AFFINITY` 选项为 `table` 或 `partition` 后，PD 会将同一张表或同一个分区的 Region 归入同一个亲和性分组，并在调度过程中优先将这些 Region 的 Leader 和 Voter 副本放置到相同的少数 TiKV 节点上，从而减少查询过程中跨节点访问带来的网络延迟，提升查询性能。
 
 ## 使用限制
 
