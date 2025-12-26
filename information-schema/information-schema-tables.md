@@ -79,11 +79,11 @@ SELECT * FROM tables WHERE table_schema='mysql' AND table_name='user'\G
            CREATE_OPTIONS: 
             TABLE_COMMENT: 
             TIDB_TABLE_ID: 5
- TIDB_ROW_ID_SHARDING_INFO: NULL
-            TIDB_PK_TYPE: CLUSTERED
- TIDB_PLACEMENT_POLICY_NAME: NULL
+TIDB_ROW_ID_SHARDING_INFO: NULL
+             TIDB_PK_TYPE: CLUSTERED
+TIDB_PLACEMENT_POLICY_NAME: NULL
            TIDB_TABLE_MODE: Normal
-            TIDB_AFFINITY: NULL
+             TIDB_AFFINITY: NULL
 1 row in set (0.00 sec)
 ```
 
