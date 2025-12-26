@@ -25,11 +25,11 @@ PD Recover 包含在 TiDB 安装包中。直接下载 TiDB 安装包即可获取
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-recover) | Linux | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
+| `https://download.pingcap.com/tidb-{version}-linux-amd64.tar.gz` (pd-recover) | Linux | amd64 | `https://download.pingcap.com/tidb-{version}-linux-amd64.sha256` |
 
 > **注意：**
 >
-> `{version}` 是 TiDB 的版本号。例如，`v5.4.3` 的安装包下载链接为 `https://download.pingcap.org/tidb-v5.4.3-linux-amd64.tar.gz`。
+> `{version}` 是 TiDB 的版本号。例如，`v5.4.3` 的安装包下载链接为 `https://download.pingcap.com/tidb-v5.4.3-linux-amd64.tar.gz`。
 
 ## 快速开始
 
