@@ -37,9 +37,9 @@ TiDB 版本：8.5.5
 
 * 优化了存在大量外键场景下的 DDL 性能，逻辑 DDL 性能最高可提升 25 倍 [#61126](https://github.com/pingcap/tidb/issues/61126) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1896-->
 
-    在 v8.5.5 版本之前，当一些用户单个集群的表数量达到 1000 万级别，且其中有几十万张表有外键的场景，创建表，给表加列这些逻辑 DDL 的性能 QPS 会降低到 4，使得一些多租户的 SaaS 场景下的运维操作变得非常低效。在 v8.5.5 对该场景做了优化。经测试，1000 万张表，其中 20 万张表有外键的场景下，创建表，加列这类逻辑 DDL 的性能 QPS 稳定保持在 100，性能有 25 倍的提升。
+    在 v8.5.5 版本之前，在超大规模表场景下（如集群表总量达 1000 万级别且包含数十万张外键表），创建表或添加列等逻辑 DDL 操作的 QPS 会下降至 4 左右。这导致多租户 SaaS 等场景下的运维效率非常低。
 
-    更多信息，请参考[用户文档](链接)。
+    v8.5.5 版本针对该场景进行了专项优化。测试数据显示，在拥有 1000 万张表（其中 20 万张含外键）的极端环境下，逻辑 DDL 的处理性能可稳定保持在 100 QPS，相比之前版本提升了 25 倍，显著增强了超大规模集群的运维响应能力。
 
 * 支持将索引查询下推到 TiKV 提升查询性能 [#62575](https://github.com/pingcap/tidb/issues/62575) @[lcwangchao](https://github.com/lcwangchao) **tw@Oreoxmt** <!--1899-->
 
@@ -81,11 +81,11 @@ TiDB 版本：8.5.5
 
 ### 高可用
 
-* Introduce Client Circuit Breaker Pettern for PD [#8678](https://github.com/tikv/pd/issues/8678) @[Tema](https://github.com/Tema) **tw@hfxsd** <!--2051-->
+* 为 PD 引入客户端熔断模式 (Circuit Breaker) [#8678](https://github.com/tikv/pd/issues/8678) @[Tema](https://github.com/Tema) **tw@hfxsd** <!--2051-->
 
-    To protect the PD leader from overloading due to retry storms or similar feedback loops, a circuit breaker pattern is introduced to limit incoming traffic (when a threshold of errors is reached) to enable the system to stabilize. The `tidb_cb_pd_metadata_error_rate_threshold_ratio` system variable is used to control the application of the circuit breaker.
+    为了防止 PD Leader 因重试风暴或类似的反馈循环而过载，TiDB 引入了熔断模式。当错误率达到预设阈值时，该模式会限制进入的流量，从而使系统能够恢复稳定。你可以通过系统变量 `tidb_cb_pd_metadata_error_rate_threshold_ratio` 来控制熔断器的触发。
 
-    For more information, see [Documentation](https://docs.pingcap.com/tidb/v8.5/system-variables#tidb_cb_pd_metadata_error_rate_threshold_ratio-new-in-v855).
+    更多信息，请参考[用户文档](/system-variables.md#tidb_cb_pd_metadata_error_rate_threshold_ratio-new-in-v855).
 
 ### SQL 功能
 
