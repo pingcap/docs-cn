@@ -42,7 +42,9 @@ SHOW AFFINITY;
 - `LEADER_STORE_ID`、`VOTER_STORE_IDS`：PD 为该表或分区记录的目标 Leader 副本和 Voter 副本所在的 store ID。当亲和性尚未确定时显示为 `NULL`。
 - `STATUS`：`Pending` 表示 PD 尚未进行亲和性调度，`Preparing` 表示正在调度 Region 以满足亲和性要求，`Stable` 表示所有 Region 已经达到目标分布。
 - `REGION_COUNT`：当前在该亲和性组中的 Region 数量。
-- `AFFINITY_REGION_COUNT`：已经满足亲和性副本分布的 Region 数量。若 region_count > Affinity_region_count 时，表示pd调度没有完成；若 region_count = Affinity_region_count 时，表示 pd 的基于亲和性的副本搬迁调度工作完成，也就意味着副本分布已经满足亲和性要求，但是不意味着 merge 操作已经完成。
+- `Affinity_region_count`：当前已满足亲和性副本分布要求的 Region 数量。
+    - 当 `Affinity_region_count` < `Region_count` 时，表示仍有部分 Region 尚未完成基于亲和性的副本调度。
+    - 当 `Affinity_region_count` = `Region_count` 时，表示基于亲和性的 Region 副本迁移调度已完成，也就意味着所有 Region 的分布已经满足亲和性要求，但并不意味着相关 Region 的合并操作已完成。
 
 ## MySQL 兼容性
 
