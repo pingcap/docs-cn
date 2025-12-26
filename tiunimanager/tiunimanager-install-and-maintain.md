@@ -91,9 +91,9 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
 
 本节介绍如何在离线环境部署 TiUniManager。当前 TiUniManager 只支持通过离线部署。
 
-1. 通过 `https://download.pingcap.org/em-enterprise-server-${version}-linux-amd64.tar.gz` 下载 TiUniManager 离线安装包。
+1. 通过 `https://download.pingcap.com/em-enterprise-server-${version}-linux-amd64.tar.gz` 下载 TiUniManager 离线安装包。
 
-    下载链接中的 `${version}` 为 TiUniManager 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/em-enterprise-server-v1.0.2-linux-amd64.tar.gz`。在下载时，你需要将链接中的 `${version}` 替换为目标版本号。
+    下载链接中的 `${version}` 为 TiUniManager 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.com/em-enterprise-server-v1.0.2-linux-amd64.tar.gz`。在下载时，你需要将链接中的 `${version}` 替换为目标版本号。
 
 2. 发送 TiUniManager 离线安装包至 TiUniManager 中控机。
 
@@ -150,7 +150,7 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
 
     # 下载解压 TiDB Server 离线镜像包，将 ${version} 手动替换为实际的 TiDB 版本号。
 
-    wget https://download.pingcap.org/tidb-community-server-${version}-linux-amd64.tar.gz
+    wget https://download.pingcap.com/tidb-community-server-${version}-linux-amd64.tar.gz
     tar xzvf tidb-community-server-${version}-linux-amd64.tar.gz
 
     # 导入离线镜像包

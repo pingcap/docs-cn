@@ -52,9 +52,9 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| `https://download.pingcap.org/em-enterprise-server-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/em-enterprise-server-{version}-linux-amd64.sha256` |
+| `https://download.pingcap.com/em-enterprise-server-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.com/em-enterprise-server-{version}-linux-amd64.sha256` |
 
 > **注意：**
 >
-> - 下载链接中的 `{version}` 为 TiUniManager 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/em-enterprise-server-v1.0.2-linux-amd64.tar.gz`。
+> - 下载链接中的 `{version}` 为 TiUniManager 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.com/em-enterprise-server-v1.0.2-linux-amd64.tar.gz`。
 > - TiUniManager 从 v1.0.2 起开放源代码，因此下载链接中 `{version}` 支持的最低版本为 `v1.0.2`。你不能将 `{version}` 替换为 `v1.0.0` 或 `v1.0.1`。
