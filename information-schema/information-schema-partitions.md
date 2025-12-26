@@ -86,7 +86,7 @@ SUBPARTITION_ORDINAL_POSITION: NULL
               TABLESPACE_NAME: NULL
             TIDB_PARTITION_ID: 89
    TIDB_PLACEMENT_POLICY_NAME: NULL
-               TIDB_AFFINITY: NULL
+                TIDB_AFFINITY: NULL
 *************************** 2. row ***************************
                 TABLE_CATALOG: def
                  TABLE_SCHEMA: test
