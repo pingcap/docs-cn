@@ -24,8 +24,8 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz &&
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
+wget https://download.pingcap.com/tidb-{version}-linux-amd64.tar.gz &&
+wget https://download.pingcap.com/tidb-{version}-linux-amd64.sha256
 ```
 
 检查文件完整性，返回 ok 则正确：
@@ -41,8 +41,8 @@ sha256sum -c tidb-{version}-linux-amd64.sha256
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz &&
-wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
+wget https://download.pingcap.com/tidb-binlog-latest-linux-amd64.tar.gz &&
+wget https://download.pingcap.com/tidb-binlog-latest-linux-amd64.sha256
 ```
 
 检查文件完整性，返回 ok 则正确：

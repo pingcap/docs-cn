@@ -20,11 +20,11 @@ TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (TiDB Binlog) | Linux | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
+| `https://download.pingcap.com/tidb-{version}-linux-amd64.tar.gz` (TiDB Binlog) | Linux | amd64 | `https://download.pingcap.com/tidb-{version}-linux-amd64.sha256` |
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v5.4.3` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.4.3-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v5.4.3` 版本的下载链接为 `https://download.pingcap.com/tidb-v5.4.3-linux-amd64.tar.gz`。
 
 ## TiDB Lightning
 
@@ -32,11 +32,11 @@ TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| `https://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.sha256` |
+| `https://download.pingcap.com/tidb-toolkit-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.com/tidb-toolkit-{version}-linux-amd64.sha256` |
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB Lightning 的版本号。例如，`v5.4.3` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v5.4.3-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB Lightning 的版本号。例如，`v5.4.3` 版本的下载链接为 `https://download.pingcap.com/tidb-toolkit-v5.4.3-linux-amd64.tar.gz`。
 
 ## 备份和恢复 (BR) 工具
 
@@ -44,11 +44,11 @@ TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| `https://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.sha256` |
+| `https://download.pingcap.com/tidb-toolkit-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.com/tidb-toolkit-{version}-linux-amd64.sha256` |
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 BR 的版本号。例如，`v5.4.3` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v5.4.3-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 BR 的版本号。例如，`v5.4.3` 版本的下载链接为 `https://download.pingcap.com/tidb-toolkit-v5.4.3-linux-amd64.tar.gz`。
 
 ## TiDB DM (Data Migration)
 
@@ -56,11 +56,11 @@ TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| `https://download.pingcap.org/dm-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/dm-{version}-linux-amd64.sha256` |
+| `https://download.pingcap.com/dm-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.com/dm-{version}-linux-amd64.sha256` |
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 DM 的版本号。例如，`v5.4.3` 版本的下载链接为 `https://download.pingcap.org/dm-v5.4.3-linux-amd64.tar.gz`。可以通过 [DM Release](https://github.com/pingcap/tiflow/releases) 查看当前已发布版本。
+> 下载链接中的 `{version}` 为 DM 的版本号。例如，`v5.4.3` 版本的下载链接为 `https://download.pingcap.com/dm-v5.4.3-linux-amd64.tar.gz`。可以通过 [DM Release](https://github.com/pingcap/tiflow/releases) 查看当前已发布版本。
 
 ## Dumpling
 
@@ -68,11 +68,11 @@ TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| `https://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.sha256` |
+| `https://download.pingcap.com/tidb-toolkit-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.com/tidb-toolkit-{version}-linux-amd64.sha256` |
 
 > **注意：**
 >
-> - 下载链接中的 `{version}` 为 Dumpling 的版本号。例如，`v5.4.3` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v5.4.3-linux-amd64.tar.gz`。可以通过 [TiDB Release](https://github.com/pingcap/tidb/releases) 查看当前已发布版本。
+> - 下载链接中的 `{version}` 为 Dumpling 的版本号。例如，`v5.4.3` 版本的下载链接为 `https://download.pingcap.com/tidb-toolkit-v5.4.3-linux-amd64.tar.gz`。可以通过 [TiDB Release](https://github.com/pingcap/tidb/releases) 查看当前已发布版本。
 > - Dumpling 已支持 arm64 linux，将下载链接中的 amd64 替换为 arm64，即表示 arm64 版 Dumpling。
 
 ## sync-diff-inspector
@@ -81,11 +81,11 @@ TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| `https://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/tidb-toolkit-{version}-linux-amd64.sha256` |
+| `https://download.pingcap.com/tidb-toolkit-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.com/tidb-toolkit-{version}-linux-amd64.sha256` |
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v5.4.3` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v5.4.3-linux-amd64.tar.gz`。可以通过 [TiDB Releases](https://github.com/pingcap/tidb/releases) 查看当前已发布版本。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v5.4.3` 版本的下载链接为 `https://download.pingcap.com/tidb-toolkit-v5.4.3-linux-amd64.tar.gz`。可以通过 [TiDB Releases](https://github.com/pingcap/tidb/releases) 查看当前已发布版本。
 
 ## TiCDC
 
@@ -97,9 +97,9 @@ TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| `https://download.pingcap.org/em-enterprise-server-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/em-enterprise-server-{version}-linux-amd64.sha256` |
+| `https://download.pingcap.com/em-enterprise-server-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.com/em-enterprise-server-{version}-linux-amd64.sha256` |
 
 > **注意：**
 >
-> - 下载链接中的 `{version}` 为 TiUniManager 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/em-enterprise-server-v1.0.2-linux-amd64.tar.gz`。
+> - 下载链接中的 `{version}` 为 TiUniManager 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.com/em-enterprise-server-v1.0.2-linux-amd64.tar.gz`。
 > - TiUniManager 从 v1.0.2 起开放源代码，因此下载链接中 `{version}` 支持的最低版本为 `v1.0.2`。你不能将 `{version}` 替换为 `v1.0.0` 或 `v1.0.1`。

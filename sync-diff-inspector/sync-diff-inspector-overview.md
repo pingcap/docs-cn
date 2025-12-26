@@ -17,7 +17,7 @@ title: sync-diff-inspector 用户文档
 
 你可通过以下方式下载 sync-diff-inspector：
 
-+ Binary 包。点击 [tidb-community-toolkit-v5.4.3-linux-amd64](https://download.pingcap.org/tidb-community-toolkit-v5.4.3-linux-amd64.tar.gz) 进行下载。
++ Binary 包。点击 [tidb-community-toolkit-v5.4.3-linux-amd64](https://download.pingcap.com/tidb-community-toolkit-v5.4.3-linux-amd64.tar.gz) 进行下载。
 + Docker 镜像。执行以下命令进行下载：
 
     {{< copyable "shell-regular" >}}

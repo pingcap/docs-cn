@@ -30,8 +30,8 @@ binlogctl 下载链接：
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz &&
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
+wget https://download.pingcap.com/tidb-{version}-linux-amd64.tar.gz &&
+wget https://download.pingcap.com/tidb-{version}-linux-amd64.sha256
 ```
 
 检查文件完整性，返回 ok 则正确：
