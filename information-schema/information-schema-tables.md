@@ -42,7 +42,7 @@ DESC tables;
 | TIDB_TABLE_ID             | bigint(21)    | YES  |      | NULL     |       |
 | TIDB_ROW_ID_SHARDING_INFO | varchar(255)  | YES  |      | NULL     |       |
 | TIDB_PK_TYPE              | varchar(64)   | YES  |      | NULL     |       |
-| TIDB_PLACEMENT_POLICY_NAME | varchar(64)   | YES  |      | NULL     |       |
+| TIDB_PLACEMENT_POLICY_NAME | varchar(64)  | YES  |      | NULL     |       |
 | TIDB_TABLE_MODE           | varchar(16)   | YES  |      | NULL     |       |
 | TIDB_AFFINITY             | varchar(128)  | YES  |      | NULL     |       |
 +---------------------------+---------------+------+------+----------+-------+
