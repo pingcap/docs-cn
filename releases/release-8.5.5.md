@@ -119,11 +119,23 @@ TiDB 版本：8.5.5
 
 ### 可观测性
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
+* 在 Statement Summary Tables 和慢日志中增加存储引擎标识 [#61736](https://github.com/pingcap/tidb/issues/61736) @[henrybw](https://github.com/henrybw) **tw@Oreoxmt**<!--2034 beta.2-->
 
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+    当集群中同时部署了 TiKV 和 TiFlash 时，用户在数据库诊断和性能优化过程中经常需要根据存储引擎筛选 SQL 语句。例如，当用户发现 TiFlash 负载较高时，需要筛选出在 TiFlash 上运行的 SQL 语句，以便识别可能导致 TiFlash 负载过高的查询语句。为解决此需求，TiDB 从 v9.0.0 开始，在 Statement Summary Tables 和慢日志中新增了存储引擎标识字段。
 
-    更多信息，请参考[用户文档](链接)。
+    在 [Statement Summary Tables](/statement-summary-tables.md) 中新增的字段：
+
+    * `STORAGE_KV`：值为 `1` 时表示该 SQL 语句访问了 TiKV。
+    * `STORAGE_MPP`：值为 `1` 时表示该 SQL 语句访问了 TiFlash。
+
+    在[慢日志](/identify-slow-queries.md)中新增的字段：
+
+    * `Storage_from_kv`：值为 `true` 时表示该 SQL 语句访问了 TiKV。
+    * `Storage_from_mpp`：值为 `true` 时表示该 SQL 语句访问了 TiFlash。
+
+    该功能可以简化部分诊断和性能优化场景的工作流程，提升问题诊断效率。
+
+    更多信息，请参考 [Statement Summary Tables](/statement-summary-tables.md) 和[慢日志](/identify-slow-queries.md)。
 
 ### 安全
 
