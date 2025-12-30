@@ -39,8 +39,11 @@ SHOW AFFINITY;
 
 各列含义如下：
 
-- `LEADER_STORE_ID`、`VOTER_STORE_IDS`：PD 为该表或分区记录的目标 Leader 副本和 Voter 副本所在的 store ID。当亲和性尚未确定时显示为 `NULL`。
-- `STATUS`：`Pending` 表示 PD 尚未进行亲和性调度，`Preparing` 表示正在调度 Region 以满足亲和性要求，`Stable` 表示所有 Region 已经达到目标分布。
+- `Leader_store_id`、`Voter_store_ids`：PD 为该表或分区记录的目标 Leader 副本和 Voter 副本所在的 TiKV Store ID。如果亲和性分组尚未确定目标副本位置或 [`schedule.affinity-schedule-limit`](/pd-configuration-file.md#affinity-schedule-limit-从-v855-和-v900-版本开始引入) 为 `0` ，则显示为 `NULL`。
+- `Status`：表示当前亲和性调度的状态。
+    - `Pending`：PD 尚未对该表或分区进行亲和性调度（比如未确定 Leader 或 Voter 时）。
+    - `Preparing`：PD 正在调度 Region 以满足亲和性要求。
+    - `Stable`：所有 Region 已达到目标分布。
 - `REGION_COUNT`：当前在该亲和性组中的 Region 数量。
 - `Affinity_region_count`：当前已满足亲和性副本分布要求的 Region 数量。
     - 当 `Affinity_region_count` < `Region_count` 时，表示仍有部分 Region 尚未完成基于亲和性的副本调度。
