@@ -7,21 +7,23 @@ summary: TiDB 数据库中 MODIFY COLUMN 的使用概况。
 
 `ALTER TABLE .. MODIFY COLUMN` 语句用于修改已有表上的列，包括列的数据类型和属性。若要同时重命名，可改用 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 语句。
 
-从 v5.1.0 版本起，TiDB 支持需要 Reorg-Data 的列类型变更场景。这类变更在执行过程中需要对表中的已有数据进行重建，包括读取原始数据、按照新的数据格式进行处理，并重新写入表中。常见的 Reorg-Data 类型变更包括（但不限于）：
+从 v5.1.0 起，TiDB 支持需要 Reorg-Data 的列类型变更。这类变更在执行过程中会重建表中现有的所有数据，包括读取原始数据、按照新的数据格式进行处理，以及重新写入表中。由于需要处理全表数据，Reorg-Data 操作通常较为耗时，其执行时间与表中的数据量成正比。
+
+常见的需要 Reorg-Data 的列类型变更包括（但不限于）：
+
 
 - 从 `VARCHAR` 转换为 `BIGINT`
 - `DECIMAL` 精度修改
 - 从 `VARCHAR(10)` 到 `VARCHAR(5)` 的长度压缩
 
-由于需要对全表数据进行处理，Reorg-Data 操作通常较为耗时，其执行时间与表中的数据量成正比。
-从 v8.5.5 和 v9.0.0 起，TiDB 优化了部分原本需要 Reorg-Data 的列类型变更的执行效率。如果当前会话的 [SQL 模式](/sql-mode.md)为严格模式（即 `sql_mode` 值包含 `STRICT_TRANS_TABLES` 或 `STRICT_ALL_TABLES`），TiDB 在进行以下类型变更时，将不再进行表数据重建，仅重建必要的索引：
+从 v8.5.5 和 v9.0.0 起，针对部分原本需要 Reorg-Data 的列类型变更，TiDB 优化了执行效率。如果当前会话的 [SQL 模式](/sql-mode.md)为严格模式（即 `sql_mode` 值包含 `STRICT_TRANS_TABLES` 或 `STRICT_ALL_TABLES`），TiDB 在进行以下类型变更时，会预先检查类型转换过程中是否存在数据截断风险，若不存在数据截断风险，TiDB 将不再进行表数据重建，仅重建受影响的索引：
 
 - 整数类型之间的变更（例如 `BIGINT` 到 `INT`）
 - 字符串类型之间的变更（例如 `VARCHAR(200)` 到 `VARCHAR(100)`）
 
 > **注意：**
 >
-> 当从 `VARCHAR` 转换为 `CHAR` 时，要求所有原数据的末尾均不包含空格；若存在不满足该条件的数据，TiDB 仍会执行 Reorg-Data，以保持数据一致性。
+> 当从 `VARCHAR` 转换为 `CHAR` 时，要求所有原数据的末尾均不包含空格；若存在不满足该条件的数据，TiDB 仍会执行 Reorg-Data，以确保转换后的数据符合 `CHAR` 类型的填充规则。
 
 ## 语法图
 
