@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-modify-column/','/docs-cn/d
 - 从 `VARCHAR(10)` 到 `VARCHAR(5)` 的长度压缩
 
 由于需要对全表数据进行处理，Reorg-Data 操作通常较为耗时，其执行时间与表中的数据量成正比。
-从 v8.5.5 和 v9.0.0 版本起，TiDB 优化了部分 Reorg-Data 类型变更的执行效率。在 [SQL 模式](/sql-mode.md)严格模式（即 `sql_mode` 值包含 `STRICT_TRANS_TABLES` 或 `STRICT_ALL_TABLES`），在进行以下类型变更时，TiDB 将不再进行表数据重建，只进行部分索引的重建：
+从 v8.5.5 和 v9.0.0 起，TiDB 优化了部分原本需要 Reorg-Data 的列类型变更的执行效率。如果当前会话的 [SQL 模式](/sql-mode.md)为严格模式（即 `sql_mode` 值包含 `STRICT_TRANS_TABLES` 或 `STRICT_ALL_TABLES`），TiDB 在进行以下类型变更时，将不再进行表数据重建，仅重建必要的索引：
 
 - 整数类型之间的变更（例如 `BIGINT` 到 `INT`）
 - 字符串类型之间的变更（例如 `VARCHAR(200)` 到 `VARCHAR(100)`）
