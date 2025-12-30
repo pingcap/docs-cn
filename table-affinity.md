@@ -84,7 +84,7 @@ ALTER TABLE t1 AFFINITY = '';
 
 可以通过以下方式查看表的亲和性信息：
 
-- 执行 [`SHOW AFFINITY;`](/sql-statements/sql-statement-show-affinity.md)，在 `STATUS` 列查看已开启亲和性的表或分区及其调度状态。`STATUS` 列的含义如下：
+- 执行 [`SHOW AFFINITY;`](/sql-statements/sql-statement-show-affinity.md)，在 `Status` 列查看已开启亲和性的表或分区及其调度状态。`STATUS` 列的含义如下：
 
     - `Pending`：PD 尚未对该表或分区进行亲和性调度 （比如未确定 Leader 或 Voter 时）。
     - `Preparing`：PD 正在调度 Region 以满足亲和性要求。
