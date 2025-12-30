@@ -95,12 +95,12 @@ ALTER TABLE t1 AFFINITY = '';
 
 ## 注意事项
 
-- **Region 的自动分裂**：当 Region 属于某个亲和性分组且亲和性生效时，Region 默认不会自动分裂（除非大小或 Key 数量超过阈值，该阈值通常为 max-affinity-merge-region-size 的四倍左右），以避免产生过多 Region 影响亲和性效果。手动执行的 [`ADMIN SPLIT`](/sql-statements/sql-statement-admin-split.md) 不受此限制。
+- **Region 的自动分裂**：当 Region 属于某个亲和性分组且亲和性生效时，Region 默认不会自动分裂（除非 Region 大小超过 [`schedule.max-affinity-merge-region-size`](/pd-configuration-file.md#max-affinity-merge-region-size-从-v855-和-v900-版本开始引入) 的四倍以上），以避免产生过多 Region 影响亲和性效果。手动执行的 [`ADMIN SPLIT`](/sql-statements/sql-statement-admin-split.md) 不受此限制。
 
 - **降级与过期机制**：如果亲和性分组中目标 Leader 或 Voter 所在的 TiKV 节点处于不可用状态（例如节点宕机或磁盘空间不足），Leader 被驱逐，或与现有放置规则发生冲突时，PD 会将该亲和性分组标记为降级状态。在降级期间，对应表或分区的亲和性调度将暂停。
 
     - 若在 10 分钟内相关节点恢复正常，PD 会继续按照原有亲和性设置进行调度。
-    - 若超过 10 分钟仍未恢复，该亲和性分组将被标记为过期，PD 将恢复常规调度行为，此时 [`SHOW AFFINITY`](/sql-statements/sql-statement-show-affinity.md) 的状态会回到 `Pending`。接下来，PD 将会自动更新亲和性分组中的 Leader 和 Voter 以重新启用亲和性调度。
+    - 若超过 10 分钟仍未恢复，该亲和性分组将被标记为过期，此时 PD 会先恢复常规调度行为（[`SHOW AFFINITY`](/sql-statements/sql-statement-show-affinity.md) 的状态会回到 `Pending`），然后自动更新亲和性分组中的 Leader 和 Voter 以重新启用亲和性调度。
 
 ## 相关语句与配置
 
