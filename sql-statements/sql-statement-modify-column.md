@@ -13,7 +13,9 @@ summary: TiDB 数据库中 MODIFY COLUMN 的使用概况。
 - `DECIMAL` 精度修改
 - 从 `VARCHAR(10)` 到 `VARCHAR(5)` 的长度压缩
 
-从 v8.5.5 和 v9.0.0 版本起，TiDB 优化了部分 Reorg-Data 类型变更的执行效率。在 [SQL 模式](/sql-mode.md)严格模式（即 `sql_mode` 值包含 `STRICT_TRANS_TABLES` 或 `STRICT_ALL_TABLES`），以下类型变更将不再进行表数据重建，只进行部分索引的重建：
+Reorg-Data 指的是在修改列类型时，TiDB 需要对表中的现有数据进行重建，包括读取原数据，按照新的数据格式进行处理，然后重新写入表中。这类操作通常比较耗时，时间消耗与表中的数据量成正比。
+
+从 v8.5.5 和 v9.0.0 版本起，TiDB 优化了部分 Reorg-Data 类型变更的执行效率。在 [SQL 模式](/sql-mode.md)严格模式（即 `sql_mode` 值包含 `STRICT_TRANS_TABLES` 或 `STRICT_ALL_TABLES`），在进行以下类型变更时，TiDB 将不再进行表数据重建，只进行部分索引的重建：
 
 - 整数类型之间的变更（例如 `BIGINT` 到 `INT`）
 - 字符串类型之间的变更（例如 `VARCHAR(200)` 到 `VARCHAR(100)`）
