@@ -474,7 +474,7 @@ SHOW binding_cache status;
 
 ### 绑定使用情况统计
 
-从 v9.0.0 开始，TiDB 引入了 [`tidb_enable_binding_usage`](/system-variables.md#tidb_enable_binding_usage-new-in-v854-and-v900) 系统变量，用于控制是否收集 SQL 执行计划绑定的使用统计信息。
+从 v9.0.0 开始，TiDB 引入了 [`tidb_enable_binding_usage`](/system-variables.md#tidb_enable_binding_usage-new-in-v900) 系统变量，用于控制是否收集 SQL 执行计划绑定的使用统计信息。
 
 当此变量设置为 `ON` 时，TiDB 会每六个小时将绑定使用情况的统计信息写入 `mysql.bind_info` 表。你可以使用这些统计信息来识别未使用的绑定，并优化绑定管理策略，例如删除不再需要的绑定或调整现有绑定以提高查询性能。
 
