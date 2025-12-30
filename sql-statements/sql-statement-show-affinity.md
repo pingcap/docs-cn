@@ -5,7 +5,7 @@ summary: 介绍 TiDB 数据库中 SHOW AFFINITY 的使用概况。
 
 # SHOW AFFINITY <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
 
-`SHOW AFFINITY` 语句用于查看配置了 `AFFINITY` 选项的表或分区的亲和性调度信息，以及 PD 当前记录的目标副本分布。
+`SHOW AFFINITY` 语句用于查看配置了 `AFFINITY` 选项的表的[亲和性](table-affinity.md)调度信息，以及 PD 当前记录的目标副本分布。
 
 ## 语法图
 
