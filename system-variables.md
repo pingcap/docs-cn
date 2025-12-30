@@ -1765,7 +1765,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`OFF`
 - 该变量控制是否启用废弃的 batch-dml 特性。启用该变量后，部分语句可能会被拆分为多个事务执行，这是非原子性的，使用时需谨慎。使用 batch-dml 时，必须确保正在操作的数据没有并发操作。要使该变量生效，还需要为 `tidb_batch_dml_size` 指定一个正值，并启用 `tidb_batch_insert` 和 `tidb_batch_delete` 中的至少一个。
 
-### `tidb_enable_binding_usage` <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
+### `tidb_enable_binding_usage` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
 - 作用域: GLOBAL
 - 是否持久化到集群: 是
