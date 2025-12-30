@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-modify-column/','/docs-cn/d
 
 `ALTER TABLE .. MODIFY COLUMN` 语句用于修改已有表上的列，包括列的数据类型和属性。若要同时重命名，可改用 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 语句。
 
-从 v5.1.0 版本起，TiDB 开始支持 Reorg 类型变更，包括但不限于：
+从 v5.1.0 版本起，TiDB 开始支持 Reorg-Data 类型变更，包括但不限于：
 
 - 从 `VARCHAR` 转换为 `BIGINT`
 - `DECIMAL` 精度修改
