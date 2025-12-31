@@ -170,7 +170,7 @@ TiDB 版本：8.5.5
 |--------|------------------------------|------|
 | `tidb_advancer_check_point_lag_limit`       |  新增   | 控制日志备份任务 Checkpoint 的滞后时间限制。如果日志备份任务 Checkpoint 的滞后时间超过了限制，TiDB Advancer 会暂停该任务。 |
 | `tidb_cb_pd_metadata_error_rate_threshold_ratio`    |  新增  | 控制 TiDB 何时触发熔断器。设置为 `0`（默认值）表示禁用熔断器。设置为 `0.01` 到 `1` 之间的值时，表示启用熔断器，当发送到 PD 的特定请求的错误率达到或超过该阈值时，熔断器会被触发。|
-|        |                              |      |
+| `tidb_index_lookup_pushdown_policy` |  新增  | 控制 TiDB 是否以及在什么条件下将 `IndexLookUp` 算子下推到 TiKV。 |
 |        |                              |      |
 |        |                              |      |
 
