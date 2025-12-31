@@ -291,7 +291,7 @@ pd-server 相关配置项。
 ### `max-affinity-merge-region-size` <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
 
 - 控制属于同一[亲和性](table-affinity.md)分组中相邻的小 Region 自动合并的阈值。当 Region 属于某个亲和性分组，且其大小小于该配置值时，PD 会尝试将该 Region 与同一亲和性分组中相邻的其它小 Region 进行合并，以减少 Region 数量并维持亲和性效果。设置为 `0` 表示关闭亲和性分组中相邻小 Region 的自动合并。
-+ 默认：256
++ 默认值：256
 + 单位：MiB
 
 ### `patrol-region-interval`
