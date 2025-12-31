@@ -153,9 +153,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `grpc-concurrency`
 
 + gRPC 工作线程的数量。调整 gRPC 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
-+ 默认值：从 v8.5.4 版本开始，调整为 `grpc-raft-conn-num * 3 + 2`。其中，grpc-raft-conn-num 的默认值可参考[grpc-raft-conn-num](#grpc-raft-conn-num)。
++ 默认值：从 v8.5.4 起，调整为 `grpc-raft-conn-num * 3 + 2`。其中，`grpc-raft-conn-num` 的默认值可参考 [`grpc-raft-conn-num`](#grpc-raft-conn-num)。在 v8.5.3 及之前的 v8.5.x 版本中，默认值为 5。
 
-    + 比如，当 CPU 核数为 8 时，`grpc-raft-conn-num` 的默认值为 1，相应地，`grpc-concurrency` 即为 1 * 3 + 2 == 5。
+    + 例如，当 CPU 核数为 8 时，`grpc-raft-conn-num` 的默认值为 1，相应地，`grpc-concurrency` 即为 1 * 3 + 2 == 5。
 
 + 最小值：1
 
@@ -174,7 +174,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `grpc-raft-conn-num`
 
 + TiKV 节点之间用于 Raft 通信的连接最大数量。
-+ 默认值：从 v8.5.4 版本开始，调整为`MAX(1, MIN(4, CPU num / 8))`. 其中，`MIN(4, CPU num / 8)` 表示当 CPU 核数大于等于 32 时，默认的最大连接数限制为 4。
++ 默认值：从 v8.5.4 版本开始，调整为`MAX(1, MIN(4, CPU 核数 / 8))`，其中，`MIN(4, CPU 核数 / 8)` 表示当 CPU 核数大于等于 32 时，默认的最大连接数为 4。在 v8.5.3 及之前的 v8.5.x 版本中，默认值为 1。
 + 最小值：1
 
 ### `max-grpc-send-msg-len`
