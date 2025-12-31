@@ -373,6 +373,11 @@ SQL 的基础信息：
 - `MAX_QUEUED_RC_TIME`：执行 SQL 语句等待可用 RU 的最大耗时
 - `RESOURCE_GROUP`：执行 SQL 语句绑定的资源组
 
+和存储引擎相关的字段：
+
+- `STORAGE_KV`：从 v8.5.5 开始引入，表示该类 SQL 语句上一次执行是否从 TiKV 读取了数据。
+- `STORAGE_MPP`：从 v8.5.5 开始引入，表示该类 SQL 语句上一次执行是否从 TiFlash 读取了数据。
+
 ### `statements_summary_evicted` 字段介绍
 
 - `BEGIN_TIME`: 记录的开始时间；
