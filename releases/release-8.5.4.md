@@ -61,13 +61,11 @@ TiDB 版本：8.5.4
 
 ## 兼容性变更
 
-## 要点
+新建的 v8.5.3 集群可以平滑升级到 v8.5.4。但 v8.5.4 发布包含若干系统变量和配置参数的默认值变更和行为调整，需要注意以下要点：
+- 大多数变更对于常规升级是安全的，但对于曾进行过性能调优、使用 TiFlash、或对 TiKV compaction 进行了自定义配置的集群，需要仔细检查本节内容。
+- 一些老旧配置项已被废弃，不再推荐使用，建议使用新的配置组。
 
-- 新建的 v8.5.3 集群可以平滑升级到 v8.5.4。但本次发布包含若干系统变量和配置参数的默认值变更和行为调整，需要注意。
-  - 大多数变更对于常规升级是安全的，但对于进行过性能调优、使用 TiFlash 或 TiKV compaction 自定义配置的集群，需要仔细检查本节内容。
-  - 一些老旧配置项已被废弃，不再推荐使用，建议使用新的配置组。
-
-## 系统变量
+### 系统变量
 
 | 变量 | 类型 | 默认值 | 描述 | PR | 提交者 |
 |------|------|--------|------|----|-------------|
@@ -77,7 +75,7 @@ TiDB 版本：8.5.4
 | [`tidb_opt_enable_semi_join_rewrite`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables/#tidb_opt_enable_semi_join_rewrite-从-v854-版本开始引入) | 新增 | `OFF` | 控制是否改写 `EXISTS` 子查询。 | [#44850](https://github.com/pingcap/tidb/issues/44850) | [@terry1purcell](https://github.com/terry1purcell) |
 | [`tidb_stats_update_during_ddl`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables/#tidb_stats_update_during_ddl-从-v854-版本开始引入) | 新增 | `OFF` | 启用后，`ADD INDEX` 会在 DDL 执行期间收集新索引的统计信息，使索引添加完成后，优化器可以立即使用该索引。对于大表加索引的场景可能增加 DDL 执行时间。 | [#57948](https://github.com/pingcap/tidb/issues/57948) | [@terry1purcell](https://github.com/terry1purcell), [@AilinKid](https://github.com/AilinKid) |
 
-## 配置参数
+### 配置参数
 
 | 配置参数 | 类型 | 默认值 | 描述 | PR | 提交者 |
 |-------------------------|------|---------------|-------------|----|-------------|
