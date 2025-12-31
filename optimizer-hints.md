@@ -476,7 +476,7 @@ EXPLAIN SELECT /*+ NO_ORDER_INDEX(t, a) */ a FROM t ORDER BY a LIMIT 10;
 
 和 `ORDER_INDEX` Hint 的示例相同，优化器对该查询会生成两类计划：`Limit + IndexScan(keep order: true)` 和 `TopN + IndexScan(keep order: false)`，当使用了 `NO_ORDER_INDEX` Hint，优化器会选择后一种不按照顺序读取索引的计划。
 
-### INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...]) <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
+### INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...]) <span class="version-mark">从 v8.5.5 版本开始引入</span>
 
 `INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...])` 提示优化器仅使用指定的索引访问指定的表，并将 `IndexLookUp` 算子下推到 TiKV 执行。
 
@@ -513,7 +513,7 @@ EXPLAIN SELECT /*+ INDEX_LOOKUP_PUSHDOWN(t1, a) */ a, b FROM t1;
 - 下推的 `LocalIndexLookUp` 算子暂不支持以分页 (paging) 方式发送 Coprocessor 请求。
 - 下推的 `LocalIndexLookUp` 算子暂不支持[下推计算结果缓存](/coprocessor-cache.md)。
 
-### NO_INDEX_LOOKUP_PUSHDOWN(t1_name) <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
+### NO_INDEX_LOOKUP_PUSHDOWN(t1_name) <span class="version-mark">从 v8.5.5 版本开始引入</span>
 
 `NO_INDEX_LOOKUP_PUSHDOWN(t1_name)` 用于显式禁止对指定表执行 `IndexLookUp` 下推。该 Hint 通常与系统变量 [`tidb_index_lookup_pushdown_policy`](/system-variables.md#tidb_index_lookup_pushdown_policy-从-v855-和-v900-版本开始引入) 配合使用。当该变量的值为 `force` 或 `affinity-force` 时，你可以使用此 Hint 阻止特定表下推 `IndexLookUp`。
 
