@@ -373,25 +373,11 @@ SQL 的基础信息：
 - `MAX_QUEUED_RC_TIME`：执行 SQL 语句等待可用 RU 的最大耗时
 - `RESOURCE_GROUP`：执行 SQL 语句绑定的资源组
 
-<<<<<<< HEAD
-=======
-和网络流量相关的字段：
-
-- `SUM_UNPACKED_BYTES_SENT_TIKV_TOTAL`：SQL 语句向 TiKV 发送的总字节数
-- `SUM_UNPACKED_BYTES_RECEIVED_TIKV_TOTAL`：SQL 语句从 TiKV 接收的总字节数
-- `SUM_UNPACKED_BYTES_SENT_TIKV_CROSS_ZONE`：SQL 语句向跨可用区 TiKV 发送的字节数
-- `SUM_UNPACKED_BYTES_RECEIVED_TIKV_CROSS_ZONE`：SQL 语句从跨可用区 TiKV 接收的字节数
-- `SUM_UNPACKED_BYTES_SENT_TIFLASH_TOTAL`：SQL 语句向 TiFlash 发送的总字节数（包含 TiFlash 节点之间发送的字节数）
-- `SUM_UNPACKED_BYTES_RECEIVED_TIFLASH_TOTAL`：SQL 语句从 TiFlash 接收的总字节数（包含 TiFlash 节点之间接收的字节数）
-- `SUM_UNPACKED_BYTES_SENT_TIFLASH_CROSS_ZONE`：SQL 语句向跨可用区 TiFlash 发送的字节数（包含 TiFlash 节点之间跨可用区发送的字节数）
-- `SUM_UNPACKED_BYTES_RECEIVED_TIFLASH_CROSS_ZONE`：SQL 语句从跨可用区 TiFlash 接收的字节数（包含 TiFlash 节点之间跨可用区接收的字节数）
-
 和存储引擎相关的字段：
 
-- `STORAGE_KV`：从 v9.0.0 开始引入，表示该类 SQL 语句上一次执行是否从 TiKV 读取了数据。
-- `STORAGE_MPP`：从 v9.0.0 开始引入，表示该类 SQL 语句上一次执行是否从 TiFlash 读取了数据。
+- `STORAGE_KV`：从 v8.5.5 开始引入，表示该类 SQL 语句上一次执行是否从 TiKV 读取了数据。
+- `STORAGE_MPP`：从 v8.5.5 开始引入，表示该类 SQL 语句上一次执行是否从 TiFlash 读取了数据。
 
->>>>>>> 18121a08dd (include storage engines in slow query logs and statements summary (#20676))
 ### `statements_summary_evicted` 字段介绍
 
 - `BEGIN_TIME`: 记录的开始时间；

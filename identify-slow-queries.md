@@ -169,8 +169,8 @@ Slow Query 基础信息：
 
 和存储引擎相关的字段：
 
-- `Storage_from_kv`：从 v9.0.0 开始引入，表示该语句是否从 TiKV 读取数据。
-- `Storage_from_mpp`：从 v9.0.0 开始引入，表示该语句是否从 TiFlash 读取数据。
+- `Storage_from_kv`：从 v8.5.5 开始引入，表示该语句是否从 TiKV 读取数据。
+- `Storage_from_mpp`：从 v8.5.5 开始引入，表示该语句是否从 TiFlash 读取数据。
 
 ## 相关系统变量
 
