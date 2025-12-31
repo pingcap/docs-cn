@@ -528,7 +528,7 @@ SELECT /*+ NO_INDEX_LOOKUP_PUSHDOWN(t) */ * FROM t WHERE a > 1;
 
 > **注意：**
 >
-> `NO_INDEX_LOOKUP_PUSHDOWN` 的优先级高于 [`INDEX_LOOKUP_PUSHDOWN`](#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-和-v900-版本开始引入)。当同一个查询中同时指定这两个 Hint 时，`NO_INDEX_LOOKUP_PUSHDOWN` 生效。
+> `NO_INDEX_LOOKUP_PUSHDOWN` 的优先级高于 [`INDEX_LOOKUP_PUSHDOWN`](#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入)。当同一个查询中同时指定这两个 Hint 时，`NO_INDEX_LOOKUP_PUSHDOWN` 生效。
 
 ### AGG_TO_COP()
 
