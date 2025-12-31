@@ -515,7 +515,7 @@ EXPLAIN SELECT /*+ INDEX_LOOKUP_PUSHDOWN(t1, a) */ a, b FROM t1;
 
 ### NO_INDEX_LOOKUP_PUSHDOWN(t1_name) <span class="version-mark">从 v8.5.5 版本开始引入</span>
 
-`NO_INDEX_LOOKUP_PUSHDOWN(t1_name)` 用于显式禁止对指定表执行 `IndexLookUp` 下推。该 Hint 通常与系统变量 [`tidb_index_lookup_pushdown_policy`](/system-variables.md#tidb_index_lookup_pushdown_policy-从-v855-和-v900-版本开始引入) 配合使用。当该变量的值为 `force` 或 `affinity-force` 时，你可以使用此 Hint 阻止特定表下推 `IndexLookUp`。
+`NO_INDEX_LOOKUP_PUSHDOWN(t1_name)` 用于显式禁止对指定表执行 `IndexLookUp` 下推。该 Hint 通常与系统变量 [`tidb_index_lookup_pushdown_policy`](/system-variables.md#tidb_index_lookup_pushdown_policy-从-v855-版本开始引入) 配合使用。当该变量的值为 `force` 或 `affinity-force` 时，你可以使用此 Hint 阻止特定表下推 `IndexLookUp`。
 
 以下示例将 `tidb_index_lookup_pushdown_policy` 变量设置为 `force`，使当前会话中的所有 `IndexLookUp` 算子自动下推。如果在查询中指定了 `NO_INDEX_LOOKUP_PUSHDOWN` Hint，则对应表不会下推 `IndexLookUp`：
 
