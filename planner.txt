@@ -1,0 +1,44 @@
+planner https://github.com/pingcap/tidb/pull/64622  planner: integrate Skyline Pruning into index selection of IndexJoin | tidb-test=pr/2632  qw4990  None  None [#63949](https://github.com/pingcap/tidb/issues/63949) @[qw4990](https://github.com/qw4990)
+planner https://github.com/pingcap/tidb/pull/63792  stats: reduce updating col predicate usage table (#63519) Tristan1900 None  None [#63426](https://github.com/pingcap/tidb/issues/63426) @[Tristan1900](https://github.com/Tristan1900)
+planner https://github.com/pingcap/tidb/pull/63919  expression: don't allocate column every time when to newLocalColumnPool (#63864)  hawkingrei  "expression: don't allocate column every time when to newLocalColumnPool_x000D_
+_x000D_
+当使用 newLocalColumnPool 时不需要每次都分配 column 内存" "expression: don't allocate column every time when to newLocalColumnPool_x000D_
+_x000D_
+当使用 newLocalColumnPool 时不需要每次都分配 column 内存 [#63809](https://github.com/pingcap/tidb/issues/63809) @[hawkingrei](https://github.com/hawkingrei)"
+planner https://github.com/pingcap/tidb/pull/64093  range: wrongly skip the candidate in the extractBestCNFItemRanges (#62585)  hawkingrei  None  None [#62547](https://github.com/pingcap/tidb/issues/62547) @[hawkingrei](https://github.com/hawkingrei)
+planner https://github.com/pingcap/tidb/pull/64228  statistics: use sampled logger and improve error messages (#63962)  0xPoe "减少无效的 sync load 加载失败警告日志_x000D_
+Reduce unnecessary sync load failure warning logs"  "减少无效的 sync load 加载失败警告日志_x000D_
+Reduce unnecessary sync load failure warning logs [#63880](https://github.com/pingcap/tidb/issues/63880) @[0xPoe](https://github.com/0xPoe)"
+planner https://github.com/pingcap/tidb/pull/64501  stats: remove ColAndIdxExistenceMap checked flag (#63626) Tristan1900 None  None [#60316](https://github.com/pingcap/tidb/issues/60316) @[Tristan1900](https://github.com/Tristan1900)
+planner https://github.com/pingcap/tidb/pull/64848  executor: fix plan replayer cannot load bindings (#64802) hawkingrei  None  None [#64811](https://github.com/pingcap/tidb/issues/64811) @[hawkingrei](https://github.com/hawkingrei)
+planner https://github.com/pingcap/tidb/pull/64628  statistics: ignore system tables in stats cache (#64097)  0xPoe "修复系统表会污染表健康度监控的问题_x000D_
+Fix the issue where system tables could pollute the stats health metrics" "修复系统表会污染表健康度监控的问题_x000D_
+Fix the issue where system tables could pollute the stats health metrics [#57176](https://github.com/pingcap/tidb/issues/57176) @[0xPoe](https://github.com/0xPoe)"
+planner https://github.com/pingcap/tidb/pull/64628  statistics: ignore system tables in stats cache (#64097)  0xPoe "修复系统表会污染表健康度监控的问题_x000D_
+Fix the issue where system tables could pollute the stats health metrics" "修复系统表会污染表健康度监控的问题_x000D_
+Fix the issue where system tables could pollute the stats health metrics [#64080](https://github.com/pingcap/tidb/issues/64080) @[0xPoe](https://github.com/0xPoe)"
+planner https://github.com/pingcap/tidb/pull/64449  statistics: use the correct analyze version (#64399)  0xPoe None  None [#64300](https://github.com/pingcap/tidb/issues/64300) @[0xPoe](https://github.com/0xPoe)
+planner https://github.com/pingcap/tidb/pull/64565  stats: avoid creating pseudo stats table when dumping stats delta  (#62887) Tristan1900 None  None [#62590](https://github.com/pingcap/tidb/issues/62590) @[Tristan1900](https://github.com/Tristan1900)
+planner https://github.com/pingcap/tidb/pull/63978  planner: PointGet will not skip the reuse chunk with enough total memory (#63921) hawkingrei  None  None [#63920](https://github.com/pingcap/tidb/issues/63920) @[hawkingrei](https://github.com/hawkingrei)
+planner https://github.com/pingcap/tidb/pull/64782  planner: fix LogicalProjection.DeriveStats allocate too many memories (#63829)  hawkingrei  None  None [#63810](https://github.com/pingcap/tidb/issues/63810) @[hawkingrei](https://github.com/hawkingrei)
+planner https://github.com/pingcap/tidb/pull/64785  planner: fix unexpected decorrelate for LeftOuterJoin (#63211) | tidb-test=pr/2648  guo-shaoge  None  None [#62937](https://github.com/pingcap/tidb/issues/62937) @[guo-shaoge](https://github.com/guo-shaoge)
+planner https://github.com/pingcap/tidb/pull/64963  stats: close the priority queue DDL handler when auto-analyze is disabled (#64817)  0xPoe "修复 auto-anlyze 关闭之后 mysql.tidb_ddl_notifier 不能被清理的问题_x000D_
+Fix the issue where mysql.tidb_ddl_notifier cannot be cleaned up after auto-analyze is turned off"  "修复 auto-anlyze 关闭之后 mysql.tidb_ddl_notifier 不能被清理的问题_x000D_
+Fix the issue where mysql.tidb_ddl_notifier cannot be cleaned up after auto-analyze is turned off [#64038](https://github.com/pingcap/tidb/issues/64038) @[0xPoe](https://github.com/0xPoe)"
+planner https://github.com/pingcap/tidb/pull/64447  planner: remove fullRange check from skyline pruning (#63828) terry1purcell None  None [#63235](https://github.com/pingcap/tidb/issues/63235) @[terry1purcell](https://github.com/terry1purcell)
+planner https://github.com/pingcap/tidb/pull/64778  planner: fix cannot find column error for expression index (#63683) | tidb-test=release-8.5 guo-shaoge  None  None [#52653](https://github.com/pingcap/tidb/issues/52653) @[guo-shaoge](https://github.com/guo-shaoge)
+planner https://github.com/pingcap/tidb/pull/64780  expression: add items in the bench daily for expression (#63883)  hawkingrei  None  None [#63809](https://github.com/pingcap/tidb/issues/63809) @[hawkingrei](https://github.com/hawkingrei)
+planner https://github.com/pingcap/tidb/pull/65015  stats: set the default analyze column options to all  | tidb-test=pr/2653 0xPoe "将 tidb_analyze_column_options 默认值设置为 all_x000D_
+Set the default value of tidb_analyze_column_options to all"  "将 tidb_analyze_column_options 默认值设置为 all_x000D_
+Set the default value of tidb_analyze_column_options to all [#64992](https://github.com/pingcap/tidb/issues/64992) @[0xPoe](https://github.com/0xPoe)"
+planner https://github.com/pingcap/tidb/pull/64779  planner: fix uninitialized stats for expression index (#63961)  guo-shaoge  None  None [#57090](https://github.com/pingcap/tidb/issues/57090) @[guo-shaoge](https://github.com/guo-shaoge)
+planner https://github.com/pingcap/tidb/pull/63812  planner: optimizer the performance of `IsFullRange` check (#63566)  qw4990  None  None [#63235](https://github.com/pingcap/tidb/issues/63235) @[qw4990](https://github.com/qw4990)
+planner https://github.com/pingcap/tidb/pull/64775  planner: consider magnified seeking cost in IndexJoin (#63568)  qw4990  None  None [#62499](https://github.com/pingcap/tidb/issues/62499) @[qw4990](https://github.com/qw4990)
+planner https://github.com/pingcap/tidb/pull/64965  planner: Fix bug in the plan cache when the metadata lock is disabled. (#64795) wddevries None  None [#64351](https://github.com/pingcap/tidb/issues/64351) @[wddevries](https://github.com/wddevries)
+planner https://github.com/pingcap/tidb/pull/65002  planner,executor: fix cannot dump plan replayer when query happen to panic (#64836) hawkingrei  None  None [#64835](https://github.com/pingcap/tidb/issues/64835) @[hawkingrei](https://github.com/hawkingrei)
+planner https://github.com/pingcap/tidb/pull/63673  planner: rewrite semi join when to predicate push down (#63436) hawkingrei  None  None [#58958](https://github.com/pingcap/tidb/issues/58958) @[hawkingrei](https://github.com/hawkingrei)
+planner https://github.com/pingcap/tidb/pull/65054  planner: fix some wrong index selection issues caused by the skyline pruning being too aggressive | tidb-test=pr/2655 qw4990  None  None [#64378](https://github.com/pingcap/tidb/issues/64378) @[qw4990](https://github.com/qw4990)
+planner https://github.com/pingcap/tidb/pull/65061  planner: Apply should not be full scan when plan cache enabled (#64646) winoros "Fix the issue that a Correlated subquery may generate an unexpected full scan when plan cache is enabled._x000D_
+修复当计划缓存开启时，关联子查询可能产生非预期的全表扫描的问题"  "Fix the issue that a Correlated subquery may generate an unexpected full scan when plan cache is enabled._x000D_
+修复当计划缓存开启时，关联子查询可能产生非预期的全表扫描的问题 [#64645](https://github.com/pingcap/tidb/issues/64645) @[winoros](https://github.com/winoros)"
+planner, execution  https://github.com/pingcap/tidb/pull/64017  expression: refactor expression.Contains to improve performance (#61374)  hawkingrei  None  None [#61373](https://github.com/pingcap/tidb/issues/61373) @[hawkingrei](https://github.com/hawkingrei)
