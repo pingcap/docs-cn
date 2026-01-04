@@ -1184,22 +1184,38 @@ pd-ctl resource-manager config controller set ltb-max-wait-duration 30m
 
 ### `scheduler config evict-slow-store-scheduler`
 
-`evict-slow-store-scheduler` 用于在 TiKV 节点出现磁盘 I/O 或网络抖动时，阻断 PD 向异常节点调度 leader，并在必要时主动驱逐 leader。TiKV 会在 store 心跳中同时上报 `SlowScore`（磁盘）与 `NetworkSlowScore`（网络），分值范围均为 1~100，数值越大代表该节点越可能异常。
+`evict-slow-store-scheduler` 用于在 TiKV 节点出现磁盘 I/O 或网络抖动时，限制 PD 向异常节点调度 Leader，并在必要时主动驱逐 Leader，以降低慢节点对集群的影响。
 
-你可以通过 `recovery-duration` 来控制慢节点恢复正常的时间。
+#### 磁盘慢节点
 
-示例：
+TiKV 会在 store 心跳中向 PD 上报基于磁盘 I/O 情况计算得到的 `SlowScore`（从 v6.2.0 起支持）。该分值范围为 1～100，数值越大表示该节点越可能存在磁盘性能异常。
+对于磁盘慢节点，TiKV 侧的探测以及 PD 侧基于 `evict-slow-store-scheduler` 的调度处理默认开启，无需额外配置。
+
+#### 网络慢节点
+
+从 v8.5.5 和 v9.0.0 起，TiKV 还支持在 store 心跳中上报基于网络探测结果计算得到的 `NetworkSlowScore`，用于识别网络抖动导致的慢节点。该分值同样为 1～100，数值越大表示网络异常的可能性越高。
+
+出于兼容性和资源消耗的考虑，网络慢节点的探测与调度默认关闭。如需启用，你需要同时完成以下配置：
+
+1. 在 PD 侧开启调度器对网络慢节点的处理：
+    ```bash
+    scheduler config evict-slow-store-scheduler set enable-network-slow-store true
+    ```
+2. 在 TiKV 侧确保 [`raftstore.inspect-network-interval`](/tikv-configuration-file.md#inspect-network-interval) 配置项大于 `0`，以启用网络探测。
+
+#### 恢复时间控制
+
+你可以通过 `recovery-duration` 参数控制慢节点在被判定为恢复正常前需要保持稳定状态的时间。
+
+示例如下：
 
 ```bash
->> scheduler config evict-slow-store-scheduler            // 查看当前配置
+>> scheduler config evict-slow-store-scheduler
 {
   "recovery-duration": "1800"  // 30 分钟
 }
 >> scheduler config evict-slow-store-scheduler set recovery-duration 600
 ```
-
-当你需要开启网络的慢节点探测时，可以通过 `scheduler config evict-slow-store-scheduler set enable-network-slow-store true` 来开启。
-当你需要直接关闭 tikv 内部的网络探测时，可将 TiKV 侧 [`raftstore.inspect-network-interval`](/tikv-configuration-file.md#inspect-network-interval) 设置为 `0`。
 
 ### `scheduler config balance-leader-scheduler`
 
