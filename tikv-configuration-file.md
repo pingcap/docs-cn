@@ -286,7 +286,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `inspect-network-interval` <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
 
 + 控制 TiKV HealthChecker 主动向 PD 以及其他 TiKV 节点发起网络探测的周期，用于计算 `NetworkSlowScore` 并向 PD 上报慢节点的网络状态。
-+ 设置为 `0` 表示关闭网络探测。数值越小，采样频率越高，能够更快放大网络抖动，但也会消耗更多网络与 CPU 资源。
++ 设置为 `0` 表示关闭网络探测。数值越小，探测频率越高，有助于更快发现和放大网络抖动，但也会消耗更多网络与 CPU 资源。
 + 默认值：100ms
 + 取值范围：0 或 `[10ms, +∞)`
 
