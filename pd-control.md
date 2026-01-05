@@ -1188,7 +1188,8 @@ pd-ctl resource-manager config controller set ltb-max-wait-duration 30m
 
 #### 磁盘慢节点
 
-TiKV 会在 store 心跳中向 PD 上报基于磁盘 I/O 情况计算得到的 `SlowScore`（从 v6.2.0 起支持）。该分值范围为 1～100，数值越大表示该节点越可能存在磁盘性能异常。
+从 v6.2.0 开始，TiKV 会在 store 心跳中向 PD 上报 `SlowScore`，该分值基于磁盘 I/O 情况计算得出。分值范围为 1～100，数值越大表示该节点越可能存在磁盘性能异常。
+
 对于磁盘慢节点，TiKV 侧的探测以及 PD 侧基于 `evict-slow-store-scheduler` 的调度处理默认开启，无需额外配置。
 
 #### 网络慢节点
