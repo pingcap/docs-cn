@@ -33,7 +33,7 @@ TiDB 版本：8.5.5
 
     注：以上数据基于 DDL 执行过程中未发生数据截断的前提。对于包含 TiFlash 副本的表，以及涉及有符号与无符号整数类型相互转换（signed ↔ unsigned）的变更场景，上述优化不适用。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-modify-column.md)。
 
 * 优化了存在大量外键场景下的 DDL 性能，逻辑 DDL 性能最高可提升 25 倍 [#61126](https://github.com/pingcap/tidb/issues/61126) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1896-->
 
@@ -53,9 +53,9 @@ TiDB 版本：8.5.5
 
 * 支持表级数据亲和性（AFFINITY），提升查询性能（实验特性） [#9764](https://github.com/tikv/pd/issues/9764) @[lhy1024](https://github.com/lhy1024) **tw@qiancai** <!--2317-->
 
-    从 v8.5.5 起，在创建或修改表时，你可以设置表的 `AFFINITY` 选项为 `table` 或 `partition`。设置后，PD 会将同一张表或同一个分区的 Region 归入同一个亲和性分组，并在调度过程中优先将这些 Region 的 Leader 和 Voter 副本放置到相同的少数 TiKV 节点上。此时，通过在查询中使用 [`INDEX_LOOKUP_PUSHDOWN`](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入) Hint，可以显式指示优化器将索引查询下推到 TiKV 执行，减少跨节点分散查询带来的延迟，提升查询性能。
+    从 v8.5.5 起，在创建或修改表时，你可以设置表的 `AFFINITY` 选项为 `table` 或 `partition`。设置后，PD 会将同一张表或同一个分区的 Region 归入同一个亲和性分组，并在调度过程中优先将这些 Region 的 Leader 和 Voter 副本放置到相同的少数 TiKV 节点上。此时，通过在查询中使用 [`INDEX_LOOKUP_PUSHDOWN`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入) Hint，可以显式指示优化器将索引查询下推到 TiKV 执行，减少跨节点分散查询带来的延迟，提升查询性能。
 
-    需要注意的是，表级数据亲和性目前为实验特性，默认关闭。如需开启，请将 PD 配置项 [`schedule.affinity-schedule-limit`](/pd-configuration-file.md#affinity-schedule-limit-从-v855-和-v900-版本开始引入) 设置为大于 `0` 的值。该配置项用于控制 PD 同时可进行的亲和性调度任务数。
+    需要注意的是，表级数据亲和性目前为实验特性，默认关闭。如需开启，请将 PD 配置项 [`schedule.affinity-schedule-limit`](https://docs.pingcap.com/zh/tidb/v8.5/pd-configuration-file#affinity-schedule-limit-从-v855-版本开始引入) 设置为大于 `0` 的值。该配置项用于控制 PD 同时可进行的亲和性调度任务数。
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/table-affinity)。
 
@@ -97,15 +97,15 @@ TiDB 版本：8.5.5
 
     在 v8.5.5 之前，如果集群开启了分布式执行框架 [`tidb_enable_dist_task`](/system-variables/#tidb_enable_dist_task-从-v710-版本开始引入) ，TiDB 不支持在 `ADD INDEX` 任务执行期间修改该任务的 `THREAD`、`BATCH_SIZE`、`MAX_WRITE_SPEED` 参数。要调整这些参数，你需要先取消当前 `ADD INDEX` 任务，重新设置参数后再提交，效率较低。
 
-    从 v8.5.5 起，在 `ADD INDEX` 任务执行期间，你可以根据当前业务负载和对 `ADD INDEX` 性能的需求，通过 `ADMIN ALTER DDL JOBS` 语句在线灵活调整这些参数，而无需中断任务。
+    从 v8.5.5 起，在分布式 `ADD INDEX` 任务执行期间，你可以根据当前业务负载和对 `ADD INDEX` 性能的需求，通过 `ADMIN ALTER DDL JOBS` 语句在线灵活调整这些参数，而无需中断任务。
 
-    更多信息，请参考[用户文档](/sql-statement-admin-alter-ddl/#admin-alter-ddl-jobs)。
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-admin-alter-ddl.md)。
 
 ### 数据库管理
 
 * TiKV 支持优雅关闭 (graceful shutdown) [#17221](https://github.com/tikv/tikv/issues/17221) @[hujiatao0](https://github.com/hujiatao0) **tw@qiancai** <!--2297-->
 
-    在关闭 TiKV 服务器时，TiKV 会尽量将其上的 leader 副本转移到其他 TiKV 节点，然后再关闭。该等待期默认为 20 秒，可通过 [`server.graceful-shutdown-timeout`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#graceful-shutdown-timeout-从-v855-版本开始引入) 配置项进行调整。若达到该超时时间后仍有 leader 未完成转移，TiKV 将跳过剩余 leader 的转移，直接进入关闭流程。
+    在关闭 TiKV 服务器时，TiKV 会在配置的等待期内尽量先将节点上的 leader 副本转移到其他 TiKV 节点，然后再关闭。该等待期默认为 20 秒，可通过 [`server.graceful-shutdown-timeout`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#graceful-shutdown-timeout-从-v855-版本开始引入) 配置项进行调整。若达到该超时时间后仍有 leader 未完成转移，TiKV 将跳过剩余 leader 的转移，直接进入关闭流程。
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#graceful-shutdown-timeout-从-v855-版本开始引入)。
 
