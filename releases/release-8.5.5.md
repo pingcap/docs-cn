@@ -194,16 +194,17 @@ TiDB 版本：8.5.5
 
 + TiDB
 
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - improve the error message for import into when there are encoding errors [#63763](https://github.com/pingcap/tidb/issues/63763) @[D3Hunter](https://github.com/D3Hunter)
+    - change the parser for parquet format to get better performance [#62906](https://github.com/pingcap/tidb/issues/) @[joechenrh](https://github.com/joechenrh)
     - 将 `tidb_analyze_column_options` 的默认值设置为 `all` [#64992](https://github.com/pingcap/tidb/issues/64992) @[0xPoe](https://github.com/0xPoe)
-    - (dup): release-9.0.0.md > 改进提升> TiDB - 优化分布式执行框架 (Distributed eXecution Framework, DXF) 内部 SQL 语句的 CPU 使用率 [#59344](https://github.com/pingcap/tidb/issues/59344) @[D3Hunter](https://github.com/D3Hunter)
     - 优化 IndexHashJoin 的执行方式，在部分 JOIN 场景下采用增量处理以避免一次性加载大量数据，显著降低内存占用并提升执行性能 [#63303](https://github.com/pingcap/tidb/issues/63303) @[ChangRui-Ryan](https://github.com/ChangRui-Ryan)
+    - (dup): release-9.0.0.md > 改进提升> TiDB - 优化分布式执行框架 (Distributed eXecution Framework, DXF) 内部 SQL 语句的 CPU 使用率 [#59344](https://github.com/pingcap/tidb/issues/59344) @[D3Hunter](https://github.com/D3Hunter)
 
 + TiKV
 
-    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - Introduces CPU-aware scaling for the unified read pool to avoid CPU starvation under hot read workloads. [#18464](https://github.com/tikv/tikv/issues/18464) @[mittalrishabh](https://github.com/mittalrishabh)
+    - Adds network latency awareness to slow score to avoid scheduling leaders on TiKV nodes with unstable network conditions. [#18797](https://github.com/tikv/tikv/issues/18797) @[okJiang](https://github.com/okJiang)
+    - Optimizes hibernate behavior by allowing leaders to enter hibernation once a majority vote is reached, without waiting for down non-voter peers. [#19070](https://github.com/tikv/tikv/issues/19070) @[jiadebin](https://github.com/jiadebin)
     - (dup): release-9.0.0.md > 改进提升> TiKV - 在 TiKV 内存占用高时，对 BR 的日志恢复请求进行限流，防止 TiKV OOM [#18124](https://github.com/tikv/tikv/issues/18124) @[3pointer](https://github.com/3pointer)
 
 + PD
@@ -212,50 +213,17 @@ TiDB 版本：8.5.5
     - 优化了时间戳推进和选举逻辑 [#9981](https://github.com/tikv/pd/issues/9981) @[bufferflies](https://github.com/bufferflies)
     - 支持批量设置 TiKV 的 store limit [#9970](https://github.com/tikv/pd/issues/9970) @[bufferflies](https://github.com/bufferflies)
     - `pd_cluster_status` 增加了 store 标签 [#9855](https://github.com/tikv/pd/issues/9855) @[SerjKol80](https://github.com/SerjKol80)
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-+ TiFlash
-
-    - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
 + Tools
-
-    + Backup & Restore (BR)
-
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
     + TiCDC
 
         - 为创建 changefeed 增加更全面的检查 [#12253](https://github.com/pingcap/tiflow/issues/12253) @[wk989898](https://github.com/wk989898)
 
-    + TiDB Data Migration (DM)
-
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + TiDB Lightning
-
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + Dumpling
-
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + TiUP
-
-        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
 ## 错误修复
 
 + TiDB
 
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - 修复 TiDB 初始化时无法读取最新的 tidb_mem_quota_binding_cache 变量值初始化 binding 的问题 [#65381](https://github.com/pingcap/tidb/issues/65381) @[qw4990](https://github.com/qw4990)
     - 修复了在 `extractBestCNFItemRanges` 中错误地跳过候选项导致查询范围计算不精确的问题 [#62547](https://github.com/pingcap/tidb/issues/62547) @[hawkingrei](https://github.com/hawkingrei)
     - 修复了 `plan replayer` 无法加载 binding 的问题 [#64811](https://github.com/pingcap/tidb/issues/64811) @[hawkingrei](https://github.com/hawkingrei)
@@ -268,14 +236,36 @@ TiDB 版本：8.5.5
     - 修复 auto-anlyze 关闭之后 `mysql.tidb_ddl_notifier` 不能被清理的问题 [#64038](https://github.com/pingcap/tidb/issues/64038) @[0xPoe](https://github.com/0xPoe)
     - 修复了在 `newLocalColumnPool` 中重复分配 column 的问题 [#63809](https://github.com/pingcap/tidb/issues/63809) @[hawkingrei](https://github.com/hawkingrei)
     - 减少无效的 sync load 加载失败警告日志 [#63880](https://github.com/pingcap/tidb/issues/63880) @[0xPoe](https://github.com/0xPoe)
-    - (dup): release-9.0.0.md > 错误修复> TiDB - 修复查询 `information_schema.tables` 可能出现 OOM 问题，优化系统表查询过程中的内存使用监控 [#58985](https://github.com/pingcap/tidb/issues/58985) @[tangenta](https://github.com/tangenta)
     - 修复手动 kill 正在执行事务的 connection 可能导致 tidb 发生 panic 异常退出的问题 [#63956](https://github.com/pingcap/tidb/issues/63956) @[wshwsh12](https://github.com/wshwsh12)
     - 修复缓存表在走 TiFlash 副本读取时可能出现的 goroutine 和内存泄漏问题 [#63329](https://github.com/pingcap/tidb/issues/63329) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - fix the problem that foreign key is not updated after modify column [#issue](https://github.com/pingcap/tidb/issues/59705) @[fzzf678](https://github.com/fzzf678)
+    - fix error decoding `RENAME TABLE` job arg from older version TiDB [#issue](https://github.com/pingcap/tidb/issues/64413) @[joechenrh](https://github.com/joechenrh)
+    - fix missing rebase auto increment not executed if BR restore failed [#issue](https://github.com/pingcap/tidb/issues/64761) @[joechenrh](https://github.com/joechenrh)
+    - fix OOM issue when querying `information_schema` tables [#issue](https://github.com/pingcap/tidb/issues/58985) @[tangenta](https://github.com/tangenta)
+    - fix the problem that TiDB node may stuck during upgrade [#issue](https://github.com/pingcap/tidb/issues/64539) @[joechenrh](https://github.com/joechenrh)
+    - fix unexpected successful admin check when there are no index record [#issue](https://github.com/pingcap/tidb/issues/63698) @[wjhuang2016](https://github.com/wjhuang2016)
+    - fix data-index inconsistency when chaning collation with modify column [#issue](https://github.com/pingcap/tidb/issues/61668) @[tangenta](https://github.com/tangenta)
+    - fix incorrect initialization for foreign key related fields when copying table info [#issue](https://github.com/pingcap/tidb/issues/61668) @[tangenta](https://github.com/tangenta)
+    - fix the problem that embedded analyze may be not triggered for multi schema change [#issue](https://github.com/pingcap/tidb/issues/65040) @[joechenrh](https://github.com/joechenrh)
+    - fix the problem that the DXF task was not cancelled after canceling the add index job [#issue](https://github.com/pingcap/tidb/issues/64129) @[tangenta](https://github.com/tangenta)
+    - fix incorrect check to determing whether to load table info for tables contain foreign key [#issue](https://github.com/pingcap/tidb/issues/60444) @[JQWong7](https://github.com/JQWong7)
+    - fix incorrect auto ID setting after cross-database rename table [#issue](https://github.com/pingcap/tidb/issues/64561) @[joechenrh](https://github.com/joechenrh)
+    - fix incorrect handling meta key for older version of TiDB [#issue](https://github.com/pingcap/tidb/issues/64323) @[wjhuang2016](https://github.com/wjhuang2016)
+    - fix ligtning doesnt' report error for schema files without trailing semicolon [#issue](https://github.com/pingcap/tidb/issues/63414) @[GMHDBJD](https://github.com/GMHDBJD)
+    - fix the dead loop when reading files during IMPORT INTO global sort [#issue](https://github.com/pingcap/tidb/issues/61177) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - fix the panic when processing generated columns for IMPORT INTO [#issue](https://github.com/pingcap/tidb/issues/64657) @[D3Hunter](https://github.com/D3Hunter)
+    - (dup): release-9.0.0.md > 错误修复> TiDB - 修复查询 `information_schema.tables` 可能出现 OOM 问题，优化系统表查询过程中的内存使用监控 [#58985](https://github.com/pingcap/tidb/issues/58985) @[tangenta](https://github.com/tangenta)
+
 
 + TiKV
 
-    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - Fix the bug that analyze scan kv operation metric is always 0 [#19206](https://github.com/tikv/tikv/issues/19206) @[glorv](https://github.com/glorv)
+    - Fix the bug that pd heartbeat may report wrong region size/keys statistics data after leader change. [#19180](https://github.com/tikv/tikv/issues/19180) @[glorv](https://github.com/glorv)
+    - Fixes unsafe recovery getting stuck by removing tombstoned TiFlash learners from the unsafe recovery demotion list. [#18458](https://github.com/tikv/tikv/issues/18458) @[v01dstar](https://github.com/v01dstar)
+    - Fixes an issue where snapshots could be canceled indefinitely under continuous writes, blocking replica recovery. [#18872](https://github.com/tikv/tikv/issues/18872) @[exit-code-1](https://github.com/exit-code-1)
+    - Fixes compaction slowdowns caused by increased flow-control thresholds. [#18708](https://github.com/tikv/tikv/issues/18708) @[hhwyt](https://github.com/hhwyt)
+    - Fix the bug that pd heartbeat may report wrong region size/keys statistics data after leader change. [#19180](https://github.com/tikv/tikv/issues/19180) @[glorv](https://github.com/glorv)
+    - Fixes a corner case where Raft peers could enter hibernation prematurely, causing them to remain busy and block leader transfers after TiKV restart. [#19203](https://github.com/tikv/tikv/issues/19203) @[LykxSassinator](https://github.com/LykxSassinator)
 
 + PD
 
@@ -299,8 +289,13 @@ TiDB 版本：8.5.5
 
     + Backup & Restore (BR)
 
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - Fixed an issue that memory usage may be unacceptable when log backup enabled and many regions in cluster. [#18719](https://github.com/tikv/tikv/issues/18719) @[YuJuncen](https://github.com/YuJuncen)
+        - Fixed an issue that Azure SDK cannot found suitable key from environment. [#18206](https://github.com/tikv/tikv/issues/18206) @[YuJuncen](https://github.com/YuJuncen)
+        - Fixed an issue that foreign keys cannot be properly fixed during `restore point`. [#61642](https://github.com/pingcap/tidb/issues/61642) @[Leavrth](https://github.com/Leavrth)
+        - Fixed an issue that restore cannot be performed if system table collations are incompatible between backup and target cluster by introducing the parameter --sys-check-collation to support restore privileges tables from v6.5 to v7.5 [#64667](https://github.com/pingcap/tidb/issues/64667) @[Leavrth](https://github.com/Leavrth)
+        - Fixed an issue that caused `restore log` cannot be performed after a failed `restore point` though the latter is safe to be execued. [#64908](https://github.com/pingcap/tidb/issues/64908) @[RidRisR](https://github.com/RidRisR)
+        - Fixed an issue that Azure managed identity is unavailable.[#19006](https://github.com/tikv/tikv/issues/19006) @[RidRisR](https://github.com/RidRisR)
+        - Fixed an issue that may cause `restore point` from checkpoint panic when the log backup was mixed with a full backup. [#58685](https://github.com/pingcap/tidb/issues/58685) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
 
@@ -310,25 +305,3 @@ TiDB 版本：8.5.5
         - 升级 aws-sdk-go-v2 依赖以修复 glue schema 的注册问题[#12424](https://github.com/pingcap/tiflow/issues/12424) @[wk989898](https://github.com/wk989898)
         - 修复引起 memory quota 无法正常释放的问题[#18169](https://github.com/tikv/tikv/issues/18169) @[asddongmen](https://github.com/asddongmen)
         - 修复引起 memory quota 无法正常释放的问题[#18915](https://github.com/tikv/tikv/issues/18915) @[asddongmen](https://github.com/asddongmen)
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + TiDB Data Migration (DM)
-
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + TiDB Lightning
-
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + Dumpling
-
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + TiUP
-
-        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
