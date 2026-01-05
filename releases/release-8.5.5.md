@@ -77,9 +77,11 @@ TiDB 版本：8.5.5
 
 ### 稳定性
 
-* Improved store scheduling in presence of network jitter [#9359](https://github.com/tikv/pd/issues/9359) @[okJiang](https://github.com/okJiang) **tw@qiancai** <!--2260-->
+* 提升 TiKV 在网络抖动时的调度稳定性 [#9359](https://github.com/tikv/pd/issues/9359) @[okJiang](https://github.com/okJiang) **tw@qiancai** <!--2260-->
 
-    Provides a network status feedback mechanism to PD to avoid re-scheduling the leaders back to a problematic node (experiencing network jitter) after the leaders had been transferred off the node by TiKV raft mechanism. If the network continues to jitter, PD will actively evict leader from jittering node.
+    从 v8.5.5 起，TiKV 引入网络慢节点检测与反馈机制。启用该机制后，TiKV 会在节点之间探测网络延时，计算网络慢节点分数，并将该分数上报给 PD。PD 基于该分数判断 TiKV 节点的网络状态并进行相应的调度调整：当检测到某个 TiKV 节点存在网络抖动时，PD 会限制向该节点调度新的 Leader；如果网络抖动持续存在，PD 会主动将该节点上的现有 Leader 驱逐到其他 TiKV 节点，从而降低网络异常对集群的影响。
+
+    更多信息，请参阅[用户文档](/pd-control.md#scheduler-config-evict-slow-store-scheduler)。
 
 ### 高可用
 
@@ -141,15 +143,15 @@ TiDB 版本：8.5.5
 
 ### 安全
 
-* Enable Azure Managed Identity (MI) authentication for Backup & Restore (BR) to Azure Blob Storage [#19006](https://github.com/tikv/tikv/issues/19006) @[RidRisR](https://github.com/RidRisR) **tw@qiancai** <!--2308-->
+* Backup & Restore (BR) 支持通过 Azure 托管标识（Managed Identity, MI）访问 Azure Blob Storage [#19006](https://github.com/tikv/tikv/issues/19006) @[RidRisR](https://github.com/RidRisR) **tw@qiancai** <!--2308-->
 
-    Starting from v8.5.5, TiDB Backup & Restore supports Azure Managed Identity (MI) for authenticating to Azure Blob Storage, eliminating the need for static SAS tokens. This enables secure, keyless, and ephemeral authentication aligned with Azure best practices.
+    从 v8.5.5 起，BR 支持使用 Azure 托管标识（MI）对 Azure Blob Storage 进行身份验证，无需使用静态 SAS Token。该方式基于短期有效令牌且无需管理密钥，更加安全，符合 Azure 安全最佳实践。
 
-    With this feature, BR and the embedded BR worker in TiKV can acquire access tokens directly from Azure Instance Metadata Service (IMDS), reducing credential leakage risk and simplifying credential rotation for self-managed and cloud deployments on Azure.
+    利用该功能，BR 及内嵌于 TiKV 的 BR Worker 可直接从 Azure 实例元数据服务（IMDS）获取访问令牌，有效降低了凭证泄露的风险，并简化了本地或云上 Azure 环境中的凭据轮换管理。
 
-    This enhancement is particularly useful for enterprise customers running TiDB on Azure Kubernetes Service (AKS) or other Azure environments that require strict security controls for backup and restore workflows.
+    该功能尤其适用于在 Azure Kubernetes Service (AKS) 或其他 Azure 环境中运行 TiDB 的企业用户，这些环境通常对备份和恢复操作有严格的安全管控要求。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/br/backup-and-restore-storages.md#鉴权)。
 
 ## 兼容性变更
 
