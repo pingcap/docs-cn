@@ -1194,7 +1194,7 @@ pd-ctl resource-manager config controller set ltb-max-wait-duration 30m
 
 #### 网络慢节点
 
-从 v8.5.5 和 v9.0.0 起，TiKV 还支持在 store 心跳中上报基于网络探测结果计算得到的 `NetworkSlowScore`，用于识别网络抖动导致的慢节点。该分值同样为 1～100，数值越大表示网络异常的可能性越高。
+从 v8.5.5 和 v9.0.0 起，TiKV 支持在 store 心跳中上报 `NetworkSlowScore`，该分值基于网络探测结果计算得出，用于识别网络抖动导致的慢节点。分值范围为 1～100，数值越大表示网络异常的可能性越高。
 
 出于兼容性和资源消耗的考虑，网络慢节点的探测与调度默认关闭。如需启用，你需要同时完成以下配置：
 
