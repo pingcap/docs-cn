@@ -1203,7 +1203,8 @@ pd-ctl resource-manager config controller set ltb-max-wait-duration 30m
     ```bash
     scheduler config evict-slow-store-scheduler set enable-network-slow-store true
     ```
-2. 在 TiKV 侧确保 [`raftstore.inspect-network-interval`](/tikv-configuration-file.md#inspect-network-interval) 配置项大于 `0`，以启用网络探测。
+
+2. 在 TiKV 侧将 [`raftstore.inspect-network-interval`](/tikv-configuration-file.md#inspect-network-interval) 配置项设置为大于 `0` 的值，以启用网络探测。
 
 #### 恢复时间控制
 
