@@ -202,9 +202,9 @@ tiup br restore db --db test -u "${PD_IP}:2379" \
         --storage "azure://external/backup-20220915?account-name=${account-name}"
         ```
 
-- 方式四：使用 Azure 托管标识 (Managed Identity) <span class="version-mark">从 v8.5.5 和 v9.0.0 开始引入</span>
+- 方式四：使用 Azure 托管标识 (Managed Identity)
 
-    如果你的 TiDB 集群和 br 命令行工具运行在 Azure 虚拟机 (VM) 或 Azure Kubernetes Service (AKS) 环境中，并且已为节点分配了托管标识，则可以使用托管标识进行鉴权。
+    从 v8.5.5 和 v9.0.0  起，如果你的 TiDB 集群和 br 命令行工具运行在 Azure 虚拟机 (VM) 或 Azure Kubernetes Service (AKS) 环境中，并且已为节点分配了托管标识，则可以使用托管标识进行鉴权。
 
     使用此方式前，请确保已在 [Azure Portal](https://azure.microsoft.com/) 中为该托管标识授予目标存储账户的访问权限（如 `Storage Blob Data Contributor`）。
 
