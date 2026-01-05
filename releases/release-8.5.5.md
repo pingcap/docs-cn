@@ -145,7 +145,7 @@ TiDB 版本：8.5.5
 
 * Backup & Restore (BR) 支持通过 Azure 托管标识（Managed Identity, MI）访问 Azure Blob Storage [#19006](https://github.com/tikv/tikv/issues/19006) @[RidRisR](https://github.com/RidRisR) **tw@qiancai** <!--2308-->
 
-    从 v8.5.5 起，BR 支持使用 Azure 托管标识（MI）对 Azure Blob Storage 进行身份验证，无需使用静态 SAS Token。该方式基于短期有效令牌且无需管理密钥，更加安全，符合 Azure 安全最佳实践。
+    从 v8.5.5 起，BR 支持使用 Azure 托管标识（MI）对 Azure Blob Storage 进行身份验证，无需使用静态 SAS Token。该方式实现了安全、无密钥且短期有效的认证，符合 Azure 安全最佳实践。
 
     利用该功能，BR 及内嵌于 TiKV 的 BR Worker 可直接从 Azure 实例元数据服务（IMDS）获取访问令牌，有效降低了凭证泄露的风险，并简化了本地或云上 Azure 环境中的凭据轮换管理。
 
