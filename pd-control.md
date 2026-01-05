@@ -1198,6 +1198,7 @@ TiKV 会在 store 心跳中向 PD 上报基于磁盘 I/O 情况计算得到的 `
 出于兼容性和资源消耗的考虑，网络慢节点的探测与调度默认关闭。如需启用，你需要同时完成以下配置：
 
 1. 在 PD 侧开启调度器对网络慢节点的处理：
+
     ```bash
     scheduler config evict-slow-store-scheduler set enable-network-slow-store true
     ```
