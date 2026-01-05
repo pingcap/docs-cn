@@ -61,19 +61,19 @@ TiDB 版本：8.5.5
 
 * 按时间点恢复 (Point-in-time recovery, PITR) 支持从压缩后的日志备份中恢复，以加快恢复速度 [#56522](https://github.com/pingcap/tidb/issues/56522) @[YuJuncen](https://github.com/YuJuncen) **tw@lilin90** <!--2001-->
 
-    从 v9.0.0 开始，压缩日志备份功能提供了离线压缩能力，将非结构化的日志备份数据转换为结构化的 SST 文件，从而实现以下改进：
+    从 v8.5.5 开始，压缩日志备份功能提供了离线压缩能力，将非结构化的日志备份数据转换为结构化的 SST 文件，从而实现以下改进：
 
-    - SST 可以被快速导入集群，从而**提升恢复性能**。
-    - 压缩过程中消除重复记录，从而**减少空间消耗**。
-    - 在确保 RTO (Recovery Time Objective) 的前提下，你可以设置更长的全量备份间隔，从而**降低对业务的影响**。
+    - **提升恢复性能**：SST 可以更快地导入到集群中。
+    - **降低存储空间占用**：在压缩过程中会去除冗余数据。
+    - **减少对业务的影响**：在确保 RPO (Recovery Point Objective) 的前提下，可以设置更长的全量备份间隔。
 
   更多信息，请参考[用户文档](/br/br-compact-log-backup.md)。
 
-* Accelerated recovery of system tables from backups [#58757](https://github.com/pingcap/tidb/issues/58757) @[Leavrth](https://github.com/Leavrth) **tw@lilin90** <!--2109-->
+* 加速从备份中恢复系统表 [#58757](https://github.com/pingcap/tidb/issues/58757) @[Leavrth](https://github.com/Leavrth) **tw@lilin90** <!--2109-->
 
-    When restoring system tables from a backup, BR now introduces a new `--fast-load-sys-tables` parameter to use physical restoration instead of logical restoration. This option completely overwrites/replaces the existing tables, instead of restoring into them, for faster restoration for large scale deployments.
+    从 v8.5.5 开始，对于从备份中恢复系统表，BR 引入了新参数 `--fast-load-sys-tables`，用物理恢复替代逻辑恢复。该参数开启状态下，BR 会完全替换或覆盖现有的系统表，而不是向其中写入数据，从而显著提升大规模部署场景下的数据恢复性能。
 
-    For more information, see [Documentation](/br/br-snapshot-guide.md#restore-tables-in-the-mysql-schema).
+    更多信息，请参考[用户文档](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)。
 
 ### 稳定性
 
@@ -111,15 +111,15 @@ TiDB 版本：8.5.5
 
 * 提升进行中的日志备份与快照恢复的兼容性 [#58685](https://github.com/pingcap/tidb/issues/58685) @[BornChanger](https://github.com/BornChanger) **tw@lilin90** <!--2000-->
 
-    从 v9.0.0 开始，当日志备份任务正在运行时，在满足特定条件的情况下，仍然可以执行快照恢复，并且恢复的数据可以被进行中的日志备份正常记录。这样，日志备份可以持续进行，无需在恢复数据期间中断。
+    从 v8.5.5 开始，当日志备份任务正在运行时，在满足特定条件的情况下，仍然可以执行快照恢复。这样，日志备份可以持续进行，无需在恢复数据期间中断。并且，恢复的数据可以被进行中的日志备份正常记录。
 
     更多信息，请参考[用户文档](/br/br-pitr-manual.md#进行中的日志备份与快照恢复的兼容性)。
 
-* Table level restores from Log Backups [#57613](https://github.com/pingcap/tidb/issues/57613) @[Tristan1900](https://github.com/Tristan1900) **tw@lilin90** <!--2005-->
+* 支持从日志备份中进行表级恢复 [#57613](https://github.com/pingcap/tidb/issues/57613) @[Tristan1900](https://github.com/Tristan1900) **tw@lilin90** <!--2005-->
 
-    Starting from v8.5.5, individual table level point in time recoveries can now be performed from log backups using filters. Being able to restore individual tables, instead of the full cluster, to a specific point in time enables much more flexible, and less impactful, recovery options.
+    从 v8.5.5 开始，你可以使用过滤器从日志备份中对单个表执行按时间点恢复 (PITR)。相比将整个集群恢复到指定时间点，表级恢复提供了更加灵活、且对业务影响更小的恢复方式。
 
-    For more information, see [documentation](/br/br-pitr-manual.md#restore-data-using-filters).
+    更多信息，请参考[用户文档](/br/br-pitr-manual.md#使用过滤器恢复)。
 
 ### 可观测性
 
