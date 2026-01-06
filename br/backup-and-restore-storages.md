@@ -213,15 +213,20 @@ tiup br restore db --db test -u "${PD_IP}:2379" \
 
         使用系统分配的托管标识时，无需配置任何 Azure 相关环境变量，直接运行 br 备份命令即可。
 
+        ```shell
+        tiup br backup full -u "${PD_IP}:2379" \
+        --storage "azure://external/backup-20220915?account-name=${account-name}"
+        ```
+
         > **注意：**
         >
         > 请确保运行环境中**不存在** `AZURE_CLIENT_ID`、`AZURE_TENANT_ID` 或 `AZURE_CLIENT_SECRET` 环境变量，否则 Azure SDK 可能会优先使用其他认证方式，导致托管标识未生效。
 
     - **用户分配的托管标识 (User-assigned)**：
 
-        使用用户分配的托管标识时，需要在 TiKV 运行环境或 br 命令行工具运行环境中配置环境变量 `AZURE_CLIENT_ID`，其值为该托管标识的 Client ID。
+        使用用户分配的托管标识时，需要在 TiKV 运行环境和 br 命令行工具运行环境中配置环境变量 `AZURE_CLIENT_ID` （其值为该托管标识的 Client ID），然后再执行 br 备份命令。具体步骤如下：
 
-        - 使用 TiUP 启动时为 TiKV 配置 Client ID：
+        1. 使用 TiUP 启动时为 TiKV 配置 Client ID：
 
             以下步骤以 TiKV 端口 `24000`、systemd 服务名 `tikv-24000` 为例：
 
@@ -231,7 +236,7 @@ tiup br restore db --db test -u "${PD_IP}:2379" \
                 systemctl edit tikv-24000
                 ```
 
-            2. 配置环境变量，仅需设置 Client ID：
+            2. 配置 `AZURE_CLIENT_ID` 环境变量：
 
                 ```ini
                 [Service]
@@ -245,20 +250,18 @@ tiup br restore db --db test -u "${PD_IP}:2379" \
                 systemctl restart tikv-24000
                 ```
 
-        - 为 br 命令行工具配置 Client ID：
-
-            在运行 br 备份命令前，设置 `AZURE_CLIENT_ID` 环境变量：
+        2. 为 br 命令行工具配置 `AZURE_CLIENT_ID` 环境变量：
 
             ```shell
             export AZURE_CLIENT_ID="<your-client-id>"
             ```
 
-    配置好环境变量 `AZURE_CLIENT_ID` 后，可以使用以下 br 命令行工具将数据备份至 Azure Blob Storage：
+        3. 使用 br 命令行工具将数据备份至 Azure Blob Storage：
 
-    ```shell
-    tiup br backup full -u "${PD_IP}:2379" \
-    --storage "azure://external/backup-20220915?account-name=${account-name}"
-    ```
+            ```shell
+            tiup br backup full -u "${PD_IP}:2379" \
+            --storage "azure://external/backup-20220915?account-name=${account-name}"
+            ```
 
 </div>
 </SimpleTab>
