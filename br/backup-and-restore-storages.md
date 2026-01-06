@@ -207,32 +207,38 @@ tiup br restore db --db test -u "${PD_IP}:2379" \
 
     从 v8.5.5 和 v9.0.0 起，如果你的 TiDB 集群和 br 命令行工具运行在 Azure 虚拟机 (VM) 或 Azure Kubernetes Service (AKS) 环境中，并且已为节点分配了托管标识，则可以使用托管标识进行鉴权。
 
-    使用此方式前，请确保已在 [Azure Portal](https://azure.microsoft.com/) 中为该托管标识授予目标存储账户的访问权限（如 `Storage Blob Data Contributor`）。
+    使用此方式前，请确保已在 [Azure Portal](https://azure.microsoft.com/) 中为对应的托管标识授予目标存储账户的访问权限（如 `Storage Blob Data Contributor`）。
 
     - **系统分配的托管标识 (System-assigned)**：
 
-       使用系统分配的托管标识时，无需配置任何 Azure 相关环境变量，直接运行 br 备份命令即可。请确保运行环境中**不存在** `AZURE_CLIENT_ID`、`AZURE_TENANT_ID` 或 `AZURE_CLIENT_SECRET`，否则 Azure SDK 可能会优先使用其他认证方式。
+        使用系统分配的托管标识时，无需配置任何 Azure 相关环境变量，直接运行 br 备份命令即可。
+
+        > **注意：**
+        >
+        > 请确保运行环境中**不存在** `AZURE_CLIENT_ID`、`AZURE_TENANT_ID` 或 `AZURE_CLIENT_SECRET` 环境变量，否则 Azure SDK 可能会优先使用其他认证方式，导致托管标识未生效。
 
     - **用户分配的托管标识 (User-assigned)**：
 
-        使用用户分配的托管标识时，需要在 TiKV 运行环境或 br 命令行工具运行环境中配置环境变量 `$AZURE_CLIENT_ID`，其值为该托管标识的 Client ID。
+        使用用户分配的托管标识时，需要在 TiKV 运行环境或 br 命令行工具运行环境中配置环境变量 `AZURE_CLIENT_ID`，其值为该托管标识的 Client ID。
 
         - 使用 TiUP 启动时为 TiKV 配置 Client ID：
 
-           1. 假设节点上 TiKV 端口为 `24000`，Systemd 服务名为 `tikv-24000`：
+            以下步骤以 TiKV 端口 `24000`、systemd 服务名 `tikv-24000` 为例：
+
+            1. 执行以下命令进入服务配置编辑界面：
 
                 ```shell
                 systemctl edit tikv-24000
                 ```
 
-            2. 编辑环境变量信息（仅需 Client ID）：
+            2. 配置环境变量，仅需设置 Client ID：
 
                 ```ini
                 [Service]
-                Environment="AZURE_CLIENT_ID=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+                Environment="AZURE_CLIENT_ID=<your-client-id>"
                 ```
 
-            3. 重新加载配置并重启 TiKV：
+            3. 重新加载 systemd 配置并重启 TiKV：
 
                 ```shell
                 systemctl daemon-reload
@@ -241,13 +247,13 @@ tiup br restore db --db test -u "${PD_IP}:2379" \
 
         - 为 br 命令行工具配置 Client ID：
 
-            确认当前 Shell 环境中存在 Client ID：
+            在运行 br 命令前，设置 `AZURE_CLIENT_ID` 环境变量：
 
             ```shell
             export AZURE_CLIENT_ID="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
             ```
 
-    配置好环境变量 `$AZURE_CLIENT_ID` 后，可以使用以下 br 命令行工具将数据备份至 Azure Blob Storage：
+    配置好环境变量 `AZURE_CLIENT_ID` 后，可以使用以下 br 命令行工具将数据备份至 Azure Blob Storage：
 
     ```shell
     tiup br backup full -u "${PD_IP}:2379" \
