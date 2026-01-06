@@ -95,7 +95,7 @@ ALTER TABLE t1 AFFINITY = '';
 
 ## 注意事项
 
-- **Region 的自动分裂**：当 Region 属于某个亲和性分组且亲和性生效时，Region 默认不会自动分裂，以避免产生过多 Region 影响亲和性效果。只有当 Region 大小超过 [`schedule.max-affinity-merge-region-size`](/pd-configuration-file.md#max-affinity-merge-region-size-从-v855-和-v900-版本开始引入) 值的四倍时，才会触发自动分裂。手动执行的 [`ADMIN SPLIT`](/sql-statements/sql-statement-admin-split.md) 不受此限制。
+- **Region 的自动分裂**：当 Region 属于某个亲和性分组且亲和性生效时，Region 默认不会自动分裂，以避免产生过多 Region 影响亲和性效果。只有当 Region 大小超过 [`schedule.max-affinity-merge-region-size`](/pd-configuration-file.md#max-affinity-merge-region-size-从-v855-和-v900-版本开始引入) 值的四倍时，才会触发自动分裂。需要注意的是，非 TiKV 或 PD 自动触发的 Region 分裂（例如手动执行的 [`SPLIT TABLE`](/sql-statements/sql-statement-split-region.md)）不受此限制。
 
 - **降级与过期机制**：如果亲和性分组中目标 Leader 或 Voter 所在的 TiKV 节点处于不可用状态（例如节点宕机或磁盘空间不足）、Leader 被驱逐，或与现有放置规则发生冲突时，PD 会将该亲和性分组标记为降级状态。在降级期间，对应表或分区的亲和性调度将暂停。
 
