@@ -7,7 +7,7 @@ summary: TiDB 数据库中 MODIFY COLUMN 的使用概况。
 
 `ALTER TABLE ... MODIFY COLUMN` 语句用于修改已有表上的列，包括列的数据类型和属性。若要同时重命名，可改用 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 语句。
 
-从 v5.1.0 起，TiDB 支持需要 Reorg-Data 的列类型变更。这类变更在执行过程中会重建表中现有的所有数据，包括读取原始数据、按照新的数据格式进行处理，以及重新写入表中。由于需要处理全表数据，Reorg-Data 操作通常较为耗时，其执行时间与表中的数据量成正比。
+从 v5.1.0 起，TiDB 支持需要 Reorg-Data 的列类型变更。在执行此类变更时，TiDB 会对表中的的全部现有数据进行重建，具体过程包括：读取原始表数据、按照新的列类型对数据进行转换，然后将转换后的数据重新写入表中。由于需要处理全表数据，Reorg-Data 操作通常耗时较长，其执行时间与表中的数据量成正比。
 
 以下是一些常见的需要执行 Reorg-Data 的列类型变更示例：
 
