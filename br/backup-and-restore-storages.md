@@ -249,7 +249,7 @@ tiup br restore db --db test -u "${PD_IP}:2379" \
             在运行 br 命令前，设置 `AZURE_CLIENT_ID` 环境变量：
 
             ```shell
-            export AZURE_CLIENT_ID="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+            export AZURE_CLIENT_ID="<your-client-id>"
             ```
 
     配置好环境变量 `AZURE_CLIENT_ID` 后，可以使用以下 br 命令行工具将数据备份至 Azure Blob Storage：
