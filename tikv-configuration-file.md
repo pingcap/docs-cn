@@ -227,7 +227,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `end-point-memory-quota` <span class="version-mark">从 v8.2.0 版本开始引入</span>
 
 * TiKV Coprocessor 请求可以使用的内存上限。超过该值后，后续的 Coprocessor 请求将被拒绝，并报错 "server is busy"。
-* 默认值：系统总内存大小的 45%。如果超过 500 MiB，则默认值为 500 MiB。
+* 默认值：系统总内存大小的 12.5%。如果小于 500 MiB，则默认值为 500 MiB。
 
 ### `snap-io-max-bytes-per-sec`
 
