@@ -155,16 +155,11 @@ TiDB 版本：8.5.5
 
 ## 兼容性变更
 
-### 系统变量
-
-
-### 配置参数
-
-- 新增 BR 配置项 [`--checkpoint-storage`](/br/br-checkpoint-restore.md#实现细节将断点数据存储在下游集群)，用于指定断点数据存储的外部存储。 
-
 ### 行为变更
 
 * When using [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) with [Global Sort](/tidb-global-sort.md) enabled, primary key or unique index conflicts are now automatically resolved by removing all conflicting rows (none of the conflicting rows are preserved), instead of causing the task to fail. The number of conflicted rows appears in the `Result_Message` column of `SHOW IMPORT JOBS` output, and detailed conflict information is stored in cloud storage. For more information, see [`IMPORT INTO` conflict resolution](/sql-statements/sql-statement-import-into.md#conflict-resolution).
+* 从 v8.5.5 开始，在数据恢复期间，目标表的 Table Mode 会自动设置为 `restore`，处于 `restore` 模式的表禁止用户执行任何读写操作。当数据恢复完成后，Table Mode 会自动切换为 `normal` 状态，用户可以正常读写该表，从而确保数据恢复期间的任务稳定性和数据一致性。
+* 从 v8.5.5 开始，当参数 `--load-stats` 设置为 `false` 时，BR 不再向 `mysql.stats_meta` 表写入恢复表的统计信息。你可以在恢复完成后手动执行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)，以更新相关统计信息。
 
 ### MySQL 兼容性
 
@@ -175,16 +170,14 @@ TiDB 版本：8.5.5
 | `tidb_advancer_check_point_lag_limit`       |  新增   | 控制日志备份任务 Checkpoint 的滞后时间限制。如果日志备份任务 Checkpoint 的滞后时间超过了限制，TiDB Advancer 会暂停该任务。 |
 | `tidb_cb_pd_metadata_error_rate_threshold_ratio`    |  新增  | 控制 TiDB 何时触发熔断器。设置为 `0`（默认值）表示禁用熔断器。设置为 `0.01` 到 `1` 之间的值时，表示启用熔断器，当发送到 PD 的特定请求的错误率达到或超过该阈值时，熔断器会被触发。|
 | `tidb_index_lookup_pushdown_policy` |  新增  | 控制 TiDB 是否以及在什么条件下将 `IndexLookUp` 算子下推到 TiKV。 |
-|        |                              |      |
-|        |                              |      |
 
 ### 配置参数
 
 | 配置文件或组件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-|  |  |  |  |
-|  |  |  |  |
-|  |  |  |  |
+| BR | [`--checkpoint-storage`](/br/br-checkpoint-restore.md#实现细节将断点数据存储在下游集群) | 新增 | 用于指定断点数据存储的外部存储。 |
+| BR | [`--fast-load-sys-tables`](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表) | 新增 | 用于在全新的集群上物理恢复系统表。 |
+| BR | [`--filter`](/br/br-pitr-manual.md#使用过滤器恢复) | 新增 | 用于恢复特定的数据库或表。 |
 
 ### 系统表
 
