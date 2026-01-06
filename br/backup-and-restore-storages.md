@@ -205,7 +205,7 @@ tiup br restore db --db test -u "${PD_IP}:2379" \
 
 - 方式四：使用 Azure 托管标识 (Managed Identity)
 
-    从 v8.5.5 和 v9.0.0 起，如果你的 TiDB 集群和 br 命令行工具运行在 Azure 虚拟机 (VM) 或 Azure Kubernetes Service (AKS) 环境中，并且已为节点分配了托管标识，则可以使用托管标识进行鉴权。
+    从 v8.5.5 和 v9.0.0 起，如果你的 TiDB 集群和 br 命令行工具运行在 Azure 虚拟机 (VM) 或 Azure Kubernetes Service (AKS) 环境中，并且已为节点分配了 Azure 托管标识，则可以使用 Azure 托管标识进行鉴权。
 
     使用此方式前，请确保已在 [Azure Portal](https://azure.microsoft.com/) 中为对应的托管标识授予目标存储账户的访问权限（如 `Storage Blob Data Contributor`）。
 
@@ -247,7 +247,7 @@ tiup br restore db --db test -u "${PD_IP}:2379" \
 
         - 为 br 命令行工具配置 Client ID：
 
-            在运行 br 命令前，设置 `AZURE_CLIENT_ID` 环境变量：
+            在运行 br 备份命令前，设置 `AZURE_CLIENT_ID` 环境变量：
 
             ```shell
             export AZURE_CLIENT_ID="<your-client-id>"
