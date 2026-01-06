@@ -131,8 +131,8 @@ SHOW TABLES
     - `"NOT_SHARDED(PK_IS_HANDLE)"`：一个定义了整型主键的表未被 Shard。
     - `"PK_AUTO_RANDOM_BITS={bit_number}"`：一个定义了整型主键的表由于定义了 `AUTO_RANDOM` 而被 Shard。
     - `"SHARD_BITS={bit_number}"`：表使用 `SHARD_ROW_ID_BITS={bit_number}` 进行了 Shard。
-    - NULL：表属于系统表或 View，无法被 Shard。
-* `TIDB_PK_TYPE`：表的主键类型，可能的值包括 `CLUSTERED`（聚簇主键）和 `NONCLUSTERED`。
-* `TIDB_PLACEMENT_POLICY_NAME`：应用于该表的放置策略名称。
+    - `NULL`：表属于系统表或 View，无法被 Shard。
+* `TIDB_PK_TYPE`：表的主键类型，可能的值包括 `CLUSTERED`（聚簇主键）和 `NONCLUSTERED`（非聚簇主键）。
+* `TIDB_PLACEMENT_POLICY_NAME`：应用于该表的放置策略 (placement policy) 名称。
 * `TIDB_TABLE_MODE`：表的模式，例如 `Normal`、`Import` 或 `Restore`。
-* `TIDB_AFFINITY`：表的亲和性等级，非分区表为 `table`，分区表为 `partition`，未开启亲和性时为 NULL。
+* `TIDB_AFFINITY`：表的亲和性等级，非分区表为 `table`，分区表为 `partition`，未开启亲和性时为 `NULL`。
