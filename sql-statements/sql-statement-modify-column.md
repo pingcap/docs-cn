@@ -17,10 +17,15 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-modify-column/','/docs-cn/d
 - `DECIMAL` 精度修改
 - 从 `VARCHAR(10)` 到 `VARCHAR(5)` 的长度压缩
 
-从 v8.5.5 和 v9.0.0 起，针对部分原本需要 Reorg-Data 的列类型变更，TiDB 优化了执行效率。如果当前会话的 [SQL 模式](/sql-mode.md)为严格模式（即 `sql_mode` 值包含 `STRICT_TRANS_TABLES` 或 `STRICT_ALL_TABLES`），TiDB 在进行以下类型变更时，会预先检查类型转换过程中是否存在数据截断风险，若不存在数据截断风险，TiDB 将不再进行表数据重建，仅重建受影响的索引：
+从 v8.5.5 和 v9.0.0 起，TiDB 对部分原本需要 Reorg-Data 的列类型变更进行了优化。在满足以下条件时，TiDB 将不再重建表数据，仅重建受影响的索引，从而提升执行效率：
 
-- 整数类型之间的变更（例如 `BIGINT` 到 `INT`）
-- 字符串类型之间的变更（例如 `VARCHAR(200)` 到 `VARCHAR(100)`）
+- 当前会话的 [SQL 模式](/sql-mode.md) 为严格模式（`sql_mode` 包含 `STRICT_TRANS_TABLES` 或 `STRICT_ALL_TABLES`）
+- 类型转换过程中不存在数据截断风险
+
+该优化适用于以下类型变更场景：
+
+- 整数类型之间的变更（例如，从 `BIGINT` 变更为 `INT`）
+- 字符串类型之间的变更（例如，从 `VARCHAR(200)` 变更为 `VARCHAR(100)`）
 
 > **注意：**
 >
