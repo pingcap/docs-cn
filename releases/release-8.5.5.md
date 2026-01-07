@@ -208,9 +208,9 @@ TiDB 版本：8.5.5
 + PD <!--tw@Oreoxmt: 4 notes-->
 
     - 优化了高基数指标 [#9357](https://github.com/tikv/pd/issues/9357) @[rleungx](https://github.com/rleungx)
-    - 优化了时间戳推进和选举逻辑 [#9981](https://github.com/tikv/pd/issues/9981) @[bufferflies](https://github.com/bufferflies)
-    - 支持批量设置 TiKV 的 store limit [#9970](https://github.com/tikv/pd/issues/9970) @[bufferflies](https://github.com/bufferflies)
-    - `pd_cluster_status` 增加了 store 标签 [#9855](https://github.com/tikv/pd/issues/9855) @[SerjKol80](https://github.com/SerjKol80)
+    - 优化时间戳推进和 Leader 选举的逻辑 [#9981](https://github.com/tikv/pd/issues/9981) @[bufferflies](https://github.com/bufferflies)
+    - 支持批量配置 TiKV 的 Store Limit [#9970](https://github.com/tikv/pd/issues/9970) @[bufferflies](https://github.com/bufferflies)
+    - 为 `pd_cluster_status` 指标添加 `store` 标签 [#9855](https://github.com/tikv/pd/issues/9855) @[SerjKol80](https://github.com/SerjKol80)
 
 + Tools
 
@@ -257,13 +257,12 @@ TiDB 版本：8.5.5
 
 + TiKV <!--tw@Oreoxmt: 7 notes-->
 
-    - Fix the bug that analyze scan kv operation metric is always 0 [#19206](https://github.com/tikv/tikv/issues/19206) @[glorv](https://github.com/glorv)
-    - Fix the bug that pd heartbeat may report wrong region size/keys statistics data after leader change. [#19180](https://github.com/tikv/tikv/issues/19180) @[glorv](https://github.com/glorv)
-    - Fixes unsafe recovery getting stuck by removing tombstoned TiFlash learners from the unsafe recovery demotion list. [#18458](https://github.com/tikv/tikv/issues/18458) @[v01dstar](https://github.com/v01dstar)
-    - Fixes an issue where snapshots could be canceled indefinitely under continuous writes, blocking replica recovery. [#18872](https://github.com/tikv/tikv/issues/18872) @[exit-code-1](https://github.com/exit-code-1)
-    - Fixes compaction slowdowns caused by increased flow-control thresholds. [#18708](https://github.com/tikv/tikv/issues/18708) @[hhwyt](https://github.com/hhwyt)
-    - Fix the bug that pd heartbeat may report wrong region size/keys statistics data after leader change. [#19180](https://github.com/tikv/tikv/issues/19180) @[glorv](https://github.com/glorv)
-    - Fixes a corner case where Raft peers could enter hibernation prematurely, causing them to remain busy and block leader transfers after TiKV restart. [#19203](https://github.com/tikv/tikv/issues/19203) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 修复 Analyze 请求的 `KV Cursor Operations` 监控指标始终为 `0` 的问题 [#19206](https://github.com/tikv/tikv/issues/19206) @[glorv](https://github.com/glorv)
+    - 修复 Leader 变更后 PD 心跳可能上报错误的 Region 大小或 key 统计信息的问题 [#19180](https://github.com/tikv/tikv/issues/19180) @[glorv](https://github.com/glorv)
+    - 通过从 Unsafe Recovery 降级列表中移除 tombstone 状态的 TiFlash Learner，修复 Unsafe Recovery 进程卡住的问题 [#18458](https://github.com/tikv/tikv/issues/18458) @[v01dstar](https://github.com/v01dstar)
+    - 修复在持续写入期间快照可能被无限期取消，从而阻塞副本恢复的问题 [#18872](https://github.com/tikv/tikv/issues/18872) @[exit-code-1](https://github.com/exit-code-1)
+    - 修复流控阈值过高导致 compaction 变慢的问题 [#18708](https://github.com/tikv/tikv/issues/18708) @[hhwyt](https://github.com/hhwyt)
+    - 修复特定场景下 Raft peer 可能过早进入休眠状态，导致 TiKV 重启后 peer 保持繁忙并阻塞 Leader 迁移的问题 [#19203](https://github.com/tikv/tikv/issues/19203) @[LykxSassinator](https://github.com/LykxSassinator)
 
 + PD <!--tw@qiancai: 7 notes-->
 
@@ -285,13 +284,13 @@ TiDB 版本：8.5.5
 
     + Backup & Restore (BR) <!--tw@Oreoxmt: 7 notes-->
 
-        - Fixed an issue that memory usage may be unacceptable when log backup enabled and many regions in cluster. [#18719](https://github.com/tikv/tikv/issues/18719) @[YuJuncen](https://github.com/YuJuncen)
-        - Fixed an issue that Azure SDK cannot found suitable key from environment. [#18206](https://github.com/tikv/tikv/issues/18206) @[YuJuncen](https://github.com/YuJuncen)
-        - Fixed an issue that foreign keys cannot be properly fixed during `restore point`. [#61642](https://github.com/pingcap/tidb/issues/61642) @[Leavrth](https://github.com/Leavrth)
-        - Fixed an issue that restore cannot be performed if system table collations are incompatible between backup and target cluster by introducing the parameter --sys-check-collation to support restore privileges tables from v6.5 to v7.5 [#64667](https://github.com/pingcap/tidb/issues/64667) @[Leavrth](https://github.com/Leavrth)
-        - Fixed an issue that caused `restore log` cannot be performed after a failed `restore point` though the latter is safe to be execued. [#64908](https://github.com/pingcap/tidb/issues/64908) @[RidRisR](https://github.com/RidRisR)
-        - Fixed an issue that Azure managed identity is unavailable.[#19006](https://github.com/tikv/tikv/issues/19006) @[RidRisR](https://github.com/RidRisR)
-        - Fixed an issue that may cause `restore point` from checkpoint panic when the log backup was mixed with a full backup. [#58685](https://github.com/pingcap/tidb/issues/58685) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复集群中存在大量 Region 时，开启日志备份导致内存占用过高的问题 [#18719](https://github.com/tikv/tikv/issues/18719) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复 Azure SDK 无法从环境变量中获取合适的密钥的问题 [#18206](https://github.com/tikv/tikv/issues/18206) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复执行 `restore point` 时无法正确恢复外键的问题 [#61642](https://github.com/pingcap/tidb/issues/61642) @[Leavrth](https://github.com/Leavrth)
+        - 修复备份集群与目标集群的系统表字符集排序规则不兼容导致恢复失败的问题，通过添加 `--sys-check-collation` 参数支持将权限表从 v6.5 恢复到 v7.5 [#64667](https://github.com/pingcap/tidb/issues/64667) @[Leavrth](https://github.com/Leavrth)
+        - 修复在 `restore point` 失败后，即使操作安全也无法执行 `restore log` 的问题 [#64908](https://github.com/pingcap/tidb/issues/64908) @[RidRisR](https://github.com/RidRisR)
+        - 修复 Azure Managed Identity 托管标识不可用的问题 [#19006](https://github.com/tikv/tikv/issues/19006) @[RidRisR](https://github.com/RidRisR)
+        - 修复当日志备份数据与全量备份数据混合时，从 checkpoint 进行 `restore point` 可能导致 panic 的问题 [#58685](https://github.com/pingcap/tidb/issues/58685) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC <!--tw@qiancai: 6 notes-->
 
