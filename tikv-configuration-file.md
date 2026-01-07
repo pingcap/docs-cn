@@ -572,12 +572,16 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。
 
 ### `l0-files-threshold`
 
-+ 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).level0-slowdown-writes-trigger`的配置。
++ 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。
++ v8.5.4 及之前版本：当 `enable` 的值为 `true` 时，该配置会直接覆盖 `rocksdb.(defaultcf|writecf|lockcf).level0-slowdown-writes-trigger`。
++ 从 v8.5.5 起：当 `enable` 的值为 `true` 时，仅当 `storage.flow-control.l0-files-threshold` 小于 `rocksdb.(defaultcf|writecf|lockcf).level0-slowdown-writes-trigger` 时才覆盖该 RocksDB 配置项，以避免在调大流控阈值时削弱 RocksDB 的 compaction 加速机制。
 + 默认值：20
 
 ### `soft-pending-compaction-bytes-limit`
 
-+ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求，报错 `ServerIsBusy`。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).soft-pending-compaction-bytes-limit` 的配置。
++ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求，报错 `ServerIsBusy`。
++ v8.5.4 及之前版本：当 `enable` 的值为 `true` 时，该配置会直接覆盖 `rocksdb.(defaultcf|writecf|lockcf).soft-pending-compaction-bytes-limit`。
++ 从 v8.5.5 起：当 `enable` 的值为 `true` 时，仅当 `storage.flow-control.soft-pending-compaction-bytes-limit` 小于 `rocksdb.(defaultcf|writecf|lockcf).soft-pending-compaction-bytes-limit` 时才覆盖该 RocksDB 配置项，以避免在调大流控阈值时削弱 RocksDB 的 compaction 加速机制。
 + 默认值："192GiB"
 
 ### `hard-pending-compaction-bytes-limit`
@@ -1641,7 +1645,9 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ### `level0-slowdown-writes-trigger`
 
-+ 触发 write stall 的 L0 文件最大个数。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.l0-files-threshold` 会覆盖此配置。
++ 触发 write stall 的 L0 文件最大个数。
++ v8.5.4 及之前版本：当 `storage.flow-control.enable` 的值为 `true` 时，该配置项会被 `storage.flow-control.l0-files-threshold` 直接覆盖。
++ 从 v8.5.5 起：当 `storage.flow-control.enable` 的值为 `true` 时，如果本配置项的值大于 `storage.flow-control.l0-files-threshold`，则本配置项会被 `storage.flow-control.l0-files-threshold` 覆盖；否则保持本配置不变。
 + 默认值：20
 + 最小值：0
 
@@ -1698,7 +1704,9 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ### `soft-pending-compaction-bytes-limit`
 
-+ pending compaction bytes 的软限制。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.soft-pending-compaction-bytes-limit` 会覆盖此配置。
++ pending compaction bytes 的软限制。
++ v8.5.4 及之前版本：当 `storage.flow-control.enable` 的值为 `true` 时，该配置项会被 `storage.flow-control.soft-pending-compaction-bytes-limit` 直接覆盖。
++ 从 v8.5.5 起：当 `storage.flow-control.enable` 的值为 `true` 时，如果本配置项的值大于 `storage.flow-control.soft-pending-compaction-bytes-limit`，则本配置项会被 `storage.flow-control.soft-pending-compaction-bytes-limit` 覆盖；否则保持本配置不变。
 + 默认值：192GiB
 + 单位：KiB|MiB|GiB
 
