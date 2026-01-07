@@ -15,7 +15,7 @@ summary: 了解断点恢复功能，包括它的使用场景、实现原理以�
 
 ## 实现原理
 
-断点恢复的实现原理分为快照恢复和日志恢复两部分。具体实现细节请参考[实现细节](#实现细节)。
+断点恢复的实现原理分为快照恢复和日志恢复两部分。具体实现细节请参考[实现细节：将断点数据存储在下游集群](#实现细节将断点数据存储在下游集群)和[实现细节：将断点数据存储在外部存储](#实现细节将断点数据存储在外部存储)。
 
 ### 快照恢复
 
@@ -65,7 +65,11 @@ br 工具暂停 GC 的原理是通过执行 `SET config tikv gc.ratio-threshold 
 
 不建议进行跨大版本的断点恢复操作。对于使用 v8.5.0 之前长期支持 (Long-Term Support, LTS) 版本 br 恢复失败的集群，无法通过 v8.5.0 或更新的 LTS 版本 br 继续恢复，反之亦然。
 
-## 实现细节
+## 实现细节：将断点数据存储在下游集群
+
+> **注意：**
+>
+> 从 v8.5.5 开始，默认将断点数据存储在下游集群。你可以通过参数 `--checkpoint-storage` 来指定断点数据存储的外部存储。
 
 断点恢复的具体操作细节分为快照恢复和 PITR 恢复两部分。
 
@@ -81,7 +85,7 @@ br 工具暂停 GC 的原理是通过执行 `SET config tikv gc.ratio-threshold 
 
 [PITR (Point-in-time recovery)](/br/br-pitr-guide.md) 恢复分为快照恢复和日志恢复两个阶段。
 
-在第一次执行恢复时，br 工具首先进入快照恢复阶段。该阶段与上述只进行[快照恢复](#快照恢复-1)操作相同，断点数据，以及备份数据的上游集群的 ID 和备份数据的 BackupTS（即日志恢复的起始时间点 `start-ts`）会被记录到 `__TiDB_BR_Temporary_Snapshot_Restore_Checkpoint` 数据库中。如果在此阶段恢复失败，尝试继续断点恢复时无法再调整日志恢复的起始时间点 `start-ts`。
+在第一次执行恢复时，br 工具首先进入快照恢复阶段。断点数据、备份数据的上游集群的 ID、备份数据的 BackupTS（即日志恢复的起始时间点 `start-ts`）和 PITR 恢复的 `restored-ts` 会被记录到 `__TiDB_BR_Temporary_Snapshot_Restore_Checkpoint` 数据库中。如果在此阶段恢复失败，尝试继续断点恢复时无法再调整日志恢复的起始时间点 `start-ts` 和 `restored-ts`。
 
 在第一次执行恢复并且进入日志恢复阶段时，br 工具会在恢复集群中创建 `__TiDB_BR_Temporary_Log_Restore_Checkpoint` 数据库，用于记录断点数据，以及这次恢复的上游集群 ID 和恢复的时间范围 `start-ts` 与 `restored-ts`。如果在此阶段恢复失败，重新执行恢复命令时，你需要指定与断点记录相同的 `start-ts` 和 `restored-ts` 参数，否则 br 工具会报错，并提示上游集群 ID 或恢复的时间范围与断点记录不同。如果恢复集群已被清理，你可以手动删除 `__TiDB_BR_Temporary_Log_Restore_Checkpoint` 数据库，然后使用其他备份重试。
 
