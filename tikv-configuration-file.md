@@ -153,7 +153,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `grpc-concurrency`
 
 + gRPC 工作线程的数量。调整 gRPC 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
-+ 默认值：从 v8.5.4 和 v9.0.0 起，调整为 `grpc-raft-conn-num * 3 + 2`。其中，`grpc-raft-conn-num` 的默认值可参考 [`grpc-raft-conn-num`](#grpc-raft-conn-num)。在 v8.5.3 及之前的版本中，默认值为 5。
++ 默认值：从 v8.5.4 和 v9.0.0 起，调整为 `grpc-raft-conn-num * 3 + 2`。其中，`grpc-raft-conn-num` 的值可参考 [`grpc-raft-conn-num`](#grpc-raft-conn-num)。在 v8.5.3 及之前的版本中，默认值为 5。
 
     + 例如，当 CPU 核数为 8 时，`grpc-raft-conn-num` 的默认值为 1，相应地，`grpc-concurrency` 的默认值即为 `1 * 3 + 2 = 5`。
 
