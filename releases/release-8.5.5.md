@@ -166,8 +166,8 @@ TiDB 版本：8.5.5
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
-| [`tidb_advancer_check_point_lag_limit`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_advancer_check_point_lag_limit-从-v855-版本开始引入)       |  新增   | 控制日志备份任务 Checkpoint 的滞后时间限制，默认值为 `48h0m0s`。如果日志备份任务 Checkpoint 的滞后时间超过了限制，TiDB Advancer 会暂停该任务。 |
-| [`tidb_cb_pd_metadata_error_rate_threshold_ratio`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_cb_pd_metadata_error_rate_threshold_ratio-从-v855-版本开始引入)    |  新增  | 控制 TiDB 何时触发熔断器。默认值为 `0`，表示禁用熔断器。设置为 `0.01` 到 `1` 之间的值时，表示启用熔断器，当发送到 PD 的特定请求的错误率达到或超过该阈值时，熔断器会被触发。|
+| [`tidb_advancer_check_point_lag_limit`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_advancer_check_point_lag_limit-从-v855-版本开始引入) | 新增 | 控制日志备份任务 Checkpoint 的滞后时间限制，默认值为 `48h0m0s`。如果日志备份任务 Checkpoint 的滞后时间超过了限制，TiDB Advancer 会暂停该任务。 |
+| [`tidb_cb_pd_metadata_error_rate_threshold_ratio`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_cb_pd_metadata_error_rate_threshold_ratio-从-v855-版本开始引入) | 新增 | 控制 TiDB 何时触发熔断器。默认值为 `0`，表示禁用熔断器。设置为 `0.01` 到 `1` 之间的值时，表示启用熔断器，当发送到 PD 的特定请求的错误率达到或超过该阈值时，熔断器会被触发。|
 | [`tidb_index_lookup_pushdown_policy`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_index_lookup_pushdown_policy-从-v855-版本开始引入) |  新增  | 控制 TiDB 是否以及在什么条件下将 `IndexLookUp` 算子下推到 TiKV。默认值为 `hint-only`，表示仅在 SQL 中显式指定 [`INDEX_LOOKUP_PUSHDOWN`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入) Hint 时，才将 `IndexLookUp` 算子下推到 TiKV。 |
 
 ### 配置参数
