@@ -45,11 +45,11 @@ TiDB 版本：8.5.5
 
     TiDB 从 v8.5.5 开始支持通过 Optimizer Hints 将索引查询 `IndexLookUp` 下推到 TiKV 节点执行，从而减少远程调用次数并提升查询性能。实际性能提升比例因业务场景而异，需要进行测试验证。
 
-    使用 [`INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...])`](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入) Hint，可以显式指示优化器将指定表的索引查询下推到 TiKV。建议将该 Hint 与表的 AFFINITY 属性配合使用，例如为普通表设置 `AFFINITY="table"`，为分区表设置 `AFFINITY="partition"`。
+    使用 [`INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...])`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入) Hint，可以显式指示优化器将指定表的索引查询下推到 TiKV。建议将该 Hint 与表的 AFFINITY 属性配合使用，例如为普通表设置 `AFFINITY="table"`，为分区表设置 `AFFINITY="partition"`。
 
-    如果需要禁止某个表的索引查询下推到 TiKV，可以使用 [`NO_INDEX_LOOKUP_PUSHDOWN(t1_name)`](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints#no_index_lookup_pushdownt1_name-从-v855-版本开始引入) Hint。
+    如果需要禁止某个表的索引查询下推到 TiKV，可以使用 [`NO_INDEX_LOOKUP_PUSHDOWN(t1_name)`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints#no_index_lookup_pushdownt1_name-从-v855-版本开始引入) Hint。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入)。
 
 * 支持表级数据亲和性（AFFINITY），提升查询性能（实验特性） [#9764](https://github.com/tikv/pd/issues/9764) @[lhy1024](https://github.com/lhy1024) **tw@qiancai** <!--2317-->
 
@@ -166,9 +166,9 @@ TiDB 版本：8.5.5
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
-| `tidb_advancer_check_point_lag_limit`       |  新增   | 控制日志备份任务 Checkpoint 的滞后时间限制。如果日志备份任务 Checkpoint 的滞后时间超过了限制，TiDB Advancer 会暂停该任务。 |
-| `tidb_cb_pd_metadata_error_rate_threshold_ratio`    |  新增  | 控制 TiDB 何时触发熔断器。设置为 `0`（默认值）表示禁用熔断器。设置为 `0.01` 到 `1` 之间的值时，表示启用熔断器，当发送到 PD 的特定请求的错误率达到或超过该阈值时，熔断器会被触发。|
-| `tidb_index_lookup_pushdown_policy` |  新增  | 控制 TiDB 是否以及在什么条件下将 `IndexLookUp` 算子下推到 TiKV。 |
+| [`tidb_advancer_check_point_lag_limit`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_advancer_check_point_lag_limit-从-v855-版本开始引入)       |  新增   | 控制日志备份任务 Checkpoint 的滞后时间限制，默认值为 `48h0m0s`。如果日志备份任务 Checkpoint 的滞后时间超过了限制，TiDB Advancer 会暂停该任务。 |
+| [`tidb_cb_pd_metadata_error_rate_threshold_ratio`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_cb_pd_metadata_error_rate_threshold_ratio-从-v855-版本开始引入)    |  新增  | 控制 TiDB 何时触发熔断器。默认值为 `0`，表示禁用熔断器。设置为 `0.01` 到 `1` 之间的值时，表示启用熔断器，当发送到 PD 的特定请求的错误率达到或超过该阈值时，熔断器会被触发。|
+| [`tidb_index_lookup_pushdown_policy`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_index_lookup_pushdown_policy-从-v855-版本开始引入) |  新增  | 控制 TiDB 是否以及在什么条件下将 `IndexLookUp` 算子下推到 TiKV。默认值为 `hint-only`，表示仅在 SQL 中显式指定 [`INDEX_LOOKUP_PUSHDOWN`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入) Hint 时，才将 `IndexLookUp` 算子下推到 TiKV。 |
 
 ### 配置参数
 
