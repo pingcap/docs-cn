@@ -157,7 +157,6 @@ TiDB 版本：8.5.5
 
 ### 行为变更
 
-* When using [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) with [Global Sort](/tidb-global-sort.md) enabled, primary key or unique index conflicts are now automatically resolved by removing all conflicting rows (none of the conflicting rows are preserved), instead of causing the task to fail. The number of conflicted rows appears in the `Result_Message` column of `SHOW IMPORT JOBS` output, and detailed conflict information is stored in cloud storage. For more information, see [`IMPORT INTO` conflict resolution](/sql-statements/sql-statement-import-into.md#conflict-resolution).
 * 从 v8.5.5 开始，在数据恢复期间，目标表的 Table Mode 会自动设置为 `restore`，处于 `restore` 模式的表禁止用户执行任何读写操作。当数据恢复完成后，Table Mode 会自动切换为 `normal` 状态，用户可以正常读写该表，从而确保数据恢复期间的任务稳定性和数据一致性。
 * 从 v8.5.5 开始，当参数 `--load-stats` 设置为 `false` 时，BR 不再向 `mysql.stats_meta` 表写入恢复表的统计信息。你可以在恢复完成后手动执行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)，以更新相关统计信息。
 
@@ -176,8 +175,8 @@ TiDB 版本：8.5.5
 
 | 配置文件或组件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| PD | [`schedule.max-affinity-merge-region-size`](https://docs.pingcap.com/zh/tidb/v8.5/pd-configuration-file#max-affinity-merge-region-size-从-v855-版本开始引入) | 新增 | 控制属于同一[亲和性](/table-affinity.md)分组中相邻的小 Region 自动合并的阈值，默认值为 `256`，单位为 MiB。 |
-| PD  | [`schedule.affinity-schedule-limit`](https://docs.pingcap.com/zh/tidb/v8.5/pd-configuration-file#affinity-schedule-limit-从-v855-版本开始引入) | 新增 | 控制同时进行的[亲和性](/table-affinity.md)调度任务数量，默认值为 `0`，表示亲和性调度默认关闭。 |
+| PD | [`schedule.max-affinity-merge-region-size`](https://docs.pingcap.com/zh/tidb/v8.5/pd-configuration-file#max-affinity-merge-region-size-从-v855-版本开始引入) | 新增 | 控制属于同一[亲和性](https://docs.pingcap.com/zh/tidb/v8.5/table-affinity)分组中相邻的小 Region 自动合并的阈值，默认值为 `256`，单位为 MiB。 |
+| PD  | [`schedule.affinity-schedule-limit`](https://docs.pingcap.com/zh/tidb/v8.5/pd-configuration-file#affinity-schedule-limit-从-v855-版本开始引入) | 新增 | 控制同时进行的[亲和性](https://docs.pingcap.com/zh/tidb/v8.5/table-affinity)调度任务数量，默认值为 `0`，表示亲和性调度默认关闭。 |
 | TiKV | [`performance.enable-async-batch-get`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#enable-async-batch-get-从-v855-版本开始引入)  | 新增 | 控制 TiDB 是否使用异步方式执行 Batch Get 算子，默认值为 `true`。 |
 | TiKV | [`server.graceful-shutdown-timeout`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#graceful-shutdown-timeout-从-v855-版本开始引入) | 新增 | 控制 TiKV 优雅关闭 (graceful shutdown) 的超时时长，默认值为 `20s`。 |
 | TiKV | [`server.inspect-network-interval`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#inspect-network-interval-从-v855-版本开始引入) | 新增 | 控制 TiKV HealthChecker 主动向 PD 以及其他 TiKV 节点发起网络探测的周期，默认值为 `100ms`。 |
