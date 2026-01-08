@@ -346,7 +346,7 @@ TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schem
 
 在 TiDB v7.4 及之前版本中，如果 JDBC URL 中未配置 `connectionCollation`，且 `characterEncoding` 未配置或配置为 `UTF-8`，TiDB [`collation_connection`](/system-variables.md#collation_connection) 变量将默认使用 `utf8mb4_bin` 排序规则。
 
-从 TiDB v7.4 开始，如果 JDBC URL 中未配置 `connectionCollation`，且 `characterEncoding` 未配置或配置为 `UTF-8`，[`collation_connection`](/system-variables.md#collation_connection) 变量值取决于 JDBC 驱动版本。例如，对于 Connector/J8.0.26 及之后版本，JDBC 驱动程序默认使用 `utf8mb4` 字符集，使用 `utf8mb4_general_ci` 作为连接排序规则，TiDB 将遵循驱动程序，[`collation_connection`](/system-variables.md#collation_connection) 变量将使用 `utf8mb4_0900_ai_ci` 排序规则。详情请参考[JDBC 连接的排序规则](#当-jdbc-url-中未配置-connectioncollation-时jdbc-连接使用什么排序规则)。
+从 TiDB v7.4 开始，如果 JDBC URL 中未配置 `connectionCollation`，且 `characterEncoding` 未配置或配置为 `UTF-8`，[`collation_connection`](/system-variables.md#collation_connection) 变量值取决于 JDBC 驱动版本。详情请参考[JDBC 连接的排序规则](#当-jdbc-url-中未配置-connectioncollation-时jdbc-连接使用什么排序规则)。
 
 当从较低版本升级到 v7.4 或更高版本时（例如，从 v6.5 升级到 v7.5），如需保持 JDBC 连接的 `collation_connection` 为 `utf8mb4_bin`，建议在 JDBC URL 中配置 `connectionCollation` 参数。
 
