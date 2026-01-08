@@ -197,12 +197,13 @@ TiDB 版本：8.5.5
     - 将 `tidb_analyze_column_options` 的默认值设置为 `all` [#64992](https://github.com/pingcap/tidb/issues/64992) @[0xPoe](https://github.com/0xPoe)
     - 优化 IndexHashJoin 的执行方式，在部分 JOIN 场景下采用增量处理以避免一次性加载大量数据，显著降低内存占用并提升执行性能 [#63303](https://github.com/pingcap/tidb/issues/63303) @[ChangRui-Ryan](https://github.com/ChangRui-Ryan)
     - (dup): release-9.0.0.md > 改进提升> TiDB - 优化分布式执行框架 (Distributed eXecution Framework, DXF) 内部 SQL 语句的 CPU 使用率 [#59344](https://github.com/pingcap/tidb/issues/59344) @[D3Hunter](https://github.com/D3Hunter)
+    - 提升 `expression.Contains` 函数的性能 [#61373](https://github.com/pingcap/tidb/issues/61373) @[hawkingrei](https://github.com/hawkingrei)
 
 + TiKV <!--tw@lilin90: 3 notes-->
 
-    - Introduces CPU-aware scaling for the unified read pool to avoid CPU starvation under hot read workloads. [#18464](https://github.com/tikv/tikv/issues/18464) @[mittalrishabh](https://github.com/mittalrishabh)
-    - Adds network latency awareness to slow score to avoid scheduling leaders on TiKV nodes with unstable network conditions. [#18797](https://github.com/tikv/tikv/issues/18797) @[okJiang](https://github.com/okJiang)
-    - Optimizes hibernate behavior by allowing leaders to enter hibernation once a majority vote is reached, without waiting for down non-voter peers. [#19070](https://github.com/tikv/tikv/issues/19070) @[jiadebin](https://github.com/jiadebin)
+    - 为统一读取池 (Unified Read Pool) 引入 CPU 感知扩缩容机制，以避免在热点读取负载下出现 CPU 饥饿 (CPU Starvation) 问题 [#18464](https://github.com/tikv/tikv/issues/18464) @[mittalrishabh](https://github.com/mittalrishabh)
+    - 在慢节点评分 (Slow Score) 中增加网络延迟感知，避免将 Leader 调度到网络环境不稳定的 TiKV 节点上 [#18797](https://github.com/tikv/tikv/issues/18797) @[okJiang](https://github.com/okJiang)
+    - 优化静默 (Hibernate) 行为，允许 Leader 在获得多数派投票后立即进入静默状态，无需等待离线的非投票副本 (Non-voter Peers) [#19070](https://github.com/tikv/tikv/issues/19070) @[jiadebin](https://github.com/jiadebin)
     - (dup): release-9.0.0.md > 改进提升> TiKV - 在 TiKV 内存占用高时，对 BR 的日志恢复请求进行限流，防止 TiKV OOM [#18124](https://github.com/tikv/tikv/issues/18124) @[3pointer](https://github.com/3pointer)
 
 + PD <!--tw@Oreoxmt: 4 notes-->
@@ -222,26 +223,25 @@ TiDB 版本：8.5.5
 
 + TiDB <!--tw@lilin90: the following 15 notes-->
 
-    - 修复 TiDB 初始化时无法读取最新的 tidb_mem_quota_binding_cache 变量值初始化 binding 的问题 [#65381](https://github.com/pingcap/tidb/issues/65381) @[qw4990](https://github.com/qw4990)
-    - 修复了在 `extractBestCNFItemRanges` 中错误地跳过候选项导致查询范围计算不精确的问题 [#62547](https://github.com/pingcap/tidb/issues/62547) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复了 `plan replayer` 无法加载 binding 的问题 [#64811](https://github.com/pingcap/tidb/issues/64811) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复了 `PointGet` 在有足够内存时仍不复用 chunk 导致不必要内存分配的问题 [#63920](https://github.com/pingcap/tidb/issues/63920) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复了 `LogicalProjection.DeriveStats` 分配过多内存的问题 [#63810](https://github.com/pingcap/tidb/issues/63810) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复了当查询发生 panic 时 `plan replayer` 无法 dump 的问题 [#64835](https://github.com/pingcap/tidb/issues/64835) @[hawkingrei](https://github.com/hawkingrei)
-    - 提升了 `expression.Contains` 函数的性能 [#61373](https://github.com/pingcap/tidb/issues/61373) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 TiDB 初始化时无法读取最新的 `tidb_mem_quota_binding_cache` 变量值进行初始化绑定的问题 [#65381](https://github.com/pingcap/tidb/issues/65381) @[qw4990](https://github.com/qw4990)
+    - 修复在 `extractBestCNFItemRanges` 中错误地跳过候选项，导致查询范围计算不精确的问题 [#62547](https://github.com/pingcap/tidb/issues/62547) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 `plan replayer` 无法加载绑定的问题 [#64811](https://github.com/pingcap/tidb/issues/64811) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 `PointGet` 在有足够内存的情况下没有复用 chunk，导致不必要的内存分配的问题 [#63920](https://github.com/pingcap/tidb/issues/63920) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 `LogicalProjection.DeriveStats` 分配过多内存的问题 [#63810](https://github.com/pingcap/tidb/issues/63810) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复当查询发生 panic 时，`plan replayer` 无法正常导出 (dump) 的问题 [#64835](https://github.com/pingcap/tidb/issues/64835) @[hawkingrei](https://github.com/hawkingrei)
     - 修复当计划缓存开启时，关联子查询可能产生非预期的全表扫描的问题 [#64645](https://github.com/pingcap/tidb/issues/64645) @[winoros](https://github.com/winoros)
-    - 修复系统表会污染表健康度监控的问题 [#57176](https://github.com/pingcap/tidb/issues/57176), [#64080](https://github.com/pingcap/tidb/issues/64080) @[0xPoe](https://github.com/0xPoe)
-    - 修复 auto-anlyze 关闭之后 `mysql.tidb_ddl_notifier` 不能被清理的问题 [#64038](https://github.com/pingcap/tidb/issues/64038) @[0xPoe](https://github.com/0xPoe)
-    - 修复了在 `newLocalColumnPool` 中重复分配 column 的问题 [#63809](https://github.com/pingcap/tidb/issues/63809) @[hawkingrei](https://github.com/hawkingrei)
-    - 减少无效的 sync load 加载失败警告日志 [#63880](https://github.com/pingcap/tidb/issues/63880) @[0xPoe](https://github.com/0xPoe)
-    - 修复手动 kill 正在执行事务的 connection 可能导致 tidb 发生 panic 异常退出的问题 [#63956](https://github.com/pingcap/tidb/issues/63956) @[wshwsh12](https://github.com/wshwsh12)
-    - 修复缓存表在走 TiFlash 副本读取时可能出现的 goroutine 和内存泄漏问题 [#63329](https://github.com/pingcap/tidb/issues/63329) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复系统表导致表健康度监控不正确的问题 [#57176](https://github.com/pingcap/tidb/issues/57176), [#64080](https://github.com/pingcap/tidb/issues/64080) @[0xPoe](https://github.com/0xPoe)
+    - 修复关闭自动更新表的统计信息后 (`tidb_enable_auto_analyze = OFF`)，`mysql.tidb_ddl_notifier` 不能被清理的问题 [#64038](https://github.com/pingcap/tidb/issues/64038) @[0xPoe](https://github.com/0xPoe)
+    - 修复在 `newLocalColumnPool` 中重复分配列的问题 [#63809](https://github.com/pingcap/tidb/issues/63809) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复存在无效的 `syncload` 加载失败警告日志的问题 [#63880](https://github.com/pingcap/tidb/issues/63880) @[0xPoe](https://github.com/0xPoe)
+    - 修复手动停止正在执行事务的链接时，可能导致 TiDB 发生 panic 而异常退出的问题 [#63956](https://github.com/pingcap/tidb/issues/63956) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复缓存表在读取 TiFlash 副本时，可能出现 goroutine 和内存泄漏的问题 [#63329](https://github.com/pingcap/tidb/issues/63329) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复执行 `ALTER TABLE child CHANGE COLUMN` 修改列后，外键 (Foreign Key) 没有更新的问题 [#59705](https://github.com/pingcap/tidb/issues/59705) @[fzzf678](https://github.com/fzzf678) <!--tw@hfxsd: the following 16 notes--> 
     - 修复解码旧版本 TiDB 的 `RENAME TABLE` 任务 arg 时出现错误的问题 [#64413](https://github.com/pingcap/tidb/issues/64413) @[joechenrh](https://github.com/joechenrh)
     - 修复当 BR 恢复失败时，未能正常设置自增 ID (Rebase) 的问题 [#60804](https://github.com/pingcap/tidb/issues/60804) @[joechenrh](https://github.com/joechenrh)
     - 修复查询 `information_schema` 表出现 OOM 的问题 [#58985](https://github.com/pingcap/tidb/issues/58985) @[tangenta](https://github.com/tangenta)
     - 修复在升级时 TiDB 节点可能会卡住的问题 [#64539](https://github.com/pingcap/tidb/issues/64539) @[joechenrh](https://github.com/joechenrh)
-    - 修复当没有索引数据时，admin check 没有报错的问题 [#issue](https://github.com/pingcap/tidb/issues/63698) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复当没有索引数据时，admin check 没有报错的问题 [#63698](https://github.com/pingcap/tidb/issues/63698) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复执行 `MODIFY COLUMN` 修改排序规则时，数据索引不一致的问题 [#61668](https://github.com/pingcap/tidb/issues/61668) @[tangenta](https://github.com/tangenta)
     - 修复多个 schema 变更时，内嵌于 DDL 的 Analyze 特性可能不会启用的问题 [#65040](https://github.com/pingcap/tidb/issues/65040) @[joechenrh](https://github.com/joechenrh)
     - 修复取消 `ADD INDEX` 任务后，分布式执行框架 (Distributed eXecution Framework, DXF) 任务没有取消的问题 [#issue](https://github.com/pingcap/tidb/issues/64129) @[tangenta](https://github.com/tangenta)
