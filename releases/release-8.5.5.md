@@ -192,10 +192,10 @@ TiDB 版本：8.5.5
 
 + TiDB <!--tw@qiancai: 4 notes-->
 
-    - improve the error message for import into when there are encoding errors [#63763](https://github.com/pingcap/tidb/issues/63763) @[D3Hunter](https://github.com/D3Hunter)
-    - change the parser for parquet format to get better performance [#62906](https://github.com/pingcap/tidb/issues/) @[joechenrh](https://github.com/joechenrh)
-    - 将 `tidb_analyze_column_options` 的默认值设置为 `all` [#64992](https://github.com/pingcap/tidb/issues/64992) @[0xPoe](https://github.com/0xPoe)
-    - 优化 IndexHashJoin 的执行方式，在部分 JOIN 场景下采用增量处理以避免一次性加载大量数据，显著降低内存占用并提升执行性能 [#63303](https://github.com/pingcap/tidb/issues/63303) @[ChangRui-Ryan](https://github.com/ChangRui-Ryan)
+    - 优化 `IMPORT INTO` 在遇到编码错误时的报错信息，帮助用户更准确地定位问题 [#63763](https://github.com/pingcap/tidb/issues/63763) @[D3Hunter](https://github.com/D3Hunter)
+    - 改进 Parquet 文件的解析机制，提升 Parquet 格式数据的导入性能 [#62906](https://github.com/pingcap/tidb/issues/62906) @[joechenrh](https://github.com/joechenrh)
+    - 将 `tidb_analyze_column_options` 的默认值设置为 `all`，默认对所有列进行统计信息收集 [#64992](https://github.com/pingcap/tidb/issues/64992) @[0xPoe](https://github.com/0xPoe)
+    - 优化 `IndexHashJoin` 算子的执行逻辑，在特定 JOIN 场景下采用增量处理以避免一次性加载大量数据，显著降低内存占用并提升执行性能 [#63303](https://github.com/pingcap/tidb/issues/63303) @[ChangRui-Ryan](https://github.com/ChangRui-Ryan)
     - (dup): release-9.0.0.md > 改进提升> TiDB - 优化分布式执行框架 (Distributed eXecution Framework, DXF) 内部 SQL 语句的 CPU 使用率 [#59344](https://github.com/pingcap/tidb/issues/59344) @[D3Hunter](https://github.com/D3Hunter)
     - 提升 `expression.Contains` 函数的性能 [#61373](https://github.com/pingcap/tidb/issues/61373) @[hawkingrei](https://github.com/hawkingrei)
 
@@ -266,13 +266,13 @@ TiDB 版本：8.5.5
 
 + PD <!--tw@qiancai: 7 notes-->
 
-    - 修复节点在上线过程中可能无法下线的问题 [#8997](https://github.com/tikv/pd/issues/8997) @[lhy1024](https://github.com/lhy1024)
-    - 修复因大量 leader transfer 可能导致 region size 跳变的问题 [#10014](https://github.com/tikv/pd/issues/10014) @[lhy1024](https://github.com/lhy1024)
+    - 修复节点在上线过程中可能无法被移除的问题 [#8997](https://github.com/tikv/pd/issues/8997) @[lhy1024](https://github.com/lhy1024)
+    - 修复大量的 Leader 迁移可能导致 Region 大小出现跳变的问题 [#10014](https://github.com/tikv/pd/issues/10014) @[lhy1024](https://github.com/lhy1024)
     - 修复调度过程中可能导致 PD panic 的问题 [#9951](https://github.com/tikv/pd/issues/9951) @[bufferflies](https://github.com/bufferflies)
     - 修复导入过程中数据不均衡的问题 [#9088](https://github.com/tikv/pd/issues/9088) @[GMHDBJD](https://github.com/GMHDBJD)
-    - 修复开启 PD follower handle 后遇到错误时，无法将请求回退到 leader 处理的问题 [#64933](https://github.com/pingcap/tidb/issues/64933) @[okJiang](https://github.com/okJiang)
-    - 修复微服务请求没有正常转发的问题 [#9825](https://github.com/tikv/pd/issues/9825) @[lhy1024](https://github.com/lhy1024) [#9825](https://github.com/tikv/pd/issues/9825) @[lhy1024](https://github.com/lhy1024)
-    - 修复微服务 TLS 配置问题 [#9367](https://github.com/tikv/pd/issues/9367) @[rleungx](https://github.com/rleungx)
+    - 修复开启 Active PD Follower 特性后，若请求在 Follower 节点处理失败，无法正确回退到 Leader 节点重试的问题 [#64933](https://github.com/pingcap/tidb/issues/64933) @[okJiang](https://github.com/okJiang)
+    - 修复 PD 微服务模式下部分请求未能正确转发的问题 [#9825](https://github.com/tikv/pd/issues/9825) @[lhy1024](https://github.com/lhy1024)
+    - 修复 `tso` 和 `scheduling` 微服务中 TLS 配置加载不正确导致连接失败的问题 [#9367](https://github.com/tikv/pd/issues/9367) @[rleungx](https://github.com/rleungx)
 
 + TiFlash <!--tw@hfxsd: 3 notes-->
 
