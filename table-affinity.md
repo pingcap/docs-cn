@@ -31,9 +31,9 @@ PD 亲和性调度特性默认关闭。在设置表或分区的亲和性前，�
 
     例如，执行以下命令将该配置项设置为 `4`，表示允许 PD 最多同时执行 4 个亲和性调度任务：
 
-      ```bash
-      pd-ctl config set schedule.affinity-schedule-limit 4
-      ```
+    ```bash
+    pd-ctl config set schedule.affinity-schedule-limit 4
+    ```
 
 2. （可选）根据需要设置 PD 配置项 [`schedule.max-affinity-merge-region-size`](/pd-configuration-file.md#max-affinity-merge-region-size-从-v855-和-v900-版本开始引入)（默认值为 `256`，单位为 MiB），用于控制属于同一亲和性分组中相邻的小 Region 自动合并的阈值。设置为 `0` 表示关闭亲和性分组中相邻的小 Region 的自动合并。
 
@@ -104,6 +104,6 @@ ALTER TABLE t1 AFFINITY = '';
 
 ## 相关语句与配置
 
-- [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 或 [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md) 的 `AFFINITY` 选项
+- [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 和 [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md) 的 `AFFINITY` 选项
 - [`SHOW AFFINITY`](/sql-statements/sql-statement-show-affinity.md)
 - PD 配置项：[`schedule.affinity-schedule-limit`](/pd-configuration-file.md#affinity-schedule-limit-从-v855-和-v900-版本开始引入) 和 [`schedule.max-affinity-merge-region-size`](/pd-configuration-file.md#max-affinity-merge-region-size-从-v855-和-v900-版本开始引入)
