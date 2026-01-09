@@ -20,16 +20,16 @@ TiDB 版本：8.5.5
     优化策略包括：
 
     - 在严格 SQL 模式下，预先检查类型转换过程中是否存在数据截断风险。
-    - 若不存在数据截断风险，则仅更新元数据，尽量避免索引重建。
+    - 若不存在数据截断风险，则仅更新元数据，避免不必要的索引重建。
     - 如需重建索引，则采用更高效的 Ingest 流程，大幅提升索引重建性能。
 
-    以下为性能提升示例。该示例基于一张包含 114 GiB 数据、6 亿行记录的表进行基准测试。测试集群由 3 个 TiDB 节点、6 个 TiKV 节点和 1 个 PD 节点组成，所有节点均为 16 核 CPU、32 GiB 内存。
+    以下为性能提升示例。该示例基于一张包含 114 GiB 数据、6 亿行记录的表进行基准测试。测试集群由 3 个 TiDB 节点、6 个 TiKV 节点和 1 个 PD 节点组成，所有节点均配置 16 核 CPU 和 32 GiB 内存。
 
     | 场景 | 操作类型 | 优化前 | 优化后 | 性能提升 |
     |------|----------|--------|--------|----------|
-    | 无索引列 | `BIGINT → INT` | 2 小时 34 分 | 1 分 5 秒 | 142 倍 |
-    | 有索引列 | `BIGINT → INT` | 6 小时 25 分 | 0.05 秒 | 460,000 倍 |
-    | 有索引列 | `CHAR(120) → VARCHAR(60)` | 7 小时 16 分 | 12 分 56 秒 | 34 倍 |
+    | 无索引列 | `BIGINT → INT` | 2 小时 34 分钟 | 1 分 5 秒 | 142 倍 |
+    | 有索引列 | `BIGINT → INT` | 6 小时 25 分钟 | 0.05 秒 | 460,000 倍 |
+    | 有索引列 | `CHAR(120) → VARCHAR(60)` | 7 小时 16 分钟 | 12 分 56 秒 | 34 倍 |
 
     注：以上数据基于 DDL 执行过程中未发生数据截断的前提。对于包含 TiFlash 副本的表，以及涉及有符号与无符号整数类型相互转换（signed ↔ unsigned）的变更场景，上述优化不适用。
 
@@ -51,11 +51,11 @@ TiDB 版本：8.5.5
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入)。
 
-* 支持表级数据亲和性（AFFINITY），提升查询性能（实验特性） [#9764](https://github.com/tikv/pd/issues/9764) @[lhy1024](https://github.com/lhy1024) **tw@qiancai** <!--2317-->
+* 支持表级数据亲和性 (AFFINITY)，提升查询性能（实验特性） [#9764](https://github.com/tikv/pd/issues/9764) @[lhy1024](https://github.com/lhy1024) **tw@qiancai** <!--2317-->
 
-    从 v8.5.5 起，在创建或修改表时，你可以设置表的 `AFFINITY` 选项为 `table` 或 `partition`。设置后，PD 会将同一张表或同一个分区的 Region 归入同一个亲和性分组，并在调度过程中优先将这些 Region 的 Leader 和 Voter 副本放置到相同的少数 TiKV 节点上。此时，通过在查询中使用 [`INDEX_LOOKUP_PUSHDOWN`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入) Hint，可以显式指示优化器将索引查询下推到 TiKV 执行，减少跨节点分散查询带来的延迟，提升查询性能。
+    从 v8.5.5 起，你可以在创建或修改表时将 `AFFINITY` 选项设置为 `table` 或 `partition`。配置后，PD 会将同一张表或同一个分区的 Region 归入同一个亲和性分组，并在调度过程中优先将这些 Region 的 Leader 和 Voter 副本放置到相同的少数 TiKV 节点上。此时，通过在查询中使用 [`INDEX_LOOKUP_PUSHDOWN`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入) Hint，可以显式指示优化器将索引查询下推到 TiKV 执行，从而减少跨节点分散查询带来的延迟，提升查询性能。
 
-    需要注意的是，表级数据亲和性目前为实验特性，默认关闭。如需开启，请将 PD 配置项 [`schedule.affinity-schedule-limit`](https://docs.pingcap.com/zh/tidb/v8.5/pd-configuration-file#affinity-schedule-limit-从-v855-版本开始引入) 设置为大于 `0` 的值。该配置项用于控制 PD 同时可进行的亲和性调度任务数。
+    需要注意的是，表级数据亲和性目前为实验特性，默认关闭。如需开启，请将 PD 配置项 [`schedule.affinity-schedule-limit`](https://docs.pingcap.com/zh/tidb/v8.5/pd-configuration-file#affinity-schedule-limit-从-v855-版本开始引入) 设置为大于 `0` 的值。该配置项用于控制 PD 同时可执行的亲和性调度任务数。
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/table-affinity)。
 
@@ -79,7 +79,7 @@ TiDB 版本：8.5.5
 
 * 提升 TiKV 在网络抖动时的调度稳定性 [#9359](https://github.com/tikv/pd/issues/9359) @[okJiang](https://github.com/okJiang) **tw@qiancai** <!--2260-->
 
-    从 v8.5.5 起，TiKV 引入网络慢节点检测与反馈机制。启用该机制后，TiKV 会在节点之间探测网络延时，计算网络慢节点分数，并将该分数上报给 PD。PD 基于该分数判断 TiKV 节点的网络状态并进行相应的调度调整：当检测到某个 TiKV 节点存在网络抖动时，PD 会限制向该节点调度新的 Leader；如果网络抖动持续存在，PD 会主动将该节点上的现有 Leader 驱逐到其他 TiKV 节点，从而降低网络异常对集群的影响。
+    从 v8.5.5 起，TiKV 引入网络慢节点检测与反馈机制。启用该机制后，TiKV 会探测节点之间的网络延时，计算网络慢节点分数，并将该分数上报给 PD。PD 基于该分数判断 TiKV 节点的网络状态，并进行相应的调度调整：当检测到某个 TiKV 节点存在网络抖动时，PD 会限制向该节点调度新的 Leader。如果网络抖动持续存在，PD 会主动将该节点上的现有 Leader 驱逐到其他 TiKV 节点，从而降低网络异常对集群的影响。
 
     更多信息，请参阅[用户文档](/pd-control.md#scheduler-config-evict-slow-store-scheduler)。
 
@@ -95,7 +95,7 @@ TiDB 版本：8.5.5
 
 * 支持在线修改分布式 `ADD INDEX` 任务的并发和吞吐 [#64947](https://github.com/pingcap/tidb/issues/64947) @[joechenrh](https://github.com/joechenrh) **tw@qiancai** <!--2326-->
 
-    在 v8.5.5 之前，如果集群开启了分布式执行框架 [`tidb_enable_dist_task`](/system-variables/#tidb_enable_dist_task-从-v710-版本开始引入) ，TiDB 不支持在 `ADD INDEX` 任务执行期间修改该任务的 `THREAD`、`BATCH_SIZE`、`MAX_WRITE_SPEED` 参数。要调整这些参数，你需要先取消当前 `ADD INDEX` 任务，重新设置参数后再提交，效率较低。
+    在 v8.5.5 之前，如果集群开启了分布式执行框架 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入)，TiDB 不支持在 `ADD INDEX` 任务执行期间修改该任务的 `THREAD`、`BATCH_SIZE` 和 `MAX_WRITE_SPEED` 参数。要调整这些参数，你需要先取消当前 `ADD INDEX` 任务，重新设置参数后再提交，效率较低。
 
     从 v8.5.5 起，在分布式 `ADD INDEX` 任务执行期间，你可以根据当前业务负载和对 `ADD INDEX` 性能的需求，通过 `ADMIN ALTER DDL JOBS` 语句在线灵活调整这些参数，而无需中断任务。
 
@@ -105,7 +105,7 @@ TiDB 版本：8.5.5
 
 * TiKV 支持优雅关闭 (graceful shutdown) [#17221](https://github.com/tikv/tikv/issues/17221) @[hujiatao0](https://github.com/hujiatao0) **tw@qiancai** <!--2297-->
 
-    在关闭 TiKV 服务器时，TiKV 会在配置的等待期内尽量先将节点上的 leader 副本转移到其他 TiKV 节点，然后再关闭。该等待期默认为 20 秒，可通过 [`server.graceful-shutdown-timeout`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#graceful-shutdown-timeout-从-v855-版本开始引入) 配置项进行调整。若达到该超时时间后仍有 leader 未完成转移，TiKV 将跳过剩余 leader 的转移，直接进入关闭流程。
+    在关闭 TiKV 服务器时，TiKV 会在配置的等待期内尽量先将节点上的 Leader 副本转移到其他 TiKV 节点，然后再关闭。该等待期默认为 20 秒，可通过 [`server.graceful-shutdown-timeout`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#graceful-shutdown-timeout-从-v855-版本开始引入) 配置项进行调整。若达到该超时时间后仍有 Leader 未完成转移，TiKV 将跳过剩余 Leader 的转移，直接进入关闭流程。
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#graceful-shutdown-timeout-从-v855-版本开始引入)。
 
@@ -143,13 +143,13 @@ TiDB 版本：8.5.5
 
 ### 安全
 
-* Backup & Restore (BR) 支持通过 Azure 托管标识（Managed Identity, MI）访问 Azure Blob Storage [#19006](https://github.com/tikv/tikv/issues/19006) @[RidRisR](https://github.com/RidRisR) **tw@qiancai** <!--2308-->
+* Backup & Restore (BR) 支持通过 Azure 托管标识 (Managed Identity, MI) 访问 Azure Blob Storage [#19006](https://github.com/tikv/tikv/issues/19006) @[RidRisR](https://github.com/RidRisR) **tw@qiancai** <!--2308-->
 
-    从 v8.5.5 起，BR 支持使用 Azure 托管标识（MI）对 Azure Blob Storage 进行身份验证，无需使用静态 SAS Token。该方式实现了安全、无密钥且短期有效的认证，符合 Azure 安全最佳实践。
+    从 v8.5.5 起，BR 支持使用 Azure 托管标识 (MI) 对 Azure Blob Storage 进行身份验证，无需使用静态 SAS Token。该方式实现了安全、无密钥且短期有效的认证，符合 Azure 安全最佳实践。
 
-    利用该功能，BR 及内嵌于 TiKV 的 BR Worker 可直接从 Azure 实例元数据服务（IMDS）获取访问令牌，有效降低了凭证泄露的风险，并简化了本地或云上 Azure 环境中的凭据轮换管理。
+    利用该功能，BR 及内嵌于 TiKV 的 BR Worker 可直接从 Azure 实例元数据服务 (IMDS) 获取访问令牌，从而有效降低凭证泄露的风险，并简化本地或云上 Azure 环境中的凭据轮换管理。
 
-    该功能尤其适用于在 Azure Kubernetes Service (AKS) 或其他 Azure 环境中运行 TiDB 的企业用户，这些环境通常对备份和恢复操作有严格的安全管控要求。
+    该功能适用于在 Azure Kubernetes Service (AKS) 或其他 Azure 环境中运行 TiDB 的场景，尤其是在备份和恢复操作需满足严格安全管控要求的企业环境中。
 
     更多信息，请参考[用户文档](/br/backup-and-restore-storages.md#鉴权)。
 
@@ -194,7 +194,7 @@ TiDB 版本：8.5.5
 
     - 优化 `IMPORT INTO` 在遇到编码错误时的报错信息，帮助用户更准确地定位问题 [#63763](https://github.com/pingcap/tidb/issues/63763) @[D3Hunter](https://github.com/D3Hunter)
     - 改进 Parquet 文件的解析机制，提升 Parquet 格式数据的导入性能 [#62906](https://github.com/pingcap/tidb/issues/62906) @[joechenrh](https://github.com/joechenrh)
-    - 将 `tidb_analyze_column_options` 的默认值设置为 `all`，默认对所有列进行统计信息收集 [#64992](https://github.com/pingcap/tidb/issues/64992) @[0xPoe](https://github.com/0xPoe)
+    - 将 `tidb_analyze_column_options` 的默认值修改为 `ALL`，默认对所有列进行统计信息收集 [#64992](https://github.com/pingcap/tidb/issues/64992) @[0xPoe](https://github.com/0xPoe)
     - 优化 `IndexHashJoin` 算子的执行逻辑，在特定 JOIN 场景下采用增量处理以避免一次性加载大量数据，显著降低内存占用并提升执行性能 [#63303](https://github.com/pingcap/tidb/issues/63303) @[ChangRui-Ryan](https://github.com/ChangRui-Ryan)
     - (dup): release-9.0.0.md > 改进提升> TiDB - 优化分布式执行框架 (Distributed eXecution Framework, DXF) 内部 SQL 语句的 CPU 使用率 [#59344](https://github.com/pingcap/tidb/issues/59344) @[D3Hunter](https://github.com/D3Hunter)
     - 提升 `expression.Contains` 函数的性能 [#61373](https://github.com/pingcap/tidb/issues/61373) @[hawkingrei](https://github.com/hawkingrei)
@@ -217,7 +217,7 @@ TiDB 版本：8.5.5
 
     + TiCDC <!--tw@qiancai: 1 note-->
 
-        - 增强 Changefeed 的配置检查逻辑，在创建或更新 Changefeed 时，若 Dispatcher 配置引用的列不存在，将直接报错并拒绝操作，避免任务运行失败 [#12253](https://github.com/pingcap/tiflow/issues/12253) @[wk989898](https://github.com/wk989898)
+        - 增强 Changefeed 的配置检查逻辑，在创建或更新 Changefeed 时，若 Dispatcher 配置引用的列不存在，TiCDC 会直接报错并拒绝操作，避免任务运行失败 [#12253](https://github.com/pingcap/tiflow/issues/12253) @[wk989898](https://github.com/wk989898)
 
 ## 错误修复
 
