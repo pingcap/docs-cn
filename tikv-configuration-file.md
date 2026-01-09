@@ -576,7 +576,8 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。
 
     > **注意**：
     >
-    > 当满足一定条件时，`rocksdb.(defaultcf|writecf|lockcf).level0-slowdown-writes-trigger` 的值会被该配置项覆盖。详细参考 [`rocksdb.(defaultcf|writecf|lockcf).level0-slowdown-writes-trigger`](/tikv-configuration-file.md#level0-slowdown-writes-trigger)。
+    > 当满足一定条件时，`rocksdb.(defaultcf|writecf|lockcf).level0-slowdown-writes-trigger` 的值会被该配置项覆盖。详情参考 [`rocksdb.(defaultcf|writecf|lockcf).level0-slowdown-writes-trigger`](/tikv-configuration-file.md#level0-slowdown-writes-trigger)。
+
 + 默认值：20
 
 ### `soft-pending-compaction-bytes-limit`
@@ -585,7 +586,8 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。
 
     > **注意**：
     >
-    > 当满足一定条件时，`rocksdb.(defaultcf|writecf|lockcf).soft-pending-compaction-bytes-limit` 的值会被该配置项覆盖。详细参考 [`rocksdb.(defaultcf|writecf|lockcf).soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit-1)。
+    > 当满足一定条件时，`rocksdb.(defaultcf|writecf|lockcf).soft-pending-compaction-bytes-limit` 的值会被该配置项覆盖。详情参考 [`rocksdb.(defaultcf|writecf|lockcf).soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit-1)。
+
 + 默认值："192GiB"
 
 ### `hard-pending-compaction-bytes-limit`
