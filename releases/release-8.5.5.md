@@ -93,7 +93,7 @@ TiDB 版本：8.5.5
 
 ### SQL 功能
 
-* 支持在线修改分布式 `ADD INDEX` 任务的并发和吞吐 [#62120](https://github.com/pingcap/tidb/pull/62120) @[joechenrh](https://github.com/joechenrh) **tw@qiancai** <!--2326-->
+* 支持在线修改分布式 `ADD INDEX` 任务的并发和吞吐 [#64947](https://github.com/pingcap/tidb/issues/64947) @[joechenrh](https://github.com/joechenrh) **tw@qiancai** <!--2326-->
 
     在 v8.5.5 之前，如果集群开启了分布式执行框架 [`tidb_enable_dist_task`](/system-variables/#tidb_enable_dist_task-从-v710-版本开始引入) ，TiDB 不支持在 `ADD INDEX` 任务执行期间修改该任务的 `THREAD`、`BATCH_SIZE`、`MAX_WRITE_SPEED` 参数。要调整这些参数，你需要先取消当前 `ADD INDEX` 任务，重新设置参数后再提交，效率较低。
 
@@ -177,7 +177,7 @@ TiDB 版本：8.5.5
 | -------- | -------- | -------- | -------- |
 | PD | [`schedule.max-affinity-merge-region-size`](https://docs.pingcap.com/zh/tidb/v8.5/pd-configuration-file#max-affinity-merge-region-size-从-v855-版本开始引入) | 新增 | 控制属于同一[亲和性](https://docs.pingcap.com/zh/tidb/v8.5/table-affinity)分组中相邻的小 Region 自动合并的阈值，默认值为 `256`，单位为 MiB。 |
 | PD  | [`schedule.affinity-schedule-limit`](https://docs.pingcap.com/zh/tidb/v8.5/pd-configuration-file#affinity-schedule-limit-从-v855-版本开始引入) | 新增 | 控制同时进行的[亲和性](https://docs.pingcap.com/zh/tidb/v8.5/table-affinity)调度任务数量，默认值为 `0`，表示亲和性调度默认关闭。 |
-| TiKV | [`performance.enable-async-batch-get`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#enable-async-batch-get-从-v855-版本开始引入)  | 新增 | 控制 TiDB 是否使用异步方式执行 Batch Get 算子，默认值为 `true`。 |
+| TiDB | [`performance.enable-async-batch-get`](https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file#enable-async-batch-get-从-v855-版本开始引入)  | 新增 | 控制 TiDB 是否使用异步方式执行 Batch Get 算子，默认值为 `true`。 |
 | TiKV | [`server.graceful-shutdown-timeout`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#graceful-shutdown-timeout-从-v855-版本开始引入) | 新增 | 控制 TiKV 优雅关闭 (graceful shutdown) 的超时时长，默认值为 `20s`。 |
 | TiKV | [`server.inspect-network-interval`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#inspect-network-interval-从-v855-版本开始引入) | 新增 | 控制 TiKV HealthChecker 主动向 PD 以及其他 TiKV 节点发起网络探测的周期，默认值为 `100ms`。 |
 | BR | [`--checkpoint-storage`](/br/br-checkpoint-restore.md#实现细节将断点数据存储在下游集群) | 新增 | 用于指定断点数据存储的外部存储。 |
@@ -217,7 +217,7 @@ TiDB 版本：8.5.5
 
     + TiCDC <!--tw@qiancai: 1 note-->
 
-        - 增强 Changefeed 的配置检查逻辑，在创建或更新 Changefeed 时，若 Dispatcher 配置引用的列不存在，将直接报错并拒绝操作，避免任务运行失败  [#12253](https://github.com/pingcap/tiflow/issues/12253) @[wk989898](https://github.com/wk989898)
+        - 增强 Changefeed 的配置检查逻辑，在创建或更新 Changefeed 时，若 Dispatcher 配置引用的列不存在，将直接报错并拒绝操作，避免任务运行失败 [#12253](https://github.com/pingcap/tiflow/issues/12253) @[wk989898](https://github.com/wk989898)
 
 ## 错误修复
 
