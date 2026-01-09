@@ -217,7 +217,7 @@ TiDB 版本：8.5.5
 
     + TiCDC <!--tw@qiancai: 1 note-->
 
-        - 为创建 changefeed 增加更全面的检查 [#12253](https://github.com/pingcap/tiflow/issues/12253) @[wk989898](https://github.com/wk989898)
+        - 增强 Changefeed 的配置检查逻辑，在创建或更新 Changefeed 时，若 Dispatcher 配置引用的列不存在，将直接报错并拒绝操作，避免任务运行失败  [#12253](https://github.com/pingcap/tiflow/issues/12253) @[wk989898](https://github.com/wk989898)
 
 ## 错误修复
 
@@ -294,9 +294,9 @@ TiDB 版本：8.5.5
 
     + TiCDC <!--tw@qiancai: 6 notes-->
 
-        - 修复同步到存储类型下游时可能因为 writer close 操作失败而导致的数据丢失问题 [#12436](https://github.com/pingcap/tiflow/issues/12436) @[wk989898](https://github.com/wk989898)
-        - 修复同步 truncate partition 操作可能导致 changefeed 失败的问题 [#12430](https://github.com/pingcap/tiflow/issues/12430) @[wk989898](https://github.com/wk989898)
-        - 修复同步多表 DDL语句时产生的不正确的 DDL 执行顺序 [#12449](https://github.com/pingcap/tiflow/issues/12449) @[wlwilliamx](https://github.com/wlwilliamx)
-        - 升级 aws-sdk-go-v2 依赖以修复 glue schema 的注册问题[#12424](https://github.com/pingcap/tiflow/issues/12424) @[wk989898](https://github.com/wk989898)
-        - 修复引起 memory quota 无法正常释放的问题[#18169](https://github.com/tikv/tikv/issues/18169) @[asddongmen](https://github.com/asddongmen)
-        - 修复引起 memory quota 无法正常释放的问题[#18915](https://github.com/tikv/tikv/issues/18915) @[asddongmen](https://github.com/asddongmen)
+        - 修复同步数据到对象存储时，可能因未正确捕获 Writer 关闭错误而导致数据丢失的问题 [#12436](https://github.com/pingcap/tiflow/issues/12436) @[wk989898](https://github.com/wk989898)
+        - 修复同步分区表的 `TRUNCATE` 操作可能导致 Changefeed 失败的问题 [#12430](https://github.com/pingcap/tiflow/issues/12430) @[wk989898](https://github.com/wk989898)
+        - 修复同步多表重命名 DDL 时，下游执行顺序可能不正确的问题 [#12449](https://github.com/pingcap/tiflow/issues/12449) @[wlwilliamx](https://github.com/wlwilliamx)
+        - 升级 `aws-sdk-go-v2` 依赖版本，以修复使用 Glue Schema Registry 时可能遇到的连接错误 [#12424](https://github.com/pingcap/tiflow/issues/12424) @[wk989898](https://github.com/wk989898)
+        - 修复 TiKV CDC 组件重启后可能无法正确释放内存配额，导致 Changefeed 任务卡住的问题 [#18169](https://github.com/tikv/tikv/issues/18169) @[asddongmen](https://github.com/asddongmen)
+        - 修复 TiKV CDC 在增量扫描任务堆积时，gRPC 连接可能因误判为空闲而被异常断开的问题 [#18915](https://github.com/tikv/tikv/issues/18915) @[asddongmen](https://github.com/asddongmen)
