@@ -41,11 +41,11 @@ TiDB 版本：8.5.5
 
     v8.5.5 版本针对该场景进行了专项优化。测试数据显示，在拥有 1000 万张表（其中 20 万张含外键）的极端环境下，逻辑 DDL 的处理性能可稳定保持在 100 QPS，相比之前版本提升了 25 倍，显著增强了超大规模集群的运维响应能力。
 
-* 支持将索引查询下推到 TiKV 提升查询性能 [#62575](https://github.com/pingcap/tidb/issues/62575) @[lcwangchao](https://github.com/lcwangchao) **tw@Oreoxmt** <!--1899-->
+* 支持将索引查询下推到 TiKV，提升查询性能 [#62575](https://github.com/pingcap/tidb/issues/62575) @[lcwangchao](https://github.com/lcwangchao) **tw@Oreoxmt** <!--1899-->
 
-    TiDB 从 v8.5.5 开始支持通过 Optimizer Hints 将索引查询 `IndexLookUp` 下推到 TiKV 节点执行，从而减少远程调用次数并提升查询性能。实际性能提升比例因业务场景而异，需要进行测试验证。
+    TiDB 从 v8.5.5 开始支持通过 [Optimizer Hints](/optimizer-hints.md) 将索引查询算子 `IndexLookUp` 下推到 TiKV 节点执行，从而减少远程调用次数并提升查询性能。实际性能提升比例因业务场景而异，需要进行测试验证。
 
-    使用 [`INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...])`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入) Hint，可以显式指示优化器将指定表的索引查询下推到 TiKV。建议将该 Hint 与表的 AFFINITY 属性配合使用，例如为普通表设置 `AFFINITY="table"`，为分区表设置 `AFFINITY="partition"`。
+    如果需要显式指示优化器将指定表的索引查询下推到 TiKV，可以使用 [`INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...])`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入) Hint。建议将该 Hint 与表的 AFFINITY 属性配合使用，例如为普通表设置 `AFFINITY="table"`，为分区表设置 `AFFINITY="partition"`。
 
     如果需要禁止某个表的索引查询下推到 TiKV，可以使用 [`NO_INDEX_LOOKUP_PUSHDOWN(t1_name)`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints#no_index_lookup_pushdownt1_name-从-v855-版本开始引入) Hint。
 
@@ -125,7 +125,7 @@ TiDB 版本：8.5.5
 
 * 在 Statement Summary Tables 和慢日志中增加存储引擎标识 [#61736](https://github.com/pingcap/tidb/issues/61736) @[henrybw](https://github.com/henrybw) **tw@Oreoxmt**<!--2034 beta.2-->
 
-    当集群中同时部署了 TiKV 和 TiFlash 时，用户在数据库诊断和性能优化过程中经常需要根据存储引擎筛选 SQL 语句。例如，当用户发现 TiFlash 负载较高时，需要筛选出在 TiFlash 上运行的 SQL 语句，以便识别可能导致 TiFlash 负载过高的查询语句。为解决此需求，TiDB 从 v9.0.0 开始，在 Statement Summary Tables 和慢日志中新增了存储引擎标识字段。
+    当集群中同时部署了 TiKV 和 TiFlash 时，用户在数据库诊断和性能优化过程中经常需要根据存储引擎筛选 SQL 语句。例如，当用户发现 TiFlash 负载较高时，需要筛选出在 TiFlash 上运行的 SQL 语句，以便识别可能导致 TiFlash 负载过高的查询语句。为解决此需求，TiDB 从 v8.5.5 开始，在 Statement Summary Tables 和慢日志中新增了存储引擎标识字段。
 
     在 [Statement Summary Tables](/statement-summary-tables.md) 中新增的字段：
 
@@ -208,7 +208,7 @@ TiDB 版本：8.5.5
 
 + PD <!--tw@Oreoxmt: 4 notes-->
 
-    - 优化了高基数指标 [#9357](https://github.com/tikv/pd/issues/9357) @[rleungx](https://github.com/rleungx)
+    - 优化了高基数指标，降低 PD 的内存占用和监控系统压力 [#9357](https://github.com/tikv/pd/issues/9357) @[rleungx](https://github.com/rleungx)
     - 优化时间戳推进和 Leader 选举的逻辑 [#9981](https://github.com/tikv/pd/issues/9981) @[bufferflies](https://github.com/bufferflies)
     - 支持批量配置 TiKV 的 Store Limit [#9970](https://github.com/tikv/pd/issues/9970) @[bufferflies](https://github.com/bufferflies)
     - 为 `pd_cluster_status` 指标添加 `store` 标签 [#9855](https://github.com/tikv/pd/issues/9855) @[SerjKol80](https://github.com/SerjKol80)
@@ -258,7 +258,7 @@ TiDB 版本：8.5.5
 + TiKV <!--tw@Oreoxmt: 7 notes-->
 
     - 修复 Analyze 请求的 `KV Cursor Operations` 监控指标始终为 `0` 的问题 [#19206](https://github.com/tikv/tikv/issues/19206) @[glorv](https://github.com/glorv)
-    - 修复 Leader 变更后 PD 心跳可能上报错误的 Region 大小或 key 统计信息的问题 [#19180](https://github.com/tikv/tikv/issues/19180) @[glorv](https://github.com/glorv)
+    - 修复 Leader 变更后 Region 心跳可能向 PD 上报错误的 Region 大小或 key 统计信息的问题 [#19180](https://github.com/tikv/tikv/issues/19180) @[glorv](https://github.com/glorv)
     - 通过从 Unsafe Recovery 降级列表中移除 tombstone 状态的 TiFlash Learner，修复 Unsafe Recovery 进程卡住的问题 [#18458](https://github.com/tikv/tikv/issues/18458) @[v01dstar](https://github.com/v01dstar)
     - 修复在持续写入期间快照可能被无限期取消，从而阻塞副本恢复的问题 [#18872](https://github.com/tikv/tikv/issues/18872) @[exit-code-1](https://github.com/exit-code-1)
     - 修复流控阈值过高导致 compaction 变慢的问题 [#18708](https://github.com/tikv/tikv/issues/18708) @[hhwyt](https://github.com/hhwyt)
@@ -289,7 +289,6 @@ TiDB 版本：8.5.5
         - 修复执行 `restore point` 时无法正确恢复外键的问题 [#61642](https://github.com/pingcap/tidb/issues/61642) @[Leavrth](https://github.com/Leavrth)
         - 修复备份集群与目标集群的系统表字符集排序规则不兼容导致恢复失败的问题，通过添加 `--sys-check-collation` 参数支持将权限表从 v6.5 恢复到 v7.5 [#64667](https://github.com/pingcap/tidb/issues/64667) @[Leavrth](https://github.com/Leavrth)
         - 修复在 `restore point` 失败后，即使操作安全也无法执行 `restore log` 的问题 [#64908](https://github.com/pingcap/tidb/issues/64908) @[RidRisR](https://github.com/RidRisR)
-        - 修复 Azure Managed Identity 托管标识不可用的问题 [#19006](https://github.com/tikv/tikv/issues/19006) @[RidRisR](https://github.com/RidRisR)
         - 修复当日志备份数据与全量备份数据混合时，从 checkpoint 进行 `restore point` 可能导致 panic 的问题 [#58685](https://github.com/pingcap/tidb/issues/58685) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC <!--tw@qiancai: 6 notes-->
