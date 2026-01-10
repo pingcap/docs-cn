@@ -177,7 +177,8 @@ TiDB 版本：8.5.5
 | -------- | -------- | -------- | -------- |
 | PD | [`schedule.max-affinity-merge-region-size`](https://docs.pingcap.com/zh/tidb/v8.5/pd-configuration-file#max-affinity-merge-region-size-从-v855-版本开始引入) | 新增 | 控制属于同一[亲和性](https://docs.pingcap.com/zh/tidb/v8.5/table-affinity)分组中相邻的小 Region 自动合并的阈值，默认值为 `256`，单位为 MiB。 |
 | PD  | [`schedule.affinity-schedule-limit`](https://docs.pingcap.com/zh/tidb/v8.5/pd-configuration-file#affinity-schedule-limit-从-v855-版本开始引入) | 新增 | 控制同时进行的[亲和性](https://docs.pingcap.com/zh/tidb/v8.5/table-affinity)调度任务数量，默认值为 `0`，表示亲和性调度默认关闭。 |
-| TiDB | [`performance.enable-async-batch-get`](https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file#enable-async-batch-get-从-v855-版本开始引入)  | 新增 | 控制 TiDB 是否使用异步方式执行 Batch Get 算子，默认值为 `true`。 |
+| TiDB | [`performance.enable-async-batch-get`](https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file#enable-async-batch-get-从-v855-版本开始引入) | 新增 | 控制 TiDB 是否使用异步方式执行 Batch Get 算子，默认值为 `true`。 |
+| TiKV | [`readpool.cpu-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#cpu-threshold-从-v855-版本开始引入) | 新增 | 限制统一处理读请求的线程池 (UnifyReadPool) 可使用的最大 CPU 资源比例。默认值为 `0.0`，表示不限制 UnifyReadPool 的 CPU 资源比例，该线程池的规模主要根据当前处理任务的线程数量动态调整。 |
 | TiKV | [`server.graceful-shutdown-timeout`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#graceful-shutdown-timeout-从-v855-版本开始引入) | 新增 | 控制 TiKV 优雅关闭 (graceful shutdown) 的超时时长，默认值为 `20s`。 |
 | TiKV | [`server.inspect-network-interval`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#inspect-network-interval-从-v855-版本开始引入) | 新增 | 控制 TiKV HealthChecker 主动向 PD 以及其他 TiKV 节点发起网络探测的周期，默认值为 `100ms`。 |
 | BR | [`--checkpoint-storage`](/br/br-checkpoint-restore.md#实现细节将断点数据存储在下游集群) | 新增 | 用于指定断点数据存储的外部存储。 |
