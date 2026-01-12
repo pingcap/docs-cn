@@ -61,7 +61,7 @@ SET GLOBAL tidb_opt_fix_control = '44262:ON,44389:ON,44823:10000,44830:ON,44855:
 | [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 和 [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) | 启用实例级计划缓存而不是会话级缓存，适合高并发连接或频繁使用预处理语句的场景。 | 实验特性，建议先在测试环境验证，并关注内存占用。 |
 | [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 启用[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)，降低不使用预处理语句应用的编译开销。 | 无 |
 | [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt-从-v600-版本开始引入) | 针对每次执行后关闭计划的应用，缓存其计划。 | 无 |
-| [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) | 收集所有列的统计信息，避免因缺失统计导致执行计划不佳。默认情况下，TiDB 仅收集 [`PREDICATE COLUMNS`](/statistics.md#收集部分列的统计信息) 的统计信息。 | 默认值为 `'PREDICATE'`。如果设为 `'ALL'` 会增加 `ANALYZE TABLE` 的资源消耗。 |
+| [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) | 收集所有列的统计信息，避免因缺失统计导致执行计划不佳。 | 无 |
 | [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 将同步加载统计信息的超时时间从默认 100ms 提高到 2s，确保编译前加载完毕。 | 调大该变量的值会导致编译等待时间变长。 |
 | [`tidb_opt_limit_push_down_threshold`](/system-variables.md#tidb_opt_limit_push_down_threshold) | 提高 `Limit` 或 `TopN` 下推到 TiKV 的阈值。 | 当存在多个索引选项时，调大该变量的值后，优化器更倾向于选择能优化 `ORDER BY` 和 `Limit` 算子的索引。 |
 | [`tidb_opt_derive_topn`](/system-variables.md#tidb_opt_derive_topn-从-v700-版本开始引入) | 启用[从窗口函数中推导 `TopN` 或 `Limit`](/derive-topn-from-window.md)。 | 仅支持 `ROW_NUMBER()` 窗口函数。 |
