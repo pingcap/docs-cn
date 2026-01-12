@@ -65,7 +65,7 @@ SetItem ::=
     ColumnName '=' Expr
 
 Format ::=
-    'CSV' | 'SQL' | 'PARQUET'
+    'FORMAT' ('"CSV"' | '"SQL"' | '"PARQUET"')
 
 WithOptions ::=
     'WITH' OptionItem (',' OptionItem)*
