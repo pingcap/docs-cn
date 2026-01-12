@@ -114,6 +114,13 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 - 数据类型：`STRINGS`
 - 不指定该选项时，Node Exporter 的版本与集群版本保持一致。
 
+### --restart-timeout
+
+- 指定滚动升级之间的间隔，即在升级组件后等待一段时间。
+- 数据类型: `STRINGS`。支持所有 [`golang time.ParseDuration`](https://pkg.go.dev/time#ParseDuration) 能够解析的数据类型。
+- 默认值：`0`
+- 不指定该选项时，升级组件后不会等待。
+
 ### -h, --help
 
 - 输出帮助信息。

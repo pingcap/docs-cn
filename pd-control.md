@@ -24,12 +24,12 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 | 安装包                                                                    | 操作系统 | 架构  | SHA256 校验和                                                    |
 | :------------------------------------------------------------------------ | :------- | :---- | :--------------------------------------------------------------- |
-| `https://download.pingcap.org/tidb-community-server-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux    | amd64 | `https://download.pingcap.org/tidb-community-server-{version}-linux-amd64.tar.gz.sha256` |
-| `https://download.pingcap.org/tidb-community-server-{version}-linux-arm64.tar.gz` (pd-ctl) | Linux | arm64 | `https://download.pingcap.org/tidb-community-server-{version}-linux-arm64.tar.gz.sha256` |
+| `https://download.pingcap.com/tidb-community-server-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux    | amd64 | `https://download.pingcap.com/tidb-community-server-{version}-linux-amd64.tar.gz.sha256` |
+| `https://download.pingcap.com/tidb-community-server-{version}-linux-arm64.tar.gz` (pd-ctl) | Linux | arm64 | `https://download.pingcap.com/tidb-community-server-{version}-linux-arm64.tar.gz.sha256` |
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v8.5.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v8.5.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v8.5.0` 版本的下载链接为 `https://download.pingcap.com/tidb-community-server-v8.5.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
@@ -1569,8 +1569,32 @@ store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"en
 ```
 
 ```
-{"id":1,"address":"127.0.0.1:20161""state_name":"Up"}
-{"id":5,"address":"127.0.0.1:20162""state_name":"Up"}
+{"id":1,"address":"127.0.0.1:20161","state_name":"Up"}
+{"id":5,"address":"127.0.0.1:20162","state_name":"Up"}
+...
+```
+
+### 查询存算分离架构下的 TiFlash 节点
+
+查找[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Write Node：
+
+```bash
+store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}, {"key":"engine_role","value":"write"}])) | {id, address, labels, state_name}'
+```
+
+```
+{"id":130,"address":"172.31.8.1:10161","labels":[{"key":"engine_role","value":"write"},{"key":"engine","value":"tiflash"}],"state_name":"Up"}
+...
+```
+
+查找[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Compute Node：
+
+```bash
+store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash_compute"}])) | {id, address, labels, state_name}'
+```
+
+```
+{"id":131,"address":"172.31.9.1:10161","labels":[{"key":"engine","value":"tiflash_compute"}],"state_name":"Up"}
 ...
 ```
 

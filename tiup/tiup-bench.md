@@ -47,6 +47,7 @@ tiup bench rawsql # 以自定义 SQL 文件作为 workload 压测
 ```
 
 - `--host` 和 `--port` 支持以逗号分隔传入多个值，以启用客户端负载均衡。例如，当指定 `--host 172.16.4.1,172.16.4.2 --port 4000,4001` 时，负载程序将以轮询调度的方式连接到 172.16.4.1:4000, 172.16.4.1:4001, 172.16.4.2:4000, 172.16.4.2:4001 这 4 个实例上。
+- 本地部署的情况下，数据库的主机地址默认 `127.0.0.1`。如果没有部署到本地，请使用完整的 `tiup bench` 命令指定相关参数，例如：`tiup bench tpcc -H 192.168.169.31 -P 4000 -D tpcc -U root -P tidb --warehouses 4 --parts 4 prepare`
 - `--conn-params` 需要符合 [query string](https://en.wikipedia.org/wiki/Query_string) 格式，不同数据库支持不同参数，如：
     - `--conn-params tidb_isolation_read_engines='tiflash'` 设置 TiDB 通过 TiFlash 进行查询。
     - `--conn-params sslmode=disable` 设置连接 PostgreSQL 不启用加密。

@@ -173,7 +173,7 @@ TiDB 支持在会话或全局作用域上修改 [`sql_mode`](/system-variables.m
         --batch
     ```
 
-- 也可以选择增大 TiDB 的单个事物语句数量限制，不过此操作会导致内存增加。详情参见 [SQL 语句的限制](/tidb-limitations.md#sql-statements-的限制)。
+- 也可以选择增大 TiDB 单个事务允许的语句条数限制，不过这样会占用更多内存。详情参见 [SQL 语句的限制](/tidb-limitations.md#sql-statements-的限制)。
 
 ## TiDB 有像 Oracle 那样的 Flashback Query 功能么，DDL 支持么？
 
@@ -185,7 +185,7 @@ TiDB 支持在会话或全局作用域上修改 [`sql_mode`](/system-variables.m
 
 ## 删除数据后查询速度为何会变慢？
 
-删除大量数据后，会有很多无用的 key 存在，影响查询效率。要解决该问题，可以尝试开启 [Region Merge](/best-practices/massive-regions-best-practices.md#方法五开启-region-merge) 功能，具体可参考[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)中的删除数据部分。
+删除大量数据后，会有很多无用的 key 存在，影响查询效率。要解决该问题，可以尝试开启 [Region Merge](/best-practices/massive-regions-best-practices.md#方法五开启-region-merge) 功能，具体可参考[最佳实践](https://tidb.net/blog/7f818fc0)中的删除数据部分。
 
 ## 对数据做删除操作之后，空间回收比较慢，如何处理？
 
@@ -347,7 +347,7 @@ TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schem
 
 在 TiDB v7.4 及之前版本中，如果 JDBC URL 中未配置 `connectionCollation`，且 `characterEncoding` 未配置或配置为 `UTF-8`，TiDB [`collation_connection`](/system-variables.md#collation_connection) 变量将默认使用 `utf8mb4_bin` 排序规则。
 
-从 TiDB v7.4 开始，如果 JDBC URL 中未配置 `connectionCollation`，且 `characterEncoding` 未配置或配置为 `UTF-8`，[`collation_connection`](/system-variables.md#collation_connection) 变量值取决于 JDBC 驱动版本。例如，对于 Connector/J8.0.26 及之后版本，JDBC 驱动程序默认使用 `utf8mb4` 字符集，使用 `utf8mb4_general_ci` 作为连接排序规则，TiDB 将遵循驱动程序，[`collation_connection`](/system-variables.md#collation_connection) 变量将使用 `utf8mb4_0900_ai_ci` 排序规则。详情请参考[JDBC 连接的排序规则](#当-jdbc-url-中未配置-connectioncollation-时jdbc-连接使用什么排序规则)。
+从 TiDB v7.4 开始，如果 JDBC URL 中未配置 `connectionCollation`，且 `characterEncoding` 未配置或配置为 `UTF-8`，[`collation_connection`](/system-variables.md#collation_connection) 变量值取决于 JDBC 驱动版本。详情请参考[JDBC 连接的排序规则](#当-jdbc-url-中未配置-connectioncollation-时jdbc-连接使用什么排序规则)。
 
 当从较低版本升级到 v7.4 或更高版本时（例如，从 v6.5 升级到 v7.5），如需保持 JDBC 连接的 `collation_connection` 为 `utf8mb4_bin`，建议在 JDBC URL 中配置 `connectionCollation` 参数。
 

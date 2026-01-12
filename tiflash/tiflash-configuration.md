@@ -63,6 +63,8 @@ summary: 介绍 TiFlash 的配置参数，包括 tiflash.toml 和 tiflash-learne
 
 - TiFlash 临时文件的存放路径。
 - 默认使用 \[[`path`](#path) 或者 [`storage.latest.dir`](#dir-1) 的第一个目录\] + "/tmp"
+- 从 v9.0.0 开始，不推荐使用 `tmp_path`。建议使用 [`storage.temp`](#storagetemp-从-v900-版本开始引入) 中的配置项替代，因其支持设置容量限制，控制临时文件的空间使用。
+- 当 `storage.temp` 配置存在时，`tmp_path` 配置会被忽略。
 
 <!-- 示例值：`"/tidb-data/tiflash-9000/tmp"` -->
 
@@ -97,6 +99,14 @@ summary: 介绍 TiFlash 的配置参数，包括 tiflash.toml 和 tiflash-learne
 - 单位：Byte。目前不支持如 `"10GB"` 的设置。
 - `capacity` 列表的长度应当与 [`storage.main.dir`](#dir) 列表长度保持一致。
 
+#### `storage.api_version` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- TiFlash 与 PD、TiKV 进行通讯时的接口版本。
+- 可选值：
+    - `1`：TiFlash 使用 API V1 与 PD、TiKV 进行通信。
+    - `2`：TiFlash 使用 API V2 与 PD、TiKV 进行通信，为多租户特性提供支持。
+- 默认值：`1`
+
 #### storage.latest
 
 ##### `dir`
@@ -111,6 +121,24 @@ summary: 介绍 TiFlash 的配置参数，包括 tiflash.toml 和 tiflash-learne
 - [`storage.latest.dir`](#dir-1) 存储目录列表中，每个目录的最大可用容量。
 
 <!-- 示例值：`[10737418240, 10737418240]` -->
+
+#### storage.temp <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+##### `dir`
+
+- 指定查询执行过程中临时落盘文件的存储路径。
+- 默认使用 \[[`storage.latest.dir`](#dir-1) 的第一个目录\] + "/tmp"
+
+##### `capacity`
+
+- 限制临时文件目录的总空间使用量。如果查询过程中生成的临时落盘文件大小超过该限制，将导致查询报错。
+- 单位：Byte。目前不支持类似 `"10GB"` 的格式。
+- 范围：`[0, 9223372036854775807]`
+- 如果未设置该值或将其设置为 `0`，表示不限制临时文件的空间使用，落盘文件可以使用整个硬盘的容量。
+- 如果设置为大于 `0` 的值，TiFlash 在启动时会执行以下检查：
+    - `storage.temp.capacity` 必须小于等于 `storage.temp.dir` 所在硬盘的总空间。
+    - 如果 `storage.temp.dir` 是 `storage.main.dir` 的子目录，且 `storage.main.capacity` 大于 `0`，则 `storage.temp.capacity` 必须小于等于 `storage.main.capacity`。同理，如果是 `storage.latest.dir` 的子目录，也会进行类似检查。
+- 该配置项不支持热加载，修改后需要重启 TiFlash 进程才能生效。
 
 #### storage.io_rate_limit <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
@@ -241,6 +269,13 @@ I/O 限流功能相关配置。
 - 该配置只针对存算分离模式生效，详细请参考 [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md)。
 - 可选值：`"tiflash_write"`、`"tiflash_compute"`
 
+##### `graceful_wait_shutdown_timeout` <span class="version-mark">从 v8.5.4 和 v9.0.0 版本开始引入</span>
+
+- 控制在关闭 TiFlash 服务器时的最长等待时间。在此期间，TiFlash 允许尚未完成的 MPP 任务继续执行，但不再接收新的 MPP 任务。如果所有正在运行的 MPP 任务都在此超时时间之前完成，TiFlash 将立即关闭；否则将在等待时间结束后强制关闭。
+- 默认值：`600`
+- 单位：秒
+- 在等待 TiFlash 服务器关闭期间，TiDB 不会再向该 TiFlash 服务器发送新的 MPP 任务。
+
 #### flash.proxy
 
 ##### `addr`
@@ -365,7 +400,7 @@ I/O 限流功能相关配置。
 
 ##### `cop_pool_size` <span class="version-mark">从 v5.0 版本开始引入</span>
 
-- 表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 `0` 或不设置，则使用默认值，即物理核数的两倍。
+- 表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。当请求数量超过该配置值但未超过其 10 倍时，多出的请求会排队等待；当请求数量超过该配置值的 10 倍时，多出来的请求会被 TiFlash 拒绝。如果设为 `0` 或不设置，则使用默认值，即物理核数的两倍。
 - 默认值：物理核数的两倍
 
 ##### `cop_pool_handle_limit` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -414,6 +449,13 @@ I/O 限流功能相关配置。
 - 表示 PageStorage 单个数据文件中有效数据的最低比例。当某个数据文件的有效数据比例低于该值时，会触发 GC 对该文件的数据进行整理。
 - 默认值：`0.5`
 
+##### `disagg_blocklist_wn_store_id` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 控制在存算分离架构下，TiFlash Compute Node 不会将请求分发至哪些 TiFlash Write Node。
+- 其值为使用 `,` 分隔的 store_id 字符串。例如，设置为 `"140,141"` 表示 TiFlash Compute Node 不会将请求分发至 store_id 为 `140` 或 `141` 的 TiFlash Write Node。可以使用 [pd-ctl](/pd-control.md#查询存算分离架构下的-tiflash-节点) 查找集群中 TiFlash Write Node 的 store_id。
+- 如果其值为空字符串 `""`，表示 TiFlash Compute Node 会将请求分发至所有 TiFlash Write Node。
+- 默认值：`""`
+
 ##### `max_bytes_before_external_group_by` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 - 表示带 `GROUP BY` key 的 Hash Aggregation 算子在触发 spill 之前的最大可用内存，超过该阈值之后 Hash Aggregation 会采用[数据落盘](/tiflash/tiflash-spill-disk.md)的方式来减小内存使用。
@@ -432,6 +474,8 @@ I/O 限流功能相关配置。
 ##### `enable_resource_control` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
 - 表示是否开启 TiFlash 资源管控功能。当设置为 `true` 时，TiFlash 会使用 [Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)。
+- 默认值：`true`
+- 可选值：`true`、`false`
 
 ##### `task_scheduler_thread_soft_limit` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
@@ -454,6 +498,13 @@ I/O 限流功能相关配置。
 - magic hash 生成的哈希值分布更加均匀，能够有效减少哈希冲突，但其计算速度比 CRC32 慢。建议在 `GROUPBY` 键的 NDV（number of distinct values，不同值的数量）较高时启用该配置，以优化聚合性能。
 - 默认值：`false`
 - 可选值：`true`、`false`
+
+##### `enable_version_chain` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 用于控制 TiFlash 实现 MVCC 过滤的算法。如果设置为 `1`，则使用 VersionChain 算法；如果设置为 `0`，则使用 DeltaIndex 算法。
+- 通常情况下，采用 VersionChain 算法的扫表性能要明显优于 DeltaIndex 算法，因为 VersionChain 算法可以通过避免对数据进行排序来提升 MVCC 过滤的性能。
+- 默认值：`1`
+- 可选值：`1`、`0`
 
 #### security <span class="version-mark">从 v4.0.5 版本开始引入</span>
 

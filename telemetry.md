@@ -12,7 +12,8 @@ aliases: ['/docs-cn/dev/telemetry/','/zh/tidb/dev/sql-statement-admin-show-telem
 >
 > - 从 TiUP v1.11.3 起，TiUP 遥测功能默认关闭，即 TiUP 默认不再收集使用情况信息。如果从 v1.11.3 之前的 TiUP 版本升级至 v1.11.3 或更高 TiUP 版本，遥测保持升级前的开启或关闭状态。
 > - 从 TiSpark v3.0.3 开始，TiSpark 遥测功能默认关闭，即 TiSpark 默认不收集使用情况信息。
-> - 从 TiDB v8.1.0 起，TiDB 和 TiDB Dashboard 移除了遥测功能。
+> - 在 v8.1.0 到 v8.5.1 及其之间的版本中，TiDB 和 TiDB Dashboard 移除了遥测功能。
+> - 从 TiDB v8.5.3 开始，TiDB 重新引入遥测功能，但其行为已更改为仅将遥测相关信息输出到日志文件，不再通过网络发送给 PingCAP。
 
 ## 开启遥测后哪些使用情况信息会被收集？
 
@@ -20,7 +21,7 @@ aliases: ['/docs-cn/dev/telemetry/','/zh/tidb/dev/sql-statement-admin-show-telem
 
 > **注意：**
 >
-> 在**任何情况**下，集群中用户存储的数据都**不会**被收集。另请参阅 [PingCAP 隐私声明](https://pingcap.com/zh/privacy-policy/)。
+> 在**任何情况**下，集群中用户存储的数据都**不会**被收集。另请参阅[隐私政策](https://pingkai.cn/legal/privacy-policy)。
 
 ### TiUP
 
@@ -93,4 +94,4 @@ tiup telemetry status
 - 若为中国大陆 IP 地址，使用情况信息将会发送并存储于中国大陆境内的公有云服务器。
 - 若为中国大陆以外 IP 地址，使用情况信息将会发送并存储于美国的公有云服务器。
 
-可参阅 [PingCAP 隐私声明](https://pingcap.com/zh/privacy-policy/)了解详情。
+可参阅[隐私政策](https://pingkai.cn/legal/privacy-policy)了解详情。

@@ -103,7 +103,7 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | SQL 语句 | 描述 |
 |----------|------|
 | [`CANCEL IMPORT JOB`](/sql-statements/sql-statement-cancel-import-job.md) | 取消正在进行的导入任务。 |
-| [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) | 通过 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md) 将数据导入到表中。 |
+| [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) | 通过 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)将数据导入到表中。 |
 | [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) | 从 Amazon S3 或 Google Cloud Storage 加载数据到表中。 |
 | [`SHOW IMPORT JOB`](/sql-statements/sql-statement-show-import-job.md) | 显示导入任务的状态。 |
 

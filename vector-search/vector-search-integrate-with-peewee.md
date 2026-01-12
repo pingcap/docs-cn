@@ -90,7 +90,7 @@ TIDB_DATABASE=test
 
 </div>
 
-<div label="{{{ .starter }}}">
+<div label="{{{ .starter }}} 或 Essential">
 
 对于 {{{ .starter }}} 集群，请按照以下步骤获取集群的连接字符串，然后配置环境变量：
 

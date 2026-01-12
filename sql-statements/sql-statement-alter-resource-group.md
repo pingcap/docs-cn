@@ -29,7 +29,9 @@ DirectResourceGroupOption ::=
     "RU_PER_SEC" EqOpt LengthNum
 |   "PRIORITY" EqOpt ResourceGroupPriorityOption
 |   "BURSTABLE"
-|   "BURSTABLE" EqOpt Boolean
+|   "BURSTABLE" EqOpt "MODERATED"
+|   "BURSTABLE" EqOpt "UNLIMITED"
+|   "BURSTABLE" EqOpt "OFF"
 |   "QUERY_LIMIT" EqOpt '(' ResourceGroupRunawayOptionList ')'
 |   "QUERY_LIMIT" EqOpt '(' ')'
 |   "QUERY_LIMIT" EqOpt "NULL"
@@ -80,7 +82,7 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-
 |---------------|--------------|--------------------------------------|
 | `RU_PER_SEC`  | 每秒 RU 填充的速度 | `RU_PER_SEC = 500` 表示此资源组每秒回填 500 个 RU。 |
 | `PRIORITY`    | 任务在 TiKV 上处理的绝对优先级  | `PRIORITY = HIGH` 表示优先级高。若未指定则默认为 `MEDIUM`。 |
-| `BURSTABLE`   | 允许对应的资源组超出配额后使用空余的系统资源。 |
+| `BURSTABLE`   | 是否允许此资源组超额使用剩余的系统资源 | 从 v9.0.0 开始，支持以下三种模式：`OFF`，表示不允许此资源组超额使用剩余的系统资源；`MODERATED`，表示有限度地允许此资源组超额使用剩余的系统资源；`UNLIMITED`，表示无限度地允许此资源组超额使用剩余的系统资源。如果没有为 `BURSTABLE` 指定目标值，将默认启用 `MODERATED` 模式。 |
 | `QUERY_LIMIT` | 当查询执行满足该条件时，识别该查询为 Runaway Query 并执行相应的操作 | `QUERY_LIMIT=(EXEC_ELAPSED='60s', ACTION=KILL, WATCH=EXACT DURATION='10m')` 表示当执行时间超过 60 秒后识别为 Runaway Query，对该查询执行终止操作，并在 10 分钟内对同样的 SQL 直接执行终止操作。`QUERY_LIMIT=()` 或 `QUERY_LIMIT=NULL` 则表示不进行 Runaway 控制。具体参数介绍参见[管理资源消耗超出预期的查询 (Runaway Queries)](/tidb-resource-control-runaway-queries.md)。 ｜
 | `BACKGROUND`  | 后台任务相关的设置。具体参数介绍参见[管理后台任务](/tidb-resource-control-background-tasks.md) | `BACKGROUND=(TASK_TYPES="br,stats", UTILIZATION_LIMIT=30)` 表示将备份恢复和收集统计信息相关的任务作为后台任务调度，并且后台任务最多可以使用 TiKV 30% 的资源。 |
 
@@ -120,7 +122,7 @@ SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 +------+------------+----------+-----------+-------------+------------+
 | NAME | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT | BACKGROUND |
 +------+------------+----------+-----------+-------------+------------+
-| rg1  | 100        | MEDIUM   | NO        | NULL        | NULL       |
+| rg1  | 100        | MEDIUM   | OFF       | NULL        | NULL       |
 +------+------------+----------+-----------+-------------+------------+
 1 rows in set (1.30 sec)
 ```
@@ -144,7 +146,7 @@ SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 +------+------------+----------+-----------+----------------------------------------------------------------+------------+
 | NAME | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT                                                    | BACKGROUND |
 +------+------------+----------+-----------+----------------------------------------------------------------+------------+
-| rg1  | 200        | LOW      | NO        | EXEC_ELAPSED='1s', ACTION=COOLDOWN, WATCH=EXACT DURATION='30s' | NULL       |
+| rg1  | 200        | LOW      | OFF       | EXEC_ELAPSED='1s', ACTION=COOLDOWN, WATCH=EXACT DURATION='30s' | NULL       |
 +------+------------+----------+-----------+----------------------------------------------------------------+------------+
 1 rows in set (1.30 sec)
 ```
@@ -164,11 +166,11 @@ SELECT * FROM information_schema.resource_groups WHERE NAME ='default';
 ```
 
 ```sql
-+---------+------------+----------+-----------+-------------+-------------------------------------------+
-| NAME    | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT | BACKGROUND                                |
-+---------+------------+----------+-----------+-------------+-------------------------------------------+
-| default | UNLIMITED  | MEDIUM   | YES       | NULL        | TASK_TYPES='br,ddl', UTILIZATION_LIMIT=30 |
-+---------+------------+----------+-----------+-------------+-------------------------------------------+
++---------+------------+----------+-----------+-------------+------------+
+| NAME    | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT | BACKGROUND |
++---------+------------+----------+-----------+-------------+------------+
+| default | UNLIMITED  | MEDIUM   | UNLIMITED | NULL        | NULL       |
++---------+------------+----------+-----------+-------------+------------+
 1 rows in set (1.30 sec)
 ```
 

@@ -77,7 +77,7 @@ URI 中可配置的的参数如下：
 | `kafka-version`      | 下游 Kafka 版本号。该值需要与下游 Kafka 的实际版本保持一致。 |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`）。 |
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）。|
-| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10 MB。|
+| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`，最大值为 `100MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 `64MB` 和 `256MB` 调整至 `10MB`。|
 | `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`），需要大于等于 Kafka 中 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 的值。 |
 | `required-acks`      | 在 `Produce` 请求中使用的配置项，用于告知 broker 需要收到多少副本确认后才进行响应。可选值有：`0`（`NoResponse`：不发送任何响应，只有 TCP ACK），`1`（`WaitForLocal`：仅等待本地提交成功后再响应）和 `-1`（`WaitForAll`：等待所有同步副本提交后再响应。最小同步副本数量可通过 broker 的 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 配置项进行配置）。（可选，默认值为 `-1`）。                      |
 | `compression`        | 设置发送消息时使用的压缩算法（可选值为 `none`、`lz4`、`gzip`、`snappy` 和 `zstd`，默认值为 `none`）。注意 Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。|
@@ -111,6 +111,7 @@ URI 中可配置的的参数如下：
 * TiCDC 推荐用户自行创建 Kafka Topic，你至少需要设置该 Topic 每次向 Kafka broker 发送消息的最大数据量和下游 Kafka partition 的数量。在创建 changefeed 的时候，这两项设置分别对应 `max-message-bytes` 和 `partition-num` 参数。
 * 如果你在创建 changefeed 时，使用了尚未存在的 Topic，那么 TiCDC 会尝试使用 `partition-num` 和 `replication-factor` 参数自行创建 Topic，建议明确指定这两个参数。
 * 在大多数情况下，建议使用 `canal-json` 协议。
+* 如果 TiCDC 上游的数据变更很少，比如可能会出现超过 10 分钟没有数据变更的情况，建议在 Kafka broker 的配置文件中调大 Kafka 的连接空闲超时时间，详情参考[为什么 TiCDC 同步到 Kafka 的任务经常因 `broken pipe` 报错而失败](/ticdc/ticdc-faq.md#为什么-ticdc-同步到-kafka-的任务经常因-broken-pipe-报错而失败)。
 
 > **注意：**
 >
@@ -282,8 +283,8 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 partition 分发器用 `partition = "xxx"` 来指定，支持 `default`、`index-value`、`columns`、`table` 和 `ts` 共五种 partition 分发器，分发规则如下：
 
 - `default`：默认使用 table 分发规则。使用所属库名和表名计算 partition 编号，一张表的数据被发送到相同的 partition。单表数据只存在于一个 partition 中并保证有序，但是发送吞吐量有限，无法通过添加消费者的方式提升消费速度。
-- `index-value`：使用事件所属表的主键、唯一索引或由 `index` 配置指定的索引的值计算 partition 编号，一张表的数据被发送到多个 partition。单表数据被发送到多个 partition 中，每个 partition 中的数据有序，可以通过添加消费者的方式提升消费速度。
-- `columns`：使用由 `columns` 指定的列的值计算 partition 编号。一张表的数据被发送到多个 partition。单表数据被发送到多个 partition 中，每个 partition 中的数据有序，可以通过添加消费者的方式提升消费速度。
+- `index-value`：使用事件所属表的主键、唯一索引或由 `index` 配置指定的索引的值计算 partition 编号，一张表的数据被发送到多个 partition。单表数据被发送到多个 partition 中，每个 partition 中的数据有序，可以通过添加消费者的方式提升消费速度。该分发规则可以保证某一行的更新数据被有序地发送到相同的 partition。
+- `columns`：使用由 `columns` 指定的列的值计算 partition 编号。一张表的数据被发送到多个 partition。单表数据被发送到多个 partition 中，每个 partition 中的数据有序，可以通过添加消费者的方式提升消费速度。该分发规则可以保证某一行的更新数据被有序地发送到相同的 partition。
 - `table`：使用事件所属的表的库名和表名计算 partition 编号。
 - `ts`：使用事件的 commitTs 计算 partition 编号。一张表的数据被发送到多个 partition。单表数据被发送到多个 partition 中，每个 partition 中的数据有序，可以通过添加消费者的方式提升消费速度。一条数据的多次修改可能被发送到不同的 partition 中。消费者消费进度不同可能导致消费端数据不一致。因此，消费端需要对来自多个 partition 的数据按 commitTs 排序后再进行消费。
 
@@ -476,7 +477,7 @@ Kafka 消费者收到消息之后，首先检查 `onlyHandleKey` 字段。如果
 
 > **警告：**
 >
-> 在 Kafka 消费者处理数据并查询 TiDB 时，可能发生数据已经被 GC 的情况。你需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 为一个较大的值，以避免该情况。
+> 在 Kafka 消费者处理数据并查询 TiDB 时，可能发生数据已经被 GC 的情况。你需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)为一个较大的值，以避免该情况。
 
 ### 发送大消息到外部存储
 

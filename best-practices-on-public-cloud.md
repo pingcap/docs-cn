@@ -13,7 +13,7 @@ summary: 了解在公有云上部署 TiDB 的最佳实践。
 
 [RocksDB](https://rocksdb.org/) 是 TiKV 的存储引擎，负责存储用户数据。出于成本考虑，云上提供的 EBS IO 吞吐量通常比较有限，因此 RocksDB 可能会表现出较高的写放大，导致磁盘吞吐量成为负载的瓶颈。随着时间的推移，待 compaction 的字节总量会不断增加从而触发流量控制，这意味着此时 TiKV 缺乏足够的磁盘带宽来处理前台写入流量。
 
-要缓解由磁盘吞吐量受限引起的瓶颈，你可以通过[启用 Titan](#启用-titan) 来改善性能。如果数据的平均行大小低于 512 字节，Titan 并不适用，此时你可以通过[提高所有压缩级别](#提高所有压缩级别) 来改善性能。
+要缓解由磁盘吞吐量受限引起的瓶颈，你可以通过[启用 Titan](#启用-titan) 来改善性能。如果数据的平均行大小低于 512 字节，Titan 并不适用，此时你可以通过[提高所有压缩级别](#提高所有压缩级别)来改善性能。
 
 ### 启用 Titan
 
@@ -148,7 +148,7 @@ Google Cloud 的[实时迁移功能](https://cloud.google.com/compute/docs/insta
 - TiKV：在维护期间驱逐受影响的 TiKV 存储上的 Leader。
 - PD：如果当前 PD 实例是 PD Leader，则会重新分配 Leader。
 
-需要注意的是，此监控脚本是专门为 [TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/dev/tidb-operator-overview) 部署的 TiDB 集群设计的，TiDB Operator 为 Kubernetes 环境中的 TiDB 提供了增强的管理功能。
+需要注意的是，此监控脚本是专门为 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.6/tidb-operator-overview) 部署的 TiDB 集群设计的，TiDB Operator 为 Kubernetes 环境中的 TiDB 提供了增强的管理功能。
 
 通过使用该监控脚本，并在维护事件期间采取必要的措施，TiDB 集群可以更好地应对 Google Cloud 上的实时迁移事件，确保对查询处理和响应时间的影响最小以及系统的平稳运行。
 
