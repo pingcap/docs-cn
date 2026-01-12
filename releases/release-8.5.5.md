@@ -204,7 +204,7 @@ TiDB 版本：8.5.5
 
     - 为统一读取池 (Unified Read Pool) 引入 CPU 感知扩缩容机制，以避免在热点读取负载下出现 CPU 饥饿 (CPU Starvation) 问题 [#18464](https://github.com/tikv/tikv/issues/18464) @[mittalrishabh](https://github.com/mittalrishabh)
     - 在慢节点评分 (Slow Score) 中增加网络延迟感知，避免将 Leader 调度到网络环境不稳定的 TiKV 节点上 [#18797](https://github.com/tikv/tikv/issues/18797) @[okJiang](https://github.com/okJiang)
-    - 优化静默 (Hibernate) 行为，允许 Leader 在获得多数派投票后立即进入静默状态，无需等待离线的非投票副本 (Non-voter Peers) [#19070](https://github.com/tikv/tikv/issues/19070) @[jiadebin](https://github.com/jiadebin)
+    - 优化静默 Region (Hibernate Region) 的行为，允许 Leader 在获得多数派投票后立即进入静默状态，无需等待离线的非投票副本 (Non-voter Peers) [#19070](https://github.com/tikv/tikv/issues/19070) @[jiadebin](https://github.com/jiadebin)
     - (dup): release-9.0.0.md > 改进提升> TiKV - 在 TiKV 内存占用高时，对 BR 的日志恢复请求进行限流，防止 TiKV OOM [#18124](https://github.com/tikv/tikv/issues/18124) @[3pointer](https://github.com/3pointer)
 
 + PD <!--tw@Oreoxmt: 4 notes-->
