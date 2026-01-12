@@ -155,12 +155,17 @@ TiDB 版本：8.5.5
 
 ## 兼容性变更
 
+新建的 TiDB v8.5.4 集群可以平滑升级到 v8.5.5。大多数变更对于常规升级是安全的，但 v8.5.5 发布包含若干行为变更、MySQL 兼容性变更、系统变量变更、配置参数变更以及系统表变更。在升级前，请务必仔细阅读本节内容。
+
 ### 行为变更
 
 * 从 v8.5.5 开始，在数据恢复期间，目标表的 Table Mode 会自动设置为 `restore`，处于 `restore` 模式的表禁止用户执行任何读写操作。当数据恢复完成后，Table Mode 会自动切换为 `normal` 状态，用户可以正常读写该表，从而确保数据恢复期间的任务稳定性和数据一致性。
 * 从 v8.5.5 开始，当参数 `--load-stats` 设置为 `false` 时，BR 不再向 `mysql.stats_meta` 表写入恢复表的统计信息。你可以在恢复完成后手动执行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)，以更新相关统计信息。
 
 ### MySQL 兼容性
+
+* 从 v8.5.5 起，数据表新增 `AFFINITY` 属性，用于控制表或分区数据的亲和性，可以通过 `CREATE TABLE` 或 `ALTER TABLE` 语句配置。更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/table-affinity)。
+* 从 v8.5.5 起，TiDB 新增 `SHOW AFFINITY` 语句，用于查看表的亲和性信息。该语句是 TiDB 对 MySQL 语法的扩展。更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-show-affinity)。
 
 ### 系统变量
 
@@ -171,7 +176,6 @@ TiDB 版本：8.5.5
 | [`tidb_index_lookup_pushdown_policy`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_index_lookup_pushdown_policy-从-v855-版本开始引入) |  新增  | 控制 TiDB 是否以及在什么条件下将 `IndexLookUp` 算子下推到 TiKV。默认值为 `hint-only`，表示仅在 SQL 中显式指定 [`INDEX_LOOKUP_PUSHDOWN`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入) Hint 时，才将 `IndexLookUp` 算子下推到 TiKV。 |
 
 ### 配置参数
-
 
 | 配置文件或组件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
@@ -189,7 +193,15 @@ TiDB 版本：8.5.5
 
 ### 系统表
 
+* 系统表 [`INFORMATION_SCHEMA.TABLES`](/information-schema/information-schema-tables.md) 和 [`INFORMATION_SCHEMA.PARTITIONS`](/information-schema/information-schema-partitions.md) 新增 `TIDB_AFFINITY` 列，用于查看数据亲和性等级。
+
 ### 其他
+
+* 在使用 BR v8.5.5 对较低版本的 TiDB (例如 v8.5.4 或 v8.1.2) 执行 PITR 恢复时，日志恢复阶段会出现失败，并提示错误 `[ddl:8204] invalid ddl job type: none`。
+
+    数据全量备份与恢复不受此问题影响。
+
+    建议使用与目标 TiDB 集群版本一致的 BR 版本。例如，在 TiDB v8.5.5 集群上执行 PITR 时，使用 BR v8.5.5。
 
 ## 改进提升
 
