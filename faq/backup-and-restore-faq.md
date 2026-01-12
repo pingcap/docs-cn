@@ -114,7 +114,7 @@ Error: failed to check gc safePoint, checkpoint ts 433177834291200000: GC safepo
 failed to refresh meta for database with schemaID=124, dbName=pitr_test: [ddl:8204]invalid ddl job type: none
 ```
 
-这个错误是 DDL owner 所在的 TiDB 节点版本无法识别 Refresh Meta DDL，这是因为集群的 TiDB 版本太低。请升级集群至少到 8.5.5 再使用 PITR table filter。
+该错误是由于 DDL Owner 所在的 TiDB 节点版本过低，无法识别 Refresh Meta DDL 导致的。请将集群升级至 v8.5.5 或以上版本，再使用 PITR 的 table filter 功能。
 
 ## 功能兼容性问题
 
