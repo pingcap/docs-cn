@@ -213,7 +213,7 @@ TiDB 版本：8.5.5
 
     - 优化了高基数指标，降低 PD 的内存占用和监控系统压力 [#9357](https://github.com/tikv/pd/issues/9357) @[rleungx](https://github.com/rleungx)
     - 优化时间戳推进和 Leader 选举的逻辑 [#9981](https://github.com/tikv/pd/issues/9981) @[bufferflies](https://github.com/bufferflies)
-    - 支持批量配置 TiKV 的 Store Limit [#9970](https://github.com/tikv/pd/issues/9970) @[bufferflies](https://github.com/bufferflies)
+    - 支持按照存储引擎（TiKV 或 TiFlash) 批量配置 Store Limit [#9970](https://github.com/tikv/pd/issues/9970) @[bufferflies](https://github.com/bufferflies)
     - 为 `pd_cluster_status` 指标添加 `store` 标签 [#9855](https://github.com/tikv/pd/issues/9855) @[SerjKol80](https://github.com/SerjKol80)
 
 + Tools
