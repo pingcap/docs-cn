@@ -230,6 +230,8 @@ TiDB 版本：8.5.5
     - 修复 `PointGet` 在有足够内存的情况下没有复用 chunk，导致不必要的内存分配的问题 [#63920](https://github.com/pingcap/tidb/issues/63920) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 `LogicalProjection.DeriveStats` 分配过多内存的问题 [#63810](https://github.com/pingcap/tidb/issues/63810) @[hawkingrei](https://github.com/hawkingrei)
     - 修复当查询发生 panic 时，`plan replayer` 无法正常导出 (dump) 的问题 [#64835](https://github.com/pingcap/tidb/issues/64835) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复了在特定场景下，在 TTL 表的 `SHOW CREATE TABLE` 输出中属性顺序显示不正确的问题 [#64876](https://github.com/pingcap/tidb/issues/64876) @[YangKeao](https://github.com/YangKeao)
+    - 修复了 TTL 任务超时时，其执行摘要信息为空的问题 [#61509](https://github.com/pingcap/tidb/issues/61509) @[YangKeao](https://github.com/YangKeao)
     - 修复当计划缓存开启时，关联子查询可能产生非预期的全表扫描的问题 [#64645](https://github.com/pingcap/tidb/issues/64645) @[winoros](https://github.com/winoros)
     - 修复系统表导致表健康度监控不正确的问题 [#57176](https://github.com/pingcap/tidb/issues/57176), [#64080](https://github.com/pingcap/tidb/issues/64080) @[0xPoe](https://github.com/0xPoe)
     - 修复关闭自动更新表的统计信息后 (`tidb_enable_auto_analyze = OFF`)，`mysql.tidb_ddl_notifier` 不能被清理的问题 [#64038](https://github.com/pingcap/tidb/issues/64038) @[0xPoe](https://github.com/0xPoe)
