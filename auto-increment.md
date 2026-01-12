@@ -22,7 +22,7 @@ aliases: ['/docs-cn/dev/auto-increment/']
 
 > **注意：**
 >
-> 如果要求自增编号在所有 TiDB 实例上具有单调性，并且你的 TiDB 版本在 v6.5.0 及以上，推荐使用 [MySQL 兼容模式](#mysql-兼容模式)。
+> 如果要求自增编号在所有 TiDB 实例上具有单调性，并且你的 TiDB 版本在 v6.5.0 及以上，推荐使用[兼容 MySQL 的自增列模式](#兼容-mysql-的自增列模式)。
 
 {{< copyable "sql" >}}
 
@@ -288,7 +288,6 @@ Query OK, 0 rows affected (0.02 sec)
 
 INSERT INTO t VALUES();
 Query OK, 1 row affected (0.00 sec)
-Records: 1  Duplicates: 0  Warnings: 0
 
 SELECT * FROM t;
 +---+
@@ -297,58 +296,144 @@ SELECT * FROM t;
 | 1 |
 +---+
 1 row in set (0.01 sec)
+
+SHOW CREATE TABLE t;
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                                                                                                                                                                             |
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| t     | CREATE TABLE `t` (
+  `a` int NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`a`) /*T![clustered_index] CLUSTERED */
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin AUTO_INCREMENT=101 /*T![auto_id_cache] AUTO_ID_CACHE=100 */ |
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
 ```
 
-此时如果将该列的自增缓存无效化，重新进行隐式分配：
+此时如果重启 TiDB，自增 ID 缓存将会丢失，新的插入操作将从一个之前缓存范围外的更高的 ID 值开始分配。
 
 ```sql
-DELETE FROM t;
-Query OK, 1 row affected (0.01 sec)
-
-RENAME TABLE t to t1;
-Query OK, 0 rows affected (0.01 sec)
-
-INSERT INTO t1 VALUES()
+INSERT INTO t VALUES();
 Query OK, 1 row affected (0.00 sec)
 
 SELECT * FROM t;
 +-----+
 | a   |
 +-----+
+|   1 |
 | 101 |
 +-----+
-1 row in set (0.00 sec)
+2 rows in set (0.01 sec)
 ```
 
 可以看到再一次分配的值为 `101`，说明该表的自增 ID 分配缓存的大小为 `100`。
 
 此外如果在批量插入的 `INSERT` 语句中所需连续 ID 长度超过 `AUTO_ID_CACHE` 的长度时，TiDB 会适当调大缓存以便能够保证该语句的正常插入。
 
+### 清除自增 ID 缓存
+
+在一些场景中，你可能需要清除自增 ID 缓存，以保证数据一致性。例如：
+
+- 使用 [Data Migration (DM)](/dm/dm-overview.md) 进行增量同步，当同步结束后，下游 TiDB 的数据写入方式将从 DM 切换回正常的业务数据写入，此时自增列 ID 的写入模式通常由显式写入转换成隐式分配。
+- TiDB Lightning 完成数据导入后会自动清除自增 ID 缓存，但 TiCDC 在增量同步后不会自动清除。因此，在停止 TiCDC 并进行主备切换之前，需要手动清除下游集群的自增 ID 缓存。
+- 当业务同时使用了显式写入和隐式分配时，需要清除自增 ID 缓存，以防止后续隐式分配的自增 ID 与已显式写入的 ID 发生冲突，导致主键冲突错误。具体场景参考[唯一性保证](/auto-increment.md#唯一性保证)。
+
+你可以执行 `ALTER TABLE` 语句设置 `AUTO_INCREMENT = 0` 来清除集群中所有 TiDB 节点的自增 ID 缓存。例如：
+
+```sql
+CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 100;
+Query OK, 0 rows affected (0.02 sec)
+
+INSERT INTO t VALUES();
+Query OK, 1 row affected (0.02 sec)
+
+INSERT INTO t VALUES(50);
+Query OK, 1 row affected (0.00 sec)
+
+SELECT * FROM t;
++----+
+| a  |
++----+
+|  1 |
+| 50 |
++----+
+2 rows in set (0.01 sec)
+```
+
+```sql
+ALTER TABLE t AUTO_INCREMENT = 0;
+Query OK, 0 rows affected, 1 warning (0.07 sec)
+
+SHOW WARNINGS;
++---------+------+-------------------------------------------------------------------------+
+| Level   | Code | Message                                                                 |
++---------+------+-------------------------------------------------------------------------+
+| Warning | 1105 | Can't reset AUTO_INCREMENT to 0 without FORCE option, using 101 instead |
++---------+------+-------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+
+INSERT INTO t VALUES();
+Query OK, 1 row affected (0.02 sec)
+
+SELECT * FROM t;
++-----+
+| a   |
++-----+
+|   1 |
+|  50 |
+| 101 |
++-----+
+3 rows in set (0.01 sec)
+```
+
 ### 自增步长和偏移量设置
 
 从 v3.0.9 和 v4.0.rc-1 开始，和 MySQL 的行为类似，自增列隐式分配的值遵循 session 变量 `@@auto_increment_increment` 和 `@@auto_increment_offset` 的控制，其中自增列隐式分配的值 (ID) 将满足式子 `(ID - auto_increment_offset) % auto_increment_increment == 0`。
 
-## MySQL 兼容模式
+## 兼容 MySQL 的自增列模式
 
-从 v6.4.0 开始，TiDB 实现了中心化分配自增 ID 的服务，可以支持 TiDB 实例不缓存数据，而是每次请求都访问中心化服务获取 ID。
-
-当前中心化分配服务内置在 TiDB 进程，类似于 DDL Owner 的工作模式。有一个 TiDB 实例将充当“主”的角色提供 ID 分配服务，而其它的 TiDB 实例将充当“备”角色。当“主”节点发生故障时，会自动进行“主备切换”，从而保证中心化服务的高可用。
-
-MySQL 兼容模式的使用方式是，建表时将 `AUTO_ID_CACHE` 设置为 `1`：
+TiDB 提供了一种兼容 MySQL 的自增列模式，该模式能确保 ID 严格递增且间隙最小。要启用此模式，需在建表时将 `AUTO_ID_CACHE` 设置为 `1`：
 
 ```sql
 CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
 ```
 
+当 `AUTO_ID_CACHE` 设置为 `1` 时，所有 TiDB 实例生成的 ID 严格全局递增，每个 ID 保证全局唯一，相较于默认缓存模式（`AUTO_ID_CACHE 0` 具有 30000 个缓存值），ID 间隙显著缩小。
+
+例如，启用 `AUTO_ID_CACHE 1` 后可以生成如下序列：
+
+```sql
+INSERT INTO t VALUES (); -- Returns ID 1
+INSERT INTO t VALUES (); -- Returns ID 2
+INSERT INTO t VALUES (); -- Returns ID 3
+-- After failover
+INSERT INTO t VALUES (); -- Might return ID 5
+```
+
+相比之下，使用默认缓存（`AUTO_ID_CACHE 0`）时可能出现较大间隙：
+
+```sql
+INSERT INTO t VALUES (); -- Returns ID 1
+INSERT INTO t VALUES (); -- Returns ID 2
+-- New TiDB instance allocates next batch
+INSERT INTO t VALUES (); -- Returns ID 30001
+```
+
+尽管 `AUTO_ID_CACHE 1` 能保证 ID 严格递增且不会出现类似 `AUTO_ID_CACHE 0` 的大幅间隙，但在以下场景中仍可能出现微小间隙。这些间隙是维持 ID 全局唯一性和严格递增特性的必要代价：
+
+- 主实例退出或崩溃的故障恢复期间
+
+    使用兼容 MySQL 的自增列模式后，能保证 ID **唯一**、**单调递增**，行为几乎跟 MySQL 完全一致。即使跨 TiDB 实例访问，ID 也不会出现回退。只有在中心化分配自增 ID 服务的“主” TiDB 实例进程退出（如该 TiDB 节点重启）或者异常崩溃时，才有可能造成部分 ID 不连续。这是因为主备切换时，“备” 节点需要丢弃一部分之前的“主” 节点已经分配的 ID，以保证 ID 不出现重复。
+
+- TiDB 节点滚动升级期间
+- 正常并发事务场景（与 MySQL 类似）
+
 > **注意：**
 >
-> 在 TiDB 各个版本中，`AUTO_ID_CACHE` 设置为 `1` 都表明 TiDB 不再缓存 ID，但是不同版本的实现方式不一样：
+> `AUTO_ID_CACHE 1` 的行为和性能在不同 TiDB 版本中的演进如下：
 >
-> - 对于 TiDB v6.4.0 之前的版本，由于每次分配 ID 都需要通过一个 TiKV 事务完成 `AUTO_INCREMENT` 值的持久化修改，因此设置 `AUTO_ID_CACHE` 为 `1` 会出现性能下降。
-> - 对于 v6.4.0 及以上版本，由于引入了中心化的分配服务，`AUTO_INCREMENT` 值的修改只是在 TiDB 服务进程中的一个内存操作，相较于之前版本更快。
-> - 将 `AUTO_ID_CACHE` 设置为 `0` 表示 TiDB 使用默认的缓存大小 `30000`。
-
-使用 MySQL 兼容模式后，能保证 ID **唯一**、**单调递增**，行为几乎跟 MySQL 完全一致。即使跨 TiDB 实例访问，ID 也不会出现回退。只有在中心化分配自增 ID 服务的“主” TiDB 实例进程退出（如该 TiDB 节点重启）或者异常崩溃时，才有可能造成部分 ID 不连续。这是因为主备切换时，“备” 节点需要丢弃一部分之前的“主” 节点已经分配的 ID，以保证 ID 不出现重复。
+> - v6.4.0 之前：每次 ID 分配需通过一个 TiKV 事务完成，会影响性能。
+> - v6.4.0 起：引入集中式分配服务，ID 分配转为内存操作，性能显著提升。
+> - v8.1.0 起：移除主节点退出时的自动 `forceRebase` 操作以实现快速重启。虽然故障恢复时可能产生额外非连续 ID，但可避免大量表使用 `AUTO_ID_CACHE 1` 时可能出现的写入阻塞。
 
 ## 使用限制
 

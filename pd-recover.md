@@ -14,7 +14,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
 ### 从源代码编译
 
-* [Go](https://golang.org/)：PD Recover 使用了 Go 模块，请安装 Go 1.21 或以上版本。
+* [Go](https://golang.org/)：PD Recover 使用了 Go 模块，请安装 Go 1.23 或以上版本。
 * 在 [PD](https://github.com/pingcap/pd) 根目录下，运行 `make pd-recover` 命令来编译源代码并生成 `bin/pd-recover`。
 
 > **注意：**

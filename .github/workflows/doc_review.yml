@@ -1,0 +1,78 @@
+name: AI Doc Review
+
+on:
+  workflow_dispatch:
+
+  issue_comment:
+    types:
+      - created
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event_name == 'issue_comment' &&
+        contains(github.event.comment.body, '/bot-review') &&
+        (github.event.comment.user.login == 'hfxsd' || github.event.comment.user.login == 'likidu' || github.event.comment.user.login == 'lilin90' || github.event.comment.user.login == 'Oreoxmt' || github.event.comment.user.login == 'qiancai')
+      )
+    steps:
+
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
+
+      - name: Extract review parameters
+        id: extract
+        if: github.event_name == 'issue_comment'
+        run: |
+          COMMENT="${{ github.event.comment.body }}"
+
+          # Match commit range
+          if [[ "$COMMENT" =~ \/bot-review:[[:space:]]*([a-f0-9]{7,40})[[:space:]]*\.\.[[:space:]]*([a-f0-9]{7,40}) ]]; then
+            echo "BASE_SHA=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+            echo "HEAD_SHA=${BASH_REMATCH[2]}" >> $GITHUB_OUTPUT
+            echo "REVIEW_MODE=commit_range" >> $GITHUB_OUTPUT
+            printf "Detected commit range with regex: %s..%s\\n" "${BASH_REMATCH[1]}" "${BASH_REMATCH[2]}"
+
+          # Match a single commit
+          elif [[ "$COMMENT" =~ \/bot-review:[[:space:]]+([a-f0-9]{7,40}) ]]; then
+            echo "COMMIT_SHA=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+            echo "REVIEW_MODE=single_commit" >> $GITHUB_OUTPUT
+            printf "Detected single commit: %s\\n" "${BASH_REMATCH[1]}"
+
+          # Match "/bot-review" or "/bot-review "
+          elif [[ "$COMMENT" =~ ^\/bot-review[[:space:]]*$ ]]; then
+            echo "REVIEW_MODE=latest" >> $GITHUB_OUTPUT
+            echo "Detected default review mode"
+
+          # Invalid format
+          else
+            echo "REVIEW_MODE=invalid" >> $GITHUB_OUTPUT
+            echo "Invalid bot-review command format"
+          fi
+
+          echo "Parameters output:"
+          cat $GITHUB_OUTPUT
+
+      - name: AI Doc Reviewer
+        uses: qiancai/ai-doc-reviewer@main
+        continue-on-error: false  # Ensure workflow fails if the action fails
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          API_PROVIDER: "deepseek"  # or "openai" if you want to use OpenAI
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          DEEPSEEK_API_MODEL: "deepseek-chat"  # Updated model name
+          exclude: "**/*.json"  # Optional: exclude patterns separated by commas
+          REVIEW_MODE: ${{ steps.extract.outputs.REVIEW_MODE || 'default' }}
+          COMMIT_SHA: ${{ steps.extract.outputs.COMMIT_SHA || '' }}
+          BASE_SHA: ${{ steps.extract.outputs.BASE_SHA || '' }}
+          HEAD_SHA: ${{ steps.extract.outputs.HEAD_SHA || '' }}
+          PROMPT_PATH: "doc-review-prompt.txt"

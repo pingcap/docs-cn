@@ -32,6 +32,7 @@ Clinic Server 是部署在云端的云服务，根据数据存储的位置不同
 | 日志 | `tidb.log` | `--include=log` |
 | Error 日志 | `tidb_stderr.log` | `--include=log` |
 | 慢日志| `tidb_slow_query.log` | `--include=log` |
+| 审计日志 | `tidb-audit.log.json` | `--include=log` |
 | 配置文件 | `tidb.toml` | `--include=config` |
 | 实时配置| `config.json` | `--include=config` |
 
@@ -140,3 +141,14 @@ Clinic Server 是部署在云端的云服务，根据数据存储的位置不同
 | 系统 `/etc/security/limits.conf` 中的内容 | `limits.conf` | `--include=system` |
 | 内核参数列表 | `sysctl.conf` | `--include=system` |
 | socket 统计信息（即 ss 的命令结果） | `ss.txt` | `--include=system` |
+
+### 日志文件分类
+
+你可以使用 `--include=log.<type>` 参数来指定要采集的日志类型。
+
+日志类型包括：
+
+- `std`：文件名中包含 `stderr` 的日志文件。
+- `rocksdb`：以 `rocksdb` 为前缀、以 `.info` 为后缀的日志文件。
+- `slow`：慢查询日志文件。
+- `unknown`：不属于以上任何类型的日志文件。

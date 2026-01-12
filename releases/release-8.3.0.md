@@ -9,7 +9,7 @@ summary: 了解 TiDB 8.3.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：8.3.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.3/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v8.3.0-DMR#version-list)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.3/quick-start-with-tidb)
 
 在 8.3.0 版本中，你可以获得以下关键特性：
 
@@ -49,7 +49,7 @@ TiDB 版本：8.3.0
 
 * 优化器默认允许将 `Projection` 算子下推到存储引擎 [#51876](https://github.com/pingcap/tidb/issues/51876) @[yibin87](https://github.com/yibin87)
 
-    将 `Projection` 算子下推到存储引擎可以减少计算引擎和存储引擎之间的数据传输量，从而提升 SQL 执行效率。这在处理包含 [JSON 查询类函数](/functions-and-operators/json-functions/json-functions-search.md)或 [JSON 值属性类函数](/functions-and-operators/json-functions/json-functions-return.md) 的查询时尤其有效。从 v8.3.0 开始，TiDB 默认开启 `Projection` 算子下推功能，控制该功能的系统变量 [`tidb_opt_projection_push_down`](/system-variables.md#tidb_opt_projection_push_down-从-v610-版本开始引入) 的默认值从 `OFF` 修改为 `ON`。启用该功能后，优化器会自动将符合条件的 JSON 查询类函数、JSON 值属性类函数等下推到存储引擎。
+    将 `Projection` 算子下推到存储引擎可以减少计算引擎和存储引擎之间的数据传输量，从而提升 SQL 执行效率。这在处理包含 [JSON 查询类函数](/functions-and-operators/json-functions/json-functions-search.md)或 [JSON 值属性类函数](/functions-and-operators/json-functions/json-functions-return.md)的查询时尤其有效。从 v8.3.0 开始，TiDB 默认开启 `Projection` 算子下推功能，控制该功能的系统变量 [`tidb_opt_projection_push_down`](/system-variables.md#tidb_opt_projection_push_down-从-v610-版本开始引入) 的默认值从 `OFF` 修改为 `ON`。启用该功能后，优化器会自动将符合条件的 JSON 查询类函数、JSON 值属性类函数等下推到存储引擎。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_opt_projection_push_down-从-v610-版本开始引入)。
 
@@ -119,7 +119,7 @@ TiDB 版本：8.3.0
 
     从 v8.3.0 开始，全局索引作为实验特性正式发布。你可通过关键字 `Global` 为分区表显式创建一个全局索引，从而去除分区表唯一建必须包含分区表达式中用到的所有列的限制，满足灵活的业务需求。同时基于全局索引也提升了非分区列的查询性能。
 
-    更多信息，请参考[用户文档](/partitioned-table.md#全局索引)。
+    更多信息，请参考[用户文档](/global-indexes.md)。
 
 ### 稳定性
 
@@ -212,10 +212,11 @@ TiDB 版本：8.3.0
 |--------|------------------------------|------|
 | [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size)     | 修改   | 增加 SESSION 作用域。     |
 | [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt)    | 修改   | 增加 SESSION 作用域。     |
+| [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) | 修改 | 经进一步的测试，默认值从 `OFF` 修改为 `ON`，即 TiDB 默认开启对 `PREDICATE COLUMNS` 的收集。|
 | [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入) | 修改 | 从 v8.3.0 起，该变量可以控制[垃圾回收 (GC)](/garbage-collection-overview.md) 过程中 [Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)和 [Delete Range（删除区间）](/garbage-collection-overview.md#delete-ranges删除区间)的并发线程数。在 v8.3.0 之前，该变量只能控制 Resolve Locks（清理锁）的线程数。|
 | [`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso) | 修改 | 增加 GLOBAL 作用域。|
 | [`tidb_opt_projection_push_down`](/system-variables.md#tidb_opt_projection_push_down-从-v610-版本开始引入) | 修改 | 增加 GLOBAL 作用域，变量值可以持久化到集群。经进一步的测试，默认值从 `OFF` 修改为 `ON`，即默认允许优化器将 `Projection` 算子下推到 TiKV。|
-| [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)  | 修改 | 取值范围修改为 `0` 或 `[536870912,9223372036854775807]`。 |
+| [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)  | 修改 | 取值范围修改为 `0` 或 `[536870912, 9223372036854775807]`，其中最小值为 `536870912` bytes（即 512 MiB），避免设置了过小的 cache size 导致性能下降。|
 | [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) | 新增 | 控制 `ANALYZE TABLE` 语句的行为。将其设置为默认值 `PREDICATE` 表示仅收集 [predicate columns](/statistics.md#收集部分列的统计信息) 的统计信息；将其设置为 `ALL` 表示收集所有列的统计信息。 |
 | [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) | 新增 | 这个变量用于控制 [Cursor Fetch](/develop/dev-guide-connection-parameters.md#使用-streamingresult-流式获取执行结果) 功能的行为。|
 | [`tidb_enable_shared_lock_promotion`](/system-variables.md#tidb_enable_shared_lock_promotion-从-v830-版本开始引入)      | 新增  | 控制是否启用共享锁升级为排他锁的功能。默认值为 `OFF`，表示不启用共享锁升级为排他锁的功能。  |
@@ -233,13 +234,13 @@ TiDB 版本：8.3.0
 
 ### 系统表
 
-* 在系统表 [`INFORMATION_SCHEMA.PROCESSLIST`](/information-schema/information-schema-processlist.md) 和 [`INFORMATION_SCHEMA.CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md#cluster_processlist) 中新增 `ROWS_AFFECTED` 字段，用于显示 DML 语句当前影响的数据行数。[#46889](https://github.com/pingcap/tidb/issues/46889) @[lcwangchao](https://github.com/lcwangchao) 
+* 在系统表 [`INFORMATION_SCHEMA.PROCESSLIST`](/information-schema/information-schema-processlist.md) 和 [`INFORMATION_SCHEMA.CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md#cluster_processlist) 中新增 `ROWS_AFFECTED` 字段，用于显示 DML 语句当前影响的数据行数。[#46889](https://github.com/pingcap/tidb/issues/46889) @[lcwangchao](https://github.com/lcwangchao)
 
 ## 废弃功能
 
 * 以下为从 v8.3.0 开始已废弃的功能：
 
-    * 从 v7.5.0 开始，[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 的数据同步功能被废弃。从 v8.3.0 开始，TiDB Binlog 被完全废弃，并计划在未来版本中移除。如需进行增量数据同步，请使用 [TiCDC](/ticdc/ticdc-overview.md)。如需按时间点恢复 (point-in-time recovery, PITR)，请使用 [PITR](/br/br-pitr-guide.md)。
+    * 从 v7.5.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 的数据同步功能被废弃。从 v8.3.0 开始，TiDB Binlog 被完全废弃，并计划在未来版本中移除。如需进行增量数据同步，请使用 [TiCDC](/ticdc/ticdc-overview.md)。如需按时间点恢复 (point-in-time recovery, PITR)，请使用 [PITR](/br/br-pitr-guide.md)。
     * 从 v8.3.0 开始，系统变量 [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) 被废弃。TiDB 默认收集 [predicate columns](/glossary.md#predicate-columns) 的统计信息。更多信息，参见 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入)。
 
 * 以下为计划将在未来版本中废弃的功能：
@@ -307,7 +308,6 @@ TiDB 版本：8.3.0
         - 在恢复快照备份的数据之前，新增对 TiKV 和 TiFlash 是否有足够的磁盘空间的检查；如果空间不足，会终止恢复并返回错误 [#54316](https://github.com/pingcap/tidb/issues/54316) @[RidRisR](https://github.com/RidRisR)
         - 在 TiKV 下载每个 SST 文件之前，新增对 TiKV 是否有足够的磁盘空间的检查；如果空间不足，会终止恢复并返回错误 [#17224](https://github.com/tikv/tikv/issues/17224) @[RidRisR](https://github.com/RidRisR)
         - 支持通过环境变量设置阿里云访问身份 [#45551](https://github.com/pingcap/tidb/issues/45551) @[RidRisR](https://github.com/RidRisR)
-        - 优化备份功能，提升在大量表备份过程中遇到节点重启、扩容或网络抖动时的备份性能和稳定性 [#52534](https://github.com/pingcap/tidb/issues/52534) @[3pointer](https://github.com/3pointer)
         - 使用 BR 进行备份恢复时，会根据 BR 进程的可用内存自动设置环境变量 `GOMEMLIMIT`，避免出现 OOM [#53777](https://github.com/pingcap/tidb/issues/53777) @[Leavrth](https://github.com/Leavrth)
         - 使增量备份兼容按时间点恢复 (PITR) [#54474](https://github.com/pingcap/tidb/issues/54474) @[3pointer](https://github.com/3pointer)
         - 支持备份和恢复 `mysql.column_stats_usage` 表 [#53567](https://github.com/pingcap/tidb/issues/53567) @[hi-rustin](https://github.com/Rustin170506)
@@ -432,6 +432,5 @@ TiDB 版本：8.3.0
 - [michaelmdeng](https://github.com/michaelmdeng)
 - [mittalrishabh](https://github.com/mittalrishabh)
 - [qingfeng777](https://github.com/qingfeng777)
-- [renovate](https://github.com/apps/renovate)
 - [SandeepPadhi](https://github.com/SandeepPadhi)
 - [yzhan1](https://github.com/yzhan1)

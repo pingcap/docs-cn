@@ -33,7 +33,7 @@ curl http://127.0.0.1:10080/status
 ```
 {
     connections: 0,  # 当前 TiDB Server 上的客户端连接数
-    version: "8.0.11-TiDB-v8.3.0",  # TiDB 版本号
+    version: "8.0.11-TiDB-v8.5.0",  # TiDB 版本号
     git_hash: "7267747ae0ec624dffc3fdedb00f1ed36e10284b"  # TiDB 当前代码的 Git Hash
 }
 ```
@@ -84,7 +84,7 @@ curl http://127.0.0.1:10080/schema_storage/test
 
 - PD API 地址：`http://${host}:${port}/pd/api/v1/${api_name}`
 - 默认端口：2379
-- 各类 `api_name` 详细信息：参见 [PD API Doc](https://download.pingcap.com/pd-api-doc.html)
+- 各类 `api_name` 详细信息：参见 [PD API Doc](https://docs-download.pingcap.com/api/pd-api/pd-api-doc.html)
 
 通过该接口可以获取当前所有 TiKV 节点的状态以及负载均衡信息。下面以一个单节点的 TiKV 集群为例，说明用户需要了解的信息：
 

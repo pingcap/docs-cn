@@ -57,8 +57,8 @@ online-ddl: true                # 开启 DM 的 online DDL 支持特性。兼容
 
 如果您想深入了解其实现原理，请阅读以下两篇技术博客：
 
-- [DM 源码阅读系列文章（八）Online Schema Change 迁移支持](https://pingcap.com/blog-cn/dm-source-code-reading-8/#dm-源码阅读系列文章八online-schema-change-迁移支持)
-- [TiDB Online Schema Change 原理](https://pingcap.com/zh/blog/tidb-source-code-reading-17)
+- [DM 源码阅读系列文章（八）Online Schema Change 迁移支持](https://tidb.net/blog/8645ba77)
+- [TiDB Online Schema Change 原理](https://tidb.net/blog/897e1539)
 
 ## 探索更多
 

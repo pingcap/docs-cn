@@ -131,10 +131,6 @@ show warnings;
 | raftstore.max-apply-unpersisted-log-limit | 允许 apply 已 commit 但尚未持久化的 Raft 日志的最大数量 |
 | raftstore.split-region-check-tick-interval | 检查 Region 是否需要分裂的时间间隔 |
 | raftstore.region-split-check-diff | 允许 Region 数据超过指定大小的最大值 |
-| raftstore.region-compact-check-interval | 检查是否需要人工触发 RocksDB compaction 的时间间隔 |
-| raftstore.region-compact-check-step | 每轮校验人工 compaction 时，一次性检查的 Region 个数 |
-| raftstore.region-compact-min-tombstones | 触发 RocksDB compaction 需要的 tombstone 个数 |
-| raftstore.region-compact-tombstones-percent | 触发 RocksDB compaction 需要的 tombstone 所占比例 |
 | raftstore.pd-heartbeat-tick-interval | 触发 Region 对 PD 心跳的时间间隔 |
 | raftstore.pd-store-heartbeat-tick-interval | 触发 store 对 PD 心跳的时间间隔 |
 | raftstore.snap-mgr-gc-tick-interval | 触发回收过期 snapshot 文件的时间间隔 |
@@ -162,6 +158,7 @@ show warnings;
 | readpool.unified.max-thread-count | 统一处理读请求的线程池最多的线程数量，即 UnifyReadPool 线程池大小 |
 | readpool.unified.max-tasks-per-worker | 统一处理读请求的线程池中单个线程允许积压的最大任务数量，超出后会返回 Server Is Busy。 |
 | readpool.unified.auto-adjust-pool-size | 是否开启自适应调整 UnifyReadPool 的大小 |
+| resource-control.priority-ctl-strategy | 配置低优先级任务的流量管控策略。 |
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
 | coprocessor.batch-split-limit | 批量分裂 Region 的阈值 |
 | coprocessor.region-max-size | Region 容量空间的最大值 |
@@ -172,12 +169,14 @@ show warnings;
 | pessimistic-txn.wake-up-delay-duration | 悲观事务被重新唤醒的时间 |
 | pessimistic-txn.pipelined | 是否开启流水线式加悲观锁流程 |
 | pessimistic-txn.in-memory | 是否开启内存悲观锁功能 |
+| pessimistic-txn.in-memory-peer-size-limit | 控制单个 Region 内存悲观锁的内存使用上限 |
+| pessimistic-txn.in-memory-instance-size-limit | 控制单个 TiKV 实例内存悲观锁的内存使用上限 |
 | quota.foreground-cpu-time | 限制处理 TiKV 前台读写请求所使用的 CPU 资源使用量，软限制 |
 | quota.foreground-write-bandwidth | 限制前台事务写入的带宽，软限制 |
 | quota.foreground-read-bandwidth | 限制前台事务读取数据和 Coprocessor 读取数据的带宽，软限制 |
 | quota.background-cpu-time | 限制处理 TiKV 后台读写请求所使用的 CPU 资源使用量，软限制 |
-| quota.background-write-bandwidth | 限制后台事务写入的带宽，软限制，暂未生效 |
-| quota.background-read-bandwidth | 限制后台事务读取数据和 Coprocessor 读取数据的带宽，软限制，暂未生效 |
+| quota.background-write-bandwidth | 限制后台事务写入的带宽，软限制 |
+| quota.background-read-bandwidth | 限制后台事务读取数据和 Coprocessor 读取数据的带宽，软限制 |
 | quota.enable-auto-tune | 是否支持 quota 动态调整。如果打开该配置项，TiKV 会根据 TiKV 实例的负载情况动态调整对后台请求的限制 quota |
 | quota.max-delay-duration | 单次读写请求被强制等待的最大时间 |
 | gc.ratio-threshold | 跳过 Region GC 的阈值（GC 版本个数/key 个数）|
@@ -185,6 +184,12 @@ show warnings;
 | gc.max-write-bytes-per-sec | 一秒可写入 RocksDB 的最大字节数 |
 | gc.enable-compaction-filter | 是否使用 compaction filter |
 | gc.compaction-filter-skip-version-check | 是否跳过 compaction filter 的集群版本检查（未 release）|
+| gc.auto-compaction.check-interval | TiKV 检查是否需要触发自动 RocksDB compaction 的时间间隔 |
+| gc.auto-compaction.tombstone-num-threshold | 触发 TiKV 自动 (RocksDB) compaction 需要的 RocksDB tombstone 个数 |
+| gc.auto-compaction.tombstone-percent-threshold | 触发 TiKV 自动 (RocksDB) compaction 需要的 RocksDB tombstone 所占比例 |
+| gc.auto-compaction.redundant-rows-threshold | 触发 TiKV 自动 (RocksDB) compaction 需要的冗余的 MVCC 数据行数 |
+| gc.auto-compaction.redundant-rows-percent-threshold | 触发 TiKV 自动 (RocksDB) compaction 需要的冗余的 MVCC 数据行数所占比例 |
+| gc.auto-compaction.bottommost-level-force | 控制是否强制对 RocksDB 最底层文件进行 compaction |
 | {db-name}.max-total-wal-size | WAL 总大小限制 |
 | {db-name}.max-background-jobs | RocksDB 后台线程个数 |
 | {db-name}.max-background-flushes | RocksDB flush 线程个数 |
@@ -218,7 +223,13 @@ show warnings;
 | server.concurrent-send-snap-limit | 同时发送 snapshot 的最大个数 |
 | server.concurrent-recv-snap-limit | 同时接受 snapshot 的最大个数 |
 | storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
+| storage.flow-control.enable | 是否开启流量控制机制 |
+| storage.flow-control.memtables-threshold | 触发流量控制的 KvDB memtable 数量阈值 |
+| storage.flow-control.l0-files-threshold | 触发流量控制的 KvDB L0 文件数量阈值 |
+| storage.flow-control.soft-pending-compaction-bytes-limit | 触发流控机制开始拒绝部分写入请求的 KvDB pending compaction bytes 阈值 |
+| storage.flow-control.hard-pending-compaction-bytes-limit | 触发流控机制拒绝所有新写入请求的 KvDB pending compaction bytes 阈值 |
 | storage.scheduler-worker-pool-size | Scheduler 线程池中线程的数量 |
+| import.num-threads | 处理恢复或导入 RPC 请求的线程数量（自 v8.1.2 起支持在线修改） |
 | backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
 | split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果连续 10s 内，某个 Region 的读请求的 QPS 超过 qps-threshold，则尝试切分该 Region |
 | split.byte-threshold | 对 Region 执行 load-base-split 的阈值。如果连续 10s 内，某个 Region 的读请求的流量超过 byte-threshold，则尝试切分该 Region |
@@ -263,11 +274,12 @@ Query OK, 0 rows affected (0.01 sec)
 | cluster-version | 集群的版本 |
 | schedule.max-merge-region-size |  控制 Region Merge 的 size 上限（单位是 MiB） |
 | schedule.max-merge-region-keys | 控制 Region Merge 的 key 数量上限 |
-| schedule.patrol-region-interval | 控制 replicaChecker 检查 Region 健康状态的运行频率 |
+| schedule.patrol-region-interval | 控制 checker 检查 Region 健康状态的运行频率 |
 | schedule.split-merge-interval | 控制对同一个 Region 做 split 和 merge 操作的间隔 |
 | schedule.max-snapshot-count | 控制单个 store 最多同时接收或发送的 snapshot 数量 |
 | schedule.max-pending-peer-count | 控制单个 store 的 pending peer 上限 |
 | schedule.max-store-down-time | PD 认为失联 store 无法恢复的时间 |
+| schedule.max-store-preparing-time | 控制 store 上线阶段的最长等待时间 |
 | schedule.leader-schedule-policy | 用于控制 leader 调度的策略 |
 | schedule.leader-schedule-limit | 可以控制同时进行 leader 调度的任务个数 |
 | schedule.region-schedule-limit | 可以控制同时进行 Region 调度的任务个数 |
@@ -285,16 +297,42 @@ Query OK, 0 rows affected (0.01 sec)
 | schedule.enable-location-replacement | 用于开启隔离级别检查 |
 | schedule.enable-cross-table-merge | 用于开启跨表 Merge |
 | schedule.enable-one-way-merge | 用于开启单向 Merge（只允许和下一个相邻的 Region Merge） |
+| schedule.region-score-formula-version | 用于设置 Region 算分公式的版本 |
+| schedule.scheduler-max-waiting-operator | 用于控制每个调度器同时存在的 operator 的个数 |
+| schedule.enable-debug-metrics | 用于开启 debug 的 metrics |
+| schedule.enable-heartbeat-concurrent-runner | 用于开启 Region 心跳异步并发处理功能 |
+| schedule.enable-heartbeat-breakdown-metrics | 用于开启 Region 心跳指标拆分，用于统计 Region 心跳处理各阶段所消耗的时间 |
+| schedule.enable-joint-consensus | 用于开启 Joint Consensus 进行副本调度 |
+| schedule.hot-regions-write-interval | 设置 PD 存储 Hot Region 信息时间间隔 |
+| schedule.hot-regions-reserved-days | 设置 PD 保留的 Hot Region 信息的最长时间 |
+| schedule.max-movable-hot-peer-size | 设置热点调度可以调度的最大 Region size |
+| schedule.store-limit-version | 设置 [store limit](/configure-store-limit.md) 工作模式 |
+| schedule.patrol-region-worker-count | 控制 checker 检查 Region 健康状态时，创建 operator 的并发数 |
 | replication.max-replicas | 用于设置副本的数量 |
 | replication.location-labels | 用于设置 TiKV 集群的拓扑信息 |
 | replication.enable-placement-rules | 开启 Placement Rules |
 | replication.strictly-match-label | 开启 label 检查 |
+| replication.isolation-level | 设置 TiKV 集群的最小强制拓扑隔离级别 |
 | pd-server.use-region-storage | 开启独立的 Region 存储 |
 | pd-server.max-gap-reset-ts | 用于设置最大的重置 timestamp 的间隔（BR）|
 | pd-server.key-type| 用于设置集群 key 的类型 |
 | pd-server.metric-storage | 用于设置集群 metrics 的存储地址 |
 | pd-server.dashboard-address | 用于设置 dashboard 的地址 |
+| pd-server.flow-round-by-digit | 指定 PD 对 Region 流量信息的末尾数字进行四舍五入的位数 |
+| pd-server.min-resolved-ts-persistence-interval | 设置 PD leader 对集群中 Resolved TS 最小值进行持久化的间隔时间 |
+| pd-server.server-memory-limit | PD 实例的内存限制比例 |
+| pd-server.server-memory-limit-gc-trigger | PD 尝试触发 GC 的阈值比例 |
+| pd-server.enable-gogc-tuner | 是否开启 GOGC Tuner |
+| pd-server.gc-tuner-threshold | GOGC Tuner 自动调节的最大内存阈值比例 |
 | replication-mode.replication-mode | 备份的模式 |
+| replication-mode.dr-auto-sync.label-key | 用于区分不同的 AZ，需要和 Placement Rules 相匹配 |
+| replication-mode.dr-auto-sync.primary | 主 AZ |
+| replication-mode.dr-auto-sync.dr | 从 AZ |
+| replication-mode.dr-auto-sync.primary-replicas  | 主 AZ 上 Voter 副本的数量 |
+| replication-mode.dr-auto-sync.dr-replicas | 从 AZ 上 Voter 副本的数量 |
+| replication-mode.dr-auto-sync.wait-store-timeout | 当出现网络隔离或者故障时，切换到异步复制模式的等待时间 |
+| replication-mode.dr-auto-sync.wait-recover-timeout | 当网络恢复后，切换回 `sync-recover` 状态的等待时间 |
+| replication-mode.dr-auto-sync.pause-region-split | 用于控制在 `async_wait` 和 `async` 状态下是否暂停 Region 的 split 操作 |
 
 具体配置项意义可参考 [PD 配置文件描述](/pd-configuration-file.md)。
 

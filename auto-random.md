@@ -78,7 +78,7 @@ tidb> SHOW CREATE TABLE t;
 | Table | Create Table                                                                                                                                                                                                                                                    |
 +-------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | t     | CREATE TABLE `t` (
-  `a` bigint(20) NOT NULL /*T![auto_rand] AUTO_RANDOM(5) */,
+  `a` bigint NOT NULL /*T![auto_rand] AUTO_RANDOM(5) */,
   `b` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`a`) /*T![clustered_index] CLUSTERED */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin /*T! PRE_SPLIT_REGIONS=2 */ |
@@ -158,6 +158,42 @@ SHOW WARNINGS;
 ## ID 隐式分配规则
 
 `AUTO_RANDOM` 列隐式分配的值和自增列类似，也遵循 session 变量 [`auto_increment_increment`](/system-variables.md#auto_increment_increment) 和 [`auto_increment_offset`](/system-variables.md#auto_increment_offset) 的控制，其中隐式分配值的自增位 (ID) 满足等式 `(ID - auto_increment_offset) % auto_increment_increment == 0`。
+
+## 清除自增 ID 缓存
+
+在部署了多个 TiDB 实例的集群中，向 `AUTO_RANDOM` 列插入显式值时，可能会发生 ID 冲突，与 `AUTO_INCREMENT` 列类似。如果显式插入的 ID 值与 TiDB 用于自动生成的内部计数器冲突，可能会导致错误。
+
+冲突发生的原因如下：每个 `AUTO_RANDOM` ID 由随机位 (Random Bits) 和自增部分组成。TiDB 使用内部计数器来生成自增部分。如果显式插入的 ID 的自增部分恰好等于计数器的下一个值，则此后当 TiDB 尝试自动生成该相同 ID 时，可能会发生重复键错误。更多详细信息，请参阅 [`AUTO_INCREMENT` 唯一性保证](/auto-increment.md#唯一性保证)。
+
+在单个 TiDB 实例中，该问题不会发生，因为节点在处理显式插入时会自动调整其内部计数器，从而防止冲突。相比之下，在有多个 TiDB 节点的环境中，每个节点维护自己的 ID 缓存，所以你需要清除这些缓存以防止显式插入后发生冲突。要清除这些未分配的缓存 ID 并避免潜在的冲突，有以下两种方法：
+
+### 方法 1：自动重置基值（推荐方式）
+
+```sql
+ALTER TABLE t AUTO_RANDOM_BASE=0;
+```
+
+该语句会自动确定一个合适的基值。尽管执行后会返回类似于 `Can't reset AUTO_INCREMENT to 0 without FORCE option, using XXX instead` 的警告信息，但基值确实会被更新，因此你可以忽略此警告。
+
+> **注意：**
+>
+> 不能使用 `FORCE` 关键字将 `AUTO_RANDOM_BASE` 设置为 `0`，否则会导致错误。
+
+### 方法 2：手动设置特定的基值
+
+如果需要设置一个特定的基值（例如 `1000`），可以使用 `FORCE` 关键字：
+
+```sql
+ALTER TABLE t FORCE AUTO_RANDOM_BASE = 1000;
+```
+
+但是这种方法并不方便，因为你需要自行确定合适的基值。
+
+> **注意：**
+>
+> 使用 `FORCE` 时，必须指定一个非零的正整数。
+
+以上两个方法中的语句均会修改所有 TiDB 节点上生成 `AUTO_RANDOM` 值时使用的自增位起始值，但不会影响已经分配的 ID。
 
 ## 使用限制
 

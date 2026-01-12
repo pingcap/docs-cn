@@ -8,6 +8,8 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-glossary/','/docs-cn/dev/r
 
 本术语表提供了 TiDB Lightning 相关的术语和定义，这些术语会出现在 TiDB Lightning 的日志、监控指标、配置和文档中。
 
+关于 TiDB 相关的术语和定义，请参考 [TiDB 术语表](/glossary.md)。
+
 <!-- A -->
 
 ## A

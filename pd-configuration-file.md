@@ -14,7 +14,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 > **Tip:**
 >
-> 如果你需要调整配置项的值，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)进行操作。
+> PD 初始化后，如果你需要调整配置项的值，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)和 [PD Control 使用说明](/pd-control.md)进行操作。
 
 ### `name`
 
@@ -74,7 +74,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `lease`
 
 + PD Leader Key 租约超时时间，超时系统重新选举 Leader。
-+ 默认值：3
++ 默认值：从 v8.5.2 版本开始，默认值为 5。在 v8.5.2 版本之前，默认值为 3。
 + 单位：秒
 
 ### `quota-backend-bytes`
@@ -91,6 +91,22 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + compaction-mode 为 periodic 时为元信息数据库自动压缩的间隔时间；compaction-mode 设置为 revision 时为自动压缩的版本数。
 + 默认值：1h
+
+### `tick-interval`
+
++ 等价于 etcd 的 `heartbeat-interval` 配置项，用于控制不同 PD 节点中内嵌的 etcd 实例之间的 Raft 心跳间隔。较小的值可以提高故障检测速度，但会增加网络负载。
++ 默认值：500ms
+
+### `election-interval`
+
++ 等价于 etcd 的 `election-timeout` 配置项，用于控制 PD 节点中内嵌的 etcd 实例的选举超时时间，即在超过该时间没有收到来自其他 etcd 实例的有效心跳后，当前 etcd 实例会发起 Raft 选举。
++ 默认值：3000ms
++ 该值必须至少为 [`tick-interval`](#tick-interval) 的 5 倍，例如 `tick-interval` 为 `500ms`，则 `election-interval` 必须大于等于 `2500ms`。
+
+### `enable-prevote`
+
++ 等价于 etcd 的 `pre-vote` 配置项，用于控制 PD 节点中内嵌的 etcd 是否开启 Raft 预投票。启用后，etcd 会进行额外的选举阶段，以检查是否能获得足够的票数赢得选举，从而最大程度地减少服务中断。
++ 默认值：true
 
 ### `force-new-cluster`
 
@@ -254,26 +270,48 @@ pd-server 相关配置项。
 
 调度相关的配置项。
 
+> **注意：**
+> 
+> 要修改与调度相关的 PD 配置项，请根据集群的情况选择以下方法之一：
+>
+> - 对于新部署集群，你可以直接在 PD 配置文件中进行修改。
+> - 对于已有集群，请使用命令行工具 [PD Control](/pd-control.md) 进行修改。直接修改 PD 配置文件中与调度相关的配置项不会对已有集群生效。
+
 ### `max-merge-region-size`
 
 + 控制 Region Merge 的 size 上限，当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。
-+ 默认：20
++ 默认：54。在 v8.4.0 之前，默认值为 20；从 v8.4.0 开始，默认值为 54。
 + 单位：MiB
 
 ### `max-merge-region-keys`
 
 + 控制 Region Merge 的 key 上限，当 Region key 大于指定值时 PD 不会将其与相邻的 Region 合并。
-+ 默认：200000
++ 默认：540000。在 v8.4.0 之前，默认值为 200000；从 v8.4.0 开始，默认值为 540000。
 
 ### `patrol-region-interval`
 
-+ 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整
++ 控制 checker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整
 + 默认：10ms
+
+### `patrol-region-worker-count` <span class="version-mark">从 v8.5.0 版本开始引入</span>
+
+> **警告：**
+>
+> 将该配置项设置为大于 1 将启用并发检查。目前该功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/tikv/pd/issues)反馈。
+
++ 控制 checker 检查 Region 健康状态时，创建 [operator](/glossary.md#operator) 的并发数。通常情况下，无需调整此配置项。
++ 默认：1
 
 ### `split-merge-interval`
 
 + 控制对同一个 Region 做 split 和 merge 操作的间隔，即对于新 split 的 Region 一段时间内不会被 merge。
 + 默认：1h
+
+### `max-movable-hot-peer-size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
++ 控制热点调度可以调度的最大 Region size。
++ 默认：512
++ 单位：MiB
 
 ### `max-snapshot-count`
 
@@ -384,6 +422,16 @@ pd-server 相关配置项。
 * 设置 PD 保留的 Hot Region 信息的最长时间。单位为天。
 * 默认值: 7
 
+### `enable-heartbeat-breakdown-metrics` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
++ 是否开启 Region 心跳指标拆分，用于统计 Region 心跳处理各阶段所消耗的时间，便于在监控上进行分析。
++ 默认值：true
+
+### `enable-heartbeat-concurrent-runner` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
++ 是否开启 Region 心跳异步并发处理功能。开启后会使用独立的执行器异步并发处理 Region 心跳请求，可提高心跳处理吞吐量，降低延迟。
++ 默认值：true
+
 ## replication
 
 副本相关的配置项。
@@ -418,26 +466,26 @@ pd-server 相关配置项。
 
 ### `store-limit-version` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
-> **警告：**
->
-> 在当前版本中，将该配置项设置为 `"v2"` 为实验特性，不建议在生产环境中使用。
-
 + 设置 `store limit` 工作模式
 + 默认值：v1
 + 可选值：
     + v1：在 v1 模式下，你可以手动修改 `store limit` 以限制单个 TiKV 调度速度。
-    + v2：（实验特性）在 v2 模式下，你无需关注 `store limit` 值，PD 将根据 TiKV Snapshot 执行情况动态调整 TiKV 调度速度。详情请参考 [Store Limit v2 原理](/configure-store-limit.md#store-limit-v2-原理)。
+    + v2：在 v2 模式下，你无需关注 `store limit` 值，PD 将根据 TiKV Snapshot 执行情况动态调整 TiKV 调度速度。详情请参考 [Store Limit v2 原理](/configure-store-limit.md#store-limit-v2-原理)。
 
-## label-property
+## label-property（已废弃）
 
-标签相关的配置项。
+标签相关的配置项，只支持 `reject-leader` 类型。
 
-### `key`
+> **注意：**
+>
+> 标签相关的配置项已从 v5.2 开始废弃，建议使用 [Placement Rules](/configure-placement-rules.md#场景二5-副本按-2-2-1-的比例放置在-3-个数据中心且第-3-个中心不产生-leader) 设置副本策略。
+
+### `key`（已废弃）
 
 + 拒绝 leader 的 store 带有的 label key。
 + 默认值：""
 
-### `value`
+### `value`（已废弃）
 
 + 拒绝 leader 的 store 带有的 label value。
 + 默认值：""
@@ -445,6 +493,12 @@ pd-server 相关配置项。
 ## dashboard
 
 PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项。
+
+### `disable-custom-prom-addr`
+
++ 是否禁止在 [TiDB Dashboard](/dashboard/dashboard-intro.md) 中配置自定义的 Prometheus 数据源地址。
++ 默认值：`false`
++ 当配置为 `true` 时，如果在 TiDB Dashboard 中配置自定义的 Prometheus 数据源地址，TiDB Dashboard 会报错。
 
 ### `tidb-cacert-path`
 
@@ -469,17 +523,20 @@ PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项�
 
 ### `enable-telemetry`
 
-+ 是否启用 TiDB Dashboard 遥测功能。
+> **警告：**
+>
+> 从 TiDB v8.1.0 开始，TiDB Dashboard 已移除遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。
+
++ 在 v8.1.0 之前，用于控制是否启用 TiDB Dashboard 遥测功能。
 + 默认值：false
-+ 参阅[遥测](/telemetry.md)了解该功能详情。
 
 ## `replication-mode`
 
 Region 同步模式相关的配置项。更多详情，请参阅[启用自适应同步模式](/two-data-centers-in-one-city-deployment.md#启用自适应同步模式)。
 
-## Controller
+## controller
 
-PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关的配置项。
+PD 中内置的 [Resource Control](/tidb-resource-control-ru-groups.md) 相关的配置项。
 
 ### `degraded-mode-wait-duration`
 
@@ -489,12 +546,12 @@ PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关的配置项
 
 ### `request-unit`
 
-下面是 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 相关的配置项。
+下面是 [Request Unit (RU)](/tidb-resource-control-ru-groups.md#什么是-request-unit-ru) 相关的配置项。
 
 #### `read-base-cost`
 
 + 每次读请求转换成 RU 的基准系数
-+ 默认值: 0.25
++ 默认值：0.125
 
 #### `write-base-cost`
 

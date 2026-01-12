@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/configure-store-limit/']
 
 # Store Limit
 
-Store Limit 是 PD 在 3.0 版本引入的特性，旨在能够更加细粒度地控制调度的速度，针对不同调度场景进行调优。
+Store Limit 是一个 PD 特性，旨在更精细地控制调度速度，以在不同场景下实现更好的性能。
 
 ## 实现原理
 
@@ -28,44 +28,40 @@ Store Limit 是通过在内存中维护了一个 store ID 到令牌桶的映射�
 
 Store Limit 与 PD 其他 limit 相关的参数（如 `region-schedule-limit`，`leader-schedule-limit` 等）不同的是，Store Limit 限制的主要是 operator 的消费速度，而其他的 limit 主要是限制 operator 的产生速度。引入 Store Limit 特性之前，调度的限速主要是全局的，所以即使限制了全局的速度，但还是有可能存在调度都集中在部分 store 上面，因而影响集群的性能。而 Store Limit 通过将限速的粒度进一步细化，可以更好的控制调度的行为。
 
+Store Limit 定义了每分钟操作的最大数量。假设 Store Limit 为每分钟 5 次操作，向集群添加新节点将以每分钟 5 个 Region（`add-peer` 操作）的速度进行。如果需要为 15 个 Region 执行 `add-peer`，则该操作将需要 3 分钟 (15 / 5 = 3)，并且如果每个 Region 为 96 MiB，将消耗最高 8 MiB/s ((5 × 96) / 60 = 8)。
+
 ## 使用方法
 
-Store Limit 相关的参数可以通过 `pd-ctl` 进行设置。
+Store Limit 相关的参数可以通过 [`PD Control`](/pd-control.md) 进行设置。
 
 ### 查看当前 store 的 limit 设置
 
 查看当前 store 的 limit 示例如下：
 
-{{< copyable "shell-regular" >}}
-
 ```bash
-store limit                         // 显示所有 store 添加和删除 peer 的速度上限。
-store limit add-peer                // 显示所有 store 添加 peer 的速度上限。
-store limit remove-peer             // 显示所有 store 删除 peer 的速度上限。
+tiup ctl:v<CLUSTER_VERSION> pd store limit             // 显示所有 store 添加和删除 peer 的速度上限。
+tiup ctl:v<CLUSTER_VERSION> pd store limit add-peer    // 显示所有 store 添加 peer 的速度上限。
+tiup ctl:v<CLUSTER_VERSION> pd store limit remove-peer // 显示所有 store 删除 peer 的速度上限。
 ```
 
 ### 设置全部 store 的 limit
 
 设置全部 store 的 limit 示例如下：
 
-{{< copyable "shell-regular" >}}
-
 ```bash
-store limit all 5                   // 设置所有 store 添加和删除 peer 的速度上限为每分钟 5 个。
-store limit all 5 add-peer          // 设置所有 store 添加 peer 的速度上限为每分钟 5 个。
-store limit all 5 remove-peer       // 设置所有 store 删除 peer 的速度上限为每分钟 5 个。
+tiup ctl:v<CLUSTER_VERSION> pd store limit all 5                   // 设置所有 store 添加和删除 peer 的速度上限为每分钟 5 个。
+tiup ctl:v<CLUSTER_VERSION> pd store limit all 5 add-peer          // 设置所有 store 添加 peer 的速度上限为每分钟 5 个。
+tiup ctl:v<CLUSTER_VERSION> pd store limit all 5 remove-peer       // 设置所有 store 删除 peer 的速度上限为每分钟 5 个。
 ```
 
 ### 设置单个 store 的 limit
 
 设置单个 store 的 limit 示例如下：
 
-{{< copyable "shell-regular" >}}
-
 ```bash
-store limit 1 5                     // 设置 store 1 添加和删除 peer 的速度上限为每分钟 5 个。
-store limit 1 5 add-peer            // 设置 store 1 添加 peer 的速度上限为每分钟 5 个。
-store limit 1 5 remove-peer         // 设置 store 1 删除 peer 的速度上限为每分钟 5 个。
+tiup ctl:v<CLUSTER_VERSION> pd store limit 1 5                     // 设置 store 1 添加和删除 peer 的速度上限为每分钟 5 个。
+tiup ctl:v<CLUSTER_VERSION> pd store limit 1 5 add-peer            // 设置 store 1 添加 peer 的速度上限为每分钟 5 个。
+tiup ctl:v<CLUSTER_VERSION> pd store limit 1 5 remove-peer         // 设置 store 1 删除 peer 的速度上限为每分钟 5 个。
 ```
 
 ## Store Limit v2 原理

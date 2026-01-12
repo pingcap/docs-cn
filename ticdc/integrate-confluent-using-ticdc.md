@@ -198,8 +198,8 @@ Snowflake 是一种云原生数据仓库。借助 Confluent 的能力，你只�
 
 ```
 CREATE TABLE `item` (
-  `i_id` int(11) NOT NULL,
-  `i_im_id` int(11) DEFAULT NULL,
+  `i_id` int NOT NULL,
+  `i_im_id` int DEFAULT NULL,
   `i_name` varchar(24) DEFAULT NULL,
   `i_price` decimal(5,2) DEFAULT NULL,
   `i_data` varchar(50) DEFAULT NULL,

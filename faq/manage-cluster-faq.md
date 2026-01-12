@@ -41,7 +41,7 @@ mysql -h 127.0.0.1 -uroot -P4000
 
 如需快速了解 TiDB 节点、TiKV 节点、PD 节点的配置文件、数据文件及日志文件的相关介绍与其存放位置，建议观看下面的培训视频（时长 9 分钟）。
 
-<video src="https://download.pingcap.com/docs-cn/Lesson12_log.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson12.png"></video>
+<video src="https://docs-download.pingcap.com/media/videos/docs-cn/Lesson12_log.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson12.png"></video>
 
 ### 如何规范停止 TiDB？
 
@@ -101,7 +101,7 @@ TiDB 目前社区非常活跃，同时，我们还在不断的优化和修改 BU
 
 ### Percolator 用了分布式锁，crash 的客户端会保持锁，会造成锁没有 release？
 
-详细可参考 [Percolator 和 TiDB 事务算法](https://pingcap.com/blog-cn/percolator-and-txn/)。
+详细可参考 [Percolator 和 TiDB 事务算法](https://tidb.net/blog/f537be2c)。
 
 ### TiDB 为什么选用 gRPC 而不选用 Thrift，是因为 Google 在用吗？
 
@@ -117,10 +117,7 @@ TiDB 目前社区非常活跃，同时，我们还在不断的优化和修改 BU
 
 ### 为什么事务没有使用异步提交或一阶段提交？
 
-在以下情况中，即使通过系统变量开启了[异步提交](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入)和[一阶段提交](/system-variables.md#tidb_enable_1pc-从-v50-版本开始引入)，TiDB 也不会使用这些特性：
-
-- 如果开启了 TiDB Binlog，受 TiDB Binlog 的实现原理限制，TiDB 不会使用异步提交或一阶段提交特性。
-- TiDB 只在事务写入不超过 256 个键值对，以及所有键值对里键的总大小不超过 4 KB 时，才会使用异步提交或一阶段提交特性。这是因为对于写入量大的事务，异步提交不能明显提升执行性能。
+TiDB 只在事务写入不超过 256 个键值对，以及所有键值对里键的总大小不超过 4 KB 时，才会使用异步提交或一阶段提交特性。否则，即使通过系统变量开启了[异步提交](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入)和[一阶段提交](/system-variables.md#tidb_enable_1pc-从-v50-版本开始引入)，TiDB 也不会使用这些特性。这是因为对于写入量大的事务，异步提交不能明显提升执行性能。
 
 ## PD 管理
 
@@ -337,23 +334,19 @@ Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 
 
 ### TiKV 是否有类似 MySQL 的 `innodb_flush_log_trx_commit` 参数，来保证提交数据不丢失？
 
-是的。TiKV 单机的存储引擎目前使用两个 RocksDB 实例，其中一个存储 raft-log。TiKV 有个 sync-log 参数，在 true 的情况下，每次提交都会强制刷盘到 raft-log，如果发生 crash 后，通过 raft-log 进行 KV 数据的恢复。
+TiKV 没有类似的参数，但是 TiKV 上的每次提交都会强制落盘到 Raft 日志 (TiKV 使用 [Raft Engine](/glossary.md#raft-engine) 存储 Raft 日志，在提交时会强制刷盘)。如果 TiKV 发生 crash，KV 的数据将会根据 Raft 日志自动恢复。
 
 ### 对 WAL 存储有什么推荐的硬件配置，例如 SSD，RAID 级别，RAID 卡 cache 策略，NUMA 设置，文件系统选择，操作系统的 IO 调度策略等？
 
 WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD。RAID 如果允许的话，最好是 RAID 10，RAID 卡 cache、操作系统 I/O 调度目前没有针对性的最佳实践，Linux 7 以上默认配置即可。NUMA 没有特别建议，NUMA 内存分配策略可以尝试使用 `interleave = all`，文件系统建议 ext4。
 
-### 在最严格的 `sync-log = true` 数据可用模式下，写入性能如何？
+### 是否可以利用 TiKV 的 Raft + 多副本达到完全的数据可靠？
 
-一般来说，开启 `sync-log` 会让性能损耗 30% 左右。关闭 `sync-log` 时的性能表现，请参见 [TiDB Sysbench 性能测试报告](/benchmark/v3.0-performance-benchmarking-with-sysbench.md)。
+通过使用 [Raft 一致性算法](https://raft.github.io/)，数据在各 TiKV 节点间复制为多副本，以确保某个节点挂掉时数据的安全性。只有当数据已写入超过 50% 的副本时，应用才返回 ACK（三副本中的两副本）。
 
-### 是否可以利用 TiKV 的 Raft + 多副本达到完全的数据可靠，单机存储引擎是否需要最严格模式？
+理论上两个节点也可能同时发生故障，因此从 v5.0 版本开始，写入 TiKV 的数据会默认落盘，即每次提交都会强制落盘到 Raft 日志。如果 TiKV 发生 crash，KV 的数据将会根据 Raft 日志自动恢复。
 
-通过使用 [Raft 一致性算法](https://raft.github.io/)，数据在各 TiKV 节点间复制为多副本，以确保某个节点挂掉时数据的安全性。只有当数据已写入超过 50% 的副本时，应用才返回 ACK（三副本中的两副本）。但理论上两个节点也可能同时发生故障，所以除非是对性能要求高于数据安全的场景，一般都强烈推荐开启 `sync-log`。
-
-另外，还有一种 `sync-log` 的替代方案，即在 Raft group 中用五个副本而非三个。这将允许两个副本同时发生故障，而仍然能保证数据安全性。
-
-对于单机存储引擎也同样推荐打开 `sync-log` 模式。否则如果节点宕机可能会丢失最后一次写入数据。
+此外，也可以考虑在 Raft group 中使用五个副本而非三个。这将允许两个副本同时发生故障，而仍然能保证数据安全性。
 
 ### 使用 Raft 协议，数据写入会有多次网络的 roundtrip，实际写入延迟如何？
 
@@ -387,12 +380,17 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 
 本小节介绍 TiDB 测试中的常见问题、原因及解决方法。
 
+### 如何对 TiDB 进行 Sysbench 基准测试？
+
+参考[如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)。
+
 ### TiDB Sysbench 基准测试结果如何？
 
-很多用户在接触 TiDB 都习惯做一个基准测试或者 TiDB 与 MySQL 的对比测试，官方也做了一个类似测试。我们汇总很多测试结果后，发现虽然测试的数据有一定的偏差，但结论或者方向基本一致，由于 TiDB 与 MySQL 由于架构上的差别非常大，很多方面是很难找到一个基准点，所以官方的建议两点：
+很多用户在接触 TiDB 时都习惯做一个基准测试，或者将 TiDB 与 MySQL 进行对比测试。官方也曾进行过类似的测试，发现尽管不同的测试数据之间存在一定的偏差，但整体结论和方向大致一致。由于 TiDB 和 MySQL 在架构上的差异非常大，许多方面都很难找到完全对等的基准点。
 
-- 大家不要用过多精力纠结这类基准测试上，应该更多关注 TiDB 的场景上的区别。
-- 大家可以直接参考 [TiDB Sysbench 性能测试报告](/benchmark/v3.0-performance-benchmarking-with-sysbench.md)。
+因此，无需纠结于这类基准测试，可以更多关注 TiDB 在使用场景上的区别。
+
+如需了解 TiDB v8.5 的性能表现，可以参考 TiDB Cloud Dedicated 集群的[性能测试报告](https://docs.pingcap.com/tidbcloud/v8.5-performance-highlights)（英文版）。
 
 ### TiDB 集群容量 QPS 与节点数之间关系如何，和 MySQL 对比如何？
 

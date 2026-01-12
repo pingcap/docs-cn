@@ -51,7 +51,7 @@ Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
 一个通用的配置样例如下所示：
 
 ```shell
---sink-uri="mysql://root:123456@127.0.0.1:3306"
+--sink-uri="mysql://root:12345678@127.0.0.1:3306"
 ```
 
 URI 中可配置的参数如下：
@@ -59,33 +59,49 @@ URI 中可配置的参数如下：
 | 参数         | 描述                                             |
 | :------------ | :------------------------------------------------ |
 | `root`        | 下游数据库的用户名。当同步数据到 TiDB 或其它兼容 MySQL 的数据库时，下游数据库的用户需要具备[一定的权限](#下游数据库用户所需的权限)。                             |
-| `123456`       | 下游数据库密码。（可采用 Base64 进行编码）                                     |
+| `12345678`     | 下游数据库密码（可采用 Base64 进行编码）。                                   |
 | `127.0.0.1`    | 下游数据库的 IP。                                |
-| `3306`         | 下游数据的连接端口。                                 |
-| `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）。       |
+| `3306`         | 下游数据库的连接端口。                                 |
+| `worker-count` | 向下游执行 SQL 语句的并发度（可选，默认值为 `16`，最大值为 `1024`）。       |
 | `cache-prep-stmts` | 向下游执行 SQL 时是否使用 prepared statement 并且开启客户端的 prepared statement 缓存（可选，默认值为 `true`）。 |
-| `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`）。 |
+| `multi-stmt-enable` | 向下游执行的 SQL 语句是否支持通过分号分隔多个 SQL 语句（可选，默认值为 `true`）。如果设置为 `false`，则每个 SQL 语句都作为独立的事务执行。如果设置为 `true`，`cache-prep-stmts` 不会生效。 |
+| `max-txn-row`  | 向下游执行 SQL 语句的 batch 大小（可选，默认值为 `256`，最大值为 `2048`）。 |
+| `max-multi-update-row`  | 开启批量写入时，向下游执行 `UPDATE ROWS` SQL 语句的 batch 大小，总是小于 `max-txn-row`（可选，默认值为 `40`，最大值为 `256`）。|
+| `max-multi-update-row-size` | 开启批量写入特性时 (`batch-dml-enable`)，此参数用于控制向下游执行 `UPDATE ROWS` SQL 语句的批量处理大小（单位：字节）。若单行数据平均大小超过该阈值，则每行数据会作为独立的 SQL 执行（可选，默认值为 `1024`，最大值为 `8192`）。|
 | `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选）。 |
 | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选）。 |
 | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选）。 |
 | `time-zone`    | 连接下游 MySQL 实例时使用的时区名称，从 v4.0.8 开始生效。（可选。如果不指定该参数，使用 TiCDC 服务进程的时区；如果指定该参数但使用空值，例如：`time-zone=""`，则表示连接 MySQL 时不指定时区，使用下游默认时区）。 |
 | `transaction-atomicity`      | 指定事务的原子性级别（可选，默认值为 `none`）。当该值为 `table` 时 TiCDC 保证单表事务的原子性，当该值为 `none` 时 TiCDC 会拆分单表事务。 |
+| `batch-dml-enable` | 开启 batch-dml 批量写入特性（可选，默认值为 `true`）。|
+| `read-timeout` | go-sql-driver 参数，[I/O 读取超时](https://pkg.go.dev/github.com/go-sql-driver/mysql#readme-readtimeout)（可选，默认值为 `2m`）。|
+| `write-timeout` | go-sql-driver 参数，[I/O 写入超时](https://pkg.go.dev/github.com/go-sql-driver/mysql#readme-writetimeout)（可选，默认值为 `2m`）。|
+| `timeout` | go-sql-driver 参数，[建立连接的超时时间](https://pkg.go.dev/github.com/go-sql-driver/mysql#readme-timeout)，即拨号超时（可选，默认值为 `2m`）。|
+| `tidb-txn-mode` | 设置环境变量 [`tidb_txn_mode`](/system-variables.md#tidb_txn_mode)（可选，默认值为 `optimistic`）。 |
+| `safe-mode` | 指定向下游同步数据时 `INSERT` 和 `UPDATE` 语句的处理方式。当设置为 `true` 时，TiCDC 会将上游所有的 `INSERT` 语句转换为 `REPLACE INTO` 语句，所有的 `UPDATE` 语句转换为 `DELETE` + `REPLACE INTO` 语句。在 v6.1.3 版本之前，该参数的默认值为 `true`。从 v6.1.3 版本开始，该参数的默认值调整为 `false`，TiCDC 在启动时会获取一个当前时间戳 `ThresholdTs`：<ul><li>对于 `CommitTs` 小于 `ThresholdTs` 的 `INSERT` 语句和 `UPDATE` 语句，TiCDC 会分别将其转换为 `REPLACE INTO` 语句和 `DELETE` + `REPLACE INTO` 语句。</li><li>对于 `CommitTs` 大于等于 `ThresholdTs` 的 `INSERT` 语句和 `UPDATE` 语句，`INSERT` 语句将直接同步到下游，`UPDATE` 语句的具体行为则参考 [TiCDC 拆分 UPDATE 事件行为说明](/ticdc/ticdc-split-update-behavior.md)。</li></ul> |
 
 若需要对 Sink URI 中的数据库密码使用 Base64 进行编码，可以参考如下命令：
 
 ```shell
-echo -n '123456' | base64   # 假设待编码的密码为 123456
+echo -n '12345678' | base64   # 假设待编码的密码为 12345678
 ```
 
 编码后的密码如下：
 
 ```shell
-MTIzNDU2
+MTIzNDU2Nzg=
 ```
 
 > **注意：**
 >
-> 当 Sink URI 中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以使用 [URI Encoder](https://www.urlencoder.org/) 工具对 URI 进行转义。
+> 当 Sink URI 的参数中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以使用 [URI Encoder](https://www.urlencoder.org/) 工具对 URI 进行转义。
+>
+> 例如，如果连接到下游数据库的用户名为 `R&D (2)`、并要指定证书文件路径为 `/data1/R&D (2).pem` 时，需要对这些参数进行如下转义：
+>
+> ```shell
+> --sink-uri="mysql://R%26D%20%282%29:MTIzNDU2Nzg%3D@127.0.0.1:3306/?ssl-cert=/data1/R%26D%20%282%29.pem"
+> #                    ^~~ ^~~^~~ ^~~            ^~~                                  ^~~ ^~~^~~ ^~~
+> ```
 
 ## 下游数据库用户所需的权限
 
@@ -107,7 +123,7 @@ MTIzNDU2
 
 ## 灾难场景的最终一致性复制
 
-从 v6.1.1 版本开始，容灾场景下的最终一致性复制功能 GA。从 v5.3.0 开始，TiCDC 支持将上游 TiDB 的增量数据备份到下游集群的对象存储或 NFS 文件系统。当上游集群出现了灾难，完全无法使用时，TiCDC 可以将下游集群恢复到最近的一致状态，即提供灾备场景的最终一致性复制能力，确保应用可以快速切换到下游集群，避免数据库长时间不可用，提高业务连续性。
+TiCDC 的最终一致性复制功能使用 redo log 来确保上游灾难场景中的数据一致性。从 v6.1.1 版本开始，该功能 GA。从 v5.3.0 开始，TiCDC 支持将上游 TiDB 的增量数据备份到下游集群的对象存储或 NFS 文件系统。当上游集群出现了灾难，完全无法使用时，TiCDC 可以将下游集群恢复到最近的一致状态，即提供灾备场景的最终一致性复制能力，确保应用可以快速切换到下游集群，避免数据库长时间不可用，提高业务连续性。
 
 目前，TiCDC 支持将 TiDB 集群的增量数据复制到 TiDB 或兼容 MySQL 的数据库系统（包括 Aurora、MySQL 和 MariaDB）。如果 TiCDC 在上游发生灾难前正常运行，且上游 TiDB 集群没有出现数据复制延迟大幅度增加的情况，灾难发生后，下游集群可以在 5 分钟之内恢复集群，并且最多丢失出现问题前 10 秒钟的数据，即 RTO <= 5 min，P95 RPO <= 10s。
 

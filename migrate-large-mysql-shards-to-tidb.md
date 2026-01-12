@@ -36,9 +36,9 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB，�
 
 ```sql
 CREATE TABLE `table1` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sid` bigint(20) NOT NULL,
-  `pid` bigint(20) NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `sid` bigint NOT NULL,
+  `pid` bigint NOT NULL,
   `comment` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `sid` (`sid`)
@@ -49,9 +49,9 @@ CREATE TABLE `table1` (
 
 ```sql
 CREATE TABLE `table5` (
-  `id` bigint(20) NOT NULL,
-  `sid` bigint(20) NOT NULL,
-  `pid` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
+  `sid` bigint NOT NULL,
+  `pid` bigint NOT NULL,
   `comment` varchar(255) DEFAULT NULL,
   INDEX (`id`),
   UNIQUE KEY `sid` (`sid`)
@@ -119,9 +119,9 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
 ```sql
 CREATE TABLE `table5` (
-  `id` bigint(20) NOT NULL,
-  `sid` bigint(20) NOT NULL,
-  `pid` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
+  `sid` bigint NOT NULL,
+  `pid` bigint NOT NULL,
   `comment` varchar(255) DEFAULT NULL,
   INDEX (`id`),
   UNIQUE KEY `sid` (`sid`)

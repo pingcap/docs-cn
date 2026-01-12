@@ -19,7 +19,7 @@ summary: MySQL 的 `performance_schema` 提供了 `statement summary tables`，�
 
 ## `statements_summary`
 
-`statements_summary` 是 `information_schema` 里的一张系统表，它把 SQL 按 所属资源组、SQL digest 和 plan digest 分组，统计每一组的 SQL 信息。
+`statements_summary` 是 `information_schema` 里的一张系统表，它把 SQL 按所属资源组、SQL digest 和 plan digest 分组，统计每一组的 SQL 信息。
 
 此处的 SQL digest 与 slow log 里的 SQL digest 一样，是把 SQL 规一化后算出的唯一标识符。SQL 的规一化会忽略常量、空白符、大小写的差别。即语法一致的 SQL 语句，其 digest 也相同。
 
@@ -80,7 +80,7 @@ select * from employee where id in (...) and salary between ? and ?;
 > **注意：**
 >
 > - 在 TiDB 中，statement summary tables 中字段的时间单位是纳秒 (ns)，而 MySQL 中的时间单位是皮秒 (ps)。
-> - 从 v7.5.1 和 v7.6.0 版本开始，对于开启[资源管控](/tidb-resource-control.md)的集群，`statements_summary` 会分资源组进行聚合，即在不同资源组执行的相同语句会被收集为不同的记录。
+> - 从 v7.5.1 和 v7.6.0 版本开始，对于开启[资源管控](/tidb-resource-control-ru-groups.md)的集群，`statements_summary` 会分资源组进行聚合，即在不同资源组执行的相同语句会被收集为不同的记录。
 
 ## `statements_summary_history`
 
@@ -90,9 +90,15 @@ select * from employee where id in (...) and salary between ? and ?;
 
 ## `statements_summary_evicted`
 
-`statements_summary` 表的容量受 `tidb_stmt_summary_max_stmt_count` 配置控制，内部使用 LRU 算法，一旦接收到的 SQL 种类超过了 `tidb_stmt_summary_max_stmt_count`，表中最久未被命中的记录就会被驱逐出表。TiDB 引入了 `statements_summary_evicted` 表，该表记录了各个时段被驱逐 SQL 语句的具体数量。
+[`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-从-v40-版本开始引入) 系统变量用于限制 `statements_summary` 和 `statements_summary_history` 这两张表在内存中可存储的 SQL digest 总数。当超出该限制时，TiDB 会从 `statements_summary` 和 `statements_summary_history` 这两张表中驱逐最久未使用的 SQL digest。
 
-只有当 SQL 语句被 `statement summary` 表驱逐的时候，`statements_summary_evicted` 表的内容才会更新。`statements_summary_evicted` 表记录发生驱逐的时间段和被驱逐 SQL 的数量。
+> **注意：**
+>
+> 当启用 [`tidb_stmt_summary_enable_persistent`](#持久化-statements-summary) 时，`statements_summary_history` 表中的数据会持久化到磁盘。此时，`tidb_stmt_summary_max_stmt_count` 仅限制 `statements_summary` 表在内存中可存储的 SQL digest 数量；当超出 `tidb_stmt_summary_max_stmt_count` 的限制时，TiDB 仅会从 `statements_summary` 表中驱逐最久未使用的 SQL digest。
+
+`statements_summary_evicted` 表记录了发生 SQL digest 驱逐的时间段，以及该时间段内被驱逐的 SQL digest 数量。通过该表，你可以评估当前 `tidb_stmt_summary_max_stmt_count` 的配置是否适合你的工作负载。如果该表中存在记录，说明在某个时间点上 SQL digest 的数量曾超出过 `tidb_stmt_summary_max_stmt_count` 的限制。
+
+在 [TiDB Dashboard 的 SQL 语句分析列表页面](/dashboard/dashboard-statement-list.md#others)中，被驱逐的语句信息会显示在 `Others` 行中。
 
 ## statement summary 的 cluster 表
 
@@ -107,13 +113,17 @@ select * from employee where id in (...) and salary between ? and ?;
 - `tidb_enable_stmt_summary`：是否打开 statement summary 功能。1 代表打开，0 代表关闭，默认打开。statement summary 关闭后，系统表里的数据会被清空，下次打开后重新统计。经测试，打开后对性能几乎没有影响。
 - `tidb_stmt_summary_refresh_interval`：`statements_summary` 的清空周期，单位是秒 (s)，默认值是 `1800`。
 - `tidb_stmt_summary_history_size`：`statements_summary_history` 保存每种 SQL 的历史的数量，也是 `statements_summary_evicted` 的表容量，默认值是 `24`。
-- `tidb_stmt_summary_max_stmt_count`：statement summary tables 保存的 SQL 种类数量，默认 3000 条。当 SQL 种类超过该值时，会移除最近没有使用的 SQL。这些 SQL 将会被 `DIGEST` 为 `NULL` 的行和  `statements_summary_evicted` 统计记录。`DIGEST` 为 `NULL` 的行数据在 [TiDB Dashboard SQL 语句分析列表页面](/dashboard/dashboard-statement-list.md#others) 中显示为 `Others`。
+- `tidb_stmt_summary_max_stmt_count`：限制 `statements_summary` 和 `statements_summary_history` 这两张表在内存中可存储的 SQL digest 总数。默认值为 3000 条。
+
+    当超出该限制时，TiDB 会从 `statements_summary` 和 `statements_summary_history` 这两张表中驱逐最久未使用的 SQL digest。这些被驱逐的 SQL digest 的数量将会被记录在 [`statements_summary_evicted`](#statements_summary_evicted) 表中。
+
+    > **注意：**
+    >
+    > - 当 SQL digest 被驱逐时，其相关的所有时间段的 summary 数据都会从 `statements_summary` 和 `statements_summary_history` 这两张表中移除。因此，即使一个时间段的 SQL digest 数量没有超过限制，`statements_summary_history` 表中的 SQL digest 数量也可能小于实际的 SQL digest 数量。如果遇到该情况，并且影响了性能，建议调大 `tidb_stmt_summary_max_stmt_count` 的值。
+    > - 当启用 [`tidb_stmt_summary_enable_persistent`](#持久化-statements-summary) 时，`statements_summary_history` 表中的数据会持久化到磁盘。此时，`tidb_stmt_summary_max_stmt_count` 仅限制 `statements_summary` 表在内存中可存储的 SQL digest 数量；当超出 `tidb_stmt_summary_max_stmt_count` 的限制时，TiDB 仅会从 `statements_summary` 表中驱逐最久未使用的 SQL digest。
+
 - `tidb_stmt_summary_max_sql_length`：字段 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 的最大显示长度，默认值是 4096。
 - `tidb_stmt_summary_internal_query`：是否统计 TiDB 的内部 SQL。1 代表统计，0 代表不统计，默认不统计。
-
-> **注意：**
->
-> 当一种 SQL 因为达到 `tidb_stmt_summary_max_stmt_count` 限制要被移除时，TiDB 会移除该 SQL 语句种类在所有时间段的数据。因此，即使一个时间段内的 SQL 种类数量没有达到上限，显示的 SQL 语句数量也会比实际的少。如遇到该情况，对性能也有一些影响，建议调大 `tidb_stmt_summary_max_stmt_count` 的值。
 
 statement summary 配置示例如下：
 
@@ -306,6 +316,7 @@ SQL 的基础信息：
 - `MAX_MEM`：使用的最大内存，单位 byte
 - `AVG_DISK`：使用的平均硬盘空间，单位 byte
 - `MAX_DISK`：使用的最大硬盘空间，单位 byte
+- `AVG_TIDB_CPU_TIME`：这类 SQL 平均占用 TiDB 服务器 CPU 的时间。该列仅在开启 [Top SQL 特性](/dashboard/top-sql.md)时显示实际值，否则始终显示为 `0`
 
 和 TiKV Coprocessor Task 相关的字段：
 
@@ -324,6 +335,7 @@ SQL 的基础信息：
 - `MAX_TOTAL_KEYS`：Coprocessor 扫过的 key 的最大数量
 - `AVG_PROCESSED_KEYS`：Coprocessor 处理的 key 的平均数量。相比 `avg_total_keys`，`avg_processed_keys` 不包含 MVCC 的旧版本。如果 `avg_total_keys` 和 `avg_processed_keys` 相差很大，说明旧版本比较多
 - `MAX_PROCESSED_KEYS`：Coprocessor 处理的 key 的最大数量
+- `AVG_TIKV_CPU_TIME`：这类 SQL 平均占用 TiKV 服务器 CPU 的时间
 
 和事务相关的字段：
 
@@ -361,6 +373,22 @@ SQL 的基础信息：
 - `AVG_QUEUED_RC_TIME`：执行 SQL 语句等待可用 RU 的平均耗时
 - `MAX_QUEUED_RC_TIME`：执行 SQL 语句等待可用 RU 的最大耗时
 - `RESOURCE_GROUP`：执行 SQL 语句绑定的资源组
+
+和网络流量相关的字段：
+
+- `SUM_UNPACKED_BYTES_SENT_TIKV_TOTAL`：SQL 语句向 TiKV 发送的总字节数
+- `SUM_UNPACKED_BYTES_RECEIVED_TIKV_TOTAL`：SQL 语句从 TiKV 接收的总字节数
+- `SUM_UNPACKED_BYTES_SENT_TIKV_CROSS_ZONE`：SQL 语句向跨可用区 TiKV 发送的字节数
+- `SUM_UNPACKED_BYTES_RECEIVED_TIKV_CROSS_ZONE`：SQL 语句从跨可用区 TiKV 接收的字节数
+- `SUM_UNPACKED_BYTES_SENT_TIFLASH_TOTAL`：SQL 语句向 TiFlash 发送的总字节数（包含 TiFlash 节点之间发送的字节数）
+- `SUM_UNPACKED_BYTES_RECEIVED_TIFLASH_TOTAL`：SQL 语句从 TiFlash 接收的总字节数（包含 TiFlash 节点之间接收的字节数）
+- `SUM_UNPACKED_BYTES_SENT_TIFLASH_CROSS_ZONE`：SQL 语句向跨可用区 TiFlash 发送的字节数（包含 TiFlash 节点之间跨可用区发送的字节数）
+- `SUM_UNPACKED_BYTES_RECEIVED_TIFLASH_CROSS_ZONE`：SQL 语句从跨可用区 TiFlash 接收的字节数（包含 TiFlash 节点之间跨可用区接收的字节数）
+
+和存储引擎相关的字段：
+
+- `STORAGE_KV`：从 v9.0.0 开始引入，表示该类 SQL 语句上一次执行是否从 TiKV 读取了数据。
+- `STORAGE_MPP`：从 v9.0.0 开始引入，表示该类 SQL 语句上一次执行是否从 TiFlash 读取了数据。
 
 ### `statements_summary_evicted` 字段介绍
 

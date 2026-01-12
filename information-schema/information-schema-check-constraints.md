@@ -29,6 +29,7 @@ DESC CHECK_CONSTRAINTS;
 下述示例使用 `CREATE TABLE` 语句添加 `CHECK` 约束：
 
 ```sql
+SET GLOBAL tidb_enable_check_constraint = ON;
 CREATE TABLE test.t1 (id INT PRIMARY KEY, CHECK (id%2 = 0));
 SELECT * FROM CHECK_CONSTRAINTS\G
 ```

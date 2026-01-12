@@ -21,7 +21,7 @@ TiDB 对每个表分配一个 TableID，每一个索引都会分配一个 IndexI
 每行数据按照如下规则进行编码成 Key-Value pair：
 
 ```text
-Key: tablePrefix{tableID}_recordPrefixSep{rowID}
+Key: tablePrefix{TableID}_recordPrefixSep{RowID}
 Value: [col1, col2, col3, col4]
 ```
 
@@ -30,14 +30,14 @@ Value: [col1, col2, col3, col4]
 对于 Index 数据，会按照如下规则编码成 Key-Value pair：
 
 ```text
-Key: tablePrefix{tableID}_indexPrefixSep{indexID}_indexedColumnsValue
+Key: tablePrefix{TableID}_indexPrefixSep{IndexID}_indexedColumnsValue
 Value: rowID
 ```
 
-Index 数据还需要考虑 Unique Index 和非 Unique Index 两种情况，对于 Unique Index，可以按照上述编码规则。但是对于非 Unique Index，通过这种编码并不能构造出唯一的 Key，因为同一个 Index 的 `tablePrefix{tableID}_indexPrefixSep{indexID}` 都一样，可能有多行数据的 `ColumnsValue` 是一样的，所以对于非 Unique Index 的编码做了一点调整：
+Index 数据还需要考虑 Unique Index 和非 Unique Index 两种情况，对于 Unique Index，可以按照上述编码规则。但是对于非 Unique Index，通过这种编码并不能构造出唯一的 Key，因为同一个 Index 的 `tablePrefix{TableID}_indexPrefixSep{IndexID}` 都一样，可能有多行数据的 `ColumnsValue` 是一样的，所以对于非 Unique Index 的编码做了一点调整：
 
 ```text
-Key: tablePrefix{tableID}_indexPrefixSep{indexID}_indexedColumnsValue_rowID
+Key: tablePrefix{TableID}_indexPrefixSep{IndexID}_indexedColumnsValue_rowID
 Value: null
 ```
 
@@ -176,3 +176,7 @@ TiDB 的 Coprocessor Cache 功能支持下推计算结果缓存。开启该功�
 ## 打散读热点
 
 在读热点场景中，热点 TiKV 无法及时处理读请求，导致读请求排队。但是，此时并非所有 TiKV 资源都已耗尽。为了降低延迟，TiDB v7.1.0 引入了负载自适应副本读取功能，允许从其他 TiKV 节点读取副本，而无需在热点 TiKV 节点排队等待。你可以通过 [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold-从-v700-版本开始引入) 系统变量控制读请求的排队长度。当 leader 节点的预估排队时间超过该阈值时，TiDB 会优先从 follower 节点读取数据。在读热点的情况下，与不打散读热点相比，该功能可提高读取吞吐量 70%～200%。
+
+## 使用 TiKV MVCC 内存引擎缓解因多版本导致的读热点
+
+在 GC 历史版本数据的保留时间过长、频繁更新或删除时，可能会因扫描大量 MVCC 版本而导致读热点。针对这类热点，可通过开启 [TiKV MVCC 内存引擎](/tikv-in-memory-engine.md)功能缓解。

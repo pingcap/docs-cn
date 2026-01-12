@@ -46,3 +46,4 @@ ADMIN RESUME DDL JOBS job_id [, job_id] ...;
 * [`ADMIN SHOW DDL [JOBS|QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)
 * [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md)
 * [`ADMIN PAUSE DDL`](/sql-statements/sql-statement-admin-pause-ddl.md)
+* [`ADMIN ALTER DDL`](/sql-statements/sql-statement-admin-alter-ddl.md)

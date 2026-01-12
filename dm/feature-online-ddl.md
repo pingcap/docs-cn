@@ -128,8 +128,8 @@ pt-osc 主要涉及的 SQL 以及 DM 的处理：
 1. 创建 `_new` 表：
 
     ```sql
-    CREATE TABLE `test`.`_test4_new` (id int(11) NOT NULL AUTO_INCREMENT,
-    date date DEFAULT NULL, account_id bigint(20) DEFAULT NULL, conversion_price decimal(20,3) DEFAULT NULL,  ocpc_matched_conversions bigint(20) DEFAULT NULL, ad_cost decimal(20,3) DEFAULT NULL,cl2 varchar(20) COLLATE utf8mb4_bin NOT NULL,cl1 varchar(20) COLLATE utf8mb4_bin NOT NULL,PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ;
+    CREATE TABLE `test`.`_test4_new` (id int NOT NULL AUTO_INCREMENT,
+    date date DEFAULT NULL, account_id bigint DEFAULT NULL, conversion_price decimal(20,3) DEFAULT NULL,  ocpc_matched_conversions bigint DEFAULT NULL, ad_cost decimal(20,3) DEFAULT NULL,cl2 varchar(20) COLLATE utf8mb4_bin NOT NULL,cl1 varchar(20) COLLATE utf8mb4_bin NOT NULL,PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ;
     ```
 
     DM: 不执行 `_test4_new` 的创建操作。根据 ghost_schema、ghost_table 以及 dm_worker 的 `server_id`，删除下游 `dm_meta.{task_name}_onlineddl` 的记录，清理内存中的相关信息。

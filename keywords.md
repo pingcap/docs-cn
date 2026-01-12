@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/keywords/','/docs-cn/dev/keywords-and-reserved-words/','
 
 本文介绍 TiDB 的关键字，对保留字和非保留字作出区分，并汇总所有的关键字以供查询使用。
 
-关键字是 SQL 语句中具有特殊含义的单词，例如  [`SELECT`](/sql-statements/sql-statement-select.md)、[`UPDATE`](/sql-statements/sql-statement-update.md) 和 [`DELETE`](/sql-statements/sql-statement-delete.md) 等等。它们之中有的能够直接作为标识符，被称为**非保留关键字**（简称**非保留字**），但有需要经过特殊处理才能作为标识符的字，被称为**保留关键字**（简称**保留字**）。但是，也存在一些特殊的非保留关键字，有时候可能也需要进行特殊处理，推荐你将它们当作保留关键字处理。
+关键字是 SQL 语句中具有特殊含义的单词，例如  [`SELECT`](/sql-statements/sql-statement-select.md)、[`UPDATE`](/sql-statements/sql-statement-update.md) 和 [`DELETE`](/sql-statements/sql-statement-delete.md) 等等。它们之中有的能够直接作为标识符，被称为**非保留关键字**（简称**非保留字**），但有需要经过特殊处理才能作为标识符的字，被称为**保留关键字**（简称**保留字**）。
 
 对于保留字，必须使用反引号包裹，才能作为标识符被使用。例如：
 
@@ -50,9 +50,11 @@ Query OK, 0 rows affected (0.08 sec)
 
 TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/information-schema/information-schema-keywords.md) 表，可以用于查询 TiDB 中所有的关键字。
 
+你可以使用系统变量 [`tidb_enable_window_function`](/system-variables.md#tidb_enable_window_function) 控制[窗口函数](/functions-and-operators/window-functions.md)中的关键词是否在语法树中生效。将 `tidb_enable_window_function` 设置为 `OFF`，则窗口函数中的单词将不再作为关键词。
+
 ## 关键字列表
 
-下表列出了 TiDB 中所有的关键字。其中保留字用 `(R)` 来标识。[窗口函数](/functions-and-operators/window-functions.md)的保留字用 `(R-Window)` 来标识。需要用反引号 `` ` `` 包裹的特殊非保留字用 `(S)` 来标识。
+下表列出了 TiDB 中所有的关键字。其中保留字用 `(R)` 来标识。[窗口函数](/functions-and-operators/window-functions.md)的保留字用 `(R-Window)` 来标识。
 
 <TabsPanel letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ" />
 
@@ -73,6 +75,7 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - ANALYZE (R)
 - AND (R)
 - ANY
+- APPLY
 - ARRAY (R)
 - AS (R)
 - ASC (R)
@@ -541,6 +544,7 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - READ (R)
 - REAL (R)
 - REBUILD
+- RECOMMEND
 - RECOVER
 - RECURSIVE (R)
 - REDUNDANT
@@ -685,8 +689,6 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - TABLESAMPLE (R)
 - TABLESPACE
 - TABLE_CHECKSUM
-- TELEMETRY
-- TELEMETRY_ID
 - TEMPORARY
 - TEMPTABLE
 - TERMINATED (R)
@@ -694,7 +696,7 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - THAN
 - THEN (R)
 - TIDB
-- TiDB_CURRENT_TSO (R)
+- TIDB_CURRENT_TSO (R)
 - TIFLASH
 - TIKV_IMPORTER
 - TIME

@@ -28,21 +28,26 @@ aliases: ['/zh/tidb/dev/br-usage-backup/','/zh/tidb/dev/br-usage-restore/','/zh/
 tiup br backup full --pd "${PD_IP}:2379" \
     --backupts '2022-09-08 13:30:00 +08:00' \
     --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}" \
-    --ratelimit 128 \
 ```
 
 以上命令中：
 
-- `--backupts`：快照对应的物理时间点，格式可以是 [TSO](/glossary.md#tso) 或者时间戳，例如 `400036290571534337` 或者 `2018-05-11 01:42:23 +08:00`。如果该快照的数据被垃圾回收 (GC) 了，那么 `tiup br backup` 命令会报错并退出。使用日期方式备份时，建议同时指定时区，否则 br 默认使用本地时间构造时间戳，可能导致备份时间点错误。如果你没有指定该参数，那么 br 会选取备份开始的时间点所对应的快照。
+- `--backupts`：快照对应的物理时间点，格式可以是 [TSO](/tso.md) 或者时间戳，例如 `400036290571534337` 或者 `2018-05-11 01:42:23 +08:00`。如果该快照的数据被垃圾回收 (GC) 了，那么 `tiup br backup` 命令会报错并退出。使用日期方式备份时，建议同时指定时区，否则 br 默认使用本地时间构造时间戳，可能导致备份时间点错误。如果你没有指定该参数，那么 br 会选取备份开始的时间点所对应的快照。
 - `--storage`：数据备份到的存储地址。快照备份支持以 Amazon S3、Google Cloud Storage、Azure Blob Storage 为备份存储，以上命令以 Amazon S3 为示例。详细存储地址格式请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
-- `--ratelimit`：**每个 TiKV** 备份数据的速度上限，单位为 MiB/s。
 
-在快照备份过程中，终端会显示备份进度条。在备份完成后，会输出备份耗时、速度、备份数据大小等信息。
+在快照备份过程中，终端会显示备份进度条。在备份完成后，会输出备份耗时、速度、备份数据大小等信息。其中：
+
+- `total-ranges`：备份的文件总数量
+- `ranges-succeed`：备份成功的文件数量
+- `ranges-failed`：备份失败的文件数量
+- `backup-total-ranges`：备份的表（包括分区表）与索引的数量
+- `write-CF-files`：备份文件中含有 `write CF` 数据的 SST 文件数量
+- `default-CF-files`：备份文件中含有 `default CF` 数据的 SST 文件数量
 
 ```shell
 Full Backup <-------------------------------------------------------------------------------> 100.00%
 Checksum <----------------------------------------------------------------------------------> 100.00%
-*** ["Full Backup success summary"] *** [backup-checksum=3.597416ms] [backup-fast-checksum=2.36975ms] *** [total-take=4.715509333s] [BackupTS=435844546560000000] [total-kv=1131] [total-kv-size=250kB] [average-speed=53.02kB/s] [backup-data-size(after-compressed)=71.33kB] [Size=71330]
+*** ["Full Backup success summary"] *** [total-ranges=20] [ranges-succeed=20] [ranges-failed=0] [backup-checksum=3.597416ms] [backup-fast-checksum=2.36975ms] [backup-total-ranges=11] [backup-total-regions=10] [write-CF-files=14] [default-CF-files=6] [total-take=4.715509333s] [BackupTS=435844546560000000] [total-kv=1131] [total-kv-size=250kB] [average-speed=53.02kB/s] [backup-data-size(after-compressed)=71.33kB] [Size=71330]
 ```
 
 ## 查询快照备份的时间点信息
@@ -79,12 +84,26 @@ tiup br restore full --pd "${PD_IP}:2379" \
 --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
-在恢复快照备份数据过程中，终端会显示恢复进度条。在完成恢复后，会输出恢复耗时、速度、恢复数据大小等信息。
+在恢复快照备份数据过程中，终端会显示恢复进度条。在完成恢复后，会输出恢复耗时、速度、恢复数据大小等信息。其中：
+
+- `total-ranges`：恢复的文件总数量
+- `ranges-succeed`：恢复成功的文件数量
+- `ranges-failed`：恢复失败的文件数量
+- `merge-ranges`：合并数据范围的耗时
+- `split-region`：切分和打散 Region 的耗时
+- `restore-files`： TiKV 恢复 SST 文件的耗时
+- `write-CF-files`：恢复文件中含有 `write CF` 数据的 SST 文件数量
+- `default-CF-files`：恢复文件中含有 `default CF` 数据的 SST 文件数量
+- `split-keys`：生成的用于切分 Region 的 key 数量
 
 ```shell
-Full Restore <------------------------------------------------------------------------------> 100.00%
-*** ["Full Restore success summary"] *** [total-take=4.344617542s] [total-kv=5] [total-kv-size=327B] [average-speed=75.27B/s] [restore-data-size(after-compressed)=4.813kB] [Size=4813] [BackupTS=435844901803917314]
+Split&Scatter Region <--------------------------------------------------------------------> 100.00%
+Download&Ingest SST <---------------------------------------------------------------------> 100.00%
+Restore Pipeline <------------------------------------------------------------------------> 100.00%
+*** ["Full Restore success summary"] [total-ranges=20] [ranges-succeed=20] [ranges-failed=0] [merge-ranges=7.546971ms] [split-region=343.594072ms] [restore-files=1.57662s] [default-CF-files=6] [write-CF-files=14] [split-keys=9] [total-take=4.344617542s] [total-kv=5] [total-kv-size=327B] [average-speed=75.27B/s] [restore-data-size(after-compressed)=4.813kB] [Size=4813] [BackupTS=435844901803917314]
 ```
+
+在数据恢复期间，目标表的 Table Mode 会自动设置为 `restore`，处于 `restore` 模式的表禁止用户执行任何读写操作。当数据恢复完成后，Table Mode 会自动切换为 `normal` 状态，用户可以正常读写该表，从而确保数据恢复期间的任务稳定性和数据一致性。
 
 ### 恢复备份数据中指定库表的数据
 
@@ -129,9 +148,12 @@ tiup br restore full \
 
 ### 恢复 `mysql` 数据库下的表
 
+在使用快照备份功能备份集群时，BR 会将系统表备份为库名带有 `__TiDB_BR_Temporary_` 前缀的表。例如，`mysql.user` 表会被备份为 `__TiDB_BR_Temporary_mysql.user`。因此，在执行快照恢复时，BR 会首先恢复这些带有 `__TiDB_BR_Temporary_` 前缀的表，避免与目标集群中现有的系统表数据发生冲突。在恢复系统表时，BR 会通过 `REPLACE INTO` 语句将数据从带有 `__TiDB_BR_Temporary_` 前缀的表写入对应的系统表。
+
 - `br` v5.1.0 开始，快照备份时默认自动备份 **mysql schema 下的系统表数据**，但恢复数据时默认不恢复系统表数据。
 - `br` v6.2.0 开始，增加恢复参数 `--with-sys-table` 支持恢复数据的同时恢复**部分系统表相关数据**。
 - `br` v7.6.0 开始，恢复参数 `--with-sys-table` 默认开启，即默认支持恢复数据的同时恢复**部分系统表相关数据**。
+- `br` v9.0.0 开始，增加恢复参数 `--fast-load-sys-tables` 支持物理恢复系统表。通过 `RENAME TABLE` DDL 将 `__TiDB_BR_Temporary_mysql` 下的系统表和 `mysql` 库下的系统表进行原子交换。与通过 `REPLACE INTO` SQL 写入的逻辑恢复系统表方式不同，物理恢复系统表将会完全覆盖系统表中原有的数据。
 
 **可恢复的部分系统表**：
 
@@ -153,16 +175,24 @@ tiup br restore full \
 
 - 统计信息表 (`mysql.stat_*`) (但可以恢复统计信息，详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))
 - 系统变量表 (`mysql.tidb`、`mysql.global_variables`)
-- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/snap_client/systable_restore.go#L31)
+- 其他系统表
 
 ```
 +-----------------------------------------------------+
+| advisory_locks                                      |
+| analyze_jobs                                        |
+| analyze_options                                     |
 | capture_plan_baselines_blacklist                    |
 | column_stats_usage                                  |
+| dist_framework_meta                                 |
 | gc_delete_range                                     |
 | gc_delete_range_done                                |
 | global_variables                                    |
-| schema_index_usage                                  |
+| help_topic                                          |
+| index_advisor_results                               |
+| plan_replayer_status                                |
+| plan_replayer_task                                  |
+| request_unit_by_group                               |
 | stats_buckets                                       |
 | stats_extended                                      |
 | stats_feedback                                      |
@@ -173,7 +203,27 @@ tiup br restore full \
 | stats_meta_history                                  |
 | stats_table_locked                                  |
 | stats_top_n                                         |
+| table_cache_meta                                    |
 | tidb                                                |
+| tidb_background_subtask                             |
+| tidb_background_subtask_history                     |
+| tidb_ddl_history                                    |
+| tidb_ddl_job                                        |
+| tidb_ddl_notifier                                   |
+| tidb_ddl_reorg                                      |
+| tidb_global_task                                    |
+| tidb_global_task_history                            |
+| tidb_import_jobs                                    |
+| tidb_mdl_info                                       |
+| tidb_mdl_view                                       |
+| tidb_pitr_id_map                                    |
+| tidb_runaway_queries                                |
+| tidb_runaway_watch                                  |
+| tidb_runaway_watch_done                             |
+| tidb_timers                                         |
+| tidb_ttl_job_history                                |
+| tidb_ttl_table_status                               |
+| tidb_ttl_task                                       |
 +-----------------------------------------------------+
 ```
 
@@ -198,15 +248,23 @@ TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，�
 
 你可以通过如下方案手动控制备份对集群性能带来的影响。但是，这两种方案在减少备份对集群的影响的同时，也会降低备份任务的速度。
 
-- 使用 `--ratelimit` 参数对备份任务进行限速。请注意，这个参数限制的是**把备份文件存储到外部存储**的速度。计算备份文件的大小时，请以备份日志中的 `backup data size(after compressed)` 为准。设置 `--ratelimit` 后，为了避免任务数过多导致限速失效，br 的 `concurrency` 参数会自动调整为 1。
-- 调节 TiKV 配置项 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1)，限制备份任务使用的工作线程数量。内部测试数据表明，当备份的线程数量不大于 `8`、集群总 CPU 利用率不超过 60% 时，备份任务对集群（无论读写负载）几乎没有影响。
+- 优先推荐: 调节 TiKV 配置项 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1)，该配置用于限制备份任务使用的工作线程数。由于备份过程属于 CPU 密集型操作，通过控制线程数可以更精确地限制备份对 TiKV 的 CPU 使用，从而实现更可控、更可预测的资源隔离。在绝大多数场景中，仅调整 `num-threads` 就足以控制备份对集群的影响。内部测试表明，当线程数小于或等于 8、且集群总 CPU 利用率小于 60% 时，备份对业务负载的影响可忽略不计。
+
+- 次选方案：如果你已将 `num-threads` 设置为较低值（如 `1`），但仍希望进一步降低备份对集群的影响，此时可以考虑使用 `--ratelimit` 参数。该参数限制的是备份文件写入外部存储的带宽，单位为 MiB/s。实际限速效果取决于压缩后的数据体积。详情请参考日志中的 `backup data size (after compressed)` 字段。启用后，BR 会自动将 `--concurrency` 调整为 `1`，以减少并发请求数量。
+
+> **注意：** 
+>
+> 开启 `--ratelimit` 会进一步降低备份速度。在大多数情况下，如果你在业务低峰期执行备份，并且已经将 `num-threads` 降为 `1`，但仍然担心备份影响业务，通常说明**集群资源已接近瓶颈**。此时，建议考虑以下替代方案：
+>
+> - [扩容 TiKV 节点](/tiup/tiup-cluster.md#扩容节点)以提升可用资源。
+> - 开启日志备份 [`Log Backup`](/br/br-log-architecture.md)，以降低对在线业务的干扰。
 
 通过限制备份的线程数量可以降低备份对集群性能的影响，但是这会影响到备份的性能，以上的多次备份测试结果显示，单 TiKV 存储节点上备份速度和备份线程数量呈正比。在线程数量较少的时候，备份速度约为 20 MiB/线程数。例如，单 TiKV 节点 5 个备份线程可达到 100 MiB/s 的备份速度。
 
 ### 快照恢复的性能与影响
 
 - TiDB 恢复的时候会尽可能打满 TiKV CPU、磁盘 IO、网络带宽等资源，所以推荐在空的集群上执行备份数据的恢复，避免对正在运行的业务产生影响。
-- 备份数据的恢复速度与集群配置、部署、运行的业务都有比较大的关系。在内部多场景仿真测试中，单 TiKV 存储节点上备份数据恢复速度能够达到 100 MiB/s。在不同用户场景下，快照恢复的性能和影响应以实际测试结论为准。
+- 备份数据的恢复速度与集群配置、部署、运行的业务都有比较大的关系。在不同用户场景下，快照恢复的性能和影响应以实际测试结论为准。
 - BR 提供了粗粒度的 Region 打散算法，用于提升大规模 Region 场景下的 Region 恢复速度。在这个方式下每个 TiKV 节点会得到均匀稳定的下载任务，从而充分利用每个 TiKV 节点的所有资源实现并行快速恢复。在实际案例中，大规模 Region 场景下，集群快照恢复速度最高提升约 3 倍。
 - 从 v8.0.0 起，`br` 命令行工具新增 `--tikv-max-restore-concurrency` 参数，用于控制每个 TiKV 节点的最大 download 和 ingest 文件数量。此外，通过调整此参数，可以控制作业队列的最大长度（作业队列的最大长度 = 32 \* TiKV 节点数量 \* `--tikv-max-restore-concurrency`），进而控制 BR 节点的内存消耗。
 

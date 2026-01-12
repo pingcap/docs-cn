@@ -12,13 +12,9 @@ TiDB v7.6.0 引入了系统变量 [`tidb_ddl_version`](https://docs.pingcap.com/
 
 合并后的批量建表语句在同一个事务内执行，如果其中一个语句失败，所有语句都会失败。
 
-> **警告：**
->
-> TiDB 加速建表目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 ## 与 TiDB 工具的兼容性
 
-- [TiCDC](/ticdc/ticdc-overview.md) 暂不支持同步通过 TiDB 加速创建的表。
+- 在 TiDB v8.3.0 之前的版本中，[TiCDC](/ticdc/ticdc-overview.md) 不支持同步通过 TiDB 加速创建的表。从 v8.3.0 开始，TiCDC 可以正常同步这类表。
 
 ## 限制
 
@@ -27,6 +23,8 @@ TiDB 加速建表目前仅适用于 [`CREATE TABLE`](/sql-statements/sql-stateme
 ## 使用方法
 
 你可以通过设置系统变量 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入) 的值来开启或关闭加速建表的功能。
+
+从 TiDB v8.5.0 开始，新创建的集群默认开启 TiDB 加速建表功能，即 `tidb_enable_fast_create_table` 默认值为 `ON`。如果从 v8.4.0 及之前版本的集群升级至 v8.5.0 及之后的版本，`tidb_enable_fast_create_table` 的默认值不发生变化。
 
 要开启该功能，将该变量的值设置为 `ON`：
 

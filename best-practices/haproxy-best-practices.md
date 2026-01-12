@@ -69,8 +69,6 @@ HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，�
 
 执行如下命令安装依赖包：
 
-{{< copyable "shell-regular" >}}
-
 ```bash
 yum -y install epel-release gcc systemd-devel
 ```
@@ -81,36 +79,28 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
 
 ### 安装 HAProxy
 
-1. 下载 HAProxy 2.6.2 的源码包：
-
-    {{< copyable "shell-regular" >}}
+1. 下载 HAProxy 2.6.21 的源码包：
 
     ```bash
-    wget https://www.haproxy.org/download/2.6/src/haproxy-2.6.2.tar.gz
+    wget https://www.haproxy.org/download/2.6/src/haproxy-2.6.21.tar.gz
     ```
 
 2. 解压源码包：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
-    tar zxf haproxy-2.6.2.tar.gz
+    tar zxf haproxy-2.6.21.tar.gz
     ```
 
 3. 从源码编译 HAProxy 应用：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
-    cd haproxy-2.6.2
+    cd haproxy-2.6.21
     make clean
     make -j 8 TARGET=linux-glibc USE_THREAD=1
     make PREFIX=${/app/haproxy} SBINDIR=${/app/haproxy/bin} install  # 将 `${/app/haproxy}` 和 `${/app/haproxy/bin}` 替换为自定义的实际路径。
     ```
 
 4. 重新配置 `profile` 文件：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     echo 'export PATH=/app/haproxy/bin:$PATH' >> /etc/profile
@@ -119,8 +109,6 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
 
 5. 检查 HAProxy 是否安装成功：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     which haproxy
     ```
@@ -128,8 +116,6 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
 #### HAProxy 命令介绍
 
 执行如下命令查看命令行参数及基本用法：
-
-{{< copyable "shell-regular" >}}
 
 ```bash
 haproxy --help
@@ -202,7 +188,7 @@ listen admin_stats                         # frontend 和 backend 的组合体�
    stats  admin if TRUE                    # 手工启用或禁用后端服务器（HAProxy 1.4.9 及之后版本开始支持）。
 
 listen tidb-cluster                        # 配置 database 负载均衡。
-   bind 0.0.0.0:3390                       # 浮动 IP 和 监听端口。
+   bind 0.0.0.0:3390                       # 浮动 IP 和监听端口。
    mode tcp                                # HAProxy 要使用第 4 层的传输层。
    balance leastconn                       # 连接数最少的服务器优先接收连接。`leastconn` 建议用于长会话服务，例如 LDAP、SQL、TSE 等，而不是短会话协议，如 HTTP。该算法是动态的，对于启动慢的服务器，服务器权重会在运行中作调整。
    server tidb-1 10.9.18.229:4000 check inter 2000 rise 2 fall 3       # 检测 4000 端口，检测频率为每 2000 毫秒一次。如果 2 次检测为成功，则认为服务器可用；如果 3 次检测为失败，则认为服务器不可用。
@@ -226,8 +212,6 @@ listen tidb-cluster                        # 配置 database 负载均衡。
 
 要启动 HAProxy，执行 `haproxy` 命令。默认读取 `/etc/haproxy/haproxy.cfg`（推荐）。
 
-{{< copyable "shell-regular" >}}
-
 ```bash
 haproxy -f /etc/haproxy/haproxy.cfg
 ```
@@ -238,15 +222,11 @@ haproxy -f /etc/haproxy/haproxy.cfg
 
 1. 执行如下命令：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     ps -ef | grep haproxy
     ```
 
 2. 终止 HAProxy 相关的 PID 进程：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     kill -9 ${haproxy.pid}

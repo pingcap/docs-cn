@@ -112,7 +112,7 @@ routes:
 
 ```sql
 CREATE TABLE `test`.`t` (
-    a int(11) PRIMARY KEY,
+    a int PRIMARY KEY,
     c_table varchar(10) DEFAULT NULL,
     c_schema varchar(10) DEFAULT NULL,
     c_source varchar(10) DEFAULT NULL
@@ -180,7 +180,7 @@ mysql> select * from test.t;
 ```sql
 CREATE TABLE `test`.`t` (
     c_table varchar(10) DEFAULT NULL,
-    a int(11) PRIMARY KEY,
+    a int PRIMARY KEY,
     c_schema varchar(10) DEFAULT NULL,
     c_source varchar(10) DEFAULT NULL
 );
@@ -190,7 +190,7 @@ CREATE TABLE `test`.`t` (
 
 ```sql
 CREATE TABLE `test`.`t` (
-    a int(11) PRIMARY KEY,
+    a int PRIMARY KEY,
     c_table varchar(10) DEFAULT NULL,
     c_schema varchar(10) DEFAULT NULL,
 );
@@ -200,9 +200,9 @@ CREATE TABLE `test`.`t` (
 
 ```sql
 CREATE TABLE `test`.`t` (
-    a int(11) PRIMARY KEY,
+    a int PRIMARY KEY,
     c_table varchar(10) DEFAULT NULL,
-    c_schema int(11) DEFAULT NULL,
+    c_schema int DEFAULT NULL,
     c_source varchar(10) DEFAULT NULL,
 );
 ```

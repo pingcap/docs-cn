@@ -84,6 +84,7 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 
 | SQL 语句 | 描述 |
 |----------|------|
+| [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md) | 修改单个正在运行的 DDL 作业的相关参数。 |
 | [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) | 取消 DDL 作业。 |
 | [`ADMIN CHECK [TABLE\|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) | 检查表或索引的完整性。 |
 | [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md) | 计算表的校验和。 |
@@ -91,7 +92,6 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`ADMIN PAUSE DDL`](/sql-statements/sql-statement-admin-pause-ddl.md) | 暂停 DDL 作业。 |
 | [`ADMIN RESUME DDL`](/sql-statements/sql-statement-admin-resume-ddl.md) | 恢复 DDL 作业。 |
 | [`ADMIN SHOW DDL [JOBS\|JOB QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md) | 显示 DDL 作业信息或 DDL 对应的查询语句。 |
-| [`ADMIN SHOW TELEMETRY`](/sql-statements/sql-statement-admin-show-telemetry.md) | 显示遥测数据。 |
 | [`ADMIN`](/sql-statements/sql-statement-admin.md) | 执行各种管理任务。 |
 | [`FLUSH TABLES`](/sql-statements/sql-statement-flush-tables.md) | 用于提供 [MySQL 兼容性](/mysql-compatibility.md)，在 TiDB 中没有实际用途。 |
 | [`SET <variable>`](/sql-statements/sql-statement-set-variable.md) | 修改系统变量或用户变量。 |
@@ -103,7 +103,7 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | SQL 语句 | 描述 |
 |----------|------|
 | [`CANCEL IMPORT JOB`](/sql-statements/sql-statement-cancel-import-job.md) | 取消正在进行的导入任务。 |
-| [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) | 通过 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md) 将数据导入到表中。 |
+| [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) | 通过 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)将数据导入到表中。 |
 | [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) | 从 Amazon S3 或 Google Cloud Storage 加载数据到表中。 |
 | [`SHOW IMPORT JOB`](/sql-statements/sql-statement-show-import-job.md) | 显示导入任务的状态。 |
 
@@ -138,7 +138,7 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | SQL 语句 | 描述 |
 |----------|------|
 | [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) | 修改资源组。 |
-| [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md) | 估算并输出当前集群的 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 容量。 |
+| [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md) | 估算并输出当前集群的 [Request Unit (RU)](/tidb-resource-control-ru-groups.md#什么是-request-unit-ru) 容量。 |
 | [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) | 创建新的资源组。 |
 | [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md) | 删除资源组。 |
 | [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md) | 管理 Runaway Queries 监控列表。 |
@@ -213,16 +213,12 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`SHOW GRANTS`](/sql-statements/sql-statement-show-grants.md) | 显示与用户关联的权限。 |
 | [`SHOW PRIVILEGES`](/sql-statements/sql-statement-show-privileges.md) | 显示可用的权限。 |
 
-## TiCDC 与 TiDB Binlog
+## TiCDC
 
 | SQL 语句 | 描述 |
 |----------|------|
 | [`ADMIN [SET\|SHOW\|UNSET] BDR ROLE`](/sql-statements/sql-statement-admin-bdr-role.md) | 管理 BDR 角色。 |
-| [`CHANGE DRAINER`](/sql-statements/sql-statement-change-drainer.md) | 修改集群中 Drainer 的状态信息。 |
-| [`CHANGE PUMP`](/sql-statements/sql-statement-change-pump.md) | 修改集群中 Pump 的状态信息。 |
-| [`SHOW DRAINER STATUS`](/sql-statements/sql-statement-show-drainer-status.md) | 显示集群中所有 Drainer 节点的状态。 |
 | [`SHOW MASTER STATUS`](/sql-statements/sql-statement-show-master-status.md) | 显示集群中当前最新的 TSO。 |
-| [`SHOW PUMP STATUS`](/sql-statements/sql-statement-show-pump-status.md) | 显示集群中所有 Pump 节点的状态信息。 |
 
 ## 统计信息和执行计划管理
 
@@ -236,7 +232,10 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`LOAD STATS`](/sql-statements/sql-statement-load-stats.md) | 将统计信息加载到 TiDB 中。 |
 | [`SHOW ANALYZE STATUS`](/sql-statements/sql-statement-show-analyze-status.md) | 显示统计信息收集任务。 |
 | [`SHOW BINDINGS`](/sql-statements/sql-statement-show-bindings.md) | 显示已创建的 SQL 绑定。 |
+| [`SHOW COLUMN_STATS_USAGE`](/sql-statements/sql-statement-show-column-stats-usage.md) | 显示列统计信息的最近一次使用时间和收集时间。 |
+| [`SHOW STATS_BUCKETS`](/sql-statements/sql-statement-show-stats-buckets.md) | 显示常规统计信息中的桶信息。 |
 | [`SHOW STATS_HEALTHY`](/sql-statements/sql-statement-show-stats-healthy.md) | 显示统计信息准确度的预估值。 |
 | [`SHOW STATS_HISTOGRAMS`](/sql-statements/sql-statement-show-stats-histograms.md) | 显示统计信息中的直方图信息。 |
 | [`SHOW STATS_LOCKED`](/sql-statements/sql-statement-show-stats-locked.md) | 显示统计信息被锁定的表。 |
 | [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md) | 显示表中的行数和表中发生更改的行数。 |
+| [`SHOW STATS_TOPN`](/sql-statements/sql-statement-show-stats-topn.md) | 显示常规统计信息中的 Top-N 信息。 |

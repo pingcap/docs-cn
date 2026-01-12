@@ -109,7 +109,7 @@ TableOption ::=
     PartDefOption
 |   DefaultKwdOpt ( CharsetKw EqOpt CharsetName | 'COLLATE' EqOpt CollationName )
 |   ( 'AUTO_INCREMENT' | 'AUTO_ID_CACHE' | 'AUTO_RANDOM_BASE' | 'AVG_ROW_LENGTH' | 'CHECKSUM' | 'TABLE_CHECKSUM' | 'KEY_BLOCK_SIZE' | 'DELAY_KEY_WRITE' | 'SHARD_ROW_ID_BITS' | 'PRE_SPLIT_REGIONS' ) EqOpt LengthNum
-|   ( 'CONNECTION' | 'PASSWORD' | 'COMPRESSION' ) EqOpt stringLit
+|   ( 'CONNECTION' | 'ENGINE_ATTRIBUTE' | 'PASSWORD' | 'COMPRESSION' ) EqOpt stringLit
 |   RowFormat
 |   ( 'STATS_PERSISTENT' | 'PACK_KEYS' ) EqOpt StatsPersistentVal
 |   ( 'STATS_AUTO_RECALC' | 'STATS_SAMPLE_PAGES' ) EqOpt ( LengthNum | 'DEFAULT' )
@@ -126,9 +126,41 @@ OnCommitOpt ::=
 PlacementPolicyOption ::=
     "PLACEMENT" "POLICY" EqOpt PolicyName
 |   "PLACEMENT" "POLICY" (EqOpt | "SET") "DEFAULT"
+
+DefaultValueExpr ::=
+    NowSymOptionFractionParentheses
+|   SignedLiteral
+|   NextValueForSequenceParentheses
+|   BuiltinFunction
+|   '(' SignedLiteral ')'
+
+BuiltinFunction ::=
+    '(' BuiltinFunction ')'
+|   identifier '(' ')'
+|   identifier '(' ExpressionList ')'
+|   "REPLACE" '(' ExpressionList ')'
+
+NowSymOptionFractionParentheses ::=
+    '(' NowSymOptionFractionParentheses ')'
+|   NowSymOptionFraction
+
+NowSymOptionFraction ::=
+    NowSym
+|   NowSymFunc '(' ')'
+|   NowSymFunc '(' NUM ')'
+|   CurdateSym '(' ')'
+|   "CURRENT_DATE"
+
+NextValueForSequenceParentheses ::=
+    '(' NextValueForSequenceParentheses ')'
+|   NextValueForSequence
+
+NextValueForSequence ::=
+    "NEXT" "VALUE" forKwd TableName
+|   "NEXTVAL" '(' TableName ')'
 ```
 
-TiDB 支持以下 `table_option`。TiDB 会解析并忽略其他 `table_option` 参数，例如 `AVG_ROW_LENGTH`、`CHECKSUM`、`COMPRESSION`、`CONNECTION`、`DELAY_KEY_WRITE`、`ENGINE`、`KEY_BLOCK_SIZE`、`MAX_ROWS`、`MIN_ROWS`、`ROW_FORMAT` 和 `STATS_PERSISTENT`。
+TiDB 支持以下 `table_option`。TiDB 会解析并忽略其他 `table_option` 参数，例如 `AVG_ROW_LENGTH`、`CHECKSUM`、`COMPRESSION`、`CONNECTION`、`DELAY_KEY_WRITE`、`ENGINE`、`KEY_BLOCK_SIZE`、`MAX_ROWS`、`MIN_ROWS`、`ROW_FORMAT` 和 `STATS_PERSISTENT`。此外，TiDB 会解析 `ENGINE_ATTRIBUTE`，但总是返回 `ERROR 3981 (HY000): Storage engine does not support ENGINE_ATTRIBUTE` 错误。这是一个保留参数，供未来使用。
 
 | 参数           |含义                                  |举例                      |
 |----------------|--------------------------------------|----------------------------|
@@ -167,18 +199,18 @@ mysql> CREATE TABLE t1 (a int);
 Query OK, 0 rows affected (0.09 sec)
 
 mysql> DESC t1;
-+-------+---------+------+------+---------+-------+
-| Field | Type    | Null | Key  | Default | Extra |
-+-------+---------+------+------+---------+-------+
-| a     | int(11) | YES  |      | NULL    |       |
-+-------+---------+------+------+---------+-------+
++-------+------+------+------+---------+-------+
+| Field | Type | Null | Key  | Default | Extra |
++-------+------+------+------+---------+-------+
+| a     | int  | YES  |      | NULL    |       |
++-------+------+------+------+---------+-------+
 1 row in set (0.00 sec)
 
 mysql> SHOW CREATE TABLE t1\G
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
-  `a` int(11) DEFAULT NULL
+  `a` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 1 row in set (0.00 sec)
 
@@ -219,7 +251,7 @@ mysql> DESC t1;
 +-------+--------------+------+------+---------+----------------+
 | Field | Type         | Null | Key  | Default | Extra          |
 +-------+--------------+------+------+---------+----------------+
-| id    | bigint(20)   | NO   | PRI  | NULL    | auto_increment |
+| id    | bigint       | NO   | PRI  | NULL    | auto_increment |
 | b     | varchar(200) | NO   |      | NULL    |                |
 +-------+--------------+------+------+---------+----------------+
 2 rows in set (0.00 sec)
@@ -235,7 +267,7 @@ mysql> DESC t1;
 * `COMMENT` 属性不支持 `WITH PARSER` 选项。
 * TiDB 在单个表中默认支持 1017 列，最大可支持 4096 列。InnoDB 中相应的数量限制为 1017 列，MySQL 中的硬限制为 4096 列。详情参阅 [TiDB 使用限制](/tidb-limitations.md)。
 * 分区表支持 `HASH`、`RANGE`、`LIST` 和 `KEY` [分区类型](/partitioned-table.md#分区类型)。对于不支持的分区类型，TiDB 会报 `Warning: Unsupported partition type %s, treat as normal table` 错误，其中 `%s` 为不支持的具体分区类型。
-* TiDB 对[分区表](/partitioned-table.md)进行了扩展。你可以指定 `GLOBAL` 索引选项将 `PRIMARY KEY` 或 `UNIQUE INDEX` 设置为[全局索引](/partitioned-table.md#全局索引)。该扩展与 MySQL 不兼容。
+* TiDB 对[分区表](/partitioned-table.md)进行了扩展。你可以指定 `GLOBAL` 索引选项将 `PRIMARY KEY` 或 `UNIQUE INDEX` 设置为[全局索引](/global-indexes.md)。该扩展与 MySQL 不兼容。
 
 ## 另请参阅
 

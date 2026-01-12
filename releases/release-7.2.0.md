@@ -9,7 +9,7 @@ summary: 了解 TiDB 7.2.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：7.2.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.2/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v7.2.0-DMR#version-list)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.2/quick-start-with-tidb)
 
 在 7.2.0 版本中，你可以获得以下关键特性：
 
@@ -92,7 +92,7 @@ TiDB 版本：7.2.0
 
     对资源超出预期查询的自动管理能力，为你提供了有效的手段，快速应对突发的查询性能问题，降低对数据库整体性能的影响，从而提升数据库的稳定性。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
+    更多信息，请参考[用户文档](/tidb-resource-control-runaway-queries.md)。
 
 * 增强根据历史执行计划创建绑定的能力 [#39199](https://github.com/pingcap/tidb/issues/39199) @[qw4990](https://github.com/qw4990)
 
@@ -173,6 +173,7 @@ TiDB 版本：7.2.0
 ### 行为变更
 
 - TiCDC 在处理 Update 事件时，如果事件的主键或者非空唯一索引的列值发生改变，则会将该条事件拆分为 Delete 和 Insert 两条事件。更多信息，请参考[用户文档](/ticdc/ticdc-split-update-behavior.md#含有单条-update-变更的事务拆分)。
+- 系统变量 [`tidb_remove_orderby_in_subquery`](/system-variables.md#tidb_remove_orderby_in_subquery-从-v610-版本开始引入) 的默认值从 `OFF` 修改为 `ON`，即优化器改写会移除子查询中的 `ORDER BY` 子句，以避免不必要的排序操作。此变更可能造成 SQL 输出不同的查询顺序。ISO/IEC SQL 标准并不要求查询结果遵循子查询的 `ORDER BY` 排序，如需严格保证最终结果的顺序，应在外层查询添加 `ORDER BY`。如果你的应用依赖子查询排序，可以将此变量修改为 `OFF`。从旧版本升级的集群默认不会修改该行为。
 
 ### 系统变量
 
@@ -263,6 +264,7 @@ TiDB 版本：7.2.0
     - 修复由于 Coprocessor task 中 `TxnScope` 缺失导致 Stale Read 全局优化不生效的问题 [#43365](https://github.com/pingcap/tidb/issues/43365) @[you06](https://github.com/you06)
     - 修复 follower read 未处理 flashback 错误而进行重试，导致查询报错的问题 [#43673](https://github.com/pingcap/tidb/issues/43673) @[you06](https://github.com/you06)
     - 修复 `ON UPDATE` 语句没有正确更新主键导致数据索引不一致的问题 [#44565](https://github.com/pingcap/tidb/issues/44565) @[zyguan](https://github.com/zyguan)
+    - 修复权限表中一些列大小写敏感的问题 [#41048](https://github.com/pingcap/tidb/issues/41048) @[bb7133](https://github.com/bb7133)
     - 修改 `UNIX_TIMESTAMP()` 函数的上限为 `3001-01-19 03:14:07.999999 UTC`，与 MySQL 8.0.28+ 保持一致 [#43987](https://github.com/pingcap/tidb/issues/43987) @[YangKeao](https://github.com/YangKeao)
     - 修复在 ingest 模式下创建索引失败的问题 [#44137](https://github.com/pingcap/tidb/issues/44137) @[tangenta](https://github.com/tangenta)
     - 修复取消处于 rollback 状态的 DDL 任务导致相关元数据出错的问题 [#44143](https://github.com/pingcap/tidb/issues/44143) @[wjhuang2016](https://github.com/wjhuang2016)

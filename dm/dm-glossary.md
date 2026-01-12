@@ -8,15 +8,17 @@ aliases: ['/docs-cn/tidb-data-migration/dev/glossary/']
 
 本文档介绍 TiDB Data Migration (TiDB DM) 相关术语。
 
+关于 TiDB 相关的术语和定义，请参考 [TiDB 术语表](/glossary.md)。
+
 ## B
 
 ### Binlog
 
-在 TiDB DM 中，Binlog 通常指 MySQL/MariaDB 生成的 binary log 文件，具体请参考 [MySQL Binary Log](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_replication.html) 与 [MariaDB Binary Log](https://mariadb.com/kb/en/library/binary-log/)。
+在 TiDB DM 中，Binlog 通常指 MySQL/MariaDB 生成的 binary log 文件，具体请参考 [MySQL Binary Log](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_replication.html) 与 [MariaDB Binary Log](https://mariadb.com/docs/server/server-management/server-monitoring-logs/binary-log)。
 
 ### Binlog event
 
-MySQL/MariaDB 生成的 Binlog 文件中的数据变更信息，具体请参考 [MySQL Binlog Event](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_replication_binlog_event.html) 与 [MariaDB Binlog Event](https://mariadb.com/kb/en/library/1-binlog-events/)。
+MySQL/MariaDB 生成的 Binlog 文件中的数据变更信息，具体请参考 [MySQL Binlog Event](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_replication_binlog_event.html) 与 [MariaDB Binlog Event](https://mariadb.com/docs/server/reference/clientserver-protocol/replication-protocol/1-binlog-events)。
 
 ### Binlog event filter
 
@@ -24,7 +26,7 @@ MySQL/MariaDB 生成的 Binlog 文件中的数据变更信息，具体请参考 
 
 ### Binlog position
 
-特定 Binlog event 在 Binlog 文件中的位置偏移信息，具体请参考 [MySQL `SHOW BINLOG EVENTS`](https://dev.mysql.com/doc/refman/8.0/en/show-binlog-events.html) 与 [MariaDB `SHOW BINLOG EVENTS`](https://mariadb.com/kb/en/library/show-binlog-events/)。
+特定 Binlog event 在 Binlog 文件中的位置偏移信息，具体请参考 [MySQL `SHOW BINLOG EVENTS`](https://dev.mysql.com/doc/refman/8.0/en/show-binlog-events.html) 与 [MariaDB `SHOW BINLOG EVENTS`](https://mariadb.com/docs/server/reference/sql-statements/administrative-sql-statements/show/show-binlog-events)。
 
 ### Binlog replication 处理单元/ sync 处理单元
 
@@ -32,7 +34,7 @@ DM-worker 内部用于读取上游 Binlog 或本地 Relay log 并迁移到下游
 
 ### Block & allow table list
 
-针对上游数据库实例表的黑白名单过滤功能，具体可参考 [Block & Allow Table Lists](/dm/dm-block-allow-table-lists.md)。该功能与 [MySQL Replication Filtering](https://dev.mysql.com/doc/refman/8.0/en/replication-rules.html) 及 [MariaDB Replication Filters](https://mariadb.com/kb/en/library/replication-filters/) 类似。
+针对上游数据库实例表的黑白名单过滤功能，具体可参考 [Block & Allow Table Lists](/dm/dm-block-allow-table-lists.md)。该功能与 [MySQL Replication Filtering](https://dev.mysql.com/doc/refman/8.0/en/replication-rules.html) 及 [MariaDB Replication Filters](https://mariadb.com/docs/server/ha-and-performance/standard-replication/replication-filters) 类似。
 
 ### Bound
 
@@ -47,7 +49,7 @@ TiDB DM 在全量导入与增量复制过程中的断点信息，用于在重新
 - 对于全量导入，Checkpoint 信息对应于每个数据文件已经被成功导入的数据对应的文件内偏移量等信息，其在每个导入数据的事务中迁移更新；
 - 对于增量复制，Checkpoint 信息对应于已经成功解析并导入到下游的 [Binlog event](#binlog-event) 对应的 [Binlog position](#binlog-position) 等信息，其在 DDL 导入成功后或距上次更新时间超过 30 秒等条件下更新。
 
-另外，[Relay 处理单元](#relay-处理单元) 对应的 `relay.meta` 内记录的信息也相当于 Checkpoint，其对应于 Relay 处理单元已经成功从上游拉取并写入到 [Relay log](#relay-log) 的 [Binlog event](#binlog-event) 对应的 [Binlog position](#binlog-position) 或 [GTID](#gtid) 信息。
+另外，[Relay 处理单元](#relay-处理单元)对应的 `relay.meta` 内记录的信息也相当于 Checkpoint，其对应于 Relay 处理单元已经成功从上游拉取并写入到 [Relay log](#relay-log) 的 [Binlog event](#binlog-event) 对应的 [Binlog position](#binlog-position) 或 [GTID](#gtid) 信息。
 
 ## D
 
@@ -67,7 +69,7 @@ DM-worker 内部用于从上游导出全量数据的处理单元，每个 Subtas
 
 ### GTID
 
-MySQL/MariaDB 的全局事务 ID，当启用该功能后会在 Binlog 文件中记录 GTID 相关信息，多个 GTID 即组成为 GTID Set，具体请参考 [MySQL GTID Format and Storage](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids-concepts.html) 与 [MariaDB Global Transaction ID](https://mariadb.com/kb/en/library/gtid/)。
+MySQL/MariaDB 的全局事务 ID，当启用该功能后会在 Binlog 文件中记录 GTID 相关信息，多个 GTID 即组成为 GTID Set，具体请参考 [MySQL GTID Format and Storage](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids-concepts.html) 与 [MariaDB Global Transaction ID](https://mariadb.com/docs/server/ha-and-performance/standard-replication/gtid)。
 
 ## L
 
@@ -87,7 +89,7 @@ DM-worker 内部用于将全量导出数据导入到下游的处理单元，每�
 
 ### Relay log
 
-DM-worker 从上游 MySQL/MariaDB 拉取 Binlog 后存储在本地的文件，当前其格式为标准的 Binlog 格式，可使用版本兼容的 [mysqlbinlog](https://dev.mysql.com/doc/refman/8.0/en/mysqlbinlog.html) 等工具进行解析。其作用与 [MySQL Relay Log](https://dev.mysql.com/doc/refman/8.0/en/replica-logs-relaylog.html) 及 [MariaDB Relay Log](https://mariadb.com/kb/en/library/relay-log/) 相近。
+DM-worker 从上游 MySQL/MariaDB 拉取 Binlog 后存储在本地的文件，当前其格式为标准的 Binlog 格式，可使用版本兼容的 [mysqlbinlog](https://dev.mysql.com/doc/refman/8.0/en/mysqlbinlog.html) 等工具进行解析。其作用与 [MySQL Relay Log](https://dev.mysql.com/doc/refman/8.0/en/replica-logs-relaylog.html) 及 [MariaDB Relay Log](https://mariadb.com/docs/server/server-management/server-monitoring-logs/binary-log/relay-log) 相近。
 
 有关 TiDB DM 内 Relay log 的目录结构、初始迁移规则、数据清理等内容，可参考 [TiDB DM Relay Log](/dm/relay-log.md)。
 

@@ -9,7 +9,7 @@ summary: 了解 TiDB 7.4.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：7.4.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.4/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v7.4.0-DMR#version-list)
+试用链接：[快速体验](https://docs-archive.pingcap.com/zh/tidb/v7.4/quick-start-with-tidb)
 
 在 7.4.0 版本中，你可以获得以下关键特性：
 
@@ -24,15 +24,15 @@ TiDB 版本：7.4.0
 <tbody>
   <tr>
     <td rowspan="3">稳定性与高可用</td>
-    <td>引入<a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-global-sort" target="_blank">全局排序能力</a>，提升<code>IMPORT INTO</code>和<code>ADD INDEX</code>任务的性能和稳定性（实验特性）</td>
-    <td>在 v7.4.0 以前，使用<a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-distributed-execution-framework" target="_blank">分布式并行执行框架</a>执行 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> 等任务时，只能对部分数据进行局部排序。这导致 TiKV 需要采取额外操作，并且在将数据导入到 TiKV 之前，TiDB 节点还需要为其分配本地磁盘空间以进行排序。<br/>随着 v7.4.0 引入全局排序特性，可以将数据暂时存储在外部存储（如 S3）中进行全局排序后再导入到 TiKV 中。这一改进降低了 TiKV 对资源的额外消耗，并显著提高了 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> 等操作的性能和稳定性。</td>
+    <td>引入<a href="https://docs-archive.pingcap.com/zh/tidb/v7.4/tidb-global-sort" target="_blank">全局排序能力</a>，提升<code>IMPORT INTO</code>和<code>ADD INDEX</code>任务的性能和稳定性（实验特性）</td>
+    <td>在 v7.4.0 以前，使用<a href="https://docs-archive.pingcap.com/zh/tidb/v7.4/tidb-distributed-execution-framework" target="_blank">分布式并行执行框架</a>执行 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> 等任务时，只能对部分数据进行局部排序。这导致 TiKV 需要采取额外操作，并且在将数据导入到 TiKV 之前，TiDB 节点还需要为其分配本地磁盘空间以进行排序。<br/>随着 v7.4.0 引入全局排序特性，可以将数据暂时存储在外部存储（如 S3）中进行全局排序后再导入到 TiKV 中。这一改进降低了 TiKV 对资源的额外消耗，并显著提高了 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> 等操作的性能和稳定性。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-resource-control#管理后台任务" target="_blank">资源管控</a>支持自动管理后台任务（实验特性）</td>
+    <td><a href="https://docs-archive.pingcap.com/zh/tidb/v7.4/tidb-resource-control#管理后台任务" target="_blank">资源管控</a>支持自动管理后台任务（实验特性）</td>
     <td>从 v7.1.0 开始，资源管控成为正式功能，该特性有助于缓解不同工作负载间的资源与存储访问干扰。TiDB v7.4.0 将此资源控制应用于后台任务。资源管控可以识别和管理后台任务，例如自动收集统计信息、备份和恢复、TiDB Lightning 批量数据导入以及在线 DDL。未来，所有后台任务都将纳入资源管控。</td>
   </tr>
   <tr>
-    <td>TiFlash 支持<a href="https://docs.pingcap.com/zh/tidb/v7.4/tiflash-disaggregated-and-s3" target="_blank">存储计算资源分离和 S3 共享存储</a> (GA) </td>
+    <td>TiFlash 支持<a href="https://docs-archive.pingcap.com/zh/tidb/v7.4/tiflash-disaggregated-and-s3" target="_blank">存储计算资源分离和 S3 共享存储</a> (GA) </td>
     <td>TiFlash 存算分离架构和 S3 共享存储成为正式功能：
       <ul>
         <li>支持分离 TiFlash 的存储和计算资源，提升 HTAP 资源的弹性能力。</li>
@@ -42,7 +42,7 @@ TiDB 版本：7.4.0
   </tr>
   <tr>
     <td rowspan="2">SQL</td>
-    <td>TiDB 支持完整的<a href="https://docs.pingcap.com/zh/tidb/v7.4/partitioned-table#将分区表转换为非分区表" target="_blank">分区类型管理功能</a> </td>
+    <td>TiDB 支持完整的<a href="https://docs-archive.pingcap.com/zh/tidb/v7.4/partitioned-table#将分区表转换为非分区表" target="_blank">分区类型管理功能</a> </td>
     <td>在 v7.4.0 之前，Range/List 分区表支持分区管理操作包括 <code>TRUNCATE</code>、<code>EXCHANGE</code>、<code>ADD</code>、<code>DROP</code>、<code>REORGANIZE</code> 等，Hash/Key 分区表支持分区管理操作包括 <code>ADD</code> 和 <code>COALESCE</code> 等。
     <p>现在 TiDB 新增支持了以下分区类型管理操作：</p>
     <ul>
@@ -53,12 +53,12 @@ TiDB 版本：7.4.0
     </td>
   </tr>
   <tr>
-    <td>MySQL 8.0 兼容性：支持<a href="https://docs.pingcap.com/zh/tidb/v7.4/character-set-and-collation#支持的字符集和排序规则" target="_blank">排序规则 <code>utf8mb4_0900_ai_ci</code></a></td>
+    <td>MySQL 8.0 兼容性：支持<a href="https://docs-archive.pingcap.com/zh/tidb/v7.4/character-set-and-collation#支持的字符集和排序规则" target="_blank">排序规则 <code>utf8mb4_0900_ai_ci</code></a></td>
     <td>MySQL 8.0 的一个显著变化是默认字符集更改为 utf8mb4，其默认排序规则是 <code>utf8mb4_0900_ai_ci</code>。TiDB v7.4.0 增强了与 MySQL 8.0 的兼容性。现在你可以更轻松地将在 MySQL 8.0 中使用默认排序规则创建的数据库迁移或复制到 TiDB。</td>
   </tr>
   <tr>
     <td>数据库管理与可观测性</td>
-    <td>选择<a href="https://docs.pingcap.com/zh/tidb/v7.4/system-variables#tidb_service_scope-从-v740-版本开始引入" target="_blank">适用的 TiDB 节点</a>来并行执行 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> SQL 语句（实验特性）</td>
+    <td>选择<a href="https://docs-archive.pingcap.com/zh/tidb/v7.4/system-variables#tidb_service_scope-从-v740-版本开始引入" target="_blank">适用的 TiDB 节点</a>来并行执行 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> SQL 语句（实验特性）</td>
     <td>你可以选择在现有 TiDB 节点、或者新增 TiDB 节点执行 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> SQL 语句。该方法可以实现与其他 TiDB 节点的资源隔离，确保在执行上述语句时的最佳性能，并避免对已有业务造成性能影响。</td>
   </tr>
 </tbody>
@@ -154,7 +154,7 @@ TiDB 版本：7.4.0
 
     通过配置 TiFlash 参数 `enable_resource_control`，你可以控制是否开启 TiFlash 资源管控特性。开启后，TiFlash 将根据 TiDB 的资源组配置进行资源调度管理，确保整体资源的合理分配和使用。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md)。
+    更多信息，请参考[用户文档](/tidb-resource-control-ru-groups.md)。
 
 * TiFlash 支持 Pipeline 执行模型 (GA) [#6518](https://github.com/pingcap/tiflash/issues/6518) @[SeaRise](https://github.com/SeaRise)
 
@@ -183,7 +183,7 @@ TiDB 版本：7.4.0
 
   默认情况下，被标记为后台任务的任务类型为空，此时后台任务的管理功能处于关闭状态，其行为与 TiDB v7.4.0 之前版本保持一致。你需要手动修改 `default` 资源组的后台任务类型以开启后台任务管理。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md#管理后台任务)。
+    更多信息，请参考[用户文档](/tidb-resource-control-background-tasks.md)。
 
 * 锁定统计信息成为正式功能 (GA) [#46351](https://github.com/pingcap/tidb/issues/46351) @[hi-rustin](https://github.com/Rustin170506)
 
@@ -198,6 +198,14 @@ TiDB 版本：7.4.0
     从 v7.4.0 开始，TiDB 引入系统变量 [`tidb_opt_enable_hash_join`](/system-variables.md#tidb_opt_enable_hash_join-从-v656v712-和-v740-版本开始引入) 对表的哈希连接进行控制。默认开启 (`ON`)。如果你非常确定执行计划中不需要选择表之间的哈希连接，则可以修改变量为 `OFF`，降低执行计划回退的可能性，提升系统稳定性。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_opt_enable_hash_join-从-v656v712-和-v740-版本开始引入)。
+
+* 控制统计信息缓存成为正式功能 (GA) [#45367](https://github.com/pingcap/tidb/issues/45367) @[hawkingrei](https://github.com/hawkingrei)
+
+    TiDB 实例可以缓存表的统计信息，以加速执行计划的生成，提升 SQL 执行性能。从 v6.1.0 开始，引入了系统变量 [`tidb_stats_cache_mem_quota`](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入)，你可以通过设置该变量，控制统计信息缓存占用的内存上限。当统计信息缓存达到限额时，TiDB 会自动驱逐不活跃的缓存，从而控制实例的内存使用，提升稳定性。
+
+    从 v7.4.0 开始，该功能成为正式功能 (GA)。
+
+    更多信息，请参考[用户文档](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入)。
 
 ### SQL 功能
 
@@ -297,7 +305,7 @@ TiDB 版本：7.4.0
 | [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) | 新增 | 该变量用于指定[全局排序](/tidb-global-sort.md)中使用的云存储的 URI。 |
 | [`tidb_opt_enable_hash_join`](/system-variables.md#tidb_opt_enable_hash_join-从-v656v712-和-v740-版本开始引入) | 新增 | 控制优化器是否会选择表的哈希连接。默认打开 (`ON`)。设置为 `OFF` 时，除非没有计划可用，否则优化器会避免选择表的哈希连接。 |
 | [`tidb_opt_objective`](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入) | 新增 | 该变量用于设置优化器优化目标。`moderate` 维持旧版本的默认行为，优化器会利用更多信息尝试生成更优的计划；`determinate` 则倾向于保守，保持执行计划稳定。 |
-| [`tidb_request_source_type`](/system-variables.md#tidb_request_source_type-从-v740-版本开始引入) | 新增 | 该变量用于显式指定当前会话的任务类型，用于[资源管控](/tidb-resource-control.md)识别并控制。如 `SET @@tidb_request_source_type = "background"`。 |
+| [`tidb_request_source_type`](/system-variables.md#tidb_request_source_type-从-v740-版本开始引入) | 新增 | 该变量用于显式指定当前会话的任务类型，用于[资源管控](/tidb-resource-control-ru-groups.md)识别并控制。如 `SET @@tidb_request_source_type = "background"`。 |
 | [`tidb_schema_version_cache_limit`](/system-variables.md#tidb_schema_version_cache_limit-从-v740-版本开始引入) | 新增 | 该变量用于限制 TiDB 实例可以缓存多少个历史版本的表结构信息。默认值为 `16`，即默认缓存 16 个历史版本的表结构信息。|
 | [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | 新增 | 该变量是一个实例级别的变量，用于控制 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)下各 TiDB 节点的服务范围。当设置 TiDB 节点的 `tidb_service_scope` 为 `background` 时，分布式执行框架将调度该节点执行任务（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）。 |
 | [`tidb_session_alias`](/system-variables.md#tidb_session_alias-从-v740-版本开始引入) | 新增 | 用来自定义当前会话相关日志中 `session_alias` 列的值。 |
@@ -315,6 +323,7 @@ TiDB 版本：7.4.0
 | TiFlash | [`flash.compact_log_min_gap`](/tiflash/tiflash-configuration.md) | 新增 | 在当前 Raft 状态机推进的 `applied_index` 和上次落盘时的 `applied_index` 的差值高于 `compact_log_min_gap` 时，TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行数据落盘。 |
 | TiFlash | [`profiles.default.enable_resource_control`](/tiflash/tiflash-configuration.md) | 新增 | 控制是否开启 TiFlash 资源管控功能。 |
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md) | 修改 | 默认值从 `4` 修改为 `5`，该格式可以合并小文件从而减少了物理文件数量。 |
+| TiFlash | [`task_scheduler_active_set_soft_limit`](/tiflash/tiflash-configuration.md#task_scheduler_active_set_soft_limit-从-v640-版本开始引入) | 修改 | 默认值从 `vcpu * 0.25` 改为 `vcpu * 2`. |
 | Dumpling  | [`--csv-line-terminator`](/dumpling-overview.md#dumpling-主要选项表) | 新增 | 控制导出数据为 CSV 文件的换行符，支持 `"\r\n"` 和 `"\n"`，默认值为 `"\r\n"`，即和历史版本保持一致。 |
 | TiCDC | [`claim-check-storage-uri`](/ticdc/ticdc-sink-to-kafka.md#发送大消息到外部存储) | 新增 | 当指定 `large-message-handle-option` 为 `claim-check` 时，`claim-check-storage-uri` 必须设置为一个有效的外部存储服务地址，否则创建 Changefeed 将会报错。|
 | TiCDC | [`large-message-handle-compression`](/ticdc/ticdc-sink-to-kafka.md#ticdc-层数据压缩功能) | 新增 | 控制是否开启编码时的压缩功能，默认为空，即不开启。|
@@ -322,7 +331,7 @@ TiDB 版本：7.4.0
 
 ## 废弃和删除的功能
 
-+ [Mydumper](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview) 计划在 v7.5.0 中废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
++ [Mydumper](https://docs-archive.pingcap.com/zh/tidb/v4.0/mydumper-overview) 计划在 v7.5.0 中废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
 + TiKV-importer 组件计划在 v7.5.0 中废弃，建议使用 [TiDB Lightning 物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)作为替代方案。
 + TiCDC 移除 `enable-old-value` 参数 [#9667](https://github.com/pingcap/tiflow/issues/9667) @[3AceShowHand](https://github.com/3AceShowHand)
 

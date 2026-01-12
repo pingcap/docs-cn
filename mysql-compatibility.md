@@ -21,7 +21,7 @@ TiDB 高度兼容 MySQL 协议，以及 MySQL 5.7 和 MySQL 8.0 常用的功能�
 
 > **注意：**
 >
-> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/security-compatibility-with-mysql.md)、[悲观事务模式](/pessimistic-transaction.md#和-mysql-innodb-的差异)相关的兼容信息，请查看各自具体页面。
+> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于安全特性相关的兼容信息，请查看[TiDB 与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)。
 
 ## 不支持的功能特性
 
@@ -31,7 +31,7 @@ TiDB 高度兼容 MySQL 协议，以及 MySQL 5.7 和 MySQL 8.0 常用的功能�
 * 自定义函数
 * 全文语法与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 空间类型的函数（即 `GIS`/`GEOMETRY`）、数据类型和索引 [#6347](https://github.com/pingcap/tidb/issues/6347)
-* 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk` 的字符集
+* 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk`、`gb18030` 的字符集
 * MySQL 追踪优化器
 * XML 函数
 * X-Protocol [#1109](https://github.com/pingcap/tidb/issues/1109)
@@ -48,12 +48,13 @@ TiDB 高度兼容 MySQL 协议，以及 MySQL 5.7 和 MySQL 8.0 常用的功能�
 * 降序索引 [#2519](https://github.com/pingcap/tidb/issues/2519)
 * `SKIP LOCKED` 语法 [#18207](https://github.com/pingcap/tidb/issues/18207)
 * 横向派生表 [#40328](https://github.com/pingcap/tidb/issues/40328)
+* JOIN 的 ON 子句的子查询 [#11414](https://github.com/pingcap/tidb/issues/11414)
 
 ## 与 MySQL 有差异的特性详细说明
 
 ### 自增 ID
 
-- TiDB 的自增列既能保证唯一，也能保证在单个 TiDB server 中自增，使用 [`AUTO_INCREMENT` MySQL 兼容模式](/auto-increment.md#mysql-兼容模式)能保证多个 TiDB server 中自增 ID，但不保证自动分配的值的连续性。建议避免将缺省值和自定义值混用，以免出现 `Duplicated Error` 的错误。
+- TiDB 的自增列既能保证唯一，也能保证在单个 TiDB server 中自增，使用 [`AUTO_INCREMENT` 兼容 MySQL 的自增列模式](/auto-increment.md#兼容-mysql-的自增列模式)能保证多个 TiDB server 中自增 ID，但不保证自动分配的值的连续性。建议避免将缺省值和自定义值混用，以免出现 `Duplicated Error` 的错误。
 
 - TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭允许移除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE`。
 
@@ -91,7 +92,7 @@ mysql> SELECT _tidb_rowid, id FROM t;
 3 rows in set (0.01 sec)
 ```
 
-可以看到，由于共用分配器，id 每次自增步长是 2。在 [MySQL 兼容模式](/auto-increment.md#mysql-兼容模式)中改掉了该行为，没有共用分配器，因此不会跳号。
+可以看到，由于共用分配器，id 每次自增步长是 2。在[兼容 MySQL 的自增列模式](/auto-increment.md#兼容-mysql-的自增列模式)中改掉了该行为，没有共用分配器，因此不会跳号。
 
 > **注意：**
 >
@@ -99,7 +100,7 @@ mysql> SELECT _tidb_rowid, id FROM t;
 
 ### Performance schema
 
-TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控指标。因此，TiDB 的 Performance schema 表返回空结果。
+TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控指标。因此，TiDB 的大多数 [performance schema 表](/performance-schema/performance-schema.md)返回空结果。
 
 ### 查询计划
 
@@ -165,6 +166,8 @@ TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写�
 * 关于 TiDB 对字符集和排序规则的支持情况，详见[字符集和排序规则](/character-set-and-collation.md)。
 
 * 关于 GBK 字符集与 MySQL 的兼容情况，详见 [GBK 兼容情况](/character-set-gbk.md#与-mysql-的兼容性)。
+
+* 关于 GB18030 字符集与 MySQL 的兼容情况，详见 [GB18030 与 MySQL 的兼容性](/character-set-gb18030.md#与-mysql-的兼容性)。
 
 * TiDB 继承表中使用的字符集作为国家字符集。
 
@@ -241,3 +244,7 @@ TiDB 资源组创建与修改语句的语法与 MySQL 官方不同，详情参�
 - [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md)
 - [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md)
 - [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md)
+
+## 悲观事务（锁）方面与 MySQL InnoDB 的差异
+
+关于 TiDB 与 MySQL InnoDB 处理悲观事务（锁）的差异，请参阅[和 MySQL InnoDB 的差异](/pessimistic-transaction.md#和-mysql-innodb-的差异)。

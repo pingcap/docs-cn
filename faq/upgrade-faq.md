@@ -14,7 +14,7 @@ aliases: ['/docs-cn/dev/faq/upgrade-faq/','/docs-cn/dev/faq/upgrade/']
 
 ### 滚动升级有那些影响？
 
-滚动升级 TiDB 期间，业务运行会受到一定影响。因此，不建议在业务高峰期进行滚动升级。需要配置最小集群拓扑 (TiDB \* 2、PD \* 3、TiKV \* 3)，如果集群环境中有 Pump 和 Drainer 服务，建议先停止 Drainer，然后滚动升级（升级 TiDB 时会升级 Pump）。
+滚动升级 TiDB 期间，业务运行会受到一定影响。因此，不建议在业务高峰期进行滚动升级。需要配置最小集群拓扑 (TiDB \* 2、PD \* 3、TiKV \* 3)。
 
 ### 集群在执行 DDL 请求期间可以进行升级操作吗？
 
@@ -35,6 +35,12 @@ aliases: ['/docs-cn/dev/faq/upgrade-faq/','/docs-cn/dev/faq/upgrade/']
 ## 升级后常见问题
 
 本小节列出了一些升级后可能会遇到的问题与解决办法。
+
+### TiDB 升级后 JDBC 连接的排序规则变化问题
+
+当从较低版本升级到 v7.4 或更高版本时，如果 JDBC URL 中未配置 `connectionCollation`，且 `characterEncoding` 未配置或配置为 `UTF-8`，升级后 JDBC 连接的默认排序规则可能会从 `utf8mb4_bin` 变更为 `utf8mb4_0900_ai_ci`。如需保持排序规则为 `utf8mb4_bin`，请在 JDBC URL 中配置 `connectionCollation=utf8mb4_bin`。
+
+更多信息，请参考 [JDBC 连接所使用的排序规则](/faq/sql-faq.md#jdbc-连接所使用的排序规则)。
 
 ### 执行 DDL 操作时遇到的字符集 (charset) 问题
 

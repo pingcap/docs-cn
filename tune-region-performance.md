@@ -11,7 +11,13 @@ summary: 了解如何通过调整 Region 大小等方法对 Region 进行性能�
 
 TiKV 自动将底层数据进行[分片](/best-practices/tidb-best-practices.md#数据分片)，所有数据按照 key 的范围划分为若干个 Region。当某个 Region 的大小超过一定限制后，TiKV 会将它分裂为多个 Region。
 
-在大量数据的场景下，如果 Region 较小，可能会出现 Region 数量过多的情况，从而带来更多的资源开销和导致[性能回退](/best-practices/massive-regions-best-practices.md#性能问题)的问题。从 v6.1.0 开始，TiDB 支持设置自定义的 Region 大小。Region 默认的大小约为 96 MiB，将其调大可以减少 Region 个数。
+在大量数据的场景下，如果 Region 较小，可能会出现 Region 数量过多的情况，从而带来更多的资源开销和导致[性能回退](/best-practices/massive-regions-best-practices.md#性能问题)的问题。
+
+> **说明：**
+>
+> - 在 v6.1.0 中，TiDB 支持设置自定义的 Region 大小，该特性为实验特性。
+> - 从 v6.5.0 开始，该特性成为正式功能（GA）。
+> - 从 v8.4.0 开始，Region 默认的大小从 96 MiB 调整为 256 MiB，将其调大可以减少 Region 个数。
 
 开启 [Hibernate Region](/best-practices/massive-regions-best-practices.md#方法四开启-hibernate-region-功能) 或 [`Region Merge`](/best-practices/massive-regions-best-practices.md#方法五开启-region-merge) 也可以减少过多 Region 带来的性能开销。
 
@@ -36,10 +42,6 @@ Region 的大小可以通过 [`coprocessor.region-split-size`](/tikv-configurati
 Region 调大以后，如需进一步提高查询的并发度，可以设置 [`coprocessor.enable-region-bucket`](/tikv-configuration-file.md#enable-region-bucket-从-v610-版本开始引入) 为 `true`。这个配置会将每个 Region 划分为更小的区间 bucket，并且以这个更小的区间作为并发查询单位，以提高扫描数据的并发度。bucket 的大小通过 [`coprocessor.region-bucket-size`](/tikv-configuration-file.md#region-bucket-size-从-v610-版本开始引入) 来控制。
 
 ## 通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力
-
-> **警告：**
->
-> Active PD Follower 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 当集群的 Region 数量较多时，PD leader 处理心跳和调度任务的开销也较大，可能导致 CPU 资源紧张。如果同时集群中的 TiDB 实例数量较多，查询 Region 信息请求并发量较大，PD leader CPU 压力将变得更大，可能会造成 PD 服务不可用。
 

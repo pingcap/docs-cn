@@ -28,7 +28,7 @@ tiup cluster import [flags]
 
 ## 选项
 
-### -d, --dir string（string，默认 当前目录）
+### -d, --dir string（string，默认当前目录）
 
 指定 TiDB Ansible 所在目录。
 
@@ -59,5 +59,3 @@ tiup cluster import [flags]
 ## 输出
 
 导入过程的日志信息。
-
-[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

@@ -12,18 +12,28 @@ summary: TiDB 数据库中 QUERY WATCH 的使用概况。
 ```ebnf+diagram
 AddQueryWatchStmt ::=
     "QUERY" "WATCH" "ADD" QueryWatchOptionList
+
 QueryWatchOptionList ::=
     QueryWatchOption
 |   QueryWatchOptionList QueryWatchOption
 |   QueryWatchOptionList ',' QueryWatchOption
+
 QueryWatchOption ::=
     "RESOURCE" "GROUP" ResourceGroupName
 |   "RESOURCE" "GROUP" UserVariable
 |   "ACTION" EqOpt ResourceGroupRunawayActionOption
 |   QueryWatchTextOption
+
 ResourceGroupName ::=
     Identifier
 |   "DEFAULT"
+
+ResourceGroupRunawayActionOption ::=
+    DRYRUN
+|   COOLDOWN
+|   KILL
+|   "SWITCH_GROUP" '(' ResourceGroupName ')'
+
 QueryWatchTextOption ::=
     "SQL" "DIGEST" SimpleExpr
 |   "PLAN" "DIGEST" SimpleExpr
@@ -40,7 +50,7 @@ DropQueryWatchStmt ::=
 
 ## 参数说明
 
-详见 [`QUERY WATCH` 语句说明](/tidb-resource-control.md#query-watch-语句说明)。
+详见 [`QUERY WATCH` 语句说明](/tidb-resource-control-runaway-queries.md#query-watch-语句说明)。
 
 ## MySQL 兼容性
 
@@ -48,4 +58,4 @@ DropQueryWatchStmt ::=
 
 ## 另请参阅
 
-* [Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)
+* [Runaway Queries](/tidb-resource-control-runaway-queries.md#管理资源消耗超出预期的查询-runaway-queries)

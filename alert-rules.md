@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 # TiDB 集群报警规则
 
-本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiFlash、TiDB Binlog、TiCDC、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
+本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiFlash、TiCDC、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
 
 按照严重程度由高到低，报警项可分为紧急级别 \> 严重级别 \> 警告级别三类。该分级适用于以下各组件的报警项。
 
@@ -121,12 +121,11 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     TiDB 服务中发生的事件数量。当出现以下事件的时候会报警：
 
     1. start：TiDB 服务启动。
-    2. hang：当发生了 Critical 级别的事件时（目前只有 Binlog 写不进去一种情况），TiDB 进入 `hang` 模式，并等待人工 Kill。
+    2. hang：当发生了 Critical 级别的事件时，TiDB 进入 `hang` 模式，并等待人工 Kill。
 
 * 处理方法：
 
-    * 重启 TiDB 以恢复服务。
-    * 检查 TiDB Binlog 服务是否正常。
+    重启 TiDB 以恢复服务。
 
 #### `TiDB_tikvclient_backoff_seconds_count`
 
@@ -555,17 +554,19 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
     1. 从 TiDB 日志中查看慢查询日志，看查询是否用到了索引或全表扫，或者看是否需要做 analyze。
     2. 排查是否有热点。
-    3. 查看 Coprocessor 监控，看 `coporcessor table/index scan` 里 `total` 和 `process` 是否匹配。如果相差太大，表明做了太多的无效查询。看是否有 `over seek bound`，如果有，表明版本太多，GC 工作不及时，需要增大并行 GC 的线程数。
+    3. 查看 Coprocessor 监控，看 `coprocessor table/index scan` 里 `total` 和 `process` 是否匹配。如果相差太大，表明做了太多的无效查询。看是否有 `over seek bound`，如果有，表明版本太多，GC 工作不及时，需要增大并行 GC 的线程数。
 
 #### `TiKV_raftstore_thread_cpu_seconds_total`
 
 * 报警规则：
 
-    `sum(rate(tikv_thread_cpu_seconds_total{name=~"raftstore_.*"}[1m])) by (instance, name) > 1.6`
+    `sum(rate(tikv_thread_cpu_seconds_total{name=~"raftstore_.*"}[1m])) by (instance) > 1.6`
 
 * 规则描述：
 
-    Raftstore 线程压力太大。
+    监测 raftstore 的 CPU 消耗。如果该值偏大，表明 Raftstore 线程压力很大。
+
+    该报警项的阈值为 [`raftstore.store-pool-size`](/tikv-configuration-file.md#store-pool-size) 的 80%。`raftstore.store-pool-size` 默认为 2，所以该阈值为 1.6。 
 
 * 处理方法：
 
@@ -603,8 +604,8 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 处理方法：
 
-    1. 查看 Scheduler-All 监控中的 scheduler command duration，看哪一个命令耗时最大。
-    2. 查看 Scheduler-All 监控中的 scheduler scan details，看 `total` 和 `process` 是否匹配。如果相差太大，表明有很多无效的扫描，另外观察是否有 `over seek bound`，如果太多，表明 GC 不及时。
+    1. 查看 `Scheduler` 和 `Scheduler-${cmd}`（`${cmd}` 为指定待查询的写命令）监控中的 scheduler command duration，看哪一个命令耗时最大。
+    2. 查看 `Scheduler` 和 `Scheduler-${cmd}` 监控中的 scheduler scan details，检查 `total` 和 `process` 是否匹配。如果相差太大，表明有很多无效的扫描。同时观察是否有 `over seek bound`，如果太多，表明 GC 不及时。
     3. 查看 Storage 监控中的 storage async snapshot/write duration，看是否 Raft 操作不及时。
 
 #### `TiKV_thread_apply_worker_cpu_seconds`
@@ -770,10 +771,6 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 ## TiFlash 报警规则
 
 关于 TiFlash 报警规则的详细描述，参见 [TiFlash 报警规则](/tiflash/tiflash-alert-rules.md)。
-
-## TiDB Binlog 报警规则
-
-关于 TiDB Binlog 报警规则的详细描述，参见 [TiDB Binlog 集群监控报警文档](/tidb-binlog/monitor-tidb-binlog-cluster.md#监控报警规则)。
 
 ## TiCDC 报警规则
 
@@ -960,38 +957,6 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 检查 TiFlash 服务所在机器是否宕机。
     * 检查 TiFlash 进程是否存在。
     * 检查监控机与 TiFlash 服务所在机器之间网络是否正常。
-
-#### `Pump_server_is_down`
-
-* 报警规则：
-
-    `probe_success{group="pump"} == 0`
-
-* 规则描述：
-
-    Pump 服务端口探测失败。
-
-* 处理方法：
-
-    * 检查 Pump 服务所在机器是否宕机。
-    * 检查 Pump 进程是否存在。
-    * 检查监控机与 Pump 服务所在机器之间网络是否正常。
-
-#### `Drainer_server_is_down`
-
-* 报警规则：
-
-    `probe_success{group="drainer"} == 0`
-
-* 规则描述：
-
-    Drainer 服务端口探测失败。
-
-* 处理方法：
-
-    * 检查 Drainer 服务所在机器是否宕机。
-    * 检查 Drainer 进程是否存在。
-    * 检查监控机与 Drainer 服务所在机器之间网络是否正常。
 
 #### `TiKV_server_is_down`
 

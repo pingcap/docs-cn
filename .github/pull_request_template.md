@@ -2,7 +2,7 @@
 
 ### First-time contributors' checklist <!--Remove this section if you're not a first-time contributor.-->
 
-- [ ] I've signed [**Contributor License Agreement**](https://cla-assistant.io/pingcap/docs-cn) that's required for repo owners to accept my contribution.
+- [ ] I've signed the [**Contributor License Agreement**](https://cla.pingcap.net/pingcap/docs), which is required for the repository owners to accept my contribution.
 
 ### What is changed, added or deleted? (Required)
 
@@ -19,16 +19,14 @@ By default, **CHOOSE MASTER ONLY** so your changes will be applied to the next T
 For details, see [tips for choosing the affected versions (in Chinese)](https://github.com/pingcap/docs-cn/blob/master/CONTRIBUTING.md#版本选择指南).
 
 - [ ] master (the latest development version)
-- [ ] v8.4 (TiDB 8.4 versions)
-- [ ] v8.3 (TiDB 8.3 versions)
-- [ ] v8.2 (TiDB 8.2 versions)
+- [ ] v9.0 (TiDB 9.0 versions)
+- [ ] v8.5 (TiDB 8.5 versions)
 - [ ] v8.1 (TiDB 8.1 versions)
 - [ ] v7.5 (TiDB 7.5 versions)
 - [ ] v7.1 (TiDB 7.1 versions)
 - [ ] v6.5 (TiDB 6.5 versions)
 - [ ] v6.1 (TiDB 6.1 versions)
 - [ ] v5.4 (TiDB 5.4 versions)
-- [ ] v5.3 (TiDB 5.3 versions))
 
 ### What is the related PR or file link(s)?
 

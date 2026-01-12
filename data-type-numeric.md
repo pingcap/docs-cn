@@ -18,6 +18,10 @@ TiDB 支持 MySQL 所有的整数类型，包括 `INTEGER`/`INT`、`TINYINT`、`
 
 字段说明：
 
+> **警告：**
+>
+> 从 v8.5.0 开始，整数显示宽度功能已废弃（[`deprecate-integer-display-length`](/tidb-configuration-file.md#deprecate-integer-display-length) 默认为 `true`）。不建议为整数类型指定显示宽度。
+
 | 语法元素 | 说明 |
 | ---- | --------|
 | M | 类型显示宽度，可选 |

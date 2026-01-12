@@ -53,20 +53,6 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
     该告警与同步任务中断类似，可参考 [TiCDC 同步任务出现中断](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断)的处理方法。
 
-### `ticdc_processor_exit_with_error_count`
-
-* 报警规则：
-
-    `changes(ticdc_processor_exit_with_error_count[1m]) > 0`
-
-* 规则描述：
-
-    TiCDC 某个同步任务报错退出。
-
-* 处理方法：
-
-    参考 [TiCDC 同步任务出现中断](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断)的处理方法。
-
 ## 警告级别报警项
 
 警告级别的报警是对某一问题或错误的提醒。
@@ -85,61 +71,47 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
     收集 TiCDC 日志，定位原因。
 
-### `cdc_sink_flush_duration_time_more_than_10s`
+### `cdc_no_owner`
 
 * 报警规则：
 
-    `histogram_quantile(0.9, rate(ticdc_sink_txn_worker_flush_duration[1m])) > 10`
+    `sum(rate(ticdc_owner_ownership_counter[240s])) < 0.5`
 
 * 规则描述：
-
-    TiCDC 某一同步任务写下游执行时间超过 10 秒。
+    
+    TiCDC 集群超过 10 分钟没有 owner。
 
 * 处理方法：
 
-    检查下游是否出现问题。
+    收集 TiCDC 日志，定位原因。
 
-### `cdc_processor_checkpoint_tso_no_change_for_1m`
+### `ticdc_changefeed_meet_error`
 
 * 报警规则：
 
-    `changes(ticdc_processor_checkpoint_ts[1m]) < 1`
+    `(max_over_time(ticdc_owner_status[1m]) == 1 or max_over_time(ticdc_owner_status[1m]) == 6) > 0`
 
 * 规则描述：
 
-    TiCDC 某一个同步任务进度超过 1 分钟没有推进。
+    TiCDC 某个同步任务遇到错误。
 
 * 处理方法：
 
     参考 [TiCDC 同步任务出现中断](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断)的处理方法。
 
-### `ticdc_puller_entry_sorter_sort_bucket`
+### `ticdc_processor_exit_with_error_count`
 
 * 报警规则：
 
-    `histogram_quantile(0.9, rate(ticdc_puller_entry_sorter_sort_bucket{}[1m])) > 1`
+    `changes(ticdc_processor_exit_with_error_count[1m]) > 0`
 
 * 规则描述：
 
-    TiCDC puller entry sorter 排序延迟太高。
+    TiCDC 某个同步任务报错退出。
 
 * 处理方法：
 
-    收集 TiCDC 日志，定位原因。
-
-### `ticdc_puller_entry_sorter_merge_bucket`
-
-* 报警规则：
-
-    `histogram_quantile(0.9, rate(ticdc_puller_entry_sorter_merge_bucket{}[1m])) > 1`
-
-* 规则描述：
-
-    TiCDC puller entry sorter merge 延迟太高。
-
-* 处理方法：
-
-    收集 TiCDC 日志，定位原因。
+    参考 [TiCDC 同步任务出现中断](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断)的处理方法。
 
 ### `tikv_cdc_min_resolved_ts_no_change_for_1m`
 
@@ -169,15 +141,15 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
     收集 TiCDC 监控和 TiKV 日志，定位原因。
 
-### `ticdc_sink_mysql_execution_error`
+### `ticdc_sink_execution_error`
 
 * 报警规则：
 
-    `changes(ticdc_sink_mysql_execution_error[1m]) > 0`
+    `changes(ticdc_sink_execution_error[1m]) > 0`
 
 * 规则描述：
 
-    TiCDC 某一同步任务写下游 MySQL 时遇到错误。
+    TiCDC 某一同步任务写下游时遇到错误。
 
 * 处理方法：
 

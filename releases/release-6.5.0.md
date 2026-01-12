@@ -9,7 +9,7 @@ summary: 了解 TiDB 6.5.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：6.5.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.5.0#version-list)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.5/production-deployment-using-tiup)
 
 TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
@@ -24,7 +24,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 - [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)特性 GA，添加索引的性能约提升为 v6.1.0 的 10 倍。
 - TiDB 全局内存控制特性 GA，通过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 即可管理全局内存阈值。
-- 支持高性能、全局单调递增的 [`AUTO_INCREMENT` 列属性](/auto-increment.md#mysql-兼容模式) GA，兼容 MySQL。
+- 支持高性能、全局单调递增的 [`AUTO_INCREMENT` 列属性](/auto-increment.md#兼容-mysql-的自增列模式) GA，兼容 MySQL。
 - [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-cluster.md) 特性新增对 TiCDC 和 PITR 的兼容性支持，该特性已 GA。
 - 优化器引入的更精准的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2) GA，同时优化器增强索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能对 `AND` 连接的表达式的支持。
 - 支持下推 `JSON_EXTRACT()` 函数至 TiFlash。
@@ -60,7 +60,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     在大批量的数据处理场景，单一大事务 SQL 处理可能对集群稳定性和性能造成影响。非事务 DML 语句将一个 DML 语句拆成多个 SQL 语句在内部执行。拆分后的语句将牺牲事务原子性和隔离性，但是对于集群的稳定性有很大提升。TiDB 从 v6.1.0 开始支持非事务 `DELETE` 语句，v6.5.0 新增对非事务 `INSERT`、`REPLACE` 和 `UPDATE` 语句的支持。
 
-    更多信息，请参考[非事务 DML 语句](/non-transactional-dml.md) 和 [`BATCH` 语句](/sql-statements/sql-statement-batch.md)。
+    更多信息，请参考[非事务 DML 语句](/non-transactional-dml.md)和 [`BATCH` 语句](/sql-statements/sql-statement-batch.md)。
 
 * 支持 Time to live (TTL)（实验特性）[#39262](https://github.com/pingcap/tidb/issues/39262) @[lcwangchao](https://github.com/lcwangchao)
 
@@ -132,7 +132,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 如果 PD 节点因异常不可访问，也还可以继续使用 TiDB Dashboard 进行集群诊断。
     - 在开放 TiDB Dashboard 到外网时，不用担心 PD 中的特权端口的权限问题，降低集群的安全风险。
 
-  更多信息，请参考 [TiDB Operator 部署独立的 TiDB Dashboard](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/get-started#部署独立的-tidb-dashboard)。
+  更多信息，请参考 [TiDB Operator 部署独立的 TiDB Dashboard](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.5/get-started#部署独立的-tidb-dashboard)。
 
 * Performance Overview 面板中新增 TiFlash 和 CDC (Change Data Capture) 面板 [#39230](https://github.com/pingcap/tidb/issues/39230) @[dbsid](https://github.com/dbsid)
 
@@ -219,13 +219,13 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 支持高性能、全局单调递增的 `AUTO_INCREMENT` 列属性 (GA) [#38442](https://github.com/pingcap/tidb/issues/38442) @[tiancaiamao](https://github.com/tiancaiamao)
 
-    TiDB v6.4.0 引入了 `AUTO_INCREMENT` 的 MySQL 兼容模式作为实验特性，通过中心化分配自增 ID，实现了自增 ID 在所有 TiDB 实例上单调递增。使用该特性能够更容易地实现查询结果按自增 ID 排序。该功能在 v6.5.0 正式 GA。使用该功能的单表写入 TPS 预期超过 2 万，并支持通过弹性扩容提升单表和整个集群的写入吞吐。要使用 MySQL 兼容模式，你需要在建表时将 `AUTO_ID_CACHE` 设置为 `1`。
+    TiDB v6.4.0 引入了 `AUTO_INCREMENT` 的兼容 MySQL 的自增列模式作为实验特性，通过中心化分配自增 ID，实现了自增 ID 在所有 TiDB 实例上单调递增。使用该特性能够更容易地实现查询结果按自增 ID 排序。该功能在 v6.5.0 正式 GA。使用该功能的单表写入 TPS 预期超过 2 万，并支持通过弹性扩容提升单表和整个集群的写入吞吐。要使用兼容 MySQL 的自增列模式，你需要在建表时将 `AUTO_ID_CACHE` 设置为 `1`。
 
     ```sql
     CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
     ```
 
-    更多信息，请参考[用户文档](/auto-increment.md#mysql-兼容模式)。
+    更多信息，请参考[用户文档](/auto-increment.md#兼容-mysql-的自增列模式)。
 
 ### 数据迁移
 
@@ -321,10 +321,12 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) |  修改 | 该变量默认值由 `0` 修改为 `80%`，因为 TiDB 全局内存控制特性 GA，该调整默认开启 TiDB 实例的内存限制，并将默认的内存限制设为总内存的 80%。|
 | [`default_password_lifetime`](/system-variables.md#default_password_lifetime-从-v650-版本开始引入) | 新增 | 用于设置全局自动密码过期策略，要求用户定期修改密码。默认值为 `0`，表示禁用全局自动密码过期策略。 |
 | [`disconnect_on_expired_password`](/system-variables.md#disconnect_on_expired_password-从-v650-版本开始引入) | 新增 | 该变量是一个只读变量，用来显示 TiDB 是否会直接断开密码已过期用户的连接。 |
+| [`tidb_store_batch_size`](/system-variables.md#tidb_store_batch_size) | 新增 | 该变量默认关闭，其控制的功能尚未稳定，不建议在生产环境中修改该变量值。 |
 | [`password_history`](/system-variables.md#password_history-从-v650-版本开始引入) | 新增 | 基于密码更改次数的密码重用策略，不允许用户重复使用最近设置次数内使用过的密码。默认值为 `0`，表示禁用基于密码更改次数的密码重用策略。 |
 | [`password_reuse_interval`](/system-variables.md#password_reuse_interval-从-v650-版本开始引入) | 新增 | 基于经过时间限制的密码重用策略，不允许用户重复使用最近设置天数内使用过的密码。默认值为 `0`，表示禁用基于密码更改时间内的密码重用策略。 |
 | [`tidb_auto_build_stats_concurrency`](/system-variables.md#tidb_auto_build_stats_concurrency-从-v650-版本开始引入) | 新增 | 该变量用于设置执行统计信息自动更新的并发度，默认值为 `1`。 |
 | [`tidb_cdc_write_source`](/system-variables.md#tidb_cdc_write_source-从-v650-版本开始引入) | 新增 | 当变量非 `0` 时，该 SESSION 写入的数据将被视为是由 TiCDC 写入的。这个变量仅由 TiCDC 设置，任何时候都不应该手动调整该变量。 |
+| [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) | 新增 | 在 v6.5.0，该变量控制的功能尚未完全生效，请保留默认值。 |
 | [`tidb_index_merge_intersection_concurrency`](/system-variables.md#tidb_index_merge_intersection_concurrency-从-v650-版本开始引入) | 新增 | 这个变量用来设置索引合并进行交集操作时的最大并发度，仅在以动态裁剪模式访问分区表时有效。 |
 | [`tidb_source_id`](/system-variables.md#tidb_source_id-从-v650-版本开始引入) | 新增 | 设置在[双向复制](/ticdc/ticdc-bidirectional-replication.md)系统内不同集群的 ID。|
 | [`tidb_sysproc_scan_concurrency`](/system-variables.md#tidb_sysproc_scan_concurrency-从-v650-版本开始引入) | 新增 | 该变量用于设置 TiDB 执行内部 SQL 语句（例如统计信息自动更新）时 scan 操作的并发度，默认值为 `1`。 |
@@ -353,7 +355,8 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | TiDB | [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) | 废弃 | 自 v6.5.0 起，该配置项被废弃。请使用 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 系统变量进行设置。 |
 | TiDB | [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password-从-v650-版本开始引入) | 新增 | 该配置用于控制 TiDB 服务端是否直接断开密码已过期用户的连接，默认值为 `true`，表示 TiDB 服务端将直接断开密码已过期用户的连接。 |
 | TiKV | `raw-min-ts-outlier-threshold` | 删除 | 从 v6.4.0 起，该配置项被废弃。从 v6.5.0 起，该配置项被删除。 |
-| TiKV | [`cdc.min-ts-interval`](/tikv-configuration-file.md#min-ts-interval) | 修改 | 为了降低 CDC 延迟，该配置的默认值从 `1s` 修改为 `200ms`。 |
+| TiKV | [`raft-engine.bytes-per-sync`](/tikv-configuration-file.md#bytes-per-sync-2) | 废弃 | 从 v6.5.0 起，Raft Engine 在写入日志时不会缓存而是直接落盘，因此该配置项被废弃，且不再生效。 |
+| TiKV | [`cdc.min-ts-interval`](/tikv-configuration-file.md#min-ts-interval) | 修改 | 为了降低 CDC 延迟，该配置的默认值从 `"1s"` 修改为 `"200ms"`。 |
 | TiKV | [`memory-use-ratio`](/tikv-configuration-file.md#memory-use-ratio-从-v650-版本开始引入) | 新增 | 表示 PITR 日志恢复功能中可用内存与系统总内存的占比。 |
 | TiCDC | [`sink.terminator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 `\r\n` 作为换行符。 |
 | TiCDC | [`sink.date-separator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month`、`day`。默认值为 `none`，即不使用日期分隔。|

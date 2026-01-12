@@ -101,7 +101,7 @@ Slow Query 基础信息：
 * `Write_keys`：表示该事务向 TiKV 的 Write CF 写入 Key 的数量。
 * `Write_size`：表示事务提交时写 key 或 value 的总大小。
 * `Prewrite_region`：表示事务两阶段提交中第一阶段（prewrite 阶段）涉及的 TiKV Region 数量。每个 Region 会触发一次远程过程调用。
-* `Wait_prewrite_binlog_time`：表示事务提交时用于写 binlog 的时间。
+* `Wait_prewrite_binlog_time`：表示事务提交时用于写 binlog 的时间。从 v8.4.0 开始，TiDB Binlog 已移除，不再有相关时间。
 * `Resolve_lock_time`：表示事务提交时遇到锁后，清理锁或者等待锁过期的时间。
 
 和内存使用相关的字段：
@@ -135,8 +135,8 @@ Slow Query 基础信息：
 * `Cop_wait_p90`：cop-task 的 P90 分位等待时间。
 * `Cop_wait_max`：cop-task 的最大等待时间。
 * `Cop_wait_addr`：等待时间最长的 cop-task 所在地址。
-* `Rocksdb_delete_skipped_count`：RocksDB 读数据过程中已删除 Key 的扫描数。
-* `Rocksdb_key_skipped_count`：RocksDB 扫数据时遇到的已删除 (tombstone) Key 数量。
+* `Rocksdb_delete_skipped_count`：RocksDB 扫数据时遇到的已删除 (tombstone) Key 数量。
+* `Rocksdb_key_skipped_count`：RocksDB 扫数据时所有遇到的 Key 数量。
 * `Rocksdb_block_cache_hit_count`：RocksDB 从 Block Cache 缓存中读数据的次数。
 * `Rocksdb_block_read_count`：RocksDB 从文件系统中读数据的次数。
 * `Rocksdb_block_read_byte`：RocksDB 从文件系统中读数据的数据量。
@@ -167,6 +167,11 @@ Slow Query 基础信息：
 * `Request_unit_read`：执行语句消耗的总读 RU。
 * `Request_unit_write`：执行语句消耗的总写 RU。
 * `Time_queued_by_rc`：执行语句过程中等待可用资源的总耗时。
+
+和存储引擎相关的字段：
+
+- `Storage_from_kv`：从 v9.0.0 开始引入，表示该语句是否从 TiKV 读取数据。
+- `Storage_from_mpp`：从 v9.0.0 开始引入，表示该语句是否从 TiFlash 读取数据。
 
 ## 相关系统变量
 

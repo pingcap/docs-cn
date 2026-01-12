@@ -10,7 +10,7 @@ TiDB Dashboard 是 TiDB 自 4.0 版本起提供的图形化界面，可用于监
 
 > **注意：**
 >
-> TiDB v6.5.0 且 TiDB Operator v1.4.0 之后，在 Kubernetes 上支持将 TiDB Dashboard 作为独立的 Pod 部署。具体信息，参考 [TiDB Operator 部署独立的 TiDB Dashboard](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/get-started#部署独立的-tidb-dashboard)。
+> TiDB v6.5.0 且 TiDB Operator v1.4.0 之后，在 Kubernetes 上支持将 TiDB Dashboard 作为独立的 Pod 部署。具体信息，参考 [TiDB Operator 部署独立的 TiDB Dashboard](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.6/get-started#部署独立的-tidb-dashboard)。
 
 ![界面](/media/dashboard/dashboard-intro.gif)
 
@@ -62,7 +62,7 @@ TiDB Dashboard 在 GitHub 上[开源](https://github.com/pingcap-incubator/tidb-
 
 ## 预估资源管控容量
 
-为使用[资源管控 (Resource Control)](/tidb-resource-control.md) 特性实现资源隔离，集群管理员可以定义资源组 (Resource Group)，通过资源组限定配额。
+为使用[资源管控 (Resource Control)](/tidb-resource-control-ru-groups.md) 特性实现资源隔离，集群管理员可以定义资源组 (Resource Group)，通过资源组限定配额。
 
 在进行资源规划之前，你需要了解集群的整体容量。参阅[资源管控页面](/dashboard/dashboard-resource-manager.md)了解详情。
 

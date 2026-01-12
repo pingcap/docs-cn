@@ -404,7 +404,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8249
 
-    资源组不存在。在修改或绑定不存在的资源组时返回该错误。请参考[创建资源组](/tidb-resource-control.md#创建资源组)。
+    资源组不存在。在修改或绑定不存在的资源组时返回该错误。请参考[创建资源组](/tidb-resource-control-ru-groups.md#创建资源组)。
 
 * Error Number: 8250
 
@@ -428,11 +428,11 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8253
 
-    查询终止，因为满足 Runaway Queries 的条件。请参考 [Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
+    查询终止，因为满足 Runaway Queries 的条件。请参考 [Runaway Queries](/tidb-resource-control-runaway-queries.md)。
 
 * Error Number: 8254
 
-    查询终止，因为被 Runaway Queries 免疫命中。请参考 [Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
+    查询终止，因为被 Runaway Queries 免疫命中。请参考 [Runaway Queries](/tidb-resource-control-runaway-queries.md)。
 
 * Error Number: 8260
 
@@ -448,7 +448,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8263
 
-    该 DDL 无法在特定的 BDR role 下执行。请确定该集群是否处于[双向复制](/ticdc/ticdc-bidirectional-replication.md) 中。如果集群没有在双向复制中，可以通过 `ADMIN UNSET BDR ROLE;` 使 DDL 恢复正常使用。
+    该 DDL 无法在特定的 BDR role 下执行。请确定该集群是否处于[双向复制](/ticdc/ticdc-bidirectional-replication.md)中。如果集群没有在双向复制中，可以通过 `ADMIN UNSET BDR ROLE;` 使 DDL 恢复正常使用。
 
 * Error Number: 9001
 

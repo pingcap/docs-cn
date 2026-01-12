@@ -5,9 +5,9 @@ summary: 了解搜索 JSON 值的 JSON 函数。
 
 # 搜索 JSON 值的 JSON 函数
 
-本文档介绍用于搜索 JSON 值的 JSON 函数。
+TiDB 支持使用 MySQL 8.0 中提供的大部分[用于搜索 JSON 值的 JSON 函数](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html)。
 
-## [JSON_CONTAINS()](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-contains)
+## `JSON_CONTAINS()`
 
 通过返回 `1` 或 `0`，`JSON_CONTAINS(json_doc, candidate [,path])` 函数用于确认指定的 JSON 文档 `candidate` 是否包含在目标 JSON 文档中。
 
@@ -88,7 +88,7 @@ SELECT JSON_CONTAINS('{"foo": "bar", "aaa": 5}','"bar"', '$.foo');
 1 row in set (0.00 sec)
 ```
 
-## [JSON_CONTAINS_PATH()](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-contains-path)
+## `JSON_CONTAINS_PATH()`
 
 `JSON_CONTAINS_PATH(json_doc,all_or_one,path [,path, ...])` 函数返回 `0` 或 `1`，表示 JSON 文档是否包含指定路径下的数据。
 
@@ -139,7 +139,7 @@ SELECT JSON_CONTAINS_PATH('{"foo": "bar", "aaa": 5}','all','$.foo', '$.aaa');
 1 row in set (0.00 sec)
 ```
 
-## [JSON_EXTRACT()](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-extract)
+## `JSON_EXTRACT()`
 
 `JSON_EXTRACT(json_doc, path[, path] ...)` 函数从 JSON 文档中提取与 `path` 参数匹配的数据。
 
@@ -156,7 +156,7 @@ SELECT JSON_EXTRACT('{"foo": "bar", "aaa": 5}', '$.foo');
 1 row in set (0.00 sec)
 ```
 
-## [->](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#operator_json-column-path)
+## `->`
 
 `column->path` 函数返回 `column` 中与 `path` 参数匹配的数据。该函数是 [`JSON_EXTRACT()`](#json_extract) 的别名。
 
@@ -179,7 +179,7 @@ FROM (
 1 row in set (0.00 sec)
 ```
 
-## [->>](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#operator_json-inline-path)
+## `->>`
 
 `column->>path` 函数去掉 `column` 中与 `path` 参数匹配的数据的引号。它是 `JSON_UNQUOTE(JSON_EXTRACT(doc,path_literal))` 的别名。
 
@@ -204,7 +204,7 @@ FROM (
 1 row in set (0.00 sec)
 ```
 
-## [JSON_KEYS()](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-keys)
+## `JSON_KEYS()`
 
 `JSON_KEYS(json_doc [,path])` 函数以 JSON 数组的形式返回 JSON 对象的顶层键 (key)。如果指定了 `path` 参数，则返回所选路径的顶层键 (key)。
 
@@ -240,7 +240,7 @@ SELECT JSON_KEYS('{"name": {"first": "John", "last": "Doe"}, "type": "Person"}',
 1 row in set (0.00 sec)
 ```
 
-## [JSON_SEARCH()](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-search)
+## `JSON_SEARCH()`
 
 `JSON_SEARCH(json_doc,one_or_all,str)` 函数会在 JSON 文档中搜索与字符串匹配的一个或所有的匹配项。
 
@@ -276,7 +276,7 @@ SELECT JSON_SEARCH('{"a": ["aa", "bb", "cc"], "b": ["cc", "dd"]}','all','cc');
 1 row in set (0.01 sec)
 ```
 
-## [MEMBER OF()](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#operator_member-of)
+## `MEMBER OF()`
 
 `str MEMBER OF (json_array)` 函数测试传入的 `str` 值是否是 `json_array` 的元素，如果是则返回 `1`，否则返回 `0`。如果任一参数为 `NULL`，则返回 `NULL`。
 
@@ -294,7 +294,7 @@ SELECT '🍍' MEMBER OF ('["🍍","🥥","🥭"]') AS 'Contains pineapple';
 
 ```
 
-## [JSON_OVERLAPS()](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-overlaps)
+## `JSON_OVERLAPS()`
 
 `JSON_OVERLAPS(json_doc, json_doc)` 函数检查两个 JSON 文档是否有重叠部分。如果有重叠，则返回 `1`，如果没有重叠，则返回 `0`。如果任一参数为 `NULL`，则返回 `NULL`。
 

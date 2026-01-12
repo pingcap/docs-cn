@@ -33,7 +33,7 @@ IndexPartSpecification
 
 IndexOption
          ::= 'KEY_BLOCK_SIZE' '='? LengthNum
-           | IndexType
+           | 'USING' IndexType
            | 'WITH' 'PARSER' Identifier
            | 'COMMENT' stringLit
            | 'VISIBLE'
@@ -120,7 +120,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 * TiDB 支持解析 `FULLTEXT` 语法，但不支持使用 `FULLTEXT` 索引。
 * 不支持降序索引（类似于 MySQL 5.7）。
 * 无法向表中添加 `CLUSTERED` 类型的 `PRIMARY KEY`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
-* TiDB 对[分区表](/partitioned-table.md)进行了扩展。你可以指定 `GLOBAL` 索引选项将 `PRIMARY KEY` 或 `UNIQUE INDEX` 设置为[全局索引](/partitioned-table.md#全局索引)。该扩展与 MySQL 不兼容。
+* TiDB 对[分区表](/partitioned-table.md)进行了扩展。你可以指定 `GLOBAL` 索引选项将 `PRIMARY KEY` 或 `UNIQUE INDEX` 设置为[全局索引](/global-indexes.md)。该扩展与 MySQL 不兼容。
 
 ## 另请参阅
 

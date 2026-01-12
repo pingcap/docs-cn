@@ -16,7 +16,7 @@ aliases: ['/zh/tidb/dev/create-table']
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)。
 - [创建一个数据库](/develop/dev-guide-create-database.md)。
 
@@ -80,7 +80,7 @@ CREATE TABLE `bookshop`.`users` (
 
 最后，又加入了一个字段名为 `balance` 用以表示用户的余额，类型为 [decimal](/data-type-numeric.md#decimal-类型)，且其精度为 15，比例为 2。简单的说明一下精度和比例代表的含义，精度代表字段数值的总位数，而比例代表小数点后有多少位。例如: `decimal(5,2)`，即精度为 5，比例为 2 时，其取值范围为 `-999.99` 到 `999.99`。`decimal(6,1)`，即精度为 6，比例为 1 时，其取值范围为 `-99999.9` 到 `99999.9`。`decimal` 类型为定点数，可精确保存数字，在需要精确数字的场景（如用户财产相关）中，请确保使用[定点数](/data-type-numeric.md#定点类型)类型。
 
-TiDB 支持许多其他的列数据类型，包含[整数](/data-type-numeric.md#整数类型)、[浮点数](/data-type-numeric.md#浮点类型)、[定点数](/data-type-numeric.md#定点类型)、[时间](/data-type-date-and-time.md#datetime-类型)、[枚举](/data-type-string.md#enum-类型) 等，可参考支持的列的[数据类型](/basic-features.md#数据类型函数和操作符)，并使用与你准备保存在数据库内的数据匹配的**数据类型**。
+TiDB 支持许多其他的列数据类型，包含[整数](/data-type-numeric.md#整数类型)、[浮点数](/data-type-numeric.md#浮点类型)、[定点数](/data-type-numeric.md#定点类型)、[时间](/data-type-date-and-time.md#datetime-类型)、[枚举](/data-type-string.md#enum-类型)等，可参考支持的列的[数据类型](/basic-features.md#数据类型函数和操作符)，并使用与你准备保存在数据库内的数据匹配的**数据类型**。
 
 稍微提升一下复杂度，例如选择定义一张 `books` 表，这张表将是 `bookshop` 数据的核心。它包含书的唯一标识、名称、书籍类型（如：杂志、动漫、教辅等）、库存、价格、出版时间等字段。
 
@@ -132,7 +132,7 @@ CREATE TABLE `bookshop`.`users` (
 
 ## 选择聚簇索引
 
-[聚簇索引](/clustered-indexes.md) (clustered index) 是 TiDB 从 v5.0 开始支持的特性，用于控制含有主键的表数据的存储方式。通过使用聚簇索引，TiDB 可以更好地组织数据表，从而提高某些查询的性能。有些数据库管理系统也将聚簇索引称为“索引组织表” (index-organized tables)。
+[聚簇索引](/clustered-indexes.md) (clustered index) 是 TiDB 从 v5.0 开始支持的特性，用于控制含有主键的表数据的存储方式。通过使用聚簇索引，TiDB 可以更好地组织数据表，从而提高某些查询的性能。有些数据库管理系统将聚簇索引表称为“索引组织表” (index-organized tables)。
 
 目前 TiDB 中 **_含有主键_** 的表分为以下两类：
 
@@ -265,7 +265,7 @@ ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
 
 > **注意：**
 >
-> 如果你的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群) 来创建一个含有 TiFlash 的集群。
+> 如果你的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)来创建一个含有 TiFlash 的集群。
 
 随后正常进行查询即可：
 

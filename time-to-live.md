@@ -116,7 +116,7 @@ CREATE TABLE message (
 
 上述语句的消息以 `expire_at` 列来作为过期时间，并按照消息类型来设定。如果是图片，则 5 天后过期，不然就 30 天后过期。
 
-TTL 还可以和 [JSON 类型](/data-type-json.md) 一起使用。例如：
+TTL 还可以和 [JSON 类型](/data-type-json.md)一起使用。例如：
 
 ```sql
 CREATE TABLE orders (
@@ -128,15 +128,17 @@ CREATE TABLE orders (
 
 ## TTL 任务
 
-对于每张设置了 TTL 属性的表，TiDB 内部会定期调度后台任务来清理过期的数据。你可以通过给表设置 `TTL_JOB_INTERVAL` 属性来自定义任务的执行周期，比如通过下面的语句将后台清理任务设置为每 24 小时执行一次：
+对于每张设置了 TTL 属性的表，TiDB 内部会定期调度后台任务来清理过期的数据。你可以通过给表设置 `TTL_JOB_INTERVAL` 属性来自定义任务的执行周期，比如通过下面的语句将后台清理任务设置为每 48 小时执行一次：
 
 ```sql
-ALTER TABLE orders TTL_JOB_INTERVAL = '24h';
+ALTER TABLE orders TTL_JOB_INTERVAL = '48h';
 ```
 
-`TTL_JOB_INTERVAL` 的默认值是 `1h`。
+`TTL_JOB_INTERVAL` 的默认值是 `24h`。在 v8.5 及之前版本中，默认值为 `1h`。
 
-在执行 TTL 任务时，TiDB 会基于 Region 的数量将表拆分为最多 64 个子任务。这些子任务会被分发到不同的 TiDB 节点中执行。你可以通过设置系统变量 [`tidb_ttl_running_tasks`](/system-variables.md#tidb_ttl_running_tasks-从-v700-版本开始引入) 来限制整个集群中同时执行的 TTL 子任务数量。然而，并非所有表的 TTL 任务都可以被拆分为子任务。请参考[使用限制](#使用限制)以了解哪些表的 TTL 任务不能被拆分。
+在执行 TTL 任务时，TiDB 会基于 Region 的数量将表拆分为多个子任务。这些子任务会被分发到不同的 TiDB 节点中执行。通常情况下，单个表的子任务个数最多为 64，但是对于更大规模的集群，比如 TiKV 实例个数超过 64，单个表可拆分成的最大子任务数量和 TiKV 实例个数相等。然而，并非所有表的 TTL 任务都可以被拆分为子任务。请参考[使用限制](#使用限制)以了解哪些表的 TTL 任务不能被拆分。
+
+TiDB 还会在集群级别限制并发执行的 TTL 子任务数量。你可以通过修改系统变量 [`tidb_ttl_running_tasks`](/system-variables.md#tidb_ttl_running_tasks-从-v700-版本开始引入) 来设置最大并发数量。
 
 如果想禁止 TTL 任务的执行，除了可以设置表属性 `TTL_ENABLE='OFF'` 外，也可以通过设置全局变量 `tidb_ttl_job_enable` 关闭整个集群的 TTL 任务的执行。
 
@@ -155,7 +157,7 @@ SET @@global.tidb_ttl_job_schedule_window_end_time = '05:00 +0000';
 
 ## TTL 的可观测性
 
-TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关指标的可视化图表。你可以在 TiDB -> TTL 的面板下看到这些信息。指标详情见 [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md) 中的 `TTL` 部分。
+TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关指标的可视化图表。你可以在 TiDB -> TTL 的面板下看到这些信息。指标详情见 [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md)中的 `TTL` 部分。
 
 同时，可以通过以下三个系统表获得 TTL 任务执行的更多信息：
 
@@ -243,7 +245,16 @@ TTL 功能能够与 TiDB 的迁移、备份、恢复工具一同使用。
 * 不允许在临时表上设置 TTL 属性，包括本地临时表和全局临时表。
 * 具有 TTL 属性的表不支持作为外键约束的主表被其他表引用。
 * 不保证所有过期数据立即被删除，过期数据被删除的时间取决于后台清理任务的调度周期和调度窗口。
-* 对于使用[聚簇索引](/clustered-indexes.md)的表，如果主键的类型不是整数类型或二进制字符串类型，TTL 任务将无法被拆分成多个子任务。这将导致 TTL 任务只能在一个 TiDB 节点上按顺序执行。如果表中的数据量较大，TTL 任务的执行可能会变得缓慢。
+* 对于使用[聚簇索引](/clustered-indexes.md)的表，仅支持在以下场景中将 TTL 任务拆分成多个子任务：
+    - 主键或者复合主键的第一列为整数或二进制字符串类型。其中，二进制字符串类型主要指下面几种：
+        - `CHAR(N) CHARACTER SET BINARY`
+        - `VARCHAR(N) CHARACTER SET BINARY`
+        - `BINARY(N)`
+        - `VARBINARY(N)`
+        - `BIT(N)`
+    - 主键或者复合主键的第一列的字符集为 `utf8` 或者 `utf8mb4`，且排序规则设置为 `utf8_bin`、 `utf8mb4_bin` 或者 `utf8mb4_0900_bin`。
+* 对于主键第一列的字符集类型是 `utf8` 或者 `utf8mb4` 的表，仅会根据 ASCII 可见字符的范围进行子任务拆分。如果大量的主键值具有相同的 ASCII 前缀，可能会造成任务拆分不均匀。
+* 对于不支持拆分 TTL 子任务的表，TTL 任务只能在一个 TiDB 节点上按顺序执行。此时如果表中的数据量较大，TTL 任务的执行可能会变得缓慢。
 
 ## 常见问题
 

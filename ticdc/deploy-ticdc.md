@@ -9,18 +9,13 @@ summary: 了解 TiCDC 软硬件环境要求以及如何安装部署和运维 TiC
 
 ## 软件和硬件环境推荐配置
 
-在生产环境中，TiCDC 的软件和硬件配置推荐如下：
-
-| Linux 操作系统       | 版本         |
-| :----------------------- | :----------: |
-| Red Hat Enterprise Linux | 7.3 及以上   |
-| CentOS                   | 7.3 及以上   |
+在生产环境中，TiCDC 硬件配置推荐如下：
 
 | CPU | 内存 | 硬盘               | 网络 | TiCDC 集群实例数量（生产环境最低要求） |
 | --- | --- |------------------| --- | --- |
 | 16 核+ | 64 GB+ | 500 GB+ SSD 类型硬盘 | 万兆网卡（2 块最佳） | 2 |
 
-更多信息参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)。
+软件配置推荐及更多信息，参见 [TiDB 软件和硬件环境需求](/hardware-and-software-requirements.md)。
 
 ## 使用 TiUP 部署包含 TiCDC 组件的全新 TiDB 集群
 
@@ -95,7 +90,7 @@ tiup cluster upgrade <cluster-name> <version> --transfer-timeout 600
 
 > **注意：**
 >
-> 命令中的 `<cluster-name>` 需要替换为集群名字，`<version>` 需要替换为目标版本号，例如 v8.3.0。
+> 命令中的 `<cluster-name>` 需要替换为集群名字，`<version>` 需要替换为目标版本号，例如 v8.5.0。
 
 ### 升级的注意事项
 
@@ -128,23 +123,21 @@ tiup cluster upgrade <cluster-name> <version> --transfer-timeout 600
       pd: {}
       tiflash: {}
       tiflash-learner: {}
-      pump: {}
-      drainer: {}
       cdc:
         gc-ttl: 172800
     ```
 
     以上把 TiCDC 的 `gc-ttl` 的值设置为 48 小时。
 
-3. 执行 `tiup cluster reload -R cdc` 命令重新加载配置。
+3. 执行 `tiup cluster reload <cluster-name> -R cdc` 命令重新加载配置。
 
 ## 使用 TiUP 终止和启动 TiCDC 节点
 
 使用 TiUP 可以方便地终止和启动 TiCDC 节点，命令如下：
 
-- 终止 TiCDC 节点：`tiup cluster stop -R cdc`
-- 启动 TiCDC 节点：`tiup cluster start -R cdc`
-- 重启 TiCDC 节点：`tiup cluster restart -R cdc`
+- 终止 TiCDC 节点：`tiup cluster stop <cluster-name> -R cdc`
+- 启动 TiCDC 节点：`tiup cluster start <cluster-name> -R cdc`
+- 重启 TiCDC 节点：`tiup cluster restart <cluster-name> -R cdc`
 
 ## 使用加密传输 (TLS) 功能
 
@@ -152,7 +145,7 @@ tiup cluster upgrade <cluster-name> <version> --transfer-timeout 600
 
 ## 使用 TiCDC 命令行工具来查看集群状态
 
-执行以下命令来查看 TiCDC 集群运行状态，注意需要将 `v<CLUSTER_VERSION>` 替换为 TiCDC 集群版本，例如 `v8.3.0`：
+执行以下命令来查看 TiCDC 集群运行状态，注意需要将 `v<CLUSTER_VERSION>` 替换为 TiCDC 集群版本，例如 `v8.5.0`：
 
 ```shell
 tiup cdc:v<CLUSTER_VERSION> cli capture list --server=http://10.0.10.25:8300

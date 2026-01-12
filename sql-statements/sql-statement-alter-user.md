@@ -20,17 +20,14 @@ UserSpecList ::=
 UserSpec ::=
     Username AuthOption
 
-RequireClauseOpt ::=
-    ( 'REQUIRE' 'NONE' | 'REQUIRE' 'SSL' | 'REQUIRE' 'X509' | 'REQUIRE' RequireList )?
-
-RequireList ::=
-    ( "ISSUER" stringLit | "SUBJECT" stringLit | "CIPHER" stringLit | "SAN" stringLit | "TOKEN_ISSUER" stringLit )*
-
 Username ::=
     StringName ('@' StringName | singleAtIdentifier)? | 'CURRENT_USER' OptionalBraces
 
 AuthOption ::=
     ( 'IDENTIFIED' ( 'BY' ( AuthString | 'PASSWORD' HashString ) | 'WITH' StringName ( 'BY' AuthString | 'AS' HashString )? ) )?
+
+ConnectionOptions ::=
+    ( 'WITH' 'MAX_USER_CONNECTIONS' N )?
 
 PasswordOption ::= ( 'PASSWORD' 'EXPIRE' ( 'DEFAULT' | 'NEVER' | 'INTERVAL' N 'DAY' )? | 'PASSWORD' 'HISTORY' ( 'DEFAULT' | N ) | 'PASSWORD' 'REUSE' 'INTERVAL' ( 'DEFAULT' | N 'DAY' ) | 'FAILED_LOGIN_ATTEMPTS' N | 'PASSWORD_LOCK_TIME' ( N | 'UNBOUNDED' ) )*
 
@@ -175,6 +172,22 @@ ALTER USER 'newuser' PASSWORD REUSE INTERVAL 90 DAY;
 
 ```
 Query OK, 0 rows affected (0.02 sec)
+```
+
+通过 `ALTER USER ... WITH MAX_USER_CONNECTIONS N` 修改用户 `newuser` 允许登录的最大连接数：
+
+```sql
+ALTER USER 'newuser' WITH MAX_USER_CONNECTIONS 3;
+SELECT User, Host, max_user_connections FROM mysql.user WHERE User='newuser';
+```
+
+```
++---------+------+----------------------+
+| User    | Host | max_user_connections |
++---------+------+----------------------+
+| newuser | %    |                    3 |
++---------+------+----------------------+
+1 row in set (0.01 sec)
 ```
 
 ### 修改用户绑定的资源组

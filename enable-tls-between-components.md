@@ -68,7 +68,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     - TiFlash（从 v4.0.5 版本开始引入）
 
-        在 `tiflash.toml` 文件中设置，将 `http_port` 项改为 `https_port`:
+        在 `tiflash.toml` 文件中设置：
 
         ```toml
         [security]
@@ -109,11 +109,23 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
         cdc server --pd=https://127.0.0.1:2379 --log-file=ticdc.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301 --ca=/path/to/ca.pem --cert=/path/to/ticdc-cert.pem --key=/path/to/ticdc-key.pem
         ```
 
+    - TiProxy
+
+        在 `config` 文件中设置，并设置相应的 URL 为 https：
+
+        ```toml
+        [security]
+            [server-http-tls]
+            ca = "/path/to/ca.pem"
+            cert = "/path/to/tiproxy-server.pem"
+            key = "/path/to/tiproxy-server-key.pem"
+        ```
+
     此时 TiDB 集群各个组件间已开启加密传输。
 
     > **注意：**
     >
-    > 若 TiDB 集群各个组件间开启加密传输后，在使用 tidb-ctl、tikv-ctl 或 pd-ctl 工具连接集群时，需要指定 client 证书，示例：
+    > 若 TiDB 集群各个组件间开启加密传输后，在使用 tidb-ctl、tikv-ctl、pd-ctl 或 tiproxyctl 工具连接集群时，需要指定 client 证书，示例：
 
     {{< copyable "shell-regular" >}}
 
@@ -135,13 +147,14 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
 ## 认证组件调用者身份
 
-通常被调用者除了校验调用者提供的密钥、证书和 CA 有效性外，还需要校验调用方身份以防止拥有有效证书的非法访问者进行访问（例如：TiKV 只能被 TiDB 访问，需阻止拥有合法证书但非 TiDB 的其他访问者访问 TiKV）。
+通常被调用者除了校验调用者提供的密钥、证书和 CA 有效性外，还需要通过 `Common Name` 校验调用方身份以防止拥有有效证书的非法访问者进行访问（例如：TiKV 只能被 TiDB 访问，需阻止拥有合法证书但非 TiDB 的其他访问者访问 TiKV）。
 
-如希望进行组件调用者身份认证，需要在生证书时通过 `Common Name` 标识证书使用者身份，并在被调用者配置检查证书 `Common Name` 列表来检查调用者身份。
+如希望对组件调用方进行身份认证，需要在生成证书时通过 `Common Name` 标识证书调用方身份，并在被调用者的配置文件中配置 `cluster-verify-cn` (TiDB 组件）或 `cert-allowed-cn`（其它组件）来检查调用方身份。
 
 > **注意：**
 >
-> 目前 PD 的 `cert-allowed-cn` 配置项只能设置一个值。因此所有认证对象的 `commonName` 都要设置成同一个值。
+> - 从 v8.4.0 起，PD 的 `cert-allowed-cn` 配置项支持设置多个值。你可以根据需要在 TiDB 的 `cluster-verify-cn` 配置项以及其它组件的 `cert-allowed-cn` 配置项中设置多个 `Common Name`。需要额外注意的是，TiUP 在查询组件状态的时候会使用独立的标识，比如集群名是 `test`，它会使用 `test-client` 作为 `Common Name`。
+> - 对于 v8.3.0 及之前版本，PD 的 `cert-allowed-cn` 配置项只能设置一个值。因此，所有认证对象的 `Common Name` 必须设置成同一个值。相关配置示例可参见 [v8.3.0 文档](https://docs-archive.pingcap.com/tidb/v8.3/enable-tls-between-components/)。
 
 - TiDB
 
@@ -149,7 +162,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cluster-verify-cn = ["TiDB"]
+    cluster-verify-cn = ["tidb", "tiproxy", "test-client", "prometheus"]
     ```
 
 - TiKV
@@ -158,7 +171,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert-allowed-cn = ["TiDB"]
+    cert-allowed-cn = ["tidb", "pd", "tikv", "tiflash", "prometheus"]
     ```
 
 - PD
@@ -167,7 +180,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert-allowed-cn = ["TiDB"]
+    cert-allowed-cn = ["tidb", "pd", "tikv", "tiflash", "tiproxy", "test-client", "prometheus"]
     ```
 
 - TiFlash（从 v4.0.5 版本开始引入）
@@ -176,20 +189,64 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert_allowed_cn = ["TiDB"]
+    cert_allowed_cn = ["tidb", "tikv", "prometheus"]
     ```
 
     在 `tiflash-learner.toml` 文件中设置：
 
     ```toml
     [security]
-    cert-allowed-cn = ["TiDB"]
+    cert-allowed-cn = ["tidb", "tikv", "tiflash", "prometheus"]
+    ```
+
+- TiProxy（从 v1.4.0 版本开始引入）
+
+    在 `config` 文件中设置：
+
+    ```toml
+    [security]
+        [server-http-tls]
+        cert-allowed-cn = ["tiproxy", "tidb", "test-client", "prometheus"]
+    ```
+
+## 验证 TiDB 组件间的 TLS 配置
+
+在为 TiDB 组件间通信配置 TLS 后，可以使用以下命令验证 TLS 是否已成功启用。这些命令会输出每个组件的证书和 TLS 握手详细信息。
+
+- TiDB
+
+    ```sh
+    openssl s_client -connect <tidb_host>:10080 -cert /path/to/client.pem -key /path/to/client-key.pem -CAfile ./ca.crt < /dev/null
+    ```
+
+- PD
+
+    ```sh
+    openssl s_client -connect <pd_host>:2379 -cert /path/to/client.pem -key /path/to/client-key.pem -CAfile ./ca.crt < /dev/null
+    ```
+
+- TiKV
+
+    ```sh
+    openssl s_client -connect <tikv_host>:20160 -cert /path/to/client.pem -key /path/to/client-key.pem -CAfile ./ca.crt < /dev/null
+    ```
+
+- TiFlash (在 v4.0.5 版本引入)
+
+    ```sh
+    openssl s_client -connect <tiflash_host>:<tiflash_port> -cert /path/to/client.pem -key /path/to/client-key.pem -CAfile ./ca.crt < /dev/null
+    ```
+
+- TiProxy
+
+    ```sh
+    openssl s_client -connect <tiproxy_host>:3080 -cert /path/to/client.pem -key /path/to/client-key.pem -CAfile ./ca.crt < /dev/null
     ```
 
 ## 证书重新加载
 
-- 如果 TiDB 集群部署在本地的数据中心，TiDB、PD、TiKV、TiFlash、TiCDC 和各种 client 在每次新建相互通讯的连接时都会重新读取当前的证书和密钥文件内容，实现证书和密钥的重新加载，无需重启 TiDB 集群。
-- 如果 TiDB 集群部署在自己管理的 Cloud，TLS 证书的签发需要与云服务商的证书管理服务集成，TiDB、PD、TiKV、TiFlash、TiCDC 组件的 TLS 证书支持自动轮换，无需重启 TiDB 集群。
+- 如果 TiDB 集群部署在本地的数据中心，TiDB、PD、TiKV、TiFlash、TiCDC、TiProxy 和各种 client 在每次新建相互通讯的连接时都会重新读取当前的证书和密钥文件内容，实现证书和密钥的重新加载，无需重启 TiDB 集群。
+- 如果 TiDB 集群部署在自己管理的 Cloud，TLS 证书的签发需要与云服务商的证书管理服务集成，TiDB、PD、TiKV、TiFlash、TiCDC、TiProxy 组件的 TLS 证书支持自动轮换，无需重启 TiDB 集群。
 
 ## 证书有效期
 

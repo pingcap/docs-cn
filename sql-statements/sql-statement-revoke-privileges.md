@@ -11,8 +11,8 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-revoke-privileges/','/docs-
 ## 语法图
 
 ```ebnf+diagram
-GrantStmt ::=
-    'GRANT' PrivElemList 'ON' ObjectType PrivLevel 'TO' UserSpecList RequireClauseOpt WithGrantOptionOpt
+RevokeStmt ::=
+    'REVOKE' PrivElemList 'ON' ObjectType PrivLevel 'FROM' UserSpecList
 
 PrivElemList ::=
     PrivElem ( ',' PrivElem )*
@@ -55,10 +55,6 @@ PrivLevel ::=
 
 UserSpecList ::=
     UserSpec ( ',' UserSpec )*
-
-RequireClauseOpt ::= ('REQUIRE' ('NONE' | 'SSL' | 'X509' | RequireListElement ('AND'? RequireListElement)*))?
-
-RequireListElement ::= 'ISSUER' Issuer | 'SUBJECT' Subject | 'CIPHER' Cipher | 'SAN' SAN | 'TOKEN_ISSUER' TokenIssuer
 ```
 
 ## 示例

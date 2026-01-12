@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/','/zh/tidb/dev/pitr-troublesh
 
 ## 当误删除或误更新数据后，如何原地快速恢复？
 
-从 TiDB v6.4.0 引入了完整的 Flashback 功能，可以支持原地快速恢复 GC 时间内的数据到指定时间点。在误操作场景下，推荐使用 Flashback 来恢复数据，具体可以参考 [Flashback 集群](/sql-statements/sql-statement-flashback-cluster.md) 和 [Flashback 数据库](/sql-statements/sql-statement-flashback-database.md)语法。
+从 TiDB v6.4.0 引入了完整的 Flashback 功能，可以支持原地快速恢复 GC 时间内的数据到指定时间点。在误操作场景下，推荐使用 Flashback 来恢复数据，具体可以参考 [Flashback 集群](/sql-statements/sql-statement-flashback-cluster.md)和 [Flashback 数据库](/sql-statements/sql-statement-flashback-database.md)语法。
 
 ## 在 TiDB v5.4.0 及后续版本中，当在有负载的集群进行备份时，备份速度为什么会变得很慢？
 
@@ -110,12 +110,12 @@ Error: failed to check gc safePoint, checkpoint ts 433177834291200000: GC safepo
 
 ## 功能兼容性问题
 
-### 为什么 BR 恢复的数据无法同步到 TiCDC / Drainer 的上游集群？
+### 为什么 BR 恢复的数据无法同步到 TiCDC 的上游集群？
 
 - **BR 恢复的数据无法被同步到下游**，因为恢复时 BR 直接导入 SST 文件，而下游集群目前没有办法获得上游的 SST 文件。
-- 在 4.0.3 版本之前，恢复时产生的 DDL jobs 还可能会让 TiCDC / Drainer 执行异常的 DDL。所以，如果一定要在 TiCDC / Drainer 的上游集群执行恢复，请将 BR 恢复的所有表加入 TiCDC / Drainer 的阻止名单。
+- 在 4.0.3 版本之前，恢复时产生的 DDL jobs 还可能会让 TiCDC 执行异常的 DDL。所以，如果一定要在 TiCDC 的上游集群执行恢复，请将 BR 恢复的所有表加入 TiCDC 的阻止名单。
 
-TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/tiflow/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成，Drainer 则可以通过 [`syncer.ignore-table`](/tidb-binlog/tidb-binlog-configuration-file.md#ignore-table) 完成。
+TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/tiflow/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成。
 
 ### 恢复时为什么会报 `new_collation_enabled` 不匹配？
 
@@ -279,7 +279,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 
 - 统计信息表（`mysql.stat_*`）(但可以恢复统计信息，详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
-- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/snap_client/systable_restore.go#L31)
+- 其他系统表（详细参考[恢复 `mysql` 数据库下的表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)）
 
 ### 恢复的时候，报错 `cannot file rewrite rule`，该如何处理？
 

@@ -34,7 +34,7 @@ ColumnOption
            | 'AUTO_INCREMENT'
            | 'PRIMARY'? 'KEY' ( 'CLUSTERED' | 'NONCLUSTERED' )?
            | 'UNIQUE' 'KEY'?
-           | 'DEFAULT' ( NowSymOptionFraction | SignedLiteral | NextValueForSequence )
+           | 'DEFAULT' DefaultValueExpr
            | 'SERIAL' 'DEFAULT' 'VALUE'
            | 'ON' 'UPDATE' NowSymOptionFraction
            | 'COMMENT' stringLit
@@ -48,6 +48,13 @@ ColumnOption
 
 ColumnName ::=
     Identifier ( '.' Identifier ( '.' Identifier )? )?
+
+DefaultValueExpr ::=
+    NowSymOptionFractionParentheses
+|   SignedLiteral
+|   NextValueForSequenceParentheses
+|   BuiltinFunction
+|   '(' SignedLiteral ')'
 ```
 
 ## 示例
@@ -95,8 +102,8 @@ SHOW CREATE TABLE t1\G
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `col1` bigint(20) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `col1` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin AUTO_INCREMENT=30001
 1 row in set (0.00 sec)
@@ -145,7 +152,7 @@ SHOW CREATE TABLE t1\G
 *************************** 1. row ***************************
        Table: t1
 CREATE TABLE `t1` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `col1` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin AUTO_INCREMENT=30001
@@ -179,7 +186,7 @@ CREATE TABLE `t1` (
 
     ```sql
     CREATE TABLE t (a int primary key);
-    ALTER TABLE t MODIFY COLUMN a INT(10) UNSIGNED;
+    ALTER TABLE t MODIFY COLUMN a int UNSIGNED;
     ERROR 8200 (HY000): Unsupported modify column: column has primary key flag
     ```
 
@@ -205,7 +212,7 @@ CREATE TABLE `t1` (
     ERROR 8200 (HY000): Unsupported modify column: table is partition table
     ```
 
-* 不支持部分数据类型（例如，部分时间类型、Bit、Set、Enum、JSON 等）的变更，因为 TiDB cast 函数与 MySQL 的行为有一些兼容性问题。例如：
+* 不支持部分数据类型（例如，部分 TIME 类型、BIT、SET、ENUM、JSON 等）向某些类型的变更，因为 TiDB 的 `CAST` 函数与 MySQL 的行为有一些兼容性问题。例如：
 
     ```sql
     CREATE TABLE t (a DECIMAL(13, 7));

@@ -17,6 +17,8 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 ## 使用限制
 
 - 只支持导入数据到数据库中已有的空表。
+- 如果表中其他分区已包含数据，不支持将数据导入到该表的空分区中。目标表必须完全为空才能执行导入操作。
+- 不支持导入到[临时表](/temporary-tables.md)或者[缓存表](/cached-tables.md)。
 - 不支持事务，也无法回滚。在显式事务 (`BEGIN`/`END`) 中执行会报错。
 - 不支持和 [Backup & Restore](/br/backup-and-restore-overview.md)、[`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md)、[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)、TiDB Lightning 导入、TiCDC 数据同步、[Point-in-time recovery (PITR)](/br/br-log-architecture.md) 等功能同时工作。相关兼容性介绍，请参见 [`IMPORT INTO` 和 TiDB Lightning 与日志备份和 TiCDC 的兼容性](/tidb-lightning/tidb-lightning-compatibility-and-scenarios.md)。
 - 导入数据的过程中，请勿在目标表上执行 DDL 和 DML 操作，也不要在目标数据库上执行 [`FLASHBACK DATABASE`](/sql-statements/sql-statement-flashback-database.md)，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入完成后再进行读写操作。
@@ -32,7 +34,6 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - 目前单个 `IMPORT INTO` 任务支持导入 10 TiB 以内的数据。启用[全局排序](/tidb-global-sort.md)后，单个 `IMPORT INTO` 任务支持导入 40 TiB 以内的数据。
 - 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
 - 每个集群上最多同时有 16 个 `IMPORT INTO` 任务（参考 [TiDB 分布式执行框架使用限制](/tidb-distributed-execution-framework.md#使用限制)）在运行，当集群没有足够资源或者达到任务数量上限时，新提交的导入任务会排队等待执行。
-- 当使用[全局排序](/tidb-global-sort.md)导入数据时，`THREAD` 选项值需要大于或等于 `16`。
 - 当使用[全局排序](/tidb-global-sort.md)导入数据时，单行数据的总长度不能超过 32 MiB。
 - 未开启 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)时创建的所有 `IMPORT INTO` 任务会直接在提交任务的节点上运行，后续即使开启了分布式执行框架，这些任务也不会被调度到其它 TiDB 节点上执行。开启分布式执行框架后，新创建的 `IMPORT INTO` 任务如果导入的是 S3 或 GCS 中的数据，则会自动调度或者 failover 到其它 TiDB 节点执行。
 
@@ -43,6 +44,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - `IMPORT INTO ... FROM SELECT` 不支持使用 `SHOW IMPORT JOB(s)` 和 `CANCEL IMPORT JOB <job-id>` 等任务管理语句。
 - TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)需要有足够的空间来存储整个 `SELECT` 语句查询结果（暂不支持设置 `DISK_QUOTA` 选项）。
 - 不支持使用 [`tidb_snapshot`](/read-historical-data.md) 导入历史数据。
+- 由于 `SELECT` 子句的语法较为复杂，`IMPORT INTO` 的 `WITH` 参数可能会与其冲突，导致解析时报错，例如 `GROUP BY ... [WITH ROLLUP]`。建议先对复杂的 `SELECT` 语句创建视图，然后使用 `IMPORT INTO ... FROM SELECT * FROM view_name` 进行导入。或者，可以通过括号明确 `SELECT` 子句的范围，例如 `IMPORT INTO ... FROM (SELECT ...) WITH ...`。
 
 ## 导入前准备
 
@@ -103,9 +105,9 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 
 ### fileLocation
 
-用于指定数据文件的存储位置，该位置可以是 S3 或 GCS URI 路径，也可以是 TiDB 本地文件路径。
+用于指定数据文件的存储位置以及要导入的文件。你可以指定单个文件，也可以使用通配符匹配多个文件。
 
-- S3 或 GCS URI 路径：配置详见[外部存储服务的 URI 格式](/external-storage-uri.md)。
+- 云存储（Amazon S3 或 GCS）：提供完整的对象存储 URI，格式参见[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 - TiDB 本地文件路径：必须为绝对路径，数据文件后缀必须为 `.csv`、`.sql` 或 `.parquet`。确保该路径对应的文件存储在当前用户连接的 TiDB 节点上，且当前连接的用户有 `FILE` 权限。
 
@@ -120,11 +122,17 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 - 导入指定路径下的所有以 `.csv` 结尾的文件：`s3://<bucket-name>/path/to/data/*.csv`
 - 导入指定路径下所有以 `foo` 为前缀的文件：`s3://<bucket-name>/path/to/data/foo*`
 - 导入指定路径下以 `foo` 为前缀、以 `.csv` 结尾的文件：`s3://<bucket-name>/path/to/data/foo*.csv`
-- 导入指定路径下的 `1.csv` 和 `2.csv`：`s3://<bucket-name>/path/to/data/[12].csv`
+- 导入指定路径下的 `1.csv` 和 `2.csv`：`s3://<bucket-name>/path/to/data/[12].csv`，适用于导入特定的非连续文件
+- 导入指定名称范围 (range) 的文件 `1.csv`、`2.csv` 和 `3.csv`：`s3://<bucket-name>/path/to/data/[1-3].csv`
+- 导入名称为单字符的文件，使用 `^` 进行排除操作，例如导入除 `1.csv` 和 `2.csv` 之外的单字符文件名文件：`s3://<bucket-name>/path/to/data/[^12].csv`
+
+> **注意：**
+>
+> 在每个导入任务中，只能使用一种文件格式。如果通配符匹配到不同扩展名的文件（例如同一个匹配模式中同时匹配到 `.csv` 和 `.sql`），预检查将失败。你需要为每种格式的文件分别执行独立的 `IMPORT INTO` 语句。
 
 ### Format
 
-`IMPORT INTO` 支持 3 种数据文件格式，包括 `CSV`、`SQL` 和 `PARQUET`。当不指定该参数时，默认格式为 `CSV`。
+`IMPORT INTO` 支持三种数据文件格式：`CSV`、`SQL` 和 `PARQUET`。如果省略 `FORMAT` 子句，TiDB 会根据文件扩展名 (`.csv`, `.sql`, `.parquet`) 自动识别文件格式。TiDB 支持压缩文件，在检测格式时会忽略压缩后缀 (`.gz`, `.gzip`, `.zstd`, `.zst`, `.snappy`)。如果文件没有扩展名，TiDB 默认将文件格式视为 `CSV`。
 
 ### WithOptions
 
@@ -176,6 +184,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 >
 > - Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
 > - 由于无法对单个大压缩文件进行并发解压，因此压缩文件的大小会直接影响导入速度。建议解压后的文件大小不要超过 256 MiB。
+> - 当省略 `FORMAT` 子句时，TiDB 会先从文件名中去掉一个压缩后缀，然后检查剩余的扩展名，以确定文件是 `CSV` 还是 `SQL`。
 
 ### 全局排序
 

@@ -282,7 +282,7 @@ tiup dm patch prod-cluster /tmp/dm--hotfix.tar.gz -N 172.16.4.5:8261
 > - `import` 命令用于将数据从 DM 1.0 集群导入到一个新的 DM 2.0 集群。如果你需要将 DM 迁移任务导入一个现有的 DM 2.0 集群，可以参考 [TiDB Data Migration 1.0.x 到 2.0+ 手动升级](/dm/manually-upgrade-dm-1.0-to-2.0.md)。
 > - 导入集群某些组件的部署目录与原始集群的部署目录不同，可以执行 `display` 命令来查看相关信息。
 > - 导入前，执行 `tiup update --self && tiup update dm`，以确保 DM 组件是最新版本。
-> - 导入后，集群中只存在一个 DM-master 节点。请参考[扩容节点](#扩容节点) 来扩展 DM-master。
+> - 导入后，集群中只存在一个 DM-master 节点。请参考[扩容节点](#扩容节点)来扩展 DM-master。
 
 引入 TiUP 前，DM-Ansible 用于部署 DM 集群。要使 TiUP 接管由 DM-Ansible 部署的 DM 1.0 集群，需要执行 `import` 命令：
 
@@ -394,7 +394,7 @@ tiup dmctl --master-addr master1:8261 operate-source create /tmp/source1.yml
 
 此时可以通过命令行参数 `--native-ssh` 启用系统自带命令行：
 
-- 部署集群：`tiup dm deploy <cluster-name> <version> <topo> --native-ssh`，其中 `<cluster-name>` 为集群名称，`<version>` 为 DM 集群版本（例如 `v8.3.0`），`<topo>` 为拓扑文件路径
+- 部署集群：`tiup dm deploy <cluster-name> <version> <topo> --native-ssh`，其中 `<cluster-name>` 为集群名称，`<version>` 为 DM 集群版本（例如 `v8.5.0`），`<topo>` 为拓扑文件路径
 - 启动集群：`tiup dm start <cluster-name> --native-ssh`
 - 升级集群：`tiup dm upgrade ... --native-ssh`
 

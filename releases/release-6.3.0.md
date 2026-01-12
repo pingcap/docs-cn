@@ -13,7 +13,7 @@ TiDB 版本：6.3.0-DMR
 >
 > TiDB 6.3.0-DMR 的用户文档已[归档](https://docs-archive.pingcap.com/zh/tidb/v6.3)。如无特殊需求，建议使用 TiDB 数据库的[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.3/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.3.0-DMR#version-list)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.3/quick-start-with-tidb)
 
 在 6.3.0-DMR 版本中，你可以获得以下关键特性：
 
@@ -42,7 +42,7 @@ TiDB 版本：6.3.0-DMR
 
 * 分区表 [EXCHANGE PARTITION 功能](/partitioned-table.md#分区管理) GA [#35996](https://github.com/pingcap/tidb/issues/35996) @[ymkzpx](https://github.com/ymkzpx)
 
-* 新增支持下推两个[窗口函数](/tiflash/tiflash-supported-pushdown-calculations.md) 至 TiFlash [#5579](https://github.com/pingcap/tiflash/issues/5579) @[SeaRise](https://github.com/SeaRise)
+* 新增支持下推两个[窗口函数](/tiflash/tiflash-supported-pushdown-calculations.md)至 TiFlash [#5579](https://github.com/pingcap/tiflash/issues/5579) @[SeaRise](https://github.com/SeaRise)
 
     * `LEAD()`
     * `LAG()`
@@ -145,9 +145,9 @@ TiDB 版本：6.3.0-DMR
 
     正式支持对在线 TiKV 节点[关闭 Titan 引擎](/storage-engine/titan-configuration.md#关闭-titan)。
 
-* 缺少 GlobalStats 时自动选择分区静态剪裁 [#37535](https://github.com/pingcap/tidb/issues/37535) @[Yisaer](https://github.com/Yisaer)
+* 缺少全局统计信息时自动选择分区静态剪裁 [#37535](https://github.com/pingcap/tidb/issues/37535) @[Yisaer](https://github.com/Yisaer)
 
-    当启用分区[动态剪裁](/partitioned-table.md#动态裁剪模式)时，优化器依赖 [GlobalStats](/statistics.md#收集动态裁剪模式下的分区表统计信息) 进行执行计划的选择。在 [GlobalStats](/statistics.md#收集动态裁剪模式下的分区表统计信息) 收集完成前，使用 pseudo 统计信息可能会造成性能回退。在 v6.3.0 版本中，如果在 [GlobalStats](/statistics.md#收集动态裁剪模式下的分区表统计信息) 收集未完成的情况下打开动态分区裁剪开关，TiDB 会维持静态分区剪裁的状态，直到 GlobalStats 收集完成。该方式确保在切换分区剪裁策略时系统性能保持稳定。
+    当启用分区[动态裁剪](/partitioned-table.md#动态裁剪模式)时，优化器依赖[全局统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)进行执行计划的选择。在[全局统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)收集完成前，使用 pseudo 统计信息可能会造成性能回退。在 v6.3.0 版本中，如果在[全局统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)未收集完成的情况下启用 `dynamic` 动态裁剪模式，TiDB 仍然会维持 `static` 静态裁剪的状态，直到全局统计信息收集完成。该方式确保在切换分区裁剪策略时系统性能保持稳定。
 
 ### 易用性
 

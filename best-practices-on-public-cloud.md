@@ -13,7 +13,7 @@ summary: 了解在公有云上部署 TiDB 的最佳实践。
 
 [RocksDB](https://rocksdb.org/) 是 TiKV 的存储引擎，负责存储用户数据。出于成本考虑，云上提供的 EBS IO 吞吐量通常比较有限，因此 RocksDB 可能会表现出较高的写放大，导致磁盘吞吐量成为负载的瓶颈。随着时间的推移，待 compaction 的字节总量会不断增加从而触发流量控制，这意味着此时 TiKV 缺乏足够的磁盘带宽来处理前台写入流量。
 
-要缓解由磁盘吞吐量受限引起的瓶颈，你可以通过[启用 Titan](#启用-titan) 来改善性能。如果数据的平均行大小低于 512 字节，Titan 并不适用，此时你可以通过[提高所有压缩级别](#提高所有压缩级别) 来改善性能。
+要缓解由磁盘吞吐量受限引起的瓶颈，你可以通过[启用 Titan](#启用-titan) 来改善性能。如果数据的平均行大小低于 512 字节，Titan 并不适用，此时你可以通过[提高所有压缩级别](#提高所有压缩级别)来改善性能。
 
 ### 启用 Titan
 
@@ -136,14 +136,6 @@ tikv:
 
 要减少跨可用区的读取流量，你可以启用 [Follower Read 功能](/follower-read.md)，该功能允许 TiDB 优先选择在同一可用区内的副本进行读取。要启用该功能，请将 [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) 变量设置为 `closest-replicas` 或 `closest-adaptive`。
 
-要减少 TiKV 实例中跨可用区的写入流量，你可以启用 gRPC 压缩功能，该功能在网络传输数据之前会对其进行压缩。以下配置示例展示了如何为 TiKV 启用 gzip gRPC 压缩：
-
-```
-server_configs:
-  tikv:
-    server.grpc-compression-type: gzip
-```
-
 要减少 TiFlash MPP 任务中数据交换（data shuffle 过程）所带来的网络流量，建议在同一可用区内部署多个 TiFlash 实例。从 v6.6.0 开始，[Exchange 数据压缩](/explain-mpp.md#mpp-version-和-exchange-数据压缩)功能默认启用，以减少 MPP 数据交换导致的网络流量。
 
 ## 缓解 Google Cloud 上的实时迁移维护事件带来的性能影响
@@ -156,7 +148,7 @@ Google Cloud 的[实时迁移功能](https://cloud.google.com/compute/docs/insta
 - TiKV：在维护期间驱逐受影响的 TiKV 存储上的 Leader。
 - PD：如果当前 PD 实例是 PD Leader，则会重新分配 Leader。
 
-需要注意的是，此监控脚本是专门为 [TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/dev/tidb-operator-overview) 部署的 TiDB 集群设计的，TiDB Operator 为 Kubernetes 环境中的 TiDB 提供了增强的管理功能。
+需要注意的是，此监控脚本是专门为 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.6/tidb-operator-overview) 部署的 TiDB 集群设计的，TiDB Operator 为 Kubernetes 环境中的 TiDB 提供了增强的管理功能。
 
 通过使用该监控脚本，并在维护事件期间采取必要的措施，TiDB 集群可以更好地应对 Google Cloud 上的实时迁移事件，确保对查询处理和响应时间的影响最小以及系统的平稳运行。
 
@@ -193,14 +185,14 @@ set global tidb_tso_client_batch_max_wait_time = 2; # 默认值为 0
 
 #### 调整 TiKV 配置
 
-为了减少 Region 数量并降低系统的心跳开销，建议将 TiKV 配置中的 Region 大小从 `96MB` 增加到 `256MB`。
+为了减少 Region 数量并降低系统的心跳开销，可以参考[调整 Region 大小](/best-practices/massive-regions-best-practices.md#方法六调整-region-大小)将 TiKV 配置中的 Region 大小适度调大
 
 ```
 [coprocessor]
-  region-split-size = "256MB"
+  region-split-size = "288MiB"
 ```
 
-## 调整后的效果
+### 调整后的效果
 
 调整后的效果如下：
 

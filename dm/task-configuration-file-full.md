@@ -6,7 +6,7 @@ summary: 本文介绍了 Data Migration (DM) 的任务完整配置文件，包�
 
 # DM 任务完整配置文件介绍
 
-本文档主要介绍 Data Migration (DM) 的任务完整的配置文件，包含[全局配置](#全局配置) 和[实例配置](#实例配置) 两部分。
+本文档主要介绍 Data Migration (DM) 的任务完整的配置文件，包含[全局配置](#全局配置)和[实例配置](#实例配置)两部分。
 
 ## 关键概念
 
@@ -111,7 +111,7 @@ mydumpers:                           # dump 处理单元的运行配置参数
   global:                            # 配置名称
     threads: 4                       # dump 处理单元从上游数据库实例导出数据和 check-task 访问上游的线程数量，默认值为 4
     chunk-filesize: 64               # dump 处理单元生成的数据文件大小，默认值为 64，单位为 MB
-    extra-args: "--consistency none" # dump 处理单元的其他参数，不需要在 extra-args 中配置 table-list，DM 会自动生成
+    extra-args: "--consistency auto" # dump 处理单元的其他参数，不需要在 extra-args 中配置 table-list，DM 会自动生成
 
 loaders:                             # load 处理单元的运行配置参数
   global:                            # 配置名称
@@ -248,14 +248,29 @@ mysql-instances:
 
 全局配置主要包含下列功能配置集：
 
-| 配置项        | 说明                                    |
-| :------------ | :--------------------------------------- |
-| `routes` | 上游和下游表之间的路由 table routing 规则集。如果上游与下游的库名、表名一致，则不需要配置该项。使用场景及示例配置参见 [Table Routing](/dm/dm-table-routing.md) |
-| `filters` | 上游数据库实例匹配的表的 binlog event filter 规则集。如果不需要对 binlog 进行过滤，则不需要配置该项。使用场景及示例配置参见 [Binlog Event Filter](/dm/dm-binlog-event-filter.md) |
-| `block-allow-list` | 该上游数据库实例匹配的表的 block & allow lists 过滤规则集。建议通过该项指定需要迁移的库和表，否则会迁移所有的库和表。使用场景及示例配置参见 [Block & Allow Lists](/dm/dm-block-allow-table-lists.md) |
-| `mydumpers` | dump 处理单元的运行配置参数。如果默认配置可以满足需求，则不需要配置该项，也可以只使用 `mydumper-thread` 对 `thread` 配置项单独进行配置。 |
-| `loaders` | load 处理单元的运行配置参数。如果默认配置可以满足需求，则不需要配置该项，也可以只使用 `loader-thread` 对 `pool-size` 配置项单独进行配置。 |
-| `syncers` | sync 处理单元的运行配置参数。如果默认配置可以满足需求，则不需要配置该项，也可以只使用 `syncer-thread` 对 `worker-count` 配置项单独进行配置。 |
+#### `routes`
+
+- 上游和下游表之间的路由 table routing 规则集。如果上游与下游的库名、表名一致，则不需要配置该项。使用场景及示例配置参见 [Table Routing](/dm/dm-table-routing.md)。
+
+#### `filters`
+
+- 上游数据库实例匹配的表的 binlog event filter 规则集。如果不需要对 binlog 进行过滤，则不需要配置该项。使用场景及示例配置参见 [Binlog Event Filter](/dm/dm-binlog-event-filter.md)。
+
+#### `block-allow-list`
+
+- 该上游数据库实例匹配的表的 block & allow lists 过滤规则集。建议通过该项指定需要迁移的库和表，否则会迁移所有的库和表。使用场景及示例配置参见 [Block & Allow Lists](/dm/dm-block-allow-table-lists.md)。
+
+#### `mydumpers`
+
+- dump 处理单元的运行配置参数。如果默认配置可以满足需求，则不需要配置该项，也可以只使用 `mydumper-thread` 对 `thread` 配置项单独进行配置。
+
+#### `loaders`
+
+- load 处理单元的运行配置参数。如果默认配置可以满足需求，则不需要配置该项，也可以只使用 `loader-thread` 对 `pool-size` 配置项单独进行配置。
+
+#### `syncers`
+
+- sync 处理单元的运行配置参数。如果默认配置可以满足需求，则不需要配置该项，也可以只使用 `syncer-thread` 对 `worker-count` 配置项单独进行配置。
 
 各个功能配置集的参数及解释参见[完整配置文件示例](#完整配置文件示例)中的注释说明。
 

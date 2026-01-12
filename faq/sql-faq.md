@@ -33,7 +33,9 @@ TiDB 包含一个基于成本的优化器。在大多数情况下，优化器会
 
 ## 如何阻止特定的 SQL 语句执行（或者将某个 SQL 语句加入黑名单）？
 
-你可以使用 [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) Hint 来创建 [SQL 绑定](/sql-plan-management.md#执行计划绑定-sql-binding)，将特定语句的执行时间限制为一个较小的值（例如 1ms）。这样，语句就会在超过限制时自动终止。
+对于 v7.5.0 及以上版本，你可以使用 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md) 语句将特定的 SQL 查询加入黑名单。具体使用方法参见[管理资源消耗超出预期的查询 (Runaway Queries)](/tidb-resource-control-runaway-queries.md#query-watch-语句说明)。
+
+对于 v7.5.0 之前版本，你可以使用 [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) Hint 来创建 [SQL 绑定](/sql-plan-management.md#执行计划绑定-sql-binding)，将特定语句的执行时间限制为一个较小的值（例如 1ms）。这样，语句就会在超过限制时自动终止。
 
 例如，要阻止执行 `SELECT * FROM t1, t2 WHERE t1.id = t2.id`，可以使用以下 SQL 绑定将语句的执行时间限制为 1ms：
 
@@ -133,7 +135,7 @@ MySQL 中，返回结果的顺序可能较为固定，因为查询是通过单�
 
 ## TiDB 的 codec 能保证 UTF8 的字符串是 memcomparable 的吗？我们的 key 需要支持 UTF8，有什么编码建议吗？
 
-TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 memcomparable 格式的。
+TiDB 的默认字符集是 `utf8mb4`，字符串是 memcomparable 格式。关于字符集的更多信息，参见[字符集和排序规则](/character-set-and-collation.md)。
 
 ## 一个事务中的语句数量最大是多少？
 
@@ -171,7 +173,7 @@ TiDB 支持在会话或全局作用域上修改 [`sql_mode`](/system-variables.m
         --batch
     ```
 
-- 也可以选择增大 TiDB 的单个事物语句数量限制，不过此操作会导致内存增加。详情参见 [SQL 语句的限制](/tidb-limitations.md#sql-statements-的限制)。
+- 也可以选择增大 TiDB 单个事务允许的语句条数限制，不过这样会占用更多内存。详情参见 [SQL 语句的限制](/tidb-limitations.md#sql-statements-的限制)。
 
 ## TiDB 有像 Oracle 那样的 Flashback Query 功能么，DDL 支持么？
 
@@ -183,7 +185,7 @@ TiDB 支持在会话或全局作用域上修改 [`sql_mode`](/system-variables.m
 
 ## 删除数据后查询速度为何会变慢？
 
-删除大量数据后，会有很多无用的 key 存在，影响查询效率。要解决该问题，可以尝试开启 [Region Merge](/best-practices/massive-regions-best-practices.md#方法五开启-region-merge) 功能，具体可参考[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)中的删除数据部分。
+删除大量数据后，会有很多无用的 key 存在，影响查询效率。要解决该问题，可以尝试开启 [Region Merge](/best-practices/massive-regions-best-practices.md#方法五开启-region-merge) 功能，具体可参考[最佳实践](https://tidb.net/blog/7f818fc0)中的删除数据部分。
 
 ## 对数据做删除操作之后，空间回收比较慢，如何处理？
 
@@ -207,7 +209,7 @@ TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语�
 
 > **注意：**
 >
-> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
+> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
 
 以上两种参数可以结合 TiDB 的 DML 语言进行使用，使用方法举例如下：
 
@@ -286,7 +288,7 @@ TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schem
 
 ### 触发 Information schema is out of date 错误的原因？
 
-在 v6.5.0 之前，当执行 DML 时，TiDB 超过一个 DDL lease 时间（默认 45s）没能加载到最新的 schema 就可能会报 `Information schema is out of date` 的错误。遇到此错的可能原因如下：
+当执行 DML 时，TiDB 超过一个 DDL lease 时间（默认 45s）没能加载到最新的 schema 就可能会报 `Information schema is out of date` 的错误。遇到此错的可能原因如下：
 
 - 执行此 DML 的 TiDB 被 kill 后准备退出，且此 DML 对应的事务执行时间超过一个 DDL lease，在事务提交时会报这个错误。
 - TiDB 在执行此 DML 时，有一段时间内连不上 PD 或者 TiKV，导致 TiDB 超过一个 DDL lease 时间没有 load schema，或者导致 TiDB 断开与 PD 之间带 keep alive 设置的连接。
@@ -322,6 +324,73 @@ TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schem
 
 - 如果 Owner 不存在，尝试手动触发 Owner 选举：`curl -X POST http://{TiDBIP}:10080/ddl/owner/resign`。
 - 如果 Owner 存在，导出 Goroutine 堆栈并检查可能卡住的地方。
+
+## JDBC 连接所使用的排序规则
+
+本节列出了 JDBC 连接排序规则的相关问题。关于 TiDB 支持的字符集和排序规则，请参考[字符集和排序规则](/character-set-and-collation.md)。
+
+### 当 JDBC URL 中未配置 `connectionCollation` 时，JDBC 连接使用什么排序规则？
+
+当 JDBC URL 中未配置 `connectionCollation` 时，有以下两种场景：
+
+**场景一**：JDBC URL 中 `connectionCollation` 和 `characterEncoding` 均未配置
+
+- 对于 Connector/J8.0.25 及之前版本，JDBC 驱动程序将尝试使用服务器的默认字符集。因为 TiDB 的默认字符集为 `utf8mb4`，驱动程序将使用 `utf8mb4_bin` 作为连接排序规则。
+- 对于 Connector/J8.0.26 及之后版本，JDBC 驱动程序将使用 `utf8mb4` 字符集，并根据 `SELECT VERSION()` 的返回值自动选择排序规则。
+
+    - 当返回值小于 `8.0.1` 时，驱动程序使用 `utf8mb4_general_ci` 作为连接排序规则。TiDB 将遵循驱动程序，使用 `utf8mb4_general_ci` 作为排序规则。
+    - 当返回值大于等于 `8.0.1` 时，驱动程序使用 `utf8mb4_0900_ai_ci` 作为连接排序规则。v7.4.0 及之后版本的 TiDB 将遵循驱动程序，使用 `utf8mb4_0900_ai_ci` 作为排序规则，而 v7.4.0 之前版本的 TiDB 由于不支持 `utf8mb4_0900_ai_ci` 排序规则，将回退到使用默认的排序规则 `utf8mb4_bin`。
+
+**场景二**：JDBC URL 中配置了 `characterEncoding=utf8` 但未配置 `connectionCollation`，JDBC 驱动程序将按照映射规则使用 `utf8mb4` 字符集，并按照场景一中的描述选择排序规则。
+
+### 如何解决 TiDB 升级后排序规则变化带来的问题？
+
+在 TiDB v7.4 及之前版本中，如果 JDBC URL 中未配置 `connectionCollation`，且 `characterEncoding` 未配置或配置为 `UTF-8`，TiDB [`collation_connection`](/system-variables.md#collation_connection) 变量将默认使用 `utf8mb4_bin` 排序规则。
+
+从 TiDB v7.4 开始，如果 JDBC URL 中未配置 `connectionCollation`，且 `characterEncoding` 未配置或配置为 `UTF-8`，[`collation_connection`](/system-variables.md#collation_connection) 变量值取决于 JDBC 驱动版本。例如，对于 Connector/J8.0.26 及之后版本，JDBC 驱动程序默认使用 `utf8mb4` 字符集，使用 `utf8mb4_general_ci` 作为连接排序规则，TiDB 将遵循驱动程序，[`collation_connection`](/system-variables.md#collation_connection) 变量将使用 `utf8mb4_0900_ai_ci` 排序规则。详情请参考[JDBC 连接的排序规则](#当-jdbc-url-中未配置-connectioncollation-时jdbc-连接使用什么排序规则)。
+
+当从较低版本升级到 v7.4 或更高版本时（例如，从 v6.5 升级到 v7.5），如需保持 JDBC 连接的 `collation_connection` 为 `utf8mb4_bin`，建议在 JDBC URL 中配置 `connectionCollation` 参数。
+
+以下为 TiDB v6.5 中常见的 JDBC URL 配置：
+
+```
+spring.datasource.url=JDBC:mysql://{TiDBIP}:{TiDBPort}/{DBName}?characterEncoding=UTF-8&useSSL=false&useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSqlLimit=10000&prepStmtCacheSize=1000&useConfigs=maxPerformance&rewriteBatchedStatements=true&defaultFetchSize=-2147483648&allowMultiQueries=true
+```
+
+升级到 TiDB v7.4 或更高版本后，建议在 JDBC URL 中配置 `connectionCollation` 参数：
+
+```
+spring.datasource.url=JDBC:mysql://{TiDBIP}:{TiDBPort}/{DBName}?characterEncoding=UTF-8&connectionCollation=utf8mb4_bin&useSSL=false&useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSqlLimit=10000&prepStmtCacheSize=1000&useConfigs=maxPerformance&rewriteBatchedStatements=true&defaultFetchSize=-2147483648&allowMultiQueries=true
+```
+
+### `utf8mb4_bin` 与 `utf8mb4_0900_ai_ci` 排序规则有何区别？
+
+| 排序规则             | 是否区分大小写 | 是否忽略末尾空格 | 是否区分重音 | 比较方式               |
+|----------------------|----------------|------------------|--------------|------------------------|
+| `utf8mb4_bin`        | 区分           | 忽略             | 区分         | 按二进制编码值比较     |
+| `utf8mb4_0900_ai_ci` | 不区分         | 不忽略           | 不区分       | 使用 Unicode 排序算法 |
+
+例如：
+
+```sql
+-- utf8mb4_bin 区分大小写
+SELECT 'apple' = 'Apple' COLLATE utf8mb4_bin;  -- 返回 0 (FALSE)
+
+-- utf8mb4_0900_ai_ci 不区分大小写
+SELECT 'apple' = 'Apple' COLLATE utf8mb4_0900_ai_ci;  -- 返回 1 (TRUE)
+
+-- utf8mb4_bin 忽略末尾空格
+SELECT 'Apple ' = 'Apple' COLLATE utf8mb4_bin; -- 返回 1 (TRUE)
+
+-- utf8mb4_0900_ai_ci 不忽略末尾空格
+SELECT 'Apple ' = 'Apple' COLLATE utf8mb4_0900_ai_ci; -- 返回 0 (FALSE)
+
+-- utf8mb4_bin 区分重音
+SELECT 'café' = 'cafe' COLLATE utf8mb4_bin;  -- 返回 0 (FALSE)
+
+-- utf8mb4_0900_ai_ci 不区分重音
+SELECT 'café' = 'cafe' COLLATE utf8mb4_0900_ai_ci;  -- 返回 1 (TRUE)
+```
 
 ## SQL 优化
 

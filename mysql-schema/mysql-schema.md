@@ -34,6 +34,7 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
     * `tidb_server_version` 用于记录 TiDB 在初始化时的版本信息，注意该值为只读，不可修改。
     * `system_tz` 用于记录 TiDB 的系统时区
     * `new_collation_enabled` 用于记录 TiDB 是否开启了[新排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)，注意该值为只读，不可修改。
+    * `cluster_id` 用于记录 TiDB 集群的唯一标识，注意该值为只读，不可修改。
 
 ## 服务端帮助信息系统表
 
@@ -48,15 +49,22 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `stats_extended` 扩展统计信息，比如列之间的顺序相关性
 * `stats_feedback` 统计信息的查询反馈
 * `stats_fm_sketch` 统计信息列的直方图 FMSketch 分布
+* `stats_table_locked` 被锁定的统计信息
+* `stats_meta_history` 历史统计信息中的元信息部分
+* `stats_history` 历史统计信息中的其它部分
 * `analyze_options` 各个表默认的 `analyze` 参数
 * `column_stats_usage` 列统计信息的使用情况
-* `schema_index_usage` 索引的使用情况
 * `analyze_jobs` 正在执行的统计信息收集任务以及过去 7 天内的历史任务记录
 
 ## 执行计划相关系统表
 
 * `bind_info` 执行计划的绑定信息
 * `capture_plan_baselines_blacklist` 关于自动绑定执行计划对象的黑名单
+
+## PLAN REPLAYER 相关系统表
+
+* `plan_replayer_status` 存储用户注册的 [`PLAN REPLAYER CAPTURE`](/sql-plan-replayer.md#使用-plan-replayer-capture-功能) 抓取任务
+* `plan_replayer_task` 存储 [`PLAN REPLAYER CAPTURE`](/sql-plan-replayer.md#使用-plan-replayer-capture-功能) 抓取结果
 
 ## GC Worker 相关系统表
 
@@ -81,13 +89,13 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 
 ## 元数据锁相关系统表
 
-* `tidb_mdl_view` 元数据锁的视图，可以用于查看当前阻塞的 DDL 的相关信息
-* `tidb_mdl_info` TiDB 内部用于同步各节点的元数据锁的相关信息
+* [`tidb_mdl_view`](/mysql-schema/mysql-schema-tidb-mdl-view.md)：元数据锁视图。用于查看当前被阻塞的 DDL 语句的相关信息。另请参阅[元数据锁](/metadata-lock.md)。
+* `tidb_mdl_info`：TiDB 内部使用的表，用于在各个节点之间同步元数据锁的相关信息。
 
 ## DDL 相关系统表
 
 * `tidb_ddl_history` 记录了 DDL 语句的历史记录
-* `tidb_ddl_jobs` TiDB 内部存放的正在执行的 DDL 的元数据，用于执行 DDL
+* `tidb_ddl_job` TiDB 内部存放的正在执行的 DDL 的元数据，用于执行 DDL
 * `tidb_ddl_reorg` TiDB 内部存放的正在执行的物理 DDL（例如加索引）的元数据，用于执行物理 DDL
 
 ## 分布式执行框架相关系统表
@@ -102,10 +110,16 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 
 * `request_unit_by_group` 存放资源组 RU 消耗统计的历史记录
 
+## 备份和恢复相关系统表
+
+* `tidb_pitr_id_map`：存储时间点恢复 (Point-in-time recovery, PITR) 操作的 ID 映射信息
+* `tidb_restore_registry` <span class="version-mark">从 v9.0.0 开始引入</span>：存储恢复任务的注册表，该表给每个恢复任务分配唯一的恢复 ID 以防止不同的恢复操作发生冲突
+
 ## 其它系统表
 
 * `GLOBAL_VARIABLES` 全局系统变量表
 * `expr_pushdown_blacklist` 表达式下推的黑名单
 * `opt_rule_blacklist` 逻辑优化规则的黑名单
 * `tidb_import_jobs` 记录 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 任务信息
-* `tidb_timers` 存储了内部定时器的相关元信息
+* `tidb_timers` 存储内部定时器的相关元信息
+* `advisory_locks` 存储[锁函数](/functions-and-operators/locking-functions.md)相关的信息

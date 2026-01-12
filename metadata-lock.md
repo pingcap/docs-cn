@@ -74,32 +74,35 @@ TiDB v6.3.0 引入了 `mysql.tidb_mdl_view` 视图，可以用于查看当前阻
 >
 > 查询 `mysql.tidb_mdl_view` 视图需要有 [`PROCESS` 权限](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process)。
 
-下面以给表 `t` 添加索引为例，假设有 DDL 语句 `ALTER TABLE t ADD INDEX idx(a)`：
+下面以给表 `t` 添加列为例，假设有 DDL 语句 `ALTER TABLE t ADD COLUMN c INT`：
 
 ```sql
-SELECT * FROM mysql.tidb_mdl_view\G
-*************************** 1. row ***************************
-    JOB_ID: 141
-   DB_NAME: test
-TABLE_NAME: t
-     QUERY: ALTER TABLE t ADD INDEX idx(a)
-SESSION ID: 2199023255957
-  TxnStart: 08-30 16:35:41.313(435643624013955072)
-SQL_DIGESTS: ["begin","select * from `t`"]
-1 row in set (0.02 sec)
+TABLE mysql.tidb_mdl_view\G
 ```
 
-可以从上面的输出结果中了解到，有一个 `SESSION ID` 为 `2199023255957` 的事务阻塞了该添加索引 DDL 的执行。该事务执行的 SQL 语句如 `SQL_DIGESTS` 中所示，即 ``["begin","select * from `t`"]``。如果想要使被阻塞的 DDL 能够继续执行，可以通过如下 Global `KILL` 命令中止 `SESSION ID` 为 `2199023255957` 的事务：
+```
+*************************** 1. row ***************************
+     job_id: 118
+    db_name: test
+ table_name: t
+      query: ALTER TABLE t ADD COLUMN c INT
+ session_id: 1547698182
+ start_time: 2025-03-19 09:52:36.509000
+SQL_DIGESTS: ["begin","select * from `t`"]
+1 row in set (0.00 sec)
+```
+
+可以从上面的输出结果中了解到，有一个 `SESSION ID` 为 `1547698182` 的事务阻塞了该 `ADD COLUMN` DDL 的执行。该事务执行的 SQL 语句如 `SQL_DIGESTS` 中所示，即 ``["begin","select * from `t`"]``。如果想要使被阻塞的 DDL 能够继续执行，可以通过如下 Global `KILL` 命令中止 `SESSION ID` 为 `1547698182` 的事务：
 
 ```sql
-mysql> KILL 2199023255957;
+mysql> KILL 1547698182;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
 中止该事务后，再次查询 `mysql.tidb_mdl_view` 视图。此时，查询结果不再显示上面的事务信息，说明 DDL 不再被阻塞：
 
 ```sql
-SELECT * FROM mysql.tidb_mdl_view\G
+TABLE mysql.tidb_mdl_view\G
 Empty set (0.01 sec)
 ```
 

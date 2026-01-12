@@ -9,7 +9,7 @@ summary: 了解 TiDB 7.5.1 版本的兼容性变更、改进提升，以及错�
 
 TiDB 版本：7.5.1
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v7.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v7.5.1#version-list)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v7.5/production-deployment-using-tiup)
 
 ## 兼容性变更
 
@@ -32,7 +32,7 @@ TiDB 版本：7.5.1
 
         - [慢查询日志](/identify-slow-queries.md)增加资源组名称、RU 消耗、以及等待资源耗时。
         - [Statement Summary Tables](/statement-summary-tables.md) 增加资源组名称、RU 消耗、以及等待资源耗时。
-        - 在变量 [`tidb_last_query_info`](/system-variables.md#tidb_last_query_info-从-v4014-版本开始引入) 中增加了 SQL 的 [RU](/tidb-resource-control.md#什么是-request-unit-ru) 消耗信息 `ru_consumption`，你可以利用此变量获取会话中上一条语句的资源消耗。
+        - 在变量 [`tidb_last_query_info`](/system-variables.md#tidb_last_query_info-从-v4014-版本开始引入) 中增加了 SQL 的 [RU](/tidb-resource-control-ru-groups.md#什么是-request-unit-ru) 消耗信息 `ru_consumption`，你可以利用此变量获取会话中上一条语句的资源消耗。
         - 增加基于[资源组的数据库指标](/grafana-resource-control-dashboard.md)：QPS/TPS、执行时间 (P999/P99/P95)、失败次数、连接数。
 
     - 将 `CANCEL IMPORT JOB` 命令调整为同步命令 [#48736](https://github.com/pingcap/tidb/issues/48736) @[D3Hunter](https://github.com/D3Hunter)
@@ -49,7 +49,7 @@ TiDB 版本：7.5.1
 
 + TiFlash
 
-    - 改进 [RU (Request Unit)](/tidb-resource-control.md#什么是-request-unit-ru) 计算方法，以提高 RU 值的稳定性 [#8391](https://github.com/pingcap/tiflash/issues/8391) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 改进 [RU (Request Unit)](/tidb-resource-control-ru-groups.md#什么是-request-unit-ru) 计算方法，以提高 RU 值的稳定性 [#8391](https://github.com/pingcap/tiflash/issues/8391) @[guo-shaoge](https://github.com/guo-shaoge)
     - 降低磁盘性能抖动对读取延迟的影响 [#8583](https://github.com/pingcap/tiflash/issues/8583) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 减少后台数据 GC 任务对读、写任务延迟的影响 [#8650](https://github.com/pingcap/tiflash/issues/8650) @[JaySon-Huang](https://github.com/JaySon-Huang)
 

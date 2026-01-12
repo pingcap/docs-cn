@@ -28,7 +28,7 @@ TiKV 当前不从核心转储 (core dumps) 中排除加密密钥和用户数据�
 
 TiKV 使用文件的绝对路径来跟踪已加密的数据文件。一旦 TiKV 节点开启了加密功能，用户就不应更改数据文件的路径配置，例如 `storage.data-dir`，`raftstore.raftdb-path`，`rocksdb.wal-dir` 和 `raftdb.wal-dir`。
 
-SM4 加密只在 v6.3.0 及之后版本的 TiKV 上支持。v6.3.0 之前的 TiKV 仅支持 AES 加密。SM4 加密会对吞吐造成 50% 到 80% 的回退。
+SM4 加密只在 v6.3.0 及之后版本的 TiKV 上支持。v6.3.0 之前的 TiKV 仅支持 AES 加密。SM4 加密会对性能造成影响：最严重的情况下，会对吞吐造成 50% 到 80% 的回退；[`storage.block-cache`](/tikv-configuration-file.md#storageblock-cache) 足够大会显著降低加密对吞吐的影响，可将吞吐的回退降至 10% 左右。
 
 ### TiFlash
 
@@ -91,10 +91,6 @@ data-key-rotation-period = "168h" # 7 days
 #### 通过 KMS 指定主密钥
 
 TiKV 支持 AWS、Google Cloud 和 Azure 这三个平台的 KMS 加密。你可以根据服务部署的平台，选择其中之一配置 KMS 加密。
-
-> **警告：**
->
-> 通过 Google Cloud KMS 指定主密钥目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 <SimpleTab>
 

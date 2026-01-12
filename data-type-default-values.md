@@ -36,7 +36,7 @@ summary: 数据类型的默认值描述了列的默认值设置规则。默认�
 
 MySQL 从 8.0.13 开始支持在 `DEFAULT` 子句中指定表达式为默认值。具体可参考 [Explicit Default Handling as of MySQL 8.0.13](https://dev.mysql.com/doc/refman/8.0/en/data-type-defaults.html#data-type-defaults-explicit)。
 
-从 v8.0.0 开始，TiDB 在 `DEFAULT` 子句中新增支持指定以下表达式作为字段的默认值：
+TiDB 支持在 `DEFAULT` 子句中指定以下表达式作为字段的默认值：
 
 * `UPPER(SUBSTRING_INDEX(USER(), '@', 1))`
 * `REPLACE(UPPER(UUID()), '-', '')`
@@ -46,9 +46,50 @@ MySQL 从 8.0.13 开始支持在 `DEFAULT` 子句中指定表达式为默认值�
     * `DATE_FORMAT(NOW(), '%Y-%m-%d %H.%i.%s')`
     * `DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%s')`
 * `STR_TO_DATE('1980-01-01', '%Y-%m-%d')`
+* [`CURRENT_TIMESTAMP()`](/functions-and-operators/date-and-time-functions.md) 和 [`CURRENT_DATE()`](/functions-and-operators/date-and-time-functions.md)：均使用默认的时间精度(fractional seconds precision, fsp)
+* [`JSON_OBJECT()`](/functions-and-operators/json-functions.md)，[`JSON_ARRAY()`](/functions-and-operators/json-functions.md)，[`JSON_QUOTE()`](/functions-and-operators/json-functions.md)
+* [`NEXTVAL()`](/functions-and-operators/sequence-functions.md#nextval)
+* [`RAND()`](/functions-and-operators/numeric-functions-and-operators.md)
+* [`UUID()`](/functions-and-operators/miscellaneous-functions.md#uuid)，[`UUID_TO_BIN()`](/functions-and-operators/miscellaneous-functions.md#uuid_to_bin)
+* [`VEC_FROM_TEXT()`](/vector-search/vector-search-functions-and-operators.md#vec_from_text)
 
-此外，从 v8.0.0 开始，TiDB 额外支持 `BLOB`、`TEXT` 以及 `JSON` 数据类型分配默认值，但是默认值仅支持通过表达式来设置。以下是 `BLOB` 的示例：
+TiDB 支持为 `BLOB`、`TEXT` 以及 `JSON` 数据类型分配默认值，但是，你只能使用表达式来设置这些数据类型的默认值，而不能使用字面量。
+
+以下是 `BLOB` 的示例：
 
 ```sql
-CREATE TABLE t2 (b BLOB DEFAULT (RAND()));
+CREATE TABLE t2 (
+  b BLOB DEFAULT (RAND())
+);
 ```
+
+以下是使用 UUID 的示例：
+
+```sql
+CREATE TABLE t3 (
+  uuid BINARY(16) DEFAULT (UUID_TO_BIN(UUID())),
+  name VARCHAR(255)
+);
+```
+
+更多关于如何使用 UUID 的内容，请参考 [UUID 最佳实践](/best-practices/uuid.md)。
+
+以下是使用 `JSON` 的示例：
+
+```sql
+CREATE TABLE t4 (
+  id bigint AUTO_RANDOM PRIMARY KEY,
+  j json DEFAULT (JSON_OBJECT("a", 1, "b", 2))
+);
+```
+
+以下是使用 `JSON` 时不被允许的示例：
+
+```sql
+CREATE TABLE t5 (
+  id bigint AUTO_RANDOM PRIMARY KEY,
+  j json DEFAULT ('{"a": 1, "b": 2}')
+);
+```
+
+最后两个示例都描述了相似的默认值，但只有第一个是允许的，因为它使用的是表达式而不是字面量。

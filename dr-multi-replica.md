@@ -107,7 +107,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
     tiup bench tpcc  prepare -H 127.0.0.1 -P 4000 -D tpcc --warehouses 1
     ```
 
-    指定 PD leader 的优先级:
+    指定 PD leader 的优先级：
 
     ```shell
     tiup ctl:v6.4.0 pd member leader_priority  pd-1 4
@@ -119,7 +119,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
 
     > **注意：**
     >
-    > 优先级数值越大的节点成为 leader 的可能性越高。
+    > 在可用的 PD 节点中，优先级数值最大的节点会直接当选 leader。
 
 3. 创建 placement rule，并将测试表的主副本固定在区域 1：
 

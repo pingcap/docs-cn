@@ -51,11 +51,11 @@ SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 ```
 
 ```sql
-+------+------------+----------+-----------+-------------+
-| NAME | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT |
-+------+------------+----------+-----------+-------------+
-| rg1  | 500        | MEDIUM   | YES       | NULL        |
-+------+------------+----------+-----------+-------------+
++------+------------+----------+-----------+-------------+------------+
+| NAME | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT | BACKGROUND |
++------+------------+----------+-----------+-------------+------------+
+| rg1  | 500        | MEDIUM   | MODERATED | NULL        | NULL       |
++------+------------+----------+-----------+-------------+------------+
 1 row in set (0.01 sec)
 ```
 
@@ -83,4 +83,4 @@ MySQL 也支持 [DROP RESOURCE GROUP](https://dev.mysql.com/doc/refman/8.0/en/dr
 
 * [ALTER RESOURCE GROUP](/sql-statements/sql-statement-alter-resource-group.md)
 * [CREATE RESOURCE GROUP](/sql-statements/sql-statement-create-resource-group.md)
-* [RU](/tidb-resource-control.md#什么是-request-unit-ru)
+* [RU](/tidb-resource-control-ru-groups.md#什么是-request-unit-ru)

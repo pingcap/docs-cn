@@ -9,7 +9,7 @@ summary: 了解 TiDB 8.0.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：8.0.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.0/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v8.0.0-DMR#version-list)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.0/quick-start-with-tidb)
 
 在 8.0.0 版本中，你可以获得以下关键特性：
 
@@ -75,7 +75,7 @@ TiDB 版本：8.0.0
 
 * 增强 Titan 引擎的易用性 [#16245](https://github.com/tikv/tikv/issues/16245) @[Connor1996](https://github.com/Connor1996)
 
-    - 默认启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存（[`shared-blob-cache`](/tikv-configuration-file.md#shared-blob-cache从-v800-版本开始引入) 默认为 `true`），无需再单独配置 [`blob-cache-size`](/tikv-configuration-file.md#blob-cache-size)。
+    - 默认启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存（[`shared-blob-cache`](/tikv-configuration-file.md#shared-blob-cache-从-v800-版本开始引入) 默认为 `true`），无需再单独配置 [`blob-cache-size`](/tikv-configuration-file.md#blob-cache-size)。
     - 支持动态修改 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size)、[`blob-file-compression`](/tikv-configuration-file.md#blob-file-compression)、[`discardable-ratio`](/tikv-configuration-file.md#min-blob-size)，以提升使用 Titan 引擎时的性能和灵活性。
 
   更多信息，请参考[用户文档](/storage-engine/titan-configuration.md)。
@@ -336,9 +336,13 @@ TiDB 版本：8.0.0
 | TiKV | [`log-backup.initial-scan-rate-limit`](/tikv-configuration-file.md#initial-scan-rate-limit-从-v620-版本开始引入) | 修改 | 增加了最小值为 `1MiB` 的限制。 |
 | TiKV | [`raftstore.store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) | 修改 | 为了提升 TiKV 性能，该参数默认值从 `0` 修改为 `1`，表示 StoreWriter 线程池的大小默认为 `1`。|
 | TiKV | [`rocksdb.defaultcf.titan.blob-cache-size`](/tikv-configuration-file.md#blob-cache-size) | 修改 | 从 v8.0.0 开始，TiKV 引入了 `shared-blob-cache` 配置项并默认开启，因此无需再单独设置 `blob-cache-size`。只有当 `shared-blob-cache` 设置为 `false` 时，`blob-cache-size` 的设置才生效。|
+| TiKV | [`rocksdb.titan.max-background-gc`](/tikv-configuration-file.md#max-background-gc) | 修改 | 默认值从 `4` 修改为 `1`，以减少 Titan GC 过程对线程资源的占用。 |
 | TiKV | [`security.encryption.master-key.vendor`](/encryption-at-rest.md#通过-kms-指定主密钥) | 修改 | 主密钥可选的服务商类型新增 `gcp`。 |
-| TiKV | [`rocksdb.defaultcf.titan.shared-blob-cache`](/tikv-configuration-file.md#shared-blob-cache从-v800-版本开始引入) | 新增 | 控制是否启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存。默认值为 `true`。|
+| TiKV | [`storage.block-cache.low-pri-pool-ratio`](/tikv-configuration-file.md#low-pri-pool-ratio-从-v800-版本开始引入) | 新增 | 指定 Titan 组件使用的 block cache 占整个 block cache 的比例。默认值为 `0.2`。 |
+| TiKV | [`rocksdb.defaultcf.titan.shared-blob-cache`](/tikv-configuration-file.md#shared-blob-cache-从-v800-版本开始引入) | 新增 | 控制是否启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存。默认值为 `true`。|
 | TiKV | [`security.encryption.master-key.gcp.credential-file-path`](/encryption-at-rest.md#通过-kms-指定主密钥) | 新增 | 在 `security.encryption.master-key.vendor` 为 `gcp` 时，用于指定 Google Cloud 认证凭证文件的路径。|
+| PD | [`schedule.enable-heartbeat-breakdown-metrics`](/pd-configuration-file.md#enable-heartbeat-breakdown-metrics-从-v800-版本开始引入) | 新增 | 控制是否开启 Region 心跳指标拆分，用于统计 Region 心跳处理各阶段所消耗的时间，便于在监控上进行分析。默认值为 `true`。 |
+| PD | [`schedule.enable-heartbeat-concurrent-runner`](/pd-configuration-file.md#enable-heartbeat-concurrent-runner-从-v800-版本开始引入) | 新增 | 控制是否开启 Region 心跳异步并发处理功能。开启后会使用独立的执行器异步并发处理 Region 心跳请求，可提高心跳处理吞吐量，降低延迟。默认值为 `true`。 |
 | TiDB Lightning  | [`tikv-importer.duplicate-resolution`](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃)  | 废弃 | 用于在物理导入模式下设置是否检测和解决唯一键冲突的记录。从 v8.0.0 开始被参数 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 替代。 |
 | TiDB Lightning  | [`conflict.precheck-conflict-before-import`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)  | 新增 | 控制是否开启前置冲突检测，即导入数据到 TiDB 前，先检查所需导入的数据是否存在冲突。该参数默认值为 `false`，表示仅开启后置冲突检测。仅当导入模式为物理导入模式 (`tikv-importer.backend = "local"`) 时可以使用该参数。 |
 | TiDB Lightning  | [`logical-import-batch-rows`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 在逻辑导入模式下，用于限制每个事务中可插入的最大行数，默认值为 `65536`。 |

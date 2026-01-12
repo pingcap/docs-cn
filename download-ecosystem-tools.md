@@ -10,11 +10,11 @@ summary: 本文介绍如何下载 TiDB 工具包。TiDB 工具包包含常用工
 
 ## TiDB 工具包下载
 
-TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具 Dumpling、数据导入工具 TiDB Lightning、备份恢复工具 BR。
+TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具 Dumpling、数据导入工具 TiDB Lightning、备份恢复工具 BR、数据一致性检查工具 sync-diff-inspector。
 
 > **建议：**
 >
-> 如果你的部署环境能访问互联网，无需单独下载 TiDB 工具包，可以直接通过使用 [TiUP 命令一键部署](/tiup/tiup-component-management.md)所需的 TiDB 工具。
+> 对于 TiDB v9.0.0 及以上版本，包括 sync-diff-inspector 在内的大多数工具都可以直接通过 TiUP 使用。如果你的部署环境能访问互联网，无需单独下载 TiDB 工具包，可以直接通过使用 [TiUP 命令一键部署](/tiup/tiup-component-management.md)所需的 TiDB 工具。
 
 ### 环境要求
 
@@ -23,12 +23,11 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 
 ### 下载步骤
 
-1. 访问 [TiDB 社区版](https://pingcap.com/zh/product-community/)页面。
-2. 找到 **TiDB-community-toolkit 软件包**，点击**立即下载**。
+1. 访问[软件下载中心](https://pingkai.cn/download#tidb-community)页面。
+2. 选择你所需的 TiDB 版本和架构，选择 **TiDB 工具集 TiDB-community-toolkit**，确认隐私政策，然后点击**立即下载**。
 
 > **注意：**
 >
-> - 点击**立即下载**后，默认下载当前 TiDB 的最新发布版本。如需下载其它版本，请在 [TiDB 社区版](https://pingcap.com/zh/product-community/)页面底部查看其它版本下载信息。
 > - 如需在 Kubernetes 上部署运维 TiDB，无需下载 TiDB-community-toolkit 软件包，请参考[离线安装 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tidb-operator#离线安装-tidb-operator)。
 > - 如需使用 [PD Control](/pd-control.md) 工具 `pd-ctl`，请下载 **TiDB-community-server 软件包**。
 
@@ -43,9 +42,8 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 | [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)  | `tidb-lightning-ctl` <br/>`tidb-lightning-{version}-linux-{arch}.tar.gz`  |
 | [TiDB DM (Data Migration)](/dm/dm-overview.md)  | `dm-worker-{version}-linux-{arch}.tar.gz` <br/>`dm-master-{version}-linux-{arch}.tar.gz` <br/>`dmctl-{version}-linux-{arch}.tar.gz`  |
 | [TiCDC](/ticdc/ticdc-overview.md)  | `cdc-{version}-linux-{arch}.tar.gz`  |
-| [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)  | `pump-{version}-linux-{arch}.tar.gz` <br/>`drainer-{version}-linux-{arch}.tar.gz` <br/>`binlogctl` <br/>`reparo`  |
 | [Backup & Restore (BR)](/br/backup-and-restore-overview.md)  | `br-{version}-linux-{arch}.tar.gz`  |
-| [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)  | `sync_diff_inspector`  |
+| [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)  | TiDB v9.0.0 及以上版本：`tiflow-{version}-linux-{arch}.tar.gz`<br/>TiDB v9.0.0 之前的版本：`sync_diff_inspector` |
 | [PD Recover](/pd-recover.md)  | `pd-recover-{version}-linux-{arch}.tar.gz` |
 
 > **注意：**

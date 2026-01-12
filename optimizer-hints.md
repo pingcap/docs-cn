@@ -477,6 +477,60 @@ EXPLAIN SELECT /*+ NO_ORDER_INDEX(t, a) */ a FROM t ORDER BY a LIMIT 10;
 
 和 `ORDER_INDEX` Hint 的示例相同，优化器对该查询会生成两类计划：`Limit + IndexScan(keep order: true)` 和 `TopN + IndexScan(keep order: false)`，当使用了 `NO_ORDER_INDEX` Hint，优化器会选择后一种不按照顺序读取索引的计划。
 
+### INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...]) <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
+
+`INDEX_LOOKUP_PUSHDOWN(t1_name, idx1_name [, idx2_name ...])` 提示优化器仅使用指定的索引访问指定的表，并将 `IndexLookUp` 算子下推到 TiKV 执行。
+
+以下示例展示了使用该 Hint 后生成的执行计划：
+
+```sql
+CREATE TABLE t1(a INT, b INT, KEY(a));
+EXPLAIN SELECT /*+ INDEX_LOOKUP_PUSHDOWN(t1, a) */ a, b FROM t1;
+```
+
+```sql
++-----------------------------+----------+-----------+----------------------+--------------------------------+
+| id                          | estRows  | task      | access object        | operator info                  |
++-----------------------------+----------+-----------+----------------------+--------------------------------+
+| IndexLookUp_7               | 10000.00 | root      |                      |                                |
+| ├─LocalIndexLookUp(Build)   | 10000.00 | cop[tikv] |                      | index handle offsets:[1]       |
+| │ ├─IndexFullScan_5(Build)  | 10000.00 | cop[tikv] | table:t1, index:a(a) | keep order:false, stats:pseudo |
+| │ └─TableRowIDScan_8(Probe) | 10000.00 | cop[tikv] | table:t1             | keep order:false, stats:pseudo |
+| └─TableRowIDScan_6(Probe)   | 0.00     | cop[tikv] | table:t1             | keep order:false, stats:pseudo |
++-----------------------------+----------+-----------+----------------------+--------------------------------+
+```
+
+使用 `INDEX_LOOKUP_PUSHDOWN` Hint 后，执行计划中原本位于 TiDB 侧的最外层 Build 算子会被替换为 `LocalIndexLookUp`，并下推到 TiKV 执行。TiKV 在扫描索引的同时，会尝试在本地回表读取行数据。由于索引和行数据可能分布在不同的 Region，下推到 TiKV 的请求可能无法覆盖所有目标行。因此，执行计划中仍会保留 TiDB 侧的 `TableRowIDScan` 算子，用于补齐未在 TiKV 侧命中的行数据。
+
+`INDEX_LOOKUP_PUSHDOWN` Hint 目前存在以下限制：
+
+- 不支持缓存表 (cached table) 和临时表。
+- 暂不支持使用[全局索引](/global-indexes.md)的查询。
+- 暂不支持使用[多值索引](/choose-index.md#使用多值索引)的查询。
+- 暂不支持除 `REPEATABLE-READ` 之外的其他隔离级别。
+- 暂不支持 [Follower Read](/follower-read.md)。
+- 暂不支持 [Stale Read](/stale-read.md) 或[使用 `tidb_snapshot` 来读取历史数据](/read-historical-data.md)。
+- 下推的 `LocalIndexLookUp` 算子暂不支持 `keep order`。如果执行计划包含基于索引列的 `ORDER BY`，查询将回退为普通的 `IndexLookUp`。
+- 下推的 `LocalIndexLookUp` 算子暂不支持以分页 (paging) 方式发送 Coprocessor 请求。
+- 下推的 `LocalIndexLookUp` 算子暂不支持[下推计算结果缓存](/coprocessor-cache.md)。
+
+### NO_INDEX_LOOKUP_PUSHDOWN(t1_name) <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
+
+`NO_INDEX_LOOKUP_PUSHDOWN(t1_name)` 用于显式禁止对指定表执行 `IndexLookUp` 下推。该 Hint 通常与系统变量 [`tidb_index_lookup_pushdown_policy`](/system-variables.md#tidb_index_lookup_pushdown_policy-从-v855-和-v900-版本开始引入) 配合使用。当该变量的值为 `force` 或 `affinity-force` 时，你可以使用此 Hint 阻止特定表下推 `IndexLookUp`。
+
+以下示例将 `tidb_index_lookup_pushdown_policy` 变量设置为 `force`，使当前会话中的所有 `IndexLookUp` 算子自动下推。如果在查询中指定了 `NO_INDEX_LOOKUP_PUSHDOWN` Hint，则对应表不会下推 `IndexLookUp`：
+
+```sql
+SET @@tidb_index_lookup_pushdown_policy = 'force';
+
+-- 不会下推 IndexLookUp 算子
+SELECT /*+ NO_INDEX_LOOKUP_PUSHDOWN(t) */ * FROM t WHERE a > 1;
+```
+
+> **注意：**
+>
+> `NO_INDEX_LOOKUP_PUSHDOWN` 的优先级高于 [`INDEX_LOOKUP_PUSHDOWN`](#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-和-v900-版本开始引入)。当同一个查询中同时指定这两个 Hint 时，`NO_INDEX_LOOKUP_PUSHDOWN` 生效。
+
 ### AGG_TO_COP()
 
 `AGG_TO_COP()` 提示优化器将指定查询块中的聚合函数下推到 coprocessor。如果优化器没有下推某些适合下推的聚合函数，建议尝试使用。例如：
@@ -860,7 +914,7 @@ SELECT /*+ NTH_PLAN(3) */ count(*) from t where a > 5;
 
 ### RESOURCE_GROUP(resource_group_name)
 
-`RESOURCE_GROUP(resource_group_name)` 用于[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)。此 Hint 将临时使用指定的资源组执行当前的语句。如果指定的资源组不存在，则该 Hint 将被忽略。
+`RESOURCE_GROUP(resource_group_name)` 用于[使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)。此 Hint 将临时使用指定的资源组执行当前的语句。如果指定的资源组不存在，则该 Hint 将被忽略。
 
 示例：
 

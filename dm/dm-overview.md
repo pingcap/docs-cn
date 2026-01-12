@@ -52,13 +52,17 @@ tiup install dm dmctl
 
     - DM 不会将视图的 DDL 语句同步到下游的 TiDB 集群，也不会将针对视图的 DML 语句同步到下游。在该场景下，建议用户在下游 TiDB 集群中自行创建视图。
 
-+ GBK 字符集兼容性限制
++ GBK 和 GB18030 字符集兼容性限制
 
-    - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB。
+    - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB，在 v9.0.0 之前不支持将 `charset=GB18030` 的表迁移到 TiDB。
 
 + Binlog 兼容性限制
 
     - DM 不支持 MySQL 8.0 的新特性 binlog 事务压缩 [Transaction_payload_event](https://dev.mysql.com/doc/refman/8.0/en/binary-log-transaction-compression.html)。使用 binlog 事务压缩有导致上下游数据不一致的风险。
+
++ 向量类型数据同步
+
+    - DM 不支持迁移或同步 MySQL 的向量数据类型到 TiDB。
 
 ## Contributing
 
@@ -79,9 +83,9 @@ DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/bl
 
 在 v5.4 之前，DM 工具的文档独立于 TiDB 文档。要访问这些早期版本的 DM 文档，请点击以下链接：
 
-- [DM v5.3 文档](https://docs.pingcap.com/zh/tidb-data-migration/v5.3)
-- [DM v2.0 文档](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/)
-- [DM v1.0 文档](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/)
+- [DM v5.3 文档](https://docs-archive.pingcap.com/zh/tidb-data-migration/v5.3)
+- [DM v2.0 文档](https://docs-archive.pingcap.com/zh/tidb-data-migration/v2.0/)
+- [DM v1.0 文档](https://docs-archive.pingcap.com/zh/tidb-data-migration/v1.0/)
 
 > **注意：**
 >
@@ -90,8 +94,8 @@ DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/bl
 
 要快速了解 DM 的原理架构、适用场景，建议先观看下面的培训视频。注意本视频只作为学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson20_dm_part01.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson20.png"></video>
+<video src="https://docs-download.pingcap.com/media/videos/docs-cn%2FLesson20_dm_part01.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson20.png"></video>
 
-<video src="https://download.pingcap.com/docs-cn/Lesson20_dm_part02.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson20.png"></video>
+<video src="https://docs-download.pingcap.com/media/videos/docs-cn/Lesson20_dm_part02.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson20.png"></video>
 
-<video src="https://download.pingcap.com/docs-cn/Lesson20_part03.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson20.png"></video>
+<video src="https://docs-download.pingcap.com/media/videos/docs-cn/Lesson20_part03.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson20.png"></video>

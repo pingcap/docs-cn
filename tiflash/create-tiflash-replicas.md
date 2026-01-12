@@ -53,6 +53,13 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0;
 
 * v5.1 版本及后续版本将不再支持设置系统表的 replica。在集群升级前，需要清除相关系统表的 replica，否则升级到较高版本后将无法再修改系统表的 replica 设置。
 
+> **注意：**
+>
+> 目前，使用 TiCDC 同步表到下游 TiDB 集群时，不支持为表创建 TiFlash 副本，即 TiCDC 不支持同步 TiFlash 相关的 DDL，例如:
+>
+> * `ALTER TABLE table_name SET TIFLASH REPLICA count;`
+> * `ALTER DATABASE db_name SET TIFLASH REPLICA count;`
+
 ### 查看表同步进度
 
 可通过如下 SQL 语句查看特定表（通过 WHERE 语句指定，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态：
@@ -102,6 +109,8 @@ ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0;
 > - 该命令执行结束后，在该库中新建的表不会自动创建 TiFlash 副本。
 >
 > - 该命令会跳过系统表、视图、临时表以及包含了 TiFlash 不支持字符集的表。
+>
+> - 通过设置 [`tidb_batch_pending_tiflash_count`](/system-variables.md#tidb_batch_pending_tiflash_count-从-v60-版本开始引入) 系统变量可以控制执行过程中允许的尚未同步完成的表的数量。调小该值有助于减低同步时集群受到的压力。注意，因为这个限制不是实时的，所以设置完后仍有可能存在尚未同步完成的表的数量超过限制的情况。
 
 ### 查看库同步进度
 
@@ -119,7 +128,12 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
 ## 加快 TiFlash 副本同步速度
 
-新增 TiFlash 副本时，各个 TiKV 实例将进行全表数据扫描，并将扫描得到的数据快照发送给 TiFlash 从而形成副本。默认情况下，为了降低对 TiKV 及 TiFlash 线上业务的影响，TiFlash 新增副本速度较慢、占用资源较少。如果集群中 TiKV 及 TiFlash 的 CPU 和磁盘 IO 资源有富余，你可以按以下步骤操作来提升 TiFlash 副本同步速度：
+当你执行以下任一操作时，TiDB 集群会触发 TiFlash 副本同步流程：
+
+* 为某个表添加 TiFlash 副本
+* 新增 TiFlash 节点，PD 会将 TiFlash 副本从原有节点调度至新节点
+
+在此过程中，各个 TiKV 实例将进行全表数据扫描，并将扫描得到的数据快照发送给 TiFlash 从而形成副本。默认情况下，为了降低对 TiKV 及 TiFlash 线上业务的影响，TiFlash 新增副本速度较慢、占用资源较少。如果集群中 TiKV 及 TiFlash 的 CPU 和磁盘 IO 资源有富余，你可以按以下步骤操作来提升 TiFlash 副本同步速度：
 
 1. 通过 [SQL 语句在线修改配置](/dynamic-config.md)，临时调高各个 TiKV 及 TiFlash 实例的数据快照写入速度：
 
@@ -131,34 +145,42 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
     以上 SQL 语句执行后，配置修改立即生效，无需重启集群。但由于副本同步速度还受到 PD 副本速度控制，因此当前你还无法观察到副本同步速度提升。
 
-2. 使用 [PD Control](/pd-control.md) 逐步放开新增副本速度限制：
+2. 使用 [PD Control](/pd-control.md) 逐步放开副本调度速度限制：
 
-    TiFlash 默认新增副本速度是 30（每分钟大约 30 个 Region 将会新增 TiFlash 副本）。执行以下命令将调整所有 TiFlash 实例的新增副本速度到 60，即原来的 2 倍速度：
+    TiFlash 默认副本调度速度是 30，即在每个 TiFlash 实例上，每分钟大约有 30 个 Region 的 TiFlash 副本被添加或删除。执行以下命令将调整所有 TiFlash 实例的新增副本速度到 60，即原来的 2 倍速度：
 
     ```shell
     tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
     ```
 
-    > 上述命令中，需要将 `v<CLUSTER_VERSION>` 替换为该集群版本，例如 `v8.3.0`，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
+    > 上述命令中，需要将 `v<CLUSTER_VERSION>` 替换为该集群版本，例如 `v8.5.0`，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
     >
     > ```shell
-    > tiup ctl:v8.3.0 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer
+    > tiup ctl:v8.5.0 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer
     > ```
+
+    如果集群中已经有大量的 Region 存在旧的 TiFlash 节点，需要将 Region 从旧的 TiFlash 节点均衡调度到新的 TiFlash 节点，则需要同时修改 `remove-peer` 的限制。
+
+    ```shell
+    tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 remove-peer
+    ```
 
     执行完毕后，几分钟内，你将观察到 TiFlash 节点的 CPU 及磁盘 IO 资源占用显著提升，TiFlash 将更快地创建副本。同时，TiKV 节点的 CPU 及磁盘 IO 资源占用也将有所上升。
 
-    如果此时 TiKV 及 TiFlash 节点的资源仍有富余，且线上业务的延迟没有显著上升，则可以考虑进一步放开调度速度，例如将新增副本的速度增加为原来的 3 倍：
+    如果此时 TiKV 及 TiFlash 节点的资源仍有富余，且线上业务的延迟没有显著上升，则可以考虑进一步放开调度速度，例如将副本调度的速度增加为原来的 3 倍：
 
     ```shell
     tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 90 add-peer
+    tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 90 remove-peer
     ```
 
 3. 在副本同步完毕后，恢复到默认配置，减少在线业务受到的影响。
 
-    执行以下 PD Control 命令可恢复默认的新增副本速度：
+    执行以下 PD Control 命令可恢复默认的副本调度速度：
 
     ```shell
     tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 30 add-peer
+    tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 30 remove-peer
     ```
 
     执行以下 SQL 语句可恢复默认的数据快照写入速度：
@@ -198,12 +220,12 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
     注：旧版本中的 `flash.proxy.labels` 配置无法处理可用区名字中的特殊字符，建议使用 `learner_config` 中的 `server.labels` 来进行配置。
 
-2. 启动集群后，在创建副本时为副本调度指定 label，语法如下：
+2. 启动集群后，在创建副本时指定满足高可用需求的 TiFlash 副本个数，语法如下：
 
     {{< copyable "sql" >}}
 
     ```sql
-    ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels;
+    ALTER TABLE table_name SET TIFLASH REPLICA count;
     ```
 
     例如：
@@ -211,44 +233,47 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
     {{< copyable "sql" >}}
 
     ```sql
-    ALTER TABLE t SET TIFLASH REPLICA 2 LOCATION LABELS "zone";
+    ALTER TABLE t SET TIFLASH REPLICA 2;
     ```
 
-3. 此时 PD 会根据设置的 label 进行调度，将表 `t` 的两个副本分别调度到两个可用区中。可以通过监控或 pd-ctl 来验证这一点：
+3. 此时 PD 会根据 TiFlash 节点 `learner_config` 的 `server.labels` 以及表的副本数 `count` 进行调度，将表 `t` 的副本分别调度到不同的可用区中，保证可用性。详情请参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)。可以通过下列 SQL 来验证某个表 Region 在 TiFlash 节点上的分布：
 
-    ```shell
-    > tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store
+    ```sql
+    -- Non-partitioned table
+    SELECT table_id, p.store_id, address, COUNT(p.region_id) 
+    FROM
+      information_schema.tikv_region_status r,
+      information_schema.tikv_region_peers p,
+      information_schema.tikv_store_status s
+    WHERE
+      r.db_name = 'test' 
+      AND r.table_name = 'table_to_check'
+      AND r.region_id = p.region_id 
+      AND p.store_id = s.store_id
+      AND JSON_EXTRACT(s.label, '$[0].value') = 'tiflash'
+    GROUP BY table_id, p.store_id, address;
 
-        ...
-
-        "address": "172.16.5.82:23913",
-        "labels": [
-          { "key": "engine", "value": "tiflash"},
-          { "key": "zone", "value": "z1" }
-        ],
-        "region_count": 4,
-
-        ...
-
-        "address": "172.16.5.81:23913",
-        "labels": [
-          { "key": "engine", "value": "tiflash"},
-          { "key": "zone", "value": "z1" }
-        ],
-        "region_count": 5,
-
-        ...
-
-        "address": "172.16.5.85:23913",
-        "labels": [
-          { "key": "engine", "value": "tiflash"},
-          { "key": "zone", "value": "z2" }
-        ],
-        "region_count": 9,
-
-        ...
+    -- Partitioned table
+    SELECT table_id, r.partition_name, p.store_id, address, COUNT(p.region_id)
+    FROM
+      information_schema.tikv_region_status r,
+      information_schema.tikv_region_peers p,
+      information_schema.tikv_store_status s
+    WHERE 
+      r.db_name = 'test' 
+      AND r.table_name = 'table_to_check' 
+      AND r.partition_name LIKE 'p202312%'
+      AND r.region_id = p.region_id 
+      AND p.store_id = s.store_id
+      AND JSON_EXTRACT(s.label, '$[0].value') = 'tiflash'
+    GROUP BY table_id, r.partition_name, p.store_id, address
+    ORDER BY table_id, r.partition_name, p.store_id;
     ```
 
 关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
 
 TiFlash 支持设置不同区域的副本选择策略，具体请参考变量 [`tiflash_replica_read`](/system-variables.md#tiflash_replica_read-从-v730-版本开始引入)。
+
+> **注意：**
+>
+> `ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels;` 语法中的 `location_labels` 如果涉及多个 label，无法被正确解析并设置 Placement Rule 规则，因此不建议使用 `LOCATION LABELS` 配置 TiFlash 副本。

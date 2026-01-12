@@ -24,39 +24,46 @@ jobs:
   flush-pdf:
     name: Flush PDF by Version
     runs-on: ubuntu-latest
+    env:
+      TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+      TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
+      CDN_BASE_URL: "https://docs-download.pingcap.com/pdf"
     steps:
-      - name: install qiniu qshell
-        uses: foxundermoon/setup-qshell@v5
+      - name: Set up Python environment
+        uses: actions/setup-python@v5
         with:
-          version: '2.6.2'
+          python-version: '3.12'
+          architecture: 'x64'
 
-      - name: print pdf to a file (tidb)
+      - name: Install Tencent Cloud CLI
+        run: pip3 install tccli
+
+      - name: Print PDF to a file (tidb)
         if: ${{ inputs.type == 'tidb' }}
         run: |
-          echo "https://download.pingcap.org/tidb-${{inputs.version}}-en-manual.pdf" >> pdf.txt
-          echo "https://download.pingcap.org/tidb-${{inputs.version}}-zh-manual.pdf" >> pdf.txt
-          cat pdf.txt
+          echo "${CDN_BASE_URL}/tidb-${{inputs.version}}-en-manual.pdf" >> links.txt
+          echo "${CDN_BASE_URL}/tidb-${{inputs.version}}-zh-manual.pdf" >> links.txt
+          cat links.txt
 
-      - name: print pdf to a file (tidb cloud)
+      - name: Print PDF to a file (tidb cloud)
         if: ${{ inputs.type == 'tidb cloud' }}
         run: |
-          echo "https://download.pingcap.org/tidbcloud-en-manual.pdf" > pdf.txt
-          cat pdf.txt
+          echo "${CDN_BASE_URL}/tidbcloud-en-manual.pdf" > links.txt
+          cat links.txt
 
-      - name: print pdf to a file (tidb operator)
+      - name: Print PDF to a file (tidb operator)
         if: ${{ inputs.type == 'tidb operator' }}
         run: |
-          echo "https://download.pingcap.org/tidb-in-kubernetes-${{inputs.version}}-en-manual.pdf" >> pdf.txt
-          echo "https://download.pingcap.org/tidb-in-kubernetes-${{inputs.version}}-zh-manual.pdf" >> pdf.txt
-          cat pdf.txt
+          echo "${CDN_BASE_URL}/tidb-in-kubernetes-${{inputs.version}}-en-manual.pdf" >> links.txt
+          echo "${CDN_BASE_URL}/tidb-in-kubernetes-${{inputs.version}}-zh-manual.pdf" >> links.txt
+          cat links.txt
 
-      - name: refresh url
+      - name: Refresh URLs
         run: |
-          qshell account ${{ secrets.QINIU_ACCESS_KEY }} ${{ secrets.QINIU_SECRET_KEY }} tidb
-          result=$(qshell cdnrefresh -i pdf.txt)
-          if echo $result | grep -w '200'; then
-            echo 'CDN refresh success'
-          else
-            echo "CDN refresh failed: $result"
+          cat links.txt | jq -nR '[inputs | select(length>0)]' | tee links.json
+          tccli cdn PurgeUrlsCache --Urls "$(cat links.json)" | tee result.json
+          task_id="$(cat result.json | jq .TaskId)"
+          if [ -z "${task_id}" ]; then
+            echo "Unable to find TaskId, CDN refresh might fail"
             exit 1
           fi

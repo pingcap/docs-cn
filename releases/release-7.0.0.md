@@ -9,7 +9,7 @@ summary: 了解 TiDB 7.0.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：7.0.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.0/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v7.0.0-DMR#version-list)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.0/quick-start-with-tidb)
 
 在 7.0.0 版本中，你可以获得以下关键特性：
 
@@ -162,7 +162,7 @@ TiDB 版本：7.0.0
     - 会话级别。通过 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 设置当前会话的资源组。
     - 语句级别。通过 [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) 设置当前语句的资源组。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md)。
+    更多信息，请参考[用户文档](/tidb-resource-control-ru-groups.md)。
 
 * 支持 Fast Online DDL 的检查点机制，提升容错性和自动恢复能力 [#42164](https://github.com/pingcap/tidb/issues/42164) @[tangenta](https://github.com/tangenta)
 
@@ -248,7 +248,7 @@ TiDB 版本：7.0.0
 * [DBeaver](https://dbeaver.io/) v23.0.1 默认支持 TiDB [#17396](https://github.com/dbeaver/dbeaver/issues/17396) @[Icemap](https://github.com/Icemap)
 
     - 提供独立的 TiDB 模块、Icon 和标识。
-    - 默认配置支持 [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta)，你可以更方便地连接 TiDB Serverless。
+    - 默认配置支持 [{{{ .starter }}}](https://docs.pingcap.com/tidbcloud/select-cluster-tier#starter)，你可以更方便地连接 {{{ .starter }}}。
     - 支持识别 TiDB 版本，从而显示或隐藏外键 Tab。
     - 支持 Explain SQL 计划显示。
     - 支持 TiDB 语法高亮，如 `PESSIMISTIC`、`OPTIMISTIC`、`AUTO_RANDOM`、`PLACEMENT`、`POLICY`、`REORGANIZE`、`EXCHANGE`、`CACHE`、`NONCLUSTERED`、`CLUSTERED` 等。
@@ -345,6 +345,7 @@ TiDB 版本：7.0.0
 | [`tidb_opt_enable_late_materialization`](/system-variables.md#tidb_opt_enable_late_materialization-从-v700-版本开始引入) | 新增 | 这个变量用来控制是否启用 [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)功能。默认值为 `OFF`，即未开启 TiFlash 延迟物化功能。|
 | [`tidb_opt_ordering_index_selectivity_threshold`](/system-variables.md#tidb_opt_ordering_index_selectivity_threshold-从-v700-版本开始引入) | 新增 | 该变量用于当 SQL 中存在 `ORDER BY` 和 `LIMIT` 子句且带有过滤条件时，控制优化器选择索引的行为。 |
 |[`tidb_pessimistic_txn_fair_locking`](/system-variables.md#tidb_pessimistic_txn_fair_locking-从-v700-版本开始引入) | 新增 | 是否对悲观锁启用加强的悲观锁唤醒模型，以降低单行冲突场景下事务的尾延迟。默认值为 `ON`，从旧版本升级到 v7.0.0 或之后版本，该变量会被设置成 `OFF`。 |
+| [`tidb_slow_txn_log_threshold`](/system-variables.md#tidb_slow_txn_log_threshold-从-v700-版本开始引入) | 新增 | 这个变量用于设置慢事务日志阈值。当事务执行时间超过该阈值时，TiDB 会在日志中记录该事务的详细信息。默认值 `0` 表示关闭该功能。 |
 | [`tidb_ttl_running_tasks`](/system-variables.md#tidb_ttl_running_tasks-从-v700-版本开始引入) | 新增 | 这个变量用于限制整个集群内 TTL 任务的并发量。默认值 `-1` 表示与 TiKV 节点的数量相同。 |
 
 ### 配置文件参数
@@ -356,12 +357,12 @@ TiDB 版本：7.0.0
 | TiKV | [`resolved-ts.advance-ts-interval`](/tikv-configuration-file.md#advance-ts-interval) | 修改 | 默认值由 `"1s"` 变更为 `"20s"`。该修改可以延长定期推进 Resolved TS 的时间间隔，从而减少 TiKV 节点之间的流量消耗。 |
 | TiKV | [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) | 修改 | 默认值由 `false` 变更为 `true`。 |
 | TiKV | [`raft-engine.prefill-for-recycle`](/tikv-configuration-file.md#prefill-for-recycle-从-v700-版本开始引入) | 新增 | 控制 Raft Engine 是否自动生成空的日志文件用于日志回收。默认值为 `false`。|
-| PD         | [`degraded-mode-wait-duration`](/pd-configuration-file.md#degraded-mode-wait-duration)         | 新增 | PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于配置触发降级模式需要等待的时间。默认值为 `"0s"`。|
-| PD         |  [`read-base-cost`](/pd-configuration-file.md#read-base-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置每次读请求转换成 RU 的基准系数。默认值为 `0.25`。 |
-| PD         |  [`read-cost-per-byte`](/pd-configuration-file.md#read-cost-per-byte)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置读流量转换成 RU 的基准系数。默认值为 `1/(64 * 1024)`。 |
-| PD         |  [`read-cpu-ms-cost`](/pd-configuration-file.md#read-cpu-ms-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置 CPU 转换成 RU 的基准系数。默认值为 `1/3`。 |
-| PD         |  [`write-base-cost`](/pd-configuration-file.md#write-base-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置每次写请求转换成 RU 的基准系数。默认值为 `1`。 |
-| PD         |  [`write-cost-per-byte`](/pd-configuration-file.md#write-cost-per-byte)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置写流量转换成 RU 的基准系数。默认值为 `1/1024`。 |
+| PD         | [`degraded-mode-wait-duration`](/pd-configuration-file.md#degraded-mode-wait-duration)         | 新增 | PD 中内置的 [Resource Control](/tidb-resource-control-ru-groups.md) 相关配置项。用于配置触发降级模式需要等待的时间。默认值为 `"0s"`。|
+| PD         |  [`read-base-cost`](/pd-configuration-file.md#read-base-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control-ru-groups.md) 相关配置项。用于设置每次读请求转换成 RU 的基准系数。默认值为 `0.25`。 |
+| PD         |  [`read-cost-per-byte`](/pd-configuration-file.md#read-cost-per-byte)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control-ru-groups.md) 相关配置项。用于设置读流量转换成 RU 的基准系数。默认值为 `1/(64 * 1024)`。 |
+| PD         |  [`read-cpu-ms-cost`](/pd-configuration-file.md#read-cpu-ms-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control-ru-groups.md) 相关配置项。用于设置 CPU 转换成 RU 的基准系数。默认值为 `1/3`。 |
+| PD         |  [`write-base-cost`](/pd-configuration-file.md#write-base-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control-ru-groups.md) 相关配置项。用于设置每次写请求转换成 RU 的基准系数。默认值为 `1`。 |
+| PD         |  [`write-cost-per-byte`](/pd-configuration-file.md#write-cost-per-byte)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control-ru-groups.md) 相关配置项。用于设置写流量转换成 RU 的基准系数。默认值为 `1/1024`。 |
 | TiFlash | [`mark_cache_size`](/tiflash/tiflash-configuration.md) |  修改  | TiFlash 中数据块元信息的内存 cache 上限，默认值从 `5368709120` 修改为 `1073741824`，以减少不必要的内存占用 |
 | TiFlash | [`minmax_index_cache_size`](/tiflash/tiflash-configuration.md) |  修改  | TiFlash 中数据块 min-max 索引的内存 cache 上限，默认值从 `5368709120` 修改为 `1073741824`，以减少不必要的内存占用  |
 | TiFlash | [`flash.disaggregated_mode`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 在 TiFlash 的存算分离架构中，表示此 TiFlash 节点是 Write Node 还是 Compute Node。可选值为 `tiflash_write` 或者 `tiflash_compute`。 |

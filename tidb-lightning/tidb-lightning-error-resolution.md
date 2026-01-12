@@ -105,7 +105,7 @@ CREATE TABLE conflict_error_v3 (
     raw_value   mediumblob NOT NULL,
     raw_handle  mediumblob NOT NULL,
     raw_row     mediumblob NOT NULL,
-    kv_type     tinyint(1) NOT NULL,
+    kv_type     tinyint NOT NULL,
     INDEX (task_id, table_name),
     INDEX (index_name),
     INDEX (table_name, index_name),
@@ -276,7 +276,7 @@ CREATE VIEW conflict_view AS
      table_name: `example`.`t`
            path: example.t.1.sql
          offset: 253
-          error: failed to cast value as tinyint(4) for column `a` (#1): [types:1690]constant 600 overflows tinyint
+          error: failed to cast value as tinyint for column `a` (#1): [types:1690]constant 600 overflows tinyint
        row_data: (600,'six hundred')
     ```
 

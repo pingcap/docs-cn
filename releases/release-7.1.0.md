@@ -9,7 +9,7 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：7.1.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v7.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v7.1.0#version-list)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v7.1/production-deployment-using-tiup)
 
 TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
@@ -74,7 +74,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>TiDB 支持与 <a href="https://dev.mysql.com/doc/refman/8.0/en/ldap-pluggable-authentication.html" target="_blank"> MySQL 8.0</a> 兼容的 LDAP 身份认证。</td>
   </tr>
   <tr>
-    <td>增强数据库审计功能（<a href="https://pingcap.com/zh/product/#SelectProduct" target="_blank">企业版</a>）</td>
+    <td>增强数据库审计功能（<a href="https://pingkai.cn/docs/pingkaidb/stable/upgrade-compatibility/" target="_blank">企业版</a>）</td>
     <td>TiDB 企业版增强了数据库审计功能，通过更细粒度的事件过滤控制、更友好的过滤条件设置方式、新增的 JSON 文件输出格式、审计日志的生命周期管理，大幅提升了系统的审计能力。</td>
   </tr>
 </tbody>
@@ -152,7 +152,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     为了更好的用户体验，TiDB Dashboard 增加了[资源管控的管理页面](/dashboard/dashboard-resource-manager.md)。你可以在该页面查看资源组配置，并通过可视化的方式进行容量预估，便于合理配置资源。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md)。
+    更多信息，请参考[用户文档](/tidb-resource-control-ru-groups.md)。
 
 * 支持 Fast Online DDL 的检查点机制，提升容错性和自动恢复能力 [#42164](https://github.com/pingcap/tidb/issues/42164) @[tangenta](https://github.com/tangenta)
 
@@ -283,7 +283,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
   数据库审计是 TiDB 企业版的重要功能之一，为企业提供了强大的监管和审计工具，以保证数据安全和合规性。TiDB 企业版的数据库审计功能可以帮助企业管理人员追踪数据库操作的来源和影响，确保数据不被非法窃取或篡改。同时，数据库审计还可以帮助企业遵守各种法规和合规要求，确保企业在法律和道德方面的合规性。该功能对企业信息安全具有非常重要的应用价值。
 
-    该功能为企业版特性，要获取数据库审计功能及其文档，请在 [TiDB 产品页面](https://pingcap.com/zh/product/#SelectProduct)**企业版**区域点击**立即咨询**联系 PingCAP。
+    该功能为企业版特性，要获取数据库审计功能及其文档，请[联系我们](https://pingkai.cn/contact)。
 
 ## 兼容性变更
 
@@ -386,7 +386,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + PD
 
-    - 新增基于 snapshot 执行细节来自动调整 store limit 大小的控制器。将 `store-limit-version` 设置为 `v2` 即可开启该控制器，开启后，用户无需手动调整 `store limit` 配置来控制扩缩容的速度 [#6147](https://github.com/tikv/pd/issues/6147) @[bufferflies](https://github.com/bufferflies)
+    - 新增基于 snapshot 执行细节来自动调整 store limit 大小的控制器。将 `store-limit-version` 设置为 `v2` 即可开启该控制器（实验特性），开启后，用户无需手动调整 `store limit` 配置来控制扩缩容的速度 [#6147](https://github.com/tikv/pd/issues/6147) @[bufferflies](https://github.com/bufferflies)
     - 新增历史负载信息，避免了存储引擎为 raft-kv2 时，热点调度器对不稳定负载所在的 Region 进行频繁调度 [#6297](https://github.com/tikv/pd/issues/6297) @[bufferflies](https://github.com/bufferflies)
     - 新增 leader 健康检查机制，当 etcd leader 所在的 PD server 无法当选 leader 时，主动切换 etcd leader 来保证 PD leader 可用 [#6403](https://github.com/tikv/pd/issues/6403) @[nolouch](https://github.com/nolouch)
 
@@ -425,7 +425,6 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复对于执行中的 `DROP TABLE` 操作，`ADMIN SHOW DDL JOBS` 的结果中缺少表名的问题 [#42268](https://github.com/pingcap/tidb/issues/42268) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复 `Ignore Event Per Minute` 和 `Stats Cache LRU Cost` 图表在 Grafana 监控面板中有时不可见的问题 [#42562](https://github.com/pingcap/tidb/issues/42562) @[pingandb](https://github.com/pingandb)
     - 修复查询表 `INFORMATION_SCHEMA.COLUMNS` 时，`ORDINAL_POSITION` 列返回结果错误的问题 [#43379](https://github.com/pingcap/tidb/issues/43379) @[bb7133](https://github.com/bb7133)
-    - 修复权限表中一些列大小写敏感的问题 [#41048](https://github.com/pingcap/tidb/issues/41048) @[bb7133](https://github.com/bb7133)
     - 修复缓存表执行新增列操作后，新增列值为 `NULL` 而非列的默认值的问题 [#42928](https://github.com/pingcap/tidb/issues/42928) @[lqs](https://github.com/lqs)
     - 修复在谓词下推的情况下 CTE 结果错误的问题 [#43645](https://github.com/pingcap/tidb/issues/43645) @[winoros](https://github.com/winoros)
     - 修复分区特别多并且带有 TiFlash 副本的分区表在执行 `TRUNCATE TABLE` 时，出现写冲突导致 DDL 重试的问题 [#42940](https://github.com/pingcap/tidb/issues/42940) @[mjonss](https://github.com/mjonss)
@@ -534,7 +533,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ## 性能测试
 
-如需了解 TiDB v7.1.0 的性能表现，你可以参考 TiDB Dedicated 集群的 [TPC-C 性能测试报告](https://docs.pingcap.com/tidbcloud/v7.1.0-performance-benchmarking-with-tpcc)和 [Sysbench 性能测试报告](https://docs.pingcap.com/tidbcloud/v7.1.0-performance-benchmarking-with-sysbench)（英文版）。
+如需了解 TiDB v7.1.0 的性能表现，你可以参考 TiDB Cloud Dedicated 集群的 [TPC-C 性能测试报告](https://docs.pingcap.com/tidbcloud/v7.1.0-performance-benchmarking-with-tpcc)和 [Sysbench 性能测试报告](https://docs.pingcap.com/tidbcloud/v7.1.0-performance-benchmarking-with-sysbench)（英文版）。
 
 ## 贡献者
 

@@ -104,7 +104,7 @@ tidb_session_execute_duration_seconds{type="general"} =
     read value duration
 ```
 
-`pd_client_cmd_handle_cmds_duration_seconds{type="wait"}` 代表从 PD 中读取 [TSO](/glossary.md#tso) 的耗时。在 auto-commit 事务模式下从聚簇索引主键或者快照中读取时，该数值为 0。
+`pd_client_cmd_handle_cmds_duration_seconds{type="wait"}` 代表从 PD 中读取 [TSO](/tso.md) 的耗时。在 auto-commit 事务模式下从聚簇索引主键或者快照中读取时，该数值为 0。
 
 `read handle duration` 和 `read value duration` 使用如下方式计算：
 
@@ -863,7 +863,7 @@ tikv_raftstore_apply_log_duration_seconds =
 
 如果 `SELECT` 语句占 Database Time 的很大一部分，你可以认为 TiDB 在读查询时速度很慢。
 
-慢查询的执行计划可以在 TiDB Dashboard 中的 [Top SQL 语句](/dashboard/dashboard-overview.md#top-sql-语句) 区域查看。要分析慢读取查询的耗时，你可以根据前面的描述分析[点查](#点查-point-get)、[批量点查](#批量点查-batch-point-get)和[表扫描和索引扫描](#表扫描和索引扫描-table-scan-和-index-scan)的耗时情况。
+慢查询的执行计划可以在 TiDB Dashboard 中的 [Top SQL 语句](/dashboard/dashboard-overview.md#top-sql-语句)区域查看。要分析慢读取查询的耗时，你可以根据前面的描述分析[点查](#点查-point-get)、[批量点查](#批量点查-batch-point-get)和[表扫描和索引扫描](#表扫描和索引扫描-table-scan-和-index-scan)的耗时情况。
 
 ### 慢写入查询
 

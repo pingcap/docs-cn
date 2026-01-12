@@ -1,7 +1,7 @@
 ---
 title: TopN 和 Limit 下推
 aliases: ['/docs-cn/dev/topn-limit-push-down/']
-summary: TiDB 中的 LIMIT 子句对应 Limit 算子节点，ORDER BY 子句对应 Sort 算子节点。相邻的 Limit 和 Sort 算子组合成 TopN 算子节点，表示按排序规则提取记录的前 N 项。TopN 下推将尽可能下推到数据源附近，减少数据传输或计算的开销。可参考 [优化规则及表达式下推的黑名单](/blocklist-control-plan.md) 中的关闭方法。TopN 可下推到存储层 Coprocessor，减少计算开销。TopN 无法下推过 Join，排序规则仅依赖于外表列时可下推。TopN 也可转换成 Limit，简化排序操作。
+summary: TiDB 中的 LIMIT 子句对应 Limit 算子节点，ORDER BY 子句对应 Sort 算子节点。相邻的 Limit 和 Sort 算子组合成 TopN 算子节点，表示按排序规则提取记录的前 N 项。TopN 下推将尽可能下推到数据源附近，减少数据传输或计算的开销。可参考[优化规则及表达式下推的黑名单](/blocklist-control-plan.md)中的关闭方法。TopN 可下推到存储层 Coprocessor，减少计算开销。TopN 无法下推过 Join，排序规则仅依赖于外表列时可下推。TopN 也可转换成 Limit，简化排序操作。
 ---
 
 # TopN 和 Limit 下推

@@ -1,15 +1,13 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
-- [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 8.3 Release Notes](/releases/release-8.3.0.md)
+  - [TiDB 8.5 Release Notes](/releases/release-8.5.0.md)
   - [功能概览](/basic-features.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)
-  - [路线图](/tidb-roadmap.md)
 - 快速上手
   - [快速上手 TiDB](/quick-start-with-tidb.md)
   - [快速上手 HTAP](/quick-start-with-htap.md)
@@ -18,7 +16,7 @@
 - 应用开发
   - [概览](/develop/dev-guide-overview.md)
   - 快速开始
-    - [使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+    - [使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
   - 示例程序
     - Java
@@ -47,6 +45,8 @@
     - Ruby
       - [mysql2](/develop/dev-guide-sample-application-ruby-mysql2.md)
       - [Rails](/develop/dev-guide-sample-application-ruby-rails.md)
+    - C#
+      - [C#](/develop/dev-guide-sample-application-cs.md)
   - 连接到 TiDB
     - GUI 数据库工具
       - [MySQL Workbench](/develop/dev-guide-gui-mysql-workbench.md)
@@ -77,6 +77,24 @@
       - [Follower Read](/develop/dev-guide-use-follower-read.md)
       - [Stale Read](/develop/dev-guide-use-stale-read.md)
     - [HTAP 查询](/develop/dev-guide-hybrid-oltp-and-olap-queries.md)
+  - 向量搜索
+    - [概述](/vector-search/vector-search-overview.md)
+    - 快速入门
+      - [使用 SQL 开始向量搜索](/vector-search/vector-search-get-started-using-sql.md)
+      - [使用 Python 开始向量搜索](/vector-search/vector-search-get-started-using-python.md)
+    - 集成
+      - [集成概览](/vector-search/vector-search-integration-overview.md)
+      - AI 框架
+        - [LlamaIndex](/vector-search/vector-search-integrate-with-llamaindex.md)
+        - [Langchain](/vector-search/vector-search-integrate-with-langchain.md)
+      - 嵌入模型/服务
+        - [Jina AI](/vector-search/vector-search-integrate-with-jinaai-embedding.md)
+      - ORM 库
+        - [SQLAlchemy](/vector-search/vector-search-integrate-with-sqlalchemy.md)
+        - [peewee](/vector-search/vector-search-integrate-with-peewee.md)
+        - [Django](/vector-search/vector-search-integrate-with-django-orm.md)
+    - [优化搜索性能](/vector-search/vector-search-improve-performance.md)
+    - [使用限制](/vector-search/vector-search-limitations.md)
   - 事务
     - [概览](/develop/dev-guide-transaction-overview.md)
     - [乐观事务和悲观事务](/develop/dev-guide-optimistic-and-pessimistic-transaction.md)
@@ -114,13 +132,11 @@
     - [PD 微服务部署拓扑](/pd-microservices-deployment-topology.md)
     - [TiProxy 部署拓扑](/tiproxy/tiproxy-deployment-topology.md)
     - [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
-    - [TiDB Binlog 部署拓扑](/tidb-binlog-deployment-topology.md)
     - [TiSpark 部署拓扑](/tispark-deployment-topology.md)
     - [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     - [混合部署拓扑结构](/hybrid-deployment-topology.md)
-  - 安装与启动
-    - [使用 TiUP 部署](/production-deployment-using-tiup.md)
-    - [在 Kubernetes 上部署](/tidb-in-kubernetes.md)
+  - [使用 TiUP 部署](/production-deployment-using-tiup.md)
+  - [在 Kubernetes 上部署](/tidb-in-kubernetes.md)
   - [验证集群状态](/post-installation-check.md)
   - 测试集群性能
     - [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
@@ -136,6 +152,7 @@
     - [从大数据量 MySQL 迁移数据到 TiDB](/migrate-large-mysql-to-tidb.md)
     - [从小数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-small-mysql-shards-to-tidb.md)
     - [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)
+    - [从 Vitess 迁移数据到 TiDB](/migrate-from-vitess.md)
     - [从 MariaDB 迁移数据到 TiDB](/migrate-from-mariadb.md)
     - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
     - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
@@ -147,16 +164,69 @@
     - [下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)
     - [如何根据类型或 DDL 内容过滤 binlog 事件](/filter-binlog-event.md)
     - [如何通过 SQL 表达式过滤 DML binlog 事件](/filter-dml-event.md)
-- 数据集成
-  - [数据集成概述](/integration-overview.md)
+- 数据同步
+  - [TiCDC 概述](/ticdc/ticdc-overview.md)
+  - [安装部署与集群运维](/ticdc/deploy-ticdc.md)
+  - Changefeed
+    - [Changefeed 概述](/ticdc/ticdc-changefeed-overview.md)
+    - 创建 Changefeed
+      - [同步数据到 MySQL 兼容的数据库](/ticdc/ticdc-sink-to-mysql.md)
+      - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
+      - [同步数据到 Pulsar](/ticdc/ticdc-sink-to-pulsar.md)
+      - [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
+    - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
+    - [日志过滤器](/ticdc/ticdc-filter.md)
+    - [DDL 同步](/ticdc/ticdc-ddl.md)
+    - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
+  - 监控告警
+    - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
+    - [详细监控指标](/ticdc/monitor-ticdc.md)
+    - [报警规则](/ticdc/ticdc-alert-rules.md)
   - 数据集成场景
+    - [数据集成概述](/integration-overview.md)
     - [与 Confluent Cloud 和 Snowflake 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)
     - [与 Apache Kafka 和 Apache Flink 进行数据集成](/replicate-data-to-kafka.md)
+  - 参考指南
+    - TiCDC 架构设计与原理
+      - [TiCDC 新架构](/ticdc/ticdc-architecture.md)
+      - [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)
+    - [TiCDC 数据同步能力详解](/ticdc/ticdc-data-replication-capabilities.md)
+    - [TiCDC Server 配置参数](/ticdc/ticdc-server-config.md)
+    - [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)
+    - [TiCDC 客户端鉴权](/ticdc/ticdc-client-authentication.md)
+    - [单行数据正确性校验](/ticdc/ticdc-integrity-check.md)
+    - [主从集群数据校验和快照读](/ticdc/ticdc-upstream-downstream-check.md)
+    - [拆分 UPDATE 事件行为说明](/ticdc/ticdc-split-update-behavior.md)
+    - 输出数据协议
+      - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
+      - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
+      - [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
+      - [TiCDC Debezium Protocol](/ticdc/ticdc-debezium.md)
+      - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+      - [TiCDC Simple Protocol](/ticdc/ticdc-simple-protocol.md)
+    - [TiCDC Open API v2](/ticdc/ticdc-open-api-v2.md)
+    - [TiCDC Open API v1](/ticdc/ticdc-open-api.md)
+    - TiCDC 数据消费
+      - [基于 Avro 的 TiCDC 行数据 Checksum 校验](/ticdc/ticdc-avro-checksum-verification.md)
+      - [Storage sink 消费程序编写指引](/ticdc/ticdc-storage-consumer-dev-guide.md)
+    - [TiCDC 兼容性](/ticdc/ticdc-compatibility.md)
+  - [故障处理](/ticdc/troubleshoot-ticdc.md)
+  - [常见问题解答](/ticdc/ticdc-faq.md)
+  - [术语表](/ticdc/ticdc-glossary.md)
 - 运维操作
+  - 安全加固
+    - [TiDB 安全配置最佳实践](/best-practices-for-security-configuration.md)
+    - [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
+    - [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
+    - [生成自签名证书](/generate-self-signed-certificates.md)
+    - [静态加密](/encryption-at-rest.md)
+    - [为 TiDB 落盘文件开启加密](/enable-disk-spill-encrypt.md)
+    - [日志脱敏](/log-redaction.md)
   - 升级 TiDB 版本
     - [使用 TiUP 升级](/upgrade-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
     - [平滑升级 TiDB](/smooth-upgrade-tidb.md)
+    - [迁移升级 TiDB](/tidb-upgrade-migration-guide.md)
     - [TiFlash 升级帮助](/tiflash-upgrade-guide.md)
   - 扩缩容
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
@@ -171,6 +241,7 @@
       - [使用概述](/br/br-use-overview.md)
       - [快照备份与恢复](/br/br-snapshot-guide.md)
       - [日志备份与 PITR](/br/br-pitr-guide.md)
+      - [压缩日志备份](/br/br-compact-log-backup.md)
       - [实践示例](/br/backup-and-restore-use-cases.md)
       - [备份存储](/br/backup-and-restore-storages.md)
     - br cli 命令手册
@@ -191,7 +262,10 @@
     - [基于主备集群的容灾](/dr-secondary-cluster.md)
     - [基于多副本的单集群容灾](/dr-multi-replica.md)
     - [基于备份与恢复的容灾](/dr-backup-restore.md)
-  - [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)
+  - 资源管控
+    - [使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)
+    - [管理资源消耗超出预期的查询 (Runaway Queries)](/tidb-resource-control-runaway-queries.md)
+    - [限制后台任务资源使用](/tidb-resource-control-background-tasks.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
@@ -204,6 +278,37 @@
   - [监控 API](/tidb-monitoring-api.md)
   - [手动部署监控](/deploy-monitoring-services.md)
   - [升级监控组件](/upgrade-monitoring-services.md)
+  - TiDB Dashboard
+    - [简介](/dashboard/dashboard-intro.md)
+    - 运维
+      - [部署](/dashboard/dashboard-ops-deploy.md)
+      - [反向代理](/dashboard/dashboard-ops-reverse-proxy.md)
+      - [用户管理](/dashboard/dashboard-user.md)
+      - [安全](/dashboard/dashboard-ops-security.md)
+    - [访问](/dashboard/dashboard-access.md)
+    - [概况页面](/dashboard/dashboard-overview.md)
+    - [集群信息页面](/dashboard/dashboard-cluster-info.md)
+    - [Top SQL 页面](/dashboard/top-sql.md)
+    - [流量可视化页面](/dashboard/dashboard-key-visualizer.md)
+    - [监控关系图](/dashboard/dashboard-metrics-relation.md)
+    - SQL 语句分析
+      - [列表页面](/dashboard/dashboard-statement-list.md)
+      - [执行详情页面](/dashboard/dashboard-statement-details.md)
+    - [慢查询页面](/dashboard/dashboard-slow-query.md)
+    - 集群诊断页面
+      - [访问](/dashboard/dashboard-diagnostics-access.md)
+      - [查看报告](/dashboard/dashboard-diagnostics-report.md)
+      - [使用示例](/dashboard/dashboard-diagnostics-usage.md)
+    - [监控指标页面](/dashboard/dashboard-monitoring.md)
+    - [日志搜索页面](/dashboard/dashboard-log-search.md)
+    - [资源管控页面](/dashboard/dashboard-resource-manager.md)
+    - 实例性能分析
+      - [手动分析页面](/dashboard/dashboard-profiling.md)
+      - [持续分析页面](/dashboard/continuous-profiling.md)
+    - 会话管理与配置
+      - [分享会话](/dashboard/dashboard-session-share.md)
+      - [配置 SSO 登录](/dashboard/dashboard-session-sso.md)
+    - [常见问题](/dashboard/dashboard-faq.md)
   - [将 Grafana 监控数据导出成快照](/exporting-grafana-snapshots.md)
   - [TiDB 集群报警规则与处理方法](/alert-rules.md)
   - [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
@@ -248,6 +353,7 @@
       - [TiKV 线程调优](/tune-tikv-thread-performance.md)
       - [TiKV 内存调优](/tune-tikv-memory-performance.md)
       - [TiKV Follower Read](/follower-read.md)
+      - [TiKV MVCC 内存引擎](/tikv-in-memory-engine.md)
       - [Region 性能调优](/tune-region-performance.md)
       - [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
       - [下推计算结果缓存](/coprocessor-cache.md)
@@ -297,6 +403,7 @@
       - [执行计划管理](/sql-plan-management.md)
       - [优化规则及表达式下推的黑名单](/blocklist-control-plan.md)
       - [Optimizer Fix Controls](/optimizer-fix-controls.md)
+    - [索引推荐 (Index Advisor)](/index-advisor.md)
 - 教程
   - [单区域多 AZ 部署](/multi-data-centers-in-one-city-deployment.md)
   - [双区域多 AZ 部署](/three-data-centers-in-two-cities-deployment.md)
@@ -308,22 +415,10 @@
       - [使用系统变量 `tidb_read_staleness` 读取历史数据](/tidb-read-staleness.md)
       - [使用系统变量 `tidb_external_ts` 读取历史数据](/tidb-external-ts.md)
     - [使用系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md)
-  - 最佳实践
-    - [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
-    - [Java 应用开发最佳实践](/best-practices/java-app-best-practices.md)
-    - [HAProxy 最佳实践](/best-practices/haproxy-best-practices.md)
-    - [高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)
-    - [Grafana 监控最佳实践](/best-practices/grafana-monitor-best-practices.md)
-    - [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md)
-    - [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md)
-    - [三节点混合部署最佳实践](/best-practices/three-nodes-hybrid-deployment.md)
-    - [在三数据中心下就近读取数据](/best-practices/three-dc-local-read.md)
-    - [使用 UUID](/best-practices/uuid.md)
-    - [只读存储节点最佳实践](/best-practices/readonly-nodes.md)
   - [Placement Rules 使用文档](/configure-placement-rules.md)
   - [Load Base Split 使用文档](/configure-load-base-split.md)
   - [Store Limit 使用文档](/configure-store-limit.md)
-  - [DDL 执行原理及最佳实践](/ddl-introduction.md)
+  - [数据批量处理](/batch-processing.md)
   - PD 微服务使用文档
     - [PD 微服务概览](/pd-microservices.md)
     - [使用 TiUP 扩容缩容 PD 微服务节点](/scale-microservices-using-tiup.md)
@@ -331,6 +426,22 @@
     - [TSO 配置参数](/command-line-flags-for-tso-configuration.md)
     - [Scheduling 配置文件描述](/scheduling-configuration-file.md)
     - [Scheduling 配置参数](/command-line-flags-for-scheduling-configuration.md)
+- 最佳实践
+  - [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
+  - [DDL 最佳实践](/ddl-introduction.md)
+  - [多列索引优化最佳实践](/best-practices/multi-column-index-best-practices.md)
+  - [管理索引和识别未使用索引的最佳实践](/best-practices/index-management-best-practices.md)
+  - [SaaS 多租户场景下处理百万张表](/best-practices/saas-best-practices.md)
+  - [将 UUID 用作主键的最佳实践](/best-practices/uuid.md)
+  - [Java 应用开发最佳实践](/best-practices/java-app-best-practices.md)
+  - [高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)
+  - [海量 Region 集群调优最佳实践](/best-practices/massive-regions-best-practices.md)
+  - [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md)
+  - [只读存储节点最佳实践](/best-practices/readonly-nodes.md)
+  - [HAProxy 最佳实践](/best-practices/haproxy-best-practices.md)
+  - [Grafana 监控最佳实践](/best-practices/grafana-monitor-best-practices.md)
+  - [三节点混合部署最佳实践](/best-practices/three-nodes-hybrid-deployment.md)
+  - [在三数据中心下就近读取数据](/best-practices/three-dc-local-read.md)
 - TiDB 工具
   - [功能概览](/ecosystem-tool-user-guide.md)
   - [使用场景](/ecosystem-tool-user-case.md)
@@ -395,6 +506,7 @@
         - [tiup cluster start](/tiup/tiup-component-cluster-start.md)
         - [tiup cluster stop](/tiup/tiup-component-cluster-stop.md)
         - [tiup cluster template](/tiup/tiup-component-cluster-template.md)
+        - [tiup cluster tls](/tiup/tiup-component-cluster-tls.md)
         - [tiup cluster upgrade](/tiup/tiup-component-cluster-upgrade.md)
       - TiUP DM 命令
         - [TiUP DM 命令概览](/tiup/tiup-component-dm.md)
@@ -425,20 +537,21 @@
     - TiUP 组件文档
       - [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
       - [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
+      - [使用 no-sudo 模式部署运维生产集群](/tiup/tiup-cluster-no-sudo-mode.md)
       - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   - [TiDB Operator](/tidb-operator-overview.md)
   - TiDB Data Migration
     - [关于 Data Migration](/dm/dm-overview.md)
     - [架构简介](/dm/dm-arch.md)
-    - [快速开始](/dm/quick-start-with-dm.md)
+    - [快速上手](/dm/quick-start-with-dm.md)
     - [最佳实践](/dm/dm-best-practices.md)
     - 部署 DM 集群
       - [软硬件要求](/dm/dm-hardware-and-software-requirements.md)
       - [使用 TiUP 联网部署（推荐）](/dm/deploy-a-dm-cluster-using-tiup.md)
       - [使用 TiUP 离线部署](/dm/deploy-a-dm-cluster-using-tiup-offline.md)
       - [使用 Binary 部署](/dm/deploy-a-dm-cluster-using-binary.md)
-      - [在 Kubernetes 环境中部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm)
+      - [在 Kubernetes 环境中部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.6/deploy-tidb-dm)
     - 入门指南
       - [创建数据源](/dm/quick-start-create-source.md)
       - [数据源操作](/dm/dm-manage-source.md)
@@ -565,68 +678,6 @@
       - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
       - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   - [Dumpling](/dumpling-overview.md)
-  - TiCDC
-    - [概述](/ticdc/ticdc-overview.md)
-    - [安装部署与集群运维](/ticdc/deploy-ticdc.md)
-    - Changefeed
-      - [Changefeed 概述](/ticdc/ticdc-changefeed-overview.md)
-      - 创建 Changefeed
-        - [同步数据到 MySQL 兼容的数据库](/ticdc/ticdc-sink-to-mysql.md)
-        - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
-        - [同步数据到 Pulsar](/ticdc/ticdc-sink-to-pulsar.md)
-        - [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
-      - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
-      - [TiCDC 客户端鉴权](/ticdc/ticdc-client-authentication.md)
-      - [日志过滤器](/ticdc/ticdc-filter.md)
-      - [DDL 同步](/ticdc/ticdc-ddl.md)
-      - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
-      - [单行数据正确性校验](/ticdc/ticdc-integrity-check.md)
-      - [主从集群一致性读和数据校验](/ticdc/ticdc-upstream-downstream-check.md)
-      - [拆分 UPDATE 事件行为说明](/ticdc/ticdc-split-update-behavior.md)
-    - 监控告警
-      - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
-      - [详细监控指标](/ticdc/monitor-ticdc.md)
-      - [报警规则](/ticdc/ticdc-alert-rules.md)
-    - 参考指南
-      - [架构设计与原理](/ticdc/ticdc-architecture.md)
-      - [TiCDC Server 配置参数](/ticdc/ticdc-server-config.md)
-      - [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)
-      - 输出数据协议
-        - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
-        - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
-        - [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
-        - [TiCDC Debezium Protocol](/ticdc/ticdc-debezium.md)
-        - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
-        - [TiCDC Simple Protocol](/ticdc/ticdc-simple-protocol.md)
-      - [TiCDC Open API v2](/ticdc/ticdc-open-api-v2.md)
-      - [TiCDC Open API v1](/ticdc/ticdc-open-api.md)
-      - TiCDC 数据消费
-        - [基于 Avro 的 TiCDC 行数据 Checksum 校验](/ticdc/ticdc-avro-checksum-verification.md)
-        - [Storage sink 消费程序编写指引](/ticdc/ticdc-storage-consumer-dev-guide.md)
-      - [兼容性](/ticdc/ticdc-compatibility.md)
-    - [故障处理](/ticdc/troubleshoot-ticdc.md)
-    - [常见问题解答](/ticdc/ticdc-faq.md)
-    - [术语表](/ticdc/ticdc-glossary.md)
-  - TiDB Binlog（已废弃）
-    - [概述](/tidb-binlog/tidb-binlog-overview.md)
-    - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
-    - [部署使用](/tidb-binlog/deploy-tidb-binlog.md)
-    - [运维管理](/tidb-binlog/maintain-tidb-binlog-cluster.md)
-    - [配置说明](/tidb-binlog/tidb-binlog-configuration-file.md)
-      - [Pump](/tidb-binlog/tidb-binlog-configuration-file.md#pump)
-      - [Drainer](/tidb-binlog/tidb-binlog-configuration-file.md#drainer)
-    - [版本升级](/tidb-binlog/upgrade-tidb-binlog.md)
-    - [监控告警](/tidb-binlog/monitor-tidb-binlog-cluster.md)
-    - [增量恢复](/tidb-binlog/tidb-binlog-reparo.md)
-    - [binlogctl 工具](/tidb-binlog/binlog-control.md)
-    - [Kafka 自定义开发](/tidb-binlog/binlog-consumer-client.md)
-    - [TiDB Binlog Relay Log](/tidb-binlog/tidb-binlog-relay-log.md)
-    - [集群间双向同步](/tidb-binlog/bidirectional-replication-between-tidb-clusters.md)
-    - [术语表](/tidb-binlog/tidb-binlog-glossary.md)
-    - 故障诊断
-      - [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
-      - [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
-    - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
   - PingCAP Clinic 诊断服务
     - [概述](/clinic/clinic-introduction.md)
     - [快速上手](/clinic/quick-start-with-clinic.md)
@@ -644,6 +695,7 @@
   - TiProxy
     - [概述](/tiproxy/tiproxy-overview.md)
     - [负载均衡策略](/tiproxy/tiproxy-load-balance.md)
+    - [流量回放](/tiproxy/tiproxy-traffic-replay.md)
     - [配置文件](/tiproxy/tiproxy-configuration.md)
     - [命令行参数](/tiproxy/tiproxy-command-line-flags.md)
     - [监控指标](/tiproxy/tiproxy-grafana.md)
@@ -676,12 +728,14 @@
     - [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)
     - [TiFlash 数据落盘](/tiflash/tiflash-spill-disk.md)
     - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
+    - [TiFlash MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)
     - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
     - [TiFlash Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)
   - TiDB 分布式执行框架
     - [TiDB 分布式执行框架介绍](/tidb-distributed-execution-framework.md)
     - [TiDB 全局排序](/tidb-global-sort.md)
   - [系统变量](/system-variables.md)
+  - [系统变量索引](/system-variable-reference.md)
   - [服务器状态变量](/status-variables.md)
   - 配置文件参数
     - [tidb-server](/tidb-configuration-file.md)
@@ -693,7 +747,6 @@
     - [pd-ctl](/pd-control.md)
     - [tidb-ctl](/tidb-control.md)
     - [pd-recover](/pd-recover.md)
-    - [binlog-ctl](/tidb-binlog/binlog-control.md)
   - 命令行参数
     - [tidb-server](/command-line-flags-for-tidb-configuration.md)
     - [tikv-server](/command-line-flags-for-tikv-configuration.md)
@@ -708,13 +761,6 @@
     - [TiFlash 监控指标](/tiflash/monitor-tiflash.md)
     - [TiCDC 监控指标](/ticdc/monitor-ticdc.md)
     - [Resource Control 监控指标](/grafana-resource-control-dashboard.md)
-  - 安全加固
-    - [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
-    - [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
-    - [生成自签名证书](/generate-self-signed-certificates.md)
-    - [静态加密](/encryption-at-rest.md)
-    - [为 TiDB 落盘文件开启加密](/enable-disk-spill-encrypt.md)
-    - [日志脱敏](/log-redaction.md)
   - 权限
     - [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
     - [权限管理](/privilege-management.md)
@@ -737,6 +783,7 @@
     - SQL 语句
       - [概览](/sql-statements/sql-statement-overview.md)
       - [`ADMIN`](/sql-statements/sql-statement-admin.md)
+      - [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md)
       - [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md)
       - [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)
       - [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md)
@@ -746,7 +793,6 @@
       - [`ADMIN RESUME DDL`](/sql-statements/sql-statement-admin-resume-ddl.md)
       - [`ADMIN [SET|SHOW|UNSET] BDR ROLE`](/sql-statements/sql-statement-admin-bdr-role.md)
       - [`ADMIN SHOW DDL [JOBS|JOB QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)
-      - [`ADMIN SHOW TELEMETRY`](/sql-statements/sql-statement-admin-show-telemetry.md)
       - [`ALTER DATABASE`](/sql-statements/sql-statement-alter-database.md)
       - [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md)
       - [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md)
@@ -770,10 +816,10 @@
       - [`BATCH`](/sql-statements/sql-statement-batch.md)
       - [`BEGIN`](/sql-statements/sql-statement-begin.md)
       - [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md)
+      - [`CANCEL DISTRIBUTION JOB`](/sql-statements/sql-statement-cancel-distribution-job.md)
       - [`CANCEL IMPORT JOB`](/sql-statements/sql-statement-cancel-import-job.md)
+      - [`CANCEL TRAFFIC JOBS`](/sql-statements/sql-statement-cancel-traffic-jobs.md)
       - [`COMMIT`](/sql-statements/sql-statement-commit.md)
-      - [`CHANGE DRAINER`](/sql-statements/sql-statement-change-drainer.md)
-      - [`CHANGE PUMP`](/sql-statements/sql-statement-change-pump.md)
       - [`CREATE BINDING`](/sql-statements/sql-statement-create-binding.md)
       - [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md)
       - [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md)
@@ -789,6 +835,7 @@
       - [`DELETE`](/sql-statements/sql-statement-delete.md)
       - [`DESC`](/sql-statements/sql-statement-desc.md)
       - [`DESCRIBE`](/sql-statements/sql-statement-describe.md)
+      - [`DISTRIBUTE TABLE`](/sql-statements/sql-statement-distribute-table.md)
       - [`DO`](/sql-statements/sql-statement-do.md)
       - [`DROP BINDING`](/sql-statements/sql-statement-drop-binding.md)
       - [`DROP DATABASE`](/sql-statements/sql-statement-drop-database.md)
@@ -853,7 +900,7 @@
       - [`SHOW CREATE DATABASE`](/sql-statements/sql-statement-show-create-database.md)
       - [`SHOW CREATE USER`](/sql-statements/sql-statement-show-create-user.md)
       - [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md)
-      - [`SHOW DRAINER STATUS`](/sql-statements/sql-statement-show-drainer-status.md)
+      - [`SHOW DISTRIBUTION JOBS`](/sql-statements/sql-statement-show-distribution-jobs.md)
       - [`SHOW ENGINES`](/sql-statements/sql-statement-show-engines.md)
       - [`SHOW ERRORS`](/sql-statements/sql-statement-show-errors.md)
       - [`SHOW FIELDS FROM`](/sql-statements/sql-statement-show-fields-from.md)
@@ -868,7 +915,6 @@
       - [`SHOW PRIVILEGES`](/sql-statements/sql-statement-show-privileges.md)
       - [`SHOW PROCESSLIST`](/sql-statements/sql-statement-show-processlist.md)
       - [`SHOW PROFILES`](/sql-statements/sql-statement-show-profiles.md)
-      - [`SHOW PUMP STATUS`](/sql-statements/sql-statement-show-pump-status.md)
       - [`SHOW SCHEMAS`](/sql-statements/sql-statement-show-schemas.md)
       - [`SHOW STATS_BUCKETS`](/sql-statements/sql-statement-show-stats-buckets.md)
       - [`SHOW STATS_HEALTHY`](/sql-statements/sql-statement-show-stats-healthy.md)
@@ -877,10 +923,12 @@
       - [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md)
       - [`SHOW STATS_TOPN`](/sql-statements/sql-statement-show-stats-topn.md)
       - [`SHOW STATUS`](/sql-statements/sql-statement-show-status.md)
+      - [`SHOW TABLE DISTRIBUTION`](/sql-statements/sql-statement-show-table-distribution.md)
       - [`SHOW TABLE NEXT_ROW_ID`](/sql-statements/sql-statement-show-table-next-rowid.md)
       - [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md)
       - [`SHOW TABLE STATUS`](/sql-statements/sql-statement-show-table-status.md)
       - [`SHOW TABLES`](/sql-statements/sql-statement-show-tables.md)
+      - [`SHOW TRAFFIC JOBS`](/sql-statements/sql-statement-show-traffic-jobs.md)
       - [`SHOW VARIABLES`](/sql-statements/sql-statement-show-variables.md)
       - [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md)
       - [`SHUTDOWN`](/sql-statements/sql-statement-shutdown.md)
@@ -888,6 +936,8 @@
       - [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md)
       - [`TABLE`](/sql-statements/sql-statement-table.md)
       - [`TRACE`](/sql-statements/sql-statement-trace.md)
+      - [`TRAFFIC CAPTURE`](/sql-statements/sql-statement-traffic-capture.md)
+      - [`TRAFFIC REPLAY`](/sql-statements/sql-statement-traffic-replay.md)
       - [`TRUNCATE`](/sql-statements/sql-statement-truncate.md)
       - [`UNLOCK STATS`](/sql-statements/sql-statement-unlock-stats.md)
       - [`UPDATE`](/sql-statements/sql-statement-update.md)
@@ -900,6 +950,7 @@
       - [日期和时间类型](/data-type-date-and-time.md)
       - [字符串类型](/data-type-string.md)
       - [JSON 类型](/data-type-json.md)
+      - [向量数据类型](/vector-search/vector-search-data-types.md)
     - 函数与操作符
       - [函数与操作符概述](/functions-and-operators/functions-and-operators-overview.md)
       - [表达式求值的类型转换](/functions-and-operators/type-conversion-in-expression-evaluation.md)
@@ -913,6 +964,7 @@
       - [加密和压缩函数](/functions-and-operators/encryption-and-compression-functions.md)
       - [锁函数](/functions-and-operators/locking-functions.md)
       - [信息函数](/functions-and-operators/information-functions.md)
+      - [向量函数和操作符](/vector-search/vector-search-functions-and-operators.md)
       - JSON 函数
         - [概览](/functions-and-operators/json-functions.md)
         - [创建 JSON 的函数](/functions-and-operators/json-functions/json-functions-create.md)
@@ -925,14 +977,17 @@
       - [GROUP BY 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)
       - [GROUP BY 修饰符](/functions-and-operators/group-by-modifier.md)
       - [窗口函数](/functions-and-operators/window-functions.md)
+      - [序列函数](/functions-and-operators/sequence-functions.md)
+      - [效用函数](/functions-and-operators/utility-functions.md)
       - [其它函数](/functions-and-operators/miscellaneous-functions.md)
+      - [TiDB 特有的函数](/functions-and-operators/tidb-functions.md)
       - [精度数学](/functions-and-operators/precision-math.md)
       - [集合运算](/functions-and-operators/set-operators.md)
-      - [序列函数](/functions-and-operators/sequence-functions.md)
-      - [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)
-      - [TiDB 特有的函数](/functions-and-operators/tidb-functions.md)
+      - [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)          
       - [Oracle 与 TiDB 函数和语法差异对照](/oracle-functions-to-tidb.md)
     - [聚簇索引](/clustered-indexes.md)
+    - [全局索引](/global-indexes.md)
+    - [向量索引](/vector-search/vector-search-index.md)
     - [约束](/constraints.md)
     - [生成列](/generated-columns.md)
     - [SQL 模式](/sql-mode.md)
@@ -943,6 +998,7 @@
       - [乐观事务](/optimistic-transaction.md)
       - [悲观事务](/pessimistic-transaction.md)
       - [非事务 DML 语句](/non-transactional-dml.md)
+      - [Pipelined DML](/pipelined-dml.md)
     - [视图](/views.md)
     - [分区表](/partitioned-table.md)
     - [临时表](/temporary-tables.md)
@@ -951,10 +1007,12 @@
     - 字符集和排序规则
       - [概述](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)
+      - [GB18030](/character-set-gb18030.md)
     - [Placement Rules in SQL](/placement-rules-in-sql.md)
     - 系统表
       - `mysql` Schema
         - [概述](/mysql-schema/mysql-schema.md)
+        - [`tidb_mdl_view`](/mysql-schema/mysql-schema-tidb-mdl-view.md)
         - [`user`](/mysql-schema/mysql-schema-user.md)
       - INFORMATION_SCHEMA
         - [概述](/information-schema/information-schema.md)
@@ -1000,12 +1058,14 @@
         - [`TABLES`](/information-schema/information-schema-tables.md)
         - [`TABLE_CONSTRAINTS`](/information-schema/information-schema-table-constraints.md)
         - [`TABLE_STORAGE_STATS`](/information-schema/information-schema-table-storage-stats.md)
+        - [`TIDB_CHECK_CONSTRAINTS`](/information-schema/information-schema-tidb-check-constraints.md)
         - [`TIDB_HOT_REGIONS`](/information-schema/information-schema-tidb-hot-regions.md)
         - [`TIDB_HOT_REGIONS_HISTORY`](/information-schema/information-schema-tidb-hot-regions-history.md)
         - [`TIDB_INDEXES`](/information-schema/information-schema-tidb-indexes.md)
         - [`TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md)
         - [`TIDB_SERVERS_INFO`](/information-schema/information-schema-tidb-servers-info.md)
         - [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
+        - [`TIFLASH_INDEXES`](/information-schema/information-schema-tiflash-indexes.md)
         - [`TIFLASH_REPLICA`](/information-schema/information-schema-tiflash-replica.md)
         - [`TIFLASH_SEGMENTS`](/information-schema/information-schema-tiflash-segments.md)
         - [`TIFLASH_TABLES`](/information-schema/information-schema-tiflash-tables.md)
@@ -1025,42 +1085,14 @@
         - [`schema_unused_indexes`](/sys-schema/sys-schema-unused-indexes.md)
     - [元数据锁](/metadata-lock.md)
     - [TiDB 加速建表](/accelerated-table-creation.md)
-  - UI
-    - TiDB Dashboard
-      - [简介](/dashboard/dashboard-intro.md)
-      - 运维
-        - [部署](/dashboard/dashboard-ops-deploy.md)
-        - [反向代理](/dashboard/dashboard-ops-reverse-proxy.md)
-        - [用户管理](/dashboard/dashboard-user.md)
-        - [安全](/dashboard/dashboard-ops-security.md)
-      - [访问](/dashboard/dashboard-access.md)
-      - [概况页面](/dashboard/dashboard-overview.md)
-      - [集群信息页面](/dashboard/dashboard-cluster-info.md)
-      - [Top SQL 页面](/dashboard/top-sql.md)
-      - [流量可视化页面](/dashboard/dashboard-key-visualizer.md)
-      - [监控关系图](/dashboard/dashboard-metrics-relation.md)
-      - SQL 语句分析
-        - [列表页面](/dashboard/dashboard-statement-list.md)
-        - [执行详情页面](/dashboard/dashboard-statement-details.md)
-      - [慢查询页面](/dashboard/dashboard-slow-query.md)
-      - 集群诊断页面
-        - [访问](/dashboard/dashboard-diagnostics-access.md)
-        - [查看报告](/dashboard/dashboard-diagnostics-report.md)
-        - [使用示例](/dashboard/dashboard-diagnostics-usage.md)
-      - [监控指标页面](/dashboard/dashboard-monitoring.md)
-      - [日志搜索页面](/dashboard/dashboard-log-search.md)
-      - [资源管控页面](/dashboard/dashboard-resource-manager.md)
-      - 实例性能分析
-        - [手动分析页面](/dashboard/dashboard-profiling.md)
-        - [持续分析页面](/dashboard/continuous-profiling.md)
-      - 会话管理与配置
-        - [分享会话](/dashboard/dashboard-session-share.md)
-        - [配置 SSO 登录](/dashboard/dashboard-session-sso.md)
-      - [常见问题](/dashboard/dashboard-faq.md)
+    - [Schema 缓存](/schema-cache.md)
   - [遥测](/telemetry.md)
   - [错误码](/error-codes.md)
   - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
   - [外部存储服务的 URI 格式](/external-storage-uri.md)
+  - [TiDB Workload Repository](/workload-repository.md)
+  - [线上负载与 `ADD INDEX` 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
+  - [内嵌于 DDL 的 Analyze](/ddl_embedded_analyze.md)
 - 常见问题解答 (FAQ)
   - [FAQ 汇总](/faq/faq-overview.md)
   - [产品 FAQ](/faq/tidb-faq.md)
@@ -1077,12 +1109,22 @@
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
+  - [版本周期支持策略](https://pingkai.cn/tidb-release-support-policy)
   - [TiDB 离线包](/binary-package.md)
+  - v8.5
+    - [8.5.4](/releases/release-8.5.4.md)
+    - [8.5.3](/releases/release-8.5.3.md)
+    - [8.5.2](/releases/release-8.5.2.md)
+    - [8.5.1](/releases/release-8.5.1.md)
+    - [8.5.0](/releases/release-8.5.0.md)
+  - v8.4
+    - [8.4.0-DMR](/releases/release-8.4.0.md)
   - v8.3
     - [8.3.0-DMR](/releases/release-8.3.0.md)
   - v8.2
     - [8.2.0-DMR](/releases/release-8.2.0.md)
   - v8.1
+    - [8.1.2](/releases/release-8.1.2.md)
     - [8.1.1](/releases/release-8.1.1.md)
     - [8.1.0](/releases/release-8.1.0.md)
   - v8.0
@@ -1090,6 +1132,10 @@
   - v7.6
     - [7.6.0-DMR](/releases/release-7.6.0.md)
   - v7.5
+    - [7.5.7](/releases/release-7.5.7.md)
+    - [7.5.6](/releases/release-7.5.6.md)
+    - [7.5.5](/releases/release-7.5.5.md)
+    - [7.5.4](/releases/release-7.5.4.md)
     - [7.5.3](/releases/release-7.5.3.md)
     - [7.5.2](/releases/release-7.5.2.md)
     - [7.5.1](/releases/release-7.5.1.md)
@@ -1101,6 +1147,7 @@
   - v7.2
     - [7.2.0-DMR](/releases/release-7.2.0.md)
   - v7.1
+    - [7.1.6](/releases/release-7.1.6.md)
     - [7.1.5](/releases/release-7.1.5.md)
     - [7.1.4](/releases/release-7.1.4.md)
     - [7.1.3](/releases/release-7.1.3.md)
@@ -1112,6 +1159,8 @@
   - v6.6
     - [6.6.0-DMR](/releases/release-6.6.0.md)
   - v6.5
+    - [6.5.12](/releases/release-6.5.12.md)
+    - [6.5.11](/releases/release-6.5.11.md)
     - [6.5.10](/releases/release-6.5.10.md)
     - [6.5.9](/releases/release-6.5.9.md)
     - [6.5.8](/releases/release-6.5.8.md)

@@ -120,7 +120,7 @@ mysql> select a.class, a.stuname, b.course, b.courscore from stu_info a join stu
 
 ```
 
-当遇到相同的 order by 值时，排序结果不稳定。为减少随机性，应当尽可能保持 order by 值的唯一性。不能保证唯一的继续加，保证 order by 的字段组合是唯一时，结果才能唯一。
+当 order by 值相同时，结果会不稳定。为了减少随机性，order by 值应该是唯一的。如果不能保证唯一性，则需要添加更多的 order by 字段，直到 order by 字段的组合是唯一的，这样结果才会稳定。
 
 ## 由于 group_concat() 中没有使用 order by 导致结果集不稳定
 
