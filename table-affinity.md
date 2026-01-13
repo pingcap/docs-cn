@@ -3,7 +3,7 @@ title: 表级数据亲和性
 summary: 通过为表或分区配置亲和性约束，控制 Region 副本的分布并查看调度状态。
 ---
 
-# 表级数据亲和性 <span class="version-mark">从 v8.5.5 和 v9.0.0 开始引入</span>
+# 表级数据亲和性 <span class="version-mark">从 v8.5.5 开始引入</span>
 
 > **警告：**
 >
@@ -35,7 +35,7 @@ PD 亲和性调度特性默认关闭。在设置表或分区的亲和性前，�
     pd-ctl config set schedule.affinity-schedule-limit 4
     ```
 
-2. （可选）根据需要设置 PD 配置项 [`schedule.max-affinity-merge-region-size`](/pd-configuration-file.md#max-affinity-merge-region-size-从-v855-和-v900-版本开始引入)（默认值为 `256`，单位为 MiB），用于控制属于同一亲和性分组中相邻的小 Region 自动合并的阈值。设置为 `0` 表示关闭亲和性分组中相邻的小 Region 的自动合并。
+2. （可选）根据需要设置 PD 配置项 [`schedule.max-affinity-merge-region-size`](/pd-configuration-file.md#max-affinity-merge-region-size-从-v855-版本开始引入)（默认值为 `256`，单位为 MiB），用于控制属于同一亲和性分组中相邻的小 Region 自动合并的阈值。设置为 `0` 表示关闭亲和性分组中相邻的小 Region 的自动合并。
 
 ## 使用方法
 
@@ -95,7 +95,7 @@ ALTER TABLE t1 AFFINITY = '';
 
 ## 注意事项
 
-- **Region 的自动分裂**：当 Region 属于某个亲和性分组且亲和性生效时，Region 默认不会自动分裂，以避免产生过多 Region 影响亲和性效果。只有当 Region 大小超过 [`schedule.max-affinity-merge-region-size`](/pd-configuration-file.md#max-affinity-merge-region-size-从-v855-和-v900-版本开始引入) 值的四倍时，才会触发自动分裂。需要注意的是，非 TiKV 或 PD 自动触发的 Region 分裂（例如手动执行的 [`SPLIT TABLE`](/sql-statements/sql-statement-split-region.md)）不受此限制。
+- **Region 的自动分裂**：当 Region 属于某个亲和性分组且亲和性生效时，Region 默认不会自动分裂，以避免产生过多 Region 影响亲和性效果。只有当 Region 大小超过 [`schedule.max-affinity-merge-region-size`](/pd-configuration-file.md#max-affinity-merge-region-size-从-v855-版本开始引入) 值的四倍时，才会触发自动分裂。需要注意的是，非 TiKV 或 PD 自动触发的 Region 分裂（例如手动执行的 [`SPLIT TABLE`](/sql-statements/sql-statement-split-region.md)）不受此限制。
 
 - **降级与过期机制**：如果亲和性分组中目标 Leader 或 Voter 所在的 TiKV 节点处于不可用状态（例如节点宕机或磁盘空间不足）、Leader 被驱逐，或与现有放置规则发生冲突时，PD 会将该亲和性分组标记为降级状态。在降级期间，对应表或分区的亲和性调度将暂停。
 
@@ -106,4 +106,4 @@ ALTER TABLE t1 AFFINITY = '';
 
 - [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 和 [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md) 的 `AFFINITY` 选项
 - [`SHOW AFFINITY`](/sql-statements/sql-statement-show-affinity.md)
-- PD 配置项：[`schedule.affinity-schedule-limit`](/pd-configuration-file.md#affinity-schedule-limit-从-v855-和-v900-版本开始引入) 和 [`schedule.max-affinity-merge-region-size`](/pd-configuration-file.md#max-affinity-merge-region-size-从-v855-和-v900-版本开始引入)
+- PD 配置项：[`schedule.affinity-schedule-limit`](/pd-configuration-file.md#affinity-schedule-limit-从-v855-版本开始引入) 和 [`schedule.max-affinity-merge-region-size`](/pd-configuration-file.md#max-affinity-merge-region-size-从-v855-版本开始引入)
