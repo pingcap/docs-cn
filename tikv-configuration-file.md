@@ -292,6 +292,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 设置服务与转发请求的连接池大小。设置过小会影响请求的延迟和负载均衡。
 + 默认值：4
 
+### `inspect-network-interval` <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
+
++ 控制 TiKV HealthChecker 主动向 PD 以及其他 TiKV 节点发起网络探测的周期，用于计算 `NetworkSlowScore` 并向 PD 上报慢节点的网络状态。
++ 设置为 `0` 表示关闭网络探测。数值越小，探测频率越高，有助于更快发现网络抖动，但也会消耗更多网络与 CPU 资源。
++ 默认值：100ms
++ 取值范围：0 或 `[10ms, +∞)`
+
 ## readpool.unified
 
 统一处理读请求的线程池相关的配置项。该线程池自 4.0 版本起取代原有的 storage 和 coprocessor 线程池。

@@ -1158,7 +1158,7 @@ pd-ctl resource-manager config controller set ltb-max-wait-duration 30m
 >> scheduler config evict-leader-scheduler                // v4.0.0 起，展示该调度器具体在哪些 store 上
 >> scheduler config evict-leader-scheduler add-store 2    // 为 store 2 添加 leader 驱逐调度
 >> scheduler config evict-leader-scheduler delete-store 2 // 为 store 2 移除 leader 驱逐调度
->> scheduler add evict-slow-store-scheduler               // 当有且仅有一个 slow store 时将该 store 上的所有 Region 的 leader 驱逐出去
+>> scheduler add evict-slow-store-scheduler               // 自动检测磁盘或网络慢节点，并在满足条件时将该 store 上的所有 Region leader 驱逐出去
 >> scheduler remove grant-leader-scheduler-1              // 把对应的调度器删掉，`-1` 对应 store ID
 >> scheduler pause balance-region-scheduler 10            // 暂停运行 balance-region 调度器 10 秒
 >> scheduler pause all 10                                 // 暂停运行所有的调度器 10 秒
@@ -1181,6 +1181,44 @@ pd-ctl resource-manager config controller set ltb-max-wait-duration 30m
 - `scheduling`：表示当前调度器正在生成调度。
 - `pending`：表示当前调度器无法产生调度。`pending` 状态的调度器，会返回一个概览信息，来帮助用户诊断。概览信息包含了 store 的一些状态信息，解释了它们为什么不能被选中进行调度。
 - `normal`：表示当前调度器无需进行调度。
+
+### `scheduler config evict-slow-store-scheduler`
+
+`evict-slow-store-scheduler` 用于在 TiKV 节点出现磁盘 I/O 或网络抖动时，限制 PD 向异常节点调度 Leader，并在必要时主动驱逐 Leader，以降低慢节点对集群的影响。
+
+#### 磁盘慢节点
+
+从 v6.2.0 开始，TiKV 会在 store 心跳中向 PD 上报 `SlowScore`，该分值基于磁盘 I/O 情况计算得出。分值范围为 1～100，数值越大表示该节点越可能存在磁盘性能异常。
+
+对于磁盘慢节点，TiKV 侧的探测以及 PD 侧基于 `evict-slow-store-scheduler` 的调度处理默认开启，无需额外配置。
+
+#### 网络慢节点
+
+从 v8.5.5 和 v9.0.0 起，TiKV 支持在 store 心跳中上报 `NetworkSlowScore`，该分值基于网络探测结果计算得出，用于识别网络抖动导致的慢节点。分值范围为 1～100，数值越大表示网络异常的可能性越高。
+
+出于兼容性和资源消耗的考虑，网络慢节点的探测与调度默认关闭。如需启用，你需要同时完成以下配置：
+
+1. 在 PD 侧开启调度器对网络慢节点的处理：
+
+    ```bash
+    scheduler config evict-slow-store-scheduler set enable-network-slow-store true
+    ```
+
+2. 在 TiKV 侧将 [`raftstore.inspect-network-interval`](/tikv-configuration-file.md#inspect-network-interval-从-v855-和-v900-版本开始引入) 配置项设置为大于 `0` 的值，以启用网络探测。
+
+#### 恢复时间控制
+
+你可以通过 `recovery-duration` 参数控制慢节点在被判定为恢复正常前需要保持稳定状态的时间。
+
+示例如下：
+
+```bash
+>> scheduler config evict-slow-store-scheduler
+{
+  "recovery-duration": "1800"  // 30 分钟
+}
+>> scheduler config evict-slow-store-scheduler set recovery-duration 600
+```
 
 ### `scheduler config balance-leader-scheduler`
 
