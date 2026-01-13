@@ -333,7 +333,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `cpu-threshold` <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
 
 + 限制统一处理读请求的线程池 (UnifyReadPool) 可使用的最大 CPU 资源比例。例如，当该值为 `0.8` 时，该线程池最多可使用 80% 的 CPU。
-    + 默认情况下（该值为 `0.0` 时），表示不限制 UnifyReadPool 的 CPU 资源比例，该线程池的规模主要根据当前处理任务的线程数量动态调整。
+    + 默认情况下（该值为 `0.0` 时），表示不限制 UnifyReadPool 的 CPU 资源比例，该线程池的规模完全由繁忙线程伸缩算法决定，该算法会根据当前处理任务的线程数量动态调整。
     + 当设置该值大于 `0.0` 时，TiKV 会在原有的繁忙线程伸缩算法基础上，引入以下 CPU 使用率阈值约束，以更严格地控制 CPU 资源使用：
         + 强制缩减：当 UnifyReadPool 的CPU 使用率超过该配置项值加上 10% 的缓冲时，TiKV 会强制缩小 UnifyReadPool 的规模。
         + 阻止扩增：当扩大 UnifyReadPool 规模可能导致 CPU 使用率超过配置阈值减去 10% 的缓冲时，TiKV 会阻止 UnifyReadPool 继续扩大规模。
