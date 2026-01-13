@@ -64,7 +64,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [多值索引](/sql-statements/sql-statement-create-index.md#多值索引) | Y |  Y |  Y  | Y | N | N | N |
 | [外键约束](/foreign-key.md) | Y |  E |  E  | E | N | N | N |
 | [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md) | Y |  Y |  Y  | Y | N | N | N |
-| [全局索引 (Global Index)](/partitioned-table.md#全局索引) | Y |  N | N  | N | N | N | N |
+| [全局索引 (Global Index)](/global-indexes.md) | Y |  N | N  | N | N | N | N |
 | [向量索引](/vector-search/vector-search-index.md) |  E |  N |  N  | N | N | N | N |
 
 ## SQL 语句
@@ -172,7 +172,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区) |  Y |  Y  |  Y  | Y | E | N | N |
 | [分区表转换为非分区表](/partitioned-table.md#将分区表转换为非分区表) |  Y |  Y  |  Y  | N | N | N | N |
 | [对现有表进行分区](/partitioned-table.md#对现有表进行分区) |  Y |  Y  |  Y  | N | N | N | N |
-| [全局索引 (Global Index)](/partitioned-table.md#全局索引) |  Y  |  N  |  N  | N | N | N | N |
+| [全局索引 (Global Index)](/global-indexes.md) |  Y  |  N  |  N  | N | N | N | N |
 
 ## 统计信息
 
