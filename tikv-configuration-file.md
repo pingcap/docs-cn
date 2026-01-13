@@ -338,7 +338,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
         + 强制缩减：当 UnifyReadPool 的CPU 使用率超过该配置项值加上 10% 的缓冲时，TiKV 会强制缩小 UnifyReadPool 的规模。
         + 阻止扩增：当扩大 UnifyReadPool 规模可能导致 CPU 使用率超过配置阈值减去 10% 的缓冲时，TiKV 会阻止 UnifyReadPool 继续扩大规模。
 + 仅当 [`readpool.unified.auto-adjust-pool-size`](#auto-adjust-pool-size-从-v630-版本开始引入) 设置为 true 时生效。
-+ 默认值：0.0
++ 默认值：`0.0`
 + 可调整范围：`[0.0, 1.0]`
 
 ## readpool.storage
