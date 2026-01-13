@@ -27,7 +27,7 @@ summary: 通过为表或分区配置亲和性约束，控制 Region 副本的分
 
 PD 亲和性调度特性默认关闭。在设置表或分区的亲和性前，请开启并配置该特性。
 
-1. 将 PD 配置项 [`schedule.affinity-schedule-limit`](/pd-configuration-file.md#affinity-schedule-limit-从-v855-和-v900-版本开始引入) 设置为大于 `0` 的值，以开启 PD 的亲和性调度。
+1. 将 PD 配置项 [`schedule.affinity-schedule-limit`](/pd-configuration-file.md#affinity-schedule-limit-从-v855-版本开始引入) 设置为大于 `0` 的值，以开启 PD 的亲和性调度。
 
     例如，执行以下命令将该配置项设置为 `4`，表示允许 PD 最多同时执行 4 个亲和性调度任务：
 
