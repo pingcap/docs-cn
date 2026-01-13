@@ -22,7 +22,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-modify-column/','/docs-cn/d
 - 当前会话的 [SQL 模式](/sql-mode.md) 为严格模式（`sql_mode` 包含 `STRICT_TRANS_TABLES` 或 `STRICT_ALL_TABLES`）
 - 类型转换过程中不存在数据截断风险
 
-该优化适用于以下类型变更场景：
+该优化仅适用于以下类型变更场景：
 
 - 整数类型之间的变更（例如，从 `BIGINT` 变更为 `INT`）
 - 字符串类型之间的变更（例如，从 `VARCHAR(200)` 变更为 `VARCHAR(100)`）
