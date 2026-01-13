@@ -1193,7 +1193,7 @@ pd-ctl resource-manager config controller set ltb-max-wait-duration 30m
 
 #### 网络慢节点
 
-从 v8.5.5 和 v9.0.0 起，TiKV 支持在 store 心跳中上报 `NetworkSlowScore`，该分值基于网络探测结果计算得出，用于识别网络抖动导致的慢节点。分值范围为 1～100，数值越大表示网络异常的可能性越高。
+从 v8.5.5 起，TiKV 支持在 store 心跳中上报 `NetworkSlowScore`，该分值基于网络探测结果计算得出，用于识别网络抖动导致的慢节点。分值范围为 1～100，数值越大表示网络异常的可能性越高。
 
 出于兼容性和资源消耗的考虑，网络慢节点的探测与调度默认关闭。如需启用，你需要同时完成以下配置：
 
@@ -1203,7 +1203,7 @@ pd-ctl resource-manager config controller set ltb-max-wait-duration 30m
     scheduler config evict-slow-store-scheduler set enable-network-slow-store true
     ```
 
-2. 在 TiKV 侧将 [`raftstore.inspect-network-interval`](/tikv-configuration-file.md#inspect-network-interval-从-v855-和-v900-版本开始引入) 配置项设置为大于 `0` 的值，以启用网络探测。
+2. 在 TiKV 侧将 [`raftstore.inspect-network-interval`](/tikv-configuration-file.md#inspect-network-interval-从-v855-版本开始引入) 配置项设置为大于 `0` 的值，以启用网络探测。
 
 #### 恢复时间控制
 
