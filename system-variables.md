@@ -1558,7 +1558,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 单位：线程
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的并发度。
 - 从 v8.3.0 版本开始，该参数支持 SESSION 级别的设置，因此修改 GLOBAL 级别的参数值不会影响当前正在运行的 DDL，而只会对新建 SESSION 中提交的 DDL 生效。
-- 从 v8.5.0 版本开始，该参数可以通过 `ADMIN ALTER DDL JOBS <job_id> BATCH_SIZE = <new_batch_size>;` 来修改。需要注意的是，在 v8.5.5 之前的版本中，不支持修改开启了 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 的 `ADD INDEX` DDL。更多详情，请见 [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-
+- 从 v8.5.0 版本开始，该参数可以通过 `ADMIN ALTER DDL JOBS <job_id> BATCH_SIZE = <new_batch_size>;` 来修改。需要注意的是，在 v8.5.5 之前的版本中，不支持修改开启了 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 的 `ADD INDEX` DDL。更多详情，请见 [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md)。
 
 ### `tidb_enable_fast_create_table` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
