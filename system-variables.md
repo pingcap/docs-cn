@@ -988,13 +988,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 >
 > - 该变量只在 [`tidb_analyze_version`](#tidb_analyze_version-从-v510-版本开始引入) 设置为 `2` 时生效。
 > - 如果将 TiDB 集群从 v8.3.0 之前的版本升级至 v8.3.0 或更高版本，该变量会默认设置为 `ALL`，以保持原有行为。
-> - 从 v8.3.0 开始，对于新部署的 TiDB 集群，该变量默认设置为 `PREDICATE`。
+> - 在 v8.3.0 到 v8.5.4 以及之间的版本中，对于新部署的 TiDB 集群，该变量默认设置为 `PREDICATE`。
+> - 从 v8.5.5 和 v9.0.0 开始，对于新部署的 TiDB 集群，该变量默认设置为 `ALL`。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：枚举型
-- 默认值：`PREDICATE`
+- 默认值：`ALL`
 - 可选值：`ALL`，`PREDICATE`
 - 该变量控制 `ANALYZE TABLE` 语句的行为。将其设置为 `PREDICATE` 表示仅收集 [predicate columns](/statistics.md#收集部分列的统计信息) 的统计信息；将其设置为 `ALL` 表示收集所有列的统计信息。在使用 OLAP 查询的场景中，建议将其设置为 `ALL`，否则查询性能可能会显著下降。
 
