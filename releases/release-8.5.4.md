@@ -70,11 +70,11 @@ TiDB 版本：8.5.4
 
 | 变量 | 类型 | 描述 |
 |------|------|------|
-| [`tidb_mpp_store_fail_ttl`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_mpp_store_fail_ttl) | 修改 | 默认值从 `60s` 修改为 `0s`，意味着 TiDB 不再需要额外等待即可向新启动的 TiFlash 节点发送查询请求，无需再通过延迟来避免查询失败 [#61826](https://github.com/pingcap/tidb/issues/61826) @[gengliqi](https://github.com/gengliqi) |
-| [`tidb_replica_read`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_replica_read-从-v40-版本开始引入) | 修改 | 从 v8.5.4 开始，该变量仅对只读 SQL 语句生效，以提高数据读取安全性并减少与其他功能的重叠 [#62856](https://github.com/pingcap/tidb/issues/62856) @[you06](https://github.com/you06) |
-| [`tidb_opt_enable_no_decorrelate_in_select`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_opt_enable_no_decorrelate_in_select-从-v854-版本开始引入) | 新增 | 控制是否对 `SELECT` 列表中的子查询进行解关联操作，默认值为 `OFF` [#51116](https://github.com/pingcap/tidb/issues/51116) @[terry1purcell](https://github.com/terry1purcell) |
-| [`tidb_opt_enable_semi_join_rewrite`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_opt_enable_semi_join_rewrite-从-v854-版本开始引入) | 新增 | 控制是否改写 `EXISTS` 子查询，默认值为 `OFF` [#44850](https://github.com/pingcap/tidb/issues/44850) @[terry1purcell](https://github.com/terry1purcell) |
-| [`tidb_stats_update_during_ddl`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_stats_update_during_ddl-从-v854-版本开始引入) | 新增 | 控制是否开启[内嵌于 DDL 的 Analyze 特性](/ddl_embedded_analyze.md)，默认值为 `OFF`。启用后，`ADD INDEX` DDL 会在执行期间收集新索引的统计信息，使索引添加完成后，优化器可以立即使用该索引。需要注意的是，对于大表加索引的场景，启用该变量可能增加 DDL 执行时间。 [#57948](https://github.com/pingcap/tidb/issues/57948) @[terry1purcell](https://github.com/terry1purcell) @[AilinKid](https://github.com/AilinKid) |
+| [`tidb_mpp_store_fail_ttl`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_mpp_store_fail_ttl) | 修改 | 默认值从 `60s` 修改为 `0s`，意味着 TiDB 不再需要额外等待即可向新启动的 TiFlash 节点发送查询请求，无需再通过延迟来避免查询失败。[#61826](https://github.com/pingcap/tidb/issues/61826) @[gengliqi](https://github.com/gengliqi) |
+| [`tidb_replica_read`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_replica_read-从-v40-版本开始引入) | 修改 | 从 v8.5.4 开始，该变量仅对只读 SQL 语句生效，以提高数据读取安全性并减少与其他功能的重叠。[#62856](https://github.com/pingcap/tidb/issues/62856) @[you06](https://github.com/you06) |
+| [`tidb_opt_enable_no_decorrelate_in_select`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_opt_enable_no_decorrelate_in_select-从-v854-版本开始引入) | 新增 | 控制是否对 `SELECT` 列表中的子查询进行解关联操作，默认值为 `OFF`。[#51116](https://github.com/pingcap/tidb/issues/51116) @[terry1purcell](https://github.com/terry1purcell) |
+| [`tidb_opt_enable_semi_join_rewrite`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_opt_enable_semi_join_rewrite-从-v854-版本开始引入) | 新增 | 控制是否改写 `EXISTS` 子查询，默认值为 `OFF`。[#44850](https://github.com/pingcap/tidb/issues/44850) @[terry1purcell](https://github.com/terry1purcell) |
+| [`tidb_stats_update_during_ddl`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_stats_update_during_ddl-从-v854-版本开始引入) | 新增 | 控制是否开启[内嵌于 DDL 的 Analyze 特性](/ddl_embedded_analyze.md)，默认值为 `OFF`。启用后，`ADD INDEX` DDL 会在执行期间收集新索引的统计信息，使索引添加完成后，优化器可以立即使用该索引。需要注意的是，对于大表加索引的场景，启用该变量可能增加 DDL 执行时间。[#57948](https://github.com/pingcap/tidb/issues/57948) @[terry1purcell](https://github.com/terry1purcell) @[AilinKid](https://github.com/AilinKid) |
 
 ### 配置参数
 
