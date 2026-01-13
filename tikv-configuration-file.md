@@ -209,6 +209,14 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：3s
 + 最小值：1s
 
+### `graceful-shutdown-timeout` <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
+
++ TiKV 优雅关闭 (graceful shutdown) 的超时时长。
+    + 当该值大于 `0s` 时，如果关闭 TiKV 节点，TiKV 在该超时时间内会尽量将其上的 leader 副本转移到其他 TiKV 节点，然后再关闭。若达到该超时时间后仍有 leader 未完成转移，TiKV 将跳过剩余 leader 的转移，直接进入关闭流程。
+    + 当该值为 `0s` 时，表示不启用 TiKV 的 graceful shutdown 功能。
++ 默认值：20s
++ 最小值：0s
+
 ### `concurrent-send-snap-limit`
 
 + 同时发送 snapshot 的最大个数。
