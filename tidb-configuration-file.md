@@ -640,7 +640,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `enable-async-batch-get` <span class="version-mark">从 v8.5.5 版本开始引入</span>
 
 + 用于控制 TiDB 是否使用异步方式执行 Batch Get 算子。使用异步方式能够降低 goroutine 开销，提供更优的性能。通常无需调整该配置项。
-+ 默认值：`true`
++ 默认值：`false`
 
 ## opentracing
 
