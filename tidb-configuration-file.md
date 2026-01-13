@@ -637,6 +637,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 当 `force-init-stats` 为 `true` 时，TiDB 启动时会等到统计信息初始化完成后再对外提供服务。需要注意的是，在表和分区数量较多且 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 为 `false` 的情况下，`force-init-stats` 为 `true` 可能会导致 TiDB 从启动到开始对外提供服务的时间变长。
 + 当 `force-init-stats` 为 `false` 时，TiDB 在统计信息初始化未完成时即可对外提供服务，但由于统计信息初始化未完成，优化器会用 pseudo 统计信息进行决策，可能会产生不合理的执行计划。
 
+### `enable-async-batch-get` <span class="version-mark">从 v8.5.5 版本开始引入</span>
+
++ 用于控制 TiDB 是否使用异步方式执行 Batch Get 算子。使用异步方式能够降低 goroutine 开销，提供更优的性能。通常无需调整该配置项。
++ 默认值：`false`
+
 ## opentracing
 
 opentracing 的相关的设置。
