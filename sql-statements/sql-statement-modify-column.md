@@ -25,7 +25,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-modify-column/','/docs-cn/d
 该优化仅适用于以下类型变更场景：
 
 - 整数类型之间的变更（例如，从 `BIGINT` 变更为 `INT`）
-- 字符串类型之间的变更（例如，从 `VARCHAR(200)` 变更为 `VARCHAR(100)`）
+- 字符串类型之间的变更且字符集未发生变化（例如，从 `VARCHAR(200)` 变更为 `VARCHAR(100)`）
 
 > **注意：**
 >
