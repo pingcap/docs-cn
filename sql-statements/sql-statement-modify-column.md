@@ -12,7 +12,6 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-modify-column/','/docs-cn/d
 
 以下是一些常见的需要执行 Reorg-Data 的列类型变更示例：
 
-
 - 从 `VARCHAR` 转换为 `BIGINT`
 - `DECIMAL` 精度修改
 - 从 `VARCHAR(10)` 到 `VARCHAR(5)` 的长度压缩
