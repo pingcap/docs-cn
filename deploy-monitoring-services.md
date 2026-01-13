@@ -28,8 +28,8 @@ summary: 本文适用于手动部署 TiDB 监控报警系统的用户。假设 T
 
 ```bash
 wget https://github.com/prometheus/prometheus/releases/download/v2.49.1/prometheus-2.49.1.linux-amd64.tar.gz
-wget https://download.pingcap.org/node_exporter-v1.3.1-linux-amd64.tar.gz
-wget https://download.pingcap.org/grafana-7.5.17.linux-amd64.tar.gz
+wget https://download.pingcap.com/node_exporter-v1.3.1-linux-amd64.tar.gz
+wget https://download.pingcap.com/grafana-7.5.17.linux-amd64.tar.gz
 ```
 
 解压二进制包：

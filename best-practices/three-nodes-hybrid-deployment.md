@@ -61,7 +61,7 @@ tikv:
 
 #### `server.grpc-concurrency`
 
-该参数默认为 `4`。因为现有部署方案的 CPU 资源有限，实际请求数也不会很多。可以把该参数值调低，后续观察监控面板保持其使用率在 80% 以下即可。
+因为现有部署方案的 CPU 资源有限，实际请求数也不会很多，可以把 [`server.grpc-concurrency`](/tikv-configuration-file.md#grpc-concurrency) 参数值调低，后续观察监控面板保持其使用率在 80% 以下即可。
 
 本次测试最后选择设置该参数值为 `2`，通过 **gRPC poll CPU** 面板观察，利用率正好在 80% 左右。
 
