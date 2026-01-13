@@ -15,7 +15,7 @@ TiDB 版本：8.5.5
 
 ### 性能
 
-* 大幅提升特定有损 DDL 操作（例如 `BIGINT → INT`、`CHAR(120) → VARCHAR(60)`）的执行效率：在未发生数据截断的前提下，这类操作的执行耗时可从数小时缩短至分钟级、秒级甚至毫秒级，性能提升可达到数十倍至数十万倍 [#63366](https://github.com/pingcap/tidb/issues/63366) [@wjhuang2016](https://github.com/wjhuang2016), [@tangenta](https://github.com/tangenta), [@fzzf678](https://github.com/fzzf678)**tw@qiancai** <!--2292-->
+* 大幅提升特定有损 DDL 操作（例如 `BIGINT → INT`、`CHAR(120) → VARCHAR(60)`）的执行效率：在未发生数据截断的前提下，这类操作的执行耗时可从数小时缩短至分钟级、秒级甚至毫秒级，性能提升可达到数十倍至数十万倍 [#63366](https://github.com/pingcap/tidb/issues/63366) [@wjhuang2016](https://github.com/wjhuang2016), [@tangenta](https://github.com/tangenta), [@fzzf678](https://github.com/fzzf678)
 
     优化策略包括：
 
@@ -35,13 +35,13 @@ TiDB 版本：8.5.5
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-modify-column.md)。
 
-* 优化了存在大量外键场景下的 DDL 性能，逻辑 DDL 性能最高可提升 25 倍 [#61126](https://github.com/pingcap/tidb/issues/61126) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1896-->
+* 优化了存在大量外键场景下的 DDL 性能，逻辑 DDL 性能最高可提升 25 倍 [#61126](https://github.com/pingcap/tidb/issues/61126) @[GMHDBJD](https://github.com/GMHDBJD)
 
     在 v8.5.5 版本之前，在超大规模表场景下（如集群表总量达 1000 万级别且包含数十万张外键表），创建表或添加列等逻辑 DDL 操作的 QPS 会下降至 4 左右。这导致多租户 SaaS 等场景下的运维效率非常低。
 
     v8.5.5 版本针对该场景进行了专项优化。测试数据显示，在拥有 1000 万张表（其中 20 万张含外键）的极端环境下，逻辑 DDL 的处理性能可稳定保持在 100 QPS，相比之前版本提升了 25 倍，显著增强了超大规模集群的运维响应能力。
 
-* 支持将索引查询下推到 TiKV，提升查询性能 [#62575](https://github.com/pingcap/tidb/issues/62575) @[lcwangchao](https://github.com/lcwangchao) **tw@Oreoxmt** <!--1899-->
+* 支持将索引查询下推到 TiKV，提升查询性能 [#62575](https://github.com/pingcap/tidb/issues/62575) @[lcwangchao](https://github.com/lcwangchao)
 
     TiDB 从 v8.5.5 开始支持通过 [Optimizer Hints](/optimizer-hints.md) 将索引查询算子 `IndexLookUp` 下推到 TiKV 节点执行，从而减少远程调用次数并提升查询性能。实际性能提升比例因业务场景而异，需要进行测试验证。
 
@@ -51,7 +51,7 @@ TiDB 版本：8.5.5
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入)。
 
-* 支持表级数据亲和性 (AFFINITY)，提升查询性能（实验特性） [#9764](https://github.com/tikv/pd/issues/9764) @[lhy1024](https://github.com/lhy1024) **tw@qiancai** <!--2317-->
+* 支持表级数据亲和性 (AFFINITY)，提升查询性能（实验特性） [#9764](https://github.com/tikv/pd/issues/9764) @[lhy1024](https://github.com/lhy1024)
 
     从 v8.5.5 起，你可以在创建或修改表时将 `AFFINITY` 选项设置为 `table` 或 `partition`。配置后，PD 会将同一张表或同一个分区的 Region 归入同一个亲和性分组，并在调度过程中优先将这些 Region 的 Leader 和 Voter 副本放置到相同的少数 TiKV 节点上。此时，通过在查询中使用 [`INDEX_LOOKUP_PUSHDOWN`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints#index_lookup_pushdownt1_name-idx1_name--idx2_name--从-v855-版本开始引入) Hint，可以显式指示优化器将索引查询下推到 TiKV 执行，从而减少跨节点分散查询带来的延迟，提升查询性能。
 
@@ -59,7 +59,7 @@ TiDB 版本：8.5.5
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/table-affinity)。
 
-* 按时间点恢复 (Point-in-time recovery, PITR) 支持从压缩后的日志备份中恢复，以加快恢复速度 [#56522](https://github.com/pingcap/tidb/issues/56522) @[YuJuncen](https://github.com/YuJuncen) **tw@lilin90** <!--2001-->
+* 按时间点恢复 (Point-in-time recovery, PITR) 支持从压缩后的日志备份中恢复，以加快恢复速度 [#56522](https://github.com/pingcap/tidb/issues/56522) @[YuJuncen](https://github.com/YuJuncen)
 
     从 v8.5.5 开始，压缩日志备份功能提供了离线压缩能力，将非结构化的日志备份数据转换为结构化的 SST 文件，从而实现以下改进：
 
@@ -69,7 +69,7 @@ TiDB 版本：8.5.5
 
   更多信息，请参考[用户文档](/br/br-compact-log-backup.md)。
 
-* 加速从备份中恢复系统表 [#58757](https://github.com/pingcap/tidb/issues/58757) @[Leavrth](https://github.com/Leavrth) **tw@lilin90** <!--2109-->
+* 加速从备份中恢复系统表 [#58757](https://github.com/pingcap/tidb/issues/58757) @[Leavrth](https://github.com/Leavrth)
 
     从 v8.5.5 开始，对于从备份中恢复系统表，BR 引入了新参数 `--fast-load-sys-tables`，用物理恢复替代逻辑恢复。该参数开启状态下，BR 会完全替换或覆盖现有的系统表，而不是向其中写入数据，从而显著提升大规模部署场景下的数据恢复性能。
 
@@ -77,7 +77,7 @@ TiDB 版本：8.5.5
 
 ### 稳定性
 
-* 提升 TiKV 在网络抖动时的调度稳定性 [#9359](https://github.com/tikv/pd/issues/9359) @[okJiang](https://github.com/okJiang) **tw@qiancai** <!--2260-->
+* 提升 TiKV 在网络抖动时的调度稳定性 [#9359](https://github.com/tikv/pd/issues/9359) @[okJiang](https://github.com/okJiang)
 
     从 v8.5.5 起，TiKV 引入网络慢节点检测与反馈机制。启用该机制后，TiKV 会探测节点之间的网络延时，计算网络慢节点分数，并将该分数上报给 PD。PD 基于该分数判断 TiKV 节点的网络状态，并进行相应的调度调整：当检测到某个 TiKV 节点存在网络抖动时，PD 会限制向该节点调度新的 Leader。如果网络抖动持续存在，PD 会主动将该节点上的现有 Leader 驱逐到其他 TiKV 节点，从而降低网络异常对集群的影响。
 
@@ -85,7 +85,7 @@ TiDB 版本：8.5.5
 
 ### 高可用
 
-* 为 PD 引入客户端熔断模式 (Circuit Breaker) [#8678](https://github.com/tikv/pd/issues/8678) @[Tema](https://github.com/Tema) **tw@hfxsd** <!--2051-->
+* 为 PD 引入客户端熔断模式 (Circuit Breaker) [#8678](https://github.com/tikv/pd/issues/8678) @[Tema](https://github.com/Tema)
 
     为了防止 PD Leader 因重试风暴或类似的反馈循环而过载，TiDB 引入了熔断模式。当错误率达到预设阈值时，该模式会限制进入的流量，从而使系统能够恢复稳定。你可以通过系统变量 `tidb_cb_pd_metadata_error_rate_threshold_ratio` 来控制熔断器的触发。
 
@@ -93,7 +93,7 @@ TiDB 版本：8.5.5
 
 ### SQL 功能
 
-* 支持在线修改分布式 `ADD INDEX` 任务的并发和吞吐 [#64947](https://github.com/pingcap/tidb/issues/64947) @[joechenrh](https://github.com/joechenrh) **tw@qiancai** <!--2326-->
+* 支持在线修改分布式 `ADD INDEX` 任务的并发和吞吐 [#64947](https://github.com/pingcap/tidb/issues/64947) @[joechenrh](https://github.com/joechenrh)
 
     在 v8.5.5 之前，如果集群开启了分布式执行框架 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入)，TiDB 不支持在 `ADD INDEX` 任务执行期间修改该任务的 `THREAD`、`BATCH_SIZE` 和 `MAX_WRITE_SPEED` 参数。要调整这些参数，你需要先取消当前 `ADD INDEX` 任务，重新设置参数后再提交，效率较低。
 
@@ -103,19 +103,19 @@ TiDB 版本：8.5.5
 
 ### 数据库管理
 
-* TiKV 支持优雅关闭 (graceful shutdown) [#17221](https://github.com/tikv/tikv/issues/17221) @[hujiatao0](https://github.com/hujiatao0) **tw@qiancai** <!--2297-->
+* TiKV 支持优雅关闭 (graceful shutdown) [#17221](https://github.com/tikv/tikv/issues/17221) @[hujiatao0](https://github.com/hujiatao0)
 
     在关闭 TiKV 服务器时，TiKV 会在配置的等待期内尽量先将节点上的 Leader 副本转移到其他 TiKV 节点，然后再关闭。该等待期默认为 20 秒，可通过 [`server.graceful-shutdown-timeout`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#graceful-shutdown-timeout-从-v855-版本开始引入) 配置项进行调整。若达到该超时时间后仍有 Leader 未完成转移，TiKV 将跳过剩余 Leader 的转移，直接进入关闭流程。
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#graceful-shutdown-timeout-从-v855-版本开始引入)。
 
-* 提升进行中的日志备份与快照恢复的兼容性 [#58685](https://github.com/pingcap/tidb/issues/58685) @[BornChanger](https://github.com/BornChanger) **tw@lilin90** <!--2000-->
+* 提升进行中的日志备份与快照恢复的兼容性 [#58685](https://github.com/pingcap/tidb/issues/58685) @[BornChanger](https://github.com/BornChanger)
 
     从 v8.5.5 开始，当日志备份任务正在运行时，在满足特定条件的情况下，仍然可以执行快照恢复。这样，日志备份可以持续进行，无需在恢复数据期间中断。并且，恢复的数据可以被进行中的日志备份正常记录。
 
     更多信息，请参考[用户文档](/br/br-pitr-manual.md#进行中的日志备份与快照恢复的兼容性)。
 
-* 支持从日志备份中进行表级恢复 [#57613](https://github.com/pingcap/tidb/issues/57613) @[Tristan1900](https://github.com/Tristan1900) **tw@lilin90** <!--2005-->
+* 支持从日志备份中进行表级恢复 [#57613](https://github.com/pingcap/tidb/issues/57613) @[Tristan1900](https://github.com/Tristan1900)
 
     从 v8.5.5 开始，你可以使用过滤器从日志备份中对单个表执行按时间点恢复 (PITR)。相比将整个集群恢复到指定时间点，表级恢复提供了更加灵活、且对业务影响更小的恢复方式。
 
@@ -123,7 +123,7 @@ TiDB 版本：8.5.5
 
 ### 可观测性
 
-* 在 Statement Summary Tables 和慢日志中增加存储引擎标识 [#61736](https://github.com/pingcap/tidb/issues/61736) @[henrybw](https://github.com/henrybw) **tw@Oreoxmt**<!--2034 beta.2-->
+* 在 Statement Summary Tables 和慢日志中增加存储引擎标识 [#61736](https://github.com/pingcap/tidb/issues/61736) @[henrybw](https://github.com/henrybw)
 
     当集群中同时部署了 TiKV 和 TiFlash 时，用户在数据库诊断和性能优化过程中经常需要根据存储引擎筛选 SQL 语句。例如，当用户发现 TiFlash 负载较高时，需要筛选出在 TiFlash 上运行的 SQL 语句，以便识别可能导致 TiFlash 负载过高的查询语句。为解决此需求，TiDB 从 v8.5.5 开始，在 Statement Summary Tables 和慢日志中新增了存储引擎标识字段。
 
@@ -143,7 +143,7 @@ TiDB 版本：8.5.5
 
 ### 安全
 
-* Backup & Restore (BR) 支持通过 Azure 托管标识 (Managed Identity, MI) 访问 Azure Blob Storage [#19006](https://github.com/tikv/tikv/issues/19006) @[RidRisR](https://github.com/RidRisR) **tw@qiancai** <!--2308-->
+* Backup & Restore (BR) 支持通过 Azure 托管标识 (Managed Identity, MI) 访问 Azure Blob Storage [#19006](https://github.com/tikv/tikv/issues/19006) @[RidRisR](https://github.com/RidRisR)
 
     从 v8.5.5 起，BR 支持使用 Azure 托管标识 (MI) 对 Azure Blob Storage 进行身份验证，无需使用静态 SAS Token。该方式实现了安全、无密钥且短期有效的认证，符合 Azure 安全最佳实践。
 
@@ -206,23 +206,23 @@ TiDB 版本：8.5.5
 
 ## 改进提升
 
-+ TiDB <!--tw@qiancai: 4 notes-->
++ TiDB
 
     - 优化 `IMPORT INTO` 在遇到编码错误时的报错信息，帮助用户更准确地定位问题 [#63763](https://github.com/pingcap/tidb/issues/63763) @[D3Hunter](https://github.com/D3Hunter)
     - 改进 Parquet 文件的解析机制，提升 Parquet 格式数据的导入性能 [#62906](https://github.com/pingcap/tidb/issues/62906) @[joechenrh](https://github.com/joechenrh)
     - 将 `tidb_analyze_column_options` 的默认值修改为 `ALL`，默认对所有列进行统计信息收集 [#64992](https://github.com/pingcap/tidb/issues/64992) @[0xPoe](https://github.com/0xPoe)
     - 优化 `IndexHashJoin` 算子的执行逻辑，在特定 JOIN 场景下采用增量处理以避免一次性加载大量数据，显著降低内存占用并提升执行性能 [#63303](https://github.com/pingcap/tidb/issues/63303) @[ChangRui-Ryan](https://github.com/ChangRui-Ryan)
-    - (dup): release-9.0.0.md > 改进提升> TiDB - 优化分布式执行框架 (Distributed eXecution Framework, DXF) 内部 SQL 语句的 CPU 使用率 [#59344](https://github.com/pingcap/tidb/issues/59344) @[D3Hunter](https://github.com/D3Hunter)
+    - 优化分布式执行框架 (Distributed eXecution Framework, DXF) 内部 SQL 语句的 CPU 使用率 [#59344](https://github.com/pingcap/tidb/issues/59344) @[D3Hunter](https://github.com/D3Hunter)
     - 提升 `expression.Contains` 函数的性能 [#61373](https://github.com/pingcap/tidb/issues/61373) @[hawkingrei](https://github.com/hawkingrei)
 
-+ TiKV <!--tw@lilin90: 3 notes-->
++ TiKV
 
     - 为统一读取池 (Unified Read Pool) 引入 CPU 感知扩缩容机制，以避免在热点读取负载下出现 CPU 饥饿 (CPU Starvation) 问题 [#18464](https://github.com/tikv/tikv/issues/18464) @[mittalrishabh](https://github.com/mittalrishabh)
     - 在慢节点评分 (Slow Score) 中增加网络延迟感知，避免将 Leader 调度到网络环境不稳定的 TiKV 节点上 [#18797](https://github.com/tikv/tikv/issues/18797) @[okJiang](https://github.com/okJiang)
     - 优化静默 Region (Hibernate Region) 的行为，允许 Leader 在获得多数派投票后立即进入静默状态，无需等待离线的非投票副本 (Non-voter Peers) [#19070](https://github.com/tikv/tikv/issues/19070) @[jiadebin](https://github.com/jiadebin)
-    - (dup): release-9.0.0.md > 改进提升> TiKV - 在 TiKV 内存占用高时，对 BR 的日志恢复请求进行限流，防止 TiKV OOM [#18124](https://github.com/tikv/tikv/issues/18124) @[3pointer](https://github.com/3pointer)
+    - 在 TiKV 内存占用高时，对 BR 的日志恢复请求进行限流，防止 TiKV OOM [#18124](https://github.com/tikv/tikv/issues/18124) @[3pointer](https://github.com/3pointer)
 
-+ PD <!--tw@Oreoxmt: 4 notes-->
++ PD
 
     - 优化了高基数指标，降低 PD 的内存占用和监控系统压力 [#9357](https://github.com/tikv/pd/issues/9357) @[rleungx](https://github.com/rleungx)
     - 优化时间戳推进和 Leader 选举的逻辑 [#9981](https://github.com/tikv/pd/issues/9981) @[bufferflies](https://github.com/bufferflies)
@@ -231,13 +231,13 @@ TiDB 版本：8.5.5
 
 + Tools
 
-    + TiCDC <!--tw@qiancai: 1 note-->
+    + TiCDC
 
         - 增强 Changefeed 的配置检查逻辑，在创建或更新 Changefeed 时，若 Dispatcher 配置引用的列不存在，TiCDC 会直接报错并拒绝操作，避免任务运行失败 [#12253](https://github.com/pingcap/tiflow/issues/12253) @[wk989898](https://github.com/wk989898)
 
 ## 错误修复
 
-+ TiDB <!--tw@lilin90: the following 15 notes-->
++ TiDB
 
     - 修复 TiDB 初始化时无法读取最新的 `tidb_mem_quota_binding_cache` 变量值进行初始化绑定的问题 [#65381](https://github.com/pingcap/tidb/issues/65381) @[qw4990](https://github.com/qw4990)
     - 修复在 `extractBestCNFItemRanges` 中错误地跳过候选项，导致查询范围计算不精确的问题 [#62547](https://github.com/pingcap/tidb/issues/62547) @[hawkingrei](https://github.com/hawkingrei)
@@ -254,7 +254,7 @@ TiDB 版本：8.5.5
     - 修复 `syncload` 加载失败警告日志无效的问题 [#63880](https://github.com/pingcap/tidb/issues/63880) @[0xPoe](https://github.com/0xPoe)
     - 修复手动停止正在执行事务的连接时，可能导致 TiDB 发生 panic 而异常退出的问题 [#63956](https://github.com/pingcap/tidb/issues/63956) @[wshwsh12](https://github.com/wshwsh12)
     - 修复缓存表在读取 TiFlash 副本时，可能出现 goroutine 和内存泄漏的问题 [#63329](https://github.com/pingcap/tidb/issues/63329) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复执行 `ALTER TABLE child CHANGE COLUMN` 修改列后，外键 (Foreign Key) 没有更新的问题 [#59705](https://github.com/pingcap/tidb/issues/59705) @[fzzf678](https://github.com/fzzf678) <!--tw@hfxsd: the following 16 notes--> 
+    - 修复执行 `ALTER TABLE child CHANGE COLUMN` 修改列后，外键 (Foreign Key) 没有更新的问题 [#59705](https://github.com/pingcap/tidb/issues/59705) @[fzzf678](https://github.com/fzzf678)
     - 修复解码旧版本 TiDB 的 `RENAME TABLE` 任务参数时出现错误的问题 [#64413](https://github.com/pingcap/tidb/issues/64413) @[joechenrh](https://github.com/joechenrh)
     - 修复当 BR 恢复失败时，未能正常设置自增 ID (Rebase) 的问题 [#60804](https://github.com/pingcap/tidb/issues/60804) @[joechenrh](https://github.com/joechenrh)
     - 修复查询 `information_schema` 表时出现 OOM 的问题 [#58985](https://github.com/pingcap/tidb/issues/58985) @[tangenta](https://github.com/tangenta)
@@ -271,9 +271,9 @@ TiDB 版本：8.5.5
     - 修复在启用全局排序 (Global Sort) 时，执行 `IMPORT INTO` 读取文件导致死循环的问题 [#61177](https://github.com/pingcap/tidb/issues/61177) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 修复在执行 `IMPORT INTO` 时，处理生成列过程中发生 panic 的问题 [#64657](https://github.com/pingcap/tidb/issues/64657) @[D3Hunter](https://github.com/D3Hunter)
     - 修复当一个 SQL 语句包含多个 `AS OF TIMESTAMP` 表达式时，可能误报错的问题 [#65090](https://github.com/pingcap/tidb/issues/65090) @[you06](https://github.com/you06)
-    - (dup): release-9.0.0.md > 错误修复> TiDB - 修复查询 `information_schema.tables` 可能出现 OOM 问题，优化系统表查询过程中的内存使用监控 [#58985](https://github.com/pingcap/tidb/issues/58985) @[tangenta](https://github.com/tangenta)
+    - 修复查询 `information_schema.tables` 可能出现 OOM 问题，优化系统表查询过程中的内存使用监控 [#58985](https://github.com/pingcap/tidb/issues/58985) @[tangenta](https://github.com/tangenta)
 
-+ TiKV <!--tw@Oreoxmt: 7 notes-->
++ TiKV
 
     - 修复 Analyze 请求的 `KV Cursor Operations` 监控指标始终为 `0` 的问题 [#19206](https://github.com/tikv/tikv/issues/19206) @[glorv](https://github.com/glorv)
     - 修复 Leader 变更后 Region 心跳可能向 PD 上报错误的 Region 大小或 key 统计信息的问题 [#19180](https://github.com/tikv/tikv/issues/19180) @[glorv](https://github.com/glorv)
@@ -282,7 +282,7 @@ TiDB 版本：8.5.5
     - 修复流控阈值过高导致 compaction 变慢的问题 [#18708](https://github.com/tikv/tikv/issues/18708) @[hhwyt](https://github.com/hhwyt)
     - 修复特定场景下 Raft peer 可能过早进入休眠状态，导致 TiKV 重启后 peer 保持繁忙并阻塞 Leader 迁移的问题 [#19203](https://github.com/tikv/tikv/issues/19203) @[LykxSassinator](https://github.com/LykxSassinator)
 
-+ PD <!--tw@qiancai: 7 notes-->
++ PD
 
     - 修复节点在上线过程中可能无法被移除的问题 [#8997](https://github.com/tikv/pd/issues/8997) @[lhy1024](https://github.com/lhy1024)
     - 修复大量的 Leader 迁移可能导致 Region 大小出现跳变的问题 [#10014](https://github.com/tikv/pd/issues/10014) @[lhy1024](https://github.com/lhy1024)
@@ -292,7 +292,7 @@ TiDB 版本：8.5.5
     - 修复 PD 微服务模式下部分请求未能正确转发的问题 [#9825](https://github.com/tikv/pd/issues/9825) @[lhy1024](https://github.com/lhy1024)
     - 修复 `tso` 和 `scheduling` 微服务中 TLS 配置加载不正确导致连接失败的问题 [#9367](https://github.com/tikv/pd/issues/9367) @[rleungx](https://github.com/rleungx)
 
-+ TiFlash <!--tw@hfxsd: 3 notes-->
++ TiFlash
 
     - 修复在 BR 恢复数据的过程中，TiFlash 可能 panic 的问题 [#10606](https://github.com/pingcap/tiflash/issues/10606) @[CalvinNeo](https://github.com/CalvinNeo)
     - 修复在 BR 恢复数据的过程中，TiFlash 不能充分利用超过 16 核 CPU 进行数据恢复的问题 [#10605](https://github.com/pingcap/tiflash/issues/10605) @[JaySon-Huang](https://github.com/JaySon-Huang)
@@ -300,7 +300,7 @@ TiDB 版本：8.5.5
 
 + Tools
 
-    + Backup & Restore (BR) <!--tw@Oreoxmt: 7 notes-->
+    + Backup & Restore (BR)
 
         - 修复集群中存在大量 Region 时，开启日志备份导致内存占用过高的问题 [#18719](https://github.com/tikv/tikv/issues/18719) @[YuJuncen](https://github.com/YuJuncen)
         - 修复 Azure SDK 无法从环境变量中获取合适的密钥的问题 [#18206](https://github.com/tikv/tikv/issues/18206) @[YuJuncen](https://github.com/YuJuncen)
@@ -309,7 +309,7 @@ TiDB 版本：8.5.5
         - 修复在 `restore point` 失败后，即使操作安全也无法执行 `restore log` 的问题 [#64908](https://github.com/pingcap/tidb/issues/64908) @[RidRisR](https://github.com/RidRisR)
         - 修复当日志备份数据与全量备份数据混合时，从 checkpoint 进行 `restore point` 可能导致 panic 的问题 [#58685](https://github.com/pingcap/tidb/issues/58685) @[YuJuncen](https://github.com/YuJuncen)
 
-    + TiCDC <!--tw@qiancai: 6 notes-->
+    + TiCDC
 
         - 修复同步数据到对象存储时，可能因未正确捕获 Writer 关闭错误而导致数据丢失的问题 [#12436](https://github.com/pingcap/tiflow/issues/12436) @[wk989898](https://github.com/wk989898)
         - 修复同步分区表的 `TRUNCATE` 操作可能导致 Changefeed 失败的问题 [#12430](https://github.com/pingcap/tiflow/issues/12430) @[wk989898](https://github.com/wk989898)
