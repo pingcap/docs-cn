@@ -169,7 +169,7 @@ TiDB 版本：8.5.5
 
 ### 系统变量
 
-| 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
+| 变量名  | 修改类型    | 描述 |
 |--------|------------------------------|------|
 | [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) | 修改 | 默认值从 `PREDICATE` 修改为 `ALL`，以提升 OLAP 和 HTAP 场景下的统计信息完整性。 |
 | [`tidb_advancer_check_point_lag_limit`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_advancer_check_point_lag_limit-从-v855-版本开始引入) | 新增 | 控制日志备份任务 Checkpoint 的滞后时间限制，默认值为 `48h0m0s`。如果日志备份任务 Checkpoint 的滞后时间超过了限制，TiDB Advancer 会暂停该任务。 |
