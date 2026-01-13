@@ -155,7 +155,7 @@ TiDB 版本：8.5.5
 
 ## 兼容性变更
 
-对于新建的 TiDB v8.5.4 集群（不包括从早于 v8.5.3 的版本升级而来的 TiDB），你可以平滑升级到 v8.5.5。v8.5.5 大多数变更对常规升级是安全的，但也包含了若干行为变更、MySQL 兼容性变更、系统变量变更、配置参数变更以及系统表变更。在升级前，请务必仔细阅读本节内容。
+对于新部署的 TiDB v8.5.4 集群（不包括从 v8.5.3 之前版本升级的集群），你可以平滑升级到 v8.5.5。v8.5.5 的大多数变更对常规升级是安全的，但也包含了若干行为变更、MySQL 兼容性变更、系统变量变更、配置参数变更以及系统表变更。在升级前，请务必仔细阅读本节内容。
 
 ### 行为变更
 
@@ -180,14 +180,14 @@ TiDB 版本：8.5.5
 
 | 配置文件或组件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| PD | [`schedule.max-affinity-merge-region-size`](https://docs.pingcap.com/zh/tidb/v8.5/pd-configuration-file#max-affinity-merge-region-size-从-v855-版本开始引入) | 新增 | 控制属于同一[亲和性](https://docs.pingcap.com/zh/tidb/v8.5/table-affinity)分组中相邻的小 Region 自动合并的阈值，默认值为 `256`，单位为 MiB。 |
-| PD  | [`schedule.affinity-schedule-limit`](https://docs.pingcap.com/zh/tidb/v8.5/pd-configuration-file#affinity-schedule-limit-从-v855-版本开始引入) | 新增 | 控制同时进行的[亲和性](https://docs.pingcap.com/zh/tidb/v8.5/table-affinity)调度任务数量，默认值为 `0`，表示亲和性调度默认关闭。 |
 | TiDB | [`performance.enable-async-batch-get`](https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file#enable-async-batch-get-从-v855-版本开始引入) | 新增 | 控制 TiDB 是否使用异步方式执行 Batch Get 算子，默认值为 `true`。 |
-| TiKV | [`rocksdb.(defaultcf|writecf|lockcf|raftcf).level0-slowdown-writes-trigger`](/tikv-configuration-file.md#level0-slowdown-writes-trigger) | 修改 | 从 v8.5.5 起，当开启流控机制（[`storage.flow-control.enable`](/tikv-configuration-file.md#enable) 为 `true`）时，该配置项仅在其值大于 [`storage.flow-control.l0-files-threshold`](/tikv-configuration-file.md#l0-files-threshold) 时会被 `storage.flow-control.l0-files-threshold` 覆盖，以避免在调大流控阈值时削弱 RocksDB 的 compaction 加速机制。在 v8.5.4 以之前版本中，当开启流控机制时，该配置项会被 `storage.flow-control.l0-files-threshold` 直接覆盖。 |
-| TiKV | [`rocksdb.(defaultcf|writecf|lockcf|raftcf).soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit-1 | 修改 | 从 v8.5.5 起，当开启流控机制（[`storage.flow-control.enable`](/tikv-configuration-file.md#enable) 为 `true`）时，该配置项仅在其值大于 [`storage.flow-control.soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit) 时会被 `storage.flow-control.soft-pending-compaction-bytes-limit` 覆盖，以避免在调大流控阈值时削弱 RocksDB 的 compaction 加速机制。在 v8.5.4 以之前版本中，当开启流控机制时，该配置项会被 `storage.flow-control.soft-pending-compaction-bytes-limit` 直接覆盖。 |
+| TiKV | [<code>rocksdb.(defaultcf|writecf|lockcf|raftcf).level0-slowdown-writes-trigger</code>](/tikv-configuration-file.md#level0-slowdown-writes-trigger) | 修改 | 从 v8.5.5 起，当开启流控机制（[`storage.flow-control.enable`](/tikv-configuration-file.md#enable) 为 `true`）时，该配置项仅在其值大于 [`storage.flow-control.l0-files-threshold`](/tikv-configuration-file.md#l0-files-threshold) 时会被 `storage.flow-control.l0-files-threshold` 覆盖，以避免在调大流控阈值时削弱 RocksDB 的 compaction 加速机制。在 v8.5.4 以及之前版本中，当开启流控机制时，该配置项会被 `storage.flow-control.l0-files-threshold` 直接覆盖。 |
+| TiKV | [<code>rocksdb.(defaultcf|writecf|lockcf|raftcf).soft-pending-compaction-bytes-limit</code>](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit-1 | 修改 | 从 v8.5.5 起，当开启流控机制（[`storage.flow-control.enable`](/tikv-configuration-file.md#enable) 为 `true`）时，该配置项仅在其值大于 [`storage.flow-control.soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit) 时会被 `storage.flow-control.soft-pending-compaction-bytes-limit` 覆盖，以避免在调大流控阈值时削弱 RocksDB 的 compaction 加速机制。在 v8.5.4 以及之前版本中，当开启流控机制时，该配置项会被 `storage.flow-control.soft-pending-compaction-bytes-limit` 直接覆盖。 |
 | TiKV | [`readpool.cpu-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#cpu-threshold-从-v855-版本开始引入) | 新增 | 限制统一处理读请求的线程池 (UnifyReadPool) 可使用的最大 CPU 资源比例。默认值为 `0.0`，表示不限制 UnifyReadPool 的 CPU 资源比例，该线程池的规模完全由繁忙线程伸缩算法决定，该算法会根据当前处理任务的线程数量动态调整。 |
 | TiKV | [`server.graceful-shutdown-timeout`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#graceful-shutdown-timeout-从-v855-版本开始引入) | 新增 | 控制 TiKV 优雅关闭 (graceful shutdown) 的超时时长，默认值为 `20s`。 |
 | TiKV | [`server.inspect-network-interval`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#inspect-network-interval-从-v855-版本开始引入) | 新增 | 控制 TiKV HealthChecker 主动向 PD 以及其他 TiKV 节点发起网络探测的周期，默认值为 `100ms`。 |
+| PD | [`schedule.max-affinity-merge-region-size`](https://docs.pingcap.com/zh/tidb/v8.5/pd-configuration-file#max-affinity-merge-region-size-从-v855-版本开始引入) | 新增 | 控制属于同一[亲和性](https://docs.pingcap.com/zh/tidb/v8.5/table-affinity)分组中相邻的小 Region 自动合并的阈值，默认值为 `256`，单位为 MiB。 |
+| PD  | [`schedule.affinity-schedule-limit`](https://docs.pingcap.com/zh/tidb/v8.5/pd-configuration-file#affinity-schedule-limit-从-v855-版本开始引入) | 新增 | 控制同时进行的[亲和性](https://docs.pingcap.com/zh/tidb/v8.5/table-affinity)调度任务数量，默认值为 `0`，表示亲和性调度默认关闭。 |
 | BR | [`--checkpoint-storage`](/br/br-checkpoint-restore.md#实现细节将断点数据存储在下游集群) | 新增 | 用于指定断点数据存储的外部存储。 |
 | BR | [`--fast-load-sys-tables`](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表) | 新增 | 用于在全新的集群上物理恢复系统表。该参数默认开启。 |
 | BR | [`--filter`](/br/br-pitr-manual.md#使用过滤器恢复) | 新增 | 用于恢复特定的数据库或表。 |
@@ -198,7 +198,7 @@ TiDB 版本：8.5.5
 
 ### 其他
 
-* 在使用 BR v8.5.5 对较低版本的 TiDB (例如 v8.5.4 或 v8.1.2) 执行 PITR 恢复时，日志恢复阶段会出现失败并报错。
+* 使用 BR v8.5.5 对较低版本的 TiDB 集群（例如 v8.5.4 或 v8.1.2）执行 PITR 恢复时，日志恢复阶段会失败并报错。
 
     数据全量备份与恢复不受此问题影响。
 
