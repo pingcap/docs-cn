@@ -330,7 +330,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 是否开启自动调整线程池的大小。开启此配置可以基于当前的 CPU 使用情况，自动调整统一处理读请求的线程池 (UnifyReadPool) 的大小，优化 TiKV 的读性能。目前线程池自动调整的范围为：`[max-thread-count, MAX(4, CPU)]`(上限与 [`max-thread-count`](#max-thread-count) 可设置的最大值相同)。
 + 默认值：false
 
-### `cpu-threshold` <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
+### `cpu-threshold` <span class="version-mark">从 v8.5.5 版本开始引入</span>
 
 + 限制统一处理读请求的线程池 (UnifyReadPool) 可使用的最大 CPU 资源比例。例如，当该值为 `0.8` 时，该线程池最多可使用 80% 的 CPU。
     + 默认情况下（该值为 `0.0` 时），表示不限制 UnifyReadPool 的 CPU 资源比例，该线程池的规模完全由繁忙线程伸缩算法决定，该算法会根据当前处理任务的线程数量动态调整。
