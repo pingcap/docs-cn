@@ -587,7 +587,7 @@ Query OK, 0 rows affected (0.00 sec)
 ```
 
 ```sql
-INSERT INTO t VALUES(1,1);
+INSERT INTO t VALUES(1,2);
 ```
 
 ```
@@ -595,21 +595,26 @@ Query OK, 1 row affected (0.00 sec)
 ```
 
 ```sql
-SELECT TIDB_ENCODE_INDEX_KEY('test', 't', 'idx', 1, 1);
+SELECT TIDB_ENCODE_INDEX_KEY('test', 't', 'idx', 2, 1);
 ```
 
 ```
 +----------------------------------------------------------------------------+
-| TIDB_ENCODE_INDEX_KEY('test', 't', 'idx', 1, 1)                            |
+| TIDB_ENCODE_INDEX_KEY('test', 't', 'idx', 2, 1)                            |
 +----------------------------------------------------------------------------+
-| 74800000000000007f5f698000000000000001038000000000000001038000000000000001 |
+| 7480000000000000b45f698000000000000001038000000000000002038000000000000001 |
 +----------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
 
 ## TIDB_ENCODE_RECORD_KEY
 
-对记录键进行编码。
+对记录键进行编码，返回结果为十六进制字符串，函数参数格式如下：
+
+`TIDB_ENCODE_RECORD_KEY(database_name, table_name, handle_columns...)`
+
+* `database_name` / `table_name`：目标表所在的库、表名。
+* `handle_columns...`：该行的 handle（行键）值。handle 的具体组成取决于表的主键类型（例如是否为 `CLUSTERED`、是否为 common handle、是否使用隐藏列 `_tidb_rowid`），可参考 [`TIDB_ENCODE_INDEX_KEY()`](#tidb_encode_index_key) 中 `handle_columns...` 的说明。
 
 ```sql
 CREATE TABLE t(id int PRIMARY KEY, a int, KEY `idx` (a));
@@ -620,7 +625,7 @@ Query OK, 0 rows affected (0.00 sec)
 ```
 
 ```sql
-INSERT INTO t VALUES(1,1);
+INSERT INTO t VALUES(1,2);
 ```
 
 ```
