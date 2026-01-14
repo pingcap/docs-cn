@@ -559,7 +559,7 @@ SELECT VITESS_HASH(123);
 `TIDB_ENCODE_INDEX_KEY(<db_name>, <table_name>, <index_name>, <index_columns>..., <handle_columns>...)`
 
 * `<db_name>`：目标索引所在的库的名称。
-* `<table_name>`：目标索引所在的表的名称。对于分区表，可以在 `table_name` 中指定分区名，例如 `'t(p0)'`。
+* `<table_name>`：目标索引所在的表的名称。对于分区表，可以在 `<table_name>` 中指定分区名，例如 `'t(p0)'`。
 * `<index_name>`：目标索引所在的索引的名称。
 * `<index_columns>...`：按索引列顺序依次填写索引列的值。对于复合索引，需要按定义顺序依次提供每一列的值。
 * `<handle_columns>...`：指定该行对应的 handle 值，取值规则如下：
