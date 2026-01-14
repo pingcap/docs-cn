@@ -1491,15 +1491,17 @@ store weight 1 5 10
 通过 `store-limit`，你可以设置 store 的调度速度。关于 `store limit` 的原理和使用方法，请参考 [`store limit`](/configure-store-limit.md)。
 
 ```bash
->> store limit                         // 显示所有 store 添加和删除 peer 的速度上限
->> store limit add-peer                // 显示所有 store 添加 peer 的速度上限
->> store limit remove-peer             // 显示所有 store 删除 peer 的速度上限
->> store limit all 5                   // 设置所有 store 添加和删除 peer 的速度上限为每分钟 5 个
->> store limit 1 5                     // 设置 store 1 添加和删除 peer 的速度上限为每分钟 5 个
->> store limit all 5 add-peer          // 设置所有 store 添加 peer 的速度上限为每分钟 5 个
->> store limit 1 5 add-peer            // 设置 store 1 添加 peer 的速度上限为每分钟 5 个
->> store limit 1 5 remove-peer         // 设置 store 1 删除 peer 的速度上限为每分钟 5 个
->> store limit all 5 remove-peer       // 设置所有 store 删除 peer 的速度上限为每分钟 5 个
+>> store limit                                  // 显示所有 store 添加和删除 peer 的速度上限
+>> store limit add-peer                         // 显示所有 store 添加 peer 的速度上限
+>> store limit remove-peer                      // 显示所有 store 删除 peer 的速度上限
+>> store limit all 5                            // 设置所有 store 添加和删除 peer 的速度上限为每分钟 5 个
+>> store limit 1 5                              // 设置 store 1 添加和删除 peer 的速度上限为每分钟 5 个
+>> store limit all 5 add-peer                   // 设置所有 store 添加 peer 的速度上限为每分钟 5 个
+>> store limit 1 5 add-peer                     // 设置 store 1 添加 peer 的速度上限为每分钟 5 个
+>> store limit 1 5 remove-peer                  // 设置 store 1 删除 peer 的速度上限为每分钟 5 个
+>> store limit all 5 remove-peer                // 设置所有 store 删除 peer 的速度上限为每分钟 5 个
+>> store limit all engine tikv 5 remove-peer    // 从 v8.5.5 和 v9.0.0 起，支持设置所有 TiKV store 删除 peer 的速度上限，该示例将所有 TiKV store 删除 peer 的速度上限设置为每分钟 5 个
+>> store limit all engine tiflash 5 remove-peer // 从 v8.5.5 和 v9.0.0 起，支持设置所有 TiFlash store 删除 peer 的速度上限，该示例将所有 TiFlash store 删除 peer 的速度上限设置为每分钟 5 个
 ```
 
 > **注意：**
