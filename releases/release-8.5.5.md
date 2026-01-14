@@ -15,7 +15,7 @@ TiDB 版本：8.5.5
 
 ### 性能
 
-* 大幅提升特定有损 DDL 操作（例如 `BIGINT → INT`、`CHAR(120) → VARCHAR(60)`）的执行效率：在未发生数据截断的前提下，这类操作的执行耗时可从数小时缩短至分钟级、秒级甚至毫秒级，性能提升可达到数十倍至数十万倍 [#63366](https://github.com/pingcap/tidb/issues/63366) [@wjhuang2016](https://github.com/wjhuang2016), [@tangenta](https://github.com/tangenta), [@fzzf678](https://github.com/fzzf678)
+* 大幅提升特定有损 DDL 操作（例如 `BIGINT → INT`、`CHAR(120) → VARCHAR(60)`）的执行效率：在未发生数据截断的前提下，这类操作的执行耗时可从数小时缩短至分钟级、秒级甚至毫秒级，性能提升可达到数十倍至数十万倍 [#63366](https://github.com/pingcap/tidb/issues/63366) @[wjhuang2016](https://github.com/wjhuang2016), @[tangenta](https://github.com/tangenta), @[fzzf678](https://github.com/fzzf678)
 
     优化策略包括：
 
@@ -32,7 +32,7 @@ TiDB 版本：8.5.5
     | 有索引列 | `CHAR(120) → VARCHAR(60)` | 7 小时 16 分钟 | 12 分 56 秒 | 34 倍 |
 
     注：以上数据基于 DDL 执行过程中未发生数据截断的前提。对于字符集之间的类型转
-换，有符号与无符号整数类型之间的转换，或是包含 TiFlash副本的表，上述优化不适用。
+换，有符号与无符号整数类型之间的转换，或是包含 TiFlash 副本的表，上述优化不适用。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-modify-column.md)。
 
@@ -262,9 +262,9 @@ TiDB 版本：8.5.5
     - 修复当没有索引数据时，admin check 没有报错的问题 [#63698](https://github.com/pingcap/tidb/issues/63698) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复执行 `MODIFY COLUMN` 修改排序规则导致数据索引不一致的问题 [#61668](https://github.com/pingcap/tidb/issues/61668) @[tangenta](https://github.com/tangenta)
     - 修复多个 schema 变更时，内嵌于 DDL 的 Analyze 特性没有启用的问题 [#65040](https://github.com/pingcap/tidb/issues/65040) @[joechenrh](https://github.com/joechenrh)
-    - 修复取消 `ADD INDEX` 任务后，分布式执行框架 (Distributed eXecution Framework, DXF) 任务没有取消的问题 [#issue](https://github.com/pingcap/tidb/issues/64129) @[tangenta](https://github.com/tangenta)
+    - 修复取消 `ADD INDEX` 任务后，分布式执行框架 (Distributed eXecution Framework, DXF) 任务没有取消的问题 [#64129](https://github.com/pingcap/tidb/issues/64129) @[tangenta](https://github.com/tangenta)
     - 修复在判断是否加载包含外键的表信息时，校验逻辑不正确的问题 [#60044](https://github.com/pingcap/tidb/issues/60044) @[JQWong7](https://github.com/JQWong7)
-    - 修复在复制表信息时，外键相关字段初始化不正确的问题 [#60044]((https://github.com/pingcap/tidb/issues/60044) @[JQWong7](https://github.com/JQWong7)
+    - 修复在复制表信息时，外键相关字段初始化不正确的问题 [#60044](https://github.com/pingcap/tidb/issues/60044) @[JQWong7](https://github.com/JQWong7)
     - 修复跨数据库重命名表格后，auto ID 设置不正确的问题 [#64561](https://github.com/pingcap/tidb/issues/64561) @[joechenrh](https://github.com/joechenrh)
     - 修复错误处理 meta key 导致 CPU 负载过高的问题 [#64323](https://github.com/pingcap/tidb/issues/64323) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复 TiDB Lightning 在 schema file 缺失末尾分号时未正常报错的问题 [#63414](https://github.com/pingcap/tidb/issues/63414) @[GMHDBJD](https://github.com/GMHDBJD)
