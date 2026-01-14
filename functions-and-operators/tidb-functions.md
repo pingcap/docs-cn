@@ -556,26 +556,38 @@ SELECT VITESS_HASH(123);
 
 对索引键进行编码，返回结果为十六进制字符串，函数参数格式如下：
 
-`TIDB_ENCODE_INDEX_KEY(database_name, table_name, index_name, index_columns..., handle_columns...)`
+`TIDB_ENCODE_INDEX_KEY(<db_name>, <table_name>, <index_name>, <index_columns>..., <handle_columns>...)`
 
-* `database_name` / `table_name` / `index_name`：目标索引所在的库、表和索引名。对于分区表，可以在 `table_name` 中指定分区名，例如 `'t(p0)'`。
-* `index_columns...`：按索引列顺序依次填写索引列的值；复合索引需要依次提供多列值。
-* `handle_columns...`：该行的 handle 值：
+* `<db_name>`：目标索引所在的库的名称。
+* `<table_name>`：目标索引所在的表的名称。对于分区表，可以在 `table_name` 中指定分区名，例如 `'t(p0)'`。
+* `<index_name>`：目标索引所在的索引的名称。
+* `<index_columns>...`：按索引列顺序依次填写索引列的值。对于复合索引，需要按定义顺序依次提供每一列的值。
+* `<handle_columns>...`：指定该行对应的 handle 值，取值规则如下：
+
     * 若表使用隐藏列 `_tidb_rowid` 作为 handle（无主键，或主键为 `NONCLUSTERED`），此处填写 `_tidb_rowid`。
-    * 若表主键为 `CLUSTERED` 且为整型单列，handle 为该主键值。
-    * 若表主键为 `CLUSTERED` 且为复合主键/非整型（common handle），handle 由所有主键列组成，需要按主键列顺序依次填写。
+    * 若表主键为 `CLUSTERED` 且为单列整型，handle 为该主键列的值。
+    * 若表主键为 `CLUSTERED` 且为复合主键或非整型 (common handle)，handle 由所有主键列组成，需要按主键列顺序依次填写。
 
-复合索引/复合主键的写法示例：
+复合索引和复合主键的写法示例：
 
 ```sql
--- 复合二级索引 idx(c1,c2)，无主键（或主键是 NONCLUSTERED），handle 为 _tidb_rowid
-SELECT TIDB_ENCODE_INDEX_KEY('<db_name>', '<table_name>', '<index_name>', <c1>, <c2>, <_tidb_rowid>);
+-- 复合二级索引 `idx(c1,c2)`，无主键或主键是 `NONCLUSTERED`，handle 为 `_tidb_rowid`
+SELECT TIDB_ENCODE_INDEX_KEY(
+    '<db_name>', '<table_name>', '<index_name>', 
+    <c1>, <c2>, <_tidb_rowid>
+);
 
--- 复合二级索引 idx(c1,c2)，整型聚簇主键 id
-SELECT TIDB_ENCODE_INDEX_KEY('<db_name>', '<table_name>', '<index_name>', <c1>, <c2>, <id>);
+-- 复合二级索引 `idx(c1,c2)`，整型聚簇主键 ID
+SELECT TIDB_ENCODE_INDEX_KEY(
+    '<db_name>', '<table_name>', '<index_name>', 
+    <c1>, <c2>, <id>
+);
 
--- 复合二级索引 idx(c1,c2)，复合聚簇主键 PRIMARY KEY(p1,p2) CLUSTERED（common handle）
-SELECT TIDB_ENCODE_INDEX_KEY('<db_name>', '<table_name>', '<index_name>', <c1>, <c2>, <p1>, <p2>);
+-- 复合二级索引 `idx(c1,c2)`，复合聚簇主键 `PRIMARY KEY(p1,p2) CLUSTERED`（common handle）
+SELECT TIDB_ENCODE_INDEX_KEY(
+    '<db_name>', '<table_name>', '<index_name>', 
+    <c1>, <c2>, <p1>, <p2>
+);
 ```
 
 ```sql
@@ -611,10 +623,11 @@ SELECT TIDB_ENCODE_INDEX_KEY('test', 't', 'idx', 2, 1);
 
 对记录键进行编码，返回结果为十六进制字符串，函数参数格式如下：
 
-`TIDB_ENCODE_RECORD_KEY(database_name, table_name, handle_columns...)`
+`TIDB_ENCODE_RECORD_KEY(<db_name>, <table_name>, <handle_columns>...)`
 
-* `database_name` / `table_name`：目标表所在的库、表名。对于分区表，可以在 `table_name` 中指定分区名，例如 `'t(p0)'`。
-* `handle_columns...`：该行的 handle（行键）值。handle 的具体组成取决于表的主键类型（例如是否为 `CLUSTERED`、是否为 common handle、是否使用隐藏列 `_tidb_rowid`），可参考 [`TIDB_ENCODE_INDEX_KEY()`](#tidb_encode_index_key) 中 `handle_columns...` 的说明。
+* `<db_name>`：目标表所在的库的名称。
+* `<table_name>`：目标表所在的表的名称。对于分区表，可以在 `table_name` 中指定分区名，例如 `'t(p0)'`。
+* `<handle_columns>...`：该行的 handle（行键）值。handle 的具体组成取决于表的主键类型，例如是否为 `CLUSTERED`、是否为 common handle、是否使用隐藏列 `_tidb_rowid`。详情请参考 [`TIDB_ENCODE_INDEX_KEY()`](#tidb_encode_index_key) 中 `handle_columns...`。
 
 ```sql
 CREATE TABLE t(id int PRIMARY KEY, a int, KEY `idx` (a));
