@@ -258,7 +258,6 @@ TiDB 版本：8.5.5
     - 修复执行 `ALTER TABLE child CHANGE COLUMN` 修改列后，外键 (Foreign Key) 没有更新的问题 [#59705](https://github.com/pingcap/tidb/issues/59705) @[fzzf678](https://github.com/fzzf678)
     - 修复解码旧版本 TiDB 的 `RENAME TABLE` 任务参数时出现错误的问题 [#64413](https://github.com/pingcap/tidb/issues/64413) @[joechenrh](https://github.com/joechenrh)
     - 修复当 BR 恢复失败时，未能正常设置自增 ID (Rebase) 的问题 [#60804](https://github.com/pingcap/tidb/issues/60804) @[joechenrh](https://github.com/joechenrh)
-    - 修复查询 `information_schema` 表时出现 OOM 的问题 [#58985](https://github.com/pingcap/tidb/issues/58985) @[tangenta](https://github.com/tangenta)
     - 修复在升级时 TiDB 节点可能会卡住的问题 [#64539](https://github.com/pingcap/tidb/issues/64539) @[joechenrh](https://github.com/joechenrh)
     - 修复当没有索引数据时，admin check 没有报错的问题 [#63698](https://github.com/pingcap/tidb/issues/63698) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复执行 `MODIFY COLUMN` 修改排序规则导致数据索引不一致的问题 [#61668](https://github.com/pingcap/tidb/issues/61668) @[tangenta](https://github.com/tangenta)
