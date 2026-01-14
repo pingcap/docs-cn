@@ -554,7 +554,29 @@ SELECT VITESS_HASH(123);
 
 ## TIDB_ENCODE_INDEX_KEY
 
-对索引键进行编码。
+对索引键进行编码，返回结果为十六进制字符串，函数参数格式如下：
+
+`TIDB_ENCODE_INDEX_KEY(database_name, table_name, index_name, index_columns..., handle_columns...)`
+
+* `database_name` / `table_name` / `index_name`：目标索引所在的库、表和索引名。
+* `index_columns...`：按索引列顺序依次填写索引列的值；复合索引需要依次提供多列值。
+* `handle_columns...`：该行的 handle 值：
+    * 若表使用隐藏列 `_tidb_rowid` 作为 handle（无主键，或主键为 `NONCLUSTERED`），此处填写 `_tidb_rowid`。
+    * 若表主键为 `CLUSTERED` 且为整型单列，handle 为该主键值。
+    * 若表主键为 `CLUSTERED` 且为复合主键/非整型（common handle），handle 由所有主键列组成，需要按主键列顺序依次填写。
+
+复合索引/复合主键的写法示例：
+
+```sql
+-- 复合二级索引 idx(c1,c2)，无主键（或主键是 NONCLUSTERED），handle 为 _tidb_rowid
+SELECT TIDB_ENCODE_INDEX_KEY('<db_name>', '<table_name>', '<index_name>', <c1>, <c2>, <_tidb_rowid>);
+
+-- 复合二级索引 idx(c1,c2)，整型聚簇主键 id
+SELECT TIDB_ENCODE_INDEX_KEY('<db_name>', '<table_name>', '<index_name>', <c1>, <c2>, <id>);
+
+-- 复合二级索引 idx(c1,c2)，复合聚簇主键 PRIMARY KEY(p1,p2) CLUSTERED（common handle）
+SELECT TIDB_ENCODE_INDEX_KEY('<db_name>', '<table_name>', '<index_name>', <c1>, <c2>, <p1>, <p2>);
+```
 
 ```sql
 CREATE TABLE t(id int PRIMARY KEY, a int, KEY `idx` (a));
