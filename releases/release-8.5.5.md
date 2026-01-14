@@ -278,7 +278,7 @@ TiDB 版本：8.5.5
     - 修复 Analyze 请求的 `KV Cursor Operations` 监控指标始终为 `0` 的问题 [#19206](https://github.com/tikv/tikv/issues/19206) @[glorv](https://github.com/glorv)
     - 修复 Leader 变更后 Region 心跳可能向 PD 上报错误的 Region 大小或 key 统计信息的问题 [#19180](https://github.com/tikv/tikv/issues/19180) @[glorv](https://github.com/glorv)
     - 通过从 Unsafe Recovery 降级列表中移除 tombstone 状态的 TiFlash Learner，修复 Unsafe Recovery 进程卡住的问题 [#18458](https://github.com/tikv/tikv/issues/18458) @[v01dstar](https://github.com/v01dstar)
-    - 修复在持续写入期间快照可能被无限期取消，从而阻塞副本恢复的问题 [#18872](https://github.com/tikv/tikv/issues/18872) @[exit-code-1](https://github.com/exit-code-1)
+    - 修复在持续写入期间快照可能被反复取消，从而阻塞副本恢复的问题 [#18872](https://github.com/tikv/tikv/issues/18872) @[exit-code-1](https://github.com/exit-code-1)
     - 修复流控阈值过高导致 compaction 变慢的问题 [#18708](https://github.com/tikv/tikv/issues/18708) @[hhwyt](https://github.com/hhwyt)
     - 修复特定场景下 Raft peer 可能过早进入休眠状态，导致 TiKV 重启后 peer 保持繁忙并阻塞 Leader 迁移的问题 [#19203](https://github.com/tikv/tikv/issues/19203) @[LykxSassinator](https://github.com/LykxSassinator)
 
