@@ -31,8 +31,7 @@ TiDB 版本：8.5.5
     | 有索引列 | `BIGINT → INT` | 6 小时 25 分钟 | 0.05 秒 | 460,000 倍 |
     | 有索引列 | `CHAR(120) → VARCHAR(60)` | 7 小时 16 分钟 | 12 分 56 秒 | 34 倍 |
 
-    注：以上数据基于 DDL 执行过程中未发生数据截断的前提。对于字符集之间的类型转
-换，有符号与无符号整数类型之间的转换，或是包含 TiFlash 副本的表，上述优化不适用。
+    注：以上数据基于 DDL 执行过程中未发生数据截断的前提。对于字符集之间的类型转换，有符号与无符号整数类型之间的转换，或是包含 TiFlash 副本的表，上述优化不适用。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-modify-column.md)。
 
@@ -82,7 +81,7 @@ TiDB 版本：8.5.5
 
     从 v8.5.5 起，TiKV 引入网络慢节点检测与反馈机制。启用该机制后，TiKV 会探测节点之间的网络延时，计算网络慢节点分数，并将该分数上报给 PD。PD 基于该分数判断 TiKV 节点的网络状态，并进行相应的调度调整：当检测到某个 TiKV 节点存在网络抖动时，PD 会限制向该节点调度新的 Leader。如果网络抖动持续存在，PD 会主动将该节点上的现有 Leader 驱逐到其他 TiKV 节点，从而降低网络异常对集群的影响。
 
-    更多信息，请参阅[用户文档](/pd-control.md#scheduler-config-evict-slow-store-scheduler)。
+    更多信息，请参考[用户文档](/pd-control.md#scheduler-config-evict-slow-store-scheduler)。
 
 ### 高可用
 
@@ -90,7 +89,7 @@ TiDB 版本：8.5.5
 
     为了防止 PD Leader 因重试风暴或类似的反馈循环而过载，TiDB 引入了熔断模式。当错误率达到预设阈值时，该模式会限制进入的流量，从而使系统能够恢复稳定。你可以通过系统变量 `tidb_cb_pd_metadata_error_rate_threshold_ratio` 来控制熔断器的触发。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_cb_pd_metadata_error_rate_threshold_ratio-new-in-v855).
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_cb_pd_metadata_error_rate_threshold_ratio-new-in-v855)。
 
 ### SQL 功能
 
@@ -227,7 +226,7 @@ TiDB 版本：8.5.5
 
     - 优化了高基数指标，降低 PD 的内存占用和监控系统压力 [#9357](https://github.com/tikv/pd/issues/9357) @[rleungx](https://github.com/rleungx)
     - 优化时间戳推进和 Leader 选举的逻辑 [#9981](https://github.com/tikv/pd/issues/9981) @[bufferflies](https://github.com/bufferflies)
-    - 支持按照存储引擎（TiKV 或 TiFlash) 批量配置 Store Limit [#9970](https://github.com/tikv/pd/issues/9970) @[bufferflies](https://github.com/bufferflies)
+    - 支持按照存储引擎（TiKV 或 TiFlash）批量配置 Store Limit [#9970](https://github.com/tikv/pd/issues/9970) @[bufferflies](https://github.com/bufferflies)
     - 为 `pd_cluster_status` 指标添加 `store` 标签 [#9855](https://github.com/tikv/pd/issues/9855) @[SerjKol80](https://github.com/SerjKol80)
 
 + Tools
