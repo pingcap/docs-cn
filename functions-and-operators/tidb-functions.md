@@ -558,7 +558,7 @@ SELECT VITESS_HASH(123);
 
 `TIDB_ENCODE_INDEX_KEY(database_name, table_name, index_name, index_columns..., handle_columns...)`
 
-* `database_name` / `table_name` / `index_name`：目标索引所在的库、表和索引名。
+* `database_name` / `table_name` / `index_name`：目标索引所在的库、表和索引名。对于分区表，可以在 `table_name` 中指定分区名，例如 `'t(p0)'`。
 * `index_columns...`：按索引列顺序依次填写索引列的值；复合索引需要依次提供多列值。
 * `handle_columns...`：该行的 handle 值：
     * 若表使用隐藏列 `_tidb_rowid` 作为 handle（无主键，或主键为 `NONCLUSTERED`），此处填写 `_tidb_rowid`。
@@ -613,7 +613,7 @@ SELECT TIDB_ENCODE_INDEX_KEY('test', 't', 'idx', 2, 1);
 
 `TIDB_ENCODE_RECORD_KEY(database_name, table_name, handle_columns...)`
 
-* `database_name` / `table_name`：目标表所在的库、表名。
+* `database_name` / `table_name`：目标表所在的库、表名。对于分区表，可以在 `table_name` 中指定分区名，例如 `'t(p0)'`。
 * `handle_columns...`：该行的 handle（行键）值。handle 的具体组成取决于表的主键类型（例如是否为 `CLUSTERED`、是否为 common handle、是否使用隐藏列 `_tidb_rowid`），可参考 [`TIDB_ENCODE_INDEX_KEY()`](#tidb_encode_index_key) 中 `handle_columns...` 的说明。
 
 ```sql
