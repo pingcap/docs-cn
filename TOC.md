@@ -733,6 +733,7 @@
   - TiDB 分布式执行框架
     - [TiDB 分布式执行框架介绍](/tidb-distributed-execution-framework.md)
     - [TiDB 全局排序](/tidb-global-sort.md)
+  - [TiDB 离线包](/binary-package.md)
   - [系统变量](/system-variables.md)
   - [系统变量索引](/system-variable-reference.md)
   - [服务器状态变量](/status-variables.md)
