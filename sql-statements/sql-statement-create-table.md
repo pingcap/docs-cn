@@ -117,6 +117,7 @@ TableOption ::=
 |   'UNION' EqOpt '(' TableNameListOpt ')'
 |   'ENCRYPTION' EqOpt EncryptionOpt
 |    'TTL' EqOpt TimeColumnName '+' 'INTERVAL' Expression TimeUnit (TTLEnable EqOpt ( 'ON' | 'OFF' ))? (TTLJobInterval EqOpt stringLit)?
+|   'AFFINITY' EqOpt StringName
 |   PlacementPolicyOption
 
 OnCommitOpt ::=
@@ -170,10 +171,12 @@ TiDB 支持以下 `table_option`。TiDB 会解析并忽略其他 `table_option` 
 |`CHARACTER SET` |指定该表所使用的[字符集](/character-set-and-collation.md)                | `CHARACTER SET` = 'utf8mb4'|
 |`COLLATE`       |指定该表所使用的字符集排序规则        | `COLLATE` = 'utf8mb4_bin'|
 |`COMMENT`       |注释信息                              | `COMMENT` = 'comment info'|
+|`AFFINITY`      |为表或分区开启亲和性调度。非分区表可设置为 `'table'`，分区表可设置为 `'partition'`。设置为 `'none'` 或留空可关闭亲和性调度 |`AFFINITY` = 'table'|
 
 > **注意：**
 >
-> 在 TiDB 配置文件中，`split-table` 默认开启。当该配置项开启时，建表操作会为每个表建立单独的 Region，详情参见 [TiDB 配置文件描述](/tidb-configuration-file.md)。
+> - 在 TiDB 配置文件中，`split-table` 默认开启。当该配置项开启时，建表操作会为每个表建立单独的 Region，详情参见 [TiDB 配置文件描述](/tidb-configuration-file.md)。
+> - 使用 `AFFINITY` 时，当前不支持对该表进行分区方案变更（如添加、删除、重组或交换分区），也不支持在临时表或视图上设置该选项。
 
 ## 示例
 

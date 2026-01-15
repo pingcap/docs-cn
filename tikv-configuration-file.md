@@ -208,6 +208,14 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：3s
 + 最小值：1s
 
+### `graceful-shutdown-timeout` <span class="version-mark">从 v8.5.5 版本开始引入</span>
+
++ TiKV 优雅关闭 (graceful shutdown) 的超时时长。
+    + 当该值大于 `0s` 时，如果关闭 TiKV 节点，TiKV 在该超时时间内会尽量将其上的 leader 副本转移到其他 TiKV 节点，然后再关闭。若达到该超时时间后仍有 leader 未完成转移，TiKV 将跳过剩余 leader 的转移，直接进入关闭流程。
+    + 当该值为 `0s` 时，表示不启用 TiKV 的 graceful shutdown 功能。
++ 默认值：20s
++ 最小值：0s
+
 ### `concurrent-send-snap-limit`
 
 + 同时发送 snapshot 的最大个数。
@@ -291,6 +299,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 设置服务与转发请求的连接池大小。设置过小会影响请求的延迟和负载均衡。
 + 默认值：4
 
+### `inspect-network-interval` <span class="version-mark">从 v8.5.5 版本开始引入</span>
+
++ 控制 TiKV HealthChecker 主动向 PD 以及其他 TiKV 节点发起网络探测的周期，用于计算 `NetworkSlowScore` 并向 PD 上报慢节点的网络状态。
++ 设置为 `0` 表示关闭网络探测。数值越小，探测频率越高，有助于更快发现网络抖动，但也会消耗更多网络与 CPU 资源。
++ 默认值：100ms
++ 取值范围：0 或 `[10ms, +∞)`
+
 ## readpool.unified
 
 统一处理读请求的线程池相关的配置项。该线程池自 4.0 版本起取代原有的 storage 和 coprocessor 线程池。
@@ -329,6 +344,17 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + 是否开启自动调整线程池的大小。开启此配置可以基于当前的 CPU 使用情况，自动调整统一处理读请求的线程池 (UnifyReadPool) 的大小，优化 TiKV 的读性能。目前线程池自动调整的范围为：`[max-thread-count, MAX(4, CPU)]`(上限与 [`max-thread-count`](#max-thread-count) 可设置的最大值相同)。
 + 默认值：false
+
+### `cpu-threshold` <span class="version-mark">从 v8.5.5 版本开始引入</span>
+
++ 限制统一处理读请求的线程池 (UnifyReadPool) 可使用的最大 CPU 资源比例。例如，当该值为 `0.8` 时，该线程池最多可使用 80% 的 CPU。
+    + 默认情况下（该值为 `0.0` 时），表示不限制 UnifyReadPool 的 CPU 资源比例，该线程池的规模完全由繁忙线程伸缩算法决定，该算法会根据当前处理任务的线程数量动态调整。
+    + 当设置该值大于 `0.0` 时，TiKV 会在原有的繁忙线程伸缩算法基础上，引入以下 CPU 使用率阈值约束，以更严格地控制 CPU 资源使用：
+        + 强制缩减：当 UnifyReadPool 的CPU 使用率超过该配置项值加上 10% 的缓冲时，TiKV 会强制缩小 UnifyReadPool 的规模。
+        + 阻止扩增：当扩大 UnifyReadPool 规模可能导致 CPU 使用率超过配置阈值减去 10% 的缓冲时，TiKV 会阻止 UnifyReadPool 继续扩大规模。
++ 仅当 [`readpool.unified.auto-adjust-pool-size`](#auto-adjust-pool-size-从-v630-版本开始引入) 设置为 `true` 时生效。
++ 默认值：`0.0`
++ 可调整范围：`[0.0, 1.0]`
 
 ## readpool.storage
 
@@ -1260,7 +1286,7 @@ RocksDB 相关的配置项。
 ### `max-manifest-file-size`
 
 + RocksDB Manifest 文件最大大小。
-+ 默认值：256MiB。在 v8.5.3 及之前的 v8.5.x 版本中，默认值为 `128MiB`。
++ 默认值：128MiB
 + 最小值：0
 + 单位：B|KiB|MiB|GiB
 

@@ -241,6 +241,7 @@
       - [使用概述](/br/br-use-overview.md)
       - [快照备份与恢复](/br/br-snapshot-guide.md)
       - [日志备份与 PITR](/br/br-pitr-guide.md)
+      - [压缩日志备份](/br/br-compact-log-backup.md)
       - [实践示例](/br/backup-and-restore-use-cases.md)
       - [备份存储](/br/backup-and-restore-storages.md)
     - br cli 命令手册
@@ -882,6 +883,7 @@
       - [`SET ROLE`](/sql-statements/sql-statement-set-role.md)
       - [`SET TRANSACTION`](/sql-statements/sql-statement-set-transaction.md)
       - [`SET <variable>`](/sql-statements/sql-statement-set-variable.md)
+      - [`SHOW AFFINITY`](/sql-statements/sql-statement-show-affinity.md)
       - [`SHOW [BACKUPS|RESTORES]`](/sql-statements/sql-statement-show-backups.md)
       - [`SHOW ANALYZE STATUS`](/sql-statements/sql-statement-show-analyze-status.md)
       - [`SHOW BINDINGS`](/sql-statements/sql-statement-show-bindings.md)
@@ -999,6 +1001,7 @@
     - [临时表](/temporary-tables.md)
     - [缓存表](/cached-tables.md)
     - [外键约束](/foreign-key.md)
+    - [表级数据亲和性](/table-affinity.md)
     - 字符集和排序规则
       - [概述](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)
