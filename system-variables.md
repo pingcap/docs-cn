@@ -4259,6 +4259,32 @@ SHOW WARNINGS;
 
 </details>
 
+### `tidb_opt_risk_eq_skew_ratio` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> TiDB 查询优化器会使用该变量。如果没有 TiDB 支持或工程师指导，请不要调整该变量。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 1]`
+- 默认值：`0`
+- 该变量用于控制当等值谓词的取值未命中 TopN 或直方图桶时，优化器在原始谓词选择率估算与可能的数据倾斜估算之间的风险比例。
+
+### `tidb_opt_risk_range_skew_ratio` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> TiDB 查询优化器会使用该变量。如果没有 TiDB 支持或工程师指导，请不要调整该变量。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 1]`
+- 默认值：`0`
+- 该变量用于控制当范围谓词的搜索范围仅命中一个直方图桶，或完全落在所有直方图桶之外时，优化器在原始谓词选择率估算与可能的数据倾斜估算之间的风险比例。
+
 ### `tidb_opt_scan_factor`
 
 - 作用域：SESSION | GLOBAL
