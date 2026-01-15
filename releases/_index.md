@@ -1,6 +1,7 @@
 ---
 title: TiDB 版本发布历史
 summary: 介绍 TiDB 版本发布历史。
+aliases: ['/zh/tidb/stable/release-notes/','/zh/tidb/v8.5/release-notes/']
 ---
 
 # TiDB 版本发布历史
