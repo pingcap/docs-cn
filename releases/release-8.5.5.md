@@ -67,7 +67,7 @@ TiDB 版本：8.5.5
     - **降低存储空间占用**：在压缩过程中会去除冗余数据。
     - **减少对业务的影响**：在确保 RPO (Recovery Point Objective) 的前提下，可以设置更长的全量备份间隔。
 
-  更多信息，请参考[用户文档](/br/br-compact-log-backup.md)。
+  更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/br-compact-log-backup)。
 
 * 加速从备份中恢复系统表 [#58757](https://github.com/pingcap/tidb/issues/58757) @[Leavrth](https://github.com/Leavrth)
 
