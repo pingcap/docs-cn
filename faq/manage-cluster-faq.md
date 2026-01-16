@@ -119,6 +119,58 @@ TiDB 目前社区非常活跃，同时，我们还在不断的优化和修改 BU
 
 TiDB 只在事务写入不超过 256 个键值对，以及所有键值对里键的总大小不超过 4 KB 时，才会使用异步提交或一阶段提交特性。否则，即使通过系统变量开启了[异步提交](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入)和[一阶段提交](/system-variables.md#tidb_enable_1pc-从-v50-版本开始引入)，TiDB 也不会使用这些特性。这是因为对于写入量大的事务，异步提交不能明显提升执行性能。
 
+### TiUP 如何为已存在的 TiDB 集群开启组件加密？
+
+TiUP v1.9.0 版本开始支持开启组件加密功能，下面以**已存在但并未开启组件间加密的集群**为例，为其开启组件加密，**该操作不支持在线进行需要重启集群**，步骤及说明如下：
+
+1. 通过 `tiup cluster tls {cluster_name} enable/disable` 命令开启或关闭 TLS 组件加密。首先，查看集群初始状态：
+
+    ```shell
+    tiup cluster display {cluster_name}
+    ```
+
+2. 通过 edit-config 将 pd 节点信息保存到单独文件，方便后续扩容。由于 ETCD 机制限制，需先将 PD 节点缩容到 1 个节点后，再使用 `tls ${cluster_name} enable` 开启组件加密。注意：`tls ${cluster_name} enable/disable` 方式开启或关闭 TLS 时会重启 TiDB 集群，行为类似于 tiup cluster restart ，而不是以滚动重启的方式重启节点。
+
+3. 将 PD 节点缩容至单节点
+
+    ```shell
+    tiup cluster scale-in {cluster_name} -N {PD_IP:PD_Port}
+    tiup cluster display {cluster_name}
+    ```
+
+4. 通过 `tiup cluster tls {cluster_name} enable` 开启 TLS 组件间加密
+
+    ```shell
+    tiup cluster tls {cluster_name} enable
+    ```
+
+5. 查看集群状态  
+
+    ```shell
+    tiup cluster display {cluster_name}
+    ```
+
+6. 验证  TLS 开启情况
+
+    检查 pd-ctl 执行 member 命令，输出的结果中对应的 peer_urls 以及 client_urls 都变为了 https 协议。注意：在 -u 指定 pd 地址时，需要使用 https 协议，若不为 https 协议，则需要检查环境，执行 `tiup cluster tls {cluster_name} disabl 回退操作。如果都是 https 协议，则可以进行下一步骤。
+    
+    ```shell
+    export PDTLS="--cacert /root/.tiup/storage/cluster/clusters/{cluster_name}/tls/ca.crt --cert /root/.tiup/storage/cluster/clusters/{cluster_name}/tls/client.crt --key /root/.tiup/storage/cluster/clusters/{cluster_name}/tls/client.pem"
+    tiup ctl:{version} pd -u https://{PD_IP:PD_Port} $PDTLS -i
+    ```
+
+7. 根据缩容前保存的拓扑信息，扩容 pd 节点  
+
+    ```shell
+    tiup cluster scale-out {cluster_name} ./scale-pd.yaml
+    ```
+
+8. 检查集群，并且尝试连接验证集群
+
+    ```shell
+    tiup cluster display {cluster_name}
+    ```
+
 ## PD 管理
 
 本小节介绍 PD 管理中的常见问题、原因及解决方法。
