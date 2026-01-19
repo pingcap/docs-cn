@@ -988,13 +988,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 >
 > - 该变量只在 [`tidb_analyze_version`](#tidb_analyze_version-从-v510-版本开始引入) 设置为 `2` 时生效。
 > - 如果将 TiDB 集群从 v8.3.0 之前的版本升级至 v8.3.0 或更高版本，该变量会默认设置为 `ALL`，以保持原有行为。
-> - 从 v8.3.0 开始，对于新部署的 TiDB 集群，该变量默认设置为 `PREDICATE`。
+> - 在 v8.3.0 到 v8.5.4 以及之间的版本中，对于新部署的 TiDB 集群，该变量默认设置为 `PREDICATE`。
+> - 从 v8.5.5 和 v9.0.0 开始，对于新部署的 TiDB 集群，该变量默认设置为 `ALL`。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：枚举型
-- 默认值：`PREDICATE`
+- 默认值：`ALL`
 - 可选值：`ALL`，`PREDICATE`
 - 该变量控制 `ANALYZE TABLE` 语句的行为。将其设置为 `PREDICATE` 表示仅收集 [predicate columns](/statistics.md#收集部分列的统计信息) 的统计信息；将其设置为 `ALL` 表示收集所有列的统计信息。在使用 OLAP 查询的场景中，建议将其设置为 `ALL`，否则查询性能可能会显著下降。
 
@@ -1288,7 +1289,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 这个变量用于控制是否开启[自动捕获绑定](/sql-plan-management.md#自动捕获绑定-baseline-capturing)功能。该功能依赖 Statement Summary，因此在使用自动绑定之前需打开 Statement Summary 开关。
 - 开启该功能后会定期遍历一次 Statement Summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动创建绑定。
 
-### `tidb_cb_pd_metadata_error_rate_threshold_ratio` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+### `tidb_cb_pd_metadata_error_rate_threshold_ratio` <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -1567,7 +1568,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
     - 当设置 `tidb_ddl_enable_fast_reorg` 为 `OFF` 时，`ADD INDEX` 会通过事务的方式执行，执行时如果 `ADD INDEX` 的目标列有较多 `UPDATE` 或者 `REPLACE` 等更新操作，batch size 设置的值越大，事务冲突的概率也会越大。此时建议调小 batch size 的值，最小值是 32。
     - 在没有事务冲突的情况下，或者当 `tidb_ddl_enable_fast_reorg` 为 `ON` 时，batch size 可设为较大值，这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。设置 batch size 时需要参考 `tidb_ddl_reorg_worker_cnt` 的设置值，详情见[线上负载与 `ADD INDEX` 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)。
     - 从 v8.3.0 版本开始，该参数支持 SESSION 级别的设置，因此修改 GLOBAL 级别的参数值不会影响当前正在运行的 DDL，而只会对新建 SESSION 中提交的 DDL 生效。
-    - 从 v8.5.0 版本开始，该参数可以通过 `ADMIN ALTER DDL JOBS <job_id> BATCH_SIZE = <new_batch_size>;` 来修改。不支持修改开启了 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 的 `ADD INDEX` DDL。更多详情，请见 [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md)。
+    - 从 v8.5.0 版本开始，该参数可以通过 `ADMIN ALTER DDL JOBS <job_id> BATCH_SIZE = <new_batch_size>;` 来修改。更多信息，请参考 [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md)。
 
 ### `tidb_ddl_reorg_priority`
 
@@ -1610,7 +1611,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 单位：线程
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的并发度。
 - 从 v8.3.0 版本开始，该参数支持 SESSION 级别的设置，因此修改 GLOBAL 级别的参数值不会影响当前正在运行的 DDL，而只会对新建 SESSION 中提交的 DDL 生效。
-- 从 v8.5.0 版本开始，该参数可以通过 `ADMIN ALTER DDL JOBS <job_id> BATCH_SIZE = <new_batch_size>;` 来修改。不支持修改开启了 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 的 `ADD INDEX` DDL。更多详情，请见 [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md)。
+- 从 v8.5.0 版本开始，该参数可以通过 `ADMIN ALTER DDL JOBS <job_id> BATCH_SIZE = <new_batch_size>;` 来修改。更多信息，请参考 [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md)。
 
 ### `tidb_enable_fast_create_table` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
