@@ -176,7 +176,7 @@ spec:
 4. 使用 [`tiup cluster patch`](/tiup/tiup-component-cluster-patch.md) 命令将下载的 TiCDC 二进制文件动态替换到你的 TiDB 集群中：
 
     ```shell
-    tiup cluster patch <cluster-name> ./cdc-v8.5.4-release.1-linux-amd64.tar.gz -R cdc
+    tiup cluster patch <cluster-name> ./cdc-v8.5.4-release.1-linux-amd64.tar.gz -R cdc --overwrite
     ```
 
 5. 通过 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令更新 TiCDC 配置以启用 TiCDC 新架构：
