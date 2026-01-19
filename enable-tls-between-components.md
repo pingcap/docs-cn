@@ -223,7 +223,14 @@ summary: 了解如何为 TiDB 集群内各组件间开启加密传输。
 ## 证书重新加载
 
 - 如果 TiDB 集群部署在本地的数据中心，TiDB、PD、TiKV、TiFlash、TiCDC 和各种 client 在每次新建相互通讯的连接时都会重新读取当前的证书和密钥文件内容，实现证书和密钥的重新加载，无需重启 TiDB 集群。
+<<<<<<< HEAD
 - 如果 TiDB 集群部署在自己管理的 Cloud，TLS 证书的签发需要与云服务商的证书管理服务集成，TiDB、PD、TiKV、TiFlash、TiCDC 组件的 TLS 证书支持自动轮换，无需重启 TiDB 集群。
+=======
+
+- TiProxy 每小时会从磁盘重新加载一次证书。
+
+- 如果 TiDB 集群部署在自己管理的 Cloud，TLS 证书的签发需要与云服务商的证书管理服务集成，TiDB、PD、TiKV、TiFlash、TiCDC、TiProxy 组件的 TLS 证书支持自动轮换，无需重启 TiDB 集群。
+>>>>>>> 173f948c50 (tiproxy: add note about reloading certificates once an hour (#21171))
 
 ## 证书有效期
 
