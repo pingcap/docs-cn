@@ -161,6 +161,8 @@ soft-pending-compaction-bytes-limit = "192GiB"
 ```toml
 [server]
 snap-io-max-bytes-per-sec = "300MiB"
+```
+
 | 配置项 | 说明 | 注意事项 |
 | ---------| ---- | ----|
 | [`snap-io-max-bytes-per-sec`](/tikv-configuration-file.md#snap-io-max-bytes-per-sec) | 控制从 TiKV 到 TiFlash 的数据复制时允许使用的最大磁盘带宽。提高该值可以加快初始数据加载和追赶同步的速度。 | 带宽占用增加可能影响在线业务性能，请在同步速度与系统稳定性之间进行合理权衡。 |
