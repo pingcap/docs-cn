@@ -1653,7 +1653,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 + 触发 write stall 的 L0 文件最大个数。
 + v8.5.4 及之前版本：当开启流控机制（[`storage.flow-control.enable`](/tikv-configuration-file.md#enable) 为 `true`）时，该配置项会被 [`storage.flow-control.l0-files-threshold`](/tikv-configuration-file.md#l0-files-threshold) 直接覆盖。
-+ 从 v8.5.5 和 v9.0.0 起：当开启流控机制（[`storage.flow-control.enable`](/tikv-configuration-file.md#enable) 为 `true`）时，该配置项仅在其值大于 [`storage.flow-control.l0-files-threshold`](/tikv-configuration-file.md#l0-files-threshold) 时会被 `storage.flow-control.l0-files-threshold` 覆盖，以避免在调大流控阈值时削弱 RocksDB 的 compaction 加速机制。
++ 从 v8.5.5 起：当开启流控机制（[`storage.flow-control.enable`](/tikv-configuration-file.md#enable) 为 `true`）时，该配置项仅在其值大于 [`storage.flow-control.l0-files-threshold`](/tikv-configuration-file.md#l0-files-threshold) 时会被 `storage.flow-control.l0-files-threshold` 覆盖，以避免在调大流控阈值时削弱 RocksDB 的 compaction 加速机制。
 + 默认值：20
 + 最小值：0
 
@@ -1712,7 +1712,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 + pending compaction bytes 的软限制。
 + v8.5.4 及之前版本：当开启流控机制（[`storage.flow-control.enable`](/tikv-configuration-file.md#enable) 为 `true`）时，该配置项会被 [`storage.flow-control.soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit) 直接覆盖。
-+ 从 v8.5.5 和 v9.0.0 起：当开启流控机制（[`storage.flow-control.enable`](/tikv-configuration-file.md#enable) 为 `true`）时，该配置项仅在其值大于 [`storage.flow-control.soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit) 时会被 `storage.flow-control.soft-pending-compaction-bytes-limit` 覆盖，以避免在调大流控阈值时削弱 RocksDB 的 compaction 加速机制。
++ 从 v8.5.5 起：当开启流控机制（[`storage.flow-control.enable`](/tikv-configuration-file.md#enable) 为 `true`）时，该配置项仅在其值大于 [`storage.flow-control.soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit) 时会被 `storage.flow-control.soft-pending-compaction-bytes-limit` 覆盖，以避免在调大流控阈值时削弱 RocksDB 的 compaction 加速机制。
 + 默认值：192GiB
 + 单位：KiB|MiB|GiB
 
