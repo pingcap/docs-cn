@@ -157,7 +157,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 用于设置新建索引的长度限制。
 + 默认值：3072
 + 单位：Byte
-+ 目前的合法值范围 `[3072, 3072*4]`。MySQL 和 TiDB v3.0.11 之前版本（不包含 v3.0.11）没有此配置项，不过都对新建索引的长度做了限制。MySQL 对此的长度限制为 `3072`，TiDB 在 v3.0.7 以及之前版本该值为 `3072*4`，在 v3.0.7 之后版本（包含 v3.0.8、v3.0.9 和 v3.0.10）的该值为 `3072`。为了与 MySQL 和 TiDB 之前版本的兼容，添加了此配置项。
++ 取值范围：`[3072, 3072*4]`
++ 兼容性：
+    + MySQL：索引长度限制固定为 3072 字节。
+    + TiDB 早期版本：
+        + TiDB v3.0.7 及之前版本：索引长度限制固定为 3072 × 4 字节。
+        + TiDB v3.0.8 ~ v3.0.10：索引长度限制固定为 3072 字节。
+    + TiDB v3.0.11 及之后版本：新增了 `max-index-length` 配置项，用于兼容不同 TiDB 版本和 MySQL 的限制。
 
 ### `table-column-count-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -171,13 +177,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：64
 + 目前的合法值范围 `[64, 512]`。
 
-### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入，从 v8.1.0 版本开始废弃</span>
+### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
 > **警告：**
 >
-> 从 TiDB v8.1.0 开始，TiDB 已移除遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。
+> - 在 v8.1.0 到 v8.5.1 及其之间的版本中，TiDB 已移除遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。
+> - 从 v8.5.3 开始，TiDB 重新引入遥测功能，但其行为已更改为仅将遥测相关信息输出到日志文件，不再通过网络发送给 PingCAP。
 
-+ 在 v8.1.0 之前，用于控制是否在 TiDB 实例上开启遥测功能。
++ 用于控制是否在 TiDB 实例上开启遥测功能。
 + 默认值：false
 
 ### `deprecate-integer-display-length`
@@ -614,6 +621,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `concurrently-init-stats` <span class="version-mark">从 v8.1.0 和 v7.5.2 版本开始引入</span>
 
+> **警告：**
+>
+> 从 v9.0.0 开始，`concurrently-init-stats` 配置项被废弃，TiDB 启动时始终并发初始化统计信息。
+
 + 用于控制 TiDB 启动时是否并发初始化统计信息。该配置项仅在 [`lite-init-stats`](#lite-init-stats-从-v710-版本开始引入) 为 `false` 时生效。
 + 默认值：在 v8.2.0 之前版本中为 `false`，在 v8.2.0 及之后版本中为 `true`。
 
@@ -630,6 +641,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：在 v7.2.0 之前版本中为 `false`，在 v7.2.0 及之后的版本中为 `true`。
 + 当 `force-init-stats` 为 `true` 时，TiDB 启动时会等到统计信息初始化完成后再对外提供服务。需要注意的是，在表和分区数量较多且 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 为 `false` 的情况下，`force-init-stats` 为 `true` 可能会导致 TiDB 从启动到开始对外提供服务的时间变长。
 + 当 `force-init-stats` 为 `false` 时，TiDB 在统计信息初始化未完成时即可对外提供服务，但由于统计信息初始化未完成，优化器会用 pseudo 统计信息进行决策，可能会产生不合理的执行计划。
+
+### `enable-async-batch-get` <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
+
++ 用于控制 TiDB 是否使用异步方式执行 Batch Get 算子。使用异步方式能够降低 goroutine 开销，提供更优的性能。通常无需调整该配置项。
++ 默认值：从 v9.0.0 起，默认值为 `true`。在 v8.5.5 中，默认值为 `false`。
 
 ## opentracing
 

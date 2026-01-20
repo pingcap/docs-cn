@@ -6,13 +6,30 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-modify-column/','/docs-cn/d
 
 # MODIFY COLUMN
 
-`ALTER TABLE .. MODIFY COLUMN` 语句用于修改已有表上的列，包括列的数据类型和属性。若要同时重命名，可改用 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 语句。
+`ALTER TABLE ... MODIFY COLUMN` 语句用于修改已有表上的列，包括列的数据类型和属性。若要同时重命名，可改用 [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 语句。
 
-从 v5.1.0 版本起，TiDB 开始支持 Reorg 类型变更，包括但不限于：
+从 v5.1.0 起，TiDB 支持需要 Reorg-Data 的列类型变更。在执行此类变更时，TiDB 会对表中现有的所有数据进行重建，具体过程包括：读取原始表数据、按照新的列类型对数据进行转换，然后将转换后的数据重新写入表中。由于需要处理全表数据，Reorg-Data 操作通常耗时较长，其执行时间与表中的数据量成正比。
+
+以下是一些常见的需要执行 Reorg-Data 的列类型变更示例：
 
 - 从 `VARCHAR` 转换为 `BIGINT`
 - `DECIMAL` 精度修改
 - 从 `VARCHAR(10)` 到 `VARCHAR(5)` 的长度压缩
+
+从 v8.5.5 和 v9.0.0 起，TiDB 对部分原本需要 Reorg-Data 的列类型变更进行了优化。在满足以下条件时，TiDB 将不再重建表数据，仅重建受影响的索引，从而提升执行效率：
+
+- 当前会话的 [SQL 模式](/sql-mode.md) 为严格模式（`sql_mode` 包含 `STRICT_TRANS_TABLES` 或 `STRICT_ALL_TABLES`）
+- 表没有 TiFash 副本
+- 类型转换过程中不存在数据截断风险
+
+该优化仅适用于以下类型变更场景：
+
+- 整数类型之间的变更（例如，从 `BIGINT` 变更为 `INT`）
+- 字符串类型之间的变更且字符集未发生变化（例如，从 `VARCHAR(200)` 变更为 `VARCHAR(100)`）
+
+> **注意：**
+>
+> 当从 `VARCHAR` 转换为 `CHAR` 时，要求所有原数据的末尾均不包含空格；若存在不满足该条件的数据，TiDB 仍会执行 Reorg-Data，以确保转换后的数据符合 `CHAR` 类型的填充规则。
 
 ## 语法图
 
@@ -34,7 +51,7 @@ ColumnOption
            | 'AUTO_INCREMENT'
            | 'PRIMARY'? 'KEY' ( 'CLUSTERED' | 'NONCLUSTERED' )?
            | 'UNIQUE' 'KEY'?
-           | 'DEFAULT' ( NowSymOptionFraction | SignedLiteral | NextValueForSequence )
+           | 'DEFAULT' DefaultValueExpr
            | 'SERIAL' 'DEFAULT' 'VALUE'
            | 'ON' 'UPDATE' NowSymOptionFraction
            | 'COMMENT' stringLit
@@ -48,6 +65,13 @@ ColumnOption
 
 ColumnName ::=
     Identifier ( '.' Identifier ( '.' Identifier )? )?
+
+DefaultValueExpr ::=
+    NowSymOptionFractionParentheses
+|   SignedLiteral
+|   NextValueForSequenceParentheses
+|   BuiltinFunction
+|   '(' SignedLiteral ')'
 ```
 
 ## 示例
@@ -161,7 +185,7 @@ CREATE TABLE `t1` (
 >   ERROR 1406 (22001): Data Too Long, field len 4, data len 5
 >   ```
 >
-> - 由于和 Async Commit 功能兼容，DDL 在开始进入到 Reorg Data 前会有一定时间（约 2.5s）的等待处理：
+> - 由于和 Async Commit 功能兼容，在关闭[元数据锁](/metadata-lock.md)的情况下，DDL 在开始进入到 Reorg-Data 前会有一定时间（约 2.5 秒）的等待处理：
 >
 >   ```
 >   Query OK, 0 rows affected (2.52 sec)

@@ -56,13 +56,13 @@ tikv-server --labels region=<region>,zone=<zone>,host=<host>
 
 ```sql
 SHOW PLACEMENT LABELS;
-+--------+----------------+
-| Key    | Values         |
-+--------+----------------+
-| disk   | ["ssd"]        |
-| region | ["us-east-1"]  |
-| zone   | ["us-east-1a"] |
-+--------+----------------+
++--------+----------------------------+
+| Key    | Values                     |
++--------+----------------------------+
+| disk   | ["ssd"]                    |
+| region | ["us-east-1", "us-west-1"] |
+| zone   | ["us-east-1a"]             |
++--------+----------------------------+
 3 rows in set (0.00 sec)
 ```
 
@@ -295,7 +295,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 );
 ```
 
-如果没有为表中的某个分区指定任何放置策略，该分区将尝试继承表上可能存在的策略。如果该表有[全局索引](/partitioned-table.md#全局索引)，索引将应用与该表相同的放置策略。在上面示例中：
+如果没有为表中的某个分区指定任何放置策略，该分区将尝试继承表上可能存在的策略。如果该表有[全局索引](/global-indexes.md)，索引将应用与该表相同的放置策略。在上面示例中：
 
 - `p0` 分区将会应用 `storageforhistorydata` 策略
 - `p4` 分区将会应用 `storagefornewdata` 策略

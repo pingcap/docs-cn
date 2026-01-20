@@ -43,7 +43,7 @@ global:
   deploy_dir: "/tidb-deploy"
   data_dir: "/tidb-data"
 component_versions:
-  tiproxy: "v1.2.0"
+  tiproxy: "v1.3.2"
 server_configs:
   tidb:
     graceful-wait-before-shutdown: 30

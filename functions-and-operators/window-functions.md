@@ -32,7 +32,7 @@ TiDB 支持除 `GROUP_CONCAT()` 和 `APPROX_PERCENTILE()` 以外的所有 [`GROU
 | [`RANK()`](#rank)                | 返回分区中当前行的排名，排名可能不连续 |
 | [`ROW_NUMBER()`](#row_number)    | 返回分区中当前行的编号 |
 
-## [`CUME_DIST()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_cume-dist)
+## `CUME_DIST()`
 
 `CUME_DIST()` 计算一个值在一组值中的累积分布。请注意，你需要在 `CUME_DIST()` 后使用 `ORDER BY` 子句对该组中的值进行排序。否则，此函数将不会返回预期值。
 
@@ -66,7 +66,7 @@ FROM
 4 rows in set (0.00 sec)
 ```
 
-## [`DENSE_RANK()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_dense-rank)
+## `DENSE_RANK()`
 
 `DENSE_RANK()` 函数返回当前行的排名。它的作用类似于 [`RANK()`](#rank)，但在处理具有相同值和排序条件的行时能够确保排名是连续的。
 
@@ -102,7 +102,7 @@ FROM (
 6 rows in set (0.00 sec)
 ```
 
-## [`FIRST_VALUE()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_first-value)
+## `FIRST_VALUE()`
 
 `FIRST_VALUE(expr)` 返回窗口中的第一个值。
 
@@ -141,7 +141,7 @@ ORDER BY
 4 rows in set (0.00 sec)
 ```
 
-## [`LAG()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_lag)
+## `LAG()`
 
 函数 `LAG(expr [, num [, default]])` 返回当前行之前第 `num` 行的 `expr` 值。如果不存在该行，则返回 `default` 值。默认情况下，未指定时，`num` 为 `1`，`default` 为 `NULL`。
 
@@ -183,7 +183,7 @@ FROM
 10 rows in set (0.01 sec)
 ```
 
-## [`LAST_VALUE()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_last-value)
+## `LAST_VALUE()`
 
 `LAST_VALUE()` 函数返回窗口中的最后一个值。
 
@@ -226,7 +226,7 @@ ORDER BY
 10 rows in set (0.00 sec)
 ```
 
-## [`LEAD()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_lead)
+## `LEAD()`
 
 函数 `LEAD(expr [, num [,default]])` 返回当前行之后第 `num` 行的 `expr` 值。如果不存在该行，则返回 `default` 值。默认情况下，未指定时，`num` 为 `1`，`default` 为 `NULL`。
 
@@ -269,7 +269,7 @@ FROM
 10 rows in set (0.00 sec)
 ```
 
-## [`NTH_VALUE()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_nth-value)
+## `NTH_VALUE()`
 
 函数 `NTH_VALUE(expr, n)` 返回窗口的第 n 个值。
 
@@ -317,7 +317,7 @@ ORDER BY
 10 rows in set (0.00 sec)
 ```
 
-## [`NTILE()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_ntile)
+## `NTILE()`
 
 `NTILE(n)` 函数将窗口划分为 `n` 个分组，并返回各行的分组编号。
 
@@ -359,7 +359,7 @@ FROM
 10 rows in set (0.00 sec)
 ```
 
-## [`PERCENT_RANK()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_percent-rank)
+## `PERCENT_RANK()`
 
 `PERCENT_RANK()` 函数返回一个介于 0 和 1 之间的数字，表示值小于当前行值的行的百分比。
 
@@ -396,7 +396,7 @@ FROM (
 6 rows in set (0.00 sec)
 ```
 
-## [`RANK()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_rank)
+## `RANK()`
 
 `RANK()` 函数的作用类似于 [`DENSE_RANK()`](#dense_rank)，但在处理具有相同值和排序条件的行时返回的排名是不连续的。这意味着它提供的是绝对排名。例如，排名 7 意味着有 6 个行的排名更靠前。
 
@@ -433,7 +433,7 @@ FROM (
 6 rows in set (0.00 sec)
 ```
 
-## [`ROW_NUMBER()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_row-number)
+## `ROW_NUMBER()`
 
 `ROW_NUMBER()` 返回结果集中当前行的行号。
 

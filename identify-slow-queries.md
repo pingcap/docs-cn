@@ -168,6 +168,11 @@ Slow Query 基础信息：
 * `Request_unit_write`：执行语句消耗的总写 RU。
 * `Time_queued_by_rc`：执行语句过程中等待可用资源的总耗时。
 
+和存储引擎相关的字段：
+
+- `Storage_from_kv`：从 v9.0.0 开始引入，表示该语句是否从 TiKV 读取数据。
+- `Storage_from_mpp`：从 v9.0.0 开始引入，表示该语句是否从 TiFlash 读取数据。
+
 ## 相关系统变量
 
 * [tidb_slow_log_threshold](/system-variables.md#tidb_slow_log_threshold)：设置慢日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢日志中。默认值是 300 ms。

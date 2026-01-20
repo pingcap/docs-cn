@@ -21,6 +21,7 @@ summary: 介绍备份与恢复 TiDB 集群快照的命令行。
     - [使用表库功能过滤恢复数据](#使用表库功能过滤恢复数据)
     - [恢复系统表中存储的执行计划绑定信息](#恢复系统表中存储的执行计划绑定信息)
 - [恢复加密的快照备份数据](#恢复加密的快照备份数据)
+- [校验和](#校验和)
 
 如果你想了解如何进行快照备份与恢复，可以参考以下教程：
 
@@ -46,8 +47,7 @@ tiup br backup full \
 
 > **注意：**
 >
-> - 从 v8.5.0 起，在进行全量备份时，BR 工具默认不计算表级别的 checksum (`--checksum=false`) 以提升备份性能。
-> - BR 工具已支持自适应 GC，会自动将 `backupTS`（默认是最新的 PD timestamp）注册到 PD 的 `safePoint`，保证 TiDB 的 GC Safe Point 在备份期间不会向前移动，即可避免手动设置 GC。
+> BR 工具已支持自适应 GC，会自动将 `backupTS`（默认是最新的 PD timestamp）注册到 PD 的 `safePoint`，保证 TiDB 的 GC Safe Point 在备份期间不会向前移动，即可避免手动设置 GC。
 
 备份期间终端会显示进度条，效果如下。当进度条达到 100% 时，表示备份完成。
 
@@ -127,7 +127,18 @@ tiup br restore full \
 --storage local:///br_data/ --pd "${PD_IP}:2379" --log-file restore.log
 ```
 
+> **注意：**
+>
+> 从 v8.5.5 和 v9.0.0 开始，当参数 `--load-stats` 设置为 `false` 时，br 不再向 `mysql.stats_meta` 表写入恢复表的统计信息。你可以在恢复完成后手动执行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)，以更新相关统计信息。
+
 备份恢复功能在备份时，将统计信息通过 JSON 格式存储在 `backupmeta` 文件中。在恢复时，将 JSON 格式的统计信息导入到集群中。详情请参考 [LOAD STATS](/sql-statements/sql-statement-load-stats.md)。
+
+从 v8.5.5 和 v9.0.0 开始，BR 引入参数 `--fast-load-sys-tables`，该参数默认开启。在使用 br 命令行工具将数据恢复到一个全新集群，且上下游的表和分区 ID 能够复用的前提下（否则会自动回退为逻辑导入统计信息），开启 `--fast-load-sys-tables` 后，br 会先将统计信息相关表恢复至临时系统库 `__TiDB_BR_Temporary_mysql` 中，再通过 `RENAME TABLE` 语句将这些表与 `mysql` 库下的原有表进行原子性替换。使用示例如下：
+
+```shell
+tiup br restore full \
+--storage local:///br_data/ --pd "${PD_IP}:2379" --log-file restore.log --load-stats --fast-load-sys-tables
+```
 
 ## 备份数据加密
 
@@ -173,13 +184,29 @@ tiup br restore full \
 - `--ratelimit`：**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）。
 - `--log-file`：备份日志写入的目标文件。
 
-恢复期间终端会显示进度条，效果如下。当进度条达到 100% 时，表示恢复完成。在完成恢复后，br 工具为了确保数据安全性，还会校验恢复数据。
+恢复期间终端会显示进度条，效果如下。当进度条达到 100% 时，表示恢复完成。在完成恢复后，如果启用了表级别[校验和](#校验和)，BR 工具会对表数据进行校验，以确保数据的逻辑完整性。注意，文件级别的校验和会始终进行，以确保恢复文件的基本完整性。
 
 ```shell
 Split&Scatter Region <--------------------------------------------------------------------> 100.00%
 Download&Ingest SST <---------------------------------------------------------------------> 100.00%
 Restore Pipeline <-------------------------/...............................................> 17.12%
 ```
+
+从 TiDB v8.5.5 和 v9.0.0 开始，你可以通过指定参数 `--fast-load-sys-tables` 在全新的集群上进行物理恢复系统表：
+
+```shell
+tiup br restore full \
+    --pd "${PD_IP}:2379" \
+    --with-sys-table \
+    --fast-load-sys-tables \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
+    --ratelimit 128 \
+    --log-file restorefull.log
+```
+
+> **注意：**
+>
+> 与通过 `REPLACE INTO` SQL 语句执行的逻辑恢复系统表方式不同，物理恢复系统表会完全覆盖系统表中的原有数据。
 
 ## 恢复备份数据中指定库表的数据
 
@@ -280,4 +307,47 @@ tiup br restore full\
     --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --crypter.method aes128-ctr \
     --crypter.key 0123456789abcdef0123456789abcdef
+```
+
+## 校验和
+
+校验和是 BR 工具用于验证备份和恢复数据完整性的一种方式。BR 工具支持两种级别的校验和：
+
+1. **文件级别校验和**：对备份文件本身进行校验，确保文件在存储和传输过程中的完整性。这一级别的校验始终开启，无法关闭。
+2. **表级别校验和**：对表数据内容进行完整性校验，验证数据的业务逻辑一致性。这一级别的校验默认关闭，你可以通过参数开启。
+
+以下小节基于性能与安全性的平衡，介绍了 BR 对表级别校验和的处理方式。
+
+### 备份时的校验和
+
+从 v8.5.0 起，在进行全量备份时，BR 工具默认不进行表级别校验和检查（`--checksum=false`），以提升备份性能。如果需要在备份过程中进行表级别校验和检查，可以显式指定 `--checksum=true`。文件级别的校验和将始终计算，确保备份文件的完整性。
+
+进行表级别校验和可以在备份时验证数据的完整性，但会增加备份时间。在大多数情况下，可以安全地使用默认设置（即不进行表级别校验和）来提高备份速度。
+
+### 恢复时的校验和
+
+从 v9.0.0 版本开始，BR 工具在执行恢复操作时默认不进行表级别校验和检查（`--checksum=false`），以提升恢复性能。如果需要进行表级别校验和检查，可以显式指定 `--checksum=true`。文件级别的校验和检查始终进行，确保恢复数据的基本完整性。
+
+恢复完成后，通常会进行数据验证来确保数据完整性。在禁用表级别校验和的情况下，表数据的全面验证步骤会被跳过，从而加快恢复过程。对于对数据完整性有严格要求的场景，可以选择启用表级别校验和。
+
+### 校验和配置示例
+
+在备份时启用表级别校验和：
+
+```shell
+tiup br backup full \
+    --pd "${PD_IP}:2379" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
+    --checksum=true \
+    --log-file backupfull.log
+```
+
+在恢复时启用表级别校验和：
+
+```shell
+tiup br restore full \
+    --pd "${PD_IP}:2379" \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
+    --checksum=true \
+    --log-file restorefull.log
 ```

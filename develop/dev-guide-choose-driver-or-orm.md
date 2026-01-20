@@ -51,7 +51,7 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容或有差异的�
 <dependency>
   <groupId>io.github.lastincisor</groupId>
   <artifactId>mysql-connector-java</artifactId>
-  <version>8.0.29-tidb-1.0.0</version>
+  <version>8.0.29-tidb-1.0.2</version>
 </dependency>
 ```
 
@@ -61,7 +61,7 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容或有差异的�
 <dependency>
   <groupId>io.github.lastincisor</groupId>
   <artifactId>mysql-connector-java</artifactId>
-  <version>8.0.29-tidb-1.0.0</version>
+  <version>8.0.29-tidb-1.0.2</version>
 </dependency>
 <dependency>
     <groupId>org.bouncycastle</groupId>
@@ -78,7 +78,7 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容或有差异的�
 如果你使用的是 Gradle，请将以下内容添加到你的 `dependencies`：
 
 ```gradle
-implementation group: 'io.github.lastincisor', name: 'mysql-connector-java', version: '8.0.29-tidb-1.0.0'
+implementation group: 'io.github.lastincisor', name: 'mysql-connector-java', version: '8.0.29-tidb-1.0.2'
 implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.67'
 implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67'
 ```
@@ -185,7 +185,7 @@ implementation 'mysql:mysql-connector-java:8.0.33'
 <dependency>
   <groupId>io.github.lastincisor</groupId>
   <artifactId>mysql-connector-java</artifactId>
-  <version>8.0.29-tidb-1.0.0</version>
+  <version>8.0.29-tidb-1.0.2</version>
 </dependency>
 <dependency>
   <groupId>io.github.lastincisor</groupId>
@@ -197,7 +197,7 @@ implementation 'mysql:mysql-connector-java:8.0.33'
 如果你使用的是 Gradle，请将以下内容添加到你的 `dependencies`：
 
 ```gradle
-implementation group: 'io.github.lastincisor', name: 'mysql-connector-java', version: '8.0.29-tidb-1.0.0'
+implementation group: 'io.github.lastincisor', name: 'mysql-connector-java', version: '8.0.29-tidb-1.0.2'
 implementation group: 'io.github.lastincisor', name: 'tidb-loadbalance', version: '0.0.5'
 ```
 
