@@ -254,7 +254,7 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
     > - `tidb_slow_log_rules` 用于替换单一阈值的方式，实现更灵活和精细化的慢查询日志控制，支持多维度指标组合条件。
     > - 在资源充足的测试环境（1 个 TiDB 节点，16 核 CPU、48 GiB 内存；3 个 TiKV 节点，每个 16 核 CPU、48 GiB 内存）中，多次 sysbench 测试结果表明：当多维慢查询日志规则在 30 分钟内生成数百万条慢查询日志时，对性能影响较小；但当日志量达到千万级时，TPS 会明显下降，延迟也会显著增加。在业务负载较高或 CPU、内存资源接近瓶颈的情况下，应谨慎配置 `tidb_slow_log_rules`，避免因规则过宽导致日志洪泛。建议结合使用 `tidb_slow_log_max_per_sec` 来限制日志打印速率，以降低对业务性能的影响。
 
-* [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v900-版本开始引入)：用于设置每秒打印慢查询日志的上限，默认值为 `0`。
+* [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v900-版本开始引入)：用于设置每秒打印慢查询日志数量的上限，默认值为 `0`。
     * 当值为 `0` 时，表示不限制每秒打印的慢查询日志数量。
     * 当值大于 `0` 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢查询日志文件。
     * 建议在启用了 `tidb_slow_log_rules` 后配置该变量，以避免规则触发频繁打印慢查询日志。
