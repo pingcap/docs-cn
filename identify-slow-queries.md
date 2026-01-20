@@ -217,7 +217,7 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
         * 慢查询日志触发仍依赖 `tidb_slow_log_threshold`。注：`query_time` 阈值的含义同该变量，均表示 SQL 执行时长阈值，以保持向后兼容。
     * 如果已设置 `tidb_slow_log_rules`：
         * 配置的规则优先生效，`tidb_slow_log_threshold` 将被忽略。
-        * 若希望规则中仍使用 `SQL 执行时间` 作为输出慢日志的条件之一，可在设置规则时使用`query_time` 并设置阈值。
+        * 若希望规则中仍使用 SQL 执行时间作为输出慢日志的条件之一，可在设置规则时使用`query_time` 并设置阈值。
         * 规则匹配逻辑（多条规则之间采用 OR 关系）：
             * SESSION 作用域规则：优先匹配，如果匹配成功，则打印慢查询日志。
             * GLOBAL 作用域规则：仅在 SESSION 作用域规则未匹配时考虑：
