@@ -5083,7 +5083,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：字符串
 - 用于定义慢查询日志的触发规则，支持基于多维度指标的组合条件，实现更加灵活和精细化的日志记录控制。
 
-> **Tip：**
+> **Tip:**
 >
 > 建议在启用 `tidb_slow_log_rules` 后，同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v900-版本开始引入)，以限制慢查询日志打印频率，防止基于规则的慢查询日志触发过于频繁。
 
