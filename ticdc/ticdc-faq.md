@@ -360,7 +360,7 @@ TiCDC 提供至少一次的数据同步保证，当下游有重复数据时，�
 
 TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆积的数据。TiCDC 正常运行期间都需要写入磁盘，但这通常不是同步吞吐和同步延时的瓶颈，写磁盘对延时影响在百毫秒内。TiCDC 也利用了内存来提升加速读取磁盘中的数据，以提升同步性能。
 
-## TiDB Lightning 物理导入模式与 TiCDC 的兼容性存在哪些限制？
+## TiDB Lightning 物理导入模式和 TiCDC 的兼容性存在哪些限制？
 
 TiDB Lightning [物理导入模式 (Physical Import Mode)](/tidb-lightning/tidb-lightning-physical-import-mode.md) 是直接将数据生成为 SST 文件并导入 TiKV 集群。由于这种导入方式不涉及常规的数据写入流程，因此不会产生 change log 记录。在大多数情况下，changefeed 无法观察到这部分数据的变更。只有在 changefeed 初始化阶段，或者 Region 发生变更（如 split/merge/leader 迁移等）触发增量扫描时，才有可能看到这部分数据，因此 changefeed 并不能完整捕获通过 TiDB Lightning 物理导入模式导入的数据。
 
