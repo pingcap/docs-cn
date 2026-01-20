@@ -223,7 +223,7 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
             * GLOBAL 作用域规则：仅在 SESSION 作用域规则未匹配时考虑：
                 * 若规则指定了 `ConnID` 并与当前会话的 `ConnID` 匹配，则使用该规则。
                 * 若规则未指定 `ConnID`（全局通用规则），则使用该规则。
-        * 使用 `SHOW VARIABLES`、`SELECT @@GLOBAL.tidb_slow_log_rules`、 `SELECT @@SESSION.tidb_slow_log_rules` 显示该变量的行为与其他系统变量一致。
+        * 使用 `SHOW VARIABLES`、`SELECT @@GLOBAL.tidb_slow_log_rules`、`SELECT @@SESSION.tidb_slow_log_rules` 显示该变量的行为与其他系统变量一致。
     * 使用示例：
         * 标准格式（SESSION 作用域）：
 
