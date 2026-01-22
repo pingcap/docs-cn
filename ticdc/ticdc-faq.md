@@ -376,7 +376,7 @@ TiDB Lightning [物理导入模式 (Physical Import Mode)](/tidb-lightning/tidb-
     cdc cli changefeed create -c "upstream-to-downstream-some-tables" --start-ts=431434047157698561 --sink-uri="mysql://root@127.0.0.1:4000? time-zone="
     ```
 
-如果可以确认 TiDB Lightning 物理导入模式操作的表与 changefeed 监听的表不存在重叠关系，可以将 [TiDB Lightning 配置文件](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 的 `check-requirements` 设置为 `false`，强制执行数据导入操作。
+如果可以确认 TiDB Lightning 物理导入模式操作的表与 changefeed 监听的表不存在重叠关系，可以将 TiDB Lightning 配置文件的 `[check-requirements`](/tidb-lightning/tidb-lightning-configuration.md#check-requirements) 设置为 `false`，强制执行数据导入操作。
 
 ## BR (Backup & Restore) 和 TiCDC 的兼容性存在哪些限制？
 
