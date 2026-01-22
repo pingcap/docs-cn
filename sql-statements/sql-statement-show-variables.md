@@ -108,6 +108,7 @@ SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_opt_distinct_agg_push_down     | 0                   |
 | tidb_opt_insubq_to_join_and_agg     | 1                   |
 | tidb_opt_join_reorder_threshold     | 0                   |
+| tidb_opt_join_reorder_through_sel  | 0                   |
 | tidb_opt_memory_factor              | 0.001               |
 | tidb_opt_network_factor             | 1                   |
 | tidb_opt_scan_factor                | 1.5                 |

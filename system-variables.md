@@ -3879,6 +3879,25 @@ mysql> desc select count(distinct a) from test.t;
 - 这个变量用来控制 TiDB Join Reorder 算法的选择。当参与 Join Reorder 的节点个数大于该阈值时，TiDB 选择贪心算法，小于该阈值时 TiDB 选择动态规划 (dynamic programming) 算法。
 - 目前对于 OLTP 的查询，推荐保持默认值。对于 OLAP 的查询，推荐将变量值设为 10~15 来获得 AP 场景下更好的连接顺序。
 
+### `tidb_opt_join_reorder_through_sel`
+
+- 作用域: SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量用于提升部分多表 Join 查询的 Join Reorder 效果。当该变量值为 `ON` 时，优化器会在满足安全条件时，将多个连续 `Join` 之间插入的过滤（`Selection`）条件一并纳入 Join Reorder 考虑，并在重建 Join 树时尽可能将条件下推到更合适的位置，从而让更多表参与连接顺序优化。
+- 开启后可能导致执行计划变化。如果你在开启后遇到性能回退或计划不稳定，建议关闭该变量。
+- 对于包含非确定性或可能产生副作用的过滤条件（例如 `rand()` 等），即使开启该变量也可能不会生效，以避免改变表达式的求值行为。
+
+开启示例：
+
+{{< copyable "sql" >}}
+
+```sql
+SET SESSION tidb_opt_join_reorder_through_sel = ON;
+```
+
 ### `tidb_opt_limit_push_down_threshold`
 
 - 作用域：SESSION | GLOBAL
