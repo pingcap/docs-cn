@@ -3890,14 +3890,6 @@ mysql> desc select count(distinct a) from test.t;
 - 开启后可能导致执行计划变化。如果你在开启后遇到性能回退或计划不稳定，建议关闭该变量。
 - 对于包含非确定性或可能产生副作用的过滤条件（例如 `rand()` 等），即使开启该变量也可能不会生效，以避免改变表达式的求值行为。
 
-开启示例：
-
-{{< copyable "sql" >}}
-
-```sql
-SET SESSION tidb_opt_join_reorder_through_sel = ON;
-```
-
 ### `tidb_opt_limit_push_down_threshold`
 
 - 作用域：SESSION | GLOBAL
