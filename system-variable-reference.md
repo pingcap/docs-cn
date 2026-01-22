@@ -3025,13 +3025,6 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [TiDB 6.4.0 Release Notes](/releases/release-6.4.0.md)
 - [TiDB 3.0.0-rc.1 Release Notes](/releases/release-3.0.0-rc.1.md)
 
-### tidb_opt_join_reorder_through_sel
-
-引用该变量的文档：
-
-- [SHOW [GLOBAL|SESSION] VARIABLES](/sql-statements/sql-statement-show-variables.md)
-- [系统变量](/system-variables.md#tidb_opt_join_reorder_through_sel)
-
 ### tidb_opt_limit_cost_factor
 
 引用该变量的文档：
