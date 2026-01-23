@@ -1,23 +1,23 @@
 ---
-title: TiDB Cloud API Overview
-summary: Learn about what TiDB Cloud API is, its features, and how to use the API to manage your TiDB Cloud clusters.
+title: TiDB Cloud API 概览
+summary: 了解 TiDB Cloud API 的定义、特性，以及如何使用该 API 管理 TiDB Cloud 集群。
 ---
 
-# TiDB Cloud API Overview
+# TiDB Cloud API 概览
 
-> **Note:**
+> **注意：**
 >
-> TiDB Cloud API is in beta.
+> TiDB Cloud API 目前处于 beta 阶段。
 
-The TiDB Cloud API is a [REST interface](https://en.wikipedia.org/wiki/Representational_state_transfer) that provides you with programmatic access to manage administrative objects within TiDB Cloud. Through this API, you can automatically and efficiently manage resources such as projects, clusters, backups, restores, imports, billings, and resources in the [Data Service](https://docs.pingcap.com/tidbcloud/data-service-overview).
+TiDB Cloud API 是一个 [REST 接口](https://en.wikipedia.org/wiki/Representational_state_transfer)，是一个 RESTful API，提供了以编程方式访问和操作 TiDB Cloud 中的各类管理资源的接口。通过该 API，你可以自动且高效地管理项目、集群、备份、恢复、导入、账单，以及 [Data Service](https://docs.pingcap.com/tidbcloud/data-service-overview) 中的相关资源。
 
-The API has the following features:
+该 API 具有以下特性：
 
-- **JSON entities.** All entities are expressed in JSON.
-- **HTTPS-only.** You can only access the API via HTTPS, ensuring all the data sent over the network is encrypted with TLS.
-- **Key-based access and digest authentication.** Before you access the TiDB Cloud API, you must generate an API key. For more information, see [API Key Management](https://docs.pingcap.com/tidbcloud/api/v1beta#section/Authentication/API-key-management). All requests are authenticated through [HTTP Digest Authentication](https://en.wikipedia.org/wiki/Digest_access_authentication), ensuring the API key is never sent over the network.
+- **JSON 实体（JSON entities）**：API 中的所有资源和数据均使用 JSON 格式。
+- **仅支持 HTTPS**：仅支持通过 HTTPS 访问该 API，从而确保所有通过网络传输的数据均经过 TLS 加密。
+- **基于密钥的访问与摘要认证**：在访问 TiDB Cloud API 之前，你需要先生成一个 API key。具体步骤请参阅 [API Key Management](https://docs.pingcap.com/tidbcloud/api/v1beta#section/Authentication/API-key-management)。所有请求都会通过 [HTTP摘要认证](https://zh.wikipedia.org/wiki/HTTPP摘要认证)进行身份验证，从而确保 API key 不会以明文形式在网络中传输。
 
-The TiDB Cloud API is available in two versions:
+TiDB Cloud API 提供以下两个版本：
 
-- [v1beta1](/api/tidb-cloud-api-v1beta1.md): manage TiDB Cloud Starter, Essential, and Dedicated clusters, as well as billing, Data Service, and IAM resources.
-- [v1beta](/api/tidb-cloud-api-v1beta.md): manage projects, clusters, backups, imports, and restores for TiDB Cloud.
+- [v1beta1](/api/tidb-cloud-api-v1beta1.md)：管理 TiDB Cloud Starter、Essential 与 Dedicated 集群，以及计费、Data Service 与 IAM 资源。
+- [v1beta](/api/tidb-cloud-api-v1beta.md)：管理 TiDB Cloud 的项目、集群、备份、导入与恢复。

@@ -1,13 +1,13 @@
 ---
-title: TiDB Operator API Overview
-summary: Learn the API of TiDB Operator services.
+title: TiDB Operator API 概览
+summary: 了解 TiDB Operator 的 API 接口。
 ---
 
-# TiDB Operator API Overview
+# TiDB Operator API 概览
 
-[TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/stable/) is an automatic operation system for TiDB clusters on Kubernetes. It provides full life-cycle management for TiDB including deployment, upgrades, scaling, backup, failover, and configuration changes. With TiDB Operator, TiDB can run seamlessly in the Kubernetes clusters deployed on a public or private cloud.
+[TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/) 是 Kubernetes 上的 TiDB 集群自动运维系统，提供包括部署、升级、扩缩容、备份恢复、配置变更的 TiDB 全生命周期管理。借助 TiDB Operator，TiDB 可以无缝运行在公有云或自托管的 Kubernetes 集群上。
 
-To manage TiDB clusters on Kubernetes, you can use the following TiDB Operator APIs:
+要在 Kubernetes 上管理 TiDB 集群，你可以使用以下 TiDB Operator API：
 
 - [Backup](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb-operator-version }}}/docs/api-references/docs.md#backup>)
 - [BackupSchedule](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb-operator-version }}}/docs/api-references/docs.md#backupschedule>)
@@ -17,4 +17,4 @@ To manage TiDB clusters on Kubernetes, you can use the following TiDB Operator A
 - [TidbInitializer](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb-operator-version }}}/docs/api-references/docs.md#tidbinitializer>)
 - [TidbMonitor](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb-operator-version }}}/docs/api-references/docs.md#tidbmonitor>)
 
-For more information, see [TiDB Operator API Document](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb-operator-version }}}/docs/api-references/docs.md>).
+更多信息，请参阅 [TiDB Operator API 文档](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb-operator-version }}}/docs/api-references/docs.md>)。

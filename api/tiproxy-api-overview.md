@@ -1,19 +1,19 @@
 ---
-title: TiProxy API Overview
-summary: Learn about the API for TiProxy.
+title: TiProxy API 概览
+summary: 了解 TiProxy 的 API。
 ---
 
-# TiProxy API Overview
+# TiProxy API 概览
 
-[TiProxy](/tiproxy/tiproxy-overview.md) is the official proxy component of PingCAP. It is placed between the client and the TiDB server to provide load balancing, connection persistence, service discovery, and other features for TiDB.
+[TiProxy](/tiproxy/tiproxy-overview.md) 是 PingCAP 的官方代理组件，它放置在客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持、服务发现等功能。
 
-TiProxy is an optional component. You can also use a third-party proxy component or connect directly to the TiDB server without using a proxy.
+TiProxy 是可选组件，你也可以使用第三方的代理组件，或者直接连接到 TiDB server。
 
-You can use TiProxy APIs to perform the following operations on the TiProxy cluster:
+通过 TiProxy API，你可以对 TiProxy 集群执行以下操作：
 
-- [Get TiProxy configuration](/tiproxy/tiproxy-api.md#get-tiproxy-configuration)
-- [Set TiProxy configuration](/tiproxy/tiproxy-api.md#set-tiproxy-configuration)
-- [Get TiProxy health status](/tiproxy/tiproxy-api.md#get-tiproxy-health-status)
-- [Get TiProxy monitoring data](/tiproxy/tiproxy-api.md#get-tiproxy-monitoring-data)
+- [获取 TiProxy 配置](/tiproxy/tiproxy-api.md#获取-tiproxy-的配置)
+- [设置 TiProxy 配置](/tiproxy/tiproxy-api.md#设置-tiproxy-的配置)
+- [获取 TiProxy 健康状态](/tiproxy/tiproxy-api.md#获取-tiproxy-的健康状态)
+- [获取 TiProxy 监控数据](/tiproxy/tiproxy-api.md#获取-tiproxy-的监控数据)
 
-For more information about each API, including request parameters, response examples, and usage instructions, see [TiProxy API](/tiproxy/tiproxy-api.md).
+关于各个 API 的请求参数、响应示例与使用说明，请参阅 [TiProxy API](/tiproxy/tiproxy-api.md)。
