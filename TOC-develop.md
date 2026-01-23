@@ -1,19 +1,19 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
-- Quick Start
-  - [Build a {{{ .starter }}} Cluster](/develop/dev-guide-build-cluster-in-cloud.md)
-  - [TiDB Basics](/develop/dev-guide-tidb-basics.md)
-  - [CRUD SQL in TiDB](/develop/dev-guide-tidb-crud-sql.md)
-- Connect to TiDB
-  - GUI Database Tools
+- 快速开始
+  - [使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+  - [TiDB 基础](/develop/dev-guide-tidb-basics.md)
+  - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
+- 连接到 TiDB
+  - GUI 数据库工具
     - [JetBrains DataGrip](/develop/dev-guide-gui-datagrip.md)
     - [DBeaver](/develop/dev-guide-gui-dbeaver.md)
     - [VS Code](/develop/dev-guide-gui-vscode-sqltools.md)
     - [MySQL Workbench](/develop/dev-guide-gui-mysql-workbench.md)
     - [Navicat](/develop/dev-guide-gui-navicat.md)
-  - [Choose Driver or ORM](/develop/dev-guide-choose-driver-or-orm.md)
-  - [Connect to TiDB Self-Managed](/develop/dev-guide-connect-to-tidb.md)
+  - [选择驱动或 ORM 框架](/develop/dev-guide-choose-driver-or-orm.md)
+  - [连接到 TiDB](/develop/dev-guide-connect-to-tidb.md)
   - BI
     - [Looker Studio](/develop/dev-guide-bi-looker-studio.md)
   - Java
@@ -21,8 +21,8 @@
     - [MyBatis](/develop/dev-guide-sample-application-java-mybatis.md)
     - [Hibernate](/develop/dev-guide-sample-application-java-hibernate.md)
     - [Spring Boot](/develop/dev-guide-sample-application-java-spring-boot.md)
-    - [Connection Pools and Connection Parameters](/develop/dev-guide-connection-parameters.md)
-    - [Best Practices for Developing Java Applications](/develop/java-app-best-practices.md)
+    - [连接池与连接参数](/develop/dev-guide-connection-parameters.md)
+    - [开发 Java 应用的最佳实践](/develop/java-app-best-practices.md)
   - Go
     - [Go-MySQL-Driver](/develop/dev-guide-sample-application-golang-sql-driver.md)
     - [GORM](/develop/dev-guide-sample-application-golang-gorm.md)
@@ -49,60 +49,60 @@
   - [WordPress](/develop/dev-guide-wordpress.md)
   - Serverless Driver ![BETA](/media/tidb-cloud/blank_transparent_placeholder.png)
     - [TiDB Cloud Serverless Driver](/develop/serverless-driver.md)
-    - [Node.js Example](/develop/serverless-driver-node-example.md)
-    - [Prisma Example](/develop/serverless-driver-prisma-example.md)
-    - [Kysely Example](/develop/serverless-driver-kysely-example.md)
-    - [Drizzle Example](/develop/serverless-driver-drizzle-example.md)
-- Design Database Schema
-  - [Overview](/develop/dev-guide-schema-design-overview.md)
-  - [Create a Database](/develop/dev-guide-create-database.md)
-  - [Create a Table](/develop/dev-guide-create-table.md)
-  - [Create a Secondary Index](/develop/dev-guide-create-secondary-indexes.md)
-- Write Data
-  - [Insert Data](/develop/dev-guide-insert-data.md)
-  - [Update Data](/develop/dev-guide-update-data.md)
-  - [Delete Data](/develop/dev-guide-delete-data.md)
-  - [Periodically Delete Expired Data Using TTL (Time to Live)](/time-to-live.md)
-  - [Prepared Statements](/develop/dev-guide-prepared-statement.md)
-- Read Data
-  - [Query Data from a Single Table](/develop/dev-guide-get-data-from-single-table.md)
-  - [Multi-table Join Queries](/develop/dev-guide-join-tables.md)
-  - [Subquery](/develop/dev-guide-use-subqueries.md)
-  - [Paginate Results](/develop/dev-guide-paginate-results.md)
-  - [Views](/develop/dev-guide-use-views.md)
-  - [Temporary Tables](/develop/dev-guide-use-temporary-tables.md)
-  - [Common Table Expression](/develop/dev-guide-use-common-table-expression.md)
-  - Read Replica Data
+    - [Node.js 示例](/develop/serverless-driver-node-example.md)
+    - [Prisma 示例](/develop/serverless-driver-prisma-example.md)
+    - [Kysely 示例](/develop/serverless-driver-kysely-example.md)
+    - [Drizzle 示例](/develop/serverless-driver-drizzle-example.md)
+- 数据库模式设计
+  - [概览](/develop/dev-guide-schema-design-overview.md)
+  - [创建数据库](/develop/dev-guide-create-database.md)
+  - [创建表](/develop/dev-guide-create-table.md)
+  - [创建二级索引](/develop/dev-guide-create-secondary-indexes.md)
+- 数据写入
+  - [插入数据](/develop/dev-guide-insert-data.md)
+  - [更新数据](/develop/dev-guide-update-data.md)
+  - [删除数据](/develop/dev-guide-delete-data.md)
+  - [使用 TTL (Time to Live) 定期删除过期数据](/time-to-live.md)
+  - [预处理语句](/develop/dev-guide-prepared-statement.md)
+- 数据读取
+  - [单表读取](/develop/dev-guide-get-data-from-single-table.md)
+  - [多表连接查询](/develop/dev-guide-join-tables.md)
+  - [子查询](/develop/dev-guide-use-subqueries.md)
+  - [查询结果分页](/develop/dev-guide-paginate-results.md)
+  - [视图](/develop/dev-guide-use-views.md)
+  - [临时表](/develop/dev-guide-use-temporary-tables.md)
+  - [公共表表达式](/develop/dev-guide-use-common-table-expression.md)
+  - 读取副本数据
     - [Follower Read](/develop/dev-guide-use-follower-read.md)
     - [Stale Read](/develop/dev-guide-use-stale-read.md)
-  - [HTAP Queries](/develop/dev-guide-hybrid-oltp-and-olap-queries.md)
-- [Vector Search](/develop/dev-guide-vector-search.md) ![BETA](/media/tidb-cloud/blank_transparent_placeholder.png)
-- Transactions
-  - [Overview](/develop/dev-guide-transaction-overview.md)
-  - [Optimistic and Pessimistic Transactions](/develop/dev-guide-optimistic-and-pessimistic-transaction.md)
-  - [Transaction Restraints](/develop/dev-guide-transaction-restraints.md)
-  - [Handle Transaction Errors](/develop/dev-guide-transaction-troubleshoot.md)
-- Optimize
-  - [Overview](/develop/dev-guide-optimize-sql-overview.md)
-  - [SQL Performance Tuning](/develop/dev-guide-optimize-sql.md)
-  - [Best Practices for Performance Tuning](/develop/dev-guide-optimize-sql-best-practices.md)
-  - [Best Practices for Indexing](/develop/dev-guide-index-best-practice.md)
-  - Other Optimization Methods
-    - [Avoid Implicit Type Conversions](/develop/dev-guide-implicit-type-conversion.md)
-    - [Unique Serial Number Generation](/develop/dev-guide-unique-serial-number-generation.md)
-- Troubleshoot
-  - [SQL or Transaction Issues](/develop/dev-guide-troubleshoot-overview.md)
-  - [Unstable Result Set](/develop/dev-guide-unstable-result-set.md)
-  - [Timeouts](/develop/dev-guide-timeouts-in-tidb.md)
-- Reference
-  - [Bookshop Example Application](/develop/dev-guide-bookshop-schema-design.md)
-  - Guidelines
-    - [Object Naming Convention](/develop/dev-guide-object-naming-guidelines.md)
-    - [SQL Development Specifications](/develop/dev-guide-sql-development-specification.md)
-- Cloud Native Development Environment
+  - [HTAP 查询](/develop/dev-guide-hybrid-oltp-and-olap-queries.md)
+- [向量搜索](/develop/dev-guide-vector-search.md) ![BETA](/media/tidb-cloud/blank_transparent_placeholder.png)
+- 事务
+  - [概览](/develop/dev-guide-transaction-overview.md)
+  - [乐观事务和悲观事务](/develop/dev-guide-optimistic-and-pessimistic-transaction.md)
+  - [事务限制](/develop/dev-guide-transaction-restraints.md)
+  - [事务错误处理](/develop/dev-guide-transaction-troubleshoot.md)
+- 优化 SQL 性能
+  - [概览](/develop/dev-guide-optimize-sql-overview.md)
+  - [SQL 性能调优](/develop/dev-guide-optimize-sql.md)
+  - [性能调优最佳实践](/develop/dev-guide-optimize-sql-best-practices.md)
+  - [索引的最佳实践](/develop/dev-guide-index-best-practice.md)
+  - 其他优化
+    - [避免隐式类型转换](/develop/dev-guide-implicit-type-conversion.md)
+    - [唯一序列号生成方案](/develop/dev-guide-unique-serial-number-generation.md)
+- 故障诊断
+  - [SQL 或事务问题](/develop/dev-guide-troubleshoot-overview.md)
+  - [结果集不稳定](/develop/dev-guide-unstable-result-set.md)
+  - [超时](/develop/dev-guide-timeouts-in-tidb.md)
+- 引用文档
+  - [Bookshop 示例应用](/develop/dev-guide-bookshop-schema-design.md)
+  - 规范
+    - [命名规范](/develop/dev-guide-object-naming-guidelines.md)
+    - [SQL 开发规范](/develop/dev-guide-sql-development-specification.md)
+- 云原生开发环境
   - [Gitpod](/develop/dev-guide-playground-gitpod.md)
-- Third-Party Support
-  - [Third-Party Tools Supported by TiDB](/develop/dev-guide-third-party-support.md)
-  - [Known Incompatibility Issues with Third-Party Tools](/develop/dev-guide-third-party-tools-compatibility.md)
-  - [ProxySQL Integration Guide](/develop/dev-guide-proxysql-integration.md)
-  - [Amazon AppFlow Integration Guide](/develop/dev-guide-aws-appflow-integration.md)
+- 第三方工具支持
+  - [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)
+  - [已知的第三方工具兼容问题](/develop/dev-guide-third-party-tools-compatibility.md)
+  - [ProxySQL 集成指南](/develop/dev-guide-proxysql-integration.md)
+  - [Amazon AppFlow 集成指南](/develop/dev-guide-aws-appflow-integration.md)
