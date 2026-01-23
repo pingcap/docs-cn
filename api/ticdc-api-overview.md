@@ -1,6 +1,6 @@
 ---
 title: TiCDC API 概览
-summary: 了解 TiCDC 服务的 API。
+summary: 了解 TiCDC 的 API。
 ---
 
 # TiCDC API 概览
