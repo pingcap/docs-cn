@@ -1,0 +1,108 @@
+<!-- markdownlint-disable MD007 -->
+<!-- markdownlint-disable MD041 -->
+
+- Quick Start
+  - [Build a {{{ .starter }}} Cluster](/develop/dev-guide-build-cluster-in-cloud.md)
+  - [TiDB Basics](/develop/dev-guide-tidb-basics.md)
+  - [CRUD SQL in TiDB](/develop/dev-guide-tidb-crud-sql.md)
+- Connect to TiDB
+  - GUI Database Tools
+    - [JetBrains DataGrip](/develop/dev-guide-gui-datagrip.md)
+    - [DBeaver](/develop/dev-guide-gui-dbeaver.md)
+    - [VS Code](/develop/dev-guide-gui-vscode-sqltools.md)
+    - [MySQL Workbench](/develop/dev-guide-gui-mysql-workbench.md)
+    - [Navicat](/develop/dev-guide-gui-navicat.md)
+  - [Choose Driver or ORM](/develop/dev-guide-choose-driver-or-orm.md)
+  - [Connect to TiDB Self-Managed](/develop/dev-guide-connect-to-tidb.md)
+  - BI
+    - [Looker Studio](/develop/dev-guide-bi-looker-studio.md)
+  - Java
+    - [JDBC](/develop/dev-guide-sample-application-java-jdbc.md)
+    - [MyBatis](/develop/dev-guide-sample-application-java-mybatis.md)
+    - [Hibernate](/develop/dev-guide-sample-application-java-hibernate.md)
+    - [Spring Boot](/develop/dev-guide-sample-application-java-spring-boot.md)
+    - [Connection Pools and Connection Parameters](/develop/dev-guide-connection-parameters.md)
+    - [Best Practices for Developing Java Applications](/develop/java-app-best-practices.md)
+  - Go
+    - [Go-MySQL-Driver](/develop/dev-guide-sample-application-golang-sql-driver.md)
+    - [GORM](/develop/dev-guide-sample-application-golang-gorm.md)
+  - Python
+    - [mysqlclient](/develop/dev-guide-sample-application-python-mysqlclient.md)
+    - [MySQL Connector/Python](/develop/dev-guide-sample-application-python-mysql-connector.md)
+    - [PyMySQL](/develop/dev-guide-sample-application-python-pymysql.md)
+    - [SQLAlchemy](/develop/dev-guide-sample-application-python-sqlalchemy.md)
+    - [peewee](/develop/dev-guide-sample-application-python-peewee.md)
+    - [Django](/develop/dev-guide-sample-application-python-django.md)
+  - Node.js
+    - [node-mysql2](/develop/dev-guide-sample-application-nodejs-mysql2.md)
+    - [mysql.js](/develop/dev-guide-sample-application-nodejs-mysqljs.md)
+    - [Prisma](/develop/dev-guide-sample-application-nodejs-prisma.md)
+    - [Sequelize](/develop/dev-guide-sample-application-nodejs-sequelize.md)
+    - [TypeORM](/develop/dev-guide-sample-application-nodejs-typeorm.md)
+    - [Next.js](/develop/dev-guide-sample-application-nextjs.md)
+    - [AWS Lambda](/develop/dev-guide-sample-application-aws-lambda.md)
+  - Ruby
+    - [mysql2](/develop/dev-guide-sample-application-ruby-mysql2.md)
+    - [Rails](/develop/dev-guide-sample-application-ruby-rails.md)
+  - C#
+    - [C#](/develop/dev-guide-sample-application-cs.md)
+  - [WordPress](/develop/dev-guide-wordpress.md)
+  - Serverless Driver ![BETA](/media/tidb-cloud/blank_transparent_placeholder.png)
+    - [TiDB Cloud Serverless Driver](/develop/serverless-driver.md)
+    - [Node.js Example](/develop/serverless-driver-node-example.md)
+    - [Prisma Example](/develop/serverless-driver-prisma-example.md)
+    - [Kysely Example](/develop/serverless-driver-kysely-example.md)
+    - [Drizzle Example](/develop/serverless-driver-drizzle-example.md)
+- Design Database Schema
+  - [Overview](/develop/dev-guide-schema-design-overview.md)
+  - [Create a Database](/develop/dev-guide-create-database.md)
+  - [Create a Table](/develop/dev-guide-create-table.md)
+  - [Create a Secondary Index](/develop/dev-guide-create-secondary-indexes.md)
+- Write Data
+  - [Insert Data](/develop/dev-guide-insert-data.md)
+  - [Update Data](/develop/dev-guide-update-data.md)
+  - [Delete Data](/develop/dev-guide-delete-data.md)
+  - [Periodically Delete Expired Data Using TTL (Time to Live)](/time-to-live.md)
+  - [Prepared Statements](/develop/dev-guide-prepared-statement.md)
+- Read Data
+  - [Query Data from a Single Table](/develop/dev-guide-get-data-from-single-table.md)
+  - [Multi-table Join Queries](/develop/dev-guide-join-tables.md)
+  - [Subquery](/develop/dev-guide-use-subqueries.md)
+  - [Paginate Results](/develop/dev-guide-paginate-results.md)
+  - [Views](/develop/dev-guide-use-views.md)
+  - [Temporary Tables](/develop/dev-guide-use-temporary-tables.md)
+  - [Common Table Expression](/develop/dev-guide-use-common-table-expression.md)
+  - Read Replica Data
+    - [Follower Read](/develop/dev-guide-use-follower-read.md)
+    - [Stale Read](/develop/dev-guide-use-stale-read.md)
+  - [HTAP Queries](/develop/dev-guide-hybrid-oltp-and-olap-queries.md)
+- [Vector Search](/develop/dev-guide-vector-search.md) ![BETA](/media/tidb-cloud/blank_transparent_placeholder.png)
+- Transactions
+  - [Overview](/develop/dev-guide-transaction-overview.md)
+  - [Optimistic and Pessimistic Transactions](/develop/dev-guide-optimistic-and-pessimistic-transaction.md)
+  - [Transaction Restraints](/develop/dev-guide-transaction-restraints.md)
+  - [Handle Transaction Errors](/develop/dev-guide-transaction-troubleshoot.md)
+- Optimize
+  - [Overview](/develop/dev-guide-optimize-sql-overview.md)
+  - [SQL Performance Tuning](/develop/dev-guide-optimize-sql.md)
+  - [Best Practices for Performance Tuning](/develop/dev-guide-optimize-sql-best-practices.md)
+  - [Best Practices for Indexing](/develop/dev-guide-index-best-practice.md)
+  - Other Optimization Methods
+    - [Avoid Implicit Type Conversions](/develop/dev-guide-implicit-type-conversion.md)
+    - [Unique Serial Number Generation](/develop/dev-guide-unique-serial-number-generation.md)
+- Troubleshoot
+  - [SQL or Transaction Issues](/develop/dev-guide-troubleshoot-overview.md)
+  - [Unstable Result Set](/develop/dev-guide-unstable-result-set.md)
+  - [Timeouts](/develop/dev-guide-timeouts-in-tidb.md)
+- Reference
+  - [Bookshop Example Application](/develop/dev-guide-bookshop-schema-design.md)
+  - Guidelines
+    - [Object Naming Convention](/develop/dev-guide-object-naming-guidelines.md)
+    - [SQL Development Specifications](/develop/dev-guide-sql-development-specification.md)
+- Cloud Native Development Environment
+  - [Gitpod](/develop/dev-guide-playground-gitpod.md)
+- Third-Party Support
+  - [Third-Party Tools Supported by TiDB](/develop/dev-guide-third-party-support.md)
+  - [Known Incompatibility Issues with Third-Party Tools](/develop/dev-guide-third-party-tools-compatibility.md)
+  - [ProxySQL Integration Guide](/develop/dev-guide-proxysql-integration.md)
+  - [Amazon AppFlow Integration Guide](/develop/dev-guide-aws-appflow-integration.md)
