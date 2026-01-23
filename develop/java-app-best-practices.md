@@ -1,136 +1,114 @@
 ---
-title: Best Practices for Developing Java Applications with TiDB
-summary: This document introduces best practices for developing Java applications with TiDB, covering database-related components, JDBC usage, connection pool configuration, data access framework, Spring Transaction, and troubleshooting tools. TiDB is highly compatible with MySQL, so most MySQL-based Java application best practices also apply to TiDB.
+title: 开发 Java 应用使用 TiDB 的最佳实践
+summary: 本文介绍了开发 Java 应用程序使用 TiDB 的常见问题与解决办法。TiDB 是高度兼容 MySQL 协议的数据库，基于 MySQL 开发的 Java 应用的最佳实践也多适用于 TiDB。
 ---
 
-# Best Practices for Developing Java Applications with TiDB
+# 开发 Java 应用使用 TiDB 的最佳实践
 
-This document introduces the best practice for developing Java applications to better use TiDB. Based on some common Java application components that interact with the backend TiDB database, this document also provides the solutions to commonly encountered issues during development.
+本文主要介绍如何开发 Java 应用程序以更好地使用 TiDB，包括开发中的常见问题与最佳实践。
 
-## Database-related components in Java applications
+## Java 应用中的数据库相关组件
 
-Common components that interact with the TiDB database in Java applications include:
+通常 Java 应用中和数据库相关的常用组件有：
 
-- Network protocol: A client interacts with a TiDB server via the standard [MySQL protocol](https://dev.mysql.com/doc/dev/mysql-server/latest/PAGE_PROTOCOL.html).
-- JDBC API and JDBC drivers: Java applications usually use the standard [JDBC (Java Database Connectivity)](https://docs.oracle.com/javase/8/docs/technotes/guides/jdbc/) API to access a database. To connect to TiDB, you can use a JDBC driver that implements the MySQL protocol via the JDBC API. Such common JDBC drivers for MySQL include [MySQL Connector/J](https://github.com/mysql/mysql-connector-j) and [MariaDB Connector/J](https://mariadb.com/docs/connectors/mariadb-connector-j/about-mariadb-connector-j#about-mariadb-connectorj).
-- Database connection pool: To reduce the overhead of creating a connection each time it is requested, applications usually use a connection pool to cache and reuse connections. JDBC [DataSource](https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html) defines a connection pool API. You can choose from different open-source connection pool implementations as needed.
-- Data access framework: Applications usually use a data access framework such as [MyBatis](https://mybatis.org/mybatis-3/index.html) and [Hibernate](https://hibernate.org/) to further simplify and manage the database access operations.
-- Application implementation: The application logic controls when to send what commands to the database. Some applications use [Spring Transaction](https://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/transaction.html) aspects to manage transactions' start and commit logics.
+- 网络协议：客户端通过标准 [MySQL 协议](https://dev.mysql.com/doc/dev/mysql-server/latest/PAGE_PROTOCOL.html)和 TiDB 进行网络交互。
+- JDBC API 及实现：Java 应用通常使用 [JDBC (Java Database Connectivity)](https://docs.oracle.com/javase/8/docs/technotes/guides/jdbc/) 来访问数据库。JDBC 定义了访问数据库 API，而 JDBC 实现完成标准 API 到 MySQL 协议的转换，常见的 JDBC 实现是 [MySQL Connector/J](https://github.com/mysql/mysql-connector-j)，此外有些用户可能使用 [MariaDB Connector/J](https://mariadb.com/docs/connectors/mariadb-connector-j/about-mariadb-connector-j#about-mariadb-connectorj)。
+- 数据库连接池：为了避免每次创建连接，通常应用会选择使用数据库连接池来复用连接，JDBC [DataSource](https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html) 定义了连接池 API，开发者可根据实际需求选择使用某种开源连接池实现。
+- 数据访问框架：应用通常选择通过数据访问框架 ([MyBatis](https://mybatis.org/mybatis-3/zh_CN/index.html), [Hibernate](https://hibernate.org/)) 的封装来进一步简化和管理数据库访问操作。
+- 业务实现：业务逻辑控制着何时发送和发送什么指令到数据库，其中有些业务会使用 [Spring Transaction](https://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/transaction.html) 切面来控制管理事务的开始和提交逻辑。
 
-![Java application components](/media/best-practices/java-practice-1.png)
+![Java Component](/media/best-practices/java-practice-1.png)
 
-From the above diagram, you can see that a Java application might do the following things:
+如上图所示，应用可能使用 Spring Transaction 来管理控制事务非手工启停，通过类似 MyBatis 的数据访问框架管理生成和执行 SQL，通过连接池获取已池化的长连接，最后通过 JDBC 接口调用实现通过 MySQL 协议和 TiDB 完成交互。
 
-- Implement the MySQL protocol via the JDBC API to interact with TiDB.
-- Get a persistent connection from the connection pool.
-- Use a data access framework such as MyBatis to generate and execute SQL statements.
-- Use Spring Transaction to automatically start or stop a transaction.
-
-The rest of this document describes the issues and their solutions when you develop a Java application using the above components.
+接下来将分别介绍使用各个组件时可能需要关注的问题。
 
 ## JDBC
 
-Java applications can be encapsulated with various frameworks. In most of the frameworks, JDBC API is called on the bottommost level to interact with the database server. For JDBC, it is recommended that you focus on the following things:
-
-- JDBC API usage choice
-- API Implementer's parameter configuration
+Java 应用尽管可以选择在不同的框架中封装，但在最底层一般会通过调用 JDBC 来与数据库服务器进行交互。对于 JDBC，需要关注的主要有：API 的使用选择和 API Implementer 的参数配置。
 
 ### JDBC API
 
-For JDBC API usage, see [JDBC official tutorial](https://docs.oracle.com/javase/tutorial/jdbc/). This section covers the usage of several important APIs.
+对于基本的 JDBC API 使用可以参考 [JDBC 官方教程](https://docs.oracle.com/javase/tutorial/jdbc/)，本文主要强调几个比较重要的 API 选择。
 
-#### Use Prepare API
+#### 使用 Prepare API
 
-For OLTP (Online Transactional Processing) scenarios, the SQL statements sent by the program to the database are several types that can be exhausted after removing parameter changes. Therefore, it is recommended to use [Prepared Statements](https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html) instead of regular [execution from a text file](https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html#executing_queries) and reuse Prepared Statements to execute directly. This avoids the overhead of repeatedly parsing and generating SQL execution plans in TiDB.
+对于 OLTP 场景，程序发送给数据库的 SQL 语句在去除参数变化后都是可穷举的某几类，因此建议使用[预处理语句 (Prepared Statements)](https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html) 代替普通的[文本执行](https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html#executing_queries)，并复用预处理语句来直接执行，从而避免 TiDB 重复解析和生成 SQL 执行计划的开销。
 
-At present, most upper-level frameworks call the Prepare API for SQL execution. If you use the JDBC API directly for development, pay attention to choosing the Prepare API.
+目前多数上层框架都会调用 Prepare API 进行 SQL 执行，如果直接使用 JDBC API 进行开发，注意选择使用 Prepare API。
 
-In addition, with the default implementation of MySQL Connector/J, only client-side statements are preprocessed, and the statements are sent to the server in a text file after `?` is replaced on the client. Therefore, in addition to using the Prepare API, you also need to configure `useServerPrepStmts = true` in JDBC connection parameters before you perform statement preprocessing on the TiDB server. For detailed parameter configuration, see [MySQL JDBC parameters](#mysql-jdbc-parameters).
+另外需要注意 MySQL Connector/J 实现中默认只会做客户端的语句预处理，会将 `?` 在客户端替换后以文本形式发送到服务端，所以除了要使用 Prepare API，还需要在 JDBC 连接参数中配置 `useServerPrepStmts = true`，才能在 TiDB 服务器端进行语句预处理（下面参数配置章节有详细介绍）。
 
-#### Use Batch API
+#### 使用 Batch 批量插入更新
 
-For batch inserts, you can use the [`addBatch`/`executeBatch` API](https://www.tutorialspoint.com/jdbc/jdbc-batch-processing). The `addBatch()` method is used to cache multiple SQL statements first on the client, and then send them to the database server together when calling the `executeBatch` method.
+对于批量插入更新，如果插入记录较多，可以选择使用 [addBatch/executeBatch API](https://www.tutorialspoint.com/jdbc/jdbc-batch-processing)。通过 addBatch 的方式将多条 SQL 的插入更新记录先缓存在客户端，然后在 executeBatch 时一起发送到数据库服务器。
 
-> **Note:**
+> **注意：**
 >
-> In the default MySQL Connector/J implementation, the sending time of the SQL statements that are added to batch with `addBatch()` is delayed to the time when `executeBatch()` is called, but the statements will still be sent one by one during the actual network transfer. Therefore, this method usually does not reduce the amount of communication overhead.
+> 对于 MySQL Connector/J 实现，默认 Batch 只是将多次 addBatch 的 SQL 发送时机延迟到调用 executeBatch 的时候，但实际网络发送还是会一条条的发送，通常不会降低与数据库服务器的网络交互次数。
 >
-> If you want to batch network transfer, you need to configure `rewriteBatchedStatements = true` in the JDBC connection parameters. For the detailed parameter configuration, see [Batch-related parameters](#batch-related-parameters).
+> 如果希望 Batch 网络发送，需要在 JDBC 连接参数中配置 `rewriteBatchedStatements = true`（下面参数配置章节有详细介绍）。
 
-#### Use `StreamingResult` to get the execution result
+#### 使用 StreamingResult 流式获取执行结果
 
-In most scenarios, to improve execution efficiency, JDBC obtains query results in advance and save them in client memory by default. But when the query returns a super large result set, the client often wants the database server to reduce the number of records returned at a time, and waits until the client's memory is ready and it requests for the next batch.
+一般情况下，为提升执行效率，JDBC 会默认提前获取查询结果并将其保存在客户端内存中。但在查询返回超大结果集的场景中，客户端会希望数据库服务器减少向客户端一次返回的记录数，等客户端在有限内存处理完一部分后再去向服务器要下一批。
 
-The following two processing methods are usually used in JDBC:
+在 JDBC 中通常有以下两种处理方式：
 
-- The first method: [Set `FetchSize` to `Integer.MIN_VALUE`](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-implementation-notes.html#ResultSet) to ensure that the client does not cache. The client will read the execution result from the network connection through `StreamingResult`.
+- 方式一：设置 [`FetchSize` 为 `Integer.MIN_VALUE`](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-implementation-notes.html#ResultSet) 让客户端不缓存，客户端通过 StreamingResult 的方式从网络连接上流式读取执行结果。
 
-    When the client uses the streaming read method, it needs to finish reading or close `resultset` before continuing to use the statement to make a query. Otherwise, the error `No statements may be issued when any streaming result sets are open and in use on a given connection. Ensure that you have called .close() on any active streaming result sets before attempting more queries.` is returned.
+    使用流式读取数据时，需要将 `resultset` 读取完成或 close 后，才能继续使用该语句进行下次查询，否则会报错 `No statements may be issued when any streaming result sets are open and in use on a given connection. Ensure that you have called .close() on any active streaming result sets before attempting more queries.`。
 
-    To avoid such an error in queries before the client finishes reading or closes `resultset`, you can add the `clobberStreamingResults=true` parameter in the URL. Then, `resultset` is automatically closed but the result set to be read in the previous streaming query is lost.
+    如果需要在 `resultset` 读取完成或 close 前进行查询避免上述报错，可在 URL 中添加配置参数 `clobberStreamingResults=true`，这样会自动 close `resultset`，但之前流式查询未被读取的结果集会丢失。
 
-- The second method: Use Cursor Fetch by first [setting `FetchSize`](http://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) as a positive integer and then configuring `useCursorFetch = true` in the JDBC URL.
+- 方式二：使用 Cursor Fetch，首先需[设置 `FetchSize`](http://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数，且在 JDBC URL 中配置 `useCursorFetch = true`。
 
-TiDB supports both methods, but it is recommended that you use the first method that sets `FetchSize` to `Integer.MIN_VALUE`, because it is a simpler implementation and has better execution efficiency.
+TiDB 同时支持以上两种方式，但更推荐使用第一种将 `FetchSize` 设置为 `Integer.MIN_VALUE` 的方式，比第二种功能实现更简单且执行效率更高。
 
-For the second method, TiDB first loads all data to the TiDB node, and then returns data to the client according to the `FetchSize`. Therefore, it usually consumes more memory than the first method. If [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) is set to `ON`, TiDB might temporarily write the result to the hard disk.
+对于第二种方式，TiDB 会先将所有数据加载到 TiDB 节点上，然后根据 `FetchSize` 依次返回给客户端。因此，通常会比第一种方式使用更多内存。如果将 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 设置为 `ON`，可能会触发落盘临时将结果写入硬盘。
 
-If the [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-new-in-v830) system variable is set to `ON`, TiDB tries to read part of the data only when the client fetches it, which uses less memory. For more details and limitations, read the [complete descriptions for the `tidb_enable_lazy_cursor_fetch` system variable](/system-variables.md#tidb_enable_lazy_cursor_fetch-new-in-v830).
+如果系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 设置为 `ON`，TiDB 将尝试仅在客户端请求数据时读取部分数据，以使用更少的内存。更多信息和使用限制，参见系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 的详细描述。
 
-### MySQL JDBC parameters
+### MySQL JDBC 参数
 
-JDBC usually provides implementation-related configurations in the form of JDBC URL parameters. This section introduces [MySQL Connector/J's parameter configurations](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-configuration-properties.html) (If you use MariaDB, see [MariaDB's parameter configurations](https://mariadb.com/docs/connectors/mariadb-connector-j/about-mariadb-connector-j#optional-url-parameters)). Because this document cannot cover all configuration items, it mainly focuses on several parameters that might affect performance.
+JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置。这里以 MySQL 官方的 Connector/J 来介绍[参数配置](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-configuration-properties.html)（如果使用的是 MariaDB，可以参考 [MariaDB 的类似配置](https://mariadb.com/docs/connectors/mariadb-connector-j/about-mariadb-connector-j#optional-url-parameters)）。因为配置项较多，这里主要关注几个可能影响到性能的参数。
 
-#### Prepare-related parameters
-
-This section introduces parameters related to `Prepare`.
+#### Prepare 相关参数
 
 ##### `useServerPrepStmts`
 
-`useServerPrepStmts` is set to `false` by default, that is, even if you use the Prepare API, the "prepare" operation will be done only on the client. To avoid the parsing overhead of the server, if the same SQL statement uses the Prepare API multiple times, it is recommended to set this configuration to `true`.
+默认情况下，`useServerPrepStmts` 的值为 `false`，即尽管使用了 Prepare API，也只会在客户端做 “prepare”。因此为了避免服务器重复解析的开销，如果同一条 SQL 语句需要多次使用 Prepare API，则建议设置该选项为 `true`。
 
-To verify that this setting already takes effect, you can do:
-
-- Go to TiDB monitoring dashboard and view the request command type through **Query Summary** > **CPS By Instance**.
-- If `COM_QUERY` is replaced by `COM_STMT_EXECUTE` or `COM_STMT_PREPARE` in the request, it means this setting already takes effect.
+在 TiDB 监控中可以通过 **Query Summary** > **CPS By Instance** 查看请求命令类型，如果请求中 `COM_QUERY` 被 `COM_STMT_EXECUTE` 或 `COM_STMT_PREPARE` 代替即生效。
 
 ##### `cachePrepStmts`
 
-Although `useServerPrepStmts=true` allows the server to execute Prepared Statements, by default, the client closes the Prepared Statements after each execution and does not reuse them. This means that the "prepare" operation is not even as efficient as text file execution. To solve this, it is recommended that after setting `useServerPrepStmts=true`, you should also configure `cachePrepStmts=true`. This allows the client to cache Prepared Statements.
+虽然 `useServerPrepStmts = true` 能让服务端执行预处理语句，但默认情况下客户端每次执行完后会 close 预处理语句，并不会复用，这样预处理的效率甚至不如文本执行。所以建议开启 `useServerPrepStmts = true` 后同时配置 `cachePrepStmts = true`，这会让客户端缓存预处理语句。
 
-To verify that this setting already takes effect, you can do:
+在 TiDB 监控中可以通过 **Query Summary** > **CPS By Instance** 查看请求命令类型，如果请求中 `COM_STMT_EXECUTE` 数目远远多于 `COM_STMT_PREPARE` 即生效。
 
-- Go to TiDB monitoring dashboard and view the request command type through **Query Summary** > **CPS By Instance**.
-- If the number of `COM_STMT_EXECUTE` in the request is far more than the number of `COM_STMT_PREPARE`, it means this setting already takes effect.
-
-In addition, configuring `useConfigs=maxPerformance` will configure multiple parameters at the same time, including `cachePrepStmts=true`.
+另外，通过 `useConfigs = maxPerformance` 配置会同时配置多个参数，其中也包括 `cachePrepStmts = true`。
 
 ##### `prepStmtCacheSqlLimit`
 
-After configuring `cachePrepStmts`, also pay attention to the `prepStmtCacheSqlLimit` configuration (the default value is `256`). This configuration controls the maximum length of the Prepared Statements cached on the client.
+在配置 `cachePrepStmts` 后还需要注意 `prepStmtCacheSqlLimit` 配置（默认为 `256`），该配置控制客户端缓存预处理语句的最大长度，超过该长度将不会被缓存。
 
-The Prepared Statements that exceed this maximum length will not be cached, so they cannot be reused. In this case, you may consider increasing the value of this configuration depending on the actual SQL length of the application.
+在一些场景 SQL 的长度可能超过该配置，导致预处理 SQL 不能复用，建议根据应用 SQL 长度情况决定是否需要调大该值。
 
-You need to check whether this setting is too small if you:
-
-- Go to TiDB monitoring dashboard and view the request command type through **Query Summary** > **CPS By Instance**.
-- And find that `cachePrepStmts=true` has been configured, but `COM_STMT_PREPARE` is still mostly equal to `COM_STMT_EXECUTE` and `COM_STMT_CLOSE` exists.
+在 TiDB 监控中通过 **Query Summary** > **CPS By Instance** 查看请求命令类型，如果已经配置了 `cachePrepStmts = true`，但 `COM_STMT_PREPARE` 还是和 `COM_STMT_EXECUTE` 基本相等且有 `COM_STMT_CLOSE`，需要检查这个配置项是否设置得太小。
 
 ##### `prepStmtCacheSize`
 
-`prepStmtCacheSize` controls the number of cached Prepared Statements (the default value is `25`). If your application requires "preparing" many types of SQL statements and wants to reuse Prepared Statements, you can increase this value.
+`prepStmtCacheSize` 控制缓存的预处理语句数目（默认为 `25`），如果应用需要预处理的 SQL 种类很多且希望复用预处理语句，可以调大该值。
 
-To verify that this setting already takes effect, you can do:
+和上一条类似，在监控中通过 **Query Summary** > **CPS By Instance** 查看请求中 `COM_STMT_EXECUTE` 数目是否远远多于 `COM_STMT_PREPARE` 来确认是否正常。
 
-- Go to TiDB monitoring dashboard and view the request command type through **Query Summary** > **CPS By Instance**.
-- If the number of `COM_STMT_EXECUTE` in the request is far more than the number of `COM_STMT_PREPARE`, it means this setting already takes effect.
+#### Batch 相关参数
 
-#### Batch-related parameters
-
-While processing batch writes, it is recommended to configure `rewriteBatchedStatements=true`. After using `addBatch()` or `executeBatch()`, JDBC still sends SQL one by one by default, for example:
+在进行 batch 写入处理时推荐配置 `rewriteBatchedStatements = true`，在已经使用 `addBatch` 或 `executeBatch` 后默认 JDBC 还是会一条条 SQL 发送，例如：
 
 ```java
-pstmt = prepare("insert into t (a) values(?)");
+pstmt = prepare(“insert into t (a) values(?)”);
 pstmt.setInt(1, 10);
 pstmt.addBatch();
 pstmt.setInt(1, 11);
@@ -139,7 +117,7 @@ pstmt.setInt(1, 12);
 pstmt.executeBatch();
 ```
 
-Although `Batch` methods are used, the SQL statements sent to TiDB are still individual `INSERT` statements:
+虽然使用了 batch 但发送到 TiDB 语句还是单独的多条 insert：
 
 {{< copyable "sql" >}}
 
@@ -149,7 +127,7 @@ insert into t(a) values(11);
 insert into t(a) values(12);
 ```
 
-But if you set `rewriteBatchedStatements=true`, the SQL statements sent to TiDB will be a single `INSERT` statement:
+如果设置 `rewriteBatchedStatements = true`，发送到 TiDB 的 SQL 将是：
 
 {{< copyable "sql" >}}
 
@@ -157,7 +135,7 @@ But if you set `rewriteBatchedStatements=true`, the SQL statements sent to TiDB 
 insert into t(a) values(10),(11),(12);
 ```
 
-Note that the rewrite of the `INSERT` statements is to concatenate the values after multiple "values" keywords into a whole SQL statement. If the `INSERT` statements have other differences, they cannot be rewritten, for example:
+需要注意的是，insert 语句的改写，只能将多个 values 后的值拼接成一整条 SQL，insert 语句如果有其他差异将无法被改写。例如：
 
 {{< copyable "sql" >}}
 
@@ -167,7 +145,7 @@ insert into t (a) values (11) on duplicate key update a = 11;
 insert into t (a) values (12) on duplicate key update a = 12;
 ```
 
-The above `INSERT` statements cannot be rewritten into one statement. But if you change the three statements into the following ones:
+上述 insert 语句将无法被改写成一条语句。该例子中，如果将 SQL 改写成如下形式：
 
 {{< copyable "sql" >}}
 
@@ -177,7 +155,7 @@ insert into t (a) values (11) on duplicate key update a = values(a);
 insert into t (a) values (12) on duplicate key update a = values(a);
 ```
 
-Then they meet the rewrite requirement. The above `INSERT` statements will be rewritten into the following one statement:
+即可满足改写条件，最终被改写成：
 
 {{< copyable "sql" >}}
 
@@ -185,7 +163,7 @@ Then they meet the rewrite requirement. The above `INSERT` statements will be re
 insert into t (a) values (10), (11), (12) on duplicate key update a = values(a);
 ```
 
-If there are three or more updates during the batch update, the SQL statements will be rewritten and sent as multiple queries. This effectively reduces the client-to-server request overhead, but the side effect is that a larger SQL statement is generated. For example:
+批量更新时如果有 3 处或 3 处以上更新，则 SQL 语句会改写为 multiple-queries 的形式并发送，这样可以有效减少客户端到服务器的请求开销，但副作用是会产生较大的 SQL 语句，例如这样：
 
 {{< copyable "sql" >}}
 
@@ -193,124 +171,122 @@ If there are three or more updates during the batch update, the SQL statements w
 update t set a = 10 where id = 1; update t set a = 11 where id = 2; update t set a = 12 where id = 3;
 ```
 
-In addition, because of a [client bug](https://bugs.mysql.com/bug.php?id=96623), if you want to configure `rewriteBatchedStatements=true` and `useServerPrepStmts=true` during batch update, it is recommended that you also configure the `allowMultiQueries=true` parameter to avoid this bug.
+另外，因为一个[客户端 bug](https://bugs.mysql.com/bug.php?id=96623)，批量更新时如果要配置 `rewriteBatchedStatements = true` 和 `useServerPrepStmts = true`，推荐同时配置 `allowMultiQueries = true` 参数来避免这个 bug。
 
-#### Integrate parameters
+#### 集成参数
 
-Through monitoring, you might notice that although the application only performs `INSERT` operations to the TiDB cluster, there are a lot of redundant `SELECT` statements. Usually this happens because JDBC sends some SQL statements to query the settings, for example, `select @@session.transaction_read_only`. These SQL statements are useless for TiDB, so it is recommended that you configure `useConfigs=maxPerformance` to avoid extra overhead.
+通过监控可能会发现，虽然业务只向集群进行 insert 操作，却看到有很多多余的 select 语句。通常这是因为 JDBC 发送了一些查询设置类的 SQL 语句（例如 `select @@session.transaction_read_only`）。这些 SQL 对 TiDB 无用，推荐配置 `useConfigs=maxPerformance` 来避免额外开销。
 
-`useConfigs=maxPerformance` includes a group of configurations. To get the detailed configurations in MySQL Connector/J 8.0 and those in MySQL Connector/J 5.1, see [mysql-connector-j 8.0](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties) and [mysql-connector-j 5.1](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties) respectively.
+`useConfigs=maxPerformance` 会包含一组配置，可查看 MySQL Connector/J [8.0 版本](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties)或 [5.1 版本](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties)来确认当前 MySQL Connector/J 中 `maxPerformance` 包含的具体配置。
 
-After it is configured, you can check the monitoring to see a decreased number of `SELECT` statements.
+配置后查看监控，可以看到多余语句减少。
 
-> **Note:**
+> **注意：**
 >
-> Enabling `useConfigs=maxPerformance` requires MySQL Connector/J version 8.0.33 or later. For more details, see [MySQL JDBC Bug](/develop/dev-guide-third-party-tools-compatibility.md#mysql-jdbc-bugs).
+> 开启 `useConfigs=maxPerformance` 需要使用 MySQL Connector/J 8.0.33 或更高版本，详情请参考 [MySQL JDBC Bug](/develop/dev-guide-third-party-tools-compatibility.md#mysql-jdbc-bug)。
 
-#### Timeout-related parameters
+#### 超时参数
 
-TiDB provides the following MySQL-compatible timeout control parameters.
+TiDB 提供以下与 MySQL 兼容的超时控制参数：
 
-- `wait_timeout`: controls the non-interactive idle timeout for the connection to Java applications. Starting from TiDB v5.4, the default value of `wait_timeout` is `28800` seconds, which is 8 hours. For TiDB versions earlier than v5.4, the default value is `0`, which means the timeout is unlimited.
-- `interactive_timeout`: controls the interactive idle timeout for the connection to Java applications. The value is 8 hours by default.
-- `max_execution_time`: controls the timeout for SQL execution in the connection, only effective for `SELECT` statements (including `SELECT ... FOR UPDATE`). The value is `0` by default, which allows the connection to be infinitely busy, that is, an SQL statement is executed for an infinitely long time.
+- `wait_timeout`：控制与 Java 应用连接的非交互式空闲超时时间。在 TiDB v5.4 及以上版本中，默认值为 `28800` 秒，即空闲超时为 8 小时。在 v5.4 之前，默认值为 `0`，即没有时间限制。
+- `interactive_timeout`：控制与 Java 应用连接的交互式空闲超时时间，默认值为 8 小时。
+- `max_execution_time`：控制连接中 SQL 执行的超时时间，仅对 `SELECT` 语句（包括 `SELECT ... FOR UPDATE`）生效，默认值是 `0`，即允许连接无限忙碌（一个 SQL 语句执行无限的长的时间）。
 
-However, in an actual production environment, idle connections and SQL statements with excessively long execution time negatively affect databases and applications. To avoid idle connections and SQL statements that are executed for too long, you can configure these two parameters in your application's connection string. For example, set `sessionVariables=wait_timeout=3600` (1 hour) and `sessionVariables=max_execution_time=300000` (5 minutes).
+但在实际生产环境中，空闲连接和一直无限执行的 SQL 对数据库和应用都有不好的影响。你可以通过在应用的连接字符串中配置这两个参数来避免空闲连接和执行时间过长的 SQL 语句。例如，设置 `sessionVariables=wait_timeout=3600`（1 小时）和 `sessionVariables=max_execution_time=300000`（5 分钟）。
 
-#### Typical JDBC connection string parameters
+#### 典型的 JDBC 连接字符串参数
 
-Combining the preceding parameter values, the JDBC connection string configuration is as follows:
+对以上的参数值进行组合，JDBC 连接字符串配置如下：
 
 ```
 jdbc:mysql://<IP_ADDRESS>:<PORT_NUMBER>/<DATABASE_NAME>?characterEncoding=UTF-8&useSSL=false&useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSqlLimit=10000&prepStmtCacheSize=1000&useConfigs=maxPerformance&rewriteBatchedStatements=true
 ```
 
-> **Note:**
+> **注意：**
 >
-> If you are connecting over a public network, you need to set `useSSL=true` and [enable TLS between TiDB clients and servers](/enable-tls-between-clients-and-servers.md).
+> 如果在公共网络发起连接，需要修改配置 `useSSL=true`，并启用 [TiDB 客户端服务端间加密传输](/enable-tls-between-clients-and-servers.md)。
 
-## Connection pool
+## 连接池
 
-Building TiDB (MySQL) connections is relatively expensive (for OLTP scenarios at least), because in addition to building a TCP connection, connection authentication is also required. Therefore, the client usually saves the TiDB (MySQL) connections to the connection pool for reuse.
+TiDB (MySQL) 连接建立是比较昂贵的操作（至少对于 OLTP），除了建立 TCP 连接外还需要进行连接鉴权操作，所以客户端通常会把 TiDB (MySQL) 连接保存到连接池中进行复用。
 
-TiDB supports the following Java connection pools:
+TiDB 支持以下 Java 的连接池：
 
 - [HikariCP](https://github.com/brettwooldridge/HikariCP)
 - [tomcat-jdbc](https://tomcat.apache.org/tomcat-10.1-doc/jdbc-pool)
 - [druid](https://github.com/alibaba/druid)
 - [c3p0](https://www.mchange.com/projects/c3p0/)
 - [dbcp](https://commons.apache.org/proper/commons-dbcp/)
+ 
+在实践中，某些连接池会长期占用特定的活跃会话。这样虽然 TiDB 计算层的多个节点间连接数一致，但活跃连接数不一致，导致实际负载不均衡。在分布式场景中，推荐使用 HikariCP，该连接池能够有效管理连接的生命周期，避免活跃连接长期固定在部分节点上，从而实现更均衡的负载分布。
 
-In practice, some connection pools might persistently use specific active sessions. Although the total number of connections appears evenly distributed across TiDB compute nodes, uneven distribution of active connections can lead to actual load imbalance. In distributed scenarios, it is recommended to use HikariCP, which manages connection lifecycles effectively and helps prevent active connections from being fixed on certain nodes, achieving balanced load distribution.
+### 典型的连接池配置
 
-### Typical connection pool configuration
-
-The following is an example configuration for HikariCP:
+以 HikariCP 为例：
 
 ```yaml
 hikari:
-  maximumPoolSize: 20
-  poolName: hikariCP
-  connectionTimeout: 30000 
-  maxLifetime: 1200000
-  keepaliveTime: 120000
+    maximumPoolSize: 20
+    poolName: hikariCP
+    connectionTimeout: 30000 
+    maxLifetime: 1200000
+    keepaliveTime: 120000
 ```
 
-The parameter explanations are as follows. For more details, refer to the [official HikariCP documentation](https://github.com/brettwooldridge/HikariCP/blob/dev/README.md).
+参数解释如下。更多详情，请参阅 [HikariCP 官方帮助文档](https://github.com/brettwooldridge/HikariCP/blob/dev/README.md)。
 
-- `maximumPoolSize`: the maximum number of connections in the pool. The default value is `10`. In containerized environments, it is recommended to set this to 4–10 times the number of CPU cores available to the Java application. Setting this value too high can lead to resource wastage, while setting it too low can slow down connection acquisition. See [About Pool Sizing](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing) for more details.
-- `minimumIdle`: HikariCP recommends not setting this parameter. The default value is equal to the value of `maximumPoolSize`, which disables connection pool scaling. This ensures that connections are readily available during traffic spikes and avoids delays caused by connection creation.
-- `connectionTimeout`: the maximum time (in milliseconds) that an application waits to acquire a connection from the pool. The default value is `30000` milliseconds (30 seconds). If no available connection is obtained within this time, a `SQLException` exception occurs.
-- `maxLifetime`: the maximum lifetime (in milliseconds) of a connection in the pool. The default value is `1800000` milliseconds (30 minutes). Connections in use are not affected. After the connection is closed, it will be removed according to this setting. Setting this value too low can cause frequent reconnections. If you are using [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-new-in-v50), ensure this value is less than the wait time.
-- `keepaliveTime`: the interval (in milliseconds) between keepalive operations on connections in the pool. This setting helps prevent disconnections caused by database or network idle timeouts. The default value is `120000` milliseconds (2 minutes). The pool prefers using the JDBC4 `isValid()` method to keep idle connections alive.
+- `maximumPoolSize`：连接池的最大连接数，默认值为 `10`。根据经验，在容器化场景下可以使用 Java 应用部署环境的 CPU 核心数的 4 ~ 10 倍。连接数配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢。详情请参考 [About Pool Sizing](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。
+- `minimumIdle`：HikariCP 官方推荐不要配置连接池最小空闲连接数，默认值等于连接池最大连接数。配置为相同值，等同于不使用连接池的伸缩特性，防止业务突增时，建立连接的过程过长，导致应用不能获取连接。
+- `connectionTimeout`：应用从连接池获取连接时的最长等待时间（单位为毫秒），默认值为 `30000` 毫秒（即 30 秒）。如果在指定时间内未能获取到可用连接，系统将抛出 SQLException 异常。
+- `maxLifetime`：连接池中每个连接的最大存活时间（单位为毫秒），即连接的生命周期，默认值为 `1800000` 毫秒（即 30 分钟）。使用中的连接不受影响，仅当连接被关闭后才会根据此设置被移除。过短的设置会引发频繁重建连接的开销。如果有 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入) 的使用场景，连接的最大存活时间应小于等待时间。
+- `keepaliveTime`：连接池中连接保活操作间隔（单位为毫秒），防止数据库或网络基础设施因超时断开连接，默认值为 `120000` 毫秒（即 2 分钟）。连接池对空闲连接优先调用 JDBC4 的 `isValid()` 方法进行保活。
 
-### Probe configuration
+应用在使用连接池时，需要注意连接使用完成后归还连接，推荐应用使用对应的连接池相关监控（如 `metricRegistry`），通过监控能及时定位连接池问题。
 
-The connection pool maintains persistent connections from clients to TiDB as follows:
+### 探活配置
 
-- Before v5.4, TiDB does not proactively close client connections by default (unless an error is reported).
-- Starting from v5.4, TiDB automatically closes client connections after `28800` seconds (this is, `8` hours) of inactivity by default. You can control this timeout setting using the TiDB and MySQL compatible `wait_timeout` variable. For more information, see [JDBC Query Timeout](/develop/dev-guide-timeouts-in-tidb.md#jdbc-query-timeout).
+连接池维护客户端到 TiDB 的长连接的方式如下：
 
-Moreover, there might be network proxies such as [LVS](https://en.wikipedia.org/wiki/Linux_Virtual_Server) or [HAProxy](https://en.wikipedia.org/wiki/HAProxy) between clients and TiDB. These proxies typically proactively clean up connections after a specific idle period (determined by the proxy's idle configuration). In addition to monitoring the proxy's idle configuration, connection pools also need to maintain or probe connections for keep-alive.
+- v5.4 版本前，TiDB 默认不会主动关闭客户端连接，除非出现报错情况。
+- 从 v5.4 起，TiDB 默认会在连接空闲超过 `28800` 秒（即 8 小时）后，自动关闭客户端连接。你可以使用 TiDB 与 MySQL 兼容的 `wait_timeout` 变量控制此超时时间，详见 [JDBC 查询超时](/develop/dev-guide-timeouts-in-tidb.md#jdbc-查询超时)文档。
 
-If you often see the following error in your Java application:
+此外，客户端到 TiDB 之间通常还会有 [LVS](https://en.wikipedia.org/wiki/Linux_Virtual_Server) 或 [HAProxy](https://en.wikipedia.org/wiki/HAProxy) 之类的网络代理。这些代理通常会在连接空闲超过特定时间（由代理的 idle 配置决定）后主动清理连接。除了关注代理的 idle 配置外，连接池还需要进行保活或探测连接。
+
+如果常在 Java 应用中看到以下错误：
 
 ```
 The last packet sent successfully to the server was 3600000 milliseconds ago. The driver has not received any packets from the server. com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
 ```
 
-If `n` in `n milliseconds ago` is `0` or a very small value, it is usually because the executed SQL operation causes TiDB to exit abnormally. To find the cause, it is recommended to check the TiDB stderr log.
+如果 `n milliseconds ago` 中的 `n` 如果是 0 或很小的值，则通常是执行的 SQL 导致 TiDB 异常退出引起的报错，推荐查看 TiDB stderr 日志；如果 n 是一个非常大的值（比如这里的 3600000），很可能是因为这个连接空闲太久然后被中间 proxy 关闭了，通常解决方式除了调大 proxy 的 idle 配置，还可以让连接池执行以下操作：
 
-If `n` is a very large value (such as `3600000` in the above example), it is likely that this connection was idle for a long time and then closed by the intermediate proxy. The usual solution is to increase the value of the proxy's idle configuration and allow the connection pool to:
+- 每次使用连接前检查连接是否可用。
+- 使用单独线程定期检查连接是否可用。
+- 定期发送 test query 保活连接。
 
-- Check whether the connection is available before using the connection every time
-- Regularly check whether the connection is available using a separate thread.
-- Send a test query regularly to keep alive connections
+不同的连接池实现可能会支持其中一种或多种方式，可以查看所使用的连接池文档来寻找对应配置。
 
-Different connection pool implementations might support one or more of the above methods. You can check your connection pool documentation to find the corresponding configuration.
+## 数据访问框架
 
-## Data access framework
-
-Applications often use some kind of data access framework to simplify database access.
+业务应用通常会使用某种数据访问框架来简化数据库的访问。
 
 ### MyBatis
 
-[MyBatis](http://www.mybatis.org/mybatis-3/) is a popular Java data access framework. It is mainly used to manage SQL queries and complete the mapping between result sets and Java objects. MyBatis is highly compatible with TiDB. MyBatis rarely has problems based on its historical issues.
+[MyBatis](http://www.mybatis.org/mybatis-3/) 是目前比较流行的 Java 数据访问框架，主要用于管理 SQL 并完成结果集和 Java 对象的来回映射工作。MyBatis 和 TiDB 兼容性很好，从历史 issue 可以看出 MyBatis 很少出现问题。这里主要关注如下几个配置。
 
-Here this document mainly focuses on the following configurations.
+#### Mapper 参数
 
-#### Mapper parameters
+MyBatis 的 Mapper 中支持两种参数：
 
-MyBatis Mapper supports two parameters:
+- `select 1 from t where id = #{param1}` 会作为预处理语句，被转换为 `select 1 from t where id = ?` 进行预处理，并使用实际参数来复用执行，通过配合前面的 Prepare 连接参数能获得最佳性能。
+- `select 1 from t where id = ${param2}` 会做文本替换为 `select 1 from t where id = 1` 执行，如果这条语句被预处理为不同参数，可能会导致 TiDB 缓存大量的预处理语句，并且以这种方式执行 SQL 有注入安全风险。
 
-- `select 1 from t where id = #{param1}` will be converted to `select 1 from t where id =?` as a Prepared Statement and be "prepared", and the actual parameter will be used for reuse. You can get the best performance when using this parameter with the previously mentioned Prepare connection parameters.
-- `select 1 from t where id = ${param2}` will be replaced with `select 1 from t where id = 1` as a text file and be executed. If this statement is replaced with different parameters and is executed, MyBatis will send different requests for "preparing" the statements to TiDB. This might cause TiDB to cache a large number of Prepared Statements, and executing SQL operations this way has injection security risks.
+#### 动态 SQL Batch
 
-#### Dynamic SQL Batch
+[动态 SQL - foreach](http://www.mybatis.org/mybatis-3/dynamic-sql.html#foreach)
 
-[Dynamic SQL - foreach](http://www.mybatis.org/mybatis-3/dynamic-sql.html#foreach)
-
-To support the automatic rewriting of multiple `INSERT` statements into the form of `insert ... values(...), (...), ...`, in addition to configuring `rewriteBatchedStatements=true` in JDBC as mentioned before, MyBatis can also use dynamic SQL to semi-automatically generate batch inserts. Take the following mapper as an example:
+要支持将多条 insert 语句自动重写为 `insert ... values(...), (...), ...` 的形式，除了前面所说的在 JDBC 配置 `rewriteBatchedStatements = true` 外，MyBatis 还可以使用动态 SQL 来半自动生成 batch insert。比如下面的 mapper:
 
 ```xml
 <insert id="insertTestBatch" parameterType="java.util.List" fetchSize="1">
@@ -326,19 +302,17 @@ To support the automatic rewriting of multiple `INSERT` statements into the form
 </insert>
 ```
 
-This mapper generates an `insert on duplicate key update` statement. The number of `(?,?,?)` following "values" is determined by the number of passed lists. Its final effect is similar to using `rewriteBatchStatements=true`, which also effectively reduces communication overhead between the client and TiDB.
+会生成一个 `insert on duplicate key update` 语句，values 后面的 `(?, ?, ?)` 数目是根据传入的 list 个数决定，最终效果和使用 `rewriteBatchStatements = true` 类似，可以有效减少客户端和 TiDB 的网络交互次数，同样需要注意预处理后超过 `prepStmtCacheSqlLimit` 限制导致不缓存预处理语句的问题。
 
-As mentioned before, you also need to note that the Prepared Statements will not be cached after their maximum length exceeds the value of `prepStmtCacheSqlLimit`.
+#### Streaming 结果
 
-#### Streaming result
+前面介绍了在 JDBC 中如何使用流式读取结果，除了 JDBC 相应的配置外，在 MyBatis 中如果希望读取超大结果集合也需要注意：
 
-[A previous section](#use-streamingresult-to-get-the-execution-result) introduces how to stream read execution results in JDBC. In addition to the corresponding configurations of JDBC, if you want to read a super large result set in MyBatis, you also need to note that:
+- 可以通过在 mapper 配置中对单独一条 SQL 设置 `fetchSize`（见上一段代码段），效果等同于调用 JDBC `setFetchSize`
+- 可以使用带 `ResultHandler` 的查询接口来避免一次获取整个结果集
+- 可以使用 `Cursor` 类来进行流式读取
 
-- You can set `fetchSize` for a single SQL statement in the mapper configuration (see the previous code block). Its effect is equivalent to calling `setFetchSize` in JDBC.
-- You can use the query interface with `ResultHandler` to avoid getting the entire result set at once.
-- You can use the `Cursor` class for stream reading.
-
-If you configure mappings using XML, you can stream read results by configuring `fetchSize="-2147483648"`(`Integer.MIN_VALUE`) in the mapping's `<select>` section.
+对于使用 xml 配置映射，可以通过在映射 `<select>` 部分配置 `fetchSize="-2147483648"`(`Integer.MIN_VALUE`) 来流式读取结果。
 
 ```xml
 <select id="getAll" resultMap="postResultMap" fetchSize="-2147483648">
@@ -346,7 +320,7 @@ If you configure mappings using XML, you can stream read results by configuring 
 </select>
 ```
 
-If you configure mappings using code, you can add the `@Options(fetchSize = Integer.MIN_VALUE)` annotation and keep the type of results as `Cursor` so that the SQL results can be read in streaming.
+而使用代码配置映射，则可以使用 `@Options(fetchSize = Integer.MIN_VALUE)` 并返回 `Cursor` 从而让 SQL 结果能被流式读取。
 
 ```java
 @Select("select * from post")
@@ -356,63 +330,54 @@ Cursor<Post> queryAllPost();
 
 ### `ExecutorType`
 
-You can choose `ExecutorType` during `openSession`. MyBatis supports three types of executors:
+在 `openSession` 的时候可以选择 `ExecutorType`，MyBatis 支持三种 executor：
 
-- Simple: The Prepared Statements are called to JDBC for each execution (if the JDBC configuration item `cachePrepStmts` is enabled, repeated Prepared Statements will be reused)
-- Reuse: The Prepared Statements are cached in `executor`, so that you can reduce duplicate calls for Prepared Statements without using the JDBC `cachePrepStmts`
-- Batch: Each update operation (`INSERT`/`DELETE`/`UPDATE`) will first be added to the batch, and will be executed until the transaction commits or a `SELECT` query is performed. If `rewriteBatchStatements` is enabled in the JDBC layer, it will try to rewrite the statements. If not, the statements will be sent one by one.
+- Simple：每次执行都会向 JDBC 进行预处理语句的调用（如果 JDBC 配置有开启 `cachePrepStmts`，重复的预处理语句会复用）。
+- Reuse：在 `executor` 中缓存预处理语句，这样不用 JDBC 的 `cachePrepStmts` 也能减少重复预处理语句的调用。
+- Batch：每次更新只有在 `addBatch` 到 query 或 commit 时才会调用 `executeBatch` 执行，如果 JDBC 层开启了 `rewriteBatchStatements`，则会尝试改写，没有开启则会一条条发送。
 
-Usually, the default value of `ExecutorType` is `Simple`. You need to change `ExecutorType` when calling `openSession`. If it is the batch execution, you might find that in a transaction the `UPDATE` or `INSERT` statements are executed pretty fast, but it is slower when reading data or committing the transaction. This is actually normal, so you need to note this when troubleshooting slow SQL queries.
+通常默认值是 `Simple`，需要在调用 `openSession` 时改变 `ExecutorType`。如果是 Batch 执行，会遇到事务中前面的 update 或 insert 都非常快，而在读数据或 commit 事务时比较慢的情况，这实际上是正常的，在排查慢 SQL 时需要注意。
 
 ## Spring Transaction
 
-In the real world, applications might use [Spring Transaction](https://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/transaction.html) and AOP aspects to start and stop transactions.
+在应用代码中业务可能会通过使用 [Spring Transaction](https://docs.spring.io/spring/docs/4.2.x/spring-framework-reference/html/transaction.html) 和 AOP 切面的方式来启停事务。
 
-By adding the `@Transactional` annotation to the method definition, AOP starts the transaction before the method is called, and commits the transaction before the method returns the result. If your application has a similar need, you can find `@Transactional` in code to determine when the transaction is started and closed.
+通过在方法定义上添加 `@Transactional` 注解标记方法，AOP 将会在方法前开启事务，方法返回结果前提交事务。如果遇到类似业务，可以通过查找代码 `@Transactional` 来确定事务的开启和关闭时机。需要特别注意有内嵌的情况，如果发生内嵌，Spring 会根据 [Propagation](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Propagation.html) 配置使用不同的行为。
 
-Pay attention to a special case of embedding. If it occurs, Spring will behave differently based on the [Propagation](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Propagation.html) configuration.
+## 其他
 
-## Misc
+### 排查工具
 
-This section introduces some useful tools for Java to help you troubleshoot issues.
-
-### Troubleshooting tools
-
-Using the powerful troubleshooting tools of JVM is recommended when an issue occurs in your Java application and you do not know the application logic. Here are a few common tools:
+在 Java 应用发生问题并且不知道业务逻辑情况下，使用 JVM 强大的排查工具会比较有用。这里简单介绍几个常用工具：
 
 #### jstack
 
-[jstack](https://docs.oracle.com/javase/7/docs/technotes/tools/share/jstack.html) is similar to pprof/goroutine in Go, which can easily troubleshoot the process stuck issue.
+[jstack](https://docs.oracle.com/javase/7/docs/technotes/tools/share/jstack.html) 对应于 Go 中的 pprof/goroutine，可以比较方便地排查进程卡死的问题。
 
-By executing `jstack pid`, you can output the IDs and stack information of all threads in the target process. By default, only the Java stack is output. If you want to output the C++ stack in the JVM at the same time, add the `-m` option.
+通过执行 `jstack pid`，即可输出目标进程中所有线程的线程 id 和堆栈信息。输出中默认只有 Java 堆栈，如果希望同时输出 JVM 中的 C++ 堆栈，需要加 `-m` 选项。
 
-By using jstack multiple times, you can easily locate the stuck issue (for example, a slow query from application's view due to using Batch ExecutorType in Mybatis) or the application deadlock issue (for example, the application does not send any SQL statement because it is preempting a lock before sending it).
+通过多次 jstack 可以方便地发现卡死问题（比如：都通过 Mybatis BatchExecutor flush 调用 update）或死锁问题（比如：测试程序都在抢占应用中某把锁导致没发送 SQL）
 
-In addition, `top -p $ PID -H` or Java swiss knife are common methods to view the thread ID. Also, to locate the issue of "a thread occupies a lot of CPU resources and I don't know what it is executing", do the following steps:
-
-- Use `printf "%x\n" pid` to convert the thread ID to hexadecimal.
-- Go to the jstack output to find the stack information of the corresponding thread.
+另外，`top -p $PID -H` 或者 Java swiss knife 都是常用的查看线程 ID 的方法。通过 `printf "%x\n" pid` 把线程 ID 转换成 16 进制，然后去 jstack 输出结果中找对应线程的栈信息，可以定位”某个线程占用 CPU 比较高，不知道它在执行什么”的问题。
 
 #### jmap & mat
 
-Unlike pprof/heap in Go, [jmap](https://docs.oracle.com/javase/7/docs/technotes/tools/share/jmap.html) dumps the memory snapshot of the entire process (in Go, it is the sampling of the distributor), and then the snapshot can be analyzed by another tool [mat](https://www.eclipse.org/mat/).
+和 Go 中的 pprof/heap 不同，[jmap](https://docs.oracle.com/javase/7/docs/technotes/tools/share/jmap.html) 会将整个进程的内存快照 dump 下来（go 是分配器的采样），然后可以通过另一个工具 [mat](https://www.eclipse.org/mat/) 做分析。
 
-Through mat, you can see the associated information and attributes of all objects in the process, and you can also observe the running status of the thread. For example, you can use mat to find out how many MySQL connection objects exist in the current application, and what is the address and status information of each connection object.
+通过 mat 可以看到进程中所有对象的关联信息和属性，还可以观察线程运行的状态。比如：我们可以通过 mat 找到当前应用中有多少 MySQL 连接对象，每个连接对象的地址和状态信息是什么。
 
-Note that mat only handles reachable objects by default. If you want to troubleshoot young GC issues, you can adjust mat configuration to view unreachable objects. In addition, for investigating the memory allocation of young GC issues (or a large number of short-lived objects), using Java Flight Recorder is more convenient.
+需要注意 mat 默认只会处理 reachable objects，如果要排查 young gc 问题可以在 mat 配置中设置查看 unreachable objects。另外对于调查 young gc 问题（或者大量生命周期较短的对象）的内存分配，用 Java Flight Recorder 比较方便。
 
 #### trace
 
-Online applications usually do not support modifying the code, but it is often desired that dynamic instrumentation is performed in Java to locate issues. Therefore, using btrace or arthas trace is a good option. They can dynamically insert trace code without restarting the application process.
+线上应用通常无法修改代码，又希望在 Java 中做动态插桩来定位问题，推荐使用 btrace 或 arthas trace。它们可以在不重启进程的情况下动态插入 trace 代码。
 
-#### Flame graph
+#### 火焰图
 
-Obtaining flame graphs in Java applications is tedious. For details, see [Java Flame Graphs Introduction: Fire For Everyone!](http://psy-lob-saw.blogspot.com/2017/02/flamegraphs-intro-fire-for-everyone.html).
+Java 应用中获取火焰图较繁琐，可参阅 [Java Flame Graphs Introduction: Fire For Everyone!](http://psy-lob-saw.blogspot.com/2017/02/flamegraphs-intro-fire-for-everyone.html) 来手动获取。
 
-## Conclusion
+## 总结
 
-Based on commonly used Java components that interact with databases, this document describes the common problems and solutions for developing Java applications with TiDB. TiDB is highly compatible with the MySQL protocol, so most of the best practices for MySQL-based Java applications also apply to TiDB.
+本文从常用的和数据库交互的 Java 组件的角度，阐述了开发 Java 应用程序使用 TiDB 的常见问题与解决办法。TiDB 是高度兼容 MySQL 协议的数据库，基于 MySQL 开发的 Java 应用的最佳实践也多适用于 TiDB。
 
-## Need help?
-
-Ask the community on [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) or [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs), or [submit a support ticket](/support.md).
+欢迎大家在 [ASK TUG](https://asktug.com/) 踊跃发言，和我们一起分享讨论 Java 应用使用 TiDB 的实践技巧或遇到的问题。
