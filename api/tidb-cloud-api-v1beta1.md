@@ -1,19 +1,19 @@
 ---
-title: TiDB Cloud API v1beta1 Overview
-summary: Learn about the v1beta1 API of TiDB Cloud.
+title: TiDB Cloud API v1beta1 概览
+summary: 了解 TiDB Cloud 的 v1beta1 API。
 ---
 
-# TiDB Cloud API v1beta1 Overview
+# TiDB Cloud API v1beta1 概览
 
-The TiDB Cloud API v1beta1 is a RESTful API that gives you programmatic access to manage administrative objects within TiDB Cloud. Through this API, you can automatically and efficiently manage cluster-level resources (such as clusters and branches) and organization- or project-level resources (such as billing, Data Service, and IAM).
+TiDB Cloud API v1beta1 是一个 RESTful API，提供了以编程方式访问和操作 TiDB Cloud 中的各类管理资源的能力。通过该 API，你可以自动且高效地管理集群级的资源（如集群与分支），以及组织或项目级的资源（如计费、Data Service 与 IAM）。
 
-Currently, you can use the following v1beta1 APIs to manage the resources in TiDB Cloud:
+目前，你可以使用以下 v1beta1 API 来管理 TiDB Cloud 中的资源：
 
-- Cluster-level resources:
-    - [TiDB Cloud Starter or Essential Cluster](https://docs.pingcap.com/tidbcloud/api/v1beta1/serverless): manage clusters, branches, data export tasks, and data import tasks for TiDB Cloud Starter or Essential clusters.
-    - [TiDB Cloud Dedicated Cluster](https://docs.pingcap.com/tidbcloud/api/v1beta1/dedicated): manage clusters, regions, private endpoint connections, and data import tasks for TiDB Cloud Dedicated clusters.
-- Organization or project-level resources:
-    - [Billing](https://docs.pingcap.com/tidbcloud/api/v1beta1/billing): manage billing for TiDB Cloud clusters.
-    - [Data Service](https://docs.pingcap.com/tidbcloud/api/v1beta1/dataservice): manage resources in the Data Service for TiDB Cloud clusters.
-    - [IAM](https://docs.pingcap.com/tidbcloud/api/v1beta1/iam): manage API keys for TiDB Cloud clusters.
-    - [MSP (Deprecated)](https://docs.pingcap.com/tidbcloud/api/v1beta1/msp)
+- 集群级资源：
+    - [TiDB Cloud Starter 或 Essential Cluster](https://docs.pingcap.com/tidbcloud/api/v1beta1/serverless)：管理 TiDB Cloud Starter 或 Essential 的集群、分支、数据导出任务与数据导入任务。
+    - [TiDB Cloud Dedicated Cluster](https://docs.pingcap.com/tidbcloud/api/v1beta1/dedicated)：管理 TiDB Cloud Dedicated 的集群、区域（Region）、Private Endpoint 连接以及数据导入任务。
+- 组织或项目级资源：
+    - [Billing](https://docs.pingcap.com/tidbcloud/api/v1beta1/billing)：管理 TiDB Cloud 集群的计费。
+    - [Data Service](https://docs.pingcap.com/tidbcloud/api/v1beta1/dataservice)：管理 TiDB Cloud 集群 Data Service 中的资源。
+    - [IAM](https://docs.pingcap.com/tidbcloud/api/v1beta1/iam)：管理 TiDB Cloud 集群的 API key。
+    - [MSP（已弃用）](https://docs.pingcap.com/tidbcloud/api/v1beta1/msp)

@@ -1,15 +1,15 @@
 ---
-title: TiDB Monitoring API Overview
-summary: Learn the API of TiDB monitoring services.
+title: TiDB 监控 API 概览
+summary: 了解 TiDB 监控服务的 API。
 ---
 
-# TiDB Monitoring API Overview
+# TiDB 监控 API 概览
 
-The TiDB monitoring framework uses two open-source projects: [Prometheus](https://prometheus.io) and [Grafana](https://grafana.com/grafana). TiDB uses Prometheus to store monitoring and performance metrics and Grafana to visualize these metrics. TiDB also provides the built-in [TiDB Dashboard](/dashboard/dashboard-intro.md) for monitoring and diagnosing TiDB clusters.
+TiDB 的监控框架基于 [Prometheus](https://prometheus.io) 和 [Grafana](https://grafana.com/grafana) 这两个开源项目。TiDB 使用 Prometheus 作为监控和性能指标信息存储方案，使用 Grafana 作为可视化组件进行展示，并提供内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 图形化界面，用于监控及诊断 TiDB 集群。
 
-You can use the following interfaces to monitor TiDB cluster status:
+你可以使用以下 API 监控 TiDB 集群状态：
 
-- [Status interface](/tidb-monitoring-api.md#use-the-status-interface): monitor the [running status](/tidb-monitoring-api.md#running-status) of the current TiDB server and the [storage information](/tidb-monitoring-api.md#storage-information) of a table.
-- [Metrics interface](/tidb-monitoring-api.md#use-the-metrics-interface): get detailed information about various operations in components and view these metrics using Grafana.
+- [状态接口](/tidb-monitoring-api.md#使用状态接口)：监控当前 TiDB Server 的[运行状态](/tidb-monitoring-api.md#运行状态)，以及某张表的[存储信息](/tidb-monitoring-api.md#存储信息)。
+- [Metrics 接口](/tidb-monitoring-api.md#使用-metrics-接口)：获取各组件中不同操作的详细指标信息，可通过 Grafana 查看这些指标。
 
-For more information about each API, including request parameters, response examples, and usage instructions, see [TiDB Monitoring API](/tidb-monitoring-api.md).
+关于各个 API 的请求参数、响应示例与使用说明，请参阅 [TiDB 监控 API](/tidb-monitoring-api.md)。
