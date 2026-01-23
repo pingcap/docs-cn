@@ -1,7 +1,7 @@
 ---
 title: TiDB API 概览
 summary: 了解 TiDB Cloud 与 TiDB 的 API。
-aliases: ['/tidbcloud/api-overview/']
+aliases: ['/zh/tidbcloud/api-overview/']
 ---
 
 # TiDB API 概览
@@ -10,7 +10,7 @@ TiDB 提供了多种 API，可用于集群的查询与运维、数据的同步�
 
 ## TiDB Cloud API（beta）
 
-[TiDB Cloud API](/api/tidb-cloud-api-overview.md) 是一个 [REST 接口](https://zh.wikipedia.org/wiki/表现层状态转换)。通过该API，你可以以编程方式访问和操作 TiDB Cloud 中的各类管理资源，例如项目、集群、备份、恢复、导入、账单以及 Data Service。
+[TiDB Cloud API](/api/tidb-cloud-api-overview.md) 是一个 [REST 接口](https://zh.wikipedia.org/wiki/表现层状态转换)。通过 该API，你可以以编程方式访问和操作 TiDB Cloud 中的各类管理资源，例如项目、集群、备份、恢复、导入、账单以及 Data Service。
 
 | API | 说明 |
 | --- | --- |
