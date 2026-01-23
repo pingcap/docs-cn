@@ -7,9 +7,6 @@
   - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
 - 连接到 TiDB
   - GUI 数据库工具
-    - [JetBrains DataGrip](/develop/dev-guide-gui-datagrip.md)
-    - [DBeaver](/develop/dev-guide-gui-dbeaver.md)
-    - [VS Code](/develop/dev-guide-gui-vscode-sqltools.md)
     - [MySQL Workbench](/develop/dev-guide-gui-mysql-workbench.md)
     - [Navicat](/develop/dev-guide-gui-navicat.md)
   - [选择驱动或 ORM 框架](/develop/dev-guide-choose-driver-or-orm.md)
