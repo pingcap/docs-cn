@@ -1,55 +1,55 @@
 ---
-title: TiDB Cloud Serverless Driver Node.js Tutorial
-summary: Learn how to use TiDB Cloud serverless driver in a local Node.js project.
+title: TiDB Cloud Serverless Driver Node.js 教程
+summary: 学习如何在本地 Node.js 项目中使用 TiDB Cloud serverless driver。
 ---
 
-# TiDB Cloud Serverless Driver Node.js Tutorial
+# TiDB Cloud Serverless Driver Node.js 教程 <!-- translated by AI -->
 
-This tutorial describes how to use TiDB Cloud serverless driver in a local Node.js project.
+本教程介绍如何在本地 Node.js 项目中使用 TiDB Cloud serverless driver。
 
 > **Note:**
 >
-> - In addition to {{{ .starter }}} clusters, the steps in this document also work with {{{ .essential }}} clusters.
-> - To learn how to use TiDB Cloud serverless driver with Cloudflare Workers, Vercel Edge Functions, and Netlify Edge Functions, check out our [Insights into Automotive Sales](https://car-sales-insight.vercel.app/) and the [sample repository](https://github.com/tidbcloud/car-sales-insight).
+> - 本教程仅适用于 TiDB Cloud Serverless 集群。
+> - 如果你想了解如何在 Cloudflare Workers、Vercel Edge Functions 和 Netlify Edge Functions 中使用 TiDB Cloud serverless driver，请参考我们的 [Insights into Automotive Sales](https://car-sales-insight.vercel.app/) 和 [示例仓库](https://github.com/tidbcloud/car-sales-insight)。
 
-## Before you begin
+## 开始之前
 
-To complete this step-by-step tutorial, you need the following:
+要完成本分步教程，你需要准备以下内容：
 
-- [Node.js](https://nodejs.org/en) >= 18.0.0.
-- [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) or your preferred package manager.
-- A {{{ .starter }}} cluster. If you don't have any, you can [create a {{{ .starter }}} cluster](/develop/dev-guide-build-cluster-in-cloud.md).
+- [Node.js](https://nodejs.org/en) >= 18.0.0。
+- [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 或你喜欢的包管理器。
+- 一个 TiDB Cloud Serverless 集群。如果你还没有，可以[创建一个 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 
-## Step 1. Create a local Node.js project
+## 步骤 1. 创建本地 Node.js 项目
 
-1. Create a project named `node-example`:
+1. 创建一个名为 `node-example` 的项目：
 
     ```shell
     mkdir node-example
     cd node-example
     ```
 
-2. Install the TiDB Cloud serverless driver using npm or your preferred package manager.
+2. 使用 npm 或你喜欢的包管理器安装 TiDB Cloud serverless driver。
 
-    The following command takes installation with npm as an example. Executing this command will create a `node_modules` directory and a `package.json` file in your project directory.
+    以下命令以 npm 安装为例。执行该命令后，会在你的项目目录下创建 `node_modules` 目录和 `package.json` 文件。
 
     ```
     npm install @tidbcloud/serverless
     ```
 
-## Step 2. Use the serverless driver
+## 步骤 2. 使用 serverless driver
 
-The serverless driver supports both CommonJS and ES modules. The following steps take the usage of the ES module as an example.
+serverless driver 同时支持 CommonJS 和 ES modules。以下步骤以 ES module 的用法为例。
 
-1. On the overview page of your {{{ .starter }}} cluster, click **Connect** in the upper-right corner, and then get the connection string for your database from the displayed dialog. The connection string looks like this:
+1. 在你的 TiDB Cloud Serverless 集群的概览页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
 
     ```
    mysql://[username]:[password]@[host]/[database]
     ```
    
-2. In the `package.json` file, specify the ES module by adding `type: "module"`. 
+2. 在 `package.json` 文件中，通过添加 `type: "module"` 来指定 ES module。
 
-    For example:
+    例如：
 
     ```json
     {
@@ -60,32 +60,32 @@ The serverless driver supports both CommonJS and ES modules. The following steps
     }
     ```
 
-3. Create a file named `index.js` in your project directory and add the following code:
+3. 在你的项目目录下创建一个名为 `index.js` 的文件，并添加以下代码：
 
     ```js
     import { connect } from '@tidbcloud/serverless'
     
-    const conn = connect({url: 'mysql://[username]:[password]@[host]/[database]'}) // replace with your {{{ .starter }}} cluster information
+    const conn = connect({url: 'mysql://[username]:[password]@[host]/[database]'}) // replace with your TiDB Cloud Serverless cluster information
     console.log(await conn.execute("show tables"))
     ```
 
-4. Run your project with the following command:
+4. 使用以下命令运行你的项目：
 
     ```
     node index.js
     ```
 
-## Compatibility with earlier versions of Node.js
+## 与早期版本 Node.js 的兼容性
 
-If you are using Node.js earlier than 18.0.0, which does not have a global `fetch` function, you can take the following steps to get `fetch`:
+如果你使用的 Node.js 版本低于 18.0.0，不包含全局 `fetch` 函数，可以通过以下步骤获取 `fetch`：
 
-1. Install a package that provides `fetch`, such as `undici`:
+1. 安装一个提供 `fetch` 的包，例如 `undici`：
 
     ```
     npm install undici
     ``` 
 
-2. Pass the `fetch` function to the `connect` function:
+2. 将 `fetch` 函数传递给 `connect` 函数：
 
     ```js
     import { connect } from '@tidbcloud/serverless'

@@ -1,39 +1,39 @@
 ---
 title: Gemini Embeddings
-summary: Learn how to use Google Gemini embedding models in TiDB Cloud.
+summary: 了解如何在 TiDB Cloud 中使用 Google Gemini 嵌入模型。
 ---
 
-# Gemini Embeddings
+# Gemini Embeddings <!-- translated by AI -->
 
-This document describes how to use Gemini embedding models with [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) in TiDB Cloud to perform semantic searches from text queries.
+本文档介绍如何在 TiDB Cloud 中结合 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 使用 Gemini 嵌入模型，从文本查询中执行语义搜索。
 
 > **Note:**
 >
-> [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) is only available on {{{ .starter }}} clusters hosted on AWS.
+> [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 仅在托管于 AWS 的 TiDB Cloud Starter 集群上可用。
 
-## Available models
+## 可用模型
 
-All Gemini models are available for use with the `gemini/` prefix if you bring your own Gemini API key (BYOK). For example:
+如果你自带 Gemini API 密钥（BYOK），则所有 Gemini 模型均可通过 `gemini/` 前缀使用。例如：
 
 **gemini-embedding-001**
 
-- Name: `gemini/gemini-embedding-001`
-- Dimensions: 128–3072 (default: 3072)
-- Distance metric: Cosine, L2
-- Maximum input text tokens: 2,048
-- Price: Charged by Google
-- Hosted by TiDB Cloud: ❌
-- Bring Your Own Key: ✅
+- 名称：`gemini/gemini-embedding-001`
+- 维度：128–3072（默认：3072）
+- 距离度量：Cosine，L2
+- 最大输入文本 tokens 数：2,048
+- 价格：由 Google 收费
+- 由 TiDB Cloud 托管：❌
+- 支持自带密钥：✅
 
-For a full list of available models, see [Gemini documentation](https://ai.google.dev/gemini-api/docs/embeddings).
+完整的可用模型列表，请参见 [Gemini documentation](https://ai.google.dev/gemini-api/docs/embeddings)。
 
-## SQL usage example
+## SQL 使用示例
 
-To use Gemini models, you must specify a [Gemini API key](https://ai.google.dev/gemini-api/docs/api-key) as follows:
+要使用 Gemini 模型，你必须按如下方式指定 [Gemini API key](https://ai.google.dev/gemini-api/docs/api-key)：
 
 > **Note:**
 >
-> Replace `'your-gemini-api-key-here'` with your actual Gemini API key.
+> 请将 `'your-gemini-api-key-here'` 替换为你实际的 Gemini API 密钥。
 
 ```sql
 SET @@GLOBAL.TIDB_EXP_EMBED_GEMINI_API_KEY = 'your-gemini-api-key-here';
@@ -66,7 +66,7 @@ ORDER BY
 LIMIT 2;
 ```
 
-Result:
+结果：
 
 ```
 +------+----------------------------------------------------------------+
@@ -77,11 +77,11 @@ Result:
 +------+----------------------------------------------------------------+
 ```
 
-## Options
+## 选项
 
-All [Gemini options](https://ai.google.dev/gemini-api/docs/embeddings) are supported via the `additional_json_options` parameter of the `EMBED_TEXT()` function.
+所有 [Gemini options](https://ai.google.dev/gemini-api/docs/embeddings) 均可通过 `EMBED_TEXT()` 函数的 `additional_json_options` 参数进行设置。
 
-**Example: Specify the task type to improve quality**
+**示例：指定任务类型以提升质量**
 
 ```sql
 CREATE TABLE sample (
@@ -95,7 +95,7 @@ CREATE TABLE sample (
 );
 ```
 
-**Example: Use an alternative dimension**
+**示例：使用不同的维度**
 
 ```sql
 CREATE TABLE sample (
@@ -109,15 +109,15 @@ CREATE TABLE sample (
 );
 ```
 
-For all available options, see [Gemini documentation](https://ai.google.dev/gemini-api/docs/embeddings).
+所有可用选项请参见 [Gemini documentation](https://ai.google.dev/gemini-api/docs/embeddings)。
 
-## Python usage example
+## Python 使用示例
 
-See [PyTiDB Documentation](https://pingcap.github.io/ai/guides/auto-embedding/).
+参见 [PyTiDB Documentation](https://pingcap.github.io/ai/guides/auto-embedding/)。
 
-## See also
+## 参见
 
 - [Auto Embedding Overview](/ai/vector-search-auto-embedding-overview.md)
-- [Vector Search](/ai/vector-search-overview.md)
-- [Vector Functions and Operators](/ai/vector-search-functions-and-operators.md)
+- [Vector Search](/vector-search/vector-search-overview.md)
+- [Vector Functions and Operators](/vector-search/vector-search-functions-and-operators.md)
 - [Hybrid Search](/ai/vector-search-hybrid-search.md)

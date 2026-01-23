@@ -1,34 +1,34 @@
 ---
 title: NVIDIA NIM Embeddings
-summary: Learn how to use NVIDIA NIM embedding models in TiDB Cloud.
+summary: 了解如何在 TiDB Cloud 中使用 NVIDIA NIM 嵌入模型。
 ---
 
-# NVIDIA NIM Embeddings
+# NVIDIA NIM Embeddings <!-- translated by AI -->
 
-This document describes how to use NVIDIA NIM embedding models with [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) in TiDB Cloud to perform semantic searches from text queries.
+本文档介绍如何在 TiDB Cloud 中结合 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 使用 NVIDIA NIM 嵌入模型，从文本查询中执行语义搜索。
 
 > **Note:**
 >
-> [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) is only available on {{{ .starter }}} clusters hosted on AWS.
+> [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 仅适用于托管在 AWS 上的 TiDB Cloud Starter 集群。
 
-## Available models
+## 可用模型
 
-Embedding models hosted on NVIDIA NIM are available for use with the `nvidia_nim/` prefix if you bring your own [NVIDIA NIM API key](https://build.nvidia.com/settings/api-keys) (BYOK).
+如果你自带 [NVIDIA NIM API key](https://build.nvidia.com/settings/api-keys)（BYOK），则可以使用以 `nvidia_nim/` 为前缀的 NVIDIA NIM 托管嵌入模型。
 
-For your convenience, the following section takes a popular model as an example to show how to use it with Auto Embedding. For a full list of available models, see [NVIDIA NIM Text-to-embedding Models](https://build.nvidia.com/models?filters=usecase%3Ausecase_text_to_embedding).
+为方便起见，以下章节以一个流行模型为例，展示如何结合 Auto Embedding 使用该模型。完整可用模型列表请参见 [NVIDIA NIM Text-to-embedding Models](https://build.nvidia.com/models?filters=usecase%3Ausecase_text_to_embedding)。
 
 ## bge-m3
 
-- Name: `nvidia_nim/baai/bge-m3`
-- Dimensions: 1024
-- Distance metric: Cosine, L2
-- Maximum input text tokens: 8,192
-- Price: Charged by NVIDIA
-- Hosted by TiDB Cloud: ❌
-- Bring Your Own Key: ✅
-- Docs: <https://docs.api.nvidia.com/nim/reference/baai-bge-m3>
+- 名称：`nvidia_nim/baai/bge-m3`
+- 维度：1024
+- 距离度量：Cosine，L2
+- 最大输入文本 token 数：8,192
+- 价格：由 NVIDIA 收费
+- TiDB Cloud 托管：❌
+- 支持自带密钥：✅
+- 文档：<https://docs.api.nvidia.com/nim/reference/baai-bge-m3>
 
-Example:
+示例：
 
 ```sql
 SET @@GLOBAL.TIDB_EXP_EMBED_NVIDIA_NIM_API_KEY = 'your-nvidia-nim-api-key-here';
@@ -61,7 +61,7 @@ ORDER BY
 LIMIT 2;
 ```
 
-Result:
+结果：
 
 ```
 +------+----------------------------------------------------------------+
@@ -72,13 +72,13 @@ Result:
 +------+----------------------------------------------------------------+
 ```
 
-## Python usage example
+## Python 使用示例
 
-See [PyTiDB Documentation](https://pingcap.github.io/ai/guides/auto-embedding/).
+参见 [PyTiDB Documentation](https://pingcap.github.io/ai/guides/auto-embedding/)。
 
-## See also
+## 参见
 
 - [Auto Embedding Overview](/ai/vector-search-auto-embedding-overview.md)
-- [Vector Search](/ai/vector-search-overview.md)
-- [Vector Functions and Operators](/ai/vector-search-functions-and-operators.md)
+- [Vector Search](/vector-search/vector-search-overview.md)
+- [Vector Functions and Operators](/vector-search/vector-search-functions-and-operators.md)
 - [Hybrid Search](/ai/vector-search-hybrid-search.md)

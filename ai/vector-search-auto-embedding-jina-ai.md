@@ -1,49 +1,49 @@
 ---
-title: Jina AI Embeddings
-summary: Learn how to use Jina AI embedding models in TiDB Cloud.
+title: Jina AI 向量嵌入
+summary: 了解如何在 TiDB Cloud 中使用 Jina AI 向量嵌入模型。
 ---
 
-# Jina AI Embeddings
+# Jina AI 向量嵌入 <!-- translated by AI -->
 
-This document describes how to use Jina AI embedding models with [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) in TiDB Cloud to perform semantic searches from text queries.
+本文档介绍如何在 TiDB Cloud 中结合 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 使用 Jina AI 向量嵌入模型，从文本查询中执行语义搜索。
 
-> **Note:**
+> **注意：**
 >
-> [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) is only available on {{{ .starter }}} clusters hosted on AWS.
+> [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 仅适用于托管在 AWS 上的 TiDB Cloud Starter 集群。
 
-## Available models
+## 可用模型
 
-All Jina AI models are available for use with the `jina_ai/` prefix if you bring your own Jina AI API key (BYOK). For example:
+如果你自带 Jina AI API 密钥（BYOK），则所有 Jina AI 模型均可通过 `jina_ai/` 前缀使用。例如：
 
 **jina-embeddings-v4**
 
-- Name: `jina_ai/jina-embeddings-v4`
-- Dimensions: 2048
-- Distance metric: Cosine, L2
-- Maximum input text tokens: 32,768
-- Price: Charged by Jina AI
-- Hosted by TiDB Cloud: ❌
-- Bring Your Own Key: ✅
+- 名称：`jina_ai/jina-embeddings-v4`
+- 维度：2048
+- 距离度量：Cosine，L2
+- 最大输入文本 token 数：32,768
+- 价格：由 Jina AI 收费
+- 由 TiDB Cloud 托管：❌
+- 支持自带密钥：✅
 
 **jina-embeddings-v3**
 
-- Name: `jina_ai/jina-embeddings-v3`
-- Dimensions: 1024
-- Distance metric: Cosine, L2
-- Maximum input text tokens: 8,192
-- Price: Charged by Jina AI
-- Hosted by TiDB Cloud: ❌
-- Bring Your Own Key: ✅
+- 名称：`jina_ai/jina-embeddings-v3`
+- 维度：1024
+- 距离度量：Cosine，L2
+- 最大输入文本 token 数：8,192
+- 价格：由 Jina AI 收费
+- 由 TiDB Cloud 托管：❌
+- 支持自带密钥：✅
 
-For a full list of available models, see [Jina AI Documentation](https://jina.ai/embeddings/).
+完整可用模型列表请参见 [Jina AI Documentation](https://jina.ai/embeddings/)。
 
-## SQL usage example
+## SQL 使用示例
 
-To use Jina AI models, you must specify a [Jina AI API key](https://jina.ai/) as follows:
+要使用 Jina AI 模型，你必须按如下方式指定 [Jina AI API 密钥](https://jina.ai/)：
 
-> **Note:**
+> **注意：**
 >
-> Replace `'your-jina-ai-api-key-here'` with your actual Jina AI API key.
+> 请将 `'your-jina-ai-api-key-here'` 替换为你实际的 Jina AI API 密钥。
 
 ```sql
 SET @@GLOBAL.TIDB_EXP_EMBED_JINA_AI_API_KEY = 'your-jina-ai-api-key-here';
@@ -51,7 +51,7 @@ SET @@GLOBAL.TIDB_EXP_EMBED_JINA_AI_API_KEY = 'your-jina-ai-api-key-here';
 CREATE TABLE sample (
   `id`        INT,
   `content`   TEXT,
-  `embedding` VECTOR(1024) GENERATED ALWAYS AS (EMBED_TEXT(
+  `embedding` VECTOR(2048) GENERATED ALWAYS AS (EMBED_TEXT(
                 "jina_ai/jina-embeddings-v4",
                 `content`
               )) STORED
@@ -76,7 +76,7 @@ ORDER BY
 LIMIT 2;
 ```
 
-Result:
+结果：
 
 ```
 +------+----------------------------------------------------------------+
@@ -87,11 +87,11 @@ Result:
 +------+----------------------------------------------------------------+
 ```
 
-## Options
+## 选项
 
-All [Jina AI options](https://jina.ai/embeddings/) are supported via the `additional_json_options` parameter of the `EMBED_TEXT()` function.
+所有 [Jina AI 选项](https://jina.ai/embeddings/) 均可通过 `EMBED_TEXT()` 函数的 `additional_json_options` 参数进行支持。
 
-**Example: Specify "downstream task" for better performance**
+**示例：为更优性能指定“下游任务”**
 
 ```sql
 CREATE TABLE sample (
@@ -105,7 +105,7 @@ CREATE TABLE sample (
 );
 ```
 
-**Example: Use an alternative dimension**
+**示例：使用其他维度**
 
 ```sql
 CREATE TABLE sample (
@@ -119,15 +119,15 @@ CREATE TABLE sample (
 );
 ```
 
-For all available options, see [Jina AI Documentation](https://jina.ai/embeddings/).
+所有可用选项请参见 [Jina AI Documentation](https://jina.ai/embeddings/)。
 
-## Python usage example
+## Python 使用示例
 
-See [PyTiDB Documentation](https://pingcap.github.io/ai/integrations/embedding-jinaai/).
+参见 [PyTiDB Documentation](https://pingcap.github.io/ai/integrations/embedding-jinaai/)。
 
-## See Also
+## 参见
 
-- [Auto Embedding Overview](/ai/vector-search-auto-embedding-overview.md)
-- [Vector Search](/ai/vector-search-overview.md)
-- [Vector Functions and Operators](/ai/vector-search-functions-and-operators.md)
-- [Hybrid Search](/ai/vector-search-hybrid-search.md)
+- [Auto Embedding 概览](/ai/vector-search-auto-embedding-overview.md)
+- [向量搜索](/vector-search/vector-search-overview.md)
+- [向量函数与操作符](/vector-search/vector-search-functions-and-operators.md)
+- [混合搜索](/ai/vector-search-hybrid-search.md)

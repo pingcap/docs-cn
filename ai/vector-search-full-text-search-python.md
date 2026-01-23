@@ -1,56 +1,56 @@
 ---
-title: Full-Text Search with Python
-summary: Full-text search lets you retrieve documents for exact keywords. In Retrieval-Augmented Generation (RAG) scenarios, you can use full-text search together with vector search to improve the retrieval quality.
+title: 使用 Python 进行全文检索
+summary: 全文检索允许你根据精确的关键词检索文档。在 RAG（检索增强生成）场景中，你可以将全文检索与向量检索结合使用，以提升检索质量。
 aliases: ['/tidb/stable/vector-search-full-text-search-python']
 ---
 
-# Full-Text Search with Python
+# 使用 Python 进行全文检索 <!-- translated by AI -->
 
-Unlike [Vector Search](/ai/vector-search-overview.md), which focuses on semantic similarity, full-text search lets you retrieve documents for exact keywords. In Retrieval-Augmented Generation (RAG) scenarios, you can use full-text search together with vector search to improve the retrieval quality.
+与关注语义相似度的 [向量检索](/vector-search/vector-search-overview.md) 不同，全文检索允许你根据精确的关键词检索文档。在 RAG（检索增强生成）场景中，你可以将全文检索与向量检索结合使用，以提升检索质量。
 
-The full-text search feature in TiDB provides the following capabilities:
+TiDB 的全文检索功能提供以下能力：
 
-- **Query text data directly**: you can search any string columns directly without the embedding process.
+- **直接查询文本数据**：你可以直接在任意字符串列上进行检索，无需进行嵌入处理。
 
-- **Support for multiple languages**: no need to specify the language for high-quality search. TiDB supports documents in multiple languages stored in the same table and automatically chooses the best text analyzer for each document.
+- **多语言支持**：无需指定语言即可获得高质量检索。TiDB 支持在同一张表中存储多种语言的文档，并会为每个文档自动选择最佳的文本分析器。
 
-- **Order by relevance**: the search result can be ordered by relevance using the widely adopted [BM25 ranking](https://en.wikipedia.org/wiki/Okapi_BM25) algorithm.
+- **按相关性排序**：检索结果可以使用被广泛采用的 [BM25 排序](https://en.wikipedia.org/wiki/Okapi_BM25) 算法按相关性排序。
 
-- **Fully compatible with SQL**: all SQL features, such as pre-filtering, post-filtering, grouping, and joining, can be used with full-text search.
+- **完全兼容 SQL**：所有 SQL 功能，如预过滤、后过滤、分组和关联查询，都可以与全文检索结合使用。
 
-> **Tip:**
+> **提示：**
 >
-> For SQL usage, see [Full-Text Search with SQL](/ai/vector-search-full-text-search-sql.md).
+> 有关 SQL 用法，参见 [使用 SQL 进行全文检索](/ai/vector-search-full-text-search-sql.md)。
 >
-> To use full-text search and vector search together in your AI apps, see [Hybrid Search](/ai/vector-search-hybrid-search.md).
+> 如需在 AI 应用中同时使用全文检索和向量检索，参见 [混合检索](/ai/vector-search-hybrid-search.md)。
 
-## Prerequisites
+## 前提条件
 
-Full-text search is still in the early stages, and we are continuously rolling it out to more customers. Currently, Full-text search is only available on {{{ .starter }}} and {{{ .essential }}} in the following regions:
+全文检索目前仍处于早期阶段，我们正在持续向更多用户开放。目前，全文检索仅在以下区域的 TiDB Cloud Starter 和 TiDB Cloud Essential 上可用：
 
-- AWS: `Frankfurt (eu-central-1)` and `Singapore (ap-southeast-1)`
+- AWS：`法兰克福 (eu-central-1)` 和 `新加坡 (ap-southeast-1)`
 
-To complete this tutorial, make sure you have a {{{ .starter }}} cluster in a supported region. If you don't have one, follow [Creating a {{{ .starter }}} cluster](/develop/dev-guide-build-cluster-in-cloud.md) to create it.
+要完成本教程，请确保你在支持的区域拥有一个 TiDB Cloud Starter 集群。如果还没有，请按照 [创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md) 创建。
 
-## Get started
+## 快速开始
 
-### Step 1. Install the [pytidb](https://github.com/pingcap/pytidb) Python SDK
+### 步骤 1. 安装 [pytidb](https://github.com/pingcap/pytidb) Python SDK
 
-[pytidb](https://github.com/pingcap/pytidb) is the official Python SDK for TiDB, designed to help developers build AI applications efficiently. It includes built-in support for vector search and full-text search.
+[pytidb](https://github.com/pingcap/pytidb) 是 TiDB 官方的 Python SDK，旨在帮助开发者高效构建 AI 应用。该 SDK 内置了对向量检索和全文检索的支持。
 
-To install the SDK, run the following command:
+安装 SDK，请运行以下命令：
 
 ```shell
 pip install pytidb
 
-# (Alternative) To use the built-in embedding functions and rerankers:
+# （可选）如需使用内置的 embedding 函数和 reranker：
 # pip install "pytidb[models]"
 
-# (Optional) To convert query results into pandas DataFrames:
+# （可选）如需将查询结果转换为 pandas DataFrame：
 # pip install pandas
 ```
 
-### Step 2. Connect to TiDB
+### 步骤 2. 连接 TiDB
 
 ```python
 from pytidb import TiDBClient
@@ -64,13 +64,13 @@ db = TiDBClient.connect(
 )
 ```
 
-You can get these connection parameters from the [TiDB Cloud console](https://tidbcloud.com):
+你可以在 [TiDB Cloud 控制台](https://tidbcloud.com) 获取这些连接参数：
 
-1. Navigate to the [**Clusters**](https://tidbcloud.com/project/clusters) page, and then click the name of your target cluster to go to its overview page.
+1. 进入 [**Clusters**](https://tidbcloud.com/project/clusters) 页面，点击目标集群名称进入集群概览页。
 
-2. Click **Connect** in the upper-right corner. A connection dialog is displayed, with connection parameters listed.
+2. 点击右上角的 **Connect**。此时会弹出连接对话框，显示连接参数。
 
-   For example, if the connection parameters are displayed as follows:
+   例如，连接参数如下所示：
 
    ```text
    HOST:     gateway01.us-east-1.prod.shared.aws.tidbcloud.com
@@ -81,7 +81,7 @@ You can get these connection parameters from the [TiDB Cloud console](https://ti
    CA:       /etc/ssl/cert.pem
    ```
 
-   The corresponding Python code to connect to the {{{ .starter }}} cluster would be as follows:
+   对应的 Python 代码如下：
 
    ```python
    db = TiDBClient.connect(
@@ -93,15 +93,15 @@ You can get these connection parameters from the [TiDB Cloud console](https://ti
    )
    ```
 
-   Note that the preceding example is for demonstration purposes only. You need to fill in the parameters with your own values and keep them secure.
+   注意，上述示例仅用于演示。你需要使用自己的参数，并妥善保管。
 
-### Step 3. Create a table and a full-text index
+### 步骤 3. 创建表和全文索引
 
-As an example, create a table named `chunks` with the following columns:
+以创建名为 `chunks` 的表为例，包含以下字段：
 
-- `id` (int): the ID of the chunk.
-- `text` (text): the text content of the chunk.
-- `user_id` (int): the ID of the user who created the chunk.
+- `id` (int)：分块的 ID。
+- `text` (text)：分块的文本内容。
+- `user_id` (int)：创建该分块的用户 ID。
 
 ```python
 from pytidb.schema import TableModel, Field
@@ -116,10 +116,10 @@ class Chunk(TableModel, table=True):
 table = db.create_table(schema=Chunk)
 
 if not table.has_fts_index("text"):
-    table.create_fts_index("text")   # 👈 Create a fulltext index on the text column.
+    table.create_fts_index("text")   # 👈 在 text 列上创建全文索引。
 ```
 
-### Step 4. Insert data
+### 步骤 4. 插入数据
 
 ```python
 table.bulk_insert(
@@ -131,9 +131,9 @@ table.bulk_insert(
 )
 ```
 
-### Step 5. Perform a full-text search
+### 步骤 5. 执行全文检索
 
-After inserting data, you can perform a full-text search as follows:
+插入数据后，你可以按如下方式进行全文检索：
 
 ```python
 df = (
@@ -147,17 +147,27 @@ df = (
 # 1   2  the quick brown        2
 ```
 
-For a complete example, see [pytidb full-text search demo](https://github.com/pingcap/pytidb/blob/main/examples/fulltext_search).
+完整示例参见 [pytidb full-text search demo](https://github.com/pingcap/pytidb/blob/main/examples/fulltext_search)。
 
-## See also
+## 相关链接
 
-- [pytidb Python SDK Documentation](https://github.com/pingcap/pytidb)
+- [pytidb Python SDK 文档](https://github.com/pingcap/pytidb)
 
-- [Hybrid Search](/ai/vector-search-hybrid-search.md)
+- [混合检索](/ai/vector-search-hybrid-search.md)
 
-## Feedback & Help
+## 反馈与帮助
 
-Full-text search is still in the early stages with limited accessibility. If you would like to try full-text search in a region that is not yet available, or if you have feedback or need help, feel free to reach out to us:
+全文检索目前仍处于早期阶段，开放范围有限。如果你希望在尚未开放的区域体验全文检索，或有任何反馈和帮助需求，欢迎联系我们：
 
-- Ask the community on [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) or [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs).
-- [Submit a support ticket for TiDB Cloud](https://tidb.support.pingcap.com/servicedesk/customer/portals)
+<CustomContent platform="tidb">
+
+- [加入我们的 Discord](https://discord.gg/zcqexutz2R)
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+- [加入我们的 Discord](https://discord.gg/zcqexutz2R)
+- [访问我们的支持门户](https://tidb.support.pingcap.com/)
+
+</CustomContent>

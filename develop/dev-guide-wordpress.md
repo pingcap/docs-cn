@@ -1,79 +1,79 @@
 ---
-title: Connect to {{{ .starter }}} with WordPress
-summary: Learn how to use {{{ .starter }}} to run WordPress. This tutorial gives step-by-step guidance to run WordPress + {{{ .starter }}} in a few minutes.
+title: 使用 WordPress 连接 TiDB Cloud Starter
+summary: 学习如何使用 TiDB Cloud Starter 运行 WordPress。本教程将为你提供分步指导，让你在几分钟内运行 WordPress + TiDB Cloud Starter。
 ---
 
-# Connect to {{{ .starter }}} with WordPress
+# 使用 WordPress 连接 TiDB Cloud Starter <!-- translated by AI -->
 
-TiDB is a MySQL-compatible database, {{{ .starter }}} is a fully managed TiDB offering, and [WordPress](https://github.com/WordPress) is a free, open-source content management system (CMS) that lets users create and manage websites. WordPress is written in PHP and uses a MySQL database.
+TiDB 是一个兼容 MySQL 的数据库，TiDB Cloud Starter 是一款全托管的 TiDB 云服务，[WordPress](https://github.com/WordPress) 是一个免费的开源内容管理系统（CMS），可以让用户创建和管理网站。WordPress 使用 PHP 编写，并使用 MySQL 数据库。
 
-In this tutorial, you can learn how to use {{{ .starter }}} to run WordPress for free.
+在本教程中，你可以学习如何免费使用 TiDB Cloud Starter 运行 WordPress。
 
 > **Note:**
 >
-> In addition to {{{ .starter }}}, this tutorial works with {{{ .essential }}}, TiDB Cloud Dedicated, and TiDB Self-Managed clusters as well. However, it is highly recommended to run WordPress with {{{ .starter }}} for cost efficiency.
+> 除了 TiDB Cloud Starter，本教程同样适用于 TiDB Cloud Essential、TiDB Cloud Dedicated 以及 TiDB 自建集群。但强烈推荐使用 TiDB Cloud Starter 来运行 WordPress，以获得更高的性价比。
 
-## Prerequisites
+## 前置条件
 
-To complete this tutorial, you need:
+完成本教程，你需要：
 
-- A {{{ .starter }}} cluster. Follow [creating a {{{ .starter }}} cluster](/develop/dev-guide-build-cluster-in-cloud.md) to create your own TiDB Cloud cluster if you don't have one.
+- 一个 TiDB Cloud Starter 集群。如果你还没有集群，请按照[创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md)来创建属于你自己的 TiDB Cloud 集群。
 
-## Run WordPress with {{{ .starter }}}
+## 使用 TiDB Cloud Starter 运行 WordPress
 
-This section demonstrates how to run WordPress with {{{ .starter }}}.
+本节将演示如何使用 TiDB Cloud Starter 运行 WordPress。
 
-### Step 1: Clone the WordPress sample repository
+### 第 1 步：克隆 WordPress 示例仓库
 
-Run the following commands in your terminal window to clone the sample code repository:
+在终端窗口中运行以下命令，克隆示例代码仓库：
 
 ```shell
 git clone https://github.com/Icemap/wordpress-tidb-docker.git
 cd wordpress-tidb-docker
 ```
 
-### Step 2: Install dependencies
+### 第 2 步：安装依赖
 
-1. The sample repository requires [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) to start WordPress. If you have them installed, you can skip this step. It is highly recommended to run your WordPress in a Linux environment (such as Ubuntu). Run the following command to install Docker and Docker Compose:
+1. 示例仓库需要 [Docker](https://www.docker.com/) 和 [Docker Compose](https://docs.docker.com/compose/) 来启动 WordPress。如果你已经安装了它们，可以跳过此步骤。强烈建议你在 Linux 环境（如 Ubuntu）下运行 WordPress。运行以下命令安装 Docker 和 Docker Compose：
 
     ```shell
     sudo sh install.sh
     ```
 
-2. The sample repository includes the [TiDB Compatibility Plugin](https://github.com/pingcap/wordpress-tidb-plugin) as a submodule. Run the following command to update the submodule:
+2. 示例仓库包含了 [TiDB Compatibility Plugin](https://github.com/pingcap/wordpress-tidb-plugin) 作为子模块。运行以下命令以更新子模块：
 
     ```shell
     git submodule update --init --recursive
     ```
 
-### Step 3: Configure connection information
+### 第 3 步：配置连接信息
 
-Configure the WordPress database connection to {{{ .starter }}}.
+配置 WordPress 数据库连接到 TiDB Cloud Starter。
 
-1. Navigate to the [**Clusters**](https://tidbcloud.com/project/clusters) page, and then click the name of your target cluster to go to its overview page.
+1. 进入 [**Clusters**](https://tidbcloud.com/project/clusters) 页面，然后点击目标集群的名称，进入其概览页面。
 
-2. Click **Connect** in the upper-right corner. A connection dialog is displayed.
+2. 点击右上角的 **Connect**。此时会弹出连接对话框。
 
-3. Ensure the configurations in the connection dialog match your operating environment.
+3. 确保连接对话框中的配置与你的操作环境一致。
 
-    - **Connection Type** is set to `Public`.
-    - **Connect With** is set to `WordPress`.
-    - **Operating System** is set to `Debian/Ubuntu/Arch`.
-    - **Database** is set to the database you want to use—for example, `test`.
+    - **Connection Type** 设置为 `Public`。
+    - **Connect With** 设置为 `WordPress`。
+    - **Operating System** 设置为 `Debian/Ubuntu/Arch`。
+    - **Database** 设置为你想要使用的数据库，例如 `test`。
 
-4. Click **Generate Password** to create a random password.
+4. 点击 **Generate Password** 生成一个随机密码。
 
     > **Tip:**
     >
-    > If you have created a password before, you can either use the original password or click **Reset Password** to generate a new one.
+    > 如果你之前已经创建过密码，可以继续使用原有密码，或者点击 **Reset Password** 生成新密码。
 
-5. Run the following command to copy `.env.example` and rename it to `.env`:
+5. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
     ```shell
     cp .env.example .env
     ```
 
-6. Copy and paste the corresponding connection string into the `.env` file. The example result is as follows:
+6. 将对应的连接字符串复制粘贴到 `.env` 文件中。示例结果如下：
 
     ```dotenv
     TIDB_HOST='{HOST}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
@@ -83,26 +83,26 @@ Configure the WordPress database connection to {{{ .starter }}}.
     TIDB_DB_NAME='test'
     ```
 
-    Be sure to replace the placeholders `{}` with the connection parameters obtained from the connection dialog. By default, your {{{ .starter }}} comes with a `test` database. If you have already created another database in your {{{ .starter }}} cluster, you can replace `test` with your database name.
+    请确保将 `{}` 占位符替换为你在连接对话框中获得的连接参数。默认情况下，你的 TiDB Cloud Starter 自带一个 `test` 数据库。如果你已经在 TiDB Cloud Starter 集群中创建了其他数据库，可以将 `test` 替换为你的数据库名。
 
-7. Save the `.env` file.
+7. 保存 `.env` 文件。
 
-### Step 4: Start WordPress with {{{ .starter }}}
+### 第 4 步：使用 TiDB Cloud Starter 启动 WordPress
 
-1. Execute the following command to run WordPress as a Docker container:
+1. 执行以下命令，将 WordPress 作为 Docker 容器运行：
 
     ```shell
     docker compose up -d
     ```
 
-2. Set up your WordPress site by visiting [localhost](http://localhost/) if you start the container on your local machine or `http://<your_instance_ip>` if the WordPress is running on a remote machine.
+2. 通过访问 [localhost](http://localhost/)（如果你在本地机器上启动容器）或 `http://<your_instance_ip>`（如果 WordPress 运行在远程机器上）来设置你的 WordPress 站点。
 
-### Step 5: Confirm the database connection
+### 第 5 步：确认数据库连接
 
-1. Close the connection dialog for your cluster on the TiDB Cloud console, and open the **SQL Editor** page.
-2. Under the **Schemas** tab on the left, click the database you connected to Wordpress.
-3. Confirm that you now see the Wordpress tables (such as `wp_posts` and `wp_comments`) in the list of tables for that database.
+1. 在 TiDB Cloud 控制台关闭集群的连接对话框，并打开 **SQL Editor** 页面。
+2. 在左侧的 **Schemas** 标签下，点击你连接到 WordPress 的数据库。
+3. 确认你现在可以在该数据库的表列表中看到 WordPress 的表（如 `wp_posts` 和 `wp_comments`）。
 
-## Need help?
+## 需要帮助？
 
-Ask the community on [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) or [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs), or [submit a support ticket](https://tidb.support.pingcap.com/).
+你可以在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 社区提问，或[提交支持工单](https://tidb.support.pingcap.com/)。

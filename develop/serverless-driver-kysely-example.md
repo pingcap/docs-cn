@@ -1,45 +1,45 @@
 ---
-title: TiDB Cloud Serverless Driver Kysely Tutorial
-summary: Learn how to use TiDB Cloud serverless driver with Kysely.
+title: TiDB Cloud Serverless Driver Kysely 教程
+summary: 学习如何在 Kysely 中使用 TiDB Cloud serverless driver。
 ---
 
-# TiDB Cloud Serverless Driver Kysely Tutorial
+# TiDB Cloud Serverless Driver Kysely 教程 <!-- translated by AI -->
 
-[Kysely](https://kysely.dev/docs/intro) is a type-safe and autocompletion-friendly TypeScript SQL query builder. TiDB Cloud offers [@tidbcloud/kysely](https://github.com/tidbcloud/kysely), enabling you to use Kysely over HTTPS with [TiDB Cloud serverless driver](/develop/serverless-driver.md). Compared with the traditional TCP way, [@tidbcloud/kysely](https://github.com/tidbcloud/kysely) brings the following benefits:
+[Kysely](https://kysely.dev/docs/intro) 是一个类型安全且支持自动补全的 TypeScript SQL 查询构建器。TiDB Cloud 提供了 [@tidbcloud/kysely](https://github.com/tidbcloud/kysely)，使你能够通过 [TiDB Cloud serverless driver](/develop/serverless-driver.md) 在 HTTPS 上使用 Kysely。与传统的 TCP 方式相比，[ @tidbcloud/kysely ](https://github.com/tidbcloud/kysely) 带来了以下优势：
 
-- Better performance in serverless environments.
-- Ability to use Kysely in edge environments.
+- 在 serverless 环境下拥有更好的性能。
+- 能够在 edge 环境中使用 Kysely。
 
-This tutorial describes how to use TiDB Cloud serverless driver with Kysely in Node.js environments and edge environments.
+本教程介绍了如何在 Node.js 环境和 edge 环境中，将 TiDB Cloud serverless driver 与 Kysely 结合使用。
 
-## Use TiDB Cloud Kysely dialect in Node.js environments
+## 在 Node.js 环境中使用 TiDB Cloud Kysely 方言
 
-This section describes how to use TiDB Cloud serverless driver with Kysely in Node.js environments.
+本节介绍如何在 Node.js 环境中，将 TiDB Cloud serverless driver 与 Kysely 结合使用。
 
-### Before you begin
+### 前置条件
 
-To complete this tutorial, you need the following:
+完成本教程，你需要：
 
-- [Node.js](https://nodejs.org/en) >= 18.0.0.
-- [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) or your preferred package manager.
-- A {{{ .starter }}} cluster. If you don't have any, you can [create a {{{ .starter }}} cluster](/develop/dev-guide-build-cluster-in-cloud.md).
+- [Node.js](https://nodejs.org/en) >= 18.0.0。
+- [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 或你喜欢的包管理器。
+- 一个 TiDB Cloud Serverless 集群。如果你还没有，可以[创建一个 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 
-### Step 1. Create a project
+### 步骤 1. 创建项目
 
-1. Create a project named `kysely-node-example`:
+1. 创建一个名为 `kysely-node-example` 的项目：
 
     ```
     mkdir kysely-node-example
     cd kysely-node-example
     ```
 
-2. Install the `kysely`, `@tidbcloud/kysely`, and `@tidbcloud/serverless` packages:
+2. 安装 `kysely`、`@tidbcloud/kysely` 和 `@tidbcloud/serverless` 包：
 
    ```
    npm install kysely @tidbcloud/kysely @tidbcloud/serverless
    ```
 
-3. In the root directory of your project, locate the `package.json` file, and then specify the ES module by adding `"type": "module"` to the file:
+3. 在项目根目录下，找到 `package.json` 文件，并通过添加 `"type": "module"` 指定 ES module：
 
    ```json
    {
@@ -52,7 +52,7 @@ To complete this tutorial, you need the following:
    }
    ```
    
-4. In the root directory of your project, add a `tsconfig.json` file to define the TypeScript compiler options. Here is an example file:
+4. 在项目根目录下，添加 `tsconfig.json` 文件以定义 TypeScript 编译选项。以下是示例文件：
 
    ```json
    {
@@ -71,25 +71,25 @@ To complete this tutorial, you need the following:
    }
    ```
 
-### Step 2. Set the environment
+### 步骤 2. 设置环境
 
-1. On the overview page of your {{{ .starter }}} cluster, click **Connect** in the upper-right corner, and then get the connection string for your database from the displayed dialog. The connection string looks like this:
+1. 在 TiDB Cloud Serverless 集群的 overview 页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
 
     ```
     mysql://[username]:[password]@[host]/[database]
     ```
 
-2. Set the environment variable `DATABASE_URL` in your local environment. For example, in Linux or macOS, you can run the following command:
+2. 在本地环境中设置环境变量 `DATABASE_URL`。例如，在 Linux 或 macOS 下，可以运行以下命令：
 
     ```bash
     export DATABASE_URL='mysql://[username]:[password]@[host]/[database]'
     ```
    
-### Step 3. Use Kysely to query data
+### 步骤 3. 使用 Kysely 查询数据
 
-1. Create a table in your {{{ .starter }}} cluster and insert some data. 
+1. 在你的 TiDB Cloud Serverless 集群中创建一张表并插入一些数据。
 
-    You can use [SQL Editor in the TiDB Cloud console](https://docs.pingcap.com/tidbcloud/explore-data-with-chat2query) to execute SQL statements. Here is an example:
+    你可以使用 [TiDB Cloud 控制台中的 SQL Editor](/ai/explore-data-with-chat2query.md) 执行 SQL 语句。以下为示例：
 
    ```sql
    CREATE TABLE `test`.`person`  (
@@ -102,7 +102,7 @@ To complete this tutorial, you need the following:
    insert into test.person values (1,'pingcap','male')
    ```
 
-2. In the root directory of your project, create a file named `hello-world.ts` and add the following code:
+2. 在项目根目录下，创建名为 `hello-world.ts` 的文件，并添加以下代码：
 
    ```ts
    import { Kysely,GeneratedAlways,Selectable } from 'kysely'
@@ -141,67 +141,67 @@ To complete this tutorial, you need the following:
    console.log(await findPeople())
    ```
 
-### Step 4. Run the Typescript code
+### 步骤 4. 运行 Typescript 代码
 
-1. Install `ts-node` to transform TypeScript into JavaScript, and then install `@types/node` to provide TypeScript type definitions for Node.js.
+1. 安装 `ts-node` 用于将 TypeScript 转换为 JavaScript，并安装 `@types/node` 以为 Node.js 提供 TypeScript 类型定义。
 
    ```
    npm install -g ts-node
    npm i --save-dev @types/node
    ```
    
-2. Run the Typescript code with the following command:
+2. 使用以下命令运行 Typescript 代码：
 
    ```
    ts-node --esm hello-world.ts
    ```
 
-## Use TiDB Cloud Kysely dialect in edge environments
+## 在 edge 环境中使用 TiDB Cloud Kysely 方言
 
-This section takes the TiDB Cloud Kysely dialect in Vercel Edge Function as an example.
+本节以 Vercel Edge Function 中的 TiDB Cloud Kysely 方言为例进行说明。
 
-### Before you begin
+### 前置条件
 
-To complete this tutorial, you need the following:
+完成本教程，你需要：
 
-- A [Vercel](https://vercel.com/docs) account that provides edge environment.
-- [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) or your preferred package manager.
-- A {{{ .starter }}} cluster. If you don't have any, you can [create a {{{ .starter }}} cluster](/develop/dev-guide-build-cluster-in-cloud.md).
+- 一个提供 edge 环境的 [Vercel](https://vercel.com/docs) 账号。
+- [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 或你喜欢的包管理器。
+- 一个 TiDB Cloud Serverless 集群。如果你还没有，可以[创建一个 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 
-### Step 1. Create a project
+### 步骤 1. 创建项目
 
-1. Install the Vercel CLI:
+1. 安装 Vercel CLI：
 
     ```
     npm i -g vercel@latest
     ```
 
-2. Create a [Next.js](https://nextjs.org/) project called `kysely-example` using the following terminal commands:
+2. 使用以下终端命令创建一个名为 `kysely-example` 的 [Next.js](https://nextjs.org/) 项目：
 
    ```
    npx create-next-app@latest kysely-example --ts --no-eslint --tailwind --no-src-dir --app --import-alias "@/*"
    cd kysely-example
    ```
    
-3. Install the `kysely`, `@tidbcloud/kysely`, and `@tidbcloud/serverless` packages:
+3. 安装 `kysely`、`@tidbcloud/kysely` 和 `@tidbcloud/serverless` 包：
 
    ```
    npm install kysely @tidbcloud/kysely @tidbcloud/serverless
    ```
 
-### Step 2. Set the environment
+### 步骤 2. 设置环境
 
-On the overview page of your {{{ .starter }}} cluster, click **Connect** in the upper-right corner, and then get the connection string for your database from the displayed dialog. The connection string looks like this:
+在 TiDB Cloud Serverless 集群的 overview 页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
 
 ```
 mysql://[username]:[password]@[host]/[database]
 ```
 
-### Step 3. Create an edge function
+### 步骤 3. 创建 edge function
 
-1. Create a table in your {{{ .starter }}} cluster and insert some data.
+1. 在你的 TiDB Cloud Serverless 集群中创建一张表并插入一些数据。
 
-    You can use [SQL Editor in the TiDB Cloud console](https://docs.pingcap.com/tidbcloud/explore-data-with-chat2query) to execute SQL statements. Here is an example:
+    你可以使用 [TiDB Cloud 控制台中的 SQL Editor](/ai/explore-data-with-chat2query.md) 执行 SQL 语句。以下为示例：
 
    ```sql
    CREATE TABLE `test`.`person`  (
@@ -214,7 +214,7 @@ mysql://[username]:[password]@[host]/[database]
    insert into test.person values (1,'pingcap','male')
    ```
 
-2. In the `app` directory of your project, create a file `/api/edge-function-example/route.ts` and add the following code:
+2. 在项目的 `app` 目录下，创建文件 `/api/edge-function-example/route.ts`，并添加以下代码：
 
    ```ts
    import { NextResponse } from 'next/server';
@@ -270,30 +270,30 @@ mysql://[username]:[password]@[host]/[database]
    }
    ```
    
-   The preceding code accepts a query parameter `query` and returns the result of the query. If the query parameter is not provided, it returns all records in the `person` table.
+   上述代码接收一个查询参数 `query` 并返回查询结果。如果未提供该参数，则返回 `person` 表中的所有记录。
 
-3. Test your code locally:
+3. 本地测试你的代码：
 
    ```
    export DATABASE_URL='mysql://[username]:[password]@[host]/[database]'
    next dev
    ```
    
-4. Navigate to `http://localhost:3000/api/edge-function-example` to get the response from your route.
+4. 访问 `http://localhost:3000/api/edge-function-example`，即可获取该路由的响应。
 
-### Step 4. Deploy your code to Vercel
+### 步骤 4. 部署代码到 Vercel
 
-1. Deploy your code to Vercel with the `DATABASE_URL` environment variable:
+1. 使用 `DATABASE_URL` 环境变量将代码部署到 Vercel：
 
    ```
    vercel -e DATABASE_URL='mysql://[username]:[password]@[host]/[database]' --prod
    ```
 
-    After the deployment is complete, you will get the URL of your project. 
+    部署完成后，你将获得项目的 URL。
 
-2. Navigate to the `${Your-URL}/api/edge-function-example` page to get the response from your route.
+2. 访问 `${Your-URL}/api/edge-function-example` 页面，即可获取该路由的响应。
 
-## What's next
+## 后续操作
 
-- Learn more about [Kysely](https://kysely.dev/docs/intro) and [@tidbcloud/kysely](https://github.com/tidbcloud/kysely)
-- Learn how to [integrate TiDB Cloud with Vercel](https://docs.pingcap.com/tidbcloud/integrate-tidbcloud-with-vercel)
+- 了解更多关于 [Kysely](https://kysely.dev/docs/intro) 和 [@tidbcloud/kysely](https://github.com/tidbcloud/kysely) 的信息
+- 学习如何 [将 TiDB Cloud 集成到 Vercel](/tidb-cloud/integrate-tidbcloud-with-vercel.md)

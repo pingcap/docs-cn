@@ -1,61 +1,61 @@
 ---
 title: Cohere Embeddings
-summary: Learn how to use Cohere embedding models in TiDB Cloud.
+summary: 了解如何在 TiDB Cloud 中使用 Cohere 嵌入模型。
 ---
 
-# Cohere Embeddings
+# Cohere Embeddings <!-- translated by AI -->
 
-This document describes how to use Cohere embedding models with [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) in TiDB Cloud to perform semantic searches from text queries.
+本文档介绍如何在 TiDB Cloud 中结合 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 使用 Cohere 嵌入模型，从文本查询中执行语义搜索。
 
 > **Note:**
 >
-> [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) is only available on {{{ .starter }}} clusters hosted on AWS.
+> [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 仅在托管于 AWS 的 TiDB Cloud Starter 集群上可用。
 
-## Available models
+## 可用模型
 
-TiDB Cloud provides the following [Cohere](https://cohere.com/) embedding models natively. No API key is required.
+TiDB Cloud 原生提供以下 [Cohere](https://cohere.com/) 嵌入模型。无需 API 密钥。
 
 **Cohere Embed v3 model**
 
-- Name: `tidbcloud_free/cohere/embed-english-v3`
-- Dimensions: 1024
-- Distance metric: Cosine, L2
-- Languages: English
-- Maximum input text tokens: 512 (about 4 characters per token)
-- Maximum input text characters: 2,048
-- Price: Free
-- Hosted by TiDB Cloud: ✅ `tidbcloud_free/cohere/embed-english-v3`
-- Bring Your Own Key: ✅ `cohere/embed-english-v3.0`
+- 名称：`tidbcloud_free/cohere/embed-english-v3`
+- 维度：1024
+- 距离度量：Cosine，L2
+- 语言：英语
+- 最大输入文本 token 数：512（约每个 token 4 个字符）
+- 最大输入文本字符数：2,048
+- 价格：免费
+- 由 TiDB Cloud 托管：✅ `tidbcloud_free/cohere/embed-english-v3`
+- 自带密钥：✅ `cohere/embed-english-v3.0`
 
 **Cohere Multilingual Embed v3 model**
 
-- Name: `tidbcloud_free/cohere/embed-multilingual-v3`
-- Dimensions: 1024
-- Distance metric: Cosine, L2
-- Languages: 100+ languages
-- Maximum input text tokens: 512 (about 4 characters per token)
-- Maximum input text characters: 2,048
-- Price: Free
-- Hosted by TiDB Cloud: ✅ `tidbcloud_free/cohere/embed-multilingual-v3`
-- Bring Your Own Key: ✅ `cohere/embed-multilingual-v3.0`
+- 名称：`tidbcloud_free/cohere/embed-multilingual-v3`
+- 维度：1024
+- 距离度量：Cosine，L2
+- 语言：100+ 种语言
+- 最大输入文本 token 数：512（约每个 token 4 个字符）
+- 最大输入文本字符数：2,048
+- 价格：免费
+- 由 TiDB Cloud 托管：✅ `tidbcloud_free/cohere/embed-multilingual-v3`
+- 自带密钥：✅ `cohere/embed-multilingual-v3.0`
 
-Alternatively, all Cohere models are available for use with the `cohere/` prefix if you bring your own Cohere API key (BYOK). For example:
+另外，如果你自带 Cohere API 密钥（BYOK），所有 Cohere 模型均可通过 `cohere/` 前缀使用。例如：
 
 **Cohere Embed v4 model**
 
-- Name: `cohere/embed-v4.0`
-- Dimensions: 256, 512, 1024, 1536 (default)
-- Distance metric: Cosine, L2
-- Maximum input text tokens: 128,000
-- Price: Charged by Cohere
-- Hosted by TiDB Cloud: ❌
-- Bring Your Own Key: ✅
+- 名称：`cohere/embed-v4.0`
+- 维度：256、512、1024、1536（默认）
+- 距离度量：Cosine，L2
+- 最大输入文本 token 数：128,000
+- 价格：由 Cohere 收费
+- 由 TiDB Cloud 托管：❌
+- 自带密钥：✅
 
-For a full list of Cohere models, see [Cohere Documentation](https://docs.cohere.com/docs/cohere-embed).
+完整的 Cohere 模型列表请参见 [Cohere Documentation](https://docs.cohere.com/docs/cohere-embed)。
 
-## SQL usage example (TiDB Cloud hosted)
+## SQL 使用示例（TiDB Cloud 托管）
 
-The following example shows how to use the Cohere embedding model hosted by TiDB Cloud with Auto Embedding.
+以下示例展示了如何结合 Auto Embedding 使用 TiDB Cloud 托管的 Cohere 嵌入模型。
 
 ```sql
 CREATE TABLE sample (
@@ -71,10 +71,10 @@ CREATE TABLE sample (
 
 > **Note:**
 >
-> - For the Cohere embedding model, you must specify `input_type` in the `EMBED_TEXT()` function when defining the table. For example, `'{"input_type": "search_document", "input_type@search": "search_query"}'` means that `input_type` is set to `search_document` for data insertion and `search_query` is automatically applied during vector searches.
-> - The `@search` suffix indicates that the field takes effect only during vector search queries, so you do not need to specify `input_type` again when writing a query.
+> - 对于 Cohere 嵌入模型，你必须在定义表时于 `EMBED_TEXT()` 函数中指定 `input_type`。例如，`'{"input_type": "search_document", "input_type@search": "search_query"}'` 表示插入数据时 `input_type` 设为 `search_document`，向量搜索时自动应用 `search_query`。
+> - `@search` 后缀表示该字段仅在向量搜索查询时生效，因此在查询时无需再次指定 `input_type`。
 
-Insert and query data:
+插入和查询数据：
 
 ```sql
 INSERT INTO sample
@@ -96,7 +96,7 @@ ORDER BY
 LIMIT 2;
 ```
 
-Result:
+结果：
 
 ```
 +------+----------------------------------------------------------------+
@@ -107,30 +107,30 @@ Result:
 +------+----------------------------------------------------------------+
 ```
 
-## Options (TiDB Cloud hosted)
+## 选项（TiDB Cloud 托管）
 
-Both the **Embed v3** and **Multilingual Embed v3** models support the following options, which you can specify via the `additional_json_options` parameter of the `EMBED_TEXT()` function.
+**Embed v3** 和 **Multilingual Embed v3** 模型均支持以下选项，你可以通过 `EMBED_TEXT()` 函数的 `additional_json_options` 参数进行指定。
 
-- `input_type` (required): prepends special tokens to indicate the purpose of the embedding. You must use the same input type consistently when generating embeddings for the same task, otherwise embeddings will be mapped to different semantic spaces and become incompatible. The only exception is semantic search, where documents are embedded with `search_document` and queries are embedded with `search_query`.
+- `input_type`（必填）：在嵌入前添加特殊 token 以指示嵌入用途。你在为同一任务生成嵌入时必须始终使用相同的 input type，否则嵌入会被映射到不同的语义空间，导致不兼容。唯一的例外是语义搜索，文档使用 `search_document`，查询使用 `search_query`。
 
-    - `search_document`: generates embeddings from documents to store in a vector database.
-    - `search_query`: generates embeddings from queries to search against stored embeddings in a vector database.
-    - `classification`: generates embeddings to be used as input for a text classifier.
-    - `clustering`: generates embeddings for clustering tasks.
+    - `search_document`：从文档生成嵌入，用于存储到向量数据库。
+    - `search_query`：从查询生成嵌入，用于在向量数据库中检索已存储的嵌入。
+    - `classification`：生成嵌入，作为文本分类器的输入。
+    - `clustering`：生成嵌入，用于聚类任务。
 
-- `truncate` (optional): controls how the API handles inputs longer than the maximum token length. You can specify one of the following values:
+- `truncate`（可选）：控制 API 如何处理超出最大 token 长度的输入。可选值如下：
 
-    - `NONE` (default): returns an error when the input exceeds the maximum input token length.
-    - `START`: discards text from the beginning until the input fits.
-    - `END`: discards text from the end until the input fits.
+    - `NONE`（默认）：当输入超过最大 token 长度时返回错误。
+    - `START`：从开头截断文本，直到输入符合要求。
+    - `END`：从结尾截断文本，直到输入符合要求。
 
-## SQL usage example (BYOK)
+## SQL 使用示例（BYOK）
 
-To use Bring Your Own Key (BYOK) Cohere models, you must specify a Cohere API key as follows:
+如需使用自带密钥（BYOK）的 Cohere 模型，你必须按如下方式指定 Cohere API 密钥：
 
 > **Note**
 >
-> Replace `'your-cohere-api-key-here'` with your actual Cohere API key. You can obtain an API key from the [Cohere Dashboard](https://dashboard.cohere.com/).
+> 请将 `'your-cohere-api-key-here'` 替换为你的实际 Cohere API 密钥。你可以在 [Cohere Dashboard](https://dashboard.cohere.com/) 获取 API 密钥。
 
 ```sql
 SET @@GLOBAL.TIDB_EXP_EMBED_COHERE_API_KEY = 'your-cohere-api-key-here';
@@ -164,13 +164,13 @@ ORDER BY
 LIMIT 2;
 ```
 
-## Options (BYOK)
+## 选项（BYOK）
 
-All [Cohere embedding options](https://docs.cohere.com/v2/reference/embed) are supported via the `additional_json_options` parameter of the `EMBED_TEXT()` function.
+所有 [Cohere 嵌入选项](https://docs.cohere.com/v2/reference/embed) 均可通过 `EMBED_TEXT()` 函数的 `additional_json_options` 参数进行设置。
 
-**Example: Specify different `input_type` for search and insert operations**
+**示例：为搜索和插入操作分别指定不同的 `input_type`**
 
-Use the `@search` suffix to indicates that the field takes effect only during vector search queries.
+使用 `@search` 后缀表示该字段仅在向量搜索查询时生效。
 
 ```sql
 CREATE TABLE sample (
@@ -184,7 +184,7 @@ CREATE TABLE sample (
 );
 ```
 
-**Example: Use an alternative dimension**
+**示例：使用不同的维度**
 
 ```sql
 CREATE TABLE sample (
@@ -198,15 +198,15 @@ CREATE TABLE sample (
 );
 ```
 
-For all available options, see [Cohere Documentation](https://docs.cohere.com/v2/reference/embed).
+所有可用选项请参见 [Cohere Documentation](https://docs.cohere.com/v2/reference/embed)。
 
-## Python usage example
+## Python 使用示例
 
-See [PyTiDB Documentation](https://pingcap.github.io/ai/guides/auto-embedding/).
+参见 [PyTiDB Documentation](https://pingcap.github.io/ai/guides/auto-embedding/)。
 
-## See also
+## 参见
 
 - [Auto Embedding Overview](/ai/vector-search-auto-embedding-overview.md)
-- [Vector Search](/ai/vector-search-overview.md)
-- [Vector Functions and Operators](/ai/vector-search-functions-and-operators.md)
+- [Vector Search](/vector-search/vector-search-overview.md)
+- [Vector Functions and Operators](/vector-search/vector-search-functions-and-operators.md)
 - [Hybrid Search](/ai/vector-search-hybrid-search.md)
