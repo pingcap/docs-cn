@@ -3,7 +3,7 @@ title: 将 TiDB 集成到 Amazon AppFlow
 summary: 逐步介绍如何将 TiDB 集成到 Amazon AppFlow。
 ---
 
-# 将 TiDB 集成到 Amazon AppFlow <!-- translated by AI -->
+# 将 TiDB 集成到 Amazon AppFlow <!-- Draft translated by AI -->
 
 [Amazon AppFlow](https://aws.amazon.com/appflow/) 是一项全托管的 API 集成服务，你可以用它将你的 SaaS 应用程序与 AWS 服务连接，并安全地传输数据。通过 Amazon AppFlow，你可以在 TiDB 与多种数据提供方之间导入和导出数据，例如 Salesforce、Amazon S3、LinkedIn 和 GitHub。更多信息请参见 AWS 文档中的 [Supported source and destination applications](https://docs.aws.amazon.com/appflow/latest/userguide/app-specific.html)。
 

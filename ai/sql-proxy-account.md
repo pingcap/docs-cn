@@ -3,7 +3,7 @@ title: SQL Proxy Account
 summary: 了解 TiDB Cloud 中的 SQL 代理账号。
 ---
 
-# SQL 代理账号 <!-- translated by AI -->
+# SQL 代理账号 <!-- Draft translated by AI -->
 
 SQL 代理账号是 TiDB Cloud 自动为 TiDB Cloud 用户创建的 SQL 用户账号，用于通过 [SQL Editor](/ai/explore-data-with-chat2query.md) 或 [Data Service](https://docs.pingcap.com/tidbcloud/api/v1beta1/dataservice) 代表用户访问数据库。例如，`testuser@pingcap.com` 是一个 TiDB Cloud 用户账号，而 `3jhEcSimm7keKP8.testuser._41mqK6H4` 则是其对应的 SQL 代理账号。
 

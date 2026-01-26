@@ -1,6 +1,6 @@
 ---
-title: AI
-summary: <Introduction to AI>
+title: 使用 TiDB 中的 AI 功能
+summary: 介绍如何使用 TiDB 中的 AI 功能。
 ---
 
-# AI Overview
+# 使用 AI 功能

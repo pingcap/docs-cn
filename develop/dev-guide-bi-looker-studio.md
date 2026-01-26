@@ -3,7 +3,7 @@ title: 使用 Looker Studio 连接 TiDB Cloud
 summary: 了解如何使用 Looker Studio 连接 TiDB Cloud。
 ---
 
-# 使用 Looker Studio 连接 TiDB Cloud <!-- translated by AI -->
+# 使用 Looker Studio 连接 TiDB Cloud <!-- Draft translated by AI -->
 
 TiDB 是一个兼容 MySQL 的数据库，TiDB Cloud 是一款完全托管的数据库即服务（DBaaS），可将 TiDB 部署到你的云环境中，[Looker Studio](https://lookerstudio.google.com/) 是一款免费的基于 Web 的 BI 工具，可以可视化来自多种数据源的数据。
 

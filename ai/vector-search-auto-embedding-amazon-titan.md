@@ -3,7 +3,7 @@ title: Amazon Titan Embeddings
 summary: 了解如何在 TiDB Cloud 中使用 Amazon Titan 嵌入模型。
 ---
 
-# Amazon Titan Embeddings <!-- translated by AI -->
+# Amazon Titan Embeddings <!-- Draft translated by AI -->
 
 本文档介绍如何在 TiDB Cloud 中结合 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 使用 Amazon Titan 嵌入模型，从文本查询中执行语义搜索。
 

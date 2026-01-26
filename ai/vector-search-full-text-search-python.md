@@ -4,7 +4,7 @@ summary: 全文检索允许你根据精确的关键词检索文档。在 RAG（�
 aliases: ['/tidb/stable/vector-search-full-text-search-python']
 ---
 
-# 使用 Python 进行全文检索 <!-- translated by AI -->
+# 使用 Python 进行全文检索 <!-- Draft translated by AI -->
 
 与关注语义相似度的 [向量检索](/vector-search/vector-search-overview.md) 不同，全文检索允许你根据精确的关键词检索文档。在 RAG（检索增强生成）场景中，你可以将全文检索与向量检索结合使用，以提升检索质量。
 

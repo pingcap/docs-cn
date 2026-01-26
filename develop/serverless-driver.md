@@ -4,7 +4,7 @@ summary: 了解如何从 serverless 和 edge 环境连接到 TiDB Cloud Starter 
 aliases: ['/tidbcloud/serverless-driver-config']
 ---
 
-# TiDB Cloud Serverless Driver (Beta) <!-- translated by AI -->
+# TiDB Cloud Serverless Driver (Beta) <!-- Draft translated by AI -->
 
 > **注意：**
 >

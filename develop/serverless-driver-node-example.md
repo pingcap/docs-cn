@@ -3,7 +3,7 @@ title: TiDB Cloud Serverless Driver Node.js 教程
 summary: 学习如何在本地 Node.js 项目中使用 TiDB Cloud serverless driver。
 ---
 
-# TiDB Cloud Serverless Driver Node.js 教程 <!-- translated by AI -->
+# TiDB Cloud Serverless Driver Node.js 教程 <!-- Draft translated by AI -->
 
 本教程介绍如何在本地 Node.js 项目中使用 TiDB Cloud serverless driver。
 

@@ -4,7 +4,7 @@ summary: 同时使用全文检索和向量检索以提升检索质量。
 aliases: ['/tidb/stable/vector-search-hybrid-search']
 ---
 
-# Hybrid Search <!-- translated by AI -->
+# Hybrid Search <!-- Draft translated by AI -->
 
 通过使用全文检索，你可以基于精确关键词检索文档。通过使用向量检索，你可以基于语义相似度检索文档。那么，我们能否将这两种检索方式结合起来，以提升检索质量并覆盖更多场景？答案是可以，这种方法被称为混合检索（hybrid search），并且在 AI 应用中被广泛使用。
 

@@ -3,7 +3,7 @@ title: 使用 AI 辅助 SQL 编辑器探索你的数据
 summary: 了解如何在 TiDB Cloud 控制台中使用 AI 辅助 SQL 编辑器，最大化你的数据价值。
 ---
 
-# 使用 AI 辅助 SQL 编辑器探索你的数据 <!-- translated by AI -->
+# 使用 AI 辅助 SQL 编辑器探索你的数据 <!-- Draft translated by AI -->
 
 你可以在 [TiDB Cloud 控制台](https://tidbcloud.com/)中使用内置的 AI 辅助 SQL 编辑器，最大化你的数据价值。
 

@@ -3,11 +3,11 @@
 
 # Table of Contents
 
-## AI FEATURES
+## AI 功能
 
 - 探索数据
-  - [在 SQL 编辑器使用 Chat2Query](/ai/explore-data-with-chat2query.md) ![BETA](/media/tidb-cloud/blank_transparent_placeholder.png)
-  - [SQL 代理账户](/ai/sql-proxy-account.md)
+  - [使用 AI 辅助 SQL 编辑器 Chat2Query](/ai/explore-data-with-chat2query.md) ![BETA](/media/tidb-cloud/blank_transparent_placeholder.png)
+  - [配置 SQL 代理账户](/ai/sql-proxy-account.md)
 - 向量搜索 [!BETA](/media/tidb-cloud/blank_transparent_placeholder.png)
   - [概述](/ai/vector-search-overview.md)
   - 快速入门

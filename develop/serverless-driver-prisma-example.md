@@ -3,7 +3,7 @@ title: TiDB Cloud Serverless Driver Prisma 教程
 summary: 学习如何将 TiDB Cloud serverless driver 与 Prisma ORM 一起使用。
 ---
 
-# TiDB Cloud Serverless Driver Prisma 教程 <!-- translated by AI -->
+# TiDB Cloud Serverless Driver Prisma 教程 <!-- Draft translated by AI -->
 
 [Prisma](https://www.prisma.io/docs) 是一个开源的下一代 ORM（对象关系映射），可以帮助开发者以直观、高效且安全的方式与数据库交互。TiDB Cloud 提供了 [@tidbcloud/prisma-adapter](https://github.com/tidbcloud/prisma-adapter)，使你能够通过 HTTPS 使用 [Prisma Client](https://www.prisma.io/docs/concepts/components/prisma-client) 连接 [TiDB Cloud serverless driver](/develop/serverless-driver.md)。与传统的 TCP 方式相比，[@tidbcloud/prisma-adapter](https://github.com/tidbcloud/prisma-adapter) 带来了以下优势：
 

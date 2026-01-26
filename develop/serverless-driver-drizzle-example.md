@@ -3,9 +3,9 @@ title: TiDB Cloud Serverless Driver Drizzle 教程
 summary: 学习如何在 Drizzle 中使用 TiDB Cloud serverless driver。
 ---
 
-# TiDB Cloud Serverless Driver Drizzle 教程 <!-- translated by AI -->
+# TiDB Cloud Serverless Driver Drizzle 教程 <!-- Draft translated by AI -->
 
-[Drizzle ORM](https://orm.drizzle.team/) 是一款轻量级且高性能的 TypeScript ORM，注重开发者体验。从 `drizzle-orm@0.31.2` 开始，Drizzle 支持 [drizzle-orm/tidb-serverless](https://orm.drizzle.team/docs/get-started-mysql#tidb-serverless)，你可以通过 [TiDB Cloud serverless driver](/develop/serverless-driver.md) 以 HTTPS 方式连接 Drizzle。
+[Drizzle ORM](https://orm.drizzle.team/) 是一款轻量级且高性能的 TypeScript ORM，注重开发者体验。从 `drizzle-orm@0.31.2` 开始，Drizzle 支持 [drizzle-orm/tidb-serverless](https://orm.drizzle.team/docs/get-started-mysql#tidb-serverless)，你可以通过 [TiDB Cloud serverless driver](//serverless-driver.md) 以 HTTPS 方式连接 Drizzle。
 
 本教程介绍如何在 Node.js 环境和边缘环境中，将 TiDB Cloud serverless driver 与 Drizzle 搭配使用。
 

@@ -3,7 +3,7 @@ title: Auto Embedding 概述
 summary: 了解如何使用 Auto Embedding 通过纯文本而非向量进行语义搜索。
 ---
 
-# Auto Embedding 概述 <!-- translated by AI -->
+# Auto Embedding 概述 <!-- Draft translated by AI -->
 
 Auto Embedding 功能允许你直接使用纯文本进行向量搜索，无需自行提供向量。通过该功能，你可以直接插入文本数据，并使用文本查询进行语义搜索，TiDB 会在后台自动将文本转换为向量。
 

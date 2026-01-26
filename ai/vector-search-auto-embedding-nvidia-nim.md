@@ -3,7 +3,7 @@ title: NVIDIA NIM Embeddings
 summary: 了解如何在 TiDB Cloud 中使用 NVIDIA NIM 嵌入模型。
 ---
 
-# NVIDIA NIM Embeddings <!-- translated by AI -->
+# NVIDIA NIM Embeddings <!-- Draft translated by AI -->
 
 本文档介绍如何在 TiDB Cloud 中结合 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 使用 NVIDIA NIM 嵌入模型，从文本查询中执行语义搜索。
 
