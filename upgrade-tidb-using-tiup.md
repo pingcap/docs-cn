@@ -305,7 +305,7 @@ Cluster version:    v{{{ .tidb-version }}}
 
 ### 4.2 升级到 v6.2.0 及以上版本时，如何解决升级卡住的问题
 
-从 v6.2.0 开始，TiDB 默认开启[并发 DDL 框架](/ddl-introduction.md#tidb-在线-ddl-异步变更的原理)执行并发 DDL。该框架改变了 DDL 作业存储方式，由 KV 队列变为表队列。这一变化可能会导致部分升级场景卡住。下面是一些会触发该问题的场景及解决方案：
+从 v6.2.0 开始，TiDB 默认开启[并发 DDL 框架](/best-practices/ddl-introduction.md#tidb-在线-ddl-异步变更的原理)执行并发 DDL。该框架改变了 DDL 作业存储方式，由 KV 队列变为表队列。这一变化可能会导致部分升级场景卡住。下面是一些会触发该问题的场景及解决方案：
 
 - 加载插件导致的卡住
 

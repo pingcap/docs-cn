@@ -86,7 +86,7 @@ absent -> delete only -> write only -> write reorg -> public
 + 涉及同一张表的 DDL 相互阻塞。
 + `DROP DATABASE` 和数据库内所有对象的 DDL 互相阻塞。
 + 涉及不同表的加索引和列类型变更可以并发执行。
-+ 从 v8.2.0 版本开始，支持并行执行不同表的[逻辑 DDL 语句](/ddl-introduction.md#ddl-语句类型简介)。
++ 从 v8.2.0 版本开始，支持并行执行不同表的[逻辑 DDL 语句](/best-practices/ddl-introduction.md#ddl-语句类型简介)。
 + 其他情况下 DDL 可以根据 Concurrent DDL 并行度可用情况确定是否可以执行。
 
 具体来说，TiDB 在 v6.2.0 中对 DDL 执行框架进行了如下升级：
