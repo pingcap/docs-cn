@@ -1,17 +1,9 @@
 ---
-title: 开发者手册概览
-summary: 整体叙述了开发者手册，罗列了开发者手册的大致脉络。
+title: TiDB 基础知识
+summary: 介绍 TiDB 的基础知识，包括事务机制和应用程序与 TiDB 交互的方式。
 ---
 
-# 开发者手册概览
-
-本文是为应用程序开发者所编写的，如果你对 TiDB 的内部原理感兴趣，或希望参与到 TiDB 的开发中来，那么可前往阅读 [TiDB Kernel Development Guide](https://pingcap.github.io/tidb-dev-guide/) 来获取更多 TiDB 的相关信息。
-
-本手册将展示如何使用 TiDB 来快速构建一个应用，并且阐述使用 TiDB 期间可能出现的场景以及可能会遇到的问题。因此，在阅读此页面之前，建议你先行阅读 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)。
-
-此外，你还可以通过视频的形式学习免费的 [TiDB SQL 开发在线课程](https://pingkai.cn/learn)。
-
-## TiDB 基础
+# TiDB 基础知识
 
 在你开始使用 TiDB 之前，你需要了解一些关于 TiDB 数据库的一些重要工作机制：
 
@@ -23,7 +15,7 @@ summary: 整体叙述了开发者手册，罗列了开发者手册的大致脉�
 
 TiDB 支持分布式事务，而且提供[乐观事务](/optimistic-transaction.md)与[悲观事务](/pessimistic-transaction.md)两种事务模式。TiDB 当前版本中默认采用 **悲观事务** 模式，这让你在 TiDB 事务时可以像使用传统的单体数据库 (如: MySQL) 事务一样。
 
-你可以使用 [BEGIN](/sql-statements/sql-statement-begin.md) 开启一个事务，或者使用 `BEGIN PESSIMISTIC` 显式的指定开启一个**悲观事务**，使用 `BEGIN OPTIMISTIC` 显式的指定开启一个**乐观事务**。随后，使用 [COMMIT](/sql-statements/sql-statement-commit.md) 提交事务，或使用 [ROLLBACK](/sql-statements/sql-statement-rollback.md) 回滚事务。
+你可以使用 [`BEGIN`](/sql-statements/sql-statement-begin.md) 开启一个事务，或者使用 `BEGIN PESSIMISTIC` 显式的指定开启一个**悲观事务**，使用 `BEGIN OPTIMISTIC` 显式的指定开启一个**乐观事务**。随后，使用 [`COMMIT`](/sql-statements/sql-statement-commit.md) 提交事务，或使用 [`ROLLBACK`](/sql-statements/sql-statement-rollback.md) 回滚事务。
 
 TiDB 会为你保证 `BEGIN` 开始到 `COMMIT` 或 `ROLLBACK` 结束间的所有语句的原子性，即在这期间的所有语句全部成功，或者全部失败。用以保证你在应用开发时所需的数据一致性。
 
@@ -46,3 +38,9 @@ TiDB 高度兼容 MySQL 协议，TiDB 支持[大多数 MySQL 的语法及特性]
 - [事务](/develop/dev-guide-transaction-overview.md)
 - [优化 SQL 性能](/develop/dev-guide-optimize-sql-overview.md)
 - [示例程序](/develop/dev-guide-sample-application-java-spring-boot.md)
+
+## 需要帮助？
+
+- 在 [AskTUG](https://asktug.com/?utm_source=docs-cn-dev-guide) 上进行提问。
+- [提交 TiDB Cloud 工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)
+- [提交 TiDB 工单](/support.md)
