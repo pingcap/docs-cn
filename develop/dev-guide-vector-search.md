@@ -1,61 +1,61 @@
 ---
-title: Vector Search
-summary: Introduce the vector search feature in TiDB for developers, including concepts, tutorials, integrations, and reference documentation.
+title: 向量搜索
+summary: 为应用开发者介绍 TiDB 中的向量搜索功能，包括相关概念、教程、集成方式以及参考文档。
 ---
 
-# Vector Search
+# 向量搜索
 
-[Vector search](/ai/vector-search-overview.md) enables semantic similarity searches across diverse data types such as documents, images, audio, and video. By leveraging your MySQL expertise, you can build scalable AI applications with advanced search functionality.
+[向量搜索](/ai/vector-search-overview.md) 支持在文档、图像、音频和视频等多种数据类型上进行语义相似性搜索。熟悉 MySQL 的开发人员可以基于该功能轻松构建人工智能 (AI) 应用。
 
-## Get started
+## 快速开始
 
-To get started with TiDB vector search, refer to the following tutorials:
+要开始使用 TiDB 向量搜索，请参考以下文档：
 
-- [Get Started with SQL](/ai/vector-search-get-started-using-sql.md)
-- [Get Started with Python](/ai/vector-search-get-started-using-python.md)
+- [使用 SQL 开始向量搜索](/ai/vector-search-get-started-using-sql.md)
+- [使用 Python 开始向量搜索](/ai/vector-search-get-started-using-python.md)
 
-## Auto Embedding
+## 自动嵌入（Auto Embedding）
 
-The Auto Embedding feature lets you perform vector searches directly with plain text, without providing your own vectors. With this feature, you can insert text data directly and perform semantic searches using text queries, while TiDB automatically converts the text into vectors behind the scenes.
+自动嵌入功能允许你直接使用纯文本进行向量搜索，而无需自行生成或提供向量。通过该功能，你可以直接插入文本数据，并使用文本查询进行语义搜索，TiDB 会在后台自动将文本转换为向量。
 
-Currently, TiDB supports various embedding models, such as Amazon Titan, Cohere, Jina AI, OpenAI, Gemini, Hugging Face, and NVIDIA NIM. You can choose the one that best fits your needs. For more information, see [Auto Embedding Overview](/ai/vector-search-auto-embedding-overview.md).
+目前，TiDB 支持多种嵌入模型，例如 Amazon Titan、Cohere、Jina AI、OpenAI、Gemini、Hugging Face 以及 NVIDIA NIM。你可以根据需求选择合适的模型。更多信息，请参阅[自动嵌入概述](/ai/vector-search-auto-embedding-overview.md)。
 
-## Integrations
+## 集成
 
-To accelerate your development, you can integrate TiDB vector search with popular AI frameworks (such as LlamaIndex and LangChain), embedding services (such as Jina AI), and ORM libraries (such as SQLAlchemy, Peewee, and Django ORM). You can choose the one that best fits your needs.
+为提高开发效率，你可以将 TiDB 向量搜索与主流 AI 框架（如 LlamaIndex 和 LangChain）、嵌入服务（如 Jina AI）以及 ORM 库（如 SQLAlchemy、Peewee 和 Django ORM）进行集成。你可以根据自己的使用场景选择最合适的集成方式。
 
-For more information, see [Vector Search Integration Overview](/ai/vector-search-integration-overview.md).
+更多信息，请参阅[向量搜索集成概述](/ai/vector-search-integration-overview.md)。
 
-## Text search
+## 文本搜索
 
-Unlike vector search, which focuses on semantic similarity, full-text search lets you retrieve documents for exact keywords.
+与侧重语义相似性的向量搜索不同，全文搜索主要基于精确关键词进行文档检索。
 
-To improve the retrieval quality in RAG scenarios, you can combine vector search with full-text search.
+在 RAG 场景中，为了提升检索质量，你可以将向量搜索与全文搜索结合使用。
 
-| Scenario | Documentation |
+| 场景 | 文档 |
 |---------------|-------------|
-| Perform keyword-based search using SQL. | [Full-Text Search with SQL](/ai/vector-search-full-text-search-sql.md) |
-| Implement full-text search in Python applications. | [Full-Text Search with Python](/ai/vector-search-full-text-search-python.md) |
-| Combine vector and full-text search for better results. | [Hybrid Search](/ai/vector-search-hybrid-search.md) |
+| 使用 SQL 进行基于关键词的搜索 | [使用 SQL 进行全文搜索](/ai/vector-search-full-text-search-sql.md) |
+| 在 Python 应用中进行全文搜索 | [使用 Python 进行全文搜索](/ai/vector-search-full-text-search-python.md) |
+| 结合向量搜索与全文搜索以获得更优结果 | [混合搜索](/ai/vector-search-hybrid-search.md) |
 
-## Improve performance
+## 性能优化
 
-To optimize the performance of your vector search queries, you can follow a series of best practices, such as adding vector indexes, monitoring index build progress, reducing dimensions, excluding vector columns, and warming up indexes.
+为了优化向量搜索查询的性能，你可以遵循一系列最佳实践，例如添加向量索引、监控索引构建进度、降低向量维度、排除向量列以及对索引进行预热。
 
-For more information about these best practices, see [Improve Vector Search Performance](/ai/vector-search-improve-performance.md).
+关于这些最佳实践的详细说明，请参阅[提升向量搜索性能](/ai/vector-search-improve-performance.md)。
 
-## Limitations
+## 限制
 
-Before implementing vector search, be aware of the following limitations:
+在实现向量搜索之前，请注意以下限制：
 
-- Maximum 16383 dimensions per vector
-- Vector columns cannot be primary keys, unique indexes, or partition keys
-- No direct casting between vector and other data types (use string as intermediate)
+- 单个向量的最大维度为 16383
+- 向量列不能作为主键、唯一索引或分区键
+- 向量类型与其他数据类型之间不支持直接类型转换（可使用字符串作为中间类型）
 
-For a complete list, see [Vector Search Limitations](/ai/vector-search-limitations.md).
+完整限制列表，请参阅[向量搜索限制](/ai/vector-search-limitations.md)。
 
-## Reference
+## 参考
 
-- [Vector Data Types](/ai/vector-search-data-types.md)
-- [Vector Functions and Operators](/ai/vector-search-functions-and-operators.md)
-- [Vector Index](/ai/vector-search-index.md)
+- [向量数据类型](/ai/vector-search-data-types.md)
+- [向量函数与运算符](/ai/vector-search-functions-and-operators.md)
+- [向量索引](/ai/vector-search-index.md)

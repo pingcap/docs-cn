@@ -1,50 +1,46 @@
 ---
-title: TiDB basics for Developers
-summary: Learn the basics of TiDB for developers, such as transaction mechanisms and how applications interact with TiDB.
+title: TiDB 基础知识
+summary: 介绍 TiDB 的基础知识，包括事务机制和应用程序与 TiDB 交互的方式。
 ---
 
-# TiDB basics for Developers
+# TiDB 基础知识
 
-Before you start working with TiDB, you need to understand some important mechanisms of how TiDB works:
+在你开始使用 TiDB 之前，你需要了解一些关于 TiDB 数据库的一些重要工作机制：
 
-- Read the [TiDB Transaction Overview](/transaction-overview.md) to understand how transactions work in TiDB, or check out the [Transaction Notes for Application Developers](/develop/dev-guide-transaction-overview.md) to learn about transaction knowledge required for application development.
-- Understand [the way applications interact with TiDB](#the-way-applications-interact-with-tidb).
-- To learn core components and concepts of building up the distributed database TiDB and TiDB Cloud, refer to the free online course [Introduction to TiDB](https://eng.edu.pingcap.com/catalog/info/id:203/?utm_source=docs-dev-guide).
+- 阅读 [TiDB 事务概览](/transaction-overview.md)来了解 TiDB 的事务运作方式或查看[为应用开发程序员准备的事务说明](/develop/dev-guide-transaction-overview.md)查看应用开发程序员需要了解的事务部分。
+- 学习免费在线课程 [TiDB 架构与特点](https://learn.pingcap.cn/learner/course/600003?utm_source=docs-cn-dev-guide)，了解构建 TiDB 分布式数据库集群的核心组件及其概念。
+- 了解[应用程序与 TiDB 交互的方式](#应用程序与-tidb-交互的方式)。
 
-> **Note:**
->
-> This guide is written for application developers, but if you are interested in the inner workings of TiDB or want to get involved in TiDB development, read the [TiDB Kernel Development Guide](https://pingcap.github.io/tidb-dev-guide/) for more information about TiDB.
+## TiDB 事务机制
 
-## TiDB transaction mechanisms
+TiDB 支持分布式事务，而且提供[乐观事务](/optimistic-transaction.md)与[悲观事务](/pessimistic-transaction.md)两种事务模式。TiDB 当前版本中默认采用 **悲观事务** 模式，这让你在 TiDB 事务时可以像使用传统的单体数据库 (如: MySQL) 事务一样。
 
-TiDB supports distributed transactions and offers both [optimistic transaction](/optimistic-transaction.md) and [pessimistic transaction](/pessimistic-transaction.md) modes. The current version of TiDB uses the **pessimistic transaction** mode by default, which allows you to transact with TiDB as you would with a traditional monolithic database (for example, MySQL).
+你可以使用 [`BEGIN`](/sql-statements/sql-statement-begin.md) 开启一个事务，或者使用 `BEGIN PESSIMISTIC` 显式的指定开启一个**悲观事务**，使用 `BEGIN OPTIMISTIC` 显式的指定开启一个**乐观事务**。随后，使用 [`COMMIT`](/sql-statements/sql-statement-commit.md) 提交事务，或使用 [`ROLLBACK`](/sql-statements/sql-statement-rollback.md) 回滚事务。
 
-You can start a transaction using [`BEGIN`](/sql-statements/sql-statement-begin.md), explicitly specify a **pessimistic transaction** using `BEGIN PESSIMISTIC`, or explicitly specify an **optimistic transaction** using `BEGIN OPTIMISTIC`. After that, you can either commit ([`COMMIT`](/sql-statements/sql-statement-commit.md)) or roll back ([`ROLLBACK`](/sql-statements/sql-statement-rollback.md)) the transaction.
+TiDB 会为你保证 `BEGIN` 开始到 `COMMIT` 或 `ROLLBACK` 结束间的所有语句的原子性，即在这期间的所有语句全部成功，或者全部失败。用以保证你在应用开发时所需的数据一致性。
 
-TiDB guarantees atomicity for all statements between the start of `BEGIN` and the end of `COMMIT` or `ROLLBACK`, that is, all statements that are executed during this period either succeed or fail as a whole. This is used to ensure data consistency you need for application development.
+若你不清楚**乐观事务**是什么，请暂时不要使用它。因为使用**乐观事务**的前提是需要应用程序可以正确的处理 `COMMIT` 语句所返回的[所有错误](/error-codes.md)。如果不确定应用程序如何处理，请直接使用**悲观事务**。
 
-If you are not sure what an **optimistic transaction** is, do **_NOT_** use it yet. Because **optimistic transactions** require that the application can correctly handle [all errors](https://docs.pingcap.com/tidb/v8.5/error-codes/) returned by the `COMMIT` statement. If you are not sure how your application handles them, use a **pessimistic transaction** instead.
+## 应用程序与 TiDB 交互的方式
 
-## The way applications interact with TiDB
+TiDB 高度兼容 MySQL 协议，TiDB 支持[大多数 MySQL 的语法及特性](/mysql-compatibility.md)，因此大部分的 MySQL 的连接库都与 TiDB 兼容。如果你的应用程序框架或语言无 PingCAP 的官方适配，那么建议你使用 MySQL 的客户端库。同时，也有越来越多的三方数据库主动支持 TiDB 的差异特性。
 
-TiDB is highly compatible with the MySQL protocol and supports [most MySQL syntax and features](/mysql-compatibility.md), so most MySQL connection libraries are compatible with TiDB. If your application framework or language does not have an official adaptation from PingCAP, it is recommended that you use MySQL's client libraries. More and more third-party libraries are actively supporting TiDB's different features.
+因为 TiDB 兼容 MySQL 协议，且兼容 MySQL 语法，因此大多数支持 MySQL 的 ORM 也兼容 TiDB。
 
-Since TiDB is compatible with the MySQL protocol and MySQL syntax, most of the ORMs that support MySQL are also compatible with TiDB.
+## 扩展阅读
 
-## Read more
+- [快速开始](/develop/dev-guide-build-cluster-in-cloud.md)
+- [选择驱动或 ORM 框架](/develop/dev-guide-choose-driver-or-orm.md)
+- [连接到 TiDB](/develop/dev-guide-connect-to-tidb.md)
+- [数据库模式设计](/develop/dev-guide-schema-design-overview.md)
+- [数据写入](/develop/dev-guide-insert-data.md)
+- [数据读取](/develop/dev-guide-get-data-from-single-table.md)
+- [事务](/develop/dev-guide-transaction-overview.md)
+- [优化 SQL 性能](/develop/dev-guide-optimize-sql-overview.md)
+- [示例程序](/develop/dev-guide-sample-application-java-spring-boot.md)
 
-- [Quick Start](/develop/dev-guide-build-cluster-in-cloud.md)
-- [Choose Driver or ORM](/develop/dev-guide-choose-driver-or-orm.md)
-- [Connect to TiDB](https://docs.pingcap.com/tidb/v8.5/dev-guide-connect-to-tidb/)
-- [Database Schema Design](/develop/dev-guide-schema-design-overview.md)
-- [Write Data](/develop/dev-guide-insert-data.md)
-- [Read Data](/develop/dev-guide-get-data-from-single-table.md)
-- [Transaction](/develop/dev-guide-transaction-overview.md)
-- [Optimize](/develop/dev-guide-optimize-sql-overview.md)
-- [Example Applications](/develop/dev-guide-sample-application-java-spring-boot.md)
+## 需要帮助？
 
-## Need help?
-
-- Ask the community on [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) or [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs).
-- [Submit a support ticket for TiDB Cloud](https://tidb.support.pingcap.com/servicedesk/customer/portals)
-- [Submit a support ticket for TiDB Self-Managed](/support.md)
+- 在 [AskTUG](https://asktug.com/?utm_source=docs-cn-dev-guide) 上进行提问。
+- [提交 TiDB Cloud 工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)
+- [提交 TiDB 工单](/support.md)
