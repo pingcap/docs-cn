@@ -86,7 +86,7 @@ Coprocessor 是一种替 TiDB 分担计算工作负载的协处理机制。它�
 
 ### Data Definition Language (DDL)
 
-数据定义语言 (Data Definition Language, DDL) 是 SQL 标准的一部分，用于创建、修改和删除表及其他对象。更多信息，请参见 [DDL 语句的执行原理及最佳实践](/ddl-introduction.md)。
+数据定义语言 (Data Definition Language, DDL) 是 SQL 标准的一部分，用于创建、修改和删除表及其他对象。更多信息，请参见 [DDL 语句的执行原理及最佳实践](/best-practices/ddl-introduction.md)。
 
 ### Data Migration (DM)
 
