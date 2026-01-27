@@ -4,9 +4,9 @@ summary: 全文检索允许你根据精确的关键词检索文档。在 RAG（�
 aliases: ['/tidb/stable/vector-search-full-text-search-python']
 ---
 
-# 使用 Python 进行全文检索 <!-- Draft translated by AI -->
+# 使用 Python 进行全文检索
 
-与关注语义相似度的 [向量检索](/vector-search/vector-search-overview.md) 不同，全文检索允许你根据精确的关键词检索文档。在 RAG（检索增强生成）场景中，你可以将全文检索与向量检索结合使用，以提升检索质量。
+与关注语义相似度的[向量检索](/vector-search/vector-search-overview.md)不同，全文检索允许你根据精确的关键词检索文档。在 RAG（检索增强生成）场景中，你可以将全文检索与向量检索结合使用，以提升检索质量。
 
 TiDB 的全文检索功能提供以下能力：
 
@@ -14,23 +14,23 @@ TiDB 的全文检索功能提供以下能力：
 
 - **多语言支持**：无需指定语言即可获得高质量检索。TiDB 支持在同一张表中存储多种语言的文档，并会为每个文档自动选择最佳的文本分析器。
 
-- **按相关性排序**：检索结果可以使用被广泛采用的 [BM25 排序](https://en.wikipedia.org/wiki/Okapi_BM25) 算法按相关性排序。
+- **按相关性排序**：检索结果可以使用被广泛采用的 [BM25 排序](https://en.wikipedia.org/wiki/Okapi_BM25)算法按相关性排序。
 
 - **完全兼容 SQL**：所有 SQL 功能，如预过滤、后过滤、分组和关联查询，都可以与全文检索结合使用。
 
 > **提示：**
 >
-> 有关 SQL 用法，参见 [使用 SQL 进行全文检索](/ai/vector-search-full-text-search-sql.md)。
+> 有关 SQL 用法，参见[使用 SQL 进行全文检索](/ai/vector-search-full-text-search-sql.md)。
 >
-> 如需在 AI 应用中同时使用全文检索和向量检索，参见 [混合检索](/ai/vector-search-hybrid-search.md)。
+> 如需在 AI 应用中同时使用全文检索和向量检索，参见[混合检索](/ai/vector-search-hybrid-search.md)。
 
 ## 前提条件
 
 全文检索目前仍处于早期阶段，我们正在持续向更多用户开放。目前，全文检索仅在以下区域的 TiDB Cloud Starter 和 TiDB Cloud Essential 上可用：
 
-- AWS：`法兰克福 (eu-central-1)` 和 `新加坡 (ap-southeast-1)`
+- AWS：`Frankfurt (eu-central-1)` 和 `Singapore (ap-southeast-1)`
 
-要完成本教程，请确保你在支持的区域拥有一个 TiDB Cloud Starter 集群。如果还没有，请按照 [创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md) 创建。
+要完成本教程，请确保你在支持的区域拥有一个 TiDB Cloud Starter 集群。如果还没有，请按照[创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md)创建。
 
 ## 快速开始
 
@@ -64,36 +64,36 @@ db = TiDBClient.connect(
 )
 ```
 
-你可以在 [TiDB Cloud 控制台](https://tidbcloud.com) 获取这些连接参数：
+你可以在 [TiDB Cloud 控制台](https://tidbcloud.com)获取这些连接参数：
 
 1. 进入 [**Clusters**](https://tidbcloud.com/project/clusters) 页面，点击目标集群名称进入集群概览页。
 
 2. 点击右上角的 **Connect**。此时会弹出连接对话框，显示连接参数。
 
-   例如，连接参数如下所示：
+    例如，连接参数如下所示：
 
-   ```text
-   HOST:     gateway01.us-east-1.prod.shared.aws.tidbcloud.com
-   PORT:     4000
-   USERNAME: 4EfqPF23YKBxaQb.root
-   PASSWORD: abcd1234
-   DATABASE: test
-   CA:       /etc/ssl/cert.pem
-   ```
+    ```text
+    HOST:     gateway01.us-east-1.prod.shared.aws.tidbcloud.com
+    PORT:     4000
+    USERNAME: 4EfqPF23YKBxaQb.root
+    PASSWORD: abcd1234
+    DATABASE: test
+    CA:       /etc/ssl/cert.pem
+    ```
 
-   对应的 Python 代码如下：
+    对应的 Python 代码如下：
 
-   ```python
-   db = TiDBClient.connect(
-       host="gateway01.us-east-1.prod.shared.aws.tidbcloud.com",
-       port=4000,
-       username="4EfqPF23YKBxaQb.root",
-       password="abcd1234",
-       database="test",
-   )
-   ```
+    ```python
+    db = TiDBClient.connect(
+        host="gateway01.us-east-1.prod.shared.aws.tidbcloud.com",
+        port=4000,
+        username="4EfqPF23YKBxaQb.root",
+        password="abcd1234",
+        database="test",
+    )
+    ```
 
-   注意，上述示例仅用于演示。你需要使用自己的参数，并妥善保管。
+    注意，上述示例仅用于演示。你需要使用自己的参数，并妥善保管。
 
 ### 步骤 3. 创建表和全文索引
 
