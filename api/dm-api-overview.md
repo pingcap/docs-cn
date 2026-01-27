@@ -1,11 +1,11 @@
 ---
 title: Data Migration API 概览
-summary: 了解 Data Migration（DM）的 API。
+summary: 了解 Data Migration (DM) 的 API。
 ---
 
 # Data Migration API 概览
 
-[TiDB Data Migration](/dm/dm-overview.md)（DM）是一款便捷的数据迁移工具，支持从与 MySQL 协议兼容的数据库（例如 MySQL、MariaDB、Aurora MySQL）到 TiDB 的全量数据迁移和增量数据同步。
+[TiDB Data Migration](/dm/dm-overview.md) (DM) 是一款便捷的数据迁移工具，支持从与 MySQL 协议兼容的数据库（例如 MySQL、MariaDB、Aurora MySQL）到 TiDB 的全量数据迁移和增量数据同步。
 
 DM 提供了用于查询与操作 DM 集群的 OpenAPI，其功能范围与 [dmctl 工具](/dm/dmctl-introduction.md)相当。
 

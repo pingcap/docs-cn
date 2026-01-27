@@ -5,7 +5,7 @@ summary: 了解 TiDB 监控服务的 API。
 
 # TiDB 监控 API 概览
 
-TiDB 的监控框架基于 [Prometheus](https://prometheus.io) 和 [Grafana](https://grafana.com/grafana) 这两个开源项目。TiDB 使用 Prometheus 作为监控和性能指标信息存储方案，使用 Grafana 作为可视化组件进行展示，并提供内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 图形化界面，用于监控及诊断 TiDB 集群。
+TiDB 的监控框架基于 [Prometheus](https://prometheus.io) 和 [Grafana](https://grafana.com/grafana) 这两个开源项目。TiDB 使用 Prometheus 存储监控和性能指标，使用 Grafana 可视化展示这些指标，并提供内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 图形化界面，用于监控及诊断 TiDB 集群。
 
 你可以使用以下 API 监控 TiDB 集群状态：
 
