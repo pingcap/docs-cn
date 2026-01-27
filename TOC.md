@@ -432,6 +432,7 @@
   - [多列索引优化最佳实践](/best-practices/multi-column-index-best-practices.md)
   - [管理索引和识别未使用索引的最佳实践](/best-practices/index-management-best-practices.md)
   - [SaaS 多租户场景下处理百万张表](/best-practices/saas-best-practices.md)
+  - [使用 TiDB 分区表的最佳实践](/best-practices/tidb-partitioned-tables-best-practices.md)
   - [将 UUID 用作主键的最佳实践](/best-practices/uuid.md)
   - [Java 应用开发最佳实践](/best-practices/java-app-best-practices.md)
   - [高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)
