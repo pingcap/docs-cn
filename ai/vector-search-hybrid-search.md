@@ -153,15 +153,5 @@ df = (
 
 全文检索目前仍处于早期阶段，开放范围有限。如果你希望在尚未开放的区域体验全文检索，或有任何反馈与帮助需求，欢迎联系我们：
 
-<CustomContent platform="tidb">
-
-- [加入我们的 Discord](https://discord.gg/zcqexutz2R)
-
-</CustomContent>
-
-<CustomContent platform="tidb-cloud">
-
-- [加入我们的 Discord](https://discord.gg/zcqexutz2R)
-- [访问我们的支持门户](https://tidb.support.pingcap.com/)
-
-</CustomContent>
+- 在 [AskTUG](https://asktug.com/?utm_source=docs-cn-dev-guide) 上进行提问
+- [提交 TiDB Cloud 工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)
