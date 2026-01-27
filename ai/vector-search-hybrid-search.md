@@ -23,7 +23,7 @@ aliases: ['/tidb/stable/vector-search-hybrid-search']
 
 - AWS: `Frankfurt (eu-central-1)` 和 `Singapore (ap-southeast-1)`
 
-要完成本教程，请确保你在支持的区域拥有一个 TiDB Cloud Starter 集群。如果还没有，请参考 [创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md) 进行创建。
+要完成本教程，请确保你在支持的区域拥有一个 TiDB Cloud Starter 集群。如果还没有，请参考[创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md)进行创建。
 
 ## 快速开始
 
@@ -53,7 +53,7 @@ db = TiDBClient.connect(
 )
 ```
 
-你可以在 [TiDB Cloud 控制台](https://tidbcloud.com) 获取这些连接参数：
+你可以在 [TiDB Cloud 控制台](https://tidbcloud.com)获取这些连接参数：
 
 1. 进入 [**Clusters**](https://tidbcloud.com/project/clusters) 页面，点击目标集群名称进入集群概览页。
 
