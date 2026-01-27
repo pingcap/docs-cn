@@ -7,13 +7,13 @@ summary: 了解使用 TiDB 分区表的最佳实践，以提高性能、简化�
 
 本指南介绍如何在 TiDB 中使用分区表 (Partitioned Table) 以提升性能、简化数据管理，并高效处理大规模数据集。
 
-TiDB 的分区表提供了一种灵活的方式来管理大规模数据集，提升查询效率、便于批量删除历史数据并缓解写入热点问题。通过将数据划分为逻辑分区，TiDB 能利用分区裁剪（Partition Pruning）在查询执行时跳过不相关的分区，从而减少资源消耗并提升性能，尤其适用于包含大量数据的联机分析处理（Online Analytical Processing, OLAP）工作负载。
+TiDB 的分区表提供了一种灵活的方式来管理大规模数据集，提升查询效率、便于批量删除历史数据并缓解写入热点问题。通过将数据划分为逻辑分区，TiDB 能利用分区裁剪（Partition Pruning）在查询执行时跳过不相关的分区，从而减少资源消耗并提升性能，尤其适用于包含大量数据的联机分析处理 (Online Analytical Processing, OLAP) 工作负载。
 
 一个常见用例是将范围分区 [Range 分区](/partitioned-table.md#range-分区)与本地索引结合，以通过例如 [`ALTER TABLE ... DROP PARTITION`](/sql-statements/sql-statement-alter-table.md) 等操作高效清理历史数据。此方法能几乎瞬间删除过期数据，并在按分区键过滤时保持高查询效率。然而，从非分区表迁移到分区表后，无法利用分区裁剪的查询（例如未包含分区键的查询）可能出现性能下降。在这种情况下，可以使用[全局索引](/global-indexes.md)通过在所有分区间提供统一的索引结构来缓解性能影响。
 
 另一种场景是使用哈希或 Key 分区来解决写入热点问题，尤其是当工作负载使用 [`AUTO_INCREMENT`](/auto-increment.md) ID 时，顺序插入会使得特定 TiKV Region 过载。将写入分散到不同分区可以平衡负载，但与范围分区类似，未能利用分区裁剪的查询可能再次出现性能下降，此时全局索引可以提供帮助。
 
-尽管分区化带来明显好处，但也会引入挑战。例如，新创建的范围分区可能会产生临时热点。为了解决此问题，TiDB 支持自动或手动的 Region 预分裂（pre-splitting）来平衡数据分布并避免瓶颈。
+尽管分区化带来明显好处，但也会引入挑战。例如，新创建的范围分区可能会产生临时热点。为了解决此问题，TiDB 支持自动或手动的 Region 预分裂 (Pre-splitting) 来平衡数据分布并避免瓶颈。
 
 本文从查询优化、数据清理、写入扩展性和索引管理等多个角度审视 TiDB 的分区表，并通过详细场景与最佳实践提供如何优化分区表设计与调优 TiDB 性能的实用指导。
 
@@ -42,7 +42,7 @@ TiDB 的分区表提供了一种灵活的方式来管理大规模数据集，提
 
 ### 二级索引查询性能：非分区表 vs 本地索引 vs 全局索引
 
-在 TiDB 中，分区表默认使用本地索引（local indexes），每个分区维护自己的索引集；而全局索引覆盖整张表并跨分区跟踪行。
+在 TiDB 中，分区表默认使用本地索引 (Local Index)，每个分区维护自己的索引集；而全局索引覆盖整张表并跨分区跟踪行。
 
 对于访问多个分区的数据查询，全局索引通常能提供更好的性能。原因在于：使用本地索引的查询需要在每个相关分区分别进行索引查找，而使用全局索引的查询仅需在整表范围内进行一次查找。
 
@@ -423,13 +423,13 @@ PARTITION BY KEY (id) PARTITIONS 16;
 - 将非分区表转换为分区表会增加 Region 总数，因为 TiDB 为每个分区创建独立的 Region。
 - 未按分区键过滤的查询无法使用分区裁剪。TiDB 必须扫描所有分区或在所有分区上执行索引查找，这会增加 coprocessor 任务数并降低性能。
 
-    例如，下面的查询未使用分区键（`id`），可能会出现性能下降：
+    例如，下面的查询未使用分区键 (`id`)，可能会出现性能下降：
 
     ```sql
     SELECT * FROM server_info WHERE `serial_no` = ?;
     ```
 
-- 为了减少未使用分区键查询的扫描开销，需要创建全局索引。尽管全局索引会降低 `DROP PARTITION` 的速度，但哈希和 Key 分区表不支持 `DROP PARTITION`，因此全局索引在这种场景中是实际的解决方案，因为这些分区通常不会被截断（truncate）。例如：
+- 为了减少未使用分区键查询的扫描开销，需要创建全局索引。尽管全局索引会降低 `DROP PARTITION` 的速度，但哈希和 Key 分区表不支持 `DROP PARTITION`，因此全局索引在这种场景中是实际的解决方案，因为这些分区通常不会被截断 (Truncate)。例如：
 
     ```sql
     ALTER TABLE server_info ADD UNIQUE INDEX(serial_no, id) GLOBAL;
@@ -458,7 +458,7 @@ PARTITION BY KEY (id) PARTITIONS 16;
 根本原因：
 
 - 在 TiDB 中，新创建的分区最初只有单个 Region 位于某个 TiKV 节点。所有写入都会定向到该单个 Region，直到其拆分并重新分布数据。在此期间，TiKV 节点需要同时处理应用写入和 Region 拆分任务。
-- 如果新分区的初始写入流量非常高，TiKV 节点可能没有足够资源（如 CPU 或 I/O）来及时拆分和散播（scatter）Regions，导致写入在较长时间内集中在同一节点。
+- 如果新分区的初始写入流量非常高，TiKV 节点可能没有足够资源（如 CPU 或 I/O）来及时拆分和打散 (Scatter) Regions，导致写入在较长时间内集中在同一节点。
 
 影响：
 
@@ -466,7 +466,7 @@ PARTITION BY KEY (id) PARTITIONS 16;
 
 ### 分区表类型比较
 
-下表比较了非聚簇（non-clustered）分区表、聚簇（clustered）分区表和聚簇非分区表：
+下表比较了非聚簇 (Non-clustered) 分区表、聚簇 (Clustered) 分区表和聚簇非分区表：
 
 | 表类型                      | Region 预分裂 | 读性能     | 写扩展性 | 按分区清理数据 |
 |---|---:|---|---|---|
@@ -483,7 +483,7 @@ PARTITION BY KEY (id) PARTITIONS 16;
 
 #### 缺点
 
-- 使用点查（Point Get）或表范围扫描（Table Range Scan）时需要额外的表查找，可能导致读性能下降。
+- 使用点查 (Point Get) 或表范围扫描 (Table Range Scan) 时需要额外的表查找，可能导致读性能下降。
 
 #### 适用场景
 
@@ -547,7 +547,7 @@ SELECT MIN(id), MAX(id) FROM employees;
 - 对于复合主键或复合索引，仅使用最左列来定义拆分边界。
 - 如果最左列是字符串，需考虑其长度和值分布以确保均匀分布。
 
-##### 步骤 4：预分裂并散播（scatter）Regions
+##### 步骤 4：预分裂并打散 (Scatter) Regions
 
 常见做法是将 Region 数与 TiKV 节点数量匹配，或设置为 TiKV 节点数量的两倍。这有助于从一开始就使数据更均匀地分布在集群中。
 
@@ -587,7 +587,7 @@ SHOW TABLE employees PARTITION (p4) regions;
 
 #### 优势
 
-使用点查（Point Get）或表范围扫描（Table Range Scan）时无需额外查找，可提升读性能。
+使用点查 (Point Get) 或表范围扫描 (Table Range Scan) 时无需额外查找，可提升读性能。
 
 #### 缺点
 
