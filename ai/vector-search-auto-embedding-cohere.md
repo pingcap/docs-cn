@@ -1,19 +1,19 @@
 ---
-title: Cohere Embeddings
+title: Cohere 嵌入模型
 summary: 了解如何在 TiDB Cloud 中使用 Cohere 嵌入模型。
 ---
 
-# Cohere Embeddings <!-- Draft translated by AI -->
+# Cohere 嵌入模型
 
-本文档介绍如何在 TiDB Cloud 中结合 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 使用 Cohere 嵌入模型，从文本查询中执行语义搜索。
+本文介绍如何在 TiDB Cloud 中通过 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 功能，使用 Cohere 嵌入模型对文本查询进行语义搜索。
 
-> **Note:**
+> **注意：**
 >
-> [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 仅在托管于 AWS 的 TiDB Cloud Starter 集群上可用。
+> 目前，仅 AWS 上的 TiDB Cloud Starter 集群支持 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 功能。
 
 ## 可用模型
 
-TiDB Cloud 原生提供以下 [Cohere](https://cohere.com/) 嵌入模型。无需 API 密钥。
+TiDB Cloud 内置了以下 [Cohere](https://cohere.com/) 嵌入模型。使用时，无需提供 API 密钥。
 
 **Cohere Embed v3 model**
 
@@ -25,7 +25,7 @@ TiDB Cloud 原生提供以下 [Cohere](https://cohere.com/) 嵌入模型。无�
 - 最大输入文本字符数：2,048
 - 价格：免费
 - 由 TiDB Cloud 托管：✅ `tidbcloud_free/cohere/embed-english-v3`
-- 自带密钥：✅ `cohere/embed-english-v3.0`
+- Bring Your Own Key（BYOK，由用户自行提供 API key）：✅ `cohere/embed-english-v3.0`
 
 **Cohere Multilingual Embed v3 model**
 
@@ -37,9 +37,9 @@ TiDB Cloud 原生提供以下 [Cohere](https://cohere.com/) 嵌入模型。无�
 - 最大输入文本字符数：2,048
 - 价格：免费
 - 由 TiDB Cloud 托管：✅ `tidbcloud_free/cohere/embed-multilingual-v3`
-- 自带密钥：✅ `cohere/embed-multilingual-v3.0`
+- Bring Your Own Key（BYOK，由用户自行提供 API key）：✅ `cohere/embed-multilingual-v3.0`
 
-另外，如果你自带 Cohere API 密钥（BYOK），所有 Cohere 模型均可通过 `cohere/` 前缀使用。例如：
+此外，如果你能提供自己的 Cohere API Key，可以通过在模型名称前指定 `cohere/` 前缀的方式使用任意 Cohere 模型。例如：
 
 **Cohere Embed v4 model**
 
@@ -49,13 +49,13 @@ TiDB Cloud 原生提供以下 [Cohere](https://cohere.com/) 嵌入模型。无�
 - 最大输入文本 token 数：128,000
 - 价格：由 Cohere 收费
 - 由 TiDB Cloud 托管：❌
-- 自带密钥：✅
+- Bring Your Own Key（BYOK，由用户自行提供 API key）：✅
 
-完整的 Cohere 模型列表请参见 [Cohere Documentation](https://docs.cohere.com/docs/cohere-embed)。
+完整的 Cohere 模型列表请参见 [Cohere 文档](https://docs.cohere.com/docs/cohere-embed)。
 
-## SQL 使用示例（TiDB Cloud 托管）
+## SQL 使用示例（针对 TiDB Cloud 内置的嵌入模型）
 
-以下示例展示了如何结合 Auto Embedding 使用 TiDB Cloud 托管的 Cohere 嵌入模型。
+以下示例展示了如何通过 Auto Embedding 功能使用 TiDB Cloud 内置的 Cohere 嵌入模型。
 
 ```sql
 CREATE TABLE sample (
@@ -71,7 +71,7 @@ CREATE TABLE sample (
 
 > **Note:**
 >
-> - 对于 Cohere 嵌入模型，你必须在定义表时于 `EMBED_TEXT()` 函数中指定 `input_type`。例如，`'{"input_type": "search_document", "input_type@search": "search_query"}'` 表示插入数据时 `input_type` 设为 `search_document`，向量搜索时自动应用 `search_query`。
+> - 对于 Cohere 嵌入模型，在定义表时，你必须在 `EMBED_TEXT()` 函数中指定 `input_type`。例如，`'{"input_type": "search_document", "input_type@search": "search_query"}'` 表示插入数据时 `input_type` 为 `search_document`，向量搜索时自动应用 `search_query`。
 > - `@search` 后缀表示该字段仅在向量搜索查询时生效，因此在查询时无需再次指定 `input_type`。
 
 插入和查询数据：
@@ -107,11 +107,11 @@ LIMIT 2;
 +------+----------------------------------------------------------------+
 ```
 
-## 选项（TiDB Cloud 托管）
+## 选项（针对 TiDB Cloud 内置的嵌入模型）
 
 **Embed v3** 和 **Multilingual Embed v3** 模型均支持以下选项，你可以通过 `EMBED_TEXT()` 函数的 `additional_json_options` 参数进行指定。
 
-- `input_type`（必填）：在嵌入前添加特殊 token 以指示嵌入用途。你在为同一任务生成嵌入时必须始终使用相同的 input type，否则嵌入会被映射到不同的语义空间，导致不兼容。唯一的例外是语义搜索，文档使用 `search_document`，查询使用 `search_query`。
+- `input_type`（必填）：在嵌入前添加特殊 token 以指示嵌入用途。你在为同一任务生成嵌入时必须始终使用相同的 `input type`，否则嵌入会被映射到不同的语义空间，导致不兼容。唯一的例外是语义搜索，文档使用 `search_document`，查询使用 `search_query`。
 
     - `search_document`：从文档生成嵌入，用于存储到向量数据库。
     - `search_query`：从查询生成嵌入，用于在向量数据库中检索已存储的嵌入。
@@ -126,7 +126,7 @@ LIMIT 2;
 
 ## SQL 使用示例（BYOK）
 
-如需使用自带密钥（BYOK）的 Cohere 模型，你必须按如下方式指定 Cohere API 密钥：
+如需使用 Bring Your Own Key (BYOK) 方式的 Cohere 模型，你必须按如下方式指定 Cohere API 密钥：
 
 > **Note**
 >
@@ -204,9 +204,9 @@ CREATE TABLE sample (
 
 参见 [PyTiDB Documentation](https://pingcap.github.io/ai/guides/auto-embedding/)。
 
-## 参见
+## 另请参阅
 
-- [Auto Embedding Overview](/ai/vector-search-auto-embedding-overview.md)
-- [Vector Search](/vector-search/vector-search-overview.md)
-- [Vector Functions and Operators](/vector-search/vector-search-functions-and-operators.md)
-- [Hybrid Search](/ai/vector-search-hybrid-search.md)
+- [Auto Embedding 概览](/ai/vector-search-auto-embedding-overview.md)
+- [向量搜索](/vector-search/vector-search-overview.md)
+- [向量函数与操作符](/vector-search/vector-search-functions-and-operators.md)
+- [混合搜索](/ai/vector-search-hybrid-search.md)

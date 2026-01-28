@@ -1,11 +1,11 @@
 ---
-title: OpenAI Embeddings
+title: OpenAI 嵌入模型
 summary: 了解如何在 TiDB Cloud 中使用 OpenAI 嵌入模型。
 ---
 
-# OpenAI Embeddings <!-- Draft translated by AI -->
+# OpenAI 嵌入模型
 
-本文档介绍如何在 TiDB Cloud 中结合 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 使用 OpenAI 嵌入模型，从文本查询中执行语义搜索。
+本文介绍如何在 TiDB Cloud 中通过 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 功能，使用 OpenAI 嵌入模型对文本查询进行语义搜索。
 
 > **注意：**
 >
@@ -13,7 +13,7 @@ summary: 了解如何在 TiDB Cloud 中使用 OpenAI 嵌入模型。
 
 ## 可用模型
 
-如果你自带 OpenAI API key（BYOK），所有 OpenAI 模型均可通过 `openai/` 前缀使用。例如：
+如果你能提供自己的 OpenAI API Key，可以通过在模型名称前指定 `openai/` 前缀的方式使用任意 OpenAI 模型。例如：
 
 **text-embedding-3-small**
 
@@ -22,7 +22,7 @@ summary: 了解如何在 TiDB Cloud 中使用 OpenAI 嵌入模型。
 - 距离度量：Cosine，L2
 - 价格：由 OpenAI 收费
 - 由 TiDB Cloud 托管：❌
-- 支持自带密钥：✅
+- Bring Your Own Key（BYOK，由用户自行提供 API key）：✅
 
 **text-embedding-3-large**
 
@@ -31,13 +31,13 @@ summary: 了解如何在 TiDB Cloud 中使用 OpenAI 嵌入模型。
 - 距离度量：Cosine，L2
 - 价格：由 OpenAI 收费
 - 由 TiDB Cloud 托管：❌
-- 支持自带密钥：✅
+- Bring Your Own Key（BYOK，由用户自行提供 API key）：✅
 
-完整可用模型列表请参见 [OpenAI Documentation](https://platform.openai.com/docs/guides/embeddings)。
+完整可用模型列表请参见 [OpenAI 文档](https://platform.openai.com/docs/guides/embeddings)。
 
 ## SQL 使用示例
 
-要使用 OpenAI 模型，必须按如下方式指定 [OpenAI API key](https://platform.openai.com/api-keys)：
+如需使用 OpenAI 模型，请按照以下方式指定 [OpenAI API key](https://platform.openai.com/api-keys)：
 
 > **注意：**
 >
@@ -74,7 +74,7 @@ ORDER BY
 LIMIT 2;
 ```
 
-结果：
+输出结果：
 
 ```
 +------+----------------------------------------------------------------+
@@ -87,7 +87,7 @@ LIMIT 2;
 
 ## 使用 Azure OpenAI
 
-如需在 Azure 上使用 OpenAI 嵌入模型，请将全局变量 `TIDB_EXP_EMBED_OPENAI_API_BASE` 设置为你的 Azure 资源的 URL。例如：
+如需使用 Azure 上提供的 OpenAI 嵌入模型，请将全局变量 `TIDB_EXP_EMBED_OPENAI_API_BASE` 设置为你的 Azure 资源的 URL。例如：
 
 ```sql
 SET @@GLOBAL.TIDB_EXP_EMBED_OPENAI_API_KEY = 'your-openai-api-key-here';
@@ -120,24 +120,24 @@ ORDER BY
 LIMIT 2;
 ```
 
-请注意，即使你的资源 URL 形式为 `https://<your-resource-name>.cognitiveservices.azure.com/`，也必须使用 `https://<your-resource-name>.openai.azure.com/openai/v1` 作为 API base，以确保 OpenAI 兼容的请求和响应格式。
+请注意，即使你的资源 URL 为 `https://<your-resource-name>.cognitiveservices.azure.com/`，配置`TIDB_EXP_EMBED_OPENAI_API_BASE` 时也必须使用 `https://<your-resource-name>.openai.azure.com/openai/v1` 格式，以确保请求和响应格式与 OpenAI 兼容。
 
-如需从 Azure OpenAI 切换回直接使用 OpenAI，只需将 `TIDB_EXP_EMBED_OPENAI_API_BASE` 设置为空字符串：
+如需从 Azure OpenAI 切换回直接使用 OpenAI，将 `TIDB_EXP_EMBED_OPENAI_API_BASE` 设置为空字符串即可：
 
 ```sql
-SET @@GLOBAL.TIDB_EXP_EMED_OPENAI_API_BASE = '';
+SET @@GLOBAL.TIDB_EXP_EMBED_OPENAI_API_BASE = '';
 ```
 
 > **注意：**
 >
-> - 出于安全原因，你只能将 API base 设置为 Azure OpenAI URL 或 OpenAI URL。不允许设置为任意 base URL。
-> - 如需使用其他 OpenAI 兼容的嵌入服务，请联系 [TiDB Cloud Support](/tidb-cloud/tidb-cloud-support.md)。
+> - 出于安全原因，`API_BASE` 只能设置为 Azure OpenAI URL 或 OpenAI URL，不允许设置为任意 base URL。
+> - 如需使用其他 OpenAI 兼容的嵌入服务，请联系 [TiDB Cloud Support](https://docs.pingcap.com/tidbcloud/tidb-cloud-support/)。
 
 ## 选项
 
-所有 [OpenAI embedding options](https://platform.openai.com/docs/api-reference/embeddings/create) 均可通过 `EMBED_TEXT()` 函数的 `additional_json_options` 参数进行设置。
+所有 [OpenAI Embedding 选项](https://platform.openai.com/docs/api-reference/embeddings/create) 均可通过 `EMBED_TEXT()` 函数的 `additional_json_options` 参数进行设置。
 
-**示例：为 text-embedding-3-large 使用其他维度**
+**示例：设置 text-embedding-3-large 的维度**
 
 ```sql
 CREATE TABLE sample (
@@ -151,15 +151,15 @@ CREATE TABLE sample (
 );
 ```
 
-所有可用选项请参见 [OpenAI Documentation](https://platform.openai.com/docs/api-reference/embeddings/create)。
+所有可用选项请参见 [OpenAI Embedding 文档](https://platform.openai.com/docs/api-reference/embeddings/create)。
 
 ## Python 使用示例
 
-参见 [PyTiDB Documentation](https://pingcap.github.io/ai/guides/auto-embedding/)。
+参见 [PyTiDB 文档](https://pingcap.github.io/ai/guides/auto-embedding/)。
 
 ## 另请参阅
 
 - [Auto Embedding Overview](/ai/vector-search-auto-embedding-overview.md)
-- [Vector Search](/vector-search/vector-search-overview.md)
-- [Vector Functions and Operators](/vector-search/vector-search-functions-and-operators.md)
-- [Hybrid Search](/ai/vector-search-hybrid-search.md)
+- [向量搜索](/vector-search/vector-search-overview.md)
+- [向量函数与操作符](/vector-search/vector-search-functions-and-operators.md)
+- [混合搜索](/ai/vector-search-hybrid-search.md)
