@@ -493,7 +493,7 @@ PARTITION BY KEY (id) PARTITIONS 16;
 
 为缓解新范围分区引发的热点问题，执行以下步骤。
 
-##### 步骤 1：使用 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`
+##### 第 1 步：使用 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`
 
 创建带 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 和 [`PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 的分区表以预分裂 Regions。
 
@@ -522,7 +522,7 @@ PARTITION BY RANGE ( YEAR(hired) ) (
 );
 ```
 
-##### 步骤 2：添加 `merge_option=deny` 属性
+##### 第 2 步：添加 `merge_option=deny` 属性
 
 在表级或分区级添加 [`merge_option=deny`](/table-attributes.md#使用表属性控制-region-合并) 属性，以防止空 Region 被合并。当你删除分区时，TiDB 仍会合并属于被删除分区的 Regions。
 
@@ -533,7 +533,7 @@ ALTER TABLE employees ATTRIBUTES 'merge_option=deny';
 ALTER TABLE employees PARTITION `p3` ATTRIBUTES 'merge_option=deny';
 ```
 
-##### 步骤 3：根据业务数据确定拆分边界
+##### 第 3 步：根据业务数据确定拆分边界
 
 在创建表或添加分区前，为避免热点进行预分裂。为有效预分裂，基于实际业务数据分布配置 Region 拆分的上下界。避免设置过宽的边界，因为这会阻碍数据在 TiKV 节点间的有效分布，失去预分裂的意义。
 
@@ -547,11 +547,11 @@ SELECT MIN(id), MAX(id) FROM employees;
 - 对于复合主键或复合索引，仅使用最左列来定义拆分边界。
 - 如果最左列是字符串，需考虑其长度和值分布以确保均匀分布。
 
-##### 步骤 4：预分裂并打散 (Scatter) Regions
+##### 第 4 步：预分裂并打散 (Scatter) Regions
 
 常见做法是将 Region 数与 TiKV 节点数量匹配，或设置为 TiKV 节点数量的两倍。这有助于从一开始就使数据更均匀地分布在集群中。
 
-##### 步骤 5：按需为主键和二级索引拆分 Regions
+##### 第 5 步：按需为主键和二级索引拆分 Regions
 
 要为分区表中所有分区的主键拆分 Regions，请使用以下 SQL：
 
@@ -567,7 +567,7 @@ SPLIT PARTITION TABLE employees INDEX `PRIMARY` BETWEEN (1, "1970-01-01") AND (1
 SPLIT PARTITION TABLE employees INDEX `idx_employees_on_store_id` BETWEEN (1) AND (1000) REGIONS <number_of_regions>;
 ```
 
-#####（可选）步骤 6：在添加新分区时手动拆分 Regions
+##### （可选）第 6 步：在添加新分区时手动拆分 Regions
 
 在添加分区时，你可以为其主键和索引手动拆分 Regions。
 
