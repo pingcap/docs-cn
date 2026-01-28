@@ -1,19 +1,19 @@
 ---
-title: Jina AI 向量嵌入
+title: Jina AI 嵌入模型
 summary: 了解如何在 TiDB Cloud 中使用 Jina AI 向量嵌入模型。
 ---
 
-# Jina AI 向量嵌入 <!-- Draft translated by AI -->
+# Jina AI 嵌入模型
 
-本文档介绍如何在 TiDB Cloud 中结合 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 使用 Jina AI 向量嵌入模型，从文本查询中执行语义搜索。
+本文介绍如何在 TiDB Cloud 中通过 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 功能，使用 Jina AI 向量嵌入模型对文本查询进行语义搜索。
 
 > **注意：**
 >
-> [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 仅适用于托管在 AWS 上的 TiDB Cloud Starter 集群。
+> 目前，仅 AWS 上的 TiDB Cloud Starter 集群支持 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 功能。
 
 ## 可用模型
 
-如果你自带 Jina AI API 密钥（BYOK），则所有 Jina AI 模型均可通过 `jina_ai/` 前缀使用。例如：
+如果你能提供自己的 Jina AI API Key，可以通过在模型名称前指定 `jina_ai/` 前缀的方式使用任意 Jina AI 模型。例如：
 
 **jina-embeddings-v4**
 
@@ -23,7 +23,7 @@ summary: 了解如何在 TiDB Cloud 中使用 Jina AI 向量嵌入模型。
 - 最大输入文本 token 数：32,768
 - 价格：由 Jina AI 收费
 - 由 TiDB Cloud 托管：❌
-- 支持自带密钥：✅
+- Bring Your Own Key（BYOK，由用户自行提供 API key）：✅
 
 **jina-embeddings-v3**
 
@@ -33,13 +33,13 @@ summary: 了解如何在 TiDB Cloud 中使用 Jina AI 向量嵌入模型。
 - 最大输入文本 token 数：8,192
 - 价格：由 Jina AI 收费
 - 由 TiDB Cloud 托管：❌
-- 支持自带密钥：✅
+- Bring Your Own Key（BYOK，由用户自行提供 API key）：✅
 
-完整可用模型列表请参见 [Jina AI Documentation](https://jina.ai/embeddings/)。
+完整可用模型列表请参见 [Jina AI 文档](https://jina.ai/embeddings/)。
 
 ## SQL 使用示例
 
-要使用 Jina AI 模型，你必须按如下方式指定 [Jina AI API 密钥](https://jina.ai/)：
+如需使用 Jina AI 模型，请按照以下方式指定 [Jina AI API key](https://jina.ai/)：
 
 > **注意：**
 >
@@ -76,7 +76,7 @@ ORDER BY
 LIMIT 2;
 ```
 
-结果：
+输出示例：
 
 ```
 +------+----------------------------------------------------------------+
@@ -89,9 +89,9 @@ LIMIT 2;
 
 ## 选项
 
-所有 [Jina AI 选项](https://jina.ai/embeddings/) 均可通过 `EMBED_TEXT()` 函数的 `additional_json_options` 参数进行支持。
+所有 [Jina AI 选项](https://jina.ai/embeddings/) 均可通过 `EMBED_TEXT()` 函数的 `additional_json_options` 参数进行设置。
 
-**示例：为更优性能指定“下游任务”**
+**示例：指定“下游任务”以提升性能**
 
 ```sql
 CREATE TABLE sample (
@@ -119,13 +119,13 @@ CREATE TABLE sample (
 );
 ```
 
-所有可用选项请参见 [Jina AI Documentation](https://jina.ai/embeddings/)。
+所有可用选项请参见 [Jina AI 文档](https://jina.ai/embeddings/)。
 
 ## Python 使用示例
 
-参见 [PyTiDB Documentation](https://pingcap.github.io/ai/integrations/embedding-jinaai/)。
+参见 [PyTiDB 文档](https://pingcap.github.io/ai/integrations/embedding-jinaai/)。
 
-## 参见
+## 另请参阅
 
 - [Auto Embedding 概览](/ai/vector-search-auto-embedding-overview.md)
 - [向量搜索](/vector-search/vector-search-overview.md)

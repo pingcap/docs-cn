@@ -1,38 +1,38 @@
 ---
-title: Amazon Titan Embeddings
+title: Amazon Titan 嵌入模型
 summary: 了解如何在 TiDB Cloud 中使用 Amazon Titan 嵌入模型。
 ---
 
-# Amazon Titan Embeddings <!-- Draft translated by AI -->
+# Amazon Titan 嵌入模型
 
-本文档介绍如何在 TiDB Cloud 中结合 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 使用 Amazon Titan 嵌入模型，从文本查询中执行语义搜索。
+本文介绍如何在 TiDB Cloud 中通过 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 功能，使用 Amazon Titan 嵌入模型对文本查询进行语义搜索。
 
-> **Note:**
+> **注意：**
 >
-> [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 仅适用于托管在 AWS 上的 TiDB Cloud Starter 集群。
+> 目前，仅 AWS 上的 TiDB Cloud Starter 集群支持 [Auto Embedding](/ai/vector-search-auto-embedding-overview.md) 功能。
 
 ## 可用模型
 
-TiDB Cloud 原生提供以下 [Amazon Titan 嵌入模型](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html)。无需 API 密钥。
+TiDB Cloud 内置了以下 [Amazon Titan 嵌入模型](https://docs.aws.amazon.com/zh_cn/bedrock/latest/userguide/titan-embedding-models.html)。使用该模型时，无需提供 API 密钥。
 
 **Amazon Titan Text Embedding V2 模型**
 
 - 名称：`tidbcloud_free/amazon/titan-embed-text-v2`
 - 维度：1024（默认）、512、256
 - 距离度量：Cosine、L2
-- 支持语言：英语（预览支持 100+ 种语言）
-- 典型用例：RAG、文档检索、重排序、分类
+- 语言：英语（预览版支持 100 多种语言）
+- 典型用例：RAG、文档搜索、重新排序、分类
 - 最大输入文本 token 数：8,192
 - 最大输入文本字符数：50,000
 - 价格：免费
 - 由 TiDB Cloud 托管：✅
-- 支持自带密钥：❌
+- Bring Your Own Key（BYOK，由用户自行提供 API key）：❌
 
-关于该模型的更多信息，请参见 [Amazon Bedrock 文档](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html)。
+关于该模型的更多信息，请参见 [Amazon Bedrock 文档](https://docs.aws.amazon.com/zh_cn/bedrock/latest/userguide/titan-embedding-models.html)。
 
 ## SQL 使用示例
 
-以下示例展示了如何结合 Auto Embedding 使用 Amazon Titan 嵌入模型。
+以下示例展示如何通过 Auto Embedding 功能使用 Amazon Titan 嵌入模型。
 
 ```sql
 CREATE TABLE sample (
@@ -64,7 +64,7 @@ ORDER BY
 LIMIT 2;
 ```
 
-结果：
+输出示例：
 
 ```
 +------+----------------------------------------------------------------+
@@ -79,8 +79,8 @@ LIMIT 2;
 
 你可以通过 `EMBED_TEXT()` 函数的 `additional_json_options` 参数指定以下选项：
 
-- `normalize`（可选）：是否对输出嵌入向量进行归一化。默认为 `true`。
-- `dimensions`（可选）：输出嵌入向量的维度。支持的取值：`1024`（默认）、`512`、`256`。
+- `normalize`（可选）：是否对输出向量进行归一化。默认为 `true`。
+- `dimensions`（可选）：指定输出向量维度。可选值：`1024`（默认）、`512`、`256`。
 
 **示例：使用其他维度**
 
@@ -115,7 +115,7 @@ ORDER BY
 LIMIT 2;
 ```
 
-结果：
+输出示例：
 
 ```
 +------+----------------------------------------------------------------+
@@ -130,9 +130,9 @@ LIMIT 2;
 
 参见 [PyTiDB 文档](https://pingcap.github.io/ai/guides/auto-embedding/)。
 
-## 参见
+## 另请参阅
 
 - [Auto Embedding 概览](/ai/vector-search-auto-embedding-overview.md)
-- [向量检索](/vector-search/vector-search-overview.md)
+- [向量搜索](/vector-search/vector-search-overview.md)
 - [向量函数与操作符](/vector-search/vector-search-functions-and-operators.md)
 - [混合检索](/ai/vector-search-hybrid-search.md)

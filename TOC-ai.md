@@ -13,15 +13,15 @@
   - 快速入门
     - [使用 SQL 开始向量搜索](/vector-search/vector-search-get-started-using-sql.md)
     - [使用 Python 开始向量搜索](/vector-search/vector-search-get-started-using-python.md)
-  - 自动嵌入
+  - Auto Embedding
     - [概览](/ai/vector-search-auto-embedding-overview.md)
-    - [Amazon Titan 嵌入](/ai/vector-search-auto-embedding-amazon-titan.md)
-    - [Cohere 嵌入](/ai/vector-search-auto-embedding-cohere.md)
-    - [Jina AI 嵌入](/ai/vector-search-auto-embedding-jina-ai.md)
-    - [OpenAI 嵌入](/ai/vector-search-auto-embedding-openai.md)
-    - [Gemini 嵌入](/ai/vector-search-auto-embedding-gemini.md)
-    - [HuggingFace 嵌入](/ai/vector-search-auto-embedding-huggingface.md)
-    - [NVIDIA NIM 嵌入](/ai/vector-search-auto-embedding-nvidia-nim.md)
+    - [Amazon Titan 嵌入模型](/ai/vector-search-auto-embedding-amazon-titan.md)
+    - [Cohere 嵌入模型](/ai/vector-search-auto-embedding-cohere.md)
+    - [Jina AI 嵌入模型](/ai/vector-search-auto-embedding-jina-ai.md)
+    - [OpenAI 嵌入模型](/ai/vector-search-auto-embedding-openai.md)
+    - [Gemini 嵌入模型](/ai/vector-search-auto-embedding-gemini.md)
+    - [HuggingFace 嵌入模型](/ai/vector-search-auto-embedding-huggingface.md)
+    - [NVIDIA NIM 嵌入模型](/ai/vector-search-auto-embedding-nvidia-nim.md)
   - 集成
     - [集成概览](/vector-search/vector-search-integration-overview.md)
     - AI 框架
