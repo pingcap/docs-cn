@@ -1,6 +1,7 @@
 ---
 title: Jina AI 向量嵌入
 summary: 了解如何在 TiDB Cloud 中使用 Jina AI 向量嵌入模型。
+aliases: ['/zh/tidbcloud/vector-search-auto-embedding-jina-ai/']
 ---
 
 # Jina AI 向量嵌入 <!-- Draft translated by AI -->

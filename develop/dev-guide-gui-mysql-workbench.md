@@ -1,6 +1,7 @@
 ---
 title: 使用 MySQL Workbench 连接到 TiDB
 summary: 了解如何使用 MySQL Workbench 连接到 TiDB。
+aliases: ['/zh/tidb/stable/dev-guide-gui-mysql-workbench/','/zh/tidb/dev/dev-guide-gui-mysql-workbench/','/zh/tidbcloud/dev-guide-gui-mysql-workbench/']
 ---
 
 # 使用 MySQL Workbench 连接到 TiDB

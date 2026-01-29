@@ -1,7 +1,7 @@
 ---
 title: Hybrid Search
 summary: 同时使用全文检索和向量检索以提升检索质量。
-aliases: ['/tidb/stable/vector-search-hybrid-search']
+aliases: ['/tidb/stable/vector-search-hybrid-search','/zh/tidbcloud/vector-search-hybrid-search/']
 ---
 
 # Hybrid Search <!-- Draft translated by AI -->

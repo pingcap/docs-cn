@@ -1,6 +1,7 @@
 ---
 title: 使用 SQL 开始向量搜索
 summary: 了解如何在 TiDB 中使用 SQL 语句快速开始向量搜索，从而为你的生成式 AI 应用提供支持。
+aliases: ['/zh/tidb/stable/vector-search-get-started-using-sql/','/zh/tidb/dev/vector-search-get-started-using-sql/','/zh/tidbcloud/vector-search-get-started-using-sql/']
 ---
 
 # 使用 SQL 开始向量搜索

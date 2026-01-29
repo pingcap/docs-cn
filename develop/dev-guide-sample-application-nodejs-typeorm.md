@@ -1,6 +1,7 @@
 ---
 title: 使用 TypeORM 连接到 TiDB
 summary: 本文描述了 TiDB 和 TypeORM 的连接步骤，并给出了简单示例代码片段。
+aliases: ['/zh/tidb/stable/dev-guide-sample-application-nodejs-typeorm/','/zh/tidb/dev/dev-guide-sample-application-nodejs-typeorm/','/zh/tidbcloud/dev-guide-sample-application-nodejs-typeorm/']
 ---
 
 # 使用 TypeORM 连接到 TiDB

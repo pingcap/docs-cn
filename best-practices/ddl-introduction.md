@@ -1,6 +1,7 @@
 ---
 title: DDL 语句的执行原理及最佳实践
 summary: 介绍 TiDB 中 DDL 语句的实现原理、在线变更过程、最佳实践等内容。
+aliases: ['/zh/tidb/stable/ddl-introduction/','/zh/tidb/dev/ddl-introduction/','/zh/tidbcloud/ddl-introduction/']
 ---
 
 # DDL 语句的执行原理及最佳实践

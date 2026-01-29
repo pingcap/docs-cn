@@ -1,6 +1,7 @@
 ---
 title: 使用 Python 开始向量搜索
 summary: 了解如何使用 Python 和 TiDB 向量搜索快速开发可执行语义搜索的人工智能应用程序。
+aliases: ['/zh/tidb/stable/vector-search-get-started-using-python/','/zh/tidb/dev/vector-search-get-started-using-python/','/zh/tidbcloud/vector-search-get-started-using-python/']
 ---
 
 # 使用 Python 开始向量搜索

@@ -1,6 +1,7 @@
 ---
 title: 在 Django ORM 中使用 TiDB 向量搜索
 summary: 了解如何在 Django ORM 中通过 TiDB 向量搜索功能存储向量并执行语义搜索。
+aliases: ['/zh/tidb/stable/vector-search-integrate-with-django-orm/','/zh/tidb/dev/vector-search-integrate-with-django-orm/','/zh/tidbcloud/vector-search-integrate-with-django-orm/']
 ---
 
 # 在 Django ORM 中使用 TiDB 向量搜索

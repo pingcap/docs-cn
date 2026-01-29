@@ -1,6 +1,7 @@
 ---
 title: 事务概览
 summary: 简单介绍 TiDB 中的事务。
+aliases: ['/zh/tidb/stable/dev-guide-transaction-overview/','/zh/tidb/dev/dev-guide-transaction-overview/','/zh/tidbcloud/dev-guide-transaction-overview/']
 ---
 
 # 事务概览

@@ -1,6 +1,7 @@
 ---
 title: 只读存储节点最佳实践
 summary: 介绍如何通过使用只读存储节点，达到物理隔离部分流量的目的。
+aliases: ['/zh/tidb/stable/readonly-nodes/','/zh/tidb/dev/readonly-nodes/']
 ---
 
 # 只读存储节点最佳实践

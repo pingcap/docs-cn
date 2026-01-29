@@ -1,6 +1,7 @@
 ---
 title: 单表查询
 summary: 介绍 TiDB 中的单表查询功能。
+aliases: ['/zh/tidb/stable/dev-guide-get-data-from-single-table/','/zh/tidb/dev/dev-guide-get-data-from-single-table/','/zh/tidbcloud/dev-guide-get-data-from-single-table/']
 ---
 
 <!-- markdownlint-disable MD029 -->

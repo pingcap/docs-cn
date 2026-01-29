@@ -1,7 +1,7 @@
 ---
 title: 使用 SQL 进行全文检索
 summary: 全文检索允许你根据精确关键词检索文档。在 RAG（检索增强生成）场景中，你可以将全文检索与向量检索结合使用，以提升检索质量。
-aliases: ['/tidb/stable/vector-search-full-text-search-sql']
+aliases: ['/tidb/stable/vector-search-full-text-search-sql','/zh/tidbcloud/vector-search-full-text-search-sql/']
 ---
 
 # 使用 SQL 进行全文检索 <!-- Draft translated by AI -->

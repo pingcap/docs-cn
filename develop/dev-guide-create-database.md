@@ -1,6 +1,7 @@
 ---
 title: 创建数据库
 summary: 创建数据库的方法、规范及例子。
+aliases: ['/zh/tidb/stable/dev-guide-create-database/','/zh/tidb/dev/dev-guide-create-database/','/zh/tidbcloud/dev-guide-create-database/']
 ---
 
 # 创建数据库

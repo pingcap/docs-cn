@@ -1,6 +1,7 @@
 ---
 title: 向量函数和操作符
 summary: 本文介绍 TiDB 的向量相关函数和操作。
+aliases: ['/zh/tidb/stable/vector-search-functions-and-operators/','/zh/tidb/dev/vector-search-functions-and-operators/','/zh/tidbcloud/vector-search-functions-and-operators/']
 ---
 
 # 向量函数和操作符

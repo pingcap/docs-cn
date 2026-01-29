@@ -1,6 +1,7 @@
 ---
 title: OpenAI Embeddings
 summary: 了解如何在 TiDB Cloud 中使用 OpenAI 嵌入模型。
+aliases: ['/zh/tidbcloud/vector-search-auto-embedding-openai/']
 ---
 
 # OpenAI Embeddings <!-- Draft translated by AI -->

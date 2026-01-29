@@ -1,6 +1,7 @@
 ---
 title: Vector Search Changelogs
 summary: 了解 TiDB 向量检索功能的新特性、兼容性变更、改进和缺陷修复。
+aliases: ['/zh/tidbcloud/vector-search-changelogs/']
 ---
 
 # Vector Search Changelogs <!-- Draft translated by AI -->

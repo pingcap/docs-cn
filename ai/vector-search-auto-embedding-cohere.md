@@ -1,6 +1,7 @@
 ---
 title: Cohere Embeddings
 summary: 了解如何在 TiDB Cloud 中使用 Cohere 嵌入模型。
+aliases: ['/zh/tidbcloud/vector-search-auto-embedding-cohere/']
 ---
 
 # Cohere Embeddings <!-- Draft translated by AI -->

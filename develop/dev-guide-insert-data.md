@@ -1,6 +1,7 @@
 ---
 title: 插入数据
 summary: 插入数据、批量导入数据的方法、最佳实践及例子。
+aliases: ['/zh/tidb/stable/dev-guide-insert-data/','/zh/tidb/dev/dev-guide-insert-data/','/zh/tidbcloud/dev-guide-insert-data/']
 ---
 
 <!-- markdownlint-disable MD029 -->

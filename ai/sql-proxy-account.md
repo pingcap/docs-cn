@@ -1,6 +1,7 @@
 ---
 title: SQL Proxy Account
 summary: 了解 TiDB Cloud 中的 SQL 代理账号。
+aliases: ['/zh/tidbcloud/sql-proxy-account/']
 ---
 
 # SQL 代理账号 <!-- Draft translated by AI -->
