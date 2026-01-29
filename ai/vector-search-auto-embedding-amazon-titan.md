@@ -26,7 +26,7 @@ TiDB Cloud 内置了以下 [Amazon Titan 嵌入模型](https://docs.aws.amazon.c
 - 最大输入文本字符数：50,000
 - 价格：免费
 - 由 TiDB Cloud 托管：✅
-- Bring Your Own Key（BYOK，由用户自行提供 API key）：❌
+- Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：❌
 
 关于该模型的更多信息，请参见 [Amazon Bedrock 文档](https://docs.aws.amazon.com/zh_cn/bedrock/latest/userguide/titan-embedding-models.html)。
 
@@ -135,4 +135,4 @@ LIMIT 2;
 - [Auto Embedding 概览](/ai/vector-search-auto-embedding-overview.md)
 - [向量搜索](/vector-search/vector-search-overview.md)
 - [向量函数与操作符](/vector-search/vector-search-functions-and-operators.md)
-- [混合检索](/ai/vector-search-hybrid-search.md)
+- [混合搜索](/ai/vector-search-hybrid-search.md)

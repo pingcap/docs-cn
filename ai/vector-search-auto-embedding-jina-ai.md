@@ -13,33 +13,33 @@ summary: 了解如何在 TiDB Cloud 中使用 Jina AI 向量嵌入模型。
 
 ## 可用模型
 
-如果你能提供自己的 Jina AI API Key，可以通过在模型名称前指定 `jina_ai/` 前缀的方式使用任意 Jina AI 模型。例如：
+如果你能提供自己的 Jina AI API 密钥，可以通过在模型名称前指定 `jina_ai/` 前缀的方式使用任意 Jina AI 模型。例如：
 
 **jina-embeddings-v4**
 
 - 名称：`jina_ai/jina-embeddings-v4`
 - 维度：2048
-- 距离度量：Cosine，L2
+- 距离度量：Cosine、L2
 - 最大输入文本 token 数：32,768
 - 价格：由 Jina AI 收费
 - 由 TiDB Cloud 托管：❌
-- Bring Your Own Key（BYOK，由用户自行提供 API key）：✅
+- Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅
 
 **jina-embeddings-v3**
 
 - 名称：`jina_ai/jina-embeddings-v3`
 - 维度：1024
-- 距离度量：Cosine，L2
+- 距离度量：Cosine、L2
 - 最大输入文本 token 数：8,192
 - 价格：由 Jina AI 收费
 - 由 TiDB Cloud 托管：❌
-- Bring Your Own Key（BYOK，由用户自行提供 API key）：✅
+- Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅
 
 完整可用模型列表请参见 [Jina AI 文档](https://jina.ai/embeddings/)。
 
 ## SQL 使用示例
 
-如需使用 Jina AI 模型，请按照以下方式指定 [Jina AI API key](https://jina.ai/)：
+如需使用 Jina AI 模型，请按照以下方式指定 [Jina AI API 密钥](https://jina.ai/)：
 
 > **注意：**
 >

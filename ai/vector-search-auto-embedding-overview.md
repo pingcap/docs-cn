@@ -65,11 +65,11 @@ LIMIT 3;
 +----+--------------------------------------------------------------+
 ```
 
-上述示例使用了 Amazon Titan 模型。更多模型，请参见 [可用的文本嵌入模型](#available-text-embedding-models)。
+上述示例使用了 Amazon Titan 模型。更多模型，请参见[可用的文本嵌入模型](#可用的文本嵌入模型)。
 
 ## Auto Embedding + 向量索引
 
-为提升查询性能，你可以结合 Auto Embedding 与[向量索引](/vector-search/vector-search-index.md) 功能，在 Auto Embedding 生成的向量列上创建向量索引，系统会自动使用该索引进行查询：
+为提升查询性能，你可以结合 Auto Embedding 与[向量索引](/vector-search/vector-search-index.md)功能，在 Auto Embedding 生成的向量列上创建向量索引，系统会自动使用该索引进行查询：
 
 ```sql
 -- 创建支持 Auto Embedding 和向量索引功能的表
@@ -110,22 +110,22 @@ TiDB Cloud 支持多种嵌入模型，可根据需求选择：
 
 | 嵌入模型      | 文档                                                                                  | 由 TiDB Cloud 托管 <sup>1</sup> | 需要用户自行提供 API key (BYOK) <sup>2</sup> |
 | ------------- | ------------------------------------------------------------------------------------- | ---------------------------- | ----------------- |
-| Amazon Titan  | [Amazon Titan Embeddings](/ai/vector-search-auto-embedding-amazon-titan.md)   | ✅                           |                   |
-| Cohere        | [Cohere Embeddings](/ai/vector-search-auto-embedding-cohere.md)               | ✅                           | ✅                |
-| Jina AI       | [Jina AI Embeddings](/ai/vector-search-auto-embedding-jina-ai.md)             |                              | ✅                |
-| OpenAI        | [OpenAI Embeddings](/ai/vector-search-auto-embedding-openai.md)               |                              | ✅                |
-| Gemini        | [Gemini Embeddings](/ai/vector-search-auto-embedding-gemini.md)               |                              | ✅                |
+| Amazon Titan  | [Amazon Titan 嵌入模型](/ai/vector-search-auto-embedding-amazon-titan.md)   | ✅                           |                   |
+| Cohere        | [Cohere 嵌入模型](/ai/vector-search-auto-embedding-cohere.md)               | ✅                           | ✅                |
+| Jina AI       | [Jina AI 嵌入模型](/ai/vector-search-auto-embedding-jina-ai.md)             |                              | ✅                |
+| OpenAI        | [OpenAI 嵌入模型](/ai/vector-search-auto-embedding-openai.md)               |                              | ✅                |
+| Gemini        | [Gemini 嵌入模型](/ai/vector-search-auto-embedding-gemini.md)               |                              | ✅                |
 
 你还可以通过 TiDB Cloud 支持的以下推理服务，使用开源嵌入模型：
 
 | 嵌入模型             | 文档                                                                                  | 由 TiDB Cloud 托管 <sup>1</sup> | 需要用户自行提供 API key (BYOK) <sup>2</sup> | 示例支持的模型                  |
 | -------------------- | ------------------------------------------------------------------------------------- | ---------------------------- | ----------------- | ------------------------------- |
-| HuggingFace Inference| [HuggingFace Embeddings](/ai/vector-search-auto-embedding-huggingface.md)     |                              | ✅                | `bge-m3`, `multilingual-e5-large`|
-| NVIDIA NIM           | [NVIDIA NIM Embeddings](/ai/vector-search-auto-embedding-nvidia-nim.md)       |                              | ✅                | `bge-m3`, `nv-embed-v1`          |
+| HuggingFace Inference| [HuggingFace 嵌入模型](/ai/vector-search-auto-embedding-huggingface.md)     |                              | ✅                | `bge-m3`, `multilingual-e5-large`|
+| NVIDIA NIM           | [NVIDIA NIM 嵌入模型](/ai/vector-search-auto-embedding-nvidia-nim.md)       |                              | ✅                | `bge-m3`, `nv-embed-v1`          |
 
 &#8203;<sup>1</sup> 模型由 TiDB Cloud 托管，无需任何 API key。目前这些托管模型可免费使用，但可能有些限制以保障所有用户体验。
 
-&#8203;<sup>2</sup> BYOK（Bring Your Own Key）模型需要你提供从相应的嵌入服务商处获取的 API key。TiDB Cloud 不对 BYOK 模型的使用收费。你需要自行管理和监控这些模型所产生的费用。
+&#8203;<sup>2</sup> BYOK (Bring Your Own Key) 模型需要你提供从相应的嵌入服务商处获取的 API key。TiDB Cloud 不对 BYOK 模型的使用收费。你需要自行管理和监控这些模型所产生的费用。
 
 ## Auto Embedding 的工作原理
 
