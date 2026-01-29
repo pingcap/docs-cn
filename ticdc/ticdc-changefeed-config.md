@@ -149,7 +149,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 #### `enable-table-across-nodes`
 
 - 将表以 Region 为单位分配给多个 TiCDC 节点进行同步。
-- 在 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)中，该功能只在 Kafka Changefeed 上生效，暂不支持 MySQL changefeed。
+- 在 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)中，该功能只在 Kafka Changefeed 上生效，暂不支持 MySQL Changefeed。
 - 在 [TiCDC 新架构](/ticdc/ticdc-architecture.md)中，该功能对所有类型下游的 Changefeed 生效。详情请参考[新功能介绍](/ticdc/ticdc-architecture.md#新功能介绍)。
 - `enable-table-across-nodes` 开启后，有两种分配模式：
 
