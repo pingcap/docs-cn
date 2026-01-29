@@ -1,6 +1,7 @@
 ---
 title: 已知的第三方工具兼容问题
 summary: 介绍在测试中发现的 TiDB 与第三方工具的兼容性问题。
+aliases: ['/zh/tidb/stable/dev-guide-third-party-tools-compatibility/','/zh/tidb/dev/dev-guide-third-party-tools-compatibility/','/zh/tidbcloud/dev-guide-third-party-tools-compatibility/']
 ---
 
 # 已知的第三方工具兼容问题

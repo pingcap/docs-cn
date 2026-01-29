@@ -1,6 +1,7 @@
 ---
 title: 使用 Sequelize 连接到 TiDB
 summary: 本文描述了 TiDB 和 Sequelize 的连接步骤，并给出了简单示例代码片段。
+aliases: ['/zh/tidb/stable/dev-guide-sample-application-nodejs-sequelize/','/zh/tidb/dev/dev-guide-sample-application-nodejs-sequelize/','/zh/tidbcloud/dev-guide-sample-application-nodejs-sequelize/']
 ---
 
 # 使用 Sequelize 连接到 TiDB

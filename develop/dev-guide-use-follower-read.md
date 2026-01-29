@@ -1,6 +1,7 @@
 ---
 title: Follower Read
 summary: 使用 Follower Read 在特定情况下加速查询。
+aliases: ['/zh/tidb/stable/dev-guide-use-follower-read/','/zh/tidb/dev/dev-guide-use-follower-read/','/zh/tidbcloud/dev-guide-use-follower-read/']
 ---
 
 # Follower Read

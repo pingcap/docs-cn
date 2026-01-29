@@ -1,6 +1,7 @@
 ---
 title: 向量数据类型
 summary: 本文介绍 TiDB 的向量数据类型。
+aliases: ['/zh/tidb/stable/vector-search-data-types/','/zh/tidb/dev/vector-search-data-types/','/zh/tidbcloud/vector-search-data-types/']
 ---
 
 # 向量数据类型 (Vector)

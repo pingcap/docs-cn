@@ -1,6 +1,7 @@
 ---
 title: 在 SQLAlchemy 中使用 TiDB 向量搜索
 summary: 了解如何在 SQLAlchemy 中通过 TiDB 向量搜索功能存储向量并执行语义搜索。
+aliases: ['/zh/tidb/stable/vector-search-integrate-with-sqlalchemy/','/zh/tidb/dev/vector-search-integrate-with-sqlalchemy/','/zh/tidbcloud/vector-search-integrate-with-sqlalchemy/']
 ---
 
 # 在 SQLAlchemy 中使用 TiDB 向量搜索

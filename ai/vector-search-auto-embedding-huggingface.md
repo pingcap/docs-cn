@@ -1,6 +1,7 @@
 ---
 title: HuggingFace Embeddings
 summary: 了解如何在 TiDB Cloud 中使用 HuggingFace 嵌入模型。
+aliases: ['/zh/tidbcloud/vector-search-auto-embedding-huggingface/']
 ---
 
 # HuggingFace Embeddings <!-- Draft translated by AI -->

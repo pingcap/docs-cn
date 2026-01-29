@@ -1,6 +1,7 @@
 ---
 title: 在 LlamaIndex 中使用 TiDB 向量搜索
 summary: 了解如何在 LlamaIndex 中使用 TiDB 向量搜索。
+aliases: ['/zh/tidb/stable/vector-search-integrate-with-llamaindex/','/zh/tidb/dev/vector-search-integrate-with-llamaindex/','/zh/tidbcloud/vector-search-integrate-with-llamaindex/']
 ---
 
 # 在 LlamaIndex 中使用 TiDB 向量搜索

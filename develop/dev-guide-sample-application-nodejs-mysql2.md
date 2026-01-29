@@ -1,6 +1,7 @@
 ---
 title: 使用 node-mysql2 连接到 TiDB
 summary: 本文描述了 TiDB 和 node-mysql2 的连接步骤，并给出了简单示例代码片段。
+aliases: ['/zh/tidb/stable/dev-guide-sample-application-nodejs-mysql2/','/zh/tidb/dev/dev-guide-sample-application-nodejs-mysql2/','/zh/tidbcloud/dev-guide-sample-application-nodejs-mysql2/']
 ---
 
 # 使用 node-mysql2 连接到 TiDB

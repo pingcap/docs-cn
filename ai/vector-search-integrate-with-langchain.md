@@ -1,6 +1,7 @@
 ---
 title: 在 LangChain 中使用 TiDB 向量搜索
 summary: 展示如何在 LangChain 中使用 TiDB 向量搜索
+aliases: ['/zh/tidb/stable/vector-search-integrate-with-langchain/','/zh/tidb/dev/vector-search-integrate-with-langchain/','/zh/tidbcloud/vector-search-integrate-with-langchain/']
 ---
 
 # 在 LangChain 中使用 TiDB 向量搜索

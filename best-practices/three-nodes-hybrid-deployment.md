@@ -1,6 +1,7 @@
 ---
 title: 三节点混合部署最佳实践
 summary: 了解三节点混合部署最佳实践。
+aliases: ['/zh/tidb/stable/three-nodes-hybrid-deployment/','/zh/tidb/dev/three-nodes-hybrid-deployment/']
 ---
 
 # 三节点混合部署的最佳实践

@@ -1,6 +1,7 @@
 ---
 title: 使用 mysql.js 连接到 TiDB
 summary: 本文描述了 TiDB 和 mysql.js 的连接步骤，并给出了简单示例代码片段。
+aliases: ['/zh/tidb/stable/dev-guide-sample-application-nodejs-mysqljs/','/zh/tidb/dev/dev-guide-sample-application-nodejs-mysqljs/','/zh/tidbcloud/dev-guide-sample-application-nodejs-mysqljs/']
 ---
 
 # 使用 mysql.js 连接到 TiDB

@@ -1,6 +1,7 @@
 ---
 title: 使用 AI 辅助 SQL 编辑器探索你的数据
 summary: 了解如何在 TiDB Cloud 控制台中使用 AI 辅助 SQL 编辑器，最大化你的数据价值。
+aliases: ['/zh/tidbcloud/explore-data-with-chat2query/']
 ---
 
 # 使用 AI 辅助 SQL 编辑器探索你的数据 <!-- Draft translated by AI -->

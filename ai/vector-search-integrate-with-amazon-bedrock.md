@@ -1,6 +1,7 @@
 ---
 title: 集成 TiDB 向量检索与 Amazon Bedrock
 summary: 学习如何将 TiDB 向量检索与 Amazon Bedrock 集成，构建基于检索增强生成（RAG）的问答机器人。
+aliases: ['/zh/tidbcloud/vector-search-integrate-with-amazon-bedrock/']
 ---
 
 # 集成 TiDB 向量检索与 Amazon Bedrock <!-- Draft translated by AI -->

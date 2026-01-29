@@ -1,6 +1,7 @@
 ---
 title: 结合 Jina AI 嵌入模型 API 使用 TiDB 向量搜索
 summary: 了解如何结合 Jina AI 嵌入模型 API 使用 TiDB 向量搜索，以存储向量嵌入信息并执行语义搜索。
+aliases: ['/zh/tidb/stable/vector-search-integrate-with-jinaai-embedding/','/zh/tidb/dev/vector-search-integrate-with-jinaai-embedding/','/zh/tidbcloud/vector-search-integrate-with-jinaai-embedding/']
 ---
 
 # 结合 Jina AI 嵌入模型 API 使用 TiDB 向量搜索

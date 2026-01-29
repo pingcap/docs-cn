@@ -1,6 +1,7 @@
 ---
 title: 向量搜索概述
 summary: 介绍 TiDB 向量搜索功能。TiDB 向量搜索可以对文档、图像、音频和视频等多种数据类型进行语义搜索。
+aliases: ['/zh/tidb/stable/vector-search-overview/','/zh/tidb/dev/vector-search-overview/','/zh/tidbcloud/vector-search-overview/']
 ---
 
 # 向量搜索概述
