@@ -163,7 +163,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 #### `region-threshold`
 
-- 默认值：`100000`
+- 默认值：对于[新架构](/ticdc/ticdc-architecture.md) 的 TiCDC，默认值为 `10000`；对于[老架构](/ticdc/ticdc-classic-architecture.md)的 TiCDC，默认值为 `100000`。
 
 #### `write-key-threshold`
 
