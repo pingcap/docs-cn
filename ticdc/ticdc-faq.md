@@ -382,7 +382,7 @@ TiDB Lightning [物理导入模式 (Physical Import Mode)](/tidb-lightning/tidb-
 
 ## BR (Backup & Restore) 和 TiCDC 的兼容性存在哪些限制？
 
-BR (Backup & Restore) 工具是将直接将数据生成 SST 文件并导入 TiKV 集群，因此 Changefeed 无法保证完整捕获通过 BR 恢复的数据。详情请参考 [TiDB Lightning 物理导入模式与 TiCDC 的兼容性](/ticdc/ticdc-faq.md#tidb-lightning-物理导入模式与-ticdc-有哪些兼容性限制)。
+BR (Backup & Restore) 工具是将直接将数据生成 SST 文件并导入 TiKV 集群，因此 Changefeed 无法保证完整捕获通过 BR 恢复的数据。详情请参考 [TiDB Lightning 物理导入模式与 TiCDC 的兼容性](#tidb-lightning-物理导入模式和-ticdc-的兼容性存在哪些限制)。
 
 不同版本的 BR 处理方式不同：
 
