@@ -55,12 +55,16 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 
 ## 新功能介绍
 
-新架构支持为 MySQL Sink 启用**表级任务拆分**。你可以通过在 Changefeed 配置中设置 `scheduler.enable-table-across-nodes = true` 来启用该功能。
+新架构支持为所有类型的 Sink 启用**表级任务拆分**。你可以通过在 Changefeed 配置中设置 `scheduler.enable-table-across-nodes = true` 来启用该功能。
 
-启用后，当**有且仅有一个主键或非空唯一键**的表满足以下任一条件时，TiCDC 会自动将其拆分并分发到多个节点并行执行同步，从而提升同步效率与资源利用率：
+启用后，TiCDC 会自动将满足以下任一条件的表拆分并分发到多个节点并行执行同步，从而提升同步效率与资源利用率：
 
-- 表的 Region 数超过配置的阈值（默认 `100000`，可通过 `scheduler.region-threshold` 调整）。
+- 表的 Region 数超过配置的阈值（默认 `10000`，可通过 `scheduler.region-threshold` 调整）。
 - 表的写入流量超过配置的阈值（默认未开启，可通过 `scheduler.write-key-threshold` 设置）。
+
+> **注意：**
+>
+> 针对 MySQL Sink 的 Changefeed，除了满足上述任一条件，表还需要满足**有且仅有一个主键或非空唯一键**，才可以被 TiCDC 拆分并分发，以保证拆表模式下数据同步的正确性。
 
 ## 兼容性说明
 
