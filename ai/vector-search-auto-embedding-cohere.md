@@ -13,7 +13,7 @@ summary: 了解如何在 TiDB Cloud 中使用 Cohere 嵌入模型。
 
 ## 可用模型
 
-TiDB Cloud 内置了以下 [Cohere](https://cohere.com/) 嵌入模型。使用该模型时，无需提供 API 密钥。
+TiDB Cloud 内置了以下 [Cohere](https://cohere.com/) 嵌入模型。使用这些模型时，无需提供 API 密钥。
 
 **Cohere Embed v3 模型**
 
