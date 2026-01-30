@@ -13,7 +13,7 @@ summary: 了解如何在 TiDB Cloud 中使用 NVIDIA NIM 嵌入模型。
 
 ## 可用模型
 
-如果你能提供自己的 [NVIDIA NIM API Key](https://build.nvidia.com/settings/api-keys)，可以通过在模型名称前指定 `nvidia_nim/` 前缀的方式使用任意 NVIDIA NIM 模型。
+如果你能提供自己的 [NVIDIA NIM API 密钥](https://build.nvidia.com/settings/api-keys)，可以通过在模型名称前指定 `nvidia_nim/` 前缀的方式使用任意 NVIDIA NIM 模型。
 
 以下章节以一个比较流行的 NVIDIA NIM 模型为例，展示如何通过 Auto Embedding 功能使用 NVIDIA NIM 模型。完整可用模型列表请参见 [NVIDIA NIM Text-to-embedding Models](https://build.nvidia.com/models?filters=usecase%3Ausecase_text_to_embedding)。
 
@@ -25,7 +25,7 @@ summary: 了解如何在 TiDB Cloud 中使用 NVIDIA NIM 嵌入模型。
 - 最大输入文本 token 数：8,192
 - 价格：由 NVIDIA 收费
 - 由 TiDB Cloud 托管：❌
-- Bring Your Own Key（BYOK，由用户自行提供 API key）：✅
+- Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅
 - 文档：<https://docs.api.nvidia.com/nim/reference/baai-bge-m3>
 
 示例：

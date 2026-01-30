@@ -13,35 +13,35 @@ summary: 了解如何在 TiDB Cloud 中使用 OpenAI 嵌入模型。
 
 ## 可用模型
 
-如果你能提供自己的 OpenAI API Key，可以通过在模型名称前指定 `openai/` 前缀的方式使用任意 OpenAI 模型。例如：
+如果你能提供自己的 OpenAI API 密钥，可以通过在模型名称前指定 `openai/` 前缀的方式使用任意 OpenAI 模型。例如：
 
 **text-embedding-3-small**
 
 - 名称：`openai/text-embedding-3-small`
 - 维度：512-1536（默认：1536）
-- 距离度量：Cosine，L2
+- 距离度量：Cosine、L2
 - 价格：由 OpenAI 收费
 - 由 TiDB Cloud 托管：❌
-- Bring Your Own Key（BYOK，由用户自行提供 API key）：✅
+- Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅
 
 **text-embedding-3-large**
 
 - 名称：`openai/text-embedding-3-large`
 - 维度：256-3072（默认：3072）
-- 距离度量：Cosine，L2
+- 距离度量：Cosine、L2
 - 价格：由 OpenAI 收费
 - 由 TiDB Cloud 托管：❌
-- Bring Your Own Key（BYOK，由用户自行提供 API key）：✅
+- Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅
 
 完整可用模型列表请参见 [OpenAI 文档](https://platform.openai.com/docs/guides/embeddings)。
 
 ## SQL 使用示例
 
-如需使用 OpenAI 模型，请按照以下方式指定 [OpenAI API key](https://platform.openai.com/api-keys)：
+如需使用 OpenAI 模型，请按照以下方式指定 [OpenAI API 密钥](https://platform.openai.com/api-keys)：
 
 > **注意：**
 >
-> 请将 `'your-openai-api-key-here'` 替换为你实际的 OpenAI API key。
+> 请将 `'your-openai-api-key-here'` 替换为你实际的 OpenAI API 密钥。
 
 ```sql
 SET @@GLOBAL.TIDB_EXP_EMBED_OPENAI_API_KEY = 'your-openai-api-key-here';
@@ -120,7 +120,7 @@ ORDER BY
 LIMIT 2;
 ```
 
-请注意，即使你的资源 URL 为 `https://<your-resource-name>.cognitiveservices.azure.com/`，配置`TIDB_EXP_EMBED_OPENAI_API_BASE` 时也必须使用 `https://<your-resource-name>.openai.azure.com/openai/v1` 格式，以确保请求和响应格式与 OpenAI 兼容。
+请注意，即使你的资源 URL 为 `https://<your-resource-name>.cognitiveservices.azure.com/`，配置 `TIDB_EXP_EMBED_OPENAI_API_BASE` 时也必须使用 `https://<your-resource-name>.openai.azure.com/openai/v1` 格式，以确保请求和响应格式与 OpenAI 兼容。
 
 如需从 Azure OpenAI 切换回直接使用 OpenAI，将 `TIDB_EXP_EMBED_OPENAI_API_BASE` 设置为空字符串即可：
 
@@ -131,11 +131,11 @@ SET @@GLOBAL.TIDB_EXP_EMBED_OPENAI_API_BASE = '';
 > **注意：**
 >
 > - 出于安全原因，`API_BASE` 只能设置为 Azure OpenAI URL 或 OpenAI URL，不允许设置为任意 base URL。
-> - 如需使用其他 OpenAI 兼容的嵌入服务，请联系 [TiDB Cloud Support](https://docs.pingcap.com/tidbcloud/tidb-cloud-support/)。
+> - 如需使用其他 OpenAI 兼容的嵌入服务，请联系 [TiDB Cloud 支持](https://docs.pingcap.com/zh/tidbcloud/tidb-cloud-support/)。
 
 ## 选项
 
-所有 [OpenAI Embedding 选项](https://platform.openai.com/docs/api-reference/embeddings/create) 均可通过 `EMBED_TEXT()` 函数的 `additional_json_options` 参数进行设置。
+所有 [OpenAI Embedding 选项](https://platform.openai.com/docs/api-reference/embeddings/create)均可通过 `EMBED_TEXT()` 函数的 `additional_json_options` 参数进行设置。
 
 **示例：设置 text-embedding-3-large 的维度**
 

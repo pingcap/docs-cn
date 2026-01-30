@@ -13,49 +13,49 @@ summary: 了解如何在 TiDB Cloud 中使用 Cohere 嵌入模型。
 
 ## 可用模型
 
-TiDB Cloud 内置了以下 [Cohere](https://cohere.com/) 嵌入模型。使用时，无需提供 API 密钥。
+TiDB Cloud 内置了以下 [Cohere](https://cohere.com/) 嵌入模型。使用这些模型时，无需提供 API 密钥。
 
-**Cohere Embed v3 model**
+**Cohere Embed v3 模型**
 
 - 名称：`tidbcloud_free/cohere/embed-english-v3`
 - 维度：1024
-- 距离度量：Cosine，L2
+- 距离度量：Cosine、L2
 - 语言：英语
-- 最大输入文本 token 数：512（约每个 token 4 个字符）
+- 最大输入文本 token 数：512（每个 token 约 4 个字符）
 - 最大输入文本字符数：2,048
 - 价格：免费
 - 由 TiDB Cloud 托管：✅ `tidbcloud_free/cohere/embed-english-v3`
-- Bring Your Own Key（BYOK，由用户自行提供 API key）：✅ `cohere/embed-english-v3.0`
+- Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅ `cohere/embed-english-v3.0`
 
-**Cohere Multilingual Embed v3 model**
+**Cohere Multilingual Embed v3 模型**
 
 - 名称：`tidbcloud_free/cohere/embed-multilingual-v3`
 - 维度：1024
-- 距离度量：Cosine，L2
-- 语言：100+ 种语言
-- 最大输入文本 token 数：512（约每个 token 4 个字符）
+- 距离度量：Cosine、L2
+- 语言：100 多种语言
+- 最大输入文本 token 数：512（每个 token 约 4 个字符）
 - 最大输入文本字符数：2,048
 - 价格：免费
 - 由 TiDB Cloud 托管：✅ `tidbcloud_free/cohere/embed-multilingual-v3`
-- Bring Your Own Key（BYOK，由用户自行提供 API key）：✅ `cohere/embed-multilingual-v3.0`
+- Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅ `cohere/embed-multilingual-v3.0`
 
-此外，如果你能提供自己的 Cohere API Key，可以通过在模型名称前指定 `cohere/` 前缀的方式使用任意 Cohere 模型。例如：
+此外，如果你能提供自己的 Cohere API 密钥，可以通过在模型名称前指定 `cohere/` 前缀的方式使用任意 Cohere 模型。例如：
 
-**Cohere Embed v4 model**
+**Cohere Embed v4 模型**
 
 - 名称：`cohere/embed-v4.0`
 - 维度：256、512、1024、1536（默认）
-- 距离度量：Cosine，L2
+- 距离度量：Cosine、L2
 - 最大输入文本 token 数：128,000
 - 价格：由 Cohere 收费
 - 由 TiDB Cloud 托管：❌
-- Bring Your Own Key（BYOK，由用户自行提供 API key）：✅
+- Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅
 
 完整的 Cohere 模型列表请参见 [Cohere 文档](https://docs.cohere.com/docs/cohere-embed)。
 
 ## SQL 使用示例（针对 TiDB Cloud 内置的嵌入模型）
 
-以下示例展示了如何通过 Auto Embedding 功能使用 TiDB Cloud 内置的 Cohere 嵌入模型。
+以下示例展示如何通过 Auto Embedding 功能使用 TiDB Cloud 内置的 Cohere 嵌入模型。
 
 ```sql
 CREATE TABLE sample (
@@ -96,7 +96,7 @@ ORDER BY
 LIMIT 2;
 ```
 
-结果：
+输出示例：
 
 ```
 +------+----------------------------------------------------------------+
@@ -124,7 +124,7 @@ LIMIT 2;
     - `START`：从开头截断文本，直到输入符合要求。
     - `END`：从结尾截断文本，直到输入符合要求。
 
-## SQL 使用示例（BYOK）
+## SQL 使用示例 (BYOK)
 
 如需使用 Bring Your Own Key (BYOK) 方式的 Cohere 模型，你必须按如下方式指定 Cohere API 密钥：
 
@@ -164,9 +164,9 @@ ORDER BY
 LIMIT 2;
 ```
 
-## 选项（BYOK）
+## 选项 (BYOK)
 
-所有 [Cohere 嵌入选项](https://docs.cohere.com/v2/reference/embed) 均可通过 `EMBED_TEXT()` 函数的 `additional_json_options` 参数进行设置。
+所有 [Cohere 嵌入选项](https://docs.cohere.com/v2/reference/embed)均可通过 `EMBED_TEXT()` 函数的 `additional_json_options` 参数进行设置。
 
 **示例：为搜索和插入操作分别指定不同的 `input_type`**
 
@@ -198,11 +198,11 @@ CREATE TABLE sample (
 );
 ```
 
-所有可用选项请参见 [Cohere Documentation](https://docs.cohere.com/v2/reference/embed)。
+所有可用选项请参见 [Cohere 文档](https://docs.cohere.com/v2/reference/embed)。
 
 ## Python 使用示例
 
-参见 [PyTiDB Documentation](https://pingcap.github.io/ai/guides/auto-embedding/)。
+参见 [PyTiDB 文档](https://pingcap.github.io/ai/guides/auto-embedding/)。
 
 ## 另请参阅
 
