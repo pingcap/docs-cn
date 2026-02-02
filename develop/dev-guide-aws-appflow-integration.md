@@ -5,7 +5,7 @@ summary: 了解如何将 TiDB 集成到 Amazon AppFlow。
 
 # TiDB 与 Amazon AppFlow 集成指南
 
-[Amazon AppFlow](https://aws.amazon.com/appflow/) 是一项全托管的 API 集成服务，可用于将软件即服务（SaaS）应用与 AWS 服务连接，并安全地传输数据。通过 Amazon AppFlow，你可以在 TiDB 与多种数据提供方之间导入和导出数据，例如 Salesforce、Amazon S3、LinkedIn 和 GitHub。更多信息请参见 AWS 文档中的[支持的源和目标应用](https://docs.aws.amazon.com/appflow/latest/userguide/app-specific.html)。
+[Amazon AppFlow](https://aws.amazon.com/appflow/) 是一项全托管的 API 集成服务，可用于将软件即服务 (SaaS) 应用与 AWS 服务连接，并安全地传输数据。通过 Amazon AppFlow，你可以在 TiDB 与多种数据提供方之间导入和导出数据，例如 Salesforce、Amazon S3、LinkedIn 和 GitHub。更多信息请参见 AWS 文档中的[支持的源和目标应用](https://docs.aws.amazon.com/appflow/latest/userguide/app-specific.html)。
 
 本文档介绍了如何将 TiDB 与 Amazon AppFlow 进行集成，并以集成 TiDB Cloud Starter 集群为例进行说明。
 
@@ -152,7 +152,7 @@ git clone https://github.com/pingcap-inc/tidb-appflow-integration
 
     ![tidb connection message](/media/develop/aws-appflow-step-tidb-connection-message.png)
 
-7. 现在你可以获取在连接中指定的数据库里的所有表。从下拉列表中选择 **sf_account** 表。
+7. 现在你可以获取到在连接中指定的数据库里的所有表。从下拉列表中选择 **sf_account** 表。
 
     ![database](/media/develop/aws-appflow-step-database.png)
 
