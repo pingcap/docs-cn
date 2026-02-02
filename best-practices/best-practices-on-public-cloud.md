@@ -1,6 +1,7 @@
 ---
 title: 在公有云上部署 TiDB 的最佳实践
 summary: 了解在公有云上部署 TiDB 的最佳实践。
+aliases: ['/zh/tidb/stable/best-practices-on-public-cloud/','/zh/tidb/dev/best-practices-on-public-cloud/']
 ---
 
 # 在公有云上部署 TiDB 的最佳实践
