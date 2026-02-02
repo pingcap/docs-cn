@@ -9,6 +9,7 @@
   - [多列索引优化最佳实践](/best-practices/multi-column-index-best-practices.md)
   - [管理索引和识别未使用索引的最佳实践](/best-practices/index-management-best-practices.md)
 - 集群部署
+  - [在公有云上部署 TiDB 的最佳实践](/best-practices/best-practices-on-public-cloud.md)
   - [三节点混合部署的最佳实践](/best-practices/three-nodes-hybrid-deployment.md)
   - [在三数据中心下就近读取数据的最佳实践](/best-practices/three-dc-local-read.md)
 - 运维管理

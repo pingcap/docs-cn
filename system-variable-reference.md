@@ -3430,7 +3430,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [SHOW [GLOBAL|SESSION] VARIABLES](/sql-statements/sql-statement-show-variables.md)
 - [只读存储节点最佳实践](/best-practices/readonly-nodes.md)
 - [在三数据中心下就近读取数据](/best-practices/three-dc-local-read.md)
-- [在公有云上部署 TiDB 的最佳实践](/best-practices-on-public-cloud.md)
+- [在公有云上部署 TiDB 的最佳实践](/best-practices/best-practices-on-public-cloud.md)
 - [系统变量](/system-variables.md#tidb_replica_read-从-v40-版本开始引入)
 - [TiDB 8.5.4 Release Notes](/releases/release-8.5.4.md)
 - [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
@@ -3960,7 +3960,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
-- [在公有云上部署 TiDB 的最佳实践](/best-practices-on-public-cloud.md)
+- [在公有云上部署 TiDB 的最佳实践](/best-practices/best-practices-on-public-cloud.md)
 - [系统变量](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v530-版本开始引入)
 - [TiDB 5.3 Release Notes](/releases/release-5.3.0.md)
 
