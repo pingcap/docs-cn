@@ -3,19 +3,19 @@ title: 使用 WordPress 连接 TiDB Cloud Starter
 summary: 学习如何使用 TiDB Cloud Starter 运行 WordPress。本教程将为你提供分步指导，让你在几分钟内运行 WordPress + TiDB Cloud Starter。
 ---
 
-# 使用 WordPress 连接 TiDB Cloud Starter <!-- Draft translated by AI -->
+# 使用 WordPress 连接 TiDB Cloud Starter
 
-TiDB 是一个兼容 MySQL 的数据库，TiDB Cloud Starter 是一款全托管的 TiDB 云服务，[WordPress](https://github.com/WordPress) 是一个免费的开源内容管理系统（CMS），可以让用户创建和管理网站。WordPress 使用 PHP 编写，并使用 MySQL 数据库。
+TiDB 是一个兼容 MySQL 的数据库，TiDB Cloud Starter 是一款全托管的 TiDB 云服务，[WordPress](https://github.com/WordPress) 是一个免费的开源内容管理系统 (CMS)，可以让用户创建和管理网站。WordPress 使用 PHP 编写，并使用 MySQL 数据库。
 
 在本教程中，你可以学习如何免费使用 TiDB Cloud Starter 运行 WordPress。
 
-> **Note:**
+> **注意：**
 >
-> 除了 TiDB Cloud Starter，本教程同样适用于 TiDB Cloud Essential、TiDB Cloud Dedicated 以及 TiDB 自建集群。但强烈推荐使用 TiDB Cloud Starter 来运行 WordPress，以获得更高的性价比。
+> 除了 TiDB Cloud Starter，本教程同样适用于 TiDB Cloud Essential、TiDB Cloud Dedicated 以及 TiDB 自托管集群。但强烈推荐使用 TiDB Cloud Starter 来运行 WordPress，以获得更高的性价比。
 
-## 前置条件
+## 前提条件
 
-完成本教程，你需要：
+要完成本教程，你需要：
 
 - 一个 TiDB Cloud Starter 集群。如果你还没有集群，请按照[创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md)来创建属于你自己的 TiDB Cloud 集群。
 
@@ -48,7 +48,7 @@ cd wordpress-tidb-docker
 
 ### 第 3 步：配置连接信息
 
-配置 WordPress 数据库连接到 TiDB Cloud Starter。
+配置 WordPress 数据库到 TiDB Cloud Starter 的连接。
 
 1. 进入 [**Clusters**](https://tidbcloud.com/project/clusters) 页面，然后点击目标集群的名称，进入其概览页面。
 
@@ -65,7 +65,7 @@ cd wordpress-tidb-docker
 
     > **Tip:**
     >
-    > 如果你之前已经创建过密码，可以继续使用原有密码，或者点击 **Reset Password** 生成新密码。
+    > 如果你之前已经创建过密码，可以继续使用原有密码，或者点击 **Reset Password** 生成一个新密码。
 
 5. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -105,4 +105,4 @@ cd wordpress-tidb-docker
 
 ## 需要帮助？
 
-你可以在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 社区提问，或[提交支持工单](https://tidb.support.pingcap.com/)。
+你可以在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 社区提问，或提交支持工单（[TiDB](/support.md) 或 [TiDB Cloud](https://tidb.support.pingcap.com/)）。
