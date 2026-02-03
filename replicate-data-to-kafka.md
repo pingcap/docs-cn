@@ -38,7 +38,7 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
 3. （可选）部署 Flink 集群。
 
     - 实验环境，可以参考 [Apache Flink First steps](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/try-flink/local_installation/) 启动 Flink 集群。
-    - 生产环境，可以参考 [Apache Kafka Deployment](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/deployment/overview/) 部署 Flink 生产集群。
+    - 生产环境，可以参考 [Apache Flink Deployment](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/deployment/overview/) 部署 Flink 生产集群。
 
 ## 第 2 步：创建 Kafka changefeed
 
