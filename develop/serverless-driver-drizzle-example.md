@@ -93,7 +93,7 @@ summary: 学习如何在 Drizzle 中使用 TiDB Cloud serverless driver。
 
 1. 在你的 TiDB Cloud Serverless 集群中创建一张表。
 
-   你可以使用 [TiDB Cloud 控制台的 SQL Editor](/ai/explore-data-with-chat2query.md) 执行 SQL 语句。以下为示例：
+   你可以使用 [TiDB Cloud 控制台的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-chat2query/) 执行 SQL 语句。以下为示例：
 
    ```sql
    CREATE TABLE `test`.`users` (
@@ -203,7 +203,7 @@ summary: 学习如何在 Drizzle 中使用 TiDB Cloud serverless driver。
 
 1. 在你的 TiDB Cloud Serverless 集群中创建一张表。
 
-   你可以使用 [TiDB Cloud 控制台的 SQL Editor](/ai/explore-data-with-chat2query.md) 执行 SQL 语句。以下为示例：
+   你可以使用 [TiDB Cloud 控制台的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-chat2query/) 执行 SQL 语句。以下为示例：
 
    ```sql
    CREATE TABLE `test`.`users` (
