@@ -49,12 +49,12 @@
       - [Rails](/develop/dev-guide-sample-application-ruby-rails.md)
     - C#
       - [C#](/develop/dev-guide-sample-application-cs.md)
-    - TiDB Cloud Serverless Driver ![BETA](/media/tidb-cloud/blank_transparent_placeholder.png)
-      - [概览](/develop/serverless-driver.md)
-      - [Node.js 示例](/develop/serverless-driver-node-example.md)
-      - [Prisma 示例](/develop/serverless-driver-prisma-example.md)
-      - [Kysely 示例](/develop/serverless-driver-kysely-example.md)
-      - [Drizzle 示例](/develop/serverless-driver-drizzle-example.md)
+  - 通过 TiDB Cloud Serverless Driver 连接 ![BETA](/media/blank_transparent_placeholder.png)
+    - [概览](/develop/serverless-driver.md)
+    - [Node.js 示例](/develop/serverless-driver-node-example.md)
+    - [Prisma 示例](/develop/serverless-driver-prisma-example.md)
+    - [Kysely 示例](/develop/serverless-driver-kysely-example.md)
+    - [Drizzle 示例](/develop/serverless-driver-drizzle-example.md)
 - 数据库模式设计
   - [概览](/develop/dev-guide-schema-design-overview.md)
   - [创建数据库](/develop/dev-guide-create-database.md)
