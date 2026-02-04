@@ -4076,6 +4076,55 @@ mysql> desc select count(distinct a) from test.t;
 +----------------------------------+---------+-----------+----------------------+-------------------------------------+
 ```
 
+### `tidb_opt_partial_ordered_index_for_topn`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：枚举型
+- 默认值：`DISABLE`
+- 可选值：`DISABLE`、`COST`
+- 用于控制是否启用 partial order TopN 优化。当 `ORDER BY ... LIMIT` 能够利用索引前缀顺序（例如索引最后一列为前缀列）时，可避免扫描全表，减少排序开销。
+- 适用场景：`ORDER BY ... LIMIT` 的排序列较长、仅建立了前缀索引且希望减少 TopN 排序开销时，可通过该变量结合 use index hint 稳定使用 partial order TopN 优化。
+- 目前支持的应用场景：
+    1. 强制走 partial order 优化：将变量设为 `COST`，并通过 `USE INDEX`/`FORCE INDEX` 指定满足条件的索引。如果指定的索引不满足 partial order 优化条件（例如 `ORDER BY` 与索引前缀不匹配或存在不支持的排序形式），即使设置为 `COST` 也可能无法应用该优化，执行计划会退化为常规方式。
+    2. 强制关闭 partial order 优化：将变量设为 `DISABLE`。
+- 暂未支持的应用场景：
+    1. 完全依赖 cost model 动态选择是否应用优化。虽然目前支持 `COST` 取值，但 partial order 的 cost model 尚未发布，不推荐单独使用 `COST`。如果希望使用 partial order 优化，建议结合 `USE INDEX`/`FORCE INDEX` 一起使用。
+- 示例 1：强制走 partial order 优化（`COST` + `USE INDEX`）。
+
+    ```sql
+    > SET SESSION tidb_opt_partial_ordered_index_for_topn = 'COST';
+
+    > EXPLAIN FORMAT='brief' SELECT /*+ use_index(t_varchar, idx_name_prefix) */ *
+        FROM t_varchar ORDER BY name LIMIT 5;
+    +-------------------------------------------+---------+-----------+------------------------------+----------------------------------------------------------------------------------------------+
+    | id                                        | estRows | task      | access object                | operator info                                                                                |
+    +-------------------------------------------+---------+-----------+------------------------------+----------------------------------------------------------------------------------------------+
+    | TopN                                      | 5.00    | root      |                              | planner__core__partial_order_topn.t_varchar.name, offset:0, count:5, prefix_col:planner__core__partial_order_topn.t_varchar.name, prefix_len:10 |
+    | └─IndexLookUp                             | 5.00    | root      |                              |                                                                                              |
+    |   ├─Limit(Build)                          | 5.00    | cop[tikv] |                              | offset:0, count:5, prefix_col:planner__core__partial_order_topn.t_varchar.name, prefix_len:10 |
+    |   │ └─IndexFullScan                       | 10000.00| cop[tikv] | table:t_varchar, index:idx_name_prefix(name) | keep order:true, stats:pseudo                                               |
+    |   └─TableRowIDScan(Probe)                 | 5.00    | cop[tikv] | table:t_varchar              | keep order:false, stats:pseudo                                                               |
+    +-------------------------------------------+---------+-----------+------------------------------+----------------------------------------------------------------------------------------------+
+    ```
+
+- 示例 2：强制关闭 partial order 优化（`DISABLE`）。
+
+    ```sql
+    > SET SESSION tidb_opt_partial_ordered_index_for_topn = 'DISABLE';
+
+    > EXPLAIN FORMAT='brief' SELECT * FROM t_varchar ORDER BY name LIMIT 5;
+    +---------------------------+---------+-----------+---------------------+----------------------------------------------------+
+    | id                        | estRows | task      | access object       | operator info                                      |
+    +---------------------------+---------+-----------+---------------------+----------------------------------------------------+
+    | TopN                      | 5.00    | root      |                     | planner__core__partial_order_topn.t_varchar.name, offset:0, count:5 |
+    | └─TableReader             | 5.00    | root      | data:TopN           |                                                    |
+    |   └─TopN                  | 5.00    | cop[tikv] |                     | planner__core__partial_order_topn.t_varchar.name, offset:0, count:5 |
+    |     └─TableFullScan       | 10000.00| cop[tikv] | table:t_varchar     | keep order:false, stats:pseudo                     |
+    +---------------------------+---------+-----------+---------------------+----------------------------------------------------+
+    ```
+
 ### `tidb_opt_prefer_range_scan` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 > **注意：**
