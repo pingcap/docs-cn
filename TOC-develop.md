@@ -78,7 +78,7 @@
     - [Follower Read](/develop/dev-guide-use-follower-read.md)
     - [Stale Read](/develop/dev-guide-use-stale-read.md)
   - [HTAP 查询](/develop/dev-guide-hybrid-oltp-and-olap-queries.md)
-- [向量搜索](/develop/dev-guide-vector-search.md) ![BETA](/media/tidb-cloud/blank_transparent_placeholder.png)
+- [向量搜索](/develop/dev-guide-vector-search.md) ![BETA](/media/blank_transparent_placeholder.png)
 - 事务处理
   - [概览](/develop/dev-guide-transaction-overview.md)
   - [乐观事务和悲观事务](/develop/dev-guide-optimistic-and-pessimistic-transaction.md)
