@@ -1,5 +1,5 @@
 ---
-title:  使用 TiDB Cloud Starter 运行 WordPress
+title: 使用 TiDB Cloud Starter 运行 WordPress
 summary: 学习如何使用 TiDB Cloud Starter 运行 WordPress。本教程将为你提供分步指导，让你在几分钟内运行 WordPress + TiDB Cloud Starter。
 ---
 
