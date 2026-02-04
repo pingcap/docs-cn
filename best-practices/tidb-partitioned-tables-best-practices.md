@@ -253,8 +253,8 @@ TiDB 分区表的性能开销取决于分区数量和索引类型。
 
 关于 TTL 的发现：
 
-- 在 50 线程情况下，每个 TTL 作业耗时 8 到 10 分钟，删除 700 到 1100 万行。
-- 在 100 线程情况下，TTL 能处理最多约 2000 万行，但执行时间增加到 15 到 30 分钟且波动较大。
+- 在 50 个线程情况下，每个 TTL 作业耗时 8 到 10 分钟，删除 700 万到 1100 万行。
+- 在 100 个线程情况下，TTL 能处理最多约 2000 万行，但执行时间增加到 15 到 30 分钟，且波动较大。
 - 在高负载下，TTL 作业因额外的扫描和删除开销会降低整体 QPS。
 
 关于 `DROP PARTITION` 的发现：
@@ -324,7 +324,7 @@ ALTER TABLE ad_cache LAST PARTITION LESS THAN ("${nextTimestamp}");
 - 对于大规模或基于时间的数据清理，使用分区表并通过 `DROP PARTITION` 删除数据。该方法提供更好的性能、更低的系统影响和更简单的运维行为。
 - 对于细粒度或后台数据清理，使用 TTL。TTL 不适合具有高写入吞吐或需要快速删除大量数据的工作负载。
 
-### 分区删除效率：本地索引 vs 全局索引
+### 删除分区的效率：本地索引和全局索引
 
 对于带有全局索引的分区表，DDL 操作（例如 `DROP PARTITION`、`TRUNCATE PARTITION` 和 `REORGANIZE PARTITION`）必须同步更新全局索引条目。这些更新会显著增加 DDL 执行时间。
 
@@ -373,7 +373,7 @@ TiDB 会将新行和索引条目追加到“最右侧”的 Region。随着时�
 >
 > - 本节以分区表为示例说明缓解读写热点。TiDB 还提供其他热点缓解功能，例如 [`AUTO_INCREMENT`](/auto-increment.md) 和 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md)。
 >
-> 在特定场景下使用分区表时，将 `merge_option=deny` 用于保留分区边界的策略。更多信息见 [issue #58128](https://github.com/pingcap/tidb/issues/58128)。
+> - 在特定场景下使用分区表时，设置 `merge_option=deny` 用于保留分区边界的策略。更多信息见 [issue #58128](https://github.com/pingcap/tidb/issues/58128)。
 
 ### 分区如何工作
 
@@ -443,13 +443,13 @@ PARTITION BY KEY (id) PARTITIONS 16;
 
 在 Range 分区表中，如果查询未按分区键过滤，新创建的空分区可能成为读热点。
 
-根本原因：
+**根本原因：**
 
-- 默认情况下，TiDB 在创建表时为每个分区创建一个空 Region。如果一段时间内没有写入数据，TiDB 可能会将多个空分区的 Region 合并为单个 Region。
+默认情况下，TiDB 在创建表时为每个分区创建一个空 Region。如果一段时间内没有写入数据，TiDB 可能会将多个空分区的 Region 合并为单个 Region。
 
-影响：
+**影响：**
 
-- 当查询未按分区键过滤时，执行计划中会显示为 `partition:all`，TiDB 会扫描所有分区。单个包含多个空分区的 Region 会被反复扫描，导致读热点。
+当查询未按分区键过滤时，TiDB 会扫描所有分区，执行计划中会显示为 `partition:all`。因此，包含多个空分区的单个 Region 会被反复扫描，导致读热点。
 
 ### 写热点
 
@@ -600,7 +600,7 @@ SHOW TABLE employees PARTITION (p4) regions;
 
 #### 最佳实践
 
-为缓解新范围分区引发的热点问题，请参阅[非聚簇分区表的最佳实践](#非聚簇分区表的解决方案)。
+为缓解新 Range 分区引发的热点问题，请参阅[非聚簇分区表的最佳实践](#非聚簇分区表的解决方案)中的操作步骤。
 
 ### 聚簇非分区表的解决方案
 
