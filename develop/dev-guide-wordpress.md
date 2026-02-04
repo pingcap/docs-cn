@@ -1,9 +1,9 @@
 ---
-title: 使用 WordPress 连接 TiDB Cloud Starter
+title: 使用 TiDB Cloud Starter 运行 WordPress
 summary: 学习如何使用 TiDB Cloud Starter 运行 WordPress。本教程将为你提供分步指导，让你在几分钟内运行 WordPress + TiDB Cloud Starter。
 ---
 
-# 使用 WordPress 连接 TiDB Cloud Starter
+# 使用 TiDB Cloud Starter 运行 WordPress
 
 TiDB 是一个兼容 MySQL 的数据库，TiDB Cloud Starter 是一款全托管的 TiDB 云服务，[WordPress](https://github.com/WordPress) 是一个免费的开源内容管理系统 (CMS)，可以让用户创建和管理网站。WordPress 使用 PHP 编写，并使用 MySQL 数据库。
 

@@ -6,7 +6,15 @@ aliases: ['zh/tidbcloud/dev-guide-overview/','zh/tidb/dev/dev-guide-overview/','
 
 # 应用开发概览
 
-本指南是为应用程序开发者所编写的，如果你对 TiDB 的内部原理感兴趣，或希望参与到 TiDB 的开发中来，那么可前往阅读 [TiDB Kernel Development Guide](https://pingcap.github.io/tidb-dev-guide/) 来获取更多 TiDB 的相关信息。
+[TiDB](https://github.com/pingcap/tidb) 是一款开源的分布式 SQL 数据库，同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP)。
+
+本指南旨在帮助应用开发者快速掌握如何连接 TiDB、设计数据库、读写数据，并基于 TiDB 构建可靠且高性能的应用程序。
+
+无论你是 TiDB 的新手，还是正在将基于 MySQL 的现有应用迁移至 TiDB，都可以通过本指南提供详细的步骤说明与最佳实践快速上手，提升开发效率。
+
+> **注意：**
+>
+> 本指南是为应用程序开发者所编写的，如果你对 TiDB 的内部原理感兴趣，或希望参与到 TiDB 的开发中来，那么可前往阅读 [TiDB Kernel Development Guide](https://pingcap.github.io/tidb-dev-guide/) 来获取更多 TiDB 的相关信息。
 
 此外，你还可以通过视频的形式学习免费的 [TiDB SQL 开发在线课程](https://pingkai.cn/learn)。
 
