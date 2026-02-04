@@ -1,21 +1,21 @@
 ---
-title: Hybrid Search
+title: 混合检索
 summary: 同时使用全文检索和向量检索以提升检索质量。
 aliases: ['/tidb/stable/vector-search-hybrid-search']
 ---
 
-# Hybrid Search <!-- Draft translated by AI -->
+# 混合检索
 
-通过使用全文检索，你可以基于精确关键词检索文档。通过使用向量检索，你可以基于语义相似度检索文档。那么，我们能否将这两种检索方式结合起来，以提升检索质量并覆盖更多场景？答案是可以，这种方法被称为混合检索（hybrid search），并且在 AI 应用中被广泛使用。
+通过使用全文检索，你可以基于精确关键词检索文档。通过使用向量检索，你可以基于语义相似度检索文档。那么，我们能否将这两种检索方式结合起来，以提升检索质量并覆盖更多场景？答案是可以，这种方法被称为混合检索 (Hybrid Search)，并且在 AI 应用中被广泛使用。
 
 在 TiDB 中，混合检索的一般流程如下：
 
-1. 使用 TiDB 进行 **全文检索** 和 **向量检索**。
+1. 使用 TiDB 进行**全文检索**和**向量检索**。
 2. 使用 **reranker**（重排序器）对两种检索结果进行融合。
 
 ![Hybrid Search](/media/vector-search/hybrid-search-overview.svg)
 
-本教程演示了如何在 TiDB 中使用 [pytidb](https://github.com/pingcap/pytidb) Python SDK 实现混合检索，该 SDK 内置了 embedding 和 reranking 支持。使用 pytidb 并非强制要求 —— 你也可以直接使用 SQL 进行检索，并根据需要使用自定义的 reranking 模型。
+本教程演示了如何在 TiDB 中使用 [pytidb](https://github.com/pingcap/pytidb) Python SDK 实现混合检索，该 SDK 内置了 embedding 和 reranking 支持。使用 pytidb 并非强制要求，你也可以直接使用 SQL 进行检索，并根据需要使用自定义的 reranking 模型。
 
 ## 前置条件
 
@@ -23,7 +23,7 @@ aliases: ['/tidb/stable/vector-search-hybrid-search']
 
 - AWS: `Frankfurt (eu-central-1)` 和 `Singapore (ap-southeast-1)`
 
-要完成本教程，请确保你在支持的区域拥有一个 TiDB Cloud Starter 集群。如果还没有，请参考 [创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md) 进行创建。
+要完成本教程，请确保你在支持的区域拥有一个 TiDB Cloud Starter 集群。如果还没有，请参考[创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md)进行创建。
 
 ## 快速开始
 
@@ -53,7 +53,7 @@ db = TiDBClient.connect(
 )
 ```
 
-你可以在 [TiDB Cloud 控制台](https://tidbcloud.com) 获取这些连接参数：
+你可以在 [TiDB Cloud 控制台](https://tidbcloud.com)获取这些连接参数：
 
 1. 进入 [**Clusters**](https://tidbcloud.com/project/clusters) 页面，点击目标集群名称进入集群概览页。
 
@@ -153,15 +153,5 @@ df = (
 
 全文检索目前仍处于早期阶段，开放范围有限。如果你希望在尚未开放的区域体验全文检索，或有任何反馈与帮助需求，欢迎联系我们：
 
-<CustomContent platform="tidb">
-
-- [加入我们的 Discord](https://discord.gg/zcqexutz2R)
-
-</CustomContent>
-
-<CustomContent platform="tidb-cloud">
-
-- [加入我们的 Discord](https://discord.gg/zcqexutz2R)
-- [访问我们的支持门户](https://tidb.support.pingcap.com/)
-
-</CustomContent>
+- 在 [AskTUG](https://asktug.com/?utm_source=docs-cn-dev-guide) 上进行提问
+- [提交 TiDB Cloud 工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)
