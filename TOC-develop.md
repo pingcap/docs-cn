@@ -98,7 +98,7 @@
   - [结果集不稳定](/develop/dev-guide-unstable-result-set.md)
   - [超时](/develop/dev-guide-timeouts-in-tidb.md)
 
-## 集成
+## 集成指南
 
 - 第三方工具支持
   - [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)
