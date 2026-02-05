@@ -17,7 +17,6 @@
     - [MySQL CLI 工具](/develop/dev-guide-mysql-tools.md)
     - [MySQL Workbench](/develop/dev-guide-gui-mysql-workbench.md)
     - [Navicat](/develop/dev-guide-gui-navicat.md)
-    - [Looker Studio](/develop/dev-guide-bi-looker-studio.md)
   - 通过驱动或 ORM 框架连接
     - [选择驱动或 ORM 框架](/develop/dev-guide-choose-driver-or-orm.md)
     - Java

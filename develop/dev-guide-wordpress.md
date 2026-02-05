@@ -105,4 +105,5 @@ cd wordpress-tidb-docker
 
 ## 需要帮助？
 
-你可以在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 社区提问，或提交支持工单（[TiDB](/support.md) 或 [TiDB Cloud](https://tidb.support.pingcap.com/)）。
+- 在 [AskTUG](https://asktug.com/?utm_source=docs-cn-dev-guide) 上进行提问
+- [提交 TiDB Cloud 工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)
