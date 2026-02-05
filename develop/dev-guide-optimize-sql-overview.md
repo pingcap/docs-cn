@@ -28,4 +28,5 @@ summary: 介绍 TiDB 的 SQL 性能调优概览。
 
 ## 推荐阅读
 
-- [SQL 性能调优](/sql-tuning-overview.md)。
+- TiDB Cloud 文档：[SQL 调优概述](https://docs.pingcap.com/zh/tidbcloud/tidb-cloud-sql-tuning-overview/)
+- TiDB 文档：[SQL 性能调优](/sql-tuning-overview.md)
