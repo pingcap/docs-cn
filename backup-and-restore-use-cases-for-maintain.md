@@ -46,7 +46,7 @@ summary: 介绍使用 BR 备份与恢复的场景示例。
 
 > **注意：**
 >
-> 推荐使用[最新版本 TiDB/TiKV/PD/BR](/releases/release-notes.md)，同时需要确保 BR 版本和 TiDB 版本**相同**。
+> 推荐使用[最新版本 TiDB/TiKV/PD/BR](https://docs.pingcap.com/zh/releases/tidb-self-managed/)，同时需要确保 BR 版本和 TiDB 版本**相同**。
 
 ### TiKV 集群硬件信息
 
