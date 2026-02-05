@@ -13,7 +13,7 @@ TiDB 提供了完善的性能诊断和分析功能，例如 TiDB Dashboard 的 [
 >
 > [Top SQL](/dashboard/top-sql.md) 和 [Continuous Profiling](/dashboard/continuous-profiling.md) 功能默认关闭，需要提前开启。
 
-在这些场景中，通过使用不同的 JDBC 配置运行同一个应用程序，你可以观察应用和数据库之间不同的交互方式将如何影响系统整体的性能，从而更好地掌握[开发 Java 应用使用 TiDB 的最佳实践](/best-practices/java-app-best-practices.md)。
+在这些场景中，通过使用不同的 JDBC 配置运行同一个应用程序，你可以观察应用和数据库之间不同的交互方式将如何影响系统整体的性能，从而更好地掌握[开发 Java 应用使用 TiDB 的最佳实践](/develop/java-app-best-practices.md)。
 
 ## 负载环境
 
