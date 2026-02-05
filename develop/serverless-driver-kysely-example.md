@@ -1,16 +1,16 @@
 ---
-title: TiDB Cloud Serverless Driver Kysely 教程
+title: TiDB Cloud serverless driver Kysely 教程
 summary: 学习如何在 Kysely 中使用 TiDB Cloud serverless driver。
 ---
 
-# TiDB Cloud Serverless Driver Kysely 教程 <!-- Draft translated by AI -->
+# TiDB Cloud serverless driver Kysely 教程
 
-[Kysely](https://kysely.dev/docs/intro) 是一个类型安全且支持自动补全的 TypeScript SQL 查询构建器。TiDB Cloud 提供了 [@tidbcloud/kysely](https://github.com/tidbcloud/kysely)，使你能够通过 [TiDB Cloud serverless driver](/develop/serverless-driver.md) 在 HTTPS 上使用 Kysely。与传统的 TCP 方式相比，[ @tidbcloud/kysely ](https://github.com/tidbcloud/kysely) 带来了以下优势：
+[Kysely](https://kysely.dev/docs/intro) 是一个类型安全且支持自动补全的 TypeScript SQL 查询构建器。TiDB Cloud 提供了 [@tidbcloud/kysely](https://github.com/tidbcloud/kysely)，使你能够通过 [TiDB Cloud serverless driver](/develop/serverless-driver.md) 在 HTTPS 上使用 Kysely。与传统的 TCP 方式相比，[@tidbcloud/kysely](https://github.com/tidbcloud/kysely) 带来了以下优势：
 
 - 在 serverless 环境下拥有更好的性能。
-- 能够在 edge 环境中使用 Kysely。
+- 能够在边缘环境中使用 Kysely。
 
-本教程介绍了如何在 Node.js 环境和 edge 环境中，将 TiDB Cloud serverless driver 与 Kysely 结合使用。
+本教程介绍如何在 Node.js 环境和边缘环境中，将 TiDB Cloud serverless driver 与 Kysely 结合使用。
 
 ## 在 Node.js 环境中使用 TiDB Cloud Kysely 方言
 
@@ -18,11 +18,11 @@ summary: 学习如何在 Kysely 中使用 TiDB Cloud serverless driver。
 
 ### 前置条件
 
-完成本教程，你需要：
+完成本教程，你需要准备以下内容：
 
 - [Node.js](https://nodejs.org/en) >= 18.0.0。
 - [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 或你喜欢的包管理器。
-- 一个 TiDB Cloud Serverless 集群。如果你还没有，可以[创建一个 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- 一个 TiDB Cloud Starter 集群。如果你还没有，可以[创建一个 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 
 ### 步骤 1. 创建项目
 
@@ -71,9 +71,9 @@ summary: 学习如何在 Kysely 中使用 TiDB Cloud serverless driver。
    }
    ```
 
-### 步骤 2. 设置环境
+### 步骤 2. 配置环境
 
-1. 在 TiDB Cloud Serverless 集群的 overview 页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
+1. 在 TiDB Cloud Starter 集群的概览页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
 
     ```
     mysql://[username]:[password]@[host]/[database]
@@ -87,9 +87,9 @@ summary: 学习如何在 Kysely 中使用 TiDB Cloud serverless driver。
    
 ### 步骤 3. 使用 Kysely 查询数据
 
-1. 在你的 TiDB Cloud Serverless 集群中创建一张表并插入一些数据。
+1. 在你的 TiDB Cloud Starter 集群中创建一张表并插入一些数据。
 
-    你可以使用 [TiDB Cloud 控制台中的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-chat2query/) 执行 SQL 语句。以下为示例：
+    你可以使用 [TiDB Cloud 控制台的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-chat2query/) 执行 SQL 语句。以下为示例：
 
    ```sql
    CREATE TABLE `test`.`person`  (
@@ -108,7 +108,7 @@ summary: 学习如何在 Kysely 中使用 TiDB Cloud serverless driver。
    import { Kysely,GeneratedAlways,Selectable } from 'kysely'
    import { TiDBServerlessDialect } from '@tidbcloud/kysely'
    
-   // Types
+   // 类型定义
    interface Database {
      person: PersonTable
    }
@@ -119,14 +119,14 @@ summary: 学习如何在 Kysely 中使用 TiDB Cloud serverless driver。
      gender: "male" | "female"
    }
    
-   // Dialect
+   // 方言配置
    const db = new Kysely<Database>({
      dialect: new TiDBServerlessDialect({
        url: process.env.DATABASE_URL
      }),
    })
    
-   // Simple Querying
+   // 简单查询
    type Person = Selectable<PersonTable>
    export async function findPeople(criteria: Partial<Person> = {}) {
      let query = db.selectFrom('person')
@@ -141,7 +141,7 @@ summary: 学习如何在 Kysely 中使用 TiDB Cloud serverless driver。
    console.log(await findPeople())
    ```
 
-### 步骤 4. 运行 Typescript 代码
+### 步骤 4. 运行 TypeScript 代码
 
 1. 安装 `ts-node` 用于将 TypeScript 转换为 JavaScript，并安装 `@types/node` 以为 Node.js 提供 TypeScript 类型定义。
 
@@ -150,23 +150,23 @@ summary: 学习如何在 Kysely 中使用 TiDB Cloud serverless driver。
    npm i --save-dev @types/node
    ```
    
-2. 使用以下命令运行 Typescript 代码：
+2. 使用以下命令运行 TypeScript 代码：
 
    ```
    ts-node --esm hello-world.ts
    ```
 
-## 在 edge 环境中使用 TiDB Cloud Kysely 方言
+## 在边缘环境中使用 TiDB Cloud Kysely 方言
 
 本节以 Vercel Edge Function 中的 TiDB Cloud Kysely 方言为例进行说明。
 
 ### 前置条件
 
-完成本教程，你需要：
+完成本教程，你需要准备以下内容：
 
-- 一个提供 edge 环境的 [Vercel](https://vercel.com/docs) 账号。
+- 一个提供边缘环境的 [Vercel](https://vercel.com/docs) 账号。
 - [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 或你喜欢的包管理器。
-- 一个 TiDB Cloud Serverless 集群。如果你还没有，可以[创建一个 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- 一个 TiDB Cloud Starter 集群。如果你还没有，可以[创建一个 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 
 ### 步骤 1. 创建项目
 
@@ -189,19 +189,19 @@ summary: 学习如何在 Kysely 中使用 TiDB Cloud serverless driver。
    npm install kysely @tidbcloud/kysely @tidbcloud/serverless
    ```
 
-### 步骤 2. 设置环境
+### 步骤 2. 配置环境
 
-在 TiDB Cloud Serverless 集群的 overview 页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
+在 TiDB Cloud Starter 集群的概览页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
 
 ```
 mysql://[username]:[password]@[host]/[database]
 ```
 
-### 步骤 3. 创建 edge function
+### 步骤 3. 创建边缘函数
 
-1. 在你的 TiDB Cloud Serverless 集群中创建一张表并插入一些数据。
+1. 在你的 TiDB Cloud Starter 集群中创建一张表并插入一些数据。
 
-    你可以使用 [TiDB Cloud 控制台中的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-chat2query/) 执行 SQL 语句。以下为示例：
+    你可以使用 [TiDB Cloud 控制台的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-chat2query/) 执行 SQL 语句。以下为示例：
 
    ```sql
    CREATE TABLE `test`.`person`  (
@@ -224,7 +224,7 @@ mysql://[username]:[password]@[host]/[database]
    
    export const runtime = 'edge';
    
-   // Types
+   // 类型定义
    interface Database {
      person: PersonTable
    }
@@ -235,14 +235,14 @@ mysql://[username]:[password]@[host]/[database]
      gender: "male" | "female" | "other"
    }
    
-   // Dialect
+   // 方言配置
    const db = new Kysely<Database>({
      dialect: new TiDBServerlessDialect({
        url: process.env.DATABASE_URL
      }),
    })
    
-   // Query
+   // 查询
    type Person = Selectable<PersonTable>
    async function findPeople(criteria: Partial<Person> = {}) {
      let query = db.selectFrom('person')
@@ -293,7 +293,7 @@ mysql://[username]:[password]@[host]/[database]
 
 2. 访问 `${Your-URL}/api/edge-function-example` 页面，即可获取该路由的响应。
 
-## 后续操作
+## 下一步
 
 - 了解更多关于 [Kysely](https://kysely.dev/docs/intro) 和 [@tidbcloud/kysely](https://github.com/tidbcloud/kysely) 的信息
-- 学习如何 [将 TiDB Cloud 集成到 Vercel](/tidb-cloud/integrate-tidbcloud-with-vercel.md)
+- 学习如何[将 TiDB Cloud 集成到 Vercel](https://docs.pingcap.com/zh/tidbcloud/integrate-tidbcloud-with-vercel)

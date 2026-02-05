@@ -1,24 +1,24 @@
 ---
-title: TiDB Cloud Serverless Driver (Beta)
-summary: 了解如何从 serverless 和 edge 环境连接到 TiDB Cloud Starter 或 TiDB Cloud Essential。
+title: TiDB Cloud serverless driver (Beta)
+summary: 了解如何从 serverless 和边缘环境连接到 TiDB Cloud Starter 或 TiDB Cloud Essential。
 aliases: ['/tidbcloud/serverless-driver-config']
 ---
 
-# TiDB Cloud Serverless Driver (Beta) <!-- Draft translated by AI -->
+# TiDB Cloud serverless driver (Beta)
 
 > **注意：**
 >
-> serverless driver 目前为 beta 版本，仅适用于 TiDB Cloud Starter 或 TiDB Cloud Essential 集群。
+> serverless driver 目前为 Beta 版本，仅适用于 TiDB Cloud Starter 或 TiDB Cloud Essential 集群。
 
-## 为什么要使用 TiDB Cloud Serverless Driver (Beta)
+## 为什么要使用 TiDB Cloud serverless driver (Beta)
 
-传统的基于 TCP 的 MySQL driver 并不适用于 serverless 函数，因为它们期望建立长连接、持久的 TCP 连接，而这与 serverless 函数的短生命周期特性相矛盾。此外，在 [Vercel Edge Functions](https://vercel.com/docs/functions/edge-functions) 和 [Cloudflare Workers](https://workers.cloudflare.com/) 等 edge 环境中，可能缺乏对完整 TCP 支持和完整 Node.js 兼容性，这些 driver 可能根本无法工作。
+传统的基于 TCP 的 MySQL driver 不适用于 serverless 函数，是因为它们假设数据库连接是持久存在的，而这与 serverless 函数的短生命周期特性相矛盾。此外，在 [Vercel Edge Functions](https://vercel.com/docs/functions/edge-functions) 和 [Cloudflare Workers](https://workers.cloudflare.com/) 等边缘环境中，由于可能缺乏完整的 TCP 支持和 Node.js 兼容性，这些 driver 可能根本无法工作。
 
-[TiDB Cloud serverless driver (Beta)](https://github.com/tidbcloud/serverless-js) 针对 JavaScript，可以让你通过 HTTP 连接到 TiDB Cloud Starter 或 TiDB Cloud Essential 集群，而 HTTP 通常被 serverless 环境所支持。借助该 driver，你可以从 edge 环境连接到 TiDB Cloud Starter 或 TiDB Cloud Essential 集群，并减少 TCP 带来的连接开销，同时保持与传统基于 TCP 的 MySQL driver 类似的开发体验。
+[TiDB Cloud serverless driver (Beta)](https://github.com/tidbcloud/serverless-js) 是一款面向 JavaScript 的驱动，允许你通过 HTTP（serverless 环境普遍支持的通信方式）连接到 TiDB Cloud Starter 或 TiDB Cloud Essential 集群。借助该 driver，你可以从边缘环境连接到 TiDB Cloud Starter 或 TiDB Cloud Essential 集群，减少 TCP 带来的连接开销，同时保持与传统基于 TCP 的 MySQL driver 类似的开发体验。
 
 > **注意：**
 >
-> 如果你更喜欢使用 RESTful API 进行编程而不是 SQL 或 ORM，可以使用 [Data Service (beta)](/tidb-cloud/data-service-overview.md)。
+> 如果你更倾向于使用 RESTful API 进行编程而不是 SQL 或 ORM，可以使用 [Data Service (Beta)](https://docs.pingcap.com/zh/tidbcloud/data-service-overview)。
 
 ## 安装 serverless driver
 
@@ -63,9 +63,9 @@ try {
 }
 ```
 
-## Edge 环境示例
+## 边缘环境示例
 
-以下是在 edge 环境中使用 serverless driver 的一些示例。你也可以尝试这个完整的 [在线演示](https://github.com/tidbcloud/car-sales-insight)。
+以下是在边缘环境中使用 serverless driver 的一些示例。你也可以尝试这个完整的[在线演示](https://github.com/tidbcloud/car-sales-insight)。
 
 <SimpleTab>
 
@@ -84,7 +84,7 @@ export async function GET(request: NextRequest) {
 }
 ```
 
-了解更多关于 [在 Vercel 中使用 TiDB Cloud serverless driver](/tidb-cloud/integrate-tidbcloud-with-vercel.md)。
+了解更多关于[在 Vercel 中使用 TiDB Cloud serverless driver](https://docs.pingcap.com/zh/tidbcloud/integrate-tidbcloud-with-vercel)。
 
 </div>
 
@@ -104,7 +104,7 @@ export default {
 };
 ```
 
-了解更多关于 [在 Cloudflare Workers 中使用 TiDB Cloud serverless driver](/tidb-cloud/integrate-tidbcloud-with-cloudflare.md)。
+了解更多关于[在 Cloudflare Workers 中使用 TiDB Cloud serverless driver](https://docs.pingcap.com/zh/tidbcloud/integrate-tidbcloud-with-cloudflare)。
 
 </div>
 
@@ -120,7 +120,7 @@ export default async () => {
 }
 ```
 
-了解更多关于 [在 Netlify 中使用 TiDB Cloud serverless driver](/tidb-cloud/integrate-tidbcloud-with-netlify.md#use-the-edge-function)。
+了解更多关于[在 Netlify 中使用 TiDB Cloud serverless driver](https://docs.pingcap.com/zh/tidbcloud/integrate-tidbcloud-with-netlify#使用-edge-function)。
 
 </div>
 
@@ -163,7 +163,7 @@ const result = await conn.execute('show tables')
 | `host`       | string   | N/A           | 集群的主机名。                                                                                                                                                                                                                                                                                                                                       |
 | `database`   | string   | `test`        | 集群的数据库。                                                                                                                                                                                                                                                                                                                                       |
 | `url`        | string   | N/A           | 数据库的 URL，格式为 `mysql://[username]:[password]@[host]/[database]`，其中 `database` 可省略（如果你打算连接到默认数据库）。                                                                                                                                                                                 |
-| `fetch`      | function | global fetch  | 自定义 fetch 函数。例如，你可以在 node.js 中使用 `undici` 的 fetch。                                                                                                                                                                                                                                          |
+| `fetch`      | function | global fetch  | 自定义 fetch 函数。例如，你可以在 Node.js 中使用 `undici` 的 fetch。                                                                                                                                                                                                                                          |
 | `arrayMode`  | bool     | `false`       | 是否以数组而非对象的形式返回结果。为了获得更好的性能，可以设置为 `true`。                                                                                                                                                                                                                                     |
 | `fullResult` | bool     | `false`       | 是否返回完整结果对象而不仅仅是行数据。为了获得更详细的结果，可以设置为 `true`。                                                                                                                                                                                                                               |
 | `decoders`   | object   | `{}`          | 一组键值对，允许你自定义不同列类型的解码过程。在每个键值对中，你可以指定列类型作为 key，并指定相应的函数作为 value。该函数以 TiDB Cloud serverless driver 返回的原始字符串值为参数，并返回解码后的值。                                                                                                         |
@@ -172,7 +172,7 @@ const result = await conn.execute('show tables')
 
 > **注意：**
 >
-> 如果你的用户名、密码或数据库名包含特殊字符，在通过 URL 传递时必须对这些字符进行 [百分号编码](https://en.wikipedia.org/wiki/Percent-encoding)。例如，密码 `password1@//?` 需要在 URL 中编码为 `password1%40%2F%2F%3F`。
+> 如果你的用户名、密码或数据库名包含特殊字符，在通过 URL 传递时必须对这些字符进行[百分号编码](https://zh.wikipedia.org/wiki/百分号编码)。例如，密码 `password1@//?` 需要在 URL 中编码为 `password1%40%2F%2F%3F`。
 
 当配置了 `url` 后，无需单独配置 `host`、`username`、`password` 和 `database`。以下代码是等价的：
 
@@ -210,7 +210,7 @@ const conn = connect(config)
 | `arrayMode`  | bool   | `false`          | 是否以数组而非对象的形式返回结果。为了获得更好的性能，可以设置为 `true`。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `fullResult` | bool   | `false`          | 是否返回完整结果对象而不仅仅是行数据。为了获得更详细的结果，可以设置为 `true`。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `isolation`  | string | `REPEATABLE READ`| 事务隔离级别，可设置为 `READ COMMITTED` 或 `REPEATABLE READ`。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `decoders`   | object | `{}`             | 一组键值对，允许你自定义不同列类型的解码过程。在每个键值对中，你可以指定列类型作为 key，并指定相应的函数作为 value。该函数以 TiDB Cloud serverless driver 返回的原始字符串值为参数，并返回解码后的值。如果你在连接级别和 SQL 级别都配置了 `decoders`，则连接级别中 key 不同的键值对会合并到 SQL 级别生效；如果同一个 key（即列类型）在两级都指定，则以 SQL 级别为准。 |
+| `decoders`   | object | `{}`             | 一组键值对，允许你自定义不同列类型的解码过程。在每个键值对中，你可以指定列类型作为 key，并指定相应的函数作为 value。该函数以 TiDB Cloud serverless driver 返回的原始字符串值为参数，并返回解码后的值。如果你在连接级别和 SQL 级别都配置了 `decoders`，则连接级别中具有不同 key 的键值对将合并到 SQL 级别并生效。如果两个级别指定了相同的 key（即列类型），则以 SQL 级别的值为准。 |
 
 **arrayMode 和 fullResult**
 
@@ -223,7 +223,7 @@ const results = await conn.execute('select * from test',null,{arrayMode:true,ful
 
 **isolation**
 
-`isolation` 选项只能在 `begin` 方法中使用。
+`isolation` 选项只能在 `begin` 函数中使用。
 
 ```ts
 const conn = connect({url: 'mysql://[username]:[password]@[host]/[database]'})
@@ -271,9 +271,9 @@ conn.execute(`select ...`, [], {
 
 ### 数据类型映射
 
-TiDB 与 Javascript 之间的类型映射如下：
+TiDB 与 JavaScript 之间的数据类型映射如下：
 
-| TiDB 数据类型 | Javascript 类型 |
+| TiDB 数据类型 | JavaScript 类型 |
 |----------------------|-----------------|
 | TINYINT              | number          |
 | UNSIGNED TINYINT     | number          |
@@ -331,10 +331,10 @@ TiDB Cloud serverless driver 已集成以下 ORM：
 
 ## 计费
 
-serverless driver 本身免费，但使用该 driver 访问数据会产生 [Request Units (RUs)](/tidb-cloud/tidb-cloud-glossary.md#request-unit-ru) 和存储用量。
+serverless driver 本身免费，但使用该 driver 访问数据会产生 [Request Units (RUs)](https://docs.pingcap.com/zh/tidbcloud/tidb-cloud-glossary/#request-capacity-unit-rcu) 和存储用量。
 
-- 对于 TiDB Cloud Starter 集群，计费遵循 [TiDB Cloud Starter 计费](https://www.pingcap.com/tidb-cloud-starter-pricing-details/) 模型。
-- 对于 TiDB Cloud Essential 集群，计费遵循 [TiDB Cloud Essential 计费](https://www.pingcap.com/tidb-cloud-essential-pricing-details/) 模型。
+- 对于 TiDB Cloud Starter 集群，按 [TiDB Cloud Starter 计费模式](https://www.pingcap.com/tidb-cloud-starter-pricing-details/)计费。
+- 对于 TiDB Cloud Essential 集群，按 [TiDB Cloud Essential 计费模式](https://www.pingcap.com/tidb-cloud-essential-pricing-details/)计费。
 
 ## 限制
 
@@ -342,9 +342,9 @@ serverless driver 本身免费，但使用该 driver 访问数据会产生 [Requ
 
 - 单次查询最多可获取 10,000 行数据。
 - 每次只能执行一条 SQL 语句，不支持在一个查询中执行多条 SQL 语句。
-- 暂不支持通过 [私有端点](/tidb-cloud/set-up-private-endpoint-connections-serverless.md) 连接。
-- 为保护你的凭证，服务端会通过跨域资源共享（CORS）阻止来自未授权浏览器来源的请求。因此，你只能在后端服务中使用 serverless driver。
+- 暂不支持通过[私有端点](https://docs.pingcap.com/zh/tidbcloud/set-up-private-endpoint-connections-serverless)连接。
+- 为保护你的凭证，服务端会通过跨域资源共享 (CORS) 阻止来自未经授权的浏览器来源的请求。因此，你只能在后端服务中使用 serverless driver。
 
-## 后续步骤
+## 下一步
 
-- 了解如何 [在本地 Node.js 项目中使用 TiDB Cloud serverless driver](/develop/serverless-driver-node-example.md)。
+- 了解如何[在本地 Node.js 项目中使用 TiDB Cloud serverless driver](/develop/serverless-driver-node-example.md)。
