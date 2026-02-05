@@ -58,19 +58,19 @@ SET GLOBAL tidb_opt_fix_control = '44262:ON,44389:ON,44823:10000,44830:ON,44855:
 
 | 系统变量 | 说明 | 注意事项 |
 | ---------| ---- | ----|
-| [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 和 [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) | 启用实例级计划缓存而不是会话级缓存，适合高并发连接或频繁使用预处理语句的场景。 | 实验特性，建议先在测试环境验证，并关注内存占用。 |
+| [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 和 [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) | 启用实例级计划缓存而不是会话级缓存，在高并发连接或频繁使用预处理语句的场景中，可以显著提升负载的性能。 | 实验特性，建议先在测试环境验证，并关注内存占用。 |
 | [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 启用[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)，降低不使用预处理语句应用的编译开销。 | 无 |
-| [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt-从-v600-版本开始引入) | 针对每次执行后关闭计划的应用，缓存其计划。 | 无 |
+| [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt-从-v600-版本开始引入) | 针对使用预处理语句但在每次执行后关闭执行计划的应用，为该应用混存执行计划。 | 无 |
 | [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) | 收集所有列的统计信息，避免因缺失统计导致执行计划不佳。 | 无 |
 | [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 将同步加载统计信息的超时时间从默认 100ms 提高到 2s，确保编译前加载完毕。 | 调大该变量的值会导致编译等待时间变长。 |
-| [`tidb_opt_limit_push_down_threshold`](/system-variables.md#tidb_opt_limit_push_down_threshold) | 提高 `Limit` 或 `TopN` 下推到 TiKV 的阈值。 | 当存在多个索引选项时，调大该变量的值后，优化器更倾向于选择能优化 `ORDER BY` 和 `Limit` 算子的索引。 |
+| [`tidb_opt_limit_push_down_threshold`](/system-variables.md#tidb_opt_limit_push_down_threshold) | 提高将 `Limit` 或 `TopN` 下推到 TiKV 的阈值。 | 当存在多个索引选项时，调大该变量的值后，优化器更倾向于选择能优化 `ORDER BY` 和 `Limit` 算子的索引。 |
 | [`tidb_opt_derive_topn`](/system-variables.md#tidb_opt_derive_topn-从-v700-版本开始引入) | 启用[从窗口函数中推导 `TopN` 或 `Limit`](/derive-topn-from-window.md)。 | 仅支持 `ROW_NUMBER()` 窗口函数。 |
-| [`tidb_runtime_filter_mode`](/system-variables.md#tidb_runtime_filter_mode-从-v720-版本开始引入) | 启用本地模式的 [Runtime Filter](/runtime-filter.md#runtime-filter-mode)，提升 Hash Join 效率。 | v7.2.0 引入，默认关闭。 |
-| [`tidb_opt_enable_mpp_shared_cte_execution`](/system-variables.md#tidb_opt_enable_mpp_shared_cte_execution-从-v720-版本开始引入) | 启用非递归 CTE 下推到 TiFlash。 | 实验特性。 |
-| [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts-从-v600-版本开始引入) | 在读已提交隔离级别下，启动该变量可以避免获取全局时间戳，优化事务读延迟。 | 与可重复读隔离级别不兼容。 |
+| [`tidb_runtime_filter_mode`](/system-variables.md#tidb_runtime_filter_mode-从-v720-版本开始引入) | 启用本地模式的 [Runtime Filter](/runtime-filter.md#runtime-filter-mode)，提升 Hash Join 效率。 | v7.2.0 引入，出于安全考虑默认关闭。 |
+| [`tidb_opt_enable_mpp_shared_cte_execution`](/system-variables.md#tidb_opt_enable_mpp_shared_cte_execution-从-v720-版本开始引入) | 启用非递归公共表表达式 [Common Table Expressions (CTE)](/sql-statements/sql-statement-with.md) 下推到 TiFlash。 | 实验特性。 |
+| [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts-从-v600-版本开始引入) | 对于 read-committed 隔离级别，启用该变量可以避免获取全局时间戳带来的延迟和开销，从而优化事务级读取延迟。 | 该特性与可重复读 (Repeatable Read) 隔离级别不兼容。 |
 | [`tidb_guarantee_linearizability`](/system-variables.md#tidb_guarantee_linearizability-从-v50-版本开始引入) | 通过跳过从 PD 获取提交时间戳，提升性能。 | 为了提升性能，这种方式牺牲了线性一致性 (Linearizability)，仅保证因果一致性。不适用于需要严格线性一致性的场景。|
-| [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) | 启用 PD Follower 特性，允许 PD Follower 节点处理 Region 请求。该特性有助于将负载均匀分摊到所有 PD 节点，降低 PD Leader 的 CPU 压力。 | 实验特性，建议先在非生产环境中测试。 |
-| [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v653-和-v710-版本开始引入) | 启用高级查询优化策略，通过引入额外的优化规则和启发式方法来提升性能。 | 不同负载效果不同，需充分测试。 |
+| [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) | 启用 PD Follower 特性，允许 PD Follower 节点处理 Region 请求。该特性有助于将负载均匀分摊到所有 PD 节点，降低 PD Leader 的 CPU 压力。 | N/A |
+| [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v653-和-v710-版本开始引入) | 启用高级查询优化策略，通过引入额外的优化规则和启发式方法来提升性能。 | 不同负载的性能提升效果不同，因此请进行充分测试。 |
 
 以下为优化器控制配置项的详细说明，这些配置项可启用额外的优化能力：
 
@@ -83,7 +83,7 @@ SET GLOBAL tidb_opt_fix_control = '44262:ON,44389:ON,44823:10000,44830:ON,44855:
 
 ### TiKV 配置
 
-在 TiKV 配置文件中添加如下内容：
+在 TiKV 配置文件中添加如下配置项：
 
 ```toml
 [server]
@@ -124,7 +124,7 @@ soft-pending-compaction-bytes-limit = "192GiB"
 
 | 配置项 | 说明 | 注意事项 |
 | ---------| ---- | ----|
-| <ul><li>[`concurrent-send-snap-limit`](/tikv-configuration-file.md#concurrent-send-snap-limit)</li><li>[`concurrent-recv-snap-limit`](/tikv-configuration-file.md#concurrent-recv-snap-limit)</li><li>[`snap-io-max-bytes-per-sec`](/tikv-configuration-file.md#snap-io-max-bytes-per-sec)</li></ul> | 设置 TiKV 扩容时快照并发传输和 I/O 带宽的上限。提高这些上限可以通过加快数据迁移速度，缩短扩容耗时。 | 需权衡扩容速度与在线业务性能。 |
+| <ul><li>[`concurrent-send-snap-limit`](/tikv-configuration-file.md#concurrent-send-snap-limit)</li><li>[`concurrent-recv-snap-limit`](/tikv-configuration-file.md#concurrent-recv-snap-limit)</li><li>[`snap-io-max-bytes-per-sec`](/tikv-configuration-file.md#snap-io-max-bytes-per-sec)</li></ul> | 在 TiKV 扩缩容过程中，为并发快照传输和 I/O 带宽设置限制。提高这些限制可以加快数据迁移，从而缩短扩缩容时间。 | 需权衡扩容速度与在线业务性能。 |
 | <ul><li>[`in-memory-peer-size-limit`](/tikv-configuration-file.md#in-memory-peer-size-limit-从-v840-版本开始引入)</li><li>[`in-memory-instance-size-limit`](/tikv-configuration-file.md#in-memory-instance-size-limit-从-v840-版本开始引入)</li></ul> | 控制悲观锁缓存的 Region 级和实例级的内存分配，将锁存储在内存中可减少磁盘 I/O 并提升事务性能。 | 提高上限会提升性能，但也会增加内存消耗。 |
 | [`rocksdb.max-manifest-file-size`](/tikv-configuration-file.md#max-manifest-file-size) | 设置 RocksDB Manifest 文件的最大大小。Manifest 文件记录 SST 文件和数据库状态变更的元数据。增大该值可减少 Manifest 文件的写频率，从而降低其对前台写入性能的影响。 | 默认值为 `128MiB`。在存在大量 SST 文件（如数十万级别）的环境下，Manifest 文件频繁的写操作会影响写入性能。建议将该参数调高至 `256MiB` 或更大，以保持最佳性能。 |
 | <ul><li>[`rocksdb.titan`](/tikv-configuration-file.md#rocksdbtitan)</li><li>[`rocksdb.defaultcf.titan`](/tikv-configuration-file.md#rocksdbdefaultcftitan)</li><li>[`min-blob-size`](/tikv-configuration-file.md#min-blob-size) </li><li> [`blob-file-compression`](/tikv-configuration-file.md#blob-file-compression)</li></ul> | 启用 Titan 存储引擎以降低写放大并缓解磁盘 I/O 瓶颈。尤其适用于 RocksDB 压缩无法跟上写入压力、待压缩字节持续积压的场景。 | 仅当写放大成为主要瓶颈时建议开启。需权衡以下因素：<ul><li>主键范围扫描可能受影响。</li><li>空间放大会增加（极端情况下最高 2 倍）。</li><li>Blob 缓存会占用更多内存。</li></ul> |
@@ -152,7 +152,7 @@ soft-pending-compaction-bytes-limit = "192GiB"
 
 > **注意：**
 >
-> TiKV 在调度层实现了流控机制，以保障系统稳定性。当关键阈值（如待压缩字节数或写入队列大小）被突破时，TiKV 会拒绝新的写入请求，并返回 `ServerIsBusy` 错误。这通常意味着后台压缩进程无法跟上前台写入的速度。流控触发后，系统会出现延迟抖动和 QPS（吞吐量）下降等现象。为避免此类性能退化，建议提前做好容量规划，并合理配置压缩参数和存储设置。
+> TiKV 在调度器层实现流控以确保系统稳定性。当超过关键阈值（包括待压缩字节数或写入队列大小等）时，TiKV 会开始拒绝写入请求并返回 ServerIsBusy 错误。该错误表示后台压缩进程无法跟上当前前台写入操作的速率。流控被触发后，通常会导致延迟升高并降低查询吞吐量（QPS 下降）。为避免这些性能劣化，需要进行充分的容量规划，并合理配置压缩参数和存储相关设置。
 
 ### TiFlash-learner 配置
 
@@ -191,8 +191,8 @@ snap-io-max-bytes-per-sec = "300MiB"
 | QPS | 89,100 | 100,128 | +12.38% |
 | 平均延迟（毫秒）| 35.87 | 31.92 | -11.01% |
 | P95 延迟（毫秒）| 58.92 | 51.02 | -13.41% |
-| 执行计划缓存命中率（%） | 56.89% | 87.51% | +53.82% |
-| 计划缓存内存占用（MiB） | 95.3 | 70.2 | -26.34% |
+| 执行计划缓存命中率 (%) | 56.89% | 87.51% | +53.82% |
+| 计划缓存内存占用 (MiB) | 95.3 | 70.2 | -26.34% |
 
 #### 主要优势
 
@@ -279,14 +279,14 @@ sysbench oltp_read_only run --mysql-host={host} --mysql-port={port} --mysql-user
 
 #### 性能分析
 
-自 v7.6.0 起，Titan 默认启用，TiDB v8.4.0 中 Titan 的默认 `min-blob-size` 为 `32KiB`。基线配置采用 `31KiB` 的记录大小，确保数据存储在 RocksDB 中。而在关键配置中，将 `min-blob-size` 设置为 `1KiB`，使数据存储在 Titan。
+从 v7.6.0 开始，Titan 默认启用。TiDB v8.4.0 中，Titan 的 `min-blob-size` 默认值为 `32KiB`。基线配置采用 `31KiB` 的记录大小，确保数据存储在 RocksDB 中。而在关键配置中，将 `min-blob-size` 设置为 `1KiB`，使数据存储在 Titan。
 
 关键配置下的性能提升，主要归因于 Titan 显著减少了 RocksDB 的压缩操作。如下图所示：
 
 - 基线配置：RocksDB 压缩总吞吐量超过 1 GiB/s，峰值超过 3 GiB/s。
 - 关键配置：RocksDB 压缩峰值吞吐量低于 100 MiB/s。
 
-压缩开销的大幅降低，是关键配置下整体吞吐量提升的主要原因。
+压缩开销的大幅降低有助于整体吞吐量的提升，这一提升体现在关键参数配置的优化效果中。
 
 ![Titan RocksDB compaction:](/media/performance/titan-rocksdb-compactions.png)
 
@@ -342,8 +342,8 @@ go-ycsb run mysql -P /ycsb/workloads/workloada -p {host} -p mysql.port={port} -p
 
 如果你的业务负载包含大量高频小事务或频繁请求时间戳的查询，[TSO (Timestamp Oracle）](/glossary.md#timestamp-oracle-tso) 可能成为性能瓶颈。你可以通过 [**Performance Overview > SQL Execute Time Overview**](/grafana-performance-overview-dashboard.md#sql-execute-time-overview) 面板检查 TSO 等待时间是否占据 SQL 执行时间的较大比例。如果 TSO 等待时间较高，可考虑以下优化措施：
 
-- 对于不需要严格一致性的读操作，启用低精度 TSO（[`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso)）。详见 [方案 1：低精度 TSO](#方案-1低精度-tso)。
-- 尽量将多个小事务合并为较大的事务。详见 [方案 2：TSO 请求并行模式](#方案-2tso-请求并行模式)。
+- 对于不需要严格一致性的读操作，启用低精度 TSO ([`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso))。详见 [方案 1：低精度 TSO](#方案-1低精度-tso)。
+- 尽量将多个小事务合并为较大的事务。详见[方案 2：TSO 请求并行模式](#方案-2tso-请求并行模式)。
 
 #### 方案 1：低精度 TSO
 
@@ -413,7 +413,7 @@ admission-min-process-ms = 0
 - 对于高并发、小事务的 OLTP 负载：
 
     - 建议设置为 `128`~`256`（默认值为 `1024`）。
-    - 可降低内存占用，加快 limit 查询。
+    - 可降低内存占用，提升 limit 查询的速度。
     - 适用场景：点查、小范围扫描。
 
     ```sql
@@ -500,7 +500,7 @@ SET GLOBAL tidb_opt_distinct_agg_push_down = ON;
 
 ### 使用内存引擎缓解 MVCC 版本积压
 
-在高读写热点区域或垃圾回收、压缩不及时的情况下，过多的 MVCC 版本会导致性能瓶颈。自 v8.5.0 起，你可以通过启用 [TiKV MVCC 内存引擎](/tikv-in-memory-engine.md)来缓解该问题。只需在 TiKV 配置文件中添加如下内容：
+在高读写热点区域或垃圾回收、压缩不及时的情况下，过多的 MVCC 版本会导致性能瓶颈。自 v8.5.0 起，你可以通过启用 [TiKV MVCC 内存引擎 (In-Memory Engine, IME)](/tikv-in-memory-engine.md) 来缓解该问题。只需在 TiKV 配置文件中添加如下内容：
 
 > **注意：**
 >
@@ -515,7 +515,7 @@ enable = true
 
 通过管理统计信息的收集方式，可以在保持查询优化能力的同时提升批量操作的性能。本节介绍如何有效管理该过程。
 
-#### 何时关闭自动统计信息分析（auto analyze）
+#### 何时关闭自动统计信息分析 (Auto Analyze)
 
 在以下场景中，可以通过将系统变量 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 设置为 `OFF` 来关闭自动统计信息分析：
 
