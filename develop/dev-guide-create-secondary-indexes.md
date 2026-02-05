@@ -128,6 +128,15 @@ CREATE INDEX `idx_book_published_at` ON `bookshop`.`books` (`bookshop`.`books`.`
 
 可以看到执行计划中没有了 **TableFullScan** 的字样，取而代之的是 **IndexRangeScan**，这代表已经 TiDB 在进行这个查询时准备使用索引。
 
+上方执行计划中的的 **TableFullScan**、**IndexRangeScan** 等在 TiDB 内被称为[算子](/explain-overview.md#算子简介)。这里对执行计划的解读及算子等不做进一步的展开，若你对此感兴趣，可前往 [TiDB 执行计划概览](/explain-overview.md)文档查看更多关于执行计划与 TiDB 算子的相关知识。
+
+执行计划并非每次返回使用的算子都相同，这是由于 TiDB 使用的优化方式为 **基于代价的优化方式 (CBO)**，执行计划不仅与规则相关，还和数据分布相关。
+
+关于 TiDB SQL 性能调优的更多信息，请参阅以下文档：
+
+- TiDB Cloud 文档：[SQL 调优概述](https://docs.pingcap.com/zh/tidbcloud/tidb-cloud-sql-tuning-overview/)
+- TiDB 文档：[SQL 性能调优](/sql-tuning-overview.md)
+
 > **注意：**
 >
 > TiDB 在查询时，还支持显式地使用索引，你可以使用 [Optimizer Hints](/optimizer-hints.md) 或[执行计划管理 (SPM)](/sql-plan-management.md) 来人为的控制索引的使用。但如果你不了解它内部发生了什么，请你**_暂时先不要使用它_**。
