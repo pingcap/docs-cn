@@ -293,7 +293,7 @@ mysql://[username]:[password]@[host]/[database]
 
 2. 访问 `${Your-URL}/api/edge-function-example` 页面，即可获取该路由的响应。
 
-## 后续步骤
+## 下一步
 
 - 了解更多关于 [Kysely](https://kysely.dev/docs/intro) 和 [@tidbcloud/kysely](https://github.com/tidbcloud/kysely) 的信息
-- 学习如何[将 TiDB Cloud 集成到 Vercel](/tidb-cloud/integrate-tidbcloud-with-vercel.md)
+- 学习如何[将 TiDB Cloud 集成到 Vercel](https://docs.pingcap.com/zh/tidbcloud/integrate-tidbcloud-with-vercel)

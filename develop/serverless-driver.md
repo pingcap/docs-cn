@@ -12,13 +12,13 @@ aliases: ['/tidbcloud/serverless-driver-config']
 
 ## 为什么要使用 TiDB Cloud serverless driver (Beta)
 
-传统的基于 TCP 的 MySQL driver 不适用于 serverless 函数，因为它们期望建立持久的 TCP 连接，而这与 serverless 函数的短生命周期特性相矛盾。此外，在 [Vercel Edge Functions](https://vercel.com/docs/functions/edge-functions) 和 [Cloudflare Workers](https://workers.cloudflare.com/) 等边缘环境中，由于可能缺乏完整的 TCP 支持和 Node.js 兼容性，这些 driver 可能根本无法工作。
+传统的基于 TCP 的 MySQL driver 不适用于 serverless 函数，是因为它们假设数据库连接是持久存在的，而这与 serverless 函数的短生命周期特性相矛盾。此外，在 [Vercel Edge Functions](https://vercel.com/docs/functions/edge-functions) 和 [Cloudflare Workers](https://workers.cloudflare.com/) 等边缘环境中，由于可能缺乏完整的 TCP 支持和 Node.js 兼容性，这些 driver 可能根本无法工作。
 
-[TiDB Cloud serverless driver (Beta)](https://github.com/tidbcloud/serverless-js) 适用于 JavaScript，允许你通过 HTTP 连接到 TiDB Cloud Starter 或 TiDB Cloud Essential 集群，而 HTTP 通常受到 serverless 环境的支持。借助该 driver，你可以从边缘环境连接到 TiDB Cloud Starter 或 TiDB Cloud Essential 集群，减少 TCP 带来的连接开销，同时保持与传统基于 TCP 的 MySQL driver 类似的开发体验。
+[TiDB Cloud serverless driver (Beta)](https://github.com/tidbcloud/serverless-js) 是一款面向 JavaScript 的驱动，允许你通过 HTTP（serverless 环境普遍支持的通信方式）连接到 TiDB Cloud Starter 或 TiDB Cloud Essential 集群。借助该 driver，你可以从边缘环境连接到 TiDB Cloud Starter 或 TiDB Cloud Essential 集群，减少 TCP 带来的连接开销，同时保持与传统基于 TCP 的 MySQL driver 类似的开发体验。
 
 > **注意：**
 >
-> 如果你更倾向于使用 RESTful API 进行编程而不是 SQL 或 ORM，可以使用 [Data Service (Beta)](/tidb-cloud/data-service-overview.md)。
+> 如果你更倾向于使用 RESTful API 进行编程而不是 SQL 或 ORM，可以使用 [Data Service (Beta)](https://docs.pingcap.com/zh/tidbcloud/data-service-overview)。
 
 ## 安装 serverless driver
 
@@ -84,7 +84,7 @@ export async function GET(request: NextRequest) {
 }
 ```
 
-了解更多关于[在 Vercel 中使用 TiDB Cloud serverless driver](/tidb-cloud/integrate-tidbcloud-with-vercel.md)。
+了解更多关于[在 Vercel 中使用 TiDB Cloud serverless driver](https://docs.pingcap.com/zh/tidbcloud/integrate-tidbcloud-with-vercel)。
 
 </div>
 
@@ -104,7 +104,7 @@ export default {
 };
 ```
 
-了解更多关于[在 Cloudflare Workers 中使用 TiDB Cloud serverless driver](/tidb-cloud/integrate-tidbcloud-with-cloudflare.md)。
+了解更多关于[在 Cloudflare Workers 中使用 TiDB Cloud serverless driver](https://docs.pingcap.com/zh/tidbcloud/integrate-tidbcloud-with-cloudflare)。
 
 </div>
 
@@ -120,7 +120,7 @@ export default async () => {
 }
 ```
 
-了解更多关于[在 Netlify 中使用 TiDB Cloud serverless driver](/tidb-cloud/integrate-tidbcloud-with-netlify.md#use-the-edge-function)。
+了解更多关于[在 Netlify 中使用 TiDB Cloud serverless driver](https://docs.pingcap.com/zh/tidbcloud/integrate-tidbcloud-with-netlify#使用-edge-function)。
 
 </div>
 
@@ -331,10 +331,10 @@ TiDB Cloud serverless driver 已集成以下 ORM：
 
 ## 计费
 
-serverless driver 本身免费，但使用该 driver 访问数据会产生 [Request Units (RUs)](/tidb-cloud/tidb-cloud-glossary.md#request-unit-ru) 和存储用量。
+serverless driver 本身免费，但使用该 driver 访问数据会产生 [Request Units (RUs)](https://docs.pingcap.com/zh/tidbcloud/tidb-cloud-glossary/#request-capacity-unit-rcu) 和存储用量。
 
-- 对于 TiDB Cloud Starter 集群，计费遵循 [TiDB Cloud Starter 计费](https://www.pingcap.com/tidb-cloud-starter-pricing-details/)模型。
-- 对于 TiDB Cloud Essential 集群，计费遵循 [TiDB Cloud Essential 计费](https://www.pingcap.com/tidb-cloud-essential-pricing-details/)模型。
+- 对于 TiDB Cloud Starter 集群，按 [TiDB Cloud Starter 计费模式](https://www.pingcap.com/tidb-cloud-starter-pricing-details/)计费。
+- 对于 TiDB Cloud Essential 集群，按 [TiDB Cloud Essential 计费模式](https://www.pingcap.com/tidb-cloud-essential-pricing-details/)计费。
 
 ## 限制
 
@@ -342,9 +342,9 @@ serverless driver 本身免费，但使用该 driver 访问数据会产生 [Requ
 
 - 单次查询最多可获取 10,000 行数据。
 - 每次只能执行一条 SQL 语句，不支持在一个查询中执行多条 SQL 语句。
-- 暂不支持通过[私有端点](/tidb-cloud/set-up-private-endpoint-connections-serverless.md)连接。
+- 暂不支持通过[私有端点](https://docs.pingcap.com/zh/tidbcloud/set-up-private-endpoint-connections-serverless)连接。
 - 为保护你的凭证，服务端会通过跨域资源共享 (CORS) 阻止来自未经授权的浏览器来源的请求。因此，你只能在后端服务中使用 serverless driver。
 
-## 后续步骤
+## 下一步
 
 - 了解如何[在本地 Node.js 项目中使用 TiDB Cloud serverless driver](/develop/serverless-driver-node-example.md)。

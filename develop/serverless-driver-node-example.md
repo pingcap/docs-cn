@@ -14,7 +14,7 @@ summary: 学习如何在本地 Node.js 项目中使用 TiDB Cloud serverless dri
 
 ## 开始之前
 
-要完成本分步教程，你需要准备以下内容：
+要完成本教程中的步骤，你需要准备以下内容：
 
 - [Node.js](https://nodejs.org/en) >= 18.0.0。
 - [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 或你喜欢的包管理器。

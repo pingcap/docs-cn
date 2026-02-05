@@ -270,7 +270,7 @@ summary: 学习如何在 Drizzle 中使用 TiDB Cloud serverless driver。
 
 2. 访问 `${Your-URL}/api/edge-function-example` 页面，获取路由返回的响应。
 
-## 后续步骤
+## 下一步
 
 - 了解更多关于 [Drizzle](https://orm.drizzle.team/docs/overview) 和 [drizzle-orm/tidb-serverless](https://orm.drizzle.team/docs/get-started-mysql#tidb-serverless) 的信息。
-- 学习如何[集成 TiDB Cloud 与 Vercel](/tidb-cloud/integrate-tidbcloud-with-vercel.md)。
+- 学习如何[集成 TiDB Cloud 与 Vercel](https://docs.pingcap.com/zh/tidbcloud/integrate-tidbcloud-with-vercel)。
