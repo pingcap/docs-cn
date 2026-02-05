@@ -281,6 +281,6 @@ Golang 驱动程序提供对数据库的底层访问，但要求开发者：
 
 ## 需要帮助?
 
-- 在 [AskTUG](https://asktug.com/?utm_source=docs-cn-dev-guide) 上进行提问
+- 在 [AskTUG 论坛](https://asktug.com/?utm_source=docs-cn-dev-guide) 上提问
 - [提交 TiDB Cloud 工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)
 - [提交 TiDB 工单](/support.md)
