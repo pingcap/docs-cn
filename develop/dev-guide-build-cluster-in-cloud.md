@@ -1,11 +1,11 @@
 ---
-title: 使用 {{{ .starter }}} 构建 TiDB 集群
+title: 创建 {{{ .starter }}} 集群
 summary: 使用 {{{ .starter }}} 构建 TiDB 集群，并连接 {{{ .starter }}} 集群。
 ---
 
 <!-- markdownlint-disable MD029 -->
 
-# 使用 {{{ .starter }}} 构建 TiDB 集群
+# 创建 {{{ .starter }}} 集群
 
 本文将介绍如何以最快的方式开始使用 TiDB。你将创建并启动一个 [{{{ .starter }}}](https://www.pingcap.com/tidb-cloud-starter/) 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
 

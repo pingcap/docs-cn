@@ -1,17 +1,17 @@
 ---
-title: 将 TiDB 集成到 Amazon AppFlow
-summary: 逐步介绍如何将 TiDB 集成到 Amazon AppFlow。
+title: TiDB 与 Amazon AppFlow 集成指南
+summary: 了解如何将 TiDB 集成到 Amazon AppFlow。
 ---
 
-# 将 TiDB 集成到 Amazon AppFlow <!-- Draft translated by AI -->
+# TiDB 与 Amazon AppFlow 集成指南
 
-[Amazon AppFlow](https://aws.amazon.com/appflow/) 是一项全托管的 API 集成服务，你可以用它将你的 SaaS 应用程序与 AWS 服务连接，并安全地传输数据。通过 Amazon AppFlow，你可以在 TiDB 与多种数据提供方之间导入和导出数据，例如 Salesforce、Amazon S3、LinkedIn 和 GitHub。更多信息请参见 AWS 文档中的 [Supported source and destination applications](https://docs.aws.amazon.com/appflow/latest/userguide/app-specific.html)。
+[Amazon AppFlow](https://aws.amazon.com/appflow/) 是一项全托管的 API 集成服务，可用于将软件即服务 (SaaS) 应用与 AWS 服务连接，并安全地传输数据。通过 Amazon AppFlow，你可以在 TiDB 与多种数据提供方之间导入和导出数据，例如 Salesforce、Amazon S3、LinkedIn 和 GitHub。更多信息请参见 AWS 文档中的[支持的源和目标应用](https://docs.aws.amazon.com/appflow/latest/userguide/app-specific.html)。
 
-本文档介绍了如何将 TiDB 集成到 Amazon AppFlow，并以集成 TiDB Cloud Starter 集群为例进行说明。
+本文档介绍了如何将 TiDB 与 Amazon AppFlow 进行集成，并以集成 TiDB Cloud Starter 集群为例进行说明。
 
-如果你还没有 TiDB 集群，可以创建一个 [TiDB Cloud Starter](https://tidbcloud.com/console/clusters) 集群，该集群免费且大约 30 秒即可创建完成。
+如果你还没有 TiDB 集群，可以创建一个 [TiDB Cloud Starter](https://tidbcloud.com/console/clusters) 集群，该集群免费，且大约 30 秒即可创建完成。
 
-## 前置条件
+## 前提条件
 
 - [Git](https://git-scm.com/)
 - [JDK](https://openjdk.org/install/) 11 或更高版本
@@ -62,14 +62,14 @@ git clone https://github.com/pingcap-inc/tidb-appflow-integration
     sam deploy --guided
     ```
 
-    > **Note:**
+    > **注意：**
     >
     > - `--guided` 选项会通过提示引导你完成部署。你的输入会被存储在配置文件中，默认是 `samconfig.toml`。
-    > - `stack_name` 指定你正在部署的 AWS Lambda 的名称。
-    > - 该引导流程默认使用 AWS 作为 TiDB Cloud Starter 的云服务商。如果你要将 Amazon S3 作为源或目标，需要将 AWS Lambda 的 `region` 设置为与 Amazon S3 相同。
+    > - `stack_name` 用于指定正在部署的 AWS Lambda 的名称。
+    > - 引导流程默认使用 AWS 作为 TiDB Cloud Starter 的云服务商。如果你要将 Amazon S3 作为源或目标，需要将 AWS Lambda 的 `region` 设置为与 Amazon S3 相同。
     > - 如果你之前已经运行过 `sam deploy --guided`，可以直接运行 `sam deploy`，SAM CLI 会使用 `samconfig.toml` 配置文件简化交互。
 
-    如果你看到如下类似输出，说明 Lambda 部署成功。
+    如果你看到类似如下输出，说明 Lambda 部署成功。
 
     ```
     Successfully created/updated stack - <stack_name> in <region>
@@ -81,7 +81,7 @@ git clone https://github.com/pingcap-inc/tidb-appflow-integration
 
 ### 使用 Lambda 注册连接器
 
-1. 在 [AWS 管理控制台](https://console.aws.amazon.com) 中，导航到 [Amazon AppFlow > Connectors](https://console.aws.amazon.com/appflow/home#/gallery)，点击 **Register new connector**。
+1. 在 [AWS 管理控制台](https://console.aws.amazon.com) 中，前往 [Amazon AppFlow > Connectors](https://console.aws.amazon.com/appflow/home#/gallery)，然后点击 **Register new connector**。
 
     ![register connector](/media/develop/aws-appflow-step-register-connector.png)
 
@@ -93,7 +93,7 @@ git clone https://github.com/pingcap-inc/tidb-appflow-integration
 
 ## 第 2 步：创建 flow
 
-导航到 [Amazon AppFlow > Flows](https://console.aws.amazon.com/appflow/home#/list)，点击 **Create flow**。
+前往 [Amazon AppFlow > Flows](https://console.aws.amazon.com/appflow/home#/list)，点击 **Create flow**。
 
 ![create flow](/media/develop/aws-appflow-step-create-flow.png)
 
@@ -105,7 +105,7 @@ git clone https://github.com/pingcap-inc/tidb-appflow-integration
 
 ### 设置源表和目标表
 
-选择 **Source details** 和 **Destination details**。TiDB 连接器可以用作两者之一。
+选择 **Source details** 和 **Destination details**。TiDB 连接器可以在这两者中使用。
 
 1. 选择源名称。本文档以 **Salesforce** 作为示例源。
 
@@ -121,15 +121,15 @@ git clone https://github.com/pingcap-inc/tidb-appflow-integration
 
         ![connect to salesforce](/media/develop/aws-appflow-step-connect-to-salesforce.png)
 
-    2. 点击 **Allow**，确认 AWS 可以读取你的 Salesforce 数据。
+    2. 点击 **Allow**，以确认 AWS 可以读取你的 Salesforce 数据。
 
         ![allow salesforce](/media/develop/aws-appflow-step-allow-salesforce.png)
 
-    > **Note:**
+    > **注意：**
     >
-    > 如果你的公司已经在使用 Salesforce 的 Professional Edition，REST API 默认未启用。你可能需要注册一个新的 Developer Edition 才能使用 REST API。更多信息请参考 [Salesforce Forum Topic](https://developer.salesforce.com/forums/?id=906F0000000D9Y2IAK)。
+    > 如果你的公司已经在使用 Salesforce 专业版 (Professional Edition)，默认情况下未启用 REST API。你可能需要注册一个新的 Salesforce 开发者版 (Developer Edition) 才能使用 REST API。更多信息请参考 [Salesforce 论坛相关话题](https://developer.salesforce.com/forums/?id=906F0000000D9Y2IAK)。
 
-3. 在 **Destination details** 区域，选择 **TiDB-Connector** 作为目标。此时会显示 **Connect** 按钮。
+3. 在 **Destination details** 区域，选择 **TiDB-Connector** 作为目标端。此时会显示 **Connect** 按钮。
 
     ![tidb dest](/media/develop/aws-appflow-step-tidb-dest.png)
 
@@ -152,11 +152,11 @@ git clone https://github.com/pingcap-inc/tidb-appflow-integration
 
     ![tidb connection message](/media/develop/aws-appflow-step-tidb-connection-message.png)
 
-7. 现在你可以获取到你指定数据库下的所有表。从下拉列表中选择 **sf_account** 表。
+7. 现在你可以获取到在连接中指定的数据库里的所有表。从下拉列表中选择 **sf_account** 表。
 
     ![database](/media/develop/aws-appflow-step-database.png)
 
-    下图展示了将 Salesforce **Account** 对象的数据传输到 TiDB 的 `sf_account` 表的配置：
+    下图展示了将 Salesforce **Account** 对象的数据传输到 TiDB 中 `sf_account` 表的配置：
 
     ![complete flow](/media/develop/aws-appflow-step-complete-flow.png)
 
@@ -182,7 +182,7 @@ git clone https://github.com/pingcap-inc/tidb-appflow-integration
 
     ![add mapping rule](/media/develop/aws-appflow-step-add-mapping-rule.png)
 
-- 本文档需要以下映射规则（源字段名 -> 目标字段名）：
+- 本文示例需要以下映射规则（源字段名 -> 目标字段名）：
 
     - Account ID -> id
     - Account Name -> name
@@ -197,7 +197,7 @@ git clone https://github.com/pingcap-inc/tidb-appflow-integration
 
 ### （可选）设置过滤器
 
-如果你想为数据字段添加一些过滤条件，可以在此处设置。否则跳过此步骤，点击 **Next**。
+如果你想为数据字段添加一些过滤条件，可以在此处设置。否则，跳过此步骤，并点击 **Next**。
 
 ![filters](/media/develop/aws-appflow-step-filters.png)
 
@@ -249,14 +249,4 @@ test> SELECT * FROM sf_account;
 
 ## 需要帮助？
 
-<CustomContent platform="tidb">
-
-在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 社区提问，或[提交支持工单](/support.md)。
-
-</CustomContent>
-
-<CustomContent platform="tidb-cloud">
-
-在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 社区提问，或[提交支持工单](https://tidb.support.pingcap.com/)。
-
-</CustomContent>
+在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 社区提问，或提交支持工单（[TiDB](/support.md) 或 [TiDB Cloud](https://tidb.support.pingcap.com/)）。
