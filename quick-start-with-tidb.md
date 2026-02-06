@@ -527,7 +527,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 如果你是应用开发者，想要快速使用 TiDB 构建应用，可参阅以下文档：
 
-- [开发者手册概览](/develop/dev-guide-overview.md)
+- [开发者手册概览](/develop/_index.md)
 - [使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
 - [示例程序](/develop/dev-guide-sample-application-java-jdbc.md)
 

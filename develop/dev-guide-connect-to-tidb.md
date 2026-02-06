@@ -11,9 +11,6 @@ TiDB 高度兼容 MySQL 协议，这使得大多数客户端驱动程序和 ORM 
 
 - 如果希望通过图形界面工具进行连接，可参考以下常用 GUI 工具的相关文档：
 
-    - [JetBrains DataGrip](/develop/dev-guide-gui-datagrip.md)
-    - [DBeaver](/develop/dev-guide-gui-dbeaver.md)
-    - [VS Code](/develop/dev-guide-gui-vscode-sqltools.md)
     - [MySQL Workbench](/develop/dev-guide-gui-mysql-workbench.md)
     - [Navicat](/develop/dev-guide-gui-navicat.md)
 
