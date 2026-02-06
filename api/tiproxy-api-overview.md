@@ -13,7 +13,7 @@ TiProxy 是可选组件，你也可以使用第三方的代理组件，或者直
 
 - [获取 TiProxy 配置](/tiproxy/tiproxy-api.md#获取-tiproxy-的配置)
 - [设置 TiProxy 配置](/tiproxy/tiproxy-api.md#设置-tiproxy-的配置)
-- [获取 TiProxy 健康状态](/tiproxy/tiproxy-api.md#获取-tiproxy-的健康状态)
+- [获取 TiProxy 健康状况](/tiproxy/tiproxy-api.md#获取-tiproxy-的健康状况)
 - [获取 TiProxy 监控数据](/tiproxy/tiproxy-api.md#获取-tiproxy-的监控数据)
 
 关于各个 API 的请求参数、响应示例与使用说明，请参阅 [TiProxy API](/tiproxy/tiproxy-api.md)。
