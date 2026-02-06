@@ -7,7 +7,7 @@ summary: 针对开发者的 TiDB 连接池与连接参数的说明。
 
 本文介绍在使用 Java 驱动程序或 ORM 框架连接 TiDB 时，如何配置连接池和连接参数。
 
-> **Tip**
+> **Tip:**
 >
 > 本文中以下章节摘自[开发 Java 应用使用 TiDB 的最佳实践](/develop/java-app-best-practices.md)：
 >
