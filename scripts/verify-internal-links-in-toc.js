@@ -58,7 +58,9 @@ function toTargetRel(url = "") {
 }
 
 function extractInternalDocTargetsFromUrls(urls = []) {
-  return urls.filter((url) => isInternalDocLink(url)).map((url) => toTargetRel(url));
+  return urls
+    .filter((url) => isInternalDocLink(url))
+    .map((url) => toTargetRel(url));
 }
 
 function extractInternalDocTargetsFromMarkdownFile(absPath) {
@@ -99,12 +101,12 @@ function buildTocIndex(tocFiles) {
     const pages = new Set();
 
     extractInternalDocTargetsFromMarkdownFile(tocAbs).forEach((rel) => {
-        pages.add(rel);
-        anyTocPages.add(rel);
+      pages.add(rel);
+      anyTocPages.add(rel);
 
-        const tocs = pageToTocs.get(rel) || new Set();
-        tocs.add(toc);
-        pageToTocs.set(rel, tocs);
+      const tocs = pageToTocs.get(rel) || new Set();
+      tocs.add(toc);
+      pageToTocs.set(rel, tocs);
     });
 
     tocToPages.set(toc, pages);
@@ -274,12 +276,10 @@ function main() {
       const shownTargets = verbose ? targets : targets.slice(0, maxFiles);
 
       shownTargets.forEach((item, index) => {
-        if (index > 0) {
-          console.error("");
-        }
-
         const targetUrl = `/${item.targetRel}`;
-        const targetTocs = sortedValues(pageToTocs.get(item.targetRel) || new Set());
+        const targetTocs = sortedValues(
+          pageToTocs.get(item.targetRel) || new Set()
+        );
         const sourceFiles = sortedValues(item.sourceFiles);
 
         console.error(`Target: ${targetUrl}`);
@@ -297,6 +297,7 @@ function main() {
           console.error(`Expected TOC: ${item.expectedLabel}`);
         }
 
+        console.error("");
         console.error(`Referenced in (${sourceFiles.length}):`);
         const shownFiles = verbose
           ? sourceFiles
@@ -308,6 +309,10 @@ function main() {
           console.error(
             `  - ... and ${sourceFiles.length - maxLinksPerFile} more (set TOC_MAX_LINKS_PER_FILE or VERBOSE_TOC=1)`
           );
+        }
+
+        if (index < shownTargets.length - 1) {
+          console.error("");
         }
       });
 
