@@ -89,7 +89,7 @@ TiDB 版本：8.5.5
 
     为了防止 PD Leader 因重试风暴或类似的反馈循环而过载，TiDB 引入了熔断模式。当错误率达到预设阈值时，该模式会限制进入的流量，从而使系统能够恢复稳定。你可以通过系统变量 `tidb_cb_pd_metadata_error_rate_threshold_ratio` 来控制熔断器的触发。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_cb_pd_metadata_error_rate_threshold_ratio-new-in-v855)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_cb_pd_metadata_error_rate_threshold_ratio-从-v855-版本开始引入)。
 
 ### SQL 功能
 
