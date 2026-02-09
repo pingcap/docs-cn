@@ -152,7 +152,12 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `grpc-concurrency`
 
 + gRPC 工作线程的数量。调整 gRPC 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
-+ 默认值：5
++ 默认值：
+
+    + 从 v8.5.4 起，默认值调整为 `grpc-raft-conn-num * 3 + 2`。其中，`grpc-raft-conn-num` 的值可参考 [`grpc-raft-conn-num`](#grpc-raft-conn-num)。例如，当 CPU 核数为 8 时，`grpc-raft-conn-num` 的默认值为 1，相应地，`grpc-concurrency` 的默认值即为 `1 * 3 + 2 = 5`。
+
+    + 在 v8.5.3 及之前的版本中，默认值为 5。
+
 + 最小值：1
 
 ### `grpc-concurrent-stream`
@@ -170,7 +175,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `grpc-raft-conn-num`
 
 + TiKV 节点之间用于 Raft 通信的连接最大数量。
-+ 默认值：1
++ 默认值：
+
+    + 从 v8.5.4 起，默认值调整为 `MAX(1, MIN(4, CPU 核数 / 8))`，其中，`MIN(4, CPU 核数 / 8)` 表示当 CPU 核数大于等于 32 时，默认的最大连接数为 4。
+    + 在 v8.5.3 及之前的版本中，默认值为 1。
+
 + 最小值：1
 
 ### `max-grpc-send-msg-len`
@@ -199,6 +208,14 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：3s
 + 最小值：1s
 
+### `graceful-shutdown-timeout` <span class="version-mark">从 v8.5.5 版本开始引入</span>
+
++ TiKV 优雅关闭 (graceful shutdown) 的超时时长。
+    + 当该值大于 `0s` 时，如果关闭 TiKV 节点，TiKV 在该超时时间内会尽量将其上的 leader 副本转移到其他 TiKV 节点，然后再关闭。若达到该超时时间后仍有 leader 未完成转移，TiKV 将跳过剩余 leader 的转移，直接进入关闭流程。
+    + 当该值为 `0s` 时，表示不启用 TiKV 的 graceful shutdown 功能。
++ 默认值：20s
++ 最小值：0s
+
 ### `concurrent-send-snap-limit`
 
 + 同时发送 snapshot 的最大个数。
@@ -226,7 +243,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `end-point-memory-quota` <span class="version-mark">从 v8.2.0 版本开始引入</span>
 
 * TiKV Coprocessor 请求可以使用的内存上限。超过该值后，后续的 Coprocessor 请求将被拒绝，并报错 "server is busy"。
-* 默认值：系统总内存大小的 45%。如果超过 500 MiB，则默认值为 500 MiB。
+* 默认值：系统总内存大小的 12.5%。如果小于 500 MiB，则默认值为 500 MiB。
 
 ### `snap-io-max-bytes-per-sec`
 
@@ -282,6 +299,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 设置服务与转发请求的连接池大小。设置过小会影响请求的延迟和负载均衡。
 + 默认值：4
 
+### `inspect-network-interval` <span class="version-mark">从 v8.5.5 版本开始引入</span>
+
++ 控制 TiKV HealthChecker 主动向 PD 以及其他 TiKV 节点发起网络探测的周期，用于计算 `NetworkSlowScore` 并向 PD 上报慢节点的网络状态。
++ 设置为 `0` 表示关闭网络探测。数值越小，探测频率越高，有助于更快发现网络抖动，但也会消耗更多网络与 CPU 资源。
++ 默认值：100ms
++ 取值范围：0 或 `[10ms, +∞)`
+
 ## readpool.unified
 
 统一处理读请求的线程池相关的配置项。该线程池自 4.0 版本起取代原有的 storage 和 coprocessor 线程池。
@@ -320,6 +344,17 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + 是否开启自动调整线程池的大小。开启此配置可以基于当前的 CPU 使用情况，自动调整统一处理读请求的线程池 (UnifyReadPool) 的大小，优化 TiKV 的读性能。目前线程池自动调整的范围为：`[max-thread-count, MAX(4, CPU)]`(上限与 [`max-thread-count`](#max-thread-count) 可设置的最大值相同)。
 + 默认值：false
+
+### `cpu-threshold` <span class="version-mark">从 v8.5.5 版本开始引入</span>
+
++ 限制统一处理读请求的线程池 (UnifyReadPool) 可使用的最大 CPU 资源比例。例如，当该值为 `0.8` 时，该线程池最多可使用 80% 的 CPU。
+    + 默认情况下（该值为 `0.0` 时），表示不限制 UnifyReadPool 的 CPU 资源比例，该线程池的规模完全由繁忙线程伸缩算法决定，该算法会根据当前处理任务的线程数量动态调整。
+    + 当设置该值大于 `0.0` 时，TiKV 会在原有的繁忙线程伸缩算法基础上，引入以下 CPU 使用率阈值约束，以更严格地控制 CPU 资源使用：
+        + 强制缩减：当 UnifyReadPool 的CPU 使用率超过该配置项值加上 10% 的缓冲时，TiKV 会强制缩小 UnifyReadPool 的规模。
+        + 阻止扩增：当扩大 UnifyReadPool 规模可能导致 CPU 使用率超过配置阈值减去 10% 的缓冲时，TiKV 会阻止 UnifyReadPool 继续扩大规模。
++ 仅当 [`readpool.unified.auto-adjust-pool-size`](#auto-adjust-pool-size-从-v630-版本开始引入) 设置为 `true` 时生效。
++ 默认值：`0.0`
++ 可调整范围：`[0.0, 1.0]`
 
 ## readpool.storage
 
@@ -563,12 +598,22 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。
 
 ### `l0-files-threshold`
 
-+ 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).level0-slowdown-writes-trigger`的配置。
++ 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。
+
+    > **注意**：
+    >
+    > 当满足一定条件时，`rocksdb.(defaultcf|writecf|lockcf|raftcf).level0-slowdown-writes-trigger` 的值会被该配置项覆盖。详情参考 [`rocksdb.(defaultcf|writecf|lockcf|raftcf).level0-slowdown-writes-trigger`](/tikv-configuration-file.md#level0-slowdown-writes-trigger)。
+
 + 默认值：20
 
 ### `soft-pending-compaction-bytes-limit`
 
-+ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求，报错 `ServerIsBusy`。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).soft-pending-compaction-bytes-limit` 的配置。
++ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求，报错 `ServerIsBusy`。
+
+    > **注意**：
+    >
+    > 当满足一定条件时，`rocksdb.(defaultcf|writecf|lockcf|raftcf).soft-pending-compaction-bytes-limit` 的值会被该配置项覆盖。详情参考 [`rocksdb.(defaultcf|writecf|lockcf|raftcf).soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit-1)。
+
 + 默认值："192GiB"
 
 ### `hard-pending-compaction-bytes-limit`
@@ -792,7 +837,7 @@ raftstore 相关的配置项。
 
 > **警告：**
 >
-> 从 v7.5.7 开始，该配置项被废弃，其功能由 [`gc.auto-compaction.check-interval`](#check-interval-从-v757-版本开始引入) 代替。
+> 从 v7.5.7 和 v8.5.4 开始，该配置项被废弃，其功能由 [`gc.auto-compaction.check-interval`](#check-interval-从-v757-和-v854-版本开始引入) 代替。
 
 + 检查是否需要人工触发 RocksDB compaction 的时间间隔，0 表示不启用。
 + 默认值：5m
@@ -802,7 +847,7 @@ raftstore 相关的配置项。
 
 > **警告：**
 >
-> 从 v7.5.7 开始，该配置项被废弃。
+> 从 v7.5.7 和 v8.5.4 开始，该配置项被废弃。
 
 + 每轮校验人工 compaction 时，一次性检查的 Region 个数。
 + 默认值：
@@ -813,7 +858,7 @@ raftstore 相关的配置项。
 
 > **警告：**
 >
-> 从 v7.5.7 开始，该配置项被废弃，其功能由 [`gc.auto-compaction.tombstone-num-threshold`](#tombstone-num-threshold-从-v757-版本开始引入) 代替。
+> 从 v7.5.7 和 v8.5.4 开始，该配置项被废弃，其功能由 [`gc.auto-compaction.tombstone-num-threshold`](#tombstone-num-threshold-从-v757-和-v854-版本开始引入) 代替。
 
 + 触发 RocksDB compaction 需要的 tombstone 个数。
 + 默认值：10000
@@ -823,7 +868,7 @@ raftstore 相关的配置项。
 
 > **警告：**
 >
-> 从 v7.5.7 开始，该配置项被废弃，其功能由 [`gc.auto-compaction.tombstone-percent-threshold`](#tombstone-percent-threshold-从-v757-版本开始引入) 代替。
+> 从 v7.5.7 和 v8.5.4 开始，该配置项被废弃，其功能由 [`gc.auto-compaction.tombstone-percent-threshold`](#tombstone-percent-threshold-从-v757-和-v854-版本开始引入) 代替。
 
 + 触发 RocksDB compaction 需要的 tombstone 所占比例。
 + 默认值：30
@@ -834,7 +879,7 @@ raftstore 相关的配置项。
 
 > **警告：**
 >
-> 从 v7.5.7 开始，该配置项被废弃，其功能由 [`gc.auto-compaction.redundant-rows-threshold`](#redundant-rows-threshold-从-v757-版本开始引入) 代替。
+> 从 v7.5.7 和 v8.5.4 开始，该配置项被废弃，其功能由 [`gc.auto-compaction.redundant-rows-threshold`](#redundant-rows-threshold-从-v757-和-v854-版本开始引入) 代替。
 
 + 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。
 + 默认值：`50000`
@@ -844,7 +889,7 @@ raftstore 相关的配置项。
 
 > **警告：**
 >
-> 从 v7.5.7 开始，该配置项被废弃，其功能由 [`gc.auto-compaction.redundant-rows-percent-threshold`](#redundant-rows-percent-threshold-从-v757-版本开始引入) 代替。
+> 从 v7.5.7 和 v8.5.4 开始，该配置项被废弃，其功能由 [`gc.auto-compaction.redundant-rows-percent-threshold`](#redundant-rows-percent-threshold-从-v757-和-v854-版本开始引入) 代替。
 
 + 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。
 + 默认值：`20`
@@ -1251,7 +1296,7 @@ RocksDB 相关的配置项。
 ### `max-manifest-file-size`
 
 + RocksDB Manifest 文件最大大小。
-+ 默认值：256MiB。在 v8.5.3 及之前的 v8.5.x 版本中，默认值为 `128MiB`。
++ 默认值：128MiB
 + 最小值：0
 + 单位：B|KiB|MiB|GiB
 
@@ -1632,7 +1677,9 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ### `level0-slowdown-writes-trigger`
 
-+ 触发 write stall 的 L0 文件最大个数。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.l0-files-threshold` 会覆盖此配置。
++ 触发 write stall 的 L0 文件最大个数。
++ v8.5.4 及之前版本：当开启流控机制（[`storage.flow-control.enable`](/tikv-configuration-file.md#enable) 为 `true`）时，该配置项会被 [`storage.flow-control.l0-files-threshold`](/tikv-configuration-file.md#l0-files-threshold) 直接覆盖。
++ 从 v8.5.5 起：当开启流控机制（[`storage.flow-control.enable`](/tikv-configuration-file.md#enable) 为 `true`）时，该配置项仅在其值大于 [`storage.flow-control.l0-files-threshold`](/tikv-configuration-file.md#l0-files-threshold) 时会被 `storage.flow-control.l0-files-threshold` 覆盖，以避免在调大流控阈值时削弱 RocksDB 的 compaction 加速机制。
 + 默认值：20
 + 最小值：0
 
@@ -1689,7 +1736,9 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ### `soft-pending-compaction-bytes-limit`
 
-+ pending compaction bytes 的软限制。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.soft-pending-compaction-bytes-limit` 会覆盖此配置。
++ pending compaction bytes 的软限制。
++ v8.5.4 及之前版本：当开启流控机制（[`storage.flow-control.enable`](/tikv-configuration-file.md#enable) 为 `true`）时，该配置项会被 [`storage.flow-control.soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit) 直接覆盖。
++ 从 v8.5.5 起：当开启流控机制（[`storage.flow-control.enable`](/tikv-configuration-file.md#enable) 为 `true`）时，该配置项仅在其值大于 [`storage.flow-control.soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit) 时会被 `storage.flow-control.soft-pending-compaction-bytes-limit` 覆盖，以避免在调大流控阈值时削弱 RocksDB 的 compaction 加速机制。
 + 默认值：192GiB
 + 单位：KiB|MiB|GiB
 
@@ -2258,42 +2307,42 @@ Raft Engine 相关的配置项。
 
 用于配置 TiKV 自动 compaction 的行为。
 
-### `check-interval` <span class="version-mark">从 v7.5.7 版本开始引入</span>
+### `check-interval` <span class="version-mark">从 v7.5.7 和 v8.5.4 版本开始引入</span>
 
 + TiKV 检查是否需要触发自动 compaction 的时间间隔。在此时间段内，满足自动 compaction 条件的 Region 会按优先级进行处理。当到达此间隔时，TiKV 会重新扫描 Region 信息并重新计算优先级。
 + 默认值：`"300s"`
 
-### `tombstone-num-threshold` <span class="version-mark">从 v7.5.7 版本开始引入</span>
+### `tombstone-num-threshold` <span class="version-mark">从 v7.5.7 和 v8.5.4 版本开始引入</span>
 
-+ 触发 TiKV 自动 compaction 需要的 RocksDB tombstone 个数。当 tombstone 数量达到此阈值，或 tombstone 所占比例达到 [`tombstone-percent-threshold`](#tombstone-percent-threshold-从-v757-版本开始引入) 时，TiKV 将触发自动 compaction。
++ 触发 TiKV 自动 compaction 需要的 RocksDB tombstone 个数。当 tombstone 数量达到此阈值，或 tombstone 所占比例达到 [`tombstone-percent-threshold`](#tombstone-percent-threshold-从-v757-和-v854-版本开始引入) 时，TiKV 将触发自动 compaction。
 + 仅在关闭 [Compaction Filter](/garbage-collection-configuration.md) 时生效。
 + 默认值：`10000`
 + 最小值：`0`
 
-### `tombstone-percent-threshold` <span class="version-mark">从 v7.5.7 版本开始引入</span>
+### `tombstone-percent-threshold` <span class="version-mark">从 v7.5.7 和 v8.5.4 版本开始引入</span>
 
-+ 触发 TiKV 自动 compaction 需要的 RocksDB tombstone 所占比例。当 tombstone 所占比例达到此阈值，或 tombstone 数量达到 [`tombstone-num-threshold`](#tombstone-num-threshold-从-v757-版本开始引入) 时，TiKV 将触发自动 compaction。
++ 触发 TiKV 自动 compaction 需要的 RocksDB tombstone 所占比例。当 tombstone 所占比例达到此阈值，或 tombstone 数量达到 [`tombstone-num-threshold`](#tombstone-num-threshold-从-v757-和-v854-版本开始引入) 时，TiKV 将触发自动 compaction。
 + 仅在关闭 [Compaction Filter](/garbage-collection-configuration.md) 时生效。
 + 默认值：`30`
 + 最小值：`0`
 + 最大值：`100`
 
-### `redundant-rows-threshold` <span class="version-mark">从 v7.5.7 版本开始引入</span>
+### `redundant-rows-threshold` <span class="version-mark">从 v7.5.7 和 v8.5.4 版本开始引入</span>
 
-+ 触发 TiKV 自动 compaction 需要的冗余的 MVCC 数据行数，包含 RocksDB tombstone、TiKV stale versions 和 TiKV deletion tombstones。当冗余的 MVCC 数据行数达到此阈值，或这些行数的占比达到 [`redundant-rows-percent-threshold`](#redundant-rows-percent-threshold-从-v757-版本开始引入) 时，TiKV 将触发自动 compaction。
++ 触发 TiKV 自动 compaction 需要的冗余的 MVCC 数据行数，包含 RocksDB tombstone、TiKV stale versions 和 TiKV deletion tombstones。当冗余的 MVCC 数据行数达到此阈值，或这些行数的占比达到 [`redundant-rows-percent-threshold`](#redundant-rows-percent-threshold-从-v757-和-v854-版本开始引入) 时，TiKV 将触发自动 compaction。
 + 仅在开启 [Compaction Filter](/garbage-collection-configuration.md) 时生效。
 + 默认值：`50000`
 + 最小值：`0`
 
-### `redundant-rows-percent-threshold` <span class="version-mark">从 v7.5.7 版本开始引入</span>
+### `redundant-rows-percent-threshold` <span class="version-mark">从 v7.5.7 和 v8.5.4 版本开始引入</span>
 
-+ 触发 TiKV 自动 compaction 需要的冗余的 MVCC 数据行数所占比例。冗余数据包含 RocksDB tombstone、TiKV stale versions 和 TiKV deletion tombstones。当冗余的 MVCC 数据行数达到 [`redundant-rows-threshold`](#redundant-rows-threshold-从-v757-版本开始引入)，或这些行数的占比达到 `redundant-rows-percent-threshold` 时，TiKV 将触发自动 compaction。
++ 触发 TiKV 自动 compaction 需要的冗余的 MVCC 数据行数所占比例。冗余数据包含 RocksDB tombstone、TiKV stale versions 和 TiKV deletion tombstones。当冗余的 MVCC 数据行数达到 [`redundant-rows-threshold`](#redundant-rows-threshold-从-v757-和-v854-版本开始引入)，或这些行数的占比达到 `redundant-rows-percent-threshold` 时，TiKV 将触发自动 compaction。
 + 仅在开启 [Compaction Filter](/garbage-collection-configuration.md) 时生效。
 + 默认值：`20`
 + 最小值：`0`
 + 最大值：`100`
 
-### `bottommost-level-force` <span class="version-mark">从 v7.5.7 版本开始引入</span>
+### `bottommost-level-force` <span class="version-mark">从 v7.5.7 和 v8.5.4 版本开始引入</span>
 
 + 控制是否强制对 RocksDB 最底层文件进行 compaction。
 + 默认值：`true`

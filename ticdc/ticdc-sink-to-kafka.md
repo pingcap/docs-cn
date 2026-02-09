@@ -369,8 +369,8 @@ column-selectors = [
 [scheduler]
 # 默认值为 "false"，设置为 "true" 以打开该功能。
 enable-table-across-nodes = true
-# 打开该功能后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。
-region-threshold = 100000
+# 打开该功能后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。对于 TiCDC 新架构，该参数默认值为 `10000`；对于 TiCDC 老架构，该参数默认值为 `100000`。
+region-threshold = 10000
 # 打开该功能后，该功能会对每分钟修改行数大于 `write-key-threshold` 值的表生效。
 # 注意：
 # * 该参数默认值为 0，代表该功能默认不会按表的修改行数来切分表的同步范围。
