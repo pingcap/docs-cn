@@ -1,6 +1,7 @@
 ---
 title: PD 调度策略最佳实践
 summary: 了解 PD 调度策略的最佳实践和调优方式
+aliases: ['/zh/tidb/stable/pd-scheduling-best-practices/','/zh/tidb/dev/pd-scheduling-best-practices/']
 ---
 
 # PD 调度策略最佳实践

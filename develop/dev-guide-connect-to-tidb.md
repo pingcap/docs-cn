@@ -1,6 +1,7 @@
 ---
 title: 连接到 TiDB
 summary: 连接到 TiDB 的方式概览。
+aliases: ['/zh/tidb/stable/dev-guide-connect-to-tidb/','/zh/tidb/dev/dev-guide-connect-to-tidb/']
 ---
 
 # 连接到 TiDB

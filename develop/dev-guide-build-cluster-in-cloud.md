@@ -1,6 +1,7 @@
 ---
 title: 创建 {{{ .starter }}} 集群
 summary: 使用 {{{ .starter }}} 构建 TiDB 集群，并连接 {{{ .starter }}} 集群。
+aliases: ['/zh/tidb/stable/dev-guide-build-cluster-in-cloud/','/zh/tidb/dev/dev-guide-build-cluster-in-cloud/','/zh/tidbcloud/dev-guide-build-cluster-in-cloud/']
 ---
 
 <!-- markdownlint-disable MD029 -->

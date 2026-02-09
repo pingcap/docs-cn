@@ -1,6 +1,7 @@
 ---
 title: 使用 mysqlclient 连接到 TiDB
 summary: 了解如何使用 mysqlclient 连接到 TiDB。本文提供了使用 mysqlclient 与 TiDB 交互的 Python 示例代码片段。
+aliases: ['/zh/tidb/stable/dev-guide-sample-application-python-mysqlclient/','/zh/tidb/dev/dev-guide-sample-application-python-mysqlclient/','/zh/tidbcloud/dev-guide-sample-application-python-mysqlclient/']
 ---
 
 # 使用 mysqlclient 连接到 TiDB

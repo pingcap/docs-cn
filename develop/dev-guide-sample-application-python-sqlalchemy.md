@@ -1,6 +1,7 @@
 ---
 title: 使用 SQLAlchemy 连接到 TiDB
 summary: 了解如何使用 SQLAlchemy 连接到 TiDB。本文提供了使用 SQLAlchemy 与 TiDB 交互的 Python 示例代码片段。
+aliases: ['/zh/tidb/stable/dev-guide-sample-application-python-sqlalchemy/','/zh/tidb/dev/dev-guide-sample-application-python-sqlalchemy/','/zh/tidbcloud/dev-guide-sample-application-python-sqlalchemy/']
 ---
 
 # 使用 SQLAlchemy 连接到 TiDB

@@ -1,6 +1,7 @@
 ---
 title: 事务错误处理
 summary: 介绍 TiDB 中的事务错误处理办法。
+aliases: ['/zh/tidb/stable/dev-guide-transaction-troubleshoot/','/zh/tidb/dev/dev-guide-transaction-troubleshoot/','/zh/tidbcloud/dev-guide-transaction-troubleshoot/']
 ---
 
 # 事务错误处理

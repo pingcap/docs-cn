@@ -1,6 +1,7 @@
 ---
 title: 乐观事务和悲观事务
 summary: 介绍 TiDB 中的乐观事务和悲观事务，乐观事务的重试等。
+aliases: ['/zh/tidb/stable/dev-guide-optimistic-and-pessimistic-transaction/','/zh/tidb/dev/dev-guide-optimistic-and-pessimistic-transaction/','/zh/tidbcloud/dev-guide-optimistic-and-pessimistic-transaction/']
 ---
 
 # 乐观事务和悲观事务
