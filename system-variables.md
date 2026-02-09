@@ -5150,7 +5150,113 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **Tip:**
 >
-> 建议在启用 `tidb_slow_log_rules` 后，同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v900-版本开始引入)，以限制慢查询日志打印频率，防止基于规则的慢查询日志触发过于频繁。
+> - 在生产环境启用 `tidb_slow_log_rules` 时，建议同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v900-版本开始引入)，避免慢查询日志打印过于频繁。
+> - 规则建议先从较严格条件开始，再按排障需求逐步放宽；详细性能影响请参考下文 [使用建议](#使用建议)。
+
+#### 统一规则语法与类型约束
+
+- 规则容量与分隔：`SESSION` 和 `GLOBAL` 各最多支持 10 条规则（同一会话最多可生效 20 条）；规则之间用 `;` 分隔。
+- 条件格式：单条规则内多个条件用 `,` 分隔，格式为 `字段名:值`。
+- 字段与作用域：字段名大小写不敏感（需保留下划线等字符）；`SESSION` 规则不支持 `Conn_ID`，仅 `GLOBAL` 支持。
+- 匹配语义：数值字段按 `>=` 匹配，字符串和布尔字段按等值匹配（`=`）；`DB` 与 `Resource_group` 匹配时不区分大小写；不支持显式操作符（如 `>`, `<`, `!=`）。
+
+类型约束：
+- 数值类型（`int64`、`uint64`、`float64`）统一要求 `>= 0`，负值会解析报错。
+  - `int64`：上限 `2^63-1`。
+  - `uint64`：上限 `2^64-1`。
+  - `float64`：常规上限约 `1.79e308`。当前按 Go `ParseFloat` 解析，`NaN`/`Inf` 虽可被解析，但可能导致规则恒真或恒假，不建议使用。
+- `bool`：支持 `true`/`false`、`1`/`0`、`t`/`f`（大小写不敏感）。
+- `string`：当前不支持包含分隔符 `,`（条件分隔符）或 `;`（规则分隔符）；即使使用引号（单引号或双引号）也不支持；不支持转义。
+- 重复字段：单条规则内若同一字段重复设置，以最后一次出现的值为准。
+
+#### 字段全量表格（语义摘要）
+
+字段的详细解释、诊断含义和背景信息请参考 [`identify-slow-queries.md` 的字段含义说明](/identify-slow-queries.md#字段含义说明)。
+
+| 字段名 | 类型 | 单位 | 语义摘要 |
+| --- | --- | --- | --- |
+| `Conn_ID` | `uint` | 计数 | 表示用户连接 ID（仅 GLOBAL 规则允许） |
+| `Session_alias` | `string` | 无 | 表示会话别名 |
+| `DB` | `string` | 无 | 表示执行语句时使用的 database |
+| `Exec_retry_count` | `uint` | 计数 | 表示语句执行的重试次数 |
+| `Query_time` | `float` | 秒 | 表示执行这个语句花费的时间 |
+| `Parse_time` | `float` | 秒 | 表示语句在语法解析阶段花费的时间 |
+| `Compile_time` | `float` | 秒 | 表示语句在查询优化阶段花费的时间 |
+| `Rewrite_time` | `float` | 秒 | 表示语句在查询改写阶段花费的时间 |
+| `Optimize_time` | `float` | 秒 | 表示语句在优化查询计划阶段花费的时间 |
+| `Wait_TS` | `float` | 秒 | 表示语句在等待获取事务 TS 阶段花费的时间 |
+| `Is_internal` | `bool` | 无 | 表示是否为 TiDB 内部 SQL |
+| `Digest` | `string` | 无 | 表示 SQL 语句的指纹 |
+| `Plan_digest` | `string` | 无 | 表示执行计划的指纹 |
+| `Num_cop_tasks` | `int` | 计数 | 表示语句发送的 Coprocessor 请求数量 |
+| `Mem_max` | `int` | bytes | 表示执行期间 TiDB 使用的最大内存空间 |
+| `Disk_max` | `int` | bytes | 表示执行期间 TiDB 使用的最大硬盘空间 |
+| `Write_sql_response_total` | `float` | 秒 | 表示语句把结果发送回客户端花费的时间 |
+| `Succ` | `bool` | 无 | 表示语句是否执行成功 |
+| `Resource_group` | `string` | 无 | 表示语句执行所绑定的资源组 |
+| `KV_total` | `float` | 秒 | 表示语句在 TiKV/TiFlash 上所有 RPC 请求花费的时间 |
+| `PD_total` | `float` | 秒 | 表示语句在 PD 上所有 RPC 请求花费的时间 |
+| `Unpacked_bytes_sent_tikv_total` | `int` | bytes | 表示发送到 TiKV 的解压后总字节数 |
+| `Unpacked_bytes_received_tikv_total` | `int` | bytes | 表示从 TiKV 接收的解压后总字节数 |
+| `Unpacked_bytes_sent_tikv_cross_zone` | `int` | bytes | 表示跨可用区发送到 TiKV 的解压后字节数 |
+| `Unpacked_bytes_received_tikv_cross_zone` | `int` | bytes | 表示跨可用区从 TiKV 接收的解压后字节数 |
+| `Unpacked_bytes_sent_tiflash_total` | `int` | bytes | 表示发送到 TiFlash 的解压后总字节数 |
+| `Unpacked_bytes_received_tiflash_total` | `int` | bytes | 表示从 TiFlash 接收的解压后总字节数 |
+| `Unpacked_bytes_sent_tiflash_cross_zone` | `int` | bytes | 表示跨可用区发送到 TiFlash 的解压后字节数 |
+| `Unpacked_bytes_received_tiflash_cross_zone` | `int` | bytes | 表示跨可用区从 TiFlash 接收的解压后字节数 |
+| `Process_time` | `float` | 秒 | 表示 SQL 在 TiKV 的处理时间之和 |
+| `Backoff_time` | `float` | 秒 | 表示语句遇到重试错误时在重试前等待的时间 |
+| `Total_keys` | `uint` | 计数 | 表示 Coprocessor 扫过的 key 数量 |
+| `Process_keys` | `uint` | 计数 | 表示 Coprocessor 处理的 key 数量 |
+| `cop_mvcc_read_amplification` | `float` | ratio | 表示 MVCC 读放大比（`Total_keys` / `Process_keys`） |
+| `Prewrite_time` | `float` | 秒 | 表示事务两阶段提交第一阶段（prewrite）的耗时 |
+| `Commit_time` | `float` | 秒 | 表示事务两阶段提交第二阶段（commit）的耗时 |
+| `Write_keys` | `uint` | 计数 | 表示事务向 TiKV 的 Write CF 写入 Key 的数量 |
+| `Write_size` | `uint` | bytes | 表示事务提交时写 key 或 value 的总大小 |
+| `Prewrite_region` | `uint` | 计数 | 表示事务 prewrite 阶段涉及的 TiKV Region 数量 |
+
+#### 生效行为与匹配顺序
+
+- 规则更新行为：每次执行 `SET [SESSION|GLOBAL] tidb_slow_log_rules = '...'` 都会覆盖对应作用域原有规则，不会追加。
+- 规则清空行为：`SET [SESSION|GLOBAL] tidb_slow_log_rules = ''` 会清空对应作用域规则。
+- 在当前会话存在可生效的 `tidb_slow_log_rules`（SESSION 规则、GLOBAL 的当前 `Conn_ID` 规则，或未指定 `Conn_ID` 的全局规则）时，慢查询日志输出由规则匹配结果决定，`tidb_slow_log_threshold` 不再参与判断。
+- 在当前会话不存在可生效的规则（例如对应作用域规则被清空）时，慢查询日志触发仍依赖 `tidb_slow_log_threshold`（单位：毫秒）。
+- 如果希望规则中仍使用 SQL 执行时间作为输出慢日志的条件，可在规则中使用 `Query_time`（单位：秒）并设置阈值。
+- 规则匹配逻辑如下：
+    - 多条规则之间采用 OR 关系；单条规则内多个字段条件采用 AND 关系。
+    - SESSION 作用域规则优先匹配；若未匹配，再按顺序匹配 GLOBAL 的 `Conn_ID` 定向规则和未指定 `Conn_ID` 的全局通用规则。
+- `SHOW VARIABLES LIKE 'tidb_slow_log_rules'` 与 `SELECT @@SESSION.tidb_slow_log_rules` 返回 SESSION 规则文本（未设置时为空字符串）；`SELECT @@GLOBAL.tidb_slow_log_rules` 返回 GLOBAL 规则文本。
+
+#### 使用示例
+
+- 标准格式（SESSION 作用域）：
+
+  ```sql
+  SET SESSION tidb_slow_log_rules = 'Query_time: 0.5, Is_internal: false';
+  ```
+
+- 错误格式（SESSION 作用域不支持 `Conn_ID`）：
+
+  ```sql
+  SET SESSION tidb_slow_log_rules = 'Conn_ID: 12, Query_time: 0.5, Is_internal: false';
+  ```
+
+- 全局规则（适用于所有连接）：
+
+  ```sql
+  SET GLOBAL tidb_slow_log_rules = 'Query_time: 0.5, Is_internal: false';
+  ```
+
+- 指定特定连接的全局规则（分别适用于 `Conn_ID:11` 和 `Conn_ID:12` 的两个连接）：
+
+  ```sql
+  SET GLOBAL tidb_slow_log_rules = 'Conn_ID: 11, Query_time: 0.5, Is_internal: false; Conn_ID: 12, Query_time: 0.6, Process_time: 0.3, DB: db1';
+  ```
+
+#### 使用建议
+
+- `tidb_slow_log_rules` 用于替换单一阈值方式，支持多维度指标组合条件，以实现更灵活和精细化的慢查询日志控制。
+- 在资源充足的测试环境（1 个 TiDB 节点，16 核 CPU、48 GiB 内存；3 个 TiKV 节点，每个 16 核 CPU、48 GiB 内存）中，多次 sysbench 测试结果表明：当多维慢查询日志规则在 30 分钟内生成数百万条慢查询日志时，对性能影响较小；但当日志量达到千万级时，TPS 会明显下降，延迟也会显著增加。在业务负载较高或 CPU、内存资源接近瓶颈的情况下，应谨慎配置 `tidb_slow_log_rules`，避免因规则过宽导致日志洪泛。若需要限制日志输出速率，可通过 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v900-版本开始引入) 进行限速，以降低对业务性能的影响。
 
 ### `tidb_slow_log_threshold`
 
