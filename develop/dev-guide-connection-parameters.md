@@ -6,8 +6,15 @@ aliases: ['/zh/tidb/stable/dev-guide-connection-parameters/','/zh/tidb/dev/dev-g
 
 # 配置连接池与连接参数
 
-> - 连接池参数 - 连接数配置、探活配置两节摘自[开发 Java 应用使用 TiDB 的最佳实践 - 连接池](/develop/java-app-best-practices.md#连接池)。
-> - 连接参数摘自[开发 Java 应用使用 TiDB 的最佳实践 - JDBC](/develop/java-app-best-practices.md#jdbc)。
+本文介绍在使用 Java 驱动程序或 ORM 框架连接 TiDB 时，如何配置连接池和连接参数。
+
+> **Tip:**
+>
+> 本文中以下章节摘自[开发 Java 应用使用 TiDB 的最佳实践](/develop/java-app-best-practices.md)：
+>
+> - [连接数配置](#连接数配置)
+> - [探活配置](#探活配置)
+> - [连接参数](#连接参数)
 
 ## 连接池参数
 

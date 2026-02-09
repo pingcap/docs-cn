@@ -41,7 +41,10 @@ MySQL 维护了一系列 [`Com_` 开头的服务端变量](https://dev.mysql.com
 
 **规避方法**
 
-请勿使用这样的变量。在 MySQL 中 `Com_*` 常见的使用场景之一是监控。TiDB 的可观测性较为完善，无需从服务端变量进行查询。如需定制监控工具，可阅读 [TiDB 监控框架概述](/tidb-monitoring-framework.md)来获得更多信息。
+请勿使用这样的变量。在 MySQL 中 `Com_*` 常见的使用场景之一是监控。TiDB 的可观测性较为完善，无需从服务端变量进行查询。如需了解更多关于监控服务的信息，请参阅以下文档：
+
+- TiDB Cloud 文档：[监控 TiDB 集群](https://docs.pingcap.com/zh/tidbcloud/monitor-tidb-cluster)。
+- TiDB 文档：[TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
 ### TiDB 错误日志区分 `TIMESTAMP` 与 `DATETIME` 类型
 

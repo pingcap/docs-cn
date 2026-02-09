@@ -161,4 +161,4 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 
 ## 需要帮助?
 
-如果在开发的过程中遇到问题，可以在 [AskTUG](https://asktug.com/?utm_source=docs-cn-dev-guide) 上进行提问，或从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
+如果在开发的过程中遇到问题，可以在 [AskTUG 论坛](https://asktug.com/?utm_source=docs-cn-dev-guide) 上提问，或从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。

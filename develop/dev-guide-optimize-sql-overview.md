@@ -29,4 +29,5 @@ aliases: ['/zh/tidb/stable/dev-guide-optimize-sql-overview/','/zh/tidb/dev/dev-g
 
 ## 推荐阅读
 
-- [SQL 性能调优](/sql-tuning-overview.md)。
+- TiDB Cloud 文档：[SQL 调优概述](https://docs.pingcap.com/zh/tidbcloud/tidb-cloud-sql-tuning-overview/)
+- TiDB 文档：[SQL 性能调优](/sql-tuning-overview.md)

@@ -241,12 +241,26 @@ with get_connection(autocommit=True) as connection:
 
 ## 批量插入
 
-如果你需要快速地将大量数据导入 TiDB 集群，最好的方式并不是使用 `INSERT` 语句，这并不是最高效的方法，而且需要你自行处理异常等问题。推荐使用 PingCAP 提供的一系列工具进行数据迁移：
+如果你需要快速地将大量数据导入 TiDB 集群，最好的方式并不是使用 `INSERT` 语句，这并不是最高效的方法，而且需要你自行处理异常等问题。推荐使用以下工具进行数据批量插入：
+
+<SimpleTab groupId="platform">
+<div label="TiDB Cloud" value="tidb-cloud">
+
+- 数据导出：使用 [Dumpling](/dumpling-overview.md) 将 MySQL 或 TiDB 数据导出到本地或云存储。对于 TiDB Cloud Starter 或 Essential 集群，还可以使用 [TiDB Cloud 控制台](https://tidbcloud.com/) 中的 [Export](https://docs.pingcap.com/zh/tidbcloud/serverless-export) 功能高效地导出数据。
+- 数据导入：使用 [TiDB Cloud 控制台](https://tidbcloud.com/) 中的 [Import](https://docs.pingcap.com/zh/tidbcloud/import-sample-data) 功能。你可以导入 Dumpling 导出的数据、导入本地 CSV 文件，或[从云存储导入 CSV 文件到 TiDB Cloud](/tidb-cloud/import-csv-files.md)。
+- 数据同步：使用 [TiDB Cloud 控制台](https://tidbcloud.com/) 中的 [TiDB Data Migration](https://docs.pingcap.com/zh/tidbcloud/migrate-from-mysql-using-data-migration) 功能。可同步 MySQL 兼容数据库到 TiDB，且支持分库分表数据库的迁移。
+- 数据备份与恢复：使用 [TiDB Cloud 控制台](https://tidbcloud.com/) 中的 [Backup](https://docs.pingcap.com/zh/tidbcloud/backup-and-restore) 功能。与 Dumpling 相比，备份与恢复功能更适用于大数据场景。
+
+</div>
+<div label="TiDB" value="tidb">
 
 - 数据导出工具：[Dumpling](/dumpling-overview.md)。可以导出 MySQL 或 TiDB 的数据到本地或 Amazon S3 中。
-- 数据导入工具：[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)。可以导入 `Dumpling` 导出的数据、CSV 文件，或者 [Amazon Aurora 生成的 Apache Parquet 文件](/migrate-aurora-to-tidb.md)。同时支持在本地盘或 Amazon S3 云盘读取数据。
-- 数据同步工具：[TiDB Data Migration](/dm/dm-overview.md)。可同步 MySQL、MariaDB、Amazon Aurora 数据库到 TiDB 中。且支持分库分表数据库的迁移。
-- 数据备份恢复工具：[Backup & Restore (BR)](/br/backup-and-restore-overview.md)。相对于 `Dumpling`，BR 更适合**_大数据量_**的场景。
+- 数据导入工具：[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)。可以导入 Dumpling 导出的数据、CSV 文件，或者 [Amazon Aurora 生成的 Apache Parquet 文件](/migrate-aurora-to-tidb.md)。同时支持在本地盘或 Amazon S3 云盘读取数据。
+- 数据同步工具：[TiDB Data Migration](/dm/dm-overview.md)。可同步 MySQL、MariaDB、Amazon Aurora 数据库到 TiDB 中，且支持分库分表数据库的迁移。
+- 数据备份恢复工具：[Backup & Restore (BR)](/br/backup-and-restore-overview.md)。相对于 Dumpling，BR 更适合大数据量的场景。
+
+</div>
+</SimpleTab>
 
 ## 避免热点
 

@@ -247,7 +247,7 @@ SELECT * FROM acc;
 
 ## 扩展阅读
 
-- [HTAP 快速上手指南](/quick-start-with-htap.md)
-- [HTAP 深入探索指南](/explore-htap.md)
+- TiDB Cloud 文档：[HTAP 快速上手指南](/tidb-cloud/tidb-cloud-htap-quickstart.md)
+- TiDB 文档：[HTAP 快速上手指南](/quick-start-with-htap.md) 和 [HTAP 深入探索指南](/explore-htap.md)
 - [窗口函数](/functions-and-operators/window-functions.md)
 - [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)

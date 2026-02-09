@@ -102,9 +102,9 @@ public class AuthorDAO {
 }
 ```
 
-- 在[获得数据库连接](/develop/dev-guide-connect-to-tidb.md#jdbc)之后，你可以通过 `conn.createStatement()` 语句创建一个 `Statement` 实例对象。
-- 然后调用 `stmt.executeQuery("query_sql")` 方法向 TiDB 发起一个数据库查询请求。
-- 数据库返回的查询结果将会存放到 `ResultSet` 当中，通过遍历 `ResultSet` 对象可以将返回结果映射到此前准备的 `Author` 类对象当中。
+在[使用 JDBC 连接到 TiDB](/develop/dev-guide-sample-application-java-jdbc.md)之后，你可以通过 `conn.createStatement()` 语句创建一个 `Statement` 实例对象。然后调用 `stmt.executeQuery("query_sql")` 方法向 TiDB 发起一个数据库查询请求。
+
+数据库返回的查询结果将会存放到 `ResultSet` 当中，通过遍历 `ResultSet` 对象可以将返回结果映射到此前准备的 `Author` 类对象当中。
 
 </div>
 </SimpleTab>
