@@ -148,16 +148,29 @@ TiDB v6.6.0 版本之前的 BR 版本兼容性矩阵：
 > **注意：**
 >
 > - 已知问题：从 v7.2.0 开始，新建集群的部分系统表字段变为大小写不敏感。然而，对于从 v7.2.0 之前的版本**在线升级**到 v7.2.0 及以上版本的集群，对应的系统表字段仍然大小写敏感。如果在这两类集群之间进行包含系统表的备份和恢复操作，可能会失败。详情参见 [Issue #43717](https://github.com/pingcap/tidb/issues/43717)。
->
-> - 从 v8.5.5 开始，如果旧集群系统表中不存在大小写冲突的记录（例如同时存在 `test.t1` 和 `test.T1`），在恢复时可以指定 BR 参数 `--sys-check-collation`。BR 会检查系统表数据在不同排序规则 (Collation) 下的兼容性：如果兼容，则可以成功恢复来自旧版本的备份；如果不兼容，则 BR 会报错并终止恢复。如果在恢复前上游集群仍然存在，你可以在上游集群中手动执行下列三组 SQL 语句通过确认 COUNT 一致来验证数据在不同的 collation 下兼容：
-> - SQL 1：SELECT COUNT(1) FROM mysql.db;
-> - SQL 1：SELECT COUNT(1) FROM (SELECT Host, DB COLLATE utf8mb4_general_ci, User FROM mysql.db GROUP BY Host, DB COLLATE utf8mb4_general_ci, User) as a;
->
-> - SQL 2：SELECT COUNT(1) FROM mysql.tables_priv;
-> - SQL 2：SELECT COUNT(1) FROM (SELECT Host, DB COLLATE utf8mb4_general_ci, User, Table_name COLLATE utf8mb4_general_ci FROM mysql.tables_priv GROUP BY Host, DB COLLATE utf8mb4_general_ci, User, Table_name COLLATE utf8mb4_general_ci) as a;
->
-> - SQL 3：SELECT COUNT(1) FROM mysql.columns_priv;
-> - SQL 3：SELECT COUNT(1) FROM (SELECT Host, DB COLLATE utf8mb4_general_ci, User, Table_name COLLATE utf8mb4_general_ci, Column_name COLLATE utf8mb4_general_ci FROM mysql.columns_priv GROUP BY Host, DB COLLATE utf8mb4_general_ci, User, Table_name COLLATE utf8mb4_general_ci, Column_name COLLATE utf8mb4_general_ci) as a;
+
+从 v8.5.5 开始，如果旧集群系统表中不存在大小写冲突的记录（例如同时存在 `test.t1` 和 `test.T1`），在恢复时可以指定 BR 参数 `--sys-check-collation`。BR 会检查系统表数据在不同的排序规则 (Collation) 下的兼容性：如果兼容，则可以成功恢复来自旧版本的备份；如果不兼容，则 BR 会报错并终止恢复。如果在恢复前上游集群仍然存在，你可以在上游集群中手动执行下列三组 SQL 语句通过确认 `COUNT` 一致来验证数据在不同的排序规则下兼容：
+
+第一组 SQL：
+
+```sql
+SELECT COUNT(1) FROM mysql.db;
+SELECT COUNT(1) FROM (SELECT Host, DB COLLATE utf8mb4_general_ci, User FROM mysql.db GROUP BY Host, DB COLLATE utf8mb4_general_ci, User) as a;
+```
+
+第二组 SQL：
+
+```sql
+SELECT COUNT(1) FROM mysql.tables_priv;
+SELECT COUNT(1) FROM (SELECT Host, DB COLLATE utf8mb4_general_ci, User, Table_name COLLATE utf8mb4_general_ci FROM mysql.tables_priv GROUP BY Host, DB COLLATE utf8mb4_general_ci, User, Table_name COLLATE utf8mb4_general_ci) as a;
+```
+
+第三组 SQL：
+
+```sql
+SELECT COUNT(1) FROM mysql.columns_priv;
+SELECT COUNT(1) FROM (SELECT Host, DB COLLATE utf8mb4_general_ci, User, Table_name COLLATE utf8mb4_general_ci, Column_name COLLATE utf8mb4_general_ci FROM mysql.columns_priv GROUP BY Host, DB COLLATE utf8mb4_general_ci, User, Table_name COLLATE utf8mb4_general_ci, Column_name COLLATE utf8mb4_general_ci) as a;
+```
 
 下表列出了全量备份的兼容性矩阵，表格中所有信息均适用于新建集群。如果备份集群是从 v7.2.0 之前升级过来的集群，行为等同于 v7.1.0：
 
