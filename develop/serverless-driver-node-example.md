@@ -1,24 +1,24 @@
 ---
-title: TiDB Cloud Serverless Driver Node.js 教程
+title: TiDB Cloud serverless driver Node.js 教程
 summary: 学习如何在本地 Node.js 项目中使用 TiDB Cloud serverless driver。
 ---
 
-# TiDB Cloud Serverless Driver Node.js 教程 <!-- Draft translated by AI -->
+# TiDB Cloud serverless driver Node.js 教程
 
 本教程介绍如何在本地 Node.js 项目中使用 TiDB Cloud serverless driver。
 
-> **Note:**
+> **注意：**
 >
-> - 本教程仅适用于 TiDB Cloud Serverless 集群。
-> - 如果你想了解如何在 Cloudflare Workers、Vercel Edge Functions 和 Netlify Edge Functions 中使用 TiDB Cloud serverless driver，请参考我们的 [Insights into Automotive Sales](https://car-sales-insight.vercel.app/) 和 [示例仓库](https://github.com/tidbcloud/car-sales-insight)。
+> - 除了 TiDB Cloud Starter 集群，本教程的步骤也适用于 TiDB Cloud Essential 集群。
+> - 如果你想了解如何在 Cloudflare Workers、Vercel Edge Functions 和 Netlify Edge Functions 中使用 TiDB Cloud serverless driver，请参考 [Insights into Automotive Sales](https://car-sales-insight.vercel.app/) 和[示例仓库](https://github.com/tidbcloud/car-sales-insight)。
 
 ## 开始之前
 
-要完成本分步教程，你需要准备以下内容：
+要完成本教程中的步骤，你需要准备以下内容：
 
 - [Node.js](https://nodejs.org/en) >= 18.0.0。
 - [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 或你喜欢的包管理器。
-- 一个 TiDB Cloud Serverless 集群。如果你还没有，可以[创建一个 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- 一个 TiDB Cloud Starter 集群。如果你还没有，可以[创建一个 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 
 ## 步骤 1. 创建本地 Node.js 项目
 
@@ -41,7 +41,7 @@ summary: 学习如何在本地 Node.js 项目中使用 TiDB Cloud serverless dri
 
 serverless driver 同时支持 CommonJS 和 ES modules。以下步骤以 ES module 的用法为例。
 
-1. 在你的 TiDB Cloud Serverless 集群的概览页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
+1. 在你的 TiDB Cloud Starter 集群的概览页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
 
     ```
    mysql://[username]:[password]@[host]/[database]
@@ -65,7 +65,7 @@ serverless driver 同时支持 CommonJS 和 ES modules。以下步骤以 ES modu
     ```js
     import { connect } from '@tidbcloud/serverless'
     
-    const conn = connect({url: 'mysql://[username]:[password]@[host]/[database]'}) // replace with your TiDB Cloud Serverless cluster information
+    const conn = connect({url: 'mysql://[username]:[password]@[host]/[database]'}) // 替换为你的 TiDB Cloud Starter 集群信息
     console.log(await conn.execute("show tables"))
     ```
 
@@ -75,7 +75,7 @@ serverless driver 同时支持 CommonJS 和 ES modules。以下步骤以 ES modu
     node index.js
     ```
 
-## 与早期版本 Node.js 的兼容性
+## 与 Node.js 早期版本的兼容性
 
 如果你使用的 Node.js 版本低于 18.0.0，不包含全局 `fetch` 函数，可以通过以下步骤获取 `fetch`：
 

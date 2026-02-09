@@ -712,14 +712,9 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [使用 Django 连接到 TiDB](/develop/dev-guide-sample-application-python-django.md)
 - [使用 MySQL Connector/Python 连接到 TiDB](/develop/dev-guide-sample-application-python-mysql-connector.md)
 - [使用 PyMySQL 连接到 TiDB](/develop/dev-guide-sample-application-python-pymysql.md)
-- [使用 Python 开始向量搜索](/vector-search/vector-search-get-started-using-python.md)
 - [使用 SQLAlchemy 连接到 TiDB](/develop/dev-guide-sample-application-python-sqlalchemy.md)
 - [使用 peewee 连接到 TiDB](/develop/dev-guide-sample-application-python-peewee.md)
-- [在 LangChain 中使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-langchain.md)
-- [在 LlamaIndex 中使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-llamaindex.md)
-- [在 SQLAlchemy 中使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-sqlalchemy.md)
 - [系统变量](/system-variables.md#ssl_ca)
-- [结合 Jina AI 嵌入模型 API 使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-jinaai-embedding.md)
 
 ### ssl_cert
 

@@ -5,7 +5,6 @@
 
 ## 版本概览
 
-- [发布版本汇总](/releases/_index.md)
 - [版本发布时间线](/releases/release-timeline.md)
 - [TiDB 版本规则](/releases/versioning.md)
 - [版本周期支持策略](https://pingkai.cn/tidb-release-support-policy)

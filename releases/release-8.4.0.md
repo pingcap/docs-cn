@@ -200,13 +200,13 @@ TiDB 版本：8.4.0
 
     向量搜索是一种基于数据语义的搜索方法，可以提供更相关的搜索结果。作为 AI 和大语言模型 (LLM) 的核心功能之一，向量搜索可用于检索增强生成 (Retrieval-Augmented Generation, RAG)、语义搜索、推荐系统等多种场景。
 
-    从 v8.4.0 开始，TiDB 支持[向量数据类型](/vector-search/vector-search-data-types.md)和[向量搜索索引](/vector-search/vector-search-index.md)，具备强大的向量搜索能力。TiDB 的向量数据类型最多可支持 16383 维度，并支持多种[距离函数](/vector-search/vector-search-functions-and-operators.md#向量函数)，包括 L2 距离（欧式距离）、余弦距离、负内积和 L1 距离（曼哈顿距离）。
+    从 v8.4.0 开始，TiDB 支持[向量数据类型](https://docs.pingcap.com/ai/vector-search-data-types)和[向量搜索索引](https://docs.pingcap.com/ai/vector-search-index)，具备强大的向量搜索能力。TiDB 的向量数据类型最多可支持 16383 维度，并支持多种[距离函数](https://docs.pingcap.com/ai/vector-search-functions-and-operators#向量函数)，包括 L2 距离（欧式距离）、余弦距离、负内积和 L1 距离（曼哈顿距离）。
 
     在使用时，你只需要创建包含向量数据类型的表，并插入向量数据，即可执行向量搜索查询，也可进行向量数据与传统关系数据的混合查询。
 
-    此外，你可以创建并利用[向量搜索索引](/vector-search/vector-search-index.md)来提升向量搜索的性能。需要注意的是，TiDB 的向量搜索索引依赖于 TiFlash。在使用向量搜索索引之前，需要确保 TiDB 集群中已部署 TiFlash 节点。
+    此外，你可以创建并利用[向量搜索索引](https://docs.pingcap.com/ai/vector-search-index)来提升向量搜索的性能。需要注意的是，TiDB 的向量搜索索引依赖于 TiFlash。在使用向量搜索索引之前，需要确保 TiDB 集群中已部署 TiFlash 节点。
 
-    更多信息，请参考[用户文档](/vector-search/vector-search-overview.md)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/ai/)。
 
 ### 数据库管理
 
