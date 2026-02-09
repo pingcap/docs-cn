@@ -1,6 +1,7 @@
 ---
 title: 使用 Prisma 连接到 TiDB
 summary: 本文描述了 TiDB 和 Prisma 的连接步骤，并给出了简单示例代码片段。
+aliases: ['/zh/tidb/stable/dev-guide-sample-application-nodejs-prisma/','/zh/tidb/dev/dev-guide-sample-application-nodejs-prisma/','/zh/tidbcloud/dev-guide-sample-application-nodejs-prisma/']
 ---
 
 # 使用 Prisma 连接到 TiDB

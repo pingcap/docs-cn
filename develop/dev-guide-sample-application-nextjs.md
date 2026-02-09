@@ -1,6 +1,7 @@
 ---
 title: 在 Next.js 中使用 mysql2 连接到 TiDB
 summary: 本文介绍了如何在 Next.js 中使用 TiDB 和 mysql2 构建一个 CRUD 应用程序，并给出了简单示例代码片段。
+aliases: ['/zh/tidb/stable/dev-guide-sample-application-nextjs/','/zh/tidb/dev/dev-guide-sample-application-nextjs/','/zh/tidbcloud/dev-guide-sample-application-nextjs/']
 ---
 
 # 在 Next.js 中使用 mysql2 连接到 TiDB
