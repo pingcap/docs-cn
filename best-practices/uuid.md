@@ -1,6 +1,7 @@
 ---
 title: 将 UUID 用作主键的最佳实践
 summary: 了解在 TiDB 中将 UUID 用作主键的最佳实践。
+aliases: ['/zh/tidb/stable/uuid/','/zh/tidb/dev/uuid/','/zh/tidbcloud/uuid/']
 ---
 
 # 将 UUID 用作主键的最佳实践

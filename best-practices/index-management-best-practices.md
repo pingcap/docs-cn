@@ -1,6 +1,7 @@
 ---
 title: 管理索引和识别未使用索引的最佳实践
 summary: 了解在 TiDB 中管理和优化索引、识别并移除未使用索引的最佳实践。
+aliases: ['/zh/tidb/stable/index-management-best-practices/','/zh/tidb/dev/index-management-best-practices/']
 ---
 
 # 管理索引和识别未使用索引的最佳实践

@@ -1,6 +1,7 @@
 ---
 title: 使用 GORM 连接到 TiDB
 summary: 了解如何使用 GORM 连接到 TiDB。本文提供了使用 GORM 与 TiDB 交互的 Golang 示例代码片段。
+aliases: ['/zh/tidb/stable/dev-guide-sample-application-golang-gorm/','/zh/tidb/dev/dev-guide-sample-application-golang-gorm/','/zh/tidbcloud/dev-guide-sample-application-golang-gorm/']
 ---
 
 # 使用 GORM 连接到 TiDB

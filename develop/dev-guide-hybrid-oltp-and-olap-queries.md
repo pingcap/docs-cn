@@ -1,6 +1,7 @@
 ---
 title: HTAP 查询
 summary: 介绍 TiDB 中的 HTAP 查询功能。
+aliases: ['/zh/tidb/stable/dev-guide-hybrid-oltp-and-olap-queries/','/zh/tidb/dev/dev-guide-hybrid-oltp-and-olap-queries/','/zh/tidbcloud/dev-guide-hybrid-oltp-and-olap-queries/']
 ---
 
 # HTAP 查询

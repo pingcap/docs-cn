@@ -1,6 +1,7 @@
 ---
 title: 结果集不稳定
 summary: 结果集不稳定错误的处理办法。
+aliases: ['/zh/tidb/stable/dev-guide-unstable-result-set/','/zh/tidb/dev/dev-guide-unstable-result-set/','/zh/tidbcloud/dev-guide-unstable-result-set/']
 ---
 
 # 结果集不稳定

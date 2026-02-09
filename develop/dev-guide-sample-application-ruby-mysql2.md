@@ -1,6 +1,7 @@
 ---
 title: 使用 mysql2 连接 TiDB
 summary: 本文描述了 TiDB 和 mysql2 的连接步骤，并给出了使用 mysql2 gem 连接 TiDB 的简单示例代码片段。
+aliases: ['/zh/tidb/stable/dev-guide-sample-application-ruby-mysql2/','/zh/tidb/dev/dev-guide-sample-application-ruby-mysql2/','/zh/tidbcloud/dev-guide-sample-application-ruby-mysql2/']
 ---
 
 # 使用 mysql2 连接 TiDB

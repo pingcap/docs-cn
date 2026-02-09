@@ -1,6 +1,7 @@
 ---
 title: ProxySQL 集成指南
 summary: 了解如何将本地部署的 TiDB 或 TiDB Cloud 集群与 ProxySQL 集成。
+aliases: ['/zh/tidb/stable/dev-guide-proxysql-integration/','/zh/tidb/dev/dev-guide-proxysql-integration/','/zh/tidbcloud/dev-guide-proxysql-integration/']
 ---
 
 # ProxySQL 集成指南

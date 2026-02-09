@@ -1,6 +1,7 @@
 ---
 title: 在 AWS Lambda 函数中使用 mysql2 连接到 TiDB
 summary: 本文介绍如何在 AWS Lambda 函数中使用 TiDB 和 mysql2 构建一个 CRUD 应用程序，并给出了简单示例代码片段。
+aliases: ['/zh/tidb/stable/dev-guide-sample-application-aws-lambda/','/zh/tidb/dev/dev-guide-sample-application-aws-lambda/','/zh/tidbcloud/dev-guide-sample-application-aws-lambda/']
 ---
 
 # 在 AWS Lambda 函数中使用 mysql2 连接到 TiDB

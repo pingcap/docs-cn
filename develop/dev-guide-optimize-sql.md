@@ -1,6 +1,7 @@
 ---
 title: SQL 性能调优
 summary: 介绍 TiDB 的 SQL 性能调优方案和分析办法。
+aliases: ['/zh/tidb/stable/dev-guide-optimize-sql/','/zh/tidb/dev/dev-guide-optimize-sql/','/zh/tidbcloud/dev-guide-optimize-sql/']
 ---
 
 # SQL 性能调优

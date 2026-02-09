@@ -1,6 +1,7 @@
 ---
 title: 使用 PyMySQL 连接到 TiDB
 summary: 了解如何使用 PyMySQL 连接到 TiDB。本文提供了使用 PyMySQL 与 TiDB 交互的 Python 示例代码片段。
+aliases: ['/zh/tidb/stable/dev-guide-sample-application-python-pymysql/','/zh/tidb/dev/dev-guide-sample-application-python-pymysql/','/zh/tidbcloud/dev-guide-sample-application-python-pymysql/']
 ---
 
 # 使用 PyMySQL 连接到 TiDB
