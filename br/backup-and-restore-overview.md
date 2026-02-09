@@ -165,21 +165,39 @@ TiDB v6.6.0 版本之前的 BR 版本兼容性矩阵：
 
 ```sql
 SELECT COUNT(1) FROM mysql.db;
-SELECT COUNT(1) FROM (SELECT Host, DB COLLATE utf8mb4_general_ci, User FROM mysql.db GROUP BY Host, DB COLLATE utf8mb4_general_ci, User) as a;
+SELECT COUNT(1) FROM (
+  SELECT Host, DB COLLATE utf8mb4_general_ci, User
+  FROM mysql.db
+  GROUP BY Host, DB COLLATE utf8mb4_general_ci, User
+) AS a;
 ```
 
 第二组 SQL：
 
 ```sql
 SELECT COUNT(1) FROM mysql.tables_priv;
-SELECT COUNT(1) FROM (SELECT Host, DB COLLATE utf8mb4_general_ci, User, Table_name COLLATE utf8mb4_general_ci FROM mysql.tables_priv GROUP BY Host, DB COLLATE utf8mb4_general_ci, User, Table_name COLLATE utf8mb4_general_ci) as a;
+SELECT COUNT(1) FROM (
+  SELECT Host, DB COLLATE utf8mb4_general_ci, User,
+         Table_name COLLATE utf8mb4_general_ci
+  FROM mysql.tables_priv
+  GROUP BY Host, DB COLLATE utf8mb4_general_ci, User,
+           Table_name COLLATE utf8mb4_general_ci
+) AS a;
 ```
 
 第三组 SQL：
 
 ```sql
 SELECT COUNT(1) FROM mysql.columns_priv;
-SELECT COUNT(1) FROM (SELECT Host, DB COLLATE utf8mb4_general_ci, User, Table_name COLLATE utf8mb4_general_ci, Column_name COLLATE utf8mb4_general_ci FROM mysql.columns_priv GROUP BY Host, DB COLLATE utf8mb4_general_ci, User, Table_name COLLATE utf8mb4_general_ci, Column_name COLLATE utf8mb4_general_ci) as a;
+SELECT COUNT(1) FROM (
+  SELECT Host, DB COLLATE utf8mb4_general_ci, User,
+         Table_name COLLATE utf8mb4_general_ci,
+         Column_name COLLATE utf8mb4_general_ci
+  FROM mysql.columns_priv
+  GROUP BY Host, DB COLLATE utf8mb4_general_ci, User,
+           Table_name COLLATE utf8mb4_general_ci,
+           Column_name COLLATE utf8mb4_general_ci
+) AS a;
 ```
 
 若两次 `COUNT` 结果一致，则表示在目标 collation 下不会产生大小写冲突。
