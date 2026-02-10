@@ -20,7 +20,7 @@ aliases: ['/tidb/stable/vector-search-data-types/','/tidb/dev/vector-search-data
 
 与使用 [`JSON`](/data-type-json.md) 类型相比，使用向量数据类型具有以下优势：
 
-- 支持向量索引：你可以构建 [向量检索索引](/ai/reference/vector-search-index.md) 来加速向量检索。
+- 支持向量索引：你可以构建 [向量搜索索引](/ai/reference/vector-search-index.md) 来加速向量搜索。
 - 维度约束：你可以指定维度，禁止插入不同维度的向量。
 - 优化的存储格式：向量数据类型针对向量数据进行了优化，空间效率和性能优于 `JSON` 类型。
 
@@ -61,7 +61,7 @@ ERROR 1105 (HY000): vector has 2 dimensions, does not fit VECTOR(3)
 
 关于向量数据类型可用的函数和运算符，参见 [向量函数与运算符](/ai/reference/vector-search-functions-and-operators.md)。
 
-关于如何构建和使用向量检索索引，参见 [向量检索索引](/ai/reference/vector-search-index.md)。
+关于如何构建和使用向量搜索索引，参见 [向量搜索索引](/ai/reference/vector-search-index.md)。
 
 ## 存储不同维度的向量
 
@@ -77,7 +77,7 @@ INSERT INTO vector_table VALUES (1, '[0.3, 0.5, -0.1]'); -- 3 维向量，OK
 INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 2 维向量，OK
 ```
 
-但需要注意的是，你无法为该列构建 [向量检索索引](/ai/reference/vector-search-index.md)，因为只有相同维度的向量之间才能计算向量距离。
+但需要注意的是，你无法为该列构建 [向量搜索索引](/ai/reference/vector-search-index.md)，因为只有相同维度的向量之间才能计算向量距离。
 
 ## 比较
 
@@ -235,7 +235,7 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 
 ## 限制
 
-关于向量数据类型的限制，参见 [向量检索限制](/ai/reference/vector-search-limitations.md) 和 [向量索引限制](/ai/reference/vector-search-index.md#restrictions)。
+关于向量数据类型的限制，参见 [向量搜索限制](/ai/reference/vector-search-limitations.md) 和 [向量索引限制](/ai/reference/vector-search-index.md#restrictions)。
 
 ## MySQL 兼容性
 
@@ -244,5 +244,5 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 ## 参见
 
 - [向量函数与运算符](/ai/reference/vector-search-functions-and-operators.md)
-- [向量检索索引](/ai/reference/vector-search-index.md)
-- [提升向量检索性能](/ai/reference/vector-search-improve-performance.md)
+- [向量搜索索引](/ai/reference/vector-search-index.md)
+- [提升向量搜索性能](/ai/reference/vector-search-improve-performance.md)

@@ -1,11 +1,11 @@
 ---
 title: TiDB for AI
-summary: 利用 TiDB 集成的向量检索、全文检索和无缝 Python SDK 构建现代 AI 应用。
+summary: 利用 TiDB 集成的向量搜索、全文检索和无缝 Python SDK 构建现代 AI 应用。
 ---
 
 # TiDB for AI
 
-TiDB 是为现代 AI 应用设计的分布式 SQL 数据库，提供集成的向量检索、全文检索和混合检索能力。本文档概述了使用 TiDB 构建 AI 驱动应用可用的 AI 特性和工具。
+TiDB 是为现代 AI 应用设计的分布式 SQL 数据库，提供集成的向量搜索、全文检索和混合检索能力。本文档概述了使用 TiDB 构建 AI 驱动应用可用的 AI 特性和工具。
 
 ## 快速开始
 
@@ -14,7 +14,7 @@ TiDB 是为现代 AI 应用设计的分布式 SQL 数据库，提供集成的向
 | 文档 | 描述 |
 | --- | --- |
 | [Get Started with Python](/ai/quickstart-via-python.md) | 使用 Python 在几分钟内构建你的第一个基于 TiDB 的 AI 应用。 |
-| [Get Started with SQL](/ai/quickstart-via-sql.md) | 使用 SQL 快速开始向量检索。 |
+| [Get Started with SQL](/ai/quickstart-via-sql.md) | 使用 SQL 快速开始向量搜索。 |
 
 ## 概念
 
@@ -22,7 +22,7 @@ TiDB 是为现代 AI 应用设计的分布式 SQL 数据库，提供集成的向
 
 | 文档 | 描述 |
 | --- | --- |
-| [Vector Search](/ai/concepts/vector-search-overview.md) | 向量检索的全面概述，包括概念、工作原理和应用场景。 |
+| [Vector Search](/ai/concepts/vector-search-overview.md) | 向量搜索的全面概述，包括概念、工作原理和应用场景。 |
 
 ## 指南
 
@@ -34,7 +34,7 @@ TiDB 是为现代 AI 应用设计的分布式 SQL 数据库，提供集成的向
 | [Working with Tables](/ai/guides/tables.md) | 创建、查询和管理包含向量字段的表。 |
 | [Vector Search](/ai/guides/vector-search.md) | 使用 `pytidb` 进行语义相似度检索。 |
 | [Full-Text Search](/ai/guides/vector-search-full-text-search-python.md) | 基于关键字的文本检索，支持 BM25 排序。 |
-| [Hybrid Search](/ai/guides/vector-search-hybrid-search.md) | 结合向量检索与全文检索，获得更优结果。 |
+| [Hybrid Search](/ai/guides/vector-search-hybrid-search.md) | 结合向量搜索与全文检索，获得更优结果。 |
 | [Image Search](/ai/guides/image-search.md) | 利用多模态嵌入进行 image 检索。 |
 | [Auto Embedding](/ai/guides/auto-embedding.md) | 数据插入时自动生成嵌入向量。 |
 | [Filtering](/ai/guides/filtering.md) | 通过元信息条件过滤检索结果。 |
@@ -66,12 +66,12 @@ TiDB 是为现代 AI 应用设计的分布式 SQL 数据库，提供集成的向
 
 ## 参考
 
-TiDB AI 与向量检索特性的技术参考文档。
+TiDB AI 与向量搜索特性的技术参考文档。
 
 | 文档 | 描述 |
 | --- | --- |
 | [Vector Data Types](/ai/reference/vector-search-data-types.md) | 向量列类型及其用法。 |
 | [Functions and Operators](/ai/reference/vector-search-functions-and-operators.md) | 距离函数与向量运算符。 |
 | [Vector Search Index](/ai/reference/vector-search-index.md) | 创建和管理向量索引以提升性能。 |
-| [Performance Tuning](/ai/reference/vector-search-improve-performance.md) | 优化向量检索性能。 |
+| [Performance Tuning](/ai/reference/vector-search-improve-performance.md) | 优化向量搜索性能。 |
 | [Limitations](/ai/reference/vector-search-limitations.md) | 当前的限制与约束。 |

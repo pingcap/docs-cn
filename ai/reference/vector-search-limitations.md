@@ -1,17 +1,17 @@
 ---
-title: 向量检索限制
-summary: 了解 TiDB 向量检索的限制。
+title: 向量搜索限制
+summary: 了解 TiDB 向量搜索的限制。
 aliases: ['/tidb/stable/vector-search-limitations/','/tidb/dev/vector-search-limitations/','/tidbcloud/vector-search-limitations/']
 ---
 
-# 向量检索限制
+# 向量搜索限制
 
-本文档描述了 TiDB 向量检索已知的限制。
+本文档描述了 TiDB 向量搜索已知的限制。
 
 > **注意：**
 >
-> - 向量检索功能目前为 beta 版本，可能会在没有提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量检索功能适用于 [TiDB 自建版](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自建版和 TiDB Cloud Dedicated，TiDB 版本必须为 v8.4.0 或以上版本（推荐使用 v8.5.0 或以上版本）。
+> - 向量搜索功能目前为 beta 版本，可能会在没有提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+> - 向量搜索功能适用于 [TiDB 自建版](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自建版和 TiDB Cloud Dedicated，TiDB 版本必须为 v8.4.0 或以上版本（推荐使用 v8.5.0 或以上版本）。
 
 ## 向量数据类型限制
 
@@ -25,11 +25,11 @@ aliases: ['/tidb/stable/vector-search-limitations/','/tidb/dev/vector-search-lim
 
 ## 向量索引限制
 
-参见 [向量检索限制](/ai/reference/vector-search-index.md#restrictions)。
+参见 [向量搜索限制](/ai/reference/vector-search-index.md#restrictions)。
 
 ## 与 TiDB 工具的兼容性
 
-在使用向量检索时，请注意以下兼容性问题：
+在使用向量搜索时，请注意以下兼容性问题：
 
 - TiDB Cloud 功能：
 

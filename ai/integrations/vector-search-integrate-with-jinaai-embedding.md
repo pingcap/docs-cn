@@ -1,17 +1,17 @@
 ---
-title: 集成 TiDB 向量检索与 Jina AI Embeddings API
-summary: 学习如何将 TiDB 向量检索与 Jina AI Embeddings API 集成，实现 embedding 存储与语义检索。
+title: 集成 TiDB 向量搜索与 Jina AI Embeddings API
+summary: 学习如何将 TiDB 向量搜索与 Jina AI Embeddings API 集成，实现 embedding 存储与语义检索。
 aliases: ['/tidb/stable/vector-search-integrate-with-jinaai-embedding/','/tidb/dev/vector-search-integrate-with-jinaai-embedding/','/tidbcloud/vector-search-integrate-with-jinaai-embedding/']
 ---
 
-# 集成 TiDB 向量检索与 Jina AI Embeddings API
+# 集成 TiDB 向量搜索与 Jina AI Embeddings API
 
 本教程将指导你如何使用 [Jina AI](https://jina.ai/) 生成文本 embedding，将其存储到 TiDB 中，并基于 embedding 实现相似文本检索。
 
 > **注意：**
 >
-> - 向量检索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量检索功能适用于 [TiDB Self-Managed](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB Self-Managed 和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB Self-Managed 和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 ## 前置条件
 
@@ -28,7 +28,7 @@ aliases: ['/tidb/stable/vector-search-integrate-with-jinaai-embedding/','/tidb/d
 
 ## 运行示例应用
 
-你可以按照以下步骤，快速学习如何将 TiDB 向量检索与 Jina AI embedding 集成。
+你可以按照以下步骤，快速学习如何将 TiDB 向量搜索与 Jina AI embedding 集成。
 
 ### 步骤 1. 克隆仓库
 
@@ -274,4 +274,4 @@ with Session(engine) as session:
 ## 参见
 
 - [向量数据类型](/ai/reference/vector-search-data-types.md)
-- [向量检索索引](/ai/reference/vector-search-index.md)
+- [向量搜索索引](/ai/reference/vector-search-index.md)

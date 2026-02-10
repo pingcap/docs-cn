@@ -1,6 +1,6 @@
 ---
 title: OpenAI-Compatible Embeddings
-summary: 了解如何将 TiDB 向量检索与 OpenAI 兼容的 embedding 模型集成，以存储 embedding 并执行语义检索。
+summary: 了解如何将 TiDB 向量搜索与 OpenAI 兼容的 embedding 模型集成，以存储 embedding 并执行语义检索。
 ---
 
 # OpenAI-Compatible Embeddings
@@ -119,7 +119,7 @@ table.bulk_insert(documents)
 
 ### 步骤 5：检索相似文档
 
-使用 `table.search()` API 执行向量检索：
+使用 `table.search()` API 执行向量搜索：
 
 ```python
 results = table.search("How to start learning Java programming?") \
@@ -128,4 +128,4 @@ results = table.search("How to start learning Java programming?") \
 print(results)
 ```
 
-启用 [Auto Embedding](/ai/integrations/vector-search-auto-embedding-overview.md) 后，TiDB 会在向量检索时自动为查询文本生成 embedding。
+启用 [Auto Embedding](/ai/integrations/vector-search-auto-embedding-overview.md) 后，TiDB 会在向量搜索时自动为查询文本生成 embedding。

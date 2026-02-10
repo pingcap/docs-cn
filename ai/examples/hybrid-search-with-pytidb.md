@@ -1,11 +1,11 @@
 ---
 title: 混合搜索示例
-summary: 结合向量搜索和全文搜索，获得更全面的结果。
+summary: 结合向量搜索和全文检索，获得更全面的结果。
 ---
 
 # 混合搜索示例
 
-本演示展示了如何结合向量搜索和全文搜索，以提升在文档集上的检索质量。
+本演示展示了如何结合向量搜索和全文检索，以提升在文档集上的检索质量。
 
 <p align="center">
     <img src="https://docs-download.pingcap.com/media/images/docs/ai/tidb-hybrid-search-demo.png" alt="TiDB Hybrid Search Demo" width="700"/>
@@ -22,7 +22,7 @@ summary: 结合向量搜索和全文搜索，获得更全面的结果。
 
 > **注意**
 >
-> 目前，全文搜索仅在以下产品选项和区域中可用：
+> 目前，全文检索仅在以下产品选项和区域中可用：
 >
 > - TiDB Cloud Starter：法兰克福（`eu-central-1`）、新加坡（`ap-southeast-1`）
 

@@ -1,33 +1,33 @@
 ---
-title: 向量检索索引
-summary: 了解如何在 TiDB 中构建和使用向量检索索引，以加速 K-最近邻（KNN）查询。
+title: 向量搜索索引
+summary: 了解如何在 TiDB 中构建和使用向量搜索索引，以加速 K-最近邻（KNN）查询。
 aliases: ['/tidb/stable/vector-search-index/','/tidb/dev/vector-search-index/','/tidbcloud/vector-search-index/']
 ---
 
-# 向量检索索引
+# 向量搜索索引
 
-如 [向量检索](/ai/concepts/vector-search-overview.md) 文档所述，向量检索通过计算给定向量与数据库中所有向量之间的距离，找出 Top K-最近邻（KNN）。这种方式能够提供准确的结果，但当表中包含大量向量时，查询速度较慢，因为需要进行全表扫描。[^1]
+如 [向量搜索](/ai/concepts/vector-search-overview.md) 文档所述，向量搜索通过计算给定向量与数据库中所有向量之间的距离，找出 Top K-最近邻（KNN）。这种方式能够提供准确的结果，但当表中包含大量向量时，查询速度较慢，因为需要进行全表扫描。[^1]
 
-为了提升检索效率，你可以在 TiDB 中为近似 KNN（ANN）检索创建向量检索索引。使用向量索引进行向量检索时，TiDB 可以大幅提升查询性能，准确性仅有轻微下降，通常检索召回率可保持在 90% 以上。
+为了提升检索效率，你可以在 TiDB 中为近似 KNN（ANN）检索创建向量搜索索引。使用向量索引进行向量搜索时，TiDB 可以大幅提升查询性能，准确性仅有轻微下降，通常检索召回率可保持在 90% 以上。
 
 > **注意：**
 >
-> - 向量检索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量检索功能适用于 [TiDB 自建版](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自建版和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 及以上（推荐 v8.5.0 及以上）。
+> - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+> - 向量搜索功能适用于 [TiDB 自建版](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自建版和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 及以上（推荐 v8.5.0 及以上）。
 
-目前，TiDB 支持 [HNSW（Hierarchical Navigable Small World）](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) 向量检索索引算法。
+目前，TiDB 支持 [HNSW（Hierarchical Navigable Small World）](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) 向量搜索索引算法。
 
 ## 限制
 
 - 你的集群中必须提前部署 TiFlash 节点。
-- 向量检索索引不能作为主键或唯一索引使用。
-- 向量检索索引只能创建在单个向量列上，不能与其他列（如整数型或字符串）组合为组合索引。
-- 创建和使用向量检索索引时，必须指定距离函数。目前仅支持余弦距离 `VEC_COSINE_DISTANCE()` 和 L2 距离 `VEC_L2_DISTANCE()` 函数。
-- 对于同一列，不支持使用相同距离函数创建多个向量检索索引。
-- 不支持直接删除带有向量检索索引的列。你可以先删除该列上的向量检索索引，再删除该列。
+- 向量搜索索引不能作为主键或唯一索引使用。
+- 向量搜索索引只能创建在单个向量列上，不能与其他列（如整数型或字符串）组合为组合索引。
+- 创建和使用向量搜索索引时，必须指定距离函数。目前仅支持余弦距离 `VEC_COSINE_DISTANCE()` 和 L2 距离 `VEC_L2_DISTANCE()` 函数。
+- 对于同一列，不支持使用相同距离函数创建多个向量搜索索引。
+- 不支持直接删除带有向量搜索索引的列。你可以先删除该列上的向量搜索索引，再删除该列。
 - 不支持修改带有向量索引的列的类型。
-- 不支持将向量检索索引设置为 [不可见](/sql-statements/sql-statement-alter-index.md)。
-- 不支持在启用 [静态加密](/encryption-at-rest.md) 的 TiFlash 节点上构建向量检索索引。
+- 不支持将向量搜索索引设置为 [不可见](/sql-statements/sql-statement-alter-index.md)。
+- 不支持在启用 [静态加密](/encryption-at-rest.md) 的 TiFlash 节点上构建向量搜索索引。
 
 ## 创建 HNSW 向量索引
 
@@ -51,17 +51,17 @@ aliases: ['/tidb/stable/vector-search-index/','/tidb/dev/vector-search-index/','
     CREATE VECTOR INDEX idx_embedding ON foo ((VEC_COSINE_DISTANCE(embedding)));
     ALTER TABLE foo ADD VECTOR INDEX idx_embedding ((VEC_COSINE_DISTANCE(embedding)));
 
-    -- 你也可以显式指定 "USING HNSW" 来构建向量检索索引。
+    -- 你也可以显式指定 "USING HNSW" 来构建向量搜索索引。
     CREATE VECTOR INDEX idx_embedding ON foo ((VEC_COSINE_DISTANCE(embedding))) USING HNSW;
     ALTER TABLE foo ADD VECTOR INDEX idx_embedding ((VEC_COSINE_DISTANCE(embedding))) USING HNSW;
     ```
 
 > **注意：**
 >
-> 向量检索索引功能依赖于表的 TiFlash 副本。
+> 向量搜索索引功能依赖于表的 TiFlash 副本。
 >
-> - 如果在创建表时定义了向量检索索引，TiDB 会自动为该表创建 TiFlash 副本。
-> - 如果在创建表时未定义向量检索索引，且当前表没有 TiFlash 副本，则需要在为表添加向量检索索引前，手动创建 TiFlash 副本。例如：`ALTER TABLE 'table_name' SET TIFLASH REPLICA 1;`。
+> - 如果在创建表时定义了向量搜索索引，TiDB 会自动为该表创建 TiFlash 副本。
+> - 如果在创建表时未定义向量搜索索引，且当前表没有 TiFlash 副本，则需要在为表添加向量搜索索引前，手动创建 TiFlash 副本。例如：`ALTER TABLE 'table_name' SET TIFLASH REPLICA 1;`。
 
 创建 HNSW 向量索引时，你需要为向量指定距离函数：
 
@@ -70,11 +70,11 @@ aliases: ['/tidb/stable/vector-search-index/','/tidb/dev/vector-search-index/','
 
 向量索引只能创建在定长向量列上，例如定义为 `VECTOR(3)` 的列。不能为非定长向量列（如定义为 `VECTOR` 的列）创建索引，因为只有维度相同的向量之间才能计算距离。
 
-关于向量检索索引的限制，详见 [限制](#限制)。
+关于向量搜索索引的限制，详见 [限制](#限制)。
 
 ## 使用向量索引
 
-在 K-最近邻检索查询中，可以通过如下 `ORDER BY ... LIMIT` 语句使用向量检索索引：
+在 K-最近邻检索查询中，可以通过如下 `ORDER BY ... LIMIT` 语句使用向量搜索索引：
 
 ```sql
 SELECT *
@@ -83,7 +83,7 @@ ORDER BY VEC_COSINE_DISTANCE(embedding, '[1, 2, 3, 4, 5]')
 LIMIT 10
 ```
 
-要在向量检索中使用索引，确保 `ORDER BY ... LIMIT` 子句使用的距离函数与创建向量索引时指定的距离函数一致。
+要在向量搜索中使用索引，确保 `ORDER BY ... LIMIT` 子句使用的距离函数与创建向量索引时指定的距离函数一致。
 
 ## 向量索引与过滤条件联合使用
 
@@ -98,7 +98,7 @@ ORDER BY VEC_COSINE_DISTANCE(embedding, '[1, 2, 3]')
 LIMIT 5;
 ```
 
-要在带有过滤条件的场景下使用向量索引，应先通过向量检索查询 K-最近邻，再对结果进行过滤：
+要在带有过滤条件的场景下使用向量索引，应先通过向量搜索查询 K-最近邻，再对结果进行过滤：
 
 ```sql
 -- 对于以下查询，`WHERE` 过滤在 KNN 之后执行，因此可以使用向量索引：
@@ -116,7 +116,7 @@ WHERE category = "document";
 
 ## 查看索引构建进度
 
-在你插入大量数据后，部分数据可能不会立即持久化到 TiFlash。对于已持久化的向量数据，向量检索索引会同步构建；对于尚未持久化的数据，索引会在数据持久化后再构建。此过程不会影响数据的准确性和一致性，你可以随时进行向量检索并获得完整结果。但在向量索引完全构建前，性能会低于最佳状态。
+在你插入大量数据后，部分数据可能不会立即持久化到 TiFlash。对于已持久化的向量数据，向量搜索索引会同步构建；对于尚未持久化的数据，索引会在数据持久化后再构建。此过程不会影响数据的准确性和一致性，你可以随时进行向量搜索并获得完整结果。但在向量索引完全构建前，性能会低于最佳状态。
 
 你可以通过查询 `INFORMATION_SCHEMA.TIFLASH_INDEXES` 表来查看索引构建进度：
 
@@ -210,7 +210,7 @@ LIMIT 10;
 ANN index not used: index can be used only when ordering by vec_cosine_distance() in ASC order
 ```
 
-## 分析向量检索性能
+## 分析向量搜索性能
 
 要了解向量索引的详细使用信息，可以执行 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 语句，并查看输出中的 `execution info` 列：
 
@@ -253,7 +253,7 @@ LIMIT 10;
 
 ## 另请参阅
 
-- [提升向量检索性能](/ai/reference/vector-search-improve-performance.md)
+- [提升向量搜索性能](/ai/reference/vector-search-improve-performance.md)
 - [向量数据类型](/ai/reference/vector-search-data-types.md)
 
 [^1]: KNN 检索的解释改编自 ClickHouse 文档中 [Approximate Nearest Neighbor Search Indexes](https://github.com/ClickHouse/ClickHouse/pull/50661/files#diff-7ebd9e71df96e74230c9a7e604fa7cb443be69ba5e23bf733fcecd4cc51b7576) 一文，作者为 [rschu1ze](https://github.com/rschu1ze)，遵循 Apache License 2.0 许可协议。

@@ -1,12 +1,12 @@
 ---
 title: 使用 Python 快速上手 TiDB + AI
-summary: 学习如何使用 Python SDK 在 TiDB 中开始向量检索。
+summary: 学习如何使用 Python SDK 在 TiDB 中开始向量搜索。
 aliases: ['/tidb/stable/vector-search-get-started-using-sql/','/tidb/dev/vector-search-get-started-using-sql/','/tidbcloud/vector-search-get-started-using-sql/']
 ---
 
 # 使用 Python 快速上手 TiDB + AI
 
-本文档演示了如何使用 Python SDK 在 TiDB 中开始 [向量检索](/ai/concepts/vector-search-overview.md)。跟随本教程，你将构建你的第一个与 TiDB 协作的 AI 应用。
+本文档演示了如何使用 Python SDK 在 TiDB 中开始 [向量搜索](/ai/concepts/vector-search-overview.md)。跟随本教程，你将构建你的第一个与 TiDB 协作的 AI 应用。
 
 通过学习本教程，你将掌握：
 
@@ -17,8 +17,8 @@ aliases: ['/tidb/stable/vector-search-get-started-using-sql/','/tidb/dev/vector-
 
 > **注意：**
 >
-> - 向量检索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量检索功能适用于 [TiDB 自主部署](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自主部署和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 及以上）。
+> - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+> - 向量搜索功能适用于 [TiDB 自主部署](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自主部署和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 及以上）。
 
 ## 前置条件
 
@@ -179,7 +179,7 @@ table.bulk_insert([
 
 ## 检索最近邻
 
-要检索给定 query 的最近邻，可以使用 `table.search()` method。该 method 默认执行 [向量检索](/ai/guides/vector-search.md)。
+要检索给定 query 的最近邻，可以使用 `table.search()` method。该 method 默认执行 [向量搜索](/ai/guides/vector-search.md)。
 
 ```python
 table.search(
@@ -189,7 +189,7 @@ table.search(
 .limit(3).to_list()
 ```
 
-在本例中，向量检索会将 query 向量与 `chunks` 表中 `text_vec` 字段存储的向量进行比较，并根据相似度得分返回最相关的前 3 条结果。
+在本例中，向量搜索会将 query 向量与 `chunks` 表中 `text_vec` 字段存储的向量进行比较，并根据相似度得分返回最相关的前 3 条结果。
 
 `_distance` 越小，表示两个向量越相似。
 
@@ -242,4 +242,4 @@ client.drop_table("chunks")
 
 ## 后续步骤
 
-- 了解 TiDB 中 [向量检索](/ai/guides/vector-search.md)、[全文检索](/ai/guides/vector-search-full-text-search-python.md) 和 [混合检索](/ai/guides/vector-search-hybrid-search.md) 的更多细节。
+- 了解 TiDB 中 [向量搜索](/ai/guides/vector-search.md)、[全文检索](/ai/guides/vector-search-full-text-search-python.md) 和 [混合检索](/ai/guides/vector-search-hybrid-search.md) 的更多细节。

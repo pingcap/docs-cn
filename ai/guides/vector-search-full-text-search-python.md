@@ -1,12 +1,12 @@
 ---
 title: 使用 Python 进行全文检索
-summary: 全文检索允许你通过精确关键字检索文档。在检索增强生成（RAG）场景中，你可以将全文检索与向量检索结合使用，以提升检索质量。
+summary: 全文检索允许你通过精确关键字检索文档。在检索增强生成（RAG）场景中，你可以将全文检索与向量搜索结合使用，以提升检索质量。
 aliases: ['/tidb/stable/vector-search-full-text-search-python/','/tidbcloud/vector-search-full-text-search-python/']
 ---
 
 # 使用 Python 进行全文检索
 
-与关注语义相似度的 [向量检索](/ai/concepts/vector-search-overview.md) 不同，全文检索允许你通过精确关键字检索文档。在检索增强生成（RAG）场景中，你可以将全文检索与向量检索结合使用，以提升检索质量。
+与关注语义相似度的 [向量搜索](/ai/concepts/vector-search-overview.md) 不同，全文检索允许你通过精确关键字检索文档。在检索增强生成（RAG）场景中，你可以将全文检索与向量搜索结合使用，以提升检索质量。
 
 TiDB 的全文检索功能提供以下能力：
 
@@ -22,7 +22,7 @@ TiDB 的全文检索功能提供以下能力：
 >
 > 有关 SQL 用法，参见 [使用 SQL 进行全文检索](/ai/guides/vector-search-full-text-search-sql.md)。
 >
-> 如需在 AI 应用中同时使用全文检索和向量检索，参见 [混合检索](/ai/guides/vector-search-hybrid-search.md)。
+> 如需在 AI 应用中同时使用全文检索和向量搜索，参见 [混合检索](/ai/guides/vector-search-hybrid-search.md)。
 
 ## 前提条件
 
@@ -36,7 +36,7 @@ TiDB 的全文检索功能提供以下能力：
 
 ### 步骤 1. 安装 [pytidb](https://github.com/pingcap/pytidb) Python SDK
 
-[pytidb](https://github.com/pingcap/pytidb) 是 TiDB 官方的 Python SDK，旨在帮助开发者高效构建 AI 应用。该 SDK 内置支持向量检索和全文检索。
+[pytidb](https://github.com/pingcap/pytidb) 是 TiDB 官方的 Python SDK，旨在帮助开发者高效构建 AI 应用。该 SDK 内置支持向量搜索和全文检索。
 
 安装 SDK，请运行以下命令：
 

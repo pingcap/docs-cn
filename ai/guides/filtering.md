@@ -9,7 +9,7 @@ summary: 了解如何在你的应用中使用过滤功能。
 
 ## 概述
 
-你可以对标量字段和 JSON 字段进行过滤。对 JSON 字段的过滤通常用于向量检索中的 [元信息过滤](/ai/guides/vector-search.md#metadata-filtering)。
+你可以对标量字段和 JSON 字段进行过滤。对 JSON 字段的过滤通常用于向量搜索中的 [元信息过滤](/ai/guides/vector-search.md#metadata-filtering)。
 
 [`pytidb`](https://github.com/pingcap/pytidb) 是 TiDB 的官方 Python SDK，旨在帮助开发者高效构建 AI 应用。
 

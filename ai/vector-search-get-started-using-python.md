@@ -1,6 +1,6 @@
 ---
 title: 使用 Python 快速入门 TiDB + AI
-summary: 学习如何使用 Python 和 TiDB 向量检索快速开发一个实现语义搜索的 AI 应用。
+summary: 学习如何使用 Python 和 TiDB 向量搜索快速开发一个实现语义搜索的 AI 应用。
 aliases: ['/tidb/stable/vector-search-get-started-using-python/','/tidb/dev/vector-search-get-started-using-python/','/tidbcloud/vector-search-get-started-using-python/']
 ---
 
@@ -8,12 +8,12 @@ aliases: ['/tidb/stable/vector-search-get-started-using-python/','/tidb/dev/vect
 
 本教程演示如何开发一个简单的 AI 应用，提供 **语义搜索** 功能。与传统的关键字搜索不同，语义搜索能够智能理解你的查询背后的含义，并返回最相关的结果。例如，如果你有标题为 "dog"、"fish" 和 "tree" 的文档，当你搜索 "a swimming animal" 时，应用会识别出 "fish" 是最相关的结果。
 
-在本教程中，你将使用 [TiDB 向量检索](/ai/concepts/vector-search-overview.md)、Python、[TiDB Vector SDK for Python](https://github.com/pingcap/tidb-vector-python) 以及 AI 模型来开发该 AI 应用。
+在本教程中，你将使用 [TiDB 向量搜索](/ai/concepts/vector-search-overview.md)、Python、[TiDB Vector SDK for Python](https://github.com/pingcap/tidb-vector-python) 以及 AI 模型来开发该 AI 应用。
 
 > **注意：**
 >
-> - 向量检索功能目前为 beta 版本，可能会在不提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量检索功能适用于 [TiDB 自建版](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自建版和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能目前为 beta 版本，可能会在不提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+> - 向量搜索功能适用于 [TiDB 自建版](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自建版和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 ## 前置条件
 
@@ -50,7 +50,7 @@ touch example.py
 pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 ```
 
-- `tidb-vector`：用于与 TiDB 向量检索交互的 Python 客户端。
+- `tidb-vector`：用于与 TiDB 向量搜索交互的 Python 客户端。
 - [`sentence-transformers`](https://sbert.net)：一个 Python 库，提供用于从文本生成 [向量嵌入](/ai/concepts/vector-search-overview.md#vector-embedding) 的预训练模型。
 
 ### 步骤 3. 配置 TiDB 集群连接字符串
@@ -230,4 +230,4 @@ Search result ("a swimming animal"):
 ## 参见
 
 - [向量数据类型](/ai/reference/vector-search-data-types.md)
-- [向量检索索引](/ai/reference/vector-search-index.md)
+- [向量搜索索引](/ai/reference/vector-search-index.md)

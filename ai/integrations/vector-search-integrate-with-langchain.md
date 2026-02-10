@@ -1,17 +1,17 @@
 ---
-title: 集成向量检索与 LangChain
-summary: 学习如何将 TiDB 向量检索集成到 LangChain。
+title: 集成向量搜索与 LangChain
+summary: 学习如何将 TiDB 向量搜索集成到 LangChain。
 aliases: ['/tidb/stable/vector-search-integrate-with-langchain/','/tidb/dev/vector-search-integrate-with-langchain/','/tidbcloud/vector-search-integrate-with-langchain/']
 ---
 
-# 集成向量检索与 LangChain
+# 集成向量搜索与 LangChain
 
-本教程演示如何将 [TiDB 向量检索](/ai/concepts/vector-search-overview.md) 集成到 [LangChain](https://python.langchain.com/)。
+本教程演示如何将 [TiDB 向量搜索](/ai/concepts/vector-search-overview.md) 集成到 [LangChain](https://python.langchain.com/)。
 
 > **注意：**
 >
-> - 向量检索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量检索功能适用于 [TiDB 自建版](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自建版和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+> - 向量搜索功能适用于 [TiDB 自建版](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自建版和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 > **提示**
 >
@@ -33,7 +33,7 @@ aliases: ['/tidb/stable/vector-search-integrate-with-langchain/','/tidb/dev/vect
 
 ## 快速开始
 
-本节将提供将 TiDB 向量检索与 LangChain 集成以进行语义检索的分步指导。
+本节将提供将 TiDB 向量搜索与 LangChain 集成以进行语义检索的分步指导。
 
 ### 步骤 1. 新建 Jupyter Notebook 文件
 
@@ -170,7 +170,7 @@ docs = text_splitter.split_documents(documents)
 
 TiDB 向量存储支持余弦距离（`cosine`）和欧氏距离（`l2`）两种向量相似度度量方式。默认策略为余弦距离。
 
-以下代码将在 TiDB 中创建一个名为 `embedded_documents` 的表，该表已针对向量检索进行了优化。
+以下代码将在 TiDB 中创建一个名为 `embedded_documents` 的表，该表已针对向量搜索进行了优化。
 
 ```python
 embeddings = OpenAIEmbeddings()
@@ -185,7 +185,7 @@ vector_store = TiDBVectorStore.from_documents(
 
 执行成功后，你可以直接在 TiDB 数据库中查看和访问 `embedded_documents` 表。
 
-### 步骤 6. 执行向量检索
+### 步骤 6. 执行向量搜索
 
 本步骤演示如何在文档 `state_of_the_union.txt` 中检索 “What did the president say about Ketanji Brown Jackson”。
 
@@ -463,7 +463,7 @@ TiDB Vector offers advanced, high-speed vector processing capabilities, enhancin
 
 ## 高级用例示例：旅行社
 
-本节演示将向量检索与 LangChain 集成的旅行社场景。目标是为客户生成个性化旅行报告，帮助他们查找拥有特定设施（如干净的休息室和素食选项）的机场。
+本节演示将向量搜索与 LangChain 集成的旅行社场景。目标是为客户生成个性化旅行报告，帮助他们查找拥有特定设施（如干净的休息室和素食选项）的机场。
 
 流程主要分为两步：
 
@@ -633,4 +633,4 @@ vector_store.tidb_vector_client.execute("DROP TABLE airplan_routes")
 ## 相关文档
 
 - [向量数据类型](/ai/reference/vector-search-data-types.md)
-- [向量检索索引](/ai/reference/vector-search-index.md)
+- [向量搜索索引](/ai/reference/vector-search-index.md)

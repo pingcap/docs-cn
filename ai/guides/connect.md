@@ -140,6 +140,6 @@ db = TiDBClient(db_engine=db_engine)
 连接到 TiDB 数据库后，你可以参考以下指南，学习如何操作你的数据：
 
 - [表操作](/ai/guides/tables.md)：学习如何在 TiDB 中定义和管理表。
-- [向量检索](/ai/guides/vector-search.md)：使用向量嵌入进行语义检索。
+- [向量搜索](/ai/guides/vector-search.md)：使用向量嵌入进行语义检索。
 - [全文检索](/ai/guides/vector-search-full-text-search-python.md)：通过关键字检索文档。
 - [混合检索](/ai/guides/vector-search-hybrid-search.md)：结合向量和全文检索，获得更相关的结果。

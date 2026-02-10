@@ -29,15 +29,15 @@ aliases: ['/zh/tidb/stable/vector-search-overview/','/zh/tidb/dev/vector-search-
 
 ## 文本搜索
 
-与侧重语义相似性的向量搜索不同，全文搜索主要基于精确关键词进行文档检索。
+与侧重语义相似性的向量搜索不同，全文检索主要基于精确关键词进行文档检索。
 
-在 RAG 场景中，为了提升检索质量，你可以将向量搜索与全文搜索结合使用。
+在 RAG 场景中，为了提升检索质量，你可以将向量搜索与全文检索结合使用。
 
 | 场景 | 文档 |
 |---------------|-------------|
-| 使用 SQL 进行基于关键词的搜索 | [使用 SQL 进行全文搜索](https://docs.pingcap.com/ai/vector-search-full-text-search-sql) |
-| 在 Python 应用中进行全文搜索 | [使用 Python 进行全文搜索](https://docs.pingcap.com/ai/vector-search-full-text-search-python) |
-| 结合向量搜索与全文搜索以获得更优结果 | [混合搜索](https://docs.pingcap.com/ai/vector-search-hybrid-search) |
+| 使用 SQL 进行基于关键词的搜索 | [使用 SQL 进行全文检索](https://docs.pingcap.com/ai/vector-search-full-text-search-sql) |
+| 在 Python 应用中进行全文检索 | [使用 Python 进行全文检索](https://docs.pingcap.com/ai/vector-search-full-text-search-python) |
+| 结合向量搜索与全文检索以获得更优结果 | [混合搜索](https://docs.pingcap.com/ai/vector-search-hybrid-search) |
 
 ## 性能优化
 

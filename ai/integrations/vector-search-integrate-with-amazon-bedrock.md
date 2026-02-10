@@ -1,21 +1,21 @@
 ---
-title: 集成 TiDB 向量检索与 Amazon Bedrock
-summary: 学习如何集成 TiDB 向量检索与 Amazon Bedrock，构建基于 RAG（检索增强生成）的问答机器人。
+title: 集成 TiDB 向量搜索与 Amazon Bedrock
+summary: 学习如何集成 TiDB 向量搜索与 Amazon Bedrock，构建基于 RAG（检索增强生成）的问答机器人。
 aliases: ['/tidbcloud/vector-search-integrate-with-amazon-bedrock/']
 ---
 
-# 集成 TiDB 向量检索与 Amazon Bedrock
+# 集成 TiDB 向量搜索与 Amazon Bedrock
 
 > **注意：**
 >
 > 本文档仅适用于 TiDB Cloud，不适用于 TiDB 自建版。
 
-本教程演示如何将 [TiDB 向量检索](/ai/concepts/vector-search-overview.md) 与 [Amazon Bedrock](https://aws.amazon.com/bedrock/) 集成，以构建基于 RAG（检索增强生成）的问答机器人。
+本教程演示如何将 [TiDB 向量搜索](/ai/concepts/vector-search-overview.md) 与 [Amazon Bedrock](https://aws.amazon.com/bedrock/) 集成，以构建基于 RAG（检索增强生成）的问答机器人。
 
 > **注意：**
 >
-> - 向量检索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量检索功能适用于 [TiDB 自建版](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自建版和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+> - 向量搜索功能适用于 [TiDB 自建版](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自建版和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 > **提示**
 >
@@ -48,7 +48,7 @@ aliases: ['/tidbcloud/vector-search-integrate-with-amazon-bedrock/']
 
 ## 开始使用
 
-本节将提供分步指南，帮助你集成 TiDB 向量检索与 Amazon Bedrock，构建基于 RAG 的问答机器人。
+本节将提供分步指南，帮助你集成 TiDB 向量搜索与 Amazon Bedrock，构建基于 RAG 的问答机器人。
 
 ### 步骤 1. 设置环境变量
 
@@ -316,4 +316,4 @@ def save_entities_with_embedding(session, contents):
 ## 参见
 
 - [向量数据类型](/ai/reference/vector-search-data-types.md)
-- [向量检索索引](/ai/reference/vector-search-index.md)
+- [向量搜索索引](/ai/reference/vector-search-index.md)

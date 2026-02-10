@@ -1,24 +1,24 @@
 ---
 title: 通过 SQL 快速上手 TiDB + AI
-summary: 学习如何仅使用 SQL 语句快速上手 TiDB 向量检索，为你的生成式 AI 应用提供支持。
+summary: 学习如何仅使用 SQL 语句快速上手 TiDB 向量搜索，为你的生成式 AI 应用提供支持。
 aliases: ['/tidb/stable/vector-search-get-started-using-sql/','/tidb/dev/vector-search-get-started-using-sql/','/tidbcloud/vector-search-get-started-using-sql/']
 ---
 
 # 通过 SQL 快速上手 TiDB + AI
 
-TiDB 扩展了 MySQL 语法以支持[向量检索](/ai/concepts/vector-search-overview.md)，并引入了新的[向量数据类型](/ai/reference/vector-search-data-types.md)以及若干[向量函数](/ai/reference/vector-search-functions-and-operators.md)。
+TiDB 扩展了 MySQL 语法以支持[向量搜索](/ai/concepts/vector-search-overview.md)，并引入了新的[向量数据类型](/ai/reference/vector-search-data-types.md)以及若干[向量函数](/ai/reference/vector-search-functions-and-operators.md)。
 
-本文档演示了如何仅使用 SQL 语句快速上手 TiDB 向量检索。你将学习如何使用 [MySQL 命令行客户端](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)完成以下操作：
+本文档演示了如何仅使用 SQL 语句快速上手 TiDB 向量搜索。你将学习如何使用 [MySQL 命令行客户端](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)完成以下操作：
 
 - 连接到你的 TiDB 集群。
 - 创建向量表。
 - 存储向量嵌入。
-- 执行向量检索查询。
+- 执行向量搜索查询。
 
 > **注意：**
 >
-> - 向量检索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量检索功能适用于 [TiDB 自建版](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自建版和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+> - 向量搜索功能适用于 [TiDB 自建版](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自建版和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 ## 前置条件
 
@@ -139,9 +139,9 @@ SELECT * FROM embedded_documents;
 3 rows in set (0.15 sec)
 ```
 
-### 步骤 5. 执行向量检索查询
+### 步骤 5. 执行向量搜索查询
 
-与全文检索类似，用户在使用向量检索时会向应用提供检索词。
+与全文检索类似，用户在使用向量搜索时会向应用提供检索词。
 
 本例中，检索词为 “a swimming animal”，其对应的向量嵌入假定为 `[1,2,3]`。在实际应用中，你需要使用嵌入模型将用户的检索词转换为向量嵌入。
 
@@ -174,4 +174,4 @@ LIMIT 3;
 ## 参见
 
 - [向量数据类型](/ai/reference/vector-search-data-types.md)
-- [向量检索索引](/ai/reference/vector-search-index.md)
+- [向量搜索索引](/ai/reference/vector-search-index.md)

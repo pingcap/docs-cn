@@ -1,12 +1,12 @@
 ---
 title: 使用 SQL 进行全文检索
-summary: 全文检索允许你根据精确关键字检索文档。在检索增强生成（RAG）场景中，你可以将全文检索与向量检索结合使用，以提升检索质量。
+summary: 全文检索允许你根据精确关键字检索文档。在检索增强生成（RAG）场景中，你可以将全文检索与向量搜索结合使用，以提升检索质量。
 aliases: ['/tidb/stable/vector-search-full-text-search-sql/','/tidbcloud/vector-search-full-text-search-sql/']
 ---
 
 # 使用 SQL 进行全文检索
 
-与关注语义相似度的 [向量检索](/ai/concepts/vector-search-overview.md) 不同，全文检索允许你根据精确关键字检索文档。在检索增强生成（RAG）场景中，你可以将全文检索与向量检索结合使用，以提升检索质量。
+与关注语义相似度的 [向量搜索](/ai/concepts/vector-search-overview.md) 不同，全文检索允许你根据精确关键字检索文档。在检索增强生成（RAG）场景中，你可以将全文检索与向量搜索结合使用，以提升检索质量。
 
 TiDB 的全文检索功能提供以下能力：
 
@@ -22,7 +22,7 @@ TiDB 的全文检索功能提供以下能力：
 >
 > 如需在 Python 中使用，请参见 [使用 Python 进行全文检索](/ai/guides/vector-search-full-text-search-python.md)。
 >
-> 如需在 AI 应用中同时使用全文检索和向量检索，请参见 [混合检索](/ai/guides/vector-search-hybrid-search.md)。
+> 如需在 AI 应用中同时使用全文检索和向量搜索，请参见 [混合检索](/ai/guides/vector-search-hybrid-search.md)。
 
 ## 快速开始
 

@@ -1,17 +1,17 @@
 ---
-title: 集成 TiDB 向量检索与 SQLAlchemy
-summary: 学习如何将 TiDB 向量检索与 SQLAlchemy 集成，以存储嵌入向量并执行语义检索。
+title: 集成 TiDB 向量搜索与 SQLAlchemy
+summary: 学习如何将 TiDB 向量搜索与 SQLAlchemy 集成，以存储嵌入向量并执行语义检索。
 aliases: ['/tidb/stable/vector-search-integrate-with-sqlalchemy/','/tidb/dev/vector-search-integrate-with-sqlalchemy/','/tidbcloud/vector-search-integrate-with-sqlalchemy/']
 ---
 
-# 集成 TiDB 向量检索与 SQLAlchemy
+# 集成 TiDB 向量搜索与 SQLAlchemy
 
-本教程将指导你如何使用 [SQLAlchemy](https://www.sqlalchemy.org/) 与 [TiDB 向量检索](/ai/concepts/vector-search-overview.md) 进行交互，存储嵌入向量，并执行向量检索查询。
+本教程将指导你如何使用 [SQLAlchemy](https://www.sqlalchemy.org/) 与 [TiDB 向量搜索](/ai/concepts/vector-search-overview.md) 进行交互，存储嵌入向量，并执行向量搜索查询。
 
 > **注意：**
 >
-> - 向量检索功能目前为 beta 版本，可能会在无提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量检索功能适用于 [TiDB 自建版](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自建版和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 及以上）。
+> - 向量搜索功能目前为 beta 版本，可能会在无提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+> - 向量搜索功能适用于 [TiDB 自建版](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自建版和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 及以上）。
 
 ## 前置条件
 
@@ -28,7 +28,7 @@ aliases: ['/tidb/stable/vector-search-integrate-with-sqlalchemy/','/tidb/dev/vec
 
 ## 运行示例应用
 
-你可以按照以下步骤快速学习如何将 TiDB 向量检索与 SQLAlchemy 集成。
+你可以按照以下步骤快速学习如何将 TiDB 向量搜索与 SQLAlchemy 集成。
 
 ### 第 1 步：克隆仓库
 
@@ -220,4 +220,4 @@ with Session(engine) as session:
 ## 参见
 
 - [向量数据类型](/ai/reference/vector-search-data-types.md)
-- [向量检索索引](/ai/reference/vector-search-index.md)
+- [向量搜索索引](/ai/reference/vector-search-index.md)

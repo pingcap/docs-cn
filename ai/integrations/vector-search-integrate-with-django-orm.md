@@ -1,17 +1,17 @@
 ---
-title: 将 TiDB 向量检索集成到 Django ORM
-summary: 学习如何将 TiDB 向量检索集成到 Django ORM，用于存储嵌入向量并执行语义检索。
+title: 将 TiDB 向量搜索集成到 Django ORM
+summary: 学习如何将 TiDB 向量搜索集成到 Django ORM，用于存储嵌入向量并执行语义检索。
 aliases: ['/tidb/stable/vector-search-integrate-with-django-orm/','/tidb/dev/vector-search-integrate-with-django-orm/','/tidbcloud/vector-search-integrate-with-django-orm/']
 ---
 
-# 将 TiDB 向量检索集成到 Django ORM
+# 将 TiDB 向量搜索集成到 Django ORM
 
-本教程将指导你如何使用 [Django](https://www.djangoproject.com/) ORM 与 [TiDB 向量检索](/ai/concepts/vector-search-overview.md) 进行交互，存储嵌入向量，并执行向量检索查询。
+本教程将指导你如何使用 [Django](https://www.djangoproject.com/) ORM 与 [TiDB 向量搜索](/ai/concepts/vector-search-overview.md) 进行交互，存储嵌入向量，并执行向量搜索查询。
 
 > **注意：**
 >
-> - 向量检索功能目前为 Beta 版本，可能会在没有提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量检索功能适用于 [TiDB 自建版](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自建版和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能目前为 Beta 版本，可能会在没有提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+> - 向量搜索功能适用于 [TiDB 自建版](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自建版和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 ## 前置条件
 
@@ -28,7 +28,7 @@ aliases: ['/tidb/stable/vector-search-integrate-with-django-orm/','/tidb/dev/vec
 
 ## 运行示例应用
 
-你可以按照以下步骤快速学习如何将 TiDB 向量检索集成到 Django ORM。
+你可以按照以下步骤快速学习如何将 TiDB 向量搜索集成到 Django ORM。
 
 ### 第 1 步：克隆仓库
 
@@ -66,7 +66,7 @@ pip install Django django-tidb mysqlclient numpy python-dotenv
 
 #### 什么是 `django-tidb`？
 
-`django-tidb` 是 Django 的 TiDB 方言，增强了 Django ORM 对 TiDB 特性的支持（例如向量检索），并解决了 TiDB 与 Django 之间的兼容性问题。
+`django-tidb` 是 Django 的 TiDB 方言，增强了 Django ORM 对 TiDB 特性的支持（例如向量搜索），并解决了 TiDB 与 Django 之间的兼容性问题。
 
 安装 `django-tidb` 时，请选择与你的 Django 版本相匹配的版本。例如，如果你使用的是 `django==4.2.*`，则安装 `django-tidb==4.2.*`。小版本号无需完全一致，建议使用最新的小版本。
 
@@ -231,7 +231,7 @@ Document.objects.create(content="tree", embedding=[1, 0, 0])
 
 ### 检索最近邻文档
 
-TiDB 向量检索支持以下距离函数：
+TiDB 向量搜索支持以下距离函数：
 
 - `L1Distance`
 - `L2Distance`
@@ -259,4 +259,4 @@ results = Document.objects.annotate(
 ## 参见
 
 - [向量数据类型](/ai/reference/vector-search-data-types.md)
-- [向量检索索引](/ai/reference/vector-search-index.md)
+- [向量搜索索引](/ai/reference/vector-search-index.md)
