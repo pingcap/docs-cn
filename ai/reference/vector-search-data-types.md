@@ -241,7 +241,7 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 
 向量数据类型为 TiDB 特有，MySQL 不支持。
 
-## 参见
+## 另请参阅
 
 - [向量函数与运算符](/ai/reference/vector-search-functions-and-operators.md)
 - [向量搜索索引](/ai/reference/vector-search-index.md)

@@ -53,6 +53,6 @@ summary: 本指南介绍如何在 Visual Studio Code 中配置 TiDB MCP Server�
 }
 ```
 
-## 参见
+## 另请参阅
 
 - [TiDB MCP Server](/ai/integrations/tidb-mcp-server.md)

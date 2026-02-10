@@ -127,7 +127,7 @@ LIMIT 2;
 +------+----------------------------------------------------------------+
 ```
 
-## 参见
+## 另请参阅
 
 - [Auto Embedding 概览](/ai/integrations/vector-search-auto-embedding-overview.md)
 - [向量搜索](/ai/concepts/vector-search-overview.md)

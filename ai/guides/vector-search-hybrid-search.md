@@ -233,7 +233,7 @@ results = (
 
 如需查看更多重排序模型，请参见 [Reranking](/ai/guides/reranking.md)。
 
-## 参见
+## 另请参阅
 
 - [pytidb Python SDK 文档](https://github.com/pingcap/pytidb)
 

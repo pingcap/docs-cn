@@ -104,7 +104,7 @@ results = table.search("orange tabby cat").limit(3).to_list()
 
 然后，多模态嵌入模型会将关键字文本转换为能够表达其语义含义的嵌入，TiDB 会执行向量搜索，查找嵌入与该关键字嵌入最相似的镜像。
 
-## 参见
+## 另请参阅
 
 - [自动嵌入指南](/ai/guides/auto-embedding.md)
 - [向量搜索指南](/ai/concepts/vector-search-overview.md)

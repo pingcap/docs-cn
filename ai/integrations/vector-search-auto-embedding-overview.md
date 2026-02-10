@@ -198,7 +198,7 @@ TiDB 提供了统一的接口，便于集成多种嵌入服务商和模型：
 
 - `multimodal` *(可选)*：是否使用多模态嵌入模型。启用后，`use_server` 会自动设为 `False`，嵌入服务将在客户端侧调用。
 
-## 参见
+## 另请参阅
 
 - [向量数据类型](/ai/reference/vector-search-data-types.md)
 - [向量函数与操作符](/ai/reference/vector-search-functions-and-operators.md)

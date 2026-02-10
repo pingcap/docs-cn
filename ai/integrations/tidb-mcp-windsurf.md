@@ -53,6 +53,6 @@ summary: 本指南将向你展示如何在 Windsurf 中配置 TiDB MCP Server。
 }
 ```
 
-## 参见
+## 另请参阅
 
 - [TiDB MCP Server](/ai/integrations/tidb-mcp-server.md)

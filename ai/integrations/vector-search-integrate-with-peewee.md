@@ -246,7 +246,7 @@ distance = distance_expression.alias('distance')
 results = Document.select(Document, distance).where(distance_expression < 0.2).order_by(distance).limit(3)
 ```
 
-## 参见
+## 另请参阅
 
 - [向量数据类型](/ai/reference/vector-search-data-types.md)
 - [向量搜索索引](/ai/reference/vector-search-index.md)

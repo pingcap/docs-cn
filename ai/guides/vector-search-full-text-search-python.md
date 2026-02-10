@@ -149,7 +149,7 @@ df = (
 
 完整示例参见 [pytidb 全文检索演示](https://github.com/pingcap/pytidb/blob/main/examples/fulltext_search)。
 
-## 参见
+## 另请参阅
 
 - [pytidb Python SDK 文档](https://github.com/pingcap/pytidb)
 

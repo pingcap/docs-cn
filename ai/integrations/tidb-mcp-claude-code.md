@@ -69,6 +69,6 @@ claude mcp add --transport stdio TiDB \
 }
 ```
 
-## 参见
+## 另请参阅
 
 - [TiDB MCP Server](/ai/integrations/tidb-mcp-server.md)

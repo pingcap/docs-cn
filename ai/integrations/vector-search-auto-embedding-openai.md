@@ -289,7 +289,7 @@ CREATE TABLE sample (
 
 所有可用选项请参见 [OpenAI Documentation](https://platform.openai.com/docs/api-reference/embeddings/create)。
 
-## 参见
+## 另请参阅
 
 - [Auto Embedding 概览](/ai/integrations/vector-search-auto-embedding-overview.md)
 - [向量搜索](/ai/concepts/vector-search-overview.md)

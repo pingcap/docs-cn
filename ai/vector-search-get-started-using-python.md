@@ -227,7 +227,7 @@ Search result ("a swimming animal"):
 
 因此，根据输出，最有可能的游泳动物是 fish，或者是一只擅长游泳的 dog。
 
-## 参见
+## 另请参阅
 
 - [向量数据类型](/ai/reference/vector-search-data-types.md)
 - [向量搜索索引](/ai/reference/vector-search-index.md)

@@ -24,7 +24,7 @@ with client.session() as session:
     assert final_total_balance == initial_total_balance
 ```
 
-## 参见
+## 另请参阅
 
 - [TiDB Developer Guide - Transactions](/develop/dev-guide-transaction-overview.md)
 - [TiDB Documentation - SQL Reference - Transactions](/transaction-overview.md)

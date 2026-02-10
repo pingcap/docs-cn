@@ -271,7 +271,7 @@ with Session(engine) as session:
           f'    content: {doc.content}')
 ```
 
-## 参见
+## 另请参阅
 
 - [向量数据类型](/ai/reference/vector-search-data-types.md)
 - [向量搜索索引](/ai/reference/vector-search-index.md)

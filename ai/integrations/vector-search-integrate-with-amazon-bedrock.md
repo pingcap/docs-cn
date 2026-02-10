@@ -313,7 +313,7 @@ def save_entities_with_embedding(session, contents):
     The final answer is: TiDB is a distributed SQL database compatible with MySQL.
     ```
 
-## 参见
+## 另请参阅
 
 - [向量数据类型](/ai/reference/vector-search-data-types.md)
 - [向量搜索索引](/ai/reference/vector-search-index.md)

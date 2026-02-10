@@ -198,7 +198,7 @@ WHERE t.author_id IN
 +--------------+-----------+-------------+
 ```
 
-## 参见
+## 另请参阅
 
 - [混合检索](/ai/guides/vector-search-hybrid-search.md)
 

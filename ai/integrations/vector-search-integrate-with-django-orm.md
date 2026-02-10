@@ -256,7 +256,7 @@ results = Document.objects.annotate(
 ).filter(distance__lt=0.2).order_by('distance')[:3]
 ```
 
-## 参见
+## 另请参阅
 
 - [向量数据类型](/ai/reference/vector-search-data-types.md)
 - [向量搜索索引](/ai/reference/vector-search-index.md)

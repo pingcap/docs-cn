@@ -171,7 +171,7 @@ LIMIT 3;
 
 因此，根据输出，最有可能的“swimming animal”是 fish，其次可能是会游泳的 dog。
 
-## 参见
+## 另请参阅
 
 - [向量数据类型](/ai/reference/vector-search-data-types.md)
 - [向量搜索索引](/ai/reference/vector-search-index.md)
