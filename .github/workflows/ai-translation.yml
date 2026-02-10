@@ -14,6 +14,7 @@ env:
 
 jobs:
   translate:
+    if: github.repository == 'pingcap/docs-cn'
     runs-on: ubuntu-latest
 
     permissions:
@@ -79,10 +80,26 @@ jobs:
 
           echo "files=${out}" >> "${GITHUB_OUTPUT}"
 
+      - name: Prepare docs source working dir
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          src_cfg="docs-cn/latest_translation_commit.json"
+          if [ ! -f "${src_cfg}" ]; then
+            echo "::error::Missing ${src_cfg}. Please add it to the base branch so the workflow can track the last translated commit."
+            exit 1
+          fi
+
+          workdir="${{ runner.temp }}/docs-source"
+          rm -rf "${workdir}"
+          mkdir -p "${workdir}"
+          cp "${src_cfg}" "${workdir}/latest_translation_commit.json"
+
       - name: Download files
         uses: pingcap/docs-toolkit/actions/file-diff-update@main
         with:
-          config_file: ${{ github.workspace }}/docs-cn/latest_translation_commit.json
+          config_file: latest_translation_commit.json
           working_directory: ${{ runner.temp }}/docs-source
           filter_by_cloud_toc: "false"
           files: ${{ steps.normalize.outputs.files }}
@@ -103,6 +120,23 @@ jobs:
             exit 0
           fi
           echo "ai_files=$(find \"${input_dir}\" -type f | wc -l | tr -d ' ')" >> "${GITHUB_OUTPUT}"
+
+      - name: Download variables.json
+        if: steps.check.outputs.ai_files != '0'
+        uses: pingcap/docs-toolkit/actions/file-diff-update@main
+        with:
+          config_file: latest_translation_commit.json
+          working_directory: ${{ runner.temp }}/docs-source
+          filter_by_cloud_toc: "false"
+          files: variables.json
+
+      - name: Prepare variables
+        if: steps.check.outputs.ai_files != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          workdir="${{ runner.temp }}/docs-source"
+          cp "${workdir}/tmp/variables.json" "${workdir}/tmp/ai/variables.json"
 
       - name: Translate
         if: steps.check.outputs.ai_files != '0'
@@ -132,6 +166,13 @@ jobs:
         run: |
           cd docs-cn
           find ai -type f | head -50 || true
+
+      - name: Persist translation cursor
+        if: steps.check.outputs.ai_files != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp "${{ runner.temp }}/docs-source/latest_translation_commit.json" "docs-cn/latest_translation_commit.json"
 
       - name: Set build ID
         id: build_id
