@@ -100,7 +100,7 @@ pip install -r requirements.txt
     ```
 
 </div>
-<div label="TiDB Self-Managed" value="tidb">
+<div label="自行部署管理的 TiDB" value="tidb">
 
 对于 TiDB Self-Managed 集群，在终端中设置连接 TiDB 集群的环境变量：
 
