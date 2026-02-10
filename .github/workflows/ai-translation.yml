@@ -101,6 +101,7 @@ jobs:
           config_file: latest_translation_commit.json
           working_directory: ${{ runner.temp }}/docs-source
           filter_by_cloud_toc: "false"
+          folder: "ai"
           files: ${{ steps.normalize.outputs.files }}
 
       - name: Show tmp directory structure
