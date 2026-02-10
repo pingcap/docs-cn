@@ -14,6 +14,7 @@ env:
 
 jobs:
   translate:
+    if: github.repository == 'pingcap/docs-cn'
     runs-on: ubuntu-latest
 
     permissions:
