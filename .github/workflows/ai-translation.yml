@@ -118,7 +118,7 @@ jobs:
             echo "ai_files=0" >> "${GITHUB_OUTPUT}"
             exit 0
           fi
-          echo "ai_files=$(find \"${input_dir}\" -type f | wc -l | tr -d ' ')" >> "${GITHUB_OUTPUT}"
+          echo "ai_files=$(find "${input_dir}" -type f | wc -l | tr -d ' ')" >> "${GITHUB_OUTPUT}"
 
       - name: Download variables.json
         if: steps.check.outputs.ai_files != '0'
