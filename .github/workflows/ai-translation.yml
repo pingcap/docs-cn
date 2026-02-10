@@ -1,0 +1,169 @@
+name: Translation(zh) by AI (docs/ai)
+
+on:
+  workflow_dispatch:
+    inputs:
+      file_names:
+        description: "Specify file names to translate under docs/ai (comma-separated list). Example: foo.md,subdir/bar.mdx"
+        required: false
+        type: string
+        default: ""
+
+env:
+  DOCS_CN_BASE: feature/preview-top-navigation
+
+jobs:
+  translate:
+    if: github.repository == 'pingcap/docs-cn'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout docs-cn
+        with:
+          ref: ${{ env.DOCS_CN_BASE }}
+          path: docs-cn
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        name: Checkout docs-toolkit
+        with:
+          repository: pingcap/docs-toolkit
+          ref: main
+          path: docs-toolkit
+
+      - uses: actions/setup-node@v4
+        name: Setup node
+        with:
+          node-version: 20
+          cache: yarn
+          cache-dependency-path: docs-toolkit/markdown-translator/yarn.lock
+
+      - name: Install deps
+        shell: bash
+        run: |
+          corepack enable
+          yarn --cwd docs-toolkit/markdown-translator
+
+      - name: Normalize file list
+        id: normalize
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files="${{ inputs.file_names }}"
+          if [ -z "${files}" ]; then
+            echo "files=" >> "${GITHUB_OUTPUT}"
+            exit 0
+          fi
+
+          IFS=',' read -ra items <<< "${files}"
+          out=""
+          for item in "${items[@]}"; do
+            rel="$(echo "${item}" | xargs)"
+            [ -z "${rel}" ] && continue
+
+            if [[ "${rel}" != ai/* ]]; then
+              rel="ai/${rel}"
+            fi
+
+            if [ -z "${out}" ]; then
+              out="${rel}"
+            else
+              out="${out},${rel}"
+            fi
+          done
+
+          echo "files=${out}" >> "${GITHUB_OUTPUT}"
+
+      - name: Download files
+        uses: pingcap/docs-toolkit/actions/file-diff-update@main
+        with:
+          config_file: ${{ github.workspace }}/docs-cn/latest_translation_commit.json
+          working_directory: ${{ runner.temp }}/docs-source
+          filter_by_cloud_toc: "false"
+          files: ${{ steps.normalize.outputs.files }}
+
+      - name: Show tmp directory structure
+        shell: bash
+        run: |
+          find "${{ runner.temp }}/docs-source/tmp" -type f | head -200 || true
+
+      - name: Check downloaded files
+        id: check
+        shell: bash
+        run: |
+          set -euo pipefail
+          input_dir="${{ runner.temp }}/docs-source/tmp/ai"
+          if [ ! -d "${input_dir}" ]; then
+            echo "ai_files=0" >> "${GITHUB_OUTPUT}"
+            exit 0
+          fi
+          echo "ai_files=$(find \"${input_dir}\" -type f | wc -l | tr -d ' ')" >> "${GITHUB_OUTPUT}"
+
+      - name: Translate
+        if: steps.check.outputs.ai_files != '0'
+        shell: bash
+        env:
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GLOSSARY_ID: ${{ secrets.GCP_GLOSSARY_ID }}
+          LANGLINK_ACCESS_KEY: ${{ secrets.LANGLINK_ACCESS_KEY }}
+          LANGLINK_ACCESS_SECRET: ${{ secrets.LANGLINK_ACCESS_SECRET }}
+          LANGLINK_USER: ${{ secrets.LANGLINK_USER }}
+        run: |
+          set -euo pipefail
+
+          key_path="${RUNNER_TEMP}/gcp-key.json"
+          echo "${{ secrets.GCP_KEY }}" | base64 --decode > "${key_path}"
+          export GOOGLE_APPLICATION_CREDENTIALS="${key_path}"
+
+          mkdir -p docs-cn/ai
+
+          node docs-toolkit/markdown-translator/src/index.js \
+            --input-dir "${{ runner.temp }}/docs-source/tmp/ai" \
+            --output-dir "docs-cn/ai"
+
+      - name: Show output (first 50 files)
+        if: steps.check.outputs.ai_files != '0'
+        shell: bash
+        run: |
+          cd docs-cn
+          find ai -type f | head -50 || true
+
+      - name: Set build ID
+        id: build_id
+        if: steps.check.outputs.ai_files != '0'
+        shell: bash
+        run: echo "id=$(date +%s)" >> "$GITHUB_OUTPUT"
+
+      - name: Create PR
+        if: steps.check.outputs.ai_files != '0'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          path: docs-cn
+          token: ${{ github.token }}
+          branch: zh-translation/ai-${{ steps.build_id.outputs.id }}
+          base: ${{ env.DOCS_CN_BASE }}
+          title: "ci: ZH translation(ai) ${{ steps.build_id.outputs.id }}"
+          body: |
+            ### What is changed, added or deleted? (Required)
+
+            Translate `pingcap/docs` `docs/ai` to Chinese and sync to `docs-cn/ai`.
+
+            ### Which TiDB version(s) do your changes apply to? (Required)
+
+            - [x] ${{ env.DOCS_CN_BASE }}
+
+            ### What is the related PR or file link(s)?
+
+            ### Do your changes match any of the following descriptions?
+
+            - [ ] Delete files
+            - [ ] Change aliases
+            - [ ] Need modification after applied to another branch
+            - [ ] Might cause conflicts after applied to another branch
+          delete-branch: true
