@@ -10,7 +10,7 @@ on:
         default: ""
 
 env:
-  DOCS_CN_BASE: feature/preview-top-navigation
+  DOCS_CN_BASE: release-8.5
 
 jobs:
   translate:
