@@ -143,19 +143,11 @@ jobs:
         if: steps.check.outputs.ai_files != '0'
         shell: bash
         env:
-          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-          GLOSSARY_ID: ${{ secrets.GCP_GLOSSARY_ID }}
           LANGLINK_ACCESS_KEY: ${{ secrets.LANGLINK_ACCESS_KEY }}
           LANGLINK_ACCESS_SECRET: ${{ secrets.LANGLINK_ACCESS_SECRET }}
           LANGLINK_USER: ${{ secrets.LANGLINK_USER }}
         run: |
           set -euo pipefail
-
-          key_path="${RUNNER_TEMP}/gcp-key.json"
-          echo "${{ secrets.GCP_KEY }}" | base64 --decode > "${key_path}"
-          export GOOGLE_APPLICATION_CREDENTIALS="${key_path}"
-
-          mkdir -p docs-cn/ai
 
           node docs-toolkit/markdown-translator/src/index.js \
             --input-dir "${{ runner.temp }}/docs-source/tmp/ai" \
