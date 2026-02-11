@@ -20,7 +20,7 @@ aliases: ['/zh/tidb/stable/dev-guide-troubleshoot-overview/','/zh/tidb/dev/dev-g
 
 - [慢查询](https://docs.pingcap.com/zh/tidbcloud/tune-performance/#慢查询)
 - [SQL 语句分析](https://docs.pingcap.com/zh/tidbcloud/tune-performance/#语句分析)
-- [Key Visualizer](https://docs.pingcap.com/zh/tidbcloud/tune-performance/#Key Visualizer)
+- [Key Visualizer](https://docs.pingcap.com/zh/tidbcloud/tune-performance/#key-visualizer)
 
 </div>
 

@@ -26,7 +26,7 @@ Jina AI 提供高性能、多模态、多语言、长上下文的嵌入模型，
 - 最大输入文本 token 数: 32,768
 - 价格: 由 Jina AI 收费
 - 由 TiDB Cloud 托管: ❌
-- 支持自带密钥: ✅
+- 支持 Bring Your Own Key（BYOK，由用户自行提供 API 密钥）: ✅
 
 **jina-embeddings-v3**
 
@@ -36,7 +36,7 @@ Jina AI 提供高性能、多模态、多语言、长上下文的嵌入模型，
 - 最大输入文本 token 数: 8,192
 - 价格: 由 Jina AI 收费
 - 由 TiDB Cloud 托管: ❌
-- 支持自带密钥: ✅
+- 支持 Bring Your Own Key（BYOK，由用户自行提供 API 密钥）: ✅
 
 完整可用模型列表请参见 [Jina AI 文档](https://jina.ai/embeddings/)。
 
@@ -72,6 +72,7 @@ mysql -h {gateway-region}.prod.aws.tidbcloud.com \
     -p{password} \
     -D {database}
 ```
+
 </div>
 </SimpleTab>
 

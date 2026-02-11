@@ -27,4 +27,4 @@ TiDB 为相关 TiDB 工具提供了多种 API。通过这些 API，你可以管�
 | [Data Migration API](/dm/dm-open-api.md) | 管理 DM-master 与 DM-worker 节点、数据源以及数据同步任务。 |
 | [监控 API](/tidb-monitoring-api.md) | 获取 TiDB Server 运行状态、数据表的存储信息以及 TiKV 集群的详细信息。 |
 | [TiCDC API](/ticdc/ticdc-open-api-v2.md) | 查询 TiCDC 节点状态并管理数据同步任务，包括任务的创建、暂停、恢复与更新等操作。 |
-| [TiDB Operator API](<https://github.com/pingcap/tidb-operator/blob/{{{ .tidb-operator-version }}}/docs/api-references/docs.md>) | 管理 Kubernetes 上的 TiDB 集群，包括集群部署、升级、扩缩容、备份与故障转移等操作。 |
+| [TiDB Operator API](https://github.com/pingcap/tidb-operator/blob/{{{.tidb-operator-version}}}/docs/api-references/docs.md) | 管理 Kubernetes 上的 TiDB 集群，包括集群部署、升级、扩缩容、备份与故障转移等操作。 |
