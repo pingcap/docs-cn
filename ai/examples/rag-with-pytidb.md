@@ -1,6 +1,6 @@
 ---
 title: RAG 示例
-summary: 构建一个结合文档检索与语言生成的 RAG 应用。
+summary: 构建一个结合文档搜索与语言生成的 RAG 应用。
 ---
 
 # RAG 示例

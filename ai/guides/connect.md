@@ -9,7 +9,7 @@ summary: 学习如何使用 `pytidb` 客户端连接到 TiDB 数据库。
 
 ## 安装依赖项
 
-[`pytidb`](https://github.com/pingcap/pytidb) 是一个基于 [SQLAlchemy](https://sqlalchemy.org/) 构建的 Python 客户端。它提供了一系列高级 API，帮助你存储和检索向量嵌入，无需编写原始 SQL。
+[`pytidb`](https://github.com/pingcap/pytidb) 是一个基于 [SQLAlchemy](https://sqlalchemy.org/) 构建的 Python 客户端。它提供了一系列高级 API，帮助你存储和搜索向量嵌入，无需编写原始 SQL。
 
 要安装 Python 客户端，请运行以下命令：
 
@@ -140,6 +140,6 @@ db = TiDBClient(db_engine=db_engine)
 连接到 TiDB 数据库后，你可以参考以下指南，学习如何操作你的数据：
 
 - [表操作](/ai/guides/tables.md)：学习如何在 TiDB 中定义和管理表。
-- [向量搜索](/ai/guides/vector-search.md)：使用向量嵌入进行语义检索。
-- [全文检索](/ai/guides/vector-search-full-text-search-python.md)：通过关键字检索文档。
-- [混合检索](/ai/guides/vector-search-hybrid-search.md)：结合向量和全文检索，获得更相关的结果。
+- [向量搜索](/ai/guides/vector-search.md)：使用向量嵌入进行语义搜索。
+- [全文搜索](/ai/guides/vector-search-full-text-search-python.md)：通过关键字搜索文档。
+- [混合搜索](/ai/guides/vector-search-hybrid-search.md)：结合向量和全文搜索，获得更相关的结果。

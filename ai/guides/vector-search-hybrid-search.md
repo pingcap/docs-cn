@@ -1,16 +1,16 @@
 ---
 title: 混合搜索
-summary: 同时使用全文检索和向量搜索，以提升检索质量。
+summary: 同时使用全文搜索和向量搜索，以提升搜索质量。
 aliases: ['/tidb/stable/vector-search-hybrid-search/','/tidbcloud/vector-search-hybrid-search/']
 ---
 
 # 混合搜索
 
-通过使用全文检索，你可以基于精确关键字检索文档。通过使用向量搜索，你可以基于语义相似性检索文档。我们能否将这两种搜索方法结合起来，以提升检索质量并应对更多场景？答案是肯定的，这种方法被称为混合搜索（hybrid search），并在 AI 应用中被广泛采用。
+通过使用全文搜索，你可以基于精确关键字搜索文档。通过使用向量搜索，你可以基于语义相似性搜索文档。我们能否将这两种搜索方法结合起来，以提升搜索质量并应对更多场景？答案是肯定的，这种方法被称为混合搜索（hybrid search），并在 AI 应用中被广泛采用。
 
 在 TiDB 中，混合搜索的一般工作流程如下：
 
-1. 使用 TiDB 进行**全文检索**和**向量搜索**。
+1. 使用 TiDB 进行**全文搜索**和**向量搜索**。
 2. 使用**重排序器**（reranker）将两种搜索的结果进行融合。
 
 ![Hybrid Search](/media/vector-search/hybrid-search-overview.svg)
@@ -19,7 +19,7 @@ aliases: ['/tidb/stable/vector-search-hybrid-search/','/tidbcloud/vector-search-
 
 ## 前提条件
 
-全文检索目前仍处于早期阶段，我们正在持续向更多用户开放。目前，全文检索仅在以下区域的 TiDB Cloud Starter 和 TiDB Cloud Essential 上可用：
+全文搜索目前仍处于早期阶段，我们正在持续向更多用户开放。目前，全文搜索仅在以下区域的 TiDB Cloud Starter 和 TiDB Cloud Essential 上可用：
 
 - AWS: `Frankfurt (eu-central-1)` 和 `Singapore (ap-southeast-1)`
 
@@ -179,7 +179,7 @@ results = (
 
 ### 加权分数融合
 
-加权分数融合通过加权求和的方式，将向量搜索和全文检索的分数结合起来：
+加权分数融合通过加权求和的方式，将向量搜索和全文搜索的分数结合起来：
 
 ```python
 final_score = vs_weight * vector_score + fts_weight * fulltext_score
@@ -203,7 +203,7 @@ results = (
 参数说明：
 
 - `vs_weight`：向量搜索分数的权重。
-- `fts_weight`：全文检索分数的权重。
+- `fts_weight`：全文搜索分数的权重。
 
 ## 重排序方法
 
@@ -237,11 +237,11 @@ results = (
 
 - [pytidb Python SDK 文档](https://github.com/pingcap/pytidb)
 
-- [使用 Python 进行全文检索](/ai/guides/vector-search-full-text-search-python.md)
+- [使用 Python 进行全文搜索](/ai/guides/vector-search-full-text-search-python.md)
 
 ## 反馈与帮助
 
-全文检索目前仍处于早期阶段，开放范围有限。如果你希望在尚未开放的区域体验全文检索，或有任何反馈或需要帮助，欢迎联系我们：
+全文搜索目前仍处于早期阶段，开放范围有限。如果你希望在尚未开放的区域体验全文搜索，或有任何反馈或需要帮助，欢迎联系我们：
 
 - 在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 社区提问。
 - [提交 TiDB Cloud 支持工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)

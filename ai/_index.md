@@ -1,11 +1,11 @@
 ---
 title: TiDB for AI
-summary: 利用 TiDB 集成的向量搜索、全文检索和无缝 Python SDK 构建现代 AI 应用。
+summary: 利用 TiDB 集成的向量搜索、全文搜索和无缝 Python SDK 构建现代 AI 应用。
 ---
 
 # TiDB for AI
 
-TiDB 是为现代 AI 应用设计的分布式 SQL 数据库，提供集成的向量搜索、全文检索和混合检索能力。本文档概述了使用 TiDB 构建 AI 驱动应用可用的 AI 特性和工具。
+TiDB 是为现代 AI 应用设计的分布式 SQL 数据库，提供集成的向量搜索、全文搜索和混合搜索能力。本文档概述了使用 TiDB 构建 AI 驱动应用可用的 AI 特性和工具。
 
 ## 快速开始
 
@@ -18,7 +18,7 @@ TiDB 是为现代 AI 应用设计的分布式 SQL 数据库，提供集成的向
 
 ## 概念
 
-了解 TiDB AI 检索的基础概念。
+了解 TiDB AI 搜索的基础概念。
 
 | 文档 | 描述 |
 | --- | --- |
@@ -32,12 +32,12 @@ TiDB 是为现代 AI 应用设计的分布式 SQL 数据库，提供集成的向
 | --- | --- |
 | [Connect to TiDB](/ai/guides/connect.md) | 使用 `pytidb` 连接 TiDB Cloud 或自建集群。 |
 | [Working with Tables](/ai/guides/tables.md) | 创建、查询和管理包含向量字段的表。 |
-| [Vector Search](/ai/guides/vector-search.md) | 使用 `pytidb` 进行语义相似度检索。 |
-| [Full-Text Search](/ai/guides/vector-search-full-text-search-python.md) | 基于关键字的文本检索，支持 BM25 排序。 |
-| [Hybrid Search](/ai/guides/vector-search-hybrid-search.md) | 结合向量搜索与全文检索，获得更优结果。 |
-| [Image Search](/ai/guides/image-search.md) | 利用多模态嵌入进行 image 检索。 |
+| [Vector Search](/ai/guides/vector-search.md) | 使用 `pytidb` 进行语义相似度搜索。 |
+| [Full-Text Search](/ai/guides/vector-search-full-text-search-python.md) | 基于关键字的文本搜索，支持 BM25 排序。 |
+| [Hybrid Search](/ai/guides/vector-search-hybrid-search.md) | 结合向量搜索与全文搜索，获得更优结果。 |
+| [Image Search](/ai/guides/image-search.md) | 利用多模态嵌入进行 image 搜索。 |
 | [Auto Embedding](/ai/guides/auto-embedding.md) | 数据插入时自动生成嵌入向量。 |
-| [Filtering](/ai/guides/filtering.md) | 通过元信息条件过滤检索结果。 |
+| [Filtering](/ai/guides/filtering.md) | 通过元信息条件过滤搜索结果。 |
 
 ## 示例
 
@@ -46,9 +46,9 @@ TiDB 是为现代 AI 应用设计的分布式 SQL 数据库，提供集成的向
 | 文档 | 描述 |
 | --- | --- |
 | [Basic CRUD Operations](/ai/examples/basic-with-pytidb.md) | 使用 `pytidb` 进行基础表操作。 |
-| [Vector Search](/ai/examples/vector-search-with-pytidb.md) | 语义相似度检索示例。 |
+| [Vector Search](/ai/examples/vector-search-with-pytidb.md) | 语义相似度搜索示例。 |
 | [RAG Application](/ai/examples/rag-with-pytidb.md) | 构建检索增强生成（RAG）应用。 |
-| [Image Search](/ai/examples/image-search-with-pytidb.md) | 基于 Jina AI 嵌入的多模态 image 检索。 |
+| [Image Search](/ai/examples/image-search-with-pytidb.md) | 基于 Jina AI 嵌入的多模态 image 搜索。 |
 | [Conversational Memory](/ai/examples/memory-with-pytidb.md) | 为 AI agent 和聊天机器人提供持久 memory。 |
 | [Text-to-SQL](/ai/examples/text2sql-with-pytidb.md) | 将自然语言转换为 SQL 查询。 |
 

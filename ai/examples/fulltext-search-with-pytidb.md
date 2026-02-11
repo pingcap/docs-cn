@@ -1,15 +1,15 @@
 ---
-title: 全文检索示例
-summary: 使用 TiDB 全文检索执行传统文本搜索。
+title: 全文搜索示例
+summary: 使用 TiDB 全文搜索执行传统文本搜索。
 ---
 
-# 全文检索示例
+# 全文搜索示例
 
-本示例演示如何使用 TiDB 全文检索构建一个支持多语言的电商产品搜索应用。该应用的用户可以使用其偏好的语言，通过关键字搜索产品。
+本示例演示如何使用 TiDB 全文搜索构建一个支持多语言的电商产品搜索应用。该应用的用户可以使用其偏好的语言，通过关键字搜索产品。
 
 <p align="center">
   <img width="700" alt="E-commerce product search with full-text search" src="https://docs-download.pingcap.com/media/images/docs/ai/e-commerce-product-search-with-full-text-search.png" />
-  <p align="center"><i>基于全文检索的电商产品搜索</i></p>
+  <p align="center"><i>基于全文搜索的电商产品搜索</i></p>
 </p>
 
 ## 前置条件

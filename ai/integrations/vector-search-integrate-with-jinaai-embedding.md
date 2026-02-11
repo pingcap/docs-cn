@@ -1,12 +1,12 @@
 ---
 title: 集成 TiDB 向量搜索与 Jina AI Embeddings API
-summary: 学习如何将 TiDB 向量搜索与 Jina AI Embeddings API 集成，实现 embedding 存储与语义检索。
+summary: 学习如何将 TiDB 向量搜索与 Jina AI Embeddings API 集成，实现 embedding 存储与语义搜索。
 aliases: ['/tidb/stable/vector-search-integrate-with-jinaai-embedding/','/tidb/dev/vector-search-integrate-with-jinaai-embedding/','/tidbcloud/vector-search-integrate-with-jinaai-embedding/']
 ---
 
 # 集成 TiDB 向量搜索与 Jina AI Embeddings API
 
-本教程将指导你如何使用 [Jina AI](https://jina.ai/) 生成文本 embedding，将其存储到 TiDB 中，并基于 embedding 实现相似文本检索。
+本教程将指导你如何使用 [Jina AI](https://jina.ai/) 生成文本 embedding，将其存储到 TiDB 中，并基于 embedding 实现相似文本搜索。
 
 > **注意：**
 >
@@ -250,9 +250,9 @@ with Session(engine) as session:
    session.commit()
 ```
 
-### 在 TiDB 中基于 Jina AI embedding 进行语义检索
+### 在 TiDB 中基于 Jina AI embedding 进行语义搜索
 
-通过 Jina AI embedding API 为查询文本生成 embedding，然后基于 **查询文本的 embedding** 与 **向量表中每条 embedding** 的余弦距离，检索最相关的文档：
+通过 Jina AI embedding API 为查询文本生成 embedding，然后基于 **查询文本的 embedding** 与 **向量表中每条 embedding** 的余弦距离，搜索最相关的文档：
 
 ```python
 query = 'What is TiDB?'

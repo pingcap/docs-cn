@@ -115,7 +115,7 @@ LIMIT 2;
 - `input_type`（必填）：在嵌入前添加特殊 token，用于指示嵌入的用途。对于同一任务，生成嵌入时必须始终使用相同的 input_type，否则嵌入会被映射到不同的语义空间，导致不兼容。唯一的例外是语义搜索，文档嵌入使用 `search_document`，查询嵌入使用 `search_query`。
 
     - `search_document`：从文档生成嵌入，用于存储到向量数据库。
-    - `search_query`：从查询生成嵌入，用于在向量数据库中检索已存储的嵌入。
+    - `search_query`：从查询生成嵌入，用于在向量数据库中搜索已存储的嵌入。
     - `classification`：生成嵌入，作为文本分类器的输入。
     - `clustering`：生成嵌入，用于聚类任务。
 

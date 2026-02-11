@@ -33,7 +33,7 @@ aliases: ['/tidb/stable/vector-search-integrate-with-langchain/','/tidb/dev/vect
 
 ## 快速开始
 
-本节将提供将 TiDB 向量搜索与 LangChain 集成以进行语义检索的分步指导。
+本节将提供将 TiDB 向量搜索与 LangChain 集成以进行语义搜索的分步指导。
 
 ### 步骤 1. 新建 Jupyter Notebook 文件
 
@@ -187,7 +187,7 @@ vector_store = TiDBVectorStore.from_documents(
 
 ### 步骤 6. 执行向量搜索
 
-本步骤演示如何在文档 `state_of_the_union.txt` 中检索 “What did the president say about Ketanji Brown Jackson”。
+本步骤演示如何在文档 `state_of_the_union.txt` 中搜索 “What did the president say about Ketanji Brown Jackson”。
 
 ```python
 query = "What did the president say about Ketanji Brown Jackson"
@@ -299,7 +299,7 @@ We’re securing commitments and supporting partners in South and Central Americ
 
 ### 作为检索器使用
 
-在 LangChain 中，[retriever](https://python.langchain.com/v0.2/docs/concepts/#retrievers) 是一个用于非结构化查询检索文档的接口，功能比向量存储更丰富。以下代码演示如何将 TiDB 向量存储作为检索器使用。
+在 LangChain 中，[retriever](https://python.langchain.com/v0.2/docs/concepts/#retrievers) 是一个用于非结构化查询搜索文档的接口，功能比向量存储更丰富。以下代码演示如何将 TiDB 向量存储作为检索器使用。
 
 ```python
 retriever = vector_store.as_retriever(
@@ -335,9 +335,9 @@ And I did that 4 days ago, when I nominated Circuit Court of Appeals Judge Ketan
 vector_store.drop_vectorstore()
 ```
 
-## 使用元信息过滤进行检索
+## 使用元信息过滤进行搜索
 
-你可以通过元信息过滤，进一步筛选检索结果，仅返回符合过滤条件的最近邻结果。
+你可以通过元信息过滤，进一步筛选搜索结果，仅返回符合过滤条件的最近邻结果。
 
 ### 支持的元信息类型
 
@@ -439,7 +439,7 @@ vector_store.add_texts(
  UUID('08dcd2ba-9f16-4f29-a9b7-18141f8edae3')]
 ```
 
-使用元信息过滤器进行相似度检索：
+使用元信息过滤器进行相似度搜索：
 
 ```python
 docs_with_score = vector_store.similarity_search_with_score(
@@ -467,7 +467,7 @@ TiDB Vector offers advanced, high-speed vector processing capabilities, enhancin
 
 流程主要分为两步：
 
-1. 对机场评论进行语义检索，找出符合所需设施的机场代码。
+1. 对机场评论进行语义搜索，找出符合所需设施的机场代码。
 2. 执行 SQL 查询，将这些代码与航线信息关联，突出显示符合用户偏好的航空公司和目的地。
 
 ### 准备数据
@@ -531,9 +531,9 @@ vector_store.add_texts(
  UUID('f426747c-0f7b-4c62-97ed-3eeb7c8dd76e')]
 ```
 
-### 执行语义检索
+### 执行语义搜索
 
-以下代码检索拥有干净设施和素食选项的机场：
+以下代码搜索拥有干净设施和素食选项的机场：
 
 ```python
 retriever = vector_store.as_retriever(
@@ -564,7 +564,7 @@ Comfortable seating in lounge areas and diverse food selections, including veget
 
 ### 获取机场详细信息
 
-从检索结果中提取机场代码，并查询数据库获取详细航线信息：
+从搜索结果中提取机场代码，并查询数据库获取详细航线信息：
 
 ```python
 # 从元信息中提取机场代码

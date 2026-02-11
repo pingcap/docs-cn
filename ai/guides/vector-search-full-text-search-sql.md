@@ -1,48 +1,48 @@
 ---
-title: 使用 SQL 进行全文检索
-summary: 全文检索允许你根据精确关键字检索文档。在检索增强生成（RAG）场景中，你可以将全文检索与向量搜索结合使用，以提升检索质量。
+title: 使用 SQL 进行全文搜索
+summary: 全文搜索允许你根据精确关键字搜索文档。在检索增强生成（RAG）场景中，你可以将全文搜索与向量搜索结合使用，以提升搜索质量。
 aliases: ['/tidb/stable/vector-search-full-text-search-sql/','/tidbcloud/vector-search-full-text-search-sql/']
 ---
 
-# 使用 SQL 进行全文检索
+# 使用 SQL 进行全文搜索
 
-与关注语义相似度的 [向量搜索](/ai/concepts/vector-search-overview.md) 不同，全文检索允许你根据精确关键字检索文档。在检索增强生成（RAG）场景中，你可以将全文检索与向量搜索结合使用，以提升检索质量。
+与关注语义相似度的 [向量搜索](/ai/concepts/vector-search-overview.md) 不同，全文搜索允许你根据精确关键字搜索文档。在检索增强生成（RAG）场景中，你可以将全文搜索与向量搜索结合使用，以提升搜索质量。
 
-TiDB 的全文检索功能提供以下能力：
+TiDB 的全文搜索功能提供以下能力：
 
-- **直接查询文本数据**：你可以直接在任意 string 列上进行检索，无需 embedding 过程。
+- **直接查询文本数据**：你可以直接在任意 string 列上进行搜索，无需 embedding 过程。
 
-- **支持多语言**：无需指定语言即可获得高质量检索。TiDB 的文本分析器支持同一张表中多种语言混合的文档，并会自动为每个文档选择最佳分析器。
+- **支持多语言**：无需指定语言即可获得高质量搜索。TiDB 的文本分析器支持同一张表中多种语言混合的文档，并会自动为每个文档选择最佳分析器。
 
-- **按相关性排序**：检索结果可通过广泛采用的 [BM25 排序](https://en.wikipedia.org/wiki/Okapi_BM25) algorithm 按相关性排序。
+- **按相关性排序**：搜索结果可通过广泛采用的 [BM25 排序](https://en.wikipedia.org/wiki/Okapi_BM25) algorithm 按相关性排序。
 
-- **完全兼容 SQL**：所有 SQL 功能，如预过滤、后过滤、分组和 join，都可与全文检索结合使用。
+- **完全兼容 SQL**：所有 SQL 功能，如预过滤、后过滤、分组和 join，都可与全文搜索结合使用。
 
 > **提示：**
 >
-> 如需在 Python 中使用，请参见 [使用 Python 进行全文检索](/ai/guides/vector-search-full-text-search-python.md)。
+> 如需在 Python 中使用，请参见 [使用 Python 进行全文搜索](/ai/guides/vector-search-full-text-search-python.md)。
 >
-> 如需在 AI 应用中同时使用全文检索和向量搜索，请参见 [混合检索](/ai/guides/vector-search-hybrid-search.md)。
+> 如需在 AI 应用中同时使用全文搜索和向量搜索，请参见 [混合搜索](/ai/guides/vector-search-hybrid-search.md)。
 
 ## 快速开始
 
-全文检索仍处于早期阶段，我们正在持续向更多用户开放。目前，全文检索仅在以下区域的 TiDB Cloud Starter 和 TiDB Cloud Essential 上可用：
+全文搜索仍处于早期阶段，我们正在持续向更多用户开放。目前，全文搜索仅在以下区域的 TiDB Cloud Starter 和 TiDB Cloud Essential 上可用：
 
 - AWS: `Frankfurt (eu-central-1)` 和 `Singapore (ap-southeast-1)`
 
-在使用全文检索前，请确保你的 TiDB Cloud Starter 集群已创建在支持的区域。如果还没有，请按照 [创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md) 进行创建。
+在使用全文搜索前，请确保你的 TiDB Cloud Starter 集群已创建在支持的区域。如果还没有，请按照 [创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md) 进行创建。
 
-要进行全文检索，请按照以下步骤操作：
+要进行全文搜索，请按照以下步骤操作：
 
 1. [**创建全文索引**](#创建全文索引)：创建带有全文索引的表，或为已有表添加全文索引。
 
 2. [**插入文本数据**](#插入文本数据)：向表中插入文本数据。
 
-3. [**执行全文检索**](#执行全文检索)：使用文本查询和全文检索函数进行全文检索。
+3. [**执行全文搜索**](#执行全文搜索)：使用文本查询和全文搜索函数进行全文搜索。
 
 ### 创建全文索引
 
-要进行全文检索，需要创建全文索引，它为高效检索和排序提供必要的数据结构。全文索引既可以在新表上创建，也可以添加到已有表上。
+要进行全文搜索，需要创建全文索引，它为高效搜索和排序提供必要的数据结构。全文索引既可以在新表上创建，也可以添加到已有表上。
 
 创建带有全文索引的表：
 
@@ -98,11 +98,11 @@ INSERT INTO stock_items VALUES (14, "无线蓝牙耳机超长续航42小时快�
 INSERT INTO stock_items VALUES (15, "皎月银 国家补贴 心率血氧监测 蓝牙通话 智能手表 男女表");
 ```
 
-### 执行全文检索
+### 执行全文搜索
 
-要执行全文检索，可以使用 `FTS_MATCH_WORD()` function。
+要执行全文搜索，可以使用 `FTS_MATCH_WORD()` function。
 
-**示例：检索最相关的 10 个文档**
+**示例：搜索最相关的 10 个文档**
 
 ```sql
 SELECT * FROM stock_items
@@ -122,7 +122,7 @@ SELECT * FROM stock_items
 |    5 | ワイヤレスイヤホン ハイブリッドANC搭載 40dBまでアクティブノイズキャンセル                                            |
 +------+-----------------------------------------------------------------------------------------------------------+
 
--- 尝试用另一种语言检索：
+-- 尝试用另一种语言搜索：
 SELECT * FROM stock_items
     WHERE fts_match_word("蓝牙耳机", title)
     ORDER BY fts_match_word("蓝牙耳机", title)
@@ -152,11 +152,11 @@ SELECT COUNT(*) FROM stock_items
 +----------+
 ```
 
-## 高级示例：与其他表 join 检索结果
+## 高级示例：与其他表 join 搜索结果
 
-你可以将全文检索与其他 SQL 功能（如 join 和子查询）结合使用。
+你可以将全文搜索与其他 SQL 功能（如 join 和子查询）结合使用。
 
-假设你有一张 `users` 表和一张 `tickets` 表，并希望基于作者姓名的全文检索结果查找其创建的工单：
+假设你有一张 `users` 表和一张 `tickets` 表，并希望基于作者姓名的全文搜索结果查找其创建的工单：
 
 ```sql
 CREATE TABLE users(
@@ -179,7 +179,7 @@ INSERT INTO tickets VALUES (2, "Ticket 2", 1);
 INSERT INTO tickets VALUES (3, "Ticket 3", 2);
 ```
 
-你可以使用子查询根据作者姓名查找匹配的用户 ID，然后在外层查询中使用这些 ID 检索并 join 相关工单信息：
+你可以使用子查询根据作者姓名查找匹配的用户 ID，然后在外层查询中使用这些 ID 搜索并 join 相关工单信息：
 
 ```sql
 SELECT t.title AS TICKET_TITLE, u.id AS AUTHOR_ID, u.name AS AUTHOR_NAME FROM tickets t
@@ -200,11 +200,11 @@ WHERE t.author_id IN
 
 ## 另请参阅
 
-- [混合检索](/ai/guides/vector-search-hybrid-search.md)
+- [混合搜索](/ai/guides/vector-search-hybrid-search.md)
 
 ## 反馈与帮助
 
-全文检索仍处于早期阶段，开放区域有限。如果你希望在尚未开放的区域体验全文检索，或有任何反馈与帮助需求，欢迎联系我们：
+全文搜索仍处于早期阶段，开放区域有限。如果你希望在尚未开放的区域体验全文搜索，或有任何反馈与帮助需求，欢迎联系我们：
 
 - 在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 社区提问。
 - [提交 TiDB Cloud 支持工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)

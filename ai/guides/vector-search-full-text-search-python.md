@@ -1,32 +1,32 @@
 ---
-title: 使用 Python 进行全文检索
-summary: 全文检索允许你通过精确关键字检索文档。在检索增强生成（RAG）场景中，你可以将全文检索与向量搜索结合使用，以提升检索质量。
+title: 使用 Python 进行全文搜索
+summary: 全文搜索允许你通过精确关键字搜索文档。在检索增强生成（RAG）场景中，你可以将全文搜索与向量搜索结合使用，以提升搜索质量。
 aliases: ['/tidb/stable/vector-search-full-text-search-python/','/tidbcloud/vector-search-full-text-search-python/']
 ---
 
-# 使用 Python 进行全文检索
+# 使用 Python 进行全文搜索
 
-与关注语义相似度的 [向量搜索](/ai/concepts/vector-search-overview.md) 不同，全文检索允许你通过精确关键字检索文档。在检索增强生成（RAG）场景中，你可以将全文检索与向量搜索结合使用，以提升检索质量。
+与关注语义相似度的 [向量搜索](/ai/concepts/vector-search-overview.md) 不同，全文搜索允许你通过精确关键字搜索文档。在检索增强生成（RAG）场景中，你可以将全文搜索与向量搜索结合使用，以提升搜索质量。
 
-TiDB 的全文检索功能提供以下能力：
+TiDB 的全文搜索功能提供以下能力：
 
-- **直接查询文本数据**：你可以直接检索任意 string 列，无需进行 embedding 过程。
+- **直接查询文本数据**：你可以直接搜索任意 string 列，无需进行 embedding 过程。
 
-- **支持多语言**：无需指定语言即可获得高质量检索。TiDB 支持在同一张表中存储多种语言的文档，并会为每个文档自动选择最佳文本分析器。
+- **支持多语言**：无需指定语言即可获得高质量搜索。TiDB 支持在同一张表中存储多种语言的文档，并会为每个文档自动选择最佳文本分析器。
 
-- **按相关性排序**：检索结果可通过被广泛采用的 [BM25 排序](https://en.wikipedia.org/wiki/Okapi_BM25) algorithm 按相关性排序。
+- **按相关性排序**：搜索结果可通过被广泛采用的 [BM25 排序](https://en.wikipedia.org/wiki/Okapi_BM25) algorithm 按相关性排序。
 
-- **完全兼容 SQL**：所有 SQL 功能，如预过滤、后过滤、分组和关联查询等，都可与全文检索结合使用。
+- **完全兼容 SQL**：所有 SQL 功能，如预过滤、后过滤、分组和关联查询等，都可与全文搜索结合使用。
 
 > **提示：**
 >
-> 有关 SQL 用法，参见 [使用 SQL 进行全文检索](/ai/guides/vector-search-full-text-search-sql.md)。
+> 有关 SQL 用法，参见 [使用 SQL 进行全文搜索](/ai/guides/vector-search-full-text-search-sql.md)。
 >
-> 如需在 AI 应用中同时使用全文检索和向量搜索，参见 [混合检索](/ai/guides/vector-search-hybrid-search.md)。
+> 如需在 AI 应用中同时使用全文搜索和向量搜索，参见 [混合搜索](/ai/guides/vector-search-hybrid-search.md)。
 
 ## 前提条件
 
-全文检索仍处于早期阶段，我们正在持续向更多用户开放。目前，全文检索仅在以下区域的 TiDB Cloud Starter 和 TiDB Cloud Essential 上可用：
+全文搜索仍处于早期阶段，我们正在持续向更多用户开放。目前，全文搜索仅在以下区域的 TiDB Cloud Starter 和 TiDB Cloud Essential 上可用：
 
 - AWS: `法兰克福 (eu-central-1)` 和 `新加坡 (ap-southeast-1)`
 
@@ -36,7 +36,7 @@ TiDB 的全文检索功能提供以下能力：
 
 ### 步骤 1. 安装 [pytidb](https://github.com/pingcap/pytidb) Python SDK
 
-[pytidb](https://github.com/pingcap/pytidb) 是 TiDB 官方的 Python SDK，旨在帮助开发者高效构建 AI 应用。该 SDK 内置支持向量搜索和全文检索。
+[pytidb](https://github.com/pingcap/pytidb) 是 TiDB 官方的 Python SDK，旨在帮助开发者高效构建 AI 应用。该 SDK 内置支持向量搜索和全文搜索。
 
 安装 SDK，请运行以下命令：
 
@@ -131,9 +131,9 @@ table.bulk_insert(
 )
 ```
 
-### 步骤 5. 执行全文检索
+### 步骤 5. 执行全文搜索
 
-插入数据后，你可以按如下方式执行全文检索：
+插入数据后，你可以按如下方式执行全文搜索：
 
 ```python
 df = (
@@ -147,17 +147,17 @@ df = (
 # 1   2  the quick brown        2
 ```
 
-完整示例参见 [pytidb 全文检索演示](https://github.com/pingcap/pytidb/blob/main/examples/fulltext_search)。
+完整示例参见 [pytidb 全文搜索演示](https://github.com/pingcap/pytidb/blob/main/examples/fulltext_search)。
 
 ## 另请参阅
 
 - [pytidb Python SDK 文档](https://github.com/pingcap/pytidb)
 
-- [混合检索](/ai/guides/vector-search-hybrid-search.md)
+- [混合搜索](/ai/guides/vector-search-hybrid-search.md)
 
 ## 反馈与帮助
 
-全文检索仍处于早期阶段，开放范围有限。如果你希望在尚未开放的区域体验全文检索，或有任何反馈和帮助需求，欢迎联系我们：
+全文搜索仍处于早期阶段，开放范围有限。如果你希望在尚未开放的区域体验全文搜索，或有任何反馈和帮助需求，欢迎联系我们：
 
 - 在 [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc) 或 [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap-docs) 社区提问。
 - [提交 TiDB Cloud 支持工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)

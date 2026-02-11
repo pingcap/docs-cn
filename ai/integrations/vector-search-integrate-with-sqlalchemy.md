@@ -1,6 +1,6 @@
 ---
 title: 集成 TiDB 向量搜索与 SQLAlchemy
-summary: 学习如何将 TiDB 向量搜索与 SQLAlchemy 集成，以存储嵌入向量并执行语义检索。
+summary: 学习如何将 TiDB 向量搜索与 SQLAlchemy 集成，以存储嵌入向量并执行语义搜索。
 aliases: ['/tidb/stable/vector-search-integrate-with-sqlalchemy/','/tidb/dev/vector-search-integrate-with-sqlalchemy/','/tidbcloud/vector-search-integrate-with-sqlalchemy/']
 ---
 
@@ -193,9 +193,9 @@ with Session(engine) as session:
    session.commit()
 ```
 
-### 检索最近邻文档
+### 搜索最近邻文档
 
-基于余弦距离函数，检索与查询向量 `[1, 2, 3]` 语义最接近的前 3 个文档。
+基于余弦距离函数，搜索与查询向量 `[1, 2, 3]` 语义最接近的前 3 个文档。
 
 ```python
 with Session(engine) as session:
@@ -205,9 +205,9 @@ with Session(engine) as session:
    ).order_by(distance).limit(3).all()
 ```
 
-### 检索距离在指定范围内的文档
+### 搜索距离在指定范围内的文档
 
-检索与查询向量 `[1, 2, 3]` 余弦距离小于 0.2 的文档。
+搜索与查询向量 `[1, 2, 3]` 余弦距离小于 0.2 的文档。
 
 ```python
 with Session(engine) as session:

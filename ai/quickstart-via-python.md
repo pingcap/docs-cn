@@ -13,7 +13,7 @@ aliases: ['/tidb/stable/vector-search-get-started-using-sql/','/tidb/dev/vector-
 - 使用 TiDB Python SDK 连接 TiDB。
 - 利用主流嵌入模型生成文本嵌入向量。
 - 将向量存储到 TiDB 表中。
-- 使用向量相似度进行语义检索。
+- 使用向量相似度进行语义搜索。
 
 > **注意：**
 >
@@ -162,7 +162,7 @@ class Chunk(TableModel):
 table = client.create_table(schema=Chunk, if_exists="overwrite")
 ```
 
-创建完成后，你可以使用 `table` 对象插入数据、检索数据等。
+创建完成后，你可以使用 `table` 对象插入数据、搜索数据等。
 
 ## 插入数据
 
@@ -177,9 +177,9 @@ table.bulk_insert([
 ])
 ```
 
-## 检索最近邻
+## 搜索最近邻
 
-要检索给定 query 的最近邻，可以使用 `table.search()` method。该 method 默认执行 [向量搜索](/ai/guides/vector-search.md)。
+要搜索给定 query 的最近邻，可以使用 `table.search()` method。该 method 默认执行 [向量搜索](/ai/guides/vector-search.md)。
 
 ```python
 table.search(
@@ -242,4 +242,4 @@ client.drop_table("chunks")
 
 ## 后续步骤
 
-- 了解 TiDB 中 [向量搜索](/ai/guides/vector-search.md)、[全文检索](/ai/guides/vector-search-full-text-search-python.md) 和 [混合检索](/ai/guides/vector-search-hybrid-search.md) 的更多细节。
+- 了解 TiDB 中 [向量搜索](/ai/guides/vector-search.md)、[全文搜索](/ai/guides/vector-search-full-text-search-python.md) 和 [混合搜索](/ai/guides/vector-search-hybrid-search.md) 的更多细节。

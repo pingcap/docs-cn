@@ -8,7 +8,7 @@ aliases: ['/tidb/stable/vector-search-index/','/tidb/dev/vector-search-index/','
 
 如 [向量搜索](/ai/concepts/vector-search-overview.md) 文档所述，向量搜索通过计算给定向量与数据库中所有向量之间的距离，找出 Top K-最近邻（KNN）。这种方式能够提供准确的结果，但当表中包含大量向量时，查询速度较慢，因为需要进行全表扫描。[^1]
 
-为了提升检索效率，你可以在 TiDB 中为近似 KNN（ANN）检索创建向量搜索索引。使用向量索引进行向量搜索时，TiDB 可以大幅提升查询性能，准确性仅有轻微下降，通常检索召回率可保持在 90% 以上。
+为了提升搜索效率，你可以在 TiDB 中为近似 KNN（ANN）搜索创建向量搜索索引。使用向量索引进行向量搜索时，TiDB 可以大幅提升查询性能，准确性仅有轻微下降，通常搜索召回率可保持在 90% 以上。
 
 > **注意：**
 >
@@ -74,7 +74,7 @@ aliases: ['/tidb/stable/vector-search-index/','/tidb/dev/vector-search-index/','
 
 ## 使用向量索引
 
-在 K-最近邻检索查询中，可以通过如下 `ORDER BY ... LIMIT` 语句使用向量搜索索引：
+在 K-最近邻搜索查询中，可以通过如下 `ORDER BY ... LIMIT` 语句使用向量搜索索引：
 
 ```sql
 SELECT *
@@ -246,8 +246,8 @@ LIMIT 10;
 - `vector_index.load.from_s3`：从 S3 加载的索引数量。
 - `vector_index.load.from_disk`：从磁盘加载的索引数量。该索引此前已从 S3 下载到本地磁盘。
 - `vector_index.load.from_cache`：从缓存加载的索引数量。该索引此前已从 S3 下载到缓存。
-- `vector_index.search.total`：在索引中检索的总耗时。较大的延时通常意味着索引为冷数据（从未访问或长时间未访问），导致检索时有大量 I/O 操作。该值可能大于实际查询时间，因为可能有多个向量索引并行检索。
-- `vector_index.search.discarded_nodes`：检索过程中访问但被丢弃的向量行数。这些被丢弃的向量不会计入检索结果。该值较大通常说明存在大量因 `UPDATE` 或 `DELETE` 语句产生的陈旧行。
+- `vector_index.search.total`：在索引中搜索的总耗时。较大的延时通常意味着索引为冷数据（从未访问或长时间未访问），导致搜索时有大量 I/O 操作。该值可能大于实际查询时间，因为可能有多个向量索引并行搜索。
+- `vector_index.search.discarded_nodes`：搜索过程中访问但被丢弃的向量行数。这些被丢弃的向量不会计入搜索结果。该值较大通常说明存在大量因 `UPDATE` 或 `DELETE` 语句产生的陈旧行。
 
 关于输出的解读，参见 [`EXPLAIN`](/sql-statements/sql-statement-explain.md)、[`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 及 [EXPLAIN 使用指南](/explain-walkthrough.md)。
 
@@ -256,4 +256,4 @@ LIMIT 10;
 - [提升向量搜索性能](/ai/reference/vector-search-improve-performance.md)
 - [向量数据类型](/ai/reference/vector-search-data-types.md)
 
-[^1]: KNN 检索的解释改编自 ClickHouse 文档中 [Approximate Nearest Neighbor Search Indexes](https://github.com/ClickHouse/ClickHouse/pull/50661/files#diff-7ebd9e71df96e74230c9a7e604fa7cb443be69ba5e23bf733fcecd4cc51b7576) 一文，作者为 [rschu1ze](https://github.com/rschu1ze)，遵循 Apache License 2.0 许可协议。
+[^1]: KNN 搜索的解释改编自 ClickHouse 文档中 [Approximate Nearest Neighbor Search Indexes](https://github.com/ClickHouse/ClickHouse/pull/50661/files#diff-7ebd9e71df96e74230c9a7e604fa7cb443be69ba5e23bf733fcecd4cc51b7576) 一文，作者为 [rschu1ze](https://github.com/rschu1ze)，遵循 Apache License 2.0 许可协议。

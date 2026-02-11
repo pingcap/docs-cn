@@ -1,6 +1,6 @@
 ---
 title: 将 TiDB 向量搜索集成到 Django ORM
-summary: 学习如何将 TiDB 向量搜索集成到 Django ORM，用于存储嵌入向量并执行语义检索。
+summary: 学习如何将 TiDB 向量搜索集成到 Django ORM，用于存储嵌入向量并执行语义搜索。
 aliases: ['/tidb/stable/vector-search-integrate-with-django-orm/','/tidb/dev/vector-search-integrate-with-django-orm/','/tidbcloud/vector-search-integrate-with-django-orm/']
 ---
 
@@ -229,7 +229,7 @@ Document.objects.create(content="fish", embedding=[1, 2, 4])
 Document.objects.create(content="tree", embedding=[1, 0, 0])
 ```
 
-### 检索最近邻文档
+### 搜索最近邻文档
 
 TiDB 向量搜索支持以下距离函数：
 
@@ -238,7 +238,7 @@ TiDB 向量搜索支持以下距离函数：
 - `CosineDistance`
 - `NegativeInnerProduct`
 
-基于余弦距离函数，检索与查询向量 `[1, 2, 3]` 语义最接近的前 3 个文档。
+基于余弦距离函数，搜索与查询向量 `[1, 2, 3]` 语义最接近的前 3 个文档。
 
 ```python
 results = Document.objects.annotate(
@@ -246,9 +246,9 @@ results = Document.objects.annotate(
 ).order_by('distance')[:3]
 ```
 
-### 检索距离在指定范围内的文档
+### 搜索距离在指定范围内的文档
 
-检索与查询向量 `[1, 2, 3]` 余弦距离小于 0.2 的文档。
+搜索与查询向量 `[1, 2, 3]` 余弦距离小于 0.2 的文档。
 
 ```python
 results = Document.objects.annotate(
