@@ -17,6 +17,7 @@
   - [8.5.3](/releases/release-8.5.3.md)
   - [8.5.2](/releases/release-8.5.2.md)
   - [8.5.1](/releases/release-8.5.1.md)
+  - [8.5.0](/releases/release-8.5.0.md)
 - v8.4
   - [8.4.0-DMR](/releases/release-8.4.0.md)
 - v8.3
