@@ -1,7 +1,7 @@
 ---
 title: 对象命名规范
 summary: 介绍 TiDB 中的对象命名规范。
-aliases: ['/zh/tidb/dev/object-naming-guidelines']
+aliases: ['/zh/tidb/dev/object-naming-guidelines','/zh/tidb/stable/dev-guide-object-naming-guidelines/','/zh/tidb/dev/dev-guide-object-naming-guidelines/','/zh/tidbcloud/dev-guide-object-naming-guidelines/']
 ---
 
 # 对象命名规范

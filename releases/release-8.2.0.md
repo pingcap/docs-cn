@@ -224,7 +224,7 @@ TiDB 版本：8.2.0
 
 + TiDB
 
-    - 支持并行执行[逻辑 DDL 语句 (General DDL)](/ddl-introduction.md#ddl-语句类型简介)。相比 v8.1.0，在使用 10 个会话并发提交不同 DDL 语句的场景下，性能提升了 3 到 6 倍 [#53246](https://github.com/pingcap/tidb/issues/53246) @[D3Hunter](https://github.com/D3Hunter)
+    - 支持并行执行[逻辑 DDL 语句 (General DDL)](/best-practices/ddl-introduction.md#ddl-语句类型简介)。相比 v8.1.0，在使用 10 个会话并发提交不同 DDL 语句的场景下，性能提升了 3 到 6 倍 [#53246](https://github.com/pingcap/tidb/issues/53246) @[D3Hunter](https://github.com/D3Hunter)
     - 改进形如 `((a = 1 and b = 2 and c > 3) or (a = 4 and b = 5 and c > 6)) and d > 3` 的表达式匹配多列索引的逻辑，使其能生成更加精准的 `Range` [#41598](https://github.com/pingcap/tidb/issues/41598) @[ghazalfamilyusa](https://github.com/ghazalfamilyusa)
     - 优化对大数据量的表进行简单查询时获取数据分布信息的性能 [#53850](https://github.com/pingcap/tidb/issues/53850) @[you06](https://github.com/you06)
     - 聚合的结果集能够作为 IndexJoin 的内表，使更多的复杂查询可以匹配到 IndexJoin，从而可以通过索引提升查询效率 [#37068](https://github.com/pingcap/tidb/issues/37068) @[elsa0520](https://github.com/elsa0520)

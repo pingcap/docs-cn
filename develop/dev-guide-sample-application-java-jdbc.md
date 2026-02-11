@@ -1,7 +1,7 @@
 ---
 title: 使用 JDBC 连接到 TiDB
 summary: 了解如何使用 JDBC 连接到 TiDB。本文提供了使用 JDBC 与 TiDB 交互的 Java 示例代码片段。
-aliases: ['/zh/tidb/dev/sample-application-java','/zh/tidb/dev/dev-guide-sample-application-java']
+aliases: ['/zh/tidb/dev/sample-application-java','/zh/tidb/dev/dev-guide-sample-application-java','/zh/tidb/stable/dev-guide-sample-application-java-jdbc/','/zh/tidb/dev/dev-guide-sample-application-java-jdbc/','/zh/tidbcloud/dev-guide-sample-application-java-jdbc/']
 ---
 
 # 使用 JDBC 连接到 TiDB
@@ -26,7 +26,7 @@ TiDB 是一个兼容 MySQL 的数据库。JDBC 是 Java 的数据访问 API。[M
 - [Git](https://git-scm.com/downloads)。
 - TiDB 集群。如果你还没有 TiDB 集群，可以按照以下方式创建：
     - （推荐方式）参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)，创建你自己的 TiDB Cloud 集群。
-    - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
+    - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
 ## 运行代码并连接到 TiDB
 
@@ -290,4 +290,6 @@ Java 驱动程序提供对数据库的底层访问，但要求开发者：
 
 ## 需要帮助?
 
-如果在开发的过程中遇到问题，可以在 [AskTUG](https://asktug.com/?utm_source=docs-cn-dev-guide) 上进行提问，寻求帮助。
+- 在 [AskTUG 论坛](https://asktug.com/?utm_source=docs-cn-dev-guide) 上提问
+- [提交 TiDB Cloud 工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)
+- [提交 TiDB 工单](/support.md)

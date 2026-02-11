@@ -239,7 +239,7 @@ TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语�
 
 ## DDL 执行
 
-本节列出了 DDL 语句执行的相关问题。DDL 执行原理的详细说明，参见 [TiDB 中 DDL 执行原理及最佳实践](/ddl-introduction.md)。
+本节列出了 DDL 语句执行的相关问题。DDL 执行原理的详细说明，参见 [TiDB 中 DDL 执行原理及最佳实践](/best-practices/ddl-introduction.md)。
 
 ### 各类 DDL 操作的预估耗时是多长？
 
