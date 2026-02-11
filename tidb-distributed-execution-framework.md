@@ -98,4 +98,4 @@ TiDB 后端任务分布式框架的架构图如下：
 
 ## 另请参阅
 
-* [DDL 执行原理及最佳实践](/ddl-introduction.md)
+* [DDL 执行原理及最佳实践](/best-practices/ddl-introduction.md)
