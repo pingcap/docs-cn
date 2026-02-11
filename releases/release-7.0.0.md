@@ -86,7 +86,7 @@ TiDB 版本：7.0.0
 
     从 TiDB v7.0.0 开始，Fast Online DDL 和 PITR 已经完全兼容。通过 PITR 恢复集群数据时，系统将自动回放日志备份期间记录的通过 Fast Online DDL 方式添加的索引操作，达到兼容效果。
 
-    更多信息，请参考[用户文档](/ddl-introduction.md)。
+    更多信息，请参考[用户文档](/best-practices/ddl-introduction.md)。
 
 * TiFlash 引擎支持 Null-Aware Semi Join 和 Null-Aware Anti Semi Join 算子 [#6674](https://github.com/pingcap/tiflash/issues/6674) @[gengliqi](https://github.com/gengliqi)
 
@@ -142,7 +142,7 @@ TiDB 版本：7.0.0
 
     TiDB v6.5.0 支持通过 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 方式创建普通的二级索引。从 v7.0.0 开始，TiDB 支持通过 Fast Online DDL 方式创建唯一索引。相比于 TiDB v6.1.0，大表添加唯一索引的性能预期将提升数倍。
 
-    更多信息，请参考[用户文档](/ddl-introduction.md)。
+    更多信息，请参考[用户文档](/best-practices/ddl-introduction.md)。
 
 ### 稳定性
 
@@ -168,7 +168,7 @@ TiDB 版本：7.0.0
 
     TiDB v7.0.0 引入 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 的检查点机制，大幅提升 Fast Online DDL 的容错性和自动恢复能力。通过周期性记录并同步 DDL 进度，即使在 TiDB DDL Owner 故障重启或切换时，正在执行中的 DDL 仍能以 Fast Online DDL 方式继续执行，从而让 DDL 执行更加稳定高效。
 
-    更多信息，请参考[用户文档](/ddl-introduction.md)。
+    更多信息，请参考[用户文档](/best-practices/ddl-introduction.md)。
 
 * TiFlash 引擎支持数据落盘 (Spill to disk) [#6528](https://github.com/pingcap/tiflash/issues/6528) @[windtalker](https://github.com/windtalker)
 

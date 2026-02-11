@@ -110,7 +110,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     ADMIN RESUME DDL JOBS 1,2;
     ```
 
-    更多信息，请参考[用户文档](/ddl-introduction.md#ddl-相关的命令介绍)。
+    更多信息，请参考[用户文档](/best-practices/ddl-introduction.md#ddl-相关的命令介绍)。
 
 * BR 支持备份和恢复统计信息 [#48008](https://github.com/pingcap/tidb/issues/48008) @[Leavrth](https://github.com/Leavrth)
 
