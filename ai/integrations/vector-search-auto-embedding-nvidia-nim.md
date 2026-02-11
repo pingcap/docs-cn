@@ -26,7 +26,7 @@ aliases: ['/zh/tidbcloud/vector-search-auto-embedding-nvidia-nim/']
 - 最大输入文本 token 数：8,192
 - 价格：由 NVIDIA 收费
 - TiDB Cloud 托管：❌
-- 支持自带密钥：✅
+- 支持 Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅
 - 文档：<https://docs.api.nvidia.com/nim/reference/baai-bge-m3>
 
 示例：

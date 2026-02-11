@@ -24,7 +24,7 @@ aliases: ['/zh/tidbcloud/vector-search-auto-embedding-gemini/']
 - 最大输入文本 token 数：2,048
 - 价格：由 Google 收费
 - 由 TiDB Cloud 托管：❌
-- 支持自带密钥：✅
+- 支持 Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅
 
 完整可用模型列表请参见 [Gemini 文档](https://ai.google.dev/gemini-api/docs/embeddings)。
 

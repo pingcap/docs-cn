@@ -25,7 +25,7 @@ aliases: ['/zh/tidbcloud/vector-search-auto-embedding-huggingface/']
 - 距离度量：Cosine，L2
 - 价格：由 Hugging Face 收费
 - TiDB Cloud 托管：❌
-- 自带密钥：✅
+- Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅
 - 项目主页：<https://huggingface.co/intfloat/multilingual-e5-large>
 
 示例：
@@ -69,7 +69,7 @@ LIMIT 2;
 - 距离度量：Cosine，L2
 - 价格：由 Hugging Face 收费
 - TiDB Cloud 托管：❌
-- 自带密钥：✅
+- Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅
 - 项目主页：<https://huggingface.co/BAAI/bge-m3>
 
 ```sql
@@ -111,7 +111,7 @@ LIMIT 2;
 - 距离度量：Cosine，L2
 - 价格：由 Hugging Face 收费
 - TiDB Cloud 托管：❌
-- 自带密钥：✅
+- Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅
 - 项目主页：<https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2>
 
 示例：
@@ -155,7 +155,7 @@ LIMIT 2;
 - 距离度量：Cosine，L2
 - 价格：由 Hugging Face 收费
 - TiDB Cloud 托管：❌
-- 自带密钥：✅
+- Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅
 - 项目主页：<https://huggingface.co/sentence-transformers/all-mpnet-base-v2>
 
 ```sql
@@ -202,7 +202,7 @@ LIMIT 2;
 - 最大输入文本 tokens：512
 - 价格：由 Hugging Face 收费
 - TiDB Cloud 托管：❌
-- 自带密钥：✅
+- Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅
 - 项目主页：<https://huggingface.co/Qwen/Qwen3-Embedding-0.6B>
 
 ```sql

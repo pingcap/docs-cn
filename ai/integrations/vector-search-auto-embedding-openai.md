@@ -23,7 +23,7 @@ aliases: ['/zh/tidbcloud/vector-search-auto-embedding-openai/']
 - 距离度量：Cosine，L2
 - 价格：由 OpenAI 收费
 - 由 TiDB Cloud 托管：❌
-- 支持自带密钥：✅
+- 支持 Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅
 
 **text-embedding-3-large**
 
@@ -32,7 +32,7 @@ aliases: ['/zh/tidbcloud/vector-search-auto-embedding-openai/']
 - 距离度量：Cosine，L2
 - 价格：由 OpenAI 收费
 - 由 TiDB Cloud 托管：❌
-- 支持自带密钥：✅
+- 支持 Bring Your Own Key（BYOK，由用户自行提供 API 密钥）：✅
 
 完整可用模型列表请参见 [OpenAI Documentation](https://platform.openai.com/docs/guides/embeddings)。
 
