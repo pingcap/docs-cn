@@ -820,7 +820,7 @@
       - [日期和时间类型](/data-type-date-and-time.md)
       - [字符串类型](/data-type-string.md)
       - [JSON 类型](/data-type-json.md)
-      - [向量数据类型](https://docs.pingcap.com/ai/vector-search-data-types)
+      - [向量数据类型](/ai/reference/vector-search-data-types.md)
     - 函数与操作符
       - [函数与操作符概述](/functions-and-operators/functions-and-operators-overview.md)
       - [表达式求值的类型转换](/functions-and-operators/type-conversion-in-expression-evaluation.md)
@@ -834,7 +834,7 @@
       - [加密和压缩函数](/functions-and-operators/encryption-and-compression-functions.md)
       - [锁函数](/functions-and-operators/locking-functions.md)
       - [信息函数](/functions-and-operators/information-functions.md)
-      - [向量函数和操作符](https://docs.pingcap.com/ai/vector-search-functions-and-operators)
+      - [向量函数和操作符](/ai/reference/vector-search-functions-and-operators.md)
       - JSON 函数
         - [概览](/functions-and-operators/json-functions.md)
         - [创建 JSON 的函数](/functions-and-operators/json-functions/json-functions-create.md)
@@ -857,7 +857,7 @@
       - [Oracle 与 TiDB 函数和语法差异对照](/oracle-functions-to-tidb.md)
     - [聚簇索引](/clustered-indexes.md)
     - [全局索引](/global-indexes.md)
-    - [向量索引](https://docs.pingcap.com/ai/vector-search-index)
+    - [向量索引](/ai/reference/vector-search-index.md)
     - [约束](/constraints.md)
     - [生成列](/generated-columns.md)
     - [SQL 模式](/sql-mode.md)
