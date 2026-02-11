@@ -17,7 +17,7 @@ aliases: ['/zh/tidb/stable/vector-search-index/','/zh/tidb/dev/vector-search-ind
 
 目前，TiDB 支持 [HNSW（Hierarchical Navigable Small World）](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) 向量搜索索引算法。
 
-## 限制
+## 限制 {#restrictions}
 
 - 你的集群中必须提前部署 TiFlash 节点。
 - 向量搜索索引不能作为主键或唯一索引使用。
@@ -114,7 +114,7 @@ WHERE category = "document";
 -- 注意，如果部分结果被过滤，最终返回的结果可能少于 5 条。
 ```
 
-## 查看索引构建进度
+## 查看索引构建进度 {#view-index-build-progress}
 
 在你插入大量数据后，部分数据可能不会立即持久化到 TiFlash。对于已持久化的向量数据，向量搜索索引会同步构建；对于尚未持久化的数据，索引会在数据持久化后再构建。此过程不会影响数据的准确性和一致性，你可以随时进行向量搜索并获得完整结果。但在向量索引完全构建前，性能会低于最佳状态。
 

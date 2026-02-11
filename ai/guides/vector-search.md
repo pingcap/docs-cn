@@ -287,7 +287,7 @@ LIMIT 10;
 </div>
 </SimpleTab>
 
-## 元信息过滤
+## 元信息过滤 {#metadata-filtering}
 
 作为关系型数据库，TiDB 支持丰富的 [SQL 运算符](https://docs.pingcap.com/tidbcloud/operators/)，并允许灵活组合过滤条件。
 

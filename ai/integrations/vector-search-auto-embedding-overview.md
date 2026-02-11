@@ -106,7 +106,7 @@ LIMIT 3;
 > - 定义向量索引时，使用 `VEC_COSINE_DISTANCE()` 或 `VEC_L2_DISTANCE()`。
 > - 查询时，使用 `VEC_EMBED_COSINE_DISTANCE()` 或 `VEC_EMBED_L2_DISTANCE()`。
 
-## 可用文本嵌入模型
+## 可用文本嵌入模型 {#available-text-embedding-models}
 
 TiDB Cloud 支持多种嵌入模型。请选择最适合你需求的模型：
 
@@ -167,7 +167,7 @@ VEC_EMBED_L2_DISTANCE(vector_column, "query_text")
 
 在 `ORDER BY` 子句中使用该函数，可按 L2 距离对结果排序。其计算方式与 [`VEC_L2_DISTANCE()`](/ai/reference/vector-search-functions-and-operators.md#vec_l2_distance) 相同，但会自动为 query 文本生成嵌入。
 
-## 在 Python 中使用 Auto Embedding
+## 在 Python 中使用 Auto Embedding {#use-auto-embedding-in-python}
 
 TiDB 提供了统一的接口，便于集成多种嵌入服务商和模型：
 

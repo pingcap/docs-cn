@@ -79,7 +79,7 @@ INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 2 维向量，OK
 
 但需要注意的是，你无法为该列构建 [向量搜索索引](/ai/reference/vector-search-index.md)，因为只有相同维度的向量之间才能计算向量距离。
 
-## 比较
+## 比较 {#comparison}
 
 你可以使用 [比较运算符](/functions-and-operators/operators.md)（如 `=`, `!=`, `<`, `>`, `<=`, `>=`）对向量数据类型进行比较。关于向量数据类型的完整比较运算符和函数列表，参见 [向量函数与运算符](/ai/reference/vector-search-functions-and-operators.md)。
 
@@ -121,7 +121,7 @@ INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 2 维向量，OK
 1 row in set (0.01 sec)
 ```
 
-## 算术运算
+## 算术运算 {#arithmetic}
 
 向量数据类型支持 `+`（加法）和 `-`（减法）算术运算。但不同维度的向量之间不支持算术运算，否则会报错。
 
@@ -148,7 +148,7 @@ INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 2 维向量，OK
 ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 ```
 
-## 类型转换
+## 类型转换 {#cast}
 
 ### 向量 ⇔ 字符串 的类型转换
 

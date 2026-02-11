@@ -14,13 +14,13 @@ HTAP 是 Hybrid Transactional / Analytical Processing 的缩写。传统意义�
 
 ## 数据准备
 
-在开始之前，你可以[通过 `tiup demo` 命令导入](/develop/dev-guide-bookshop-schema-design.md#方法一通过-tiup-demo-命令行)更加大量的示例数据，例如：
+在开始之前，你可以[通过 `tiup demo` 命令导入](/develop/dev-guide-bookshop-schema-design.md#本地部署的-tidb通过-tiup-demo-命令行)更加大量的示例数据，例如：
 
 ```shell
 tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --ratings=1000000 --orders=1000000 --host 127.0.0.1 --port 4000 --drop-tables
 ```
 
-或[使用 TiDB Cloud 的 Import 功能导入](/develop/dev-guide-bookshop-schema-design.md#方法二通过-tidb-cloud-import-功能)预先准备好的示例数据。
+或[使用 TiDB Cloud 的 Import 功能导入](/develop/dev-guide-bookshop-schema-design.md#tidb-cloud通过-import-功能)预先准备好的示例数据。
 
 ## 窗口函数
 

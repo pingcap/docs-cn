@@ -23,7 +23,7 @@ aliases: ['/zh/tidb/stable/vector-search-overview/','/zh/tidb/dev/vector-search-
 
 例如，使用全文搜索查询 “a swimming animal” 只会返回包含这些精确关键字的结果。而向量搜索则可以返回其他游泳动物（如鱼或鸭子）的结果，即使这些结果中并不包含完全相同的关键字。
 
-### 向量嵌入
+### 向量嵌入 {#vector-embedding}
 
 向量嵌入（vector embedding），也称为 embedding，是一组数字序列，用于在高维空间中表示现实世界的对象。它能够捕捉非结构化数据（如文档、图片、音频和视频）的语义和上下文信息。
 
@@ -31,7 +31,7 @@ aliases: ['/zh/tidb/stable/vector-search-overview/','/zh/tidb/dev/vector-search-
 
 TiDB 引入了专为优化向量嵌入存储与搜索设计的 [向量数据类型](/ai/reference/vector-search-data-types.md) 和 [向量搜索索引](/ai/reference/vector-search-index.md)，提升其在 AI 应用中的使用效率。你可以将向量嵌入存储在 TiDB 中，并通过这些数据类型执行向量搜索查询，查找最相关的数据。
 
-### 嵌入模型
+### 嵌入模型 {#embedding-model}
 
 嵌入模型（embedding model）是一种将数据转换为 [向量嵌入](#向量嵌入) 的算法。
 

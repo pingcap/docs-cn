@@ -17,7 +17,7 @@ summary: 了解如何在你的应用中使用过滤功能。
 
 **filters** 参数支持两种格式：[字典过滤器](#dictionary-filters) 和 [SQL 字符串过滤器](#sql-string-filters)。
 
-## 字典过滤器
+## 字典过滤器 {#dictionary-filters}
 
 `pytidb` 允许你使用带有运算符的 Python 字典来定义过滤条件，并作为 **filters** 参数传入。
 
@@ -63,7 +63,7 @@ results = (
 )
 ```
 
-### 比较运算符
+### 比较运算符 {#compare-operators}
 
 你可以使用以下比较运算符来过滤记录：
 
@@ -94,7 +94,7 @@ results = (
 }
 ```
 
-### 包含运算符
+### 包含运算符 {#inclusion-operators}
 
 你可以使用以下包含运算符来过滤记录：
 
@@ -113,7 +113,7 @@ results = (
 }
 ```
 
-### 逻辑运算符
+### 逻辑运算符 {#logical-operators}
 
 你可以使用逻辑运算符 `$and` 和 `$or` 组合多个过滤条件。
 
@@ -161,7 +161,7 @@ results = (
 }
 ```
 
-## SQL 字符串过滤器
+## SQL 字符串过滤器 {#sql-string-filters}
 
 你也可以将 SQL 字符串作为 `filters` 使用。该字符串必须是符合 TiDB SQL 语法的有效 SQL `WHERE` 子句（不包含 `WHERE` 关键字）。
 

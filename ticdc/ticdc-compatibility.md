@@ -82,7 +82,7 @@ TiCDC 从 v5.3.0 开始支持[全局临时表](/temporary-tables.md#全局临时
 
 如果 TiCDC 的上游集群包含全局临时表，下游集群也必须是 TiDB 5.3.0 及以上版本，否则同步报错。
 
-### 向量数据类型兼容性说明
+### 向量数据类型兼容性说明 {#compatibility-with-vector-data-types}
 
 从 v8.4.0 开始，TiCDC 支持同步包含[向量数据类型](https://docs.pingcap.com/ai/vector-search-data-types)的表到下游（实验特性）。
 
