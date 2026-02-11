@@ -5,7 +5,7 @@ summary: 了解如何在 peewee 中通过 TiDB 向量搜索功能存储向量并
 
 # 在 peewee 中使用 TiDB 向量搜索
 
-本文档将展示如何使用 [peewee](https://docs.peewee-orm.com/) 与 [TiDB 向量搜索](/vector-search/vector-search-overview.md)进行交互，以及如何存储向量和执行向量搜索查询。
+本文档将展示如何使用 [peewee](https://docs.peewee-orm.com/) 与 [TiDB 向量搜索](/ai/concepts/vector-search-overview.md)进行交互，以及如何存储向量和执行向量搜索查询。
 
 > **警告：**
 >
@@ -21,7 +21,7 @@ summary: 了解如何在 peewee 中通过 TiDB 向量搜索功能存储向量并
 
 如果你还没有 TiDB 集群，可以按照以下任一种方式创建：
 
-- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
+- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 - 参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)，创建 TiDB Cloud 集群。
 
 ## 运行示例应用程序
@@ -250,5 +250,5 @@ results = Document.select(Document, distance).where(distance_expression < 0.2).o
 
 ## 另请参阅
 
-- [向量数据类型](/vector-search/vector-search-data-types.md)
-- [向量搜索索引](/vector-search/vector-search-index.md)
+- [向量数据类型](/ai/reference/vector-search-data-types.md)
+- [向量搜索索引](/ai/reference/vector-search-index.md)

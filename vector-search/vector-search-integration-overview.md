@@ -17,8 +17,8 @@ TiDB 目前支持以下 AI 框架。基于这些 AI 框架，你可以使用 TiD
 
 | AI 框架 | 教程                                                                                          |
 |---------------|---------------------------------------------------------------------------------------------------|
-| Langchain     | [在 LangChain 中使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-langchain.md)   |
-| LlamaIndex    | [在 LlamaIndex 中使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-llamaindex.md) |
+| Langchain     | [在 LangChain 中使用 TiDB 向量搜索](/ai/integrations/vector-search-integrate-with-langchain.md)   |
+| LlamaIndex    | [在 LlamaIndex 中使用 TiDB 向量搜索](/ai/integrations/vector-search-integrate-with-llamaindex.md) |
 
 此外，你还可以使用 TiDB 完成多种其它需求，例如将 TiDB 用于 AI 应用程序的文档存储和知识图谱存储等。
 
@@ -32,7 +32,7 @@ TiDB 向量搜索支持存储高达 16383 维的向量，可适应大多数嵌�
 
 | 嵌入模型服务提供商 | 教程                                                                                                            |
 |-----------------------------|---------------------------------------------------------------------------------------------------------------------|
-| Jina AI                     | [结合 Jina AI 嵌入模型 API 使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-jinaai-embedding.md) |
+| Jina AI                     | [结合 Jina AI 嵌入模型 API 使用 TiDB 向量搜索](/ai/integrations/vector-search-integrate-with-jinaai-embedding.md) |
 
 ## 对象关系映射 (ORM) 库
 
@@ -42,7 +42,7 @@ TiDB 向量搜索支持存储高达 16383 维的向量，可适应大多数嵌�
 
 | 语言 | ORM/客户端 | 安装说明 | 教程 |
 |----------|--------------------|-----------------------------------|----------|
-| Python   | TiDB Vector Client | `pip install tidb-vector[client]` | [使用 Python 开始向量搜索](/vector-search/vector-search-get-started-using-python.md) |
-| Python   | SQLAlchemy         | `pip install tidb-vector`         | [在 SQLAlchemy 中使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-sqlalchemy.md)
-| Python   | peewee             | `pip install tidb-vector`         | [在 peewee 中使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-peewee.md) |
-| Python   | Django             | `pip install django-tidb[vector]` | [在 Django 中使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-django-orm.md)
+| Python   | TiDB Vector Client | `pip install tidb-vector[client]` | [使用 Python 开始向量搜索](/ai/quickstart-via-python.md) |
+| Python   | SQLAlchemy         | `pip install tidb-vector`         | [在 SQLAlchemy 中使用 TiDB 向量搜索](/ai/integrations/vector-search-integrate-with-sqlalchemy.md)
+| Python   | peewee             | `pip install tidb-vector`         | [在 peewee 中使用 TiDB 向量搜索](/ai/integrations/vector-search-integrate-with-peewee.md) |
+| Python   | Django             | `pip install django-tidb[vector]` | [在 Django 中使用 TiDB 向量搜索](/ai/integrations/vector-search-integrate-with-django-orm.md)
