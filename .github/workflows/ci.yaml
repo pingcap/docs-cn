@@ -7,17 +7,55 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  pull:
+  duplicated-file-names:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+      - name: Verify duplicated file names
+        run: ./scripts/verify-duplicated-file-name.sh
+
+  internal-links-files:
     runs-on: ubuntu-latest
     steps:
       - name: Check out
         uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "16"
-      - name: Verify duplicated file names
-        run: ./scripts/verify-duplicated-file-name.sh
-      - name: Verify internal links
+          node-version: "18"
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - name: Install Node dependencies
+        run: npm ci
+      - name: Verify internal links (full repo) - files
         run: ./scripts/verify-links.sh
-      - name: Verify internal link anchors
+
+  internal-links-anchors:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - name: Install Node dependencies
+        run: npm ci
+      - name: Verify internal links (full repo) - anchors
         run: ./scripts/verify-link-anchors.sh
+
+  internal-links-toc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - name: Install Node dependencies
+        run: npm ci
+      - name: Verify internal links (full repo) - TOC membership
+        run: node ./scripts/verify-internal-links-in-toc.js

@@ -1,7 +1,7 @@
 ---
 title: Bookshop 应用
 summary: Bookshop 应用设计、数据导入、连接数据库等操作。
-aliases: ['/zh/tidb/dev/bookshop-schema-design']
+aliases: ['/zh/tidb/dev/bookshop-schema-design','/zh/tidb/stable/dev-guide-bookshop-schema-design/','/zh/tidb/dev/dev-guide-bookshop-schema-design/','/zh/tidbcloud/dev-guide-bookshop-schema-design/']
 ---
 
 # Bookshop 应用
@@ -12,9 +12,12 @@ Bookshop 是一个虚拟的在线书店应用，你可以在 Bookshop 当中便�
 
 ## 导入表结构和数据
 
-你可以[通过 TiUP](#方法一通过-tiup-demo-命令行) 或[通过 TiDB Cloud Import](#方法二通过-tidb-cloud-import-功能) 两种方式导入 Bookshop 应用的表结构和数据。
+选择以下一种方式导入 Bookshop 应用的表结构和数据：
 
-### 方法一：通过 `tiup demo` 命令行
+- [本地部署的 TiDB：通过 `tiup demo` 命令行](#本地部署的-tidb通过-tiup-demo-命令行)
+- [TiDB Cloud：通过 Import 功能](#tidb-cloud通过-import-功能)
+
+### 本地部署的 TiDB：通过 `tiup demo` 命令行
 
 如果你使用 [TiUP](/tiup/tiup-reference.md#tiup-命令概览) 部署 TiDB 集群或者你可以直接连接到你的 TiDB 服务器，你可以通过如下命令快速生成并导入 Bookshop 应用的示例数据：
 
@@ -62,7 +65,7 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
 通过 `--drop-tables` 参数你可以删除原有的表结构，更多的参数说明你可以通过命令 `tiup demo bookshop --help` 进行了解。
 
-### 方法二：通过 TiDB Cloud Import 功能
+### TiDB Cloud：通过 Import 功能
 
 1. 打开目标集群的 **Import** 页面。
 
