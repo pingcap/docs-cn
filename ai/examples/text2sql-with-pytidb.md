@@ -1,9 +1,9 @@
 ---
-title: Text2SQL 示例
+title: 文本转 SQL 示例
 summary: 使用 AI 模型将自然语言查询转换为 SQL 语句。
 ---
 
-# Text2SQL 示例
+# 文本转 SQL 示例
 
 本演示展示了如何构建一个由 AI 驱动的 interface，将自然语言问题转换为 SQL 语句，并在 TiDB 上 execute。该示例基于 [`pytidb`](https://github.com/pingcap/pytidb)（TiDB 官方 Python SDK）、OpenAI GPT 和 Streamlit 构建，让你可以用英文直接 query 你的数据库。
 

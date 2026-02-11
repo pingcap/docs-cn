@@ -1,9 +1,9 @@
 ---
-title: 基本 CRUD 操作
+title: 增删改查基本操作
 summary: 学习使用 `pytidb` 进行数据库连接、建表和数据操作等基础操作。
 ---
 
-# 基本 CRUD 操作
+# 增删改查基本操作
 
 本示例演示了如何使用 [`pytidb`](https://github.com/pingcap/pytidb)（TiDB 官方 Python SDK）进行基本的 CRUD（创建、读取、修改、删除）操作。
 

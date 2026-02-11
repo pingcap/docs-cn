@@ -1,9 +1,9 @@
 ---
-title: AI Agent Memory Example
+title: AI Agent 对话记忆示例
 summary: 为聊天机器人和会话式 AI 应用实现会话内存。
 ---
 
-# AI Agent Memory Example
+# AI Agent 对话记忆示例
 
 本示例展示了如何利用 TiDB 的向量搜索能力构建具备持久内存的 AI agent。
 
