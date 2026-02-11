@@ -12,7 +12,7 @@ TiDB 是一个兼容 MySQL 的数据库，TiDB Cloud Starter 是一款全托管�
 
 > **注意：**
 >
-> 除了 TiDB Cloud Starter，本教程同样适用于 TiDB Cloud Essential、TiDB Cloud Dedicated 以及 TiDB 自托管。但强烈推荐使用 TiDB Cloud Starter 来运行 WordPress，以获得更高的性价比。
+> 除了 TiDB Cloud Starter，本教程同样适用于 TiDB Cloud Essential、TiDB Cloud Dedicated 以及 TiDB 自托管集群。但强烈推荐使用 TiDB Cloud Starter 来运行 WordPress，以获得更高的性价比。
 
 ## 前提条件
 
