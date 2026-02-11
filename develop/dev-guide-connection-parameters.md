@@ -5,8 +5,8 @@ summary: 针对开发者的 TiDB 连接池与连接参数的说明。
 
 # 连接池与连接参数
 
-> - 连接池参数 - 连接数配置、探活配置两节摘自[开发 Java 应用使用 TiDB 的最佳实践 - 连接池](/best-practices/java-app-best-practices.md#连接池)。
-> - 连接参数摘自[开发 Java 应用使用 TiDB 的最佳实践 - JDBC](/best-practices/java-app-best-practices.md#jdbc)。
+> - 连接池参数 - 连接数配置、探活配置两节摘自[开发 Java 应用使用 TiDB 的最佳实践 - 连接池](/develop/java-app-best-practices.md#连接池)。
+> - 连接参数摘自[开发 Java 应用使用 TiDB 的最佳实践 - JDBC](/develop/java-app-best-practices.md#jdbc)。
 
 ## 连接池参数
 
