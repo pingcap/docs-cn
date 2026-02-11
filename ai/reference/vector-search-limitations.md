@@ -11,7 +11,7 @@ aliases: ['/zh/tidb/stable/vector-search-limitations/','/zh/tidb/dev/vector-sear
 > **注意：**
 >
 > - 向量搜索功能目前为 beta 版本，可能会在没有提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB 自托管](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自托管和 TiDB Cloud Dedicated，TiDB 版本必须为 v8.4.0 或以上版本（推荐使用 v8.5.0 或以上版本）。
+> - 向量搜索功能适用于 [TiDB 自托管](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB 自托管和 TiDB Cloud Dedicated，TiDB 版本必须为 v8.4.0 或以上版本（推荐使用 v8.5.0 或以上版本）。
 
 ## 向量数据类型限制
 
@@ -33,7 +33,7 @@ aliases: ['/zh/tidb/stable/vector-search-limitations/','/zh/tidb/dev/vector-sear
 
 - TiDB Cloud 功能：
 
-    - [TiDB Cloud 控制台的数据迁移功能](/tidb-cloud/migrate-from-mysql-using-data-migration.md) 不支持将 MySQL 向量数据类型迁移或同步到 TiDB Cloud。
+    - [TiDB Cloud 控制台的数据迁移功能](https://docs.pingcap.com/zh/tidbcloud/migrate-from-mysql-using-data-migration/) 不支持将 MySQL 向量数据类型迁移或同步到 TiDB Cloud。
 
 - TiDB 工具：
 

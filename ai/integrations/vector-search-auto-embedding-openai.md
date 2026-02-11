@@ -267,7 +267,7 @@ SET @@GLOBAL.TIDB_EXP_EMBED_OPENAI_API_BASE = '';
 > **注意：**
 >
 > - 出于安全考虑，API base 只能设置为 Azure OpenAI URL 或 OpenAI URL。不允许设置为任意 base URL。
-> - 如需使用其他 OpenAI 兼容的嵌入服务，请联系 [TiDB Cloud Support](/tidb-cloud/tidb-cloud-support.md)。
+> - 如需使用其他 OpenAI 兼容的嵌入服务，请联系 [TiDB Cloud Support](https://docs.pingcap.com/zh/tidbcloud/tidb-cloud-support/)。
 
 ## 选项
 
