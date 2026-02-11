@@ -1,6 +1,7 @@
 ---
 title: 向量搜索集成概览
 summary: TiDB 向量搜索集成的概览，包括支持的 AI 框架、嵌入模型和 ORM 库。
+aliases: ['/zh/tidb/stable/vector-search-integration-overview/','/zh/tidb/dev/vector-search-integration-overview/','/zh/tidbcloud/vector-search-integration-overview/']
 ---
 
 # 向量搜索集成概览

@@ -1,6 +1,7 @@
 ---
 title: 混合搜索
 summary: 同时使用全文搜索和向量搜索，以提升搜索质量。
+aliases: ['/zh/tidbcloud/vector-search-hybrid-search/']
 ---
 
 # 混合搜索

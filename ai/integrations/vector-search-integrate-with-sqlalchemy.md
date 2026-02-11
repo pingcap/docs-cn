@@ -1,6 +1,7 @@
 ---
 title: 集成 TiDB 向量搜索与 SQLAlchemy
 summary: 学习如何将 TiDB 向量搜索与 SQLAlchemy 集成，以存储嵌入向量并执行语义搜索。
+aliases: ['/zh/tidb/stable/vector-search-integrate-with-sqlalchemy/','/zh/tidb/dev/vector-search-integrate-with-sqlalchemy/','/zh/tidbcloud/vector-search-integrate-with-sqlalchemy/']
 ---
 
 # 集成 TiDB 向量搜索与 SQLAlchemy

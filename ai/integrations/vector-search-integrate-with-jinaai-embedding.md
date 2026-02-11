@@ -1,6 +1,7 @@
 ---
 title: 集成 TiDB 向量搜索与 Jina AI Embeddings API
 summary: 学习如何将 TiDB 向量搜索与 Jina AI Embeddings API 集成，实现 embedding 存储与语义搜索。
+aliases: ['/zh/tidb/stable/vector-search-integrate-with-jinaai-embedding/','/zh/tidb/dev/vector-search-integrate-with-jinaai-embedding/','/zh/tidbcloud/vector-search-integrate-with-jinaai-embedding/']
 ---
 
 # 集成 TiDB 向量搜索与 Jina AI Embeddings API

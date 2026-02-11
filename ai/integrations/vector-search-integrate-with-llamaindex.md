@@ -1,6 +1,7 @@
 ---
 title: 集成向量搜索与 LlamaIndex
 summary: 学习如何将 TiDB 向量搜索与 LlamaIndex 集成。
+aliases: ['/zh/tidb/stable/vector-search-integrate-with-llamaindex/','/zh/tidb/dev/vector-search-integrate-with-llamaindex/','/zh/tidbcloud/vector-search-integrate-with-llamaindex/']
 ---
 
 # 集成向量搜索与 LlamaIndex

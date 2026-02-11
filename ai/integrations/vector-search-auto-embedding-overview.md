@@ -1,6 +1,7 @@
 ---
 title: Auto Embedding 概述
 summary: 了解如何使用 Auto Embedding 通过纯文本而非向量进行语义搜索。
+aliases: ['/zh/tidbcloud/vector-search-auto-embedding-overview/']
 ---
 
 # Auto Embedding 概述

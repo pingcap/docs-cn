@@ -1,6 +1,7 @@
 ---
 title: 提升向量搜索性能
 summary: 学习提升 TiDB 向量搜索性能的最佳实践。
+aliases: ['/zh/tidb/stable/vector-search-improve-performance/','/zh/tidb/dev/vector-search-improve-performance/','/zh/tidbcloud/vector-search-improve-performance/']
 ---
 
 # 提升向量搜索性能

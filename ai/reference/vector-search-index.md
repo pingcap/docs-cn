@@ -1,6 +1,7 @@
 ---
 title: 向量搜索索引
 summary: 了解如何在 TiDB 中构建和使用向量搜索索引，以加速 K-最近邻（KNN）查询。
+aliases: ['/zh/tidb/stable/vector-search-index/','/zh/tidb/dev/vector-search-index/','/zh/tidbcloud/vector-search-index/']
 ---
 
 # 向量搜索索引

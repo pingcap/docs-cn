@@ -1,6 +1,7 @@
 ---
 title: NVIDIA NIM Embeddings
 summary: 了解如何在 TiDB Cloud 中使用 NVIDIA NIM embedding 模型。
+aliases: ['/zh/tidbcloud/vector-search-auto-embedding-nvidia-nim/']
 ---
 
 # NVIDIA NIM Embeddings

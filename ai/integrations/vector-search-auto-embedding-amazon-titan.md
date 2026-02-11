@@ -1,6 +1,7 @@
 ---
 title: Amazon Titan Embeddings
 summary: 了解如何在 TiDB Cloud 中使用 Amazon Titan 嵌入模型。
+aliases: ['/zh/tidbcloud/vector-search-auto-embedding-amazon-titan/']
 ---
 
 # Amazon Titan Embeddings
