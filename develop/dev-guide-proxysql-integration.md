@@ -1,6 +1,7 @@
 ---
 title: ProxySQL 集成指南
 summary: 了解如何将本地部署的 TiDB 或 TiDB Cloud 集群与 ProxySQL 集成。
+aliases: ['/zh/tidb/stable/dev-guide-proxysql-integration/','/zh/tidb/dev/dev-guide-proxysql-integration/','/zh/tidbcloud/dev-guide-proxysql-integration/']
 ---
 
 # ProxySQL 集成指南
@@ -10,7 +11,7 @@ summary: 了解如何将本地部署的 TiDB 或 TiDB Cloud 集群与 ProxySQL �
 关于 TiDB 和 ProxySQL 的更多信息，请参考以下文档：
 
 - [TiDB Cloud](https://docs.pingcap.com/tidbcloud)
-- [TiDB 开发者指南](/develop/dev-guide-overview.md)
+- [TiDB 开发者指南](/develop/_index.md)
 - [ProxySQL 文档](https://proxysql.com/documentation/)
 
 ## 什么是 ProxySQL？

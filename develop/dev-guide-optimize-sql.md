@@ -1,6 +1,7 @@
 ---
 title: SQL 性能调优
 summary: 介绍 TiDB 的 SQL 性能调优方案和分析办法。
+aliases: ['/zh/tidb/stable/dev-guide-optimize-sql/','/zh/tidb/dev/dev-guide-optimize-sql/','/zh/tidbcloud/dev-guide-optimize-sql/']
 ---
 
 # SQL 性能调优
@@ -9,13 +10,13 @@ summary: 介绍 TiDB 的 SQL 性能调优方案和分析办法。
 
 ## 准备工作
 
-在开始之前，你可以[通过 `tiup demo` 命令导入](/develop/dev-guide-bookshop-schema-design.md#方法一通过-tiup-demo-命令行)示例数据：
+在开始之前，你可以[通过 `tiup demo` 命令导入](/develop/dev-guide-bookshop-schema-design.md#本地部署的-tidb通过-tiup-demo-命令行)示例数据：
 
 ```shell
 tiup demo bookshop prepare --books 1000000 --host 127.0.0.1 --port 4000
 ```
 
-或[使用 TiDB Cloud 的 Import 功能导入](/develop/dev-guide-bookshop-schema-design.md#方法二通过-tidb-cloud-import-功能)预先准备好的示例数据。
+或[使用 TiDB Cloud 的 Import 功能导入](/develop/dev-guide-bookshop-schema-design.md#tidb-cloud通过-import-功能)预先准备好的示例数据。
 
 ## 问题：全表扫描
 

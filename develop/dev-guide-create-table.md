@@ -1,6 +1,7 @@
 ---
 title: 创建表
 summary: 创建表的方法、规范及例子。
+aliases: ['/zh/tidb/stable/dev-guide-create-table/','/zh/tidb/dev/dev-guide-create-table/','/zh/tidbcloud/dev-guide-create-table/']
 ---
 
 # 创建表
@@ -235,11 +236,9 @@ CREATE TABLE `bookshop`.`users` (
 
 这种场景下，TiDB 就是一个比较理想的一站式数据库解决方案，TiDB 是一个 **HTAP (Hybrid Transactional and Analytical Processing)** 数据库，同时支持 OLTP 和 OLAP 场景。
 
+在 TiDB 中，你可以使用行存储引擎 [TiKV](/tikv-overview.md) 进行在线事务处理 (OLTP)，使用列存储引擎 [TiFlash](/tiflash/tiflash-overview.md) 进行在线分析处理（OLAP）。完成相关配置后，TiFlash 将基于 Raft Learner Consensus 算法实时从 TiKV 同步数据，从而确保 TiKV 与 TiFlash 之间的数据强一致。
+
 ### 同步列存数据
-
-当前，TiDB 支持两种数据分析引擎：**TiFlash** 和 **TiSpark**。大数据场景 (100 T) 下，推荐使用 TiFlash MPP 作为 HTAP 的主要方案，TiSpark 作为补充方案。希望了解更多关于 TiDB 的 HTAP 能力，可参考以下文章：[快速上手 HTAP](/quick-start-with-htap.md) 和[深入探索 HTAP](/explore-htap.md)。
-
-此处选用 [TiFlash](/tiflash/tiflash-overview.md) 为 `bookshop` 数据库的数据分析引擎。
 
 TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表，开启同步副本仅需一行 SQL，如下所示：
 

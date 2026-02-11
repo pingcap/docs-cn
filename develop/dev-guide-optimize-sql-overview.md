@@ -1,6 +1,7 @@
 ---
 title: 概览
 summary: 介绍 TiDB 的 SQL 性能调优概览。
+aliases: ['/zh/tidb/stable/dev-guide-optimize-sql-overview/','/zh/tidb/dev/dev-guide-optimize-sql-overview/','/zh/tidbcloud/dev-guide-optimize-sql-overview/']
 ---
 
 # 概览
@@ -28,4 +29,5 @@ summary: 介绍 TiDB 的 SQL 性能调优概览。
 
 ## 推荐阅读
 
-- [SQL 性能调优](/sql-tuning-overview.md)。
+- TiDB Cloud 文档：[SQL 调优概述](https://docs.pingcap.com/zh/tidbcloud/tidb-cloud-sql-tuning-overview/)
+- TiDB 文档：[SQL 性能调优](/sql-tuning-overview.md)

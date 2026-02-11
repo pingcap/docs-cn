@@ -1,6 +1,7 @@
 ---
 title: 性能调优最佳实践
 summary: 介绍使用 TiDB 的性能调优最佳实践。
+aliases: ['/zh/tidb/stable/dev-guide-optimize-sql-best-practices/','/zh/tidb/dev/dev-guide-optimize-sql-best-practices/','/zh/tidbcloud/dev-guide-optimize-sql-best-practices/']
 ---
 
 # 性能调优最佳实践
@@ -165,7 +166,7 @@ SET @@global.tidb_ddl_reorg_batch_size = 128;
 
 ## Java 数据库应用开发最佳实践
 
-[开发 Java 应用使用 TiDB 的最佳实践](https://tidb.net/blog/ae01003e)。
+[开发 Java 应用使用 TiDB 的最佳实践](/develop/java-app-best-practices.md).。
 
 ### 推荐阅读
 

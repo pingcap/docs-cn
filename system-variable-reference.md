@@ -441,7 +441,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 - [TiDB 中的各种超时](/develop/dev-guide-timeouts-in-tidb.md)
 - [TiDB 集群管理常见问题](/faq/manage-cluster-faq.md)
-- [开发 Java 应用使用 TiDB 的最佳实践](/best-practices/java-app-best-practices.md)
+- [开发 Java 应用使用 TiDB 的最佳实践](/develop/java-app-best-practices.md)
 - [系统变量](/system-variables.md#interactive_timeout)
 - [TiDB 3.0 Beta Release Notes](/releases/release-3.0-beta.md)
 - [TiDB 3.0 GA Release Notes](/releases/release-3.0-ga.md)
@@ -527,7 +527,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md)
 - [TiDB OOM 故障排查](/troubleshoot-tidb-oom.md)
 - [TiDB 中的各种超时](/develop/dev-guide-timeouts-in-tidb.md)
-- [开发 Java 应用使用 TiDB 的最佳实践](/best-practices/java-app-best-practices.md)
+- [开发 Java 应用使用 TiDB 的最佳实践](/develop/java-app-best-practices.md)
 - [执行计划管理 (SPM)](/sql-plan-management.md)
 - [系统变量](/system-variables.md#max_execution_time)
 - [连接池与连接参数](/develop/dev-guide-connection-parameters.md)
@@ -712,14 +712,9 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [使用 Django 连接到 TiDB](/develop/dev-guide-sample-application-python-django.md)
 - [使用 MySQL Connector/Python 连接到 TiDB](/develop/dev-guide-sample-application-python-mysql-connector.md)
 - [使用 PyMySQL 连接到 TiDB](/develop/dev-guide-sample-application-python-pymysql.md)
-- [使用 Python 开始向量搜索](/vector-search/vector-search-get-started-using-python.md)
 - [使用 SQLAlchemy 连接到 TiDB](/develop/dev-guide-sample-application-python-sqlalchemy.md)
 - [使用 peewee 连接到 TiDB](/develop/dev-guide-sample-application-python-peewee.md)
-- [在 LangChain 中使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-langchain.md)
-- [在 LlamaIndex 中使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-llamaindex.md)
-- [在 SQLAlchemy 中使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-sqlalchemy.md)
 - [系统变量](/system-variables.md#ssl_ca)
-- [结合 Jina AI 嵌入模型 API 使用 TiDB 向量搜索](/vector-search/vector-search-integrate-with-jinaai-embedding.md)
 
 ### ssl_cert
 
@@ -1183,7 +1178,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [ADMIN ALTER DDL JOBS](/sql-statements/sql-statement-admin-alter-ddl.md)
 - [ADMIN SHOW DDL [JOBS|JOB QUERIES]](/sql-statements/sql-statement-admin-show-ddl.md)
 - [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
-- [DDL 语句的执行原理及最佳实践](/ddl-introduction.md)
+- [DDL 语句的执行原理及最佳实践](/best-practices/ddl-introduction.md)
 - [SHOW [GLOBAL|SESSION] VARIABLES](/sql-statements/sql-statement-show-variables.md)
 - [SQL 操作常见问题](/faq/sql-faq.md)
 - [TiDB 分布式执行框架 (DXF)](/tidb-distributed-execution-framework.md)
@@ -1227,7 +1222,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [ADMIN ALTER DDL JOBS](/sql-statements/sql-statement-admin-alter-ddl.md)
 - [ADMIN SHOW DDL [JOBS|JOB QUERIES]](/sql-statements/sql-statement-admin-show-ddl.md)
 - [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
-- [DDL 语句的执行原理及最佳实践](/ddl-introduction.md)
+- [DDL 语句的执行原理及最佳实践](/best-practices/ddl-introduction.md)
 - [SHOW [GLOBAL|SESSION] VARIABLES](/sql-statements/sql-statement-show-variables.md)
 - [SQL 操作常见问题](/faq/sql-faq.md)
 - [TiDB 分布式执行框架 (DXF)](/tidb-distributed-execution-framework.md)
@@ -1634,7 +1629,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
-- [开发 Java 应用使用 TiDB 的最佳实践](/best-practices/java-app-best-practices.md)
+- [开发 Java 应用使用 TiDB 的最佳实践](/develop/java-app-best-practices.md)
 - [系统变量](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入)
 - [连接池与连接参数](/develop/dev-guide-connection-parameters.md)
 - [TiDB 8.3.0 Release Notes](/releases/release-8.3.0.md)
@@ -1994,7 +1989,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [TiDB 内存控制文档](/configure-memory-usage.md)
 - [TiDB 配置文件描述](/tidb-configuration-file.md)
 - [为 TiDB 落盘文件开启加密](/enable-disk-spill-encrypt.md)
-- [开发 Java 应用使用 TiDB 的最佳实践](/best-practices/java-app-best-practices.md)
+- [开发 Java 应用使用 TiDB 的最佳实践](/develop/java-app-best-practices.md)
 - [用 EXPLAIN 查看 JOIN 查询的执行计划](/explain-joins.md)
 - [系统变量](/system-variables.md#tidb_enable_tmp_storage_on_oom)
 - [连接池与连接参数](/develop/dev-guide-connection-parameters.md)
@@ -3430,7 +3425,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [SHOW [GLOBAL|SESSION] VARIABLES](/sql-statements/sql-statement-show-variables.md)
 - [只读存储节点最佳实践](/best-practices/readonly-nodes.md)
 - [在三数据中心下就近读取数据](/best-practices/three-dc-local-read.md)
-- [在公有云上部署 TiDB 的最佳实践](/best-practices-on-public-cloud.md)
+- [在公有云上部署 TiDB 的最佳实践](/best-practices/best-practices-on-public-cloud.md)
 - [系统变量](/system-variables.md#tidb_replica_read-从-v40-版本开始引入)
 - [TiDB 8.5.4 Release Notes](/releases/release-8.5.4.md)
 - [TiDB 8.5.3 Release Notes](/releases/release-8.5.3.md)
@@ -3960,7 +3955,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 
 引用该变量的文档：
 
-- [在公有云上部署 TiDB 的最佳实践](/best-practices-on-public-cloud.md)
+- [在公有云上部署 TiDB 的最佳实践](/best-practices/best-practices-on-public-cloud.md)
 - [系统变量](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v530-版本开始引入)
 - [TiDB 5.3 Release Notes](/releases/release-5.3.0.md)
 
@@ -4348,7 +4343,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [TiDB 中的各种超时](/develop/dev-guide-timeouts-in-tidb.md)
 - [TiDB 集群管理常见问题](/faq/manage-cluster-faq.md)
 - [TiProxy 简介](/tiproxy/tiproxy-overview.md)
-- [开发 Java 应用使用 TiDB 的最佳实践](/best-practices/java-app-best-practices.md)
+- [开发 Java 应用使用 TiDB 的最佳实践](/develop/java-app-best-practices.md)
 - [系统变量](/system-variables.md#wait_timeout)
 - [连接池与连接参数](/develop/dev-guide-connection-parameters.md)
 - [TiDB 3.0 Beta Release Notes](/releases/release-3.0-beta.md)
