@@ -1,14 +1,14 @@
 ---
-title: 自动嵌入示例
+title: Auto Embedding 示例
 summary: 使用内置嵌入模型为你的文本数据自动生成嵌入向量。
 ---
 
-# 自动嵌入示例
+# Auto Embedding 示例
 
-本示例展示如何通过 [Auto Embedding](/ai/integrations/vector-search-auto-embedding-overview.md) 功能，结合 [pytidb](https://github.com/pingcap/pytidb) client 使用自动嵌入。
+本示例展示如何通过 [Auto Embedding](/ai/integrations/vector-search-auto-embedding-overview.md) 功能，结合 [pytidb](https://github.com/pingcap/pytidb) client 使用 Auto Embedding。
 
 1. 使用 `pytidb` client 连接 TiDB。
-2. 定义一个配置了自动嵌入的 VectorField 的表。
+2. 定义一个配置了 Auto Embedding 的 VectorField 的表。
 3. 插入纯文本数据：嵌入向量会在后台自动填充。
 4. 使用自然语言查询进行向量搜索：嵌入向量会透明地生成。
 

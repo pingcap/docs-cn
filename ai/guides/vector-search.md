@@ -115,9 +115,9 @@ VALUES
 >
 > 在实际应用中，嵌入通常由[嵌入模型](/ai/concepts/vector-search-overview.md#embedding-model)生成。
 
-为方便起见，pytidb 提供了自动嵌入功能，可以在插入、修改或查询时自动为你的文本字段生成向量嵌入，无需手动处理。
+为方便起见，pytidb 提供了 Auto Embedding 功能，可以在插入、修改或查询时自动为你的文本字段生成向量嵌入，无需手动处理。
 
-详细信息请参见 [自动嵌入](/ai/guides/auto-embedding.md) 指南。
+详细信息请参见 [Auto Embedding](/ai/guides/auto-embedding.md) 指南。
 
 </div>
 </SimpleTab>

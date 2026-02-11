@@ -40,7 +40,7 @@ aliases: ['/tidbcloud/vector-search-auto-embedding-openai/']
 
 本示例展示如何创建向量表、插入文档，并使用 OpenAI 向量嵌入模型进行相似度搜索。
 
-你可以通过 AI SDK 或原生 SQL 函数，将 OpenAI 向量嵌入 API 集成到 TiDB，实现自动嵌入生成。
+你可以通过 AI SDK 或原生 SQL 函数，将 OpenAI 向量嵌入 API 集成到 TiDB，实现 Auto Embedding 生成。
 
 ### 步骤 1：连接数据库
 

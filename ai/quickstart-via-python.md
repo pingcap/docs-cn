@@ -170,7 +170,7 @@ table = client.create_table(schema=Chunk, if_exists="overwrite")
 
 ```python
 table.bulk_insert([
-    # 👇 文本会被自动嵌入并填充到 `text_vec` 字段中。
+    # 👇 文本会被 Auto Embedding 并填充到 `text_vec` 字段中。
     Chunk(text="PyTiDB is a Python library for developers to connect to TiDB.", user_id=2),
     Chunk(text="LlamaIndex is a framework for building AI applications.", user_id=2),
     Chunk(text="OpenAI is a company and platform that provides AI models service and tools.", user_id=3),
@@ -183,7 +183,7 @@ table.bulk_insert([
 
 ```python
 table.search(
-    # 👇 直接传入 query 文本，会自动嵌入为 query 向量。
+    # 👇 直接传入 query 文本，会 Auto Embedding 为 query 向量。
     "A library for my artificial intelligence software"
 )
 .limit(3).to_list()

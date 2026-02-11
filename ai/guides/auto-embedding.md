@@ -1,15 +1,15 @@
 ---
-title: 自动嵌入
-summary: 了解如何在你的应用程序中使用自动嵌入功能。
+title: Auto Embedding
+summary: 了解如何在你的应用程序中使用 Auto Embedding 功能。
 ---
 
-# 自动嵌入
+# Auto Embedding
 
-自动嵌入功能会为你的文本数据自动生成向量嵌入。
+Auto Embedding 功能会为你的文本数据自动生成向量嵌入。
 
 > **注意：**
 >
-> 有关自动嵌入的完整示例，请参见 [Auto Embedding Example](/ai/examples/auto-embedding-with-pytidb.md)。
+> 有关 Auto Embedding 的完整示例，请参见 [Auto Embedding Example](/ai/examples/auto-embedding-with-pytidb.md)。
 
 ## 基本用法
 
@@ -31,7 +31,7 @@ embed_func = EmbeddingFunction(
 
 使用 `embed_func.VectorField()` 在表结构中创建一个向量字段。
 
-要启用自动嵌入，请将 `source_field` 设置为你想要嵌入的字段。
+要启用 Auto Embedding，请将 `source_field` 设置为你想要嵌入的字段。
 
 ```python hl_lines="7"
 from pytidb.schema import TableModel, Field
@@ -65,7 +65,7 @@ table.bulk_insert([
 
 ### 第 4 步. 执行向量查询
 
-你可以将查询文本直接传递给 `search()` 方法。查询文本会被自动嵌入，然后用于向量查询。
+你可以将查询文本直接传递给 `search()` 方法。查询文本会被 Auto Embedding，然后用于向量查询。
 
 ```python
 table.search("HTAP database").limit(3).to_list()

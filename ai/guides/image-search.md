@@ -7,7 +7,7 @@ summary: 了解如何在你的应用中使用图像搜索。
 
 **图像搜索** 通过比较图像的视觉内容（而不仅仅是文本或元信息）来帮助你查找相似的镜像。该功能适用于电商、内容审核、数字资产管理，以及任何需要基于外观搜索或去重镜像的场景。
 
-TiDB 通过 **向量搜索** 实现图像搜索。借助自动嵌入，你可以使用多模态嵌入模型，从镜像 URL、PIL 镜像或关键字文本生成镜像嵌入。TiDB 随后可以在扩展下搜索相似的向量。
+TiDB 通过 **向量搜索** 实现图像搜索。借助 Auto Embedding，你可以使用多模态嵌入模型，从镜像 URL、PIL 镜像或关键字文本生成镜像嵌入。TiDB 随后可以在扩展下搜索相似的向量。
 
 > **注意：**
 >
@@ -66,7 +66,7 @@ table.bulk_insert([
 
 ### 第 4 步. 执行图像搜索
 
-图像搜索是一种向量搜索。借助自动嵌入，你可以直接提供镜像 URL、PIL 镜像或关键字文本，每种输入都会被转换为嵌入用于相似性匹配。
+图像搜索是一种向量搜索。借助 Auto Embedding，你可以直接提供镜像 URL、PIL 镜像或关键字文本，每种输入都会被转换为嵌入用于相似性匹配。
 
 #### 选项 1：通过镜像 URL 搜索
 
@@ -106,6 +106,6 @@ results = table.search("orange tabby cat").limit(3).to_list()
 
 ## 另请参阅
 
-- [自动嵌入指南](/ai/guides/auto-embedding.md)
+- [Auto Embedding 指南](/ai/guides/auto-embedding.md)
 - [向量搜索指南](/ai/concepts/vector-search-overview.md)
 - [Image Search Example](/ai/examples/image-search-with-pytidb.md)

@@ -27,7 +27,7 @@ Auto Embedding 功能允许你直接使用纯文本进行向量搜索，无需�
 以下示例展示了如何结合余弦距离使用 Auto Embedding 进行语义搜索。本示例无需 API key。
 
 ```sql
--- 创建带有自动嵌入的表
+-- 创建带有 Auto Embedding 的表
 -- 向量列的维度必须与嵌入模型的维度一致；
 -- 否则，TiDB 在插入数据时会返回错误。
 CREATE TABLE documents (
@@ -74,7 +74,7 @@ LIMIT 3;
 Auto Embedding 可与 [向量索引](/ai/reference/vector-search-index.md) 结合使用，以提升查询性能。你可以在生成的向量列上定义向量索引，系统会自动使用该索引：
 
 ```sql
--- 创建带有自动嵌入和向量索引的表
+-- 创建带有 Auto Embedding 和向量索引的表
 CREATE TABLE documents (
     id INT PRIMARY KEY AUTO_INCREMENT,
     content TEXT,
