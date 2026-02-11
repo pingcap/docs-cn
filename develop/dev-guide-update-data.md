@@ -1,7 +1,7 @@
 ---
 title: 更新数据
 summary: 更新数据、批量更新数据的方法、最佳实践及例子。
-aliases: ['/zh/tidb/stable/dev-guide-update-data/','/zh/tidb/dev/dev-guide-update-data/','/zh/tidbcloud/dev-guide-update-data/']
+aliases: ['/zh/tidb/dev/update-data','/zh/tidb/stable/dev-guide-update-data/','/zh/tidb/dev/dev-guide-update-data/','/zh/tidbcloud/dev-guide-update-data/']
 ---
 
 # 更新数据

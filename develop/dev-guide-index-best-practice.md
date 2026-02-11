@@ -1,7 +1,7 @@
 ---
 title: 索引的最佳实践
 summary: 介绍 TiDB 中索引的最佳实践。
-aliases: ['/zh/tidb/stable/dev-guide-index-best-practice/','/zh/tidb/dev/dev-guide-index-best-practice/','/zh/tidbcloud/dev-guide-index-best-practice/']
+aliases: ['/zh/tidb/dev/index-best-practice','/zh/tidb/stable/dev-guide-index-best-practice/','/zh/tidb/dev/dev-guide-index-best-practice/','/zh/tidbcloud/dev-guide-index-best-practice/']
 ---
 
 <!-- markdownlint-disable MD029 -->

@@ -1,7 +1,7 @@
 ---
 title: Stale Read
 summary: 使用 Stale Read 在特定情况下加速查询。
-aliases: ['/zh/tidb/stable/dev-guide-use-stale-read/','/zh/tidb/dev/dev-guide-use-stale-read/','/zh/tidbcloud/dev-guide-use-stale-read/']
+aliases: ['/zh/tidb/dev/use-stale-read','/zh/tidb/stable/dev-guide-use-stale-read/','/zh/tidb/dev/dev-guide-use-stale-read/','/zh/tidbcloud/dev-guide-use-stale-read/']
 ---
 
 # Stale Read

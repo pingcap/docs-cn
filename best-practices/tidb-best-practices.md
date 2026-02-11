@@ -1,5 +1,6 @@
 ---
 title: TiDB 最佳实践
+aliases: ['/docs-cn/dev/best-practices/tidb-best-practices/']
 summary: TiDB 最佳实践总结了使用 TiDB 的一些优化技巧，包括 Raft 一致性协议、分布式事务、数据分片、负载均衡、SQL 到 KV 的映射方案、二级索引的实现方法等。建议阅读官方文档和知乎专栏了解更多细节。部署时推荐使用 TiUP，导入数据时可对 TiKV 参数进行调优。在写入和查询时需注意事务大小限制和并发度设置。监控系统和日志查看也是了解系统状态的重要方法。适用场景包括数据量大、不希望做 Sharding、需要事务和强一致性等。
 aliases: ['/zh/tidb/stable/tidb-best-practices/','/zh/tidb/dev/tidb-best-practices/']
 ---
