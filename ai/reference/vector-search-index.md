@@ -70,7 +70,7 @@ aliases: ['/zh/tidb/stable/vector-search-index/','/zh/tidb/dev/vector-search-ind
 
 向量索引只能创建在定长向量列上，例如定义为 `VECTOR(3)` 的列。不能为非定长向量列（如定义为 `VECTOR` 的列）创建索引，因为只有维度相同的向量之间才能计算距离。
 
-关于向量搜索索引的限制，详见 [限制](#限制)。
+关于向量搜索索引的限制，详见 [限制](#restrictions)。
 
 ## 使用向量索引
 

@@ -33,7 +33,7 @@ TiDB 引入了专为优化向量嵌入存储与搜索设计的 [向量数据类�
 
 ### 嵌入模型 {#embedding-model}
 
-嵌入模型（embedding model）是一种将数据转换为 [向量嵌入](#向量嵌入) 的算法。
+嵌入模型（embedding model）是一种将数据转换为 [向量嵌入](#vector-embedding) 的算法。
 
 选择合适的嵌入模型对于确保语义搜索结果的准确性和相关性至关重要。对于非结构化文本数据，你可以在 [Massive Text Embedding Benchmark (MTEB) Leaderboard](https://huggingface.co/spaces/mteb/leaderboard) 上查找表现优异的文本嵌入模型。
 
