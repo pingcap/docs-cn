@@ -1,7 +1,6 @@
 ---
 title: 向量函数与运算符
 summary: 了解可用于向量数据类型的函数与运算符。
-aliases: ['/tidb/stable/vector-search-functions-and-operators/','/tidb/dev/vector-search-functions-and-operators/','/tidbcloud/vector-search-functions-and-operators/']
 ---
 
 # 向量函数与运算符

@@ -1,7 +1,6 @@
 ---
 title: 通过 SQL 快速上手 TiDB + AI
 summary: 学习如何仅使用 SQL 语句快速上手 TiDB 向量搜索，为你的生成式 AI 应用提供支持。
-aliases: ['/tidb/stable/vector-search-get-started-using-sql/','/tidb/dev/vector-search-get-started-using-sql/','/tidbcloud/vector-search-get-started-using-sql/']
 ---
 
 # 通过 SQL 快速上手 TiDB + AI

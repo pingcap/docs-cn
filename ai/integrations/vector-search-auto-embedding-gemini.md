@@ -1,7 +1,6 @@
 ---
 title: Gemini 向量嵌入
 summary: 了解如何在 TiDB Cloud 中使用 Google Gemini 向量嵌入模型。
-aliases: ['/tidbcloud/vector-search-auto-embedding-gemini/']
 ---
 
 # Gemini 向量嵌入

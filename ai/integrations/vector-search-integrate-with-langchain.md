@@ -1,7 +1,6 @@
 ---
 title: 集成向量搜索与 LangChain
 summary: 学习如何将 TiDB 向量搜索集成到 LangChain。
-aliases: ['/tidb/stable/vector-search-integrate-with-langchain/','/tidb/dev/vector-search-integrate-with-langchain/','/tidbcloud/vector-search-integrate-with-langchain/']
 ---
 
 # 集成向量搜索与 LangChain

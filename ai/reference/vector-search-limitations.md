@@ -1,7 +1,6 @@
 ---
 title: 向量搜索限制
 summary: 了解 TiDB 向量搜索的限制。
-aliases: ['/tidb/stable/vector-search-limitations/','/tidb/dev/vector-search-limitations/','/tidbcloud/vector-search-limitations/']
 ---
 
 # 向量搜索限制

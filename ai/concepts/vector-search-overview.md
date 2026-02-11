@@ -1,7 +1,6 @@
 ---
 title: Vector Search Overview
 summary: 了解 TiDB 中的向量搜索功能。该功能为文档、图片、音频和视频等多种数据类型提供了先进的语义相似性搜索解决方案。
-aliases: ['/tidb/stable/vector-search-overview/','/tidb/dev/vector-search-overview/','/tidbcloud/vector-search-overview/']
 ---
 
 # 向量搜索概述

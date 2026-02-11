@@ -1,7 +1,6 @@
 ---
 title: 使用 Python 快速入门 TiDB + AI
 summary: 学习如何使用 Python 和 TiDB 向量搜索快速开发一个实现语义搜索的 AI 应用。
-aliases: ['/tidb/stable/vector-search-get-started-using-python/','/tidb/dev/vector-search-get-started-using-python/','/tidbcloud/vector-search-get-started-using-python/']
 ---
 
 # 使用 Python 快速入门 TiDB + AI

@@ -1,7 +1,6 @@
 ---
 title: 向量搜索更新日志
 summary: 了解 TiDB 向量搜索功能的新特性、兼容性变更、改进和缺陷修复。
-aliases: ['/tidbcloud/vector-search-changelogs/']
 ---
 
 # 向量搜索更新日志

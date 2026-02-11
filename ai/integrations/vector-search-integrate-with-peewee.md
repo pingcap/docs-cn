@@ -1,7 +1,6 @@
 ---
 title: 集成 TiDB 向量搜索与 peewee
 summary: 学习如何将 TiDB 向量搜索与 peewee 集成，以存储嵌入向量并执行语义搜索。
-aliases: ['/tidb/stable/vector-search-integrate-with-peewee/','/tidb/dev/vector-search-integrate-with-peewee/','/tidbcloud/vector-search-integrate-with-peewee/']
 ---
 
 # 集成 TiDB 向量搜索与 peewee

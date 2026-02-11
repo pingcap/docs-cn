@@ -1,7 +1,6 @@
 ---
 title: Cohere 向量嵌入
 summary: 了解如何在 TiDB Cloud 中使用 Cohere 向量嵌入模型。
-aliases: ['/tidbcloud/vector-search-auto-embedding-cohere/']
 ---
 
 # Cohere 向量嵌入

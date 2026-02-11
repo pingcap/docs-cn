@@ -1,7 +1,6 @@
 ---
 title: 使用 Python 快速上手 TiDB + AI
 summary: 学习如何使用 Python SDK 在 TiDB 中开始向量搜索。
-aliases: ['/tidb/stable/vector-search-get-started-using-sql/','/tidb/dev/vector-search-get-started-using-sql/','/tidbcloud/vector-search-get-started-using-sql/']
 ---
 
 # 使用 Python 快速上手 TiDB + AI
