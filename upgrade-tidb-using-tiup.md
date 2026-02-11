@@ -37,7 +37,7 @@ title: 使用 TiUP 升级 TiDB
     4. 按本文档说明将集群升级到 6.5.12 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 - 将 v6.3.0 之前的 TiFlash 升级至 v6.3.0 及之后的版本时，需要特别注意：在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。具体请参考 [6.3.0 版本 Release Notes](/releases/release-6.3.0.md#其他) 中的描述。
-- 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](/releases/release-notes.md)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
+- 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](https://docs.pingcap.com/zh/releases/tidb-self-managed/)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
 - 升级 v5.3 之前版本的集群到 v5.3 及后续版本时，默认部署的 Prometheus 会从 v2.8.1 升级到 v2.27.1，v2.27.1 提供更多的功能并解决了安全风险。Prometheus v2.27.1 相对于 v2.8.1 存在 Alert 时间格式变化，详情见 [Prometheus commit](https://github.com/prometheus/prometheus/commit/7646cbca328278585be15fa615e22f2a50b47d06)。
 
 ## 2. 升级前准备
@@ -48,7 +48,7 @@ title: 使用 TiUP 升级 TiDB
 
 查阅 TiDB release notes 中的兼容性变更。如果有任何变更影响到了你的升级，请采取相应的措施。
 
-以下为从 v6.4.0 升级至当前版本 (v6.5.12) 所需兼容性变更信息。如果从 v6.3.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 [release notes](/releases/release-notes.md) 中提到的兼容性变更信息。
+以下为从 v6.4.0 升级至当前版本 (v6.5.12) 所需兼容性变更信息。如果从 v6.3.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 [release notes](https://docs.pingcap.com/zh/releases/tidb-self-managed/) 中提到的兼容性变更信息。
 
 - TiDB v6.5.0 release notes 中的[兼容性变更](/releases/release-6.5.0.md#兼容性变更)和[废弃功能](/releases/release-6.5.0.md#废弃功能)
 - TiDB v6.5.1 release notes 中的[兼容性变更](/releases/release-6.5.1.md#兼容性变更)
@@ -281,7 +281,7 @@ Cluster version:    v6.5.12
 
 ### 4.2 升级到 v6.2.0 及以上版本时，如何解决升级卡住的问题
 
-从 v6.2.0 开始，TiDB 默认开启[并发 DDL 框架](/ddl-introduction.md#tidb-在线-ddl-异步变更的原理)执行并发 DDL。该框架改变了 DDL 作业存储方式，由 KV 队列变为表队列。这一变化可能会导致部分升级场景卡住。下面是一些会触发该问题的场景及解决方案：
+从 v6.2.0 开始，TiDB 默认开启[并发 DDL 框架](/best-practices/ddl-introduction.md#tidb-在线-ddl-异步变更的原理)执行并发 DDL。该框架改变了 DDL 作业存储方式，由 KV 队列变为表队列。这一变化可能会导致部分升级场景卡住。下面是一些会触发该问题的场景及解决方案：
 
 - 加载插件导致的卡住
 
