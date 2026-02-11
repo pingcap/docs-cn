@@ -18,11 +18,11 @@ aliases: ['/tidb/stable/vector-search-get-started-using-sql/','/tidb/dev/vector-
 > **注意：**
 >
 > - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB 自主部署](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自主部署和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 及以上）。
+> - 向量搜索功能适用于 [TiDB 自托管](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自托管和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 及以上）。
 
 ## 前置条件
 
-- 访问 [tidbcloud.com](https://tidbcloud.com/) 免费创建一个 TiDB Cloud Starter 集群，或使用 [tiup playground](https://docs.pingcap.com/tidb/stable/quick-start-with-tidb/#deploy-a-local-test-cluster) 在本地部署一个 TiDB 自主部署集群进行测试。
+- 访问 [tidbcloud.com](https://tidbcloud.com/) 免费创建一个 TiDB Cloud Starter 集群，或使用 [tiup playground](https://docs.pingcap.com/tidb/stable/quick-start-with-tidb/#deploy-a-local-test-cluster) 在本地部署一个 TiDB 集群进行测试。
 
 ## 安装
 
@@ -80,9 +80,9 @@ client = TiDBClient.connect(
 > 上述示例仅用于演示。你需要使用你自己的参数，并妥善保管。
 
 </div>
-<div label="TiDB 自主部署">
+<div label="TiDB 自托管">
 
-以下是连接 TiDB 自主部署集群的基本示例：
+以下是连接 TiDB 自托管的基本示例：
 
 ```python
 from pytidb import TiDBClient

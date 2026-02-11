@@ -11,7 +11,7 @@ aliases: ['/tidb/stable/vector-search-integrate-with-sqlalchemy/','/tidb/dev/vec
 > **注意：**
 >
 > - 向量搜索功能目前为 beta 版本，可能会在无提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于[自行部署管理的 TiDB](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于自行部署管理的 TiDB 和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 及以上）。
+> - 向量搜索功能适用于 [TiDB 自托管](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自托管和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 及以上）。
 
 ## 前置条件
 
@@ -101,9 +101,9 @@ pip install pymysql python-dotenv sqlalchemy tidb-vector
     ```
 
 </div>
-<div label="自行部署管理的 TiDB" value="tidb">
+<div label="TiDB 自托管" value="tidb">
 
-对于自行部署管理的 TiDB 集群，在你的 Python 项目根目录下创建 `.env` 文件。将以下内容复制到 `.env` 文件中，并根据你的 TiDB 集群连接参数修改环境变量的值：
+对于自托管的 TiDB 集群，在你的 Python 项目根目录下创建 `.env` 文件。将以下内容复制到 `.env` 文件中，并根据你的 TiDB 集群连接参数修改环境变量的值：
 
 ```dotenv
 TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"

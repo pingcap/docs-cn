@@ -11,7 +11,7 @@ aliases: ['/tidb/stable/vector-search-integrate-with-jinaai-embedding/','/tidb/d
 > **注意：**
 >
 > - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB Self-Managed 和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能适用于 [TiDB 自托管](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自托管和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 ## 前置条件
 
@@ -100,7 +100,7 @@ pip install -r requirements.txt
     ```
 
 </div>
-<div label="自行部署管理的 TiDB" value="tidb">
+<div label="TiDB 自托管" value="tidb">
 
 对于 TiDB Self-Managed 集群，在终端中设置连接 TiDB 集群的环境变量：
 

@@ -13,7 +13,7 @@ aliases: ['/tidb/stable/vector-search-index/','/tidb/dev/vector-search-index/','
 > **注意：**
 >
 > - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于[自行部署管理的 TiDB](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于自行部署管理的 TiDB 和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 及以上（推荐 v8.5.0 及以上）。
+> - 向量搜索功能适用于 [TiDB 自托管](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自托管和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 及以上（推荐 v8.5.0 及以上）。
 
 目前，TiDB 支持 [HNSW（Hierarchical Navigable Small World）](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) 向量搜索索引算法。
 

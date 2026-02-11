@@ -18,7 +18,7 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/ai/concepts/vector-search-ov
 > **注意：**
 >
 > - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于[自行部署管理的 TiDB](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于自行部署管理的 TiDB 和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能适用于 [TiDB 自托管](/overview.md)、[TiDB Cloud Starter](/tidb-cloud/select-cluster-tier.md#starter)、[TiDB Cloud Essential](/tidb-cloud/select-cluster-tier.md#essential) 和 [TiDB Cloud Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-cloud-dedicated)。对于 TiDB 自托管和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 ## 前置条件
 
@@ -56,9 +56,9 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/ai/concepts/vector-search-ov
     ```
 
 </div>
-<div label="自行部署管理的 TiDB" value="tidb">
+<div label="TiDB 自托管" value="tidb">
 
-当你的自行部署管理的 TiDB 集群启动后，在终端中执行集群连接命令。
+当你自托管的 TiDB 集群启动后，在终端中执行集群连接命令。
 
 以下是 macOS 的示例连接命令：
 
