@@ -247,7 +247,7 @@ with get_connection(autocommit=True) as connection:
 <div label="TiDB Cloud" value="tidb-cloud">
 
 - 数据导出：使用 [Dumpling](/dumpling-overview.md) 将 MySQL 或 TiDB 数据导出到本地或云存储。对于 TiDB Cloud Starter 或 Essential 集群，还可以使用 [TiDB Cloud 控制台](https://tidbcloud.com/) 中的 [Export](https://docs.pingcap.com/zh/tidbcloud/serverless-export) 功能高效地导出数据。
-- 数据导入：使用 [TiDB Cloud 控制台](https://tidbcloud.com/) 中的 [Import](https://docs.pingcap.com/zh/tidbcloud/import-sample-data) 功能。你可以导入 Dumpling 导出的数据、导入本地 CSV 文件，或[从云存储导入 CSV 文件到 TiDB Cloud](/tidb-cloud/import-csv-files.md)。
+- 数据导入：使用 [TiDB Cloud 控制台](https://tidbcloud.com/) 中的 [Import](https://docs.pingcap.com/zh/tidbcloud/import-sample-data) 功能。你可以导入 Dumpling 导出的数据、导入本地 CSV 文件，或[从云存储导入 CSV 文件到 TiDB Cloud](https://docs.pingcap.com/zh/tidbcloud/import-csv-files/)。
 - 数据同步：使用 [TiDB Cloud 控制台](https://tidbcloud.com/) 中的 [TiDB Data Migration](https://docs.pingcap.com/zh/tidbcloud/migrate-from-mysql-using-data-migration) 功能。可同步 MySQL 兼容数据库到 TiDB，且支持分库分表数据库的迁移。
 - 数据备份与恢复：使用 [TiDB Cloud 控制台](https://tidbcloud.com/) 中的 [Backup](https://docs.pingcap.com/zh/tidbcloud/backup-and-restore) 功能。与 Dumpling 相比，备份与恢复功能更适用于大数据场景。
 

@@ -1,7 +1,6 @@
 ---
 title: 向量搜索
 summary: 为应用开发者介绍 TiDB 中的向量搜索功能，包括相关概念、教程、集成方式以及参考文档。
-aliases: ['/zh/tidb/stable/vector-search-overview/','/zh/tidb/dev/vector-search-overview/','/zh/tidbcloud/vector-search-overview/']
 ---
 
 # 向量搜索
