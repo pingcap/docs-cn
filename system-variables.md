@@ -2716,7 +2716,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 >
 > TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
 
-### `tidb_foreign_key_check_in_shared_lock` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+### `tidb_foreign_key_check_in_shared_lock` <span class="version-mark">从 v8.5.6 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
