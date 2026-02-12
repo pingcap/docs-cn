@@ -58,7 +58,7 @@ TiDB 版本：8.4.0
   </tr>
   <tr>
     <td rowspan="1">SQL</td>
-    <td>支持<a href="https://docs.pingcap.com/zh/tidb/v8.4/vector-search-overview">向量搜索功能</a>（实验特性）</td>
+    <td>支持<a href="https://docs.pingcap.com/zh/ai/vector-search-overview">向量搜索功能</a>（实验特性）</td>
     <td>向量搜索是一种基于数据语义的搜索方法，可以提供更相关的搜索结果。作为 AI 和大语言模型 (LLM) 的核心功能之一，向量搜索可用于检索增强生成 (Retrieval-Augmented Generation, RAG)、语义搜索、推荐系统等多种场景。</td>
   </tr>
   <tr>
