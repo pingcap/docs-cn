@@ -1,7 +1,7 @@
 ---
 title: 使用 TiDB 的增删改查 SQL
 summary: 简单介绍 TiDB 的增删改查 SQL。
-aliases: ['/zh/tidb/stable/dev-guide-tidb-crud-sql/','/zh/tidb/dev/dev-guide-tidb-crud-sql/','/zh/tidbcloud/dev-guide-tidb-crud-sql/']
+aliases: ['/zh/tidb/dev/tidb-crud-sql','/zh/tidb/stable/dev-guide-tidb-crud-sql/','/zh/tidb/dev/dev-guide-tidb-crud-sql/','/zh/tidbcloud/dev-guide-tidb-crud-sql/']
 ---
 
 # 使用 TiDB 的增删改查 SQL

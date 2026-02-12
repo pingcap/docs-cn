@@ -1,7 +1,7 @@
 ---
 title: 创建二级索引
 summary: 创建二级索引的方法、规范及例子。
-aliases: ['/zh/tidb/stable/dev-guide-create-secondary-indexes/','/zh/tidb/dev/dev-guide-create-secondary-indexes/','/zh/tidbcloud/dev-guide-create-secondary-indexes/']
+aliases: ['/zh/tidb/dev/create-secondary-indexes','/zh/tidb/stable/dev-guide-create-secondary-indexes/','/zh/tidb/dev/dev-guide-create-secondary-indexes/','/zh/tidbcloud/dev-guide-create-secondary-indexes/']
 ---
 
 # 创建二级索引

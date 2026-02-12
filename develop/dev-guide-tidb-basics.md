@@ -1,6 +1,7 @@
 ---
 title: TiDB 基础知识
 summary: 介绍 TiDB 的基础知识，包括事务机制和应用程序与 TiDB 交互的方式。
+aliases: ['/zh/tidb/dev/developer-guide-overview']
 ---
 
 # TiDB 基础知识

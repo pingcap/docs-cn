@@ -1,7 +1,7 @@
 ---
 title: 创建表
 summary: 创建表的方法、规范及例子。
-aliases: ['/zh/tidb/stable/dev-guide-create-table/','/zh/tidb/dev/dev-guide-create-table/','/zh/tidbcloud/dev-guide-create-table/']
+aliases: ['/zh/tidb/dev/create-table','/zh/tidb/stable/dev-guide-create-table/','/zh/tidb/dev/dev-guide-create-table/','/zh/tidbcloud/dev-guide-create-table/']
 ---
 
 # 创建表

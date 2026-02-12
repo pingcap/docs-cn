@@ -1,7 +1,7 @@
 ---
 title: 选择驱动或 ORM 框架
 summary: 选择驱动或 ORM 框架连接 TiDB。
-aliases: ['/zh/tidb/stable/dev-guide-choose-driver-or-orm/','/zh/tidb/dev/dev-guide-choose-driver-or-orm/','/zh/tidbcloud/dev-guide-choose-driver-or-orm/']
+aliases: ['/zh/tidb/dev/choose-driver-or-orm','/zh/tidb/stable/dev-guide-choose-driver-or-orm/','/zh/tidb/dev/dev-guide-choose-driver-or-orm/','/zh/tidbcloud/dev-guide-choose-driver-or-orm/']
 ---
 
 # 选择驱动或 ORM 框架

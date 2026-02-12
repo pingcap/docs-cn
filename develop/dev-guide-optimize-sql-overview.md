@@ -1,7 +1,7 @@
 ---
 title: 概览
 summary: 介绍 TiDB 的 SQL 性能调优概览。
-aliases: ['/zh/tidb/stable/dev-guide-optimize-sql-overview/','/zh/tidb/dev/dev-guide-optimize-sql-overview/','/zh/tidbcloud/dev-guide-optimize-sql-overview/']
+aliases: ['/zh/tidb/dev/optimize-sql-overview','/zh/tidb/stable/dev-guide-optimize-sql-overview/','/zh/tidb/dev/dev-guide-optimize-sql-overview/','/zh/tidbcloud/dev-guide-optimize-sql-overview/']
 ---
 
 # 概览

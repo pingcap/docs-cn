@@ -1,7 +1,7 @@
 ---
 title: 配置连接池与连接参数
 summary: 针对开发者的 TiDB 连接池与连接参数的说明。
-aliases: ['/zh/tidb/stable/dev-guide-connection-parameters/','/zh/tidb/dev/dev-guide-connection-parameters/','/zh/tidbcloud/dev-guide-connection-parameters/']
+aliases: ['/zh/tidb/dev/connection-parameters','/zh/tidb/stable/dev-guide-connection-parameters/','/zh/tidb/dev/dev-guide-connection-parameters/','/zh/tidbcloud/dev-guide-connection-parameters/']
 ---
 
 # 配置连接池与连接参数
