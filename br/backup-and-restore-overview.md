@@ -147,62 +147,8 @@ TiDB v6.6.0 版本之前的 BR 版本兼容性矩阵：
 
 > **注意：**
 >
-> 已知问题：从 v7.2.0 开始，新建集群的部分系统表字段变为大小写不敏感。然而，对于从 v7.2.0 之前的版本**在线升级**到 v7.2.0 及以上版本的集群，对应的系统表字段仍然大小写敏感。如果在这两类集群之间进行包含系统表的备份和恢复操作，可能会失败。详情参见 [Issue #43717](https://github.com/pingcap/tidb/issues/43717)。
-
-<details>
-<summary>检查在目标集群排序规则下是否存在大小写冲突</summary>
-
-从 v8.5.5 起，BR 在恢复系统表时支持通过参数 `--sys-check-collation` 检查排序规则（collation）兼容性。在恢复过程中，BR 会验证系统表数据在目标集群排序规则下是否存在大小写冲突。
-
-- 如果数据在目标 collation 下兼容，则可以成功恢复旧版本备份
-- 如果检测到冲突（例如同时存在 `test.t1` 与 `test.T1`），BR 会报错并终止恢复
-
-如果恢复前上游集群仍然存在，可以在上游集群手动执行以下 SQL，对系统表进行预检查。通过比较原始记录数与按目标 collation 分组后的记录数是否一致，可以判断在目标排序规则下是否会产生冲突。
-
-请将下列 SQL 中的 `utf8mb4_general_ci` 替换为目标集群的默认 collation。
-
-第一组 SQL：
-
-```sql
-SELECT COUNT(1) FROM mysql.db;
-SELECT COUNT(1) FROM (
-  SELECT Host, DB COLLATE utf8mb4_general_ci, User
-  FROM mysql.db
-  GROUP BY Host, DB COLLATE utf8mb4_general_ci, User
-) AS a;
-```
-
-第二组 SQL：
-
-```sql
-SELECT COUNT(1) FROM mysql.tables_priv;
-SELECT COUNT(1) FROM (
-  SELECT Host, DB COLLATE utf8mb4_general_ci, User,
-         Table_name COLLATE utf8mb4_general_ci
-  FROM mysql.tables_priv
-  GROUP BY Host, DB COLLATE utf8mb4_general_ci, User,
-           Table_name COLLATE utf8mb4_general_ci
-) AS a;
-```
-
-第三组 SQL：
-
-```sql
-SELECT COUNT(1) FROM mysql.columns_priv;
-SELECT COUNT(1) FROM (
-  SELECT Host, DB COLLATE utf8mb4_general_ci, User,
-         Table_name COLLATE utf8mb4_general_ci,
-         Column_name COLLATE utf8mb4_general_ci
-  FROM mysql.columns_priv
-  GROUP BY Host, DB COLLATE utf8mb4_general_ci, User,
-           Table_name COLLATE utf8mb4_general_ci,
-           Column_name COLLATE utf8mb4_general_ci
-) AS a;
-```
-
-若两次 `COUNT` 结果一致，则表示在目标 collation 下不会产生大小写冲突。
-
-</details>
+> - 已知问题：从 v7.2.0 开始，新建集群的部分系统表字段变为大小写不敏感。然而，对于从 v7.2.0 之前的版本**在线升级**到 v7.2.0 及以上版本的集群，对应的系统表字段仍然大小写敏感。如果在这两类集群之间进行包含系统表的备份和恢复操作，可能会失败。详情参见 [Issue #43717](https://github.com/pingcap/tidb/issues/43717)。
+> - 从 v8.5.5 起，BR 在恢复系统表时支持通过参数 `--sys-check-collation` 检查排序规则（collation）兼容性。在恢复过程中，BR 会验证系统表数据在目标集群排序规则下是否存在大小写冲突。
 
 下表列出了全量备份的兼容性矩阵，表格中所有信息均适用于新建集群。如果备份集群是从 v7.2.0 之前升级过来的集群，行为等同于 v7.1.0：
 
