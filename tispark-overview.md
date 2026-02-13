@@ -1,6 +1,7 @@
 ---
 title: TiSpark 用户指南
 summary: 使用 TiSpark 一站式解决用户的 HTAP 需求。
+aliases: ['/zh/tidb/stable/tispark-overview/','/zh/tidb/dev/tispark-overview/']
 ---
 
 # TiSpark 用户指南

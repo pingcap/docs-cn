@@ -1,6 +1,7 @@
 ---
 title: 使用 TiSpark 读取 TiFlash
 summary: 了解如何使用 TiSpark 读取 TiFlash。
+aliases: ['/zh/tidb/stable/use-tispark-to-read-tiflash/','/zh/tidb/dev/use-tispark-to-read-tiflash/']
 ---
 
 # 使用 TiSpark 读取 TiFlash
