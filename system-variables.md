@@ -5648,6 +5648,10 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 ### `tidb_txn_mode`
 
+> **警告：**
+>
+> TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)。从 v7.1.0 开始，不推荐设置 `tidb_txn_mode` 的值为 `"optimistic"` 或 `""`。
+
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
