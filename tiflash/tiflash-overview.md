@@ -20,7 +20,7 @@ TiFlash 以低消耗不阻塞 TiKV 写入的方式，实时复制 TiKV 集群中
 
 在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `grep avx2 /proc/cpuinfo` 有输出。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。确保命令 `grep 'crc32' /proc/cpuinfo | grep 'asimd'` 有输出。通过使用向量扩展指令集，TiFlash 的向量化引擎能提供更好的性能。
 
-TiFlash 兼容 TiDB。
+TiFlash 兼容 TiDB，可以使用 TiDB 作为 TiFlash 的计算引擎。
 
 TiFlash 推荐使用和 TiKV 不同的节点以做到 Workload 隔离，但在无业务隔离的前提下，也可以选择与 TiKV 同节点部署。
 
@@ -58,7 +58,7 @@ TiFlash 对 TiDB 的计算加速分为两部分：列存本身的读取效率提
 
 TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表。
 
-你可以使用 TiDB 读取 TiFlash，TiDB 适合用于中等规模的 OLAP 计算。具体参见：
+你可以使用 TiDB 读取 TiFlash，具体参见：
 
 - [构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)
 - [使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md)
