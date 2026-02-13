@@ -57,7 +57,7 @@ TiDB HTAP 可以满足企业海量数据的增产需求、降低运维的风险�
 
 ## HTAP 环境准备
 
-在深入探索 TiDB HTAP 功能前，请依据你的数据场景部署 TiDB 以及对应的数据分析引擎。大数据场景 (100 T) 下，推荐使用 TiFlash MPP 作为 HTAP 的方案。
+在深入探索 TiDB HTAP 功能前，请部署 TiDB 以及对应的数据分析引擎 TiFlash。大数据场景 (100 T) 下，推荐使用 TiFlash MPP 作为 HTAP 的方案。
 
 - 如果已经部署 TiDB 集群但尚未部署 TiFlash 节点，请参阅[扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)中的步骤在现有 TiDB 集群中添加 TiFlash 节点。
 - 如果尚未部署 TiDB 集群，请使用 [TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)，并在包含最小拓扑的基础上，同时[增加 TiFlash 拓扑架构](/tiflash-deployment-topology.md)。
