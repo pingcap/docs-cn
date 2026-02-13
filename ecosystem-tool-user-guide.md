@@ -1,6 +1,6 @@
 ---
 title: TiDB 工具功能概览
-summary: TiDB 提供了丰富的工具，包括部署运维工具 TiUP 和 TiDB Operator，数据管理工具如 TiDB Data Migration（DM）、Dumpling、TiDB Lightning、Backup & Restore（BR）、TiCDC、sync-diff-inspector，以及 OLAP 分析工具 TiSpark。这些工具可用于部署、数据迁移、备份恢复、数据校验等多种操作，满足不同需求。
+summary: TiDB 提供了丰富的工具，包括部署运维工具 TiUP 和 TiDB Operator，数据管理工具如 TiDB Data Migration（DM）、Dumpling、TiDB Lightning、Backup & Restore（BR）、TiCDC、sync-diff-inspector。这些工具可用于部署、数据迁移、备份恢复、数据校验等多种操作，满足不同需求。
 ---
 
 # TiDB 工具功能概览
@@ -129,7 +129,3 @@ TiDB 提供了 TiUP 和 TiDB Operator 部署运维工具，满足你在不同系
 - sync-diff-inspector 的输入：TiDB、MySQL
 - sync-diff-inspector 的输出：TiDB、MySQL
 - 适用 TiDB 版本：所有版本
-
-## OLAP 分析工具 - TiSpark
-
-[TiSpark](/tispark-overview.md) 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。它借助 Spark 平台，同时融合 TiKV 分布式集群的优势，和 TiDB 一起为用户一站式解决 HTAP (Hybrid Transactional/Analytical Processing) 的需求。

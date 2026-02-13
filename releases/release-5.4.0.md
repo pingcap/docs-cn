@@ -109,7 +109,7 @@ TiDB 版本：5.4.0
 
     该功能默认关闭。开启后，如果用户没有对应的权限，通过 TiSpark 操作会抛出对应的异常。
 
-    [用户文档](/tispark-overview.md#安全)
+    [用户文档](https://docs.pingcap.com/zh/tidb/v5.4/tispark-overview#安全)
 
 - **TiUP 部署方式支持为 root 用户生成初始密码**
 
