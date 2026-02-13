@@ -116,15 +116,7 @@ tikv_servers:
 set tidb_replica_read=learner;
 ```
 
-#### 3.2 在 TiSpark 中使用 Follower Read
-
-你可以在 Spark 配置文件中设置 `spark.tispark.replica_read = learner` 来读取只读节点上的数据：
-
-```
-spark.tispark.replica_read learner
-```
-
-#### 3.3 在备份集群数据时只备份 Follower 节点
+#### 3.2 在备份集群数据时只备份 Follower 节点
 
 你可以在 br 命令行中添加 `--replica-read-label` 参数，来读取只读节点上的数据。注意，在 shell 中运行如下命令时需使用单引号包裹 label，以防止 `$` 被 shell 解析。
 

@@ -134,7 +134,6 @@
     - [PD 微服务部署拓扑](/pd-microservices-deployment-topology.md)
     - [TiProxy 部署拓扑](/tiproxy/tiproxy-deployment-topology.md)
     - [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
-    - [TiSpark 部署拓扑](/tispark-deployment-topology.md)
     - [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     - [混合部署拓扑结构](/hybrid-deployment-topology.md)
   - [使用 TiUP 部署](/production-deployment-using-tiup.md)
@@ -686,8 +685,6 @@
     - [使用 PingCAP Clinic 生成诊断报告](/clinic/clinic-report.md)
     - [采集 SQL 查询计划信息](/clinic/clinic-collect-sql-query-plan.md)
     - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
-  - TiSpark
-    - [TiSpark 用户指南](/tispark-overview.md)
   - sync-diff-inspector
     - [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     - [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
@@ -720,7 +717,6 @@
     - [TiFlash 简介](/tiflash/tiflash-overview.md)
     - [构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)
     - [使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md)
-    - [使用 TiSpark 读取 TiFlash](/tiflash/use-tispark-to-read-tiflash.md)
     - [使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)
     - [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md)
     - [使用 FastScan 功能](/tiflash/use-fastscan.md)
