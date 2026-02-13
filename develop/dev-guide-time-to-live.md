@@ -56,7 +56,7 @@ ALTER TABLE app_logs TTL = `created_at` + INTERVAL 1 MONTH;
 ALTER TABLE app_logs TTL = `created_at` + INTERVAL 6 MONTH;
 ```
 
-## 关闭 TTL 功能
+### 关闭 TTL 功能
 
 如需关闭表 `app_logs` 的 TTL 功能，可以执行以下语句：
 
