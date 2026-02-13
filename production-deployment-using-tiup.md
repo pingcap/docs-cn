@@ -245,7 +245,6 @@ alertmanager_servers:
 | OLTP 业务 | [部署最小拓扑架构](/minimal-deployment-topology.md) | [简单最小配置模板](/minimal-deployment-topology.md#拓扑模版)<br/>[详细最小配置模板](/minimal-deployment-topology.md#拓扑模版) | 最小集群拓扑，包括 tidb-server、tikv-server、pd-server。 |
 | HTAP 业务 | [部署 TiFlash 拓扑架构](/tiflash-deployment-topology.md) | [简单 TiFlash 配置模版](/tiflash-deployment-topology.md#拓扑模版)<br/>[详细 TiFlash 配置模版](/tiflash-deployment-topology.md#拓扑模版) | 在最小拓扑的基础上部署 TiFlash。TiFlash 是列式存储引擎，已经逐步成为集群拓扑的标配。|
 | 使用 [TiCDC](/ticdc/ticdc-overview.md) 进行增量同步 | [部署 TiCDC 拓扑架构](/ticdc-deployment-topology.md) | [简单 TiCDC 配置模板](/ticdc-deployment-topology.md#拓扑模版)<br/>[详细 TiCDC 配置模板](/ticdc-deployment-topology.md#拓扑模版) | 在最小拓扑的基础上部署 TiCDC。TiCDC 支持多种下游：TiDB、MySQL、Kafka、MQ、Confluent 和存储服务。 |
-| 使用 Spark 的 OLAP 业务 | [部署 TiSpark 拓扑架构](/tispark-deployment-topology.md) | [简单 TiSpark 配置模板](/tispark-deployment-topology.md#拓扑模版)<br/>[详细 TiSpark 配置模板](/tispark-deployment-topology.md#拓扑模版) | 在最小拓扑的基础上部署 TiSpark 组件。TiSpark 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。TiUP cluster 组件对 TiSpark 的支持目前为实验特性。 |
 | 单台机器，多个实例 | [混合部署拓扑架构](/hybrid-deployment-topology.md) | [简单混部配置模板](/hybrid-deployment-topology.md#拓扑模版)<br/>[详细混部配置模板](/hybrid-deployment-topology.md#拓扑模版) | 也适用于单机多实例需要额外增加目录、端口、资源配比、label 等配置的场景。 |
 | 跨机房部署 TiDB 集群 | [跨机房部署拓扑架构](/geo-distributed-deployment-topology.md) | [跨机房配置模板](/geo-distributed-deployment-topology.md#拓扑模版) | 以典型的两地三中心架构为例，介绍跨机房部署架构，以及需要注意的关键设置。 |
 
