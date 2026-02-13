@@ -49,6 +49,7 @@ tiup telemetry enable
 ```shell
 tiup telemetry disable
 ```
+
 ## 查看遥测启用状态
 
 对于 TiUP 遥测，可通过执行以下命令查看遥测状态：
