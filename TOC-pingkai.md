@@ -65,7 +65,7 @@
     - [插入数据](/develop/dev-guide-insert-data.md)
     - [更新数据](/develop/dev-guide-update-data.md)
     - [删除数据](/develop/dev-guide-delete-data.md)
-    - [使用 TTL (Time to Live) 定期删除过期数据](/time-to-live.md)
+    - [使用 TTL (Time to Live) 定期删除过期数据](/develop/dev-guide-time-to-live.md)
     - [预处理语句](/develop/dev-guide-prepared-statement.md)
   - 数据读取
     - [单表读取](/develop/dev-guide-get-data-from-single-table.md)
@@ -1002,6 +1002,7 @@
     - 字符集和排序规则
       - [概述](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)
+    - [TTL (Time to Live)](/time-to-live.md)
     - [Placement Rules in SQL](/placement-rules-in-sql.md)
     - 系统表
       - `mysql` Schema

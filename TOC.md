@@ -874,6 +874,7 @@
     - 字符集和排序规则
       - [概述](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)
+    - [TTL (Time to Live)](/time-to-live.md)
     - [Placement Rules in SQL](/placement-rules-in-sql.md)
     - 系统表
       - `mysql` Schema
