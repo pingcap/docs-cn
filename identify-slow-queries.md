@@ -173,6 +173,18 @@ Slow Query 基础信息：
 - `Storage_from_kv`：从 v9.0.0 开始引入，表示该语句是否从 TiKV 读取数据。
 - `Storage_from_mpp`：从 v9.0.0 开始引入，表示该语句是否从 TiFlash 读取数据。
 
+## `tidb_slow_log_rules` 指标解读
+
+`tidb_slow_log_rules` 适合用于慢日志的“定向采样”和“问题复现”，可按具体指标组合条件筛选目标语句。
+
+常用指标解读：
+
+- `cop_mvcc_read_amplification`：表示 MVCC 读放大比，计算方式为 `Total_keys / Process_keys`。该值较高通常表示扫描了大量无效版本或范围过大，可能与索引命中不佳、旧版本累积等因素有关。
+- `Query_time`：表示语句总执行耗时。若 `Query_time` 高但 `Process_time` 不高，通常需要进一步关注排队、重试等待、网络传输或资源等待等阶段。
+- `Backoff_time`：表示语句重试前的等待时间。该值偏高通常说明存在锁冲突、Region 抖动或存储节点负载压力等问题。
+
+典型规则示例请参考 [`tidb_slow_log_rules` 系统变量文档](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入) 中“使用示例”。
+
 ## 相关 Hint
 
 从 v9.0.0 开始，你可以使用 `WRITE_SLOW_LOG` Hint。该 Hint 用于强制 TiDB 将特定 SQL 的执行信息输出至慢查询日志，无论其执行时长是否达到阈值。这有助于捕获 SQL 执行过程中的详细元数据，如执行计划和资源消耗。例如，在出现偶发性能抖动问题时，某些 SQL 仅在特定条件下（如数据量突增或索引失效）才会变慢，而平时执行速度很快，因此难以通过默认的慢查询阈值捕获。这种情况下，可以预先在业务 SQL 中添加 `WRITE_SLOW_LOG` Hint，确保在问题复现的瞬间，系统能完整记录下该次 SQL 执行的详细信息。
@@ -188,71 +200,11 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
 
 ## 相关系统变量
 
-* [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold)：用于设置慢查询日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢查询日志中。默认值是 300 ms。
-* [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入)：用于定义慢查询日志的触发规则，支持多维度指标组合条件，以实现更加灵活和精细化的日志记录控制。该变量在 v9.0.0 版本中引入，逐步替代传统的单一阈值控制方式，即替代 `tidb_slow_log_threshold` 的使用。该变量支持将以下字段作为筛选条件，设置输出慢查询日志的条件。详情请参考[字段含义说明](#字段含义说明)。
-    - 支持的筛选字段：
-        * Slow Query 基础信息：
-            * `Query_time`、`Parse_time`、`Compile_time`、`Optimize_time`、`Wait_TS`、`Rewrite_time`
-            * `Digest`、`Plan_digest`、`Is_internal`、`Succ`
-            * `Exec_retry_count`、`Backoff_time`、`Write_sql_response_total`
-        * 事务执行相关的字段：
-            * `Prewrite_time`、`Commit_time`、`Write_keys`、`Write_size`、`Prewrite_region`
-        * SQL 执行的用户相关的字段：
-            * `Conn_ID`、`DB`、`Session_alias`
-        * TiKV Coprocessor Task 相关的字段：
-            * `Process_time`、`Total_keys`、`Process_keys`、`Num_cop_tasks`
-        * 内存使用相关的字段：
-            * `Mem_max`
-        * 硬盘使用相关的字段：
-            * `Disk_max`
-        * 资源管控相关的字段：
-            * `Resource_group`
-        * 网络传输相关的字段：
-            * `KV_total`、`PD_total`
-            * `Unpacked_bytes_sent_tikv_total`、`Unpacked_bytes_received_tikv_total`
-            * `Unpacked_bytes_sent_tikv_cross_zone`、`Unpacked_bytes_received_tikv_cross_zone`
-            * `Unpacked_bytes_sent_tiflash_total`、`Unpacked_bytes_received_tiflash_total`
-            * `Unpacked_bytes_sent_tiflash_cross_zone`、`Unpacked_bytes_received_tiflash_cross_zone`
-    * 如果未设置 `tidb_slow_log_rules`：
-        * 慢查询日志触发仍依赖 `tidb_slow_log_threshold`。注：`query_time` 阈值的含义同该变量，均表示 SQL 执行时长阈值，以保持向后兼容。
-    * 如果已设置 `tidb_slow_log_rules`：
-        * 配置的规则优先生效，`tidb_slow_log_threshold` 将被忽略。
-        * 若希望规则中仍使用 SQL 执行时间作为输出慢日志的条件之一，可在设置规则时使用`query_time` 并设置阈值。
-        * 规则匹配逻辑（多条规则之间采用 OR 关系）：
-            * SESSION 作用域规则：优先匹配，如果匹配成功，则打印慢查询日志。
-            * GLOBAL 作用域规则：仅在 SESSION 作用域规则未匹配时考虑：
-                * 若规则指定了 `ConnID` 并与当前会话的 `ConnID` 匹配，则使用该规则。
-                * 若规则未指定 `ConnID`（全局通用规则），则使用该规则。
-        * 使用 `SHOW VARIABLES`、`SELECT @@GLOBAL.tidb_slow_log_rules`、`SELECT @@SESSION.tidb_slow_log_rules` 显示该变量的行为与其他系统变量一致。
-    * 使用示例：
-        * 标准格式（SESSION 作用域）：
-
-          ```sql
-          SET SESSION tidb_slow_log_rules = 'Query_time: 500, Is_internal: false';
-          ```
-
-        * 错误格式（SESSION 作用域不支持 `ConnID`）：
-
-          ```sql
-          SET SESSION tidb_slow_log_rules = 'ConnID: 12, Query_time: 500, Is_internal: false';
-          ```
-
-        * 全局规则（适用于所有连接）：
-
-          ```sql
-          SET GLOBAL tidb_slow_log_rules = 'Query_time: 500, Is_internal: false';
-          ```
-
-        * 指定特定连接的全局规则（分别适用于 `ConnID:11` 和 `ConnID:11` 的两个连接）：
-
-          ```sql
-          SET GLOBAL tidb_slow_log_rules = 'ConnID: 11, Query_time: 500, Is_internal: false; ConnID: 12, Query_time: 600, Process_time: 300, DB: db1';
-          ```
-
-    > **Tip:**
-    >
-    > - `tidb_slow_log_rules` 用于替换单一阈值的方式，实现更灵活和精细化的慢查询日志控制，支持多维度指标组合条件。
-    > - 在资源充足的测试环境（1 个 TiDB 节点，16 核 CPU、48 GiB 内存；3 个 TiKV 节点，每个 16 核 CPU、48 GiB 内存）中，多次 sysbench 测试结果表明：当多维慢查询日志规则在 30 分钟内生成数百万条慢查询日志时，对性能影响较小；但当日志量达到千万级时，TPS 会明显下降，延迟也会显著增加。在业务负载较高或 CPU、内存资源接近瓶颈的情况下，应谨慎配置 `tidb_slow_log_rules`，避免因规则过宽导致日志洪泛。建议结合使用 `tidb_slow_log_max_per_sec` 来限制日志打印速率，以降低对业务性能的影响。
+* [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold)：用于设置慢查询日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢查询日志中。默认值是 300 ms（单位：毫秒）。
+* [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入)：用于定义慢查询日志的触发规则，支持多维度指标组合条件。完整字段列表、取值范围和语法约束，请参见 [`tidb_slow_log_rules` 变量文档](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入)。
+    * 如果未设置 `tidb_slow_log_rules`：慢查询日志触发仍依赖 `tidb_slow_log_threshold`（单位：毫秒）。
+    * 如果已设置 `tidb_slow_log_rules`：配置的规则优先生效，`tidb_slow_log_threshold` 将被忽略。
+    * 注意：`tidb_slow_log_rules` 中 `Query_time`、`Process_time` 等时间类字段单位为秒（可带小数），与 `tidb_slow_log_threshold`（毫秒）不同。
 
 * [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v900-版本开始引入)：用于设置每秒打印慢查询日志数量的上限，默认值为 `0`。
     * 当值为 `0` 时，表示不限制每秒打印的慢查询日志数量。
