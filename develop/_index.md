@@ -149,7 +149,7 @@ aliases: ['zh/tidbcloud/dev-guide-overview/','zh/tidb/dev/dev-guide-overview/','
 
 ## 使用 MySQL 客户端软件
 
-TiDB 与 MySQL 高度兼容，你可以使用许多熟悉的 MySQL 客户端工具来连接 TiDB 并管理数据库。对于 TiDB Cloud 用户，你还可以使用 <a href="/tidbcloud/get-started-with-cli">>TiDB Cloud CLI</a> 来连接和管理数据库。
+TiDB 与 MySQL 高度兼容，你可以使用许多熟悉的 MySQL 客户端工具来连接 TiDB 并管理数据库。对于 TiDB Cloud 用户，你还可以使用 [TiDB Cloud CLI](https://docs.pingcap.com/tidbcloud/get-started-with-cli) 来连接和管理数据库。
 
 <DevToolGroup>
 <DevToolCard title="MySQL Workbench" logo="mysql-1" docLink="/developer/dev-guide-gui-mysql-workbench">
@@ -173,3 +173,11 @@ TiDB 与 MySQL 高度兼容，你可以使用许多熟悉的 MySQL 客户端工�
 
 </DevToolCard>
 </DevToolGroup>
+
+## 其他资源
+
+了解关于应用开发的更多信息。
+
+- 参考 [TiDB 数据库模式设计](/develop/dev-guide-schema-design-overview.md) 来设计数据结构、与数据交互、进行性能优化以及故障排查。
+- 参加 [TiDB 开发者课程](https://pingkai.cn/learn)。
+- 探索 TiDB Cloud 支持的常见[服务集成](https://docs.pingcap.com/tidbcloud/integrate-tidbcloud-with-airbyte)。
