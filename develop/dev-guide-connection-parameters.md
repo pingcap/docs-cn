@@ -32,6 +32,38 @@ Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/Hik
 
 应用在使用连接池时，需要注意连接使用完成后归还连接，推荐应用使用对应的连接池相关监控（如 **metricRegistry**），通过监控能及时定位连接池问题。
 
+### 配置连接的生命周期
+
+TiDB Server 关闭、因维护而重启，或发生异常（如硬件故障或网络问题）时，现有的客户端连接可能会被重置，导致应用程序出现中断或异常。为避免此类问题，对于长期保持的数据库连接，建议每天至少主动关闭并重新建立一次连接。
+
+常见的连接池库通常提供参数，用于控制连接的最长存活时间。
+
+<SimpleTab>
+<div label="HikariCP">
+
+- **`maxLifetime`**：连接在连接池中的最长存活时间。
+
+</div>
+
+<div label="tomcat-jdbc">
+
+- **`maxAge`**：连接在连接池中的最长存活时间。
+
+</div>
+
+<div label="c3p0">
+
+- **`maxConnectionAge`**：连接在连接池中的最长存活时间。
+
+</div>
+
+<div label="dbcp">
+
+- **`maxConnLifetimeMillis`**：连接在连接池中的最长存活时间（单位为毫秒）。
+
+</div>
+</SimpleTab>
+
 ### 探活配置
 
 连接池维护客户端到 TiDB 的长连接的方式如下：
