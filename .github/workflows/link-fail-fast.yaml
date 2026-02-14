@@ -22,7 +22,10 @@ jobs:
         uses: lycheeverse/lychee-action@v2.3.0
         with:
           fail: true
+<<<<<<< HEAD
           failIfEmpty: false
+=======
+>>>>>>> 1b74ad0dd4 (CI: Update LinkChecker URL excludes (#19850) (#21371))
           args: --root-dir $(pwd) -E -i -n -t 45 -- '${{ steps.changed-files.outputs.all_changed_files }}'
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
