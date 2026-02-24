@@ -194,7 +194,7 @@ TiCDC 为 service GC safepoint 设置的默认存活有效期为 24 小时，即
 ||上游时区| TiCDC 时区| 下游时区 |
 | :-: | :-: | :-: | :-: |
 | 配置方式 | 见[时区支持](/configure-time-zone.md) | 启动 ticdc server 时的 `--tz` 参数 |（仅当下游为 `mysql`/`tidb` sink）sink-uri 中的 `time-zone` 参数 |
-| 说明 | 上游 TiDB 的时区，影响 timestamp 类型的 DML 操作和与 timestamp 类型列相关的 DDL 操作。 | TiCDC 会将假设上游 TiDB 的时区和 TiCDC 时区配置相同，对 timestamp 类型的列进行相关处理。 |（仅当下游为 `mysql`/`tidb` sink）下游将按照该连接会话的时区设置对 DML 和 DDL 操作中包含的 timestamp 进行处理。|
+| 说明 | 上游 TiDB 的时区，影响 timestamp 类型的 DML 操作和与 timestamp 类型列相关的 DDL 操作。 | TiCDC 会假设上游 TiDB 的时区与 TiCDC 时区配置相同，并据此对 timestamp 类型的列进行相关处理。 | `mysql`/`tidb` 下游会依据该连接会话的时区设置，对 DML 和 DDL 操作中包含的 timestamp 值进行处理。|
 
 > **说明：**
 >
