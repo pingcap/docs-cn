@@ -104,6 +104,10 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
 和上一条类似，在监控中通过 **Query Summary** > **CPS By Instance** 查看请求中 `COM_STMT_EXECUTE` 数目是否远远多于 `COM_STMT_PREPARE` 来确认是否正常。
 
+#### `readOnlyPropagatesToServer`
+
+请禁用 `readOnlyPropagatesToServer` 参数。启用该参数时，JDBC 驱动会向服务器发送 `SET SESSION TRANSACTION READ ONLY` 语句。TiDB 不支持该语句。此外，该语句也没有必要，因为所有 TiDB 节点都支持读写连接。
+
 #### Batch 相关参数
 
 在进行 batch 写入处理时推荐配置 `rewriteBatchedStatements = true`，在已经使用 `addBatch` 或 `executeBatch` 后默认 JDBC 还是会一条条 SQL 发送，例如：
