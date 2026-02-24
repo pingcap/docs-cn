@@ -281,6 +281,17 @@ Java 驱动程序提供对数据库的底层访问，但要求开发者：
 - 减少管理连接和事务的[模板代码](https://en.wikipedia.org/wiki/Boilerplate_code)
 - 使用数据对象代替大量 SQL 语句来操作数据
 
+### MySQL 兼容性
+
+在 MySQL 中，当写入 `DECIMAL` 类型的数据时，如果小数位数超过字段定义的小数位数，无论超出多少，都会自动截断多余的位数并成功插入。
+
+在 TiDB v8.5.3 及之前版本中：
+
+- 如果小数位数超过字段定义的小数位数但未超过 72 位，同样会自动截断多余的位数并成功插入。
+- 如果小数位数超过 72 位，写入会失败并报错。
+
+从 TiDB v8.5.4 开始，TiDB 的行为和 MySQL 保持一致：无论小数位数超过多少，都会自动截断多余的位数并成功插入。
+
 ## 下一步
 
 - 关于 MySQL Connector/J 的更多使用方法，可以参考 [MySQL Connector/J 官方文档](https://dev.mysql.com/doc/connector-j/en/)。
