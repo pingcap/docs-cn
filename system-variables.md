@@ -4110,7 +4110,7 @@ mysql> desc select count(distinct a) from test.t;
     +-------------------------------------------+---------+-----------+------------------------------+----------------------------------------------------------------------------------------------+
     ```
 
-- 示例 2：强制关闭 partial order 优化（`DISABLE`）。
+- 示例 2：关闭 partial order TopN 优化（`DISABLE`）
 
     ```sql
     > SET SESSION tidb_opt_partial_ordered_index_for_topn = 'DISABLE';
