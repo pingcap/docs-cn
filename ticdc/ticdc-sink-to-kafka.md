@@ -189,7 +189,7 @@ dispatchers = [
 ]
 ```
 
-集成具体步骤详见[与 Confluent Cloud 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)。
+集成具体步骤详见[与 Confluent Cloud 和 Snowflake、ksqlDB、SQL Server 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)。
 
 ### TiCDC 集成 AWS Glue Schema Registry
 
