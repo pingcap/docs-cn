@@ -714,27 +714,14 @@ sudo systemctl enable ntpd.service
 
 对于需要通过手动配置中控机至目标节点互信的场景，可参考本小节。通常推荐使用 TiUP 部署工具会自动配置 SSH 互信及免密登录，可忽略本小节内容。
 
-### 步骤 1. 创建 `tidb` 用户
-
 在配置互信之前，需要在所有的目标机器上创建 `tidb` 用户。一般情况下，只要集群节点间的 SSH 互信配置正确，系统并不强制要求各节点上的 `tidb` 用户拥有相同的 UID/GID。但是，如果你的集群计划使用备份恢复工具（BR）并将数据备份到 NFS 等网络文件系统，强烈建议 BR 和 TiDB 使用同一个用户，并且在所有节点上为 `tidb` 用户指定相同的 UID 和 GID。因为 NFS 等共享存储依赖底层的 UID/GID 来识别文件权限，如果各节点 ID 不一致，或者执行 BR 的用户与运行 TiDB 的用户不同（尤其是在无 `sudo` 权限模式下），很容易导致备份或恢复时出现权限拒绝（Permission Denied）的报错。
-
-以 `root` 用户登录每一台目标机器，执行以下命令创建 `tidb` 用户。
-
-```bash
-useradd -m -d /home/tidb tidb
-passwd tidb
-```
-
-### 步骤 2. 手动配置
-
-然后执行以下步骤手动配置 SSH 互信及 sudo 免密码：
 
 1. 以 `root` 用户依次登录到部署目标机器创建 `tidb` 用户并设置登录密码。
 
     ```bash
-    useradd tidb && \
+    useradd -m -d /home/tidb tidb
     passwd tidb
-    ```
+    ```    
 
 2. 执行以下命令，将 `tidb ALL=(ALL) NOPASSWD: ALL` 添加到文件末尾，即配置好 sudo 免密码。
 
