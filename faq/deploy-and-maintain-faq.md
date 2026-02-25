@@ -85,6 +85,11 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 ## TiDB 支持在公有云上部署吗？
 
-TiDB 支持在 [Google Cloud GKE](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke)、[AWS EKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-aws-eks) 和[阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-alibaba-cloud) 上部署使用。
+TiDB 支持在以下云上部署：
+
+- [Google Cloud GKE](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-on-gcp-gke/)
+- [AWS EKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-on-aws-eks/)
+- [Azure AKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-on-azure-aks/)
+- [阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.5/deploy-on-alibaba-cloud/)
 
 此外，TiDB 云上部署也已在京东云、UCloud 上线。
