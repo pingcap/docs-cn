@@ -69,12 +69,14 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 ### 如何用 fio 命令测试 TiKV 实例的磁盘性能？
 
+- 注：以下示例使用 `ioengine=psync`（同步 I/O），因此 `iodepth` 通常固定为 1，并发主要由 `numjobs` 控制；建议使用 `direct=1` 以绕过文件系统缓存。
+
 - 随机读测试：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randread -size=10G -filename=fio_randread_test.txt -name='fio randread test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_result.json
+    ./fio -ioengine=psync -bs=32k -direct=1 -thread -rw=randread -time_based -size=10G -filename=fio_randread_test.txt -name='fio randread test' -iodepth=1 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_result.json
     ```
 
 - 顺序写和随机读混合测试：
@@ -82,7 +84,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
     {{< copyable "shell-regular" >}}
 
     ```bash
-    ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
+    ./fio -ioengine=psync -bs=32k -direct=1 -thread -rw=randrw -percentage_random=100,0 -time_based -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=1 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
     ```
 
 ## TiDB 支持在公有云上部署吗？
