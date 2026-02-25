@@ -74,15 +74,11 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 - 随机读测试：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     ./fio -ioengine=psync -bs=32k -direct=1 -thread -rw=randread -time_based -size=10G -filename=fio_randread_test.txt -name='fio randread test' -iodepth=1 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_result.json
     ```
 
 - 顺序写和随机读混合测试：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     ./fio -ioengine=psync -bs=32k -direct=1 -thread -rw=randrw -percentage_random=100,0 -time_based -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=1 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
