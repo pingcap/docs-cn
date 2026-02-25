@@ -1,7 +1,7 @@
 ---
 title: 海量 Region 集群调优最佳实践
 summary: 了解海量 Region 导致性能问题的原因和优化方法。
-aliases: ['/docs-cn/dev/best-practices/massive-regions-best-practices/','/docs-cn/dev/reference/best-practices/massive-regions/']
+aliases: ['/docs-cn/dev/best-practices/massive-regions-best-practices/','/docs-cn/dev/reference/best-practices/massive-regions/','/zh/tidb/stable/massive-regions-best-practices/','/zh/tidb/dev/massive-regions-best-practices/']
 ---
 
 # 海量 Region 集群调优最佳实践
@@ -146,7 +146,7 @@ Region 的默认大小为 256 MiB，将其调大可以减少 Region 个数，详
 
 ### 方法七：提高 Raft 通信的的最大连接数
 
-TiKV 节点间用于 Raft 通信的最大连接数默认为 1，将其调大可以减少因为海量 Region 通信量过大而导致的阻塞情况。具体的配置说明可以参考 [`grpc-raft-conn-num`](/tikv-configuration-file.md#grpc-raft-conn-num)。
+TiKV 节点间用于 Raft 通信的最大连接数可以通过 [`server.grpc-raft-conn-num`](/tikv-configuration-file.md#grpc-raft-conn-num) 配置项调整，将其值调大可以减少因为海量 Region 通信量过大而导致的阻塞情况。
 
 > **注意：**
 >

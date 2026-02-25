@@ -149,10 +149,11 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 #### `enable-table-across-nodes`
 
 - 将表以 Region 为单位分配给多个 TiCDC 节点进行同步。
-- 该功能只在 Kafka changefeed 上生效，暂不支持 MySQL changefeed。
+- 在 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)中，该功能只在 Kafka Changefeed 上生效，暂不支持 MySQL Changefeed。
+- 在 [TiCDC 新架构](/ticdc/ticdc-architecture.md)中，该功能对所有类型下游的 Changefeed 生效。详情请参考[新功能介绍](/ticdc/ticdc-architecture.md#新功能介绍)。
 - `enable-table-across-nodes` 开启后，有两种分配模式：
 
-    1. 按 Region 的数量分配，即每个 TiCDC 节点处理 Region 的个数基本相等。当某个表 Region 个数大于 `region-threshold` 值时，会将表分配到多个节点处理。`region-threshold` 默认值为 `100000`。
+    1. 按 Region 的数量分配，即每个 TiCDC 节点处理 Region 的个数基本相等。当某个表 Region 个数大于 [`region-threshold`](#region-threshold) 值时，会将表分配到多个节点处理。
     2. 按写入的流量分配，即每个 TiCDC 节点处理 Region 总修改行数基本相当。只有当表中每分钟修改行数超过 `write-key-threshold` 值时，该表才会生效。
 
   两种方式配置一种即可生效，当 `region-threshold` 和 `write-key-threshold` 同时配置时，TiCDC 将优先采用按流量分配的模式，即 `write-key-threshold`。
@@ -162,7 +163,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 #### `region-threshold`
 
-- 默认值：`100000`
+- 默认值：对于 [TiCDC 新架构](/ticdc/ticdc-architecture.md)，默认值为 `10000`；对于 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)，默认值为 `100000`。
 
 #### `write-key-threshold`
 

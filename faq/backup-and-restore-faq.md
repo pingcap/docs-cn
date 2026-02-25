@@ -108,6 +108,14 @@ Error: failed to check gc safePoint, checkpoint ts 433177834291200000: GC safepo
 
 此场景的处理办法是：先执行 `br log stop` 命令来删除当前的任务，然后执行 `br log start` 重新创建新的日志备份任务，同时做一个全量备份，便于后续做 PITR 恢复操作。
 
+### 执行 PITR table filter 时报 `[ddl:8204]invalid ddl job type: none` 错误，该如何处理？
+
+```shell
+failed to refresh meta for database with schemaID=124, dbName=pitr_test: [ddl:8204]invalid ddl job type: none
+```
+
+该错误是由于 DDL Owner 所在的 TiDB 节点版本过低，无法识别 Refresh Meta DDL 导致的。请将集群升级至 v8.5.5 或更高版本，再使用 PITR 的 [table filter](/table-filter.md) 功能。
+
 ## 功能兼容性问题
 
 ### 为什么 BR 恢复的数据无法同步到 TiCDC 的上游集群？

@@ -1,7 +1,7 @@
 ---
 title: Follower Read
 summary: 使用 Follower Read 在特定情况下加速查询。
-aliases: ['/zh/tidb/dev/use-follower-read']
+aliases: ['/zh/tidb/dev/use-follower-read','/zh/tidb/stable/dev-guide-use-follower-read/','/zh/tidb/dev/dev-guide-use-follower-read/','/zh/tidbcloud/dev-guide-use-follower-read/']
 ---
 
 # Follower Read
@@ -18,11 +18,15 @@ aliases: ['/zh/tidb/dev/use-follower-read']
 
 ### 优化读热点
 
-你可以在 [TiDB Dashboard 流量可视化页面](/dashboard/dashboard-key-visualizer.md)当中通过可视化的方法分析你的应用程序是否存在热点 Region。你可以通过将「指标选择框」选择到 `Read (bytes)` 或 `Read (keys)` 查看是否存在读取热点 Region。
+你可以通过以下可视化的方法分析你的应用程序是否存在热点 Region。
 
-如果发现确实存在热点问题，你可以通过阅读 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)章节进行逐一排查，以便从应用程序层面上避免热点的产生。
+- TiDB Cloud：打开 [TiDB Cloud 控制台中的 Key Visualizer 页面](https://docs.pingcap.com/zh/tidbcloud/tune-performance/#key-visualizer)，将指标选择框选择到 `Read (bytes)` 或 `Read (keys)` 查看是否存在读取热点 Region。
 
-如果读取热点的确无法避免或者改动的成本很大，你可以尝试通过 Follower Read 功能将读取请求更好的负载均衡到 follower region。
+- TiDB：打开 [TiDB Dashboard 中的流量可视化页面](/dashboard/dashboard-key-visualizer.md)，将指标选择框选择到 `Read (bytes)` 或 `Read (keys)` 查看是否存在读取热点 Region。
+
+如果发现确实存在热点问题，你可以参考 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)文档进行排查，以便从应用程序层面上避免热点的产生。
+
+如果读取热点的确无法避免或者改动的成本很大，你可以尝试通过 Follower Read 功能将读取请求更好地负载均衡到 follower region。
 
 ### 优化跨数据中心部署的延迟
 
@@ -136,4 +140,5 @@ public static class AuthorDAO {
 
 - [Follower Read](/follower-read.md)
 - [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)
+- [TiDB Cloud 控制台中的 Key Visualizer 页面](https://docs.pingcap.com/zh/tidbcloud/tune-performance/#key-visualizer)
 - [TiDB Dashboard 流量可视化页面](/dashboard/dashboard-key-visualizer.md)

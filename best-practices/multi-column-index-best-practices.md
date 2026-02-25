@@ -1,6 +1,7 @@
 ---
 title: 多列索引优化最佳实践
 summary: 了解如何在 TiDB 中高效使用多列索引，并应用高级优化技巧。
+aliases: ['/zh/tidb/stable/multi-column-index-best-practices/','/zh/tidb/dev/multi-column-index-best-practices/']
 ---
 
 # 多列索引优化最佳实践

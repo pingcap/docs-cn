@@ -1,7 +1,7 @@
 ---
 title: 使用 Grafana 监控 TiDB 的最佳实践
 summary: 了解高效利用 Grafana 监控 TiDB 的七个技巧。
-aliases: ['/docs-cn/dev/best-practices/grafana-monitor-best-practices/','/docs-cn/dev/reference/best-practices/grafana-monitor/']
+aliases: ['/docs-cn/dev/best-practices/grafana-monitor-best-practices/','/docs-cn/dev/reference/best-practices/grafana-monitor/','/zh/tidb/stable/grafana-monitor-best-practices/','/zh/tidb/dev/grafana-monitor-best-practices/']
 ---
 
 # 使用 Grafana 监控 TiDB 的最佳实践
