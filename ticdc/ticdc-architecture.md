@@ -68,13 +68,13 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 
 ### 拆表模式配置建议
 
-切换到 TiCDC 新架构后，不建议继续沿用老架构中的拆表相关配置项。在绝大多数场景下，建议先使用新架构的默认配置值，仅在特殊场景下再基于新架构默认值进行小幅微调。
+切换至 TiCDC 新架构后，不建议继续使用老架构中的拆表相关配置。在绝大多数场景下，建议先采用新架构的默认配置。仅在特殊场景下，再基于默认值进行小幅调整。
 
-拆表模式下建议重点关注以下配置项：
+在拆表模式下，建议重点关注以下配置项：
 
-- `scheduler.region-threshold`：默认值为 `10000`。当表中的 Region 个数大于该阈值时，TiCDC 会对该表执行拆分。对于 Region 数量较少但表整体流量较大的场景，建议适当调小该值。但该值不能小于 `scheduler.region-count-per-span`，否则可能导致任务反复调度并引起同步延迟上升。
-- `scheduler.region-count-per-span`：默认值为 `100`。在 Changefeed 初始化过程中，满足拆分条件的表会按该参数进行拆分，使拆分后的每个子表最多包含 `region-count-per-span` 个 Region。
-- `scheduler.write-key-threshold`：默认值为 `0`（默认关闭）。当表的 Sink 写入流量超过该阈值时，TiCDC 会对该表执行拆分。不建议将该参数设置为非 `0` 值。
+- `scheduler.region-threshold`：默认值为 `10000`。当表的 Region 数量超过该阈值时，TiCDC 会对该表执行拆分。对于 Region 数量较少但表整体写入流量较高的场景，可以适当降低该值。该参数必须大于或等于 `scheduler.region-count-per-span`，否则可能导致任务频繁调度，并增加同步延迟。
+- `scheduler.region-count-per-span`：默认值为 `100`。在 Changefeed 初始化阶段，满足拆分条件的表会按照该参数进行拆分。拆分后，每个子表最多包含 `region-count-per-span` 个 Region。
+- `scheduler.write-key-threshold`：默认值为 `0`（表示关闭）。当表的 Sink 写入流量超过该阈值时，TiCDC 会触发拆分。不建议将该参数设置为非 `0` 值。
 
 ## 兼容性说明
 
