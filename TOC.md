@@ -73,7 +73,7 @@
     - [报警规则](/ticdc/ticdc-alert-rules.md)
   - 数据集成场景
     - [数据集成概述](/integration-overview.md)
-    - [与 Confluent Cloud 和 Snowflake 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)
+    - [与 Confluent Cloud 和 Snowflake、ksqlDB、SQL Server 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)
     - [与 Apache Kafka 和 Apache Flink 进行数据集成](/replicate-data-to-kafka.md)
   - 参考指南
     - TiCDC 架构设计与原理
