@@ -70,7 +70,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 ### 如何用 fio 命令测试 TiKV 实例的磁盘性能？
 
-- 注：以下示例使用 `ioengine=psync`（同步 I/O），因此 `iodepth` 通常固定为 1，并发主要由 `numjobs` 控制；建议使用 `direct=1` 以绕过文件系统缓存。
+以下示例使用 `ioengine=psync`（即同步 I/O），因此 `iodepth` 通常固定为 `1`，并发主要由 `numjobs` 控制。建议使用 `direct=1` 以绕过文件系统缓存。
 
 - 随机读测试：
 
