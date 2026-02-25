@@ -4084,7 +4084,7 @@ mysql> desc select count(distinct a) from test.t;
 - 类型：枚举型
 - 默认值：`DISABLE`
 - 可选值：`DISABLE`、`COST`
-- 用于控制是否启用 partial order TopN 优化。当 `ORDER BY ... LIMIT` 能够利用索引前缀顺序（例如索引最后一列为前缀列）时，可避免扫描全表，减少排序开销。
+- 用于控制是否启用 partial order TopN 优化。当查询包含 `ORDER BY ... LIMIT` 且排序过程中可以利用排序列的前缀索引（例如单列前缀索引，或联合索引中的最后一列为前缀列）时，优化器可以利用这些索引的部分有序性在扫描过程中逐步构建 TopN 结果，并在满足 LIMIT 后提前停止扫描，从而减少排序计算开销。
 - 适用场景：`ORDER BY ... LIMIT` 的排序列较长、仅建立了前缀索引且希望减少 TopN 排序开销时，可通过该变量结合 use index hint 稳定使用 partial order TopN 优化。
 - 目前支持的应用场景：
     1. 强制走 partial order 优化：将变量设为 `COST`，并通过 `USE INDEX`/`FORCE INDEX` 指定满足条件的索引。如果指定的索引不满足 partial order 优化条件（例如 `ORDER BY` 与索引前缀不匹配或存在不支持的排序形式），即使设置为 `COST` 也可能无法应用该优化，执行计划会退化为常规方式。
