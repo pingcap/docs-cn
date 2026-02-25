@@ -4076,7 +4076,7 @@ mysql> desc select count(distinct a) from test.t;
 +----------------------------------+---------+-----------+----------------------+-------------------------------------+
 ```
 
-### `tidb_opt_partial_ordered_index_for_topn`
+### `tidb_opt_partial_ordered_index_for_topn` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
