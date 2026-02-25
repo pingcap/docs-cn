@@ -4090,8 +4090,9 @@ mysql> desc select count(distinct a) from test.t;
   - 如需启用 partial order TopN 优化，请将该变量设置为 `COST` 并在查询中通过 `USE INDEX` 或 `FORCE INDEX` Hint 指定满足条件的索引。需要注意的是，如果指定的索引不满足该优化的前置条件（例如 `ORDER BY` 与索引前缀不匹配，或者查询中存在不支持的排序形式），即使该变量设置为 `COST` 也可能无法应用该优化，执行计划会退化为常规的 TopN 方式。
   - 如需关闭 partial order TopN 优化，请将变量设为 `DISABLE`。此时，优化器将直接使用常规的全局排序 TopN 方式。
   
-- 暂未支持的应用场景：
-    1. 完全依赖 cost model 动态选择是否应用优化。虽然目前支持 `COST` 取值，但 partial order 的 cost model 尚未发布，不推荐单独使用 `COST`。如果希望使用 partial order 优化，建议结合 `USE INDEX`/`FORCE INDEX` 一起使用。
+> **注意：**
+>
+> 目前优化器尚不支持根据 cost model 动态选择是否应用 partial order TopN 优化。如果只将该变量设置为 `COST` 而不指定 `USE INDEX` 或 `FORCE INDEX` Hint，优化器可能不会应用 partial order TopN 优化。如需强制应用该优化，请结合 `USE INDEX` 或 `FORCE INDEX` Hint 一起使用（如示例 1 所示）。
 - 示例 1：强制走 partial order 优化（`COST` + `USE INDEX`）。
 
     ```sql
