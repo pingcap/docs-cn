@@ -71,7 +71,7 @@ URI 中可配置的参数如下：
 | `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选）。 |
 | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选）。 |
 | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选）。 |
-| `time-zone`    | 连接下游 MySQL/TiDB 实例时使用的时区名称（即下游连接会话的 `time_zone`），从 v4.0.8 开始生效。（可选。如果不指定该参数，使用 TiCDC 服务进程的时区；如果指定该参数但使用空值，例如：`time-zone=""`，则表示连接时不指定会话时区，使用下游默认时区）。 |
+| `time-zone`    | 连接下游 MySQL 和 TiDB 实例时使用的时区名称（即下游连接会话的 `time_zone`），从 v4.0.8 开始生效。（可选。如果不指定该参数，使用 TiCDC 服务进程的时区；如果指定该参数但使用空值，例如：`time-zone=""`，则表示连接时不指定会话时区，使用下游默认时区）。 |
 | `transaction-atomicity`      | 指定事务的原子性级别（可选，默认值为 `none`）。当该值为 `table` 时 TiCDC 保证单表事务的原子性，当该值为 `none` 时 TiCDC 会拆分单表事务。 |
 | `batch-dml-enable` | 开启 batch-dml 批量写入特性（可选，默认值为 `true`）。|
 | `read-timeout` | go-sql-driver 参数，[I/O 读取超时](https://pkg.go.dev/github.com/go-sql-driver/mysql#readme-readtimeout)（可选，默认值为 `2m`）。|
@@ -82,7 +82,7 @@ URI 中可配置的参数如下：
 
 > **说明：**
 >
-> `time-zone` 仅对 `mysql`/`tidb` sink 生效。TiCDC 会在建立到下游的连接后设置该连接会话的 `time_zone`，用于下游执行 DDL/DML 时解析 `TIMESTAMP` 等受时区影响的时间值（`DATETIME`、`DATE`、`TIME` 不受影响）。为避免因时区不一致导致的数据不一致，建议显式设置并保持与 TiCDC server 的 `--tz` 以及下游数据库时区一致。
+> `time-zone` 仅对 `mysql` 和 `tidb` 类型的 sink 生效。TiCDC 在建立与下游的连接后，会设置该会话的 `time_zone`，用于下游在执行 DDL 和 DML 时解析 `TIMESTAMP` 等受时区影响的时间值。`DATETIME`、`DATE` 和 `TIME` 不受影响。为避免因时区设置不一致导致数据不一致，建议显式设置 `time-zone`，并确保其值与 TiCDC Server 的 `--tz` 参数以及下游数据库的时区保持一致。
 
 若需要对 Sink URI 中的数据库密码使用 Base64 进行编码，可以参考如下命令：
 
