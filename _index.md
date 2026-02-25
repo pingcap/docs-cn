@@ -128,7 +128,7 @@ summary: TiDB 是平凯星辰公司自主设计、研发的开源分布式关系
 
 [系统变量](https://docs.pingcap.com/zh/tidb/dev/system-variables)
 
-[发布历史](https://docs.pingcap.com/zh/tidb/dev/release-notes)
+[发布历史](https://docs.pingcap.com/zh/releases/tidb-self-managed)
 
 [常见问题](https://docs.pingcap.com/zh/tidb/dev/faq-overview)
 
