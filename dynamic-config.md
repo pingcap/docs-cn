@@ -86,7 +86,7 @@ Query OK, 0 rows affected (0.01 sec)
 {{< copyable "sql" >}}
 
 ```sql
-set config tikv `log-level`='warn'; -- The correct config item is `log.level`.
+set config tikv `log-level`='warn'; -- This command fails because `log-level` is incorrect. Use `log.level` instead.
 ```
 
 ```sql
