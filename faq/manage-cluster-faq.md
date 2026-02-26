@@ -101,7 +101,7 @@ TiDB 目前社区非常活跃，同时，我们还在不断的优化和修改 BU
 
 ### Percolator 用了分布式锁，crash 的客户端会保持锁，会造成锁没有 release？
 
-详细可参考 [Percolator 和 TiDB 事务算法](https://tidb.net/blog/f537be2c)。
+详细可参考 [Percolator 和 TiDB 事务算法](https://pingkai.cn/tidbcommunity/blog/f537be2c)。
 
 ### TiDB 为什么选用 gRPC 而不选用 Thrift，是因为 Google 在用吗？
 

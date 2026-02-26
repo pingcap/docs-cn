@@ -405,4 +405,4 @@ Relay log 本地存储的目录结构示例如下：
 
 ## 探索更多
 
-- [DM 源码阅读系列文章（六）relay log 的实现丨TiDB 工具](https://tidb.net/blog/4570243f)
+- [DM 源码阅读系列文章（六）relay log 的实现丨TiDB 工具](https://pingkai.cn/tidbcommunity/blog/4570243f)

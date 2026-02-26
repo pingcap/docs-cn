@@ -90,19 +90,19 @@ TiDB Cloud 核心特性与应用场景简介
 
 </DocHomeCard>
 
-<DocHomeCard href="https://tidb.net" label="TiDB 社区" icon="global-tidb-community">
+<DocHomeCard href="https://pingkai.cn/tidbcommunity" label="TiDB 社区" icon="global-tidb-community">
 
 开发者、用户、Contributor、合作伙伴一起建立的学习和分享平台
 
 </DocHomeCard>
 
-<DocHomeCard href="https://tidb.net/blog" label="博客文章" icon="global-tidb-blog">
+<DocHomeCard href="https://pingkai.cn/tidbcommunity/blog" label="博客文章" icon="global-tidb-blog">
 
 满满的技术干货、深度解读、技术分享
 
 </DocHomeCard>
 
-<DocHomeCard href="https://asktug.com" label="Ask TiDB User Group" icon="global-tidb-asktug">
+<DocHomeCard href="https://pingkai.cn/tidbcommunity/forum" label="Ask TiDB User Group" icon="global-tidb-asktug">
 
 互助交流，有问有答
 
