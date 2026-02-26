@@ -163,7 +163,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 #### `region-count-per-span` <span class="version-mark">从 v8.5.4 版本开始引入</span>
 
-- 在 Changefeed 初始化阶段，满足拆分条件的表会按照该参数进行拆分。拆分后，每个子表最多包含 `region-count-per-span` 个 Region。
+- 在 [TiCDC 新架构](/ticdc/ticdc-architecture.md)中引入。在 Changefeed 初始化阶段，满足拆分条件的表会按照该参数进行拆分。拆分后，每个子表最多包含 `region-count-per-span` 个 Region。
 - 默认值：`100`。
 
 #### `region-threshold`
