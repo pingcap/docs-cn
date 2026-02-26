@@ -291,14 +291,14 @@ aliases: ['/zh/tidb/stable/release-notes/','/zh/tidb/v8.5/release-notes/']
 
 ## 1.0
 
-- [1.0.8](https://docs.pingcap.com/tidb/dev/release-1.0.8): 2018-02-11
-- [1.0.7](https://docs.pingcap.com/tidb/dev/release-1.0.7): 2018-01-22
-- [1.0.6](https://docs.pingcap.com/tidb/dev/release-1.0.6): 2018-01-08
-- [1.0.5](https://docs.pingcap.com/tidb/dev/release-1.0.5): 2017-12-26
-- [1.0.4](https://docs.pingcap.com/tidb/dev/release-1.0.4): 2017-12-11
-- [1.0.3](https://docs.pingcap.com/tidb/dev/release-1.0.3): 2017-11-28
-- [1.0.2](https://docs.pingcap.com/tidb/dev/release-1.0.2): 2017-11-13
-- [1.0.1](https://docs.pingcap.com/tidb/dev/release-1.0.1): 2017-11-01
+- [1.0.8](https://docs.pingcap.com/tidb/stable/release-1.0.8): 2018-02-11
+- [1.0.7](https://docs.pingcap.com/tidb/stable/release-1.0.7): 2018-01-22
+- [1.0.6](https://docs.pingcap.com/tidb/stable/release-1.0.6): 2018-01-08
+- [1.0.5](https://docs.pingcap.com/tidb/stable/release-1.0.5): 2017-12-26
+- [1.0.4](https://docs.pingcap.com/tidb/stable/release-1.0.4): 2017-12-11
+- [1.0.3](https://docs.pingcap.com/tidb/stable/release-1.0.3): 2017-11-28
+- [1.0.2](https://docs.pingcap.com/tidb/stable/release-1.0.2): 2017-11-13
+- [1.0.1](https://docs.pingcap.com/tidb/stable/release-1.0.1): 2017-11-01
 - [1.0.0](/releases/release-1.0-ga.md): 2017-10-16
 - [Pre-GA](/releases/release-pre-ga.md): 2017-08-30
 - [rc4](/releases/release-rc.4.md): 2017-08-04
