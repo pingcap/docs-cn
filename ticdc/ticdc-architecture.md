@@ -69,7 +69,7 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 
 ## Storage Sink 文件名变更
 
-切换至 TiCDC 新架构后，对于 [Storage Sink](/ticdc/ticdc-sink-to-cloud-storage.md)，记录数据变更的文件名格式会变为 `CDC_{uuid}_{num}.{extension}`，Index 文件名的格式会变为 `CDC_{uuid}.index`。
+切换至 TiCDC 新架构并且开启表级任务拆分后，对于 [Storage Sink](/ticdc/ticdc-sink-to-cloud-storage.md)，记录数据变更的文件名格式会变为 `CDC_{uuid}_{num}.{extension}`，Index 文件名的格式会变为 `CDC_{uuid}.index`。
 
 - 数据变更记录路径
 
