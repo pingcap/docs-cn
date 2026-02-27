@@ -183,10 +183,10 @@ func (tc *TableVersionConsumer) ExecuteDML() {}
 
 因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况，所以需要在消费程序中比较数据事件的 commit ts 和 consumer checkpoint，并在 commit ts 小于 consumer checkpoint 的情况下进行去重处理。
 
-在处理文件时，可能会遇到某个文件还没有写入完成就进行读取的情况，这会导致部分数据没有成功读取。消费时可以先读取 Index 文件来获取可以进行处理的文件来避免这种情况发生。消费逻辑为：
+在处理文件时，可能会出现某个数据文件尚未完全写入就被下游读取的情况，导致这部分数据未被成功读取。为了避免这种情况，编写下游消费程序时，请按照以下顺序进行读取数据：
 
-- 读取目录下的 meta/CDC.index 文件，获取当前已经完成写入的文件名。
-- 依次处理文件序号小于等于该文件名的 DML 事件。
+1. 读取 `{schema}/{table}/{table-version-separator}/` 目录下的 `meta/CDC.index` 文件，获取当前已经写入完成的文件名。  
+2. 依次读取文件序号小于或等于该文件名中序号的文件。
 
 > **注意：**
 >
