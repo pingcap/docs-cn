@@ -186,7 +186,7 @@ func (tc *TableVersionConsumer) ExecuteDML() {}
 在处理文件时，可能会出现某个数据文件尚未完全写入就被下游读取的情况，导致这部分数据未被成功读取。为了避免这种情况，编写下游消费程序时，请按照以下顺序进行读取数据：
 
 1. 读取 `{schema}/{table}/{table-version-separator}/` 目录下的 `meta/CDC.index` 文件，获取当前已经写入完成的文件名。  
-2. 依次读取文件序号小于该文件名中序号的文件。
+2. 对于 [TiCDC 新架构](/ticdc/ticdc-architecture.md)，依次读取文件序号小于或等于该文件名中序号的文件。对于 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)，依次读取文件序号小于该文件名中序号的文件。
 
 > **注意：**
 >
