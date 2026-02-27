@@ -66,21 +66,26 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 >
 > 针对 MySQL Sink 的 Changefeed，除了满足上述任一条件，表还需要满足**有且仅有一个主键或非空唯一键**，才可以被 TiCDC 拆分并分发，以保证拆表模式下数据同步的正确性。
 
-对于 **Storage Sink** 来说，文件名会变为 CDC\_{uuid}\_{num}.{extension} 的形式，Index 文件名会变为 CDC\_{uuid}.index 的形式。
+
+## Storage Sink 文件名变更
+
+切换至 TiCDC 新架构后，对于 [Storage Sink](/ticdc/ticdc-sink-to-cloud-storage.md)，记录数据变更的文件名格式会变为 `CDC_{uuid}_{num}.{extension}`，Index 文件名的格式会变为 `CDC_{uuid}.index`。
 
 - 数据变更记录路径
+
   ```
   {scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC_{uuid}_{num}.{extension}
   ```
 
 - Index 文件路径
+
   ```
   {scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/meta/CDC_{uuid}.index
   ```
 
   在处理文件时，可能会遇到某个文件还没有写入完成就进行读取的情况，这会导致部分数据没有成功读取。我们需要先读取 Index 文件来获取可以进行处理的文件来避免这种情况发生。消费逻辑为：
 
-  - 读取目录下的 meta/CDC.index 文件，获取当前已经完成写入的文件名。
+  - 读取目录下的 `meta/CDC_{uuid}.index` 文件，获取当前已经完成写入的文件名。
   - 依次处理文件序号小于等于该文件名的 DML 事件。
 
   ```
@@ -91,8 +96,8 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
       │   │   ├── CDC_11_000001.json
       │   │   ├── CDC_22_000001.json
       │   │   └── meta
-      │   │       ├── CDC_11.index 
-      │   │       └── CDC_22.index 
+      │   │       ├── CDC_11.index
+      │   │       └── CDC_22.index
       │   ├── 437752935075546092
       │   │   ├── CDC_33_000001.json
       │   │   ├── CDC_44_000001.json
