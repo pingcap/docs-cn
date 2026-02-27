@@ -170,4 +170,4 @@ SET @@global.tidb_ddl_reorg_batch_size = 128;
 
 ### 推荐阅读
 
-- [TiDB 最佳实践系列（一）高并发写入常见热点问题及规避方法](https://tidb.net/blog/09d47cf8)。
+- [TiDB 最佳实践系列（一）高并发写入常见热点问题及规避方法](https://pingkai.cn/tidbcommunity/blog/09d47cf8)。
