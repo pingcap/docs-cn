@@ -409,6 +409,7 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 
 <a id="M" class="letter" href="#M">M</a>
 
+- MASKING
 - MASTER
 - MATCH (R)
 - MAXVALUE (R)
@@ -512,6 +513,7 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - PLUGINS
 - POINT
 - POLICY
+- POLICIES
 - PRECEDING
 - PRECISION (R)
 - PREPARE
