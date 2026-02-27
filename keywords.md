@@ -790,3 +790,5 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 <a id="Z" class="letter" href="#Z">Z</a>
 
 - ZEROFILL (R)
+
+- ZEROFILL (R)
