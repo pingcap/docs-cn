@@ -82,7 +82,8 @@ URI 中可配置的参数如下：
 
 > **说明：**
 >
-> `time-zone` 仅对 `mysql` 和 `tidb` 类型的 sink 生效。TiCDC 在建立与下游的连接后，会设置该会话的 `time_zone`，用于下游在执行 DDL 和 DML 时解析 `TIMESTAMP` 等受时区影响的时间值。`DATETIME`、`DATE` 和 `TIME` 不受影响。为避免因时区设置不一致导致数据不一致，建议显式设置 `time-zone`，并确保其值与 TiCDC Server 的 `--tz` 参数以及下游数据库的时区保持一致。
+> - `time-zone` 仅对 `mysql` 和 `tidb` 类型的 sink 生效。TiCDC 在建立与下游的连接后，会设置该会话的 `time_zone`，用于下游在执行 DDL 和 DML 时解析 `TIMESTAMP` 等受时区影响的时间值。`DATETIME`、`DATE` 和 `TIME` 不受影响。
+> - 为避免因时区设置不一致导致数据不一致，建议显式设置 `time-zone`，并确保其值与 TiCDC Server 的 `--tz` 参数以及下游数据库的时区保持一致。
 
 若需要对 Sink URI 中的数据库密码使用 Base64 进行编码，可以参考如下命令：
 

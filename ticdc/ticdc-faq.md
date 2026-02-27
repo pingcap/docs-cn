@@ -198,7 +198,7 @@ TiCDC 为 service GC safepoint 设置的默认存活有效期为 24 小时，即
 
 > **说明：**
 >
-> `sink-uri` 中的 `time-zone` 参数仅对 `mysql` 和 `tidb` 类型的 sink 生效。对于 Kafka、Pulsar、Cloud Storage 等不涉及下游数据库会话时区的 sink，无需配置 `time-zone`。此类场景只需关注上游数据库时区与 TiCDC server 的 `--tz` 参数设置是否一致。
+> `sink-uri` 中的 `time-zone` 参数仅对 `mysql` 和 `tidb` 类型的 sink 生效。对于 Kafka、Pulsar、Cloud Storage 等不涉及下游数据库会话时区的 sink，无需配置 `time-zone`。此类场景中，你只需要确保上游数据库时区与 TiCDC server 的 `--tz` 参数的设置保持一致。
 
 > **注意：**
 >
