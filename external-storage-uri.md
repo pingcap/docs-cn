@@ -51,6 +51,10 @@ tiup cdc:v7.5.0 cli changefeed create \
 ```shell
 s3://external/test.csv?access-key=${access-key}&secret-access-key=${secret-access-key}
 ```
+> **注意：**
+>
+> 请注意，GCS 的 XML API 没有完全兼容 `s3://` 协议, 如果你使用的是 GCS，请使用 `gcs://` 协议。
+
 
 ## GCS URI 格式
 
