@@ -478,16 +478,16 @@ PARTITION BY KEY (id) PARTITIONS 16;
 
 #### 优势
 
-- 当你在配置了 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 和 [`PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 的非聚簇分区表中创建分区时，TiDB 会自动预分裂 Regions，显著降低手动工作量。
+- 在配置了 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 和 [`PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 的非聚簇分区表中创建分区时，TiDB 会自动预分裂 Regions，从而显著降低手动工作量。
 - 运维开销低。
 
 #### 缺点
 
-使用点查 (Point Get) 或表范围扫描 (Table Range Scan) 的查询需要执行额外的回表操作，可能会导致读取性能下降。
+对于使用点查 (Point Get) 或表范围扫描 (Table Range Scan) 的查询，需要执行额外的回表操作，可能会导致读取性能下降。
 
 #### 适用场景
 
-当写入可扩展性和运维简便性比低延迟读取更重要时，使用非聚簇分区表。
+在写入扩展能力和运维简便性优先于低延迟读取的场景下，使用非聚簇分区表。
 
 #### 最佳实践
 
@@ -524,7 +524,7 @@ PARTITION BY RANGE ( YEAR(hired) ) (
 
 ##### 第 2 步：添加 `merge_option=deny` 属性
 
-在表级或分区级添加 [`merge_option=deny`](/table-attributes.md#使用表属性控制-region-合并) 属性，以防止空 Region 被合并。当你删除分区时，TiDB 仍会合并属于被删除分区的 Regions。
+在表级或分区级添加 [`merge_option=deny`](/table-attributes.md#使用表属性控制-region-合并) 属性，以防止空 Region 被合并。在删除某个分区后，TiDB 仍会合并属于被删除分区的 Regions。
 
 ```sql
 -- 表级
@@ -535,9 +535,9 @@ ALTER TABLE employees PARTITION `p3` ATTRIBUTES 'merge_option=deny';
 
 ##### 第 3 步：根据业务数据确定拆分边界
 
-为了在创建表或新增分区时避免出现热点，在大量写入开始前应先对 Region 进行预拆分。为了使预拆分有效，应根据实际业务数据分布配置 Region 拆分的上下边界。避免设置过宽的边界，因为这会导致数据无法在 TiKV 节点间均匀分布，从而失去预拆分的意义。
+为避免在创建表或新增分区时出现热点，在大量写入开始前，应先对 Region 进行预拆分。为了使预拆分有效，应根据实际业务数据分布配置 Region 拆分的上下边界。避免设置过宽的边界，否则会导致数据无法在 TiKV 节点间均匀分布，从而失去预拆分的意义。
 
-请根据现有生产数据确定最小值和最大值，以便后续写入能够落在不同的预分配 Region 上。以下查询提供了一个获取现有数据范围的示例：
+请根据现有生产数据确定最小值和最大值，以便后续写入能够落在不同的预分配 Region 上。以下是获取现有数据范围的查询示例：
 
 ```sql
 SELECT MIN(id), MAX(id) FROM employees;
@@ -549,11 +549,11 @@ SELECT MIN(id), MAX(id) FROM employees;
 
 ##### 第 4 步：预分裂并打散 (Scatter) Regions
 
-常见做法是将 Region 数与 TiKV 节点数量匹配，或设置为 TiKV 节点数量的两倍。这有助于从一开始就使数据更均匀地分布在集群中。
+常见做法是将 Region 数与 TiKV 节点数量匹配，或设置为 TiKV 节点数量的两倍，使数据均匀地分布在集群中。
 
 ##### 第 5 步：按需为主键和二级索引拆分 Regions
 
-要为分区表中所有分区的主键拆分 Regions，请使用以下 SQL：
+要为分区表中所有分区的主键拆分 Regions，使用以下 SQL 语句：
 
 ```sql
 SPLIT PARTITION TABLE employees INDEX `PRIMARY` BETWEEN (1, "1970-01-01") AND (100000, "9999-12-31") REGIONS <number_of_regions>;
@@ -561,7 +561,7 @@ SPLIT PARTITION TABLE employees INDEX `PRIMARY` BETWEEN (1, "1970-01-01") AND (1
 
 该示例将在指定边界内将每个分区的主键范围拆分为 `<number_of_regions>` 个 Region。
 
-要为分区表中所有分区的二级索引拆分 Regions，请使用以下 SQL：
+要为分区表中所有分区的二级索引拆分 Regions，使用以下 SQL 语句：
 
 ```sql
 SPLIT PARTITION TABLE employees INDEX `idx_employees_on_store_id` BETWEEN (1) AND (1000) REGIONS <number_of_regions>;
@@ -713,7 +713,7 @@ PARTITION `fa_2024366` VALUES LESS THAN (2025366));
 Query OK, 0 rows affected, 1 warning (2 hours 31 min 57.05 sec)
 ```
 
-### 发现
+### 测试结果
 
 下表比较了对于一张 1.2 亿行的表，上述将分区表转换为非分区表的三种方法所花费的时间：
 
