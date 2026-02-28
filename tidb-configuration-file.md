@@ -987,6 +987,52 @@ TiDB 服务状态相关配置。
 + 可选值：`true`、`false`
 + 该值作为系统变量 [`tidb_enable_stats_owner`](/system-variables.md#tidb_enable_stats_owner-从-v840-版本开始引入) 的初始值。
 
+### `tidb_instance_plan_cache_max_size` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> Instance Plan Cache 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 指定 [Instance Plan Cache](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 的最大内存使用量。
++ 该值作为系统变量 [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) 的初始值。
++ 默认值：`125829120` (120 MiB)
++ 单位：字节
+
+### `tidb_mem_quota_binding_cache` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
++ 设置存放 `binding` 的缓存的内存使用阈值。
++ 该值作为系统变量 [`tidb_mem_quota_binding_cache`](/system-variables.md#tidb_mem_quota_binding_cache-从-v600-版本开始引入) 的初始值。
++ 默认值：`67108864` (64 MiB)
++ 单位：字节
+
+### `tidb_schema_cache_size` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
++ 控制 TiDB schema 信息缓存的大小。设置为 `0` 表示不打开缓存限制功能。如需开启，则需要将该变量的值设置在 `[67108864, 9223372036854775807]` 范围内，TiDB 将使用该变量的值做为可用的内存上限，并使用 Least Recently Used (LRU) 算法缓存所需的表，有效降低 schema 信息占用的内存。
++ 该值作为系统变量 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入) 的初始值。
++ 默认值：`536870912` (512 MiB)
++ 单位：字节
+
+### `tidb_server_memory_limit` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
++ 指定 TiDB 实例的内存限制。TiDB 会在内存用量达到该限制时，对当前内存用量最高的 SQL 语句进行取消 (Cancel) 操作。在该 SQL 语句被成功 Cancel 掉后，TiDB 会尝试调用 Golang GC 立刻回收内存，以最快速度缓解内存压力。
++ 该值作为系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的初始值。
++ 默认值：`80%`
+
+### `tidb_server_memory_limit_gc_trigger` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
++ TiDB 尝试触发 GC 的阈值。当 TiDB 的内存使用达到 `tidb_server_memory_limit` 值 \* `tidb_server_memory_limit_gc_trigger` 值时，则会主动触发一次 Golang GC。在一分钟之内只会主动触发一次 GC。
++ 该值作为系统变量 [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger-从-v640-版本开始引入) 的初始值。
++ 默认值：`70%`
++ 取值范围：`[50%, 99%]`
+
+### `tidb_stats_cache_mem_quota` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
++ 控制 TiDB 统计信息缓存的内存使用上限。
++ 该值作为系统变量 [`tidb_stats_cache_mem_quota`](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入) 的初始值。
++ 默认值：`0`
++ 取值范围：`[0, 1099511627776]`
++ 单位：字节
+
 ### `tidb_stmt_summary_enable_persistent` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 > **警告：**
@@ -1027,6 +1073,13 @@ TiDB 服务状态相关配置。
 + 默认值：64
 + 单位：MiB
 + 可结合数据保留时长需求与磁盘空间占用适当调整。
+
+### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
++ 限制 [`statements_summary`](/statement-summary-tables.md#statements_summary) 和 [`statements_summary_history`](/statement-summary-tables.md#statements_summary_history) 这两张表在内存中可存储的 SQL digest 总数。
++ 该值作为系统变量 [`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-从-v40-版本开始引入) 的初始值。
++ 默认值：`3000`
++ 取值范围：`[1, 32767]`
 
 ### `tidb_stmt_summary_file_max_backups` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
