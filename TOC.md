@@ -117,6 +117,9 @@
     - [平滑升级 TiDB](/smooth-upgrade-tidb.md)
     - [迁移升级 TiDB](/tidb-upgrade-migration-guide.md)
     - [TiFlash 升级帮助](/tiflash-upgrade-guide.md)
+  - 回退 TiDB 版本
+    - [使用 TiUP](/roll-back-tidb-using-tiup.md)
+    - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/roll-back-a-tidb-cluster)
   - 扩缩容
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
