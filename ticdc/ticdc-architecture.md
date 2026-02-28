@@ -64,7 +64,17 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 
 > **注意：**
 >
-> 针对 MySQL Sink 的 Changefeed，除了满足上述任一条件，表还需要满足**有且仅有一个主键或非空唯一键**，才可以被 TiCDC 拆分并分发，以保证拆表模式下数据同步的正确性。
+> 针对 MySQL Sink 的 Changefeed，除了满足上述任一条件，表还需要满足**有且仅有一个主键或非空唯一键**，才可以被 TiCDC 拆分并分发，以保证表级任务拆分模式下数据同步的正确性。
+
+### 表级任务拆分配置建议
+
+切换至 TiCDC 新架构后，不建议继续使用老架构中的拆表相关配置。在绝大多数场景下，建议先采用新架构的默认配置。仅在存在同步性能瓶颈或调度不均的特殊场景下，再基于默认值进行小幅调整。
+
+在拆表模式下，建议重点关注以下配置项：
+
+- [`scheduler.region-threshold`](/ticdc/ticdc-changefeed-config.md#region-threshold)：默认值为 `10000`。当表的 Region 数量超过该阈值时，TiCDC 会对该表执行拆分。对于 Region 数量较少但表整体写入流量较高的场景，可以适当降低该值。该参数必须大于或等于 `scheduler.region-count-per-span`，否则可能导致任务频繁调度，并增加同步延迟。
+- [`scheduler.region-count-per-span`](/ticdc/ticdc-changefeed-config.md#region-count-per-span-从-v854-版本开始引入)：默认值为 `100`。在 Changefeed 初始化阶段，满足拆分条件的表会按照该参数进行拆分。拆分后，每个子表最多包含 `region-count-per-span` 个 Region。
+- [`scheduler.write-key-threshold`](/ticdc/ticdc-changefeed-config.md#write-key-threshold)：默认值为 `0`（表示关闭）。当表的 Sink 写入流量超过该阈值时，TiCDC 会触发拆分。建议保持默认值 `0`。
 
 ## 兼容性说明
 
