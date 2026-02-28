@@ -1797,9 +1797,9 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 ### `tidb_enable_cascades_planner`
 
-> **警告：**
+> **注意：**
 >
-> 目前 cascades planner 为实验特性，不建议在生产环境中使用。
+> 目前 cascades planner 为全新的优化器框架实现，其在设计之初就是为了兼容性出发考虑的，其可以在最大程度上保证和原有优化器逻辑的兼容性，并且在逻辑层面能够给到一定的扩展空间，此外还能够在多重逻辑计划之间进行 CBO 决策。目前 cascades planner 开启之后由于逻辑 rule 的数量目前还比较有限，其做 plan 的能力不一定会显现出很大的提升，但是随着后续 [TiDB Cascades Rule Evolution Project](https://github.com/pingcap/tidb/issues/61528) 项目的不断深入，cascades planner 将会展现更大的灵活性和适用性。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
