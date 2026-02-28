@@ -1766,6 +1766,10 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 ### `tidb_enable_auto_analyze_priority_queue` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
+> **警告：**
+>
+> 从 v9.0.0 版本开始，该变量被废弃。TiDB 始终开启优先队列来调度自动收集统计信息的任务。
+
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
