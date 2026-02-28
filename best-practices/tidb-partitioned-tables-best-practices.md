@@ -226,48 +226,48 @@ TiDB 分区表的性能开销取决于分区数量和索引类型。
 - 当关键查询缺少有效的分区裁剪条件且匹配大量分区时，使用全局索引。
 - 仅当优先考虑 DDL 操作效率（例如快速执行 `DROP PARTITION`），且可以接受潜在的性能影响时，才使用本地索引。
 
-## 便于批量删除数据
+## 简化大批量数据删除
 
-在 TiDB 中，你可以使用 [TTL (Time to Live)](/time-to-live.md) 或手动删除分区来移除历史数据。尽管两者都能删除数据，但其性能特性差异明显。下列测试结果表明，删除分区通常更快且消耗更少资源，是处理大规模数据或频繁清理数据的更好选择。
+在 TiDB 中，你可以使用 [TTL (Time to Live)](/time-to-live.md) 或手动执行 `DROP PARTITION` 来清理历史数据。虽然这两种方法都可以删除数据，但它们在性能特征上存在显著差异。以下测试结果表明，`DROP PARTITION` 通常执行速度更快、资源消耗更少，更适合处理大规模数据集和频繁的数据清理任务。
 
-### TTL 与 `DROP PARTITION` 的区别
+### TTL 与 `DROP PARTITION` 的对比
 
-- TTL：根据数据的存活时间自动删除数据。由于该机制会随时间逐步扫描并删除行，因此执行速度可能较慢。
-- `DROP PARTITION`：一次性删除整个分区。该方法通常更快，尤其针对大数据量。
+- TTL：根据数据的存活时间自动删除数据。由于需要逐行扫描并删除数据，因此速度可能较慢。
+- `DROP PARTITION`：一次性删除整个分区。该方法通常速度更快，尤其适用于大规模数据集。
 
 #### 测试用例
 
-此测试比较 TTL 和 `DROP PARTITION` 的性能。
+本测试对比了 TTL 和 `DROP PARTITION` 的性能。
 
 - TTL 配置：每 10 分钟运行一次。
 - 分区配置：每 10 分钟删除一个分区。
-- 工作负载：后台写入负载，使用 50 个和 100 个并发线程。
+- 工作负载：分别使用 50 个和 100 个并发线程的后台写入负载。
 
-该测试衡量了执行时间、系统资源使用和删除的总行数。
+测试指标包括执行时间、系统资源使用情况以及删除的总行数。
 
-#### 发现
+#### 测试结果
 
 > **注意：**
 >
-> 本节描述的性能优势仅适用于没有全局索引的分区表。
+> 本节描述的性能优势仅适用于不包含全局索引的分区表。
 
-关于 TTL 的发现：
+以下是 TTL 的性能测试结果：
 
-- 在 50 个线程情况下，每个 TTL 作业耗时 8 到 10 分钟，删除 700 万到 1100 万行。
-- 在 100 个线程情况下，TTL 能处理最多约 2000 万行，但执行时间增加到 15 到 30 分钟，且波动较大。
-- 在高负载下，TTL 作业因额外的扫描和删除开销会降低整体 QPS。
+- 在 50 个并发线程下，每个 TTL 任务耗时 8 到 10 分钟，删除 700 万到 1100 万行数据。
+- 在 100 个并发线程下，TTL 最多能处理约 2000 万行数据，但执行时间增加至 15 到 30 分钟，且波动较大。
+- 在高负载场景下，由于额外的扫描和删除开销，TTL 任务会导致整体 QPS 下降。
 
-关于 `DROP PARTITION` 的发现：
+以下是 `DROP PARTITION` 的性能测试结果：
 
-- `ALTER TABLE ... DROP PARTITION` 语句几乎即时删除整个分区。
-- 该操作消耗资源少，因为其主要在元数据层面发生。
-- 对于大型历史数据集，`DROP PARTITION` 比 TTL 更快且更可预测。
+- `ALTER TABLE ... DROP PARTITION` 语句几乎可以立即删除整个分区。
+- 由于该操作仅涉及元数据变更，因此资源消耗极低。
+- 对于大规模历史数据，`DROP PARTITION` 比 TTL 速度更快、表现更稳定。
 
 #### 在 TiDB 中使用 TTL 与 `DROP PARTITION`
 
-下面示例使用匿名表结构。有关 TTL 的更多信息，请参阅[使用 TTL (Time to Live) 定期删除过期数据](/time-to-live.md)。
+下面示例使用脱敏后的表结构。有关 TTL 的更多信息，请参阅[使用 TTL (Time to Live) 定期删除过期数据](/time-to-live.md)。
 
-以下示例展示了启用 TTL 的表模式：
+以下示例展示了启用 TTL 的表结构：
 
 ```sql
 CREATE TABLE `ad_cache` (
@@ -286,7 +286,7 @@ TTL=`expire_time` + INTERVAL 0 DAY TTL_ENABLE='ON'
 TTL_JOB_INTERVAL='10m';
 ```
 
-以下示例展示使用 Range INTERVAL 分区的表：
+以下示例展示使用 Range INTERVAL 分区的表结构：
 
 ```sql
 CREATE TABLE `ad_cache` (
@@ -312,7 +312,7 @@ FIRST PARTITION LESS THAN ('2025-02-19 18:00:00')
 LAST PARTITION LESS THAN ('2025-02-19 20:00:00');
 ```
 
-要定期更新 `FIRST PARTITION` 和 `LAST PARTITION`，运行类似以下的 DDL 语句以删除旧分区并创建新分区。
+要定期更新 `FIRST PARTITION` 和 `LAST PARTITION`，可以执行类似以下的 DDL 语句。这些语句用于删除旧分区并创建新分区。
 
 ```sql
 ALTER TABLE ad_cache FIRST PARTITION LESS THAN ("${nextTimestamp}");
@@ -321,29 +321,29 @@ ALTER TABLE ad_cache LAST PARTITION LESS THAN ("${nextTimestamp}");
 
 #### 建议
 
-- 对于大规模或基于时间的数据清理，使用分区表并通过 `DROP PARTITION` 删除数据。该方法提供更好的性能、更低的系统影响和更简单的运维行为。
-- 对于细粒度或后台数据清理，使用 TTL。TTL 不适合具有高写入吞吐或需要快速删除大量数据的工作负载。
+- 对于大规模或基于时间的数据清理，建议使用分区表并通过 `DROP PARTITION` 删除数据。这种方法性能更好，对系统的影响更小，且运维更简单。
+- 对于细粒度或后台数据清理场景，可以使用 TTL。TTL 不太适合写入吞吐量高或需要快速删除大量数据的工作负载。
 
 ### 删除分区的效率：本地索引和全局索引
 
-对于带有全局索引的分区表，DDL 操作（例如 `DROP PARTITION`、`TRUNCATE PARTITION` 和 `REORGANIZE PARTITION`）必须同步更新全局索引条目。这些更新会显著增加 DDL 执行时间。
+对于包含全局索引的分区表，在执行 `DROP PARTITION`、`TRUNCATE PARTITION` 和 `REORGANIZE PARTITION` 等 DDL 操作时，需要同步更新全局索引中的条目。这些更新会显著增加 DDL 的执行时间。
 
-在本节可以看出，在使用全局索引的表上执行 `DROP PARTITION`，要比使用本地索引的表慢得多。在设计分区表时需考虑这一点。
+本节说明，在包含全局索引的表上执行 `DROP PARTITION` 的速度明显慢于仅包含本地索引的表。在设计分区表时，请考虑这一行为差异。
 
 #### 测试用例
 
-本测试在创建了 365 个分区、约 10 亿行的数据表上比较使用全局索引与本地索引时 `DROP PARTITION` 的性能。
+本测试创建了一张包含 365 个分区、约 10 亿行数据的表，对比了在使用全局索引和本地索引时执行 `DROP PARTITION` 的性能。
 
 | 索引类型  | 删除分区耗时 |
 |----------|------------|
 | 全局索引  | 76.02 秒    |
 | 本地索引  | 0.52 秒     |
 
-#### 发现
+#### 测试结果
 
-在带有全局索引的表上删除分区耗时 **76.02 秒**，而在带有本地索引的表上仅需 **0.52 秒**。差异来源于全局索引跨所有分区，需要额外的索引更新，而本地索引随分区数据一起被删除。
+在包含全局索引的表上删除一个分区需要 **76.02 秒**，而在包含本地索引的表上执行相同操作仅需 **0.52 秒**。这是因为全局索引覆盖所有分区，删除分区时需要额外更新索引，而本地索引会随分区数据一同删除。
 
-你可以使用下列 SQL 删除分区：
+你可以使用以下 SQL 语句删除分区：
 
 ```sql
 ALTER TABLE A DROP PARTITION A_2024363;
@@ -351,8 +351,8 @@ ALTER TABLE A DROP PARTITION A_2024363;
 
 #### 建议
 
-- 如果分区表使用全局索引，预期诸如 `DROP PARTITION`、`TRUNCATE PARTITION` 和 `REORGANIZE PARTITION` 的执行时间会更长。
-- 如果需要频繁删除分区并尽量减少性能影响，应使用本地索引以实现更快、更高效的分区管理。
+- 如果分区表使用了全局索引，请预留更长的 DDL 操作时间（如 `DROP PARTITION`、`TRUNCATE PARTITION` 和 `REORGANIZE PARTITION`）。
+- 如果需要频繁删除分区并希望尽量减少性能影响，建议使用本地索引，以实现更快速、更高效的分区管理。
 
 ## 缓解热点问题
 
@@ -372,7 +372,6 @@ TiDB 会将新行和索引条目追加到“最右侧”的 Region。随着时�
 > **注意：**
 >
 > - 本节以分区表为示例说明缓解读写热点。TiDB 还提供其他热点缓解功能，例如 [`AUTO_INCREMENT`](/auto-increment.md) 和 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md)。
->
 > - 在特定场景下使用分区表时，设置 `merge_option=deny` 用于保留分区边界的策略。更多信息见 [issue #58128](https://github.com/pingcap/tidb/issues/58128)。
 
 ### 分区如何工作
@@ -393,7 +392,7 @@ TiDB 将表数据和索引存储在 Region 中，每个 Region 覆盖一段连�
 
 如果具有 [`AUTO_INCREMENT`](/auto-increment.md) 主键的表发生大量批量插入并出现写热点，请对主键应用哈希或 Key 分区以更均匀地分布写入负载。
 
-下列 SQL 创建了一个基于主键的 16 分区表：
+下列 SQL 创建了一个基于主键的 16 个分区表：
 
 ```sql
 CREATE TABLE server_info (
@@ -484,7 +483,7 @@ PARTITION BY KEY (id) PARTITIONS 16;
 
 #### 缺点
 
-使用点查 (Point Get) 或表范围扫描 (Table Range Scan) 的查询需要执行额外的回表操作，这可能会降低读取性能。
+使用点查 (Point Get) 或表范围扫描 (Table Range Scan) 的查询需要执行额外的回表操作，可能会导致读取性能下降。
 
 #### 适用场景
 
@@ -496,7 +495,7 @@ PARTITION BY KEY (id) PARTITIONS 16;
 
 ##### 第 1 步：使用 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`
 
-创建带 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 和 [`PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 的分区表以预分裂 Regions。
+创建带 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 和 [`PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 的分区表，用于预分裂 Regions。
 
 要求：
 
@@ -690,7 +689,7 @@ Records: 120000000, ID: c1d04eec-fb49-49bb-af92-bf3d6e2d3d87
 
 ### 方法 3：在线 DDL
 
-下列 SQL 将分区表转换为非分区表：
+以下 SQL 语句将分区表转换为非分区表：
 
 ```sql
 SET @@global.tidb_ddl_REORGANIZE_worker_cnt = 16;
@@ -699,7 +698,7 @@ ALTER TABLE fa REMOVE PARTITIONING;
 -- 实际耗时：170m 12.024s（约 2 小时 50 分钟）
 ```
 
-下列 SQL 将非分区表转换为分区表：
+以下 SQL 语句将非分区表转换为分区表：
 
 ```sql
 SET @@global.tidb_ddl_REORGANIZE_worker_cnt = 16;
@@ -716,7 +715,7 @@ Query OK, 0 rows affected, 1 warning (2 hours 31 min 57.05 sec)
 
 ### 发现
 
-下表展示了对 1.2 亿行表，各方法所耗时间：
+下表比较了对于一张 1.2 亿行的表，上述将分区表转换为非分区表的三种方法所花费的时间：
 
 | 方法 | 耗时 |
 |--------|------------|
