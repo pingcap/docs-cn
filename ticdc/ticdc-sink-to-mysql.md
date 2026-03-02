@@ -80,9 +80,9 @@ URI 中可配置的参数如下：
 | `tidb-txn-mode` | 设置环境变量 [`tidb_txn_mode`](/system-variables.md#tidb_txn_mode)（可选，默认值为 `optimistic`）。 |
 | `safe-mode` | 指定向下游同步数据时 `INSERT` 和 `UPDATE` 语句的处理方式。当设置为 `true` 时，TiCDC 会将上游所有的 `INSERT` 语句转换为 `REPLACE INTO` 语句，所有的 `UPDATE` 语句转换为 `DELETE` + `REPLACE INTO` 语句。在 v6.1.3 版本之前，该参数的默认值为 `true`。从 v6.1.3 版本开始，该参数的默认值调整为 `false`，TiCDC 在启动时会获取一个当前时间戳 `ThresholdTs`：<ul><li>对于 `CommitTs` 小于 `ThresholdTs` 的 `INSERT` 语句和 `UPDATE` 语句，TiCDC 会分别将其转换为 `REPLACE INTO` 语句和 `DELETE` + `REPLACE INTO` 语句。</li><li>对于 `CommitTs` 大于等于 `ThresholdTs` 的 `INSERT` 语句和 `UPDATE` 语句，`INSERT` 语句将直接同步到下游，`UPDATE` 语句的具体行为则参考 [TiCDC 拆分 UPDATE 事件行为说明](/ticdc/ticdc-split-update-behavior.md)。</li></ul> |
 
-> **说明：**
+> **注意：**
 >
-> - `time-zone` 仅对 `mysql` 和 `tidb` 类型的 sink 生效。TiCDC 在建立与下游的连接后，会设置该会话的 `time_zone`，用于下游在执行 DDL 和 DML 时解析 `TIMESTAMP` 等受时区影响的时间值。`DATETIME`、`DATE` 和 `TIME` 不受影响。
+> - `time-zone` 仅对 `mysql` 和 `tidb` 类型的 sink 生效。TiCDC 在建立与下游的连接后，会设置该会话的 `time_zone`，用于下游在执行 DDL 和 DML 时解析 `TIMESTAMP` 等受时区影响的时间值。`DATETIME`、`DATE` 和 `TIME` 数据类型不受时区设置影响。
 > - 为避免因时区设置不一致导致数据不一致，建议显式设置 `time-zone`，并确保其值与 TiCDC Server 的 `--tz` 参数以及下游数据库的时区保持一致。
 
 若需要对 Sink URI 中的数据库密码使用 Base64 进行编码，可以参考如下命令：
