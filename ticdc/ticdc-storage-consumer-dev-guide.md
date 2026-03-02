@@ -190,4 +190,4 @@ func (tc *TableVersionConsumer) ExecuteDML() {}
 
 > **注意：**
 >
-> 在 [TiCDC 新架构](/ticdc-architecture.md) 下开启 `scheduler.enable-table-across-nodes` 后，记录数据变更的文件名格式将从 `CDC_{num}.{extension}` 变更为 `CDC_{uuid}_{num}.{extension}`，Index 文件名格式将从 `CDC.index` 变更为 `CDC_{uuid}.index`。此时，`{schema}/{table}/{table-version-separator}/` 目录下会存在 uuid 不同，序号相同的文件。编写下游消费程序时，请参考 [Storage Sink 文件名变更和消费说明](/ticdc-architecture.md#storage-sink-文件名变更和消费说明)中的顺序进行消费。
+> 在 [TiCDC 新架构](/ticdc/ticdc-architecture.md) 下开启 `scheduler.enable-table-across-nodes` 后，记录数据变更的文件名格式将从 `CDC_{num}.{extension}` 变更为 `CDC_{uuid}_{num}.{extension}`，Index 文件名格式将从 `CDC.index` 变更为 `CDC_{uuid}.index`。此时，`{schema}/{table}/{table-version-separator}/` 目录下会存在 uuid 不同，序号相同的文件。编写下游消费程序时，请参考 [Storage Sink 文件名变更和消费说明](/ticdc/ticdc-architecture.md#storage-sink-文件名变更和消费说明)中的顺序进行消费。
