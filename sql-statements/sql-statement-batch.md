@@ -29,7 +29,7 @@ Non-transactional DML, shard column must be fully specified
 
 > **注意：**
 >
-> `BATCH` 语句在内部会重写并拆分执行 DML。当前实现中表别名（alias）可能不会被保留，导致 `Unknown column ... in 'where clause'` 等报错。建议避免使用表别名，并先使用 `DRY RUN QUERY`/`DRY RUN` 预览拆分后的语句。详见[非事务 DML 语句](/non-transactional-dml.md)。
+> `BATCH` 语句在执行时会被内部重写并拆分为多个 DML 语句。在当前版本中，表别名(alias) 可能不会被保留，从而导致 `Unknown column ... in 'where clause'` 等报错。建议避免使用表别名，并在执行前使用 `DRY RUN QUERY` 或 `DRY RUN` 预览拆分后的语句。详见[非事务 DML 语句](/non-transactional-dml.md)。
 
 ## 语法图
 
