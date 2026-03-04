@@ -1,7 +1,6 @@
 ---
 title: TiDB API 概览
 summary: 了解 TiDB Cloud 和 TiDB 可用的 API。
-aliases: ['/zh/tidbcloud/api-overview/']
 ---
 
 # TiDB API 概览
