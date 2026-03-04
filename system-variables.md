@@ -6086,24 +6086,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：`uid`
 - LDAP Simple user search attribute.
 
-### `plugin_audit_log_buffer_size` <span class="version-mark">从 v8.5.4 版本开始引入</span>
-
-- 作用域：INSTANCE
-- 是否持久化到集群：否
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：字符串（只读）
-- 默认值：来自 `[instance]` 配置项
-- Plugin audit log instance variable (read-only).
-
-### `plugin_audit_log_flush_interval` <span class="version-mark">从 v8.5.4 版本开始引入</span>
-
-- 作用域：INSTANCE
-- 是否持久化到集群：否
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：字符串（只读）
-- 默认值：来自 `[instance]` 配置项
-- Plugin audit log flush interval (read-only).
-
 ### `tidb_enable_batch_query_region` <span class="version-mark">从 v8.5.4 版本开始引入</span>
 
 - 作用域：GLOBAL
