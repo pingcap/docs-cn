@@ -6067,3 +6067,267 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制计算[窗口函数](/functions-and-operators/window-functions.md)时是否采用高精度模式。
+
+### `authentication_ldap_sasl_user_search_attr`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串
+- 默认值：`uid`
+- LDAP SASL user search attribute.
+
+### `authentication_ldap_simple_user_search_attr`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串
+- 默认值：`uid`
+- LDAP Simple user search attribute.
+
+### `plugin_audit_log_buffer_size`
+
+- 作用域：INSTANCE
+- 是否持久化到集群：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串（只读）
+- 默认值：来自 `[instance]` 配置项
+- Plugin audit log instance variable (read-only).
+
+### `plugin_audit_log_flush_interval`
+
+- 作用域：INSTANCE
+- 是否持久化到集群：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串（只读）
+- 默认值：来自 `[instance]` 配置项
+- Plugin audit log flush interval (read-only).
+
+### `tidb_enable_batch_query_region`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- Enable/disable batch Region query.
+
+### `tidb_enable_binding_usage`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- Enable/disable binding usage.
+
+### `tidb_enable_tiflash_pipeline_model`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- Enable/disable TiFlash pipeline mode.
+
+### `tidb_enable_ts_validation`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- Enable/disable TS validation.
+
+### `tidb_foreign_key_check_in_shared_lock`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- Foreign key check behavior in shared lock.
+
+### `tidb_mem_arbitrator_mode`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串
+- 默认值：`disable`
+- 可选值：`disable`、`standard`、`priority`
+- Global memory arbitrator mode.
+
+### `tidb_mem_arbitrator_query_reserved`
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：字符串
+- 默认值：`0`
+- Reserved memory for current query.
+
+### `tidb_mem_arbitrator_soft_limit`
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串
+- 默认值：`0`
+- 可选值：`0`、`auto`、正整数、`(0,1]`小数
+- Global memory arbitrator soft limit.
+
+### `tidb_mem_arbitrator_wait_averse`
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串
+- 默认值：`0`
+- 可选值：`0`、`1`、`nolimit`
+- Session wait-averse strategy for memory arbitrator.
+
+### `tidb_opt_always_keep_join_key`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`ON`
+- Optimizer always keeps join key.
+
+### `tidb_opt_cartesian_join_order_threshold`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点型
+- 默认值：`0.0`
+- 范围：`[0, 18446744073709551615]`
+- Cartesian join reorder threshold.
+
+### `tidb_opt_enable_three_stage_multi_distinct_agg`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- Enable 3-stage multi-distinct agg optimization.
+
+### `tidb_opt_group_ndv_skew_ratio`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点型
+- 默认值：`0.0`
+- 范围：`[0, 1]`
+- Group NDV skew ratio.
+
+### `tidb_opt_index_join_build_v2`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- Enable index join build v2.
+
+### `tidb_opt_index_prune_threshold`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：整数型
+- 默认值：`20`
+- 范围：`[-1, 2147483647]`
+- Index prune threshold.
+
+### `tidb_opt_join_reorder_through_sel`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- Allow join reorder through selection.
+
+### `tidb_opt_partial_ordered_index_for_topn`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：枚举型
+- 默认值：`DISABLE`
+- 可选值：`DISABLE`、`COST`
+- Partial ordered index strategy for TopN.
+
+### `tidb_opt_risk_eq_skew_ratio`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点型
+- 默认值：`0.0`
+- 范围：`[0, 1]`
+- Risk eq skew ratio.
+
+### `tidb_opt_risk_range_skew_ratio`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点型
+- 默认值：`0.0`
+- 范围：`[0, 1]`
+- Risk range skew ratio.
+
+### `tidb_opt_scale_ndv_skew_ratio`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点型
+- 默认值：`1.0`
+- 范围：`[0, 1]`
+- Scale NDV skew ratio.
+
+### `tidb_opt_selectivity_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点型
+- 默认值：`0.8`
+- 范围：`[0, 1]`
+- Optimizer selectivity factor.
+
+### `tidb_opt_table_rowid_scan_cost_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点型
+- 默认值：`1.0`
+- 范围：`[0, 18446744073709551615]`
+- Table rowid scan cost factor.
+
+### `tidb_trace_event`
+
+- 作用域：INSTANCE
+- 是否持久化到集群：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串
+- 默认值：``
+- Instance-level trace event control.
+
+### `tiflash_compute_dispatch_policy`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串
+- 默认值：`consistent_hash`
+- 可选值：`consistent_hash`、`round_robin`
+- TiFlash compute dispatch policy.
