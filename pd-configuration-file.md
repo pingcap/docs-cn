@@ -120,6 +120,20 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 默认值：50ms
 + 最小值：1ms
 
+### `tso-max-index`
+
++ 用于在多 PD 集群场景下生成全局唯一的 TSO。`tso-max-index` 与 [`tso-unique-index`](#tso-unique-index) 共同决定 TSO 逻辑部分的分配方式，从而避免不同集群产生的 TSO 冲突。
++ 默认值：0
++ 当 `tso-max-index` 设置为非 0 值时，需要为每个 PD 集群设置不同的 `tso-unique-index`，并确保 `tso-unique-index` 的取值不超过 `tso-max-index`。
++ 该配置常用于 Active-Active 场景下跨集群比较时间戳，更多信息请参考 [Active-Active 表](/active-active-table.md)。
+
+### `tso-unique-index`
+
++ 用于在多 PD 集群场景下标识当前 PD 集群的唯一索引。不同集群必须配置不同值，以避免生成的 TSO 冲突。
++ 默认值：0
++ 通常需要与 [`tso-max-index`](#tso-max-index) 配合使用。例如，若有 N 个集群，建议将 `tso-max-index` 设置为 N，并将各集群的 `tso-unique-index` 设置为 1..N（每个集群不同）。
++ 该配置常用于 Active-Active 场景下跨集群比较时间戳，更多信息请参考 [Active-Active 表](/active-active-table.md)。
+
 ## pd-server
 
 pd-server 相关配置项。

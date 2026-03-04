@@ -116,7 +116,11 @@ TableOption ::=
 |   'SECONDARY_ENGINE' EqOpt ( 'NULL' | StringName )
 |   'UNION' EqOpt '(' TableNameListOpt ')'
 |   'ENCRYPTION' EqOpt EncryptionOpt
-|    'TTL' EqOpt TimeColumnName '+' 'INTERVAL' Expression TimeUnit (TTLEnable EqOpt ( 'ON' | 'OFF' ))? (TTLJobInterval EqOpt stringLit)?
+|   ActiveActiveOption
+|   SoftDeleteOption
+|   SoftDeleteJobEnableOption
+|   SoftDeleteJobIntervalOption
+|   'TTL' EqOpt TimeColumnName '+' 'INTERVAL' Expression TimeUnit (TTLEnable EqOpt ( 'ON' | 'OFF' ))? (TTLJobInterval EqOpt stringLit)?
 |   PlacementPolicyOption
 
 OnCommitOpt ::=
@@ -125,6 +129,19 @@ OnCommitOpt ::=
 PlacementPolicyOption ::=
     "PLACEMENT" "POLICY" EqOpt PolicyName
 |   "PLACEMENT" "POLICY" (EqOpt | "SET") "DEFAULT"
+
+ActiveActiveOption ::=
+    "ACTIVE_ACTIVE" EqOpt ( 'ON' | 'OFF' )
+
+SoftDeleteOption ::=
+    "SOFTDELETE" EqOpt "RETENTION" NUM TimeUnit
+|   "SOFTDELETE" EqOpt 'OFF'
+
+SoftDeleteJobEnableOption ::=
+    "SOFTDELETE_JOB_ENABLE" EqOpt ( 'ON' | 'OFF' )
+
+SoftDeleteJobIntervalOption ::=
+    "SOFTDELETE_JOB_INTERVAL" EqOpt stringLit
 
 DefaultValueExpr ::=
     NowSymOptionFractionParentheses

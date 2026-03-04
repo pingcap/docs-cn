@@ -178,6 +178,9 @@
     - [日志过滤器](/ticdc/ticdc-filter.md)
     - [DDL 同步](/ticdc/ticdc-ddl.md)
     - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
+    - [Active-Active 双向同步](/ticdc/ticdc-active-active-replication.md)
+    - [Active-Active 表](/active-active-table.md)
+    - [Soft Delete 表](/soft-delete-table.md)
   - 监控告警
     - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
     - [详细监控指标](/ticdc/monitor-ticdc.md)

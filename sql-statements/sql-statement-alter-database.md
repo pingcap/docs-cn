@@ -15,6 +15,23 @@ AlterDatabaseStmt ::=
 
 DatabaseOption ::=
     DefaultKwdOpt ( CharsetKw '='? CharsetName | 'COLLATE' '='? CollationName | 'ENCRYPTION' '='? EncryptionOpt )
+|   ActiveActiveOption
+|   SoftDeleteOption
+|   SoftDeleteJobEnableOption
+|   SoftDeleteJobIntervalOption
+
+ActiveActiveOption ::=
+    "ACTIVE_ACTIVE" EqOpt ( 'ON' | 'OFF' )
+
+SoftDeleteOption ::=
+    "SOFTDELETE" EqOpt "RETENTION" NUM TimeUnit
+|   "SOFTDELETE" EqOpt 'OFF'
+
+SoftDeleteJobEnableOption ::=
+    "SOFTDELETE_JOB_ENABLE" EqOpt ( 'ON' | 'OFF' )
+
+SoftDeleteJobIntervalOption ::=
+    "SOFTDELETE_JOB_INTERVAL" EqOpt stringLit
 ```
 
 ## 示例

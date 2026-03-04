@@ -1245,6 +1245,16 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 这个变量用于控制是否开启[自动捕获绑定](/sql-plan-management.md#自动捕获绑定-baseline-capturing)功能。该功能依赖 Statement Summary，因此在使用自动绑定之前需打开 Statement Summary 开关。
 - 开启该功能后会定期遍历一次 Statement Summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动创建绑定。
 
+### `tidb_cdc_active_active_sync_stats`
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串
+- 只读变量，仅供 TiCDC 在 Active-Active 同步过程中读取统计信息，展示当前会话因为冲突而跳过的行数统计信息。
+- 返回值为 JSON 字符串，包含以下字段：
+    - `conflict_skip_rows`：因冲突检测（Last Write Wins）被跳过写入的行数。
+
 ### `tidb_cdc_write_source` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 - 作用域：SESSION
@@ -5029,6 +5039,16 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > 跳过字符检查可能会使 TiDB 检测不到应用写入的非法 UTF-8 字符，进一步导致执行 `ANALYZE` 时解码错误，以及引入其他未知的编码问题。如果应用不能保证写入字符串的合法性，不建议跳过该检查。
 
+### `tidb_softdelete_job_enable`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 这个变量用于控制是否调度 Soft Delete 后台清理任务。
+- 当设置为 `OFF` 时，带 `SOFTDELETE` 选项的表不会执行过期数据的物理删除（Hard Delete）。更多信息请参考 [Soft Delete 表](/soft-delete-table.md)。
+
 ### `tidb_slow_log_threshold`
 
 - 作用域：GLOBAL
@@ -5347,6 +5367,20 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 > **警告：**
 >
 > 如果禁用该变量，TiDB 可能无法准确跟踪内存使用情况，并且无法控制对应 SQL 语句的内存使用。
+
+### `tidb_translate_softdelete_sql`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量用于控制 TiDB 是否对带 `SOFTDELETE` 选项的表启用语义转换（例如将 `DELETE` 重写为更新内部隐藏列 `_tidb_softdelete_time`），以及在读取时过滤已软删除的数据。
+- 当该变量为 `ON` 时，查询中不能显式引用 `_tidb_softdelete_time`。如需查看或手动处理已软删除的数据，请在会话级别将该变量设置为 `OFF`。更多信息请参考 [Soft Delete 表](/soft-delete-table.md)。
+
+> **注意：**
+>
+> 不要在 `tidb_translate_softdelete_sql=OFF` 的情况下对启用 `SOFTDELETE` 的表执行 `DELETE` 操作，否则可能会造成 Active-Active 同步的不一致。更多信息请参考 [Soft Delete 表](/soft-delete-table.md) 和 [Active-Active 表](/active-active-table.md)。
 
 ### `tidb_tso_client_batch_max_wait_time` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 

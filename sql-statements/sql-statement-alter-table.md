@@ -53,6 +53,10 @@ AlterTableSpec ::=
         | 'REMOVE' 'TTL'
         | TTLEnable EqOpt ( 'ON' | 'OFF' )
         | TTLJobInterval EqOpt stringLit
+        | 'SOFTDELETE' EqOpt 'RETENTION' NUM TimeUnit
+        | 'SOFTDELETE' EqOpt 'OFF'
+        | 'SOFTDELETE_JOB_ENABLE' EqOpt ( 'ON' | 'OFF' )
+        | 'SOFTDELETE_JOB_INTERVAL' EqOpt stringLit
     )
 |   PlacementPolicyOption
 

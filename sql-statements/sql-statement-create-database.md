@@ -28,6 +28,23 @@ DatabaseOptionList ::=
 DatabaseOption ::=
     DefaultKwdOpt ( CharsetKw '='? CharsetName | 'COLLATE' '='? CollationName | 'ENCRYPTION' '='? EncryptionOpt )
 |   DefaultKwdOpt PlacementPolicyOption
+|   ActiveActiveOption
+|   SoftDeleteOption
+|   SoftDeleteJobEnableOption
+|   SoftDeleteJobIntervalOption
+
+ActiveActiveOption ::=
+    "ACTIVE_ACTIVE" EqOpt ( 'ON' | 'OFF' )
+
+SoftDeleteOption ::=
+    "SOFTDELETE" EqOpt "RETENTION" NUM TimeUnit
+|   "SOFTDELETE" EqOpt 'OFF'
+
+SoftDeleteJobEnableOption ::=
+    "SOFTDELETE_JOB_ENABLE" EqOpt ( 'ON' | 'OFF' )
+
+SoftDeleteJobIntervalOption ::=
+    "SOFTDELETE_JOB_INTERVAL" EqOpt stringLit
 
 PlacementPolicyOption ::=
     "PLACEMENT" "POLICY" EqOpt PolicyName
@@ -47,6 +64,10 @@ CREATE {DATABASE | SCHEMA} [IF NOT EXISTS] db_name
 create_specification:
     [DEFAULT] CHARACTER SET [=] charset_name
   | [DEFAULT] COLLATE [=] collation_name
+  | ACTIVE_ACTIVE [=] ('ON' | 'OFF')
+  | SOFTDELETE [=] (RETENTION num time_unit | 'OFF')
+  | SOFTDELETE_JOB_ENABLE [=] ('ON' | 'OFF')
+  | SOFTDELETE_JOB_INTERVAL [=] stringLit
 ```
 
 当创建已存在的数据库且不指定使用 `IF NOT EXISTS` 时会报错。
