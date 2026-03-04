@@ -6169,6 +6169,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - Reserved memory for current query.
 
 ### `tidb_mem_arbitrator_soft_limit`
+
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
