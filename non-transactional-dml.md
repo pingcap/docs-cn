@@ -365,6 +365,27 @@ SELECT t2.id, t2.v, t3. FROM t2 JOIN t3 ON t2.id=t3.id
 +----------------+---------------+
 ```
 
+### 执行带表别名的非事务 DML 语句后，遇到 `Unknown column '<alias>.<column>' in 'where clause'` 错误
+
+非事务 DML 语句在执行时，TiDB 会在内部构造用于划分 batch 的查询语句，并生成拆分后的实际执行语句。你可以分别通过 [`DRY RUN QUERY`](/non-transactional-dml.md#查询非事务-dml-语句中划分-batch-的语句) 和 [`DRY RUN`](/non-transactional-dml.md#查询非事务-dml-语句中首末-batch-对应的语句) 查看这两类语句。
+
+在当前版本中，这些重写后的语句可能不会保留原始 DML 语句中的表别名 (alias)。因此，如果 `WHERE` 子句或其他表达式中使用了 `<alias>.<column>` 的形式引用列，就可能出现 `Unknown column` 报错。
+
+例如，下面的语句在某些情况下会报错：
+
+```sql
+BATCH ON t_old.id LIMIT 5000
+INSERT INTO t_new
+SELECT * FROM t_old AS t
+WHERE t.c1 IS NULL;
+```
+
+要避免该错误，建议采取以下措施：
+
+- 尽量不要在非事务 DML 语句中使用表别名。例如，将 `t.c1` 改写为 `c1` 或 `t_old.c1`。
+- 在指定[划分列](#参数说明)时，不要使用表别名。例如，将 `BATCH ON t.id` 改写为 `BATCH ON db.t_old.id` 或 `BATCH ON t_old.id`。
+- 在执行前使用 `DRY RUN QUERY` 或 `DRY RUN` 预览拆分后的语句，确保重写后的语句符合预期。
+
 ### 实际的 batch 大小和指定的 batch size 不一样
 
 在非事务 DML 语句的执行过程中，最后一个 batch 处理的数据量可能会小于 batch size。
