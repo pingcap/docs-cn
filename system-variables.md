@@ -8,8 +8,9 @@ aliases: ['/docs-cn/dev/system-variables/','/docs-cn/dev/reference/configuration
 
 TiDB 系统变量的行为与 MySQL 相似，变量的作用范围可以是会话级别有效 (Session Scope) 或全局范围有效 (Global Scope)。其中：
 
+- 对 `INSTANCE` 作用域变量的更改，设置后**只影响当前实例**。
 - 对 `SESSION` 作用域变量的更改，设置后**只影响当前会话**。
-- 对 `GLOBAL` 作用域变量的更改，设置后立即生效。如果该变量也有 `SESSION` 作用域，已经连接的所有会话 (包括当前会话) 将继续使用会话当前的 `SESSION` 变量值。
+- 对 `GLOBAL` 作用域变量的更改，设置后立即生效。如果该变量也有 `SESSION` 作用域，已经连接的所有会话 (包括当前会话) 将继续使用会话当前的 `SESSION` 变量值。如果该变量也有 `INSTANCE` 作用域，实例将优先使用配置文件中指定的值。
 - 要设置变量值，可使用 [`SET` 语句](/sql-statements/sql-statement-set-variable.md)。
 
 ```sql
@@ -20,6 +21,10 @@ SET SESSION tidb_distsql_scan_concurrency = 10;
 # 以下两个语句等价地改变一个 Global 变量
 SET @@global.tidb_distsql_scan_concurrency = 10;
 SET GLOBAL tidb_distsql_scan_concurrency = 10;
+
+# 以下两个语句等价地改变一个 Instance 变量
+SET @@instance.tidb_distsql_scan_concurrency = 10;
+SET INSTANCE tidb_distsql_scan_concurrency = 10;
 ```
 
 > **注意：**
@@ -2247,7 +2252,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 >
 > Instance Plan Cache 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-- 作用域：GLOBAL
+- 作用域：GLOBAL | INSTANCE
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
@@ -3416,7 +3421,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_mem_quota_binding_cache` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
-- 作用域：GLOBAL
+- 作用域：GLOBAL | INSTANCE
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
@@ -4959,7 +4964,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 ### `tidb_schema_cache_size` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
-- 作用域：GLOBAL
+- 作用域：GLOBAL | INSTANCE
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
@@ -4982,7 +4987,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 ### `tidb_server_memory_limit` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-- 作用域：GLOBAL
+- 作用域：GLOBAL | INSTANCE
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`80%`
@@ -4996,7 +5001,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 ### `tidb_server_memory_limit_gc_trigger` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-- 作用域：GLOBAL
+- 作用域：GLOBAL | INSTANCE
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`70%`
@@ -5321,7 +5326,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
-- 作用域：GLOBAL
+- 作用域：GLOBAL | INSTANCE
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
