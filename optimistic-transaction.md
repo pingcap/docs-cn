@@ -156,4 +156,4 @@ scheduler-concurrency = 2048000
 
 ## 更多阅读
 
-- [Percolator 和 TiDB 事务算法](https://tidb.net/blog/f537be2c)
+- [Percolator 和 TiDB 事务算法](https://pingkai.cn/tidbcommunity/blog/f537be2c)
