@@ -1,41 +1,41 @@
 ---
 title: 配置 TiDB 以优化性能
-summary: 了解如何通过配置关键参数和应对边缘场景来优化 TiDB 性能。
+summary: 了解如何通过配置关键参数和处理特殊场景来优化 TiDB 性能。
 ---
 
 # 配置 TiDB 以优化性能
 
 本文档介绍如何优化 TiDB 的性能，包括：
 
-- 常见负载的最佳实践。
+- 常见工作负载的最佳实践。
 - 针对复杂性能场景的优化策略。
 
 > **注意：**
 >
-> 本文介绍的优化技术有助于提升 TiDB 的性能，但性能调优通常需要在多个因素之间权衡，并不存在一劳永逸的方案解决所有的性能问题。部分优化方法涉及实验特性，已在文中标注。虽然这些优化可以显著提升性能，但可能并不适合生产环境，实施前请充分评估。
+> 本文中的优化技术有助于在 TiDB 中实现最佳性能。但在实际调优过程中，通常需要在多个因素之间进行权衡，不存在满足所有性能需求的单一解决方案。本文中的部分优化技术使用了实验特性，并已进行相应标记。尽管这些优化可能显著提升性能，但可能不适用于生产环境。在实施前，请进行充分评估。
 
 ## 概述
 
-要实现 TiDB 的最佳性能，需要对多项配置进行细致调优。很多情况下，达到最佳性能需要调大默认值的配置。
+要实现 TiDB 的最佳性能，需要仔细调整各项设置。在许多情况下，实现最佳性能需要将配置调整为非默认值。
 
-默认的配置优先考虑的是稳定性而不是性能。若要最大化性能，可能需要配置更激进的参数，甚至启用实验特性。本文推荐的配置基于生产环境经验和对性能优化的研究。
+默认的配置优先考虑稳定性而非性能。若需获得更高性能，你可能需要采用更激进的配置，甚至启用实验特性。本文推荐的配置基于生产环境部署经验和性能优化实践。
 
-本文档详细说明了非默认配置项，包括其优势和潜在权衡。请根据实际业务需求合理调整。
+本文介绍了非默认的配置方式，包括其优势和潜在权衡。请根据你的工作负载需求，参考这些信息来优化 TiDB 设置。
 
 ## 常见负载的关键配置
 
-以下配置项常用于优化 TiDB 性能：
+以下配置常用于优化 TiDB 性能：
 
-- 增强执行计划缓存，如 [SQL 预处理执行计划缓存](/sql-prepared-plan-cache.md)、[非预处理计划缓存](/sql-non-prepared-plan-cache.md)和[实例级执行计划缓存](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入)。
-- 通过 [Optimizer Fix Controls](/optimizer-fix-controls.md) 优化 TiDB 优化器行为。
+- 增强执行计划缓存，如 [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md)、[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)和[实例级执行计划缓存](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入)。
+- 通过 [Optimizer Fix Controls](/optimizer-fix-controls.md) 优化 TiDB 优化器的行为。
 - 更积极地使用 [Titan](/storage-engine/titan-overview.md) 存储引擎。
-- 微调 TiKV 的压缩与流控配置，确保写入密集型负载下的性能与稳定性。
+- 微调 TiKV 的 compaction 与流量控制配置，以确保写入密集型负载下的性能与稳定性。
 
-这些配置可显著提升多种负载的性能。但和所有的优化措施一样，请务必在生产环境部署前进行充分测试。
+这些配置可以显著提升多种工作负载的性能。但与任何优化一样，在部署到生产环境之前，请务必在你的环境中进行全面测试。
 
 ### 系统变量
 
-执行以下 SQL 命令应用推荐配置：
+执行以下 SQL 语句以应用推荐的配置：
 
 ```sql
 SET GLOBAL tidb_enable_instance_plan_cache=on;
@@ -54,32 +54,32 @@ SET GLOBAL pd_enable_follower_handle_region=on;
 SET GLOBAL tidb_opt_fix_control = '44262:ON,44389:ON,44823:10000,44830:ON,44855:ON,52869:ON';
 ```
 
-下表简要说明了主要系统变量的作用及注意事项：
+下表说明了部分系统变量配置的作用及注意事项：
 
 | 系统变量 | 说明 | 注意事项 |
 | ---------| ---- | ----|
-| [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 和 [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) | 启用实例级计划缓存而不是会话级缓存，在高并发连接或频繁使用预处理语句的场景中，可以显著提升负载的性能。 | 实验特性，建议先在测试环境验证，并关注内存占用。 |
-| [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 启用[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)，降低不使用预处理语句应用的编译开销。 | 无 |
-| [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt-从-v600-版本开始引入) | 针对使用预处理语句但在每次执行后关闭执行计划的应用，为该应用混存执行计划。 | 无 |
-| [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) | 收集所有列的统计信息，避免因缺失统计导致执行计划不佳。 | 无 |
-| [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 将同步加载统计信息的超时时间从默认 100ms 提高到 2s，确保编译前加载完毕。 | 调大该变量的值会导致编译等待时间变长。 |
+| [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 和 [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) | 启用实例级计划缓存而不是会话级缓存，在高并发连接或频繁使用 Prepare 语句的场景中，可以显著提升性能。 | 实验特性，建议先在测试环境中验证，并随着执行计划缓存大小的增加监控内存使用情况。 |
+| [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 启用[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)，降低未使用 Prepare 语句应用的编译开销。 | 无 |
+| [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt-从-v600-版本开始引入) | 为每次执行后关闭执行计划的 Prepare 语句应用缓存执行计划。 | 无 |
+| [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) | 收集所有列的统计信息，避免因缺少列统计信息而导致执行计划不优。 | 无 |
+| [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 将同步加载统计信息的超时时间从默认的 100ms 提高到 2s，确保 TiDB 在查询编译前加载所需的统计信息。 | 增大此值会导致查询编译前的同步等待时间更长。 |
 | [`tidb_opt_limit_push_down_threshold`](/system-variables.md#tidb_opt_limit_push_down_threshold) | 提高将 `Limit` 或 `TopN` 下推到 TiKV 的阈值。 | 当存在多个索引选项时，调大该变量的值后，优化器更倾向于选择能优化 `ORDER BY` 和 `Limit` 算子的索引。 |
 | [`tidb_opt_derive_topn`](/system-variables.md#tidb_opt_derive_topn-从-v700-版本开始引入) | 启用[从窗口函数中推导 `TopN` 或 `Limit`](/derive-topn-from-window.md)。 | 仅支持 `ROW_NUMBER()` 窗口函数。 |
-| [`tidb_runtime_filter_mode`](/system-variables.md#tidb_runtime_filter_mode-从-v720-版本开始引入) | 启用本地模式的 [Runtime Filter](/runtime-filter.md#runtime-filter-mode)，提升 Hash Join 效率。 | v7.2.0 引入，出于安全考虑默认关闭。 |
-| [`tidb_opt_enable_mpp_shared_cte_execution`](/system-variables.md#tidb_opt_enable_mpp_shared_cte_execution-从-v720-版本开始引入) | 启用非递归公共表表达式 [Common Table Expressions (CTE)](/sql-statements/sql-statement-with.md) 下推到 TiFlash。 | 实验特性。 |
-| [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts-从-v600-版本开始引入) | 对于 read-committed 隔离级别，启用该变量可以避免获取全局时间戳带来的延迟和开销，从而优化事务级读取延迟。 | 该特性与可重复读 (Repeatable Read) 隔离级别不兼容。 |
-| [`tidb_guarantee_linearizability`](/system-variables.md#tidb_guarantee_linearizability-从-v50-版本开始引入) | 通过跳过从 PD 获取提交时间戳，提升性能。 | 为了提升性能，这种方式牺牲了线性一致性 (Linearizability)，仅保证因果一致性。不适用于需要严格线性一致性的场景。|
-| [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) | 启用 PD Follower 特性，允许 PD Follower 节点处理 Region 请求。该特性有助于将负载均匀分摊到所有 PD 节点，降低 PD Leader 的 CPU 压力。 | N/A |
-| [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v653-和-v710-版本开始引入) | 启用高级查询优化策略，通过引入额外的优化规则和启发式方法来提升性能。 | 不同负载的性能提升效果不同，因此请进行充分测试。 |
+| [`tidb_runtime_filter_mode`](/system-variables.md#tidb_runtime_filter_mode-从-v720-版本开始引入) | 启用本地模式的 [Runtime Filter](/runtime-filter.md#runtime-filter-mode)，提升 Hash Join 的执行效率。 | v7.2.0 引入，出于安全考虑默认关闭。 |
+| [`tidb_opt_enable_mpp_shared_cte_execution`](/system-variables.md#tidb_opt_enable_mpp_shared_cte_execution-从-v720-版本开始引入) | 启用非递归[公共表表达式 (CTE)](/sql-statements/sql-statement-with.md) 下推至 TiFlash。 | 实验特性。 |
+| [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts-从-v600-版本开始引入) | 在 `READ-COMMITTED` 隔离级别下，启用此变量可避免获取全局时间戳的延迟和开销，从而优化事务级读延迟。 | 此特性与可重复读 (REPEATABLE READ) 隔离级别不兼容。 |
+| [`tidb_guarantee_linearizability`](/system-variables.md#tidb_guarantee_linearizability-从-v50-版本开始引入) | 跳过从 PD server 获取提交时间戳的步骤，提升性能。 | 该设置以牺牲线性一致性 (Linearizability)为代价，仅保证因果一致性，不适用于要求严格线性一致性的场景。 |
+| [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) | 启用 PD Follower 功能，允许 PD Follower 处理 Region 请求，从而将负载均匀分配至所有 PD server，降低 PD Leader 的 CPU 压力。 | 无 |
+| [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v653-和-v710-版本开始引入) | 启用高级查询优化策略，通过额外的优化规则和启发式策略提升性能。 | 请在你的环境中进行充分测试，不同工作负载下的性能提升效果可能不同。 |
 
-以下为优化器控制配置项的详细说明，这些配置项可启用额外的优化能力：
+以下为 Optimizer Fix Controls 的详细说明，这些配置项可启用额外的优化能力：
 
 - [`44262:ON`](/optimizer-fix-controls.md#44262-从-v653-和-v720-版本开始引入)：当分区表缺少[全局统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)时，使用[动态裁剪模式](/partitioned-table.md#动态裁剪模式)访问分区表。
-- [`44389:ON`](/optimizer-fix-controls.md#44389-从-v653-和-v720-版本开始引入)：对于如 `c = 10 and (a = 'xx' or (a = 'kk' and b = 1))` 这样的过滤条件，为 `IndexRangeScan` 构建更全面的扫描范围。
-- [`44823:10000`](/optimizer-fix-controls.md#44823-从-v730-版本开始引入)：为节省内存，计划缓存不会缓存参数数量超过该变量值的查询。将参数上限从默认的 `200` 提高到 `10000`，使带有超长 `in-list` 的查询也能命中计划缓存。
+- [`44389:ON`](/optimizer-fix-controls.md#44389-从-v653-和-v720-版本开始引入)：对形如 `c = 10 and (a = 'xx' or (a = 'kk' and b = 1))` 的过滤条件，尝试为 `IndexRangeScan` 更加完整地构造扫描范围，即 `range`。
+- [`44823:10000`](/optimizer-fix-controls.md#44823-从-v730-版本开始引入)：为节省内存，计划缓存不会缓存参数数量超过该变量值的查询。将参数上限从默认的 `200` 提高到 `10000`，使带有超长 `IN` 列表的查询也能命中计划缓存。
 - [`44830:ON`](/optimizer-fix-controls.md#44830-从-v657-和-v730-版本开始引入)：允许计划缓存缓存物理优化阶段生成的包含 `PointGet` 算子的执行计划。
-- [`44855:ON`](/optimizer-fix-controls.md#44855-从-v654-和-v730-版本开始引入)：当 `IndexJoin` 的 `Probe` 端包含 `Selection` 算子时，优化器可选择 `IndexJoin` 算子。
-- [`52869:ON`](/optimizer-fix-controls.md#52869-从-v810-版本开始引入)：当优化器能为查询选择单一索引扫描（非全表扫描）时，自动选择索引合并（Index Merge）方式。
+- [`44855:ON`](/optimizer-fix-controls.md#44855-从-v654-和-v730-版本开始引入)：当 `IndexJoin` 算子的 `Probe` 端包含 `Selection` 算子时，优化器会选择 `IndexJoin`。
+- [`52869:ON`](/optimizer-fix-controls.md#52869-从-v810-版本开始引入)：如果优化器能够为查询计划选择单索引扫描方法（非全表扫描），优化器会自动选择索引合并 index merge。
 
 ### TiKV 配置
 
