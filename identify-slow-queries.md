@@ -173,17 +173,12 @@ Slow Query 基础信息：
 - `Storage_from_kv`：从 v9.0.0 开始引入，表示该语句是否从 TiKV 读取数据。
 - `Storage_from_mpp`：从 v9.0.0 开始引入，表示该语句是否从 TiFlash 读取数据。
 
-## `tidb_slow_log_rules` 指标解读
+## `tidb_slow_log_rules` 使用建议
 
 `tidb_slow_log_rules` 适合用于慢日志的“定向采样”和“问题复现”，可按具体指标组合条件筛选目标语句。
 
-常用指标解读：
-
-- `cop_mvcc_read_amplification`：表示 MVCC 读放大比，计算方式为 `Total_keys / Process_keys`。该值较高通常表示扫描了大量无效版本或范围过大，可能与索引命中不佳、旧版本累积等因素有关。
-- `Query_time`：表示语句总执行耗时。若 `Query_time` 高但 `Process_time` 不高，通常需要进一步关注排队、重试等待、网络传输或资源等待等阶段。
-- `Backoff_time`：表示语句重试前的等待时间。该值偏高通常说明存在锁冲突、Region 抖动或存储节点负载压力等问题。
-
-典型规则示例请参考 [`tidb_slow_log_rules` 系统变量文档](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入) 中“使用示例”。
+- **规则配置**：如需了解规则语法、类型约束、支持字段及配置示例，请参见 [`tidb_slow_log_rules` 系统变量文档](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入)（含统一规则语法与类型约束、支持的字段列表、生效行为与匹配顺序、使用示例）。
+- **字段含义**：如需了解各字段的具体含义、诊断价值和背景信息，请参见上文[字段含义说明](#字段含义说明)。
 
 ## 相关 Hint
 

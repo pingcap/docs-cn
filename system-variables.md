@@ -5170,58 +5170,61 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - `string`：当前不支持包含分隔符 `,`（条件分隔符）或 `;`（规则分隔符）；即使使用引号（单引号或双引号）也不支持；不支持转义。
 - 重复字段：单条规则内若同一字段重复设置，以最后一次出现的值为准。
 
-#### 字段全量表格（语义摘要）
+#### 支持的字段列表（规则使用信息）
 
-字段的详细解释、诊断含义和背景信息请参考 [`identify-slow-queries.md` 的字段含义说明](/identify-slow-queries.md#字段含义说明)。
+字段的详细解释、诊断含义和背景信息请参考 [`identify-slow-queries` 的字段含义说明](/identify-slow-queries.md#字段含义说明)。
 
-| 字段名 | 类型 | 单位 | 语义摘要 |
+除特别说明外，下表中的字段默认遵循上文[统一规则语法与类型约束](#统一规则语法与类型约束)中的通用匹配与类型规则。本表仅列出当前支持的字段名、类型、单位以及少量规则侧特殊说明，不重复维护字段语义。
+
+
+| 字段名 | 类型 | 单位 | 备注 |
 | --- | --- | --- | --- |
-| `Conn_ID` | `uint` | 计数 | 表示用户连接 ID（仅 GLOBAL 规则允许） |
-| `Session_alias` | `string` | 无 | 表示会话别名 |
-| `DB` | `string` | 无 | 表示执行语句时使用的 database |
-| `Exec_retry_count` | `uint` | 计数 | 表示语句执行的重试次数 |
-| `Query_time` | `float` | 秒 | 表示执行这个语句花费的时间 |
-| `Parse_time` | `float` | 秒 | 表示语句在语法解析阶段花费的时间 |
-| `Compile_time` | `float` | 秒 | 表示语句在查询优化阶段花费的时间 |
-| `Rewrite_time` | `float` | 秒 | 表示语句在查询改写阶段花费的时间 |
-| `Optimize_time` | `float` | 秒 | 表示语句在优化查询计划阶段花费的时间 |
-| `Wait_TS` | `float` | 秒 | 表示语句在等待获取事务 TS 阶段花费的时间 |
-| `Is_internal` | `bool` | 无 | 表示是否为 TiDB 内部 SQL |
-| `Digest` | `string` | 无 | 表示 SQL 语句的指纹 |
-| `Plan_digest` | `string` | 无 | 表示执行计划的指纹 |
-| `Num_cop_tasks` | `int` | 计数 | 表示语句发送的 Coprocessor 请求数量 |
-| `Mem_max` | `int` | bytes | 表示执行期间 TiDB 使用的最大内存空间 |
-| `Disk_max` | `int` | bytes | 表示执行期间 TiDB 使用的最大硬盘空间 |
-| `Write_sql_response_total` | `float` | 秒 | 表示语句把结果发送回客户端花费的时间 |
-| `Succ` | `bool` | 无 | 表示语句是否执行成功 |
-| `Resource_group` | `string` | 无 | 表示语句执行所绑定的资源组 |
-| `KV_total` | `float` | 秒 | 表示语句在 TiKV/TiFlash 上所有 RPC 请求花费的时间 |
-| `PD_total` | `float` | 秒 | 表示语句在 PD 上所有 RPC 请求花费的时间 |
-| `Unpacked_bytes_sent_tikv_total` | `int` | bytes | 表示发送到 TiKV 的解压后总字节数 |
-| `Unpacked_bytes_received_tikv_total` | `int` | bytes | 表示从 TiKV 接收的解压后总字节数 |
-| `Unpacked_bytes_sent_tikv_cross_zone` | `int` | bytes | 表示跨可用区发送到 TiKV 的解压后字节数 |
-| `Unpacked_bytes_received_tikv_cross_zone` | `int` | bytes | 表示跨可用区从 TiKV 接收的解压后字节数 |
-| `Unpacked_bytes_sent_tiflash_total` | `int` | bytes | 表示发送到 TiFlash 的解压后总字节数 |
-| `Unpacked_bytes_received_tiflash_total` | `int` | bytes | 表示从 TiFlash 接收的解压后总字节数 |
-| `Unpacked_bytes_sent_tiflash_cross_zone` | `int` | bytes | 表示跨可用区发送到 TiFlash 的解压后字节数 |
-| `Unpacked_bytes_received_tiflash_cross_zone` | `int` | bytes | 表示跨可用区从 TiFlash 接收的解压后字节数 |
-| `Process_time` | `float` | 秒 | 表示 SQL 在 TiKV 的处理时间之和 |
-| `Backoff_time` | `float` | 秒 | 表示语句遇到重试错误时在重试前等待的时间 |
-| `Total_keys` | `uint` | 计数 | 表示 Coprocessor 扫过的 key 数量 |
-| `Process_keys` | `uint` | 计数 | 表示 Coprocessor 处理的 key 数量 |
-| `cop_mvcc_read_amplification` | `float` | ratio | 表示 MVCC 读放大比（`Total_keys` / `Process_keys`） |
-| `Prewrite_time` | `float` | 秒 | 表示事务两阶段提交第一阶段（prewrite）的耗时 |
-| `Commit_time` | `float` | 秒 | 表示事务两阶段提交第二阶段（commit）的耗时 |
-| `Write_keys` | `uint` | 计数 | 表示事务向 TiKV 的 Write CF 写入 Key 的数量 |
-| `Write_size` | `uint` | bytes | 表示事务提交时写 key 或 value 的总大小 |
-| `Prewrite_region` | `uint` | 计数 | 表示事务 prewrite 阶段涉及的 TiKV Region 数量 |
+| `Conn_ID` | `uint` | 计数 | 仅 GLOBAL 规则支持 |
+| `Session_alias` | `string` | 无 | - |
+| `DB` | `string` | 无 | 匹配时不区分大小写 |
+| `Exec_retry_count` | `uint` | 计数 | - |
+| `Query_time` | `float` | 秒 | - |
+| `Parse_time` | `float` | 秒 | - |
+| `Compile_time` | `float` | 秒 | - |
+| `Rewrite_time` | `float` | 秒 | - |
+| `Optimize_time` | `float` | 秒 | - |
+| `Wait_TS` | `float` | 秒 | - |
+| `Is_internal` | `bool` | 无 | - |
+| `Digest` | `string` | 无 | - |
+| `Plan_digest` | `string` | 无 | - |
+| `Num_cop_tasks` | `int` | 计数 | - |
+| `Mem_max` | `int` | bytes | - |
+| `Disk_max` | `int` | bytes | - |
+| `Write_sql_response_total` | `float` | 秒 | - |
+| `Succ` | `bool` | 无 | - |
+| `Resource_group` | `string` | 无 | 匹配时不区分大小写 |
+| `KV_total` | `float` | 秒 | - |
+| `PD_total` | `float` | 秒 | - |
+| `Unpacked_bytes_sent_tikv_total` | `int` | bytes | - |
+| `Unpacked_bytes_received_tikv_total` | `int` | bytes | - |
+| `Unpacked_bytes_sent_tikv_cross_zone` | `int` | bytes | - |
+| `Unpacked_bytes_received_tikv_cross_zone` | `int` | bytes | - |
+| `Unpacked_bytes_sent_tiflash_total` | `int` | bytes | - |
+| `Unpacked_bytes_received_tiflash_total` | `int` | bytes | - |
+| `Unpacked_bytes_sent_tiflash_cross_zone` | `int` | bytes | - |
+| `Unpacked_bytes_received_tiflash_cross_zone` | `int` | bytes | - |
+| `Process_time` | `float` | 秒 | - |
+| `Backoff_time` | `float` | 秒 | - |
+| `Total_keys` | `uint` | 计数 | - |
+| `Process_keys` | `uint` | 计数 | - |
+| `cop_mvcc_read_amplification` | `float` | ratio | ratio 值（Total_keys / Process_keys） |
+| `Prewrite_time` | `float` | 秒 | - |
+| `Commit_time` | `float` | 秒 | - |
+| `Write_keys` | `uint` | 计数 | - |
+| `Write_size` | `uint` | bytes | - |
+| `Prewrite_region` | `uint` | 计数 | - |
 
 #### 生效行为与匹配顺序
 
 - 规则更新行为：每次执行 `SET [SESSION|GLOBAL] tidb_slow_log_rules = '...'` 都会覆盖对应作用域原有规则，不会追加。
 - 规则清空行为：`SET [SESSION|GLOBAL] tidb_slow_log_rules = ''` 会清空对应作用域规则。
 - 在当前会话存在可生效的 `tidb_slow_log_rules`（SESSION 规则、GLOBAL 的当前 `Conn_ID` 规则，或未指定 `Conn_ID` 的全局规则）时，慢查询日志输出由规则匹配结果决定，`tidb_slow_log_threshold` 不再参与判断。
-- 在当前会话不存在可生效的规则（例如对应作用域规则被清空）时，慢查询日志触发仍依赖 `tidb_slow_log_threshold`（单位：毫秒）。
+- 在当前会话没有任何可适用规则时（例如 SESSION 和 GLOBAL 都为空，或仅配置了与当前 Conn_ID 不匹配的 GLOBAL 规则），慢查询日志触发仍依赖 `tidb_slow_log_threshold`（单位：毫秒）。
 - 如果希望规则中仍使用 SQL 执行时间作为输出慢日志的条件，可在规则中使用 `Query_time`（单位：秒）并设置阈值。
 - 规则匹配逻辑如下：
     - 多条规则之间采用 OR 关系；单条规则内多个字段条件采用 AND 关系。
