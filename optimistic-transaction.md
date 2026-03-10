@@ -52,7 +52,7 @@ sequenceDiagram
 
         opt prewrite with start_ts
             TiDB->>TiKV: prewrite(primary_key,start_ts)
-            loop [prewrite to each region in [](region,keys) parallelly]
+            loop prewrite to each region in [](region,keys) parallelly
                 TiDB->>TiKV: prewrite(keys,primary_key,start_ts)
             end
         end
@@ -60,7 +60,7 @@ sequenceDiagram
         opt commit
             TiDB-->>PD: get ts as commit_ts
             TiDB-->>TiKV: commit primary with commit_ts
-            loop [send commit to each region in [](region,keys) parallelly]
+            loop send commit to each region in [](region,keys) parallelly
                 TiDB->>TiKV: commit(keys,commit_ts)
             end
         end
