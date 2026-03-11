@@ -66,6 +66,10 @@ SET GLOBAL tidb_enable_top_sql = 1;
 
 如果你需要在 TiKV 实例上查看 `Network Bytes`、`Logical IO Bytes`，或者使用 `By REGION` 聚合，请在同一设置面板中继续打开 **开启 TiKV 网络 IO 采集（多维度）** (Enable TiKV Network IO collection (multi-dimensional)) 开关并保存。
 
+如下图所示，右侧**设置** (Settings) 面板中会同时显示 **启用特性** (Enable Feature) 和 **开启 TiKV 网络 IO 采集（多维度）** (Enable TiKV Network IO collection (multi-dimensional)) 两个开关。
+
+![开启 TiKV 网络 IO 采集](/media/dashboard/top-sql-settings-enable-tikv-network-io.png)
+
 该设置会增加一定的存储和查询开销。开启后，系统会将配置下发到当前所有 TiKV 节点；数据同样可能有约 1 分钟延迟。若仍有部分 TiKV 节点未成功开启，页面会给出告警提示，此时新数据可能不完整。
 
 对于后续新扩容的 TiKV 节点，这个开关不会自动生效。如果你希望新节点自动开启该能力，可以在 TiUP 集群拓扑的 `server_configs.tikv` 下增加以下配置，并通过 TiUP 重新下发 TiKV 配置：
@@ -105,6 +109,10 @@ server_configs:
     - 通过 `Limit` 选择展示 Top `5`、`20` 或 `100` 条记录。
     - 通过 `Order By` 选择按 `CPU Time` 或 `Network Bytes` 排序；如果当前选择的是 TiKV 实例，还可以按 `Logical IO Bytes` 排序。
     - 如果当前选择的是 TiKV 实例，还可以通过 `By QUERY`、`By TABLE`、`By DB` 或 `By REGION` 切换聚合维度。
+
+    当已选择 TiKV 实例并开启 TiKV 网络 IO 采集（多维度）后，`Order By` 下拉列表会显示 `Order By CPU`、`Order By Network` 和 `Order By Logical IO` 三种排序方式。
+
+    ![选择排序方式](/media/dashboard/top-sql-usage-select-order-by.png)
 
     ![选择聚合维度](/media/dashboard/top-sql-usage-select-agg-by.png)
 
