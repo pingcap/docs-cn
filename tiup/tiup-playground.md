@@ -99,6 +99,22 @@ tiup playground --tag ${tag_name}
 
 以这种方式启动的集群，在集群关闭以后，数据文件会保留。下一次可以继续使用该 tag 启动集群，从而使用从上一次集群关闭时的数据。
 
+## 访问 TiDB Dashboard 和 Grafana
+
+使用 TiUP playground 启动 TiDB 集群后，可以访问以下 Web 界面：
+
+- **TiDB Dashboard**：`http://127.0.0.1:2379/dashboard`
+  - 默认用户名：`root`
+  - 默认密码：（空，直接回车即可）
+
+- **Grafana**：`http://127.0.0.1:3000`
+  - 默认用户名：`admin`
+  - 默认密码：`admin`
+
+> **注意：**
+>
+> 如果你修改过数据库的 `root` 密码，登录 TiDB Dashboard 时需要使用修改后的密码。
+
 ## 快速连接到由 playground 启动的 TiDB 集群
 
 TiUP 提供了 `client` 组件，用于自动寻找并连接 playground 在本地启动的 TiDB 集群，使用方式为：
