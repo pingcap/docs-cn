@@ -30,10 +30,18 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 - Slow query：慢查询的处理时间（整个慢查询耗时、Coprocessor 耗时、Coprocessor 调度等待时间），慢查询分为 internal 和 general SQL 语句。
 - Connection Idle Duration：空闲连接的持续时间。
 - 999/99/95/80 Duration：不同类型的 SQL 语句执行耗时（不同百分位）。
+- 80 Duration：SQL 语句执行耗时的 80% 分位。
+- 95 Duration：SQL 语句执行耗时的 95% 分位。
+- 99 Duration：SQL 语句执行耗时的 99% 分位。
+- 999 Duration：SQL 语句执行耗时的 99.9% 分位。
 
 ### Query Detail
 
 - Duration 80/95/99/999 By Instance：每个 TiDB 实例执行 SQL 语句的耗时（不同百分位）。
+- Duration 80 By Instance：按实例统计的 80% 分位执行耗时。
+- Duration 95 By Instance：按实例统计的 95% 分位执行耗时。
+- Duration 99 By Instance：按实例统计的 99% 分位执行耗时。
+- Duration 999 By Instance：按实例统计的 99.9% 分位执行耗时。
 - Failed Query OPM Detail：每个 TiDB 实例上，对每分钟执行 SQL 语句发生的错误按照错误类型进行统计（例如语法错误、主键冲突等）。
 - Internal SQL OPS：整个 TiDB 集群内部 SQL 语句执行的 QPS。内部 SQL 语句是指 TiDB 内部自动执行的 SQL 语句，一般由用户 SQL 语句来触发或者内部定时任务触发。
 - Queries In Multi-Statement：一次 Multi-Statement 请求中包含的 SQL 数量（平均值或总量）。
@@ -53,6 +61,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 - Runtime GC Rate And GOMEMLIMIT：Golang GC 周期速率与 `GOMEMLIMIT` 配置值。
 - Keep Alive OPM：每个 TiDB 实例每分钟刷新监控的次数，通常不需要关注。
 - Panic And Critical Error：TiDB 中出现的 Panic、Critical Error 数量。
+- Panic And Critial Error：TiDB 中出现的 Panic、Critical Error 数量（与面板命名保持一致）。
 - Time Jump Back OPS：每个 TiDB 实例上每秒操作系统时间回跳的次数。
 - Get Token Duration：每个连接获取 Token 的耗时。
 - Skip Binlog Count：TiDB 写入 Binlog 失败的数量。从 v8.4.0 开始，TiDB Binlog 已移除，该指标不再有计数。
@@ -182,19 +191,23 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 - Stale Read Hit/Miss Ops
     - **hit**：每秒成功执行 Stale Read 的请求数量
     - **miss**：每秒尝试执行 Stale Read 但失败的请求数量
+- Stale Read Hit/Miss OPS：Stale Read 命中/未命中的每秒请求数量。
 - Stale Read Req Ops
     - **cross-zone**：每秒尝试在远程可用区执行 Stale Read 的请求数量
     - **local**：每秒尝试在本地可用区执行 Stale Read 的请求数量
+- Stale Read Req OPS：Stale Read 请求的每秒数量。
 - Stale Read Req Traffic
     - **cross-zone-in**：尝试在远程可用区执行 Stale Read 的请求的响应的传入流量
     - **cross-zone-out**：尝试在远程可用区执行 Stale Read 的请求的响应的传出流量
     - **local-in**：尝试在本地可用区执行 Stale Read 的请求的响应的传入流量
     - **local-out**：尝试在本地可用区执行 Stale Read 的请求的响应的传出流量
+- Stale Read Req Traffic：Stale Read 请求的流量统计。
 - Read Req Traffic
     - **leader-local**：Leader Read 在本地可用区处理读请求产生的流量
     - **leader-cross-zone**：Leader Read 在远程可用区处理读请求产生的流量
     - **follower-local**：Follower Read 在本地可用区处理读请求产生的流量
     - **follower-cross-zone**：Follower Read 在远程可用区处理读请求产生的流量
+- Read Req Traffic：读请求流量统计。
 - Client-side Slow Score：客户端侧慢速评分（按 store）。
 - TiKV-side Slow Score：TiKV 侧慢速评分（按 store）。
 - Store Liveness Check Faults：Store 活性检查失败次数。
@@ -341,13 +354,19 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 ### TTL
 
 - TiDB CPU Usage: 每个 TiDB 实例的 CPU 使用。
+- TiDB CPU Usage：每个 TiDB 实例的 CPU 使用。
 - TiKV IO MBps: 每个 TiKV 实例的 I/O 吞吐量。
+- TiKV IO MBps：每个 TiKV 实例的 I/O 吞吐量。
 - TiKV CPU: 每个 TiKV 实例的 CPU 使用。
+- TiKV CPU：每个 TiKV 实例的 CPU 使用。
 - TTL QPS By Type：TTL 任务产生的不同类型语句的 QPS 信息。
 - TTL Insert Rows Per Second: 每秒钟向 TTL 表插入的数据行数。
+- TTL Insert Rows Per Second：每秒钟向 TTL 表插入的数据行数。
 - TTL Processed Rows Per Second：TTL 任务每秒处理的过期数据的行数。
 - TTL Insert Rows Per Hour: 每小时总共向 TTL 表插入的行数。
+- TTL Insert Rows Per Hour：每小时总共向 TTL 表插入的行数。
 - TTL Delete Rows Per Hour: 每小时总共删除的过期行数。
+- TTL Delete Rows Per Hour：每小时总共删除的过期行数。
 - TTL Scan Query Duration：TTL 扫描语句的执行时间。
 - TTL Delete Query Duration：TTL 删除语句的执行时间。
 - Scan Worker Time By Phase：TTL 扫描 worker 各阶段耗时。
