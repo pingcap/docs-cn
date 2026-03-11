@@ -49,7 +49,7 @@ Top SQL 不适用于分析以下问题：
 Top SQL 开启后会对集群性能产生轻微的影响（平均 3% 以内），因此该功能默认关闭。你可以通过以下方法启用 Top SQL：
 
 1. 访问 [Top SQL 页面](#访问页面)。
-2. 点击**打开设置** (Open Settings)。在右侧**设置** (Settings) 页面，将**启用特性** (Enable Feature) 下方的开关打开。
+2. 点击**打开设置** (Open Settings)。在右侧**设置** (Settings) 页面，将**启用功能** (Enable Feature) 下方的开关打开。
 3. 点击**保存** (Save)。
 
 启用后，你只能查看开启之后新采集到的数据；开启之前的细粒度数据不会补采。另外，数据展示通常会有约 1 分钟延迟，因此需要等待片刻才能看到新数据。关闭 Top SQL 后，如果历史数据尚未过期，页面仍然可以继续查看已有历史数据，但不会再采集新的 Top SQL 数据。
@@ -66,7 +66,7 @@ SET GLOBAL tidb_enable_top_sql = 1;
 
 如果你需要在 TiKV 实例上查看 `Network Bytes`、`Logical IO Bytes`，或者使用 `By REGION` 聚合，请在同一设置面板中继续打开 **开启 TiKV 网络 IO 采集（多维度）** (Enable TiKV Network IO collection (multi-dimensional)) 开关并保存。
 
-如下图所示，右侧**设置** (Settings) 面板中会同时显示 **启用特性** (Enable Feature) 和 **开启 TiKV 网络 IO 采集（多维度）** (Enable TiKV Network IO collection (multi-dimensional)) 两个开关。
+如下图所示，右侧**设置** (Settings) 面板中会同时显示 **启用功能** (Enable Feature) 和 **开启 TiKV 网络 IO 采集（多维度）** (Enable TiKV Network IO collection (multi-dimensional)) 两个开关。
 
 ![开启 TiKV 网络 IO 采集](/media/dashboard/top-sql-settings-enable-tikv-network-io.png)
 
@@ -148,7 +148,7 @@ server_configs:
 你可以通过以下步骤停用该功能：
 
 1. 访问 [Top SQL 页面](#访问页面)。
-2. 点击右上角**齿轮按钮**打开设置界面，将**启用特性** (Enable Feature) 下方的开关关闭。
+2. 点击右上角**齿轮按钮**打开设置界面，将**启用功能** (Enable Feature) 下方的开关关闭。
 3. 点击**保存** (Save)。
 4. 在弹出的**关闭 Top SQL 功能** (Disable Top SQL Feature) 对话框中，点击**确认** (Disable)。
 
