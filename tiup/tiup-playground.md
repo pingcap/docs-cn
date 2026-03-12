@@ -107,7 +107,7 @@ tiup playground --tag ${tag_name}
 - TiDB Dashboard：`http://127.0.0.1:2379/dashboard`
 
     - 默认用户名：`root`
-    - 默认密码：空，直接回车即可
+    - 默认密码：``（空，直接回车即可）
 
 - Grafana：`http://127.0.0.1:3000`
 
