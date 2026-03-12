@@ -47,7 +47,7 @@ sequenceDiagram
 
     opt start 2PC
         TiDB-->>TiDB: for all keys need to write,choose first one as primary
-        TiDB->>TiKV: locate each key
+        TiDB->>PD: locate each key
         TiDB-->>TiDB: group keys by region to [](region,keys)
 
         opt prewrite with start_ts
