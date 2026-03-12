@@ -64,7 +64,7 @@ SET GLOBAL tidb_enable_top_sql = 1;
 
 ### 开启 TiKV 网络 IO 采集（可选）
 
-如果你需要在 TiKV 实例上查看 `Network Bytes`、`Logical IO Bytes`，或者使用 `By REGION` 聚合，请在同一设置面板中继续打开 **开启 TiKV 网络 IO 采集（多维度）** (Enable TiKV Network IO collection (multi-dimensional)) 开关并保存。
+如果你需要在 TiKV 实例上查看 `Order By Network`、`Order By Logical IO`，或者使用 `By Region` 聚合，请在同一设置面板中继续打开 **开启 TiKV 网络 IO 采集（多维度）** (Enable TiKV Network IO collection (multi-dimensional)) 开关并保存。
 
 如下图所示，右侧**设置** (Settings) 面板中会同时显示 **启用功能** (Enable Feature) 和 **开启 TiKV 网络 IO 采集（多维度）** (Enable TiKV Network IO collection (multi-dimensional)) 两个开关。
 
@@ -72,7 +72,7 @@ SET GLOBAL tidb_enable_top_sql = 1;
 
 该设置会增加一定的存储和查询开销。开启后，系统会将配置下发到当前所有 TiKV 节点；数据同样可能有约 1 分钟延迟。若仍有部分 TiKV 节点未成功开启，页面会给出告警提示，此时新数据可能不完整。
 
-对于后续新扩容的 TiKV 节点，这个开关不会自动生效。如果你希望新节点自动开启该能力，可以在 TiUP 集群拓扑的 `server_configs.tikv` 下增加以下配置，并通过 TiUP 重新下发 TiKV 配置：
+对于后续新扩容的 TiKV 节点，这个开关不会自动生效，需要重新手工点击开关开通全部节点。如果你希望新节点自动开启该能力，可以在 TiUP 集群拓扑的 `server_configs.tikv` 下增加以下配置，并通过 TiUP 重新下发 TiKV 配置：
 
 ```yaml
 server_configs:
@@ -108,7 +108,7 @@ server_configs:
 
     - 通过 `Limit` 选择展示 Top `5`、`20` 或 `100` 条记录。
     - 通过 `Order By` 选择按 `CPU Time` 或 `Network Bytes` 排序；如果当前选择的是 TiKV 实例，还可以按 `Logical IO Bytes` 排序。
-    - 如果当前选择的是 TiKV 实例，还可以通过 `By QUERY`、`By TABLE`、`By DB` 或 `By REGION` 切换聚合维度。
+    - 通过 `By Query`, `By Table`, `By DB` 或 `By Region` 切换聚合维度，注意后三者仅在 TiKV 实例下可用。
 
     当已选择 TiKV 实例并开启 TiKV 网络 IO 采集（多维度）后，`Order By` 下拉列表会显示 `Order By CPU`、`Order By Network` 和 `Order By Logical IO` 三种排序方式。
 
@@ -116,7 +116,7 @@ server_configs:
 
     ![选择聚合维度](/media/dashboard/top-sql-usage-select-agg-by.png)
 
-    其中，`By TABLE`、`By DB` 和 `By REGION` 仅在 TiKV 实例下可用；`By REGION` 以及 TiKV 的 `Network Bytes`、`Logical IO Bytes` 依赖于 TiKV 网络 IO 采集（多维度）已经开启。若该功能未开启，但历史数据仍然存在，页面会继续展示历史数据，并提示新数据无法完整采集。
+    `By Region` 以及 `Order By Network`、`Order By Logical IO` 依赖于 TiKV 网络 IO 采集（多维度）已经开启。若该功能未开启，但历史数据仍然存在，页面会继续展示历史数据，并提示新数据无法完整采集。
 
 5. 观察图表和表格中的热点记录。
 
@@ -124,7 +124,7 @@ server_configs:
 
     柱状图中的色块代表当前排序维度下的资源消耗，不同颜色表示不同记录。表格会按照当前排序维度展示累计值，并在最后额外给出 `Others` 行，用于汇总所有非 Top N 记录。
 
-6. 在 `By QUERY` 视图中，点击表格中的某一行，展开查看该 SQL 在不同执行计划上的明细。
+6. 在 `By Query` 视图中，点击表格中的某一行，展开查看该 SQL 在不同执行计划上的明细。
 
     ![详情](/media/dashboard/top-sql-details.png)
 
@@ -133,15 +133,15 @@ server_configs:
     - TiDB 实例通常显示 `Call/sec` 与 `Latency/call`。
     - TiKV 实例通常显示 `Call/sec`、`Scan Rows/sec` 和 `Scan Indexes/sec`。
 
-    如果当前选择的是 `By TABLE`、`By DB` 或 `By REGION` 聚合视图，页面展示的是聚合结果，不再按 SQL 执行计划展开详情。
+    如果当前选择的是 `By Table`、`By DB` 或 `By Region` 聚合视图，页面展示的是聚合结果，不再按 SQL 执行计划展开详情。
 
-7. 在 TiKV 实例上，如果需要从更高维度定位热点，可以切换到 `By TABLE`、`By DB` 或 `By REGION`，查看聚合后的结果。
+7. 在 TiKV 实例上，如果需要从更高维度定位热点，可以切换到 `By Table`、`By DB` 或 `By Region`，查看聚合后的结果。
 
     ![按 DB 维度聚合结果页面](/media/dashboard/top-sql-usage-agg-by-db-detail.png)
 
 8. 基于这些初步线索，进一步在 [SQL 语句分析](/dashboard/dashboard-statement-list.md)或[慢查询](/dashboard/dashboard-slow-query.md)页面中分析根因。
 
-    在 `By QUERY` 视图中，你也可以直接点击表格中的**在 SQL 语句分析中搜索** (Search in SQL Statements) 跳转到对应的 SQL 语句分析页面。若需要离线分析当前表格结果，可以使用表格上方的 `Download to CSV` 导出数据。
+    在 `By Query` 视图中，你也可以直接点击表格中的**在 SQL 语句分析中搜索** (Search in SQL Statements) 跳转到对应的 SQL 语句分析页面。若需要离线分析当前表格结果，可以使用表格上方的 `Download to CSV` 导出数据。
 
 ## 停用 Top SQL
 
@@ -169,7 +169,7 @@ SET GLOBAL tidb_enable_top_sql = 0;
 关闭后：
 
 - 页面仍可查看已经保留的历史网络 IO / 逻辑 IO 数据（如果历史数据尚未过期）。
-- 新的 `Network Bytes`、`Logical IO Bytes` 和 `By REGION` 数据将不再继续采集。
+- 新的 `Network Bytes`、`Logical IO Bytes` 和 `By Region` 数据将不再继续采集。
 
 ## 常见问题
 
@@ -195,13 +195,13 @@ Top SQL 本身对集群性能有轻微影响。根据测算，该功能对集群
 
 **6. Top SQL 图表的纵坐标是什么意思？**
 
-纵坐标表示当前排序维度下的资源消耗大小。选择 `CPU Time` 时表示 CPU 耗时；选择 `Network Bytes` 时表示网络字节数；选择 `Logical IO Bytes` 时表示逻辑 IO 字节数。
+纵坐标表示当前排序维度下的资源消耗大小。选择 `Order By CPU` 时表示 CPU 耗时；选择 `Order By Network` 时表示网络字节数；选择 `Order By Logical IO` 时表示逻辑 IO 字节数。
 
 **7. 还没有执行完毕的 SQL 语句会被统计到吗？**
 
 会。Top SQL 图表在每一个时间点展示的是当前所选维度下所有正在运行 SQL 的负载情况，因此尚未执行完毕的 SQL 也会被统计在内。
 
-**8. 为什么看不到 `Network Bytes`、`Logical IO Bytes` 或 `By REGION` 的新数据？**
+**8. 为什么看不到 `Order By Network`、`Order By Logical IO` 或 `By Region` 的新数据？**
 
 这些视图依赖 TiKV 网络 IO 采集（多维度）。请确认以下事项：
 
