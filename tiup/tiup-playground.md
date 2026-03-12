@@ -101,7 +101,7 @@ tiup playground --tag ${tag_name}
 
 ## 访问 TiDB Dashboard 和 Grafana
 
-使用 TiUP Playground 启动 TiDB 集群后，可以通过以下 Web 页面访问 TiDB Dashboard 和 Grafana：
+使用 TiUP Playground 启动 TiDB 集群后，可以在浏览器中通过以下地址访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 和 Grafana：
 
 - TiDB Dashboard：`http://127.0.0.1:2379/dashboard`
 
