@@ -101,15 +101,17 @@ tiup playground --tag ${tag_name}
 
 ## 访问 TiDB Dashboard 和 Grafana
 
-使用 TiUP playground 启动 TiDB 集群后，可以访问以下 Web 界面：
+使用 TiUP Playground 启动 TiDB 集群后，可以通过以下 Web 页面访问 TiDB Dashboard 和 Grafana：
 
-- **TiDB Dashboard**：`http://127.0.0.1:2379/dashboard`
-  - 默认用户名：`root`
-  - 默认密码：（空，直接回车即可）
+- TiDB Dashboard：`http://127.0.0.1:2379/dashboard`
 
-- **Grafana**：`http://127.0.0.1:3000`
-  - 默认用户名：`admin`
-  - 默认密码：`admin`
+    - 默认用户名：`root`
+    - 默认密码：空，直接回车即可
+
+- Grafana：`http://127.0.0.1:3000`
+
+    - 默认用户名：`admin`
+    - 默认密码：`admin`
 
 > **注意：**
 >
