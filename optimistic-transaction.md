@@ -17,7 +17,56 @@ summary: 了解 TiDB 的乐观事务模型。
 
 为支持分布式事务，TiDB 中乐观事务使用两阶段提交协议，流程如下：
 
-![TiDB 中的两阶段提交](/media/2pc-in-tidb.png)
+```mermaid
+---
+title: 2PC in TiDB
+---
+sequenceDiagram
+    participant client
+    participant TiDB
+    participant PD
+    participant TiKV
+
+    client->>TiDB: begin
+    TiDB->>PD: get ts as start_ts
+
+    loop excute SQL
+        alt do read
+            TiDB->>PD: get region from PD or cache
+            TiDB->>TiKV: get data from TiKV or cache with start_ts
+            TiDB-->>client: return read result
+        end
+        alt do write
+            TiDB-->>TiDB: write in cache
+            TiDB-->>client: return write result
+        end
+    end
+
+    client->>TiDB: commit
+
+    opt start 2PC
+        TiDB-->>TiDB: for all keys need to write,choose first one as primary
+        TiDB->>PD: locate each key
+        TiDB-->>TiDB: group keys by region to [](region,keys)
+
+        opt prewrite with start_ts
+            TiDB->>TiKV: prewrite(primary_key,start_ts)
+            loop prewrite to each region in [](region,keys) parallelly
+                TiDB->>TiKV: prewrite(keys,primary_key,start_ts)
+            end
+        end
+
+        opt commit
+            TiDB-->>PD: get ts as commit_ts
+            TiDB-->>TiKV: commit primary with commit_ts
+            loop send commit to each region in [](region,keys) parallelly
+                TiDB->>TiKV: commit(keys,commit_ts)
+            end
+        end
+    end
+
+    TiDB-->>client: success
+```
 
 1. 客户端开始一个事务。
 
