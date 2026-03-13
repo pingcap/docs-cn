@@ -98,10 +98,35 @@ SHOW GRANTS FOR 'newuser';
 2 rows in set (0.00 sec)
 ```
 
+你还可以在表级别为指定列授予权限，例如：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE DATABASE IF NOT EXISTS test;
+DROP TABLE IF EXISTS test.tbl;
+CREATE TABLE test.tbl (col1 INT, col2 INT, col3 INT);
+
+DROP USER IF EXISTS 'coluser'@'%';
+CREATE USER 'coluser'@'%';
+GRANT SELECT(col1, col2), UPDATE(col3) ON test.tbl TO 'coluser'@'%';
+SHOW GRANTS FOR 'coluser'@'%';
+```
+
+```
++---------------------------------------------------------------------+
+| Grants for coluser@%                                                |
++---------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO 'coluser'@'%'                                 |
+| GRANT SELECT(col1, col2), UPDATE(col3) ON test.tbl TO 'coluser'@'%' |
++---------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+```
+
 ## MySQL 兼容性
 
 * 与 MySQL 类似，`USAGE` 权限表示登录 TiDB 服务器的能力。
-* 目前不支持列级权限。
+* TiDB 支持兼容 MySQL 的列级权限管理机制。你可以在表级别为指定列授予或回收 `SELECT`、`INSERT`、`UPDATE`、`REFERENCES` 权限，详见[列级权限管理](/column-privilege-management.md)。
 * 与 MySQL 类似，不存在 `NO_AUTO_CREATE_USER` sql 模式时，`GRANT` 语句将在用户不存在时自动创建一个空密码的新用户。删除此 sql-mode（默认情况下已启用）会带来安全风险。
 * `GRANT <privileges>` 语句执行成功后，在 TiDB 中语句执行的结果会在当前连接立即生效，而 [MySQL 中部分权限的结果需要等到之后的连接才生效](https://dev.mysql.com/doc/refman/8.0/en/privilege-changes.html)。见 [TiDB #39356](https://github.com/pingcap/tidb/issues/39356)。
 
