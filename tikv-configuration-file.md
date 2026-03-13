@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/tikv-configuration-file/','/docs-cn/dev/reference/config
 
 <!-- markdownlint-disable MD001 -->
 
-TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/config-template.toml](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 找到默认值的配置文件，重命名为 config.toml 即可。
+TiKV 配置文件比命令行参数支持更多的选项。你可以在 TiKV 源码仓库的 `etc/config-template.toml` 中找到默认值的配置文件，重命名为 `config.toml` 即可。
 
 本文档只阐述未包含在命令行参数中的参数，命令行参数参见 [TiKV 配置参数](/command-line-flags-for-tikv-configuration.md)。
 
@@ -1269,7 +1269,7 @@ Coprocessor 相关的配置项。
 
 ### `enable-region-bucket` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-+ 是否将 Region 划分为更小的区间 bucket，并且以 bucket 作为并发查询单位，以提高扫描数据的并发度。bucket 的详细设计可见 [Dynamic size Region](https://github.com/tikv/rfcs/blob/master/text/0082-dynamic-size-region.md)。
++ 是否将 Region 划分为更小的区间 bucket，并且以 bucket 作为并发查询单位，以提高扫描数据的并发度。bucket 的详细设计可参考 TiKV RFC `0082-dynamic-size-region`（`Dynamic size Region`）。
 + 默认值：无，表示默认关闭。
 
 > **警告：**
@@ -2674,6 +2674,21 @@ Raft Engine 相关的配置项。
 + 单次时间戳请求的最大数量。
 + 在默认的一个 TSO 物理时钟更新周期内 (50ms)，PD 最多提供 262144 个 TSO，超过这个数量后 PD 会暂缓 TSO 请求的处理。这个配置用于避免 PD 的 TSO 消耗殆尽、影响其他业务的使用。如果增大这个参数，建议同时减小 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) 参数，以获得足够的 TSO。
 + 默认值：8192
+
+## resource-metering
+
+资源计量 (Resource Metering) 相关的配置项。
+
+### `enable-network-io-collection`
+
++ 是否在 TopSQL 中额外采集网络流量和逻辑 I/O 信息。
++ 开启后，TiKV 会在请求处理过程中额外记录网络入站字节数、网络出站字节数、逻辑读字节数和逻辑写字节数。
++ 在资源消耗上报时，TiKV 会同时考虑 CPU 时间、网络流量和逻辑 I/O 来筛选 Top N 记录，并额外按 Region 维度上报这些统计结果，便于更细粒度地分析热点请求或资源消耗来源。
++ 默认值：false
+
+> **注意：**
+>
+> 逻辑 I/O 指请求在 TiKV 存储层处理的逻辑数据量，例如读取过程中扫描或处理的数据量，以及写请求自身的逻辑写入字节数；物理 I/O 指底层存储设备实际发生的磁盘读写流量，会受到 block cache、compaction、flush 等因素影响。因此，逻辑 I/O 与实际物理 I/O 并不等价，也不能直接一一对应。
 
 ## resource-control
 
