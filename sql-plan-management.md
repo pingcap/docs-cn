@@ -472,6 +472,22 @@ SHOW binding_cache status;
 1 row in set (0.00 sec)
 ```
 
+### 绑定使用情况统计
+
+从 v9.0.0 开始，TiDB 引入了 [`tidb_enable_binding_usage`](/system-variables.md#tidb_enable_binding_usage-new-in-v900) 系统变量，用于控制是否收集 SQL 执行计划绑定的使用统计信息。
+
+当此变量设置为 `ON` 时，TiDB 会每六个小时将绑定使用情况的统计信息写入 `mysql.bind_info` 表。你可以使用这些统计信息来识别未使用的绑定，并优化绑定管理策略，例如删除不再需要的绑定或调整现有绑定以提高查询性能。
+
+```sql
+SELECT sql_digest, last_used_date FROM mysql.bind_info LIMIT 1;
+
++------------------------------------------------------------------+----------------+
+| sql_digest                                                       | last_used_date |
++------------------------------------------------------------------+----------------+
+| 5d3975ef2160c1e0517353798dac90a9914095d82c025e7cd97bd55aeb804798 | 2025-10-21     |
++------------------------------------------------------------------+----------------+
+```
+
 ## 利用 Statement Summary 表获取需要绑定的查询
 
 [Statement Summary](/statement-summary-tables.md) 的表中存放了近期的 SQL 相关的执行信息，如延迟、执行次数、对应计划等。你可以通过查询 Statement Summary 表得到符合条件查询的 `plan_digest`，然后[根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)。
