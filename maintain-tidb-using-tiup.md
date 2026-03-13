@@ -124,6 +124,23 @@ server_configs:
 
 然后执行 `tiup cluster reload ${cluster-name} -R tidb` 命令滚动重启。
 
+## 备份与恢复集群部署和运维所需的 meta 文件
+
+如果运维所需的 meta 文件丢失，会导致无法继续使用 TiUP 管理集群，建议通过以下方式定期备份 meta 文件：
+
+```bash
+tiup cluster meta backup ${cluster_name}
+```
+
+如果 meta 文件丢失，可以使用以下方法恢复 meta 文件：
+
+```bash
+tiup cluster meta restore ${cluster_name} ${backup_file}
+```
+
+> **注意：**
+>
+> 恢复操作会覆盖当前的 meta 文件，建议仅在 meta 文件丢失的情况下进行恢复。
 ## Hotfix 版本替换
 
 常规的升级集群请参考[升级文档](/upgrade-tidb-using-tiup.md)，但是在某些场景下（例如 Debug），可能需要用一个临时的包替换正在运行的组件，此时可以用 `patch` 命令：
