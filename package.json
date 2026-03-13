@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "axios": "^1.4.0",
+    "axios": "^1.13.5",
     "glob": "^8.0.3",
     "mdast-util-from-markdown": "^1.2.0",
     "mdast-util-frontmatter": "^1.0.0",
