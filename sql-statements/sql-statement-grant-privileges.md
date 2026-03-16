@@ -98,31 +98,6 @@ SHOW GRANTS FOR 'newuser';
 2 rows in set (0.00 sec)
 ```
 
-你还可以在表级别为指定列授予权限，例如：
-
-{{< copyable "sql" >}}
-
-```sql
-CREATE DATABASE IF NOT EXISTS test;
-DROP TABLE IF EXISTS test.tbl;
-CREATE TABLE test.tbl (col1 INT, col2 INT, col3 INT);
-
-DROP USER IF EXISTS 'coluser'@'%';
-CREATE USER 'coluser'@'%';
-GRANT SELECT(col1, col2), UPDATE(col3) ON test.tbl TO 'coluser'@'%';
-SHOW GRANTS FOR 'coluser'@'%';
-```
-
-```
-+---------------------------------------------------------------------+
-| Grants for coluser@%                                                |
-+---------------------------------------------------------------------+
-| GRANT USAGE ON *.* TO 'coluser'@'%'                                 |
-| GRANT SELECT(col1, col2), UPDATE(col3) ON test.tbl TO 'coluser'@'%' |
-+---------------------------------------------------------------------+
-2 rows in set (0.00 sec)
-```
-
 ## MySQL 兼容性
 
 * 与 MySQL 类似，`USAGE` 权限表示登录 TiDB 服务器的能力。
