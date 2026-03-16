@@ -5,7 +5,7 @@ summary: TiDB 支持兼容 MySQL 的列级权限管理机制，可通过 GRANT/R
 
 # 列级权限管理
 
-在 TiDB v8.5.6 及后续 8.5.x 版本中，支持兼容 MySQL 的列级权限管理机制。通过列级权限，你可以在表级别为指定列授予或回收 `SELECT`、`INSERT`、`UPDATE`、`REFERENCES` 权限，从而实现更细粒度的数据访问控制。
+从 v8.5.6 版本开始，TiDB 支持兼容 MySQL 的列级权限管理机制。通过列级权限，你可以在表级别为指定列授予或回收 `SELECT`、`INSERT`、`UPDATE`、`REFERENCES` 权限，从而实现更细粒度的数据访问控制。
 
 > **注意：**
 >
