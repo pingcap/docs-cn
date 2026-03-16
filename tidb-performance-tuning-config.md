@@ -91,10 +91,6 @@ concurrent-send-snap-limit = 64
 concurrent-recv-snap-limit = 64
 snap-io-max-bytes-per-sec = "400MiB"
 
-[pessimistic-txn]
-in-memory-peer-size-limit = "32MiB"
-in-memory-instance-size-limit = "512MiB"
-
 [rocksdb]
 max-manifest-file-size = "256MiB"
 [rocksdb.titan]
@@ -125,7 +121,6 @@ soft-pending-compaction-bytes-limit = "192GiB"
 | 配置项 | 说明 | 注意事项 |
 | ---------| ---- | ----|
 | <ul><li>[`concurrent-send-snap-limit`](/tikv-configuration-file.md#concurrent-send-snap-limit)</li><li>[`concurrent-recv-snap-limit`](/tikv-configuration-file.md#concurrent-recv-snap-limit)</li><li>[`snap-io-max-bytes-per-sec`](/tikv-configuration-file.md#snap-io-max-bytes-per-sec)</li></ul> | 在 TiKV 扩缩容过程中，为并发快照传输和 I/O 带宽设置限制。提高这些限制可以加快数据迁移，从而缩短扩缩容时间。 | 需权衡扩容速度与在线业务性能。 |
-| <ul><li>[`in-memory-peer-size-limit`](/tikv-configuration-file.md#in-memory-peer-size-limit-从-v840-版本开始引入)</li><li>[`in-memory-instance-size-limit`](/tikv-configuration-file.md#in-memory-instance-size-limit-从-v840-版本开始引入)</li></ul> | 控制悲观锁缓存的 Region 级和实例级的内存分配，将锁存储在内存中可减少磁盘 I/O 并提升事务性能。 | 提高上限会提升性能，但也会增加内存消耗。 |
 | [`rocksdb.max-manifest-file-size`](/tikv-configuration-file.md#max-manifest-file-size) | 设置 RocksDB Manifest 文件的最大大小。Manifest 文件记录 SST 文件和数据库状态变更的元数据。增大该值可减少 Manifest 文件的写频率，从而降低其对前台写入性能的影响。 | 默认值为 `128MiB`。在存在大量 SST 文件（如数十万级别）的环境下，Manifest 文件频繁的写操作会影响写入性能。建议将该参数调高至 `256MiB` 或更大，以保持最佳性能。 |
 | <ul><li>[`rocksdb.titan`](/tikv-configuration-file.md#rocksdbtitan)</li><li>[`rocksdb.defaultcf.titan`](/tikv-configuration-file.md#rocksdbdefaultcftitan)</li><li>[`min-blob-size`](/tikv-configuration-file.md#min-blob-size) </li><li> [`blob-file-compression`](/tikv-configuration-file.md#blob-file-compression)</li></ul> | 启用 Titan 存储引擎以降低写放大并缓解磁盘 I/O 瓶颈。尤其适用于 RocksDB 压缩无法跟上写入压力、待压缩字节持续积压的场景。 | 仅当写放大成为主要瓶颈时建议开启。需权衡以下因素：<ul><li>主键范围扫描可能受影响。</li><li>空间放大会增加（极端情况下最高 2 倍）。</li><li>Blob 缓存会占用更多内存。</li></ul> |
 | [`storage.scheduler-pending-write-threshold`](/tikv-configuration-file.md#scheduler-pending-write-threshold) | 设置 TiKV 调度器写入队列的最大大小。当待写入任务的总大小超过该阈值时，TiKV 会拒绝新的写入请求并返回 `Server Is Busy` 错误。 | 默认值为 `100MiB`。在高并发写入或短时写入突发场景下，适当提高该阈值（如 `512MiB`）有助于缓解压力。但若写入队列持续积压并反复超限，可能说明存在底层性能瓶颈，需进一步排查。 |
