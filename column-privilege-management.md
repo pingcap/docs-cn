@@ -119,7 +119,7 @@ UPDATE tbl SET col3 = col1 WHERE col1 > 0;
 
 ## 与 MySQL 的兼容性差异
 
-TiDB 的列级权限整体与 MySQL 兼容，但在以下场景存在差异（主要表现为 TiDB 检查更严格）：
+TiDB 的列级权限整体与 MySQL 兼容，但在以下场景存在差异：
 
 | 场景 | TiDB | MySQL |
 | :-- | :-- | :-- |
