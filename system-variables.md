@@ -4352,7 +4352,7 @@ SHOW WARNINGS;
 - 范围：`[0, 2147483647]`
 - 默认值：`1`
 
-### `tidb_opt_index_join_build_v2` <span class="version-mark">从 v9.0.0 Beta 2 版本开始引入</span>
+### `tidb_opt_index_join_build_v2` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
