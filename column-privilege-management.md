@@ -13,13 +13,32 @@ summary: TiDB 支持兼容 MySQL 的列级权限管理机制，可通过 GRANT/R
 
 ## 语法
 
-列级权限的授予和回收与表级权限类似。不同之处在于：在表名后需要指定列名列表，多个列名之间用逗号（`,`）分隔。
+列级权限的授予和回收与表级权限类似。不同之处在于：列名列表跟在权限类型后面，而不是跟在表名后面；多个列名之间使用逗号（`,`）分隔。
 
 {{< copyable "sql" >}}
 
 ```sql
-GRANT SELECT(col1, col2), UPDATE(col3) ON db_name.tbl_name TO 'user'@'host';
-REVOKE SELECT(col2) ON db_name.tbl_name FROM 'user'@'host';
+GRANT priv_type(col_name [, col_name] ...) [, priv_type(col_name [, col_name] ...)] ...
+    ON db_name.tbl_name
+    TO 'user'@'host';
+
+REVOKE priv_type(col_name [, col_name] ...) [, priv_type(col_name [, col_name] ...)] ...
+    ON db_name.tbl_name
+    FROM 'user'@'host';
+```
+
+其中：
+
+* `priv_type` 支持 `SELECT`、`INSERT`、`UPDATE` 和 `REFERENCES`。
+* `ON` 后需要指定具体表，例如 `test.tbl`。
+* 同一条 `GRANT` 或 `REVOKE` 语句可以包含多个权限项，每个权限项都可以指定自己的列名列表。
+
+例如，以下语句表示将 `col1`、`col2` 的 `SELECT` 权限和 `col3` 的 `UPDATE` 权限授予用户：
+
+{{< copyable "sql" >}}
+
+```sql
+GRANT SELECT(col1, col2), UPDATE(col3) ON test.tbl TO 'user'@'host';
 ```
 
 ## 授予列级权限
