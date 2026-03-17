@@ -67,7 +67,7 @@ SHOW GRANTS FOR 'newuser'@'%';
 +---------------------------------------------------------------------+
 ```
 
-除了使用 `SHOW GRANTS`，你还可以通过查询 `INFORMATION_SCHEMA.COLUMN_PRIVILEGES` 查看列级权限信息。
+除了使用 `SHOW GRANTS`，你还可以通过查询 [`INFORMATION_SCHEMA.COLUMN_PRIVILEGES`](/information-schema/information-schema-columns.md) 查看列级权限信息。
 
 ## 回收列级权限
 
