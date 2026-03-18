@@ -7,7 +7,7 @@ summary: TiDB 数据库中 REVOKE <privileges> 的使用概况。
 
 `REVOKE <privileges>` 语句用于删除已有用户的权限。执行 `REVOKE <privileges>` 语句需要拥有分配的权限，并且拥有 `GRANT OPTION` 权限。
 
-在 TiDB v8.5.6 及后续 8.5.x 版本中，支持兼容 MySQL 的列级权限管理机制，你可以在 `REVOKE` 中指定列名列表，例如 从 v8.5.6 版本开始，TiDB 支持兼容 MySQL 的列级权限管理机制，你可以在 `REVOKE` 中指定列名列表，例如 `REVOKE SELECT(col2) ON test.tbl FROM 'user'@'host';`。更多信息参见[列级权限管理](/column-privilege-management.md)。
+从 v8.5.6 版本开始，TiDB 支持兼容 MySQL 的列级权限管理机制，你可以在 `REVOKE` 中指定列名列表，例如，`REVOKE SELECT(col2) ON test.tbl FROM 'user'@'host';`。更多信息参见[列级权限管理](/column-privilege-management.md)。
 
 ## 语法图
 
