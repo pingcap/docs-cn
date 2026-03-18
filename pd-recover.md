@@ -42,7 +42,7 @@ PD Recover 的安装包位于 TiDB 离线工具包中。下载方式，请参考
 ./bin/pd-server --force-new-cluster --name=pd-127.0.0.10-2379 --data-dir=/path/to/existing/pd/data --client-urls=http://0.0.0.0:2379 --advertise-client-urls=http://127.0.0.1:2379 --peer-urls=http://0.0.0.0:2380 --advertise-peer-urls=http://127.0.0.1:2380 --config=conf/pd.toml
 ```
 
->** 注意：**
+> **注意：**
 >
 > - 如果未在命令行中指定 `--data-dir`，请确保 `conf/pd.toml` 中的 `data-dir` 已正确指向该存活 PD 节点的原始数据目录，否则后续执行 `pd-recover` 时可能失败。
 > - 如果同时在 `conf/pd.toml` 和命令行参数中指定了 `data-dir`，则 `conf/pd.toml` 中的 `data-dir` 优先生效。
