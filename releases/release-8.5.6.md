@@ -1,15 +1,31 @@
 ---
-title: TiDB 8.8.6 Release Notes
-summary: 了解 TiDB 8.8.6 版本的兼容性变更、改进提升，以及错误修复。
+title: TiDB 8.5.6 Release Notes
+summary: 了解 TiDB 8.5.6 版本的兼容性变更、改进提升，以及错误修复。
 ---
 
-# TiDB 8.8.6 Release Notes
+# TiDB 8.5.6 Release Notes
 
 发版日期：2026 年 x 月 x 日
 
-TiDB 版本：8.8.6
+TiDB 版本：8.5.6
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.8/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v8.8/production-deployment-using-tiup) | [下载离线包](https://pingkai.cn/download#tidb-community)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v8.5/production-deployment-using-tiup) | [下载离线包](https://pingkai.cn/download#tidb-community)
+
+## 功能详情
+
+### 稳定性
+
+- 支持为资源管控的后台任务设置资源上限成为正式功能 (GA) [#56019](https://github.com/pingcap/tidb/issues/56019) @[glorv](https://github.com/glorv)
+
+    TiDB 资源管控能够识别并降低后台任务的运行优先级。在部分场景下，即使有空闲资源，用户也希望后台任务消耗能够控制在很低的水平。从 v8.4.0 开始，你可以使用参数 `UTILIZATION_LIMIT` 为资源管控的后台任务设置最大可以使用的资源百分比，每个节点把所有后台任务的使用量控制在这个百分比以下。该功能可以让你精细控制后台任务的资源占用，进一步提升集群稳定性。
+
+    在 v8.5.6 中，该功能成为正式功能 (GA)。
+
+    更多信息，请参考[用户文档](/tidb-resource-control-background-tasks.md)。
+
+### 数据迁移
+
+- (dup): release-9.0.0.md > # 数据迁移 * 将 sync-diff-inspector 从 `pingcap/tidb-tools` 迁移至 `pingcap/tiflow` 代码仓库 [#11672](https://github.com/pingcap/tiflow/issues/11672) @[joechenrh](https://github.com/joechenrh)
 
 ## 兼容性变更
 
@@ -129,11 +145,3 @@ TiDB 版本：8.8.6
 
         - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-## Other dup notes
-
-- (dup): release-8.5.4.md > 新功能 * 支持表级别数据打散功能（实验特性）[#63260](https://github.com/pingcap/tidb/issues/63260) @[bufferflies](https://github.com/bufferflies)
-- (dup): release-8.5.5.md > # 性能> 如需重建索引，则采用更高效的 Ingest 流程，大幅提升索引重建性能。 * 支持表级数据亲和性 (AFFINITY)，提升查询性能（实验特性） [#9764](https://github.com/tikv/pd/issues/9764) @[lhy1024](https://github.com/lhy1024)
-- (dup): release-9.0.0.md > # 数据迁移 * 将 sync-diff-inspector 从 `pingcap/tidb-tools` 迁移至 `pingcap/tiflow` 代码仓库 [#11672](https://github.com/pingcap/tiflow/issues/11672) @[joechenrh](https://github.com/joechenrh)
-- (dup): release-8.4.0.md > # 稳定性 * 支持为资源管控的后台任务设置资源上限 [#56019](https://github.com/pingcap/tidb/issues/56019) @[glorv](https://github.com/glorv)
-- (dup): release-8.5.5.md > # SQL 功能 * 支持在线修改分布式 `ADD INDEX` 任务的并发和吞吐 [#64947](https://github.com/pingcap/tidb/issues/64947) @[joechenrh](https://github.com/joechenrh)
