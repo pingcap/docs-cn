@@ -516,7 +516,7 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 - `mysql.user`：用户账户，全局权限
 - `mysql.db`：数据库级别的权限
 - `mysql.tables_priv`：表级别的权限
-- `mysql.columns_priv`：列级别的权限，当前暂不支持
+- `mysql.columns_priv`：列级别的权限（从 v8.5.6 开始支持）
 
 这几张表包含了数据的生效范围和权限信息。例如，`mysql.user` 表的部分数据：
 
