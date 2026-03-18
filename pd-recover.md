@@ -36,11 +36,16 @@ PD Recover 的安装包位于 TiDB 离线工具包中。下载方式，请参考
 
 ### 第 2 步：启动存活的 PD 节点
 
-使用启动参数 `--force-new-cluster` 拉起该存活的 PD 节点，如：
+使用启动参数 `--force-new-cluster` 拉起该存活的 PD 节点，并确保该节点使用的是其原始数据目录。你可以在命令行中通过 `--data-dir` 显式指定，也可以在 `conf/pd.toml` 中提前配置 `data-dir`。例如：
 
 ```shell
-./bin/pd-server --force-new-cluster --name=pd-127.0.0.10-2379 --client-urls=http://0.0.0.0:2379 --advertise-client-urls=http://127.0.0.1:2379 --peer-urls=http://0.0.0.0:2380 --advertise-peer-urls=http://127.0.0.1:2380 --config=conf/pd.toml
+./bin/pd-server --force-new-cluster --name=pd-127.0.0.10-2379 --data-dir=/path/to/existing/pd/data --client-urls=http://0.0.0.0:2379 --advertise-client-urls=http://127.0.0.1:2379 --peer-urls=http://0.0.0.0:2380 --advertise-peer-urls=http://127.0.0.1:2380 --config=conf/pd.toml
 ```
+
+> **注意：**
+>
+> - 如果未在命令行中指定 `--data-dir`，请确保 `conf/pd.toml` 中的 `data-dir` 已正确指向该存活 PD 节点的原始数据目录，否则后续执行 `pd-recover` 时可能失败。
+> - 如果同时在 `conf/pd.toml` 和命令行参数中指定了 `data-dir`，则 `conf/pd.toml` 中的 `data-dir` 优先生效。
 
 ### 第 3 步：使用 `pd-recover` 修复元数据
 
