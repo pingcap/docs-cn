@@ -7,7 +7,7 @@ summary: TiDB 数据库中 SHOW TABLE NEXT_ROW_ID 的使用概况。
 
 `SHOW TABLE NEXT_ROW_ID` 语句用于显示用户表中某些特殊列的详情，主要包含以下几种类型：
 
-* TiDB 创建的 [`AUTO_INCREMENT`](/auto-increment.md) 类型列，即 `_tidb_rowid` 列
+* TiDB 自动管理的隐藏行句柄列 `_tidb_rowid`（`_tidb_rowid`）
 * 用户创建的 `AUTO_INCREMENT` 类型列
 * 用户创建的 [`AUTO_RANDOM`](/auto-random.md) 类型列
 * 用户创建的 [`SEQUENCE`](/sql-statements/sql-statement-create-sequence.md) 对象信息
@@ -69,3 +69,5 @@ SHOW TABLE t NEXT_ROW_ID;
 * [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
 * [AUTO_RANDOM](/auto-random.md)
 * [CREATE_SEQUENCE](/sql-statements/sql-statement-create-sequence.md)
+* [_tidb_rowid](/tidb-rowid.md)
+
