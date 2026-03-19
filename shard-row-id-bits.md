@@ -25,6 +25,9 @@ summary: 介绍 TiDB 的 `SHARD_ROW_ID_BITS` 表属性。
 
 - 自增位的值保存在 TiKV 中，由 TiDB 按顺序分配，每次分配后值会自增 1。当自增位的值耗尽后（即达到最大值时），再次自动分配时会报 `Failed to read auto-increment value from storage engine` 错误。
 - 关于 `_tidb_rowid` 取值范围：最终生成值包含的最大位数 = 分片位 + 自增位，最大值为 `(2^63)-1`。
+
+> **警告：**
+>
 > `_tidb_rowid` 是内部行句柄。不要假定它在所有情况下都是全局唯一的。对于未使用聚簇索引的分区表，`ALTER TABLE ... EXCHANGE PARTITION` 操作可能会导致不同分区具有相同的 `_tidb_rowid` 值。详情请参阅 [`_tidb_rowid`](/tidb-rowid.md)。
 
 > **注意：**
