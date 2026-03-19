@@ -42,14 +42,11 @@ TiDB 版本：8.5.6
 
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - (dup): release-8.5.4.md > 改进提升> TiKV - 优化 gRPC 线程池线程数量默认值的计算方式，将原固定值调整为根据总的 CPU 配置动态计算，避免因 gRPC 线程数量过小导致的性能瓶颈 [#18613](https://github.com/tikv/tikv/issues/18613) @[LykxSassinator](https://github.com/LykxSassinator)
-    - (dup): release-8.5.5.md > 改进提升> TiKV - 在 TiKV 内存占用高时，对 BR 的日志恢复请求进行限流，防止 TiKV OOM [#18124](https://github.com/tikv/tikv/issues/18124) @[3pointer](https://github.com/3pointer)
 
 + PD
 
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - (dup): release-8.5.5.md > 改进提升> PD - 优化了高基数指标，降低 PD 的内存占用和监控系统压力 [#9357](https://github.com/tikv/pd/issues/9357) @[rleungx](https://github.com/rleungx)
     - (dup): release-7.5.7.md > 改进提升> PD - 减少非必要的错误日志 [#9370](https://github.com/tikv/pd/issues/9370) @[bufferflies](https://github.com/bufferflies)
 
 + TiFlash
@@ -106,7 +103,6 @@ TiDB 版本：8.5.6
 
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - (dup): release-8.5.4.md > 错误修复> PD - 修复 Resource Manager 错误分配 token 导致查询卡住的问题 [#9455](https://github.com/tikv/pd/issues/9455) @[JmPotato](https://github.com/JmPotato)
 
 + TiFlash
 
@@ -119,7 +115,6 @@ TiDB 版本：8.5.6
 
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - (dup): release-8.5.5.md > 错误修复> Tools> Backup & Restore (BR) - 修复集群中存在大量 Region 时，开启日志备份导致内存占用过高的问题 [#18719](https://github.com/tikv/tikv/issues/18719) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
 
