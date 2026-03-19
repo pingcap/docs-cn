@@ -148,10 +148,10 @@ CREATE TABLE t (
 
 ## 相关语句和变量
 
--  [`SHOW TABLE NEXT_ROW_ID`](/sql-statements/sql-statement-show-table-next-rowid.md)：显示 TiDB 将要分配的下一个行 ID
--  [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md)：分片隐式行 ID 以减少热点
--  [`Clustered Indexes`](/clustered-indexes.md)：解释了何时表使用主键而不是 `_tidb_rowid`
--  [`tidb_opt_write_row_id`](/system-variables.md#tidb_opt_write_row_id)：控制是否允许写入 `_tidb_rowid`
+- [`SHOW TABLE NEXT_ROW_ID`](/sql-statements/sql-statement-show-table-next-rowid.md)：显示 TiDB 将要分配的下一个行 ID
+- [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md)：分片隐式行 ID 以减少热点
+- [`Clustered Indexes`](/clustered-indexes.md)：解释了何时表使用主键而不是 `_tidb_rowid`
+- [`tidb_opt_write_row_id`](/system-variables.md#tidb_opt_write_row_id)：控制是否允许写入 `_tidb_rowid`
 
 ## 另请参阅
 
