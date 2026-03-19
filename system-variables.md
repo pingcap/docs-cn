@@ -4094,6 +4094,8 @@ mysql> desc select count(distinct a) from test.t;
 >
 > 目前优化器尚不支持根据 cost model 动态选择是否应用 partial order TopN 优化。如果只将该变量设置为 `COST` 而不指定 `USE INDEX` 或 `FORCE INDEX` Hint，优化器可能不会应用 partial order TopN 优化。如需强制应用该优化，请结合 `USE INDEX` 或 `FORCE INDEX` Hint 一起使用（如示例 1 所示）。
 
+示例：
+
 - 示例 1：强制应用 partial order TopN 优化（`COST` + `USE INDEX`）。
 
     ```sql
