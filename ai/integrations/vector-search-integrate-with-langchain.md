@@ -15,7 +15,7 @@ aliases: ['/zh/tidb/stable/vector-search-integrate-with-langchain/','/zh/tidb/de
 
 > **提示**
 >
-> 你可以在 LangChain Docs 上查看完整的 [示例代码](https://docs.langchain.com/oss/python/integrations/vectorstores/tidb_vector)。
+> 你可以在 LangChain 文档中查看完整的[示例代码](https://docs.langchain.com/oss/python/integrations/vectorstores/tidb_vector)。
 
 ## 前置条件
 
