@@ -10,23 +10,33 @@ jobs:
   linkChecker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Download Exclude Path
         run: |
           curl https://raw.githubusercontent.com/pingcap/docs/master/.lycheeignore --output .lycheeignore
 
+      - name: Restore lychee cache
+        uses: actions/cache@v4
+        with:
+          path: .lycheecache
+          key: cache-lychee-${{ github.sha }}
+          restore-keys: cache-lychee-
+  
       - name: Check Links
-        uses: lycheeverse/lychee-action@v1.6.1
+        uses: lycheeverse/lychee-action@v2
         with:
           # For parameter description, see https://github.com/lycheeverse/lychee#commandline-parameters
-          args: -E --exclude-mail -v -i -n -t 45 -- **/*.md *.md
+          fail: true
+          failIfEmpty: false
+          args: --root-dir $(pwd) --cache --max-cache-age 8d -E -i -n -t 45 --exclude-path '^releases/' --exclude-path '^tidb-cloud/releases/' -- **/*.md *.md
           output: out.md
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Create Issue From File
-        uses: peter-evans/create-issue-from-file@v4
+        if: ${{ always() }}
+        uses: peter-evans/create-issue-from-file@v6
         with:
           title: Broken Link Detected
           content-filepath: out.md
