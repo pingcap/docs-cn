@@ -35,7 +35,6 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Create Issue From File
-        if: ${{ always() }}
         uses: peter-evans/create-issue-from-file@v6
         with:
           title: Broken Link Detected
