@@ -29,7 +29,7 @@ TiDB HTAP 可以满足企业海量数据的增产需求、降低运维的风险�
 
     当将 TiDB 应用于数据中枢场景时，TiDB 作为数据中枢可以无缝连接数据业务层和数据仓库层，满足不同业务的需求。
 
-如果想了解更多关于 TiDB HTAP 场景信息，请参阅 [TiDB HTAP 用户案例合集](https://tidb.net/blog/tag/htap)。
+如果想了解更多关于 TiDB HTAP 场景信息，请参阅 [TiDB HTAP 用户案例合集](https://pingkai.cn/tidbcommunity/blog/tag/htap)。
 
 当遇到以下技术场景时，建议使用 TiDB HTAP 提升 TiDB 数据库整体表现：
 
@@ -108,7 +108,7 @@ TiFlash 部署完成后并不会自动同步数据，你需要指定需要同步
 - [TiDB 集群故障诊断](/troubleshoot-tidb-cluster.md)
 - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
 
-除此之外，你可以在 [Github Issues](https://github.com/pingcap/tiflash/issues) 新建一个 Issue 反馈问题，或者在 [AskTUG](https://asktug.com/) 提交你的问题。
+除此之外，你可以在 [Github Issues](https://github.com/pingcap/tiflash/issues) 新建一个 Issue 反馈问题，或者在 [AskTUG](https://pingkai.cn/tidbcommunity/forum/) 提交你的问题。
 
 ## 探索更多
 
