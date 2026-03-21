@@ -177,9 +177,11 @@ TiDB 支持是否开启外键约束检查，由系统变量 [`foreign_key_checks
 
 ## 锁
 
-在 `INSERT` 或者 `UPDATE` 子表时，外键约束会检查父表中是否存在对应的外键值，并对父表中的该行数据上锁，避免该外键值被其他操作删除，导致破坏外键约束。这里的上锁行为等同于对父表中外键值所在行做 `SELECT FOR UPDATE` 操作。
+在 `INSERT` 或者 `UPDATE` 子表时，外键约束会检查父表中是否存在对应的外键值，并对父表中的该行数据上锁，避免该外键值被其他操作删除，导致破坏外键约束。
 
-因为 TiDB 目前暂不支持 `LOCK IN SHARE MODE`，所以，在并发写入子表场景，如果引用的外键值大部分都一样，可能会有比较严重的锁冲突。建议在大批量写入子表数据时，关闭 [`foreign_key_checks`](/system-variables.md#foreign_key_checks)。
+默认情况下，在悲观事务中，外键检查对父表中行的加锁行为等价于对该行执行一次 `SELECT ... FOR UPDATE` 的锁定读（即加排他锁）。在子表高并发写入的场景下，如果大量事务反复引用相同的父表行，可能出现较严重的锁冲突。
+
+你可以通过开启系统变量 [`tidb_foreign_key_check_in_shared_lock`](/system-variables.md#tidb_foreign_key_check_in_shared_lock-从-v856-和-v900-版本开始引入) 来让外键检查使用共享锁。共享锁允许多个事务在同一父表行同时完成外键检查，从而减少锁冲突，提升子表并发写入性能。
 
 ## 外键的定义和元信息
 
