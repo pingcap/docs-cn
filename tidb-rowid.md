@@ -129,7 +129,7 @@ SELECT _tidb_rowid, a, b FROM t WHERE _tidb_rowid = 100;
 - 在分区的非聚簇表上，`_tidb_rowid` 的值不保证在分区之间是唯一的。执行 `EXCHANGE PARTITION` 后，不同分区可能包含具有相同 `_tidb_rowid` 值的行。
 - `_tidb_rowid` 是否存在取决于表结构。如果表使用聚簇索引，请改用主键。
 
-## 关于热点的考虑
+## 解决热点问题
 
 对于使用 `_tidb_rowid` 的表，TiDB 默认按递增顺序分配行 ID。在写密集型工作负载下，这可能会导致写热点。
 
