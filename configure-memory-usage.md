@@ -240,13 +240,17 @@ Golang 自 Go 1.19 版本开始引入 [`GOMEMLIMIT`](https://pkg.go.dev/runtime@
 
 从 v9.0.0 开始，TiDB 引入了内存仲裁模式这种新机制，通过自上向下地集中化管理和调度内存资源来解决上述问题。
 
+> **警告：**
+>
+> 该功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue]([https://github.com/pingcap/tidb/issues](https://github.com/pingcap/tidb/issues?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen)) 反馈。
+
 你可以通过系统变量 [`tidb_mem_arbitrator_mode`](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 或 TiDB 配置文件参数 `instance.tidb_mem_arbitrator_mode` 开启内存仲裁模式。
 
 - `disable`：表示禁用内存仲裁模式
 
 - `standard` 或 `priority`：表示启用内存仲裁模式。启用后：
     - 内存资源的使用按照先订阅后分配的机制，由各个 TiDB 实例中唯一的仲裁者统筹
-    - 预期 TiDB 实例的整体内存使用量不会超过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的限制，且 [内存占用过高时的报警](#tidb-server-内存占用过高时的报警) 不再生效
+    - 预期 TiDB 实例的整体内存使用量不会超过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的限制，且[内存占用过高时的报警](#tidb-server-内存占用过高时的报警)不再生效
     - 以下系统变量的控制行为依旧有效：
         - [`tidb_mem_oom_action`](/system-variables.md#tidb_mem_oom_action-从-v610-版本开始引入)
         - [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)
@@ -282,7 +286,7 @@ Golang 自 Go 1.19 版本开始引入 [`GOMEMLIMIT`](https://pkg.go.dev/runtime@
 
 ### `priority` 模式
 
-在 `priority` 模式下，SQL 运行过程中会动态地向仲裁者订阅内存资源并阻塞式等待，仲裁者根据 SQL 的 [资源组优先级](/information-schema/information-schema-resource-groups.md) (`LOW | MEDIUM | HIGH`) 处理订阅请求。
+在 `priority` 模式下，SQL 运行过程中会动态地向仲裁者订阅内存资源并阻塞式等待，仲裁者根据 SQL 的[资源组优先级](/information-schema/information-schema-resource-groups.md) (`LOW | MEDIUM | HIGH`) 处理订阅请求。
 
 - 解析 SQL 或编译执行计划时，需要订阅的内存份额由 TiDB 估算，与 SQL 关键字数量成正比。不同于 `standard` 模式，在 `priority` 模式下，除非面临 `OOM` 风险，否则订阅失败后不会立刻终止 SQL。
 - 所有订阅请求按照优先级从高到低排队等待资源，同级别请求按照发起顺序排序。
