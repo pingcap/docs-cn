@@ -449,19 +449,16 @@ I/O 限流功能相关配置。
 - 表示 PageStorage 单个数据文件中有效数据的最低比例。当某个数据文件的有效数据比例低于该值时，会触发 GC 对该文件的数据进行整理。
 - 默认值：`0.5`
 
-以下 5 个参数只对 [存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Write Node 生效，用于控制对象存储上的 checkpoint、后台 GC 与空间汇总任务。
-
 ##### `remote_checkpoint_interval_seconds` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 控制 TiFlash 向对象存储上传 checkpoint 的后台任务执行间隔。
+- 控制 TiFlash 向对象存储上传 checkpoint 的后台任务执行间隔。该参数只对 [存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下启用了对象存储的 TiFlash Write Node 生效。
 - 默认值：`30`
 - 单位：秒
-- 只有启用了对象存储且当前节点是 TiFlash Write Node 时，该后台任务才会启动。
 - 调小该值可以让最新数据更快上传到对象存储，但会增加 checkpoint 上传频率和相关开销；调大该值则会降低上传频率。一般不建议修改该参数。
 
 ##### `remote_gc_method` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 控制 TiFlash 在对象存储上执行 GC 的方式。
+- 控制 TiFlash 在对象存储上执行 GC 的方式。该参数只对 [存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Write Node 生效。
 - 可选值：
     - `1`：`Lifecycle`。TiFlash 会为待删除对象打上 `tiflash_deleted=true` 标签，并依赖对象存储的生命周期规则(Lifecycle Rule)异步完成物理删除。首次执行 GC 时，被选为 GC owner 的 TiFlash Write Node 会检查并尝试创建对应的生命周期规则。
     - `2`：`ScanThenDelete`。TiFlash 会定期扫描带有删除标记且已过期的对象，并直接发起物理删除，不依赖对象存储生命周期规则。
@@ -470,20 +467,18 @@ I/O 限流功能相关配置。
 
 ##### `remote_gc_interval_seconds` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 控制远端对象存储 GC 后台任务的执行间隔。
+- 控制远端对象存储 GC 后台任务的执行间隔。该参数只对 [存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Write Node 生效，且只有当前被选为 GC owner 的节点会实际执行该任务。
 - 默认值：`3600`
 - 单位：秒
-- 只有当前被选为 GC owner 的 TiFlash Write Node 会实际执行该后台任务。
 - 当 `remote_gc_method` 设置为 `1` 时，该参数控制 TiFlash 扫描 lock、manifest 并维护生命周期规则的频率，但对象的实际物理删除时间仍由对象存储的生命周期规则决定。
 - 当 `remote_gc_method` 设置为 `2` 时，该参数同时控制 TiFlash 扫描并直接删除过期对象的频率。一般不建议修改该参数。
 
 ##### `remote_summary_interval_seconds` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 控制 TiFlash 周期性统计远端对象存储空间占用的执行间隔。该任务会遍历对象存储中的相关 key，按 store 统计 `data file` 和 `dt file` 的大小。
+- 控制 TiFlash 周期性统计远端对象存储空间占用的执行间隔。该参数只对 [存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Write Node 生效，且只有当前被选为 GC owner 的节点会实际执行该任务。该任务会遍历对象存储中的相关 key，统计对象存储使用的存储空间信息。
 - 默认值：`0`
 - 单位：秒
 - 当其值小于等于 `0` 时，表示关闭周期性空间汇总任务。
-- 只有当前被选为 GC owner 的 TiFlash Write Node 会实际执行该后台任务。
 - 该任务不会影响对象存储上的 GC 行为，主要用于观测对象存储空间使用情况。执行后会更新 Prometheus 指标。
 - 该任务需要遍历对象存储中的 key，开销通常高于常规 GC 扫描。如果需要开启该参数，一般建议设置为大于等于 `86400` (24 小时)。
 
