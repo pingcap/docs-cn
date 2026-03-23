@@ -1,6 +1,7 @@
 ---
 title: 在 AWS Lambda 函数中使用 mysql2 连接到 TiDB
 summary: 本文介绍如何在 AWS Lambda 函数中使用 TiDB 和 mysql2 构建一个 CRUD 应用程序，并给出了简单示例代码片段。
+aliases: ['/zh/tidb/stable/dev-guide-sample-application-aws-lambda/','/zh/tidb/dev/dev-guide-sample-application-aws-lambda/','/zh/tidbcloud/dev-guide-sample-application-aws-lambda/']
 ---
 
 # 在 AWS Lambda 函数中使用 mysql2 连接到 TiDB
@@ -32,7 +33,7 @@ TiDB 是一个兼容 MySQL 的数据库。[AWS Lambda 函数](https://aws.amazon
 如果你还没有 TiDB 集群，可以按照以下方式创建：
 
 - （推荐方式）参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)，创建你自己的 TiDB Cloud 集群。
-- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
+- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
 如果你还没有 AWS 账户或用户，可以按照 [Lambda 入门](https://docs.aws.amazon.com/zh_cn/lambda/latest/dg/getting-started.html)文档中的步骤来创建它们。
 
@@ -348,8 +349,10 @@ console.log(rsh.affectedRows);
 - 关于 mysql2 的更多使用方法，可以参考 [mysql2 的官方文档](https://sidorares.github.io/node-mysql2/zh-CN/docs)。
 - 关于 AWS Lambda 的更多使用方法，可以参考 [AWS Lambda 开发者指南](https://docs.aws.amazon.com/zh_cn/lambda/latest/dg/welcome.html)。
 - 你可以继续阅读开发者文档的其它章节来获取更多 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
-- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/category/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
+- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://pingkai.cn/learn)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.cn/learner/certification-center)。
 
 ## 需要帮助?
 
-如果在开发的过程中遇到问题，可以在 [AskTUG](https://asktug.com/?utm_source=docs-cn-dev-guide) 上进行提问，或从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
+- 在 [AskTUG 论坛](https://asktug.com/?utm_source=docs-cn-dev-guide) 上提问
+- [提交 TiDB Cloud 工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)
+- [提交 TiDB 工单](/support.md)

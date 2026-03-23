@@ -118,6 +118,7 @@ TableOption ::=
 |   'UNION' EqOpt '(' TableNameListOpt ')'
 |   'ENCRYPTION' EqOpt EncryptionOpt
 |    'TTL' EqOpt TimeColumnName '+' 'INTERVAL' Expression TimeUnit (TTLEnable EqOpt ( 'ON' | 'OFF' ))? (TTLJobInterval EqOpt stringLit)?
+|   'AFFINITY' EqOpt StringName
 |   PlacementPolicyOption
 
 OnCommitOpt ::=
@@ -132,6 +133,7 @@ DefaultValueExpr ::=
 |   SignedLiteral
 |   NextValueForSequenceParentheses
 |   BuiltinFunction
+|   '(' SignedLiteral ')'
 
 BuiltinFunction ::=
     '(' BuiltinFunction ')'
@@ -171,10 +173,12 @@ TiDB 支持以下 `table_option`。TiDB 会解析并忽略其他 `table_option` 
 |`CHARACTER SET` |指定该表所使用的[字符集](/character-set-and-collation.md)                | `CHARACTER SET` = 'utf8mb4'|
 |`COLLATE`       |指定该表所使用的字符集排序规则        | `COLLATE` = 'utf8mb4_bin'|
 |`COMMENT`       |注释信息                              | `COMMENT` = 'comment info'|
+|`AFFINITY`      |为表或分区开启亲和性调度。非分区表可设置为 `'table'`，分区表可设置为 `'partition'`。设置为 `'none'` 或留空可关闭亲和性调度 |`AFFINITY` = 'table'|
 
 > **注意：**
 >
-> 在 TiDB 配置文件中，`split-table` 默认开启。当该配置项开启时，建表操作会为每个表建立单独的 Region，详情参见 [TiDB 配置文件描述](/tidb-configuration-file.md)。
+> - 在 TiDB 配置文件中，`split-table` 默认开启。当该配置项开启时，建表操作会为每个表建立单独的 Region，详情参见 [TiDB 配置文件描述](/tidb-configuration-file.md)。
+> - 使用 `AFFINITY` 时，当前不支持对该表进行分区方案变更（如添加、删除、重组或交换分区），也不支持在临时表或视图上设置该选项。
 
 ## 示例
 
@@ -266,7 +270,7 @@ mysql> DESC t1;
 * `COMMENT` 属性不支持 `WITH PARSER` 选项。
 * TiDB 在单个表中默认支持 1017 列，最大可支持 4096 列。InnoDB 中相应的数量限制为 1017 列，MySQL 中的硬限制为 4096 列。详情参阅 [TiDB 使用限制](/tidb-limitations.md)。
 * 分区表支持 `HASH`、`RANGE`、`LIST` 和 `KEY` [分区类型](/partitioned-table.md#分区类型)。对于不支持的分区类型，TiDB 会报 `Warning: Unsupported partition type %s, treat as normal table` 错误，其中 `%s` 为不支持的具体分区类型。
-* TiDB 对[分区表](/partitioned-table.md)进行了扩展。你可以指定 `GLOBAL` 索引选项将 `PRIMARY KEY` 或 `UNIQUE INDEX` 设置为[全局索引](/partitioned-table.md#全局索引)。该扩展与 MySQL 不兼容。
+* TiDB 对[分区表](/partitioned-table.md)进行了扩展。你可以指定 `GLOBAL` 索引选项将 `PRIMARY KEY` 或 `UNIQUE INDEX` 设置为[全局索引](/global-indexes.md)。该扩展与 MySQL 不兼容。
 
 ## 另请参阅
 

@@ -51,7 +51,7 @@ TiDB 支持在 `DEFAULT` 子句中指定以下表达式作为字段的默认值�
 * [`NEXTVAL()`](/functions-and-operators/sequence-functions.md#nextval)
 * [`RAND()`](/functions-and-operators/numeric-functions-and-operators.md)
 * [`UUID()`](/functions-and-operators/miscellaneous-functions.md#uuid)，[`UUID_TO_BIN()`](/functions-and-operators/miscellaneous-functions.md#uuid_to_bin)
-* [`VEC_FROM_TEXT()`](/vector-search/vector-search-functions-and-operators.md#vec_from_text)
+* [`VEC_FROM_TEXT()`](/ai/reference/vector-search-functions-and-operators.md#vec_from_text)
 
 TiDB 支持为 `BLOB`、`TEXT` 以及 `JSON` 数据类型分配默认值，但是，你只能使用表达式来设置这些数据类型的默认值，而不能使用字面量。
 

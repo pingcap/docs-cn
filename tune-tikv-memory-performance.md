@@ -43,7 +43,7 @@ log-level = "info"
 # gRPC 线程池大小
 # grpc-concurrency = 4
 # TiKV 每个实例之间的 gRPC 连接数
-# grpc-raft-conn-num = 10
+# grpc-raft-conn-num = 1
 
 # TiDB 过来的大部分读请求都会发送到 TiKV 的 Coprocessor 进行处理，该参数用于设置
 # coprocessor 线程的个数，如果业务是读请求比较多，增加 coprocessor 的线程数，但应比系统的
@@ -186,7 +186,7 @@ level0-slowdown-writes-trigger = 20
 level0-stop-writes-trigger = 36
 
 # 当 level1 的数据量大小达到 max-bytes-for-level-base 限定的值的时候，会触发 level1 的
-# sst 和 level2 种有 overlap 的 sst 进行 compaction。
+# sst 和 level2 中有 overlap 的 sst 进行 compaction。
 # 黄金定律：max-bytes-for-level-base 的设置的第一参考原则就是保证和 level0 的数据量大致相
 # 等，这样能够减少不必要的 compaction。例如压缩方式为"no:no:lz4:lz4:lz4:lz4:lz4"，那么
 # max-bytes-for-level-base 的值应该是 write-buffer-size 的大小乘以 4，因为 level0 和

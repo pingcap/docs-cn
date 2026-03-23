@@ -60,7 +60,7 @@ MySQL binlog 顺序同步模型要求按照 binlog 顺序依次同步 binlog eve
 
 DM 通过冲突检测机制，识别出需要顺序执行的 binlog，确保这些 binlog 顺序执行的同时，最大程度地保持其他 binlog 并发执行，以此提高 binlog 同步的性能。
 
-Causality 采用一种类似并查集的算法，对每一个 DML 进行分类，将相互关联的 DML 分为一组。具体算法可参考[并行执行 DML](https://pingcap.com/zh/blog/tidb-binlog-source-code-reading-8#并行执行DML)。
+Causality 采用一种类似并查集的算法，对每一个 DML 进行分类，将相互关联的 DML 分为一组。具体算法可参考[并行执行 DML](https://tidb.net/blog/bae66851#并行执行%20DML)。
 
 ### Merger
 

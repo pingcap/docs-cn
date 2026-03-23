@@ -1,7 +1,7 @@
 ---
 title: 子查询
 summary: 介绍 TiDB 子查询功能。
-aliases: ['/zh/tidb/dev/use-subqueries']
+aliases: ['/zh/tidb/dev/use-subqueries','/zh/tidb/stable/dev-guide-use-subqueries/','/zh/tidb/dev/dev-guide-use-subqueries/','/zh/tidbcloud/dev-guide-use-subqueries/']
 ---
 
 # 子查询
@@ -128,4 +128,4 @@ WHERE
 
 - [子查询相关的优化](/subquery-optimization.md)
 - [关联子查询去关联](/correlated-subquery-optimization.md)
-- [TiDB 中的子查询优化技术](https://pingcap.com/zh/blog/tidb-optimization-for-subquery)
+- [TiDB 中的子查询优化技术](https://tidb.net/blog/b997a44c)

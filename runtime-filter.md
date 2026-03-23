@@ -256,4 +256,4 @@ Runtime Filter Type 指的是 Runtime Filter 谓词的类型，即生成的 Filt
 + Join 类型：Left outer、Full outer、Anti join（当左表为 Probe Side 时）均不支持生成 Runtime Filter。由于 Runtime Filter 会提前过滤参与 Join 的数据，这些类型的 Join 不会丢弃未匹配上的数据，所以无法使用该优化。
 + Equal Join expression：当等值 Join 表达式中的 Probe 列为复杂表达式，或者其类型为 JSON、Blob、Array 等复合类型时，也不会生成 Runtime Filter。主要原因是这类 Column 很少作为 Equal Join 的关联列，并且即使生成了 Filter，过滤率通常很低。
 
-对于以上限制，如果你需要确认是否正确生成了 Runtime Filter，可以通过 [`EXPLAIN` 语句](/sql-statements/sql-statement-explain.md) 来验证。
+对于以上限制，如果你需要确认是否正确生成了 Runtime Filter，可以通过 [`EXPLAIN` 语句](/sql-statements/sql-statement-explain.md)来验证。

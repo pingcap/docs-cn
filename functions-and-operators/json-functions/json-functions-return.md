@@ -5,9 +5,9 @@ summary: 了解返回 JSON 值的 JSON 函数。
 
 # 返回 JSON 值的 JSON 函数
 
-本文介绍返回 JSON 值的 JSON 函数。
+TiDB 支持使用 MySQL 8.0 中提供的所有[用于返回 JSON 值属性的 JSON 函数](https://dev.mysql.com/doc/refman/8.0/en/json-attribute-functions.html)。
 
-## [JSON_DEPTH()](https://dev.mysql.com/doc/refman/8.0/en/json-attribute-functions.html#function_json-depth)
+## `JSON_DEPTH()`
 
 `JSON_DEPTH(json_doc)` 函数返回 JSON 文档的最大深度。
 
@@ -32,7 +32,7 @@ SELECT JSON_DEPTH('{"weather": {"current": "sunny"}}');
 1 row in set (0.00 sec)
 ```
 
-## [JSON_LENGTH()](https://dev.mysql.com/doc/refman/8.0/en/json-attribute-functions.html#function_json-length)
+## `JSON_LENGTH()`
 
 `JSON_LENGTH(json_doc [,path])` 函数返回 JSON 文档的长度。如果指定了 `path` 参数，则返回路径中的值的长度。
 
@@ -68,7 +68,7 @@ SELECT JSON_LENGTH('{"weather": {"current": "sunny", "tomorrow": "cloudy"}}','$.
 1 row in set (0.01 sec)
 ```
 
-## [JSON_TYPE()](https://dev.mysql.com/doc/refman/8.0/en/json-attribute-functions.html#function_json-type)
+## `JSON_TYPE()`
 
 `JSON_TYPE(json_val)` 函数返回一个字符串，表示 [JSON 值的类型](/data-type-json.md#json-值的类型)。
 
@@ -132,7 +132,7 @@ SELECT JSON_TYPE('"2025-06-14"'),JSON_TYPE(CAST(CAST('2025-06-14' AS date) AS js
 1 row in set (0.00 sec)
 ```
 
-## [JSON_VALID()](https://dev.mysql.com/doc/refman/8.0/en/json-attribute-functions.html#function_json-valid)
+## `JSON_VALID()`
 
 `JSON_VALID(str)` 函数检查输入的参数是否为有效的 JSON 格式。该函数对于在将列转换为 `JSON` 类型之前进行检查非常有用。
 

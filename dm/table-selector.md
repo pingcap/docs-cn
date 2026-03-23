@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/table-selector/']
 
 # DM Table Selector
 
-Table Selector 提供了一种基于[通配符](https://zh.wikipedia.org/wiki/%E9%80%9A%E9%85%8D%E7%AC%A6) 来匹配指定 `schema/table` 的功能。
+Table Selector 提供了一种基于[通配符](https://zh.wikipedia.org/wiki/%E9%80%9A%E9%85%8D%E7%AC%A6)来匹配指定 `schema/table` 的功能。
 
 ## 通配符
 

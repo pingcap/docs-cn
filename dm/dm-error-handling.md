@@ -68,7 +68,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/error-handling/','/docs-cn/tidb-data
 
     DM 根据错误的严重程度和必要性来选择是否输出错误堆栈。错误堆栈记录了错误发生时完整的堆栈调用信息。如果用户通过错误基本信息和错误 message 描述不能完全诊断出错误发生的原因，可以通过错误堆栈进一步跟进出错时代码的运行路径。
 
-可在 DM 代码仓库[已发布的错误码](https://github.com/pingcap/tiflow/blob/master/dm/_utils/terror_gen/errors_release.txt) 中查询完整的错误码列表。
+可在 DM 代码仓库[已发布的错误码](https://github.com/pingcap/tiflow/blob/master/dm/_utils/terror_gen/errors_release.txt)中查询完整的错误码列表。
 
 ## DM 故障诊断
 
@@ -76,7 +76,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/error-handling/','/docs-cn/tidb-data
 
 1. 执行 `query-status` 命令查看任务运行状态以及相关错误输出。
 
-2. 查看与该错误相关的日志文件。日志文件位于 DM-master、DM-worker 部署节点上，通过 [DM 错误系统](#dm-错误系统) 获取错误的关键信息，然后查看[常见故障处理方法](#常见故障处理方法)以寻找相应的解决方案。
+2. 查看与该错误相关的日志文件。日志文件位于 DM-master、DM-worker 部署节点上，通过 [DM 错误系统](#dm-错误系统)获取错误的关键信息，然后查看[常见故障处理方法](#常见故障处理方法)以寻找相应的解决方案。
 
 3. 如果该错误还没有相应的解决方案，并且你无法通过查询日志或监控指标自行解决此问题，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
 
@@ -99,7 +99,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/error-handling/','/docs-cn/tidb-data
 | `code=10003` | 数据库底层 `invalid connection` 错误，通常表示 DM 到下游 TiDB 的数据库连接出现了异常（如网络故障、TiDB 重启、TiKV busy 等）且当前请求已有部分数据发送到了 TiDB。 | DM 提供针对此类错误的自动恢复。如果未能正常恢复，需要用户进一步检查错误信息并根据具体场景进行分析。 |
 | `code=10005` | 数据库查询类语句出错                                         |                                                              |
 | `code=10006` | 数据库 `EXECUTE` 类型语句出错，包括 DDL 和 `INSERT`/`UPDATE`/`DELETE` 类型的 DML。更详细的错误信息可通过错误 message 获取。错误 message 中通常包含操作数据库所返回的错误码和错误信息。 |                                                              |
-| `code=11006` |  DM 内置的 parser 解析不兼容的 DDL 时出错              |  可参考 [Data Migration 故障诊断-处理不兼容的 DDL 语句](/dm/dm-faq.md#如何处理不兼容的-ddl-语句) 提供的解决方案 |
+| `code=11006` |  DM 内置的 parser 解析不兼容的 DDL 时出错              |  可参考 [Data Migration 故障诊断-处理不兼容的 DDL 语句](/dm/dm-faq.md#如何处理不兼容的-ddl-语句)提供的解决方案 |
 | `code=20010` | 处理任务配置时，解密数据库的密码出错                             |  检查任务配置中提供的下游数据库密码是否有[使用 dmctl 正确加密](/dm/dm-manage-source.md#加密数据库密码) |
 | `code=26002` | 任务检查创建数据库连接失败。更详细的错误信息可通过错误 message 获取。错误 message 中包含操作数据库所返回的错误码和错误信息。 |  检查 DM-master 所在的机器是否有权限访问上游 |
 | `code=32001` | dump 处理单元异常                                            | 如果报错 `msg` 包含 `mydumper: argument list too long.`，则需要用户根据 block-allow-list，在 `task.yaml` 的 dump 处理单元的 `extra-args` 参数中手动加上 `--regex` 正则表达式设置要导出的库表。例如，如果要导出所有库中表名字为 `hello` 的表，可加上 `--regex '.*\\.hello$'`，如果要导出所有表，可加上 `--regex '.*'`。 |

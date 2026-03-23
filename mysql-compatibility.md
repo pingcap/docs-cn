@@ -31,7 +31,7 @@ TiDB 高度兼容 MySQL 协议，以及 MySQL 5.7 和 MySQL 8.0 常用的功能�
 * 自定义函数
 * 全文语法与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 空间类型的函数（即 `GIS`/`GEOMETRY`）、数据类型和索引 [#6347](https://github.com/pingcap/tidb/issues/6347)
-* 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk` 的字符集
+* 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk`、`gb18030` 的字符集
 * MySQL 追踪优化器
 * XML 函数
 * X-Protocol [#1109](https://github.com/pingcap/tidb/issues/1109)
@@ -166,6 +166,8 @@ TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写�
 * 关于 TiDB 对字符集和排序规则的支持情况，详见[字符集和排序规则](/character-set-and-collation.md)。
 
 * 关于 GBK 字符集与 MySQL 的兼容情况，详见 [GBK 兼容情况](/character-set-gbk.md#与-mysql-的兼容性)。
+
+* 关于 GB18030 字符集与 MySQL 的兼容情况，详见 [GB18030 与 MySQL 的兼容性](/character-set-gb18030.md#与-mysql-的兼容性)。
 
 * TiDB 继承表中使用的字符集作为国家字符集。
 

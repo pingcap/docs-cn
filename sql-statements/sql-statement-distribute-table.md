@@ -3,7 +3,7 @@ title: DISTRIBUTE TABLE
 summary: 介绍 TiDB 数据库中 DISTRIBUTE TABLE 的使用概况。
 ---
 
-# DISTRIBUTE TABLE <span class="version-mark">从 v9.0.0 开始引入</span>
+# DISTRIBUTE TABLE <span class="version-mark">从 v8.5.4 和 v9.0.0 开始引入</span>
 
 > **警告：**
 >

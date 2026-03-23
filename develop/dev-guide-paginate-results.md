@@ -1,7 +1,7 @@
 ---
 title: 分页查询
 summary: 介绍 TiDB 的分页查询功能。
-aliases: ['/zh/tidb/dev/paginate-results']
+aliases: ['/zh/tidb/dev/paginate-results','/zh/tidb/stable/dev-guide-paginate-results/','/zh/tidb/dev/dev-guide-paginate-results/','/zh/tidbcloud/dev-guide-paginate-results/']
 ---
 
 # 分页查询

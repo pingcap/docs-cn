@@ -1,13 +1,20 @@
 ---
-title: 连接池与连接参数
+title: 配置连接池与连接参数
 summary: 针对开发者的 TiDB 连接池与连接参数的说明。
-aliases: ['/zh/tidb/dev/connection-parameters']
+aliases: ['/zh/tidb/dev/connection-parameters','/zh/tidb/stable/dev-guide-connection-parameters/','/zh/tidb/dev/dev-guide-connection-parameters/','/zh/tidbcloud/dev-guide-connection-parameters/']
 ---
 
-# 连接池与连接参数
+# 配置连接池与连接参数
 
-> - 连接池参数 - 连接数配置、探活配置两节摘自[开发 Java 应用使用 TiDB 的最佳实践 - 连接池](/best-practices/java-app-best-practices.md#连接池)。
-> - 连接参数摘自[开发 Java 应用使用 TiDB 的最佳实践 - JDBC](/best-practices/java-app-best-practices.md#jdbc)。
+本文介绍在使用 Java 驱动程序或 ORM 框架连接 TiDB 时，如何配置连接池和连接参数。
+
+> **Tip:**
+>
+> 本文中以下章节摘自[开发 Java 应用使用 TiDB 的最佳实践](/develop/java-app-best-practices.md)：
+>
+> - [连接数配置](#连接数配置)
+> - [探活配置](#探活配置)
+> - [连接参数](#连接参数)
 
 ## 连接池参数
 
@@ -24,6 +31,38 @@ Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/Hik
 **minimumIdle**：连接池最小空闲连接数，主要用于在应用空闲时存留一些连接以应对突发请求，同样是需要根据业务情况进行配置。
 
 应用在使用连接池时，需要注意连接使用完成后归还连接，推荐应用使用对应的连接池相关监控（如 **metricRegistry**），通过监控能及时定位连接池问题。
+
+### 配置连接的生命周期
+
+TiDB Server 在关闭、因维护而重启，或发生异常（如硬件故障或网络问题）时，现有的客户端连接可能会被重置，导致应用程序出现中断或异常。为避免此类问题，对于长期保持的数据库连接，建议每天至少主动关闭并重新建立一次连接。
+
+常见的连接池库通常提供参数，用于控制连接的最长存活时间。
+
+<SimpleTab>
+<div label="HikariCP">
+
+- **`maxLifetime`**：连接在连接池中的最长存活时间。
+
+</div>
+
+<div label="tomcat-jdbc">
+
+- **`maxAge`**：连接在连接池中的最长存活时间。
+
+</div>
+
+<div label="c3p0">
+
+- **`maxConnectionAge`**：连接在连接池中的最长存活时间。
+
+</div>
+
+<div label="dbcp">
+
+- **`maxConnLifetimeMillis`**：连接在连接池中的最长存活时间（单位为毫秒）。
+
+</div>
+</SimpleTab>
 
 ### 探活配置
 
@@ -144,7 +183,7 @@ TiDB 同时支持以上两种方式，但更推荐使用第一种将 `FetchSize`
 
 ### MySQL JDBC 参数
 
-JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置。这里以 MySQL 官方的 Connector/J 来介绍[参数配置](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-configuration-properties.html)（如果使用的是 MariaDB，可以参考 [MariaDB 的类似配置](https://mariadb.com/kb/en/library/about-mariadb-connector-j/#optional-url-parameters)）。因为配置项较多，这里主要关注几个可能影响到性能的参数。
+JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置。这里以 MySQL 官方的 Connector/J 来介绍[参数配置](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-configuration-properties.html)（如果使用的是 MariaDB，可以参考 [MariaDB 的类似配置](https://mariadb.com/docs/connectors/mariadb-connector-j/about-mariadb-connector-j#optional-url-parameters)）。因为配置项较多，这里主要关注几个可能影响到性能的参数。
 
 #### Prepare 相关参数
 
@@ -240,13 +279,13 @@ UPDATE `t` SET `a` = 12 WHERE `id` = 3;
 
 通过监控可能会发现，虽然业务只向集群进行 insert 操作，却看到有很多多余的 select 语句。通常这是因为 JDBC 发送了一些查询设置类的 SQL 语句（例如 `select @@session.transaction_read_only`）。这些 SQL 对 TiDB 无用，推荐配置 `useConfigs = maxPerformance` 来避免额外开销。
 
-`useConfigs = maxPerformance` 会包含一组配置，可查看 MySQL Connector/J [8.0 版本](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties) 或 [5.1 版本](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties) 来确认当前 MySQL Connector/J 中 `maxPerformance` 包含的具体配置。
+`useConfigs = maxPerformance` 会包含一组配置，可查看 MySQL Connector/J [8.0 版本](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties)或 [5.1 版本](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties)来确认当前 MySQL Connector/J 中 `maxPerformance` 包含的具体配置。
 
 配置后查看监控，可以看到多余语句减少。
 
 #### 超时参数
 
-TiDB 提供两个与 MySQL 兼容的超时控制参数，[`wait_timeout`](/system-variables.md#wait_timeout) 和 [`max_execution_time`](/system-variables.md#max_execution_time)。这两个参数分别控制与 Java 应用连接的空闲超时时间和连接中 SQL 执行的超时时间，即控制 TiDB 与 Java 应用的连接最长闲多久和最长忙多久。在 TiDB v5.4 及以上版本中，`wait_timeout` 参数默认值为 `28800` 秒，即空闲超时为 8 小时。在 v5.4 之前，`wait_timeout` 参数的默认值为 `0`，即没有时间限制。 `max_execution_time` 参数的默认值为 `0`，即不限制一条 SQL 语句的执行时间。
+TiDB 提供两个与 MySQL 兼容的超时控制参数，[`wait_timeout`](/system-variables.md#wait_timeout) 和 [`max_execution_time`](/system-variables.md#max_execution_time)。这两个参数分别控制与 Java 应用连接的空闲超时时间和连接中 SQL 执行的超时时间，即控制 TiDB 与 Java 应用的连接最长闲多久和最长忙多久。在 TiDB v5.4 及以上版本中，`wait_timeout` 参数默认值为 `28800` 秒，即空闲超时为 8 小时。在 v5.4 之前，`wait_timeout` 参数的默认值为 `0`，即没有时间限制。 `max_execution_time` 参数的默认值为 `0`，即不限制一条 SQL 语句的执行时间，该参数适用于所有 `SELECT` 语句（包括 `SELECT ... FOR UPDATE`）。
 
 但是 [`wait_timeout`](/system-variables.md#wait_timeout) 的默认值比较大，在事务已启动但未提交或回滚的情况下，你可能需要更细粒度的控制和更短的超时，以避免持有锁的时间过长。此时，你可以使用 TiDB 在 v7.6.0 引入的 [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) 控制用户会话中事务的空闲超时。
 

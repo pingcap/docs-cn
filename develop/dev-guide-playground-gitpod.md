@@ -1,6 +1,7 @@
 ---
 title: Gitpod
 summary: Gitpod 是一个开源 Kubernetes 应用程序，可在浏览器中获得完整的开发环境，并立即编写代码。它能够为云中的每个任务提供全新的自动化开发环境，无需本地配置。Gitpod 提供了完整的、自动化的、预配置的云原生开发环境，让你可以直接在浏览器中开发、运行、测试代码。
+aliases: ['/zh/tidb/stable/dev-guide-playground-gitpod/','/zh/tidb/dev/dev-guide-playground-gitpod/','/zh/tidbcloud/dev-guide-playground-gitpod/']
 ---
 
 <!-- markdownlint-disable MD029 -->
@@ -25,7 +26,7 @@ Gitpod 是一个开源 Kubernetes 应用程序（GitHub 仓库地址 <https://gi
 
 ## 使用默认的 Gitpod 配置和环境
 
-完成[快速开始](#快速开始) 的步骤之后，Gitpod 会需要一段时间来设置你的工作区。
+完成[快速开始](#快速开始)的步骤之后，Gitpod 会需要一段时间来设置你的工作区。
 
 以 [Spring Boot Web](/develop/dev-guide-sample-application-java-spring-boot.md) 应用程序为例，通过 URL `https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java` 可以创建一个新工作区。
 

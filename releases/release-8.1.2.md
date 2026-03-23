@@ -9,7 +9,7 @@ summary: 了解 TiDB 8.1.2 版本的兼容性变更、改进提升和错误修�
 
 TiDB 版本：8.1.2
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v8.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v8.1.2#version-list)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v8.1/production-deployment-using-tiup) | [下载离线包](https://pingkai.cn/download#tidb-community)
 
 ## 兼容性变更
 

@@ -5,13 +5,13 @@ summary: 了解修改 JSON 值的 JSON 函数。
 
 # 修改 JSON 值的 JSON 函数
 
-本文档介绍用于修改 JSON 值的 JSON 函数。
+TiDB 支持使用 MySQL 8.0 中提供的所有[用于修改 JSON 值的 JSON 函数](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html)。
 
-## [JSON_APPEND()](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-append)
+## `JSON_APPEND()`
 
 该函数为 [`JSON_ARRAY_APPEND()`](#json_array_append) 的别名。
 
-## [JSON_ARRAY_APPEND()](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-array-append)
+## `JSON_ARRAY_APPEND()`
 
 `JSON_ARRAY_APPEND(json_array, path, value [,path, value] ...)` 函数将 `value` 插入 `path` 中指定的 `json_array` 数组的末尾，并返回结果。
 
@@ -49,7 +49,7 @@ SELECT JSON_ARRAY_APPEND('{"transport_options": ["Car", "Boat", "Train"]}', '$.t
 1 row in set (0.00 sec)
 ```
 
-## [JSON_ARRAY_INSERT()](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-array-insert)
+## `JSON_ARRAY_INSERT()`
 
 `JSON_ARRAY_INSERT(json_array, path, value [,path, value] ...)` 函数将 `value` 插入 `path` 中 `json_array` 的指定位置，并返回结果。
 
@@ -87,7 +87,7 @@ SELECT JSON_ARRAY_INSERT('["Car", "Boat", "Train"]', '$[1]', "Airplane") AS "Tra
 1 row in set (0.00 sec)
 ```
 
-## [JSON_INSERT()](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-insert)
+## `JSON_INSERT()`
 
 `JSON_INSERT(json_doc,path,value[,path,value] ...)` 函数将一个或多个值插入到 JSON 文档，并返回结果。
 
@@ -125,7 +125,7 @@ SELECT JSON_INSERT('{"a": 61, "b": 62}', '$.a', 41, '$.c', 63);
 1 row in set (0.00 sec)
 ```
 
-## [JSON_MERGE_PATCH()](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-merge-patch)
+## `JSON_MERGE_PATCH()`
 
 `JSON_MERGE_PATCH(json_doc, json_doc [,json_doc] ...)` 将两个或多个 JSON 文档合并为一个 JSON 文档，但不保留重复键的值。如果其中某些 `json_doc` 参数包含重复的键，合并后的结果只保留后面指定的那个 `json_doc` 参数中的值。
 
@@ -150,7 +150,7 @@ SELECT JSON_MERGE_PATCH(
 1 row in set (0.00 sec)
 ```
 
-## [JSON_MERGE_PRESERVE()](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-merge-preserve)
+## `JSON_MERGE_PRESERVE()`
 
 `JSON_MERGE_PRESERVE(json_doc, json_doc [,json_doc] ...)` 函数通过保留所有键值的方式合并两个或多个 JSON 文档，并返回合并结果。
 
@@ -171,7 +171,7 @@ SELECT JSON_MERGE_PRESERVE('{"a": 1, "b": 2}','{"a": 100}', '{"c": 300}');
 1 row in set (0.00 sec)
 ```
 
-## [JSON_MERGE()](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-merge)
+## `JSON_MERGE()`
 
 > **警告：**
 >
@@ -179,7 +179,7 @@ SELECT JSON_MERGE_PRESERVE('{"a": 1, "b": 2}','{"a": 100}', '{"c": 300}');
 
 该函数为 [`JSON_MERGE_PRESERVE()`](#json_merge_preserve) 已废弃的别名。
 
-## [JSON_REMOVE()](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-remove)
+## `JSON_REMOVE()`
 
 `JSON_REMOVE(json_doc,path [,path] ...)` 函数从 JSON 文档中删除指定 `path` 的数据并返回结果。
 
@@ -215,7 +215,7 @@ SELECT JSON_REMOVE('{"a": 61, "b": 62, "c": 63}','$.b','$.c');
 1 row in set (0.00 sec)
 ```
 
-## [JSON_REPLACE()](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-replace)
+## `JSON_REPLACE()`
 
 `JSON_REPLACE(json_doc,path,value[,path,value]...)` 函数替换 JSON 文档中的现有的值并返回结果。如果指定的路径不存在，该路径对应的值不会添加到结果中。
 
@@ -253,7 +253,7 @@ SELECT JSON_REPLACE('{"a": 41, "b": 62}','$.b',42,'$.c',43);
 1 row in set (0.00 sec)
 ```
 
-## [JSON_SET()](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-set)
+## `JSON_SET()`
 
 `JSON_SET(json_doc,path,value[,path,value] ...)` 函数在 JSON 文档中插入或更新数据，并返回结果。
 
@@ -291,7 +291,7 @@ SELECT JSON_SET('{"version": 1.1, "name": "example"}','$.version',1.2,'$.branch'
 1 row in set (0.00 sec)
 ```
 
-## [JSON_UNQUOTE()](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-unquote)
+## `JSON_UNQUOTE()`
 
 `JSON_UNQUOTE(json)` 函数去掉 JSON 值的引号，并以字符串形式返回结果。该函数与 [`JSON_QUOTE()`](/functions-and-operators/json-functions/json-functions-create.md#json_quote) 函数作用相反。
 

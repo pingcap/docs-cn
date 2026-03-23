@@ -105,6 +105,7 @@ SHOW BUILTINS;
 | from_base64                 |
 | from_days                   |
 | from_unixtime               |
+| fts_match_word              |
 | ge                          |
 | get_format                  |
 | get_lock                    |
@@ -189,7 +190,6 @@ SHOW BUILTINS;
 | make_set                    |
 | makedate                    |
 | maketime                    |
-| master_pos_wait             |
 | md5                         |
 | microsecond                 |
 | mid                         |
@@ -325,7 +325,7 @@ SHOW BUILTINS;
 | year                        |
 | yearweek                    |
 +-----------------------------+
-299 rows in set (0.00 sec)
+299 rows in set (0.001 sec)
 ```
 
 ## MySQL 兼容性

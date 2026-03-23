@@ -10,7 +10,7 @@ summary: TiDB 文档中心为您提供丰富的操作指南和参考资料，助
 
 <DocHomeSection label="TiDB" anchor="tidb" id="tidb">
 
-TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 的融合型分布式数据库产品，具备水平扩容或者缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等重要特性，支持在本地和云上部署。
+TiDB 是平凯星辰公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 的融合型分布式数据库产品，具备水平扩容或者缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等重要特性，支持在本地和云上部署。
 
 <DocHomeCardContainer>
 
@@ -32,9 +32,9 @@ TiDB 简介，核心特性与应用场景
 
 </DocHomeCard>
 
-<DocHomeCard href="/zh/tidb/stable/dev-guide-overview" label="开发者指南" icon="oss-developer-blue">
+<DocHomeCard href="/zh/developer/" label="开发者指南" icon="oss-developer-blue">
 
-为应用程序开发者编写的开发者手册
+用熟悉的语言或框架连接到 TiDB
 
 </DocHomeCard>
 
@@ -66,7 +66,7 @@ TiDB Cloud 核心特性与应用场景简介
 
 </DocHomeCard>
 
-<DocHomeCard href="/tidbcloud/dev-guide-overview" label="开发者指南" icon="cloud-developer-mauve">
+<DocHomeCard href="/zh/developer/" label="开发者指南" icon="cloud-developer-mauve">
 
 用熟悉的语言或框架连接到 TiDB Cloud
 
@@ -84,7 +84,7 @@ TiDB Cloud 核心特性与应用场景简介
 
 <DocHomeCardContainer>
 
-<DocHomeCard href="https://pingcap.com/zh/education" label="学习中心" icon="global-tidb-education">
+<DocHomeCard href="https://learn.pingcap.cn/learner/course" label="课程中心" icon="global-tidb-education">
 
 提供众多免费课程，助您深入学习 TiDB，成为 TiDB 技术专家
 
@@ -96,7 +96,7 @@ TiDB Cloud 核心特性与应用场景简介
 
 </DocHomeCard>
 
-<DocHomeCard href="https://pingcap.com/zh/blog" label="TiDB 博客" icon="global-tidb-blog">
+<DocHomeCard href="https://tidb.net/blog" label="博客文章" icon="global-tidb-blog">
 
 满满的技术干货、深度解读、技术分享
 

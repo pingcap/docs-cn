@@ -20,7 +20,7 @@ TiDB 支持使用 MySQL 8.0 中提供的所有[位函数和操作符](https://de
 | [`<<`](#左移) | 左移 |
 | [`>>`](#右移) | 右移 |
 
-## [`BIT_COUNT()`](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#function_bit-count)
+## `BIT_COUNT()`
 
 `BIT_COUNT(expr)` 函数返回 `expr` 中为 1 的位数。
 
@@ -71,7 +71,7 @@ SELECT BIT_COUNT(INET_ATON('255.255.255.0'));
 1 row in set (0.00 sec)
 ```
 
-## [`&`（按位与）](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_bitwise-and)
+## `&`（按位与）
 
 `&` 操作符用于执行按位与 (bitwise AND) 操作。它会比较两个数中的对应位，如果两个对应位都是 1，则结果中的对应位为 1，否则为 0。
 
@@ -129,7 +129,7 @@ SELECT INET_NTOA(INET_ATON('192.168.1.2') & INET_ATON('255.255.255.0'));
 1 row in set (0.00 sec)
 ```
 
-## [`~`（按位取反）](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_bitwise-invert)
+## `~`（按位取反）
 
 `~` 操作符用于对给定的值进行按位取反（bitwise NOT）操作。它会对给定值中的每一位进行取反：0 的位变为 1，1 的位变为 0。
 
@@ -169,7 +169,7 @@ SELECT CONV(~ b'1111111111111111111111111111111111111111111111110000111100001111
 1 row in set (0.00 sec)
 ```
 
-## [`|`（按位或）](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_bitwise-or)
+## `|`（按位或）
 
 `|` 操作符用于执行按位或 (bitwise OR) 操作。它会比较两个数中的对应位，如果至少有一个对应位为 1，则结果中的对应位为 1。
 
@@ -197,7 +197,7 @@ SELECT CONV(b'1010' | b'1100',10,2);
 1 row in set (0.00 sec)
 ```
 
-## [`^`（按位异或）](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_bitwise-xor)
+## `^`（按位异或）
 
 `^` 操作符用于执行按位异或 (bitwise XOR) 操作。它会比较两个数中的对应位，如果对应位不同，则结果中的对应位为 1。
 
@@ -227,7 +227,7 @@ SELECT CONV(b'1010' ^ b'1100',10,2);
 
 需要注意的是，由于省略了前导零，结果会显示为 `110` 而不是 `0110`。
 
-## [`<<`（左移）](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_left-shift)
+## `<<`（左移）
 
 `<<` 操作符用于执行左移操作。它会将一个数中的所有位向左移动指定的位数，并用零填充右侧空出的位。
 
@@ -261,7 +261,7 @@ SELECT n,1<<n,LPAD(CONV(1<<n,10,2),11,0) FROM cte;
 11 rows in set (0.00 sec)
 ```
 
-## [`>>`（右移）](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_right-shift)
+## `>>`（右移）
 
 `>>` 操作符用于执行右移操作。它会将数中的所有位向右移动指定的位数，并用零填充左侧空出的位。
 

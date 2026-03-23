@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/','/zh/tidb/dev/pitr-troublesh
 
 ## 当误删除或误更新数据后，如何原地快速恢复？
 
-从 TiDB v6.4.0 引入了完整的 Flashback 功能，可以支持原地快速恢复 GC 时间内的数据到指定时间点。在误操作场景下，推荐使用 Flashback 来恢复数据，具体可以参考 [Flashback 集群](/sql-statements/sql-statement-flashback-cluster.md) 和 [Flashback 数据库](/sql-statements/sql-statement-flashback-database.md)语法。
+从 TiDB v6.4.0 引入了完整的 Flashback 功能，可以支持原地快速恢复 GC 时间内的数据到指定时间点。在误操作场景下，推荐使用 Flashback 来恢复数据，具体可以参考 [Flashback 集群](/sql-statements/sql-statement-flashback-cluster.md)和 [Flashback 数据库](/sql-statements/sql-statement-flashback-database.md)语法。
 
 ## 在 TiDB v5.4.0 及后续版本中，当在有负载的集群进行备份时，备份速度为什么会变得很慢？
 
@@ -107,6 +107,14 @@ Error: failed to check gc safePoint, checkpoint ts 433177834291200000: GC safepo
 暂停日志备份任务后，备份程序为了防止生成变更日志的 MVCC 数据被 GC，暂停任务程序会自动将当前备份点 checkpoint 设置为 service safepoint，允许保留最近 24 小时内的 MVCC 数据。当超过 24 小时后，备份点 checkpoint 的 MVCC 数据已经被 GC，此时程序会拒绝恢复备份任务。
 
 此场景的处理办法是：先执行 `br log stop` 命令来删除当前的任务，然后执行 `br log start` 重新创建新的日志备份任务，同时做一个全量备份，便于后续做 PITR 恢复操作。
+
+### 执行 PITR table filter 时报 `[ddl:8204]invalid ddl job type: none` 错误，该如何处理？
+
+```shell
+failed to refresh meta for database with schemaID=124, dbName=pitr_test: [ddl:8204]invalid ddl job type: none
+```
+
+该错误是由于 DDL Owner 所在的 TiDB 节点版本过低，无法识别 Refresh Meta DDL 导致的。请将集群升级至 v8.5.5 或更高版本，再使用 PITR 的 [table filter](/table-filter.md) 功能。
 
 ## 功能兼容性问题
 

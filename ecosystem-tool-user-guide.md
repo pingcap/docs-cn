@@ -1,7 +1,7 @@
 ---
 title: TiDB 工具功能概览
 aliases: ['/docs-cn/dev/ecosystem-tool-user-guide/','/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrate/from-mysql/', '/docs-cn/dev/how-to/migrate/incrementally-from-mysql/', '/docs-cn/dev/how-to/migrate/overview/', '/docs-cn/dev/reference/tools/use-guide/']
-summary: TiDB 提供了丰富的工具，包括部署运维工具 TiUP 和 TiDB Operator，数据管理工具如 TiDB Data Migration（DM）、Dumpling、TiDB Lightning、Backup & Restore（BR）、TiCDC、sync-diff-inspector，以及 OLAP 分析工具 TiSpark。这些工具可用于部署、数据迁移、备份恢复、数据校验等多种操作，满足不同需求。
+summary: TiDB 提供了丰富的工具，包括部署运维工具 TiUP 和 TiDB Operator，数据管理工具如 TiDB Data Migration（DM）、Dumpling、TiDB Lightning、Backup & Restore（BR）、TiCDC、sync-diff-inspector。这些工具可用于部署、数据迁移、备份恢复、数据校验等多种操作，满足不同需求。
 ---
 
 # TiDB 工具功能概览
@@ -50,7 +50,7 @@ TiDB 提供了 TiUP 和 TiDB Operator 部署运维工具，满足你在不同系
 - TiDB DM 的输入：MySQL/MariaDB
 - TiDB DM 的输出：TiDB 集群
 - 适用 TiDB 版本：所有版本
-- Kubernetes 支持：使用 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm) 在 Kubernetes 上部署 TiDB DM。
+- Kubernetes 支持：使用 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.6/deploy-tidb-dm) 在 Kubernetes 上部署 TiDB DM。
 
 如果数据量在 TB 级别以下，推荐直接使用 TiDB DM 迁移 MySQL/MariaDB 数据到 TiDB（迁移的过程包括全量数据的导出导入和增量数据的复制）。
 
@@ -130,7 +130,3 @@ TiDB 提供了 TiUP 和 TiDB Operator 部署运维工具，满足你在不同系
 - sync-diff-inspector 的输入：TiDB、MySQL
 - sync-diff-inspector 的输出：TiDB、MySQL
 - 适用 TiDB 版本：所有版本
-
-## OLAP 分析工具 - TiSpark
-
-[TiSpark](/tispark-overview.md) 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。它借助 Spark 平台，同时融合 TiKV 分布式集群的优势，和 TiDB 一起为用户一站式解决 HTAP (Hybrid Transactional/Analytical Processing) 的需求。

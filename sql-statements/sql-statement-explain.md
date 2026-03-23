@@ -202,6 +202,7 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 | `tidb_json` | `EXPLAIN` 语句将输出 JSON 格式的执行计划，算子信息存放在一个 JSON 数组中           |
 | `verbose`   | `EXPLAIN` 语句将以 `row` 格式输出结果，并在结果中额外包含一个 `estCost` 列，表示查询的代价估算。关于如何使用这种格式的更多信息，请参阅[执行计划管理 (SPM)](/sql-plan-management.md)。|
 | `plan_cache` | `EXPLAIN` 语句将以 `row` 格式输出结果，[执行计划缓存](/sql-non-prepared-plan-cache.md#诊断)信息将作为 warning 显示。
+| `cost_trace` | `EXPLAIN` 语句将以扩展的 `row` 格式输出结果，包含两个额外的列：`estCost`（估算代价）和 `costFormula`（代价计算公式）。 |
 
 <SimpleTab>
 

@@ -1,7 +1,7 @@
 ---
 title: 使用 Spring Boot 连接到 TiDB
 summary: 了解如何使用 Spring Boot 连接到 TiDB。本文提供了使用 Spring Boot 与 TiDB 交互的 Java 示例代码片段。
-aliases: ['/zh/tidb/dev/dev-guide-sample-application-spring-boot', '/zh/tidb/dev/sample-application-spring-boot']
+aliases: ['/zh/tidb/dev/dev-guide-sample-application-spring-boot', '/zh/tidb/dev/sample-application-spring-boot','/zh/tidb/stable/dev-guide-sample-application-java-spring-boot/','/zh/tidb/dev/dev-guide-sample-application-java-spring-boot/','/zh/tidbcloud/dev-guide-sample-application-java-spring-boot/']
 ---
 
 # 使用 Spring Boot 连接到 TiDB
@@ -25,7 +25,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Spring](https://spring.io/) 是当前
 - [Git](https://git-scm.com/downloads)。
 - TiDB 集群。如果你还没有 TiDB 集群，可以按照以下方式创建：
     - （推荐方式）参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)，创建你自己的 TiDB Cloud 集群。
-    - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
+    - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
 ## 运行代码并连接到 TiDB
 
@@ -261,9 +261,11 @@ playerRepository.deleteById(id);
     - [Spring Data JPA 官方文档](https://spring.io/projects/spring-data-jpa)
     - [Hibernate 官方文档](https://hibernate.org/orm/documentation)
 - 你可以继续阅读开发者文档，以获取更多关于 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)、[删除数据](/develop/dev-guide-delete-data.md)、[单表读取](/develop/dev-guide-get-data-from-single-table.md)、[事务](/develop/dev-guide-transaction-overview.md)、[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
-- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/category/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
-- 我们还额外提供针对 Java 开发者的课程：[使用 Connector/J - TiDB v6](https://learn.pingcap.com/learner/course/840002/?utm_source=docs-cn-dev-guide) 及[在 TiDB 上开发应用的最佳实践 - TiDB v6](https://learn.pingcap.com/learner/course/780002/?utm_source=docs-cn-dev-guide)。
+- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://pingkai.cn/learn)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.cn/learner/certification-center)。
+- 我们还额外提供针对 Java 开发者的课程：[使用 Connector/J - TiDB v6](https://learn.pingcap.cn/learner/course/840002?utm_source=docs-cn-dev-guide) 及[在 TiDB 上开发应用的最佳实践 - TiDB v6](https://learn.pingcap.cn/learner/course/780002?utm_source=docs-cn-dev-guide)。
 
 ## 需要帮助?
 
-如果在开发的过程中遇到问题，可以在 [AskTUG](https://asktug.com/?utm_source=docs-cn-dev-guide) 上进行提问，寻求帮助。
+- 在 [AskTUG 论坛](https://asktug.com/?utm_source=docs-cn-dev-guide) 上提问
+- [提交 TiDB Cloud 工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)
+- [提交 TiDB 工单](/support.md)
