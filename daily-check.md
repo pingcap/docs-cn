@@ -51,7 +51,7 @@ TiDB 作为分布式数据库，对比单机数据库机制更加复杂，其自
 + `pending-peer-region-count`：Raft log 落后的 Region 数量。由于调度产生少量的 pending peer 是正常的，但是如果 pending peer 的数量持续（超过 30 分钟）很高，可能存在问题。
 + `undersized-region-count`：Region 大小小于 `max-merge-region-size` 或 `max-merge-region-keys` 的 Region 数量。
 
-原则上来说，该监控面板偶尔有数据是符合预期的。但长期有数据，需要排查是否存在问题。
+这些指标显示较小的非零值一般是正常的。
 
 ### KV Request Duration
 
