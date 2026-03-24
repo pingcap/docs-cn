@@ -36,7 +36,7 @@ TiDB 版本：8.5.6
 + TiDB
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 新增 DXF 的 max_node_count 配置项支持 [#66376](https://github.com/pingcap/tidb/pull/66376)@[D3Hunter](https://github.com/D3Hunter)
 
 + TiKV
 
@@ -69,7 +69,8 @@ TiDB 版本：8.5.6
     + TiDB Data Migration (DM)
 
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 新增对 MySQL 8.4 作为 DM 上游数据源的支持，适配该版本引入的新术语和版本检测逻辑 [#12532](https://github.com/pingcap/tiflow/pull/12532) @[dveeden](https://github.com/dveeden)
+        - 在 DM syncer 中新增外键因果依赖支持，确保多 worker 场景下行变更按照父表至子表的外键顺序执行 [#12552](https://github.com/pingcap/tiflow/pull/12552) @[OliverS929](https://github.com/OliverS929)
 
     + TiDB Lightning
 
@@ -91,7 +92,7 @@ TiDB 版本：8.5.6
 + TiDB
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 修复 tidb_service_scope 设置时未统一转换为小写的问题 [#66835](https://github.com/pingcap/tidb/pull/66835)@[D3Hunter](https://github.com/D3Hunter)
 
 + TiKV
 
@@ -125,7 +126,9 @@ TiDB 版本：8.5.6
     + TiDB Data Migration (DM)
 
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复 DM 在 binlog rotate 事件时全局 checkpoint 位置未推进的问题 [#12525](https://github.com/pingcap/tiflow/pull/12525) @[OliverS929](https://github.com/OliverS929)
+        - 修复含外键约束的表在 DM safe-mode 下的异常行为，移除 UPDATE 改写中多余的 DELETE 操作并避免触发外键级联 [#12541](https://github.com/pingcap/tiflow/pull/12541) @[OliverS929](https://github.com/OliverS929)
+        - 修复 DM validator 对 UNSIGNED 列误报校验错误的问题 [#12555](https://github.com/pingcap/tiflow/pull/12555) @[OliverS929](https://github.com/OliverS929)
 
     + TiDB Lightning
 
@@ -135,7 +138,7 @@ TiDB 版本：8.5.6
     + Dumpling
 
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复 Dumpling 与 MySQL 8.4 的兼容性问题 [#65131](https://github.com/pingcap/tidb/pull/65131) @[dveeden](https://github.com/dveeden)
 
     + TiUP
 
