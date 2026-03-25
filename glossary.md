@@ -14,6 +14,8 @@ aliases: ['/docs-cn/dev/glossary/']
 - [TiCDC 术语表](/ticdc/ticdc-glossary.md)
 - [TiDB Lightning 术语表](/tidb-lightning/tidb-lightning-glossary.md)
 
+[A](#a) | [B](#b) | [C](#c) | [D](#d) | [E](#e) | [G](#g) | [H](#h) | [I](#i) | [K](#k) | [L](#l) | [M](#m) | [O](#o) | [P](#p) | [Q](#q) | [R](#r) | [S](#s) | [T](#t) | [U](#u) | [V](#v)
+
 ## A
 
 ### ACID
