@@ -120,8 +120,10 @@ TiDB 版本：8.5.6
 
     + TiCDC
 
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复了一个在服务器重启时，changefeed 可能会重复创建无效 dispatcher 的问题。[#4452](https://github.com/pingcap/ticdc/issues/4452) @[wlwilliamx](https://github.com/wlwilliamx)
+        - 修复了当 TiDB 版本小于等于 v8.1.x 时，表重命名操作无法正常执行的问题。[#4392](https://github.com/pingcap/ticdc/issues/4392) @[lidezhu](https://github.com/lidezhu)
+        - 修复了一个扫描数据时的 Bug，避免启用 CDC 时 TiKV 可能出现异常崩溃。[#19404](https://github.com/tikv/tikv/issues/19404) @[wk989898](https://github.com/wk989898)
+        - 为 azblob 下游支持 Azure 托管标识认证，并修复了云存储上传过程中可能出现的卡住问题。[#3093](https://github.com/pingcap/ticdc/issues/3093) @[wlwilliamx](https://github.com/wlwilliamx)
 
     + TiDB Data Migration (DM)
 
