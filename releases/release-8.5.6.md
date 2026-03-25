@@ -105,7 +105,7 @@ TiDB 版本：8.5.6
 
 + PD
 
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    -  修复 distribute table sql panic 问题，特别是 merge region operator 比较多的场景容易触发这个 bug。 [#10292](https://github.com/tikv/pd/pull/10292) @[bufferflies](https://github.com/bufferflies)
     - 修复设置 store limit 后可能不马上生效的问题 [#10108](https://github.com/tikv/pd/issues/10108) @[okJiang](https://github.com/okJiang)
 
 + TiFlash
