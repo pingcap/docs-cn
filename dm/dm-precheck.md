@@ -67,7 +67,7 @@ tiup dmctl check-task ./task.yaml
 * （必须）上游数据库的 dump 权限
 
     - 检查是否有 INFORMATION_SCHEMA 和 dump 表的 SELECT 权限。
-    - 如果 consistency=flush，将检查是否有 RELOAD 权限。
+    - 如果 `consistency=flush`，将检查是否有 RELOAD 权限。
     - 如果 `consistency=lock`，将检查是否有 dump 表的 `LOCK TABLES` 权限。
 
     > **注意：**
