@@ -31,7 +31,27 @@ TiDB 版本：8.5.6
     在 v8.5.6 中，该功能成为正式功能 (GA)。
 
     更多信息，请参考[用户文档](/tidb-resource-control-background-tasks.md)。
+### 可观测性
 
+- 支持多维度、多粒度定义慢查询日志的触发规则（GA）[#62959](https://github.com/pingcap/tidb/issues/62959) @[zimulala](https://github.com/zimulala) **tw@lilin90** <!--2068-->
+
+	当前 TiDB 定位慢查询语句的主要方法是设置系统变量 tidb_slow_log_threshold，该机制触发慢日志控制粒度粗（整个实例级别全局控制，不支持会话和SQL级别精细化控制）、触发条件仅执行时间（Query_time）一种，无法满足复杂场景慢日志抓取以精细化定位问题的需求。
+	
+	本功能通过设置 tidb_slow_log_rules 系统变量，支持用户在实例、会话、SQL级别定义多维度（如 Query_time、Digest、Mem_max、KV_total 等等）的慢查询日志抓取规则，实现更灵活的精细化控制。
+
+	在 v8.5.6 中，该功能成为正式功能（GA）。
+	
+	更多信息，请参考 [用户文档](/identify-slow-queries.md)。
+
+- TOP SQL 增加网络流量和逻辑IO 数据（GA）[#62916](https://github.com/pingcap/tidb/issues/62916) @[yibin87](https://github.com/yibin87) **tw@qiancai** <!--2398-->
+
+	当前 TiDB TOP SQL 中仅包含 CPU 的相关指标数据，在遇到复杂情况时不利于排查问题。
+	
+	本功能在 Top SQL 设置中增加开启 **TiKV 网络I0 采集（多维度）**，方便用户进一步查看指定 TiKV 实例的 Network Bytes、Logical IO Bytes 等指标，并按 By Query、By Table、By DB 或 By Region 维度进行聚合分析。
+
+	在 v8.5.6 中，该功能成为正式功能（GA）。
+	
+	更多信息，请参考 [用户文档](/dashboard/top-sql.md)。
 ### 数据迁移
 
 - (dup): release-9.0.0.md > # 数据迁移 * 将 sync-diff-inspector 从 `pingcap/tidb-tools` 迁移至 `pingcap/tiflow` 代码仓库 [#11672](https://github.com/pingcap/tiflow/issues/11672) @[joechenrh](https://github.com/joechenrh)
