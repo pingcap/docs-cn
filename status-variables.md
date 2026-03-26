@@ -33,14 +33,14 @@ summary: 使用状态变量查看系统和会话状态。
 
 ### Performance_schema_session_connect_attrs_longest_seen
 
-- Scope: GLOBAL
-- Type: Integer
-- TiDB 观察到的会话连接属性的最大总大小（以字节为单位）。
+- 作用域：GLOBAL
+- 类型：Integer
+- TiDB 观测到的会话连接属性的最大总大小（单位为字节 bytes）。
 
 ### Performance_schema_session_connect_attrs_lost
 
-- Scope: GLOBAL
-- Type: Integer
+- 作用域：GLOBAL
+- 类型：Integer
 - 由于 `performance_schema_session_connect_attrs_size` 而导致连接属性被截断的会话数量。
 
 ### Ssl_cipher
