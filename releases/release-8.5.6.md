@@ -12,6 +12,15 @@ TiDB 版本：8.5.6
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v8.5/production-deployment-using-tiup) | [下载离线包](https://pingkai.cn/download#tidb-community)
 
 ## 功能详情
+### 性能
+
+- 外键检查支持共享锁（GA） [#66154](https://github.com/pingcap/tidb/issues/66154) @[you06](https://github.com/glorv) **tw@qiancai** <!--2085-->
+
+	对子表进行写入时，支持用户通过设置参数 tidb_foreign_key_check_in_shared_lock 来指定在父表加共享锁实现外键约束检查，相比以前仅支持排它锁，现方案可降低锁冲突提升子表并发写入性能。
+
+	在V8.5.6 中，该功能成为正式功能（GA）。
+
+	更多信息，请参考［用户文档1](/foreign-key.md)
 
 ### 稳定性
 
@@ -38,6 +47,8 @@ TiDB 版本：8.5.6
     - 增强慢查询日志的控制能力，支持使用 [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入) 基于多维指标组合条件定向输出慢查询日志，使用 [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v900-版本开始引入) 限制每秒日志输出数量，并通过 [`WRITE_SLOW_LOG`](/optimizer-hints.md) Hint 强制记录指定 SQL 的慢查询日志 [#64010](https://github.com/pingcap/tidb/issues/64010) @[zimulala](https://github.com/zimulala)
     - 增强 [Top SQL](/dashboard/top-sql.md) 的资源分析能力，支持展示 Top `5`、`20` 或 `100` 查询，支持按 CPU、网络流量和逻辑 IO 排序查看热点，并支持在 TiKV 实例上按 `Query`、`Table`、`DB` 或 `Region` 维度聚合分析 [#62916](https://github.com/pingcap/tidb/issues/62916) @[yibin87](https://github.com/yibin87)
     - 新增 DXF 的 max_node_count 配置项支持 [#66376](https://github.com/pingcap/tidb/pull/66376)@[D3Hunter](https://github.com/D3Hunter)
+    - 调整部分 stats 相关日志为 warning 级别 [#58315](https://github.com/pingcap/tidb/pull/58315)@[hawkingrei](https://github.com/hawkingrei)
+    - 调整 tidb_analyze_column_options 默认值为 all [#64992](https://github.com/pingcap/tidb/issues/64992) @[0xPoe](https://github.com/0xPoe)
 
 + TiKV
 
@@ -106,6 +117,8 @@ TiDB 版本：8.5.6
     - 修复 tidb_service_scope 设置时未统一转换为小写的问题 [#66835](https://github.com/pingcap/tidb/pull/66835)@[D3Hunter](https://github.com/D3Hunter)
     - 修复 TiDB 重启后无法展示亲和力表的问题 [#66284](https://github.com/pingcap/tidb/issues/66284) @[lcwangchao](https://github.com/lcwangchao)
     - 修复可能出现的内存泄漏 [#65522](https://github.com/pingcap/tidb/issues/65522) @[bufferflies](https://github.com/bufferflies)
+    - 修复系统表可能影响 stats healthy 监控的问题 [#64080](https://github.com/pingcap/tidb/issues/64080) @[ti-chi-bot](https://github.com/ti-chi-bot)
+    - 修复 stats delta 数据可能刷新不及时的问题 [#65426](https://github.com/pingcap/tidb/issues/65426) @[ti-chi-bot](https://github.com/ti-chi-bot)
 
 + TiKV
 
