@@ -741,6 +741,26 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
     - 集群 Region 数量较多，PD leader 由于处理心跳和调度任务的开销大，导致 CPU 资源紧张。
     - 集群中 TiDB 实例数量较多，Region 信息请求并发量较大，PD leader CPU 压力大。
 
+### performance_schema_session_connect_attrs_size <span class="version-mark">New in v9.0.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
+- Type: Integer
+- Default value: `4096`
+- Range: `[-1, 65536]`
+- Unit: Bytes
+- Controls the maximum total size of connection attributes for each session.
+- If the total size of connection attributes exceeds this value, TiDB truncates excess attributes and adds `_truncated` to indicate the number of truncated bytes.
+- If the value is set to `0`, TiDB does not retain client-provided session connection attributes, which effectively disables recording session attributes.
+- Connection attributes accepted within this limit are written to the `Session_connect_attrs` field in the slow log and can be queried from [`INFORMATION_SCHEMA.SLOW_QUERY`](/information-schema/information-schema-slow-query.md) and `INFORMATION_SCHEMA.CLUSTER_SLOW_QUERY`.
+- You can control the size of `Session_connect_attrs` recorded in the slow log by adjusting this variable.
+- The value `-1` means no configured limit and is treated as up to `65536` bytes in TiDB.
+
+> **Note:**
+>
+> TiDB enforces a hard limit of 1 MiB for handshake connection attributes. If this hard limit is exceeded, the connection is rejected.
+
 ### `plugin_dir`
 
 - 作用域：GLOBAL

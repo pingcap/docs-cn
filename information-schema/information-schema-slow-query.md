@@ -106,12 +106,14 @@ DESC slow_query;
 | Plan_digest                                | varchar(128)    | YES  |      | NULL    |       |
 | Binary_plan                                | longtext        | YES  |      | NULL    |       |
 | Prev_stmt                                  | longtext        | YES  |      | NULL    |       |
+| Session_connect_attrs                      | json            | YES  |      | NULL    |       |
 | Query                                      | longtext        | YES  |      | NULL    |       |
 +--------------------------------------------+-----------------+------+------+---------+-------+
-89 rows in set (0.00 sec)
+90 rows in set (0.00 sec)
 ```
 
 `Query` 列的语句长度上限由系统变量 [`tidb_stmt_summary_max_sql_length`](/system-variables.md#tidb_stmt_summary_max_sql_length-从-v40-版本开始引入) 控制。
+`Session_connect_attrs` 列以 JSON 格式存储从慢日志解析出的会话连接属性。TiDB 通过 [`performance_schema_session_connect_attrs_size`](/system-variables.md#performance_schema_session_connect_attrs_size-从-v900-版本开始引入) 系统变量来控制写入此字段的最大负载大小。
 
 ## CLUSTER_SLOW_QUERY table
 
