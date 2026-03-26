@@ -13,8 +13,6 @@ summary: 了解 TiDB 相关术语。
 - [TiCDC 术语表](/ticdc/ticdc-glossary.md)
 - [TiDB Lightning 术语表](/tidb-lightning/tidb-lightning-glossary.md)
 
-## A
-
 ## <a id="A" class="letter" href="#A">A</a>
 
 ### ACID
