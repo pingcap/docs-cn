@@ -67,8 +67,6 @@ GRANT SELECT ON db1.* TO 'your_user'@'your_wildcard_of_host';
 
 如果从不允许执行 `FLUSH TABLES WITH READ LOCK`（FTWRL）的托管 MySQL 服务迁移，还需要授予 `LOCK TABLES` 权限：
 
-{{< copyable "sql" >}}
-
 ```sql
 GRANT LOCK TABLES ON db1.* TO 'your_user'@'your_wildcard_of_host';
 ```
