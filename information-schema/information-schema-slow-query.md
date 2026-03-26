@@ -218,9 +218,10 @@ DESC CLUSTER_SLOW_QUERY;
 | Plan_digest                                | varchar(128)    | YES  |      | NULL    |       |
 | Binary_plan                                | longtext        | YES  |      | NULL    |       |
 | Prev_stmt                                  | longtext        | YES  |      | NULL    |       |
+| Session_connect_attrs                      | json            | YES  |      | NULL    |       |
 | Query                                      | longtext        | YES  |      | NULL    |       |
 +--------------------------------------------+-----------------+------+------+---------+-------+
-90 rows in set (0.00 sec)
+91 rows in set (0.00 sec)
 ```
 
 查询集群系统表时，TiDB 也会将相关计算下推给其他节点执行，而不是把所有节点的数据都取回来，可以查看执行计划，如下：
