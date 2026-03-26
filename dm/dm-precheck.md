@@ -68,7 +68,11 @@ tiup dmctl check-task ./task.yaml
 
     - 检查是否有 INFORMATION_SCHEMA 和 dump 表的 SELECT 权限。
     - 如果 consistency=flush，将检查是否有 RELOAD 权限。
-    - 如果 consistency=flush/lock，将检查是否有 dump 表的 LOCK TABLES 权限。
+    - 如果 `consistency=lock`，将检查是否有 dump 表的 `LOCK TABLES` 权限。
+
+    > **注意：**
+    >
+    > 当 `consistency=auto`（默认值）时，DM 会先尝试 `FLUSH TABLES WITH READ LOCK`（FTWRL）。如果 FTWRL 不可用，DM 会回退到 `LOCK TABLES`。这种回退通常发生在不允许执行 FTWRL 的托管 MySQL 服务上。在这种情况下，运行时需要 `LOCK TABLES` 权限，但前置检查当前不会验证该权限。完整权限列表请参见 [DM-worker 所需权限](/dm/dm-worker-intro.md#上游数据库用户权限)。
 
 * （必须）上游 MySQL 多实例分库分表的一致性
 

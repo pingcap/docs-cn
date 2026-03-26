@@ -52,6 +52,10 @@ Binlog replication/sync 处理单元读取上游 MySQL/MariaDB 的 binlog event 
 | `REPLICATION SLAVE` | Global |
 | `REPLICATION CLIENT` | Global |
 
+> **注意：**
+>
+> 如果从托管 MySQL 服务（例如 Amazon RDS、Aurora、ApsaraDB RDS for MySQL、Azure Database for MySQL 或 Google Cloud SQL）迁移，且该服务不允许执行 `FLUSH TABLES WITH READ LOCK`（FTWRL），还需要授予 `LOCK TABLES` 权限。使用默认的 `consistency=auto` 设置时，如果 FTWRL 不可用，DM 会回退到 `LOCK TABLES`。
+
 如果要迁移 `db1` 的数据到 TiDB，可执行如下的 `GRANT` 语句：
 
 {{< copyable "sql" >}}
@@ -59,6 +63,14 @@ Binlog replication/sync 处理单元读取上游 MySQL/MariaDB 的 binlog event 
 ```sql
 GRANT RELOAD,REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'your_user'@'your_wildcard_of_host';
 GRANT SELECT ON db1.* TO 'your_user'@'your_wildcard_of_host';
+```
+
+如果从不允许执行 `FLUSH TABLES WITH READ LOCK`（FTWRL）的托管 MySQL 服务迁移，还需要授予 `LOCK TABLES` 权限：
+
+{{< copyable "sql" >}}
+
+```sql
+GRANT LOCK TABLES ON db1.* TO 'your_user'@'your_wildcard_of_host';
 ```
 
 如果还要迁移其他数据库的数据到 TiDB，请确保已赋予这些库跟 `db1` 一样的权限。
