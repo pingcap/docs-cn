@@ -320,6 +320,10 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 
 ## 统计信息版本
 
+> **警告：**
+>
+> 从 v8.5.6 开始，统计信息版本 1 (`tidb_analyze_version = 1`) 已弃用，并将在未来的版本中移除。建议你使用统计信息版本 2 (`tidb_analyze_version = 2`) 并将现有已分析对象迁移至版本 2。
+
 系统变量 [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 用于控制 TiDB 收集统计信息的行为。目前 TiDB 支持两个版本的统计信息，即 `tidb_analyze_version = 1` 和 `tidb_analyze_version = 2`。
 
 - 从 v5.3.0 开始，变量 `tidb_analyze_version` 的默认值从 `1` 变为了 `2`。
@@ -341,11 +345,11 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 
 ### 切换统计信息版本
 
-建议确保所有表、索引（和分区）使用相同版本的统计信息收集功能。推荐使用 Version 2，但不建议在没有正当理由（例如使用中的版本出现问题）的情况下切换版本。版本之间的切换可能需要一段时间，在此期间可能没有统计信息，直到所有表都使用了新版本进行统计。如果没有统计信息，可能会影响优化器的计划选择。
+建议所有表、索引和分区使用相同的统计信息版本。如果你的集群仍在使用统计信息版本 1，请尽快迁移到统计信息版本 2。在为某个对象收集版本 2 的统计信息之前，TiDB 会继续使用其现有的版本 1 统计信息。
 
-切换版本的正当理由可能包括：使用 Version 1 在收集 Count-Min Sketch 统计信息时，由于哈希冲突导致等值查询或 `IN` 查询谓词估算不准确。此时，你可以参考 [Count-Min Sketch](#count-min-sketch) 小节中描述的解决方案，或者设置 `tidb_analyze_version = 2` 并对所有对象重新运行 `ANALYZE`。在 Version 2 的早期阶段，执行 `ANALYZE` 后有内存溢出的风险，现在这个问题已经解决，但最初的解决方案是设置 `tidb_analyze_version = 1` 并对所有对象重新运行 `ANALYZE`。
+迁移的一个主要原因是，版本 1 可能对等值/IN 谓词产生不准确的估算，因为 Count-Min sketch 可能存在哈希冲突。更多信息，请参阅 [Count-Min Sketch](#count-min-sketch)。为避免此问题，请设置 `tidb_analyze_version = 2` 并对所有对象重新运行 `ANALYZE`。
 
-要为切换统计信息版本做好 `ANALYZE` 准备，请根据情况进行以下操作：
+要为从统计信息版本 1 迁移到版本 2 做好 `ANALYZE` 准备，请根据情况进行以下操作：
 
 - 如果 `ANALYZE` 语句是手动执行的，请手动统计每张需要统计的表：
 
@@ -353,17 +357,10 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
     SELECT DISTINCT(CONCAT('ANALYZE TABLE ', table_schema, '.', table_name, ';'))
     FROM information_schema.tables JOIN mysql.stats_histograms
     ON table_id = tidb_table_id
-    WHERE stats_ver = 2;
+    WHERE stats_ver = 1;
     ```
 
-- 如果 `ANALYZE` 语句是由 TiDB 自动执行的（当开启自动更新统计信息时），请执行以下语句生成 [`DROP STATS`](/sql-statements/sql-statement-drop-stats.md) 语句：
-
-    ```sql
-    SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';'))
-    FROM information_schema.tables JOIN mysql.stats_histograms
-    ON table_id = tidb_table_id
-    WHERE stats_ver = 2;
-    ```
+- 如果 `ANALYZE` 语句是由 TiDB 自动执行的（当开启自动更新统计信息时），在你设置 `tidb_analyze_version = 2` 后，TiDB 会通过后续的自动分析逐步将统计信息刷新至版本 2。在为某个对象收集版本 2 的统计信息之前，TiDB 可以继续使用其现有的版本 1 统计信息。若要加速重要对象的迁移，请手动对其运行 `ANALYZE`。
 
 - 如果上一条语句的返回结果太长，不方便复制粘贴，可以将结果导出到临时文件后，再执行：
 
