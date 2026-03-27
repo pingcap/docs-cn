@@ -4090,12 +4090,12 @@ mysql> desc select count(distinct a) from test.t;
   - 该变量默认值为 `DISABLE`，代表关闭 partial order TopN 优化。此时，优化器将直接使用常规的全局排序 TopN 方式。
   - 如需强制应用 partial order TopN 优化，请将该变量设置为 `COST` 并在查询中通过 `USE INDEX` 或 `FORCE INDEX` Hint 指定满足条件的索引。如果指定的索引不满足该优化的前置条件（例如 `ORDER BY` 与索引前缀不匹配，或者查询中存在不支持的排序形式），即使该变量设置为 `COST` 也可能无法应用该优化，执行计划会退化为常规的 TopN 方式。
   
-> **注意：**
->
-> 目前优化器尚不支持根据 cost model 动态选择是否应用 partial order TopN 优化。如果只将该变量设置为 `COST` 而不指定 `USE INDEX` 或 `FORCE INDEX` Hint，优化器可能不会应用 partial order TopN 优化。如需强制应用该优化，请结合 `USE INDEX` 或 `FORCE INDEX` Hint 一起使用（如示例 1 所示）。
+    > **注意：**
+    >
+    > 目前优化器尚不支持根据 cost model 动态选择是否应用 partial order TopN 优化。如果只将该变量设置为 `COST` 而不指定 `USE INDEX` 或 `FORCE INDEX` Hint，优化器可能不会应用 partial order TopN 优化。如需强制应用该优化，请结合 `USE INDEX` 或 `FORCE INDEX` Hint 一起使用（如示例 1 所示）。
 
 <details>
-<summary>查看示例</summary>
+<summary>查看 partial order TopN 优化示例</summary>
 
 创建表 `t_varchar`，并在字符串列 `name` 上定义了前缀索引 `idx_name_prefix(name(10))`：
 
