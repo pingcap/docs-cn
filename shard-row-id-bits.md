@@ -9,7 +9,7 @@ summary: 介绍 TiDB 的 `SHARD_ROW_ID_BITS` 表属性。
 
 ## 基本概念
 
-对于非聚簇索引主键或没有主键的表，TiDB 会使用隐藏的 [`_tidb_rowid`](/tidb-rowid.md) 作为隐式自增 rowid。大量执行 `INSERT` 插入语句时会把数据集中写入单个 Region，造成写入热点。
+对于非聚簇索引主键或没有主键的表，TiDB 会使用内部自动生成的 [`_tidb_rowid`](/tidb-rowid.md) 作为隐式自增 rowid。大量执行 `INSERT` 插入语句时会把数据集中写入单个 Region，造成写入热点。
 
 通过设置 `SHARD_ROW_ID_BITS`，可以把 rowid 打散写入多个不同的 Region，缓解写入热点问题。
 
@@ -28,7 +28,7 @@ summary: 介绍 TiDB 的 `SHARD_ROW_ID_BITS` 表属性。
 
 > **警告：**
 >
-> `_tidb_rowid` 是内部行句柄。不要假定它在所有情况下都是全局唯一的。对于未使用聚簇索引的分区表，`ALTER TABLE ... EXCHANGE PARTITION` 操作可能会导致不同分区具有相同的 `_tidb_rowid` 值。详情请参阅 [`_tidb_rowid`](/tidb-rowid.md)。
+> `_tidb_rowid` 是 TiDB 内部隐式分配的行 ID。不要假定它在所有情况下都是全局唯一的。对于未使用聚簇索引的分区表，`ALTER TABLE ... EXCHANGE PARTITION` 操作可能会导致不同分区具有相同的 `_tidb_rowid` 值。详情请参阅 [`_tidb_rowid`](/tidb-rowid.md)。
 
 > **注意：**
 >
