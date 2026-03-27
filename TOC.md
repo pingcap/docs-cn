@@ -650,6 +650,7 @@
       - 属性
         - [AUTO_INCREMENT](/auto-increment.md)
         - [AUTO_RANDOM](/auto-random.md)
+        - [_tidb_rowid](/tidb-rowid.md)
         - [SHARD_ROW_ID_BITS](/shard-row-id-bits.md)
       - [字面值](/literal-values.md)
       - [Schema 对象名](/schema-object-names.md)
