@@ -741,7 +741,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
     - 集群 Region 数量较多，PD leader 由于处理心跳和调度任务的开销大，导致 CPU 资源紧张。
     - 集群中 TiDB 实例数量较多，Region 信息请求并发量较大，PD leader CPU 压力大。
 
-### performance_schema_session_connect_attrs_size <span class="version-mark">从 v9.0.0 版本开始引入</span>
+### `performance_schema_session_connect_attrs_size` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
