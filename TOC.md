@@ -636,6 +636,7 @@
     - [TiDB 用户账户管理](/user-account-management.md)
     - [TiDB 密码管理](/password-management.md)
     - [基于角色的访问控制](/role-based-access-control.md)
+    - [列级脱敏策略](/column-level-masking-policy.md)
     - [TiDB 证书鉴权使用指南](/certificate-authentication.md)
   - SQL
     - SQL 语言结构和语法
