@@ -78,3 +78,4 @@ SELECT * FROM information_schema.analyze_status;
 
 - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
 - [`SHOW ANALYZE STATUS`](/sql-statements/sql-statement-show-analyze-status.md)
+
