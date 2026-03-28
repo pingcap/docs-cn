@@ -322,7 +322,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 
 > **警告：**
 >
-> 从 v8.5.6 开始，统计信息版本 1 (`tidb_analyze_version = 1`) 已弃用，并将在未来的版本中移除。建议你使用统计信息版本 2 (`tidb_analyze_version = 2`) 并将现有已分析对象迁移至版本 2。
+> 从 v8.5.6 开始，统计信息版本 1 (`tidb_analyze_version = 1`) 已废弃，并将在未来的版本中移除。建议你使用统计信息版本 2 (`tidb_analyze_version = 2`) 并将现有已分析对象迁移至版本 2。
 
 系统变量 [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 用于控制 TiDB 收集统计信息的行为。目前 TiDB 支持两个版本的统计信息，即 `tidb_analyze_version = 1` 和 `tidb_analyze_version = 2`。
 
@@ -330,7 +330,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 - 如果从 v5.3.0 之前版本的集群升级至 v5.3.0 或之后的版本，该变量的默认值不会发生变化。
 <!-- - TiDB Cloud 中，从 v6.5.0 开始，该变量的默认值从 `1` 变为了 `2`。-->
 
-更推荐选择 Version 2。Version 2 将继续增强，并最终完全取代 Version 1。与 Version 1 相比，Version 2 提高了大数据量场景下多项统计信息收集的准确性。此外，Version 2 在进行谓词选择率估算时不再需要收集 Count-Min Sketch 统计信息，并支持仅对选定列进行自动收集（参见[收集部分列的统计信息](#收集部分列的统计信息)），从而提高了收集性能。
+推荐使用统计信息版本 2 。与版本 1 相比，版本 2 提高了大数据量场景下多项统计信息的准确性。此外，版本 2 在进行谓词选择率估算时不再需要收集 Count-Min Sketch 统计信息，从而提高了收集性能。
 
 以下表格列出了两个统计信息版本为优化器估算收集的信息：
 
@@ -345,11 +345,11 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 
 ### 切换统计信息版本
 
-建议所有表、索引和分区使用相同的统计信息版本。如果你的集群仍在使用统计信息版本 1，请尽快迁移到统计信息版本 2。在为某个对象收集版本 2 的统计信息之前，TiDB 会继续使用其现有的版本 1 统计信息。
+建议所有表、索引和分区使用相同的统计信息版本。如果你的集群仍在使用统计信息版本 1，请尽快迁移至统计信息版本 2。在为某个对象（例如表、索引或分区）收集到 Version 2 的统计信息之前，TiDB 会继续使用该对象现有的 Version 1 统计信息。
 
 迁移的一个主要原因是，版本 1 可能对等值/IN 谓词产生不准确的估算，因为 Count-Min sketch 可能存在哈希冲突。更多信息，请参阅 [Count-Min Sketch](#count-min-sketch)。为避免此问题，请设置 `tidb_analyze_version = 2` 并对所有对象重新运行 `ANALYZE`。
 
-要为从统计信息版本 1 迁移到版本 2 做好 `ANALYZE` 准备，请根据情况进行以下操作：
+要为从统计信息版本 1 迁移到统计信息版本 2 做好 `ANALYZE` 准备，请根据情况进行以下操作：
 
 - 如果 `ANALYZE` 语句是手动执行的，请手动统计每张需要统计的表：
 
@@ -361,6 +361,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
     ```
 
 - 如果 `ANALYZE` 语句是由 TiDB 自动执行的（当开启自动更新统计信息时），在你设置 `tidb_analyze_version = 2` 后，TiDB 会通过后续的自动分析逐步将统计信息刷新至版本 2。在为某个对象收集版本 2 的统计信息之前，TiDB 可以继续使用其现有的版本 1 统计信息。若要加速重要对象的迁移，请手动对其运行 `ANALYZE`。
+- 如果 `ANALYZE` 语句是由 TiDB 自动执行的（当开启自动更新统计信息时），在你设置 `tidb_analyze_version = 2` 后，TiDB 会通过后续的 Auto Analyze 逐步将统计信息刷新至版本 2。在为某个对象收集到版本 2 的统计信息之前，TiDB 可以继续使用其现有的版本 1 统计信息。若要加速重要对象的迁移，请手动对其运行 `ANALYZE`。
 
 - 如果上一条语句的返回结果太长，不方便复制粘贴，可以将结果导出到临时文件后，再执行：
 
