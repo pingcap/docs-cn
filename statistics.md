@@ -360,7 +360,6 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
     WHERE stats_ver = 1;
     ```
 
-- 如果 `ANALYZE` 语句是由 TiDB 自动执行的（当开启自动更新统计信息时），在你设置 `tidb_analyze_version = 2` 后，TiDB 会通过后续的自动分析逐步将统计信息刷新至版本 2。在为某个对象收集版本 2 的统计信息之前，TiDB 可以继续使用其现有的版本 1 统计信息。若要加速重要对象的迁移，请手动对其运行 `ANALYZE`。
 - 如果 `ANALYZE` 语句是由 TiDB 自动执行的（当开启自动更新统计信息时），在你设置 `tidb_analyze_version = 2` 后，TiDB 会通过后续的 Auto Analyze 逐步将统计信息刷新至版本 2。在为某个对象收集到版本 2 的统计信息之前，TiDB 可以继续使用其现有的版本 1 统计信息。若要加速重要对象的迁移，请手动对其运行 `ANALYZE`。
 
 - 如果上一条语句的返回结果太长，不方便复制粘贴，可以将结果导出到临时文件后，再执行：
