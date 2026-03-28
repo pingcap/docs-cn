@@ -322,7 +322,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 
 > **警告：**
 >
-> 从 v8.5.6 开始，统计信息版本 1 (`tidb_analyze_version = 1`) 已废弃，并将在未来的版本中移除。建议你使用统计信息版本 2 (`tidb_analyze_version = 2`) 并将现有已分析对象迁移至版本 2。
+> 从 v8.5.6 开始，统计信息版本 1 (`tidb_analyze_version = 1`) 已废弃，并将在未来的版本中移除。建议你使用统计信息版本 2 (`tidb_analyze_version = 2`)，并[将目前已有统计信息版本 1 的对象迁移至版本 2](/statistics.md#切换统计信息版本)。
 
 系统变量 [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 用于控制 TiDB 收集统计信息的行为。目前 TiDB 支持两个版本的统计信息，即 `tidb_analyze_version = 1` 和 `tidb_analyze_version = 2`。
 
