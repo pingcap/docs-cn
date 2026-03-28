@@ -4352,6 +4352,17 @@ SHOW WARNINGS;
 - 范围：`[0, 2147483647]`
 - 默认值：`1`
 
+### `tidb_opt_index_join_build_v2` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量仅为兼容性保留。TiDB 始终使用 Index Join build v2 路径，不能通过该变量切换回 v1。
+- 将该变量设置为 `OFF` 时，TiDB 会返回错误，提示该能力始终开启。
+- 从旧版本升级后，即使 `mysql.global_variables` 中保留了该变量的历史值，TiDB 仍会按 `ON` 处理。
+
 ### `tidb_opt_index_join_cost_factor` <span class="version-mark">从 v8.5.3 和 v9.0.0 版本开始引入</span>
 
 > **警告：**
