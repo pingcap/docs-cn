@@ -972,6 +972,7 @@
   - [FAQ 汇总](/faq/faq-overview.md)
   - [产品 FAQ](/faq/tidb-faq.md)
   - [SQL FAQ](/faq/sql-faq.md)
+  - [DDL FAQ]（）
   - [安装部署 FAQ](/faq/deploy-and-maintain-faq.md)
   - [迁移 FAQ](/faq/migration-tidb-faq.md)
   - [升级 FAQ](/faq/upgrade-faq.md)
