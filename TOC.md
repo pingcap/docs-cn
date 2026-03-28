@@ -633,6 +633,7 @@
   - 权限
     - [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
     - [权限管理](/privilege-management.md)
+    - [列级权限管理](/column-privilege-management.md)
     - [TiDB 用户账户管理](/user-account-management.md)
     - [TiDB 密码管理](/password-management.md)
     - [基于角色的访问控制](/role-based-access-control.md)
