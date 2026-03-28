@@ -6067,3 +6067,11 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制计算[窗口函数](/functions-and-operators/window-functions.md)时是否采用高精度模式。
+
+### `InPacketBytes`
+
+- 这个变量只做内部统计使用，对用户不可见。
+
+### `OutPacketBytes`
+
+- 这个变量只做内部统计使用，对用户不可见。
