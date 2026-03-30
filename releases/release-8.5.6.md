@@ -115,7 +115,7 @@ TiDB 版本：8.5.6
 
 + TiDB <!--tw@qiancai: 5 notes-->
 
-    - Improve plan selection for queries with IN predicates on index prefix columns. TiDB can now leverage merge sort to preserve order in ORDER BY ... LIMIT queries, reducing unnecessary scans and improving performance.[#62694](https://github.com/pingcap/tidb/pull/62694) [@time-and-fate](https://github.com/time-and-fate)**tw@hfxsd** <!--2414-->
+    - 改进包含 `IN` 条件且作用于索引前缀列的查询的执行计划选择。TiDB 现在可以使用 merge sort 在 `ORDER BY ... LIMIT` 查询中保持顺序，从而减少不必要的扫描并提升性能。[#63449](https://github.com/pingcap/tidb/issues/63449) [#34882](https://github.com/pingcap/tidb/issues/34882) [@time-and-fate](https://github.com/time-and-fate)**tw@hfxsd** <!--2414-->
     - 增强慢查询日志的控制能力，支持使用 [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入) 基于多维指标组合条件定向输出慢查询日志，使用 [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v900-版本开始引入) 限制每秒日志输出数量，并通过 [`WRITE_SLOW_LOG`](/optimizer-hints.md) Hint 强制记录指定 SQL 的慢查询日志 [#64010](https://github.com/pingcap/tidb/issues/64010) @[zimulala](https://github.com/zimulala)
     - 增强 [Top SQL](/dashboard/top-sql.md) 的资源分析能力，支持展示 Top `5`、`20` 或 `100` 查询，支持按 CPU、网络流量和逻辑 IO 排序查看热点，并支持在 TiKV 实例上按 `Query`、`Table`、`DB` 或 `Region` 维度聚合分析 [#62916](https://github.com/pingcap/tidb/issues/62916) @[yibin87](https://github.com/yibin87)
     - 新增 DXF 的 max_node_count 配置项支持 [#66376](https://github.com/pingcap/tidb/pull/66376)@[D3Hunter](https://github.com/D3Hunter)
