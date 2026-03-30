@@ -57,13 +57,13 @@ TiDB 版本：8.5.6
 
 ### **SQL**
 
-- Support column-level privilege management [#61706](https://github.com/pingcap/tidb/issues/61706) [@CbcWestwolf](https://github.com/CbcWestwolf),[@fzzf678](https://github.com/fzzf678) **tw@hfxsd** <!--2332-->
+- 支持列级权限管理 [#61706](https://github.com/pingcap/tidb/issues/61706) [@CbcWestwolf](https://github.com/CbcWestwolf),[@fzzf678](https://github.com/fzzf678) **tw@hfxsd** <!--2332-->
 
-    Before v8.5.6, TiDB privilege control mainly covered the database, and table levels, and did not support granting or revoking privileges on specific columns as MySQL does. As a result, when you needed to restrict users to accessing only a subset of sensitive columns in a table, TiDB could not provide sufficiently fine-grained access control.
+    在 v8.5.6 之前，TiDB 的权限控制覆盖数据库级别和表级别，不支持像 MySQL 那样对特定列授予或回收权限。因此，无法将用户访问限制在表中的部分敏感列。
 
-    Starting from v8.5.6, TiDB supports column-level privilege management. You can use the `GRANT` and `REVOKE` statements to grant or revoke privileges on specific columns, and TiDB performs privilege checks based on column privileges during query processing and execution plan construction. This enables more fine-grained access control and better supports sensitive data isolation and the principle of least privilege.
+    从 v8.5.6 开始，TiDB 支持列级权限管理。你可以使用 `GRANT` 和 `REVOKE` 语句管理特定列的权限。TiDB 在查询处理和执行计划构建过程中会基于列级权限进行校验，从而实现更细粒度的访问控制，并更好地支持敏感数据隔离和最小权限原则。
 
-    For more information, see the [user documentation](/column-privilege-management.md).
+    更多信息，请参考[用户文档](/column-privilege-management.md)。
   
  - Support table aliases referenced in the `FOR UPDATE OF` clause [#65532](https://github.com/pingcap/tidb/pull/65532) [@cryo-zd](https://github.com/cryo-zd) **tw@lilin90** <!--2350-->
 
@@ -75,13 +75,13 @@ TiDB 版本：8.5.6
   
 ### **DB operations**
 
-- Support specifying the maximum number of nodes for distributed execution tasks [#58937](https://github.com/pingcap/tidb/pull/58937) [@tangenta](https://github.com/tangenta), [@D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--2406-->
+- 支持指定分布式执行框架 (Distributed eXecution Framework, DXF) 任务可使用的节点数量 [#58937](https://github.com/pingcap/tidb/pull/58937) [@tangenta](https://github.com/tangenta), [@D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--2406-->
 
-    Before v8.5.6, TiDB did not support efficiently limiting how many nodes a distributed execution task could use. When you wanted to control resource usage for distributed task execution, TiDB did not provide a dedicated option to constrain the maximum node count.
+    在 v8.5.6 之前，TiDB 无法限制分布式执行框架任务可使用的节点数量。当需要控制分布式任务执行的资源使用时，TiDB 没有提供专门的选项来约束最大节点数。
 
-    Starting from v8.5.6, TiDB supports the `tidb_max_dist_task_nodes` system variable, which lets you specify the maximum number of TiDB nodes used by a distributed execution task. This gives you more flexibility to manage resource usage and tune distributed task execution based on workload and cluster conditions.
+    从 v8.5.6 开始，TiDB 引入了 `tidb_max_dist_task_nodes` 系统变量，用于指定分布式执行框架任务可使用的 TiDB 节点最大数量，从而实现更好的资源控制，并支持基于工作负载的调优。
 
-    For more information, see the [user documentation](/system-variables.md#tidb_max_dist_task_nodes-new-in-v856).
+    更多信息，请参考[用户文档](/system-variables.md#tidb_max_dist_task_nodes-从-v856-版本开始引入)。
 
 ### 数据迁移
 
