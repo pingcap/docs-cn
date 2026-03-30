@@ -166,14 +166,13 @@ TiDB 版本：8.5.6
     - Fix the issue that KILL QUERY incorrectly kills idle connections. [#65447](https://github.com/pingcap/tidb/issues/65447) @[gengliqi](https://github.com/gengliqi)
     - Fix the issue that column-level privilege checks can be incorrect for JOIN ... USING, NATURAL JOIN, and INSERT ... ON DUPLICATE KEY UPDATE. [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - Improve privilege-check performance for deployments with many column-level privilege entries. [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf) <!--tw@hfxsd: the following 8 notes-->
-    - Add cluster_id to mysql.tidb so external tools can determine whether two TiDB instances belong to the same cluster. [#59476](https://github.com/pingcap/tidb/issues/59476) @[YangKeao](https://github.com/YangKeao)
-    - Improve the slow query log by printing non-printable prepared-statement arguments as hexadecimal literals. [#65383](https://github.com/pingcap/tidb/issues/65383) @[dveeden](https://github.com/dveeden)
-    - 修复 tidb_service_scope 设置时未统一转换为小写的问题 [#66835](https://github.com/pingcap/tidb/pull/66835)@[D3Hunter](https://github.com/D3Hunter)
-    - 修复 TiDB 重启后无法展示亲和力表的问题 [#66284](https://github.com/pingcap/tidb/issues/66284) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复可能出现的内存泄漏 [#65522](https://github.com/pingcap/tidb/issues/65522) @[bufferflies](https://github.com/bufferflies)
-    - 修复系统表可能影响 stats healthy 监控的问题 [#64080](https://github.com/pingcap/tidb/issues/64080) @[ti-chi-bot](https://github.com/ti-chi-bot)
-    - 修复 stats delta 数据可能刷新不及时的问题 [#65426](https://github.com/pingcap/tidb/issues/65426) @[ti-chi-bot](https://github.com/ti-chi-bot)
-    - 修复事务中第一条语句使用 fair locking 模式上锁时，有时可能使事务 keep alive 失效、并被意外回滚的问题  [#66571](https://github.com/pingcap/tidb/issues/66571) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 在 `mysql.tidb` 中新增 `cluster_id` 字段，使外部工具能够判断两个 TiDB 实例是否属于同一集群 [#59476](https://github.com/pingcap/tidb/issues/59476) @[YangKeao](https://github.com/YangKeao)
+    - 将不可打印的预处理语句参数以十六进制的形式输出，从而提升慢查询日志的可读性 [#65383](https://github.com/pingcap/tidb/issues/65383) @[dveeden](https://github.com/dveeden)
+    - 修复设置 `tidb_service_scope` 时，其值未被正确转换为小写的问题 [#66749](https://github.com/pingcap/tidb/issues/66749) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复 TiDB 重启后无法正确显示亲和力表的问题 [#66284](https://github.com/pingcap/tidb/issues/66284) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复由于统计信息缓存 (Stats Cache) 未排除系统表，导致 Stats Healthy 监控指标显示不准确的问题 [#64080](https://github.com/pingcap/tidb/issues/64080) @[0xPoe](https://github.com/0xPoe)
+    - 修复由于 `modify_count` 更新异常，导致统计信息可能无法及时刷新的问题 [#65426](https://github.com/pingcap/tidb/issues/65426) @[ti-chi-bot](https://github.com/ti-chi-bot)
+    - 修复在悲观事务中，当首条语句使用公平锁 (Fair Locking) 模式加锁时，可能导致事务保活 (Keep Alive) 机制失效，进而引发事务被意外回滚的问题 [#66571](https://github.com/pingcap/tidb/issues/66571) @[MyonKeminta](https://github.com/MyonKeminta)
 
 + TiKV <!--tw@Oreoxmt: 7 notes-->
 
