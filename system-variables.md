@@ -741,6 +741,26 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
     - 集群 Region 数量较多，PD leader 由于处理心跳和调度任务的开销大，导致 CPU 资源紧张。
     - 集群中 TiDB 实例数量较多，Region 信息请求并发量较大，PD leader CPU 压力大。
 
+### `performance_schema_session_connect_attrs_size` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否适用于 Hint [`SET_VAR`](/optimizer-hints.md#set_varvar_namevar_value)：否
+- 类型：整数型
+- 默认值：`4096`
+- 取值范围：`[-1, 65536]`
+- 单位：Bytes
+- 控制每个会话连接属性的最大总大小。
+- 如果连接属性的总大小超过此值，TiDB 会截断超出的属性，并添加 `_truncated` 来表示被截断的字节数。
+- 在此限制内被接受的连接属性会写入慢日志中的 `Session_connect_attrs` 字段，并可通过 [`INFORMATION_SCHEMA.SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 和 `INFORMATION_SCHEMA.CLUSTER_SLOW_QUERY` 查询。
+- 你可以通过调整此变量来控制慢日志中记录的 `Session_connect_attrs` 大小。
+- 如果该值设置为 `-1`，表示未配置限制，TiDB 会将其视为最大 `65536` 字节。
+- 如果该值设置为 `0`，TiDB 不会保留客户端提供的会话连接属性，这实际上会禁用会话属性记录。
+
+> **注意：**
+>
+> TiDB 对握手连接属性强制施加 1 MiB 的硬性限制。若超过该硬性限制，连接将被拒绝。
+
 ### `plugin_dir`
 
 - 作用域：GLOBAL
