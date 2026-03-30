@@ -281,27 +281,27 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
 
 - 标准格式（SESSION 作用域）：
 
-  ```sql
-  SET SESSION tidb_slow_log_rules = 'Query_time: 0.5, Is_internal: false';
-  ```
+    ```sql
+    SET SESSION tidb_slow_log_rules = 'Query_time: 0.5, Is_internal: false';
+    ```
 
 - 错误格式（SESSION 作用域不支持 `Conn_ID`）：
 
-  ```sql
-  SET SESSION tidb_slow_log_rules = 'Conn_ID: 12, Query_time: 0.5, Is_internal: false';
-  ```
+    ```sql
+    SET SESSION tidb_slow_log_rules = 'Conn_ID: 12, Query_time: 0.5, Is_internal: false';
+    ```
 
 - 全局规则（适用于所有连接）：
 
-  ```sql
-  SET GLOBAL tidb_slow_log_rules = 'Query_time: 0.5, Is_internal: false';
-  ```
+    ```sql
+    SET GLOBAL tidb_slow_log_rules = 'Query_time: 0.5, Is_internal: false';
+    ```
 
 - 指定特定连接的全局规则（分别适用于 `Conn_ID:11` 和 `Conn_ID:12` 的两个连接）：
 
-  ```sql
-  SET GLOBAL tidb_slow_log_rules = 'Conn_ID: 11, Query_time: 0.5, Is_internal: false; Conn_ID: 12, Query_time: 0.6, Process_time: 0.3, DB: db1';
-  ```
+    ```sql
+    SET GLOBAL tidb_slow_log_rules = 'Conn_ID: 11, Query_time: 0.5, Is_internal: false; Conn_ID: 12, Query_time: 0.6, Process_time: 0.3, DB: db1';
+    ```
 
 ### 使用建议
 
