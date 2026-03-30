@@ -219,9 +219,9 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
 
 ### 支持的字段列表
 
-字段的详细解释、诊断含义和背景信息请参考 [`identify-slow-queries` 的字段含义说明](/identify-slow-queries.md#字段含义说明)。
+字段的详细解释、诊断含义和背景信息参见 [`identify-slow-queries` 的字段含义说明](/identify-slow-queries.md#字段含义说明)。
 
-除特别说明外，下表中的字段默认遵循上文[统一规则语法与类型约束](#统一规则语法与类型约束)中的通用匹配与类型规则。本表仅列出当前支持的字段名、类型、单位以及少量规则侧特殊说明，不重复维护字段语义。
+除非另有说明，下表中的字段默认遵循上文[统一规则语法与类型约束](#统一规则语法与类型约束)中的通用匹配与类型规则。该表仅列出当前支持的字段名、类型、单位以及少量规则的特殊说明，不重复说明字段语义。
 
 | 字段名                                 | 类型     | 单位   | 备注                           |
 | -------------------------------------- | -------- | ------ | ------------------------------ |
@@ -311,7 +311,7 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
 
 ## 相关系统变量
 
-* [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入)：请参见 [`tidb_slow_log_rules` 使用建议](#tidb_slow_log_rules-使用方法)
+* [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入)：请参见 [`tidb_slow_log_rules` 使用建议](#tidb_slow_log_rules-使用方法)。
 
 * [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold)：用于设置慢查询日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢查询日志中。默认值是 `300ms`（单位：毫秒）。
     > **注意：**
