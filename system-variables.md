@@ -5062,9 +5062,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > 跳过字符检查可能会使 TiDB 检测不到应用写入的非法 UTF-8 字符，进一步导致执行 `ANALYZE` 时解码错误，以及引入其他未知的编码问题。如果应用不能保证写入字符串的合法性，不建议跳过该检查。
 
-<<<<<<< HEAD
-=======
-### `tidb_slow_log_max_per_sec` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+### `tidb_slow_log_max_per_sec` <span class="version-mark">从 v8.5.6 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -5077,7 +5075,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
     - 当值大于 `0` 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢查询日志文件。
 - 该变量常与 [`tidb_slow_log_rules`](#tidb_slow_log_rules-从-v900-版本开始引入) 结合使用，以防止在高负载情况下产生过多的慢查询日志。
 
-### `tidb_slow_log_rules` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+### `tidb_slow_log_rules` <span class="version-mark">从 v8.5.6 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -5089,10 +5087,9 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **Tip:**
 >
-> - 在生产环境启用 `tidb_slow_log_rules` 时，建议同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v900-版本开始引入)，避免慢查询日志打印过于频繁。
+> - 在生产环境启用 `tidb_slow_log_rules` 时，建议同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v856-版本开始引入)，避免慢查询日志打印过于频繁。
 > - 规则建议先从较严格条件开始，再按排障需求逐步放宽。更多性能影响介绍，请参考[使用建议](/identify-slow-queries.md#使用建议)。
 
->>>>>>> 58de7cf30f (sys-var: clarify `tidb_slow_log_rules` syntax/behavior and de-duplicate slow log docs (#21337))
 ### `tidb_slow_log_threshold`
 
 - 作用域：GLOBAL
