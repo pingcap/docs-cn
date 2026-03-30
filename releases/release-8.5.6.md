@@ -55,9 +55,9 @@ TiDB 版本：8.5.6
 
     更多信息，请参考 [用户文档](/dashboard/top-sql.md)。
 
-### **SQL**
+### SQL 功能
 
-- 支持列级权限管理 [#61706](https://github.com/pingcap/tidb/issues/61706) [@CbcWestwolf](https://github.com/CbcWestwolf),[@fzzf678](https://github.com/fzzf678) **tw@hfxsd** <!--2332-->
+- 支持列级权限管理 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf) @[fzzf678](https://github.com/fzzf678) **tw@hfxsd** <!--2332-->
 
     在 v8.5.6 之前，TiDB 的权限控制覆盖数据库级别和表级别，不支持像 MySQL 那样对特定列授予或回收权限。因此，无法将用户访问限制在表中的部分敏感列。
 
@@ -65,7 +65,7 @@ TiDB 版本：8.5.6
 
     更多信息，请参考[用户文档](/column-privilege-management.md)。
   
- - Support table aliases referenced in the `FOR UPDATE OF` clause [#65532](https://github.com/pingcap/tidb/pull/65532) [@cryo-zd](https://github.com/cryo-zd) **tw@lilin90** <!--2350-->
+ - Support table aliases referenced in the `FOR UPDATE OF` clause [#65532](https://github.com/pingcap/tidb/pull/65532) @[cryo-zd](https://github.com/cryo-zd) **tw@lilin90** <!--2350-->
 
     Before v8.5.6, when a `SELECT ... FOR UPDATE OF <table>` statement referenced a table alias in the locking clause, TiDB could fail to resolve the alias correctly and return a `table not exists` error even though the alias was valid.
 
@@ -73,9 +73,9 @@ TiDB 版本：8.5.6
 
     For more information, see the user documentation. 
   
-### **DB operations**
+### 数据库管理
 
-- 支持指定分布式执行框架 (Distributed eXecution Framework, DXF) 任务可使用的节点数量 [#58937](https://github.com/pingcap/tidb/pull/58937) [@tangenta](https://github.com/tangenta), [@D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--2406-->
+- 支持指定分布式执行框架 (Distributed eXecution Framework, DXF) 任务可使用的节点数量 [#58937](https://github.com/pingcap/tidb/pull/58937) @[tangenta](https://github.com/tangenta) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--2406-->
 
     在 v8.5.6 之前，TiDB 无法限制分布式执行框架任务可使用的节点数量。当需要控制分布式任务执行的资源使用时，TiDB 没有提供专门的选项来约束最大节点数。
 
@@ -115,7 +115,7 @@ TiDB 版本：8.5.6
 
 + TiDB <!--tw@qiancai: 5 notes-->
 
-    - 改进包含 `IN` 条件且作用于索引前缀列的查询的执行计划选择。TiDB 现在可以使用 merge sort 在 `ORDER BY ... LIMIT` 查询中保持顺序，从而减少不必要的扫描并提升性能。[#63449](https://github.com/pingcap/tidb/issues/63449) [#34882](https://github.com/pingcap/tidb/issues/34882) [@time-and-fate](https://github.com/time-and-fate)**tw@hfxsd** <!--2414-->
+    - 改进包含 `IN` 条件且作用于索引前缀列的查询的执行计划选择。TiDB 现在可以使用 merge sort 在 `ORDER BY ... LIMIT` 查询中保持顺序，从而减少不必要的扫描并提升性能。[#63449](https://github.com/pingcap/tidb/issues/63449) [#34882](https://github.com/pingcap/tidb/issues/34882) @[time-and-fate](https://github.com/time-and-fate)**tw@hfxsd** <!--2414-->
     - 增强慢查询日志的控制能力，支持使用 [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入) 基于多维指标组合条件定向输出慢查询日志，使用 [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v900-版本开始引入) 限制每秒日志输出数量，并通过 [`WRITE_SLOW_LOG`](/optimizer-hints.md) Hint 强制记录指定 SQL 的慢查询日志 [#64010](https://github.com/pingcap/tidb/issues/64010) @[zimulala](https://github.com/zimulala)
     - 增强 [Top SQL](/dashboard/top-sql.md) 的资源分析能力，支持展示 Top `5`、`20` 或 `100` 查询，支持按 CPU、网络流量和逻辑 IO 排序查看热点，并支持在 TiKV 实例上按 `Query`、`Table`、`DB` 或 `Region` 维度聚合分析 [#62916](https://github.com/pingcap/tidb/issues/62916) @[yibin87](https://github.com/yibin87)
     - 新增 DXF 的 max_node_count 配置项支持 [#66376](https://github.com/pingcap/tidb/pull/66376)@[D3Hunter](https://github.com/D3Hunter)
