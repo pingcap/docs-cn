@@ -187,14 +187,14 @@ TiDB 版本：8.5.6
 
 + PD <!--tw@hfxsd: 2 notes-->
 
-    - 修复 distribute table sql panic 问题，特别是 merge region operator 比较多的场景容易触发这个 bug。 [#10292](https://github.com/tikv/pd/pull/10292) @[bufferflies](https://github.com/bufferflies)
-    - 修复设置 store limit 后可能不马上生效的问题 [#10108](https://github.com/tikv/pd/issues/10108) @[okJiang](https://github.com/okJiang)
+    - 修复在 Merge Region 调度操作较多的场景下，执行 DISTRIBUTE TABLE 语句可能导致 panic 的问题 [#10292](https://github.com/tikv/pd/pull/10292) @[bufferflies](https://github.com/bufferflies)
+    - 修复配置 Store Limit 后可能无法立即生效的问题 [#10108](https://github.com/tikv/pd/issues/10108) @[okJiang](https://github.com/okJiang)
 
 + TiFlash <!--tw@hfxsd: 3 notes-->
 
-    - 修复当一个列执行将列属性 `NOT NULL` 转为 `NULL` 的 DDL 之后，TiFlash 与 TiKV 之间可能产生不一致数据的问题 [#10680](https://github.com/pingcap/tiflash/issues/10680) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复 Grafana 面板中 Raft throughput 可能会错误地显示一个非常大的数值的问题 [#10701](https://github.com/pingcap/tiflash/issues/10701) @[CalvinNeo](https://github.com/CalvinNeo)
-    - 修复 runtime filter 开启情况下，如果 join key 数据类型不一致时，join 结果可能出错的问题 [#10699](https://github.com/pingcap/tiflash/issues/10699) @[ChangRui-Ryan](https://github.com/ChangRui-Ryan)
+    - 修复执行移除列 `NOT NULL` 约束的 DDL 后，可能导致 TiFlash 与 TiKV 数据不一致的问题 [#10680](https://github.com/pingcap/tiflash/issues/10680) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复 Grafana 监控面板中 Raft throughput 指标数值可能异常偏大的问题 [#10701](https://github.com/pingcap/tiflash/issues/10701) @[CalvinNeo](https://github.com/CalvinNeo)
+    - 修复开启 Runtime Filter 时，若 Join Key 数据类型不一致，可能导致 Join 结果不正确的问题 [#10699](https://github.com/pingcap/tiflash/issues/10699) @[ChangRui-Ryan](https://github.com/ChangRui-Ryan)
 
 + Tools
 
