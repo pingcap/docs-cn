@@ -96,7 +96,7 @@ server_configs:
 
 2. 选择一个你想要观察负载的具体 TiDB 或 TiKV 节点。
 
-    ![选择节点](/media/dashboard/v8.5-top-sql-usage-select-instance.png)
+    ![选择 TiDB 或 TiKV 节点](/media/dashboard/top-sql-usage-select-instance.png)
 
     如果你不知道要观察哪一个节点，可以先从 Grafana 或 [TiDB Dashboard 概况页面](/dashboard/dashboard-overview.md)中定位负载异常的节点，再返回 Top SQL 页面进一步分析。
 
