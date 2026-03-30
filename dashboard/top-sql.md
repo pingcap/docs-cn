@@ -74,7 +74,7 @@ SET GLOBAL tidb_enable_top_sql = 1;
 
 如下图所示，右侧**设置** (Settings) 面板中会同时显示 **启用功能** (Enable Feature) 和 **开启 TiKV 网络 IO 采集（多维度）** (Enable TiKV Network IO collection (multi-dimensional)) 两个开关。
 
-![开启 TiKV 网络 IO 采集](/media/dashboard/top-sql-settings-enable-tikv-network-io.png)
+![开启 TiKV 网络 IO 采集](/media/dashboard/v8.5-top-sql-settings-enable-tikv-network-io.png)
 
 **开启 TiKV 网络 IO 采集（多维度）**会增加一定的存储和查询开销。开启后，系统会将配置下发到当前所有 TiKV 节点；数据展示可能同样存在约 1 分钟延迟。如果部分 TiKV 节点未成功开启该功能，页面会给出告警提示，此时新数据可能不完整。
 
@@ -119,7 +119,7 @@ server_configs:
 
     - 默认的排序方式是 `Order By CPU`（按 CPU 耗时排序）。如果当前选择的是 TiKV 节点且已[开启 TiKV 网络 IO 采集（多维度）](#开启-tikv-网络-io-采集可选)，还可以选择 `Order By Network`（按网络字节数排序） 或 `Order By Logical IO`（按逻辑 IO 字节数排序）。
 
-        ![选择排序方式](/media/dashboard/top-sql-usage-select-order-by.png)
+        ![选择排序方式](/media/dashboard/v8.5-top-sql-usage-select-order-by.png)
 
     > **注意**
     >
