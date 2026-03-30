@@ -15,7 +15,7 @@ aliases: ['/zh/tidb/stable/vector-search-integrate-with-llamaindex/','/zh/tidb/d
 
 > **提示**
 >
-> 你可以在 Jupyter Notebook 中查看完整的 [示例代码](https://github.com/run-llama/llama_index/blob/main/docs/docs/examples/vector_stores/TiDBVector.ipynb)，或直接在 [Colab](https://colab.research.google.com/github/run-llama/llama_index/blob/main/docs/docs/examples/vector_stores/TiDBVector.ipynb) 在线环境中运行。
+> 你可以在 Jupyter Notebook 中查看完整的 [示例代码](https://github.com/run-llama/llama_index/blob/main/docs/examples/vector_stores/TiDBVector.ipynb)，或直接在 [Colab](https://colab.research.google.com/github/run-llama/llama_index/blob/main/docs/examples/vector_stores/TiDBVector.ipynb) 在线环境中运行。
 
 ## 前置条件
 
@@ -147,11 +147,11 @@ TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE
 
 #### 步骤 4.1 下载示例文档
 
-在你的项目目录下，新建 `data/paul_graham/` 目录，并从 [run-llama/llama_index](https://github.com/run-llama/llama_index) GitHub 仓库下载示例文档 [`paul_graham_essay.txt`](https://github.com/run-llama/llama_index/blob/main/docs/docs/examples/data/paul_graham/paul_graham_essay.txt)。
+在你的项目目录下，新建 `data/paul_graham/` 目录，并从 [run-llama/llama_index](https://github.com/run-llama/llama_index) GitHub 仓库下载示例文档 [`paul_graham_essay.txt`](https://github.com/run-llama/llama_index/blob/main/docs/examples/data/paul_graham/paul_graham_essay.txt)。
 
 ```shell
 !mkdir -p 'data/paul_graham/'
-!wget 'https://raw.githubusercontent.com/run-llama/llama_index/main/docs/docs/examples/data/paul_graham/paul_graham_essay.txt' -O 'data/paul_graham/paul_graham_essay.txt'
+!wget 'https://raw.githubusercontent.com/run-llama/llama_index/main/docs/examples/data/paul_graham/paul_graham_essay.txt' -O 'data/paul_graham/paul_graham_essay.txt'
 ```
 
 #### 步骤 4.2 加载文档
