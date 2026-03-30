@@ -113,7 +113,7 @@ TiDB 版本：8.5.6
 
 ## 改进提升
 
-+ TiDB
++ TiDB <!--tw@qiancai: 5 notes-->
 
     - Improve plan selection for queries with IN predicates on index prefix columns. TiDB can now leverage merge sort to preserve order in ORDER BY ... LIMIT queries, reducing unnecessary scans and improving performance.[#62694](https://github.com/pingcap/tidb/pull/62694) [@time-and-fate](https://github.com/time-and-fate)**tw@hfxsd** <!--2414-->
     - 增强慢查询日志的控制能力，支持使用 [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入) 基于多维指标组合条件定向输出慢查询日志，使用 [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v900-版本开始引入) 限制每秒日志输出数量，并通过 [`WRITE_SLOW_LOG`](/optimizer-hints.md) Hint 强制记录指定 SQL 的慢查询日志 [#64010](https://github.com/pingcap/tidb/issues/64010) @[zimulala](https://github.com/zimulala)
@@ -122,14 +122,14 @@ TiDB 版本：8.5.6
     - 调整部分 stats 相关日志为 warning 级别 [#58315](https://github.com/pingcap/tidb/pull/58315)@[hawkingrei](https://github.com/hawkingrei)
     - 调整 tidb_analyze_column_options 默认值为 all [#64992](https://github.com/pingcap/tidb/issues/64992) @[0xPoe](https://github.com/0xPoe)
 
-+ TiKV
++ TiKV <!--tw@qiancai: 4 notes-->
 
     - Add MVCC-read-aware load-based compaction to prioritize regions with heavy MVCC read overhead. [#19133](https://github.com/tikv/tikv/issues/19133) @[mittalrishabh](https://github.com/mittalrishabh)
     - Optimize stale-range cleanup during scaling by deleting stale keys directly instead of ingesting SST files, reducing latency impact. [#18042](https://github.com/tikv/tikv/issues/18042) @[LykxSassinator](https://github.com/LykxSassinator)
     - Make default gRPC raft connection and concurrency settings scale with CPU quota to improve resource utilization. [#18613](https://github.com/tikv/tikv/issues/18613) @[LykxSassinator](https://github.com/LykxSassinator)
     - Add Top SQL support for collecting network traffic and logical I/O information to help diagnose SQL performance issues. [#18815](https://github.com/tikv/tikv/issues/18815) @[yibin87](https://github.com/yibin87)
 
-+ PD
++ PD <!--tw@Oreoxmt: 1 note-->
 
     - 删除不存在的 label 时，现在会返回 404 [#10089](https://github.com/tikv/pd/issues/10089) @[lhy1024](https://github.com/lhy1024)
     - (dup): release-7.5.7.md > 改进提升> PD - 减少非必要的错误日志 [#9370](https://github.com/tikv/pd/issues/9370) @[bufferflies](https://github.com/bufferflies)
@@ -142,14 +142,14 @@ TiDB 版本：8.5.6
 
     + TiCDC
 
-    + TiDB Data Migration (DM)
+    + TiDB Data Migration (DM) <!--tw@lilin90: 2 notes-->
 
         - 新增对 MySQL 8.4 作为 DM 上游数据源的支持，适配该版本引入的新术语和版本检测逻辑 [#11020](https://github.com/pingcap/tiflow/issues/11020) @[dveeden](https://github.com/dveeden)
         - 在 DM syncer 中新增外键因果依赖支持，确保多 worker 场景下行变更按照父表至子表的外键顺序执行 [#12552](https://github.com/pingcap/tiflow/pull/12552) @[OliverS929](https://github.com/OliverS929)
 
     + TiDB Lightning
 
-    + Dumpling
+    + Dumpling <!--tw@Oreoxmt: 1 note-->
 
         - Support exporting data from MySQL 8.4 by adopting the updated MySQL binary log terminology [#53082](https://github.com/pingcap/tidb/issues/53082) @[dveeden](https://github.com/dveeden)
 
@@ -157,7 +157,7 @@ TiDB 版本：8.5.6
 
 ## 错误修复
 
-+ TiDB
++ TiDB <!--tw@lilin90: the following 7 notes-->
 
     - Fix the issue that upgrading from release-8.5-20250606-v8.5.2 to upstream release-8.5 can skip PITR metadata upgrades and cause PITR operations to fail. [#66994](https://github.com/pingcap/tidb/issues/66994) @[fzzf678](https://github.com/fzzf678)
     - Fix the issue that after EXCHANGE PARTITION, non-unique or nullable unique global indexes on non-clustered partitioned tables can become inconsistent and return incomplete results. [#65289](https://github.com/pingcap/tidb/issues/65289) @[mjonss](https://github.com/mjonss)
@@ -165,7 +165,7 @@ TiDB 版本：8.5.6
     - Improve the performance of privilege updates such as GRANT and REVOKE in deployments with large numbers of privilege entries. [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - Fix the issue that KILL QUERY incorrectly kills idle connections. [#65447](https://github.com/pingcap/tidb/issues/65447) @[gengliqi](https://github.com/gengliqi)
     - Fix the issue that column-level privilege checks can be incorrect for JOIN ... USING, NATURAL JOIN, and INSERT ... ON DUPLICATE KEY UPDATE. [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - Improve privilege-check performance for deployments with many column-level privilege entries. [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - Improve privilege-check performance for deployments with many column-level privilege entries. [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf) <!--tw@hfxsd: the following 8 notes-->
     - Add cluster_id to mysql.tidb so external tools can determine whether two TiDB instances belong to the same cluster. [#59476](https://github.com/pingcap/tidb/issues/59476) @[YangKeao](https://github.com/YangKeao)
     - Improve the slow query log by printing non-printable prepared-statement arguments as hexadecimal literals. [#65383](https://github.com/pingcap/tidb/issues/65383) @[dveeden](https://github.com/dveeden)
     - 修复 tidb_service_scope 设置时未统一转换为小写的问题 [#66835](https://github.com/pingcap/tidb/pull/66835)@[D3Hunter](https://github.com/D3Hunter)
@@ -175,7 +175,7 @@ TiDB 版本：8.5.6
     - 修复 stats delta 数据可能刷新不及时的问题 [#65426](https://github.com/pingcap/tidb/issues/65426) @[ti-chi-bot](https://github.com/ti-chi-bot)
     - 修复事务中第一条语句使用 fair locking 模式上锁时，有时可能使事务 keep alive 失效、并被意外回滚的问题  [#66571](https://github.com/pingcap/tidb/issues/66571) @[MyonKeminta](https://github.com/MyonKeminta)
 
-+ TiKV
++ TiKV <!--tw@Oreoxmt: 7 notes-->
 
     - Fix a memory leak in crossbeam skiplist. [#19285](https://github.com/tikv/tikv/issues/19285) @[ekexium](https://github.com/ekexium)
     - Fix the issue that global indexes on non-unique columns of partitioned tables might become inconsistent and return incorrect results in some cases. [#19262](https://github.com/tikv/tikv/issues/19262) @[mjonss](https://github.com/mjonss)
@@ -186,12 +186,12 @@ TiDB 版本：8.5.6
     - Fix ingest latency spikes in large clusters by increasing the default `rocksdb.max-manifest-file-size` from 128 MiB to 256 MiB. [#18996](https://github.com/tikv/tikv/issues/18996) @[glorv](https://github.com/glorv)
     - (dup): release-5.1.4.md > Bug 修复> TiKV - 修复悲观事务中 prewrite 请求重试在极少数情况下影响数据一致性的风险 [#11187](https://github.com/tikv/tikv/issues/11187)
 
-+ PD
++ PD <!--tw@hfxsd: 2 notes-->
 
     - 修复 distribute table sql panic 问题，特别是 merge region operator 比较多的场景容易触发这个 bug。 [#10292](https://github.com/tikv/pd/pull/10292) @[bufferflies](https://github.com/bufferflies)
     - 修复设置 store limit 后可能不马上生效的问题 [#10108](https://github.com/tikv/pd/issues/10108) @[okJiang](https://github.com/okJiang)
 
-+ TiFlash
++ TiFlash <!--tw@hfxsd: 3 notes-->
 
     - 修复当一个列执行将列属性 `NOT NULL` 转为 `NULL` 的 DDL 之后，TiFlash 与 TiKV 之间可能产生不一致数据的问题 [#10680](https://github.com/pingcap/tiflash/issues/10680) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复 Grafana 面板中 Raft throughput 可能会错误地显示一个非常大的数值的问题 [#10701](https://github.com/pingcap/tiflash/issues/10701) @[CalvinNeo](https://github.com/CalvinNeo)
@@ -199,21 +199,21 @@ TiDB 版本：8.5.6
 
 + Tools
 
-    + Backup & Restore (BR)
+    + Backup & Restore (BR) <!--tw@lilin90: 4 notes-->
 
         - 修复 log backup 的 flush_ts 可能为 0 的问题 [#19406](https://github.com/tikv/tikv/issues/19406) @[YuJuncen](https://github.com/YuJuncen)
         - 修复 BR 在使用 GCP S3 API server 进行 multipart upload 时因缺少 `Content-Length` 头而失败的问题 [#19352](https://github.com/tikv/tikv/issues/19352) @[Leavrth](https://github.com/Leavrth)
         - 修复 BR `restore point` 可能长时间卡在 `waiting for schema info finishes reloading` 并在 15 分钟后超时失败的问题 [#66110](https://github.com/pingcap/tidb/issues/66110) @[kennytm](https://github.com/kennytm)
         - 修复 BR 在恢复带有 `SHARD_ROW_ID_BITS`、`PRE_SPLIT_REGIONS` 和 `merge_option` 属性的表时无法正确预分裂 Region 的问题 [#65060](https://github.com/pingcap/tidb/issues/65060) @[JoyC-dev](https://github.com/JoyC-dev)
 
-    + TiCDC
+    + TiCDC <!--tw@Oreoxmt: 4 notes-->
 
         - 修复了一个在服务器重启时，changefeed 可能会重复创建无效 dispatcher 的问题。[#4452](https://github.com/pingcap/ticdc/issues/4452) @[wlwilliamx](https://github.com/wlwilliamx)
         - 修复了当 TiDB 版本小于等于 v8.1.x 时，表重命名操作无法正常执行的问题。[#4392](https://github.com/pingcap/ticdc/issues/4392) @[lidezhu](https://github.com/lidezhu)
         - 修复了一个扫描数据时的 Bug，避免启用 CDC 时 TiKV 可能出现异常崩溃。[#19404](https://github.com/tikv/tikv/issues/19404) @[wk989898](https://github.com/wk989898)
         - 为 azblob 下游支持 Azure 托管标识认证，并修复了云存储上传过程中可能出现的卡住问题。[#3093](https://github.com/pingcap/ticdc/issues/3093) @[wlwilliamx](https://github.com/wlwilliamx)
 
-    + TiDB Data Migration (DM)
+    + TiDB Data Migration (DM) <!--tw@qiancai: 3 notes-->
 
         - 修复 DM 在 binlog rotate 事件时全局 checkpoint 位置未推进的问题 [#12525](https://github.com/pingcap/tiflow/pull/12525) @[OliverS929](https://github.com/OliverS929)
         - 修复含外键约束的表在 DM safe-mode 下的异常行为，移除 UPDATE 改写中多余的 DELETE 操作并避免触发外键级联 [#12541](https://github.com/pingcap/tiflow/pull/12541) @[OliverS929](https://github.com/OliverS929)
@@ -221,6 +221,6 @@ TiDB 版本：8.5.6
 
     + TiDB Lightning
 
-    + Dumpling
+    + Dumpling <!--tw@qiancai: 1 note-->
 
         - 修复 Dumpling 与 MySQL 8.4 的兼容性问题 [#65131](https://github.com/pingcap/tidb/pull/65131) @[dveeden](https://github.com/dveeden)
