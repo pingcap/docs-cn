@@ -4140,6 +4140,7 @@ CREATE TABLE t_varchar (
     |     └─TableFullScan       | 10000.00| cop[tikv] | table:t_varchar     | keep order:false, stats:pseudo                     |
     +---------------------------+---------+-----------+---------------------+----------------------------------------------------+
     ```
+
 </details>
 
 ### `tidb_opt_prefer_range_scan` <span class="version-mark">从 v5.0 版本开始引入</span>
