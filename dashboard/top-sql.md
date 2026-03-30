@@ -39,7 +39,7 @@ Top SQL 不适用于分析以下问题：
 
 - 登录 TiDB Dashboard 后，在左侧导航栏中点击**Top SQL**。
 
-  ![Top SQL](/media/dashboard/top-sql-access.png)
+  ![Top SQL](/media/dashboard/v8.5-top-sql-access.png)
 
 - 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/topsql>（将 `127.0.0.1:2379` 替换为实际 PD 节点地址和端口）。
 
@@ -96,7 +96,7 @@ server_configs:
 
 2. 选择一个你想要观察负载的具体 TiDB 或 TiKV 节点。
 
-    ![选择节点](/media/dashboard/top-sql-usage-select-instance.png)
+    ![选择节点](/media/dashboard/v8.5-top-sql-usage-select-instance.png)
 
     如果你不知道要观察哪一个节点，可以先从 Grafana 或 [TiDB Dashboard 概况页面](/dashboard/dashboard-overview.md)中定位负载异常的节点，再返回 Top SQL 页面进一步分析。
 
@@ -104,18 +104,18 @@ server_configs:
 
     你可以在时间选择器中调整时间范围，或在图表中框选一个时间范围来缩放观察窗口。更小的时间范围能够展示更细粒度的数据，精度最高可达 1 秒。
 
-    ![修改时间范围](/media/dashboard/top-sql-usage-change-timerange.png)
+    ![修改时间范围](/media/dashboard/v8.5-top-sql-usage-change-timerange.png)
 
     如果图表中显示的数据已过时，你可以点击**刷新** (Refresh) 按钮执行一次刷新，或在**刷新** (Refresh) 下拉列表中选择数据自动刷新的频率。
 
-    ![刷新](/media/dashboard/top-sql-usage-refresh.png)
+    ![刷新](/media/dashboard/v8.5-top-sql-usage-refresh.png)
 
 4. 选择观察模式。
 
     - 通过 `Limit` 选择展示 Top `5`、`20` 或 `100` 类 SQL 查询。
     - 默认的聚合维度为 `By Query`。如果当前选择的是 TiKV 节点，还可以选择按照 `By Table`、`By DB` 或 `By Region` 维度进行聚合。
 
-        ![选择聚合维度](/media/dashboard/top-sql-usage-select-agg-by.png)
+        ![选择聚合维度](/media/dashboard/v8.5-top-sql-usage-select-agg-by.png)
 
     - 默认的排序方式是 `Order By CPU`（按 CPU 耗时排序）。如果当前选择的是 TiKV 节点且已[开启 TiKV 网络 IO 采集（多维度）](#开启-tikv-网络-io-采集可选)，还可以选择 `Order By Network`（按网络字节数排序） 或 `Order By Logical IO`（按逻辑 IO 字节数排序）。
 
@@ -127,13 +127,13 @@ server_configs:
 
 5. 观察图表和表格中的资源消耗热点记录。
 
-    ![图表表格](/media/dashboard/top-sql-usage-chart.png)
+    ![图表表格](/media/dashboard/v8.5-top-sql-usage-chart.png)
 
     柱状图表示当前排序维度下的资源消耗，不同颜色表示不同记录。表格会按照当前排序维度展示累计值，并在最后提供 `Others` 行，用于汇总所有非 Top N 记录。
 
 6. 在 `By Query` 视图中，点击表格中的某一行 SQL，即可查看该类 SQL 的执行计划详情。
 
-    ![详情](/media/dashboard/top-sql-details.png)
+    ![详情](/media/dashboard/v8.5-top-sql-details.png)
 
     你可以在 SQL 详情中查看对应的 SQL 模板、SQL 模板 ID、Plan 模板 ID 以及执行计划文本。SQL 详情表会根据节点类型展示不同指标：
 
@@ -148,7 +148,7 @@ server_configs:
 
 7. 在 TiKV 节点上，如果需要从更高维度定位热点，可以切换到 `By Table`、`By DB` 或 `By Region`，查看聚合后的结果。
 
-    ![按 DB 维度聚合结果页面](/media/dashboard/top-sql-usage-agg-by-db-detail.png)
+    ![按 DB 维度聚合结果页面](/media/dashboard/v8.5-top-sql-usage-agg-by-db-detail.png)
 
 8. 基于这些初步线索，进一步在 [SQL 语句分析](/dashboard/dashboard-statement-list.md)或[慢查询](/dashboard/dashboard-slow-query.md)页面中分析根因。
 
