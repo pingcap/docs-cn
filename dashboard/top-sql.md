@@ -5,25 +5,25 @@ summary: 使用 Top SQL 找到消耗 CPU、网络和逻辑 IO 资源较多的查
 
 # TiDB Dashboard Top SQL 页面
 
-在 TiDB Dashboard 的 Top SQL 页面，你可以查看和分析指定的 TiDB 或 TiKV 实例在一段时间内最消耗资源的 SQL 查询。
+在 TiDB Dashboard 的 Top SQL 页面，你可以查看和分析指定的 TiDB 或 TiKV 节点在一段时间内最消耗资源的 SQL 查询。
 
-- 开启 Top SQL 后，该功能会持续采集各个 TiDB 和 TiKV 实例的 CPU 负载数据，并保留至多 30 天。
-- 从 v8.5.6 起，你还可以在 Top SQL 设置中开启 **TiKV 网络 IO 采集（多维度）**，以进一步查看指定 TiKV 实例的 `Network Bytes`、`Logical IO Bytes` 等指标，并按 `By Query`、`By Table`、`By DB` 或 `By Region` 维度进行聚合分析。
+- 开启 Top SQL 后，该功能会持续采集现有 TiDB 和 TiKV 节点的 CPU 负载数据，并保留至多 30 天。
+- 从 v8.5.6 起，你还可以在 Top SQL 设置中开启 **TiKV 网络 IO 采集（多维度）**，以进一步查看指定 TiKV 节点的 `Network Bytes`、`Logical IO Bytes` 等指标，并按 `By Query`、`By Table`、`By DB` 或 `By Region` 维度进行聚合分析。
 
 Top SQL 具有以下功能：
 
 * 通过图表和表格展示当前时间范围内资源消耗最高的 Top `5`、`20` 或 `100` 类 SQL 查询，其余记录自动汇总为 `Others`。
-* 支持按 CPU 耗时、网络字节数排序查看资源消耗热点；选择 TiKV 实例时，还支持按逻辑 IO 字节数排序。
-* 支持按 Query 查看 SQL 及其执行计划详情；选择 TiKV 实例时，还支持按 `By Table`、`By DB` 和 `By Region` 聚合分析。
+* 支持按 CPU 耗时、网络字节数排序查看资源消耗热点；选择 TiKV 节点时，还支持按逻辑 IO 字节数排序。
+* 支持按 Query 查看 SQL 及其执行计划详情；选择 TiKV 节点时，还支持按 `By Table`、`By DB` 和 `By Region` 聚合分析。
 * 支持框选图表缩放时间范围、手动刷新、自动刷新以及导出 CSV。
 * 支持统计所有正在执行、尚未执行完毕的 SQL 语句。
-* 支持查看集群中指定 TiDB 及 TiKV 实例的情况。
+* 支持查看集群中指定 TiDB 及 TiKV 节点的情况。
 
 ## 推荐适用场景
 
 Top SQL 适用于分析性能问题。以下列举了一些典型的 Top SQL 适用场景：
 
-* 通过监控发现个别 TiDB 或 TiKV 实例 CPU 负载很高，希望快速定位是哪类 SQL 正在消耗大量 CPU 资源。
+* 通过监控发现个别 TiDB 或 TiKV 节点 CPU 负载很高，希望快速定位是哪类 SQL 正在消耗大量 CPU 资源。
 * 集群整体查询变慢，希望找出当前最消耗资源的 SQL，或者对比负载变化前后最主要的查询差异。
 * 需要从更高维度定位热点，希望按 `Table`、`DB` 或 `Region` 聚合查看 TiKV 侧的资源消耗。
 * 需要从网络流量或逻辑 IO 角度排查 TiKV 热点，而不仅仅局限于 CPU 维度。
@@ -41,7 +41,7 @@ Top SQL 不适用于分析以下问题：
 
   ![Top SQL](/media/dashboard/top-sql-access.png)
 
-- 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/topsql>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
+- 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/topsql>（将 `127.0.0.1:2379` 替换为实际 PD 节点地址和端口）。
 
 ## 启用 Top SQL
 
@@ -67,7 +67,7 @@ SET GLOBAL tidb_enable_top_sql = 1;
 
 ### 开启 TiKV 网络 IO 采集（可选）<span class="version-mark">从 v8.5.6 开始引入</span>
 
-针对 TiKV 实例，如需按照 `Order By Network`、`Order By Logical IO` 查看 Top SQL，或者使用 `By Region` 聚合，请在 Top SQL 设置面板中打开 **开启 TiKV 网络 IO 采集（多维度）** (Enable TiKV Network IO collection (multi-dimensional)) 开关并保存。
+针对 TiKV 节点，如需按照 `Order By Network`、`Order By Logical IO` 查看 Top SQL，或者使用 `By Region` 聚合，请在 Top SQL 设置面板中打开 **开启 TiKV 网络 IO 采集（多维度）** (Enable TiKV Network IO collection (multi-dimensional)) 开关并保存。
 
 - **Order By Network**：按照 TiKV 请求处理过程中产生的网络字节数排序。
 - **Order By Logical IO**：按照 TiKV 请求在 TiKV 存储层处理的逻辑数据字节数排序，例如读取过程中扫描或处理的数据量，以及写请求写入的数据量。
@@ -94,11 +94,11 @@ server_configs:
 
 1. 访问 [Top SQL 页面](#访问页面)。
 
-2. 选择一个你想要观察负载的具体 TiDB 或 TiKV 实例。
+2. 选择一个你想要观察负载的具体 TiDB 或 TiKV 节点。
 
-    ![选择实例](/media/dashboard/top-sql-usage-select-instance.png)
+    ![选择节点](/media/dashboard/top-sql-usage-select-instance.png)
 
-    如果你不知道要观察哪一个实例，可以先从 Grafana 或 [TiDB Dashboard 概况页面](/dashboard/dashboard-overview.md)中定位负载异常的节点，再返回 Top SQL 页面进一步分析。
+    如果你不知道要观察哪一个节点，可以先从 Grafana 或 [TiDB Dashboard 概况页面](/dashboard/dashboard-overview.md)中定位负载异常的节点，再返回 Top SQL 页面进一步分析。
 
 3. 设置时间范围，并根据需要刷新数据。
 
@@ -113,11 +113,11 @@ server_configs:
 4. 选择观察模式。
 
     - 通过 `Limit` 选择展示 Top `5`、`20` 或 `100` 类 SQL 查询。
-    - 默认的聚合维度为 `By Query`。如果当前选择的是 TiKV 实例，还可以选择按照 `By Table`、`By DB` 或 `By Region` 维度进行聚合。
+    - 默认的聚合维度为 `By Query`。如果当前选择的是 TiKV 节点，还可以选择按照 `By Table`、`By DB` 或 `By Region` 维度进行聚合。
 
         ![选择聚合维度](/media/dashboard/top-sql-usage-select-agg-by.png)
 
-    - 默认的排序方式是 `Order By CPU`（按 CPU 耗时排序）。如果当前选择的是 TiKV 实例且已[开启 TiKV 网络 IO 采集（多维度）](#开启-tikv-网络-io-采集可选)，还可以选择 `Order By Network`（按网络字节数排序） 或 `Order By Logical IO`（按逻辑 IO 字节数排序）。
+    - 默认的排序方式是 `Order By CPU`（按 CPU 耗时排序）。如果当前选择的是 TiKV 节点且已[开启 TiKV 网络 IO 采集（多维度）](#开启-tikv-网络-io-采集可选)，还可以选择 `Order By Network`（按网络字节数排序） 或 `Order By Logical IO`（按逻辑 IO 字节数排序）。
 
         ![选择排序方式](/media/dashboard/top-sql-usage-select-order-by.png)
 
@@ -135,10 +135,10 @@ server_configs:
 
     ![详情](/media/dashboard/top-sql-details.png)
 
-    你可以在 SQL 详情中查看对应的 SQL 模板、SQL 模板 ID、Plan 模板 ID 以及执行计划文本。SQL 详情表会根据实例类型展示不同指标：
+    你可以在 SQL 详情中查看对应的 SQL 模板、SQL 模板 ID、Plan 模板 ID 以及执行计划文本。SQL 详情表会根据节点类型展示不同指标：
 
-    - TiDB 实例通常显示 `Call/sec` 与 `Latency/call`。
-    - TiKV 实例通常显示 `Call/sec`、`Scan Rows/sec` 和 `Scan Indexes/sec`。
+    - TiDB 节点通常显示 `Call/sec` 与 `Latency/call`。
+    - TiKV 节点通常显示 `Call/sec`、`Scan Rows/sec` 和 `Scan Indexes/sec`。
 
     > **注意**
     >
@@ -146,7 +146,7 @@ server_configs:
 
     在 `By Query` 视图中，你也可以直接点击 Top SQL 表格中的**在 SQL 语句分析中搜索** (Search in SQL Statements) 跳转到对应的 SQL 语句分析页面。若需要离线分析当前表格结果，可以点击表格上方的 **Download to CSV** 导出当前表格数据。
 
-7. 在 TiKV 实例上，如果需要从更高维度定位热点，可以切换到 `By Table`、`By DB` 或 `By Region`，查看聚合后的结果。
+7. 在 TiKV 节点上，如果需要从更高维度定位热点，可以切换到 `By Table`、`By DB` 或 `By Region`，查看聚合后的结果。
 
     ![按 DB 维度聚合结果页面](/media/dashboard/top-sql-usage-agg-by-db-detail.png)
 
@@ -218,7 +218,7 @@ Top SQL 图表纵坐标表示当前排序维度下的资源消耗大小。
 
 这些视图依赖 TiKV 网络 IO 采集（多维度）。请确认以下事项：
 
-- 你当前选择的是 TiKV 实例。
+- 你当前选择的是 TiKV 节点。
 - Top SQL 设置面板中的**开启 TiKV 网络 IO 采集（多维度）**已经打开。
 - 集群中的相关 TiKV 节点都已成功开启该配置；如果只有部分节点开启，Top SQL 页面会提示新数据可能不完整。
 - 如果是新扩容的 TiKV 节点，需要重新在 Top SQL 设置面板中手工操作一次 **开启 TiKV 网络 IO 采集（多维度）** 开关并保存；如果希望后续扩容节点自动生效，请在 TiUP 的 TiKV 默认配置中同步开启 `resource-metering.enable-network-io-collection`。
