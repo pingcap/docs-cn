@@ -6068,10 +6068,10 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：`ON`
 - 这个变量用于控制计算[窗口函数](/functions-and-operators/window-functions.md)时是否采用高精度模式。
 
-### `InPacketBytes`
+### `InPacketBytes` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
 
 - 这个变量只做内部统计使用，对用户不可见。
 
-### `OutPacketBytes`
+### `OutPacketBytes` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
 
 - 这个变量只做内部统计使用，对用户不可见。
