@@ -23,7 +23,7 @@ summary: sync-diff-inspector 是一个用于校验 MySQL/TiDB 中数据一致性
 
 sync-diff-inspector 的安装方法取决于 TiDB 版本。
 
-对于 TiDB v8.5.6 和 v9.0.0 及以上版本:
+对于 TiDB v8.5.6 和 v9.0.0 及以上版本，你可通过以下方式下载 sync-diff-inspector：
 
 + 使用 TiUP 安装：
 
@@ -31,19 +31,19 @@ sync-diff-inspector 的安装方法取决于 TiDB 版本。
     tiup install sync-diff-inspector
     ```
 
-+ Binary 包。sync-diff-inspector 的 Binary 包包含在 TiDB Toolkit 中。下载 TiDB Toolkit，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
++ 下载 Binary 包。sync-diff-inspector 的安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
 
-+ Docker 镜像。执行以下命令进行下载：
++ 使用 Docker 镜像。执行以下命令进行下载：
 
     ```shell
     docker pull pingcap/sync-diff-inspector:latest
     ```
 
-对于 TiDB v8.5.6 之前的版本:
+对于 TiDB v8.5.6 之前的版本，你可通过以下方式下载 sync-diff-inspector：
 
-+ 来自旧版 [`tidb-tools`](https://github.com/pingcap/tidb-tools) 仓库的 Binary 包。sync-diff-inspector 的 Binary 包包含在 TiDB Toolkit 中。下载 TiDB Toolkit，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
++ 下载来自 [`tidb-tools`](https://github.com/pingcap/tidb-tools) 仓库的 Binary 包。sync-diff-inspector 的安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
 
-+ Docker 镜像（旧版本）。执行以下命令进行下载：
++ 使用 Docker 镜像。执行以下命令进行下载：
 
     ```shell
     docker pull pingcap/tidb-tools:latest
