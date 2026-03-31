@@ -14,7 +14,7 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 
 > **建议：**
 >
-> 对于 TiDB v9.0.0 及以上版本，包括 sync-diff-inspector 在内的大多数工具都可以直接通过 TiUP 使用。如果你的部署环境能访问互联网，无需单独下载 TiDB 工具包，可以直接通过使用 [TiUP 命令一键部署](/tiup/tiup-component-management.md)所需的 TiDB 工具。
+> 对于 TiDB v8.5.6 和 v9.0.0 及以上版本，包括 sync-diff-inspector 在内的大多数工具都可以直接通过 TiUP 使用。如果你的部署环境能访问互联网，无需单独下载 TiDB 工具包，可以直接通过使用 [TiUP 命令一键部署](/tiup/tiup-component-management.md)所需的 TiDB 工具。
 
 ### 环境要求
 
@@ -43,7 +43,7 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 | [TiDB DM (Data Migration)](/dm/dm-overview.md)  | `dm-worker-{version}-linux-{arch}.tar.gz` <br/>`dm-master-{version}-linux-{arch}.tar.gz` <br/>`dmctl-{version}-linux-{arch}.tar.gz`  |
 | [TiCDC](/ticdc/ticdc-overview.md)  | `cdc-{version}-linux-{arch}.tar.gz`  |
 | [Backup & Restore (BR)](/br/backup-and-restore-overview.md)  | `br-{version}-linux-{arch}.tar.gz`  |
-| [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)  | TiDB v9.0.0 及以上版本：`tiflow-{version}-linux-{arch}.tar.gz`<br/>TiDB v9.0.0 之前的版本：`sync_diff_inspector` |
+| [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)  | TiDB v8.5.6 和 v9.0.0 及以上版本：`tiflow-{version}-linux-{arch}.tar.gz`<br/>TiDB v8.5.6 和 v9.0.0 之前的版本：`sync_diff_inspector` |
 | [PD Recover](/pd-recover.md)  | `pd-recover-{version}-linux-{arch}.tar.gz` |
 
 > **注意：**
