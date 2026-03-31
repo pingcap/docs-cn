@@ -264,6 +264,8 @@ GROUP BY db_name , table_name;
 
 ### 如何预估 TiDB 中单个数据库的大小？
 
+要预估 TiDB 中单个数据库的大小，你可以参考使用以下查询语句：
+
 ```sql
 SET @dbname = 'test';
 
@@ -290,7 +292,10 @@ FROM (
 ) t
 GROUP BY db_name;
 ```
-- `store_size_amplification` 表示集群压缩比的平均值。你可以通过执行 `SELECT * FROM METRICS_SCHEMA.store_size_amplification;` 语句来查询该值。此外，你也可以在 Grafana 监控的 **PD** -> **Statistics** -> **Balance** 面板中，查看各节点的 `Size amplification` 指标，集群压缩比的平均值即为所有节点该指标的平均值。
+
+以上语句中：
+
+- `store_size_amplification` 表示集群压缩比的平均值。你可以通过执行 `SELECT * FROM METRICS_SCHEMA.store_size_amplification;` 语句来查询该值。此外，你也可以在 Grafana 监控的 **PD** > **Statistics** > **Balance** 面板中，查看各节点的 `Size amplification` 指标，集群压缩比的平均值即为所有节点该指标的平均值。
 - `Approximate_Size` 表示压缩前数据库的单副本估算大小，该值为估算值，并非准确值。
 - `Disk_Size` 表示压缩后数据库的大小，可根据 `Approximate_Size` 和 `store_size_amplification` 得出估算值。
 
