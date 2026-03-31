@@ -122,9 +122,9 @@ TiDB 版本：8.5.6
 
 + TiKV <!--tw@qiancai: 4 notes-->
 
-    - Add MVCC-read-aware load-based compaction to prioritize regions with heavy MVCC read overhead. [#19133](https://github.com/tikv/tikv/issues/19133) @[mittalrishabh](https://github.com/mittalrishabh)
-    - Optimize stale-range cleanup during scaling by deleting stale keys directly instead of ingesting SST files, reducing latency impact. [#18042](https://github.com/tikv/tikv/issues/18042) @[LykxSassinator](https://github.com/LykxSassinator)
-    - Add Top SQL support for collecting network traffic and logical I/O information to help diagnose SQL performance issues. [#18815](https://github.com/tikv/tikv/issues/18815) @[yibin87](https://github.com/yibin87)
+    - 新增 Load-based Compaction 机制，该机制可感知 MVCC 读取开销，并优先对读取开销较高的 Region 执行 Compaction 操作，以提升查询性能 [#19133](https://github.com/tikv/tikv/issues/19133) @[mittalrishabh](https://github.com/mittalrishabh)
+    - 优化集群扩缩容过程中 stale range 的清理逻辑，不再通过 ingest SST 文件执行清理，而是直接删除过期 key，以降低对在线请求延迟的影响 [#18042](https://github.com/tikv/tikv/issues/18042) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 为 Top SQL 新增 TiKV 网络流量和逻辑 I/O 信息的采集支持，帮助用户更准确地诊断 SQL 性能问题 [#18815](https://github.com/tikv/tikv/issues/18815) @[yibin87](https://github.com/yibin87)
 
 + PD <!--tw@Oreoxmt: 1 note-->
 
@@ -211,9 +211,9 @@ TiDB 版本：8.5.6
 
     + TiDB Data Migration (DM) <!--tw@qiancai: 3 notes-->
 
-        - 修复 DM 在 binlog rotate 事件时全局 checkpoint 位置未推进的问题 [#12525](https://github.com/pingcap/tiflow/pull/12525) @[OliverS929](https://github.com/OliverS929)
-        - 修复含外键约束的表在 DM safe-mode 下的异常行为，移除 UPDATE 改写中多余的 DELETE 操作并避免触发外键级联 [#12541](https://github.com/pingcap/tiflow/pull/12541) @[OliverS929](https://github.com/OliverS929)
-        - 修复 DM validator 对 UNSIGNED 列误报校验错误的问题 [#12555](https://github.com/pingcap/tiflow/pull/12555) @[OliverS929](https://github.com/OliverS929)
+        - 修复 DM 在上游 binlog 文件切换后全局 checkpoint 位置未推进的问题 [#12339](https://github.com/pingcap/tiflow/issues/12339) @[OliverS929](https://github.com/OliverS929)
+        - 修复 DM 在 safe-mode 下处理含外键约束表的更新时，在未修改主键或唯一键的情况下仍可能误触发外键级联并导致数据被错误删除的问题 [#12350](https://github.com/pingcap/tiflow/issues/12350) @[OliverS929](https://github.com/OliverS929)
+        - 修复 DM validator 在处理 `UNSIGNED` 列时误报校验错误的问题 [#12178](https://github.com/pingcap/tiflow/pull/12178) @[OliverS929](https://github.com/OliverS929)
 
     + TiDB Lightning
 
