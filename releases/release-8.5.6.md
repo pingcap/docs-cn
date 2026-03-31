@@ -95,11 +95,18 @@ TiDB 版本：8.5.6
 
 ### MySQL 兼容性
 
+- 从 v8.5.6 版本开始，TiDB 支持兼容 MySQL 的列级权限管理机制。你可以在表级别为指定列授予或回收 `SELECT`、`INSERT`、`UPDATE`、`REFERENCES` 权限。更多信息参见[列级权限管理](/column-privilege-management.md)。
+
 ### 系统变量
 
 | 变量名  | 修改类型    | 描述 |
 |--------|------------------------------|------|
-|   |   |   |
+
+| [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)   | 修改  | 从 v8.5.6 版本和 v9.0.0 版本开始，该变量的取值大小写不敏感。TiDB 会将输入值转换为小写形式进行存储和比较。 |
+| [`tidb_max_dist_task_nodes`](/system-variables.md#tidb_max_dist_task_nodes-从-v856-和-v900-版本开始引入)  | 新增 | 用于定义分布式框架任务可使用的 TiDB 节点数上限。默认值为 `-1`，表示启用自动模式。在自动模式下，TiDB 将按照 `min(3, tikv_nodes / 3)` 动态地计算该值，其中 `tikv_nodes` 表示集群中 TiKV 节点的数量。 |
+| [`tidb_opt_join_reorder_through_sel`](/system-variables.md#tidb_opt_join_reorder_through_sel-从-v856-和-v900-版本开始引入)  | 新增 | 用于提升部分多表 JOIN 查询的连接顺序优化 (Join Reorder) 效果。当该变量值为 `ON` 时，在满足安全条件的前提下，优化器会将多个连续 JOIN 之间的过滤条件 (`Selection`) 一并纳入连接顺序优化的候选范围。在重建 JOIN 树时，优化器会将这些条件下推至更合适的位置，从而使更多表参与连接顺序优化。 |
+| [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v856-和-v900-版本开始引入)  | 新增 | 控制每个 TiDB 节点每秒打印的慢查询日志的数量上限。<ul><li>当值为 `0` （默认值）时，表示不限制每秒打印的慢查询日志数量。</li><li>当值大于 `0` 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢查询日志文件。</li></ul>  |
+| [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v856-和-v900-版本开始引入)  | 新增 | 用于定义慢查询日志的触发规则，支持基于多维度指标的组合条件，实现更加灵活和精细化的日志记录控制。   |
 |   |   |   |
 |   |   |   |
 
