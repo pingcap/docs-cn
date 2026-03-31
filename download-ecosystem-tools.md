@@ -7,15 +7,12 @@ summary: 本文介绍如何下载 TiDB 工具包。TiDB 工具包包含常用工
 # TiDB 工具下载
 
 本文介绍如何下载 TiDB 工具包。关于 TiDB 工具包的内容，请查看 [TiDB 离线包](/binary-package.md)。
-> - 对于 TiDB v8.5.6 及以上版本，大部分工具（包括 sync-diff-inspector）都可以直接通过 TiUP 获取。如果您的部署环境有网络访问权限，您可以使用 [TiUP 命令](/tiup/tiup-component-management.md) 来部署 TiDB 工具，无需单独下载 TiDB 工具包。
-
-## TiDB 工具包下载
 
 TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具 Dumpling、数据导入工具 TiDB Lightning、备份恢复工具 BR、数据一致性检查工具 sync-diff-inspector。
 
 > **建议：**
 >
-> 对于 TiDB v8.5.6 和 v9.0.0 及以上版本，包括 sync-diff-inspector 在内的大多数工具都可以直接通过 TiUP 使用。如果你的部署环境能访问互联网，无需单独下载 TiDB 工具包，可以直接通过使用 [TiUP 命令一键部署](/tiup/tiup-component-management.md)所需的 TiDB 工具。
+> 对于 TiDB v8.5.6 及以上版本，包括 sync-diff-inspector 在内的大多数工具都可以直接通过 TiUP 使用。如果你的部署环境能访问互联网，无需单独下载 TiDB 工具包，可以直接通过使用 [TiUP 命令一键部署](/tiup/tiup-component-management.md)所需的 TiDB 工具。
 
 ### 环境要求
 
