@@ -23,7 +23,7 @@ summary: sync-diff-inspector 是一个用于校验 MySQL/TiDB 中数据一致性
 
 sync-diff-inspector 的安装方法取决于 TiDB 版本。
 
-对于 TiDB v8.5.6 和 v9.0.0 及以上版本，你可通过以下方式下载 sync-diff-inspector：
+对于 TiDB v8.5.6 及以上版本，你可通过以下方式下载 sync-diff-inspector：
 
 + 使用 TiUP 安装：
 
