@@ -136,7 +136,7 @@ TiDB 版本：8.5.6
 
 + PD <!--tw@Oreoxmt: 1 note-->
 
-    - 删除不存在的 label 时，现在会返回 404 [#10089](https://github.com/tikv/pd/issues/10089) @[lhy1024](https://github.com/lhy1024)
+    - 删除不存在的 label 时，返回 `404` 而非 `200` [#10089](https://github.com/tikv/pd/issues/10089) @[lhy1024](https://github.com/lhy1024)
     - (dup): release-7.5.7.md > 改进提升> PD - 减少非必要的错误日志 [#9370](https://github.com/tikv/pd/issues/9370) @[bufferflies](https://github.com/bufferflies)
 
 + TiFlash
@@ -156,7 +156,7 @@ TiDB 版本：8.5.6
 
     + Dumpling <!--tw@Oreoxmt: 1 note-->
 
-        - Support exporting data from MySQL 8.4 by adopting the updated MySQL binary log terminology [#53082](https://github.com/pingcap/tidb/issues/53082) @[dveeden](https://github.com/dveeden)
+        - 适配 MySQL 8.4 更新后的二进制日志命名，支持从 MySQL 8.4 导出数据 [#53082](https://github.com/pingcap/tidb/issues/53082) @[dveeden](https://github.com/dveeden)
 
     + TiUP
 
@@ -181,13 +181,13 @@ TiDB 版本：8.5.6
 
 + TiKV <!--tw@Oreoxmt: 7 notes-->
 
-    - Fix a memory leak in crossbeam skiplist. [#19285](https://github.com/tikv/tikv/issues/19285) @[ekexium](https://github.com/ekexium)
-    - Fix the issue that global indexes on non-unique columns of partitioned tables might become inconsistent and return incorrect results in some cases. [#19262](https://github.com/tikv/tikv/issues/19262) @[mjonss](https://github.com/mjonss)
-    - Fix the issue that stalled coprocessor snapshot retrieval could occupy unified read pool workers until request deadlines expired, delaying other read requests. [#18491](https://github.com/tikv/tikv/issues/18491) @[AndreMouche](https://github.com/AndreMouche)
-    - Fix the issue that follower replica reads could remain blocked on disk-full TiKV nodes by rejecting read-index requests on disk-full followers. [#19201](https://github.com/tikv/tikv/issues/19201) @[glorv](https://github.com/glorv)
-    - Fix the issue that resolved-ts task backlogs could cause OOM when the resolved-ts worker is busy. [#18359](https://github.com/tikv/tikv/issues/18359) @[overvenus](https://github.com/overvenus)
-    - Fix long-tail follower-read latency during leader transfer by retrying read-index requests sooner and adding a dedicated retry interval setting. [#18417](https://github.com/tikv/tikv/issues/18417) @[gengliqi](https://github.com/gengliqi)
-    - Fix ingest latency spikes in large clusters by increasing the default `rocksdb.max-manifest-file-size` from 128 MiB to 256 MiB. [#18996](https://github.com/tikv/tikv/issues/18996) @[glorv](https://github.com/glorv)
+    - 修复 crossbeam skiplist 存在内存泄漏的问题 [#19285](https://github.com/tikv/tikv/issues/19285) @[ekexium](https://github.com/ekexium)
+    - 修复在某些情况下分区表中非唯一列的全局索引可能不一致并返回错误结果的问题 [#19262](https://github.com/tikv/tikv/issues/19262) @[mjonss](https://github.com/mjonss)
+    - 修复 Coprocessor 快照获取卡住时，可能长时间占用统一读取池 (Unified Read Pool) 工作线程直至请求超时，进而延迟其他读请求的问题 [#18491](https://github.com/tikv/tikv/issues/18491) @[AndreMouche](https://github.com/AndreMouche)
+    - 修复当 TiKV 节点磁盘写满时，Follower 副本读取可能持续阻塞的问题 [#19201](https://github.com/tikv/tikv/issues/19201) @[glorv](https://github.com/glorv)
+    - 修复当 resolved-ts worker 繁忙时，resolved-ts 任务积压可能导致 OOM 的问题 [#18359](https://github.com/tikv/tikv/issues/18359) @[overvenus](https://github.com/overvenus)
+    - 修复 Leader 迁移期间 Follower 读取可能出现长尾延迟的问题 [#18417](https://github.com/tikv/tikv/issues/18417) @[gengliqi](https://github.com/gengliqi)
+    - 修复大规模集群中 Ingest 操作可能出现延迟抖动的问题，将 `rocksdb.max-manifest-file-size` 的默认值从 128 MiB 增大至 256 MiB [#18996](https://github.com/tikv/tikv/issues/18996) @[glorv](https://github.com/glorv)
     - (dup): release-5.1.4.md > Bug 修复> TiKV - 修复悲观事务中 prewrite 请求重试在极少数情况下影响数据一致性的风险 [#11187](https://github.com/tikv/tikv/issues/11187)
 
 + PD <!--tw@hfxsd: 2 notes-->
@@ -212,10 +212,10 @@ TiDB 版本：8.5.6
 
     + TiCDC <!--tw@Oreoxmt: 4 notes-->
 
-        - 修复了一个在服务器重启时，changefeed 可能会重复创建无效 dispatcher 的问题。[#4452](https://github.com/pingcap/ticdc/issues/4452) @[wlwilliamx](https://github.com/wlwilliamx)
-        - 修复了当 TiDB 版本小于等于 v8.1.x 时，表重命名操作无法正常执行的问题。[#4392](https://github.com/pingcap/ticdc/issues/4392) @[lidezhu](https://github.com/lidezhu)
-        - 修复了一个扫描数据时的 Bug，避免启用 CDC 时 TiKV 可能出现异常崩溃。[#19404](https://github.com/tikv/tikv/issues/19404) @[wk989898](https://github.com/wk989898)
-        - 为 azblob 下游支持 Azure 托管标识认证，并修复了云存储上传过程中可能出现的卡住问题。[#3093](https://github.com/pingcap/ticdc/issues/3093) @[wlwilliamx](https://github.com/wlwilliamx)
+        - 修复服务器重启后，changefeed 可能重复创建无效 dispatcher 的问题 [#4452](https://github.com/pingcap/ticdc/issues/4452) @[wlwilliamx](https://github.com/wlwilliamx)
+        - 修复当上游 TiDB 版本为 v8.1.x 或更早版本时，表重命名操作无法正常执行的问题 [#4392](https://github.com/pingcap/ticdc/issues/4392) @[lidezhu](https://github.com/lidezhu)
+        - 修复启用 CDC 时，TiKV 在数据扫描过程中可能崩溃的问题 [#19404](https://github.com/tikv/tikv/issues/19404) @[wk989898](https://github.com/wk989898)
+        - 为 azblob 下游新增 Azure 托管标识 (Managed Identity) 认证支持，并修复云存储上传可能卡住的问题 [#3093](https://github.com/pingcap/ticdc/issues/3093) @[wlwilliamx](https://github.com/wlwilliamx)
 
     + TiDB Data Migration (DM) <!--tw@qiancai: 3 notes-->
 
