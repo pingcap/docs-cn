@@ -116,7 +116,7 @@ TiDB 版本：8.5.6
 
 ## 改进提升
 
-+ TiDB <!--tw@qiancai: 5 notes-->
++ TiDB
 
     - 改进包含 `IN` 条件且作用于索引前缀列的查询的执行计划选择。TiDB 现在可以使用 merge sort 在 `ORDER BY ... LIMIT` 查询中保持顺序，从而减少不必要的扫描并提升性能。[#63449](https://github.com/pingcap/tidb/issues/63449) [#34882](https://github.com/pingcap/tidb/issues/34882) @[time-and-fate](https://github.com/time-and-fate)**tw@hfxsd** <!--2414-->
 
