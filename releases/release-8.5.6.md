@@ -179,7 +179,6 @@ TiDB 版本：8.5.6
     - 修复当 TiKV 节点磁盘写满时，Follower 副本读取可能持续阻塞的问题 [#19201](https://github.com/tikv/tikv/issues/19201) @[glorv](https://github.com/glorv)
     - 修复当 resolved-ts worker 繁忙时，resolved-ts 任务积压可能导致 OOM 的问题 [#18359](https://github.com/tikv/tikv/issues/18359) @[overvenus](https://github.com/overvenus)
     - 修复 Leader 迁移期间 Follower 读取可能出现长尾延迟的问题 [#18417](https://github.com/tikv/tikv/issues/18417) @[gengliqi](https://github.com/gengliqi)
-    - 修复大规模集群中 Ingest 操作可能出现延迟抖动的问题，将 `rocksdb.max-manifest-file-size` 的默认值从 128 MiB 增大至 256 MiB [#18996](https://github.com/tikv/tikv/issues/18996) @[glorv](https://github.com/glorv)
     - (dup): release-5.1.4.md > Bug 修复> TiKV - 修复悲观事务中 prewrite 请求重试在极少数情况下影响数据一致性的风险 [#11187](https://github.com/tikv/tikv/issues/11187)
 
 + PD <!--tw@hfxsd: 2 notes-->
