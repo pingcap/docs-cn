@@ -15,13 +15,13 @@ TiDB 版本：8.5.6
 
 ### 性能
 
-- 外键检查支持共享锁（GA） [#66154](https://github.com/pingcap/tidb/issues/66154) @[you06](https://github.com/glorv) **tw@qiancai** <!--2085-->
+- 外键检查支持使用共享锁 [#66154](https://github.com/pingcap/tidb/issues/66154) @[you06](https://github.com/glorv) **tw@qiancai** <!--2085-->
 
-    对子表进行写入时，支持用户通过设置参数 tidb_foreign_key_check_in_shared_lock 来指定在父表加共享锁实现外键约束检查，相比以前仅支持排它锁，现方案可降低锁冲突提升子表并发写入性能。
+    在悲观事务中，当对带有外键约束的子表执行 `INSERT` 或 `UPDATE` 时，外键检查默认会对父表中的对应行加排他锁。在子表高并发写入的场景下，如果大量事务访问相同的父表行，可能出现较严重的锁冲突。
 
-    在V8.5.6 中，该功能成为正式功能 (GA)。
+    从 v8.5.6 起，你可以将系统变量 [`tidb_foreign_key_check_in_shared_lock`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_foreign_key_check_in_shared_lock-从-v856-版本开始引入) 设置为 `ON`，使外键检查在父表上使用共享锁，从而降低锁冲突，提升子表并发写入性能。
 
-    更多信息，请参考[用户文档](/foreign-key.md)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/foreign-key#锁)。
 
 ### 稳定性
 
@@ -45,15 +45,13 @@ TiDB 版本：8.5.6
 	
 	更多信息，请参考[用户文档](/identify-slow-queries.md)。
 
-- TOP SQL 增加网络流量和逻辑IO 数据 (GA) [#62916](https://github.com/pingcap/tidb/issues/62916) @[yibin87](https://github.com/yibin87) **tw@qiancai** <!--2398-->
+- TiDB Dashboard 的 TOP SQL 页面支持收集和展示 TiKV 网络流量和逻辑 IO 数据 [#62916](https://github.com/pingcap/tidb/issues/62916) @[yibin87](https://github.com/yibin87) **tw@qiancai** <!--2398-->
 
-    当前 TiDB TOP SQL 中仅包含 CPU 的相关指标数据，在遇到复杂情况时不利于排查问题。
+    在之前的版本中，TiDB Dashboard 在识别 TOP SQL 时仅基于 CPU 相关指标，在复杂场景下难以从网络或存储访问角度定位性能瓶颈。
 
-    本功能在 Top SQL 设置中增加开启 **TiKV 网络I0 采集（多维度）**，方便用户进一步查看指定 TiKV 实例的 Network Bytes、Logical IO Bytes 等指标，并按 By Query、By Table、By DB 或 By Region 维度进行聚合分析。
+    从 v8.5.6 起，你可以在 Top SQL 设置中打开 **TiKV 网络 IO 采集（多维度）** 开关，以查看 TiKV 节点的 `Network Bytes` 和 `Logical IO Bytes` 等指标，并可以按 `By Query`、`By Table`、`By DB` 或 `By Region` 维度进行聚合分析，从而更全面地定位资源消耗热点。
 
-    在 v8.5.6 中，该功能成为正式功能 (GA)。
-
-    更多信息，请参考 [用户文档](/dashboard/top-sql.md)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/top-sql)。
 
 ### SQL 功能
 
