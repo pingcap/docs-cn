@@ -212,7 +212,7 @@ TiDB 版本：8.5.6
 
         - 修复 DM 在上游 binlog 文件切换后全局 checkpoint 位置未推进的问题 [#12339](https://github.com/pingcap/tiflow/issues/12339) @[OliverS929](https://github.com/OliverS929)
         - 修复 DM 在 safe-mode 下处理含外键约束表的更新时，在未修改主键或唯一键的情况下仍可能误触发外键级联并导致数据被错误删除的问题 [#12350](https://github.com/pingcap/tiflow/issues/12350) @[OliverS929](https://github.com/OliverS929)
-        - 修复 DM validator 在处理 `UNSIGNED` 列时误报校验错误的问题 [#12178](https://github.com/pingcap/tiflow/pull/12178) @[OliverS929](https://github.com/OliverS929)
+        - 修复 DM validator 在处理 `UNSIGNED` 列时误报校验错误的问题 [#12178](https://github.com/pingcap/tiflow/issue/12178) @[OliverS929](https://github.com/OliverS929)
 
     + TiDB Lightning
 
