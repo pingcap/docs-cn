@@ -184,7 +184,7 @@ TiDB 版本：8.5.6
 
 + PD <!--tw@hfxsd: 2 notes-->
 
-    - 修复在 Merge Region 调度操作较多的场景下，执行 DISTRIBUTE TABLE 语句可能导致 panic 的问题 [#10292](https://github.com/tikv/pd/pull/10292) @[bufferflies](https://github.com/bufferflies)
+    - 修复在 Merge Region 调度操作较多的场景下，执行 `DISTRIBUTE TABLE` 语句可能导致 panic 的问题 [#10292](https://github.com/tikv/pd/pull/10292) @[bufferflies](https://github.com/bufferflies)
     - 修复配置 Store Limit 后可能无法立即生效的问题 [#10108](https://github.com/tikv/pd/issues/10108) @[okJiang](https://github.com/okJiang)
 
 + TiFlash <!--tw@hfxsd: 3 notes-->
