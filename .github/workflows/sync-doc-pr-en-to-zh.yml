@@ -1,0 +1,185 @@
+name: Sync Docs Changes from EN PR to ZH PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_pr_url:
+        description: 'Source PR URL (English docs repository)'
+        required: true
+        type: string
+        default: ''
+      target_pr_url:
+        description: 'Target PR URL (Chinese docs repository)'
+        required: true
+        type: string
+        default: ''
+      ai_provider:
+        description: 'AI Provider to use for translation'
+        required: false
+        type: choice
+        options:
+          - deepseek
+          - gemini
+        default: 'gemini'
+
+jobs:
+  sync-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Checkout ai-pr-translator repository
+        uses: actions/checkout@v4
+        with:
+          repository: "qiancai/ai-pr-translator"
+          ref: "main"
+          path: "ai-pr-translator"
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install -r ai-pr-translator/scripts/requirements.txt
+
+      - name: Extract PR information
+        id: extract_info
+        env:
+          SOURCE_URL: ${{ github.event.inputs.source_pr_url }}
+          TARGET_URL: ${{ github.event.inputs.target_pr_url }}
+        run: |
+          if [[ ! "$SOURCE_URL" =~ ^https://github\.com/[^/]+/[^/]+/pull/[0-9]+$ ]]; then
+            echo "❌ Invalid source PR URL format"; exit 1
+          fi
+          if [[ ! "$TARGET_URL" =~ ^https://github\.com/[^/]+/[^/]+/pull/[0-9]+$ ]]; then
+            echo "❌ Invalid target PR URL format"; exit 1
+          fi
+
+          SOURCE_OWNER=$(echo "$SOURCE_URL" | cut -d'/' -f4)
+          SOURCE_REPO=$(echo "$SOURCE_URL" | cut -d'/' -f5)
+          SOURCE_PR=$(echo "$SOURCE_URL" | cut -d'/' -f7)
+          TARGET_OWNER=$(echo "$TARGET_URL" | cut -d'/' -f4)
+          TARGET_REPO=$(echo "$TARGET_URL" | cut -d'/' -f5)
+          TARGET_PR=$(echo "$TARGET_URL" | cut -d'/' -f7)
+
+          {
+            echo "source_owner<<EOF"; echo "$SOURCE_OWNER"; echo "EOF"
+            echo "source_repo<<EOF"; echo "$SOURCE_REPO"; echo "EOF"
+            echo "source_pr<<EOF"; echo "$SOURCE_PR"; echo "EOF"
+            echo "target_owner<<EOF"; echo "$TARGET_OWNER"; echo "EOF"
+            echo "target_repo<<EOF"; echo "$TARGET_REPO"; echo "EOF"
+            echo "target_pr<<EOF"; echo "$TARGET_PR"; echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+          echo "Source: ${SOURCE_OWNER}/${SOURCE_REPO}#${SOURCE_PR}"
+          echo "Target: ${TARGET_OWNER}/${TARGET_REPO}#${TARGET_PR}"
+
+      - name: Get target PR branch info
+        id: target_branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET_OWNER: ${{ steps.extract_info.outputs.target_owner }}
+          TARGET_REPO: ${{ steps.extract_info.outputs.target_repo }}
+          TARGET_PR: ${{ steps.extract_info.outputs.target_pr }}
+        run: |
+          PR_INFO=$(curl -s -H "Authorization: token ${GH_TOKEN}" -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${TARGET_OWNER}/${TARGET_REPO}/pulls/${TARGET_PR}")
+          TARGET_BRANCH=$(echo "$PR_INFO" | jq -r '.head.ref')
+          HEAD_REPO=$(echo "$PR_INFO" | jq -r '.head.repo.full_name')
+          echo "target_branch=${TARGET_BRANCH}" >> $GITHUB_OUTPUT
+          echo "head_repo=${HEAD_REPO}" >> $GITHUB_OUTPUT
+          echo "Target branch: ${TARGET_BRANCH}, Head repo: ${HEAD_REPO}"
+
+      - name: Clone target repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_REPO: ${{ steps.target_branch.outputs.head_repo }}
+          TARGET_BRANCH: ${{ steps.target_branch.outputs.target_branch }}
+        run: |
+          git clone "https://x-access-token:${GITHUB_TOKEN}@github.com/${HEAD_REPO}.git" target_repo
+          cd target_repo && git checkout "$TARGET_BRANCH"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run sync script
+        id: sync_script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEEPSEEK_API_TOKEN: ${{ secrets.DEEPSEEK_API_TOKEN }}
+          GEMINI_API_TOKEN: ${{ secrets.GEMINI_API_TOKEN }}
+          SOURCE_PR_URL: ${{ github.event.inputs.source_pr_url }}
+          TARGET_PR_URL: ${{ github.event.inputs.target_pr_url }}
+          AI_PROVIDER: ${{ github.event.inputs.ai_provider }}
+          TARGET_REPO_PATH: ${{ github.workspace }}/target_repo
+        run: |
+          cd ai-pr-translator/scripts
+          if python main_workflow.py; then
+            echo "sync_success=true" >> $GITHUB_OUTPUT
+            echo "✅ Sync script completed successfully"
+          else
+            echo "sync_success=false" >> $GITHUB_OUTPUT
+            echo "❌ Sync script failed"
+            exit 1
+          fi
+
+      - name: Commit and push changes
+        if: steps.sync_script.outputs.sync_success == 'true'
+        env:
+          SOURCE_PR_URL: ${{ github.event.inputs.source_pr_url }}
+          TARGET_PR_URL: ${{ github.event.inputs.target_pr_url }}
+          AI_PROVIDER: ${{ github.event.inputs.ai_provider }}
+          TARGET_BRANCH: ${{ steps.target_branch.outputs.target_branch }}
+        run: |
+          cd target_repo && git add .
+          if ! git diff --staged --quiet; then
+            printf "Auto-sync: Update Chinese docs from English PR\n\nSynced from: %s\nTarget PR: %s\nAI Provider: %s\n\nCo-authored-by: github-actions[bot] <github-actions[bot]@users.noreply.github.com>" \
+              "$SOURCE_PR_URL" "$TARGET_PR_URL" "$AI_PROVIDER" | git commit -F -
+            git push origin "$TARGET_BRANCH"
+            echo "Changes pushed to $TARGET_BRANCH"
+          else
+            echo "No changes to commit"
+          fi
+
+      - name: Add success comment to target PR
+        if: steps.sync_script.outputs.sync_success == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_PR_URL: ${{ github.event.inputs.source_pr_url }}
+          TARGET_PR_URL: ${{ github.event.inputs.target_pr_url }}
+          TARGET_OWNER: ${{ steps.extract_info.outputs.target_owner }}
+          TARGET_REPO: ${{ steps.extract_info.outputs.target_repo }}
+          TARGET_PR: ${{ steps.extract_info.outputs.target_pr }}
+        run: |
+          BODY=$(printf '%s\n\n%s\n%s\n%s\n\n%s' "**Auto-sync completed successfully**" \
+            "**Source PR**: ${SOURCE_PR_URL}" "**Target PR**: ${TARGET_PR_URL}" \
+            "Chinese documentation has been updated based on English documentation changes." )
+          PAYLOAD=$(jq -n --arg body "$BODY" '{body: $body}')
+          curl -X POST -H "Authorization: token ${GITHUB_TOKEN}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${TARGET_OWNER}/${TARGET_REPO}/issues/${TARGET_PR}/comments" \
+            -d "$PAYLOAD"
+
+      - name: Add failure comment to target PR
+        if: steps.sync_script.outputs.sync_success == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_PR_URL: ${{ github.event.inputs.source_pr_url }}
+          TARGET_PR_URL: ${{ github.event.inputs.target_pr_url }}
+          TARGET_OWNER: ${{ steps.extract_info.outputs.target_owner }}
+          TARGET_REPO: ${{ steps.extract_info.outputs.target_repo }}
+          TARGET_PR: ${{ steps.extract_info.outputs.target_pr }}
+        run: |
+          BODY=$(printf '%s\n\n%s\n%s\n%s\n\n%s' "**Auto-sync failed**" \
+            "**Source PR**: ${SOURCE_PR_URL}" "**Target PR**: ${TARGET_PR_URL}" \
+            "The sync process encountered an error. Please check the workflow logs for details.")
+          PAYLOAD=$(jq -n --arg body "$BODY" '{body: $body}')
+          curl -X POST -H "Authorization: token ${GITHUB_TOKEN}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${TARGET_OWNER}/${TARGET_REPO}/issues/${TARGET_PR}/comments" \
+            -d "$PAYLOAD"

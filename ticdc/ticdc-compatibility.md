@@ -82,9 +82,9 @@ TiCDC 从 v5.3.0 开始支持[全局临时表](/temporary-tables.md#全局临时
 
 如果 TiCDC 的上游集群包含全局临时表，下游集群也必须是 TiDB 5.3.0 及以上版本，否则同步报错。
 
-### 向量数据类型兼容性说明
+### 向量数据类型兼容性说明 {#compatibility-with-vector-data-types}
 
-从 v8.4.0 开始，TiCDC 支持同步包含[向量数据类型](/vector-search/vector-search-data-types.md)的表到下游（实验特性）。
+从 v8.4.0 开始，TiCDC 支持同步包含[向量数据类型](/ai/reference/vector-search-data-types.md)的表到下游（实验特性）。
 
 当下游为 Kafka 或者存储服务（如：Amazon S3、GCS、Azure Blob Storage 和 NFS）时，TiCDC 会将向量数据类型转为字符串类型进行写入。
 

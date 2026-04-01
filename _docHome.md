@@ -32,9 +32,9 @@ TiDB 简介，核心特性与应用场景
 
 </DocHomeCard>
 
-<DocHomeCard href="/zh/tidb/stable/dev-guide-overview" label="开发者指南" icon="oss-developer-blue">
+<DocHomeCard href="/zh/developer/" label="开发者指南" icon="oss-developer-blue">
 
-为应用程序开发者编写的开发者手册
+用熟悉的语言或框架连接到 TiDB
 
 </DocHomeCard>
 
@@ -66,7 +66,7 @@ TiDB Cloud 核心特性与应用场景简介
 
 </DocHomeCard>
 
-<DocHomeCard href="/tidbcloud/dev-guide-overview" label="开发者指南" icon="cloud-developer-mauve">
+<DocHomeCard href="/zh/developer/" label="开发者指南" icon="cloud-developer-mauve">
 
 用熟悉的语言或框架连接到 TiDB Cloud
 

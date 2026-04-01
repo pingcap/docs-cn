@@ -1,6 +1,7 @@
 ---
 title: 使用 C# 连接 TiDB
 summary: 了解如何使用 C# 连接 TiDB。本教程提供了与 TiDB 交互的 C# 代码示例。
+aliases: ['/zh/tidb/stable/dev-guide-sample-application-cs/','/zh/tidb/dev/dev-guide-sample-application-cs/','/zh/tidbcloud/dev-guide-sample-application-cs/']
 ---
 
 # 使用 C\# 连接 TiDB

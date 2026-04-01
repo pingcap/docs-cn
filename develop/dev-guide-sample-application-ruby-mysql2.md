@@ -1,6 +1,7 @@
 ---
 title: 使用 mysql2 连接 TiDB
 summary: 本文描述了 TiDB 和 mysql2 的连接步骤，并给出了使用 mysql2 gem 连接 TiDB 的简单示例代码片段。
+aliases: ['/zh/tidb/stable/dev-guide-sample-application-ruby-mysql2/','/zh/tidb/dev/dev-guide-sample-application-ruby-mysql2/','/zh/tidbcloud/dev-guide-sample-application-ruby-mysql2/']
 ---
 
 # 使用 mysql2 连接 TiDB
@@ -29,7 +30,7 @@ TiDB 是一个兼容 MySQL 的数据库。[mysql2](https://github.com/brianmario
 如果你还没有 TiDB 集群，可以按照以下方式创建：
 
 - （推荐方式）参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)，创建你自己的 TiDB Cloud 集群。
-- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
+- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
 ## 运行示例应用程序并连接到 TiDB
 
@@ -302,4 +303,6 @@ end
 
 ## 需要帮助？
 
-在 [AskTUG](https://asktug.com/) 论坛上提问。
+- 在 [AskTUG 论坛](https://asktug.com/?utm_source=docs-cn-dev-guide) 上提问
+- [提交 TiDB Cloud 工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)
+- [提交 TiDB 工单](/support.md)

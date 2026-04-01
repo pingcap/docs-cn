@@ -63,6 +63,7 @@ sync-diff-inspector 需要具备特定的数据库权限以获取表结构信息
 
 - `SELECT`：用于对比数据。
 - `RELOAD`：用于查看表结构。
+- `PROCESS`：当上下游都是 TiDB 时需要该权限，用于查询 `INFORMATION_SCHEMA.CLUSTER_INFO` 表。
 
 > **注意：**
 >

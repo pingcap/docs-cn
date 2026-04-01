@@ -1,6 +1,7 @@
 ---
 title: 使用 MySQL Workbench 连接到 TiDB
 summary: 了解如何使用 MySQL Workbench 连接到 TiDB。
+aliases: ['/zh/tidb/stable/dev-guide-gui-mysql-workbench/','/zh/tidb/dev/dev-guide-gui-mysql-workbench/','/zh/tidbcloud/dev-guide-gui-mysql-workbench/']
 ---
 
 # 使用 MySQL Workbench 连接到 TiDB
@@ -28,7 +29,7 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 **如果你还没有 TiDB 集群，可以按如下方式创建一个：**
 
 - （推荐方式）参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md)，创建一个 TiDB Cloud 集群。
-- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建一个本地集群。
+- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建一个本地集群。
 
 ## 连接到 TiDB
 
@@ -155,9 +156,9 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 ## 下一步
 
 - 关于 MySQL Workbench 的更多使用方法，可以参考 [MySQL Workbench 官方文档](https://dev.mysql.com/doc/workbench/en/)。
-- 你可以继续阅读[开发者文档](/develop/dev-guide-overview.md)，以获取更多关于 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)、[删除数据](/develop/dev-guide-delete-data.md)、[单表读取](/develop/dev-guide-get-data-from-single-table.md)、[事务](/develop/dev-guide-transaction-overview.md)、[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
+- 你可以继续阅读[开发者文档](/develop/_index.md)，以获取更多关于 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)、[删除数据](/develop/dev-guide-delete-data.md)、[单表读取](/develop/dev-guide-get-data-from-single-table.md)、[事务](/develop/dev-guide-transaction-overview.md)、[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
 - 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://pingkai.cn/learn)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.cn/learner/certification-center)。
 
 ## 需要帮助?
 
-如果在开发的过程中遇到问题，可以在 [AskTUG](https://asktug.com/?utm_source=docs-cn-dev-guide) 上进行提问，或从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
+如果在开发的过程中遇到问题，可以在 [AskTUG 论坛](https://asktug.com/?utm_source=docs-cn-dev-guide) 上提问，或从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。

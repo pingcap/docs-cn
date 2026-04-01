@@ -101,15 +101,15 @@ TiDB 的默认安装中存在许多用于组件间通信的特权接口。这些
 | Blackbox Exporter | 9115         | HTTP       |
 | NG Monitoring     | 12020        | HTTP       |
 
-建议向普通用户只公开数据库的 `4000` 端口和 Grafana 面板的 `9000` 端口，并通过网络安全策略组或防火墙限制其他端口。以下是使用 `iptables` 限制端口访问的示例：
+建议向普通用户只公开数据库的 `4000` 端口和 Grafana 面板的 `3000` 端口，并通过网络安全策略组或防火墙限制其他端口。以下是使用 `iptables` 限制端口访问的示例：
 
 ```shell
 # 允许来自各组件白名单 IP 地址范围的内部端口通讯
 sudo iptables -A INPUT -s 内网 IP 地址范围 -j ACCEPT
 
-# 仅对外部用户开放 4000 和 9000 端口
+# 仅对外部用户开放 4000 和 3000 端口
 sudo iptables -A INPUT -p tcp --dport 4000 -j ACCEPT
-sudo iptables -A INPUT -p tcp --dport 9000 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 3000 -j ACCEPT
 
 # 默认拒绝所有其他流量
 sudo iptables -P INPUT DROP

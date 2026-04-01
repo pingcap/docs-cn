@@ -87,7 +87,7 @@ Coprocessor 是一种替 TiDB 分担计算工作负载的协处理机制。它�
 
 ### Data Definition Language (DDL)
 
-数据定义语言 (Data Definition Language, DDL) 是 SQL 标准的一部分，用于创建、修改和删除表及其他对象。更多信息，请参见 [DDL 语句的执行原理及最佳实践](/ddl-introduction.md)。
+数据定义语言 (Data Definition Language, DDL) 是 SQL 标准的一部分，用于创建、修改和删除表及其他对象。更多信息，请参见 [DDL 语句的执行原理及最佳实践](/best-practices/ddl-introduction.md)。
 
 ### Data Migration (DM)
 
@@ -407,4 +407,4 @@ Top SQL 用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较
 
 ### Vector Search
 
-[向量搜索 (Vector Search)](/vector-search/vector-search-overview.md) 是一种优先考虑数据语义以提供相关结果的搜索方法。与传统的全文检索主要依赖于精确的关键词匹配和词频不同，向量搜索通过将不同类型的数据（如文本、图像或音频）转换为高维向量，并根据这些向量之间的相似度来进行查询。这种搜索方法能够捕捉数据的语义特征和上下文信息，从而更准确地理解用户意图。即使搜索的词语与数据库中的内容不完全匹配，向量搜索仍然可以通过对数据语义的理解，找到与用户意图相符合的结果。
+[向量搜索 (Vector Search)](/develop/dev-guide-vector-search.md) 是一种优先考虑数据语义以提供相关结果的搜索方法。与传统的全文搜索主要依赖于精确的关键词匹配和词频不同，向量搜索通过将不同类型的数据（如文本、图像或音频）转换为高维向量，并根据这些向量之间的相似度来进行查询。这种搜索方法能够捕捉数据的语义特征和上下文信息，从而更准确地理解用户意图。即使搜索的词语与数据库中的内容不完全匹配，向量搜索仍然可以通过对数据语义的理解，找到与用户意图相符合的结果。

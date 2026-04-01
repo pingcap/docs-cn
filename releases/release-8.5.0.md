@@ -98,7 +98,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>外键 (Foreign Key) 是数据库中的一种约束，用于建立表与表之间的关联关系，确保数据一致性和完整性。它可以确保子表中引用的数据必须存在于主表中，防止无效数据插入。同时，外键支持级联操作（如删除或更新时自动同步），简化了业务逻辑的实现，减少了手动维护数据关联的复杂性。</td>
   </tr>
   <tr>
-    <td>支持<a href="https://docs.pingcap.com/zh/tidb/v8.5/vector-search-overview">向量搜索功能</a>（实验特性，从 v8.4.0 开始引入）</td>
+    <td>支持<a href="https://docs.pingcap.com/zh/ai/vector-search-overview">向量搜索功能</a>（实验特性，从 v8.4.0 开始引入）</td>
     <td>向量搜索是一种基于数据语义的搜索方法，可以提供更相关的搜索结果。作为 AI 和大语言模型 (LLM) 的核心功能之一，向量搜索可用于检索增强生成 (Retrieval-Augmented Generation, RAG)、语义搜索、推荐系统等多种场景。</td>
   </tr>
   <tr>

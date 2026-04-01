@@ -146,7 +146,7 @@ TiDB 版本：7.2.0
     ADMIN RESUME DDL JOBS 1,2;
     ```
 
-    更多信息，请参考[用户文档](/ddl-introduction.md#ddl-相关的命令介绍)。
+    更多信息，请参考[用户文档](/best-practices/ddl-introduction.md#ddl-相关的命令介绍)。
 
 ### 数据迁移
 

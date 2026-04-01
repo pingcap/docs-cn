@@ -59,7 +59,7 @@ Slow Query 基础信息：
 * `Compile_time`：表示这个语句在查询优化阶段花费的时间。
 * `Optimize_time`：表示这个语句在优化查询计划阶段花费的时间。
 * `Wait_TS`：表示这个语句在等待获取事务 TS 阶段花费的时间。
-* `Query`：表示 SQL 语句。慢日志里面不会打印 `Query`，但映射到内存表后，对应的字段叫 `Query`。
+* `Query`：表示 SQL 语句。慢查询日志里面不会打印 `Query`，但映射到内存表后，对应的字段叫 `Query`。
 * `Digest`：表示 SQL 语句的指纹。
 * `Txn_start_ts`：表示事务的开始时间戳，也是事务的唯一 ID，可以用这个值在 TiDB 日志中查找事务相关的其他日志。
 * `Is_internal`：表示是否为 TiDB 内部的 SQL 语句。`true` 表示 TiDB 系统内部执行的 SQL 语句，`false` 表示用户执行的 SQL 语句。
@@ -173,29 +173,109 @@ Slow Query 基础信息：
 - `Storage_from_kv`：从 v9.0.0 开始引入，表示该语句是否从 TiKV 读取数据。
 - `Storage_from_mpp`：从 v9.0.0 开始引入，表示该语句是否从 TiFlash 读取数据。
 
-## 相关系统变量
+## 相关 Hint
 
-* [tidb_slow_log_threshold](/system-variables.md#tidb_slow_log_threshold)：设置慢日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢日志中。默认值是 300 ms。
-* [tidb_query_log_max_len](/system-variables.md#tidb_query_log_max_len)：设置慢日志记录 SQL 语句的最大长度。默认值是 4096 byte。
-* [tidb_redact_log](/system-variables.md#tidb_redact_log)：设置慢日志记录 SQL 时是否将用户数据脱敏用 `?` 代替。默认值是 `0`，即关闭该功能。
-* [tidb_enable_collect_execution_info](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的物理执行信息，默认值是 `1`。该功能对性能的影响约为 3%。开启该项后查看 `Plan` 的示例如下：
+从 v9.0.0 开始，你可以使用 `WRITE_SLOW_LOG` Hint。该 Hint 用于强制 TiDB 将特定 SQL 的执行信息输出至慢查询日志，无论其执行时长是否达到阈值。这有助于捕获 SQL 执行过程中的详细元数据，如执行计划和资源消耗。例如，在出现偶发性能抖动问题时，某些 SQL 仅在特定条件下（如数据量突增或索引失效）才会变慢，而平时执行速度很快，因此难以通过默认的慢查询阈值捕获。这种情况下，可以预先在业务 SQL 中添加 `WRITE_SLOW_LOG` Hint，确保在问题复现的瞬间，系统能完整记录下该次 SQL 执行的详细信息。
+
+- 该 Hint 不受任何阈值或触发规则限制，即无论该 SQL 查询是否达到慢查询日志打印阈值，都会打印慢查询日志。
+- 目前只支持强制开启打印慢查询日志，暂不支持通过 `WRITE_SLOW_LOG(FALSE)` 强制关闭打印慢查询日志。
+
+使用示例：
 
 ```sql
-> select tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMgk1BWM2zwAAMRnIADcVyAAxHcEQNQlOL0EBBPBbCjMJMTNfMTYJMQkzMTI4MS44NTc4MTk5MDUyMTcJdGFibGU6dCwgaW5kZXg6aWR4KGEpLCByYW5nZTpbLWluZiw1MDAwMCksIGtlZXAgb3JkZXI6ZmFsc2UJMjUBrgnQVnsA');
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMg |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|     id                    task    estRows               operator info                                                  actRows    execution info                                                                  memory       disk                              |
-|     StreamAgg_17          root    1                     funcs:count(Column#7)->Column#5                                1          time:10.931505ms, loops:2                                                       372 Bytes    N/A                               |
-|     └─IndexReader_18      root    1                     index:StreamAgg_9                                              1          time:10.927685ms, loops:2, rpc num: 1, rpc time:10.884355ms, proc keys:25007    206 Bytes    N/A                               |
-|       └─StreamAgg_9       cop     1                     funcs:count(1)->Column#7                                       1          time:11ms, loops:25                                                             N/A          N/A                               |
-|         └─IndexScan_16    cop     31281.857819905217    table:t, index:idx(a), range:[-inf,50000), keep order:false    25007      time:11ms, loops:25                                                             N/A          N/A                               |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
 ```
 
-在性能测试中可以关闭自动收集算子的执行信息：
+## 相关系统变量
 
-{{< copyable "sql" >}}
+* [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold)：用于设置慢查询日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢查询日志中。默认值是 300 ms。
+* [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入)：用于定义慢查询日志的触发规则，支持多维度指标组合条件，以实现更加灵活和精细化的日志记录控制。该变量在 v9.0.0 版本中引入，逐步替代传统的单一阈值控制方式，即替代 `tidb_slow_log_threshold` 的使用。该变量支持将以下字段作为筛选条件，设置输出慢查询日志的条件。详情请参考[字段含义说明](#字段含义说明)。
+    - 支持的筛选字段：
+        * Slow Query 基础信息：
+            * `Query_time`、`Parse_time`、`Compile_time`、`Optimize_time`、`Wait_TS`、`Rewrite_time`
+            * `Digest`、`Plan_digest`、`Is_internal`、`Succ`
+            * `Exec_retry_count`、`Backoff_time`、`Write_sql_response_total`
+        * 事务执行相关的字段：
+            * `Prewrite_time`、`Commit_time`、`Write_keys`、`Write_size`、`Prewrite_region`
+        * SQL 执行的用户相关的字段：
+            * `Conn_ID`、`DB`、`Session_alias`
+        * TiKV Coprocessor Task 相关的字段：
+            * `Process_time`、`Total_keys`、`Process_keys`、`Num_cop_tasks`
+        * 内存使用相关的字段：
+            * `Mem_max`
+        * 硬盘使用相关的字段：
+            * `Disk_max`
+        * 资源管控相关的字段：
+            * `Resource_group`
+        * 网络传输相关的字段：
+            * `KV_total`、`PD_total`
+            * `Unpacked_bytes_sent_tikv_total`、`Unpacked_bytes_received_tikv_total`
+            * `Unpacked_bytes_sent_tikv_cross_zone`、`Unpacked_bytes_received_tikv_cross_zone`
+            * `Unpacked_bytes_sent_tiflash_total`、`Unpacked_bytes_received_tiflash_total`
+            * `Unpacked_bytes_sent_tiflash_cross_zone`、`Unpacked_bytes_received_tiflash_cross_zone`
+    * 如果未设置 `tidb_slow_log_rules`：
+        * 慢查询日志触发仍依赖 `tidb_slow_log_threshold`。注：`query_time` 阈值的含义同该变量，均表示 SQL 执行时长阈值，以保持向后兼容。
+    * 如果已设置 `tidb_slow_log_rules`：
+        * 配置的规则优先生效，`tidb_slow_log_threshold` 将被忽略。
+        * 若希望规则中仍使用 SQL 执行时间作为输出慢日志的条件之一，可在设置规则时使用`query_time` 并设置阈值。
+        * 规则匹配逻辑（多条规则之间采用 OR 关系）：
+            * SESSION 作用域规则：优先匹配，如果匹配成功，则打印慢查询日志。
+            * GLOBAL 作用域规则：仅在 SESSION 作用域规则未匹配时考虑：
+                * 若规则指定了 `ConnID` 并与当前会话的 `ConnID` 匹配，则使用该规则。
+                * 若规则未指定 `ConnID`（全局通用规则），则使用该规则。
+        * 使用 `SHOW VARIABLES`、`SELECT @@GLOBAL.tidb_slow_log_rules`、`SELECT @@SESSION.tidb_slow_log_rules` 显示该变量的行为与其他系统变量一致。
+    * 使用示例：
+        * 标准格式（SESSION 作用域）：
+
+          ```sql
+          SET SESSION tidb_slow_log_rules = 'Query_time: 500, Is_internal: false';
+          ```
+
+        * 错误格式（SESSION 作用域不支持 `ConnID`）：
+
+          ```sql
+          SET SESSION tidb_slow_log_rules = 'ConnID: 12, Query_time: 500, Is_internal: false';
+          ```
+
+        * 全局规则（适用于所有连接）：
+
+          ```sql
+          SET GLOBAL tidb_slow_log_rules = 'Query_time: 500, Is_internal: false';
+          ```
+
+        * 指定特定连接的全局规则（分别适用于 `ConnID:11` 和 `ConnID:11` 的两个连接）：
+
+          ```sql
+          SET GLOBAL tidb_slow_log_rules = 'ConnID: 11, Query_time: 500, Is_internal: false; ConnID: 12, Query_time: 600, Process_time: 300, DB: db1';
+          ```
+
+    > **Tip:**
+    >
+    > - `tidb_slow_log_rules` 用于替换单一阈值的方式，实现更灵活和精细化的慢查询日志控制，支持多维度指标组合条件。
+    > - 在资源充足的测试环境（1 个 TiDB 节点，16 核 CPU、48 GiB 内存；3 个 TiKV 节点，每个 16 核 CPU、48 GiB 内存）中，多次 sysbench 测试结果表明：当多维慢查询日志规则在 30 分钟内生成数百万条慢查询日志时，对性能影响较小；但当日志量达到千万级时，TPS 会明显下降，延迟也会显著增加。在业务负载较高或 CPU、内存资源接近瓶颈的情况下，应谨慎配置 `tidb_slow_log_rules`，避免因规则过宽导致日志洪泛。建议结合使用 `tidb_slow_log_max_per_sec` 来限制日志打印速率，以降低对业务性能的影响。
+
+* [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v900-版本开始引入)：用于设置每秒打印慢查询日志数量的上限，默认值为 `0`。
+    * 当值为 `0` 时，表示不限制每秒打印的慢查询日志数量。
+    * 当值大于 `0` 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢查询日志文件。
+    * 建议在启用了 `tidb_slow_log_rules` 后配置该变量，以防止基于规则的慢查询日志触发过于频繁。
+* [`tidb_query_log_max_len`](/system-variables.md#tidb_query_log_max_len)：设置慢查询日志记录 SQL 语句的最大长度。默认值是 4096 byte。
+* [`tidb_redact_log`](/system-variables.md#tidb_redact_log)：设置慢查询日志记录 SQL 时，是否将用户数据脱敏用 `?` 代替。默认值是 `0`，即关闭该功能。
+* [`tidb_enable_collect_execution_info`](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的物理执行信息，默认值是 `1`。开启该功能会导致性能降低约 3%。开启后查看 `Plan` 的示例如下：
+
+    ```sql
+    > select tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMgk1BWM2zwAAMRnIADcVyAAxHcEQNQlOL0EBBPBbCjMJMTNfMTYJMQkzMTI4MS44NTc4MTk5MDUyMTcJdGFibGU6dCwgaW5kZXg6aWR4KGEpLCByYW5nZTpbLWluZiw1MDAwMCksIGtlZXAgb3JkZXI6ZmFsc2UJMjUBrgnQVnsA');
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+    | tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMg |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+    |     id                    task    estRows               operator info                                                  actRows    execution info                                                                  memory       disk                              |
+    |     StreamAgg_17          root    1                     funcs:count(Column#7)->Column#5                                1          time:10.931505ms, loops:2                                                       372 Bytes    N/A                               |
+    |     └─IndexReader_18      root    1                     index:StreamAgg_9                                              1          time:10.927685ms, loops:2, rpc num: 1, rpc time:10.884355ms, proc keys:25007    206 Bytes    N/A                               |
+    |       └─StreamAgg_9       cop     1                     funcs:count(1)->Column#7                                       1          time:11ms, loops:25                                                             N/A          N/A                               |
+    |         └─IndexScan_16    cop     31281.857819905217    table:t, index:idx(a), range:[-inf,50000), keep order:false    25007      time:11ms, loops:25                                                             N/A          N/A                               |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+    ```
+
+在性能测试中可以关闭自动收集算子的执行信息：
 
 ```sql
 set @@tidb_enable_collect_execution_info=0;
@@ -205,17 +285,17 @@ set @@tidb_enable_collect_execution_info=0;
 
 更多详细信息，可以参见 [TiDB 专用系统变量和语法](/system-variables.md)。
 
-## 慢日志内存映射表
+## 慢查询日志内存映射表
 
-用户可通过查询 `INFORMATION_SCHEMA.SLOW_QUERY` 表来查询慢查询日志中的内容，表中列名和慢日志中字段名一一对应，表结构可查看 [`SLOW_QUERY` 表](/information-schema/information-schema-slow-query.md)中的介绍。
+用户可通过查询 `INFORMATION_SCHEMA.SLOW_QUERY` 表来查询慢查询日志中的内容，表中列名和慢查询日志中字段名一一对应，表结构可查看 [`SLOW_QUERY` 表](/information-schema/information-schema-slow-query.md)中的介绍。
 
 > **注意：**
 >
 > 每次查询 `SLOW_QUERY` 表时，TiDB 都会去读取和解析一次当前的慢查询日志。
 
-TiDB 4.0 中，`SLOW_QUERY` 已经支持查询任意时间段的慢日志，即支持查询已经被 rotate 的慢日志文件的数据。用户查询时只需要指定 `TIME` 时间范围即可定位需要解析的慢日志文件。如果查询不指定时间范围，则仍然只解析当前的慢日志文件，示例如下：
+TiDB 4.0 中，`SLOW_QUERY` 已经支持查询任意时间段的慢查询日志，即支持查询已经被 rotate 的慢查询日志文件的数据。用户查询时只需要指定 `TIME` 时间范围即可定位需要解析的慢查询日志文件。如果查询不指定时间范围，则仍然只解析当前的慢查询日志文件，示例如下：
 
-不指定时间范围时，只会解析当前 TiDB 正在写入的慢日志文件的慢查询数据：
+不指定时间范围时，只会解析当前 TiDB 正在写入的慢查询日志文件的慢查询数据：
 
 {{< copyable "sql" >}}
 
@@ -234,7 +314,7 @@ from slow_query;
 +----------+----------------------------+----------------------------+
 ```
 
-指定查询 `2020-03-10 00:00:00` 到 `2020-03-11 00:00:00` 时间范围后，会定位指定时间范围内的慢日志文件后解析慢查询数据：
+指定查询 `2020-03-10 00:00:00` 到 `2020-03-11 00:00:00` 时间范围后，会定位指定时间范围内的慢查询日志文件后解析慢查询数据：
 
 {{< copyable "sql" >}}
 
@@ -257,7 +337,7 @@ where time > '2020-03-10 00:00:00'
 
 > **注意：**
 >
-> 如果指定时间范围内的慢日志文件被删除，或者并没有慢查询，则查询结果会返回空。
+> 如果指定时间范围内的慢查询日志文件被删除，或者并没有慢查询，则查询结果会返回空。
 
 TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY`](/information-schema/information-schema-slow-query.md#cluster_slow_query-table) 系统表，用来查询所有 TiDB 节点的慢查询信息，表结构在 `SLOW_QUERY` 的基础上多增加了 `INSTANCE` 列，表示该行慢查询信息来自的 TiDB 节点地址。使用方式和 [`SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 系统表一样。
 
@@ -468,9 +548,9 @@ select instance, count(*) from information_schema.cluster_slow_query where time 
 +---------------+----------+
 ```
 
-### 查询仅出现在异常时间段的慢日志
+### 查询仅出现在异常时间段的慢查询日志
 
-假如发现 `2020-03-10 13:24:00` ~ `2020-03-10 13:27:00` 的 QPS 降低或者延迟上升等问题，可能是由于突然出现大查询导致的，可以用下面 SQL 查询仅出现在异常时间段的慢日志，其中 `2020-03-10 13:20:00` ~ `2020-03-10 13:23:00` 为正常时间段。
+假如发现 `2020-03-10 13:24:00` ~ `2020-03-10 13:27:00` 的 QPS 降低或者延迟上升等问题，可能是由于突然出现大查询导致的，可以用下面 SQL 查询仅出现在异常时间段的慢查询日志，其中 `2020-03-10 13:20:00` ~ `2020-03-10 13:23:00` 为正常时间段。
 
 {{< copyable "sql" >}}
 
@@ -521,7 +601,7 @@ min(prev_stmt)     |
 digest             | 24bd6d8a9b238086c9b8c3d240ad4ef32f79ce94cf5a468c0b8fe1eb5f8d03df
 ```
 
-## 解析其他的 TiDB 慢日志文件
+## 解析其他的 TiDB 慢查询日志文件
 
 TiDB 通过 session 变量 `tidb_slow_query_file` 控制查询 `INFORMATION_SCHEMA.SLOW_QUERY` 时要读取和解析的文件，可通过修改改 session 变量的值来查询其他慢查询日志文件的内容：
 
@@ -531,9 +611,9 @@ TiDB 通过 session 变量 `tidb_slow_query_file` 控制查询 `INFORMATION_SCHE
 set tidb_slow_query_file = "/path-to-log/tidb-slow.log"
 ```
 
-## 用 `pt-query-digest` 工具分析 TiDB 慢日志
+## 用 `pt-query-digest` 工具分析 TiDB 慢查询日志
 
-可以用 `pt-query-digest` 工具分析 TiDB 慢日志。
+可以用 `pt-query-digest` 工具分析 TiDB 慢查询日志。
 
 > **注意：**
 >

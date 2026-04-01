@@ -1,6 +1,7 @@
 ---
 title: Gitpod
 summary: Gitpod 是一个开源 Kubernetes 应用程序，可在浏览器中获得完整的开发环境，并立即编写代码。它能够为云中的每个任务提供全新的自动化开发环境，无需本地配置。Gitpod 提供了完整的、自动化的、预配置的云原生开发环境，让你可以直接在浏览器中开发、运行、测试代码。
+aliases: ['/zh/tidb/stable/dev-guide-playground-gitpod/','/zh/tidb/dev/dev-guide-playground-gitpod/','/zh/tidbcloud/dev-guide-playground-gitpod/']
 ---
 
 <!-- markdownlint-disable MD029 -->
