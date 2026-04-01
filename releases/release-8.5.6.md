@@ -15,7 +15,7 @@ TiDB 版本：8.5.6
 
 ### 性能
 
-- 外键检查支持使用共享锁 [#66154](https://github.com/pingcap/tidb/issues/66154) @[you06](https://github.com/glorv) **tw@qiancai** <!--2085-->
+- 外键检查支持使用共享锁 [#66154](https://github.com/pingcap/tidb/issues/66154) @[you06](https://github.com/you06) **tw@qiancai** <!--2085-->
 
     在悲观事务中，当对带有外键约束的子表执行 `INSERT` 或 `UPDATE` 时，外键检查默认会对父表中的对应行加排他锁。在子表高并发写入的场景下，如果大量事务访问相同的父表行，可能出现较严重的锁冲突。
 
