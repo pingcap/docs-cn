@@ -37,9 +37,9 @@ TiDB 版本：8.5.6
 
 - 支持多维度、多粒度定义慢查询日志的触发规则 [#62959](https://github.com/pingcap/tidb/issues/62959), [#64010](https://github.com/pingcap/tidb/issues/64010) @[zimulala](https://github.com/zimulala) **tw@lilin90** <!--2068-->
 
-    在之前的版本中， TiDB 定位慢查询语句的主要方法是设置系统变量 tidb_slow_log_threshold，该机制触发慢日志控制粒度粗（整个实例级别全局控制，不支持会话和SQL级别精细化控制）、触发条件仅执行时间（Query_time）一种，无法满足复杂场景慢日志抓取以精细化定位问题的需求。
+    在 v8.5.6 之前，TiDB 定位慢查询语句的主要方法是设置系统变量 [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold)，该机制触发慢查询日志的控制粒度粗（整个实例级别全局控制，不支持会话和 SQL 级别精细化控制）、触发条件仅执行时间 (`Query_time`) 一种，无法满足复杂场景慢查询日志抓取以精细化定位问题的需求。
 
-    从 v8.5.6 起，TiDB 增强慢查询日志的控制能力。你可以使用  [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入) 系统变量在实例、会话、SQL级别定义多维度（如 Query_time、Digest、Mem_max、KV_total 等等）的慢查询日志输出规则，使用 [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v900-版本开始引入) 限制每秒日志输出数量，并通过 [`WRITE_SLOW_LOG`](/optimizer-hints.md) Hint 强制记录指定 SQL 的慢查询日志，从而实现对慢查询日志更灵活的精细化控制。
+    从 v8.5.6 起，TiDB 增强了慢查询日志的控制能力。你可以使用 [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入) 系统变量在实例、会话、SQL 级别定义多维度（如 `Query_time`、`Digest`、`Mem_max`、`KV_total`）的慢查询日志输出规则，使用 [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v900-版本开始引入) 限制每秒的日志输出数量，并通过 [`WRITE_SLOW_LOG`](/optimizer-hints.md) Hint 强制记录指定 SQL 的慢查询日志，从而实现对慢查询日志更灵活的精细化控制。
 
     更多信息，请参考[用户文档](/identify-slow-queries.md)。
 
@@ -60,15 +60,15 @@ TiDB 版本：8.5.6
     从 v8.5.6 开始，TiDB 支持列级权限管理。你可以使用 `GRANT` 和 `REVOKE` 语句管理特定列的权限。TiDB 在查询处理和执行计划构建过程中会基于列级权限进行校验，从而实现更细粒度的访问控制，并更好地支持敏感数据隔离和最小权限原则。
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/column-privilege-management)。
-  
-- Support table aliases referenced in the `FOR UPDATE OF` clause [#65532](https://github.com/pingcap/tidb/pull/65532) @[cryo-zd](https://github.com/cryo-zd) **tw@lilin90** <!--2350-->
 
-    Before v8.5.6, when a `SELECT ... FOR UPDATE OF <table>` statement referenced a table alias in the locking clause, TiDB could fail to resolve the alias correctly and return a `table not exists` error even though the alias was valid.
+- 支持在 `FOR UPDATE OF` 子句中使用表别名 [#65532](https://github.com/pingcap/tidb/pull/65532) @[cryo-zd](https://github.com/cryo-zd) **tw@lilin90** <!--2350-->
 
-    Starting from v8.5.6, TiDB supports table aliases in the `FOR UPDATE OF` clause. TiDB can now correctly resolve the locking target from the `FROM` clause, including aliased tables, so that row locks are applied as expected. This improves MySQL compatibility and makes `SELECT ... FOR UPDATE OF` statements more reliable in queries that use table aliases.
+    在 v8.5.6 之前，当 `SELECT ... FOR UPDATE OF <table>` 语句在加锁子句中引用表别名时，TiDB 可能无法正确解析该别名，即使别名是有效的，也会返回 `table not exists` 错误。
 
-    For more information, see the user documentation. 
-  
+    从 v8.5.6 起，TiDB 支持在 `FOR UPDATE OF` 子句中使用表别名。TiDB 现在可以从 `FROM` 子句中正确解析加锁目标，包括使用别名的表，从而确保行锁按预期生效。这提升了与 MySQL 的兼容性，使 `SELECT ... FOR UPDATE OF` 语句在使用表别名的查询场景下更加稳定可靠。
+
+    更多信息，请参考[用户文档](/identify-slow-queries.md)。
+
 ### 数据库管理
 
 - 支持指定分布式执行框架 (Distributed eXecution Framework, DXF) 任务可使用的节点数量 [#58937](https://github.com/pingcap/tidb/pull/58937) @[tangenta](https://github.com/tangenta) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--2406-->
