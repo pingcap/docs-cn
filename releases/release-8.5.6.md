@@ -43,9 +43,9 @@ TiDB 版本：8.5.6
 
     更多信息，请参考[用户文档](/identify-slow-queries.md)。
 
-- TiDB Dashboard 的 TOP SQL 页面支持收集和展示 TiKV 网络流量和逻辑 IO 数据 [#62916](https://github.com/pingcap/tidb/issues/62916) @[yibin87](https://github.com/yibin87) **tw@qiancai** <!--2398-->
+- TiDB Dashboard 的 Top SQL 页面支持收集和展示 TiKV 网络流量和逻辑 I/O 指标 [#62916](https://github.com/pingcap/tidb/issues/62916) @[yibin87](https://github.com/yibin87) **tw@qiancai** <!--2398-->
 
-    在之前的版本中，TiDB Dashboard 在识别 TOP SQL 时仅基于 CPU 相关指标，在复杂场景下难以从网络或存储访问角度定位性能瓶颈。
+    在之前的版本中，TiDB Dashboard 在识别 Top SQL 时仅基于 CPU 相关指标，在复杂场景下难以从网络或存储访问角度定位性能瓶颈。
 
     从 v8.5.6 起，你可以在 Top SQL 设置中打开 **TiKV 网络 IO 采集（多维度）** 开关，以查看 TiKV 节点的 `Network Bytes` 和 `Logical IO Bytes` 等指标，并可以按 `By Query`、`By Table`、`By DB` 或 `By Region` 维度进行聚合分析，从而更全面地定位资源消耗热点。
 
