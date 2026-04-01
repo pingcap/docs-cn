@@ -46,8 +46,8 @@ TiCDC 依赖 TiDB、TiKV 和 PD 提供的上游变更数据及相关接口。随
 对于老架构 TiCDC，不建议在 TiDB 滚动升级期间持续运行 changefeed。升级时，建议按以下顺序执行：
 
 1. 暂停所有 changefeed。
-2. 先将 TiCDC 升级到 `v8.5`。
-3. 再将 TiDB 集群其他组件升级到 `v8.5`。
+2. 先升级 TiCDC。
+3. 再升级 TiDB 集群的其他组件。
 4. 待升级完成后恢复 changefeed。
 
 ### 新架构 TiCDC 升级建议
