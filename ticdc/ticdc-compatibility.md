@@ -9,7 +9,7 @@ summary: 了解 TiCDC 兼容性相关限制和问题处理。
 
 ## TiCDC 新架构与 TiDB 集群的兼容性
 
-TiCDC 新架构支持 v7.5.0 及以上版本的 TiDB 集群，一些特殊的兼容性说明可参考：[TiCDC 兼容性说明](/ticdc/ticdc-architecture.md#兼容性说明)
+TiCDC 新架构支持 v7.5.0 及以上版本的 TiDB 集群，一些特殊的兼容性说明可参考：[TiCDC 兼容性说明](/ticdc/ticdc-architecture.md#兼容性说明)。
 
 ## TiCDC 与 TiDB Lightning 的兼容性
 
@@ -52,9 +52,9 @@ TiCDC 依赖 TiDB、TiKV 和 PD 提供的上游变更数据及相关接口。随
 
 ### 新架构 TiCDC 升级建议
 
-新架构 TiCDC 会保证 TiDB 集群滚动升级期间能够持续运行 changefeed，但前提是升级之前的 TiCDC 已经是新架构 TiCDC。
+新架构 TiCDC 在 TiDB 集群滚动升级期间能够持续运行 changefeed，但前提是升级之前的 TiCDC 已经是新架构 TiCDC。
 
-TiCDC 新老架构的切换可参考：[TiCDC 新架构升级指南](/ticdc/ticdc-architecture.md#升级指南)
+如果需要 TiCDC 新老架构之间的升级或切换文档，可参阅：[TiCDC 新架构升级指南](/ticdc/ticdc-architecture.md#升级指南)。
 
 ## 命令行参数和配置文件兼容性
 
