@@ -7,6 +7,10 @@ summary: 了解 TiCDC 兼容性相关限制和问题处理。
 
 本文介绍了与 TiCDC 有关的一系列兼容性问题及其处理方案。
 
+## TiCDC 新架构与 TiDB 集群的兼容性
+
+TiCDC 新架构支持 v7.5.0 及以上版本的 TiDB 集群，一些特殊的兼容性说明可参考：[TiCDC 兼容性说明](/ticdc/ticdc-architecture.md#兼容性说明)
+
 ## TiCDC 与 TiDB Lightning 的兼容性
 
 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 支持[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)和[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)两种数据导入模式。本章节介绍这两种模式与 TiCDC 的兼容性，以及同时使用 TiDB Lightning 和 TiCDC 时的操作步骤。
@@ -33,20 +37,24 @@ summary: 了解 TiCDC 兼容性相关限制和问题处理。
 * `ALTER TABLE table_name SET TIFLASH REPLICA count;`
 * `ALTER DATABASE db_name SET TIFLASH REPLICA count;`
 
-## 历史版本滚动升级兼容性说明
+## 历史版本升级的兼容性说明
 
-TiCDC 依赖 TiDB、TiKV 和 PD 提供的上游变更数据及相关接口。随着 TiDB 集群持续演进，这些数据格式和接口可能发生变化。因此，旧架构 TiCDC 不对与更高版本 TiDB/TiKV/PD 的跨版本混部提供正式的向上兼容性保证。
+TiCDC 依赖 TiDB、TiKV 和 PD 提供的上游变更数据及相关接口。随着 TiDB 及相关产品持续演进，这些数据格式和接口可能发生变化。因此，TiCDC 不对与更高版本 TiDB/TiKV/PD 的跨版本混部提供正式的向上兼容性保证。
 
-### 升级建议
+### 老架构 TiCDC 升级建议
 
-对于旧架构 TiCDC，不建议在 TiDB 滚动升级期间持续运行 changefeed。升级到 `v8.5` 时，建议按以下顺序执行：
+对于老架构 TiCDC，不建议在 TiDB 滚动升级期间持续运行 changefeed。升级时，建议按以下顺序执行：
 
 1. 暂停所有 changefeed。
-2. 将 TiCDC 升级到 `v8.5`。
-3. 将 TiDB 集群升级到 `v8.5`。
+2. 先将 TiCDC 升级到 `v8.5`。
+3. 再将 TiDB 集群其他组件升级到 `v8.5`。
 4. 待升级完成后恢复 changefeed。
 
-如果目标 TiDB 版本高于 `v8.1.x`，必须先升级 TiCDC，再升级 TiDB 集群。
+### 新架构 TiCDC 升级建议
+
+新架构 TiCDC 会保证 TiDB 集群滚动升级期间能够持续运行 changefeed，但前提是升级之前的 TiCDC 已经是新架构 TiCDC。
+
+TiCDC 新老架构的切换可参考：[TiCDC 新架构升级指南](/ticdc/ticdc-architecture.md#升级指南)
 
 ## 命令行参数和配置文件兼容性
 
