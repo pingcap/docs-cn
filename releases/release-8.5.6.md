@@ -41,7 +41,7 @@ TiDB 版本：8.5.6
 
     从 v8.5.6 起，TiDB 增强了慢查询日志的控制能力。你可以使用 [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入) 系统变量在实例、会话、SQL 级别定义多维度（如 `Query_time`、`Digest`、`Mem_max`、`KV_total`）的慢查询日志输出规则，使用 [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v900-版本开始引入) 限制每秒的日志输出数量，并通过 [`WRITE_SLOW_LOG`](/optimizer-hints.md) Hint 强制记录指定 SQL 的慢查询日志，从而实现对慢查询日志更灵活的精细化控制。
 
-    更多信息，请参考[用户文档](/identify-slow-queries.md)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/stable/identify-slow-queries/)。
 
 - TiDB Dashboard 的 Top SQL 页面支持收集和展示 TiKV 网络流量和逻辑 I/O 指标 [#62916](https://github.com/pingcap/tidb/issues/62916) @[yibin87](https://github.com/yibin87) **tw@qiancai** <!--2398-->
 
@@ -67,7 +67,7 @@ TiDB 版本：8.5.6
 
     从 v8.5.6 起，TiDB 支持在 `FOR UPDATE OF` 子句中使用表别名。TiDB 现在可以从 `FROM` 子句中正确解析加锁目标，包括使用别名的表，从而确保行锁按预期生效。这提升了与 MySQL 的兼容性，使 `SELECT ... FOR UPDATE OF` 语句在使用表别名的查询场景下更加稳定可靠。
 
-    更多信息，请参考[用户文档](/identify-slow-queries.md)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-select/)。
 
 ### 数据库管理
 
