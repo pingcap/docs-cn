@@ -124,6 +124,8 @@ TiDB 版本：8.5.6
 + TiDB
 
     - 改进包含 `IN` 条件且作用于索引前缀列的查询的执行计划选择。TiDB 现在可以使用 merge sort 在 `ORDER BY ... LIMIT` 查询中保持顺序，从而减少不必要的扫描并提升性能。[#63449](https://github.com/pingcap/tidb/issues/63449) [#34882](https://github.com/pingcap/tidb/issues/34882) @[time-and-fate](https://github.com/time-and-fate)**tw@hfxsd** <!--2414-->
+    - 在 `GRANT` 和 `REVOKE` 中支持列级权限 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 提升在列级权限条目数量较多的部署中，`GRANT` 和 `REVOKE` 等权限更新操作的性能 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
 + TiKV <!--tw@qiancai: 4 notes-->
 
@@ -163,11 +165,8 @@ TiDB 版本：8.5.6
 
     - 修复从 `release-8.5-20250606-v8.5.2` 升级到上游 `release-8.5` 时可能跳过 PITR 元数据升级，并导致 PITR 操作失败的问题 [#66994](https://github.com/pingcap/tidb/issues/66994) @[fzzf678](https://github.com/fzzf678)
     - 修复在执行 `EXCHANGE PARTITION` 后，非聚簇分区表上的非唯一全局索引或可为空的唯一全局索引可能出现不一致并返回不完整结果的问题 [#65289](https://github.com/pingcap/tidb/issues/65289) @[mjonss](https://github.com/mjonss)
-    - 在 `GRANT` 和 `REVOKE` 中支持列级权限 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - 提升在权限条目数量较多的部署中，`GRANT` 和 `REVOKE` 等权限更新操作的性能 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 修复 `KILL QUERY` 错误终止空闲连接的问题 [#65447](https://github.com/pingcap/tidb/issues/65447) @[gengliqi](https://github.com/gengliqi)
-    - 修复在 `JOIN ... USING`、`NATURAL JOIN` 和 `INSERT ... ON DUPLICATE KEY UPDATE` 场景下，列级权限检查可能不正确的问题 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - 提升在存在大量列级权限条目的部署中，权限检查的性能 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf) <!--tw@hfxsd: the following 8 notes-->
+    - 修复在 `JOIN ... USING`、`NATURAL JOIN` 和 `INSERT ... ON DUPLICATE KEY UPDATE` 场景下，列级权限检查可能不正确的问题 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf) <!--tw@hfxsd: the following 8 notes-->
     - 在 `mysql.tidb` 中新增 `cluster_id` 字段，使外部工具能够判断两个 TiDB 实例是否属于同一集群 [#59476](https://github.com/pingcap/tidb/issues/59476) @[YangKeao](https://github.com/YangKeao)
     - 将不可打印的预处理语句参数以十六进制的形式输出，从而提升慢查询日志的可读性 [#65383](https://github.com/pingcap/tidb/issues/65383) @[dveeden](https://github.com/dveeden)
     - 修复设置 `tidb_service_scope` 时，其值未被正确转换为小写的问题 [#66749](https://github.com/pingcap/tidb/issues/66749) @[D3Hunter](https://github.com/D3Hunter)
