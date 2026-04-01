@@ -41,7 +41,7 @@ TiDB 版本：8.5.6
 
     从 v8.5.6 起，TiDB 增强了慢查询日志的控制能力。你可以使用 [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入) 系统变量在实例、会话、SQL 级别定义多维度（如 `Query_time`、`Digest`、`Mem_max`、`KV_total`）的慢查询日志输出规则，使用 [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v900-版本开始引入) 限制每秒的日志输出数量，并通过 [`WRITE_SLOW_LOG`](/optimizer-hints.md) Hint 强制记录指定 SQL 的慢查询日志，从而实现对慢查询日志更灵活的精细化控制。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/stable/identify-slow-queries/)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/stable/identify-slow-queries)。
 
 - TiDB Dashboard 的 Top SQL 页面支持收集和展示 TiKV 网络流量和逻辑 I/O 指标 [#62916](https://github.com/pingcap/tidb/issues/62916) @[yibin87](https://github.com/yibin87) **tw@qiancai** <!--2398-->
 
@@ -67,7 +67,7 @@ TiDB 版本：8.5.6
 
     从 v8.5.6 起，TiDB 支持在 `FOR UPDATE OF` 子句中使用表别名。TiDB 现在可以从 `FROM` 子句中正确解析加锁目标，包括使用别名的表，从而确保行锁按预期生效。这提升了与 MySQL 的兼容性，使 `SELECT ... FOR UPDATE OF` 语句在使用表别名的查询场景下更加稳定可靠。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-select/)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-select)。
 
 ### 数据库管理
 
@@ -161,13 +161,13 @@ TiDB 版本：8.5.6
 
 + TiDB <!--tw@lilin90: the following 7 notes-->
 
-    - Fix the issue that upgrading from release-8.5-20250606-v8.5.2 to upstream release-8.5 can skip PITR metadata upgrades and cause PITR operations to fail. [#66994](https://github.com/pingcap/tidb/issues/66994) @[fzzf678](https://github.com/fzzf678)
-    - Fix the issue that after EXCHANGE PARTITION, non-unique or nullable unique global indexes on non-clustered partitioned tables can become inconsistent and return incomplete results. [#65289](https://github.com/pingcap/tidb/issues/65289) @[mjonss](https://github.com/mjonss)
-    - Support column-level privileges in GRANT and REVOKE. [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - Improve the performance of privilege updates such as GRANT and REVOKE in deployments with large numbers of privilege entries. [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - Fix the issue that KILL QUERY incorrectly kills idle connections. [#65447](https://github.com/pingcap/tidb/issues/65447) @[gengliqi](https://github.com/gengliqi)
-    - Fix the issue that column-level privilege checks can be incorrect for JOIN ... USING, NATURAL JOIN, and INSERT ... ON DUPLICATE KEY UPDATE. [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - Improve privilege-check performance for deployments with many column-level privilege entries. [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf) <!--tw@hfxsd: the following 8 notes-->
+    - 修复从 `release-8.5-20250606-v8.5.2` 升级到上游 `release-8.5` 时可能跳过 PITR 元数据升级，并导致 PITR 操作失败的问题 [#66994](https://github.com/pingcap/tidb/issues/66994) @[fzzf678](https://github.com/fzzf678)
+    - 修复在执行 `EXCHANGE PARTITION` 后，非聚簇分区表上的非唯一全局索引或可为空的唯一全局索引可能出现不一致并返回不完整结果的问题 [#65289](https://github.com/pingcap/tidb/issues/65289) @[mjonss](https://github.com/mjonss)
+    - 在 `GRANT` 和 `REVOKE` 中支持列级权限 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 提升在权限条目数量较多的部署中，`GRANT` 和 `REVOKE` 等权限更新操作的性能 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复 `KILL QUERY` 错误终止空闲连接的问题 [#65447](https://github.com/pingcap/tidb/issues/65447) @[gengliqi](https://github.com/gengliqi)
+    - 修复在 `JOIN ... USING`、`NATURAL JOIN` 和 `INSERT ... ON DUPLICATE KEY UPDATE` 场景下，列级权限检查可能不正确的问题 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 提升在存在大量列级权限条目的部署中，权限检查的性能 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf) <!--tw@hfxsd: the following 8 notes-->
     - 在 `mysql.tidb` 中新增 `cluster_id` 字段，使外部工具能够判断两个 TiDB 实例是否属于同一集群 [#59476](https://github.com/pingcap/tidb/issues/59476) @[YangKeao](https://github.com/YangKeao)
     - 将不可打印的预处理语句参数以十六进制的形式输出，从而提升慢查询日志的可读性 [#65383](https://github.com/pingcap/tidb/issues/65383) @[dveeden](https://github.com/dveeden)
     - 修复设置 `tidb_service_scope` 时，其值未被正确转换为小写的问题 [#66749](https://github.com/pingcap/tidb/issues/66749) @[D3Hunter](https://github.com/D3Hunter)
@@ -201,10 +201,10 @@ TiDB 版本：8.5.6
 
     + Backup & Restore (BR) <!--tw@lilin90: 4 notes-->
 
-        - 修复 log backup 的 flush_ts 可能为 0 的问题 [#19406](https://github.com/tikv/tikv/issues/19406) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复 BR 在使用 GCP S3 API server 进行 multipart upload 时因缺少 `Content-Length` 头而失败的问题 [#19352](https://github.com/tikv/tikv/issues/19352) @[Leavrth](https://github.com/Leavrth)
-        - 修复 BR `restore point` 可能长时间卡在 `waiting for schema info finishes reloading` 并在 15 分钟后超时失败的问题 [#66110](https://github.com/pingcap/tidb/issues/66110) @[kennytm](https://github.com/kennytm)
-        - 修复 BR 在恢复带有 `SHARD_ROW_ID_BITS`、`PRE_SPLIT_REGIONS` 和 `merge_option` 属性的表时无法正确预分裂 Region 的问题 [#65060](https://github.com/pingcap/tidb/issues/65060) @[JoyC-dev](https://github.com/JoyC-dev)
+        - 修复 Log Backup 的 `flush_ts` 可能为 0 的问题 [#19406](https://github.com/tikv/tikv/issues/19406) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复 BR 在使用 GCP S3 API Server 进行 multipart 上传时，因缺少 `Content-Length` 请求头而失败的问题 [#19352](https://github.com/tikv/tikv/issues/19352) @[Leavrth](https://github.com/Leavrth)
+        - 修复 BR 的 `restore point` 可能长时间卡在 `waiting for schema info finishes reloading` 状态，并在 15 分钟后因超时而失败的问题 [#66110](https://github.com/pingcap/tidb/issues/66110) @[kennytm](https://github.com/kennytm)
+        - 修复 BR 在恢复带有 `SHARD_ROW_ID_BITS`、`PRE_SPLIT_REGIONS` 和 `merge_option` 属性的表时，无法正确预分裂 Region 的问题 [#65060](https://github.com/pingcap/tidb/issues/65060) @[JoyC-dev](https://github.com/JoyC-dev)
 
     + TiCDC <!--tw@Oreoxmt: 4 notes-->
 
