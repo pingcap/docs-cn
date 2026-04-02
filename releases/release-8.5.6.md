@@ -97,7 +97,7 @@ TiDB 版本：8.5.6
 
 | 变量名  | 修改类型    | 描述 |
 |--------|------------------------------|------|
-| [`tidb_analyze_version`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_analyze_version-从-v510-版本开始引入) | 修改 | 从 v8.5.6 开始，统计信息版本 1（`tidb_analyze_version = 1`）已废弃，并将在未来的版本中移除。建议使用统计信息版本 2（`tidb_analyze_version = 2`）。 |
+| [`tidb_analyze_version`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_analyze_version-从-v510-版本开始引入) | 修改 | 从 v8.5.6 开始，统计信息版本 1 (`tidb_analyze_version = 1`) 已废弃，并将在未来的版本中移除。建议使用统计信息版本 2 (`tidb_analyze_version = 2`)。 |
 | [`tidb_service_scope`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_service_scope-从-v740-版本开始引入)   | 修改  | 从 v8.5.6 开始，该变量的取值大小写不敏感。TiDB 会将输入值转换为小写形式进行存储和比较。 |
 | [`InPacketBytes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#inpacketbytes-从-v856-版本开始引入) | 新增 | 这个变量只做内部统计使用，对用户不可见。 |
 | [`OutPacketBytes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#outpacketbytes-从-v856-版本开始引入) | 新增 | 这个变量只做内部统计使用，对用户不可见。 |
@@ -105,7 +105,7 @@ TiDB 版本：8.5.6
 | [`tidb_max_dist_task_nodes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_max_dist_task_nodes-从-v856-版本开始引入)  | 新增 | 用于定义分布式框架任务可使用的 TiDB 节点数上限。默认值为 `-1`，表示启用自动模式。在自动模式下，TiDB 将按照 `min(3, tikv_nodes / 3)` 动态地计算该值，其中 `tikv_nodes` 表示集群中 TiKV 节点的数量。 |
 | [`tidb_opt_join_reorder_through_sel`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables.md#tidb_opt_join_reorder_through_sel-从-v856-版本开始引入)  | 新增 | 用于提升部分多表 JOIN 查询的连接顺序优化 (Join Reorder) 效果。当该变量值为 `ON` 时，在满足安全条件的前提下，优化器会将多个连续 JOIN 之间的过滤条件 (`Selection`) 一并纳入连接顺序优化的候选范围。在重建 JOIN 树时，优化器会将这些条件下推至更合适的位置，从而使更多表参与连接顺序优化。 |
 | [`tidb_opt_partial_ordered_index_for_topn`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_opt_partial_ordered_index_for_topn-从-v856-版本开始引入) | 新增 | 用于控制在 `ORDER BY ... LIMIT` 查询中是否启用索引部分有序性 (partial order) 的 TopN 优化。默认值为 `DISABLE`，表示关闭该优化。 |
-| [`tidb_slow_log_max_per_sec`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_slow_log_max_per_sec-从-v856-版本开始引入)  | 新增 | 控制每个 TiDB 节点每秒打印的慢查询日志的数量上限。<ul><li>当值为 `0` （默认值）时，表示不限制每秒打印的慢查询日志数量。</li><li>当值大于 `0` 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢查询日志文件。</li></ul>  |
+| [`tidb_slow_log_max_per_sec`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_slow_log_max_per_sec-从-v856-版本开始引入)  | 新增 | 控制每个 TiDB 节点每秒打印的慢查询日志的数量上限。<ul><li>当值为 `0`（默认值）时，表示不限制每秒打印的慢查询日志数量。</li><li>当值大于 `0` 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢查询日志文件。</li></ul>  |
 | [`tidb_slow_log_rules`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_slow_log_rules-从-v856-版本开始引入)  | 新增 | 用于定义慢查询日志的触发规则，支持基于多维度指标的组合条件，实现更加灵活和精细化的日志记录控制。   |
 
 ### 配置参数
@@ -117,13 +117,13 @@ TiDB 版本：8.5.6
 
 ## 废弃功能
 
-- 从 v8.5.6 开始，统计信息版本 1（`tidb_analyze_version = 1`）已废弃，并将在未来的版本中移除。建议使用统计信息版本 2（`tidb_analyze_version = 2`）以获得更准确的统计信息，并[将目前已有统计信息版本 1 的对象迁移至版本 2](https://docs.pingcap.com/zh/tidb/v8.5/statistics#切换统计信息版本)。
+- 从 v8.5.6 开始，统计信息版本 1 (`tidb_analyze_version = 1`) 已废弃，并将在未来的版本中移除。建议使用统计信息版本 2 (`tidb_analyze_version = 2`) 以获得更准确的统计信息，并[将目前已有统计信息版本 1 的对象迁移至版本 2](https://docs.pingcap.com/zh/tidb/v8.5/statistics#切换统计信息版本)。
 
 ## 改进提升
 
 + TiDB
 
-    - 改进包含 `IN` 条件且作用于索引前缀列的查询的执行计划选择。TiDB 现在可以使用 merge sort 在 `ORDER BY ... LIMIT` 查询中保持顺序，从而减少不必要的扫描并提升性能。[#63449](https://github.com/pingcap/tidb/issues/63449) [#34882](https://github.com/pingcap/tidb/issues/34882) @[time-and-fate](https://github.com/time-and-fate)**tw@hfxsd** <!--2414-->
+    - 改进包含 `IN` 条件且作用于索引前缀列的查询的执行计划选择。TiDB 现在可以使用 merge sort 在 `ORDER BY ... LIMIT` 查询中保持顺序，从而减少不必要的扫描并提升性能 [#63449](https://github.com/pingcap/tidb/issues/63449) [#34882](https://github.com/pingcap/tidb/issues/34882) @[time-and-fate](https://github.com/time-and-fate)**tw@hfxsd** <!--2414-->
     - 在 `GRANT` 和 `REVOKE` 中支持列级权限 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 提升在列级权限条目数量较多的部署中，`GRANT` 和 `REVOKE` 等权限更新操作的性能 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
 
