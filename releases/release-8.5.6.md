@@ -210,7 +210,7 @@ TiDB 版本：8.5.6
         - 修复服务器重启后，changefeed 可能重复创建无效 dispatcher 的问题 [#4452](https://github.com/pingcap/ticdc/issues/4452) @[wlwilliamx](https://github.com/wlwilliamx)
         - 修复当上游 TiDB 版本为 v8.1.x 或更早版本时，TiCDC 无法正确同步表重命名操作的问题 [#4392](https://github.com/pingcap/ticdc/issues/4392) @[lidezhu](https://github.com/lidezhu)
         - 修复启用 CDC 时，TiKV 在数据扫描过程中可能崩溃的问题 [#19404](https://github.com/tikv/tikv/issues/19404) @[wk989898](https://github.com/wk989898)
-        - 为 azblob 下游新增 Azure 托管标识 (Managed Identity) 认证支持，并修复云存储上传可能卡住的问题 [#3093](https://github.com/pingcap/ticdc/issues/3093) @[wlwilliamx](https://github.com/wlwilliamx)
+        - 为 Azure Blob Storage 下游新增 Azure 托管标识 (Managed Identity) 认证支持，并修复云存储上传可能卡住的问题 [#3093](https://github.com/pingcap/ticdc/issues/3093) @[wlwilliamx](https://github.com/wlwilliamx)
 
     + TiDB Data Migration (DM) <!--tw@qiancai: 3 notes-->
 
