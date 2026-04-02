@@ -450,6 +450,7 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - MOD (R)
 - MODE
 - MODIFY
+- MONITOR
 - MONTH
 
 <a id="N" class="letter" href="#N">N</a>
