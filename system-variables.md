@@ -4477,6 +4477,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值：`0`
 - 范围：`[0, 9223372036854775807]`
 - 这个变量用来控制 TiDB schema 信息缓存的大小。单位为 byte。默认值为 `0`，表示不打开缓存限制功能。开启该功能后，TiDB 将使用该变量的值做为可用的内存上限，并使用 Least Recently Used (LRU) 算法缓存所需的表，有效降低 schema 信息占用的内存。
+- 当集群中存在较多分区表，或需要频繁对分区表执行 DDL 操作（如 `TRUNCATE`、`DROP` 分区等）时，建议将该参数取值设置为 `0`。
 
 ### `tidb_schema_version_cache_limit` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
