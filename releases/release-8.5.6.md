@@ -27,7 +27,7 @@ TiDB 版本：8.5.6
 
 - 为资源管控的后台任务设置资源上限的特性成为正式功能 (GA) [#56019](https://github.com/pingcap/tidb/issues/56019) @[glorv](https://github.com/glorv) **tw@hfxsd** <!--1933-->
 
-    TiDB 资源管控能够识别并降低后台任务的运行优先级。在部分场景下，即使有空闲资源，用户也希望后台任务消耗能够控制在很低的水平。从 v8.4.0 开始，你可以使用参数 `UTILIZATION_LIMIT` 为资源管控的后台任务设置最大可以使用的资源百分比，每个节点把所有后台任务的使用量控制在这个百分比以下。该功能可以让你精细控制后台任务的资源占用，进一步提升集群稳定性。
+    TiDB 资源管控能够识别并降低后台任务的运行优先级。在某些场景下，即使有空闲资源，用户也希望后台任务的资源消耗能够保持在较低水平。从 v8.4.0 开始，你可以使用参数 `UTILIZATION_LIMIT` 为资源管控的后台任务设置最大资源使用百分比，从而将每个节点所有后台任务的总使用量控制在该限制以内。该功能可以让你精细控制后台任务的资源占用，进一步提升集群稳定性。
 
     在 v8.5.6 中，该功能成为正式功能 (GA)。
 
@@ -55,9 +55,9 @@ TiDB 版本：8.5.6
 
 - 支持列级权限管理 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf) @[fzzf678](https://github.com/fzzf678) **tw@hfxsd** <!--2332-->
 
-    在 v8.5.6 之前，TiDB 的权限控制覆盖数据库级别和表级别，不支持像 MySQL 那样对特定列授予或回收权限。因此，无法将用户访问限制在表中的部分敏感列。
+    在 v8.5.6 之前，TiDB 的权限控制仅覆盖数据库和表级别，不支持像 MySQL 那样对特定列授予或回收权限，因此无法限制用户访问表中的部分敏感列。
 
-    从 v8.5.6 开始，TiDB 支持列级权限管理。你可以使用 `GRANT` 和 `REVOKE` 语句管理特定列的权限。TiDB 在查询处理和执行计划构建过程中会基于列级权限进行校验，从而实现更细粒度的访问控制，并更好地支持敏感数据隔离和最小权限原则。
+    从 v8.5.6 开始，TiDB 支持列级权限管理。你可以使用 `GRANT` 和 `REVOKE` 语句管理特定列的权限。TiDB 在查询处理和执行计划构建过程中会基于列级权限进行校验，从而实现更细粒度的访问控制，增强敏感数据隔离能力，并更好地支持最小权限原则。
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/column-privilege-management)。
 
@@ -128,7 +128,7 @@ TiDB 版本：8.5.6
     - 改进包含 `IN` 条件且作用于索引前缀列的查询的执行计划选择。TiDB 现在可以使用 merge sort 在 `ORDER BY ... LIMIT` 查询中保持顺序，从而减少不必要的扫描并提升性能 [#63449](https://github.com/pingcap/tidb/issues/63449) [#34882](https://github.com/pingcap/tidb/issues/34882) @[time-and-fate](https://github.com/time-and-fate)**tw@hfxsd** <!--2414-->
     - 在 `GRANT` 和 `REVOKE` 中支持列级权限 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 提升在列级权限条目数量较多的部署中，`GRANT` 和 `REVOKE` 等权限更新操作的性能 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
-
+    - 将不可打印的预处理语句参数以十六进制的形式输出，从而提升慢查询日志的可读性 [#65383](https://github.com/pingcap/tidb/issues/65383) @[dveeden](https://github.com/dveeden)
 + TiKV <!--tw@qiancai: 4 notes-->
 
     - 新增 Load-based Compaction 机制，该机制可感知 MVCC 读取开销，并优先对读取开销较高的 Region 执行 Compaction 操作，以提升查询性能 [#19133](https://github.com/tikv/tikv/issues/19133) @[mittalrishabh](https://github.com/mittalrishabh)
@@ -169,7 +169,6 @@ TiDB 版本：8.5.6
     - 修复在执行 `EXCHANGE PARTITION` 后，非聚簇分区表上的非唯一全局索引或可为空的唯一全局索引可能出现不一致并返回不完整结果的问题 [#65289](https://github.com/pingcap/tidb/issues/65289) @[mjonss](https://github.com/mjonss)
     - 修复 `KILL QUERY` 错误终止空闲连接的问题 [#65447](https://github.com/pingcap/tidb/issues/65447) @[gengliqi](https://github.com/gengliqi)<!--tw@hfxsd: the following 8 notes-->
     - 在 `mysql.tidb` 中新增 `cluster_id` 字段，使外部工具能够判断两个 TiDB 实例是否属于同一集群 [#59476](https://github.com/pingcap/tidb/issues/59476) @[YangKeao](https://github.com/YangKeao)
-    - 将不可打印的预处理语句参数以十六进制的形式输出，从而提升慢查询日志的可读性 [#65383](https://github.com/pingcap/tidb/issues/65383) @[dveeden](https://github.com/dveeden)
     - 修复设置 `tidb_service_scope` 时，其值未被正确转换为小写的问题 [#66749](https://github.com/pingcap/tidb/issues/66749) @[D3Hunter](https://github.com/D3Hunter)
     - 修复 TiDB 重启后无法正确显示亲和力表的问题 [#66284](https://github.com/pingcap/tidb/issues/66284) @[lcwangchao](https://github.com/lcwangchao)
     - 修复由于统计信息缓存 (Stats Cache) 未排除系统表，导致 Stats Healthy 监控指标显示不准确的问题 [#64080](https://github.com/pingcap/tidb/issues/64080) @[0xPoe](https://github.com/0xPoe)
