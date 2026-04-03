@@ -30,7 +30,7 @@ sequenceDiagram
     client->>TiDB: begin
     TiDB->>PD: get ts as start_ts
 
-    loop execute SQL
+    loop excute SQL
         alt do read
             TiDB->>PD: get region from PD or cache
             TiDB->>TiKV: get data from TiKV or cache with start_ts
