@@ -39,9 +39,9 @@ TiDB 版本：8.5.6
 
     在 v8.5.6 之前，TiDB 定位慢查询语句的主要方法是设置系统变量 [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold)，该机制触发慢查询日志的控制粒度粗（整个实例级别全局控制，不支持会话和 SQL 级别精细化控制）、触发条件仅执行时间 (`Query_time`) 一种，无法满足复杂场景慢查询日志抓取以精细化定位问题的需求。
 
-    从 v8.5.6 起，TiDB 增强了慢查询日志的控制能力。你可以使用 [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入) 系统变量在实例、会话、SQL 级别定义多维度（如 `Query_time`、`Digest`、`Mem_max`、`KV_total`）的慢查询日志输出规则，使用 [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v900-版本开始引入) 限制每秒的日志输出数量，并通过 [`WRITE_SLOW_LOG`](/optimizer-hints.md) Hint 强制记录指定 SQL 的慢查询日志，从而实现对慢查询日志更灵活的精细化控制。
+    从 v8.5.6 起，TiDB 增强了慢查询日志的控制能力。你可以使用 [`tidb_slow_log_rules`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_slow_log_rules-从-v856-版本开始引入) 系统变量在实例、会话、SQL 级别定义多维度（如 `Query_time`、`Digest`、`Mem_max`、`KV_total`）的慢查询日志输出规则，使用 [`tidb_slow_log_max_per_sec`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_slow_log_max_per_sec-从-v856-版本开始引入) 系统变量限制每秒的日志输出数量，并通过 [`WRITE_SLOW_LOG`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints) Hint 强制记录指定 SQL 的慢查询日志，从而实现对慢查询日志更灵活的精细化控制。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/stable/identify-slow-queries)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/identify-slow-queries)。
 
 - TiDB Dashboard 的 Top SQL 页面支持收集和展示 TiKV 网络流量和逻辑 I/O 指标 [#62916](https://github.com/pingcap/tidb/issues/62916) @[yibin87](https://github.com/yibin87) **tw@qiancai** <!--2398-->
 
@@ -61,7 +61,7 @@ TiDB 版本：8.5.6
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/column-privilege-management)。
 
-- 支持在 `FOR UPDATE OF` 子句中使用表别名 [#65532](https://github.com/pingcap/tidb/pull/65532) @[cryo-zd](https://github.com/cryo-zd) **tw@lilin90** <!--2350-->
+- 支持在 `FOR UPDATE OF` 子句中使用表别名 [#63035](https://github.com/pingcap/tidb/issues/63035) @[cryo-zd](https://github.com/cryo-zd) **tw@lilin90** <!--2350-->
 
     在 v8.5.6 之前，当 `SELECT ... FOR UPDATE OF <table>` 语句在加锁子句中引用表别名时，TiDB 可能无法正确解析该别名，即使别名是有效的，也会返回 `table not exists` 错误。
 
@@ -149,7 +149,7 @@ TiDB 版本：8.5.6
     + TiDB Data Migration (DM) <!--tw@lilin90: 2 notes-->
 
         - 新增对 MySQL 8.4 作为 DM 上游数据源的支持，适配该版本引入的新术语和版本检测逻辑 [#11020](https://github.com/pingcap/tiflow/issues/11020) @[dveeden](https://github.com/dveeden)
-        - 在 DM syncer 中新增外键因果依赖支持，确保多 worker 场景下行变更按照父表至子表的外键顺序执行 [#12552](https://github.com/pingcap/tiflow/pull/12552) @[OliverS929](https://github.com/OliverS929)
+        - 在 DM syncer 中新增外键因果依赖支持，确保多 worker 场景下行变更按照父表至子表的外键顺序执行 [#12350](https://github.com/pingcap/tiflow/issues/12350) @[OliverS929](https://github.com/OliverS929)
 
     + TiDB Lightning
 
@@ -165,8 +165,7 @@ TiDB 版本：8.5.6
 
     - 修复从 `release-8.5-20250606-v8.5.2` 升级到上游 `release-8.5` 时可能跳过 PITR 元数据升级，并导致 PITR 操作失败的问题 [#66994](https://github.com/pingcap/tidb/issues/66994) @[fzzf678](https://github.com/fzzf678)
     - 修复在执行 `EXCHANGE PARTITION` 后，非聚簇分区表上的非唯一全局索引或可为空的唯一全局索引可能出现不一致并返回不完整结果的问题 [#65289](https://github.com/pingcap/tidb/issues/65289) @[mjonss](https://github.com/mjonss)
-    - 修复 `KILL QUERY` 错误终止空闲连接的问题 [#65447](https://github.com/pingcap/tidb/issues/65447) @[gengliqi](https://github.com/gengliqi)
-    - 修复在 `JOIN ... USING`、`NATURAL JOIN` 和 `INSERT ... ON DUPLICATE KEY UPDATE` 场景下，列级权限检查可能不正确的问题 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf) <!--tw@hfxsd: the following 8 notes-->
+    - 修复 `KILL QUERY` 错误终止空闲连接的问题 [#65447](https://github.com/pingcap/tidb/issues/65447) @[gengliqi](https://github.com/gengliqi)<!--tw@hfxsd: the following 8 notes-->
     - 在 `mysql.tidb` 中新增 `cluster_id` 字段，使外部工具能够判断两个 TiDB 实例是否属于同一集群 [#59476](https://github.com/pingcap/tidb/issues/59476) @[YangKeao](https://github.com/YangKeao)
     - 将不可打印的预处理语句参数以十六进制的形式输出，从而提升慢查询日志的可读性 [#65383](https://github.com/pingcap/tidb/issues/65383) @[dveeden](https://github.com/dveeden)
     - 修复设置 `tidb_service_scope` 时，其值未被正确转换为小写的问题 [#66749](https://github.com/pingcap/tidb/issues/66749) @[D3Hunter](https://github.com/D3Hunter)
@@ -201,7 +200,7 @@ TiDB 版本：8.5.6
     + Backup & Restore (BR) <!--tw@lilin90: 4 notes-->
 
         - 修复 Log Backup 的 `flush_ts` 可能为 0 的问题 [#19406](https://github.com/tikv/tikv/issues/19406) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复 BR 在使用 GCP S3 API Server 进行 multipart 上传时，因缺少 `Content-Length` 请求头而失败的问题 [#19352](https://github.com/tikv/tikv/issues/19352) @[Leavrth](https://github.com/Leavrth)
+        - 修复在通过兼容 Amazon S3 的 API（使用 S3 风格凭证）访问 Google Cloud Storage 时，因缺少 `Content-Length` 请求头导致 BR 在分片上传过程中可能失败的问题 [#19352](https://github.com/tikv/tikv/issues/19352) @[Leavrth](https://github.com/Leavrth)
         - 修复 BR 的 `restore point` 可能长时间卡在 `waiting for schema info finishes reloading` 状态，并在 15 分钟后因超时而失败的问题 [#66110](https://github.com/pingcap/tidb/issues/66110) @[kennytm](https://github.com/kennytm)
         - 修复 BR 在恢复带有 `SHARD_ROW_ID_BITS`、`PRE_SPLIT_REGIONS` 和 `merge_option` 属性的表时，无法正确预分裂 Region 的问题 [#65060](https://github.com/pingcap/tidb/issues/65060) @[JoyC-dev](https://github.com/JoyC-dev)
 
