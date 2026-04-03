@@ -92,12 +92,14 @@ TiDB 版本：8.5.6
 ### MySQL 兼容性
 
 - 从 v8.5.6 版本开始，TiDB 支持兼容 MySQL 的列级权限管理机制。你可以在表级别为指定列授予或回收 `SELECT`、`INSERT`、`UPDATE`、`REFERENCES` 权限。更多信息参见[列级权限管理](https://docs.pingcap.com/zh/tidb/v8.5/column-privilege-management)。
+- 从 v8.5.6 版本开始，TiDB 支持在 `FOR UPDATE OF` 子句中使用表别名。为保持向后兼容性，在定义了别名的情况下，你仍然可以引用基础表名，但这会触发一条推荐使用显式别名的警告。更多信息参见 [`SELECT`](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-select) 文档。
 
 ### 系统变量
 
 | 变量名  | 修改类型    | 描述 |
 |--------|------------------------------|------|
 | [`tidb_analyze_version`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_analyze_version-从-v510-版本开始引入) | 修改 | 从 v8.5.6 开始，统计信息版本 1 (`tidb_analyze_version = 1`) 已废弃，并将在未来的版本中移除。建议使用统计信息版本 2 (`tidb_analyze_version = 2`)。 |
+| [`tidb_ignore_inlist_plan_digest`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_ignore_inlist_plan_digest-从-v760-版本开始引入) | 修改 | 默认值从 `OFF` 修改为 `ON`。默认值 `ON` 表示 TiDB 在生成执行计划摘要时，会忽略 `IN` 列表中的元素差异（包括元素数量的差异），并使用 `...` 代替 `IN` 列表中的元素。 |
 | [`tidb_service_scope`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_service_scope-从-v740-版本开始引入)   | 修改  | 从 v8.5.6 开始，该变量的取值大小写不敏感。TiDB 会将输入值转换为小写形式进行存储和比较。 |
 | [`InPacketBytes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#inpacketbytes-从-v856-版本开始引入) | 新增 | 这个变量只做内部统计使用，对用户不可见。 |
 | [`OutPacketBytes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#outpacketbytes-从-v856-版本开始引入) | 新增 | 这个变量只做内部统计使用，对用户不可见。 |
