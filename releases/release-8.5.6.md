@@ -91,8 +91,8 @@ TiDB 版本：8.5.6
 
 - 从 v8.5.6 开始，TiDB 支持兼容 MySQL 的列级权限管理机制。你可以在表级别为指定列授予或回收 `SELECT`、`INSERT`、`UPDATE`、`REFERENCES` 权限。更多信息参见[列级权限管理](https://docs.pingcap.com/zh/tidb/v8.5/column-privilege-management)。
 - 从 v8.5.6 开始，TiDB 支持在 `FOR UPDATE OF` 子句中使用表别名。为保持向后兼容性，在定义了别名的情况下，你仍然可以引用基础表名，但这会触发一条推荐使用显式别名的警告。更多信息参见 [`SELECT`](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-select) 文档。
-- 从 v8.5.6 版本开始，Dumpling 适配 MySQL 8.4 更新后的二进制日志命名，支持从 MySQL 8.4 导出数据 [#53082](https://github.com/pingcap/tidb/issues/53082) @[dveeden](https://github.com/dveeden)
-- 从 v8.5.6 版本开始，TiDB Data Migration (DM) 新增对 MySQL 8.4 作为 DM 上游数据源的支持，适配该版本引入的新术语和版本检测逻辑 [#11020](https://github.com/pingcap/tiflow/issues/11020) @[dveeden](https://github.com/dveeden)
+- 从 v8.5.6 开始，Dumpling 已适配 MySQL 8.4 更新后的二进制日志命名，支持从 MySQL 8.4 导出数据 [#53082](https://github.com/pingcap/tidb/issues/53082) @[dveeden](https://github.com/dveeden)
+- 从 v8.5.6 开始，TiDB Data Migration (DM) 新增对 MySQL 8.4 作为上游数据源的支持，适配该版本引入的新术语和版本检测逻辑 [#11020](https://github.com/pingcap/tiflow/issues/11020) @[dveeden](https://github.com/dveeden)
 
 ### 系统变量
 
@@ -104,9 +104,9 @@ TiDB 版本：8.5.6
 | [`InPacketBytes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#inpacketbytes-从-v856-版本开始引入) | 新增 | 这个变量只做内部统计使用，对用户不可见。 |
 | [`OutPacketBytes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#outpacketbytes-从-v856-版本开始引入) | 新增 | 这个变量只做内部统计使用，对用户不可见。 |
 | [`tidb_foreign_key_check_in_shared_lock`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_foreign_key_check_in_shared_lock-从-v856-版本开始引入) | 新增 | 用于控制在悲观事务中，外键约束检查对父表中的行加锁时是否使用共享锁（而非排他锁）。默认值为 `OFF`，代表默认使用排他锁。 |
-| [`tidb_max_dist_task_nodes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_max_dist_task_nodes-从-v856-版本开始引入)  | 新增 | 用于定义分布式框架任务可使用的 TiDB 节点数上限。默认值为 `-1`，表示启用自动模式。在自动模式下，TiDB 将按照 `min(3, tikv_nodes / 3)` 动态地计算该值，其中 `tikv_nodes` 表示集群中 TiKV 节点的数量。 |
+| [`tidb_max_dist_task_nodes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_max_dist_task_nodes-从-v856-版本开始引入)  | 新增 | 用于定义分布式框架任务可使用的 TiDB 节点数上限。默认值为 `-1`，表示启用自动模式。在自动模式下，TiDB 将按照 `min(3, tikv_nodes / 3)` 动态计算该值，其中 `tikv_nodes` 表示集群中 TiKV 节点的数量。 |
 | [`tidb_opt_join_reorder_through_sel`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables.md#tidb_opt_join_reorder_through_sel-从-v856-版本开始引入)  | 新增 | 用于提升部分多表 JOIN 查询的连接顺序优化 (Join Reorder) 效果。当该变量值为 `ON` 时，在满足安全条件的前提下，优化器会将多个连续 JOIN 之间的过滤条件 (`Selection`) 一并纳入连接顺序优化的候选范围。在重建 JOIN 树时，优化器会将这些条件下推至更合适的位置，从而使更多表参与连接顺序优化。 |
-| [`tidb_opt_partial_ordered_index_for_topn`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_opt_partial_ordered_index_for_topn-从-v856-版本开始引入) | 新增 | 用于控制在 `ORDER BY ... LIMIT` 查询中是否启用索引部分有序性 (partial order) 的 TopN 优化。默认值为 `DISABLE`，表示关闭该优化。 |
+| [`tidb_opt_partial_ordered_index_for_topn`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_opt_partial_ordered_index_for_topn-从-v856-版本开始引入) | 新增 | 用于控制在 `ORDER BY ... LIMIT` 查询中是否启用基于索引部分有序性 (partial order) 的 TopN 优化。默认值为 `DISABLE`，表示关闭该优化。 |
 | [`tidb_slow_log_max_per_sec`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_slow_log_max_per_sec-从-v856-版本开始引入)  | 新增 | 控制每个 TiDB 节点每秒打印的慢查询日志的数量上限。<ul><li>当值为 `0`（默认值）时，表示不限制每秒打印的慢查询日志数量。</li><li>当值大于 `0` 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢查询日志文件。</li></ul>  |
 | [`tidb_slow_log_rules`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_slow_log_rules-从-v856-版本开始引入)  | 新增 | 用于定义慢查询日志的触发规则，支持基于多维度指标的组合条件，实现更加灵活和精细化的日志记录控制。   |
 
@@ -122,7 +122,7 @@ TiDB 版本：8.5.6
 
 ## 废弃功能
 
-- 从 v8.5.6 开始，统计信息版本 1 (`tidb_analyze_version = 1`) 已废弃，并将在未来的版本中移除。建议使用统计信息版本 2 (`tidb_analyze_version = 2`) 以获得更准确的统计信息，并[将目前已有统计信息版本 1 的对象迁移至版本 2](https://docs.pingcap.com/zh/tidb/v8.5/statistics#切换统计信息版本)。
+- 从 v8.5.6 开始，统计信息版本 1 (`tidb_analyze_version = 1`) 已废弃，并将在未来的版本中移除。建议使用统计信息版本 2 (`tidb_analyze_version = 2`)，并[将目前已有统计信息版本 1 的对象迁移至版本 2](https://docs.pingcap.com/zh/tidb/v8.5/statistics#切换统计信息版本)，以获得更准确的统计信息。
 
 ## 改进提升
 
