@@ -114,9 +114,9 @@ TiDB 版本：8.5.6
 
 | 配置文件或组件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| TiKV | [`mvcc-read-aware-enabled`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#mvcc-read-aware-enabled-从-v856-版本开始引入) | 新增 | 控制是否启用 MVCC-read-aware compaction。默认值为 `false`。 |
-| TiKV | [`mvcc-read-weight`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#mvcc-read-weight-从-v856-版本开始引入) | 新增 | 在计算 Region 的压缩优先级分数时，对 MVCC 读取活动应用的权重乘数。默认值为 `3.0`。 |
-| TiKV | [`mvcc-scan-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#mvcc-scan-threshold-从-v856-版本开始引入) | 新增 | 每次读取请求扫描的 MVCC 版本数量的最小值，用于将 Region 标记为 compaction 候选。默认值为 `1000`。 |
+| TiKV | [`gc.auto-compaction.mvcc-read-aware-enabled`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#mvcc-read-aware-enabled-从-v856-版本开始引入) | 新增 | 控制是否启用 MVCC-read-aware compaction。默认值为 `false`。 |
+| TiKV | [`gc.auto-compaction.mvcc-read-weight`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#mvcc-read-weight-从-v856-版本开始引入) | 新增 | 在计算 Region 的压缩优先级分数时，对 MVCC 读取活动应用的权重乘数。默认值为 `3.0`。 |
+| TiKV | [`gc.auto-compaction.mvcc-scan-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#mvcc-scan-threshold-从-v856-版本开始引入) | 新增 | 每次读取请求扫描的 MVCC 版本数量的最小值，用于将 Region 标记为 compaction 候选。默认值为 `1000`。 |
 | TiKV | [`resource-metering.enable-network-io-collection`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#enable-network-io-collection-从-v856-版本开始引入) | 新增 | 控制是否在 [Top SQL](https://docs.pingcap.com/zh/tidb/v8.5/top-sql) 中额外采集 TiKV 网络流量和逻辑 I/O 信息。默认值为 `false`。 |
 | TiCDC | [`sink.csv.output-field-header`](https://docs.pingcap.com/zh/tidb/v8.5/ticdc/ticdc-csv#使用-csv) | 新增 | 控制 CSV 文件是否输出表头行。默认值为 `false`。仅适用于 TiCDC 新架构。 |
 
