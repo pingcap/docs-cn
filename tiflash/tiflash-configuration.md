@@ -164,6 +164,14 @@ I/O 限流功能相关配置。
 - 当 `max_bytes_per_sec` 配置不为 `0` 时，优先使用 [`max_bytes_per_sec`](#max_bytes_per_sec)。
 - 默认值：`0`
 
+##### `s3_max_read_bytes_per_sec` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 节点级 S3 读取总带宽限制，所有 S3 直接读取和 FileCache 后台下载共享这一带宽预算。
+- 该配置仅在存算分离架构下生效，用于限制冷读或缓存未命中时对 S3 的放大读取流量。
+- 设置为 `0` 表示关闭该限制。
+- 默认值：`0`
+- 单位：Byte
+
 ##### `foreground_write_weight`
 
 <!-- 下面的参数用于控制不同 I/O 流量类型分配到的带宽权重，一般不需要调整。以下默认配置表示每一种流量将获得 25 / (25 + 25 + 25 + 25) = 25% 的权重。-->
@@ -482,9 +490,16 @@ I/O 限流功能相关配置。
 - 该任务不会影响对象存储上的 GC 行为，主要用于观测对象存储空间使用情况。执行后会更新 Prometheus 指标。
 - 该任务需要遍历对象存储中的 key，开销通常高于常规 GC 扫描。如果需要开启该参数，一般建议设置为大于等于 `86400` (24 小时)。
 
+##### `dt_filecache_wait_on_downloading_ms` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 控制在[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下，TiFlash Compute Node 发现同一个 key 已经在后台下载时，当前请求最多等待该下载完成的时间。用于减少同一对象因重复下载带来的额外 S3 读取压力。
+- 设置为 `0` 表示关闭等待，当前请求不会等待已在进行中的下载完成。
+- 默认值：`0`
+- 单位：毫秒
+
 ##### `disagg_blocklist_wn_store_id` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 控制在存算分离架构下，TiFlash Compute Node 不会将请求分发至哪些 TiFlash Write Node。
+- 控制在[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下，TiFlash Compute Node 不会将请求分发至哪些 TiFlash Write Node。
 - 其值为使用 `,` 分隔的 store_id 字符串。例如，设置为 `"140,141"` 表示 TiFlash Compute Node 不会将请求分发至 store_id 为 `140` 或 `141` 的 TiFlash Write Node。可以使用 [pd-ctl](/pd-control.md#查询存算分离架构下的-tiflash-节点) 查找集群中 TiFlash Write Node 的 store_id。
 - 如果其值为空字符串 `""`，表示 TiFlash Compute Node 会将请求分发至所有 TiFlash Write Node。
 - 默认值：`""`
