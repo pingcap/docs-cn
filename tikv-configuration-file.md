@@ -2378,7 +2378,7 @@ Raft Engine 相关的配置项。
 ### `mvcc-read-aware-enabled` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
 
 + 控制是否启用 MVCC-read-aware compaction。启用后，TiKV 会跟踪读取请求期间扫描的 MVCC 版本数量，并利用这些信息优先对 MVCC 读取放大率高的 Region 进行 compaction。这可以降低热点 Region 在扫描过程中遇到大量陈旧版本时产生的读取延迟。
-+ Default value: `false`
++ 默认值：`false`
 
 ### `mvcc-scan-threshold` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
 
