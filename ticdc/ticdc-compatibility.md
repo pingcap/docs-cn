@@ -42,20 +42,19 @@ TiCDC 新架构支持 v7.5.0 及以上版本的 TiDB 集群，部分特殊的兼
 
 TiCDC 依赖 TiDB、TiKV 和 PD 提供的上游变更数据及相关接口。随着 TiDB 及相关组件的持续演进，这些数据格式和接口可能发生变化，例如 TiDB 的并行 DDL、快速建表等功能会修改相关逻辑和数据处理流程，TiCDC 需要进行相应适配。因此，**老架构 TiCDC 不保证在跨版本的 TiDB/TiKV/PD 混合部署环境中提供正式的向上和向下兼容性**。新架构 TiCDC 支持对 v7.5.0 及以上版本的 TiDB 集群提供**向下兼容性**。
 
-
 ### 老架构 TiCDC 升级建议
 
-对于老架构 TiCDC，不建议在 TiDB 滚动升级期间持续运行 Changefeed。升级时，建议按以下顺序执行：
+对于老架构 TiCDC，**不建议在 TiDB 滚动升级期间持续运行 Changefeed**。升级时，建议按以下顺序执行：
 
 1. 暂停所有 Changefeed。
 2. 先升级 TiCDC。
-3. 再升级 TiDB 集群的其他组件。
-4. 待升级完成后恢复 Changefeed。
+3. 再升级 TiDB 集群中的其他组件。
+4. 升级完成后，恢复 Changefeed。
 
-例如，假设将集群从 `v8.5.4` 升级到 `v8.5.5`，如果使用 TiUP 管理集群，可以参考以下命令（以下示例以 `linux-amd64` 为例，其他平台请按实际环境替换包名中的平台信息）：
+例如，假设将集群从 v8.5.4 升级到 v8.5.5，如果使用 TiUP 管理集群，可以参考以下命令（以下示例以 `linux-amd64` 为例，其他平台请根据实际环境替换包名中的平台信息）：
 
 ```sh
-# 1. 暂停所有 Changefeed。请对每个 Changefeed 分别执行一次。
+# 1. 暂停所有 Changefeed（需对每个 Changefeed 分别执行一次）。
 tiup cdc:v8.5.4 cli changefeed pause \
   --server=http://<ticdc-host>:8300 \
   --changefeed-id=<changefeed-id>
@@ -65,8 +64,8 @@ wget https://tiup-mirrors.pingcap.com/cdc-v8.5.5-linux-amd64.tar.gz \
   -O /tmp/cdc-v8.5.5-linux-amd64.tar.gz
 tiup cluster patch <cluster-name> /tmp/cdc-v8.5.5-linux-amd64.tar.gz -R cdc
 
-# 3. 再升级 TiDB 集群的其他组件。
-#    请根据集群中实际存在的组件分别执行。以下示例演示 PD、TiKV 和 TiDB。
+# 3. 再升级 TiDB 集群中的其他组件。
+#    需根据集群中实际存在的组件分别执行。以下示例包括 PD、TiKV 和 TiDB。
 wget https://tiup-mirrors.pingcap.com/pd-v8.5.5-linux-amd64.tar.gz \
   -O /tmp/pd-v8.5.5-linux-amd64.tar.gz
 wget https://tiup-mirrors.pingcap.com/tikv-v8.5.5-linux-amd64.tar.gz \
@@ -78,9 +77,9 @@ tiup cluster patch <cluster-name> /tmp/pd-v8.5.5-linux-amd64.tar.gz -R pd
 tiup cluster patch <cluster-name> /tmp/tikv-v8.5.5-linux-amd64.tar.gz -R tikv
 tiup cluster patch <cluster-name> /tmp/tidb-v8.5.5-linux-amd64.tar.gz -R tidb
 
-# 如果集群中还包含 TiFlash、TiProxy、TiKV-CDC 等组件，也按相同方式分别执行 patch。
+# 如果集群中还包含 TiFlash、TiProxy、TiKV-CDC 等组件，也需按相同方式分别执行 patch。
 
-# 4. 升级完成后恢复所有 Changefeed。请对每个 Changefeed 分别执行一次。
+# 4. 升级完成后，恢复所有 Changefeed（需对每个 Changefeed 分别执行一次）。
 tiup cdc:v8.5.5 cli changefeed resume \
   --server=http://<ticdc-host>:8300 \
   --changefeed-id=<changefeed-id>
@@ -88,7 +87,7 @@ tiup cdc:v8.5.5 cli changefeed resume \
 
 > **注意：**
 >
-> `tiup cluster patch` 一次只能替换一个组件，因此第 3 步需要根据集群中实际存在的组件分别执行。
+> `tiup cluster patch` 每次只能替换一个组件，因此第 3 步需要根据集群中实际存在的组件分别执行。
 
 ### 新架构 TiCDC 升级建议
 
