@@ -741,6 +741,26 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
     - 集群 Region 数量较多，PD leader 由于处理心跳和调度任务的开销大，导致 CPU 资源紧张。
     - 集群中 TiDB 实例数量较多，Region 信息请求并发量较大，PD leader CPU 压力大。
 
+### `performance_schema_session_connect_attrs_size` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否适用于 Hint [`SET_VAR`](/optimizer-hints.md#set_varvar_namevar_value)：否
+- 类型：整数型
+- 默认值：`4096`
+- 取值范围：`[-1, 65536]`
+- 单位：Bytes
+- 控制每个会话连接属性的最大总大小。
+- 如果连接属性的总大小超过此值，TiDB 会截断超出的属性，并添加 `_truncated` 来表示被截断的字节数。
+- 在此限制内被接受的连接属性会写入慢日志中的 `Session_connect_attrs` 字段，并可通过 [`INFORMATION_SCHEMA.SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 和 `INFORMATION_SCHEMA.CLUSTER_SLOW_QUERY` 查询。
+- 你可以通过调整此变量来控制慢日志中记录的 `Session_connect_attrs` 大小。
+- 如果该值设置为 `-1`，表示未配置限制，TiDB 会将其视为最大 `65536` 字节。
+- 如果该值设置为 `0`，TiDB 不会保留客户端提供的会话连接属性，这实际上会禁用会话属性记录。
+
+> **注意：**
+>
+> TiDB 对握手连接属性强制施加 1 MiB 的硬性限制。若超过该硬性限制，连接将被拒绝。
+
 ### `plugin_dir`
 
 - 作用域：GLOBAL
@@ -2983,11 +3003,11 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
-- 默认值：`OFF`
+- 默认值：`ON`。在 v8.5.6 之前，默认值为 `OFF`。
 - 这个变量用来控制 TiDB 在生成执行计划摘要 (Plan Digest) 时，是否忽略不同查询中 `IN` 列表的元素差异。
 
-    - 当为默认值 `OFF` 时，TiDB 在生成执行计划摘要时，不会忽略 `IN` 列表中的元素差异（包括元素数量差异）。`IN` 列表的元素差异将导致生成的执行计划摘要不同。
-    - 当设置为 `ON` 时，TiDB 会忽略 `IN` 列表中的元素差异（包括元素数量差异），在执行计划摘要中使用 `...` 代替 `IN` 列表中的元素。此时，相同类型的 `IN` 查询会生成相同的执行计划摘要。
+    - 当为默认值 `ON` 时，TiDB 在生成执行计划摘要时，会忽略 `IN` 列表中的元素差异（包括元素数量的差异），并使用 `...` 代替 `IN` 列表中的元素。此时，相同类型的 `IN` 查询会生成相同的执行计划摘要。
+    - 当设置为 `OFF` 时，TiDB 在生成执行计划摘要时，不会忽略 `IN` 列表中的元素差异（包括元素数量的差异）。`IN` 列表中的元素差异会导致生成的执行计划摘要不同。
 
 ### `tidb_ignore_prepared_cache_close_stmt` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
@@ -3333,7 +3353,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[100, 16384]`
 - 这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
 
-### `tidb_max_dist_task_nodes` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+### `tidb_max_dist_task_nodes` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -4968,6 +4988,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 对 TiDB v8.4.0 以前的版本，该变量默认值为 `0`。
 - 从 TiDB v8.4.0 开始，默认值为 `536870912`（即 512 MiB）。从低版本升级到 v8.4.0 及更高版本后仍然会使用旧值。
 - 这个变量用来控制 TiDB schema 信息缓存的大小。单位为 byte。设置为 `0` 表示不打开缓存限制功能。如需开启，则需要将该变量的值设置在 `[67108864, 9223372036854775807]` 范围内，TiDB 将使用该变量的值做为可用的内存上限，并使用 Least Recently Used (LRU) 算法缓存所需的表，有效降低 schema 信息占用的内存。
+- 当集群中存在较多分区表，或需要频繁对分区表执行 DDL 操作（如 `TRUNCATE`、`DROP` 分区等）时，建议将该参数取值设置为 `0`。
 
 ### `tidb_schema_version_cache_limit` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
@@ -5147,10 +5168,12 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：""
 - 类型：字符串
 - 用于定义慢查询日志的触发规则，支持基于多维度指标的组合条件，实现更加灵活和精细化的日志记录控制。
+- 关于该系统变量的详细使用方法，请参考 [`tidb_slow_log_rules` 使用方法](/identify-slow-queries.md#tidb_slow_log_rules-使用方法)。
 
 > **Tip:**
 >
-> 建议在启用 `tidb_slow_log_rules` 后，同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v900-版本开始引入)，以限制慢查询日志打印频率，防止基于规则的慢查询日志触发过于频繁。
+> - 在生产环境启用 `tidb_slow_log_rules` 时，建议同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v900-版本开始引入)，避免慢查询日志打印过于频繁。
+> - 规则建议先从较严格条件开始，再按排障需求逐步放宽。更多性能影响介绍，请参考[使用建议](/identify-slow-queries.md#使用建议)。
 
 ### `tidb_slow_log_threshold`
 
