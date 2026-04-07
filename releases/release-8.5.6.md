@@ -87,8 +87,6 @@ TiDB 版本：8.5.6
 
 对于新部署的 TiDB v8.5.5 集群（即不是从早于 v8.5.4 的版本升级而来的集群），你可以平滑升级到 v8.5.6。v8.5.6 的大多数变更对常规升级是安全的，但也包含了若干行为变更、MySQL 兼容性变更、系统变量变更、配置参数变更以及系统表变更。在升级前，请务必仔细阅读本节内容。
 
-### 行为变更
-
 ### MySQL 兼容性
 
 - 从 v8.5.6 版本开始，TiDB 支持兼容 MySQL 的列级权限管理机制。你可以在表级别为指定列授予或回收 `SELECT`、`INSERT`、`UPDATE`、`REFERENCES` 权限。更多信息参见[列级权限管理](https://docs.pingcap.com/zh/tidb/v8.5/column-privilege-management)。
@@ -129,6 +127,7 @@ TiDB 版本：8.5.6
     - 在 `GRANT` 和 `REVOKE` 中支持列级权限 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 提升在列级权限条目数量较多的部署中，`GRANT` 和 `REVOKE` 等权限更新操作的性能 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 将不可打印的预处理语句参数以十六进制的形式输出，从而提升慢查询日志的可读性 [#65383](https://github.com/pingcap/tidb/issues/65383) @[dveeden](https://github.com/dveeden)
+
 + TiKV <!--tw@qiancai: 4 notes-->
 
     - 新增 Load-based Compaction 机制，该机制可感知 MVCC 读取开销，并优先对读取开销较高的 Region 执行 Compaction 操作，以提升查询性能 [#19133](https://github.com/tikv/tikv/issues/19133) @[mittalrishabh](https://github.com/mittalrishabh)
@@ -140,26 +139,16 @@ TiDB 版本：8.5.6
     - 删除不存在的 label 时，返回 `404` 而非 `200` [#10089](https://github.com/tikv/pd/issues/10089) @[lhy1024](https://github.com/lhy1024)
     - (dup): release-7.5.7.md > 改进提升> PD - 减少非必要的错误日志 [#9370](https://github.com/tikv/pd/issues/9370) @[bufferflies](https://github.com/bufferflies)
 
-+ TiFlash
-
 + Tools
-
-    + Backup & Restore (BR)
-
-    + TiCDC
 
     + TiDB Data Migration (DM) <!--tw@lilin90: 2 notes-->
 
         - 新增对 MySQL 8.4 作为 DM 上游数据源的支持，适配该版本引入的新术语和版本检测逻辑 [#11020](https://github.com/pingcap/tiflow/issues/11020) @[dveeden](https://github.com/dveeden)
         - 在 DM syncer 中新增外键因果依赖支持，确保多 worker 场景下行变更按照父表至子表的外键顺序执行 [#12350](https://github.com/pingcap/tiflow/issues/12350) @[OliverS929](https://github.com/OliverS929)
 
-    + TiDB Lightning
-
     + Dumpling <!--tw@Oreoxmt: 1 note-->
 
         - 适配 MySQL 8.4 更新后的二进制日志命名，支持从 MySQL 8.4 导出数据 [#53082](https://github.com/pingcap/tidb/issues/53082) @[dveeden](https://github.com/dveeden)
-
-    + TiUP
 
 ## 错误修复
 
@@ -217,5 +206,3 @@ TiDB 版本：8.5.6
         - 修复 DM 在上游 binlog 文件切换后全局 checkpoint 位置未推进的问题 [#12339](https://github.com/pingcap/tiflow/issues/12339) @[OliverS929](https://github.com/OliverS929)
         - 修复 DM 在 safe-mode 下处理含外键约束表的更新时，在未修改主键或唯一键的情况下仍可能误触发外键级联并导致数据被错误删除的问题 [#12350](https://github.com/pingcap/tiflow/issues/12350) @[OliverS929](https://github.com/OliverS929)
         - 修复 DM validator 在处理 `UNSIGNED` 列时误报校验错误的问题 [#12178](https://github.com/pingcap/tiflow/issues/12178) @[OliverS929](https://github.com/OliverS929)
-
-    + TiDB Lightning
