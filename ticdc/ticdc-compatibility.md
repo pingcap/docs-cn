@@ -52,6 +52,26 @@ TiCDC 依赖 TiDB、TiKV 和 PD 提供的上游变更数据及相关接口。随
 3. 再升级 TiDB 集群的其他组件。
 4. 待升级完成后恢复 Changefeed。
 
+例如，假设将集群从 `v8.5.4` 升级到 `v8.5.5`，可以参考以下 TiUP 命令：
+
+```sh
+# 1. 暂停所有 Changefeed。请对每个 Changefeed 分别执行一次。
+tiup cdc:v8.5.4 cli changefeed pause \
+  --server=http://<ticdc-host>:8300 \
+  --changefeed-id=<changefeed-id>
+
+# 2. 先只升级 TiCDC 组件到 v8.5.5。
+tiup cluster upgrade <cluster-name> v8.5.4 --cdc-version v8.5.5
+
+# 3. 再将 TiDB 集群的其他组件升级到 v8.5.5。
+tiup cluster upgrade <cluster-name> v8.5.5
+
+# 4. 升级完成后恢复所有 Changefeed。请对每个 Changefeed 分别执行一次。
+tiup cdc:v8.5.5 cli changefeed resume \
+  --server=http://<ticdc-host>:8300 \
+  --changefeed-id=<changefeed-id>
+```
+
 ### 新架构 TiCDC 升级建议
 
 新架构 TiCDC 在 TiDB 集群滚动升级期间能够持续运行 Changefeed，但前提是升级之前的 TiCDC 已经是新架构 TiCDC。
