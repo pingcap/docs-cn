@@ -2360,7 +2360,7 @@ Raft Engine 相关的配置项。
 
 ### `mvcc-read-weight` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
 
-+ 在计算 Region 的压缩优先级分数时，对 MVCC 读取活动应用的权重乘数。较高的数值会提高 MVCC 读放大在整体评估中的权重，相对于其他压缩触发因素（例如墓碑密度 (Tombstone Density)）占比更大。该配置项仅在 [`mvcc-read-aware-enabled`](#mvcc-read-aware-enabled-从-v856-和-v900-版本开始引入) 设置为 `true` 时生效。
++ 在计算 Region 的压缩优先级分数时，对 MVCC 读取活动应用的权重乘数。较高的数值会提高 MVCC 读放大在整体评估中的权重，相对于其他压缩触发因素（例如 tombstone 密度）占比更大。该配置项仅在 [`mvcc-read-aware-enabled`](#mvcc-read-aware-enabled-从-v856-和-v900-版本开始引入) 设置为 `true` 时生效。
 + 默认值：`3.0`
 + 最小值：`0.0`
 
