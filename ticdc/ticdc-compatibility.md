@@ -7,6 +7,10 @@ summary: 了解 TiCDC 兼容性相关限制和问题处理。
 
 本文介绍了与 TiCDC 有关的一系列兼容性问题及其处理方案。
 
+## TiCDC 新架构与 TiDB 集群的兼容性
+
+TiCDC 新架构支持 v7.5.0 及以上版本的 TiDB 集群，部分特殊的兼容性说明可参考：[TiCDC 兼容性说明](/ticdc/ticdc-architecture.md#兼容性说明)。
+
 ## TiCDC 与 TiDB Lightning 的兼容性
 
 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 支持[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)和[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)两种数据导入模式。本章节介绍这两种模式与 TiCDC 的兼容性，以及同时使用 TiDB Lightning 和 TiCDC 时的操作步骤。
@@ -28,16 +32,73 @@ summary: 了解 TiCDC 兼容性相关限制和问题处理。
 
 ## TiCDC 与 TiFlash 的兼容性
 
-目前，使用 TiCDC 同步表到下游 TiDB 集群时，不支持为表创建 TiFlash 副本，即 TiCDC 不支持同步 TiFlash 相关的 DDL，例如:
+目前，使用 TiCDC 同步表到下游 TiDB 集群时，不支持为表创建 TiFlash 副本，即 TiCDC 不支持同步 TiFlash 相关的 DDL，例如：
 
 * `ALTER TABLE table_name SET TIFLASH REPLICA count;`
 * `ALTER DATABASE db_name SET TIFLASH REPLICA count;`
 
+## 历史版本升级的兼容性说明
+
+TiCDC 依赖 TiDB、TiKV 和 PD 提供的上游变更数据及相关接口。随着 TiDB 及相关组件的持续演进，这些数据格式和接口可能发生变化，例如 TiDB 的并行 DDL、快速建表等功能会修改相关逻辑和数据处理流程，TiCDC 需要进行相应适配。因此，**老架构 TiCDC 不保证在跨版本的 TiDB/TiKV/PD 混合部署环境中提供正式的向上和向下兼容性**。新架构 TiCDC 支持对 v7.5.0 及以上版本的 TiDB 集群提供**向下兼容性**。
+
+### 老架构 TiCDC 升级建议
+
+对于老架构 TiCDC，**不建议在 TiDB 滚动升级期间持续运行 Changefeed**。升级时，建议按以下顺序执行：
+
+1. 暂停所有 Changefeed。
+2. 先升级 TiCDC。
+3. 再升级 TiDB 集群中的其他组件。
+4. 升级完成后，恢复 Changefeed。
+
+例如，假设将集群从 v8.5.4 升级到 v8.5.5，如果使用 TiUP 管理集群，可以参考以下命令（以下示例以 `linux-amd64` 为例，其他平台请根据实际环境替换包名中的平台信息）：
+
+```sh
+# 1. 暂停所有 Changefeed（需对每个 Changefeed 分别执行一次）。
+tiup cdc:v8.5.4 cli changefeed pause \
+  --server=http://<ticdc-host>:8300 \
+  --changefeed-id=<changefeed-id>
+
+# 2. 先升级 TiCDC。
+wget https://tiup-mirrors.pingcap.com/cdc-v8.5.5-linux-amd64.tar.gz \
+  -O /tmp/cdc-v8.5.5-linux-amd64.tar.gz
+tiup cluster patch <cluster-name> /tmp/cdc-v8.5.5-linux-amd64.tar.gz -R cdc
+
+# 3. 再升级 TiDB 集群中的其他组件。
+#    需根据集群中实际存在的组件分别执行。以下示例包括 PD、TiKV 和 TiDB。
+wget https://tiup-mirrors.pingcap.com/pd-v8.5.5-linux-amd64.tar.gz \
+  -O /tmp/pd-v8.5.5-linux-amd64.tar.gz
+wget https://tiup-mirrors.pingcap.com/tikv-v8.5.5-linux-amd64.tar.gz \
+  -O /tmp/tikv-v8.5.5-linux-amd64.tar.gz
+wget https://tiup-mirrors.pingcap.com/tidb-v8.5.5-linux-amd64.tar.gz \
+  -O /tmp/tidb-v8.5.5-linux-amd64.tar.gz
+
+tiup cluster patch <cluster-name> /tmp/pd-v8.5.5-linux-amd64.tar.gz -R pd
+tiup cluster patch <cluster-name> /tmp/tikv-v8.5.5-linux-amd64.tar.gz -R tikv
+tiup cluster patch <cluster-name> /tmp/tidb-v8.5.5-linux-amd64.tar.gz -R tidb
+
+# 如果集群中还包含 TiFlash、TiProxy、TiKV-CDC 等组件，也需按相同方式分别执行 patch。
+
+# 4. 升级完成后，恢复所有 Changefeed（需对每个 Changefeed 分别执行一次）。
+tiup cdc:v8.5.5 cli changefeed resume \
+  --server=http://<ticdc-host>:8300 \
+  --changefeed-id=<changefeed-id>
+```
+
+> **注意：**
+>
+> `tiup cluster patch` 每次只能替换一个组件，因此第 3 步需要根据集群中实际存在的组件分别执行。
+
+### 新架构 TiCDC 升级建议
+
+新架构 TiCDC 在 TiDB 集群滚动升级期间能够持续运行 Changefeed，但前提是升级之前的 TiCDC 已经是新架构 TiCDC。
+
+如果需要在 TiCDC 新老架构之间进行升级或切换，请参阅 [TiCDC 新架构升级指南](/ticdc/ticdc-architecture.md#升级指南)。
+
 ## 命令行参数和配置文件兼容性
 
-* TiCDC v4.0.0 中移除了 `ignore-txn-commit-ts`，添加了 `ignore-txn-start-ts`，使用 start_ts 过滤事务。
+* TiCDC v4.0.0 中移除了 `ignore-txn-commit-ts`，添加了 `ignore-txn-start-ts`，使用 `start_ts` 过滤事务。
 * TiCDC v4.0.2 中移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库和数据表过滤规则，详细语法参考[表库过滤](/table-filter.md)。
-* 自 TiCDC v6.2.0 开始，`cdc cli` 将通过 TiCDC 的 Open API 直接与 TiCDC server 进行交互，而不再需要访问 PD。`cdc cli` 子命令中的 `--pd` 参数被废除，增加了 `--server` 参数，用于指定 TiCDC Server 地址。请使用 `--server` 参数替代 `--pd` 参数。
+* 从 TiCDC v6.2.0 开始，`cdc cli` 将通过 TiCDC 的 Open API 直接与 TiCDC server 进行交互，而不再需要访问 PD。`cdc cli` 子命令中的 `--pd` 参数被废除，增加了 `--server` 参数，用于指定 TiCDC Server 地址。请使用 `--server` 参数替代 `--pd` 参数。
 * 从 v6.4.0 开始，TiCDC 使用 Syncpoint 功能需要同步任务拥有下游集群的 `SYSTEM_VARIABLES_ADMIN` 或者 `SUPER` 权限。
 
 ## 兼容性问题处理
