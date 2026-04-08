@@ -49,6 +49,7 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 
 - TiDB 目前暂不支持版本降级或升级后回退。
 - 支持 TiCDC，TiFlash 等组件版本的升级。
+- 如果集群中包含基于老架构的 TiCDC 历史版本（例如 `v8.1.2`），不建议在 TiDB 滚动升级期间持续运行 Changefeed。若目标 TiDB 版本高于老架构 TiCDC，必须先升级 TiCDC。升级的时候，建议按“暂停所有 Changefeed -> 升级 TiCDC -> 升级 TiDB 集群 -> 恢复 Changefeed”的顺序执行。更多说明请参考 [TiCDC 历史版本滚动升级兼容性说明](/ticdc/ticdc-compatibility.md#历史版本升级的兼容性说明)。
 - 将 v6.3.0 之前的 TiFlash 升级至 v6.3.0 及之后的版本时，需要特别注意：在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。具体请参考 [6.3.0 版本 Release Notes](/releases/release-6.3.0.md#其他) 中的描述。
 - 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](/releases/_index.md)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
 - 升级 v5.3 之前版本的集群到 v5.3 及后续版本时，默认部署的 Prometheus 生成的 Alert 存在时间格式变化。该格式变化是从 Prometheus v2.27.1 开始引入的，详情见 [Prometheus commit](https://github.com/prometheus/prometheus/commit/7646cbca328278585be15fa615e22f2a50b47d06)。
