@@ -5078,6 +5078,34 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > 跳过字符检查可能会使 TiDB 检测不到应用写入的非法 UTF-8 字符，进一步导致执行 `ANALYZE` 时解码错误，以及引入其他未知的编码问题。如果应用不能保证写入字符串的合法性，不建议跳过该检查。
 
+### `tidb_slow_log_max_per_sec` <span class="version-mark">从 v8.5.6 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 默认值：`0`
+- 类型：整数型
+- 范围：`[0, 1000000]`
+- 控制每个 TiDB 节点每秒打印的慢查询日志的数量上限。
+    - 当值为 `0` （默认值）时，表示不限制每秒打印的慢查询日志数量。
+    - 当值大于 `0` 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢查询日志文件。
+- 该变量常与 [`tidb_slow_log_rules`](#tidb_slow_log_rules-从-v856-版本开始引入) 结合使用，以防止在高负载情况下产生过多的慢查询日志。
+
+### `tidb_slow_log_rules` <span class="version-mark">从 v8.5.6 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 默认值：""
+- 类型：字符串
+- 用于定义慢查询日志的触发规则，支持基于多维度指标的组合条件，实现更加灵活和精细化的日志记录控制。
+- 关于该系统变量的详细使用方法，请参考 [`tidb_slow_log_rules` 使用方法](/identify-slow-queries.md#tidb_slow_log_rules-使用方法)。
+
+> **Tip:**
+>
+> - 在生产环境启用 `tidb_slow_log_rules` 时，建议同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v856-版本开始引入)，避免慢查询日志打印过于频繁。
+> - 规则建议先从较严格条件开始，再按排障需求逐步放宽。更多性能影响介绍，请参考[使用建议](/identify-slow-queries.md#使用建议)。
+
 ### `tidb_slow_log_threshold`
 
 - 作用域：GLOBAL
