@@ -29,6 +29,7 @@ title: 使用 TiUP 升级 TiDB
 ## 1. 升级兼容性说明
 
 - TiDB 目前暂不支持版本降级或升级后回退。
+<<<<<<< HEAD
 - 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 6.5.12 版本。
 - 若要将 3.0 之前的版本升级至 6.5.12 版本：
     1. 首先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)。
@@ -36,6 +37,10 @@ title: 使用 TiUP 升级 TiDB
     3. 将集群升级至 4.0 版本。
     4. 按本文档说明将集群升级到 6.5.12 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
+=======
+- 支持 TiCDC，TiFlash 等组件版本的升级。
+- 如果集群中包含基于老架构的 TiCDC 历史版本（例如 `v8.1.2`），不建议在 TiDB 滚动升级期间持续运行 Changefeed。若目标 TiDB 版本高于老架构 TiCDC，必须先升级 TiCDC。升级的时候，建议按“暂停所有 Changefeed -> 升级 TiCDC -> 升级 TiDB 集群 -> 恢复 Changefeed”的顺序执行。更多说明请参考 [TiCDC 历史版本滚动升级兼容性说明](/ticdc/ticdc-compatibility.md#历史版本升级的兼容性说明)。
+>>>>>>> ae3c17c0f7 (ticdc: clarify rolling upgrade guidance (#21496))
 - 将 v6.3.0 之前的 TiFlash 升级至 v6.3.0 及之后的版本时，需要特别注意：在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。具体请参考 [6.3.0 版本 Release Notes](/releases/release-6.3.0.md#其他) 中的描述。
 - 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](https://docs.pingcap.com/zh/releases/tidb-self-managed/)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
 - 升级 v5.3 之前版本的集群到 v5.3 及后续版本时，默认部署的 Prometheus 会从 v2.8.1 升级到 v2.27.1，v2.27.1 提供更多的功能并解决了安全风险。Prometheus v2.27.1 相对于 v2.8.1 存在 Alert 时间格式变化，详情见 [Prometheus commit](https://github.com/prometheus/prometheus/commit/7646cbca328278585be15fa615e22f2a50b47d06)。
