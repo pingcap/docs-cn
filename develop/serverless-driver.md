@@ -8,13 +8,13 @@ aliases: ['/zh/tidbcloud/serverless-driver/']
 
 > **注意：**
 >
-> serverless driver 目前为 Beta 版本，仅适用于 TiDB Cloud Starter 或 TiDB Cloud Essential 集群。
+> serverless driver 目前为 Beta 版本，仅适用于 TiDB Cloud Starter 或 TiDB Cloud Essential 实例。
 
 ## 为什么要使用 TiDB Cloud serverless driver (Beta)
 
 传统的基于 TCP 的 MySQL driver 不适用于 serverless 函数，是因为它们假设数据库连接是持久存在的，而这与 serverless 函数的短生命周期特性相矛盾。此外，在 [Vercel Edge Functions](https://vercel.com/docs/functions/edge-functions) 和 [Cloudflare Workers](https://workers.cloudflare.com/) 等边缘环境中，由于可能缺乏完整的 TCP 支持和 Node.js 兼容性，这些 driver 可能根本无法工作。
 
-[TiDB Cloud serverless driver (Beta)](https://github.com/tidbcloud/serverless-js) 是一款面向 JavaScript 的驱动，允许你通过 HTTP（serverless 环境普遍支持的通信方式）连接到 TiDB Cloud Starter 或 TiDB Cloud Essential 集群。借助该 driver，你可以从边缘环境连接到 TiDB Cloud Starter 或 TiDB Cloud Essential 集群，减少 TCP 带来的连接开销，同时保持与传统基于 TCP 的 MySQL driver 类似的开发体验。
+[TiDB Cloud serverless driver (Beta)](https://github.com/tidbcloud/serverless-js) 是一款面向 JavaScript 的驱动，允许你通过 HTTP（serverless 环境普遍支持的通信方式）连接到 TiDB Cloud Starter 或 TiDB Cloud Essential 实例。借助该 driver，你可以从边缘环境连接到 TiDB Cloud Starter 或 TiDB Cloud Essential 实例，减少 TCP 带来的连接开销，同时保持与传统基于 TCP 的 MySQL driver 类似的开发体验。
 
 > **注意：**
 >
@@ -30,11 +30,11 @@ npm install @tidbcloud/serverless
 
 ## 使用 serverless driver
 
-你可以使用 serverless driver 查询 TiDB Cloud Starter 或 TiDB Cloud Essential 集群中的数据，或执行交互式事务。
+你可以使用 serverless driver 查询 TiDB Cloud Starter 或 TiDB Cloud Essential 实例中的数据，或执行交互式事务。
 
 ### 查询
 
-要从 TiDB Cloud Starter 或 TiDB Cloud Essential 集群查询数据，你需要先创建连接。然后可以使用该连接执行原生 SQL 查询。例如：
+要从 TiDB Cloud Starter 或 TiDB Cloud Essential 实例查询数据，你需要先创建连接。然后可以使用该连接执行原生 SQL 查询。例如：
 
 ```ts
 import { connect } from '@tidbcloud/serverless'
@@ -158,10 +158,10 @@ const result = await conn.execute('show tables')
 
 | 名称         | 类型     | 默认值         | 描述                                                                                                                                                                                                                                                                                                                                                  |
 |--------------|----------|---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `username`   | string   | N/A           | 集群的用户名。                                                                                                                                                                                                                                                                                                                                       |
-| `password`   | string   | N/A           | 集群的密码。                                                                                                                                                                                                                                                                                                                                         |
-| `host`       | string   | N/A           | 集群的主机名。                                                                                                                                                                                                                                                                                                                                       |
-| `database`   | string   | `test`        | 集群的数据库。                                                                                                                                                                                                                                                                                                                                       |
+| `username`   | string   | N/A           | TiDB Cloud Starter 或 TiDB Cloud Essential 实例的用户名。                                                                                                                                                                                                                                                                                                                                       |
+| `password`   | string   | N/A           | TiDB Cloud Starter 或 TiDB Cloud Essential 实例的密码。                                                                                                                                                                                                                                                                                                                                         |
+| `host`       | string   | N/A           | TiDB Cloud Starter 或 TiDB Cloud Essential 实例的主机名。                                                                                                                                                                                                                                                                                                                                       |
+| `database`   | string   | `test`        | TiDB Cloud Starter 或 TiDB Cloud Essential 实例的数据库。                                                                                                                                                                                                                                                                                                                                       |
 | `url`        | string   | N/A           | 数据库的 URL，格式为 `mysql://[username]:[password]@[host]/[database]`，其中 `database` 可省略（如果你打算连接到默认数据库）。                                                                                                                                                                                 |
 | `fetch`      | function | global fetch  | 自定义 fetch 函数。例如，你可以在 Node.js 中使用 `undici` 的 fetch。                                                                                                                                                                                                                                          |
 | `arrayMode`  | bool     | `false`       | 是否以数组而非对象的形式返回结果。为了获得更好的性能，可以设置为 `true`。                                                                                                                                                                                                                                     |
@@ -333,8 +333,8 @@ TiDB Cloud serverless driver 已集成以下 ORM：
 
 serverless driver 本身免费，但使用该 driver 访问数据会产生 [Request Units (RUs)](https://docs.pingcap.com/zh/tidbcloud/tidb-cloud-glossary/#request-capacity-unit-rcu) 和存储用量。
 
-- 对于 TiDB Cloud Starter 集群，按 [TiDB Cloud Starter 计费模式](https://www.pingcap.com/tidb-cloud-starter-pricing-details/)计费。
-- 对于 TiDB Cloud Essential 集群，按 [TiDB Cloud Essential 计费模式](https://www.pingcap.com/tidb-cloud-essential-pricing-details/)计费。
+- 对于 TiDB Cloud Starter 实例，按 [TiDB Cloud Starter 计费模式](https://www.pingcap.com/tidb-cloud-starter-pricing-details/)计费。
+- 对于 TiDB Cloud Essential 实例，按 [TiDB Cloud Essential 计费模式](https://www.pingcap.com/tidb-cloud-essential-pricing-details/)计费。
 
 ## 限制
 

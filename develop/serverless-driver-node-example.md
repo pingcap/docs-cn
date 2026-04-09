@@ -10,7 +10,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-node-example/']
 
 > **注意：**
 >
-> - 除了 TiDB Cloud Starter 集群，本教程的步骤也适用于 TiDB Cloud Essential 集群。
+> - 除了 TiDB Cloud Starter 实例，本教程的步骤也适用于 TiDB Cloud Essential 实例。
 > - 如果你想了解如何在 Cloudflare Workers、Vercel Edge Functions 和 Netlify Edge Functions 中使用 TiDB Cloud serverless driver，请参考 [Insights into Automotive Sales](https://car-sales-insight.vercel.app/) 和[示例仓库](https://github.com/tidbcloud/car-sales-insight)。
 
 ## 开始之前
@@ -19,7 +19,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-node-example/']
 
 - [Node.js](https://nodejs.org/en) >= 18.0.0。
 - [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 或你喜欢的包管理器。
-- 一个 TiDB Cloud Starter 集群。如果你还没有，可以[创建一个 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- 一个 TiDB Cloud Starter 实例。如果你还没有，可以[创建一个 TiDB Cloud Starter 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
 
 ## 步骤 1. 创建本地 Node.js 项目
 
@@ -42,7 +42,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-node-example/']
 
 serverless driver 同时支持 CommonJS 和 ES modules。以下步骤以 ES module 的用法为例。
 
-1. 在你的 TiDB Cloud Starter 集群的概览页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
+1. 在你的 TiDB Cloud Starter 实例的概览页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
 
     ```
    mysql://[username]:[password]@[host]/[database]
@@ -66,7 +66,7 @@ serverless driver 同时支持 CommonJS 和 ES modules。以下步骤以 ES modu
     ```js
     import { connect } from '@tidbcloud/serverless'
     
-    const conn = connect({url: 'mysql://[username]:[password]@[host]/[database]'}) // 替换为你的 TiDB Cloud Starter 集群信息
+    const conn = connect({url: 'mysql://[username]:[password]@[host]/[database]'}) // 替换为你的 TiDB Cloud Starter 实例信息
     console.log(await conn.execute("show tables"))
     ```
 

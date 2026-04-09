@@ -11,7 +11,7 @@ TiDB 是一个兼容 MySQL 的数据库。[GORM](https://gorm.io/index.html) 是
 本文档将展示如何使用 TiDB 和 GORM 来完成以下任务：
 
 - 配置你的环境。
-- 使用 GORM 连接到 TiDB 集群。
+- 使用 GORM 连接到 TiDB。
 - 构建并运行你的应用程序。你也可以参考[示例代码片段](#示例代码片段)，完成基本的 CRUD 操作。
 
 > **注意**
@@ -23,8 +23,8 @@ TiDB 是一个兼容 MySQL 的数据库。[GORM](https://gorm.io/index.html) 是
 - 推荐 [Go](https://go.dev/) **1.20** 及以上版本。
 - [Git](https://git-scm.com/downloads)。
 - TiDB 集群。如果你还没有 TiDB 集群，可以按照以下方式创建：
-    - （推荐方式）参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)，创建你自己的 TiDB Cloud 集群。
-    - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
+    - （推荐方式）[创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)。
+    - [部署本地测试 TiDB Self-Managed 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署正式 TiDB Self-Managed 集群](/production-deployment-using-tiup.md)。
 
 ## 运行代码并连接到 TiDB
 
@@ -41,13 +41,13 @@ cd tidb-golang-gorm-quickstart
 
 ### 第 2 步：配置连接信息
 
-根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB 集群。
+根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB。
 
 <SimpleTab>
 
 <div label="{{{ .starter }}} 或 Essential">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 {{{ .starter }}} 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，选择你的 {{{ .starter }}} 或 Essential 实例，进入实例的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
@@ -95,7 +95,7 @@ cd tidb-golang-gorm-quickstart
 
 <div label="TiDB Cloud Dedicated">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Cloud Dedicated 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，选择你的 TiDB Cloud Dedicated 集群，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
 
@@ -189,7 +189,7 @@ func createDB() *gorm.DB {
 }
 ```
 
-在使用该函数时，你需要将 `${tidb_host}`、`${tidb_port}`、`${tidb_user}`、`${tidb_password}`、`${tidb_db_name}` 等替换为你的 TiDB 集群的实际值。因为 {{{ .starter }}} 要求使用 TLS (SSL) connection，因此在连接到 {{{ .starter }}} 时 `${use_ssl}` 的值应为 `true`。
+在使用该函数时，你需要将 `${tidb_host}`、`${tidb_port}`、`${tidb_user}`、`${tidb_password}`、`${tidb_db_name}` 等替换为你的 TiDB 的实际值。因为 {{{ .starter }}} 要求使用 TLS (SSL) connection，因此在连接到 {{{ .starter }}} 时 `${use_ssl}` 的值应为 `true`。
 
 ### 插入数据
 

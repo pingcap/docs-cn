@@ -15,7 +15,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-prisma-example/']
 
 > **建议：**
 >
-> 除了 TiDB Cloud Starter 集群，本教程的步骤也适用于 TiDB Cloud Essential 集群。
+> 除了 TiDB Cloud Starter 实例，本教程的步骤也适用于 TiDB Cloud Essential 实例。
 
 ## 安装
 
@@ -84,7 +84,7 @@ const prisma = new PrismaClient({ adapter });
 
 - [Node.js](https://nodejs.org/en) >= 18.0.0
 - [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 或你喜欢的包管理器
-- 一个 TiDB Cloud Starter 集群。如果你还没有，可以[创建一个 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+- 一个 TiDB Cloud Starter 实例。如果你还没有，可以[创建一个 TiDB Cloud Starter 实例](/develop/dev-guide-build-cluster-in-cloud.md)
 
 ### 步骤 1. 创建项目
 
@@ -123,7 +123,7 @@ const prisma = new PrismaClient({ adapter });
 
 ### 步骤 2. 配置环境
 
-1. 在 TiDB Cloud Starter 集群的概览页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
+1. 在 TiDB Cloud Starter 实例的概览页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
 
     ```
     mysql://[username]:[password]@[host]:4000/[database]?sslaccept=strict
@@ -184,13 +184,13 @@ const prisma = new PrismaClient({ adapter });
    }
    ```
 
-3. 使用 Prisma schema 同步你的数据库。你可以手动在 TiDB Cloud Starter 集群中创建数据库表，也可以使用 Prisma CLI 自动创建：
+3. 使用 Prisma schema 同步你的数据库。你可以手动在 TiDB Cloud Starter 实例中创建数据库表，也可以使用 Prisma CLI 自动创建：
 
     ```
     npx prisma db push
     ```
 
-   该命令会通过传统的 TCP 连接在 TiDB Cloud Starter 集群中创建 `user` 表，而不是通过 `@tidbcloud/prisma-adapter` 的 HTTPS 连接。这是因为它使用了与 Prisma Migrate 相同的引擎。关于该命令的更多信息，请参见 [Prototype your schema](https://www.prisma.io/docs/concepts/components/prisma-migrate/db-push)。
+   该命令会通过传统的 TCP 连接在 TiDB Cloud Starter 实例中创建 `user` 表，而不是通过 `@tidbcloud/prisma-adapter` 的 HTTPS 连接。这是因为它使用了与 Prisma Migrate 相同的引擎。关于该命令的更多信息，请参见 [Prototype your schema](https://www.prisma.io/docs/concepts/components/prisma-migrate/db-push)。
 
 4. 生成 Prisma Client：
 
