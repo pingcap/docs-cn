@@ -11,7 +11,7 @@ TiDB 是一个兼容 MySQL 的数据库。[node-mysql2](https://github.com/sidor
 本文档将展示如何使用 TiDB 和 node-mysql2 来完成以下任务：
 
 - 配置你的环境。
-- 使用 node-mysql2 驱动连接到 TiDB 集群。
+- 使用 node-mysql2 驱动连接到 TiDB。
 - 构建并运行你的应用程序。你也可以参考[示例代码片段](#示例代码片段)，完成基本的 CRUD 操作。
 
 > **注意**
@@ -28,8 +28,8 @@ TiDB 是一个兼容 MySQL 的数据库。[node-mysql2](https://github.com/sidor
 
 如果你还没有 TiDB 集群，可以按照以下方式创建：
 
-- （推荐方式）参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)，创建你自己的 TiDB Cloud 集群。
-- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
+- （推荐方式）[创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [部署本地测试 TiDB Self-Managed 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署正式 TiDB Self-Managed 集群](/production-deployment-using-tiup.md)。
 
 ## 运行代码并连接到 TiDB
 
@@ -60,13 +60,13 @@ npm install mysql2 dotenv --save
 
 ### 第 3 步：配置连接信息
 
-根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB 集群。
+根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB。
 
 <SimpleTab>
 
 <div label="{{{ .starter }}} 或 Essential">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 {{{ .starter }}} 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，选择你的 {{{ .starter }}} 或 Essential 实例，进入实例的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
@@ -110,7 +110,7 @@ npm install mysql2 dotenv --save
 
 <div label="TiDB Cloud Dedicated">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Cloud Dedicated 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，选择你的 TiDB Cloud Dedicated 集群，进入集群的 **Overview** 页面。
 2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
 3. 在连接对话框中，从 **Connection Type** 下拉列表中选择 **Public**，并点击 **CA cert** 下载 CA 文件。
 
@@ -180,7 +180,7 @@ npm run start
 
 **预期输出结果：**
 
-如果连接成功，你的终端将会输出所连接集群的版本信息：
+如果连接成功，你的终端将会输出 TiDB 版本信息：
 
 ```
 🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v{{{ .tidb-version }}})
@@ -199,7 +199,7 @@ npm run start
 
 ### 连接到 TiDB
 
-下面的代码使用环境变量中定义的连接选项来建立与 TiDB 集群的连接。
+下面的代码使用环境变量中定义的连接选项来建立与 TiDB 的连接。
 
 ```javascript
 // 步骤 1. 导入 'mysql2' 和 'dotenv' 依赖包。
@@ -211,7 +211,7 @@ import * as fs from "fs";
 dotenv.config();
 
 async function main() {
-    // 步骤 3. 创建与 TiDB 集群的连接。
+    // 步骤 3. 创建与 TiDB 的连接。
     const options = {
         host: process.env.TIDB_HOST || '127.0.0.1',
         port: process.env.TIDB_PORT || 4000,

@@ -23,7 +23,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-kysely-example/']
 
 - [Node.js](https://nodejs.org/en) >= 18.0.0。
 - [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 或你喜欢的包管理器。
-- 一个 TiDB Cloud Starter 集群。如果你还没有，可以[创建一个 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- 一个 TiDB Cloud Starter 实例。如果你还没有，可以[创建一个 TiDB Cloud Starter 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
 
 ### 步骤 1. 创建项目
 
@@ -74,7 +74,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-kysely-example/']
 
 ### 步骤 2. 配置环境
 
-1. 在 TiDB Cloud Starter 集群的概览页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
+1. 在 TiDB Cloud Starter 实例的概览页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
 
     ```
     mysql://[username]:[password]@[host]/[database]
@@ -85,10 +85,10 @@ aliases: ['/zh/tidbcloud/serverless-driver-kysely-example/']
     ```bash
     export DATABASE_URL='mysql://[username]:[password]@[host]/[database]'
     ```
-   
+
 ### 步骤 3. 使用 Kysely 查询数据
 
-1. 在你的 TiDB Cloud Starter 集群中创建一张表并插入一些数据。
+1. 在你的 TiDB Cloud Starter 实例中创建一张表并插入一些数据。
 
     你可以使用 [TiDB Cloud 控制台的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-chat2query/) 执行 SQL 语句。以下为示例：
 
@@ -167,7 +167,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-kysely-example/']
 
 - 一个提供边缘环境的 [Vercel](https://vercel.com/docs) 账号。
 - [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 或你喜欢的包管理器。
-- 一个 TiDB Cloud Starter 集群。如果你还没有，可以[创建一个 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- 一个 TiDB Cloud Starter 实例。如果你还没有，可以[创建一个 TiDB Cloud Starter 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
 
 ### 步骤 1. 创建项目
 
@@ -192,7 +192,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-kysely-example/']
 
 ### 步骤 2. 配置环境
 
-在 TiDB Cloud Starter 集群的概览页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
+在 TiDB Cloud Starter 实例的概览页面，点击右上角的 **Connect**，然后在弹出的对话框中获取你的数据库连接字符串。连接字符串格式如下：
 
 ```
 mysql://[username]:[password]@[host]/[database]
@@ -200,7 +200,7 @@ mysql://[username]:[password]@[host]/[database]
 
 ### 步骤 3. 创建边缘函数
 
-1. 在你的 TiDB Cloud Starter 集群中创建一张表并插入一些数据。
+1. 在你的 TiDB Cloud Starter 实例中创建一张表并插入一些数据。
 
     你可以使用 [TiDB Cloud 控制台的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-chat2query/) 执行 SQL 语句。以下为示例：
 
