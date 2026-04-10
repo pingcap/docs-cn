@@ -2375,6 +2375,23 @@ Raft Engine 相关的配置项。
 + 控制是否强制对 RocksDB 最底层文件进行 compaction。
 + 默认值：`true`
 
+### `mvcc-read-aware-enabled` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
+
++ 控制是否启用 MVCC-read-aware compaction。启用后，TiKV 会跟踪读取请求期间扫描的 MVCC 版本数量，并利用这些信息优先对 MVCC 读取放大率高的 Region 进行 compaction。这可以降低在扫描期间遇到大量过期版本的热点 Region 的读延迟。
++ 默认值：`false`
+
+### `mvcc-scan-threshold` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
+
++ 将 Region 标记为 compaction 候选所需的每个读请求扫描的最小 MVCC 版本数量。此配置项仅在 [`mvcc-read-aware-enabled`](#mvcc-read-aware-enabled-从-v856-和-v900-版本开始引入) 设置为 `true` 时生效。
++ 默认值：`1000`
++ 最小值：`0`
+
+### `mvcc-read-weight` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
+
++ 计算 Region 的 compaction 优先级得分时，应用于 MVCC 读取活动的权重倍数。较高的数值会提高 MVCC 读放大在整体评估中的权重，相对于其他 compaction 触发因素（例如 tombstone 密度）占比更大。该配置项仅在 [`mvcc-read-aware-enabled`](#mvcc-read-aware-enabled-从-v856-和-v900-版本开始引入) 设置为 `true` 时生效。
++ 默认值：`3.0`
++ 最小值：`0.0`
+
 ## backup
 
 用于 BR 备份相关的配置项。
