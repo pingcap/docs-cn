@@ -347,7 +347,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 
 建议所有表、索引和分区使用相同的统计信息版本。如果你的集群仍在使用统计信息版本 1，请尽快迁移至统计信息版本 2。在为某个对象（例如表、索引或分区）收集到 Version 2 的统计信息之前，TiDB 会继续使用该对象现有的 Version 1 统计信息。
 
-迁移的一个主要原因是，版本 1 可能对等值/IN 谓词产生不准确的估算，因为 Count-Min sketch 可能存在哈希冲突。更多信息，请参阅 [Count-Min Sketch](#count-min-sketch)。为避免此问题，请设置 `tidb_analyze_version = 2` 并对所有对象重新运行 `ANALYZE`。
+迁移的一个主要原因是，版本 1 可能对等值/IN 谓词产生不准确的估算，因为 Count-Min Sketch 可能存在哈希冲突。更多信息，请参阅 [Count-Min Sketch](#count-min-sketch)。为避免此问题，请设置 `tidb_analyze_version = 2` 并对所有对象重新运行 `ANALYZE`。
 
 要为从统计信息版本 1 迁移到统计信息版本 2 做好 `ANALYZE` 准备，请根据情况进行以下操作：
 
