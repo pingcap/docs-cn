@@ -1,21 +1,21 @@
 ---
 title: 列级权限管理
-summary: TiDB 支持兼容 MySQL 的列级权限管理机制，可通过 `GRANT` 或 `REVOKE` 在表级别对指定列授予或回收 `SELECT`、`INSERT`、`UPDATE`、`REFERENCES` 权限，实现更细粒度的访问控制。
+summary: TiDB 支持兼容 MySQL 的列级权限管理机制。你可以通过 `GRANT` 或 `REVOKE` 在指定表上对指定列授予或回收 `SELECT`、`INSERT`、`UPDATE`、`REFERENCES` 权限，实现更细粒度的访问控制。
 ---
 
 # 列级权限管理
 
-从 v8.5.6 版本开始，TiDB 支持兼容 MySQL 的列级权限管理机制。通过列级权限，你可以在表级别为指定列授予或回收 `SELECT`、`INSERT`、`UPDATE`、`REFERENCES` 权限，从而实现更细粒度的数据访问控制。
+从 v8.5.6 版本开始，TiDB 支持兼容 MySQL 的列级权限管理机制。通过列级权限，你可以在指定表上对指定列授予或回收 `SELECT`、`INSERT`、`UPDATE`、`REFERENCES` 权限，从而实现更细粒度的数据访问控制。
 
 > **注意：**
 >
-> 虽然 MySQL 语法允许 `REFERENCES(col_name)` 这种列级写法，但 `REFERENCES` 本身属于数据库/表级权限，用于外键相关的权限检查。因此，列级 `REFERENCES` 在 MySQL 中并不会真正生效。TiDB 的行为与 MySQL 保持一致。
+> 虽然 MySQL 语法允许 `REFERENCES(col_name)` 这种列级写法，但 `REFERENCES` 本身属于数据库/表级权限，用于外键相关的权限检查。因此，列级 `REFERENCES` 在 MySQL 中不会带来实际的列级权限效果。TiDB 的行为与 MySQL 保持一致。
 
 ## 语法
 
-列级权限的授予和回收与表级权限类似，区别如下：
+列级权限的授予和回收语法与表级权限类似，区别如下：
 
-- 列名列表位于**权限类型**后面，而不是位于**表名**后面。
+- 列名列表写在**权限类型**后面，而不是写在**表名**后面。
 - 多个列名之间使用逗号（`,`）分隔。
 
 ```sql
@@ -31,7 +31,7 @@ REVOKE priv_type(col_name [, col_name] ...) [, priv_type(col_name [, col_name] .
 其中：
 
 * `priv_type` 支持 `SELECT`、`INSERT`、`UPDATE` 和 `REFERENCES`。
-* `ON` 后需要指定具体表，例如 `test.tbl`。
+* `ON` 后必须指定具体表，例如 `test.tbl`。
 * 同一条 `GRANT` 或 `REVOKE` 语句可以包含多个权限项，每个权限项都可以指定自己的列名列表。
 
 例如，以下语句表示将 `col1`、`col2` 的 `SELECT` 权限和 `col3` 的 `UPDATE` 权限授予用户：
@@ -40,9 +40,9 @@ REVOKE priv_type(col_name [, col_name] ...) [, priv_type(col_name [, col_name] .
 GRANT SELECT(col1, col2), UPDATE(col3) ON test.tbl TO 'user'@'host';
 ```
 
-## 授予列级权限
+## 授予列级权限示例
 
-以下示例将表 `test.tbl` 的 `col1` 和 `col2` 的 `SELECT` 权限授予用户 `newuser`，并将 `col3` 的 `UPDATE` 权限授予该用户：
+以下示例将表 `test.tbl` 中 `col1` 和 `col2` 的 `SELECT` 权限授予用户 `newuser`，并将 `col3` 的 `UPDATE` 权限授予该用户：
 
 ```sql
 CREATE DATABASE IF NOT EXISTS test;
@@ -69,7 +69,7 @@ SHOW GRANTS FOR 'newuser'@'%';
 
 除了使用 `SHOW GRANTS`，你还可以通过查询 `INFORMATION_SCHEMA.COLUMN_PRIVILEGES` 查看列级权限信息。
 
-## 回收列级权限
+## 回收列级权限示例
 
 以下示例从用户 `newuser` 收回列 `col2` 的 `SELECT` 权限：
 
@@ -92,8 +92,8 @@ SHOW GRANTS FOR 'newuser'@'%';
 在授予或回收列级权限后，TiDB 会对 SQL 中引用的列进行权限检查。例如：
 
 * `SELECT` 语句：`SELECT` 列权限会影响 `SELECT` 列表以及 `WHERE`、`ORDER BY` 等子句中引用的列。
-* `UPDATE` 语句：`SET` 中被更新的列需要 `UPDATE` 列权限。在表达式、条件中被读取的列通常还需要 `SELECT` 列权限。
-* `INSERT` 语句：被写入的列需要 `INSERT` 列权限。`INSERT INTO t VALUES (...)` 等价于写入所有列。
+* `UPDATE` 语句：`SET` 子句中被更新的列需要 `UPDATE` 列权限。在表达式、条件中被读取的列通常还需要 `SELECT` 列权限。
+* `INSERT` 语句：被写入的列需要 `INSERT` 列权限。`INSERT INTO t VALUES (...)` 等价于按表定义顺序向所有列写入值。
 
 以下示例中，用户 `newuser` 仅能查询 `col1`，并更新 `col3`：
 
@@ -117,7 +117,7 @@ TiDB 的列级权限整体与 MySQL 兼容，但在以下场景存在差异：
 | 场景                     | TiDB                        | MySQL                         |
 | :----------------------- | :-------------------------- | :---------------------------- |
 | 收回用户未被授予的列级权限             | `REVOKE` 可以成功执行                  | `REVOKE` 会报错               |
-| 列裁剪与 `SELECT` 列权限检查的执行顺序 | 先检查 `SELECT` 列权限，再进行列裁剪。例如：执行 `SELECT a FROM (SELECT a, b FROM t) s` 需要同时拥有 `t.a` 和 `t.b` 的 `SELECT` 列权限。 | 先进行列裁剪，再检查 `SELECT` 列权限。例如：执行 `SELECT a FROM (SELECT a, b FROM t) s` 只需要 `t.a` 的 `SELECT` 列权限。 |
+| 列裁剪与 `SELECT` 列权限检查的执行顺序 | 先检查 `SELECT` 列权限，再进行列裁剪。例如，执行 `SELECT a FROM (SELECT a, b FROM t) s` 需要同时拥有 `t.a` 和 `t.b` 的 `SELECT` 列权限。 | 先进行列裁剪，再检查 `SELECT` 列权限。例如，执行 `SELECT a FROM (SELECT a, b FROM t) s` 只需要 `t.a` 的 `SELECT` 列权限。 |
 
 ### 视图场景的列裁剪与权限检查
 
