@@ -30,6 +30,8 @@ GRANT SELECT ON test.* TO 'xxx'@'%';
 GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
 ```
 
+从 v8.5.6 版本开始，TiDB 支持兼容 MySQL 的列级权限管理机制。你可以在指定表上针对特定列授予或回收 `SELECT`、`INSERT`、`UPDATE`、`REFERENCES` 权限。更多信息参见[列级权限管理](/column-privilege-management.md)。
+
 默认情况下，如果指定的用户不存在，[`GRANT`](/sql-statements/sql-statement-grant-privileges.md) 语句将报错。该行为受 [SQL 模式](/system-variables.md#sql_mode)中的 `NO_AUTO_CREATE_USER` 控制。
 
 ```sql
@@ -514,7 +516,7 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 - `mysql.user`：用户账户，全局权限
 - `mysql.db`：数据库级别的权限
 - `mysql.tables_priv`：表级别的权限
-- `mysql.columns_priv`：列级别的权限，当前暂不支持
+- `mysql.columns_priv`：列级别的权限（从 v8.5.6 开始支持）
 
 这几张表包含了数据的生效范围和权限信息。例如，`mysql.user` 表的部分数据：
 
