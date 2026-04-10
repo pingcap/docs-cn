@@ -393,6 +393,7 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - LAST_BACKUP
 - LAST_VALUE (R-Window)
 - LASTVAL
+- LATERAL (R)
 - LEAD (R-Window)
 - LEADING (R)
 - LEAVE (R)
@@ -449,6 +450,7 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - MOD (R)
 - MODE
 - MODIFY
+- MONITOR
 - MONTH
 
 <a id="N" class="letter" href="#N">N</a>
@@ -777,7 +779,7 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - VARCHARACTER (R)
 - VARIABLES
 - VARYING (R)
-- VECTOR 
+- VECTOR
 - VIEW
 - VIRTUAL (R)
 - VISIBLE

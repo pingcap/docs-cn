@@ -273,6 +273,7 @@ TiDB 版本：8.5.5
     - 修复在执行 `IMPORT INTO` 时，处理生成列过程中发生 panic 的问题 [#64657](https://github.com/pingcap/tidb/issues/64657) @[D3Hunter](https://github.com/D3Hunter)
     - 修复当一个 SQL 语句包含多个 `AS OF TIMESTAMP` 表达式时，可能误报错的问题 [#65090](https://github.com/pingcap/tidb/issues/65090) @[you06](https://github.com/you06)
     - 修复查询 `information_schema.tables` 可能出现 OOM 问题，优化系统表查询过程中的内存使用监控 [#58985](https://github.com/pingcap/tidb/issues/58985) @[tangenta](https://github.com/tangenta)
+    - 修复 `client-go` 可能出现内存泄漏的问题 [#65522](https://github.com/pingcap/tidb/issues/65522) @[bufferflies](https://github.com/bufferflies)
 
 + TiKV
 

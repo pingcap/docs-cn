@@ -230,7 +230,7 @@ s3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://10.0
     在主用集群中，执行以下命令创建从主用集群到备用集群的同步链路：
 
     ```shell
-    tiup cdc cli changefeed create --server=http://10.1.1.9:8300 --sink-uri="mysql://{username}:{password}@10.1.1.4:4000" --changefeed-id="dr-primary-to-secondary" --start-ts="431434047157698561"
+    tiup cdc cli changefeed create --server=http://10.1.1.9:8300 --sink-uri="mysql://{username}:{password}@10.1.1.4:4000" --changefeed-id="dr-primary-to-secondary" --start-ts="431434047157698561" --config changefeed.toml
     ```
 
     更多关于 Changefeed 的配置，请参考 [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
