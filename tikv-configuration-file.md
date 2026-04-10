@@ -2354,13 +2354,13 @@ Raft Engine 相关的配置项。
 
 ### `mvcc-scan-threshold` <span class="version-mark">从 v8.5.6 版本开始引入</span>
 
-+ 将 Region 标记为 compaction 候选所需的每个读请求扫描的最小 MVCC 版本数量。此配置项仅在 [`mvcc-read-aware-enabled`](#mvcc-read-aware-enabled-从-v856-和-v900-版本开始引入) 设置为 `true` 时生效。
++ 将 Region 标记为 compaction 候选所需的每个读请求扫描的最小 MVCC 版本数量。此配置项仅在 [`mvcc-read-aware-enabled`](#mvcc-read-aware-enabled-从-v856-版本开始引入) 设置为 `true` 时生效。
 + 默认值：`1000`
 + 最小值：`0`
 
 ### `mvcc-read-weight` <span class="version-mark">从 v8.5.6 版本开始引入</span>
 
-+ 计算 Region 的 compaction 优先级得分时，应用于 MVCC 读取活动的权重倍数。较高的数值会提高 MVCC 读放大在整体评估中的权重，相对于其他 compaction 触发因素（例如 tombstone 密度）占比更大。该配置项仅在 [`mvcc-read-aware-enabled`](#mvcc-read-aware-enabled-从-v856-和-v900-版本开始引入) 设置为 `true` 时生效。
++ 计算 Region 的 compaction 优先级得分时，应用于 MVCC 读取活动的权重倍数。较高的数值会提高 MVCC 读放大在整体评估中的权重，相对于其他 compaction 触发因素（例如 tombstone 密度）占比更大。该配置项仅在 [`mvcc-read-aware-enabled`](#mvcc-read-aware-enabled-从-v856-版本开始引入) 设置为 `true` 时生效。
 + 默认值：`3.0`
 + 最小值：`0.0`
 
