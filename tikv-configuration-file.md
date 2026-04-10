@@ -2681,7 +2681,7 @@ Raft Engine 相关的配置项。
 
 ### `enable-network-io-collection` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
 
-+ 是否在 [Top SQL](/dashboard/top-sql.md) 中额外采集 TiKV 的网络流量和逻辑 I/O 信息。
++ 是否在 [Top SQL](/dashboard/top-sql.md) 中除了采集 CPU 数据外，还额外采集 TiKV 的网络流量和逻辑 I/O 信息。
 + 开启后，TiKV 在处理请求时会额外记录这些指标：网络入站字节数、网络出站字节数、逻辑读字节数和逻辑写字节数。
 + 上报资源消耗时，TiKV 会基于 CPU 时间、网络流量和逻辑 I/O 来筛选 Top N 记录，并额外按 Region 维度上报这些统计结果，便于更细粒度地分析热点请求或资源消耗来源。
 + 默认值：false
