@@ -3305,6 +3305,22 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[100, 16384]`
 - 这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
 
+### `tidb_max_dist_task_nodes` <span class="version-mark">从 v8.5.6 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`-1`
+- 范围：`-1` 或 `[1, 128]`
+- 该变量用于定义分布式框架任务可使用的 TiDB 节点数上限。默认值为 `-1`，表示启用自动模式。在自动模式下，TiDB 将按照 `min(3, tikv_nodes / 3)` 动态地计算该值，其中 `tikv_nodes` 表示集群中 TiKV 节点的数量。
+
+> **注意：**
+> 
+> 如果部分 TiDB 节点显式设置了 [`tidb_service_scope`](#tidb_service_scope-从-v740-版本开始引入)，则分布式执行框架仅会将任务调度到这些节点中执行。此时，即使 `tidb_max_dist_task_nodes` 设置了更大的值，实际使用的 TiDB 节点数也不会超过显式设置了 `tidb_service_scope` 的 TiDB 节点数。
+>
+> 例如，集群有 10 个 TiDB 节点，其中 4 个节点均设置了 `tidb_service_scope = group1`。此时即使设置 `tidb_max_dist_task_nodes = 5`，实际参与任务执行的节点数仍为 4。
+
 ### `tidb_max_paging_size` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -3830,6 +3846,17 @@ mysql> desc select count(distinct a) from test.t;
 - 范围：`[0, 2147483647]`
 - 这个变量用来控制 TiDB Join Reorder 算法的选择。当参与 Join Reorder 的节点个数大于该阈值时，TiDB 选择贪心算法，小于该阈值时 TiDB 选择动态规划 (dynamic programming) 算法。
 - 目前对于 OLTP 的查询，推荐保持默认值。对于 OLAP 的查询，推荐将变量值设为 10~15 来获得 AP 场景下更好的连接顺序。
+
+### `tidb_opt_join_reorder_through_sel` <span class="version-mark">从 v8.5.6 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量用于提升部分多表 JOIN 查询的连接顺序优化 (Join Reorder) 效果。当该变量值为 `ON` 时，在满足安全条件的前提下，优化器会将多个连续 JOIN 之间的过滤条件 (`Selection`) 一并纳入连接顺序优化的候选范围。在重建 JOIN 树时，优化器会将这些条件下推至更合适的位置，从而使更多表参与连接顺序优化。
+- 如果开启后出现性能回退或执行计划不稳定，建议将该变量设置为 `OFF` 以关闭此功能。
+- 对于包含非确定性函数或具有副作用的过滤条件（例如 `RAND()`），即使开启该变量，优化器也不会执行条件下推操作，以保证表达式的求值语义不变。
 
 ### `tidb_opt_limit_push_down_threshold`
 
@@ -5062,6 +5089,34 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 > **注意：**
 >
 > 跳过字符检查可能会使 TiDB 检测不到应用写入的非法 UTF-8 字符，进一步导致执行 `ANALYZE` 时解码错误，以及引入其他未知的编码问题。如果应用不能保证写入字符串的合法性，不建议跳过该检查。
+
+### `tidb_slow_log_max_per_sec` <span class="version-mark">从 v8.5.6 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 默认值：`0`
+- 类型：整数型
+- 范围：`[0, 1000000]`
+- 控制每个 TiDB 节点每秒打印的慢查询日志的数量上限。
+    - 当值为 `0` （默认值）时，表示不限制每秒打印的慢查询日志数量。
+    - 当值大于 `0` 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢查询日志文件。
+- 该变量常与 [`tidb_slow_log_rules`](#tidb_slow_log_rules-从-v856-版本开始引入) 结合使用，以防止在高负载情况下产生过多的慢查询日志。
+
+### `tidb_slow_log_rules` <span class="version-mark">从 v8.5.6 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 默认值：""
+- 类型：字符串
+- 用于定义慢查询日志的触发规则，支持基于多维度指标的组合条件，实现更加灵活和精细化的日志记录控制。
+- 关于该系统变量的详细使用方法，请参考 [`tidb_slow_log_rules` 使用方法](/identify-slow-queries.md#tidb_slow_log_rules-使用方法)。
+
+> **Tip:**
+>
+> - 在生产环境启用 `tidb_slow_log_rules` 时，建议同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v856-版本开始引入)，避免慢查询日志打印过于频繁。
+> - 规则建议先从较严格条件开始，再按排障需求逐步放宽。更多性能影响介绍，请参考[使用建议](/identify-slow-queries.md#使用建议)。
 
 ### `tidb_slow_log_threshold`
 
