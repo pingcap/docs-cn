@@ -5051,7 +5051,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：字符串
 - 默认值：""
-- 可选值：长度小于或等于 64 的字符串，可用合法字符包括数字 `0-9`、字母 `a-zA-Z`、下划线 `_` 和连字符 `-`
+- 可选值：长度小于或等于 64 的字符串，可用合法字符包括数字 `0-9`、字母 `a-zA-Z`、下划线 `_` 和连字符 `-`。从 v8.5.6 和 v9.0.0 开始，该变量的取值大小写不敏感，TiDB 会将输入值转换为小写形式进行存储和比较。
 - 该变量是一个实例级别的变量，用于控制 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)下各 TiDB 节点的服务范围。分布式执行框架会根据该变量的值决定将分布式任务调度到哪些 TiDB 节点上执行，具体规则请参考[任务调度](/tidb-distributed-execution-framework.md#任务调度)。
 
 ### `tidb_session_alias` <span class="version-mark">从 v7.4.0 版本开始引入</span>
@@ -5158,7 +5158,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > 跳过字符检查可能会使 TiDB 检测不到应用写入的非法 UTF-8 字符，进一步导致执行 `ANALYZE` 时解码错误，以及引入其他未知的编码问题。如果应用不能保证写入字符串的合法性，不建议跳过该检查。
 
-### `tidb_slow_log_max_per_sec` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+### `tidb_slow_log_max_per_sec` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -5169,9 +5169,9 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 控制每个 TiDB 节点每秒打印的慢查询日志的数量上限。
     - 当值为 `0` （默认值）时，表示不限制每秒打印的慢查询日志数量。
     - 当值大于 `0` 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢查询日志文件。
-- 该变量常与 [`tidb_slow_log_rules`](#tidb_slow_log_rules-从-v900-版本开始引入) 结合使用，以防止在高负载情况下产生过多的慢查询日志。
+- 该变量常与 [`tidb_slow_log_rules`](#tidb_slow_log_rules-从-v856-和-v900-版本开始引入) 结合使用，以防止在高负载情况下产生过多的慢查询日志。
 
-### `tidb_slow_log_rules` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+### `tidb_slow_log_rules` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -5183,8 +5183,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **Tip:**
 >
-> - 在生产环境启用 `tidb_slow_log_rules` 时，建议同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v900-版本开始引入)，避免慢查询日志打印过于频繁。
-> - 规则建议先从较严格条件开始，再按排障需求逐步放宽。更多性能影响介绍，请参考[使用建议](/identify-slow-queries.md#使用建议)。
+> 建议在启用 `tidb_slow_log_rules` 后，同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v856-和-v900-版本开始引入)，以限制慢查询日志打印频率，防止基于规则的慢查询日志触发过于频繁。
 
 ### `tidb_slow_log_threshold`
 
