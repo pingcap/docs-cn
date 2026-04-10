@@ -1,20 +1,20 @@
 ---
 title: TiDB Dashboard Top SQL 页面
-summary: 使用 Top SQL 找到消耗 CPU、网络和逻辑 IO 资源较多的查询
+summary: 使用 Top SQL 找到消耗 CPU、网络和逻辑 I/O 资源较多的查询。
 ---
 
 # TiDB Dashboard Top SQL 页面
 
-在 TiDB Dashboard 的 Top SQL 页面，你可以查看和分析指定的 TiDB 或 TiKV 节点在一段时间内最消耗资源的 SQL 查询。
+在 TiDB Dashboard 的 Top SQL 页面，你可以查看和分析指定的 TiDB 或 TiKV 节点在一段时间内资源消耗最高的 SQL 查询。
 
-- 开启 Top SQL 后，该功能会持续采集现有 TiDB 和 TiKV 节点的 CPU 负载数据，并保留至多 30 天。
+- 开启 Top SQL 后，该功能会持续采集现有 TiDB 和 TiKV 节点的 CPU 负载数据，并最多保留 30 天。
 - 从 v8.5.6 和 v9.0.0 起，你还可以在 Top SQL 设置中开启 **TiKV 网络 IO 采集（多维度）**，以进一步查看指定 TiKV 节点的 `Network Bytes`、`Logical IO Bytes` 等指标，并按 `By Query`、`By Table`、`By DB` 或 `By Region` 维度进行聚合分析。
 
 Top SQL 具有以下功能：
 
-* 通过图表和表格展示当前时间范围内资源消耗最高的 Top `5`、`20` 或 `100` 类 SQL 查询，其余记录自动汇总为 `Others`。
-* 支持按 CPU 耗时、网络字节数排序查看资源消耗热点；选择 TiKV 节点时，还支持按逻辑 IO 字节数排序。
-* 支持按 Query 查看 SQL 及其执行计划详情；选择 TiKV 节点时，还支持按 `By Table`、`By DB` 和 `By Region` 聚合分析。
+* 支持通过图表和表格展示当前时间范围内资源消耗最高的 Top `5`、`20` 或 `100` 类 SQL 查询，其余记录自动汇总为 `Others`。
+* 支持按 CPU 耗时、网络字节数排序查看资源消耗热点；选择 TiKV 节点时，还支持按逻辑 I/O 字节数排序。
+* 支持按 Query 查看 SQL 及其执行计划详情；选择 TiKV 节点时，还支持按 `By Table`、`By DB` 和 `By Region` 进行聚合分析。
 * 支持框选图表缩放时间范围、手动刷新、自动刷新以及导出 CSV。
 * 支持统计所有正在执行、尚未执行完毕的 SQL 语句。
 * 支持查看集群中指定 TiDB 及 TiKV 节点的情况。
@@ -26,7 +26,7 @@ Top SQL 适用于分析性能问题。以下列举了一些典型的 Top SQL 适
 * 通过监控发现个别 TiDB 或 TiKV 节点 CPU 负载很高，希望快速定位是哪类 SQL 正在消耗大量 CPU 资源。
 * 集群整体查询变慢，希望找出当前最消耗资源的 SQL，或者对比负载变化前后最主要的查询差异。
 * 需要从更高维度定位热点，希望按 `Table`、`DB` 或 `Region` 聚合查看 TiKV 侧的资源消耗。
-* 需要从网络流量或逻辑 IO 角度排查 TiKV 热点，而不仅仅局限于 CPU 维度。
+* 需要从网络流量或逻辑 I/O 角度排查 TiKV 热点，而不仅仅局限于 CPU 维度。
 
 Top SQL 不适用于分析以下问题：
 
