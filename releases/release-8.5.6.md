@@ -37,7 +37,7 @@ TiDB 版本：8.5.6
 
 - 支持多维度、多粒度定义慢查询日志的触发规则 [#62959](https://github.com/pingcap/tidb/issues/62959), [#64010](https://github.com/pingcap/tidb/issues/64010) @[zimulala](https://github.com/zimulala)
 
-    在 v8.5.6 之前，TiDB 定位慢查询语句的主要方法是设置系统变量 [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold)，该机制触发慢查询日志的控制粒度粗（整个实例级别全局控制，不支持会话和 SQL 级别精细化控制）、触发条件仅执行时间 (`Query_time`) 一种，无法满足复杂场景慢查询日志抓取以精细化定位问题的需求。
+    在 v8.5.6 之前，TiDB 定位慢查询语句的主要方法是设置系统变量 [`tidb_slow_log_threshold`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_slow_log_threshold)，该机制触发慢查询日志的控制粒度粗（整个实例级别全局控制，不支持会话和 SQL 级别精细化控制）、触发条件仅执行时间 (`Query_time`) 一种，无法满足复杂场景慢查询日志抓取以精细化定位问题的需求。
 
     从 v8.5.6 起，TiDB 增强了慢查询日志的控制能力。你可以使用 [`tidb_slow_log_rules`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_slow_log_rules-从-v856-版本开始引入) 系统变量在实例、会话、SQL 级别定义多维度（如 `Query_time`、`Digest`、`Mem_max`、`KV_total`）的慢查询日志输出规则，使用 [`tidb_slow_log_max_per_sec`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_slow_log_max_per_sec-从-v856-版本开始引入) 系统变量限制每秒的日志输出数量，并通过 [`WRITE_SLOW_LOG`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-hints) Hint 强制记录指定 SQL 的慢查询日志，从而实现对慢查询日志更灵活的精细化控制。
 
