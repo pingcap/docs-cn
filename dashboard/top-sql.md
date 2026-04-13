@@ -117,13 +117,13 @@ server_configs:
 
         ![选择聚合维度](/media/dashboard/v8.5-top-sql-usage-select-agg-by.png)
 
-    - 默认的排序方式是 `Order By CPU`（按 CPU 耗时排序）。如果当前选择的是 TiKV 节点且已[开启 TiKV 网络 IO 采集（多维度）](#开启-tikv-网络-io-采集可选)，还可以选择 `Order By Network`（按网络字节数排序） 或 `Order By Logical IO`（按逻辑 IO 字节数排序）。
+    - 默认的排序方式是 `Order By CPU`（按 CPU 耗时排序）。如果当前选择的是 TiKV 节点且已[开启 TiKV 网络 IO 采集（多维度）](#开启-tikv-网络-io-采集可选从-v856-和-v900-开始引入)，还可以选择 `Order By Network`（按网络字节数排序） 或 `Order By Logical IO`（按逻辑 IO 字节数排序）。
 
         ![选择排序方式](/media/dashboard/v8.5-top-sql-usage-select-order-by.png)
 
     > **注意**
     >
-    > `By Region` 以及 `Order By Network`、`Order By Logical IO` 仅在 [TiKV 网络 IO 采集（多维度）](#开启-tikv-网络-io-采集可选)开启时可选。若该功能未开启，但历史数据仍然存在，页面会继续展示历史数据，并提示新数据无法完整采集。
+    > `By Region` 以及 `Order By Network`、`Order By Logical IO` 仅在 [TiKV 网络 IO 采集（多维度）](#开启-tikv-网络-io-采集可选从-v856-和-v900-开始引入)开启时可选。若该功能未开启，但历史数据仍然存在，页面会继续展示历史数据，并提示新数据无法完整采集。
 
 5. 观察图表和表格中的资源消耗热点记录。
 
