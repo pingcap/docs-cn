@@ -547,6 +547,10 @@ mysql> SELECT * FROM t1;
 - 单位：秒
 - 悲观事务语句等锁时间。
 
+### `InPacketBytes` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
+
+- 这个变量只做内部统计使用，对用户不可见。
+
 ### `interactive_timeout`
 
 - 作用域：SESSION | GLOBAL
@@ -706,6 +710,10 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
     - `1`：从 v6.6.0 版本开始引入，用于开启 TiFlash 带压缩的数据交换，详情参见 [MPP Version 和 Exchange 数据压缩](/explain-mpp.md#mpp-version-和-exchange-数据压缩)。
     - `2`：从 v7.3.0 版本开始引入，用于确保在 TiFlash 执行出错的情况下，获取到准确的报错信息。
     - `3`：从 v9.0.0 版本开始引入，用于开启 TiFlash 新的字符串数据交换格式，以提高字符串的序列化和反序列化效率，从而提升查询性能。
+
+### `OutPacketBytes` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
+
+- 这个变量只做内部统计使用，对用户不可见。
 
 ### `password_history` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
