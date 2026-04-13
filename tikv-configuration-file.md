@@ -2651,7 +2651,7 @@ Raft Engine 相关的配置项。
 
 资源计量 (Resource Metering) 相关的配置项。
 
-### `enable-network-io-collection` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
+### `enable-network-io-collection` <span class="version-mark">从 v8.5.6 版本开始引入</span>
 
 + 是否在 [Top SQL](/dashboard/top-sql.md) 中除了采集 CPU 数据外，还额外采集 TiKV 的网络流量和逻辑 I/O 信息。
 + 开启后，TiKV 在处理请求时会额外记录这些指标：网络入站字节数、网络出站字节数、逻辑读字节数和逻辑写字节数。
