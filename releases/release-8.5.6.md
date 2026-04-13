@@ -189,7 +189,7 @@ TiDB 版本：8.5.6
 
     + Backup & Restore (BR)
 
-        - 修复 Log Backup 的 `flush_ts` 可能为 0 的问题 [#19406](https://github.com/tikv/tikv/issues/19406) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复 Log Backup 的 `flush_ts` 可能为 `0` 的问题 [#19406](https://github.com/tikv/tikv/issues/19406) @[YuJuncen](https://github.com/YuJuncen)
         - 修复在通过兼容 Amazon S3 的 API（使用 S3 风格凭证）访问 Google Cloud Storage 时，因缺少 `Content-Length` 请求头导致 BR 在分片上传过程中可能失败的问题 [#19352](https://github.com/tikv/tikv/issues/19352) @[Leavrth](https://github.com/Leavrth)
         - 修复 BR 的 `restore point` 可能长时间卡在 `waiting for schema info finishes reloading` 状态，并在 15 分钟后因超时而失败的问题 [#66110](https://github.com/pingcap/tidb/issues/66110) @[kennytm](https://github.com/kennytm)
         - 修复 BR 在恢复带有 `SHARD_ROW_ID_BITS`、`PRE_SPLIT_REGIONS` 和 `merge_option` 属性的表时，无法正确预分裂 Region 的问题 [#65060](https://github.com/pingcap/tidb/issues/65060) @[JoyC-dev](https://github.com/JoyC-dev)
