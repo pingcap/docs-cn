@@ -2,7 +2,7 @@
   "tidb": "TiDB",
   "tidb-version": "8.5.6",
   "tidb-operator-version": "v1.6.4",
-  "tidb-release-date": "2026-xx-xx",
+  "tidb-release-date": "2026-04-14",
   "starter": "TiDB Cloud Starter",
   "essential": "TiDB Cloud Essential",
   "dedicated": "TiDB Cloud Dedicated",
