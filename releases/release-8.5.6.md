@@ -91,8 +91,8 @@ TiDB 版本：8.5.6
 
 - 从 v8.5.6 开始，TiDB 支持兼容 MySQL 的列级权限管理机制。你可以在表级别为指定列授予或回收 `SELECT`、`INSERT`、`UPDATE`、`REFERENCES` 权限。更多信息参见[列级权限管理](https://docs.pingcap.com/zh/tidb/v8.5/column-privilege-management)。
 - 从 v8.5.6 开始，TiDB 支持在 `FOR UPDATE OF` 子句中使用表别名。为保持向后兼容性，在定义了别名的情况下，你仍然可以引用基础表名，但这会触发一条推荐使用显式别名的警告。更多信息参见 [`SELECT`](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-select) 文档。
-- 从 v8.5.6 开始，Dumpling 已适配 MySQL 8.4 更新后的二进制日志命名，支持从 MySQL 8.4 导出数据 [#53082](https://github.com/pingcap/tidb/issues/53082) @[dveeden](https://github.com/dveeden)
-- 从 v8.5.6 开始，TiDB Data Migration (DM) 新增对 MySQL 8.4 作为上游数据源的支持，适配该版本引入的新术语和版本检测逻辑 [#11020](https://github.com/pingcap/tiflow/issues/11020) @[dveeden](https://github.com/dveeden)
+- 从 v8.5.6 开始，Dumpling 已适配 MySQL 8.4 更新后的二进制日志命名，支持从 MySQL 8.4 导出数据。[#53082](https://github.com/pingcap/tidb/issues/53082) @[dveeden](https://github.com/dveeden)
+- 从 v8.5.6 开始，TiDB Data Migration (DM) 新增对 MySQL 8.4 作为上游数据源的支持，适配该版本引入的新术语和版本检测逻辑。[#11020](https://github.com/pingcap/tiflow/issues/11020) @[dveeden](https://github.com/dveeden)
 
 ### 系统变量
 
