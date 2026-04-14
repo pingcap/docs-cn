@@ -12,7 +12,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-drizzle-example/']
 
 > **建议：**
 >
-> 除了 TiDB Cloud Starter 实例，本教程的步骤也适用于 TiDB Cloud Essential 实例。
+> 除了 {{{ .starter }}} 实例，本教程的步骤也适用于 {{{ .essential }}} 实例。
 
 ## 在 Node.js 环境中使用 Drizzle 和 TiDB Cloud serverless driver
 
@@ -24,7 +24,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-drizzle-example/']
 
 - [Node.js](https://nodejs.org/en) >= 18.0.0。
 - [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 或你喜欢的包管理器。
-- 一个 TiDB Cloud Starter 实例。如果你还没有，可以[创建一个 TiDB Cloud Starter 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
+- 一个 {{{ .starter }}} 实例。如果你还没有，可以[创建一个 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
 
 ### 步骤 1. 创建项目
 
@@ -74,7 +74,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-drizzle-example/']
 
 ### 步骤 2. 配置环境
 
-1. 在 [TiDB Cloud 控制台](https://tidbcloud.com/)中，进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击目标 TiDB Cloud Starter 实例名称，进入实例概览页。
+1. 在 [TiDB Cloud 控制台](https://tidbcloud.com/)中，进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击目标 {{{ .starter }}} 实例名称，进入实例概览页。
 
 2. 在概览页右上角点击 **Connect**，在 **Connect With** 下拉列表中选择 `Serverless Driver`，然后点击 **Generate Password** 生成随机密码。
 
@@ -96,7 +96,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-drizzle-example/']
 
 ### 步骤 3. 使用 Drizzle 查询数据
 
-1. 在你的 TiDB Cloud Starter 实例中创建一张表。
+1. 在你的 {{{ .starter }}} 实例中创建一张表。
 
    你可以使用 [TiDB Cloud 控制台的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-chat2query/) 执行 SQL 语句。以下为示例：
 
@@ -160,7 +160,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-drizzle-example/']
 
 - 一个支持边缘环境的 [Vercel](https://vercel.com/docs) 账号。
 - [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 或你喜欢的包管理器。
-- 一个 TiDB Cloud Starter 集群。如果你还没有，可以[创建一个 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- 一个 {{{ .starter }}} 集群。如果你还没有，可以[创建一个 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 
 ### 步骤 1. 创建项目
 
@@ -190,7 +190,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-drizzle-example/']
 
 ### 步骤 2. 配置环境
 
-1. 在 [TiDB Cloud 控制台](https://tidbcloud.com/)中，进入你项目的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击目标 TiDB Cloud Starter 实例名称，进入实例概览页。
+1. 在 [TiDB Cloud 控制台](https://tidbcloud.com/)中，进入你项目的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击目标 {{{ .starter }}} 实例名称，进入实例概览页。
 
 2. 在概览页右上角点击 **Connect**，在 **Connect With** 下拉列表中选择 `Serverless Driver`，然后点击 **Generate Password** 生成随机密码。
 
@@ -206,7 +206,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-drizzle-example/']
 
 ### 步骤 3. 创建边缘函数
 
-1. 在你的 TiDB Cloud Starter 集群中创建一张表。
+1. 在你的 {{{ .starter }}} 集群中创建一张表。
 
    你可以使用 [TiDB Cloud 控制台的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-chat2query/) 执行 SQL 语句。以下为示例：
 

@@ -8,9 +8,9 @@ aliases: ['/zh/tidbcloud/dev-guide-aws-appflow-integration/']
 
 [Amazon AppFlow](https://aws.amazon.com/appflow/) 是一项全托管的 API 集成服务，可用于将软件即服务 (SaaS) 应用与 AWS 服务连接，并安全地传输数据。通过 Amazon AppFlow，你可以在 TiDB 与多种数据提供方之间导入和导出数据，例如 Salesforce、Amazon S3、LinkedIn 和 GitHub。更多信息请参见 AWS 文档中的[支持的源和目标应用](https://docs.aws.amazon.com/appflow/latest/userguide/app-specific.html)。
 
-本文档介绍了如何将 TiDB 与 Amazon AppFlow 进行集成，并以集成 TiDB Cloud Starter 实例为例进行说明。
+本文档介绍了如何将 TiDB 与 Amazon AppFlow 进行集成，并以集成 {{{ .starter }}} 实例为例进行说明。
 
-如果你还没有 TiDB Cloud Starter 实例，可以按照 [TiDB Cloud 快速上手指南](/tidb-cloud/tidb-cloud-quickstart.md) 创建一个，该实例免费，且大约 30 秒即可创建完成。
+如果你还没有 {{{ .starter }}} 实例，可以按照 [TiDB Cloud 快速上手指南](/tidb-cloud/tidb-cloud-quickstart.md) 创建一个，该实例免费，且大约 30 秒即可创建完成。
 
 ## 前提条件
 
@@ -67,7 +67,7 @@ git clone https://github.com/pingcap-inc/tidb-appflow-integration
     >
     > - `--guided` 选项会通过提示引导你完成部署。你的输入会被存储在配置文件中，默认是 `samconfig.toml`。
     > - `stack_name` 用于指定正在部署的 AWS Lambda 的名称。
-    > - 引导流程默认使用 AWS 作为 TiDB Cloud Starter 的云服务商。如果你要将 Amazon S3 作为源或目标，需要将 AWS Lambda 的 `region` 设置为与 Amazon S3 相同。
+    > - 引导流程默认使用 AWS 作为 {{{ .starter }}} 的云服务商。如果你要将 Amazon S3 作为源或目标，需要将 AWS Lambda 的 `region` 设置为与 Amazon S3 相同。
     > - 如果你之前已经运行过 `sam deploy --guided`，可以直接运行 `sam deploy`，SAM CLI 会使用 `samconfig.toml` 配置文件简化交互。
 
     如果你看到类似如下输出，说明 Lambda 部署成功。
@@ -149,7 +149,7 @@ git clone https://github.com/pingcap-inc/tidb-appflow-integration
     ```
 
 5. 创建好 `sf_account` 表后，点击 **Connect**。会弹出连接对话框。
-6. 在 **Connect to TiDB-Connector** 对话框中，输入 TiDB Cloud Starter 实例的连接属性。对于 TiDB Cloud Starter，需要将 **TLS** 选项设置为 `Yes`，这样 TiDB 连接器会使用 TLS 连接。然后点击 **Connect**。
+6. 在 **Connect to TiDB-Connector** 对话框中，输入 {{{ .starter }}} 实例的连接属性。对于 {{{ .starter }}}，需要将 **TLS** 选项设置为 `Yes`，这样 TiDB 连接器会使用 TLS 连接。然后点击 **Connect**。
 
     ![tidb connection message](/media/develop/aws-appflow-step-tidb-connection-message.png)
 
@@ -245,7 +245,7 @@ test> SELECT * FROM sf_account;
 
 - 如果遇到问题，可以在 AWS 管理控制台的 [CloudWatch](https://console.aws.amazon.com/cloudwatch/home) 页面查看日志。
 - 本文档中的步骤基于 [Building custom connectors using the Amazon AppFlow Custom Connector SDK](https://aws.amazon.com/blogs/compute/building-custom-connectors-using-the-amazon-appflow-custom-connector-sdk/)。
-- [TiDB Cloud Starter](https://docs.pingcap.com/tidbcloud/select-cluster-tier#starter) **不是**生产环境。
+- [{{{ .starter }}}](https://docs.pingcap.com/tidbcloud/select-cluster-tier#starter) **不是**生产环境。
 - 为避免篇幅过长，本文档示例仅展示了 `Insert` 策略，`Update` 和 `Upsert` 策略也已测试并可用。
 
 ## 需要帮助？
