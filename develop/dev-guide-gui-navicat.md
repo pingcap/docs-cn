@@ -61,7 +61,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
     - **Host**：输入从 TiDB Cloud 连接对话框中的得到的 `HOST` 参数。
     - **Port**：输入从 TiDB Cloud 连接对话框中的得到的 `PORT` 参数。
     - **User Name**：输入从 TiDB Cloud 连接对话框中的得到的 `USERNAME` 参数。
-    - **Password**：输入第 4 步中创建的密码。
+    - **Password**：输入第 4 步中生成的密码。
 
     ![Navicat: configure connection general panel for {{{ .starter }}}](/media/develop/navicat-premium-connection-config-serverless-general.png)
 

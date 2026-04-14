@@ -44,7 +44,7 @@ mysql
 
 ## 查看数据库
 
-要查看数据库，可在执行 `SHOW DATABASES` 语句。
+要查看数据库，可以执行 `SHOW DATABASES` 语句。
 
 示例：
 
