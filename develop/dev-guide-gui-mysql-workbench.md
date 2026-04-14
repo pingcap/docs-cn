@@ -65,7 +65,7 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
     - **Hostname**：输入从 TiDB Cloud 连接对话框中的得到的 `HOST` 参数。
     - **Port**：输入从 TiDB Cloud 连接对话框中的得到的 `PORT` 参数。
     - **Username**：输入从 TiDB Cloud 连接对话框中的得到的 `USERNAME` 参数。
-    - **Password**：点击 **Store in Keychain ...**  或 **Store in Vault**，输入密码，然后点击 **OK** 保存密码。
+    - **Password**：点击 **Store in Keychain ...**  或 **Store in Vault**，输入第 4 步中生成的密码，然后点击 **OK** 保存密码。
 
         ![MySQL Workbench: store the password of {{{ .starter }}} in keychain](/media/develop/mysql-workbench-store-password-in-keychain.png)
 
