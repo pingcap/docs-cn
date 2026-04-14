@@ -1,28 +1,28 @@
 ---
-title: 使用 TiDB Cloud Starter 运行 WordPress
-summary: 学习如何使用 TiDB Cloud Starter 运行 WordPress。本教程将为你提供分步指导，让你在几分钟内运行 WordPress + TiDB Cloud Starter。
+title: 使用 {{{ .starter }}} 运行 WordPress
+summary: 学习如何使用 {{{ .starter }}} 运行 WordPress。本教程将为你提供分步指导，让你在几分钟内运行 WordPress + {{{ .starter }}}。
 aliases: ['/zh/tidbcloud/dev-guide-wordpress/']
 ---
 
-# 使用 TiDB Cloud Starter 运行 WordPress
+# 使用 {{{ .starter }}} 运行 WordPress
 
-TiDB 是一个兼容 MySQL 的数据库，TiDB Cloud Starter 是一款全托管的 TiDB 云服务，[WordPress](https://github.com/WordPress) 是一个免费的开源内容管理系统 (CMS)，可以让用户创建和管理网站。WordPress 使用 PHP 编写，并使用 MySQL 数据库。
+TiDB 是一个兼容 MySQL 的数据库，{{{ .starter }}} 是一款全托管的 TiDB 云服务，[WordPress](https://github.com/WordPress) 是一个免费的开源内容管理系统 (CMS)，可以让用户创建和管理网站。WordPress 使用 PHP 编写，并使用 MySQL 数据库。
 
-在本教程中，你可以学习如何免费使用 TiDB Cloud Starter 运行 WordPress。
+在本教程中，你可以学习如何免费使用 {{{ .starter }}} 运行 WordPress。
 
 > **注意：**
 >
-> 除了 TiDB Cloud Starter，本教程同样适用于 TiDB Cloud Essential、TiDB Cloud Dedicated 以及 TiDB Self-Managed。但强烈推荐使用 TiDB Cloud Starter 来运行 WordPress，以获得更高的性价比。
+> 除了 {{{ .starter }}}，本教程同样适用于 {{{ .essential }}}、TiDB Cloud Dedicated 以及 TiDB Self-Managed。但强烈推荐使用 {{{ .starter }}} 来运行 WordPress，以获得更高的性价比。
 
 ## 前提条件
 
 要完成本教程，你需要：
 
-- [创建一个 TiDB Cloud Starter 实例](/develop/dev-guide-build-cluster-in-cloud.md)（如果你还没有）。
+- [创建一个 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)（如果你还没有）。
 
-## 使用 TiDB Cloud Starter 运行 WordPress
+## 使用 {{{ .starter }}} 运行 WordPress
 
-本节将演示如何使用 TiDB Cloud Starter 运行 WordPress。
+本节将演示如何使用 {{{ .starter }}} 运行 WordPress。
 
 ### 第 1 步：克隆 WordPress 示例仓库
 
@@ -49,9 +49,9 @@ cd wordpress-tidb-docker
 
 ### 第 3 步：配置连接信息
 
-配置 WordPress 数据库到 TiDB Cloud Starter 的连接。
+配置 WordPress 数据库到 {{{ .starter }}} 的连接。
 
-1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，然后点击目标 TiDB Cloud Starter 实例的名称，进入其概览页面。
+1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，然后点击目标 {{{ .starter }}} 实例的名称，进入其概览页面。
 
 2. 点击右上角的 **Connect**。此时会弹出连接对话框。
 
@@ -84,11 +84,11 @@ cd wordpress-tidb-docker
     TIDB_DB_NAME='test'
     ```
 
-    请确保将 `{}` 占位符替换为你在连接对话框中获得的连接参数。默认情况下，你的 TiDB Cloud Starter 自带一个 `test` 数据库。如果你已经在 TiDB Cloud Starter 实例中创建了其他数据库，可以将 `test` 替换为你的数据库名。
+    请确保将 `{}` 占位符替换为你在连接对话框中获得的连接参数。默认情况下，你的 {{{ .starter }}} 自带一个 `test` 数据库。如果你已经在 {{{ .starter }}} 实例中创建了其他数据库，可以将 `test` 替换为你的数据库名。
 
 7. 保存 `.env` 文件。
 
-### 第 4 步：使用 TiDB Cloud Starter 启动 WordPress
+### 第 4 步：使用 {{{ .starter }}} 启动 WordPress
 
 1. 执行以下命令，将 WordPress 作为 Docker 容器运行：
 
@@ -100,7 +100,7 @@ cd wordpress-tidb-docker
 
 ### 第 5 步：确认数据库连接
 
-1. 在 TiDB Cloud 控制台关闭 TiDB Cloud Starter 实例的连接对话框，并打开 **SQL Editor** 页面。
+1. 在 TiDB Cloud 控制台关闭 {{{ .starter }}} 实例的连接对话框，并打开 **SQL Editor** 页面。
 2. 在左侧的 **Schemas** 标签下，点击你连接到 WordPress 的数据库。
 3. 确认你现在可以在该数据库的表列表中看到 WordPress 的表（如 `wp_posts` 和 `wp_comments`）。
 
