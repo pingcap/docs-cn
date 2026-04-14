@@ -547,6 +547,10 @@ mysql> SELECT * FROM t1;
 - 单位：秒
 - 悲观事务语句等锁时间。
 
+### `InPacketBytes` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
+
+- 这个变量只做内部统计使用，对用户不可见。
+
 ### `interactive_timeout`
 
 - 作用域：SESSION | GLOBAL
@@ -706,6 +710,10 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
     - `1`：从 v6.6.0 版本开始引入，用于开启 TiFlash 带压缩的数据交换，详情参见 [MPP Version 和 Exchange 数据压缩](/explain-mpp.md#mpp-version-和-exchange-数据压缩)。
     - `2`：从 v7.3.0 版本开始引入，用于确保在 TiFlash 执行出错的情况下，获取到准确的报错信息。
     - `3`：从 v9.0.0 版本开始引入，用于开启 TiFlash 新的字符串数据交换格式，以提高字符串的序列化和反序列化效率，从而提升查询性能。
+
+### `OutPacketBytes` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
+
+- 这个变量只做内部统计使用，对用户不可见。
 
 ### `password_history` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
@@ -2736,6 +2744,15 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 >
 > TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
 
+### `tidb_foreign_key_check_in_shared_lock` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量用于控制在悲观事务中，外键约束检查对父表中的行加锁时是否使用共享锁（而非排他锁）。开启后，多个并发事务可以同时对同一父表行执行外键检查而不互相阻塞，从而降低锁冲突并提升子表并发写入性能。
+
 ### `tidb_gc_concurrency` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -3899,6 +3916,17 @@ mysql> desc select count(distinct a) from test.t;
 - 这个变量用来控制 TiDB Join Reorder 算法的选择。当参与 Join Reorder 的节点个数大于该阈值时，TiDB 选择贪心算法，小于该阈值时 TiDB 选择动态规划 (dynamic programming) 算法。
 - 目前对于 OLTP 的查询，推荐保持默认值。对于 OLAP 的查询，推荐将变量值设为 10~15 来获得 AP 场景下更好的连接顺序。
 
+### `tidb_opt_join_reorder_through_sel` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量用于提升部分多表 JOIN 查询的连接顺序优化 (Join Reorder) 效果。当该变量值为 `ON` 时，在满足安全条件的前提下，优化器会将多个连续 JOIN 之间的过滤条件 (`Selection`) 一并纳入连接顺序优化的候选范围。在重建 JOIN 树时，优化器会将这些条件下推至更合适的位置，从而使更多表参与连接顺序优化。
+- 如果开启后出现性能回退或执行计划不稳定，建议将该变量设置为 `OFF` 以关闭此功能。
+- 对于包含非确定性函数或具有副作用的过滤条件（例如 `RAND()`），即使开启该变量，优化器也不会执行条件下推操作，以保证表达式的求值语义不变。
+
 ### `tidb_opt_limit_push_down_threshold`
 
 - 作用域：SESSION | GLOBAL
@@ -4095,6 +4123,73 @@ mysql> desc select count(distinct a) from test.t;
 |     └─TableRowIDScan_18          | 8748.62 | cop[tikv] | table:t              | keep order:false                    |
 +----------------------------------+---------+-----------+----------------------+-------------------------------------+
 ```
+
+### `tidb_opt_partial_ordered_index_for_topn` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：枚举型
+- 默认值：`DISABLE`
+- 可选值：`DISABLE`、`COST`
+- 用于控制当查询包含 `ORDER BY ... LIMIT` 时，优化器是否可以利用索引的部分有序性 (partial order) 来优化 TopN 计算过程。当排序列与索引顺序一致时（例如排序列本身是索引列，或该列使用了前缀索引），通过索引扫描得到的数据在该列上已经具有一定的顺序（即“部分有序”）。在这种情况下，优化器可以在扫描过程中逐步构建 TopN 结果，并在满足 `LIMIT` 后提前停止扫描，从而减少排序计算开销。
+- 适用场景：`ORDER BY ... LIMIT` 的排序列为较长字符串且仅建立了前缀索引时，如需减少 TopN 排序开销时，可以通过将该变量设置为 `COST` 并在查询中指定 `USE INDEX` 或 `FORCE INDEX` Hint 以应用 partial order TopN 优化。
+
+    - 该变量默认值为 `DISABLE`，代表关闭 partial order TopN 优化。此时，优化器将直接使用常规的全局排序 TopN 方式。
+   - 如需强制应用 partial order TopN 优化，请将该变量设置为 `COST` 并在查询中通过 `USE INDEX` 或 `FORCE INDEX` Hint 指定满足条件的索引。如果指定的索引不满足该优化的前置条件（例如 `ORDER BY` 与索引前缀不匹配，或者查询中存在不支持的排序形式），即使该变量设置为 `COST` 也可能无法应用该优化，执行计划会退化为常规的 TopN 方式。
+
+    > **注意：**
+    >
+    > 目前优化器尚不支持根据 cost model 动态选择是否应用 partial order TopN 优化。如果只将该变量设置为 `COST` 而不指定 `USE INDEX` 或 `FORCE INDEX` Hint，优化器可能不会应用 partial order TopN 优化。如需强制应用该优化，请结合 `USE INDEX` 或 `FORCE INDEX` Hint 一起使用。
+
+<details>
+<summary>查看 partial order TopN 优化示例</summary>
+
+创建表 `t_varchar`，并在字符串列 `name` 上定义了前缀索引 `idx_name_prefix(name(10))`：
+
+```sql
+CREATE TABLE t_varchar (
+    id INT PRIMARY KEY,
+    name VARCHAR(255),
+    INDEX idx_name_prefix(name(10))
+);
+```
+
+- 强制应用 partial order TopN 优化（`COST` + `USE INDEX`）：
+
+    ```sql
+    > SET SESSION tidb_opt_partial_ordered_index_for_topn = 'COST';
+
+    > EXPLAIN FORMAT='brief' SELECT /*+ use_index(t_varchar, idx_name_prefix) */ *
+        FROM t_varchar ORDER BY name LIMIT 5;
+    +-------------------------------------------+---------+-----------+------------------------------+----------------------------------------------------------------------------------------------+
+    | id                                        | estRows | task      | access object                | operator info                                                                                |
+    +-------------------------------------------+---------+-----------+------------------------------+----------------------------------------------------------------------------------------------+
+    | TopN                                      | 5.00    | root      |                              | planner__core__partial_order_topn.t_varchar.name, offset:0, count:5, prefix_col:planner__core__partial_order_topn.t_varchar.name, prefix_len:10 |
+    | └─IndexLookUp                             | 5.00    | root      |                              |                                                                                              |
+    |   ├─Limit(Build)                          | 5.00    | cop[tikv] |                              | offset:0, count:5, prefix_col:planner__core__partial_order_topn.t_varchar.name, prefix_len:10 |
+    |   │ └─IndexFullScan                       | 10000.00| cop[tikv] | table:t_varchar, index:idx_name_prefix(name) | keep order:true, stats:pseudo                                               |
+    |   └─TableRowIDScan(Probe)                 | 5.00    | cop[tikv] | table:t_varchar              | keep order:false, stats:pseudo                                                               |
+    +-------------------------------------------+---------+-----------+------------------------------+----------------------------------------------------------------------------------------------+
+    ```
+
+- 关闭 partial order TopN 优化（`DISABLE`）：
+
+    ```sql
+    > SET SESSION tidb_opt_partial_ordered_index_for_topn = 'DISABLE';
+
+    > EXPLAIN FORMAT='brief' SELECT * FROM t_varchar ORDER BY name LIMIT 5;
+    +---------------------------+---------+-----------+---------------------+----------------------------------------------------+
+    | id                        | estRows | task      | access object       | operator info                                      |
+    +---------------------------+---------+-----------+---------------------+----------------------------------------------------+
+    | TopN                      | 5.00    | root      |                     | planner__core__partial_order_topn.t_varchar.name, offset:0, count:5 |
+    | └─TableReader             | 5.00    | root      | data:TopN           |                                                    |
+    |   └─TopN                  | 5.00    | cop[tikv] |                     | planner__core__partial_order_topn.t_varchar.name, offset:0, count:5 |
+    |     └─TableFullScan       | 10000.00| cop[tikv] | table:t_varchar     | keep order:false, stats:pseudo                     |
+    +---------------------------+---------+-----------+---------------------+----------------------------------------------------+
+    ```
+
+</details>
 
 ### `tidb_opt_prefer_range_scan` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -5040,7 +5135,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：字符串
 - 默认值：""
-- 可选值：长度小于或等于 64 的字符串，可用合法字符包括数字 `0-9`、字母 `a-zA-Z`、下划线 `_` 和连字符 `-`
+- 可选值：长度小于或等于 64 的字符串，可用合法字符包括数字 `0-9`、字母 `a-zA-Z`、下划线 `_` 和连字符 `-`。从 v8.5.6 和 v9.0.0 开始，该变量的取值大小写不敏感，TiDB 会将输入值转换为小写形式进行存储和比较。
 - 该变量是一个实例级别的变量，用于控制 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)下各 TiDB 节点的服务范围。分布式执行框架会根据该变量的值决定将分布式任务调度到哪些 TiDB 节点上执行，具体规则请参考[任务调度](/tidb-distributed-execution-framework.md#任务调度)。
 
 ### `tidb_session_alias` <span class="version-mark">从 v7.4.0 版本开始引入</span>
@@ -5147,7 +5242,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > 跳过字符检查可能会使 TiDB 检测不到应用写入的非法 UTF-8 字符，进一步导致执行 `ANALYZE` 时解码错误，以及引入其他未知的编码问题。如果应用不能保证写入字符串的合法性，不建议跳过该检查。
 
-### `tidb_slow_log_max_per_sec` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+### `tidb_slow_log_max_per_sec` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -5158,9 +5253,9 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 控制每个 TiDB 节点每秒打印的慢查询日志的数量上限。
     - 当值为 `0` （默认值）时，表示不限制每秒打印的慢查询日志数量。
     - 当值大于 `0` 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢查询日志文件。
-- 该变量常与 [`tidb_slow_log_rules`](#tidb_slow_log_rules-从-v900-版本开始引入) 结合使用，以防止在高负载情况下产生过多的慢查询日志。
+- 该变量常与 [`tidb_slow_log_rules`](#tidb_slow_log_rules-从-v856-和-v900-版本开始引入) 结合使用，以防止在高负载情况下产生过多的慢查询日志。
 
-### `tidb_slow_log_rules` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+### `tidb_slow_log_rules` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -5172,8 +5267,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **Tip:**
 >
-> - 在生产环境启用 `tidb_slow_log_rules` 时，建议同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v900-版本开始引入)，避免慢查询日志打印过于频繁。
-> - 规则建议先从较严格条件开始，再按排障需求逐步放宽。更多性能影响介绍，请参考[使用建议](/identify-slow-queries.md#使用建议)。
+> 建议在启用 `tidb_slow_log_rules` 后，同时配置 [`tidb_slow_log_max_per_sec`](#tidb_slow_log_max_per_sec-从-v856-和-v900-版本开始引入)，以限制慢查询日志打印频率，防止基于规则的慢查询日志触发过于频繁。
 
 ### `tidb_slow_log_threshold`
 
