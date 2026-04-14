@@ -190,7 +190,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-drizzle-example/']
 
 ### 步骤 2. 配置环境
 
-1. 在 [TiDB Cloud 控制台](https://tidbcloud.com/)中，进入你项目的 [**Clusters**](https://tidbcloud.com/project/clusters) 页面，点击目标 TiDB Cloud Starter 集群名称，进入集群概览页。
+1. 在 [TiDB Cloud 控制台](https://tidbcloud.com/)中，进入你项目的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击目标 TiDB Cloud Starter 实例名称，进入实例概览页。
 
 2. 在概览页右上角点击 **Connect**，在 **Connect With** 下拉列表中选择 `Serverless Driver`，然后点击 **Generate Password** 生成随机密码。
 

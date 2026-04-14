@@ -73,7 +73,7 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
         > **Tip:**
         >
-        > 如果你有多个 TiDB Cloud 项目，可以点击左下角的 <MDSvgIcon name="icon-left-projects" /> 切换项目。
+        > 如果你在多个 TiDB Cloud 组织中，可以使用左上角的复选框先切换到你的目标组织。
 
     2. 点击目标资源的名称，进入资源的 **Overview** 页面，然后在左侧导航栏中点击 **Import**。
 
