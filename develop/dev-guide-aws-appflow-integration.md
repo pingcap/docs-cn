@@ -10,7 +10,7 @@ aliases: ['/zh/tidbcloud/dev-guide-aws-appflow-integration/']
 
 本文档介绍了如何将 TiDB 与 Amazon AppFlow 进行集成，并以集成 {{{ .starter }}} 实例为例进行说明。
 
-如果你还没有 {{{ .starter }}} 实例，可以按照 [TiDB Cloud 快速上手指南](/tidb-cloud/tidb-cloud-quickstart.md) 创建一个，该实例免费，且大约 30 秒即可创建完成。
+如果你还没有 {{{ .starter }}} 实例，可以按照 [TiDB Cloud 快速上手指南](https://docs.pingcap.com/tidbcloud/tidb-cloud-quickstart) 创建一个，该实例免费，且大约 30 秒即可创建完成。
 
 ## 前提条件
 
