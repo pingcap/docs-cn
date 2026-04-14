@@ -188,7 +188,7 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
 
 ## `tidb_slow_log_rules` 使用方法
 
-[`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入) 用于定义慢查询日志的触发规则，支持多维度指标组合条件。适合用于慢日志的“定向采样”和“问题复现”，可按具体指标组合条件筛选目标语句。
+[`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v856-和-v900-版本开始引入) 用于定义慢查询日志的触发规则，支持多维度指标组合条件。适合用于慢日志的“定向采样”和“问题复现”，可按具体指标组合条件筛选目标语句。
 
 慢查询日志的触发行为取决于 `tidb_slow_log_rules` 的配置情况：
 
@@ -307,18 +307,18 @@ SELECT /*+ WRITE_SLOW_LOG */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
 
 - `tidb_slow_log_rules` 用于替换单一阈值方式，支持多维度指标组合条件，以实现更灵活和精细化的慢查询日志控制。
 
-- 在资源充足的测试环境（1 个 TiDB 节点，16 核 CPU、48 GiB 内存；3 个 TiKV 节点，每个 16 核 CPU、48 GiB 内存）中，多次 sysbench 测试结果表明：当多维慢查询日志规则在 30 分钟内生成数百万条慢查询日志时，对性能影响较小；但当日志量达到千万级时，TPS 会明显下降，延迟也会显著增加。因此在业务负载较高，或 CPU、内存资源接近瓶颈的情况下，应谨慎配置 `tidb_slow_log_rules`，避免因规则过宽导致日志洪泛。若需要限制日志输出速率，可通过 [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v900-版本开始引入) 进行限速，以降低对业务性能的影响。
+- 在资源充足的测试环境（1 个 TiDB 节点，16 核 CPU、48 GiB 内存；3 个 TiKV 节点，每个 16 核 CPU、48 GiB 内存）中，多次 sysbench 测试结果表明：当多维慢查询日志规则在 30 分钟内生成数百万条慢查询日志时，对性能影响较小；但当日志量达到千万级时，TPS 会明显下降，延迟也会显著增加。因此在业务负载较高，或 CPU、内存资源接近瓶颈的情况下，应谨慎配置 `tidb_slow_log_rules`，避免因规则过宽导致日志洪泛。若需要限制日志输出速率，可通过 [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v856-和-v900-版本开始引入) 进行限速，以降低对业务性能的影响。
 
 ## 相关系统变量
 
-* [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v900-版本开始引入)：请参见 [`tidb_slow_log_rules` 使用建议](#tidb_slow_log_rules-使用方法)。
+* [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v856-和-v900-版本开始引入)：请参见 [`tidb_slow_log_rules` 使用建议](#tidb_slow_log_rules-使用方法)。
 
 * [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold)：用于设置慢查询日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢查询日志中。默认值是 `300ms`（单位：毫秒）。
     > **注意：**
     >
     > `tidb_slow_log_rules` 中 `Query_time`、`Process_time` 等时间类字段单位为秒（可带小数），而 [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold) 的单位为毫秒。
 
-* [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v900-版本开始引入)：用于设置每秒打印慢查询日志数量的上限，默认值为 `0`。
+* [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v856-和-v900-版本开始引入)：用于设置每秒打印慢查询日志数量的上限，默认值为 `0`。
     * 当值为 `0` 时，表示不限制每秒打印的慢查询日志数量。
     * 当值大于 `0` 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢查询日志文件。
     * 建议在启用了 `tidb_slow_log_rules` 后配置该变量，以防止基于规则的慢查询日志触发过于频繁。
