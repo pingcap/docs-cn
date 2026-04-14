@@ -1,6 +1,6 @@
 ---
 title: TiDB 8.5.6 Release Notes
-summary: 了解 TiDB 8.5.6 版本的兼容性变更、改进提升，以及错误修复。
+summary: 了解 TiDB 8.5.6 版本的新功能、兼容性变更、改进提升，以及错误修复。
 ---
 
 # TiDB 8.5.6 Release Notes
@@ -11,7 +11,7 @@ TiDB 版本：8.5.6
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v8.5/production-deployment-using-tiup) | [下载离线包](https://pingkai.cn/download#tidb-community)
 
-## 功能详情
+## 新功能
 
 ### 性能
 
@@ -105,7 +105,7 @@ TiDB 版本：8.5.6
 | [`OutPacketBytes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#outpacketbytes-从-v856-版本开始引入) | 新增 | 这个变量只做内部统计使用，对用户不可见。 |
 | [`tidb_foreign_key_check_in_shared_lock`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_foreign_key_check_in_shared_lock-从-v856-版本开始引入) | 新增 | 用于控制在悲观事务中，外键约束检查对父表中的行加锁时是否使用共享锁（而非排他锁）。默认值为 `OFF`，代表默认使用排他锁。 |
 | [`tidb_max_dist_task_nodes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_max_dist_task_nodes-从-v856-版本开始引入)  | 新增 | 用于定义分布式框架任务可使用的 TiDB 节点数上限。默认值为 `-1`，表示启用自动模式。在自动模式下，TiDB 将按照 `min(3, tikv_nodes / 3)` 动态计算该值，其中 `tikv_nodes` 表示集群中 TiKV 节点的数量。 |
-| [`tidb_opt_join_reorder_through_sel`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables.md#tidb_opt_join_reorder_through_sel-从-v856-版本开始引入)  | 新增 | 用于提升部分多表 JOIN 查询的连接顺序优化 (Join Reorder) 效果。当该变量值为 `ON` 时，在满足安全条件的前提下，优化器会将多个连续 JOIN 之间的过滤条件 (`Selection`) 一并纳入连接顺序优化的候选范围。在重建 JOIN 树时，优化器会将这些条件下推至更合适的位置，从而使更多表参与连接顺序优化。 |
+| [`tidb_opt_join_reorder_through_sel`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_opt_join_reorder_through_sel-从-v856-版本开始引入)  | 新增 | 用于提升部分多表 JOIN 查询的连接顺序优化 (Join Reorder) 效果。当该变量值为 `ON` 时，在满足安全条件的前提下，优化器会将多个连续 JOIN 之间的过滤条件 (`Selection`) 一并纳入连接顺序优化的候选范围。在重建 JOIN 树时，优化器会将这些条件下推至更合适的位置，从而使更多表参与连接顺序优化。 |
 | [`tidb_opt_partial_ordered_index_for_topn`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_opt_partial_ordered_index_for_topn-从-v856-版本开始引入) | 新增 | 用于控制在 `ORDER BY ... LIMIT` 查询中是否启用基于索引部分有序性 (partial order) 的 TopN 优化。默认值为 `DISABLE`，表示关闭该优化。 |
 | [`tidb_slow_log_max_per_sec`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_slow_log_max_per_sec-从-v856-版本开始引入)  | 新增 | 控制每个 TiDB 节点每秒打印的慢查询日志的数量上限。<ul><li>当值为 `0`（默认值）时，表示不限制每秒打印的慢查询日志数量。</li><li>当值大于 `0` 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢查询日志文件。</li></ul>  |
 | [`tidb_slow_log_rules`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_slow_log_rules-从-v856-版本开始引入)  | 新增 | 用于定义慢查询日志的触发规则，支持基于多维度指标的组合条件，实现更加灵活和精细化的日志记录控制。   |
@@ -130,9 +130,9 @@ TiDB 版本：8.5.6
 + TiDB
 
     - 改进包含 `IN` 条件且作用于索引前缀列的查询的执行计划选择。TiDB 现在可以使用 merge sort 在 `ORDER BY ... LIMIT` 查询中保持顺序，从而减少不必要的扫描并提升性能 [#63449](https://github.com/pingcap/tidb/issues/63449) [#34882](https://github.com/pingcap/tidb/issues/34882) @[time-and-fate](https://github.com/time-and-fate)
-    - 在 `GRANT` 和 `REVOKE` 中支持列级权限 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 提升在列级权限条目数量较多的部署中，`GRANT` 和 `REVOKE` 等权限更新操作的性能 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 将不可打印的预处理语句参数以十六进制的形式输出，从而提升慢查询日志的可读性 [#65383](https://github.com/pingcap/tidb/issues/65383) @[dveeden](https://github.com/dveeden)
+    - 在 `mysql.tidb` 中新增 `cluster_id` 字段，使外部工具能够判断两个 TiDB 实例是否属于同一集群 [#59476](https://github.com/pingcap/tidb/issues/59476) @[YangKeao](https://github.com/YangKeao)
 
 + TiKV
 
@@ -158,11 +158,10 @@ TiDB 版本：8.5.6
     - 修复从 `release-8.5-20250606-v8.5.2` 升级到上游 `release-8.5` 时可能跳过 PITR 元数据升级，并导致 PITR 操作失败的问题 [#66994](https://github.com/pingcap/tidb/issues/66994) @[fzzf678](https://github.com/fzzf678)
     - 修复在执行 `EXCHANGE PARTITION` 后，非聚簇分区表上的非唯一全局索引或可为空的唯一全局索引可能出现不一致并返回不完整结果的问题 [#65289](https://github.com/pingcap/tidb/issues/65289) @[mjonss](https://github.com/mjonss)
     - 修复 `KILL QUERY` 错误终止空闲连接的问题 [#65447](https://github.com/pingcap/tidb/issues/65447) @[gengliqi](https://github.com/gengliqi)
-    - 在 `mysql.tidb` 中新增 `cluster_id` 字段，使外部工具能够判断两个 TiDB 实例是否属于同一集群 [#59476](https://github.com/pingcap/tidb/issues/59476) @[YangKeao](https://github.com/YangKeao)
     - 修复设置 `tidb_service_scope` 时，其值未被正确转换为小写的问题 [#66749](https://github.com/pingcap/tidb/issues/66749) @[D3Hunter](https://github.com/D3Hunter)
     - 修复 TiDB 重启后无法正确显示亲和力表的问题 [#66284](https://github.com/pingcap/tidb/issues/66284) @[lcwangchao](https://github.com/lcwangchao)
     - 修复由于统计信息缓存 (Stats Cache) 未排除系统表，导致 Stats Healthy 监控指标显示不准确的问题 [#64080](https://github.com/pingcap/tidb/issues/64080) @[0xPoe](https://github.com/0xPoe)
-    - 修复由于 `modify_count` 更新异常，导致统计信息可能无法及时刷新的问题 [#65426](https://github.com/pingcap/tidb/issues/65426) @[ti-chi-bot](https://github.com/ti-chi-bot)
+    - 修复由于 `modify_count` 更新异常，导致统计信息可能无法及时刷新的问题 [#65426](https://github.com/pingcap/tidb/issues/65426) @[0xPoe](https://github.com/0xPoe)
     - 修复在悲观事务中，当首条语句使用公平锁 (Fair Locking) 模式加锁时，可能导致事务保活 (Keep Alive) 机制失效，进而引发事务被意外回滚的问题 [#66571](https://github.com/pingcap/tidb/issues/66571) @[MyonKeminta](https://github.com/MyonKeminta)
 
 + TiKV
@@ -173,7 +172,7 @@ TiDB 版本：8.5.6
     - 修复当 TiKV 节点磁盘写满时，Follower Read 可能持续阻塞的问题 [#19201](https://github.com/tikv/tikv/issues/19201) @[glorv](https://github.com/glorv)
     - 修复当 resolved-ts worker 繁忙时，resolved-ts 任务积压可能导致 OOM 的问题 [#18359](https://github.com/tikv/tikv/issues/18359) @[overvenus](https://github.com/overvenus)
     - 修复 Leader 迁移期间 Follower Read 可能出现长尾延迟的问题 [#18417](https://github.com/tikv/tikv/issues/18417) @[gengliqi](https://github.com/gengliqi)
-    - 修复悲观事务中 prewrite 请求重试在极少数情况下影响数据一致性的风险 [#11187](https://github.com/tikv/tikv/issues/11187)
+    - 修复悲观事务中 prewrite 请求重试在极少数情况下影响数据一致性的风险 [#11187](https://github.com/tikv/tikv/issues/11187) @[wk989898](https://github.com/wk989898)
 
 + PD
 
