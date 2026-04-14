@@ -12,14 +12,14 @@ aliases: ['/zh/tidb/dev/create-secondary-indexes','/zh/tidb/stable/dev-guide-cre
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [使用 {{{ .starter }}} 构建 TiDB 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)。
 - [创建一个数据库](/develop/dev-guide-create-database.md)。
 - [创建表](/develop/dev-guide-create-table.md)。
 
 ## 什么是二级索引
 
-二级索引是集群中的逻辑对象，你可以简单地认为它就是一种对数据的排序，TiDB 使用这种有序性来加速查询。TiDB 的创建二级索引的操作为在线操作，不会阻塞表中的数据读写。TiDB 会创建表中各行的引用，并按选择的列进行排序。而并非对表本身的数据进行排序。
+二级索引是 TiDB 中的逻辑对象，你可以简单地认为它就是一种对数据的排序，TiDB 使用这种有序性来加速查询。TiDB 的创建二级索引的操作为在线操作，不会阻塞表中的数据读写。TiDB 会创建表中各行的引用，并按选择的列进行排序。而并非对表本身的数据进行排序。
 
 更多信息，请参阅[二级索引](/best-practices/tidb-best-practices.md#二级索引)。
 
