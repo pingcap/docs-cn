@@ -560,6 +560,7 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - RANGE (R)
 - RANK (R-Window)
 - RATE_LIMIT
+- RAW
 - READ (R)
 - REAL (R)
 - REBUILD
