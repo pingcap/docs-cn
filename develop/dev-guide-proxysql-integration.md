@@ -38,10 +38,10 @@ ProxySQL 的设计目标是快速、高效且易于使用。它完全兼容 MySQ
 
 ## 开发环境
 
-本节介绍如何在开发环境中将 TiDB 与 ProxySQL 集成。在满足[前提条件](#前提条件)的情况下，你可以根据 TiDB 集群类型选择以下选项之一开始集成 ProxySQL：
+本节介绍如何在开发环境中将 TiDB 与 ProxySQL 集成。在满足[前提条件](#前提条件)的情况下，你可以根据 TiDB 部署方式选择以下选项之一开始集成 ProxySQL：
 
 - 选项 1：[集成 TiDB Cloud 与 ProxySQL](#选项-1-集成-tidb-cloud-与-proxysql)
-- 选项 2：[集成本地部署的 TiDB 与 ProxySQL](#选项-2-集成本地部署的-tidb-与-proxysql)
+- 选项 2：[集成 TiDB Self-Managed 与 ProxySQL](#选项-2集成-tidb-self-managed-与-proxysql )
 
 ### 前提条件
 
@@ -120,15 +120,15 @@ systemctl start docker
 
 ### 选项 1: 集成 TiDB Cloud 与 ProxySQL
 
-在这个集成中，你将使用 [ProxySQL Docker 镜像](https://hub.docker.com/r/proxysql/proxysql)以及 {{{ .starter }}} 集群。下面的步骤将在端口 `16033` 上设置 ProxySQL，请确保此端口可用。
+在这个集成中，你将使用 [ProxySQL Docker 镜像](https://hub.docker.com/r/proxysql/proxysql)以及 {{{ .starter }}} 实例。下面的步骤将在端口 `16033` 上设置 ProxySQL，请确保此端口可用。
 
-#### 步骤 1. 创建一个 {{{ .starter }}} 集群
+#### 步骤 1. 创建一个 {{{ .starter }}} 实例
 
-1. 参考[创建一个 {{{ .starter }}} 集群](https://docs.pingcap.com/tidbcloud/tidb-cloud-quickstart#step-1-create-a-tidb-cluster)文档。记住为集群设置的 root 密码。
-2. 获取集群的 `hostname`、`port` 及 `username` 供后续使用。
+1. 参考[创建一个 {{{ .starter }}} 实例](https://docs.pingcap.com/tidbcloud/tidb-cloud-quickstart#step-1-create-a-tidb-cluster)文档。记住为该实例设置的 root 密码。
+2. 获取该 {{{ .starter }}} 实例的 `hostname`、`port` 及 `username` 供后续使用。
 
-    1. 在 [Clusters](https://tidbcloud.com/console/clusters) 页面，点击你的集群名称，进入集群概览页面。
-    2. 在集群概览页面的 **Connection** 面板中，复制 `Endpoint`、`Port` 与 `User` 字段，其中 `Endpoint` 是集群的 `hostname`。
+    1. 在 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击你的目标 {{{ .starter }}} 实例名称，进入其概览页面。
+    2. 在集群概览页面的 **Connection** 面板中，复制 `Endpoint`、`Port` 与 `User` 字段，其中 `Endpoint` 是该 {{{ .starter }}} 实例的的 `hostname`。
 
 #### 步骤 2. 生成 ProxySQL 配置文件
 
@@ -222,7 +222,7 @@ systemctl start docker
 
     </SimpleTab>
 
-    当出现提示时，输入集群的 `Endpoint` 作为 `Serverless Tier Host`，然后输入集群的 `Port` 与 `User`。
+    当出现提示时，输入 {{{ .starter }}} 实例的 `Endpoint` 作为 `Serverless Tier Host`，然后输入 {{{ .starter }}} 实例的 `Port` 与 `User`。
 
     下面是一个输出示例。可以看到，在当前的 `tidb-cloud-connect` 目录下生成了三个配置文件。
 
@@ -326,14 +326,14 @@ systemctl start docker
     >
     > `proxysql-prepare.sql` 脚本执行以下操作：
     >
-    > 1. 使用集群的用户名和密码添加一个 ProxySQL 用户。
+    > 1. 使用 {{{ .starter }}} 实例的用户名和密码添加一个 ProxySQL 用户。
     > 2. 将该用户分配给监控账户。
-    > 3. 将你的 {{{ .starter }}} 集群添加到主机列表中。
-    > 4. 在 ProxySQL 和 {{{ .starter }}} 集群之间启用安全连接。
+    > 3. 将你的 {{{ .starter }}} 实例添加到主机列表中。
+    > 4. 在 ProxySQL 和 {{{ .starter }}} 实例之间启用安全连接。
     >
     > 为了更好地理解此处的配置流程，强烈建议查看 `proxysql-prepare.sql` 文件。关于 ProxySQL 配置的更多信息，参考 [ProxySQL 文档](https://proxysql.com/documentation/proxysql-configuration/)。
 
-    下面是一个输出示例。输出中显示集群的主机名，这意味着 ProxySQL 和 {{{ .starter }}} 集群之间的连接建立成功。
+    下面是一个输出示例。输出中显示 {{{ .starter }}} 实例的主机名，这意味着 ProxySQL 和 {{{ .starter }}} 实例之间的连接建立成功。
 
     ```
     *************************** 1. row ***************************
@@ -351,9 +351,9 @@ systemctl start docker
                 comment:
     ```
 
-#### 步骤 4. 通过 ProxySQL 连接到 TiDB 集群
+#### 步骤 4. 通过 ProxySQL 连接到 TiDB
 
-1. 运行 `proxysql-connect.py` 连接到你的 TiDB 集群。该脚本将自动启动 MySQL 客户端并使用你在[步骤 2](#步骤-2-生成-proxysql-配置文件) 中指定的用户名和密码进行连接。
+1. 运行 `proxysql-connect.py` 连接到你的 {{{ .starter }}} 实例。该脚本将自动启动 MySQL 客户端并使用你在[步骤 2](#步骤-2-生成-proxysql-配置文件) 中指定的用户名和密码进行连接。
 
     <SimpleTab groupId="os">
 
@@ -383,17 +383,17 @@ systemctl start docker
 
     </SimpleTab>
 
-2. 连接 TiDB 集群后，可以使用以下 SQL 语句验证连接：
+2. 连接到你的 {{{ .starter }}} 实例后，可以使用以下 SQL 语句验证连接：
 
     ```sql
     SELECT VERSION();
     ```
 
-    如果输出了 TiDB 的版本信息，则表示你已经成功通过 ProxySQL 连接到 {{{ .starter }}} 集群。如需退出 MySQL 客户端，输入 `quit` 并按下 <kbd>Enter</kbd> 键。
+    如果输出了 TiDB 的版本信息，则表示你已经成功通过 ProxySQL 连接到 {{{ .starter }}} 实例。如需退出 MySQL 客户端，输入 `quit` 并按下 <kbd>Enter</kbd> 键。
 
     > **注意：**
     >
-    > **调试提示：** 如果无法连接到集群，请检查 `tidb-cloud-connect.cnf`、`proxysql-prepare.sql` 和 `proxysql-connect.py` 文件，确保你提供的服务器信息可用且正确。
+    > **调试提示：** 如果无法连接到 {{{ .starter }}} 实例，请检查 `tidb-cloud-connect.cnf`、`proxysql-prepare.sql` 和 `proxysql-connect.py` 文件，确保你提供的服务器信息可用且正确。
 
 3. 要停止和删除容器，并返回上一个目录，运行以下命令：
 
@@ -428,9 +428,9 @@ systemctl start docker
 
     </SimpleTab>
 
-### 选项 2: 集成本地部署的 TiDB 与 ProxySQL
+### 选项 2：集成 TiDB Self-Managed 与 ProxySQL
 
-在这个集成中，你将使用 [TiDB](https://hub.docker.com/r/pingcap/tidb) 和 [ProxySQL](https://hub.docker.com/r/proxysql/proxysql) 的 Docker 镜像设置环境。你也可以尝试[其他方式安装 TiDB](/quick-start-with-tidb.md)。
+在这个集成中，你将使用 [TiDB](https://hub.docker.com/r/pingcap/tidb) 和 [ProxySQL](https://hub.docker.com/r/proxysql/proxysql) 的 Docker 镜像设置环境。你也可以尝试[其他方式安装 TiDB Self-Managed](/quick-start-with-tidb.md)。
 
 下面的步骤将在端口 `6033` 和 `4000` 上分别设置 ProxySQL 和 TiDB，请确保这些端口可用。
 
@@ -582,7 +582,7 @@ systemctl start docker
 
     </SimpleTab>
 
-6. 连接 TiDB 集群后，可以使用以下 SQL 语句验证连接：
+6. 连接到你的 TiDB Self-Managed 集群后，你可以使用以下 SQL 语句验证连接：
 
     ```sql
     SELECT VERSION();
@@ -689,7 +689,7 @@ systemctl start docker
 
     执行以上命令后，系统将显示 `'ProxySQL Admin'` 提示。
 
-2. 你可以在当前 MySQL 命令行客户端中向 ProxySQL 添加一个或多个 TiDB 集群。例如，下面的语句将添加一个 TiDB Cloud Dedicated 集群。你需要用集群的 `Endpoint` 和 `Port` 替换 `<tidb cloud dedicated cluster host>` 和 `<tidb cloud dedicated cluster port>`（默认端口为 `4000`）。
+2. 你可以在当前 MySQL 命令行客户端中向 ProxySQL 添加一个或多个 TiDB Cloud Dedicated 集群。例如，下面的语句将添加一个 TiDB Cloud Dedicated 集群。你需要用 TiDB Cloud Dedicated 集群的 `Endpoint` 和 `Port` 替换 `<tidb cloud dedicated cluster host>` 和 `<tidb cloud dedicated cluster port>`（默认端口为 `4000`）。
 
     ```sql
     INSERT INTO mysql_servers(hostgroup_id, hostname, port)
@@ -706,10 +706,10 @@ systemctl start docker
     > **注意：**
     >
     > - `hostgroup_id`：指定一个 **hostgroup** 的 ID。ProxySQL 使用 **hostgroup** 管理集群。如果需要将 SQL 流量均匀地分配给这些集群，你可以将需要负载均衡的几个 TiDB 集群配置到同一个 **hostgroup** 中。另一方面，为了区分不同的集群，例如为了实现读写分离，你可以将它们配置为不同的 **hostgroup** ID。
-    > - `hostname`：TiDB 集群的 `Endpoint`。
-    > - `port`：TiDB 集群的 `Port`。
+    > - `hostname`：TiDB Cloud Dedicated 集群的 `Endpoint`。
+    > - `port`：TiDB Cloud Dedicated 集群的 `Port`。
 
-3. 为配置 ProxySQL 的登录用户，你需要确保用户在 TiDB 集群上有适当的权限。在下面的语句中，你需要把 `<tidb cloud dedicated cluster username>` 和 `<tidb cloud dedicated cluster password>` 替换为集群的实际用户名和密码。
+3. 为配置 ProxySQL 的登录用户，你需要确保用户在 TiDB Cloud Dedicated 集群上有适当的权限。在下面的语句中，你需要把 `<tidb cloud dedicated cluster username>` 和 `<tidb cloud dedicated cluster password>` 替换为 TiDB Cloud Dedicated 集群的实际用户名和密码。
 
     ```sql
     INSERT INTO mysql_users(
@@ -777,8 +777,8 @@ systemctl start docker
 
     在上面的例子中:
 
-    - `address` 和 `port` 用于指定你的 TiDB Cloud 集群的 `Endpoint` 和 `Port`。
-    - `username` 和 `password` 用于指定你的 TiDB Cloud 集群的用户名和密码。
+    - `address` 和 `port` 用于指定你的 TiDB Cloud Dedicated 集群的 `Endpoint` 和 `Port`。
+    - `username` 和 `password` 用于指定你的 TiDB Cloud Dedicated 集群的用户名和密码。
 
 3. 重启 ProxySQL：
 
@@ -804,7 +804,7 @@ systemctl start docker
 
 > **注意：**
 >
-> 以下步骤使用 TiDB 和 ProxySQL 的容器镜像配置查询规则。如果你还没有拉取这些镜像，请参考[集成本地部署的 TiDB 与 ProxySQL](#选项-2-集成本地部署的-tidb-与-proxysql) 部分的详细步骤。
+> 以下步骤使用 TiDB 和 ProxySQL 的容器镜像配置查询规则。如果你还没有拉取这些镜像，请参考[集成 TiDB Self-Managed 与 ProxySQL](#选项-2集成-tidb-self-managed-与-proxysql ) 部分的详细步骤。
 
 1. 克隆 TiDB 和 ProxySQL 的集成示例代码仓库 [`pingcap-inc/tidb-proxysql-integration`](https://github.com/pingcap-inc/tidb-proxysql-integration)。如果你已经在前面的步骤中克隆了它，请跳过这一步。
 
