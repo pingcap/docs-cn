@@ -2347,6 +2347,23 @@ Raft Engine 相关的配置项。
 + 控制是否强制对 RocksDB 最底层文件进行 compaction。
 + 默认值：`true`
 
+### `mvcc-read-aware-enabled` <span class="version-mark">从 v8.5.6 版本开始引入</span>
+
++ 控制是否启用 MVCC-read-aware compaction。启用后，TiKV 会跟踪读取请求期间扫描的 MVCC 版本数量，并利用这些信息优先对 MVCC 读取放大率高的 Region 进行 compaction。这可以降低在扫描期间遇到大量过期版本的热点 Region 的读延迟。
++ 默认值：`false`
+
+### `mvcc-scan-threshold` <span class="version-mark">从 v8.5.6 版本开始引入</span>
+
++ 将 Region 标记为 compaction 候选所需的每个读请求扫描的最小 MVCC 版本数量。此配置项仅在 [`mvcc-read-aware-enabled`](#mvcc-read-aware-enabled-从-v856-版本开始引入) 设置为 `true` 时生效。
++ 默认值：`1000`
++ 最小值：`0`
+
+### `mvcc-read-weight` <span class="version-mark">从 v8.5.6 版本开始引入</span>
+
++ 计算 Region 的 compaction 优先级得分时，应用于 MVCC 读取活动的权重倍数。较高的数值会提高 MVCC 读放大在整体评估中的权重，相对于其他 compaction 触发因素（例如 tombstone 密度）占比更大。该配置项仅在 [`mvcc-read-aware-enabled`](#mvcc-read-aware-enabled-从-v856-版本开始引入) 设置为 `true` 时生效。
++ 默认值：`3.0`
++ 最小值：`0.0`
+
 ## backup
 
 用于 BR 备份相关的配置项。
@@ -2646,6 +2663,24 @@ Raft Engine 相关的配置项。
 + 单次时间戳请求的最大数量。
 + 在默认的一个 TSO 物理时钟更新周期内 (50ms)，PD 最多提供 262144 个 TSO，超过这个数量后 PD 会暂缓 TSO 请求的处理。这个配置用于避免 PD 的 TSO 消耗殆尽、影响其他业务的使用。如果增大这个参数，建议同时减小 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) 参数，以获得足够的 TSO。
 + 默认值：8192
+
+## resource-metering
+
+资源计量 (Resource Metering) 相关的配置项。
+
+### `enable-network-io-collection` <span class="version-mark">从 v8.5.6 版本开始引入</span>
+
++ 是否在 [Top SQL](/dashboard/top-sql.md) 中除了采集 CPU 数据外，还额外采集 TiKV 的网络流量和逻辑 I/O 信息。
++ 开启后，TiKV 在处理请求时会额外记录这些指标：网络入站字节数、网络出站字节数、逻辑读字节数和逻辑写字节数。
++ 上报资源消耗时，TiKV 会基于 CPU 时间、网络流量和逻辑 I/O 来筛选 Top N 记录，并额外按 Region 维度上报这些统计结果，便于更细粒度地分析热点请求或资源消耗来源。
++ 默认值：false
+
+> **注意：**
+>
+> 逻辑 I/O 与物理 I/O 含义不同，两者不能直接对应：
+>
+> - 逻辑 I/O 指 TiKV 存储层处理请求时涉及的逻辑数据量，例如读取过程中扫描或处理的数据量，以及写请求自身的逻辑写入字节数。
+> - 物理 I/O 指底层存储设备实际发生的磁盘读写流量，会受到 block cache、compaction、flush 等因素的影响。
 
 ## resource-control
 

@@ -50,7 +50,7 @@ tiup dmctl check-task ./task.yaml
 
 - 上游 MySQL 表结构的兼容性
 
-    - 检查上游表是否设置了外键。TiDB 不支持外键，如果上游表设置了外键，则返回警告。
+    - 检查上游表是否设置了外键。TiDB v8.5.0 起正式支持外键 (GA)，DM 从 v8.5.6 开始以实验特性支持同步包含外键约束的表。在前置检查期间，如果检测到外键，DM 会返回警告。有关支持的场景和限制，参见 [DM 兼容性目录](/dm/dm-compatibility-catalog.md#外键-cascade-操作)。
     - 检查上游字符集是否与 TiDB 兼容，详见 [TiDB 支持的字符集](/character-set-and-collation.md)。
     - 检查上游表中是否存在主键或唯一键约束（从 v1.0.7 版本引入）。
 

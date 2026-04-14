@@ -172,25 +172,161 @@ Slow Query 基础信息：
 - `Storage_from_kv`：从 v8.5.5 开始引入，表示该语句是否从 TiKV 读取数据。
 - `Storage_from_mpp`：从 v8.5.5 开始引入，表示该语句是否从 TiFlash 读取数据。
 
+## `tidb_slow_log_rules` 使用方法
+
+[`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v856-版本开始引入) 用于定义慢查询日志的触发规则，支持多维度指标组合条件。适合用于慢日志的“定向采样”和“问题复现”，可按具体指标组合条件筛选目标语句。
+
+慢查询日志的触发行为取决于 `tidb_slow_log_rules` 的配置情况：
+
+- 如果未设置 `tidb_slow_log_rules`，慢查询日志触发仍依赖 [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold)（单位：毫秒）。
+- 如果已设置 `tidb_slow_log_rules`，配置的规则优先生效，[`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold) 将被忽略。
+
+如需了解各字段的具体含义、诊断价值和背景信息，请参见[字段含义说明](#字段含义说明)。
+
+### 统一规则语法与类型约束
+
+- 规则容量与分隔：`SESSION` 和 `GLOBAL` 各最多支持 10 条规则，同一会话最多可生效 20 条，规则之间用 `;` 分隔。
+- 条件格式：格式为 `字段名:值`，单条规则内的多个条件用 `,` 分隔。
+- 字段与作用域：字段名大小写不敏感（需保留下划线等字符）。`SESSION` 规则不支持 `Conn_ID`，仅 `GLOBAL` 支持 `Conn_ID`。
+- 匹配语义：
+    - 数值字段按 `>=` 匹配，字符串和布尔字段按等值匹配（`=`）。
+    - `DB` 与 `Resource_group` 匹配时不区分大小写。
+    - 不支持显式操作符（如 `>`, `<`, `!=`）。
+
+类型约束如下：
+
+- 数值类型（`int64`、`uint64`、`float64`）统一要求 `>= 0`，负值会解析报错。
+    - `int64`：上限 `2^63-1`。
+    - `uint64`：上限 `2^64-1`。
+    - `float64`：常规上限约 `1.79e308`。当前按 Go `ParseFloat` 解析，`NaN`/`Inf` 虽可被解析，但可能导致规则恒真或恒假，不建议使用。
+- `bool`：支持 `true`/`false`、`1`/`0`、`t`/`f`（大小写不敏感）。
+- `string`：当前不支持包含分隔符 `,`（条件分隔符）或 `;`（规则分隔符），即使使用引号（单引号或双引号）也不支持。不支持转义。
+- 重复字段：如果在单条规则内多次设置同一字段，以最后一次出现的值为准。
+
+### 支持的字段列表
+
+字段的详细解释、诊断含义和背景信息参见 [`identify-slow-queries` 的字段含义说明](/identify-slow-queries.md#字段含义说明)。
+
+除非另有说明，下表中的字段默认遵循上文[统一规则语法与类型约束](#统一规则语法与类型约束)中的通用匹配与类型规则。该表仅列出当前支持的字段名、类型、单位以及少量规则的特殊说明，不重复说明字段语义。
+
+| 字段名                                 | 类型     | 单位   | 备注                           |
+| -------------------------------------- | -------- | ------ | ------------------------------ |
+| `Conn_ID`                             | `uint`   | 计数   | 仅 GLOBAL 规则支持             |
+| `Session_alias`                       | `string` | 无     | -                              |
+| `DB`                                  | `string` | 无     | 匹配时不区分大小写             |
+| `Exec_retry_count`                    | `uint`   | 计数   | -                              |
+| `Query_time`                          | `float`  | 秒     | -                              |
+| `Parse_time`                          | `float`  | 秒     | -                              |
+| `Compile_time`                        | `float`  | 秒     | -                              |
+| `Rewrite_time`                        | `float`  | 秒     | -                              |
+| `Optimize_time`                       | `float`  | 秒     | -                              |
+| `Wait_TS`                             | `float`  | 秒     | -                              |
+| `Is_internal`                         | `bool`   | 无     | -                              |
+| `Digest`                              | `string` | 无     | -                              |
+| `Plan_digest`                         | `string` | 无     | -                              |
+| `Num_cop_tasks`                       | `int`    | 计数   | -                              |
+| `Mem_max`                             | `int`    | bytes  | -                              |
+| `Disk_max`                            | `int`    | bytes  | -                              |
+| `Write_sql_response_total`            | `float`  | 秒     | -                              |
+| `Succ`                                | `bool`   | 无     | -                              |
+| `Resource_group`                      | `string` | 无     | 匹配时不区分大小写               |
+| `KV_total`                            | `float`  | 秒     | -                              |
+| `PD_total`                            | `float`  | 秒     | -                              |
+| `Unpacked_bytes_sent_tikv_total`      | `int`    | bytes  | -                              |
+| `Unpacked_bytes_received_tikv_total`  | `int`    | bytes  | -                              |
+| `Unpacked_bytes_sent_tikv_cross_zone` | `int`    | bytes  | -                              |
+| `Unpacked_bytes_received_tikv_cross_zone`    | `int` | bytes  | -                          |
+| `Unpacked_bytes_sent_tiflash_total`          | `int` | bytes  | -                          |
+| `Unpacked_bytes_received_tiflash_total`      | `int` | bytes  | -                          |
+| `Unpacked_bytes_sent_tiflash_cross_zone`     | `int` | bytes  | -                          |
+| `Unpacked_bytes_received_tiflash_cross_zone` | `int` | bytes  | -                          |
+| `Process_time`                        | `float`  | 秒     | -                              |
+| `Backoff_time`                        | `float`  | 秒     | -                              |
+| `Total_keys`                          | `uint`   | 计数   | -                              |
+| `Process_keys`                        | `uint`   | 计数   | -                              |
+| `cop_mvcc_read_amplification`         | `float`  | ratio  | ratio 值 (Total_keys / Process_keys) |
+| `Prewrite_time`                       | `float`  | 秒     | -                              |
+| `Commit_time`                         | `float`  | 秒     | -                              |
+| `Write_keys`                          | `uint`   | 计数   | -                              |
+| `Write_size`                          | `uint`   | bytes  | -                              |
+| `Prewrite_region`                     | `uint`   | 计数   | -                              |
+
+### 生效行为与匹配顺序
+
+- 规则更新行为：每次执行 `SET [SESSION|GLOBAL] tidb_slow_log_rules = '...'` 都会覆盖对应作用域原有规则，不会追加。
+- 规则清空行为：`SET [SESSION|GLOBAL] tidb_slow_log_rules = ''` 会清空对应作用域规则。
+- 在当前会话存在可生效的 `tidb_slow_log_rules`（如 SESSION 规则、GLOBAL 的当前 `Conn_ID` 规则，或未指定 `Conn_ID` 的全局规则）时，慢查询日志输出由规则匹配结果决定，`tidb_slow_log_threshold` 不再参与判断。
+- 在当前会话没有任何可适用规则时，例如 SESSION 和 GLOBAL 都为空，或仅配置了与当前 `Conn_ID` 不匹配的 GLOBAL 规则，慢查询日志触发仍依赖 `tidb_slow_log_threshold`（注意其单位为毫秒）。
+- 如果希望规则中仍使用 SQL 执行时间作为输出慢日志的条件，可在规则中使用 `Query_time`（注意其单位为秒）并设置阈值。
+- 规则匹配逻辑如下：
+    - 多条规则之间采用 `OR` 关系，单条规则内多个字段条件采用 `AND` 关系。
+    - SESSION 作用域规则优先匹配，若未匹配，再按顺序匹配 GLOBAL 的 `Conn_ID` 定向规则和未指定 `Conn_ID` 的全局通用规则。
+- `SHOW VARIABLES LIKE 'tidb_slow_log_rules'` 与 `SELECT @@SESSION.tidb_slow_log_rules` 返回 SESSION 规则文本（未设置时为空字符串），`SELECT @@GLOBAL.tidb_slow_log_rules` 返回 GLOBAL 规则文本。
+
+### 使用示例
+
+- 标准格式（SESSION 作用域）：
+
+    ```sql
+    SET SESSION tidb_slow_log_rules = 'Query_time: 0.5, Is_internal: false';
+    ```
+
+- 错误格式（SESSION 作用域不支持 `Conn_ID`）：
+
+    ```sql
+    SET SESSION tidb_slow_log_rules = 'Conn_ID: 12, Query_time: 0.5, Is_internal: false';
+    ```
+
+- 全局规则（适用于所有连接）：
+
+    ```sql
+    SET GLOBAL tidb_slow_log_rules = 'Query_time: 0.5, Is_internal: false';
+    ```
+
+- 指定特定连接的全局规则（分别适用于 `Conn_ID:11` 和 `Conn_ID:12` 的两个连接）：
+
+    ```sql
+    SET GLOBAL tidb_slow_log_rules = 'Conn_ID: 11, Query_time: 0.5, Is_internal: false; Conn_ID: 12, Query_time: 0.6, Process_time: 0.3, DB: db1';
+    ```
+
+### 使用建议
+
+- `tidb_slow_log_rules` 用于替换单一阈值方式，支持多维度指标组合条件，以实现更灵活和精细化的慢查询日志控制。
+
+- 在资源充足的测试环境（1 个 TiDB 节点，16 核 CPU、48 GiB 内存；3 个 TiKV 节点，每个 16 核 CPU、48 GiB 内存）中，多次 sysbench 测试结果表明：当多维慢查询日志规则在 30 分钟内生成数百万条慢查询日志时，对性能影响较小；但当日志量达到千万级时，TPS 会明显下降，延迟也会显著增加。因此在业务负载较高，或 CPU、内存资源接近瓶颈的情况下，应谨慎配置 `tidb_slow_log_rules`，避免因规则过宽导致日志洪泛。若需要限制日志输出速率，可通过 [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v856-版本开始引入) 进行限速，以降低对业务性能的影响。
+
 ## 相关系统变量
 
-* [tidb_slow_log_threshold](/system-variables.md#tidb_slow_log_threshold)：设置慢日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢日志中。默认值是 300 ms。
-* [tidb_query_log_max_len](/system-variables.md#tidb_query_log_max_len)：设置慢日志记录 SQL 语句的最大长度。默认值是 4096 byte。
-* [tidb_redact_log](/system-variables.md#tidb_redact_log)：设置慢日志记录 SQL 时是否将用户数据脱敏用 `?` 代替。默认值是 `0`，即关闭该功能。
-* [tidb_enable_collect_execution_info](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的物理执行信息，默认值是 `1`。该功能对性能的影响约为 3%。开启该项后查看 `Plan` 的示例如下：
+* [`tidb_slow_log_rules`](/system-variables.md#tidb_slow_log_rules-从-v856-版本开始引入)：请参见 [`tidb_slow_log_rules` 使用建议](#tidb_slow_log_rules-使用方法)。
 
-```sql
-> select tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMgk1BWM2zwAAMRnIADcVyAAxHcEQNQlOL0EBBPBbCjMJMTNfMTYJMQkzMTI4MS44NTc4MTk5MDUyMTcJdGFibGU6dCwgaW5kZXg6aWR4KGEpLCByYW5nZTpbLWluZiw1MDAwMCksIGtlZXAgb3JkZXI6ZmFsc2UJMjUBrgnQVnsA');
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMg |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|     id                    task    estRows               operator info                                                  actRows    execution info                                                                  memory       disk                              |
-|     StreamAgg_17          root    1                     funcs:count(Column#7)->Column#5                                1          time:10.931505ms, loops:2                                                       372 Bytes    N/A                               |
-|     └─IndexReader_18      root    1                     index:StreamAgg_9                                              1          time:10.927685ms, loops:2, rpc num: 1, rpc time:10.884355ms, proc keys:25007    206 Bytes    N/A                               |
-|       └─StreamAgg_9       cop     1                     funcs:count(1)->Column#7                                       1          time:11ms, loops:25                                                             N/A          N/A                               |
-|         └─IndexScan_16    cop     31281.857819905217    table:t, index:idx(a), range:[-inf,50000), keep order:false    25007      time:11ms, loops:25                                                             N/A          N/A                               |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-```
+* [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold)：用于设置慢查询日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢查询日志中。默认值是 `300ms`（单位：毫秒）。
+    > **注意：**
+    >
+    > `tidb_slow_log_rules` 中 `Query_time`、`Process_time` 等时间类字段单位为秒（可带小数），而 [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold) 的单位为毫秒。
+
+* [`tidb_slow_log_max_per_sec`](/system-variables.md#tidb_slow_log_max_per_sec-从-v856-版本开始引入)：用于设置每秒打印慢查询日志数量的上限，默认值为 `0`。
+    * 当值为 `0` 时，表示不限制每秒打印的慢查询日志数量。
+    * 当值大于 `0` 时，TiDB 每秒最多打印指定数量的慢查询日志，超过部分将被丢弃，不会写入慢查询日志文件。
+    * 建议在启用了 `tidb_slow_log_rules` 后配置该变量，以防止基于规则的慢查询日志触发过于频繁。
+
+* [`tidb_query_log_max_len`](/system-variables.md#tidb_query_log_max_len)：设置慢查询日志记录 SQL 语句的最大长度。默认值是 4096 byte。
+
+* [`tidb_redact_log`](/system-variables.md#tidb_redact_log)：设置慢查询日志记录 SQL 时，是否将用户数据脱敏用 `?` 代替。默认值是 `0`，即关闭该功能。
+
+* [`tidb_enable_collect_execution_info`](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的物理执行信息，默认值是 `1`。开启该功能会导致性能降低约 3%。开启后查看 `Plan` 的示例如下：
+
+    ```sql
+    > select tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMgk1BWM2zwAAMRnIADcVyAAxHcEQNQlOL0EBBPBbCjMJMTNfMTYJMQkzMTI4MS44NTc4MTk5MDUyMTcJdGFibGU6dCwgaW5kZXg6aWR4KGEpLCByYW5nZTpbLWluZiw1MDAwMCksIGtlZXAgb3JkZXI6ZmFsc2UJMjUBrgnQVnsA');
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+    | tidb_decode_plan('jAOIMAk1XzE3CTAJMQlmdW5jczpjb3VudChDb2x1bW4jNyktPkMJC/BMNQkxCXRpbWU6MTAuOTMxNTA1bXMsIGxvb3BzOjIJMzcyIEJ5dGVzCU4vQQoxCTMyXzE4CTAJMQlpbmRleDpTdHJlYW1BZ2dfOQkxCXQRSAwyNzY4LkgALCwgcnBjIG51bTogMQkMEXMQODg0MzUFK0hwcm9jIGtleXM6MjUwMDcJMjA2HXsIMg |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+    |     id                    task    estRows               operator info                                                  actRows    execution info                                                                  memory       disk                              |
+    |     StreamAgg_17          root    1                     funcs:count(Column#7)->Column#5                                1          time:10.931505ms, loops:2                                                       372 Bytes    N/A                               |
+    |     └─IndexReader_18      root    1                     index:StreamAgg_9                                              1          time:10.927685ms, loops:2, rpc num: 1, rpc time:10.884355ms, proc keys:25007    206 Bytes    N/A                               |
+    |       └─StreamAgg_9       cop     1                     funcs:count(1)->Column#7                                       1          time:11ms, loops:25                                                             N/A          N/A                               |
+    |         └─IndexScan_16    cop     31281.857819905217    table:t, index:idx(a), range:[-inf,50000), keep order:false    25007      time:11ms, loops:25                                                             N/A          N/A                               |
+    +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+    ```
 
 在性能测试中可以关闭自动收集算子的执行信息：
 
