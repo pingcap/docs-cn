@@ -137,7 +137,7 @@ TiDB 版本：8.5.6
 
     - 新增 Load-based Compaction 机制，该机制可感知 MVCC 读取开销，并优先对读取开销较高的 Region 执行 Compaction 操作，以提升查询性能 [#19133](https://github.com/tikv/tikv/issues/19133) @[mittalrishabh](https://github.com/mittalrishabh)
     - 优化集群扩缩容过程中 stale range 的清理逻辑，不再通过 ingest SST 文件执行清理，而是直接删除过期 key，以降低对在线请求延迟的影响 [#18042](https://github.com/tikv/tikv/issues/18042) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 为 Top SQL 新增 TiKV 网络流量和逻辑 I/O 信息的采集支持，帮助用户更准确地诊断 SQL 性能问题 [#18815](https://github.com/tikv/tikv/issues/18815) @[yibin87](https://github.com/yibin87)
+    - 为 Top SQL 新增 TiKV 网络流量和逻辑 I/O 信息的采集支持，帮你更准确地诊断 SQL 性能问题 [#18815](https://github.com/tikv/tikv/issues/18815) @[yibin87](https://github.com/yibin87)
 
 + PD
 
@@ -197,11 +197,11 @@ TiDB 版本：8.5.6
 
         - 修复服务器重启后，changefeed 可能重复创建无效 dispatcher 的问题 [#4452](https://github.com/pingcap/ticdc/issues/4452) @[wlwilliamx](https://github.com/wlwilliamx)
         - 修复当上游 TiDB 版本为 v8.1.x 或更早版本时，TiCDC 无法正确同步表重命名操作的问题 [#4392](https://github.com/pingcap/ticdc/issues/4392) @[lidezhu](https://github.com/lidezhu)
-        - 修复启用 CDC 时，TiKV 在数据扫描过程中可能崩溃的问题 [#19404](https://github.com/tikv/tikv/issues/19404) @[wk989898](https://github.com/wk989898)
+        - 修复启用 TiCDC 时，TiKV 在数据扫描过程中可能崩溃的问题 [#19404](https://github.com/tikv/tikv/issues/19404) @[wk989898](https://github.com/wk989898)
         - 为 Azure Blob Storage 下游新增 Azure 托管标识 (Managed Identity) 认证支持，并修复云存储上传可能卡住的问题 [#3093](https://github.com/pingcap/ticdc/issues/3093) @[wlwilliamx](https://github.com/wlwilliamx)
 
     + TiDB Data Migration (DM)
 
         - 修复 DM 在上游 binlog 文件切换后全局 checkpoint 位置未推进的问题 [#12339](https://github.com/pingcap/tiflow/issues/12339) @[OliverS929](https://github.com/OliverS929)
-        - 修复 DM 在 safe-mode 下处理含外键约束表的更新时，在未修改主键或唯一键的情况下仍可能误触发外键级联并导致数据被错误删除的问题 [#12350](https://github.com/pingcap/tiflow/issues/12350) @[OliverS929](https://github.com/OliverS929)
+        - 修复 DM 在安全模式下处理含外键约束表的更新时，在未修改主键或唯一键的情况下仍可能误触发外键级联并导致数据被错误删除的问题 [#12350](https://github.com/pingcap/tiflow/issues/12350) @[OliverS929](https://github.com/OliverS929)
         - 修复 DM validator 在处理 `UNSIGNED` 列时误报校验错误的问题 [#12178](https://github.com/pingcap/tiflow/issues/12178) @[OliverS929](https://github.com/OliverS929)
