@@ -123,7 +123,7 @@ TiDB 版本：8.5.6
 ## 废弃功能
 
 - 从 v8.5.6 开始，统计信息版本 1 (`tidb_analyze_version = 1`) 已废弃，并将在未来的版本中移除。建议使用统计信息版本 2 (`tidb_analyze_version = 2`)，并[将目前已有统计信息版本 1 的对象迁移至版本 2](https://docs.pingcap.com/zh/tidb/v8.5/statistics#切换统计信息版本)，以获得更准确的统计信息。
-- 从 v8.5.6 开始，TiDB Lightning Web 界面已废弃，并将在 v8.5.7 中移除。该 Web UI 自 v8.4.0 起已无法正常构建。请改用 [CLI](https://docs.pingcap.com/zh/tidb/v8.5/tidb-lightning-overview) 或 [`IMPORT INTO`](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-import-into) 语句。如果这对您的工作流程产生影响，请在 [#67697](https://github.com/pingcap/tidb/issues/67697) 中反馈。
+- 从 v8.5.6 开始，TiDB Lightning Web 界面已废弃，并将在 v8.5.7 中移除。该 Web UI 自 v8.4.0 起已无法正常构建。请改用 [CLI](https://docs.pingcap.com/zh/tidb/v8.5/tidb-lightning-overview) 或 [`IMPORT INTO`](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-import-into) 语句。如果这对你的工作流程产生影响，请在 [#67697](https://github.com/pingcap/tidb/issues/67697) 中反馈。
 
 ## 改进提升
 
