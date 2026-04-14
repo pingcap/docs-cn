@@ -536,4 +536,3 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 - [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)
 - [TiFlash 简介](/tiflash/tiflash-overview.md)
-
