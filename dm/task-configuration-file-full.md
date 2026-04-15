@@ -178,7 +178,7 @@ syncers:                             # sync 处理单元的运行配置参数
     # 如设置为 "0s"，则在 DM 自动进入安全模式的时候报错。
     # 如设置为正常值，例如 "1m30s"，则在该任务异常暂停、记录 `safemode_exit_point` 失败、或是 DM 进程异常退出时，把安全模式持续时间调整为 1 分 30 秒。详情可见[自动开启安全模式](https://docs.pingcap.com/zh/tidb/stable/dm-safe-mode#自动开启)。
     safe-mode-duration: "60s"
-    # 设置为 true，DM 会在不增加延迟的情况下，尽可能地将上游对同一条数据的多次操作压缩成一次操作。
+    # 设置为 true，DM 会会在不增加延迟的情况下，尽可能地将上游对同一条数据的多次操作压缩成一次操作。
     # 如 INSERT INTO tb(a,b) VALUES(1,1); UPDATE tb SET b=11 WHERE a=1; 会被压缩成 INSERT INTO tb(a,b) VALUES(1,11); 其中 a 为主键
     # 如 UPDATE tb SET b=1 WHERE a=1; UPDATE tb(a,b) SET b=2 WHERE a=1; 会被压缩成 UPDATE tb(a,b) SET b=2 WHERE a=1; 其中 a 为主键
     # 如 DELETE FROM tb WHERE a=1; INSERT INTO tb(a,b) VALUES(1,1); 会被压缩成 REPLACE INTO tb(a,b) VALUES(1,1); 其中 a 为主键
@@ -188,6 +188,10 @@ syncers:                             # sync 处理单元的运行配置参数
     # 如 UPDATE tb SET b=11 WHERE a=1; UPDATE tb(a,b) set b=22 WHERE a=2; 会变成 INSERT INTO tb(a,b) VALUES(1,11),(2,22) ON DUPLICATE KEY UPDATE a=VALUES(a), b=VALUES(b); 其中 a 为主键
     # 如 DELETE FROM tb WHERE a=1; DELETE FROM tb WHERE a=2 会变成 DELETE FROM tb WHERE (a) IN (1),(2)；其中 a 为主键
     multiple-rows: false
+
+    # 当该值设置为大于 0 时，DM 会为所有新创建的 AUTO_INCREMENT 表设置 AUTO_ID_CACHE 大小为对应的值。
+    # 例如，如果设置为 30，语句 `CREATE TABLE tb (`id` INT AUTO_INCREMENT);` 将被修改为 `CREATE TABLE tb (`id` INT AUTO_INCREMENT) /*T![auto_id_cache] AUTO_ID_CACHE = 30 */;`
+    auto-id-cache-size: 0
 
 validators:              # 增量数据校验的运行配置参数
   global:                # 配置名称
