@@ -29,30 +29,6 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - FSync OPS：每个 TiFlash 实例每秒进行 fsync 操作的次数。
 - File Open OPS：每个 TiFlash 实例每秒进行 open 操作的次数。
 - Opened File Count：当前每个 TiFlash 实例打开的文件句柄数。
-- Region：每个 TiFlash 实例持有的 Region 数量。
-- IO Throughput：每个 TiFlash 实例的 I/O 吞吐量。
-- Threads CPU：各线程 CPU 使用情况。
-- SST Import Service：SST 导入服务相关指标。
-- SST Apply：SST 应用相关指标。
-- Region Task：Region 任务统计。
-- Region Worker：Region worker 线程统计。
-- Raft Store：Raft Store 相关状态与统计。
-- Apply Worker：Apply worker 相关统计。
-- Storage Background (Small Tasks)：存储层小型后台任务统计。
-- Storage Background (Large Tasks)：存储层大型后台任务统计。
-- Manual Compaction：手动压缩任务统计。
-- GRPC Async Server：gRPC 异步服务端相关统计。
-- GRPC Async Client：gRPC 异步客户端相关统计。
-- FAP builder：FAP 构建相关统计。
-- Snapshot Sender：Snapshot 发送相关统计。
-- Segment Scheduler：Segment 调度器相关统计。
-- Local Index Pool：本地索引池相关统计。
-- Segment Reader：Segment Reader 相关统计。
-- Threads：线程数统计。
-- Threads state：线程状态分布。
-- Threads IO：线程 I/O 相关统计。
-- Thread Voluntary Context Switches：线程自愿上下文切换次数。
-- Thread Nonvoluntary Context Switches：线程非自愿上下文切换次数。
 
 > **注意：**
 >
@@ -129,7 +105,6 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Internal Tasks Duration：所有 TiFlash 实例进行内部数据整理任务消耗的时间。
 - Page GC Tasks OPM：所有 TiFlash 实例每分钟进行 Delta 部分数据整理任务的次数。
 - Page GC Tasks Duration：所有 TiFlash 实例进行 Delta 部分数据整理任务消耗的时间分布。
-- FSync Status：fsync 状态统计。
 - Disk Write OPS：所有 TiFlash 实例每秒进行磁盘写入的次数。
 - Disk Read OPS：所有 TiFlash 实例每秒进行磁盘读取的次数。
 - Write flow：所有 TiFlash 实例磁盘写操作的流量。
@@ -318,13 +293,16 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Region：Region 相关指标。
 
 ### Errors
+
 - Server is busy：Server is busy 相关指标。
 - Leader missing：Leader missing 相关指标。
 
 ### Server
+
 - CF size：CF size 相关指标。
 
 ### Thread CPU
+
 - Raft store CPU：Raft store CPU 相关指标。
 - RocksDB CPU：RocksDB CPU 相关指标。
 - Split check CPU：Split check CPU 相关指标。
@@ -333,12 +311,14 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Region task worker pre-handle/generate snapshot CPU：Region task worker pre-handle/generate snapshot CPU 相关指标。
 
 ### PD
+
 - PD requests：PD requests 相关指标。
 - PD request duration (average)：PD request duration (average) 相关指标。
 
 ## TiFlash-Proxy-Details
 
 ### Cluster
+
 - CPU：CPU 相关指标。
 - Memory：Memory 相关指标。
 - IO utilization：IO utilization 相关指标。
@@ -348,6 +328,7 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Memory trace：Memory trace 相关指标。
 
 ### Raft Engine
+
 - Operation：Operation 相关指标。
 - Write Duration：Write Duration 相关指标。
 - Flow：Flow 相关指标。
@@ -360,6 +341,7 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Write Compression Ratio：Write Compression Ratio 相关指标。
 
 ### Errors
+
 - Critical error：Critical error 相关指标。
 - Server is busy：Server is busy 相关指标。
 - Server report failures：Server report failures 相关指标。
@@ -371,6 +353,7 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Leader missing：Leader missing 相关指标。
 
 ### Server
+
 - CF size：CF size 相关指标。
 - Store size：Store size 相关指标。
 - Channel full：Channel full 相关指标。
@@ -385,6 +368,7 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Request batch input：Request batch input 相关指标。
 
 ### gRPC
+
 - gRPC message count：gRPC message count 相关指标。
 - gRPC message failed：gRPC message failed 相关指标。
 - 99% gRPC messge duration：99% gRPC messge duration 相关指标。
@@ -393,6 +377,7 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - raft message batch size：raft message batch size 相关指标。
 
 ### Thread CPU
+
 - Raft store CPU：Raft store CPU 相关指标。
 - Async apply CPU：Async apply CPU 相关指标。
 - Scheduler worker CPU：Scheduler worker CPU 相关指标。
@@ -407,12 +392,14 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Region task worker pre-handle/generate snapshot CPU：Region task worker pre-handle/generate snapshot CPU 相关指标。
 
 ### PD
+
 - PD requests：PD requests 相关指标。
 - PD request duration (average)：PD request duration (average) 相关指标。
 - PD heartbeats：PD heartbeats 相关指标。
 - PD validate peers：PD validate peers 相关指标。
 
 ### Raft IO
+
 - Apply log duration：Apply log duration 相关指标。
 - Apply log duration per server：Apply log duration per server 相关指标。
 - Append log duration：Append log duration 相关指标。
@@ -421,11 +408,13 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Commit log duration per server：Commit log duration per server 相关指标。
 
 ### Raft process
+
 - Ready handled：Ready handled 相关指标。
 - Process ready duration per server：Process ready duration per server 相关指标。
 - 0.99 Duration of raft store events：0.99 Duration of raft store events 相关指标。
 
 ### Raft message
+
 - Sent messages per server：Sent messages per server 相关指标。
 - Flush messages per server：Flush messages per server 相关指标。
 - Receive messages per server：Receive messages per server 相关指标。
@@ -434,6 +423,7 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Raft dropped messages：Raft dropped messages 相关指标。
 
 ### Raft propose
+
 - Raft proposals per ready：Raft proposals per ready 相关指标。
 - Raft read/write proposals：Raft read/write proposals 相关指标。
 - Raft read proposals per server：Raft read proposals per server 相关指标。
@@ -446,29 +436,34 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Perf Context duration：Perf Context duration 相关指标。
 
 ### Raft admin
+
 - Admin proposals：Admin proposals 相关指标。
 - Admin apply：Admin apply 相关指标。
 - Check split：Check split 相关指标。
 - 99.99% Check split duration：99.99% Check split duration 相关指标。
 
 ### Unified Read Pool
+
 - Time used by level：Time used by level 相关指标。
 - Level 0 chance：Level 0 chance 相关指标。
 - Running tasks：Running tasks 相关指标。
 
 ### Storage
+
 - Storage command total：Storage command total 相关指标。
 - Storage async request error：Storage async request error 相关指标。
 - Storage async snapshot duration：Storage async snapshot duration 相关指标。
 - Storage async write duration：Storage async write duration 相关指标。
 
 ### Scheduler
+
 - Scheduler stage total：Scheduler stage total 相关指标。
 - Scheduler writing bytes：Scheduler writing bytes 相关指标。
 - Scheduler priority commands：Scheduler priority commands 相关指标。
 - Scheduler pending commands：Scheduler pending commands 相关指标。
 
 ### Scheduler - $command
+
 - Scheduler stage total：Scheduler stage total 相关指标。
 - Scheduler command duration：Scheduler command duration 相关指标。
 - Scheduler latch wait duration：Scheduler latch wait duration 相关指标。
@@ -480,6 +475,7 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Scheduler scan details [default]：Scheduler scan details [default] 相关指标。
 
 ### Snapshot
+
 - Rate snapshot message：Rate snapshot message 相关指标。
 - 99% Handle snapshot duration：99% Handle snapshot duration 相关指标。
 - Snapshot state count：Snapshot state count 相关指标。
@@ -487,16 +483,19 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - 99.99% Snapshot KV count：99.99% Snapshot KV count 相关指标。
 
 ### Task
+
 - Worker handled tasks：Worker handled tasks 相关指标。
 - Worker pending tasks：Worker pending tasks 相关指标。
 - FuturePool handled tasks：FuturePool handled tasks 相关指标。
 - FuturePool pending tasks：FuturePool pending tasks 相关指标。
 
 ### Threads
+
 - Threads state：Threads state 相关指标。
 - Threads IO：Threads IO 相关指标。
 - Thread Voluntary Context Switches：Thread Voluntary Context Switches 相关指标。
 - Thread Nonvoluntary Context Switches：Thread Nonvoluntary Context Switches 相关指标。
+
 
 ### RocksDB - $db
 - Get operations：Get operations 相关指标。
@@ -535,6 +534,7 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Ingest SST duration seconds：Ingest SST duration seconds 相关指标。
 - Write stall duration：Write stall duration 相关指标。
 - Memtable size：Memtable size 相关指标。
+
 
 ### Encryption
 - Encryption data keys：Encryption data keys 相关指标。
