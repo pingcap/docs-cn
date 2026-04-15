@@ -23,6 +23,7 @@ summary: 了解部署、配置和使用 TiDB 的最佳实践。
 | ------------- | ---- |
 | [DDL 最佳实践](/best-practices/ddl-introduction.md) | 在 TiDB 中管理数据定义语言 (DDL) 操作的最佳实践。 |
 | [将 UUID 用作主键的最佳实践](/best-practices/uuid.md) | 使用 UUID（通用唯一标识符）作为主键时，高效存储和索引 UUID 的最佳实践。 |
+| [使用 TiDB 分区表的最佳实践](/best-practices/tidb-partitioned-tables-best-practices.md) | 使用 TiDB 分区表以提升性能、简化数据管理，并高效处理大规模数据集的最佳实践。 |
 | [多列索引优化最佳实践](/best-practices/multi-column-index-best-practices.md) | 通过合理设计和使用多列索引来提升 TiDB 查询性能的最佳实践。 |
 | [管理索引和识别未使用索引的最佳实践](/best-practices/index-management-best-practices.md) | 管理和优化索引、识别并清理未使用索引，以提升 TiDB 性能的最佳实践。 |
 
@@ -55,5 +56,4 @@ summary: 了解部署、配置和使用 TiDB 的最佳实践。
 | [SaaS 多租户场景下处理百万张表的最佳实践](/best-practices/saas-best-practices.md) | TiDB 在 SaaS 多租户环境的最佳实践，尤其适用于单集群表数量超过百万级别的场景。 |
 | [高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md) | 在高并发写入场景下避免写入热点、优化 TiDB 性能的最佳实践。 |
 | [海量 Region 集群调优最佳实践](/best-practices/massive-regions-best-practices.md) | 在管理百万级 Region 时，优化 TiKV 性能并降低心跳开销的最佳实践。 |
-| [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md) | 通过调整 PD 调度策略实现负载均衡并加快故障恢复的最佳实践。 |
-| [使用 TiDB 分区表的最佳实践](/best-practices/tidb-partitioned-tables-best-practices.md) | 使用 TiDB 分区表以提升性能、简化数据管理，并高效处理大规模数据集的最佳实践。 |
+| [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md) | 通过调整 PD 调度策略实现负载均衡并加快故障恢复的最佳实践。 |好。
