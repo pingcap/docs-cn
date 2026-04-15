@@ -23,6 +23,7 @@ summary: 了解部署、配置和使用 TiDB 的最佳实践。
 | ------------- | ---- |
 | [DDL 最佳实践](/best-practices/ddl-introduction.md) | 在 TiDB 中管理数据定义语言 (DDL) 操作的最佳实践。 |
 | [将 UUID 用作主键的最佳实践](/best-practices/uuid.md) | 使用 UUID（通用唯一标识符）作为主键时，高效存储和索引 UUID 的最佳实践。 |
+| [使用 TiDB 分区表的最佳实践](/best-practices/tidb-partitioned-tables-best-practices.md) | 使用 TiDB 分区表以提升性能、简化数据管理，并高效处理大规模数据集的最佳实践。 |
 | [多列索引优化最佳实践](/best-practices/multi-column-index-best-practices.md) | 通过合理设计和使用多列索引来提升 TiDB 查询性能的最佳实践。 |
 | [管理索引和识别未使用索引的最佳实践](/best-practices/index-management-best-practices.md) | 管理和优化索引、识别并清理未使用索引，以提升 TiDB 性能的最佳实践。 |
 
