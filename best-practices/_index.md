@@ -56,4 +56,4 @@ summary: 了解部署、配置和使用 TiDB 的最佳实践。
 | [SaaS 多租户场景下处理百万张表的最佳实践](/best-practices/saas-best-practices.md) | TiDB 在 SaaS 多租户环境的最佳实践，尤其适用于单集群表数量超过百万级别的场景。 |
 | [高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md) | 在高并发写入场景下避免写入热点、优化 TiDB 性能的最佳实践。 |
 | [海量 Region 集群调优最佳实践](/best-practices/massive-regions-best-practices.md) | 在管理百万级 Region 时，优化 TiKV 性能并降低心跳开销的最佳实践。 |
-| [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md) | 通过调整 PD 调度策略实现负载均衡并加快故障恢复的最佳实践。 |好。
+| [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md) | 通过调整 PD 调度策略实现负载均衡并加快故障恢复的最佳实践。 |
