@@ -1,0 +1,326 @@
+name: Sync Docs Changes from EN PR to ZH PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_pr_url:
+        description: 'Source PR URL (English docs repository)'
+        required: true
+        type: string
+        default: ''
+      target_pr_url:
+        description: 'Target PR URL (Chinese docs repository)'
+        required: true
+        type: string
+        default: ''
+      ai_provider:
+        description: 'AI Provider to use for translation'
+        required: false
+        type: choice
+        options:
+          - deepseek
+          - gemini
+          - azure
+        default: 'azure'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync-docs:
+    runs-on: ubuntu-latest
+    if: contains(fromJson('["hfxsd","likidu","lilin90","Oreoxmt","qiancai"]'), github.actor)
+
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Checkout ai-pr-translator repository
+        uses: actions/checkout@v4
+        with:
+          repository: "qiancai/ai-pr-translator"
+          ref: "main"
+          path: "ai-pr-translator"
+          persist-credentials: false
+
+      - name: Checkout docs repository glossary
+        uses: actions/checkout@v4
+        with:
+          repository: "pingcap/docs"
+          ref: "master"
+          path: "docs-master"
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install -r ai-pr-translator/scripts/requirements.txt
+
+      - name: Extract PR information
+        id: extract_info
+        env:
+          SOURCE_URL: ${{ github.event.inputs.source_pr_url }}
+          TARGET_URL: ${{ github.event.inputs.target_pr_url }}
+        run: |
+          if [[ ! "$SOURCE_URL" =~ ^https://github\.com/[^/]+/[^/]+/pull/[0-9]+$ ]]; then
+            echo "❌ Invalid source PR URL format"; exit 1
+          fi
+          if [[ ! "$TARGET_URL" =~ ^https://github\.com/[^/]+/[^/]+/pull/[0-9]+$ ]]; then
+            echo "❌ Invalid target PR URL format"; exit 1
+          fi
+
+          SOURCE_OWNER=$(echo "$SOURCE_URL" | cut -d'/' -f4)
+          SOURCE_REPO=$(echo "$SOURCE_URL" | cut -d'/' -f5)
+          SOURCE_PR=$(echo "$SOURCE_URL" | cut -d'/' -f7)
+          TARGET_OWNER=$(echo "$TARGET_URL" | cut -d'/' -f4)
+          TARGET_REPO=$(echo "$TARGET_URL" | cut -d'/' -f5)
+          TARGET_PR=$(echo "$TARGET_URL" | cut -d'/' -f7)
+
+          if [[ "$SOURCE_OWNER/$SOURCE_REPO" != "pingcap/docs" ]]; then
+            echo "❌ Unsupported source repository: only pingcap/docs is supported"; exit 1
+          fi
+          if [[ "$TARGET_OWNER/$TARGET_REPO" != "pingcap/docs-cn" ]]; then
+            echo "❌ Unsupported target repository: only pingcap/docs-cn is supported"; exit 1
+          fi
+
+          {
+            echo "source_owner<<EOF"; echo "$SOURCE_OWNER"; echo "EOF"
+            echo "source_repo<<EOF"; echo "$SOURCE_REPO"; echo "EOF"
+            echo "source_pr<<EOF"; echo "$SOURCE_PR"; echo "EOF"
+            echo "target_owner<<EOF"; echo "$TARGET_OWNER"; echo "EOF"
+            echo "target_repo<<EOF"; echo "$TARGET_REPO"; echo "EOF"
+            echo "target_pr<<EOF"; echo "$TARGET_PR"; echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+          echo "Source: ${SOURCE_OWNER}/${SOURCE_REPO}#${SOURCE_PR}"
+          echo "Target: ${TARGET_OWNER}/${TARGET_REPO}#${TARGET_PR}"
+
+      - name: Get target PR branch info
+        id: target_branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET_OWNER: ${{ steps.extract_info.outputs.target_owner }}
+          TARGET_REPO: ${{ steps.extract_info.outputs.target_repo }}
+          TARGET_PR: ${{ steps.extract_info.outputs.target_pr }}
+        run: |
+          PR_INFO=$(gh api "repos/${TARGET_OWNER}/${TARGET_REPO}/pulls/${TARGET_PR}")
+          TARGET_BRANCH=$(echo "$PR_INFO" | jq -r '.head.ref')
+          HEAD_REPO=$(echo "$PR_INFO" | jq -r '.head.repo.full_name')
+          BASE_BRANCH=$(echo "$PR_INFO" | jq -r '.base.ref')
+          MAINTAINER_CAN_MODIFY=$(echo "$PR_INFO" | jq -r '.maintainer_can_modify // false')
+
+          if [[ -z "$TARGET_BRANCH" || "$TARGET_BRANCH" == "null" || -z "$HEAD_REPO" || "$HEAD_REPO" == "null" || -z "$BASE_BRANCH" || "$BASE_BRANCH" == "null" ]]; then
+            echo "❌ Failed to extract target PR branch metadata from the GitHub API response."
+            exit 1
+          fi
+
+          echo "target_branch=${TARGET_BRANCH}" >> $GITHUB_OUTPUT
+          echo "head_repo=${HEAD_REPO}" >> $GITHUB_OUTPUT
+          echo "base_branch=${BASE_BRANCH}" >> $GITHUB_OUTPUT
+          echo "maintainer_can_modify=${MAINTAINER_CAN_MODIFY}" >> $GITHUB_OUTPUT
+          echo "Target branch: ${TARGET_BRANCH}, Head repo: ${HEAD_REPO}, Base branch: ${BASE_BRANCH}, Maintainer can modify: ${MAINTAINER_CAN_MODIFY}"
+
+      - name: Verify target PR branch is pushable
+        env:
+          TARGET_OWNER: ${{ steps.extract_info.outputs.target_owner }}
+          TARGET_REPO: ${{ steps.extract_info.outputs.target_repo }}
+          HEAD_REPO: ${{ steps.target_branch.outputs.head_repo }}
+          MAINTAINER_CAN_MODIFY: ${{ steps.target_branch.outputs.maintainer_can_modify }}
+        run: |
+          if [[ "$HEAD_REPO" != "${TARGET_OWNER}/${TARGET_REPO}" && "$MAINTAINER_CAN_MODIFY" != "true" ]]; then
+            echo "Fork PR head repo ${HEAD_REPO} does not allow maintainer edits, so translated changes cannot be pushed back automatically."
+            exit 1
+          fi
+
+          echo "Push preflight passed for ${HEAD_REPO}."
+
+      - name: Clone target repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_REPO: ${{ steps.target_branch.outputs.head_repo }}
+          TARGET_BRANCH: ${{ steps.target_branch.outputs.target_branch }}
+        run: |
+          ASKPASS_SCRIPT="$RUNNER_TEMP/git-askpass-clone.sh"
+          cat >"$ASKPASS_SCRIPT" <<'EOF'
+          #!/bin/sh
+          case "$1" in
+            *Username*) printf '%s\n' "x-access-token" ;;
+            *Password*) printf '%s\n' "$GITHUB_TOKEN" ;;
+            *) printf '\n' ;;
+          esac
+          EOF
+          chmod 700 "$ASKPASS_SCRIPT"
+          export GIT_ASKPASS="$ASKPASS_SCRIPT"
+          export GIT_TERMINAL_PROMPT=0
+          trap 'rm -f "$ASKPASS_SCRIPT"' EXIT
+
+          git clone "https://github.com/${HEAD_REPO}.git" target_repo
+          cd target_repo && git checkout "$TARGET_BRANCH"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run sync script
+        id: sync_script
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEEPSEEK_API_TOKEN: ${{ secrets.DEEPSEEK_API_TOKEN }}
+          GEMINI_API_TOKEN: ${{ secrets.GEMINI_API_TOKEN }}
+          AZURE_OPENAI_KEY: ${{ secrets.AZURE_OPENAI_KEY }}
+          OPENAI_BASE_URL: ${{ secrets.AZURE_OPENAI_BASE_URL }}
+          SOURCE_PR_URL: ${{ github.event.inputs.source_pr_url }}
+          TARGET_PR_URL: ${{ github.event.inputs.target_pr_url }}
+          AI_PROVIDER: ${{ github.event.inputs.ai_provider }}
+          TARGET_REPO_PATH: ${{ github.workspace }}/target_repo
+          TERMS_PATH: ${{ github.workspace }}/docs-master/resources/terms.md
+        run: |
+          cd ai-pr-translator/scripts
+          if python main_workflow.py; then
+            echo "sync_success=true" >> $GITHUB_OUTPUT
+            echo "✅ Sync script completed successfully"
+          else
+            echo "sync_success=false" >> $GITHUB_OUTPUT
+            echo "❌ Sync script failed"
+            exit 1
+          fi
+
+      - name: Commit and push changes
+        id: commit_push
+        if: steps.sync_script.outputs.sync_success == 'true'
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_PR_URL: ${{ github.event.inputs.source_pr_url }}
+          TARGET_PR_URL: ${{ github.event.inputs.target_pr_url }}
+          AI_PROVIDER: ${{ github.event.inputs.ai_provider }}
+          TARGET_BRANCH: ${{ steps.target_branch.outputs.target_branch }}
+          TARGET_BASE_BRANCH: ${{ steps.target_branch.outputs.base_branch }}
+        run: |
+          ASKPASS_SCRIPT="$RUNNER_TEMP/git-askpass-push.sh"
+          cat >"$ASKPASS_SCRIPT" <<'EOF'
+          #!/bin/sh
+          case "$1" in
+            *Username*) printf '%s\n' "x-access-token" ;;
+            *Password*) printf '%s\n' "$GITHUB_TOKEN" ;;
+            *) printf '\n' ;;
+          esac
+          EOF
+          chmod 700 "$ASKPASS_SCRIPT"
+          export GIT_ASKPASS="$ASKPASS_SCRIPT"
+          export GIT_TERMINAL_PROMPT=0
+          trap 'rm -f "$ASKPASS_SCRIPT"' EXIT
+
+          cd target_repo && git add .
+          if git diff --staged --quiet; then
+            echo "push_success=false" >> $GITHUB_OUTPUT
+            echo "No translated changes were generated, so nothing was pushed."
+            exit 1
+          fi
+
+          REWRITE_PLACEHOLDER_COMMITS=false
+          BASE_REF="origin/${TARGET_BASE_BRANCH}"
+
+          if git rev-parse --verify "$BASE_REF" >/dev/null 2>&1; then
+            if MERGE_BASE=$(git merge-base HEAD "$BASE_REF"); then
+              readarray -t BRANCH_COMMITS < <(git rev-list --reverse "${MERGE_BASE}..HEAD")
+
+              if [[ ${#BRANCH_COMMITS[@]} -eq 2 ]]; then
+                FIRST_MSG=$(git log -1 --format=%s "${BRANCH_COMMITS[0]}")
+                SECOND_MSG=$(git log -1 --format=%s "${BRANCH_COMMITS[1]}")
+
+                if [[ "$FIRST_MSG" == "Add temp.md" && "$SECOND_MSG" == "Delete temp.md" ]]; then
+                  echo "Detected placeholder commits. Resetting branch to ${MERGE_BASE} before creating the first real sync commit."
+                  git reset --soft "${MERGE_BASE}"
+                  REWRITE_PLACEHOLDER_COMMITS=true
+                fi
+              fi
+            else
+              echo "Failed to find a merge-base with ${BASE_REF}. Skipping placeholder cleanup."
+            fi
+          else
+            echo "Base ref ${BASE_REF} not found in cloned fork. Skipping placeholder cleanup."
+          fi
+
+          if ! printf "Auto-sync: Update Chinese docs from English PR\n\nSynced from: %s\nTarget PR: %s\nAI Provider: %s\n\nCo-authored-by: github-actions[bot] <github-actions[bot]@users.noreply.github.com>" \
+            "$SOURCE_PR_URL" "$TARGET_PR_URL" "$AI_PROVIDER" | git commit -F -; then
+            echo "push_success=false" >> $GITHUB_OUTPUT
+            echo "Failed to create a commit for the translated changes."
+            exit 1
+          fi
+
+          if [[ "$REWRITE_PLACEHOLDER_COMMITS" == "true" ]]; then
+            if git push --force-with-lease origin "$TARGET_BRANCH"; then
+              echo "push_success=true" >> $GITHUB_OUTPUT
+            else
+              echo "push_success=false" >> $GITHUB_OUTPUT
+              echo "Failed to force-push translated changes to $TARGET_BRANCH."
+              exit 1
+            fi
+          else
+            if git push origin "$TARGET_BRANCH"; then
+              echo "push_success=true" >> $GITHUB_OUTPUT
+            else
+              echo "push_success=false" >> $GITHUB_OUTPUT
+              echo "Failed to push translated changes to $TARGET_BRANCH."
+              exit 1
+            fi
+          fi
+
+          echo "Changes pushed to $TARGET_BRANCH"
+
+      - name: Add success comment to target PR
+        if: steps.commit_push.outputs.push_success == 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_PR_URL: ${{ github.event.inputs.source_pr_url }}
+          TARGET_PR_URL: ${{ github.event.inputs.target_pr_url }}
+          TARGET_OWNER: ${{ steps.extract_info.outputs.target_owner }}
+          TARGET_REPO: ${{ steps.extract_info.outputs.target_repo }}
+          TARGET_PR: ${{ steps.extract_info.outputs.target_pr }}
+        run: |
+          BODY=$(printf '%s\n\n%s\n%s\n\n%s' \
+            "**Auto-sync completed successfully**" \
+            "**Source PR**: ${SOURCE_PR_URL}" \
+            "**Target PR**: ${TARGET_PR_URL}" \
+            "Chinese documentation has been updated based on English documentation changes.")
+          PAYLOAD=$(jq -n --arg body "$BODY" '{body: $body}')
+          printf '%s' "$PAYLOAD" | gh api --method POST \
+            "repos/${TARGET_OWNER}/${TARGET_REPO}/issues/${TARGET_PR}/comments" \
+            --input -
+
+      - name: Add failure comment to target PR
+        if: always() && steps.extract_info.outputs.target_owner != '' && steps.commit_push.outputs.push_success != 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_PR_URL: ${{ github.event.inputs.source_pr_url }}
+          TARGET_PR_URL: ${{ github.event.inputs.target_pr_url }}
+          TARGET_OWNER: ${{ steps.extract_info.outputs.target_owner }}
+          TARGET_REPO: ${{ steps.extract_info.outputs.target_repo }}
+          TARGET_PR: ${{ steps.extract_info.outputs.target_pr }}
+        run: |
+          BODY=$(printf '%s\n\n%s\n%s\n\n%s' \
+            "**Auto-sync failed**" \
+            "**Source PR**: ${SOURCE_PR_URL}" \
+            "**Target PR**: ${TARGET_PR_URL}" \
+            "Translated changes were not pushed to the target branch. Please check the workflow logs for details.")
+          PAYLOAD=$(jq -n --arg body "$BODY" '{body: $body}')
+          printf '%s' "$PAYLOAD" | gh api --method POST \
+            "repos/${TARGET_OWNER}/${TARGET_REPO}/issues/${TARGET_PR}/comments" \
+            --input -
+
+      - name: Fail workflow if translated changes were not pushed
+        if: always() && steps.commit_push.outputs.push_success != 'true'
+        run: |
+          echo "Workflow failed because translated changes were not pushed to the target branch."
+          exit 1

@@ -1,7 +1,7 @@
 ---
 title: 子查询
 summary: 介绍 TiDB 子查询功能。
-aliases: ['/zh/tidb/dev/use-subqueries']
+aliases: ['/zh/tidb/dev/use-subqueries','/zh/tidb/stable/dev-guide-use-subqueries/','/zh/tidb/dev/dev-guide-use-subqueries/','/zh/tidbcloud/dev-guide-use-subqueries/']
 ---
 
 # 子查询

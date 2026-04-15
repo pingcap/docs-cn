@@ -1,42 +1,42 @@
 ---
-title: 使用 {{{ .starter }}} 构建 TiDB 集群
-summary: 使用 {{{ .starter }}} 构建 TiDB 集群，并连接 {{{ .starter }}} 集群。
-aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
+title: 创建 {{{ .starter }}} 实例
+summary: 使用 {{{ .starter }}} 构建 TiDB 实例，并连接到该实例。
+aliases: ['/zh/tidb/dev/build-cluster-in-cloud','/zh/tidb/stable/dev-guide-build-cluster-in-cloud/','/zh/tidb/dev/dev-guide-build-cluster-in-cloud/','/zh/tidbcloud/dev-guide-build-cluster-in-cloud/']
 ---
 
 <!-- markdownlint-disable MD029 -->
 
-# 使用 {{{ .starter }}} 构建 TiDB 集群
+# 创建 {{{ .starter }}} 实例
 
-本文将介绍如何以最快的方式开始使用 TiDB。你将创建并启动一个 [{{{ .starter }}}](https://www.pingcap.com/tidb-cloud-starter/) 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
+本文将介绍如何以最快的方式开始使用 TiDB。你将创建并启动一个 [{{{ .starter }}}](https://www.pingcap.com/tidb-cloud-starter/) 实例，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
 
 若你需要在本地计算机上启动 TiDB，请参阅[本地启动 TiDB](/quick-start-with-tidb.md)。
 
-## 第 1 步：创建 {{{ .starter }}} 集群 {#step-1-create-a-tidb-cloud-cluster}
+## 第 1 步：创建 {{{ .starter }}} 实例 {#step-1-create-a-starter-instance}
 
-1. 如果你还未拥有 TiDB Cloud 账号，请先在此[注册](https://tidbcloud.com/free-trial)。
-2. 使用你的 TiDB Cloud 账号[登录](https://tidbcloud.com/)。
+1. 如果你没有 TiDB Cloud 账户，请点击[此处](https://tidbcloud.com/free-trial)注册。
 
-    登录后，默认进入 [**Clusters**](https://tidbcloud.com/console/clusters) 页面。
+2. [登录](https://tidbcloud.com/)你的 TiDB Cloud 账户。
 
-3. 对于新注册的用户，TiDB Cloud 会自动为你创建一个 {{{ .starter }}} 集群 `Cluster0`。你可以使用这个默认集群进行后续操作，也可以自行创建一个新的 {{{ .starter }}} 集群。
+3. 在 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击 **Create Resource**。
 
-    如果你想创建一个新的 {{{ .starter }}} 集群，请进行以下操作：
+4. 在 **Create Resource*** 页面，**Starter** 为默认选项。为你的 {{{ .starter }}} 实例输入一个名称，选择云服务提供商，然后选择一个可用区。
 
-    1. 点击 **Create Cluster**。
-    2. **Create Cluster** 页面默认选择 **Starter**。你可以根据需要修改集群名称、选择可用区，然后点击 **Create**。你的 {{{ .starter }}} 集群将于 30 秒后创建完毕。
+5. 点击 **Create** 以创建 {{{ .starter }}} 实例。
 
-4. 点击目标集群名称，进入集群概览页面，然后点击右上角的 **Connect** 按钮，弹出连接对话框。
+    你的 {{{ .starter }}} 实例将在约 30 秒内创建完成。
 
-5. 在对话框中，选择你需要的连接方式和操作系统并保存对应的连接字符串。下面连接到集群的步骤将以 MySQL 客户端为例。
+6. 在你的 {{{ .starter }}} 实例创建完成后，点击实例名称进入其概览页面，然后点击右上角的 **Connect**。此时会显示一个连接对话框。
 
-6. 点击 **Generate Password** 生成随机密码。生成的密码不会再次显示，因此请将密码妥善保存。如果没有设置 root 密码，你将无法连接到集群。
+7. 在对话框中，选择你所需的连接方式和操作系统，获取对应的连接字符串。本文档以 MySQL 客户端为例。
 
-    > **注意：**
-    >
-    > 在连接到 [{{{ .starter }}}](https://docs.pingcap.com/tidbcloud/select-cluster-tier#starter) 集群时，你需要给用户名加上前缀并使用单引号包裹用户名。你可以在 [{{{ .starter }}} 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix)中获得更多信息。
+8. 点击 **Generate Password** 生成随机密码。生成的密码不会再次显示，因此请将密码妥善保存。如果没有设置 root 密码，你将无法连接到 {{{ .starter }}} 实例。
 
-## 第 2 步：连接到集群
+> **注意：**
+>
+> 当连接到 {{{ .starter }}} 实例时，必须在用户名前加上前缀并使用单引号包裹用户名。你可以在 [{{{ .starter }}} 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix)中获得更多信息。
+
+## 第 2 步：连接到 {{{ .starter }}} 实例 {#step-2-connect-to-a-starter-instance}
 
 1. 若未安装 MySQL 客户端，请选择自己的操作系统，按以下步骤安装。
 
@@ -109,7 +109,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
     </SimpleTab>
 
-2. 运行第 1 步中得到的连接字符串。
+2. 运行[第 1 步](#step-1-create-a-starter-instance)中得到的连接字符串。
 
     ```shell
     mysql --connect-timeout 15 -u '<prefix>.root' -h <host> -P 4000 -D test --ssl-mode=VERIFY_IDENTITY --ssl-ca=/etc/ssl/cert.pem -p
@@ -117,8 +117,8 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
 > **注意：**
 >
-> - 在连接 {{{ .starter }}} 集群时，[必须使用 TLS 连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)。
-> - 如果你在连接时遇到问题，可阅读 [{{{ .starter }}} 集群安全连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)来获得更多信息。
+> - 在连接 {{{ .starter }}} 实例时，[必须使用 TLS 连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)。
+> - 如果你在连接时遇到问题，可阅读 [{{{ .starter }}} 实例安全连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)来获得更多信息。
 
 3. 填写密码，完成登录。
 

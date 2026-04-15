@@ -1,7 +1,7 @@
 ---
 title: 使用 TiDB 的增删改查 SQL
 summary: 简单介绍 TiDB 的增删改查 SQL。
-aliases: ['/zh/tidb/dev/tidb-crud-sql']
+aliases: ['/zh/tidb/dev/tidb-crud-sql','/zh/tidb/stable/dev-guide-tidb-crud-sql/','/zh/tidb/dev/dev-guide-tidb-crud-sql/','/zh/tidbcloud/dev-guide-tidb-crud-sql/']
 ---
 
 # 使用 TiDB 的增删改查 SQL
@@ -10,7 +10,7 @@ aliases: ['/zh/tidb/dev/tidb-crud-sql']
 
 ## 在开始之前
 
-请确保你已经连接到 TiDB 集群，若未连接，请参考[使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)来创建一个 {{{ .starter }}} 集群。
+请确保你已经连接到 TiDB。若未连接，请先[创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-starter-instance)并连接到它。
 
 ## 基本 SQL 操作
 
@@ -18,9 +18,9 @@ aliases: ['/zh/tidb/dev/tidb-crud-sql']
 >
 > 此处文档引用并简化自 TiDB 文档中的 [SQL 基本操作](/basic-sql-operations.md)，你可直接前往此文档获取更全面、深入的 SQL 基本操作信息。
 
-成功部署 TiDB 集群之后，便可以在 TiDB 中执行 SQL 语句了。因为 TiDB 兼容 MySQL，你可以使用 MySQL 客户端连接 TiDB，并且[大多数情况下](/mysql-compatibility.md)可以直接执行 MySQL 语句。
+TiDB 兼容 MySQL，在大多数情况下，你可以直接使用 MySQL 语句。对于暂不支持的功能，请参见[与 MySQL 的兼容性](/mysql-compatibility.md#不支持的功能特性)。
 
-SQL 是一门声明性语言，它是数据库用户与数据库交互的方式。它更像是一种自然语言，好像在用英语与数据库进行对话。本文档介绍基本的 SQL 操作。完整的 SQL 语句列表，参见 [SQL 语句概览](/sql-statements/sql-statement-overview.md)。
+如果你想试用 SQL 并测试 TiDB 对 MySQL 查询的兼容性，可以使用 [TiDB Playground](https://play.tidbcloud.com/?utm_source=docs&utm_medium=basic-sql-operations)。你也可以先[创建一个 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-starter-instance)，然后在其中运行 SQL 语句。
 
 ## 分类
 

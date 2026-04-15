@@ -1,7 +1,7 @@
 ---
 title: 唯一序列号生成方案
 summary: 唯一序列号生成方案，为自行生成唯一 ID 的开发者提供帮助。
-aliases: ['/zh/tidb/dev/unique-serial-number-generation']
+aliases: ['/zh/tidb/dev/unique-serial-number-generation','/zh/tidb/stable/dev-guide-unique-serial-number-generation/','/zh/tidb/dev/dev-guide-unique-serial-number-generation/','/zh/tidbcloud/dev-guide-unique-serial-number-generation/']
 ---
 
 # 唯一序列号生成方案

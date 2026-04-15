@@ -281,7 +281,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
 > **注意：**
 >
-> 当从一个早期的 TiDB 版本升级到 TiDB v6.0.0 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Notes](/releases/release-notes.md)。
+> 当从一个早期的 TiDB 版本升级到 TiDB v6.0.0 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Notes](/releases/_index.md)。
 
 ### 系统变量
 

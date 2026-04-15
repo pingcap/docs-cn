@@ -57,21 +57,15 @@ TiDB HTAP 可以满足企业海量数据的增产需求、降低运维的风险�
 
 ## HTAP 环境准备
 
-在深入探索 TiDB HTAP 功能前，请依据你的数据场景部署 TiDB 以及对应的数据分析引擎。大数据场景 (100 T) 下，推荐使用 TiFlash MPP 作为 HTAP 的主要方案，TiSpark 作为补充方案。
+在深入探索 TiDB HTAP 功能前，请部署 TiDB 以及对应的数据分析引擎 TiFlash。大数据场景 (100 T) 下，推荐使用 TiFlash MPP 作为 HTAP 的方案。
 
-- TiFlash
+- 如果已经部署 TiDB 集群但尚未部署 TiFlash 节点，请参阅[扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)中的步骤在现有 TiDB 集群中添加 TiFlash 节点。
+- 如果尚未部署 TiDB 集群，请使用 [TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)，并在包含最小拓扑的基础上，同时[增加 TiFlash 拓扑架构](/tiflash-deployment-topology.md)。
+- 在决定如何选择 TiFlash 节点数量时，请考虑以下几种业务场景：
 
-    - 如果已经部署 TiDB 集群但尚未部署 TiFlash 节点，请参阅[扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)中的步骤在现有 TiDB 集群中添加 TiFlash 节点。
-    - 如果尚未部署 TiDB 集群，请使用 [TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)，并在包含最小拓扑的基础上，同时[增加 TiFlash 拓扑架构](/tiflash-deployment-topology.md)。
-    - 在决定如何选择 TiFlash 节点数量时，请考虑以下几种业务场景：
-
-        - 如果业务场景以 OLTP 为主，做轻量级的 Ad hoc OLAP 计算，通常部署 1 个或几个 TiFlash 节点就会产生明显的加速效果。
-        - 当 OLTP 数据吞吐量对节点 I/O 无明显压力时，每个 TiFlash 节点将会使用较多资源用于计算，这样 TiFlash 集群可实现近似线性的扩展能力。TiFlash 节点数量应根据期待的性能和响应时间调整。
-        - 当 OLTP 数据吞吐量较高时（例如写入或更新超过千万行/小时），由于网络和物理磁盘的写入能力有限，内部 TiKV 与 TiFlash 之间的 I/O 会成为主要瓶颈，也容易产生读写热点。此时 TiFlash 节点数与 OLAP 计算量有较复杂非线性关系，需要根据具体系统状态调整节点数量。
-
-- TiSpark
-
-    - 如果你的业务需要基于 Spark 进行分析，请部署 TiSpark。具体步骤，请参阅 [TiSpark 用户指南](/tispark-overview.md)。
+    - 如果业务场景以 OLTP 为主，做轻量级的 Ad hoc OLAP 计算，通常部署 1 个或几个 TiFlash 节点就会产生明显的加速效果。
+    - 当 OLTP 数据吞吐量对节点 I/O 无明显压力时，每个 TiFlash 节点将会使用较多资源用于计算，这样 TiFlash 集群可实现近似线性的扩展能力。TiFlash 节点数量应根据期待的性能和响应时间调整。
+    - 当 OLTP 数据吞吐量较高时（例如写入或更新超过千万行/小时），由于网络和物理磁盘的写入能力有限，内部 TiKV 与 TiFlash 之间的 I/O 会成为主要瓶颈，也容易产生读写热点。此时 TiFlash 节点数与 OLAP 计算量有较复杂非线性关系，需要根据具体系统状态调整节点数量。
 
 <!--    - 实时流处理
   - 如果你想将 TiDB 与 Flink 结合构建高效易用的实时数仓，请参与 Apache Flink x TiDB Meetup 系列讲座。-->

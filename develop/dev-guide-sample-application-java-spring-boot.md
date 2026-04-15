@@ -1,7 +1,7 @@
 ---
 title: 使用 Spring Boot 连接到 TiDB
 summary: 了解如何使用 Spring Boot 连接到 TiDB。本文提供了使用 Spring Boot 与 TiDB 交互的 Java 示例代码片段。
-aliases: ['/zh/tidb/dev/dev-guide-sample-application-spring-boot', '/zh/tidb/dev/sample-application-spring-boot']
+aliases: ['/zh/tidb/dev/dev-guide-sample-application-spring-boot', '/zh/tidb/dev/sample-application-spring-boot','/zh/tidb/stable/dev-guide-sample-application-java-spring-boot/','/zh/tidb/dev/dev-guide-sample-application-java-spring-boot/','/zh/tidbcloud/dev-guide-sample-application-java-spring-boot/']
 ---
 
 # 使用 Spring Boot 连接到 TiDB
@@ -11,7 +11,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Spring](https://spring.io/) 是当前
 本文档将展示如何使用 TiDB 和 [Spring Data JPA](https://spring.io/projects/spring-data-jpa) 及 [Hibernate](https://hibernate.org/orm/) 作为 JPA 提供者来完成以下任务：
 
 - 配置你的环境。
-- 使用 Spring Data JPA 与 Hibernate 连接到 TiDB 集群。
+- 使用 Spring Data JPA 与 Hibernate 连接到 TiDB。
 - 构建并运行你的应用程序。你也可以参考[示例代码片段](#示例代码片段)，完成基本的 CRUD 操作。
 
 > **注意**
@@ -24,8 +24,8 @@ TiDB 是一个兼容 MySQL 的数据库。[Spring](https://spring.io/) 是当前
 - [Maven](https://maven.apache.org/install.html) **3.8** 及以上版本。
 - [Git](https://git-scm.com/downloads)。
 - TiDB 集群。如果你还没有 TiDB 集群，可以按照以下方式创建：
-    - （推荐方式）参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)，创建你自己的 TiDB Cloud 集群。
-    - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
+    - （推荐方式）[创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-starter-instance)。
+    - [部署本地测试 TiDB Self-Managed 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署正式 TiDB Self-Managed 集群](/production-deployment-using-tiup.md)。
 
 ## 运行代码并连接到 TiDB
 
@@ -42,13 +42,13 @@ cd tidb-java-springboot-jpa-quickstart
 
 ### 第 2 步：配置连接信息
 
-根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB 集群。
+根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB。
 
 <SimpleTab>
 
 <div label="{{{ .starter }}} 或 Essential">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 {{{ .starter }}} 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，选择你的 {{{ .starter }}} 或 Essential 实例，进入实例的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
@@ -96,7 +96,7 @@ cd tidb-java-springboot-jpa-quickstart
 
 <div label="TiDB Cloud Dedicated">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Cloud Dedicated 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，选择你的 TiDB Cloud Dedicated 集群，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
 
@@ -196,7 +196,7 @@ spring:
       ddl-auto: create-drop
 ```
 
-请在配置后将环境变量 `TIDB_JDBC_URL`、`TIDB_USER` 和 `TIDB_PASSWORD` 设置为你的 TiDB 集群的实际值。此配置文件带有环境变量默认配置，即在不配置环境变量时，变量的值为：
+请在配置后将环境变量 `TIDB_JDBC_URL`、`TIDB_USER` 和 `TIDB_PASSWORD` 设置为你的 TiDB 的实际值。此配置文件带有环境变量默认配置，即在不配置环境变量时，变量的值为：
 
 - `TIDB_JDBC_URL`: `"jdbc:mysql://localhost:4000/test"`
 - `TIDB_USER`: `"root"`
@@ -266,4 +266,6 @@ playerRepository.deleteById(id);
 
 ## 需要帮助?
 
-如果在开发的过程中遇到问题，可以在 [AskTUG](https://asktug.com/?utm_source=docs-cn-dev-guide) 上进行提问，寻求帮助。
+- 在 [AskTUG 论坛](https://asktug.com/?utm_source=docs-cn-dev-guide) 上提问
+- [提交 TiDB Cloud 工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)
+- [提交 TiDB 工单](/support.md)

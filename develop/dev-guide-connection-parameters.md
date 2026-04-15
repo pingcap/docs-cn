@@ -1,13 +1,20 @@
 ---
-title: 连接池与连接参数
+title: 配置连接池与连接参数
 summary: 针对开发者的 TiDB 连接池与连接参数的说明。
-aliases: ['/zh/tidb/dev/connection-parameters']
+aliases: ['/zh/tidb/dev/connection-parameters','/zh/tidb/stable/dev-guide-connection-parameters/','/zh/tidb/dev/dev-guide-connection-parameters/','/zh/tidbcloud/dev-guide-connection-parameters/']
 ---
 
-# 连接池与连接参数
+# 配置连接池与连接参数
 
-> - 连接池参数 - 连接数配置、探活配置两节摘自[开发 Java 应用使用 TiDB 的最佳实践 - 连接池](/best-practices/java-app-best-practices.md#连接池)。
-> - 连接参数摘自[开发 Java 应用使用 TiDB 的最佳实践 - JDBC](/best-practices/java-app-best-practices.md#jdbc)。
+本文介绍在使用 Java 驱动程序或 ORM 框架连接 TiDB 时，如何配置连接池和连接参数。
+
+> **Tip:**
+>
+> 本文中以下章节摘自[开发 Java 应用使用 TiDB 的最佳实践](/develop/java-app-best-practices.md)：
+>
+> - [连接数配置](#连接数配置)
+> - [探活配置](#探活配置)
+> - [连接参数](#连接参数)
 
 ## 连接池参数
 
@@ -24,6 +31,38 @@ Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/Hik
 **minimumIdle**：连接池最小空闲连接数，主要用于在应用空闲时存留一些连接以应对突发请求，同样是需要根据业务情况进行配置。
 
 应用在使用连接池时，需要注意连接使用完成后归还连接，推荐应用使用对应的连接池相关监控（如 **metricRegistry**），通过监控能及时定位连接池问题。
+
+### 配置连接的生命周期
+
+TiDB Server 在关闭、因维护而重启，或发生异常（如硬件故障或网络问题）时，现有的客户端连接可能会被重置，导致应用程序出现中断或异常。为避免此类问题，对于长期保持的数据库连接，建议每天至少主动关闭并重新建立一次连接。
+
+常见的连接池库通常提供参数，用于控制连接的最长存活时间。
+
+<SimpleTab>
+<div label="HikariCP">
+
+- **`maxLifetime`**：连接在连接池中的最长存活时间。
+
+</div>
+
+<div label="tomcat-jdbc">
+
+- **`maxAge`**：连接在连接池中的最长存活时间。
+
+</div>
+
+<div label="c3p0">
+
+- **`maxConnectionAge`**：连接在连接池中的最长存活时间。
+
+</div>
+
+<div label="dbcp">
+
+- **`maxConnLifetimeMillis`**：连接在连接池中的最长存活时间（单位为毫秒）。
+
+</div>
+</SimpleTab>
 
 ### 探活配置
 

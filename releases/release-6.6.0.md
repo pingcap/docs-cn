@@ -408,8 +408,8 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | DM | [`on-duplicate-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制物理导入模式针对冲突数据的解决方式。默认值为 `"none"`，表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会出现数据索引不一致的问题。  |
 | DM | [`sorting-dir-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制物理导入模式用作本地排序的目录位置，该选项的默认值与 `dir` 配置项一致。 |
 | sync-diff-inspector   | [`skip-non-existing-table`](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)   |  新增 | 当下游数据库的表在上游不存在时，该配置项决定是否跳过对上下游数据库表数量不一致场景的校验。  |
-| TiSpark | [`spark.tispark.replica_read`](/tispark-overview.md#tispark-配置) | 新增 | 控制读取副本的类型，可选值为 `leader`、`follower`、`learner`。 |
-| TiSpark | [`spark.tispark.replica_read.label`](/tispark-overview.md#tispark-配置) | 新增 | 设置目标 TiKV 节点的标签。 |
+| TiSpark | [`spark.tispark.replica_read`](https://docs-archive.pingcap.com/zh/tidb/v6.6/tispark-overview#tispark-配置) | 新增 | 控制读取副本的类型，可选值为 `leader`、`follower`、`learner`。 |
+| TiSpark | [`spark.tispark.replica_read.label`](https://docs-archive.pingcap.com/zh/tidb/v6.6/tispark-overview#tispark-配置) | 新增 | 设置目标 TiKV 节点的标签。 |
 
 ### 其他
 

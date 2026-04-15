@@ -1,13 +1,14 @@
 ---
 title: 使用 Navicat 连接到 TiDB
 summary: 了解如何使用 Navicat 连接到 TiDB。
+aliases: ['/zh/tidb/stable/dev-guide-gui-navicat/','/zh/tidb/dev/dev-guide-gui-navicat/','/zh/tidbcloud/dev-guide-gui-navicat/']
 ---
 
 # 使用 Navicat 连接到 TiDB
 
 TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是为数据库用户提供的 GUI 工具集。本教程使用 [Navicat Premium](https://www.navicat.com/en/products/navicat-premium) 工具连接 TiDB。
 
-在本文档中，你可以学习如何使用 Navicat 连接到 TiDB 集群。
+在本文档中，你可以学习如何使用 Navicat 连接到 TiDB。
 
 > **注意**
 >
@@ -23,17 +24,17 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
 
 **如果你还没有 TiDB 集群，可以按如下方式创建一个：**
 
-- （推荐方式）参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md)，创建一个 TiDB Cloud 集群。
-- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建一个本地集群。
+- （推荐方式）[创建一个 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [部署一个本地测试 TiDB Self-Managed 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署一个生产 TiDB Self-Managed 集群](/production-deployment-using-tiup.md)。
 
 ## 连接到 TiDB
 
-根据你选择的 TiDB 部署方式连接到 TiDB 集群。
+根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB。
 
 <SimpleTab>
 <div label="{{{ .starter }}} 或 Essential">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，点击你目标集群的名字，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，点击你目标 {{{ .starter }}} 或 Essential 实例的名字，进入实例的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
@@ -60,7 +61,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
     - **Host**：输入从 TiDB Cloud 连接对话框中的得到的 `HOST` 参数。
     - **Port**：输入从 TiDB Cloud 连接对话框中的得到的 `PORT` 参数。
     - **User Name**：输入从 TiDB Cloud 连接对话框中的得到的 `USERNAME` 参数。
-    - **Password**：输入 {{{ .starter }}} 集群的密码。
+    - **Password**：输入第 4 步中生成的密码。
 
     ![Navicat: configure connection general panel for {{{ .starter }}}](/media/develop/navicat-premium-connection-config-serverless-general.png)
 
@@ -68,14 +69,14 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
 
     ![Navicat: configure connection SSL panel for {{{ .starter }}}](/media/develop/navicat-premium-connection-config-serverless-ssl.png)
 
-8. 点击 **Test Connection** 以验证与 {{{ .starter }}} 集群的连接。
+8. 点击 **Test Connection** 以验证与你的目标 {{{ .starter }}} 或 Essential 实例的连接。
 
 9. 如果连接测试成功，你可以看到 **Connection Successful** 信息。点击 **OK** 完成连接配置。
 
 </div>
 <div label="TiDB Cloud Dedicated">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，点击你目标集群的名字，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，点击你目标 TiDB Cloud Dedicated 集群的名字，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
@@ -135,9 +136,9 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
 
 ## 下一步
 
-- 你可以继续阅读[开发者文档](/develop/dev-guide-overview.md)，以获取更多关于 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)、[删除数据](/develop/dev-guide-delete-data.md)、[单表读取](/develop/dev-guide-get-data-from-single-table.md)、[事务](/develop/dev-guide-transaction-overview.md)、[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
+- 你可以继续阅读[开发者文档](/develop/_index.md)，以获取更多关于 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)、[删除数据](/develop/dev-guide-delete-data.md)、[单表读取](/develop/dev-guide-get-data-from-single-table.md)、[事务](/develop/dev-guide-transaction-overview.md)、[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
 - 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://pingkai.cn/learn)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.cn/learner/certification-center)。
 
 ## 需要帮助?
 
-如果在开发的过程中遇到问题，可以在 [AskTUG](https://asktug.com/?utm_source=docs-cn-dev-guide) 上进行提问，或从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
+如果在开发的过程中遇到问题，可以在 [AskTUG 论坛](https://asktug.com/?utm_source=docs-cn-dev-guide) 上提问，或从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。

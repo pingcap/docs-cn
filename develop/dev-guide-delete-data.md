@@ -1,18 +1,18 @@
 ---
 title: 删除数据
 summary: 删除数据、批量删除数据的方法、最佳实践及例子。
-aliases: ['/zh/tidb/dev/delete-data']
+aliases: ['/zh/tidb/dev/delete-data','/zh/tidb/stable/dev-guide-delete-data/','/zh/tidb/dev/dev-guide-delete-data/','/zh/tidbcloud/dev-guide-delete-data/']
 ---
 
 # 删除数据
 
-此页面将使用 [DELETE](/sql-statements/sql-statement-delete.md) SQL 语句，对 TiDB 中的数据进行删除。如果需要周期性地删除过期数据，可以考虑使用 TiDB 的 [TTL 功能](/time-to-live.md)。
+此页面将使用 [DELETE](/sql-statements/sql-statement-delete.md) SQL 语句，对 TiDB 中的数据进行删除。如果需要周期性地删除过期数据，可以考虑使用 TiDB 的 [TTL 功能](/develop/dev-guide-time-to-live.md)。
 
 ## 在开始之前
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [使用 {{{ .starter }}} 构建 TiDB 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)，并[创建数据库](/develop/dev-guide-create-database.md)、[创建表](/develop/dev-guide-create-table.md)、[创建二级索引](/develop/dev-guide-create-secondary-indexes.md)。
 - 需先[插入数据](/develop/dev-guide-insert-data.md)才可删除。
 

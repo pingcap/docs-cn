@@ -189,7 +189,7 @@ dispatchers = [
 ]
 ```
 
-集成具体步骤详见[与 Confluent Cloud 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)。
+集成具体步骤详见[与 Confluent Cloud 和 Snowflake、ksqlDB、SQL Server 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)。
 
 ### TiCDC 集成 AWS Glue Schema Registry
 
@@ -211,7 +211,7 @@ token="xxxx"
 
 在以上配置中，`region` 和 `registry-name` 是必填项，`access-key`、`secret-access-key` 和 `token` 是可选项。最佳实践是将 AWS 连接凭证设置为环境变量或存储在 `~/.aws/credentials` 文件中，而不是将它们设置在 changefeed 的配置文件中。
 
-更多信息，请参阅 [AWS官方文档](https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/#specifying-credentials)。
+更多信息，请参阅 [AWS Go SDK V2 官方文档](https://docs.aws.amazon.com/zh_cn/sdk-for-go/v2/developer-guide/configure-gosdk.html#specifying-credentials)。
 
 ## 自定义 Kafka Sink 的 Topic 和 Partition 的分发规则
 
@@ -369,8 +369,8 @@ column-selectors = [
 [scheduler]
 # 默认值为 "false"，设置为 "true" 以打开该功能。
 enable-table-across-nodes = true
-# 打开该功能后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。
-region-threshold = 100000
+# 打开该功能后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。对于 TiCDC 新架构，该参数默认值为 `10000`；对于 TiCDC 老架构，该参数默认值为 `100000`。
+region-threshold = 10000
 # 打开该功能后，该功能会对每分钟修改行数大于 `write-key-threshold` 值的表生效。
 # 注意：
 # * 该参数默认值为 0，代表该功能默认不会按表的修改行数来切分表的同步范围。
