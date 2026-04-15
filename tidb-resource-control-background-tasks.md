@@ -4,14 +4,13 @@ summary: 介绍如何通过资源管控 (Resource Control) 控制后台任务。
 ---
 # 使用资源管控 (Resource Control) 管理后台任务
 
-> **警告：**
->
-> - 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请[提交 issue](/support.md) 反馈。
-> - 资源管控的后台任务管理是基于 TiKV 的 CPU/IO 的资源利用率动态调整资源配额的，因此它依赖各个实例可用资源上限 (Quota)。如果在单个服务器混合部署多个组件或实例，需要通过 `cgroup` 为各个实例设置合适的资源上限 (Quota)。TiUP Playground 等共享资源的配置很难表现出预期效果。
-
 后台任务是指那些优先级不高但是需要消耗大量资源的任务，如数据备份和自动统计信息收集等。这些任务通常定期或不定期触发，在执行的时候会消耗大量资源，从而影响在线的高优先级任务的性能。
 
 自 v7.4.0 开始，[TiDB 资源管控](/tidb-resource-control-ru-groups.md)引入了对后台任务的管理。当一种任务被标记为后台任务时，TiKV 会动态地限制该任务的资源使用，以尽量避免此类任务在执行时对其他前台任务的性能产生影响。TiKV 通过实时地监测所有前台任务所消耗的 CPU 和 IO 等资源，并根据实例总的资源上限计算出后台任务可使用的资源阈值，所有后台任务在执行时会受此阈值的限制。
+
+> *注意：**
+>
+> 资源管控的后台任务管理是基于 TiKV 的 CPU/IO 的资源利用率动态调整资源配额的，因此它依赖各个实例可用资源上限 (Quota)。如果在单个服务器混合部署多个组件或实例，需要通过 `cgroup` 为各个实例设置合适的资源上限 (Quota)。TiUP Playground 等共享资源的配置很难表现出预期效果。
 
 ## `BACKGROUND` 参数说明
 
@@ -20,7 +19,7 @@ summary: 介绍如何通过资源管控 (Resource Control) 控制后台任务。
 
 目前 TiDB 支持如下几种后台任务的类型：
 
-- `lightning`：使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 或 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 执行导入任务。同时支持 TiDB Lightning 的物理和逻辑导入模式。
+- `import`：使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 或 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 执行导入任务。同时支持 TiDB Lightning 的物理和逻辑导入模式。
 - `br`：使用 [BR](/br/backup-and-restore-overview.md) 执行数据备份和恢复。目前不支持 PITR。
 - `ddl`：对于 Reorg DDL，控制批量数据回写阶段的资源使用。
 - `stats`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#收集统计信息)任务。

@@ -259,7 +259,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [Green GC](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) | E | E | E | E | E | E | E |
 | [资源管控 (Resource Control)](/tidb-resource-control-ru-groups.md) | Y | Y | Y | Y | N | N | N |
 | [Runaway Queries 自动管理](/tidb-resource-control-runaway-queries.md) | Y | Y | E | N | N | N | N |
-| [后台任务资源管控](/tidb-resource-control-background-tasks.md) | E | E | E | N | N | N | N |
+| [后台任务资源管控](/tidb-resource-control-background-tasks.md) | Y | E | E | N | N | N | N |
 | [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md) | Y | Y | Y | E | N | N | N |
 | [选择执行分布式执行框架任务的 TiDB 节点](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | Y | Y | Y | N | N | N | N |
 | 通过系统变量 [`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v530-版本开始引入) 控制 PD Follower Proxy 功能 | Y | Y | Y | Y | Y | Y | Y |
