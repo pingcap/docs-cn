@@ -2494,7 +2494,7 @@ Query OK, 0 rows affected (0.09 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
-- 这个变量用于控制是否在 TiDB 发送请求到 TiKV 时验证时间戳。如果识别到带有非法时间戳的请求，TiDB 会拒绝该请求，以避免数据损坏。
+- 这个变量用于控制 TiDB 在向 TiKV 发送请求时，是否对请求中的时间戳进行合法性校验。如果检测到请求中的时间戳非法，TiDB 会拒绝该请求，以避免数据损坏。
 
 ### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
