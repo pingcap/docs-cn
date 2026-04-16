@@ -84,7 +84,7 @@ TiDB Cloud 核心特性与应用场景简介
 
 <DocHomeCardContainer>
 
-<DocHomeCard href="https://learn.pingcap.cn/learner/course" label="课程中心" icon="global-tidb-education">
+<DocHomeCard href="https://learn.pingkai.cn/learner/course" label="课程中心" icon="global-tidb-education">
 
 提供众多免费课程，助您深入学习 TiDB，成为 TiDB 技术专家
 

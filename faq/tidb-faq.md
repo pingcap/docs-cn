@@ -76,7 +76,7 @@ Usage of ./bin/tidb-server:
 - [官方文档](https://docs.pingcap.com/zh/)：获取 TiDB 相关知识最主要、最及时的途径。
 - [博客文章](https://pingkai.cn/tidbcommunity/blog)：了解产品技术解读、观点洞察、案例实践。
 - [AskTUG 社区论坛](https://pingkai.cn/tidbcommunity/forum)：与社区用户、技术专家互动交流。
-- [视频课程](https://learn.pingcap.cn/learner/course)：学习线上课程，获得数据库能力认证。
+- [视频课程](https://learn.pingkai.cn/learner/course)：学习线上课程，获得数据库能力认证。
 
 ### 1.1.11 TiDB 用户名长度限制？
 
