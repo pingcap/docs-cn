@@ -6,6 +6,10 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-web-interface/','/docs-cn/
 
 # TiDB Lightning Web 界面
 
+> **警告：**
+>
+> 从 v8.5.6 开始，TiDB Lightning Web 界面已废弃，并将在 v8.5.7 中移除。该 Web UI 自 v8.4.0 起已无法正常构建。请改用 [CLI](https://docs.pingcap.com/zh/tidb/v8.5/tidb-lightning-overview) 或 [`IMPORT INTO`](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-import-into) 语句。如果这对你的工作流程产生影响，请在 [#67697](https://github.com/pingcap/tidb/issues/67697) 中反馈。
+
 TiDB Lightning 支持在网页上查看导入进度或执行一些简单任务管理，这就是 TiDB Lightning 的**服务器模式**。本文将介绍服务器模式下的 Web 界面和一些常见操作。
 
 启用服务器模式的方式有如下几种：
