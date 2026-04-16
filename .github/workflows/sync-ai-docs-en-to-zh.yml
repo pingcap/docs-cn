@@ -6,7 +6,7 @@ concurrency:
 
 on:
   schedule:
-    - cron: "0 0 * * 4"
+    - cron: "0 0 * * 4" # Runs at 08:00 every Thursday (Beijing time, UTC+8)
   workflow_dispatch:
     inputs:
       file_names:
