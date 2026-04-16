@@ -71,8 +71,13 @@ tiup install dm dmctl
 
 您可以通过在线文档了解和使用 DM，如果您遇到无法解决的问题，可以选择以下途径之一联系我们。
 
+<<<<<<< HEAD
 - [GitHub](https://github.com/pingcap/tiflow/tree/release-8.5/dm)
 - [AskTUG](https://asktug.com/tags/dm)
+=======
+- [GitHub](https://github.com/pingcap/tiflow/tree/master/dm)
+- [AskTUG](https://pingkai.cn/tidbcommunity/forum/tags/dm)
+>>>>>>> 5696112cc0 (update tidb.net and asktug links (#21395))
 
 ## License
 
