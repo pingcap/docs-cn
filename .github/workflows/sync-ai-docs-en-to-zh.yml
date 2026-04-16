@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       file_names:
-        description: "Specify file names to translate under docs/ai (comma-separated list)"
+        description: "Specify files to translate under docs/ai or TOC-ai.md (comma-separated list)"
         required: false
         type: string
         default: ""
@@ -30,6 +30,7 @@ env:
   AI_TRANSLATOR_REPO: qiancai/ai-pr-translator
   AI_TRANSLATOR_REF: main
   SOURCE_FOLDER: ai
+  SOURCE_TOC_FILE: TOC-ai.md
 
 jobs:
   translate:
@@ -67,39 +68,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r ai-pr-translator/scripts/requirements.txt
-
-      - name: Normalize file list
-        id: normalize
-        shell: bash
-        env:
-          INPUT_FILE_NAMES: ${{ inputs.file_names }}
-        run: |
-          set -euo pipefail
-
-          files="${INPUT_FILE_NAMES}"
-          if [ -z "${files}" ]; then
-            echo "files=" >> "${GITHUB_OUTPUT}"
-            exit 0
-          fi
-
-          IFS=',' read -ra items <<< "${files}"
-          out=""
-          for item in "${items[@]}"; do
-            rel="$(echo "${item}" | xargs)"
-            [ -z "${rel}" ] && continue
-
-            if [[ "${rel}" != "${SOURCE_FOLDER}"/* ]]; then
-              rel="${SOURCE_FOLDER}/${rel}"
-            fi
-
-            if [ -z "${out}" ]; then
-              out="${rel}"
-            else
-              out="${out},${rel}"
-            fi
-          done
-
-          echo "files=${out}" >> "${GITHUB_OUTPUT}"
 
       - name: Resolve commit range
         id: commits
@@ -152,8 +120,78 @@ jobs:
           echo "base_ref=${base_ref}" >> "${GITHUB_OUTPUT}"
           echo "head_ref=${head_ref}" >> "${GITHUB_OUTPUT}"
 
+      - name: Resolve source file filter
+        id: source_files
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_FILE_NAMES: ${{ inputs.file_names || '' }}
+          SOURCE_REPO: ${{ steps.commits.outputs.source_repo }}
+          BASE_REF: ${{ steps.commits.outputs.base_ref }}
+          HEAD_REF: ${{ steps.commits.outputs.head_ref }}
+        run: |
+          set -euo pipefail
+
+          out=""
+
+          add_file() {
+            local rel="$1"
+            [ -z "${rel}" ] && return
+            case ",${out}," in
+              *",${rel},"*) return ;;
+            esac
+            if [ -z "${out}" ]; then
+              out="${rel}"
+            else
+              out="${out},${rel}"
+            fi
+          }
+
+          normalize_requested_file() {
+            local rel="$1"
+            rel="$(echo "${rel}" | xargs)"
+            rel="${rel#/}"
+            rel="${rel#docs/}"
+
+            if [ -z "${rel}" ]; then
+              return
+            fi
+
+            if [[ "${rel}" == "${SOURCE_TOC_FILE}" || "${rel}" == "${SOURCE_FOLDER}"/* ]]; then
+              add_file "${rel}"
+            else
+              add_file "${SOURCE_FOLDER}/${rel}"
+            fi
+          }
+
+          if [ -n "${INPUT_FILE_NAMES}" ]; then
+            IFS=',' read -ra items <<< "${INPUT_FILE_NAMES}"
+            for item in "${items[@]}"; do
+              normalize_requested_file "${item}"
+            done
+          else
+            readarray -t changed_files < <(
+              gh api "repos/${SOURCE_REPO}/compare/${BASE_REF}...${HEAD_REF}" --jq '.files[].filename'
+            )
+            for rel in "${changed_files[@]}"; do
+              if [[ "${rel}" == "${SOURCE_TOC_FILE}" || "${rel}" == "${SOURCE_FOLDER}"/* ]]; then
+                add_file "${rel}"
+              fi
+            done
+          fi
+
+          echo "files=${out}" >> "${GITHUB_OUTPUT}"
+          if [ -z "${out}" ]; then
+            echo "has_source_changes=false" >> "${GITHUB_OUTPUT}"
+            echo "No ${SOURCE_FOLDER}/ or ${SOURCE_TOC_FILE} changes detected."
+          else
+            echo "has_source_changes=true" >> "${GITHUB_OUTPUT}"
+            echo "Resolved source files: ${out}"
+          fi
+
       - uses: actions/checkout@v4
         name: Checkout source repo glossary
+        if: steps.source_files.outputs.has_source_changes == 'true'
         with:
           repository: ${{ steps.commits.outputs.source_repo }}
           ref: ${{ steps.commits.outputs.source_branch }}
@@ -163,6 +201,7 @@ jobs:
 
       - name: Run commit sync workflow
         id: sync
+        if: steps.source_files.outputs.has_source_changes == 'true'
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -176,8 +215,8 @@ jobs:
           SOURCE_BRANCH: ${{ steps.commits.outputs.source_branch }}
           SOURCE_BASE_REF: ${{ steps.commits.outputs.base_ref }}
           SOURCE_HEAD_REF: ${{ steps.commits.outputs.head_ref }}
-          SOURCE_FOLDER: ${{ env.SOURCE_FOLDER }}
-          SOURCE_FILES: ${{ steps.normalize.outputs.files }}
+          SOURCE_FOLDER: ""
+          SOURCE_FILES: ${{ steps.source_files.outputs.files }}
           TARGET_REPO_PATH: ${{ github.workspace }}/docs-cn
           AI_PROVIDER: ${{ inputs.ai_provider || 'azure' }}
           TERMS_PATH: ${{ github.workspace }}/docs-source/resources/terms.md
@@ -235,7 +274,7 @@ jobs:
           body: |
             ### What is changed, added or deleted? (Required)
 
-            Translate `pingcap/docs` `${{ env.SOURCE_FOLDER }}/` changes to Chinese via `ai-pr-translator` commit-diff sync.
+            Translate `pingcap/docs` AI documentation changes (`${{ env.SOURCE_FOLDER }}/**` and `${{ env.SOURCE_TOC_FILE }}`) to Chinese via `ai-pr-translator` commit-diff sync.
 
             English commit diff:
 
@@ -249,7 +288,7 @@ jobs:
 
             - Source repo: `${{ steps.commits.outputs.source_repo }}`
             - Source branch: `${{ steps.commits.outputs.source_branch }}`
-            - Source folder: `${{ env.SOURCE_FOLDER }}/`
+            - Source paths: `${{ env.SOURCE_FOLDER }}/**`, `${{ env.SOURCE_TOC_FILE }}`
 
             ### Do your changes match any of the following descriptions?
 
