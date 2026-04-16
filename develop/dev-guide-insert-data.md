@@ -14,7 +14,7 @@ aliases: ['/zh/tidb/dev/insert-data','/zh/tidb/stable/dev-guide-insert-data/','/
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)，并[创建数据库](/develop/dev-guide-create-database.md)、[创建表](/develop/dev-guide-create-table.md)、[创建二级索引](/develop/dev-guide-create-secondary-indexes.md)。
 
 ## 插入行
@@ -51,7 +51,7 @@ CREATE TABLE `player` (`id` INT, `coins` INT, `goods` INT);
 INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (1, 1000, 1), (2, 230, 2);
 ```
 
-有关如何使用此 SQL，可查阅[连接到 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-2-步连接到集群)文档部分，按文档步骤使用客户端连接到 TiDB 集群后，输入 SQL 语句即可。
+有关如何使用此 SQL，可查阅[连接到 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md#step-2-connect-to-a-starter-instance)文档部分，按文档步骤使用客户端连接到 {{{ .starter }}} 实例后，输入 SQL 语句即可。
 
 </div>
 
@@ -241,12 +241,12 @@ with get_connection(autocommit=True) as connection:
 
 ## 批量插入
 
-如果你需要快速地将大量数据导入 TiDB 集群，最好的方式并不是使用 `INSERT` 语句，这并不是最高效的方法，而且需要你自行处理异常等问题。推荐使用以下工具进行数据批量插入：
+如果你需要快速地将大量数据导入 TiDB，最好的方式并不是使用 `INSERT` 语句，这并不是最高效的方法，而且需要你自行处理异常等问题。推荐使用以下工具进行数据批量插入：
 
 <SimpleTab groupId="platform">
 <div label="TiDB Cloud" value="tidb-cloud">
 
-- 数据导出：使用 [Dumpling](/dumpling-overview.md) 将 MySQL 或 TiDB 数据导出到本地或云存储。对于 TiDB Cloud Starter 或 Essential 集群，还可以使用 [TiDB Cloud 控制台](https://tidbcloud.com/) 中的 [Export](https://docs.pingcap.com/zh/tidbcloud/serverless-export) 功能高效地导出数据。
+- 数据导出：使用 [Dumpling](/dumpling-overview.md) 将 MySQL 或 TiDB 数据导出到本地或云存储。对于 {{{ .starter }}} 或 Essential 实例，还可以使用 [TiDB Cloud 控制台](https://tidbcloud.com/) 中的 [Export](https://docs.pingcap.com/zh/tidbcloud/serverless-export) 功能高效地导出数据。
 - 数据导入：使用 [TiDB Cloud 控制台](https://tidbcloud.com/) 中的 [Import](https://docs.pingcap.com/zh/tidbcloud/import-sample-data) 功能。你可以导入 Dumpling 导出的数据、导入本地 CSV 文件，或[从云存储导入 CSV 文件到 TiDB Cloud](https://docs.pingcap.com/zh/tidbcloud/import-csv-files/)。
 - 数据同步：使用 [TiDB Cloud 控制台](https://tidbcloud.com/) 中的 [TiDB Data Migration](https://docs.pingcap.com/zh/tidbcloud/migrate-from-mysql-using-data-migration) 功能。可同步 MySQL 兼容数据库到 TiDB，且支持分库分表数据库的迁移。
 - 数据备份与恢复：使用 [TiDB Cloud 控制台](https://tidbcloud.com/) 中的 [Backup](https://docs.pingcap.com/zh/tidbcloud/backup-and-restore) 功能。与 Dumpling 相比，备份与恢复功能更适用于大数据场景。

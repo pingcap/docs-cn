@@ -11,7 +11,7 @@ TiDB 是一个兼容 MySQL 的数据库，[Rails](https://github.com/rails/rails
 本文档将展示如何使用 TiDB 和 Rails 来完成以下任务：
 
 - 设置你的环境。
-- 使用 Rails 连接你的 TiDB 集群。
+- 使用 Rails 连接 TiDB。
 - 构建并运行你的应用程序。你也可以参考[示例代码片段](#示例代码片段)，完成基本的 CRUD 操作。
 
 > **注意：**
@@ -29,8 +29,8 @@ TiDB 是一个兼容 MySQL 的数据库，[Rails](https://github.com/rails/rails
 
 如果你还没有 TiDB 集群，可以按照以下方式创建：
 
-- （推荐方式）参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)，创建你自己的 TiDB Cloud 集群。
-- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
+- （推荐方式）[创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [部署本地测试 TiDB Self-Managed 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署正式 TiDB Self-Managed 集群](/production-deployment-using-tiup.md)。
 
 ## 运行示例应用程序并连接到 TiDB
 
@@ -66,12 +66,12 @@ bundle add mysql2 dotenv
 
 ### 第 3 步：配置连接信息
 
-根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB 集群。
+根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB。
 
 <SimpleTab>
 <div label="{{{ .starter }}} 或 Essential">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，点击你的目标集群的名称，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，点击你的目标 {{{ .starter }}} 或 Essential 实例的名称，进入实例的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
@@ -93,14 +93,14 @@ bundle add mysql2 dotenv
 
    > **注意**
    >
-   > 对于 {{{ .starter }}}，当使用 Public Endpoint 时，必须使用 `ssl_mode=verify_identity` 查询参数启用 TLS 连接。
+   > 对于 {{{ .starter }}} 和 {{{ .essential }}}，当使用 Public Endpoint 时，必须使用 `ssl_mode=verify_identity` 查询参数启用 TLS 连接。
 
 7. 保存 `.env` 文件。
 
 </div>
 <div label="TiDB Cloud Dedicated">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，点击你的目标集群的名称，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，点击你的目标 TiDB Cloud Dedicated 集群的名称，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
@@ -173,7 +173,7 @@ bundle add mysql2 dotenv
     bundle exec rails runner ./quickstart.rb
     ```
 
-如果连接成功，你的终端将会输出所连接集群的版本信息：
+如果连接成功，你的终端将会输出 TiDB 版本信息：
 
 ```
 🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v8.5.0)

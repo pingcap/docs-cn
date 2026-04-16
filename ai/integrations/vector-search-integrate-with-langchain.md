@@ -15,7 +15,7 @@ aliases: ['/zh/tidb/stable/vector-search-integrate-with-langchain/','/zh/tidb/de
 
 > **提示**
 >
-> 你可以在 Jupyter Notebook 中查看完整的 [示例代码](https://github.com/langchain-ai/langchain/blob/master/docs/docs/integrations/vectorstores/tidb_vector.ipynb)，或直接在 [Colab](https://colab.research.google.com/github/langchain-ai/langchain/blob/master/docs/docs/integrations/vectorstores/tidb_vector.ipynb) 在线环境中运行。
+> 你可以在 LangChain 文档中查看完整的[示例代码](https://docs.langchain.com/oss/python/integrations/vectorstores/tidb_vector)。
 
 ## 前置条件
 
@@ -148,11 +148,11 @@ TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE
 
 #### 步骤 4.1 下载示例文档
 
-在你的项目目录下，新建 `data/how_to/` 目录，并从 [langchain-ai/langchain](https://github.com/langchain-ai/langchain) GitHub 仓库下载示例文档 [`state_of_the_union.txt`](https://github.com/langchain-ai/langchain/blob/master/docs/docs/how_to/state_of_the_union.txt)。
+在你的项目目录下，新建 `data/how_to/` 目录，并从 [langchain-ai/langchainjs](https://github.com/langchain-ai/langchainjs) GitHub 仓库下载示例文档 [`state_of_the_union.txt`](https://github.com/langchain-ai/langchainjs/blob/main/examples/state_of_the_union.txt)。
 
 ```shell
 !mkdir -p 'data/how_to/'
-!wget 'https://raw.githubusercontent.com/langchain-ai/langchain/master/docs/docs/how_to/state_of_the_union.txt' -O 'data/how_to/state_of_the_union.txt'
+!wget 'https://raw.githubusercontent.com/langchain-ai/langchainjs/refs/heads/main/examples/state_of_the_union.txt' -O 'data/how_to/state_of_the_union.txt'
 ```
 
 #### 步骤 4.2 加载并切分文档
