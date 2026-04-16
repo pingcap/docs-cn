@@ -18,5 +18,5 @@ summary: TiUP 文档地图包括使用文档和资源两部分。使用文档包
 ## 资源
 
 - [TiUP 版本发布说明](https://github.com/pingcap/tiup/releases)
-- [AskTUG TiUP 主题](https://asktug.com/tags/tiup)
+- [AskTUG TiUP 主题](https://pingkai.cn/tidbcommunity/forum/tags/tiup)
 - [TiUP Issues](https://github.com/pingcap/tiup/issues)：TiUP Github Issues 列表
