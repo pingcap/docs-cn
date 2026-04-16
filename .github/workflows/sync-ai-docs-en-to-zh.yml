@@ -213,11 +213,13 @@ jobs:
 
           python -c 'import json, os; from pathlib import Path; Path("latest_translation_commit.json").write_text(json.dumps({"source-repo": os.environ["SOURCE_REPO"], "source-branch": os.environ["SOURCE_BRANCH"], "sha": os.environ["HEAD_REF"]}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")'
 
-      - name: Set build ID
-        id: build_id
+      - name: Set build metadata
+        id: build_meta
         if: steps.changes.outputs.has_changes == 'true'
         shell: bash
-        run: echo "id=$(date +%s)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "date=$(TZ=Asia/Shanghai date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+          echo "id=$(TZ=Asia/Shanghai date +'%Y%m%d')-$(date +%s)" >> "$GITHUB_OUTPUT"
 
       - name: Create PR
         if: steps.changes.outputs.has_changes == 'true'
@@ -225,9 +227,9 @@ jobs:
         with:
           path: docs-cn
           token: ${{ github.token }}
-          branch: zh-translation/ai-${{ steps.build_id.outputs.id }}
+          branch: zh-translation/ai-${{ steps.build_meta.outputs.id }}
           base: ${{ env.DOCS_CN_BASE }}
-          title: "ci: ZH translation(ai) ${{ steps.build_id.outputs.id }}"
+          title: "${{ env.DOCS_CN_BASE }}: translate AI doc changes from ${{ steps.commits.outputs.source_repo }} ${{ steps.commits.outputs.source_branch }} on ${{ steps.build_meta.outputs.date }}"
           labels: |
             translation/no-need
           body: |
