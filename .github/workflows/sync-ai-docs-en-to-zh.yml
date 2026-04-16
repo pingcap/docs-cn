@@ -1,0 +1,299 @@
+name: Sync AI Docs from EN to ZH
+
+concurrency:
+  group: sync-ai-docs-en-to-zh
+  cancel-in-progress: true
+
+on:
+  schedule:
+    - cron: "0 0 * * 4" # Runs at 08:00 every Thursday (Beijing time, UTC+8)
+  workflow_dispatch:
+    inputs:
+      file_names:
+        description: "Specify files to translate under docs/ai or TOC-ai.md (comma-separated list)"
+        required: false
+        type: string
+        default: ""
+      ai_provider:
+        description: "AI provider to use for translation"
+        required: false
+        type: choice
+        options:
+          - azure
+          - deepseek
+          - gemini
+          - openai
+        default: azure
+
+env:
+  DOCS_CN_BASE: release-8.5
+  AI_TRANSLATOR_REPO: qiancai/ai-pr-translator
+  AI_TRANSLATOR_REF: main
+  SOURCE_FOLDER: ai
+  SOURCE_TOC_FILE: TOC-ai.md
+
+jobs:
+  translate:
+    if: github.repository == 'pingcap/docs-cn'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout docs-cn
+        with:
+          ref: ${{ env.DOCS_CN_BASE }}
+          path: docs-cn
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        name: Checkout ai-pr-translator
+        with:
+          repository: ${{ env.AI_TRANSLATOR_REPO }}
+          ref: ${{ env.AI_TRANSLATOR_REF }}
+          path: ai-pr-translator
+
+      - uses: actions/setup-python@v5
+        name: Setup Python
+        with:
+          python-version: "3.9"
+          cache: pip
+          cache-dependency-path: ai-pr-translator/scripts/requirements.txt
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ai-pr-translator/scripts/requirements.txt
+
+      - name: Resolve commit range
+        id: commits
+        shell: bash
+        working-directory: docs-cn
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          readarray -t cursor_values < <(python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("latest_translation_commit.json").read_text(encoding="utf-8"))
+          print((data.get("source-repo") or "").strip())
+          print((data.get("source-branch") or "").strip())
+          print((data.get("sha") or "").strip())
+          PY
+          )
+
+          source_repo="${cursor_values[0]:-}"
+          source_branch="${cursor_values[1]:-}"
+          base_ref="${cursor_values[2]:-}"
+
+          if [ -z "${base_ref}" ]; then
+            echo "latest_translation_commit.json does not contain a source sha" >&2
+            exit 1
+          fi
+
+          if [ -z "${source_repo}" ]; then
+            echo "latest_translation_commit.json does not contain source-repo" >&2
+            exit 1
+          fi
+
+          if [ -z "${source_branch}" ]; then
+            echo "latest_translation_commit.json does not contain source-branch" >&2
+            exit 1
+          fi
+
+          head_ref="$(git -c "http.extraheader=AUTHORIZATION: bearer ${GITHUB_TOKEN}" ls-remote "https://github.com/${source_repo}.git" "refs/heads/${source_branch}" | awk '{print $1}')"
+
+          if [ -z "${head_ref}" ]; then
+            echo "Failed to resolve head sha for ${source_repo} ${source_branch}" >&2
+            exit 1
+          fi
+
+          echo "source_repo=${source_repo}" >> "${GITHUB_OUTPUT}"
+          echo "source_branch=${source_branch}" >> "${GITHUB_OUTPUT}"
+          echo "base_ref=${base_ref}" >> "${GITHUB_OUTPUT}"
+          echo "head_ref=${head_ref}" >> "${GITHUB_OUTPUT}"
+
+      - name: Resolve source file filter
+        id: source_files
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_FILE_NAMES: ${{ inputs.file_names || '' }}
+          SOURCE_REPO: ${{ steps.commits.outputs.source_repo }}
+          BASE_REF: ${{ steps.commits.outputs.base_ref }}
+          HEAD_REF: ${{ steps.commits.outputs.head_ref }}
+        run: |
+          set -euo pipefail
+
+          out=""
+
+          add_file() {
+            local rel="$1"
+            [ -z "${rel}" ] && return
+            case ",${out}," in
+              *",${rel},"*) return ;;
+            esac
+            if [ -z "${out}" ]; then
+              out="${rel}"
+            else
+              out="${out},${rel}"
+            fi
+          }
+
+          normalize_requested_file() {
+            local rel="$1"
+            rel="$(echo "${rel}" | xargs)"
+            rel="${rel#/}"
+            rel="${rel#docs/}"
+
+            if [ -z "${rel}" ]; then
+              return
+            fi
+
+            if [[ "${rel}" == "${SOURCE_TOC_FILE}" || "${rel}" == "${SOURCE_FOLDER}"/* ]]; then
+              add_file "${rel}"
+            else
+              add_file "${SOURCE_FOLDER}/${rel}"
+            fi
+          }
+
+          if [ -n "${INPUT_FILE_NAMES}" ]; then
+            IFS=',' read -ra items <<< "${INPUT_FILE_NAMES}"
+            for item in "${items[@]}"; do
+              normalize_requested_file "${item}"
+            done
+          else
+            readarray -t changed_files < <(
+              gh api "repos/${SOURCE_REPO}/compare/${BASE_REF}...${HEAD_REF}" --jq '.files[].filename'
+            )
+            for rel in "${changed_files[@]}"; do
+              if [[ "${rel}" == "${SOURCE_TOC_FILE}" || "${rel}" == "${SOURCE_FOLDER}"/* ]]; then
+                add_file "${rel}"
+              fi
+            done
+          fi
+
+          echo "files=${out}" >> "${GITHUB_OUTPUT}"
+          if [ -z "${out}" ]; then
+            echo "has_source_changes=false" >> "${GITHUB_OUTPUT}"
+            echo "No ${SOURCE_FOLDER}/ or ${SOURCE_TOC_FILE} changes detected."
+          else
+            echo "has_source_changes=true" >> "${GITHUB_OUTPUT}"
+            echo "Resolved source files: ${out}"
+          fi
+
+      - uses: actions/checkout@v4
+        name: Checkout source repo glossary
+        if: steps.source_files.outputs.has_source_changes == 'true'
+        with:
+          repository: ${{ steps.commits.outputs.source_repo }}
+          ref: ${{ steps.commits.outputs.source_branch }}
+          path: docs-source
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Run commit sync workflow
+        id: sync
+        if: steps.source_files.outputs.has_source_changes == 'true'
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          DEEPSEEK_API_TOKEN: ${{ secrets.DEEPSEEK_API_TOKEN }}
+          GEMINI_API_TOKEN: ${{ secrets.GEMINI_API_TOKEN }}
+          OPENAI_API_TOKEN: ${{ secrets.OPENAI_API_TOKEN }}
+          AZURE_OPENAI_KEY: ${{ secrets.AZURE_OPENAI_KEY }}
+          OPENAI_BASE_URL: ${{ secrets.AZURE_OPENAI_BASE_URL }}
+          SOURCE_REPO: ${{ steps.commits.outputs.source_repo }}
+          TARGET_REPO: pingcap/docs-cn
+          SOURCE_BRANCH: ${{ steps.commits.outputs.source_branch }}
+          SOURCE_BASE_REF: ${{ steps.commits.outputs.base_ref }}
+          SOURCE_HEAD_REF: ${{ steps.commits.outputs.head_ref }}
+          SOURCE_FOLDER: ""
+          SOURCE_FILES: ${{ steps.source_files.outputs.files }}
+          TARGET_REPO_PATH: ${{ github.workspace }}/docs-cn
+          AI_PROVIDER: ${{ inputs.ai_provider || 'azure' }}
+          TERMS_PATH: ${{ github.workspace }}/docs-source/resources/terms.md
+          SKIP_TRANSLATING_AI_DOCS_TO_ZH: "false"
+        run: |
+          set -euo pipefail
+          cd ai-pr-translator/scripts
+          python commit_sync_workflow.py
+      
+      - name: Detect translated changes
+        id: changes
+        shell: bash
+        working-directory: docs-cn
+        run: |
+          set -euo pipefail
+
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "has_changes=false" >> "${GITHUB_OUTPUT}"
+          else
+            echo "has_changes=true" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Update translation cursor
+        if: steps.changes.outputs.has_changes == 'true'
+        shell: bash
+        working-directory: docs-cn
+        env:
+          HEAD_REF: ${{ steps.commits.outputs.head_ref }}
+          SOURCE_REPO: ${{ steps.commits.outputs.source_repo }}
+          SOURCE_BRANCH: ${{ steps.commits.outputs.source_branch }}
+        run: |
+          set -euo pipefail
+
+          python -c 'import json, os; from pathlib import Path; Path("latest_translation_commit.json").write_text(json.dumps({"source-repo": os.environ["SOURCE_REPO"], "source-branch": os.environ["SOURCE_BRANCH"], "sha": os.environ["HEAD_REF"]}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")'
+
+      - name: Set build metadata
+        id: build_meta
+        if: steps.changes.outputs.has_changes == 'true'
+        shell: bash
+        run: |
+          echo "date=$(TZ=Asia/Shanghai date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+          echo "id=$(TZ=Asia/Shanghai date +'%Y%m%d')-$(date +%s)" >> "$GITHUB_OUTPUT"
+
+      - name: Create PR
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          path: docs-cn
+          token: ${{ github.token }}
+          branch: zh-translation/ai-${{ steps.build_meta.outputs.id }}
+          base: ${{ env.DOCS_CN_BASE }}
+          title: "${{ env.DOCS_CN_BASE }}: translate AI doc changes from ${{ steps.commits.outputs.source_repo }} ${{ steps.commits.outputs.source_branch }} on ${{ steps.build_meta.outputs.date }}"
+          labels: |
+            translation/no-need
+          body: |
+            ### What is changed, added or deleted? (Required)
+
+            Translate `pingcap/docs` AI documentation changes (`${{ env.SOURCE_FOLDER }}/**` and `${{ env.SOURCE_TOC_FILE }}`) to Chinese via `ai-pr-translator` commit-diff sync.
+
+            English commit diff:
+
+            https://github.com/${{ steps.commits.outputs.source_repo }}/compare/${{ steps.commits.outputs.base_ref }}...${{ steps.commits.outputs.head_ref }}
+
+            ### Which TiDB version(s) do your changes apply to? (Required)
+
+            - [x] ${{ env.DOCS_CN_BASE }}
+
+            ### What is the related PR or file link(s)?
+
+            - Source repo: `${{ steps.commits.outputs.source_repo }}`
+            - Source branch: `${{ steps.commits.outputs.source_branch }}`
+            - Source paths: `${{ env.SOURCE_FOLDER }}/**`, `${{ env.SOURCE_TOC_FILE }}`
+
+            ### Do your changes match any of the following descriptions?
+
+            - [ ] Delete files
+            - [ ] Change aliases
+            - [ ] Need modification after applied to another branch
+            - [ ] Might cause conflicts after applied to another branch
+          delete-branch: true
