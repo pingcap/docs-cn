@@ -2246,7 +2246,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 这个变量用于控制 TiDB 对特殊集合算子 `NOT IN` 和 `!= ALL` 引导的子查询产生的 ANTI JOIN 是否采用 Null Aware Hash Join 的执行方式。
 - 从旧版本升级到 v7.0.0 及之后版本，该功能自动开启，即该变量的值修改为默认值 `ON`。
 
-### `tidb_enable_outer_join_reorder` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+### `tidb_opt_enable_advanced_join_reorder` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -2258,6 +2258,15 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
     - 如果升级前 TiDB 的版本低于 v6.1.0，升级后该变量的默认值为 `ON`。
     - 如果升级前 TiDB 的版本等于或大于 v6.1.0，升级后该变量的默认值跟随升级前的设定值。
+
+### `tidb_enable_outer_join_reorder` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量表示是否开启新版本 Join Reorder 实现，新版本在计划正确性方面更有保证，计划搜索空间更大，并且新版本 DP 枚举算法也支持 OUTER JOIN
 
 ### `tidb_enable_inl_join_inner_multi_pattern` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
