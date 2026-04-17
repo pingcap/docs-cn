@@ -47,5 +47,4 @@ TiDB 向量搜索支持存储最多 16383 维的向量，能够满足大多数�
 | Python   | TiDB Vector Client | `pip install tidb-vector[client]` | [使用 Python 开始向量搜索](/ai/quickstart-via-python.md) |
 | Python   | SQLAlchemy         | `pip install tidb-vector`         | [集成 TiDB 向量搜索与 SQLAlchemy](/ai/integrations/vector-search-integrate-with-sqlalchemy.md) |
 | Python   | peewee             | `pip install tidb-vector`         | [集成 TiDB 向量搜索与 peewee](/ai/integrations/vector-search-integrate-with-peewee.md) |
-| Python   | Django             | `pip install django-tidb[vector]` | [集成 TiDB 向量搜索与 Django](/ai/integrations/vector-search-integrate-with-django-orm.md)
-
+| Python   | Django             | `pip install django-tidb[vector]` | [集成 TiDB 向量搜索与 Django](/ai/integrations/vector-search-integrate-with-django-orm.md) |
