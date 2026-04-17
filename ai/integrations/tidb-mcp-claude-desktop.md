@@ -46,4 +46,3 @@ summary: 本指南将向你展示如何在 Claude Desktop 中配置 TiDB MCP Ser
 7. 重启 Claude Desktop。
 
 如需了解更多详情，请参阅 [如何在 Claude Desktop 中配置 MCP server](https://modelcontextprotocol.io/quickstart/user)。
-
