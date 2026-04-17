@@ -102,10 +102,10 @@ PLAN REPLAYER DUMP EXPLAIN (
 );
 ```
 
-或者，对于多条 SQL 的情况，你可以通过文件的方式来获取 plan replayer dump 的结果，多条 SQL 语句在文件中以 `;` 进行分隔。
+或者，对于多条 SQL 的情况，你可以通过文件的方式来获取 `PLAN REPLAYER DUMP` 的执行结果。在文件中，多条 SQL 语句以 `;` 进行分隔。
 
 ```sql
-plan replayer dump explain 'sqls.txt';
+PLAN REPLAYER DUMP EXPLAIN 'sqls.txt';
 ```
 
 ```sql
