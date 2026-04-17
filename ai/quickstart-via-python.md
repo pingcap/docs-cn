@@ -22,7 +22,7 @@ aliases: ['/zh/tidb/stable/vector-search-get-started-using-python/','/zh/tidb/de
 
 ## 前置条件
 
-- 访问 [tidbcloud.com](https://tidbcloud.com/) 免费创建一个 TiDB Cloud Starter 集群，或使用 [tiup playground](https://docs.pingcap.com/tidb/stable/quick-start-with-tidb/#deploy-a-local-test-cluster) 在本地部署一个 TiDB 集群进行测试。
+- 访问 [tidbcloud.com](https://tidbcloud.com/) 免费创建一个 TiDB Cloud Starter 实例，或使用 [tiup playground](https://docs.pingcap.com/tidb/stable/quick-start-with-tidb/#deploy-a-local-test-cluster) 在本地部署一个 TiDB 集群进行测试。
 
 ## 安装
 
@@ -45,9 +45,9 @@ pip install "pytidb[models]"
 <SimpleTab>
 <div label="TiDB Cloud Starter">
 
-你可以在 [TiDB Cloud 控制台](https://tidbcloud.com/clusters) 获取这些连接参数：
+你可以在 [TiDB Cloud 控制台](https://tidbcloud.com/tidbs) 获取这些连接参数：
 
-1. 进入 [Clusters 页面](https://tidbcloud.com/clusters)，点击目标集群名称进入其概览页面。
+1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击目标 {{{ .starter }}} 实例名称进入其概览页面。
 2. 点击右上角的 **Connect**。此时会弹出连接对话框，显示连接参数。
 
 例如，连接参数如下所示：
@@ -61,7 +61,7 @@ DATABASE: test
 CA:       /etc/ssl/cert.pem
 ```
 
-对应的 Python 代码如下，用于连接 TiDB Cloud Starter 集群：
+对应的 Python 代码如下，用于连接 TiDB Cloud Starter 实例：
 
 ```python
 from pytidb import TiDBClient
@@ -82,7 +82,7 @@ client = TiDBClient.connect(
 </div>
 <div label="TiDB 自托管">
 
-以下是连接 TiDB 自托管的基本示例：
+以下是连接 TiDB 自托管集群的基本示例：
 
 ```python
 from pytidb import TiDBClient

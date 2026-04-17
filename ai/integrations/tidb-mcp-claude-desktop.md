@@ -13,7 +13,7 @@ summary: 本指南将向你展示如何在 Claude Desktop 中配置 TiDB MCP Ser
 
 - **Claude Desktop**：从 [claude.ai](https://claude.ai/download) 下载并安装 Claude Desktop。
 - **Python (>=3.10) 和 uv**：确保已安装 Python（3.10 或更高版本）和 `uv`。请按照 [安装指南](https://docs.astral.sh/uv/getting-started/installation/) 安装 `uv`。
-- **TiDB Cloud Starter 集群**：你可以在 [TiDB Cloud](https://tidbcloud.com/free-trial) 上创建一个免费的 TiDB 集群。
+- **一个 {{{ .starter }}} 实例**：你可以在 [TiDB Cloud](https://tidbcloud.com/free-trial) 上创建一个免费的 {{{ .starter }}} 实例。
 
 ## 设置步骤
 
@@ -41,8 +41,9 @@ summary: 本指南将向你展示如何在 Claude Desktop 中配置 TiDB MCP Ser
     }
     ```
 
-5. 前往 [TiDB Cloud 集群页面](https://tidbcloud.com/console/clusters)，并导航到你想要连接的集群。
+5. 在 [**My TiDB**](https://tidbcloud.com/tidbs) 页面上，点击目标 {{{ .starter }}} 实例的名称，进入其实例概览页面。
 6. 点击右上角的 **Connect**，获取连接参数，并将 `TIDB_HOST`、`TIDB_PORT`、`TIDB_USERNAME`、`TIDB_PASSWORD` 和 `TIDB_DATABASE` 的值替换为你自己的。
 7. 重启 Claude Desktop。
 
 如需了解更多详情，请参阅 [如何在 Claude Desktop 中配置 MCP server](https://modelcontextprotocol.io/quickstart/user)。
+

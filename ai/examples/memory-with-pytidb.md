@@ -24,7 +24,7 @@ summary: 为聊天机器人和会话式 AI 应用实现会话内存。
 在开始之前，请确保你已具备以下条件：
 
 - **Python (>=3.10)**：安装 [Python](https://www.python.org/downloads/) 3.10 或以上版本。
-- **A TiDB Cloud Starter cluster**：你可以在 [TiDB Cloud](https://tidbcloud.com/free-trial) 上创建免费的 TiDB 集群。
+- **A {{{ .starter }}} instance**：你可以在 [TiDB Cloud](https://tidbcloud.com/free-trial) 上创建免费的 {{{ .starter }}} 实例。
 - **OpenAI API key**：从 [OpenAI](https://platform.openai.com/api-keys) 获取 OpenAI API key。
 
 ## How to run
@@ -48,7 +48,7 @@ pip install -r reqs.txt
 
 ### Step 3. 设置 environment variables
 
-1. 在 [TiDB Cloud 控制台](https://tidbcloud.com/)中，进入 [**Clusters**](https://tidbcloud.com/clusters) 页面，然后点击目标集群名称进入其概览页面。
+1. 在 [TiDB Cloud 控制台](https://tidbcloud.com/)中，进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，然后点击目标 {{{ .starter }}} 实例名称进入其概览页面。
 2. 点击右上角的 **Connect**。此时会弹出连接对话框，显示连接参数。
 3. 根据连接参数设置 environment variables，如下所示：
 
