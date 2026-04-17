@@ -73,7 +73,6 @@ tiup install dm dmctl
 
 - [GitHub](https://github.com/pingcap/tiflow/tree/release-8.5/dm)
 - [AskTUG](https://pingkai.cn/tidbcommunity/forum/tags/dm)
->>>>>>> 5696112cc0 (update tidb.net and asktug links (#21395))
 
 ## License
 
