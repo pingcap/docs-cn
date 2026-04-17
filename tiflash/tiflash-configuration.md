@@ -166,8 +166,8 @@ I/O 限流功能相关配置。
 
 ##### `s3_max_read_bytes_per_sec` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 节点级 S3 读取总带宽限制，所有 S3 直接读取和 FileCache 后台下载共享这一带宽预算。
-- 该配置仅在存算分离架构下生效，用于限制冷读或缓存未命中时对 S3 的放大读取流量。
+- 从对象存储读取的总带宽限制，所有对象存储直接读取和 FileCache 后台下载共享这一带宽预算。
+- 该配置仅在[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下生效，用于限制冷读或缓存未命中时对对象存储的放大读取流量。
 - 设置为 `0` 表示关闭该限制。
 - 默认值：`0`
 - 单位：Byte
@@ -459,23 +459,23 @@ I/O 限流功能相关配置。
 
 ##### `remote_checkpoint_interval_seconds` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 控制 TiFlash 向对象存储上传 checkpoint 的后台任务执行间隔。该参数只对 [存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下启用了对象存储的 TiFlash Write Node 生效。
+- 控制 TiFlash 向对象存储上传 checkpoint 的后台任务执行间隔。该参数只对[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下启用了对象存储的 TiFlash Write Node 生效。
 - 默认值：`30`
 - 单位：秒
 - 调小该值可以让最新数据更快上传到对象存储，但会增加 checkpoint 上传频率和相关开销；调大该值则会降低上传频率。一般不建议修改该参数。
 
 ##### `remote_gc_method` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 控制 TiFlash 在对象存储上执行 GC 的方式。该参数只对 [存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Write Node 生效。
+- 控制 TiFlash 在对象存储上执行 GC 的方式。该参数只对[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Write Node 生效。
 - 可选值：
-    - `1`：`Lifecycle`。TiFlash 会为待删除对象打上 `tiflash_deleted=true` 标签，并依赖对象存储的生命周期规则(Lifecycle Rule)异步完成物理删除。首次执行 GC 时，被选为 GC owner 的 TiFlash Write Node 会检查并尝试创建对应的生命周期规则。
+    - `1`：`Lifecycle`。TiFlash 会为待删除对象打上 `tiflash_deleted=true` 标签，并依赖对象存储的生命周期规则 (Lifecycle Rule) 异步完成物理删除。首次执行 GC 时，被选为 GC owner 的 TiFlash Write Node 会检查并尝试创建对应的生命周期规则。
     - `2`：`ScanThenDelete`。TiFlash 会定期扫描带有删除标记且已过期的对象，并直接发起物理删除，不依赖对象存储生命周期规则。
 - 默认值：`1`
 - 该参数只影响远端对象的回收方式，不影响 TiFlash 上传 checkpoint 的行为。假如不确定 TiFlash 是否兼容对象存储的生命周期规则，建议在部署时将该值设置为 `2`，使用 `ScanThenDelete` 的方式进行对象存储数据的 GC。
 
 ##### `remote_gc_interval_seconds` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 控制远端对象存储 GC 后台任务的执行间隔。该参数只对 [存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Write Node 生效，且只有当前被选为 GC owner 的节点会实际执行该任务。
+- 控制远端对象存储 GC 后台任务的执行间隔。该参数只对[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Write Node 生效，且只有当前被选为 GC owner 的节点会实际执行该任务。
 - 默认值：`3600`
 - 单位：秒
 - 当 `remote_gc_method` 设置为 `1` 时，该参数控制 TiFlash 扫描 lock、manifest 并维护生命周期规则的频率，但对象的实际物理删除时间仍由对象存储的生命周期规则决定。
@@ -483,7 +483,7 @@ I/O 限流功能相关配置。
 
 ##### `remote_summary_interval_seconds` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 控制 TiFlash 周期性统计远端对象存储空间占用的执行间隔。该参数只对 [存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Write Node 生效，且只有当前被选为 GC owner 的节点会实际执行该任务。该任务会遍历对象存储中的相关 key，统计对象存储使用的存储空间信息。
+- 控制 TiFlash 周期性统计远端对象存储空间占用的执行间隔。该参数只对[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Write Node 生效，且只有当前被选为 GC owner 的节点会实际执行该任务。该任务会遍历对象存储中的相关 key，统计对象存储使用的存储空间信息。
 - 默认值：`0`
 - 单位：秒
 - 当其值小于等于 `0` 时，表示关闭周期性空间汇总任务。
@@ -492,7 +492,7 @@ I/O 限流功能相关配置。
 
 ##### `dt_filecache_wait_on_downloading_ms` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 控制在[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下，TiFlash Compute Node 发现同一个 key 已经在后台下载时，当前请求最多等待该下载完成的时间。用于减少同一对象因重复下载带来的额外 S3 读取压力。
+- 控制在[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下，TiFlash Compute Node 发现同一个 key 已经在后台下载时，当前请求最多等待该下载完成的时间。用于减少同一对象因重复下载带来的额外的对象存储读取压力。
 - 设置为 `0` 表示关闭等待，当前请求不会等待已在进行中的下载完成。
 - 默认值：`0`
 - 单位：毫秒
