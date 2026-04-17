@@ -2429,6 +2429,14 @@ Raft Engine 相关的配置项。
 + TiKV 备份数据到 S3 时，如果备份文件大于该配置项的值，会自动进行[分块上传](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/API/API_UploadPart.html)。根据压缩率的不同，96 MiB Region 产生的备份文件大约在 10 MiB~30 MiB 之间。
 + 默认值：5MiB
 
+### `gcp-v2-enable`
+
++ 是否在使用 Google Cloud Storage (GCS) 执行 full backup 或 restore 时启用 `gcp_v2` 外部存储后端
++ 默认值：`true`
++ 当该配置项为 `true` 时，TiKV 在访问 GCS 时会使用 `gcp_v2` 实现；当该配置项为 `false` 时，TiKV 会继续使用旧的 GCS 实现。
++ 如果你需要在 full backup 或 restore 场景下使用 Google Cloud 的 Workload Identity Federation (WIF)，需要将该配置项保持为 `true`。
++ 关于 GCS 的鉴权方式和 WIF / ADC 的使用说明，参见 [备份存储](/br/backup-and-restore-storages.md)。
+
 ## backup.hadoop
 
 ### `home`
@@ -2483,6 +2491,14 @@ Raft Engine 相关的配置项。
 
 + 日志文件存放的临时目录，日志文件预先写入临时目录，然后 flush 到外部存储中。
 + 默认值：`${deploy-dir}/data/log-backup-temp`
+
+### `gcp-v2-enable`
+
++ 是否在日志备份使用 Google Cloud Storage (GCS) 时启用 `gcp_v2` 外部存储后端。
++ 默认值：`true`
++ 当该配置项为 `true` 时，TiKV 在访问 GCS 时会使用 `gcp_v2` 实现；当该配置项为 `false` 时，TiKV 会继续使用旧的 GCS 实现。
++ 如果你需要在日志备份场景下使用 Google Cloud 的 Workload Identity Federation (WIF)，需要将该配置项保持为 `true`。
++ 关于 GCS 的鉴权方式和 WIF / ADC 的使用说明，参见 [备份存储](/br/backup-and-restore-storages.md)。
 
 ## cdc
 

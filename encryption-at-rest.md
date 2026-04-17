@@ -170,7 +170,23 @@ credential-file-path = "/path/to/credential.json"
 ```
 
 - `key-id` 指定 KMS CMK 的密钥 ID。
-- `credential-file-path` 指向验证凭据配置文件的路径，目前支持 Service Account 和 Authentication User 这两种凭据。如果 TiKV 的运行环境已配置[应用默认凭据](https://cloud.google.com/docs/authentication/application-default-credentials?hl=zh-cn)，则无需配置 `credential-file-path`。
+- 当 `vendor = "gcp"` 时，`credential-file-path` 指向验证凭据配置文件的路径，目前支持 Service Account 和 Authentication User 这两种凭据。如果 TiKV 的运行环境已配置[应用默认凭据](https://cloud.google.com/docs/authentication/application-default-credentials?hl=zh-cn)，则无需配置 `credential-file-path`。
+
+如果你需要在 Google Cloud KMS 场景下使用 Workload Identity Federation (WIF)，请改用 `gcp_v2`：
+
+```toml
+[security.encryption.master-key]
+type = "kms"
+key-id = "projects/project-name/locations/global/keyRings/key-ring-name/cryptoKeys/key-name"
+vendor = "gcp_v2"
+
+[security.encryption.master-key.gcp]
+credential-file-path = "/path/to/external-account.json"
+```
+
+- 当 `vendor = "gcp_v2"` 时，显式凭据只支持 Service Account 和 `external_account` 两种类型。
+- 如果你使用的是 ADC 生成的 `authorized_user` JSON，不能把该 JSON 直接配置为 `credential-file-path`。此时应省略 `credential-file-path`，让 TiKV 在运行环境中通过[应用默认凭据](https://cloud.google.com/docs/authentication/application-default-credentials?hl=zh-cn)获取认证信息。
+- 旧的 `vendor = "gcp"` 不支持把 `external_account` 作为显式凭据使用，因此无法通过该方式使用 WIF。
 
 </div>
 <div label="Azure KMS">
