@@ -11,7 +11,7 @@ aliases: ['/zh/tidb/stable/vector-search-integrate-with-peewee/','/zh/tidb/dev/v
 > **注意：**
 >
 > - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB 自托管](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB 自托管和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB Self-Managed和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 ## 前置条件
 
@@ -24,7 +24,7 @@ aliases: ['/zh/tidb/stable/vector-search-integrate-with-peewee/','/zh/tidb/dev/v
 **如果你还没有 TiDB 集群，可以按如下方式创建：**
 
 - （推荐）[创建一个 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
-- [部署本地测试 TiDB 自托管集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster) 或 [部署生产环境 TiDB 自托管集群](/production-deployment-using-tiup.md)。
+- [部署本地测试 TiDB Self-Managed集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster) 或 [部署生产环境 TiDB Self-Managed集群](/production-deployment-using-tiup.md)。
 
 ## 运行示例应用
 
@@ -113,7 +113,7 @@ pip install peewee pymysql python-dotenv tidb-vector
     ```
 
 </div>
-<div label="TiDB 自托管" value="tidb">
+<div label="TiDB Self-Managed" value="tidb">
 
 对于自托管的 TiDB 集群，在 Python 项目的根目录下创建 `.env` 文件。将以下内容复制到 `.env` 文件中，并根据你的 TiDB 集群连接参数修改环境变量的值：
 
@@ -129,10 +129,10 @@ TIDB_DATABASE=test
 
 各参数说明如下：
 
-- `TIDB_HOST`：TiDB 自托管集群的主机。
-- `TIDB_PORT`：TiDB 自托管集群的端口。
-- `TIDB_USERNAME`：连接 TiDB 自托管集群的用户名。
-- `TIDB_PASSWORD`：连接 TiDB 自托管集群的密码。
+- `TIDB_HOST`：TiDB Self-Managed集群的主机。
+- `TIDB_PORT`：TiDB Self-Managed集群的端口。
+- `TIDB_USERNAME`：连接 TiDB Self-Managed集群的用户名。
+- `TIDB_PASSWORD`：连接 TiDB Self-Managed集群的密码。
 - `TIDB_DATABASE`：你要连接的数据库名称。
 
 </div>
