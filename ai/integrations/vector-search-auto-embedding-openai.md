@@ -10,7 +10,7 @@ aliases: ['/zh/tidbcloud/vector-search-auto-embedding-openai/']
 
 > **注意：**
 >
-> [Auto Embedding](/ai/integrations/vector-search-auto-embedding-overview.md) 仅适用于托管在 AWS 上的 TiDB Cloud Starter 集群。
+> [Auto Embedding](/ai/integrations/vector-search-auto-embedding-overview.md) 仅适用于托管在 AWS 上的 {{{ .starter }}} 实例。
 
 ## 可用模型
 

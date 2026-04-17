@@ -13,14 +13,14 @@ summary: 本指南将向你展示如何在 Windsurf 中配置 TiDB MCP Server。
 
 - **Windsurf**：从 [windsurf.com](https://windsurf.com) 下载并安装 Windsurf。
 - **Python (>=3.10) 和 uv**：确保已安装 Python（3.10 或更高版本）和 `uv`。请按照 [安装指南](https://docs.astral.sh/uv/getting-started/installation/) 安装 `uv`。
-- **一个 TiDB Cloud Starter 集群**：你可以在 [TiDB Cloud](https://tidbcloud.com/free-trial) 上创建一个免费的 TiDB 集群。
+- **一个 {{{ .starter }}} 实例**：你可以在 [TiDB Cloud](https://tidbcloud.com/free-trial) 上创建一个免费的 {{{ .starter }}} 实例。
 
 ## 连接到 TiDB Cloud Starter（推荐）
 
 使用 TiDB Cloud 控制台收集连接信息，然后更新 Windsurf 的 MCP 配置。
 
-1. 进入 [Clusters](https://tidbcloud.com/console/clusters) 页面，选择你的集群，然后点击右上角的 **Use with AI Tools**。
-2. 在 **Access `your_cluster_name` with AI tools** 对话框中，选择 Windsurf 需要访问的 **Branch** 和 **Database**。
+1. 在 [**My TiDB**](https://tidbcloud.com/tidbs) 页面上，点击目标 {{{ .starter }}} 实例的名称进入其概览页面，然后点击右上角的 **Use with AI Tools**。
+2. 在显示的对话框中，选择 Windsurf 需要访问的 **Branch** 和 **Database**。
 3. 查看对话框中的 **Prerequisites** 列表，并安装任何缺失的依赖项。
 4. 配置 root 密码：
 

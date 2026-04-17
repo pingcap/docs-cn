@@ -37,7 +37,7 @@ aliases: ['/zh/tidb/stable/vector-search-limitations/','/zh/tidb/dev/vector-sear
 
 - TiDB 工具：
 
-    - 请确保你使用的是 v8.4.0 或以上版本的 [BR](/br/backup-and-restore-overview.md) 进行数据备份和恢复。不支持将包含向量数据类型的表恢复到低于 v8.4.0 的 TiDB 集群。
+    - 请确保你使用的是 v8.4.0 或以上版本的 [BR](/br/backup-and-restore-overview.md) 进行数据备份和恢复。不支持将包含向量数据类型的表恢复到低于 v8.4.0 的 TiDB 版本。
     - [TiDB Data Migration (DM)](/dm/dm-overview.md) 不支持将 MySQL 向量数据类型迁移或同步到 TiDB。
     - 当 [TiCDC](/ticdc/ticdc-overview.md) 将向量数据同步到不支持向量数据类型的下游时，会将向量数据类型转换为其他类型。更多信息，参见 [与向量数据类型的兼容性](/ticdc/ticdc-compatibility.md#compatibility-with-vector-data-types)。
 

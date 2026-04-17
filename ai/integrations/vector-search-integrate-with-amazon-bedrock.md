@@ -35,9 +35,9 @@ aliases: ['/zh/tidbcloud/vector-search-integrate-with-amazon-bedrock/']
     aws configure set region <your-region>
     ```
 
-- 一个 TiDB Cloud Starter 集群
+- 一个 TiDB Cloud Starter 实例
 
-    如果你还没有 TiDB Cloud 集群，请参考[创建 TiDB Cloud Starter 集群](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter) 创建属于你自己的 TiDB Cloud 集群。
+    如果你还没有 TiDB Cloud Starter 实例，请[创建一个 TiDB Cloud Starter 实例](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)。
 
 - 一个具有 [Amazon Bedrock 所需权限](https://docs.aws.amazon.com/bedrock/latest/userguide/security_iam_id-based-policy-examples.html) 的 AWS 账户，并且能够访问以下模型：
 
@@ -54,7 +54,7 @@ aliases: ['/zh/tidbcloud/vector-search-integrate-with-amazon-bedrock/']
 
 从 [TiDB Cloud 控制台](https://tidbcloud.com/) 获取 TiDB 连接信息，并在你的开发环境中设置环境变量，操作如下：
 
-1. 进入 [**Clusters**](https://tidbcloud.com/project/clusters) 页面，点击目标集群名称，进入该集群的概览页面。
+1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击目标 TiDB Cloud Starter 实例的名称，进入该实例的概览页面。
 
 2. 点击右上角的 **Connect**，弹出连接对话框。
 
@@ -242,7 +242,7 @@ Base.metadata.create_all(engine)
 
 ### 步骤 7. 将向量数据保存到 TiDB Cloud Starter
 
-在 `demo.py` 中添加以下代码，将向量数据保存到你的 TiDB Cloud Starter 集群：
+在 `demo.py` 中添加以下代码，将向量数据保存到你的 TiDB Cloud Starter 实例：
 
 ```python
 # ---- Saving Vectors to TiDB ----
