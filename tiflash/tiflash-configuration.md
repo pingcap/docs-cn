@@ -459,7 +459,7 @@ I/O 限流功能相关配置。
 
 ##### `remote_checkpoint_interval_seconds` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-- 控制 TiFlash 向对象存储上传 checkpoint 的后台任务执行间隔。该参数只对[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下启用了对象存储的 TiFlash Write Node 生效。
+- 控制 TiFlash 向对象存储上传 checkpoint 的后台任务执行间隔。该参数只对[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下将数据存储在对象存储的 TiFlash Write Node 生效。
 - 默认值：`30`
 - 单位：秒
 - 调小该值可以让最新数据更快上传到对象存储，但会增加 checkpoint 上传频率和相关开销；调大该值则会降低上传频率。一般不建议修改该参数。
