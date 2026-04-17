@@ -17,7 +17,7 @@ summary: 使用 TiDB 全文搜索执行传统文本搜索。
 在开始之前，请确保你具备以下条件：
 
 - **Python (>=3.10)**：安装 [Python](https://www.python.org/downloads/) 3.10 或以上版本。
-- **TiDB Cloud Starter 集群**：你可以在 [TiDB Cloud](https://tidbcloud.com/free-trial) 上创建一个免费的 TiDB 集群。
+- **{{{ .starter }}} 实例**：你可以在 [TiDB Cloud](https://tidbcloud.com/free-trial) 上创建一个免费的 {{{ .starter }}} 实例。
 
 ## 运行方法
 
@@ -40,7 +40,7 @@ pip install -r reqs.txt
 
 ### 步骤 3. 设置环境变量
 
-1. 在 [TiDB Cloud 控制台](https://tidbcloud.com/)中，进入 [**Clusters**](https://tidbcloud.com/clusters) 页面，然后点击目标集群名称，进入其概览页面。
+1. 在 [TiDB Cloud 控制台](https://tidbcloud.com/)中，进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，然后点击目标 {{{ .starter }}} 实例名称，进入其概览页面。
 2. 点击右上角的 **Connect**。此时会弹出连接对话框，显示连接参数。
 3. 根据连接参数设置环境变量，如下所示：
 

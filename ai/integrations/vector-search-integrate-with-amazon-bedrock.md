@@ -8,14 +8,14 @@ aliases: ['/zh/tidbcloud/vector-search-integrate-with-amazon-bedrock/']
 
 > **注意：**
 >
-> 本文档仅适用于 TiDB Cloud，不适用 TiDB 自托管。
+> 本文档仅适用于 TiDB Cloud，不适用 TiDB Self-Managed。
 
 本教程演示如何将 [TiDB 向量搜索](/ai/concepts/vector-search-overview.md) 与 [Amazon Bedrock](https://aws.amazon.com/bedrock/) 集成，以构建基于 RAG（检索增强生成）的问答机器人。
 
 > **注意：**
 >
 > - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB 自托管](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB 自托管和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB Self-Managed 和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 > **提示**
 >
@@ -35,9 +35,9 @@ aliases: ['/zh/tidbcloud/vector-search-integrate-with-amazon-bedrock/']
     aws configure set region <your-region>
     ```
 
-- 一个 TiDB Cloud Starter 集群
+- 一个 TiDB Cloud Starter 实例
 
-    如果你还没有 TiDB Cloud 集群，请参考[创建 TiDB Cloud Starter 集群](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter) 创建属于你自己的 TiDB Cloud 集群。
+    如果你还没有 TiDB Cloud Starter 实例，请[创建一个 TiDB Cloud Starter 实例](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)。
 
 - 一个具有 [Amazon Bedrock 所需权限](https://docs.aws.amazon.com/bedrock/latest/userguide/security_iam_id-based-policy-examples.html) 的 AWS 账户，并且能够访问以下模型：
 
@@ -54,7 +54,7 @@ aliases: ['/zh/tidbcloud/vector-search-integrate-with-amazon-bedrock/']
 
 从 [TiDB Cloud 控制台](https://tidbcloud.com/) 获取 TiDB 连接信息，并在你的开发环境中设置环境变量，操作如下：
 
-1. 进入 [**Clusters**](https://tidbcloud.com/project/clusters) 页面，点击目标集群名称，进入该集群的概览页面。
+1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击目标 TiDB Cloud Starter 实例的名称，进入该实例的概览页面。
 
 2. 点击右上角的 **Connect**，弹出连接对话框。
 
@@ -242,7 +242,7 @@ Base.metadata.create_all(engine)
 
 ### 步骤 7. 将向量数据保存到 TiDB Cloud Starter
 
-在 `demo.py` 中添加以下代码，将向量数据保存到你的 TiDB Cloud Starter 集群：
+在 `demo.py` 中添加以下代码，将向量数据保存到你的 TiDB Cloud Starter 实例：
 
 ```python
 # ---- Saving Vectors to TiDB ----

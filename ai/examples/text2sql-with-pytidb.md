@@ -12,7 +12,7 @@ summary: 使用 AI 模型将自然语言查询转换为 SQL 语句。
 在开始之前，请确保你具备以下条件：
 
 - **Python (>=3.10)**：安装 [Python](https://www.python.org/downloads/) 3.10 或以上版本。
-- **TiDB Cloud Starter 集群**：你可以在 [TiDB Cloud](https://tidbcloud.com/free-trial) 上创建一个免费的 TiDB 集群。
+- **{{{ .starter }}} 实例**：你可以在 [TiDB Cloud](https://tidbcloud.com/free-trial) 上创建一个免费的 {{{ .starter }}} 实例。
 - **OpenAI API key**：从 [OpenAI](https://platform.openai.com/api-keys) 获取 OpenAI API key。
 
 ## 运行方法

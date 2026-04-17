@@ -11,20 +11,20 @@ aliases: ['/zh/tidb/stable/vector-search-integrate-with-peewee/','/zh/tidb/dev/v
 > **注意：**
 >
 > - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB 自托管](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB 自托管和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB Self-Managed 和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 ## 前置条件
 
 完成本教程，你需要：
 
-- 已安装 [Python 3.8 或更高版本](https://www.python.org/downloads/)。
+- 已安装 [Python 3.8 或更高版本](https://www.python.org/downloads)。
 - 已安装 [Git](https://git-scm.com/downloads)。
 - 一个 TiDB 集群。
 
 **如果你还没有 TiDB 集群，可以按如下方式创建：**
 
-- （推荐）参考 [创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md) 创建属于你自己的 TiDB Cloud 集群。
-- 参考 [部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster) 或 [部署生产环境 TiDB 集群](/production-deployment-using-tiup.md) 创建本地集群。
+- （推荐）[创建一个 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [部署本地测试 TiDB Self-Managed 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster) 或 [部署生产环境 TiDB Self-Managed 集群](/production-deployment-using-tiup.md)。
 
 ## 运行示例应用
 
@@ -69,9 +69,9 @@ pip install peewee pymysql python-dotenv tidb-vector
 <SimpleTab>
 <div label="TiDB Cloud Starter or Essential">
 
-对于 TiDB Cloud Starter 集群，按如下步骤获取集群连接字符串并配置环境变量：
+对于 {{{ .starter }}} 或 Essential 实例，按如下步骤获取连接字符串并配置环境变量：
 
-1. 进入 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，点击目标集群名称进入其概览页面。
+1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击目标 {{{ .starter }}} 或 Essential 实例名称进入其概览页面。
 
 2. 点击右上角的 **Connect**，弹出连接对话框。
 
@@ -94,10 +94,10 @@ pip install peewee pymysql python-dotenv tidb-vector
 
 5. 在 Python 项目的根目录下创建 `.env` 文件，并将连接参数粘贴到对应的环境变量中。
 
-    - `TIDB_HOST`：TiDB 集群的主机。
-    - `TIDB_PORT`：TiDB 集群的端口。
-    - `TIDB_USERNAME`：连接 TiDB 集群的用户名。
-    - `TIDB_PASSWORD`：连接 TiDB 集群的密码。
+    - `TIDB_HOST`：{{{ .starter }}} 或 Essential 实例的主机。
+    - `TIDB_PORT`：{{{ .starter }}} 或 Essential 实例的端口。
+    - `TIDB_USERNAME`：连接 TiDB 的用户名。
+    - `TIDB_PASSWORD`：连接 TiDB 的密码。
     - `TIDB_DATABASE`：要连接的数据库名称。
     - `TIDB_CA_PATH`：根证书文件的路径。
 
@@ -113,7 +113,7 @@ pip install peewee pymysql python-dotenv tidb-vector
     ```
 
 </div>
-<div label="TiDB 自托管" value="tidb">
+<div label="TiDB Self-Managed" value="tidb">
 
 对于自托管的 TiDB 集群，在 Python 项目的根目录下创建 `.env` 文件。将以下内容复制到 `.env` 文件中，并根据你的 TiDB 集群连接参数修改环境变量的值：
 
@@ -129,10 +129,10 @@ TIDB_DATABASE=test
 
 各参数说明如下：
 
-- `TIDB_HOST`：TiDB 集群的主机。
-- `TIDB_PORT`：TiDB 集群的端口。
-- `TIDB_USERNAME`：连接 TiDB 集群的用户名。
-- `TIDB_PASSWORD`：连接 TiDB 集群的密码。
+- `TIDB_HOST`：TiDB Self-Managed 集群的主机。
+- `TIDB_PORT`：TiDB Self-Managed 集群的端口。
+- `TIDB_USERNAME`：连接 TiDB Self-Managed 集群的用户名。
+- `TIDB_PASSWORD`：连接 TiDB Self-Managed 集群的密码。
 - `TIDB_DATABASE`：你要连接的数据库名称。
 
 </div>
@@ -168,7 +168,7 @@ Get documents within a certain distance:
 
 ### 创建向量表
 
-#### 连接 TiDB 集群
+#### 连接到 TiDB {#connect-to-tidb}
 
 ```python
 import os

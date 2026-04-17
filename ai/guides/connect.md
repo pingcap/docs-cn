@@ -24,9 +24,9 @@ pip install pytidb
 <SimpleTab>
 <div label="TiDB Cloud Starter">
 
-你可以[创建一个 TiDB Cloud Starter 集群](https://tidbcloud.com/free-trial/)，然后按照以下步骤在 Web 控制台获取连接参数：
+你可以[创建一个 TiDB Cloud Starter 实例](https://tidbcloud.com/free-trial/)，然后按照以下步骤在 Web 控制台获取连接参数：
 
-1. 进入 [Clusters 页面](https://tidbcloud.com/clusters)，点击目标集群名称，进入其概览页面。
+1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击目标 {{{ .starter }}} 实例名称，进入其概览页面。
 2. 点击右上角的 **Connect**。此时会弹出连接对话框，显示连接参数。
 3. 将连接参数复制到你的代码或环境变量中。
 
@@ -46,10 +46,10 @@ db = TiDBClient.connect(
 
 > **注意：**
 >
-> 对于 TiDB Cloud Starter，当使用公共端点时，[连接数据库必须使用 TLS](https://docs.pingcap.com/tidbcloud/secure-connections-to-starter-clusters/)。`pytidb` 客户端会**自动**为 TiDB Cloud Starter 集群启用 TLS。
+> 对于 TiDB Cloud Starter，当使用公共端点时，[连接数据库必须使用 TLS](https://docs.pingcap.com/tidbcloud/secure-connections-to-starter-clusters/)。`pytidb` 客户端会**自动**为 TiDB Cloud Starter 实例启用 TLS。
 
 </div>
-<div label="TiDB 自托管">
+<div label="TiDB Self-Managed">
 
 按照 [TiDB 快速上手](https://docs.pingcap.com/tidb/stable/quick-start-with-tidb/#deploy-a-local-test-cluster) 部署一个 TiDB 集群用于测试。
 
@@ -83,9 +83,9 @@ db = TiDBClient.connect(
 <SimpleTab>
 <div label="TiDB Cloud Starter">
 
-你可以[创建一个 TiDB Cloud Starter 集群](https://tidbcloud.com/free-trial/)，然后按照以下步骤在 Web 控制台获取连接参数：
+你可以[创建一个 TiDB Cloud Starter 实例](https://tidbcloud.com/free-trial/)，然后按照以下步骤在 Web 控制台获取连接参数：
 
-1. 进入 [Clusters 页面](https://tidbcloud.com/clusters)，点击目标集群名称，进入其概览页面。
+1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击目标 {{{ .starter }}} 实例名称，进入其概览页面。
 2. 点击右上角的 **Connect**。此时会弹出连接对话框，显示连接参数。
 3. 复制连接参数，并按以下格式构建连接字符串：
 
@@ -102,7 +102,7 @@ db = TiDBClient.connect(
 > 对于 TiDB Cloud Starter，当使用公共端点时，[连接数据库必须使用 TLS](https://docs.pingcap.com/tidbcloud/secure-connections-to-starter-clusters/)，因此需要在连接字符串中设置 `ssl_verify_cert=true&ssl_verify_identity=true`。
 
 </div>
-<div label="TiDB 自托管">
+<div label="TiDB Self-Managed">
 
 你可以按照以下格式构建连接字符串：
 

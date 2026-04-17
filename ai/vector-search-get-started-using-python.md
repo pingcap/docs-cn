@@ -13,7 +13,7 @@ aliases: ['/zh/tidb/stable/vector-search-get-started-using-python/','/zh/tidb/de
 > **注意：**
 >
 > - 向量搜索功能目前为 beta 版本，可能会在不提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB 自托管](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB 自托管和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB Self-Managed 和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 ## 前置条件
 
@@ -25,8 +25,8 @@ aliases: ['/zh/tidb/stable/vector-search-get-started-using-python/','/zh/tidb/de
 
 **如果你还没有 TiDB 集群，可以按如下方式创建：**
 
-- （推荐）参考 [创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md) 创建属于你自己的 TiDB Cloud 集群。
-- 参考 [部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster) 或 [部署生产环境 TiDB 集群](/production-deployment-using-tiup.md) 创建本地集群。
+- （推荐）[创建一个 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [部署本地测试 TiDB Self-Managed 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster) 或 [部署生产环境 TiDB Self-Managed 集群](/production-deployment-using-tiup.md)。
 
 ## 快速开始
 
@@ -53,63 +53,63 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 - `tidb-vector`：用于与 TiDB 向量搜索交互的 Python 客户端。
 - [`sentence-transformers`](https://sbert.net)：一个 Python 库，提供用于从文本生成 [向量嵌入](/ai/concepts/vector-search-overview.md#vector-embedding) 的预训练模型。
 
-### 步骤 3. 配置 TiDB 集群连接字符串
+### 第 3 步：配置 TiDB 连接字符串 {#step-3-configure-the-tidb-connection-string}
 
-根据你选择的 TiDB 部署方式，配置集群连接字符串。
+根据你选择的 TiDB 部署方式配置连接字符串。
 
 <SimpleTab>
-<div label="TiDB Cloud Starter or Essential">
+<div label="{{{ .starter }}}">
 
-对于 TiDB Cloud Starter 集群，按以下步骤获取集群连接字符串并配置环境变量：
+对于 {{{ .starter }}} 实例，按以下步骤获取连接字符串并配置环境变量：
 
-1. 进入 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，点击目标集群名称进入集群概览页。
+1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，然后点击目标 {{{ .starter }}} 实例的名称，进入其实例概览页面。
 
-2. 点击右上角的 **Connect**，弹出连接对话框。
+2. 点击右上角的 **Connect**。此时会显示连接对话框。
 
-3. 确认连接对话框中的配置与你的运行环境一致。
+3. 确保连接对话框中的配置与你的运行环境一致。
 
     - **Connection Type** 设置为 `Public`。
     - **Branch** 设置为 `main`。
     - **Connect With** 设置为 `SQLAlchemy`。
     - **Operating System** 与你的环境一致。
 
-    > **提示：**
+    > **Tip:**
     >
     > 如果你的程序运行在 Windows Subsystem for Linux (WSL) 中，请切换到对应的 Linux 发行版。
 
-4. 点击 **PyMySQL** 标签页，复制连接字符串。
+4. 点击 **PyMySQL** 页签并复制连接字符串。
 
-    > **提示：**
+    > **Tip:**
     >
-    > 如果你还未设置密码，可点击 **Generate Password** 生成随机密码。
+    > 如果你还没有设置密码，请点击 **Generate Password** 生成一个随机密码。
 
-5. 在你的 Python 项目根目录下，创建 `.env` 文件，并将连接字符串粘贴进去。
+5. 在 Python 项目的根目录中创建一个 `.env` 文件，并将连接字符串粘贴到该文件中。
 
-    以下为 macOS 示例：
+    以下是 macOS 的示例：
 
     ```dotenv
     TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@gateway01.<region>.prod.aws.tidbcloud.com:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
     ```
 
 </div>
-<div label="TiDB 自托管" value="tidb">
+<div label="TiDB Self-Managed" value="tidb">
 
-对于 TiDB 自建集群，在你的 Python 项目根目录下创建 `.env` 文件。将以下内容复制到 `.env` 文件中，并根据你的 TiDB 集群连接参数修改环境变量的值：
+对于 TiDB Self-Managed 集群，在 Python 项目的根目录中创建一个 `.env` 文件。将以下内容复制到 `.env` 文件中，并根据 TiDB 集群的连接参数修改环境变量值：
 
 ```dotenv
 TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
 # 例如：TIDB_DATABASE_URL="mysql+pymysql://root@127.0.0.1:4000/test"
 ```
 
-如果你在本地机器上运行 TiDB，`<HOST>` 默认为 `127.0.0.1`。初始 `<PASSWORD>` 为空，因此如果是首次启动集群，可以省略该字段。
+如果你在本地机器上运行 TiDB，默认情况下 `<HOST>` 为 `127.0.0.1`。初始 `<PASSWORD>` 为空，因此如果你是首次启动集群，可以省略此字段。
 
-各参数说明如下：
+以下是各参数的说明：
 
-- `<USER>`：连接 TiDB 集群的用户名。
-- `<PASSWORD>`：连接 TiDB 集群的密码。
+- `<USER>`：连接到 TiDB 的用户名。
+- `<PASSWORD>`：连接到 TiDB 的密码。
 - `<HOST>`：TiDB 集群的主机。
 - `<PORT>`：TiDB 集群的端口。
-- `<DATABASE>`：你要连接的数据库名称。
+- `<DATABASE>`：要连接的数据库名称。
 
 </div>
 
@@ -134,30 +134,30 @@ def text_to_embedding(text):
     return embedding.tolist()
 ```
 
-### 步骤 5. 连接 TiDB 集群
+### 第 5 步：连接到 TiDB {#step-5-connect-to-tidb}
 
-使用 `TiDBVectorClient` 类连接 TiDB 集群，并创建包含向量列的 `embedded_documents` 表。
+使用 `TiDBVectorClient` 类连接到 TiDB，并创建一个包含向量列的 `embedded_documents` 表。
 
-> **注意**
+> **Note**
 >
-> 请确保表中向量列的维度与嵌入模型生成的向量维度一致。例如，**msmarco-MiniLM-L12-cos-v5** 模型生成的向量为 384 维，因此 `embedded_documents` 表中向量列的维度也应为 384。
+> 请确保表中向量列的维度与嵌入模型生成的向量维度一致。例如，**msmarco-MiniLM-L12-cos-v5** 模型生成 384 维向量，因此 `embedded_documents` 中的向量列维度也应为 384。
 
 ```python
 import os
 from tidb_vector.integrations import TiDBVectorClient
 from dotenv import load_dotenv
 
-# Load the connection string from the .env file
+# 从 .env 文件中加载连接字符串
 load_dotenv()
 
 vector_store = TiDBVectorClient(
-   # The 'embedded_documents' table will store the vector data.
+   # 'embedded_documents' 表将存储向量数据。
    table_name='embedded_documents',
-   # The connection string to the TiDB cluster.
+   # TiDB 连接字符串。
    connection_string=os.environ.get('TIDB_DATABASE_URL'),
-   # The dimension of the vector generated by the embedding model.
+   # 嵌入模型生成的向量维度。
    vector_dimension=embed_model_dims,
-   # Recreate the table if it already exists.
+   # 如果表已存在，则重新创建该表。
    drop_existing_table=True,
 )
 ```

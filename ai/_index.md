@@ -30,7 +30,7 @@ TiDB 是面向 AI 应用的分布式 SQL 数据库，支持向量搜索、全文
 
 | 文档 | 描述 |
 | --- | --- |
-| [连接 TiDB](/ai/guides/connect.md) | 使用 `pytidb` 连接 TiDB Cloud 或自建集群。 |
+| [连接 TiDB](/ai/guides/connect.md) | 使用 `pytidb` 连接 TiDB Cloud 或 TiDB Self-Managed。 |
 | [使用表](/ai/guides/tables.md) | 创建、查询和管理包含向量字段的表。 |
 | [向量搜索](/ai/guides/vector-search.md) | 使用 `pytidb` 进行语义相似度搜索。 |
 | [全文搜索](/ai/guides/vector-search-full-text-search-python.md) | 基于关键字的文本搜索，支持 BM25 排序。 |
