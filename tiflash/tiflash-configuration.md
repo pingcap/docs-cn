@@ -478,8 +478,8 @@ I/O 限流功能相关配置。
 - 控制远端对象存储 GC 后台任务的执行间隔。该参数只对[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)下的 TiFlash Write Node 生效，且只有当前被选为 GC owner 的节点会实际执行该任务。
 - 默认值：`3600`
 - 单位：秒
-- 当 `remote_gc_method` 设置为 `1` 时，该参数控制 TiFlash 扫描 lock、manifest 并维护生命周期规则的频率，但对象的实际物理删除时间仍由对象存储的生命周期规则决定。
-- 当 `remote_gc_method` 设置为 `2` 时，该参数同时控制 TiFlash 扫描并直接删除过期对象的频率。一般不建议修改该参数。
+- 当 [`remote_gc_method`](#remote_gc_method-从-v900-版本开始引入) 设置为 `1` 时，该参数控制 TiFlash 扫描 lock、manifest 并维护生命周期规则的频率，但对象的实际物理删除时间仍由对象存储的生命周期规则决定。
+- 当 [`remote_gc_method`](#remote_gc_method-从-v900-版本开始引入) 设置为 `2` 时，该参数同时控制 TiFlash 扫描并直接删除过期对象的频率。一般不建议修改该参数。
 
 ##### `remote_summary_interval_seconds` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
