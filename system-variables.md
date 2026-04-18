@@ -2039,6 +2039,18 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`OFF`
 - 这个变量用来控制[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)是否支持 DML 语句。
 
+### `tidb_enable_cache_prepare_stmt` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 是否针对 prepare 进行 plan cache 缓存
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+
 ### `tidb_enable_gogc_tuner` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
