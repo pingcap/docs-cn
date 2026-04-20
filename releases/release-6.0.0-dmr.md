@@ -643,4 +643,4 @@ TiDB 提供两个[离线包下载](https://pingkai.cn/download)：`v6.0.0 TiDB-c
 
         - 修复了上游写大事务向 Kafka 同步时可能会导致 TiDB Binlog 被跳过的问题 [#1136](https://github.com/pingcap/tidb-binlog/issues/1136)
 
-如果你在使用 TiDB v6.0.0 的过程中遇到问题，可以到 [AskTUG 论坛](https://asktug.com/tags/tidb-v6)浏览、搜索或反馈问题。
+如果你在使用 TiDB v6.0.0 的过程中遇到问题，可以到 [AskTUG 论坛](https://pingkai.cn/tidbcommunity/forum/tags/tidb-v6)浏览、搜索或反馈问题。
