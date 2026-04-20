@@ -75,7 +75,7 @@ Usage of ./bin/tidb-server:
 
 #### 1.1.10 除了官方文档，有没有其他 TiDB 知识获取途径？
 
-目前[官方文档](/overview.md#tidb-简介)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 [info@pingcap.com](mailto:info@pingcap.com) 获取，以及 [AskTUG 网站](https://asktug.com)与技术专家互动交流。
+目前[官方文档](/overview.md#tidb-简介)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 [info@pingcap.com](mailto:info@pingcap.com) 获取，以及 [AskTUG 网站](https://pingkai.cn/tidbcommunity/forum)与技术专家互动交流。
 
 #### 1.1.11 TiDB 用户名长度限制？
 
@@ -95,19 +95,19 @@ MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiD
 
 ##### 1.2.1.1 TiKV 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 说存储](https://tidb.net/blog/dbe4f467)
+[三篇文章了解 TiDB 技术内幕 - 说存储](https://pingkai.cn/tidbcommunity/blog/dbe4f467)
 
 #### 1.2.2 计算 TiDB
 
 ##### 1.2.2.1 TiDB 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 说计算](https://tidb.net/blog/8427565a)
+[三篇文章了解 TiDB 技术内幕 - 说计算](https://pingkai.cn/tidbcommunity/blog/8427565a)
 
 #### 1.2.3 调度 PD
 
 ##### 1.2.3.1 PD 详细解读
 
-[三篇文章了解 TiDB 技术内幕 - 谈调度](https://tidb.net/blog/a558961f)
+[三篇文章了解 TiDB 技术内幕 - 谈调度](https://pingkai.cn/tidbcommunity/blog/a558961f)
 
 ## 二、云上部署
 

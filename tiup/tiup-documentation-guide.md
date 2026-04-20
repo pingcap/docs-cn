@@ -15,5 +15,5 @@ title: TiUP 文档地图
 
 ## 资源
 
-- [AskTUG TiUP 主题](https://asktug.com/tags/tiup)
+- [AskTUG TiUP 主题](https://pingkai.cn/tidbcommunity/forum/tags/tiup)
 - [TiUP Issues](https://github.com/pingcap/tiup/issues)：TiUP Github Issues 列表
