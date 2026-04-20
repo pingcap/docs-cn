@@ -165,8 +165,8 @@ SET @@global.tidb_ddl_reorg_batch_size = 128;
 
 ## Java 数据库应用开发最佳实践
 
-[开发 Java 应用使用 TiDB 的最佳实践](https://tidb.net/blog/ae01003e)。
+[开发 Java 应用使用 TiDB 的最佳实践](https://pingkai.cn/tidbcommunity/blog/ae01003e)。
 
 ### 推荐阅读
 
-- [TiDB 最佳实践系列（一）高并发写入常见热点问题及规避方法](https://tidb.net/blog/09d47cf8)。
+- [TiDB 最佳实践系列（一）高并发写入常见热点问题及规避方法](https://pingkai.cn/tidbcommunity/blog/09d47cf8)。
