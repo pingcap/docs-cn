@@ -38,7 +38,7 @@ title: TiDB Dashboard 流量可视化页面
 
 > **注意：**
 >
-> 关于 Region 的详细介绍，请参考[三篇文章了解 TiDB 技术内幕 - 说存储](https://tidb.net/blog/dbe4f467#保存数据/Region)
+> 关于 Region 的详细介绍，请参考[三篇文章了解 TiDB 技术内幕 - 说存储](https://pingkai.cn/tidbcommunity/blog/dbe4f467#保存数据/Region)
 
 ### 热点
 
@@ -46,7 +46,7 @@ title: TiDB Dashboard 流量可视化页面
 
 > **注意：**
 >
-> 热点问题详情请参阅 [TiDB 热点问题详解](https://tidb.net/blog/dffb428a)。
+> 热点问题详情请参阅 [TiDB 热点问题详解](https://pingkai.cn/tidbcommunity/blog/dffb428a)。
 
 ### 热力图
 
