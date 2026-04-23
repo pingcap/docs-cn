@@ -10,7 +10,7 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/ai/concepts/vector-search-ov
 
 本文档演示了如何仅使用 SQL 语句快速上手 TiDB 向量搜索。你将学习如何使用 [MySQL 命令行客户端](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)完成以下操作：
 
-- 连接到你的 TiDB 集群。
+- 连接到 TiDB。
 - 创建向量表。
 - 存储向量嵌入。
 - 执行向量搜索查询。
@@ -29,19 +29,19 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/ai/concepts/vector-search-ov
 
 **如果你还没有 TiDB 集群，可以按如下方式创建：**
 
-- （推荐）参考[创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md)来创建属于你自己的 TiDB Cloud 集群。
-- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署生产环境 TiDB 集群](/production-deployment-using-tiup.md)来创建本地集群。
+- （推荐）[创建一个 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [部署本地测试 TiDB 自托管集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署生产环境 TiDB 自托管集群](/production-deployment-using-tiup.md)。
 
 ## 快速上手
 
-### 步骤 1. 连接到 TiDB 集群
+### 步骤 1. 连接到 TiDB {#step-1-connect-to-tidb}
 
-根据你选择的 TiDB 部署方式，连接到你的 TiDB 集群。
+根据你选择的 TiDB 部署方式，连接到 TiDB。
 
 <SimpleTab>
-<div label="TiDB Cloud Starter or Essential">
+<div label="{{{ .starter }}}">
 
-1. 进入 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，然后点击目标集群名称进入其概览页面。
+1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，然后点击目标 {{{ .starter }}} 实例名称进入其概览页面。
 
 2. 点击右上角的 **Connect**，弹出连接对话框。
 

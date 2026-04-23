@@ -23,8 +23,8 @@ aliases: ['/zh/tidb/stable/vector-search-integrate-with-sqlalchemy/','/zh/tidb/d
 
 **如果你还没有 TiDB 集群，可以按如下方式创建：**
 
-- （推荐）参考 [创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md) 创建属于你自己的 TiDB Cloud 集群。
-- 参考 [部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster) 或 [部署生产环境 TiDB 集群](/production-deployment-using-tiup.md) 创建本地集群。
+- （推荐）[创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [部署本地测试 TiDB 自托管集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster) 或 [部署生产环境 TiDB 自托管集群](/production-deployment-using-tiup.md)。
 
 ## 运行示例应用
 
@@ -67,11 +67,11 @@ pip install pymysql python-dotenv sqlalchemy tidb-vector
 根据你选择的 TiDB 部署方式配置环境变量。
 
 <SimpleTab>
-<div label="TiDB Cloud Starter or Essential">
+<div label="{{{ .starter }}} or Essential">
 
-对于 TiDB Cloud Starter 集群，按以下步骤获取集群连接字符串并配置环境变量：
+对于 {{{ .starter }}} 或 Essential 实例，按以下步骤获取连接字符串并配置环境变量：
 
-1. 进入 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，点击目标集群名称进入集群概览页。
+1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击目标 {{{ .starter }}} 或 Essential 实例名称进入概览页。
 
 2. 点击右上角的 **Connect**，弹出连接对话框。
 
@@ -114,8 +114,8 @@ TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
 
 各参数说明如下：
 
-- `<USER>`：连接 TiDB 集群的用户名。
-- `<PASSWORD>`：连接 TiDB 集群的密码。
+- `<USER>`：连接 TiDB 的用户名。
+- `<PASSWORD>`：连接 TiDB 的密码。
 - `<HOST>`：TiDB 集群的主机。
 - `<PORT>`：TiDB 集群的端口。
 - `<DATABASE>`：你要连接的数据库名称。
@@ -153,7 +153,7 @@ Get documents within a certain distance:
 
 ### 创建向量表
 
-#### 连接 TiDB 集群
+#### 连接 TiDB {#connect-to-tidb}
 
 ```python
 import os
