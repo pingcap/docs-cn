@@ -3916,6 +3916,18 @@ mysql> desc select count(distinct a) from test.t;
 - 这个变量用来控制 TiDB Join Reorder 算法的选择。当参与 Join Reorder 的节点个数大于该阈值时，TiDB 选择贪心算法，小于该阈值时 TiDB 选择动态规划 (dynamic programming) 算法。
 - 目前对于 OLTP 的查询，推荐保持默认值。对于 OLAP 的查询，推荐将变量值设为 10~15 来获得 AP 场景下更好的连接顺序。
 
+### `tidb_opt_join_reorder_through_proj` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量用于提升部分将多表 JOIN 封装在视图、公共表表达式 (CTE) 或派生表中的查询的连接顺序优化 (Join Reorder) 效果。例如，你可能会先在视图或 CTE 中关联多张明细表并输出业务字段，再在外层继续关联维度表或过滤表。默认情况下，TiDB 可能只能将这类视图、CTE 或派生表整体作为一个 JOIN 节点处理，无法充分调整内部表和外部表之间的连接顺序。当该变量值为 `ON` 时，在满足安全条件的前提下，优化器会尝试识别这些封装背后的基表关系，让更多相关表一起参与连接顺序优化，从而有机会选择更优的执行计划。
+- 如果包含视图、CTE 或派生表的多表 JOIN 查询出现连接顺序不理想的情况，例如没有优先从过滤效果更好的表开始关联，你可以针对单个会话或者通过 [`SET_VAR`](/optimizer-hints.md#set_varvar_namevar_value) Hint 针对单条语句开启该变量进行验证。
+- 如果开启后出现性能回退或执行计划不稳定，建议将该变量设置为 `OFF` 以关闭此功能。
+- 为保证 SQL 结果语义不变，对于必须在多表连接后才能计算的输出表达式、包含非确定性函数或带有副作用的函数等表达式，即使开启该变量，优化器也不会调整相关连接顺序。
+
 ### `tidb_opt_join_reorder_through_sel` <span class="version-mark">从 v8.5.6 和 v9.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
