@@ -863,7 +863,7 @@ tikv_raftstore_apply_log_duration_seconds =
 
 如果 `SELECT` 语句占 Database Time 的很大一部分，你可以认为 TiDB 在读查询时速度很慢。
 
-慢查询的执行计划可以在 TiDB Dashboard 中的 [Top SQL 语句](/dashboard/dashboard-overview.md#top-sql-语句) 区域查看。要分析慢读取查询的耗时，你可以根据前面的描述分析[点查](#点查-point-get)、[批量点查](#批量点查-batch-point-get)和[表扫描和索引扫描](#表扫描和索引扫描-table-scan-和-index-scan)的耗时情况。
+慢查询的执行计划可以在 TiDB Dashboard 中的 [Top SQL 语句](/dashboard/dashboard-overview.md#top-sql-语句)区域查看。要分析慢读取查询的耗时，你可以根据前面的描述分析[点查](#点查-point-get)、[批量点查](#批量点查-batch-point-get)和[表扫描和索引扫描](#表扫描和索引扫描-table-scan-和-index-scan)的耗时情况。
 
 ### 慢写入查询
 

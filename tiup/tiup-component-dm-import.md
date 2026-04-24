@@ -34,7 +34,7 @@ tiup dm import [flags]
 
 重新部署的版本号，必须指定 v2.0.0-rc.2 或更高版本。
 
-### -d, --dir string（string，默认 当前目录）
+### -d, --dir string（string，默认当前目录）
 
 指定 TiDB Ansible 所在目录。
 

@@ -77,7 +77,7 @@ URI 中可配置的的参数如下：
 | `kafka-version`      | 下游 Kafka 版本号。该值需要与下游 Kafka 的实际版本保持一致。 |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`）。 |
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）。|
-| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10 MB。|
+| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`，最大值为 `100MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 `64MB` 和 `256MB` 调整至 `10MB`。|
 | `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`），需要大于等于 Kafka 中 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 的值。 |
 | `required-acks`      | 在 `Produce` 请求中使用的配置项，用于告知 broker 需要收到多少副本确认后才进行响应。可选值有：`0`（`NoResponse`：不发送任何响应，只有 TCP ACK），`1`（`WaitForLocal`：仅等待本地提交成功后再响应）和 `-1`（`WaitForAll`：等待所有同步副本提交后再响应。最小同步副本数量可通过 broker 的 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 配置项进行配置）。（可选，默认值为 `-1`）。                      |
 | `compression`        | 设置发送消息时使用的压缩算法（可选值为 `none`、`lz4`、`gzip`、`snappy` 和 `zstd`，默认值为 `none`）。注意 Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。|
@@ -189,7 +189,7 @@ dispatchers = [
 ]
 ```
 
-集成具体步骤详见[与 Confluent Cloud 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)。
+集成具体步骤详见[与 Confluent Cloud 和 Snowflake、ksqlDB、SQL Server 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)。
 
 ### TiCDC 集成 AWS Glue Schema Registry
 
@@ -211,7 +211,7 @@ token="xxxx"
 
 在以上配置中，`region` 和 `registry-name` 是必填项，`access-key`、`secret-access-key` 和 `token` 是可选项。最佳实践是将 AWS 连接凭证设置为环境变量或存储在 `~/.aws/credentials` 文件中，而不是将它们设置在 changefeed 的配置文件中。
 
-更多信息，请参阅 [AWS官方文档](https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/#specifying-credentials)。
+更多信息，请参阅 [AWS Go SDK V2 官方文档](https://docs.aws.amazon.com/zh_cn/sdk-for-go/v2/developer-guide/configure-gosdk.html#specifying-credentials)。
 
 ## 自定义 Kafka Sink 的 Topic 和 Partition 的分发规则
 
@@ -369,8 +369,8 @@ column-selectors = [
 [scheduler]
 # 默认值为 "false"，设置为 "true" 以打开该功能。
 enable-table-across-nodes = true
-# 打开该功能后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。
-region-threshold = 100000
+# 打开该功能后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。对于 TiCDC 新架构，该参数默认值为 `10000`；对于 TiCDC 老架构，该参数默认值为 `100000`。
+region-threshold = 10000
 # 打开该功能后，该功能会对每分钟修改行数大于 `write-key-threshold` 值的表生效。
 # 注意：
 # * 该参数默认值为 0，代表该功能默认不会按表的修改行数来切分表的同步范围。
@@ -477,7 +477,7 @@ Kafka 消费者收到消息之后，首先检查 `onlyHandleKey` 字段。如果
 
 > **警告：**
 >
-> 在 Kafka 消费者处理数据并查询 TiDB 时，可能发生数据已经被 GC 的情况。你需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 为一个较大的值，以避免该情况。
+> 在 Kafka 消费者处理数据并查询 TiDB 时，可能发生数据已经被 GC 的情况。你需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)为一个较大的值，以避免该情况。
 
 ### 发送大消息到外部存储
 

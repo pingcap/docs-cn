@@ -21,7 +21,7 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的安全连接�
 另外，与 MySQL 相同，TiDB 也支持在同一 TCP 端口上开启 TLS 连接或非 TLS 连接。对于开启了 TLS 连接支持的 TiDB 服务端，客户端既可以选择通过加密连接安全地连接到该 TiDB 服务端，也可以选择使用普通的非加密连接。如需使用加密连接，你可以通过以下方式进行配置：
 
 + 通过配置系统变量 [`require_secure_transport`](/system-variables.md#require_secure_transport-从-v610-版本开始引入) 要求所有用户必须使用加密连接来连接到 TiDB。
-+ 通过在创建用户 (`create user`)，或修改已有用户 (`alter user`) 时指定 `REQUIRE SSL` 要求指定用户必须使用 TLS 连接来连接 TiDB。以创建用户为例：
++ 通过在创建用户 (`CREATE USER`)，或修改已有用户 (`ALTER USER`) 时指定 `REQUIRE SSL` 要求指定用户必须使用 TLS 连接来连接 TiDB。以创建用户为例：
 
     ```sql
     CREATE USER 'u1'@'%' IDENTIFIED BY 'my_random_password' REQUIRE SSL;
@@ -46,6 +46,10 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的安全连接�
 - 在启动 TiDB 时，至少需要在配置文件中同时指定 `ssl-cert` 和 `ssl-key` 参数，才能在 TiDB 服务端开启安全连接。还可以指定 `ssl-ca` 参数进行客户端身份验证（请参见[配置启用身份验证](#配置启用身份验证)章节）。
 - 参数指定的文件都为 PEM 格式。另外目前 TiDB 尚不支持加载有密码保护的私钥，因此必须提供一个没有密码的私钥文件。若提供的证书或私钥无效，则 TiDB 服务端将照常启动，但并不支持客户端 TLS 连接到 TiDB 服务端。
 - 若证书参数无误，则 TiDB 在启动时将会输出 `mysql protocol server secure connection is enabled` 到 `"INFO"` 级别日志中。
+
+## 配置 TiProxy 使用 TLS 连接
+
+如需启用 [TiProxy](/tiproxy/tiproxy-overview.md) 的 TLS 连接支持，可以在 TiProxy 配置文件中指定 [`sql-tls`](/tiproxy/tiproxy-configuration.md#sql-tls) 配置项。关于该配置项的详细说明，以及如何为后端连接启用 TLS，请参考 [TiProxy 安全性](/tiproxy/tiproxy-overview.md#安全)。
 
 ## 配置 MySQL Client 使用 TLS 连接
 
@@ -77,7 +81,7 @@ MySQL 5.7 及以上版本自带的客户端默认尝试使用 TLS 连接，若�
 默认情况，服务端对客户端的身份验证是可选的。若客户端在 TLS 握手时未出示自己的身份证书，也能正常建立 TLS 连接。但也可以通过在创建用户 (`CREATE USER`) 或修改已有用户 (`ALTER USER`) 时指定 `REQUIRE x509` 要求客户端需进行身份验证，以创建用户为例：
 
 ```sql
-CREATE USER 'u1'@'%'  REQUIRE X509;
+CREATE USER 'u1'@'%' REQUIRE X509;
 ```
 
 > **注意：**

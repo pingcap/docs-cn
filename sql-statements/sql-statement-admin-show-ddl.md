@@ -67,7 +67,7 @@ OWNER_ADDRESS: 0.0.0.0:4000
     - `add index`：[`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 操作。
 - `SCHEMA_STATE`：DDL 所操作的 schema 对象的当前状态。如果 `JOB_TYPE` 是 `ADD INDEX`，则为索引的状态；如果是 `ADD COLUMN`，则为列的状态；如果是 `CREATE TABLE`，则为表的状态。常见的状态有以下几种：
     - `none`：表示不存在。一般 `DROP` 操作或者 `CREATE` 操作失败回滚后，会变为 `none` 状态。
-    - `delete only`、`write only`、`delete reorganization`、`write reorganization`：这四种状态是中间状态，具体含义请参考 [TiDB 中在线 DDL 异步变更的原理](/ddl-introduction.md#tidb-在线-ddl-异步变更的原理)。由于中间状态转换很快，一般操作中看不到这几种状态，只有执行 `ADD INDEX` 操作时能看到处于 `write reorganization` 状态，表示正在添加索引数据。
+    - `delete only`、`write only`、`delete reorganization`、`write reorganization`：这四种状态是中间状态，具体含义请参考 [TiDB 中在线 DDL 异步变更的原理](/best-practices/ddl-introduction.md#tidb-在线-ddl-异步变更的原理)。由于中间状态转换很快，一般操作中看不到这几种状态，只有执行 `ADD INDEX` 操作时能看到处于 `write reorganization` 状态，表示正在添加索引数据。
     - `public`：表示存在且对用户可用。一般 `CREATE TABLE` 和 `ADD INDEX`（或 `ADD COLUMN`）等操作完成后，会变为 `public` 状态，表示新建的表、列、索引可以正常读写了。
 - `SCHEMA_ID`：执行 DDL 操作的数据库的 ID。
 - `TABLE_ID`：执行 DDL 操作的表的 ID。
@@ -218,7 +218,7 @@ ADMIN SHOW DDL JOB QUERIES LIMIT 3 OFFSET 4;  # Retrieve rows 5-7
 
 ## 另请参阅
 
-* [DDL 语句的执行原理及最佳实践](/ddl-introduction.md)
+* [DDL 语句的执行原理及最佳实践](/best-practices/ddl-introduction.md)
 * [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md)
 * [`ADMIN PAUSE DDL`](/sql-statements/sql-statement-admin-pause-ddl.md)
 * [`ADMIN RESUME DDL`](/sql-statements/sql-statement-admin-resume-ddl.md)

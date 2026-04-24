@@ -32,7 +32,7 @@ summary: 介绍如何将数据从 MariaDB 文件迁移数据到 TiDB。
 
 TiDB 和 [MySQL 兼容](/mysql-compatibility.md)，而 MySQL 和 MariaDB 也有很多通用的特性。在迁移数据前需要注意，可能某些 MariaDB 特有的特性和 TiDB 并不兼容。
 
-除了检查本小节介绍的事项之外，建议你参考 [MariaDB Compatibility & Differences](https://mariadb.com/kb/en/compatibility-differences/) 检查相关配置。
+除了检查本小节介绍的事项之外，建议你参考 [MariaDB Compatibility and Differences](https://mariadb.com/docs/release-notes/community-server/about/compatibility-and-differences) 检查相关配置。
 
 ### 认证
 
@@ -61,7 +61,7 @@ GROUP BY
 
 ### 系统版本表
 
-TiDB 不支持[系统版本表 (System-Versioned Table)](https://mariadb.com/kb/en/system-versioned-tables/)。但是 TiDB 支持 [`AS OF TIMESTAMP`](/as-of-timestamp.md)，可以在某些场景下取代系统版本表。
+TiDB 不支持[系统版本表 (System-Versioned Table)](https://mariadb.com/docs/server/reference/sql-structure/temporal-tables/system-versioned-tables)。但是 TiDB 支持 [`AS OF TIMESTAMP`](/as-of-timestamp.md)，可以在某些场景下取代系统版本表。
 
 你可以执行下列语句检查受影响的表：
 
@@ -186,18 +186,22 @@ WHERE
 
 TiDB 不支持 MariaDB 中常用的 `latin1_swedish_ci` 排序规则。
 
-执行下列语句检查你正在使用的排序规则：
+TiDB 也不支持 `utf8mb4_uca1400_ai_ci`，该排序规则为 MariaDB 11.6 及之后版本默认使用的排序规则。请使用 `utf8mb4_0900_ai_ci`。这两个排序规则的区别在于所使用的 [Unicode Collation Algorithm (UCA)](http://www.unicode.org/reports/tr10/) 版本不同：`utf8mb4_0900_ai_ci` 使用的是 UCA 9.0.0，而 `utf8mb4_uca1400_ai_ci` 使用的是 UCA 14.0.0。
+
+执行下列语句检查 TiDB 支持的排序规则：
 
 ```sql
 SHOW COLLATION;
 ```
 
-```
+```sql
 +--------------------+---------+-----+---------+----------+---------+---------------+
 | Collation          | Charset | Id  | Default | Compiled | Sortlen | Pad_attribute |
 +--------------------+---------+-----+---------+----------+---------+---------------+
 | ascii_bin          | ascii   |  65 | Yes     | Yes      |       1 | PAD SPACE     |
 | binary             | binary  |  63 | Yes     | Yes      |       1 | NO PAD        |
+| gb18030_bin        | gb18030 | 249 |         | Yes      |       1 | PAD SPACE     |
+| gb18030_chinese_ci | gb18030 | 248 | Yes     | Yes      |       1 | PAD SPACE     |
 | gbk_bin            | gbk     |  87 |         | Yes      |       1 | PAD SPACE     |
 | gbk_chinese_ci     | gbk     |  28 | Yes     | Yes      |       1 | PAD SPACE     |
 | latin1_bin         | latin1  |  47 | Yes     | Yes      |       1 | PAD SPACE     |
@@ -210,7 +214,7 @@ SHOW COLLATION;
 | utf8mb4_general_ci | utf8mb4 |  45 |         | Yes      |       1 | PAD SPACE     |
 | utf8mb4_unicode_ci | utf8mb4 | 224 |         | Yes      |       8 | PAD SPACE     |
 +--------------------+---------+-----+---------+----------+---------+---------------+
-13 rows in set (0.00 sec)
+15 rows in set (0.000 sec)
 ```
 
 执行下列语句检查当前表的列使用的排序规则：

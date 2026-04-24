@@ -22,7 +22,7 @@ summary: 本文介绍如何快速上手体验 TiDB 的 HTAP 功能。
 
 ## 体验步骤
 
-本文的步骤以 [TPC-H](http://www.tpc.org/tpch/) 数据集为例，通过其中一个查询场景来体验 TiDB HTAP 的便捷性和高性能。TPC-H 是业界较为流行的决策支持（Decision Support）业务 Benchmark。它包含大数据量下，一个业务决策分析系统所需要响应的不同类型高复杂度的即席查询。如果需要体验 TPC-H 完整的 22 条 SQL，可以访问 [tidb-bench 仓库](https://github.com/pingcap/tidb-bench/tree/master/tpch/queries) 或者阅读 TPC-H 官网说明了解如何生成查询语句以及数据。
+本文的步骤以 [TPC-H](http://www.tpc.org/tpch/) 数据集为例，通过其中一个查询场景来体验 TiDB HTAP 的便捷性和高性能。TPC-H 是业界较为流行的决策支持（Decision Support）业务 Benchmark。它包含大数据量下，一个业务决策分析系统所需要响应的不同类型高复杂度的即席查询。如果需要体验 TPC-H 完整的 22 条 SQL，可以访问 [tidb-bench 仓库](https://github.com/pingcap/tidb-bench/tree/master/tpch/queries)或者阅读 TPC-H 官网说明了解如何生成查询语句以及数据。
 
 ### 第 1 步：部署试用环境
 

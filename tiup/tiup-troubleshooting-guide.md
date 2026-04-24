@@ -9,7 +9,7 @@ summary: TiUP 故障排查包括命令故障排查和集群组件故障排查。
 本文介绍 TiUP 使用过程中一些常见的故障及排查方式，如果本文不包含你目前遇到的问题，可以通过以下方式求助：
 
 1. [Github Issues](https://github.com/pingcap/tiup/issues) 新建一个 Issue。
-2. 在 [AskTUG](https://asktug.com/) 提交你的问题。
+2. 在 [AskTUG](https://pingkai.cn/tidbcommunity/forum/) 提交你的问题。
 
 ## 1. TiUP 命令故障排查
 

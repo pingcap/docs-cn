@@ -11,7 +11,7 @@ summary: 了解资源管控 (Resource Control) 的 Grafana Dashboard 中所展�
 
 如果你的集群配置了 [Resource Control](/tidb-resource-control-ru-groups.md) ，通过观察 Resource Control 面板上的 Metrics，你可以了解当前集群整体的资源消耗状态。
 
-TiDB 使用[令牌桶算法](https://en.wikipedia.org/wiki/Token_bucket) 做流控，正如资源管控实现机制 ([RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/master/docs/design/2022-11-25-global-resource-control.md#distributed-token-buckets)) 中所描述：一个 TiDB 节点可能存在多个 Resource Group（资源组），将在 PD 端的 GAC（Global Admission Control）进行流控。每个 TiDB 节点中的本地令牌桶（Local Token Buckets）将定期（默认 5 秒）与 PD 端的 GAC 进行通信，以重新配置本地令牌。其中的本地令牌桶（Local Token Buckets）具体实现为 Resource Controller Client。
+TiDB 使用[令牌桶算法](https://en.wikipedia.org/wiki/Token_bucket)做流控，正如资源管控实现机制 ([RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/master/docs/design/2022-11-25-global-resource-control.md#distributed-token-buckets)) 中所描述：一个 TiDB 节点可能存在多个 Resource Group（资源组），将在 PD 端的 GAC（Global Admission Control）进行流控。每个 TiDB 节点中的本地令牌桶（Local Token Buckets）将定期（默认 5 秒）与 PD 端的 GAC 进行通信，以重新配置本地令牌。其中的本地令牌桶（Local Token Buckets）具体实现为 Resource Controller Client。
 
 以下为 **Resource Control** 关键监控指标的说明。
 

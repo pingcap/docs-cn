@@ -3,7 +3,7 @@ title: SHOW TABLE DISTRIBUTION
 summary: 介绍 TiDB 数据库中 SHOW TABLE DISTRIBUTION 的使用概况。
 ---
 
-# SHOW TABLE DISTRIBUTION <span class="version-mark">从 v9.0.0 开始引入</span>
+# SHOW TABLE DISTRIBUTION <span class="version-mark">从 v8.5.4 和 v9.0.0 开始引入</span>
 
 `SHOW TABLE DISTRIBUTION` 语句用于显示指定表的 Region 分布情况。
 
@@ -19,7 +19,7 @@ TableName ::=
 
 ## 示例
 
-显示当前表 `t1` 的 Region 分布情况：
+显示当前表 `t` 的 Region 分布情况：
 
 ```sql
 CREATE TABLE `t` (
@@ -29,8 +29,8 @@ CREATE TABLE `t` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin 
 PARTITION BY RANGE (`a`)
 (PARTITION `p1` VALUES LESS THAN (10000),
- PARTITION `p2` VALUES LESS THAN (MAXVALUE)) |
-SHOW TABLE t1 DISTRIBUTIONS;
+ PARTITION `p2` VALUES LESS THAN (MAXVALUE));
+SHOW TABLE t DISTRIBUTIONS;
 ```
 
 ```

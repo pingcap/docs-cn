@@ -54,6 +54,13 @@ tiup ctl:v<CLUSTER_VERSION> pd store limit all 5 add-peer          // 设置所�
 tiup ctl:v<CLUSTER_VERSION> pd store limit all 5 remove-peer       // 设置所有 store 删除 peer 的速度上限为每分钟 5 个。
 ```
 
+从 v8.5.5 和 v9.0.0 起，PD 支持按存储引擎类型为所有 store 设置删除 peer 的 limit，示例如下：
+
+```bash
+tiup ctl:v<CLUSTER_VERSION> pd store limit all engine tikv 5 remove-peer    // 设置所有 TiKV store 删除 peer 的速度上限为每分钟 5 个
+tiup ctl:v<CLUSTER_VERSION> pd store limit all engine tiflash 5 remove-peer // 设置所有 TiFlash store 删除 peer 的速度上限为每分钟 5 个
+```
+
 ### 设置单个 store 的 limit
 
 设置单个 store 的 limit 示例如下：

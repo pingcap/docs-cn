@@ -52,9 +52,9 @@ tiup install dm dmctl
 
     - DM 不会将视图的 DDL 语句同步到下游的 TiDB 集群，也不会将针对视图的 DML 语句同步到下游。在该场景下，建议用户在下游 TiDB 集群中自行创建视图。
 
-+ GBK 字符集兼容性限制
++ GBK 和 GB18030 字符集兼容性限制
 
-    - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB。
+    - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB，在 v9.0.0 之前不支持将 `charset=GB18030` 的表迁移到 TiDB。
 
 + Binlog 兼容性限制
 
@@ -73,7 +73,7 @@ tiup install dm dmctl
 您可以通过在线文档了解和使用 DM，如果您遇到无法解决的问题，可以选择以下途径之一联系我们。
 
 - [GitHub](https://github.com/pingcap/tiflow/tree/master/dm)
-- [AskTUG](https://asktug.com/tags/dm)
+- [AskTUG](https://pingkai.cn/tidbcommunity/forum/tags/dm)
 
 ## License
 

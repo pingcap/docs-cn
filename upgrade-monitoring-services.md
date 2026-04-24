@@ -28,7 +28,7 @@ summary: 介绍如何升级 TiDB 集群监控组件 Prometheus、Grafana 和 Ale
 
 ### 第 2 步：下载 TiDB 官方 Prometheus 安装包
 
-1. 在 [TiDB 官网下载页面](https://cn.pingcap.com/product/#SelectProduct)下载 `TiDB-community-server` 软件包，并解压。
+1. 在[软件下载中心](https://pingkai.cn/download)下载 `TiDB-community-server` 软件包，并解压。
 2. 在解压文件中，找到 `prometheus-v{version}-linux-amd64.tar.gz`，并解压。
 
     ```bash
@@ -68,7 +68,7 @@ tiup cluster patch <cluster-name> prometheus-v{new-version}.tar.gz -R prometheus
 
 ### 第 2 步：下载 TiDB 官方 Grafana 安装包
 
-1. 在 [TiDB 官网下载页面](https://cn.pingcap.com/product/#SelectProduct)下载 `TiDB-community-server` 软件包，并解压。
+1. 在[软件下载中心](https://pingkai.cn/download)下载 `TiDB-community-server` 软件包，并解压。
 2. 在解压文件中，找到 `grafana-v{version}-linux-amd64.tar.gz`，并解压。
 
     ```bash

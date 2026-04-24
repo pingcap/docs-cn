@@ -1,6 +1,7 @@
 {
   "tidb": "TiDB",
   "tidb-version": "v8.5.0",
+  "tidb-operator-version": "v1.6.4",
   "starter": "TiDB Cloud Starter",
   "essential": "TiDB Cloud Essential",
   "dedicated": "TiDB Cloud Dedicated",

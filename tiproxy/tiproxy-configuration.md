@@ -189,7 +189,7 @@ server_configs:
 + 默认值：`tidb`
 + 可选值：
 
-    + `tidb`：TiDB 使用的格式。有关详细信息，请参见 [统一日志格式](https://github.com/tikv/rfcs/blob/master/text/0018-unified-log-format.md)。
+    + `tidb`：TiDB 使用的格式。有关详细信息，请参见[统一日志格式](https://github.com/tikv/rfcs/blob/master/text/0018-unified-log-format.md)。
     + `json`：结构化 JSON 格式。
     + `console`：易读的日志格式。
 
@@ -221,6 +221,10 @@ server_configs:
 + 指定要保留的日志文件的最大数量。当超过此数量时，将自动删除多余的日志文件。
 
 ### security
+
+> **注意：**
+>
+> TiProxy 每小时会从磁盘重新加载一次证书。因此，磁盘上证书文件的变更最多可能需要一小时才能生效。
 
 在 `[security]` 部分有四个名称不同的 TLS 对象，它们共享相同的配置格式和字段，但是不同名称对象的字段解释可能不同。
 

@@ -137,7 +137,13 @@ SELECT @myvar, @myvar + 1;
 
 使用 `SET [GLOBAL|SESSION] <variable>` 更改系统变量上，TiDB 与 MySQL 存在以下差异
 
-* 与 MySQL 不同，TiDB 中使用 `SET GLOBAL` 所作的修改会应用于集群中的全部 TiDB 实例。而在 MySQL 中，修改不会应用于副本。
+* 在 MySQL 中，使用 `SET GLOBAL` 所作的修改不会应用于副本。而 TiDB 中，`SET GLOBAL` 语句的作用范围取决于具体的系统变量：
+
+    * 全局生效的变量：对于大部分系统变量（例如影响集群行为或优化器行为的变量），`SET GLOBAL` 所作的修改会应用于集群中的全部 TiDB 实例。
+    * 仅当前实例生效的变量：对于一些系统变量（例如 `max_connections`），`SET GLOBAL` 所作的修改仅适用于当前连接的 TiDB 实例。
+
+    因此，在使用 `SET GLOBAL` 修改变量前，请务必查阅该变量的[文档](/system-variables.md)，特别是其“是否持久化到集群”属性，以确认其作用范围。
+
 * TiDB 中的若干变量可读又可设置，这是与 MySQL 相兼容的要求，因为应用程序和连接器常读取 MySQL 变量。例如：JDBC 连接器同时读取和设置缓存查询的参数，尽管并不依赖这一行为。
 * 即使在 TiDB 服务器重启后，`SET GLOBAL` 的更改也仍然有效。这样，TiDB 中的 `SET GLOBAL` 更类似于 MySQL 8.0 及更高版本中的 `SET PERSIST`。
 * TiDB 会持久化全局变量，因此 TiDB 不支持 `SET PERSIST` 和 `SET PERSIST_ONLY`。

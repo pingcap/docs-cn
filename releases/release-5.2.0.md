@@ -27,7 +27,7 @@ TiDB 版本：5.2.0
 
 > **注意：**
 >
-> 当从一个早期的 TiDB 版本升级到 TiDB 5.2 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Note](/releases/release-notes.md)。
+> 当从一个早期的 TiDB 版本升级到 TiDB 5.2 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Note](/releases/_index.md)。
 
 ### 系统变量
 

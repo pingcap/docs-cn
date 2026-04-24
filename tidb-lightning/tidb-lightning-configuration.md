@@ -275,8 +275,7 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 
 - 物理导入模式 TiKV 写入 KV 数据的并发度。
 - 当 TiDB Lightning 和 TiKV 直接网络传输速度超过万兆的时候，可以适当增加这个值。
-
-<!-- 示例值：`16` -->
+- 默认值：`16`
 
 #### `store-write-bwlimit`
 

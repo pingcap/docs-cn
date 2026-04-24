@@ -45,8 +45,9 @@ DESC PARTITIONS;
 | TABLESPACE_NAME               | varchar(64)  | YES  |      | NULL    |       |
 | TIDB_PARTITION_ID             | bigint(21)   | YES  |      | NULL    |       |
 | TIDB_PLACEMENT_POLICY_NAME    | varchar(64)  | YES  |      | NULL    |       |
+| TIDB_AFFINITY                 | varchar(128) | YES  |      | NULL    |       |
 +-------------------------------+--------------+------+------+---------+-------+
-27 rows in set (0.00 sec)
+28 rows in set (0.00 sec)
 ```
 
 ```sql
@@ -85,6 +86,7 @@ SUBPARTITION_ORDINAL_POSITION: NULL
               TABLESPACE_NAME: NULL
             TIDB_PARTITION_ID: 89
    TIDB_PLACEMENT_POLICY_NAME: NULL
+                TIDB_AFFINITY: NULL
 *************************** 2. row ***************************
                 TABLE_CATALOG: def
                  TABLE_SCHEMA: test
@@ -113,6 +115,7 @@ SUBPARTITION_ORDINAL_POSITION: NULL
               TABLESPACE_NAME: NULL
             TIDB_PARTITION_ID: 90
    TIDB_PLACEMENT_POLICY_NAME: NULL
+                TIDB_AFFINITY: NULL
 2 rows in set (0.00 sec)
 ```
 

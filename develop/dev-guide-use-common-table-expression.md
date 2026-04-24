@@ -1,7 +1,7 @@
 ---
 title: 公共表表达式 (CTE)
 summary: 介绍 TiDB 公共表表达式能力，用以简化 SQL。
-aliases: ['/zh/tidb/dev/use-common-table-expression']
+aliases: ['/zh/tidb/dev/use-common-table-expression','/zh/tidb/stable/dev-guide-use-common-table-expression/','/zh/tidb/dev/dev-guide-use-common-table-expression/','/zh/tidbcloud/dev-guide-use-common-table-expression/']
 ---
 
 # 公共表表达式 (CTE)

@@ -621,6 +621,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `concurrently-init-stats` <span class="version-mark">从 v8.1.0 和 v7.5.2 版本开始引入</span>
 
+> **警告：**
+>
+> 从 v9.0.0 开始，`concurrently-init-stats` 配置项被废弃，TiDB 启动时始终并发初始化统计信息。
+
 + 用于控制 TiDB 启动时是否并发初始化统计信息。该配置项仅在 [`lite-init-stats`](#lite-init-stats-从-v710-版本开始引入) 为 `false` 时生效。
 + 默认值：在 v8.2.0 之前版本中为 `false`，在 v8.2.0 及之后版本中为 `true`。
 
@@ -647,6 +651,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 控制 TiDB 启动时是否跳过统计信息初始化。
 + 默认值：`false`
 + 当 `skip-init-stats` 的值为 `true` 时，TiDB 在启动过程中会跳过统计信息初始化，并且在启动后不会加载统计信息。当需要快速启动 TiDB 且不想等待统计信息初始化时（尤其是在有大量表和分区的情况下），该配置项非常有用。但是，该配置项仅用于维护目的。在大多数情况下，请勿将该配置项设置为 `true`；否则，优化器可能会因为缺少统计信息而生成非最优的执行计划。
+
+### `enable-async-batch-get` <span class="version-mark">从 v8.5.5 和 v9.0.0 版本开始引入</span>
+
++ 用于控制 TiDB 是否使用异步方式执行 Batch Get 算子。使用异步方式能够降低 goroutine 开销，提供更优的性能。通常无需调整该配置项。
++ 默认值：从 v9.0.0 起，默认值为 `true`。在 v8.5.5 中，默认值为 `false`。
 
 ## opentracing
 
