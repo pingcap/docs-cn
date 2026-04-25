@@ -10,7 +10,7 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/ai/concepts/vector-search-ov
 
 本文档演示了如何仅使用 SQL 语句快速上手 TiDB 向量搜索。你将学习如何使用 [MySQL 命令行客户端](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)完成以下操作：
 
-- 连接到你的 TiDB 集群。
+- 连接到 TiDB。
 - 创建向量表。
 - 存储向量嵌入。
 - 执行向量搜索查询。
@@ -18,7 +18,7 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/ai/concepts/vector-search-ov
 > **注意：**
 >
 > - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB 自托管](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB 自托管和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB Self-Managed 和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 ## 前置条件
 
@@ -29,38 +29,38 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/ai/concepts/vector-search-ov
 
 **如果你还没有 TiDB 集群，可以按如下方式创建：**
 
-- （推荐）参考[创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md)来创建属于你自己的 TiDB Cloud 集群。
-- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署生产环境 TiDB 集群](/production-deployment-using-tiup.md)来创建本地集群。
+- （推荐）[创建一个 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [部署本地测试 TiDB Self-Managed 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署生产环境 TiDB Self-Managed 集群](/production-deployment-using-tiup.md)。
 
 ## 快速上手
 
-### 步骤 1. 连接到 TiDB 集群
+### 步骤 1. 连接到 TiDB {#step-1-connect-to-tidb}
 
-根据你选择的 TiDB 部署方式，连接到你的 TiDB 集群。
+根据你选择的 TiDB 部署方式连接到 TiDB。
 
 <SimpleTab>
-<div label="TiDB Cloud Starter or Essential">
+<div label="{{{ .starter }}}">
 
-1. 进入 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，然后点击目标集群名称进入其概览页面。
+1. 前往 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，然后点击目标 {{{ .starter }}} 实例的名称，进入其实例概览页面。
 
-2. 点击右上角的 **Connect**，弹出连接对话框。
+2. 点击右上角的 **Connect**。此时会显示连接对话框。
 
-3. 在连接对话框中，从 **Connect With** 下拉列表中选择 **MySQL CLI**，并保持 **Connection Type** 的默认设置为 **Public**。
+3. 在连接对话框中，从 **Connect With** 下拉列表中选择 **MySQL CLI**，并保持 **Connection Type** 为默认的 **Public**。
 
-4. 如果你还未设置密码，点击 **Generate Password** 生成一个随机密码。
+4. 如果你尚未设置密码，点击 **Generate Password** 生成一个随机密码。
 
-5. 复制连接命令并粘贴到你的终端中。以下是 macOS 的示例：
+5. 复制连接命令并粘贴到终端中。以下是 macOS 的示例：
 
     ```bash
     mysql -u '<prefix>.root' -h '<host>' -P 4000 -D 'test' --ssl-mode=VERIFY_IDENTITY --ssl-ca=/etc/ssl/cert.pem -p'<password>'
     ```
 
 </div>
-<div label="TiDB 自托管" value="tidb">
+<div label="TiDB Self-Managed" value="tidb">
 
-当你自托管的 TiDB 集群启动后，在终端中执行集群连接命令。
+启动 TiDB Self-Managed 集群后，在终端中执行集群连接命令。
 
-以下是 macOS 的示例连接命令：
+以下是 macOS 的连接命令示例：
 
 ```bash
 mysql --comments --host 127.0.0.1 --port 4000 -u root

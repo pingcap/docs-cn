@@ -11,7 +11,7 @@ aliases: ['/zh/tidb/stable/vector-search-limitations/','/zh/tidb/dev/vector-sear
 > **注意：**
 >
 > - 向量搜索功能目前为 beta 版本，可能会在没有提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB 自托管](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB 自托管和 TiDB Cloud Dedicated，TiDB 版本必须为 v8.4.0 或以上版本（推荐使用 v8.5.0 或以上版本）。
+> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB Self-Managed 和 TiDB Cloud Dedicated，TiDB 版本必须为 v8.4.0 或以上版本（推荐使用 v8.5.0 或以上版本）。
 
 ## 向量数据类型限制
 
@@ -37,7 +37,7 @@ aliases: ['/zh/tidb/stable/vector-search-limitations/','/zh/tidb/dev/vector-sear
 
 - TiDB 工具：
 
-    - 请确保你使用的是 v8.4.0 或以上版本的 [BR](/br/backup-and-restore-overview.md) 进行数据备份和恢复。不支持将包含向量数据类型的表恢复到低于 v8.4.0 的 TiDB 集群。
+    - 请确保你使用的是 v8.4.0 或以上版本的 [BR](/br/backup-and-restore-overview.md) 进行数据备份和恢复。不支持将包含向量数据类型的表恢复到低于 v8.4.0 的 TiDB 版本。
     - [TiDB Data Migration (DM)](/dm/dm-overview.md) 不支持将 MySQL 向量数据类型迁移或同步到 TiDB。
     - 当 [TiCDC](/ticdc/ticdc-overview.md) 将向量数据同步到不支持向量数据类型的下游时，会将向量数据类型转换为其他类型。更多信息，参见 [与向量数据类型的兼容性](/ticdc/ticdc-compatibility.md#compatibility-with-vector-data-types)。
 
