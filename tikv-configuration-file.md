@@ -1166,7 +1166,7 @@ raftstore 相关的配置项。
 ### `inspect-kvdb-interval` <span class="version-mark">从 v8.1.2 版本开始引入</span>
 
 + TiKV 进行慢节点检测时检查 KV 盘的间隔和超时时间。如果 KVDB 和 RaftDB 使用相同的挂载路径，该值将被覆盖为 0（不检测）。
-+ 默认值：2s
++ 默认值：`100ms`。在 v8.5.2 及之前版本中，默认值为 `2s`。
 
 ### `min-pending-apply-region-count` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
