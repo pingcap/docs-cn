@@ -352,7 +352,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 
 迁移的一个主要原因是，使用 Version 1 在收集 Count-Min Sketch 统计信息时，由于哈希冲突导致等值查询或 IN 查询谓词估算不准确。更多信息请参见 [Count-Min Sketch](#count-min-sketch)。为避免此问题，请设置 `tidb_analyze_version = 2` 并对所有对象重新运行 `ANALYZE`。
 
-要为从 Statistics Version 1 迁移到 Statistics Version 2 做好 `ANALYZE` 准备，，请根据情况进行以下操作：
+要为从 Statistics Version 1 迁移到 Statistics Version 2 做好 `ANALYZE` 准备，请根据情况进行以下操作：
 
 - 如果 `ANALYZE` 语句是手动执行的，请手动统计每张需要统计的表：
 
