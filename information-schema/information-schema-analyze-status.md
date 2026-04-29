@@ -57,12 +57,12 @@ SELECT * FROM information_schema.analyze_status;
 6 rows in set (0.00 sec)
 ```
 
-`ANALYZE_STATUS` 表中列的含义如下：
+`ANALYZE_STATUS` 表中字段的含义如下：
 
 * `TABLE_SCHEMA`：表所属的数据库的名称。
 * `TABLE_NAME`：表的名称。
 * `PARTITION_NAME`：分区表的名称。
-* `JOB_INFO`：`ANALYZE` 任务的信息。如果分析索引，该信息会包含索引名。当 `tidb_analyze_version = 2` 时，该信息会包含采样率等配置项。
+* `JOB_INFO`：`ANALYZE` 子任务的简要描述。它显示 `ANALYZE` 的作用域，例如列、索引或全局统计信息合并，并且可能包含实际生效的选项，例如 `buckets`、`topn`、`samplerate` 或 `samples`。
 * `PROCESSED_ROWS`：已经处理的行数。
 * `START_TIME`：`ANALYZE` 任务的开始时间。
 * `END_TIME`：`ANALYZE` 任务的结束时间。
