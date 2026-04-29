@@ -6,5 +6,6 @@
   "starter": "TiDB Cloud Starter",
   "essential": "TiDB Cloud Essential",
   "dedicated": "TiDB Cloud Dedicated",
+  "premium": "TiDB Cloud Premium",
   "console-url": "tidbcloud.com"
 }

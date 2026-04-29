@@ -16,7 +16,7 @@ TiDB 是一个兼容 MySQL 的数据库，[mysql2](https://github.com/sidorares/
 
 > **Note**
 >
-> 本文档适用于 {{{ .starter }}}、{{{ .essential }}} 和本地部署的 TiDB。
+> 本文档适用于 {{{ .starter }}}、{{{ .essential }}}、{{{ .premium }}} 和本地部署的 TiDB。
 
 ## 前置需求
 
@@ -105,9 +105,60 @@ npm install
     TIDB_USER='{prefix}.root'
     TIDB_PASSWORD='{password}'
     TIDB_DB_NAME='test'
+    TIDB_ENABLE_SSL='true'
     ```
 
 7. 保存 `.env` 文件。
+
+</div>
+
+<div label="{{{ .premium }}}">
+
+1. 在 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，点击你目标 {{{ .premium }}} 实例的名字，进入实例的 **Overview** 页面。
+
+2. 在左侧导航栏中，点击 **Settings** > **Networking**。
+
+3. 在 **Networking** 页面，点击 **Public Endpoint** 的 **Enable**，然后点击 **Add IP Address**。
+
+    确保你的客户端 IP 地址已添加到访问列表中。
+
+4. 在左侧导航栏中，点击 **Overview** 返回实例概览页面。
+
+5. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
+
+6. 在连接对话框中，从 **Connection Type** 下拉列表中选择 **Public**。
+
+    - 如果提示 Public Endpoint 正在开启，请等待该过程完成。
+    - 如果你尚未设置密码，请在对话框中点击 **Set Root Password**。
+    - 如果需要验证服务器证书或连接失败且需要 CA 证书，请点击 **CA cert** 下载证书。
+    - 除 **Public** 连接类型外，{{{ .premium }}} 还支持 **Private Endpoint** 连接。详情请参阅[通过 AWS PrivateLink 连接到 {{{ .premium }}}](https://docs.pingcap.com/tidbcloud/connect-to-premium-via-aws-private-endpoint/?plan=premium)。
+
+7. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
+
+    ```bash
+    # Linux
+    cp .env.example .env
+    ```
+
+    ```powershell
+    # Windows
+    Copy-Item ".env.example" -Destination ".env"
+    ```
+
+8. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下：
+
+    ```bash
+    TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
+    TIDB_PORT='4000'
+    TIDB_USER='{user}'  # e.g. root
+    TIDB_PASSWORD='{password}'
+    TIDB_DB_NAME='test'
+    TIDB_ENABLE_SSL='false'
+    ```
+
+    将占位符 `{}` 替换为从连接对话框中复制的参数值。
+
+9. 保存 `.env` 文件。
 
 </div>
 
@@ -133,6 +184,7 @@ npm install
     TIDB_USER='root'
     TIDB_PASSWORD='{password}'
     TIDB_DB_NAME='test'
+    TIDB_ENABLE_SSL='false'
     ```
 
     如果你在本地运行 TiDB 集群，默认的主机地址是 `127.0.0.1`，密码为空。
@@ -190,10 +242,10 @@ export function connect() {
     user: process.env.TIDB_USER, // TiDB user, for example: {prefix}.root
     password: process.env.TIDB_PASSWORD, // The password of TiDB user.
     database: process.env.TIDB_DATABASE || 'test', // TiDB database name, default: test
-    ssl: {
+    ssl: process.env.TIDB_ENABLE_SSL === 'true' ? {
       minVersion: 'TLSv1.2',
       rejectUnauthorized: true,
-    },
+    } : null,
     connectionLimit: 1, // Setting connectionLimit to "1" in a serverless function environment optimizes resource usage, reduces costs, ensures connection stability, and enables seamless scalability.
     maxIdle: 1, // max idle connections, the default value is the same as `connectionLimit`
     enableKeepAlive: true,
