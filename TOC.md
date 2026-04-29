@@ -739,6 +739,7 @@
       - [`PREPARE`](/sql-statements/sql-statement-prepare.md)
       - [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md)
       - [`RECOVER TABLE`](/sql-statements/sql-statement-recover-table.md)
+      - [`刷新统计信息`](/sql-statements/sql-statement-refresh-stats.md)
       - [`RENAME USER`](/sql-statements/sql-statement-rename-user.md)
       - [`RENAME TABLE`](/sql-statements/sql-statement-rename-table.md)
       - [`REPLACE`](/sql-statements/sql-statement-replace.md)
