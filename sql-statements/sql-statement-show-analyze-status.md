@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-analyze-status/']
 | `Table_schema` |  数据库名    |
 | `Table_name` | 表名 |
 | `Partition_name` | 分区名 |
-| `Job_info` | `ANALYZE` 子任务的简要描述。它显示 `ANALYZE` 的作用域，例如列、索引或全局统计信息合并，并且可能包含实际生效的选项，例如 `buckets`、`topn`、`samplerate` 或 `samples`。 |
+| `Job_info` | `ANALYZE` 子任务的简要描述。该描述包含 `ANALYZE` 的作用域（例如列、索引或全局统计信息合并），并可能包含实际生效的选项，例如 `buckets`、`topn`、`samplerate` 或 `samples`。
 | `Processed_rows` | 已经 `ANALYZE` 的行数 |
 | `Start_time` | 任务开始执行的时间 |
 | `End_time` | 任务结束执行的时间 |
@@ -42,7 +42,7 @@ ShowLikeOrWhereOpt ::= 'LIKE' SimpleExpr | 'WHERE' Expression
 
 > **注意：**
 >
-> 统计信息版本 1（`tidb_analyze_version = 1`）不再支持新的统计信息收集。以下示例展示了统计信息版本 2 下当前的 `ANALYZE` 行为。
+> 从 v9.0.0 起，TiDB 不再支持使用统计信息版本 1（`tidb_analyze_version = 1`）收集新的统计信息。以下示例展示了统计信息版本 2 下当前的 `ANALYZE` 行为。
 
 ```sql
 mysql> create table t(x int, index idx(x)) partition by hash(x) partitions 2;
