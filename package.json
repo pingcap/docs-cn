@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@breeswish-org/remark-lint-pingcap-docs-anchor": "1.1.2",
-    "markdown-link-check": "3.8.1",
+    "markdown-link-check": "3.14.2",
     "remark-cli": "9.0.0",
     "remark-lint": "8.0.0"
   }
