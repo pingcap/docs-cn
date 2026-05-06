@@ -333,7 +333,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 - 对于 TiDB Cloud，从 v6.5.0 开始，该变量的默认值从 `1` 变为 `2`。
 - 如果要升级的集群已经持久化 `tidb_analyze_version = 1` 配置，TiDB 会在升级过程中将持久化的全局值重写为 `2`。
 
-更推荐选择 Version 2。与 Version 1 相比，Version 2 提高了大数据量场景下多项统计信息的准确性。此外，Version 2 在进行谓词选择率估算时不再需要收集 Count-Min sketch 统计信息，并支持仅对选定列进行自动收集（参见[收集部分列的统计信息](#收集部分列的统计信息)），从而提高了收集性能。对于新的统计信息收集，Version 2 是 TiDB 唯一支持的统计信息版本。
+更推荐选择 Version 2。与 Version 1 相比，Version 2 提高了大数据量场景下多项统计信息的准确性。此外，Version 2 在进行谓词选择率估算时不再需要收集 Count-Min sketch 统计信息，并支持仅对选定列进行自动收集（参见[收集部分列的统计信息](#收集部分列的统计信息)），从而提高了收集性能。目前，TiDB 仅支持使用 Statistics Version 2 收集新的统计信息。
 
 以下表格列出了两个统计信息版本为优化器估算收集的信息：
 
@@ -350,7 +350,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 
 建议所有表、索引和分区使用相同版本的统计信息。如果你的集群仍在使用 Statistics Version 1，请尽快迁移到 Statistics Version 2。在某个对象（例如表、索引或分区）收集到 Version 2 统计信息之前，TiDB 会继续使用该对象现有的 Version 1 统计信息。
 
-迁移的一个主要原因是，使用 Version 1 在收集 Count-Min Sketch 统计信息时，由于哈希冲突导致等值查询或 IN 查询谓词估算不准确。更多信息请参见 [Count-Min Sketch](#count-min-sketch)。为避免此问题，请设置 `tidb_analyze_version = 2` 并对所有对象重新运行 `ANALYZE`。
+迁移的一个主要原因是，使用 Version 1 在收集 Count-Min Sketch 统计信息时，由于哈希冲突会导致等值查询或 IN 查询谓词估算不准确。更多信息请参见 [Count-Min Sketch](#count-min-sketch)。为避免此问题，请设置 `tidb_analyze_version = 2` 并对所有对象重新运行 `ANALYZE`。
 
 要为从 Statistics Version 1 迁移到 Statistics Version 2 做好 `ANALYZE` 准备，请根据情况进行以下操作：
 
