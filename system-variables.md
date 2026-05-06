@@ -2437,8 +2437,13 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
-- 这个变量用来控制是否可以插入 `null` 到非空列，关闭时允许此类插入。该设置的目的是提供一个从 TiDB 早期版本升级的方法，因为早期版本在验证类型方面不太严格。
-- 该变量的默认值 `ON` 与 MySQL 兼容。
+- 该变量用于控制在向定义为 NOT NULL 的列插入 NULL 值时的校验行为。
+
+MySQL 兼容性：
+- ON (默认值)：与 MySQL 8.0 的标准行为保持一致。对于 NOT NULL 约束执行严格校验，插入 NULL 值将直接触发错误。
+- OFF：模拟 MySQL 5.7 及其早期版本在非严格模式下的行为。允许向非空列插入 NULL，此时系统不会报错，而是自动赋予该列对应数据类型的隐式默认值（例如数字类型填充 0，字符串类型填充空字符串 ""）。
+
+TiDB 在早期版本中对非空约束的校验相对宽松。当从低版本 TiDB（如 v6.x、v7.x 等）升级至 v8.5 或更高版本时，如果存量业务逻辑依赖于这种“隐式赋默认值”的行为，开启此变量可能会导致原有 SQL 报错。如果从 MySQL 5.7 迁移至 TiDB，或从 TiDB 早期版本平滑升级至高版本且无法立即修改业务逻辑，可将此变量设置为 `OFF` 。
 
 ### `tidb_enable_strict_double_type_check` <span class="version-mark">从 v5.0 版本开始引入</span>
 
