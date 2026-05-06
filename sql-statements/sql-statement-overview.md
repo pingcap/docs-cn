@@ -82,8 +82,6 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 
 ## 管理语句
 
-<CustomContent platform="tidb">
-
 | SQL 语句                                                                            | 描述                                                                                     |
 | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md)          | 修改单个正在运行的 DDL 作业的相关参数。                                                  |
@@ -99,29 +97,6 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`SET <variable>`](/sql-statements/sql-statement-set-variable.md)                   | 修改系统变量或用户变量。                                                                |
 | [`SET [NAMES\|CHARACTER SET]`](/sql-statements/sql-statement-set-names.md)         | 设置字符集和排序规则。                                                                  |
 | [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md)                     | 将 Region 切分为更小的 Region。                                                         |
-
-</CustomContent>
-
-<CustomContent platform="tidb-cloud">
-
-| SQL 语句                                                                            | 描述                                                                                     |
-| ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md)          | 修改单个正在运行的 DDL 作业的相关参数。                                                  |
-| [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md)             | 取消 DDL 作业。                                                                          |
-| [`ADMIN CHECK [TABLE\|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) | 检查表或索引的完整性。                                                             |
-| [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)     | 计算表的校验和。                                                                        |
-| [`ADMIN CLEANUP INDEX`](/sql-statements/sql-statement-admin-cleanup.md)             | 清理表中的索引。                                                                        |
-| [`ADMIN PAUSE DDL`](/sql-statements/sql-statement-admin-pause-ddl.md)               | 暂停 DDL 作业。                                                                          |
-| [`ADMIN RECOVER INDEX`](/sql-statements/sql-statement-admin-recover.md)             | 基于冗余索引恢复一致性。                                                                |
-| [`ADMIN RESUME DDL`](/sql-statements/sql-statement-admin-resume-ddl.md)             | 恢复 DDL 作业。                                                                          |
-| [`ADMIN SHOW DDL [JOBS\|JOB QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md) | 显示 DDL 作业信息或 DDL 对应的查询语句。                                           |
-| [`ADMIN`](/sql-statements/sql-statement-admin.md)                                   | 执行各种管理任务。                                                                      |
-| [`FLUSH TABLES`](/sql-statements/sql-statement-flush-tables.md)                     | 用于提供 [MySQL 兼容性](/mysql-compatibility.md)，在 TiDB 中没有实际用途。              |
-| [`SET <variable>`](/sql-statements/sql-statement-set-variable.md)                   | 修改系统变量或用户变量。                                                                |
-| [`SET [NAMES\|CHARACTER SET]`](/sql-statements/sql-statement-set-names.md)         | 设置字符集和排序规则。                                                                  |
-| [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md)                     | 将 Region 切分为更小的 Region。                                                         |
-
-</CustomContent>
 
 ## 数据导入和导出
 
@@ -160,8 +135,6 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 
 ## 资源组
 
-<CustomContent platform="tidb">
-
 | SQL 语句 | 描述 |
 |----------|------|
 | [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) | 修改资源组。 |
@@ -171,21 +144,6 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md) | 管理 Runaway Queries 监控列表。 |
 | [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) | 设置资源组。 |
 | [`SHOW CREATE RESOURCE GROUP`](/sql-statements/sql-statement-show-create-resource-group.md) | 显示资源组的 `CREATE` 语句。 |
-
-</CustomContent>
-
-<CustomContent platform="tidb-cloud">
-
-| SQL 语句 | 描述 |
-|----------|------|
-| [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) | 修改资源组。 |
-| [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) | 创建新的资源组。 |
-| [`DROP RESOURCE GROUP`](/sql-statements/sql-statement-drop-resource-group.md) | 删除资源组。 |
-| [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md) | 管理 Runaway Queries 监控列表。 |
-| [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) | 设置资源组。 |
-| [`SHOW CREATE RESOURCE GROUP`](/sql-statements/sql-statement-show-create-resource-group.md) | 显示资源组的 `CREATE` 语句。 |
-
-</CustomContent>
 
 ## 效用语句
 
@@ -200,8 +158,6 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 
 ## 显示语句
 
-<CustomContent platform="tidb">
-
 | SQL 语句 | 描述 |
 |----------|------|
 | [`SHOW BUILTINS`](/sql-statements/sql-statement-show-builtins.md) | 列出内置函数。 |
@@ -212,25 +168,7 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`SHOW VARIABLES`](/sql-statements/sql-statement-show-variables.md) | 显示系统变量。 |
 | [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md) | 显示先前已执行语句中的警告和注意。 |
 
-</CustomContent>
-
-<CustomContent platform="tidb-cloud">
-
-| SQL 语句 | 描述 |
-|----------|------|
-| [`SHOW BUILTINS`](/sql-statements/sql-statement-show-builtins.md) | 列出内置函数。 |
-| [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md) | 列出字符集。 |
-| [`SHOW COLLATIONS`](/sql-statements/sql-statement-show-collation.md) | 列出排序规则。 |
-| [`SHOW ERRORS`](/sql-statements/sql-statement-show-errors.md) | 显示先前已执行语句中的错误。 |
-| [`SHOW STATUS`](/sql-statements/sql-statement-show-status.md) | 用于提供 [MySQL 兼容性](/mysql-compatibility.md)。TiDB Cloud 提供 [Monitoring](https://docs.pingcap.com/tidbcloud/monitor-tidb-cluster) 来集中收集大多数指标，而不是使用 `SHOW STATUS`。 |
-| [`SHOW VARIABLES`](/sql-statements/sql-statement-show-variables.md) | 显示系统变量。 |
-| [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md) | 显示先前已执行语句中的警告和注意。 |
-
-</CustomContent>
-
 ## 实例管理
-
-<CustomContent platform="tidb">
 
 | SQL 语句 | 描述 |
 |----------|------|
@@ -243,22 +181,6 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`SHOW PROCESSLIST`](/sql-statements/sql-statement-show-processlist.md) | 显示连接到相同 TiDB 服务器的当前会话。 |
 | [`SHOW PROFILES`](/sql-statements/sql-statement-show-profiles.md) | 用于提供 [MySQL 兼容性](/mysql-compatibility.md)，目前返回结果为空。 |
 | [`SHUTDOWN`](/sql-statements/sql-statement-shutdown.md) | 停止客户端连接的 TiDB 实例，而不是整个 TiDB 集群。 |
-
-</CustomContent>
-
-<CustomContent platform="tidb-cloud">
-
-| SQL 语句 | 描述 |
-|----------|------|
-| [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md) | 修改实例。 |
-| [`FLUSH STATUS`](/sql-statements/sql-statement-flush-status.md) | 用于提供 [MySQL 兼容性](/mysql-compatibility.md)。TiDB Cloud 提供 [Monitoring](https://docs.pingcap.com/tidbcloud/monitor-tidb-cluster) 来集中收集大多数指标，而不是使用 `SHOW STATUS`。 |
-| [`KILL`](/sql-statements/sql-statement-kill.md) | 终止当前 TiDB 集群中任意一个 TiDB 实例的连接。 |
-| [`SHOW ENGINES`](/sql-statements/sql-statement-show-engines.md) | 显示可用的存储引擎。 |
-| [`SHOW PLUGINS`](/sql-statements/sql-statement-show-plugins.md) | 显示已安装的插件。 |
-| [`SHOW PROCESSLIST`](/sql-statements/sql-statement-show-processlist.md) | 显示连接到相同 TiDB 服务器的当前会话。 |
-| [`SHOW PROFILES`](/sql-statements/sql-statement-show-profiles.md) | 显示查询性能分析信息。用于提供 [MySQL 兼容性](/mysql-compatibility.md)。目前仅返回空结果。 |
-
-</CustomContent>
 
 ## 锁定语句
 
@@ -293,26 +215,10 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 
 ## TiCDC
 
-<CustomContent platform="tidb">
-
 | SQL 语句 | 描述 |
 |----------|------|
 | [`ADMIN [SET\|SHOW\|UNSET] BDR ROLE`](/sql-statements/sql-statement-admin-bdr-role.md) | 管理 BDR 角色。 |
 | [`SHOW MASTER STATUS`](/sql-statements/sql-statement-show-master-status.md) | 显示集群中当前最新的 TSO。 |
-
-</CustomContent>
-
-<CustomContent platform="tidb-cloud">
-
-> **注意：**
->
-> [TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview) 和 [TiDB Binlog](https://docs-archive.pingcap.com/tidb/v8.3/tidb-binlog-overview) 是用于将 TiDB Self-Managed 的数据复制到上游的工具。大多数用于 TiCDC 和 TiDB Binlog 的 SQL 语句不适用于 TiDB Cloud。对于 TiDB Cloud，你可以改用 [TiDB Cloud console](https://tidbcloud.com) 中的 [Changefeed](https://docs.pingcap.com/tidbcloud/changefeed-overview) 功能来流式传输数据。
-
-| SQL 语句 | 描述 |
-|----------|------|
-| [`SHOW MASTER STATUS`](/sql-statements/sql-statement-show-master-status.md) | 显示集群中当前最新的 TSO。 |
-
-</CustomContent>
 
 ## 统计信息和执行计划管理
 
