@@ -1197,7 +1197,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：整数型
 - 默认值：`2`
 - 范围：`[1, 256]`
-- 对于自动 `ANALYZE`，该变量控制构建统计信息的并发度，例如可同时处理的表或分区 `ANALYZE` 任务数量。
+- 该变量控制自动收集统计信息时，构建统计信息的并发度，例如可以同时处理的表或分区的分析任务的数量。
 - 从 v8.5.7 和 v9.0.0 起，该变量的默认值从 `1` 更改为 `2`。如果你的集群是从之前的版本升级而来的，升级后该变量的值保持不变。
 
 ### `tidb_backoff_lock_fast`
@@ -1307,7 +1307,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 单位：线程
 - 默认值：`2`。TiDB v7.4.0 及其之前版本默认值为 `4`。
 - 取值范围：`[1, 256]`
-- 对于手动 `ANALYZE`，该变量控制表或分区 `ANALYZE` 的并发度，例如可同时 `ANALYZE` 的分区或表的数量。
+- 该变量控制手动收集统计信息时，构建统计信息的并发度，例如可以同时处理的表或分区的分析任务的数量。
 
 ### `tidb_build_sampling_stats_concurrency` <span class="version-mark">从 v7.5.0 版本开始引入</span>
 
