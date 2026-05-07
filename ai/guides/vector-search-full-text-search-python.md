@@ -30,7 +30,7 @@ TiDB 的全文搜索功能提供以下能力：
 
 - AWS: `法兰克福 (eu-central-1)` 和 `新加坡 (ap-southeast-1)`
 
-要完成本教程，请确保你在支持的区域拥有一个 TiDB Cloud Starter 集群。如果还没有，请按照 [创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md) 创建。
+要完成本教程，请确保你在支持的区域拥有一个 TiDB Cloud Starter 实例。如果还没有，请按照 [创建 TiDB Cloud Starter 实例](/develop/dev-guide-build-cluster-in-cloud.md) 创建。
 
 ## 快速开始
 
@@ -66,7 +66,7 @@ db = TiDBClient.connect(
 
 你可以通过以下方式在 [TiDB Cloud 控制台](https://tidbcloud.com) 获取这些连接参数：
 
-1. 进入 [**Clusters**](https://tidbcloud.com/project/clusters) 页面，点击目标集群名称进入其概览页面。
+1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击目标 {{{ .starter }}} 或 Essential 实例名称进入其概览页面。
 
 2. 点击右上角的 **Connect**。此时会弹出连接对话框，显示连接参数。
 
@@ -81,7 +81,7 @@ db = TiDBClient.connect(
    CA:       /etc/ssl/cert.pem
    ```
 
-   对应的 Python 代码如下，用于连接 TiDB Cloud Starter 集群：
+   对应的 Python 代码如下，用于连接 TiDB Cloud Starter 实例：
 
    ```python
    db = TiDBClient.connect(

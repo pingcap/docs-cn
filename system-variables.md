@@ -2560,6 +2560,15 @@ Query OK, 0 rows affected (0.09 sec)
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
 
+### `tidb_enable_ts_validation` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 这个变量用于控制 TiDB 在向 TiKV 发送请求前，是否对请求中的时间戳进行合法性校验。如果检测到请求中的时间戳非法，TiDB 会拒绝发送该请求，以避免数据损坏。
+
 ### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 - 作用域：GLOBAL
