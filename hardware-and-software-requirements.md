@@ -41,7 +41,7 @@ summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在
 
     > **注意：**
     >
-    > 对 Red Hat Enterprise Linux 9.x 的版本的支持从 [TiUP](https://github.com/pingcap/tiup/releases) v1.16.5 开始。
+    > 对 Red Hat Enterprise Linux 9.x 版本的支持从 [TiUP](https://github.com/pingcap/tiup/releases) v1.16.5 开始。
 
 + 在以下操作系统以及对应的 CPU 架构组合上，你可以编译、构建和部署 TiDB，可使用 OLTP 和 OLAP 以及数据工具的基本功能。但由于这些组合尚未经过全面且系统的测试验证，TiDB **不保证企业级生产质量要求**：
 
