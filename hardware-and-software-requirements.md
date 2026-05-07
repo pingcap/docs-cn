@@ -21,7 +21,7 @@ summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在
 |  操作系统   |   支持的 CPU 架构   |
 |   :---   |   :---   |
 | Red Hat Enterprise Linux 9.4 及以上的 9.x 版本 | <ul><li>x86_64</li><li>ARM 64</li></ul> |
-| Red Hat Enterprise Linux 8.6 及以上的版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+| Red Hat Enterprise Linux 8.6 及以上的 8.x 版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
 | Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | Amazon Linux 2023      |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
@@ -46,7 +46,7 @@ summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在
 >
 > - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
 > - 从 v8.4.0 开始，TiDB 依赖 glibc 2.28。如果 glibc 版本不满足要求，建议使用上述表格中支持的操作系统，或将操作系统升级到支持 glibc 2.28 的版本。
-> - 对 Red Hat Enterprise Linux 9.x 的版本的支持从 [TiUP](https://github.com/pingcap/tiup/releases) v1.16.5 开始。
+> - 对 Red Hat Enterprise Linux 9.x 版本的支持从 [TiUP](https://github.com/pingcap/tiup/releases) v1.16.5 开始。
 
 ### 编译和运行 TiDB 所依赖的库
 
