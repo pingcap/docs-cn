@@ -11,9 +11,16 @@ on:
     inputs:
       file_names:
         description: "Specify files to translate under docs/ai or TOC-ai.md (comma-separated list)"
-        required: false
+        required: true
         type: string
-        default: ""
+      source_files_translation_mode:
+        description: "Translate specified files incrementally or as full files"
+        required: true
+        type: choice
+        default: incremental
+        options:
+          - incremental
+          - full
       ai_provider:
         description: "AI provider to use for translation"
         required: false
@@ -217,6 +224,7 @@ jobs:
           SOURCE_HEAD_REF: ${{ steps.commits.outputs.head_ref }}
           SOURCE_FOLDER: ""
           SOURCE_FILES: ${{ steps.source_files.outputs.files }}
+          SOURCE_FILES_TRANSLATION_MODE: ${{ inputs.source_files_translation_mode || 'incremental' }}
           TARGET_REPO_PATH: ${{ github.workspace }}/docs-cn
           AI_PROVIDER: ${{ inputs.ai_provider || 'azure' }}
           TERMS_PATH: ${{ github.workspace }}/docs-source/resources/terms.md
@@ -250,7 +258,11 @@ jobs:
         run: |
           set -euo pipefail
 
-          python -c 'import json, os; from pathlib import Path; Path("latest_translation_commit.json").write_text(json.dumps({"source-repo": os.environ["SOURCE_REPO"], "source-branch": os.environ["SOURCE_BRANCH"], "sha": os.environ["HEAD_REF"]}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")'
+          if [ "${GITHUB_EVENT_NAME}" = "schedule" ]; then
+            python -c 'import json, os; from pathlib import Path; Path("latest_translation_commit.json").write_text(json.dumps({"source-repo": os.environ["SOURCE_REPO"], "source-branch": os.environ["SOURCE_BRANCH"], "sha": os.environ["HEAD_REF"]}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")'
+          else
+            echo "Skipping latest_translation_commit.json update for ${GITHUB_EVENT_NAME} run."
+          fi
 
       - name: Set build metadata
         id: build_meta
@@ -289,6 +301,8 @@ jobs:
             - Source repo: `${{ steps.commits.outputs.source_repo }}`
             - Source branch: `${{ steps.commits.outputs.source_branch }}`
             - Source paths: `${{ env.SOURCE_FOLDER }}/**`, `${{ env.SOURCE_TOC_FILE }}`
+            - Source files: `${{ steps.source_files.outputs.files }}`
+            - Source files translation mode: `${{ inputs.source_files_translation_mode || 'incremental' }}`
 
             ### Do your changes match any of the following descriptions?
 
