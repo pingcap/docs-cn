@@ -15,6 +15,8 @@ tiup cluster tls <cluster-name> <enable/disable> [flags]
 
 `<cluster-name>` 为要启用自启的集群。
 
+多个 PD 节点无法动态开关 TLS ，会导致互相通讯报错。tiup 会在集群有多于一个 PD 节点时报错，必须先 `scale-in` 到只有一个 PD 节点，才能正常开关。
+
 ## 选项
 
 ### --clean-certificate
