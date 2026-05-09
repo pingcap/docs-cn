@@ -447,7 +447,7 @@ CREATE MASKING POLICY email_mask ON users(email)
     END
   ENABLE;
 
--- 即使用户看到脱敏数据，过滤仍然有效
+-- 即使用户在 Where 条件输入未脱敏数据，过滤仍然有效
 SELECT * FROM users WHERE email = 'user@example.com';
 -- 即使显示的邮箱被脱敏，这也会返回该行
 ```
