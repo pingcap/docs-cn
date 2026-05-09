@@ -300,7 +300,7 @@ SELECT n,1024>>n,LPAD(CONV(1024>>n,10,2),11,0) FROM cte;
 
 ## MySQL 兼容性
 
-在处理位函数和操作符时，MySQL 8.0 与以下版本的 MySQL 之间存在一些差异。TiDB 旨在遵循 MySQL 8.x 的行为。
+在处理位函数和操作符时，MySQL 8.0 与之前版本的 MySQL 之间存在一些差异。TiDB 旨在遵循 MySQL 8.x 的行为。
 
 ## 已知问题
 

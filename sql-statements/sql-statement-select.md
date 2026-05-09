@@ -250,7 +250,7 @@ Query OK, 3 rows affected (0.00 sec)
 
 - 不支持 `SELECT ... INTO @variable` 语法。
 - 不支持 `SELECT ... INTO DUMPFILE` 语法。
-- `SELECT .. GROUP BY expr` 语法不会像 MySQL 5.7 那样隐含 `GROUP BY expr ORDER BY expr`。TiDB 而是匹配 MySQL 8.x 的行为，不隐含默认顺序。
+- 不支持 MySQL 5.7 中支持的 `SELECT .. GROUP BY expr` 语法，而是匹配 MySQL 8.x 的行为，不按照默认的顺序进行排序。
 - `SELECT ... TABLESAMPLE ...` 是 TiDB 的扩展语法，用于兼容其他数据库以及 [ISO/IEC 9075-2](https://standards.iso.org/iso-iec/9075/-2/ed-6/en/) 标准，但 MySQL 不支持该语法。
 
 ## 另请参阅
