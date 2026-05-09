@@ -46,8 +46,7 @@ tiup dmctl check-task ./task.yaml
 
     > **警告：**
     >
-    > - 使用 DM 从 MySQL v8.0 迁移数据到 TiDB 目前为实验特性（从 DM v2.0 引入），不建议在生产环境下使用。
-    > - 使用 DM 从 MariaDB 迁移数据到 TiDB 目前为实验特性，不建议在生产环境下使用。
+    > 使用 DM 从 MariaDB 迁移数据到 TiDB 目前为实验特性，不建议在生产环境下使用。
 
 - 上游 MySQL 表结构的兼容性
 
