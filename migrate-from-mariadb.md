@@ -292,7 +292,7 @@ ORDER BY
 
 ### 第 1 步：准备工作
 
-确保 MariaDB 上启用了 binlog，并且 `binlog_format` 设置为 `ROW`。建议设置 `binlog_annotate_row_events=OFF` 和 `log_bin_compress=OFF`。
+在 MariaDB 上启用 binlog，并设置 `binlog_format=ROW`、`binlog_row_image=FULL` 和 `binlog_legacy_event_pos=ON`。同时设置 `binlog_annotate_row_events=OFF` 和 `log_bin_compress=OFF`。
 
 你还需要一个拥有 `SUPER` 权限或 `BINLOG MONITOR` 和 `REPLICATION MASTER ADMIN` 权限的账号。该账号还需要对你要迁移的数据库有读权限。
 
