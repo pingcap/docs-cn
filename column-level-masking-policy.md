@@ -123,7 +123,7 @@ MASK_PARTIAL(phone, 3, 4, '*')
 -- 结果：  '138****5678'
 
 -- 邮箱：显示第一个字符和域名
-MASK_PARTIAL(email, 1, 7, '*')
+MASK_PARTIAL(email, 1, 12, '*')
 -- 输入：  'alice@example.com'
 -- 结果：  'a********e.com'
 
@@ -284,9 +284,9 @@ CREATE MASKING POLICY email_mask ON customers(email)
 CREATE ROLE data_viewer;
 
 -- 基于角色创建脱敏策略
-CREATE MASKING POLICY ssn_mask ON customers(ssn)
+CREATE MASKING POLICY ssn_mask ON employees(ssn)
   AS CASE
-      WHEN current_role() = 'data_viewer@%' THEN ssn
+      WHEN current_role() = '`data_viewer`@`%`' THEN ssn
       ELSE MASK_PARTIAL(ssn, 3, 4, '*')
     END
   ENABLE;
@@ -297,6 +297,9 @@ GRANT data_viewer TO 'analyst'@'%';
 -- 用户必须激活角色才能查看未脱敏的数据
 SET ROLE data_viewer;
 ```
+
+注意：`current_role()` 和 `current_user()` 的数据格式是不一样的，前者类似 '\`data_viewer\`@\`%\`' 而后者类似于 'data_view@%'，区别是有无 \` 包裹。
+这个行为不是 bug，而是 MySQL 就是这样的行为。见 https://github.com/pingcap/tidb/issues/67227
 
 ## RESTRICT ON 语义
 
