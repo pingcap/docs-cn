@@ -258,7 +258,7 @@ ORDER BY
 
 ### 索引长度
 
-如下例所示，如果索引超过最大键长度，MariaDB 会自动将其转换为前缀索引。TiDB 遵循 MySQL 的行为，不会执行这种自动转换，而是返回错误。因此，你需要修改脚本，在必要时显式创建前缀索引。
+如下例所示，在 MariaDB 中，如果索引长度超过最大键长度，MariaDB 会自动将该索引转换为前缀索引，并返回警告。与 MariaDB 不同，TiDB 遵循 MySQL 的行为，不会执行这种自动转换，而是直接返回错误。因此，在将 MariaDB DDL 迁移到 TiDB 时，如果索引列可能超过 TiDB 支持的最大键长度，你需要修改你的脚本，显式创建前缀索引。
 
 ```
 MariaDB> \W
@@ -283,7 +283,7 @@ Create Table: CREATE TABLE `t1` (
 1 row in set (0.001 sec)
 ```
 
-MariaDB 对超过最大键长度的唯一索引也有特殊处理，如下所示。TiDB 不提供此功能。
+对于超过最大键长度的唯一索引，MariaDB 也会进行特殊处理。例如，在以下示例中，MariaDB 会为 `TEXT` 列创建 `USING HASH` 的唯一索引。TiDB 不提供此功能。
 
 ```
 MariaDB> CREATE TABLE t2 (id SERIAL PRIMARY KEY, c1 TEXT NOT NULL);
@@ -311,7 +311,7 @@ Create Table: CREATE TABLE `t2` (
 1 row in set (0.001 sec)
 ```
 
-要在 TiDB 中对长文本列强制唯一性，可以添加一个生成的哈希列，并在该生成的哈希列上创建唯一索引，如下所示：
+如需在 TiDB 中对长文本列进行唯一性约束，可以添加一个生成的哈希列，并在该生成的哈希列上创建唯一索引，如下所示：
 
 ```
 tidb> CREATE TABLE t1 (id int PRIMARY KEY, c1 TEXT NOT NULL);
