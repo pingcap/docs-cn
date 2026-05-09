@@ -35,7 +35,7 @@
 | [`release-6.2`](https://github.com/pingcap/docs-cn/tree/release-6.2) | 6.2 开发里程碑版 (DMR)（该版本文档已归档，不再提供任何更新） |
 | [`release-6.1`](https://github.com/pingcap/docs-cn/tree/release-6.1) | 6.1 长期支持版 (LTS) |
 | [`release-6.0`](https://github.com/pingcap/docs-cn/tree/release-6.0) | 6.0 开发里程碑版 (DMR)（该版本文档已归档，不再提供任何更新） |
-| [`release-5.4`](https://github.com/pingcap/docs-cn/tree/release-5.4) | 5.4 稳定版 |
+| [`release-5.4`](https://github.com/pingcap/docs-cn/tree/release-5.4) | 5.4 稳定版 （该版本文档已归档，不再提供任何更新） |
 | [`release-5.3`](https://github.com/pingcap/docs-cn/tree/release-5.3) | 5.3 稳定版 （该版本文档已归档，不再提供任何更新） |
 | [`release-5.2`](https://github.com/pingcap/docs-cn/tree/release-5.2) | 5.2 稳定版 （该版本文档已归档，不再提供任何更新）|
 | [`release-5.1`](https://github.com/pingcap/docs-cn/tree/release-5.1) | 5.1 稳定版 （该版本文档已归档，不再提供任何更新）|

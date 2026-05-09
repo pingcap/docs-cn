@@ -17,10 +17,10 @@ TiDB 高度兼容 MySQL 协议，这使得大多数客户端驱动程序和 ORM 
 
 - 如需基于 TiDB 构建应用程序，可以根据所使用的编程语言和框架[选择合适的驱动或 ORM](/develop/dev-guide-choose-driver-or-orm.md)。
 
-- 如需从边缘环境通过 HTTP 连接到 {{{ .starter }}} 或 {{{ .essential }}} 集群，可以使用 [TiDB Cloud Serverless Driver](/develop/serverless-driver.md)。需要注意的是，Serverless Driver 目前处于 beta 阶段，仅适用于 {{{ .starter }}} 或 {{{ .essential }}} 集群。
+- 如需从边缘环境通过 HTTP 连接到 {{{ .starter }}} 或 {{{ .essential }}} 实例，可以使用 [TiDB Cloud Serverless Driver](/develop/serverless-driver.md)。需要注意的是，Serverless Driver 目前处于 beta 阶段，仅适用于 {{{ .starter }}} 或 {{{ .essential }}} 实例。
 
 ## 需要帮助？
 
-- 在 [AskTUG 论坛](https://asktug.com/?utm_source=docs-cn-dev-guide) 上提问
+- 在 [AskTUG 论坛](https://pingkai.cn/tidbcommunity/forum/?utm_source=docs-cn-dev-guide) 上提问
 - [提交 TiDB Cloud 工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)
 - [提交 TiDB 工单](/support.md)

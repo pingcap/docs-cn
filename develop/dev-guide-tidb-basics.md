@@ -9,7 +9,7 @@ aliases: ['/zh/tidb/dev/developer-guide-overview']
 在你开始使用 TiDB 之前，你需要了解一些关于 TiDB 数据库的一些重要工作机制：
 
 - 阅读 [TiDB 事务概览](/transaction-overview.md)来了解 TiDB 的事务运作方式或查看[为应用开发程序员准备的事务说明](/develop/dev-guide-transaction-overview.md)查看应用开发程序员需要了解的事务部分。
-- 学习免费在线课程 [TiDB 架构与特点](https://learn.pingcap.cn/learner/course/600003?utm_source=docs-cn-dev-guide)，了解构建 TiDB 分布式数据库集群的核心组件及其概念。
+- 学习免费在线课程 [TiDB 架构与特点](https://learn.pingkai.cn/learner/course/600003?utm_source=docs-cn-dev-guide)，了解构建 TiDB 分布式数据库集群的核心组件及其概念。
 - 了解[应用程序与 TiDB 交互的方式](#应用程序与-tidb-交互的方式)。
 
 ## TiDB 事务机制
@@ -42,6 +42,6 @@ TiDB 高度兼容 MySQL 协议，TiDB 支持[大多数 MySQL 的语法及特性]
 
 ## 需要帮助？
 
-- 在 [AskTUG 论坛](https://asktug.com/?utm_source=docs-cn-dev-guide) 上提问
+- 在 [AskTUG 论坛](https://pingkai.cn/tidbcommunity/forum/?utm_source=docs-cn-dev-guide) 上提问
 - [提交 TiDB Cloud 工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)
 - [提交 TiDB 工单](/support.md)

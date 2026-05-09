@@ -30,7 +30,7 @@ TiDB 的全文搜索功能提供以下能力：
 
 - AWS: `Frankfurt (eu-central-1)` 和 `Singapore (ap-southeast-1)`
 
-在使用全文搜索前，请确保你的 TiDB Cloud Starter 集群已创建在支持的区域。如果还没有，请按照 [创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md) 进行创建。
+在使用全文搜索前，请确保你的 TiDB Cloud Starter 实例已创建在支持的区域。如果还没有，请按照 [创建 TiDB Cloud Starter 实例](/develop/dev-guide-build-cluster-in-cloud.md) 进行创建。
 
 要进行全文搜索，请按照以下步骤操作：
 

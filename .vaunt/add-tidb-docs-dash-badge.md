@@ -2,7 +2,7 @@
 
 [GitHub 个人资料页](https://docs.github.com/zh/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/about-your-profile)不仅仅是你的 GitHub 仓库的集合，更是你在编程领域中的专业身份标志。
 
-本指南介绍如何在你的 GitHub 个人资料页上添加 [2024 TiDB 文档挑战赛](https://asktug.com/t/topic/1019364) (TiDB Docs Dash) 活动徽章。
+本指南介绍如何在你的 GitHub 个人资料页上添加 [2024 TiDB 文档挑战赛](https://pingkai.cn/tidbcommunity/forum/t/topic/1019364) (TiDB Docs Dash) 活动徽章。
 
 ## 第 1 步：创建一个仓库，存放个人资料 README
 

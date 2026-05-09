@@ -16,13 +16,13 @@ aliases: ['/zh/tidb/dev/create-table','/zh/tidb/stable/dev-guide-create-table/',
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)。
 - [创建一个数据库](/develop/dev-guide-create-database.md)。
 
 ## 什么是表
 
-[表](/develop/dev-guide-schema-design-overview.md#表-table)是集群中的一种逻辑对象，它从属于[数据库](/develop/dev-guide-schema-design-overview.md#数据库-database)，用于保存从 SQL 中发送的数据。表以行和列的形式组织数据记录,一张表至少有一列。若在表中定义了 n 个列，那么每一行数据都将拥有与这 n 个列中完全一致的字段。
+[表](/develop/dev-guide-schema-design-overview.md#表-table)是 TiDB 中的一种逻辑对象，它从属于[数据库](/develop/dev-guide-schema-design-overview.md#数据库-database)，用于保存从 SQL 中发送的数据。表以行和列的形式组织数据记录,一张表至少有一列。若在表中定义了 n 个列，那么每一行数据都将拥有与这 n 个列中完全一致的字段。
 
 ## 命名表
 
@@ -168,7 +168,7 @@ CREATE TABLE `bookshop`.`ratings` (
 
 如需在列上设置默认值，请使用 `DEFAULT` 约束。默认值将可以使你无需指定每一列的值，就可以插入数据。
 
-你可以将 `DEFAULT` 与[支持的 SQL 函数](/basic-features.md#数据类型函数和操作符)结合使用，将默认值的计算移出应用层，从而节省应用层的资源（当然，计算所消耗的资源并不会凭空消失，只是被转移到了 TiDB 集群中）。常见的，希望实现数据插入时，可默认填充默认的时间。还是使用 `ratings` 作为示例，可使用以下语句：
+你可以将 `DEFAULT` 与[支持的 SQL 函数](/basic-features.md#数据类型函数和操作符)结合使用，将默认值的计算移出应用层，从而节省应用层的资源（当然，计算所消耗的资源并不会凭空消失，而是由数据库来进行处理）。常见的，希望实现数据插入时，可默认填充默认的时间。还是使用 `ratings` 作为示例，可使用以下语句：
 
 ```sql
 CREATE TABLE `bookshop`.`ratings` (
@@ -263,7 +263,7 @@ ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
 
 > **注意：**
 >
-> 如果你的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)来创建一个含有 TiFlash 的集群。
+> 如果你的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-starter-instance)来创建一个含有 TiFlash 的实例。
 
 随后正常进行查询即可：
 

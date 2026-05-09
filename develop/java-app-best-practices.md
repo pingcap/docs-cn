@@ -168,7 +168,7 @@ update t set a = 10 where id = 1; update t set a = 11 where id = 2; update t set
 
 #### 集成参数
 
-通过监控可能会发现，虽然业务只向集群进行 insert 操作，却看到有很多多余的 select 语句。通常这是因为 JDBC 发送了一些查询设置类的 SQL 语句（例如 `select @@session.transaction_read_only`）。这些 SQL 对 TiDB 无用，推荐配置 `useConfigs=maxPerformance` 来避免额外开销。
+通过监控可能会发现，虽然业务只对 TiDB 进行 insert 操作，却看到有很多多余的 select 语句。通常这是因为 JDBC 发送了一些查询设置类的 SQL 语句（例如 `select @@session.transaction_read_only`）。这些 SQL 对 TiDB 无用，推荐配置 `useConfigs=maxPerformance` 来避免额外开销。
 
 `useConfigs=maxPerformance` 会包含一组配置，可查看 MySQL Connector/J [8.0 版本](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties)或 [5.1 版本](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties)来确认当前 MySQL Connector/J 中 `maxPerformance` 包含的具体配置。
 
@@ -373,4 +373,4 @@ Java 应用中获取火焰图较繁琐，可参阅 [Java Flame Graphs Introducti
 
 本文从常用的和数据库交互的 Java 组件的角度，阐述了开发 Java 应用程序使用 TiDB 的常见问题与解决办法。TiDB 是高度兼容 MySQL 协议的数据库，基于 MySQL 开发的 Java 应用的最佳实践也多适用于 TiDB。
 
-欢迎大家在 [ASK TUG](https://asktug.com/) 踊跃发言，和我们一起分享讨论 Java 应用使用 TiDB 的实践技巧或遇到的问题。
+欢迎大家在 [ASK TUG](https://pingkai.cn/tidbcommunity/forum/) 踊跃发言，和我们一起分享讨论 Java 应用使用 TiDB 的实践技巧或遇到的问题。
