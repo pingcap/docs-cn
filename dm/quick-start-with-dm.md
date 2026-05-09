@@ -91,6 +91,10 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
     GRANT PROCESS, BACKUP_ADMIN, RELOAD, REPLICATION SLAVE, REPLICATION CLIENT, SELECT ON *.* TO 'tidb-dm'@'%';
     ```
 
+    > **注意：**
+    >
+    > 如果你的 MySQL 数据源为托管型 MySQL 服务（例如 Amazon RDS、Aurora、ApsaraDB RDS for MySQL、Azure Database for MySQL 或 Google Cloud SQL），还需要授予 `LOCK TABLES` 权限。更多信息，请参见[上游数据库用户权限](/dm/dm-worker-intro.md#上游数据库用户权限)。
+
 4. 创建示例数据：
 
     ```sql
@@ -147,6 +151,10 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
 
     GRANT PROCESS, BACKUP_ADMIN, RELOAD, REPLICATION SLAVE, REPLICATION CLIENT, SELECT ON *.* TO 'tidb-dm'@'%';
     ```
+
+    > **注意：**
+    >
+    > 如果你的 MySQL 数据源为托管型 MySQL 服务（例如 Amazon RDS、Aurora、ApsaraDB RDS for MySQL、Azure Database for MySQL 或 Google Cloud SQL），还需要授予 `LOCK TABLES` 权限。更多信息，请参见[上游数据库用户权限](/dm/dm-worker-intro.md#上游数据库用户权限)。
 
 6. 创建示例数据：
 

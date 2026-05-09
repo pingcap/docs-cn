@@ -300,11 +300,11 @@ SELECT n,1024>>n,LPAD(CONV(1024>>n,10,2),11,0) FROM cte;
 
 ## MySQL 兼容性
 
-在处理位函数和操作符时，MySQL 8.0 与之前版本的 MySQL 之间存在一些差异。TiDB 旨在遵循 MySQL 8.0 的行为。
+在处理位函数和操作符时，MySQL 8.0 与之前版本的 MySQL 之间存在一些差异。TiDB 旨在遵循 MySQL 8.x 的行为。
 
 ## 已知问题
 
-在以下情况中，TiDB 中的查询结果与 MySQL 5.7 相同，但与 MySQL 8.0 不同。
+在以下情况中，TiDB 中的查询结果与 MySQL 5.7 相同，但与 MySQL 8.x 不同。
 
 - 二进制参数的位操作。更多信息，请参考 [#30637](https://github.com/pingcap/tidb/issues/30637)。
 - `BIT_COUNT()` 函数的结果。更多信息，请参考 [#44621](https://github.com/pingcap/tidb/issues/44621)。

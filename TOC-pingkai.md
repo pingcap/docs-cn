@@ -770,6 +770,7 @@
       - 属性
         - [AUTO_INCREMENT](/auto-increment.md)
         - [AUTO_RANDOM](/auto-random.md)
+        - [_tidb_rowid](/tidb-rowid.md)
         - [SHARD_ROW_ID_BITS](/shard-row-id-bits.md)
       - [字面值](/literal-values.md)
       - [Schema 对象名](/schema-object-names.md)
@@ -1111,6 +1112,7 @@
   - [版本周期支持策略](https://pingkai.cn/tidb-release-support-policy)
   - [TiDB 离线包](/binary-package.md)
   - v8.5
+    - [8.5.6](/releases/release-8.5.6.md)
     - [8.5.5](/releases/release-8.5.5.md)
     - [8.5.4](/releases/release-8.5.4.md)
     - [8.5.3](/releases/release-8.5.3.md)

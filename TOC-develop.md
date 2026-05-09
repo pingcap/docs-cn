@@ -5,7 +5,7 @@
 
 ## 快速上手
 
-- [创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+- [创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)
 - [TiDB 基础](/develop/dev-guide-tidb-basics.md)
 - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
 

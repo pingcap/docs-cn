@@ -230,6 +230,7 @@
 - 性能调优
   - 优化手册
     - [优化概述](/performance-tuning-overview.md)
+    - [配置 TiDB 以优化性能](/tidb-performance-tuning-config.md)
     - [优化方法](/performance-tuning-methods.md)
     - [OLTP 负载性能优化实践](/performance-tuning-practices.md)
     - [TiFlash 性能分析方法](/tiflash-performance-tuning-methods.md)
@@ -643,6 +644,7 @@
       - 属性
         - [AUTO_INCREMENT](/auto-increment.md)
         - [AUTO_RANDOM](/auto-random.md)
+        - [_tidb_rowid](/tidb-rowid.md)
         - [SHARD_ROW_ID_BITS](/shard-row-id-bits.md)
       - [字面值](/literal-values.md)
       - [Schema 对象名](/schema-object-names.md)

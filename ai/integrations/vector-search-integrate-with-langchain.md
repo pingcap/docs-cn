@@ -11,11 +11,11 @@ aliases: ['/zh/tidb/stable/vector-search-integrate-with-langchain/','/zh/tidb/de
 > **注意：**
 >
 > - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB 自托管](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB 自托管和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB Self-Managed 和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 > **提示**
 >
-> 你可以在 Jupyter Notebook 中查看完整的 [示例代码](https://github.com/langchain-ai/langchain/blob/master/docs/docs/integrations/vectorstores/tidb_vector.ipynb)，或直接在 [Colab](https://colab.research.google.com/github/langchain-ai/langchain/blob/master/docs/docs/integrations/vectorstores/tidb_vector.ipynb) 在线环境中运行。
+> 你可以在 LangChain 文档中查看完整的[示例代码](https://docs.langchain.com/oss/python/integrations/vectorstores/tidb_vector)。
 
 ## 前置条件
 
@@ -28,8 +28,8 @@ aliases: ['/zh/tidb/stable/vector-search-integrate-with-langchain/','/zh/tidb/de
 
 **如果你还没有 TiDB 集群，可以按如下方式创建：**
 
-- （推荐）参考 [创建 TiDB Cloud Starter 集群](/develop/dev-guide-build-cluster-in-cloud.md) 创建属于你自己的 TiDB Cloud 集群。
-- 参考 [部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster) 或 [部署生产环境 TiDB 集群](/production-deployment-using-tiup.md) 创建本地集群。
+- （推荐）[创建一个 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [部署本地测试 TiDB Self-Managed 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster) 或 [部署生产环境 TiDB Self-Managed 集群](/production-deployment-using-tiup.md)。
 
 ## 快速开始
 
@@ -70,9 +70,9 @@ from langchain_text_splitters import CharacterTextSplitter
 <SimpleTab>
 <div label="TiDB Cloud Starter 或 Essential">
 
-对于 TiDB Cloud Starter 集群，按如下步骤获取集群连接字符串并配置环境变量：
+对于 {{{ .starter }}} 或 Essential 实例，按如下步骤获取连接字符串并配置环境变量：
 
-1. 进入 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，点击目标集群名称进入集群概览页。
+1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击目标 {{{ .starter }}} 或 Essential 实例的名称进入其概览页。
 
 2. 点击右上角的 **Connect**，弹出连接对话框。
 
@@ -107,7 +107,7 @@ from langchain_text_splitters import CharacterTextSplitter
     ```
 
 </div>
-<div label="TiDB 自托管" value="tidb">
+<div label="TiDB Self-Managed" value="tidb">
 
 本文档以 [OpenAI](https://platform.openai.com/docs/introduction) 作为嵌入模型提供方。在此步骤，你需要提供上一步获取的连接字符串和你的 [OpenAI API key](https://platform.openai.com/docs/quickstart/step-2-set-up-your-api-key)。
 
@@ -134,8 +134,8 @@ TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE
 
 各参数说明如下：
 
-- `<USERNAME>`：连接 TiDB 集群的用户名。
-- `<PASSWORD>`：连接 TiDB 集群的密码。
+- `<USERNAME>`：连接 TiDB 的用户名。
+- `<PASSWORD>`：连接 TiDB 的密码。
 - `<HOST>`：TiDB 集群的主机。
 - `<PORT>`：TiDB 集群的端口。
 - `<DATABASE>`：你要连接的数据库名称。
@@ -148,11 +148,11 @@ TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE
 
 #### 步骤 4.1 下载示例文档
 
-在你的项目目录下，新建 `data/how_to/` 目录，并从 [langchain-ai/langchain](https://github.com/langchain-ai/langchain) GitHub 仓库下载示例文档 [`state_of_the_union.txt`](https://github.com/langchain-ai/langchain/blob/master/docs/docs/how_to/state_of_the_union.txt)。
+在你的项目目录下，新建 `data/how_to/` 目录，并从 [langchain-ai/langchainjs](https://github.com/langchain-ai/langchainjs) GitHub 仓库下载示例文档 [`state_of_the_union.txt`](https://github.com/langchain-ai/langchainjs/blob/main/examples/state_of_the_union.txt)。
 
 ```shell
 !mkdir -p 'data/how_to/'
-!wget 'https://raw.githubusercontent.com/langchain-ai/langchain/master/docs/docs/how_to/state_of_the_union.txt' -O 'data/how_to/state_of_the_union.txt'
+!wget 'https://raw.githubusercontent.com/langchain-ai/langchainjs/refs/heads/main/examples/state_of_the_union.txt' -O 'data/how_to/state_of_the_union.txt'
 ```
 
 #### 步骤 4.2 加载并切分文档

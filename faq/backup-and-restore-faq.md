@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/','/zh/tidb/dev/pitr-troublesh
 
 本文列出了在使用 Backup & Restore (BR) 完成备份与恢复任务时，可能会遇到的问题及相应的解决方法。
 
-如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中提问。
+如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://pingkai.cn/tidbcommunity/forum/) 社区中提问。
 
 ## 当误删除或误更新数据后，如何原地快速恢复？
 

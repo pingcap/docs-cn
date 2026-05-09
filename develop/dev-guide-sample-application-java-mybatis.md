@@ -11,12 +11,12 @@ TiDB 是一个兼容 MySQL 的数据库。[MyBatis](https://mybatis.org/mybatis-
 本文档将展示如何使用 TiDB 和 MyBatis 来完成以下任务：
 
 - 配置你的环境。
-- 使用 MyBatis 连接到 TiDB 集群。
+- 使用 MyBatis 连接到 TiDB。
 - 构建并运行你的应用程序。你也可以参考[示例代码片段](#示例代码片段)，完成基本的 CRUD 操作。
 
 > **注意**
 >
-> 本文档适用于 {{{ .starter }}}、{{{ .essential }}}、TiDB Cloud Dedicated 和本地部署的 TiDB。
+> 本文档适用于 {{{ .starter }}}、{{{ .essential }}}、{{{ .premium }}}、TiDB Cloud Dedicated 和本地部署的 TiDB。
 
 ## 前置需求
 
@@ -24,8 +24,8 @@ TiDB 是一个兼容 MySQL 的数据库。[MyBatis](https://mybatis.org/mybatis-
 - [Maven](https://maven.apache.org/install.html) **3.8** 及以上版本。
 - [Git](https://git-scm.com/downloads)。
 - TiDB 集群。如果你还没有 TiDB 集群，可以按照以下方式创建：
-    - （推荐方式）参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)，创建你自己的 TiDB Cloud 集群。
-    - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
+    - （推荐方式）[创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-starter-instance)。
+    - [部署本地测试 TiDB Self-Managed 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署正式 TiDB Self-Managed 集群](/production-deployment-using-tiup.md)。
 
 ## 运行代码并连接到 TiDB
 
@@ -42,13 +42,13 @@ cd tidb-java-mybatis-quickstart
 
 ### 第 2 步：配置连接信息
 
-根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB 集群。
+根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB。
 
 <SimpleTab>
 
 <div label="{{{ .starter }}} 或 Essential">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 {{{ .starter }}} 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，选择你的 {{{ .starter }}} 或 Essential 实例，进入实例的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
@@ -93,10 +93,52 @@ cd tidb-java-mybatis-quickstart
 7. 保存 `env.sh` 文件。
 
 </div>
+<div label="{{{ .premium }}}">
 
+1. 在 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，点击你目标 {{{ .premium }}} 实例的名字，进入实例的 **Overview** 页面。
+
+2. 在左侧导航栏中，点击 **Settings** > **Networking**。
+
+3. 在 **Networking** 页面，点击 **Public Endpoint** 的 **Enable**，然后点击 **Add IP Address**。
+
+    确保你的客户端 IP 地址已添加到访问列表中。
+
+4. 在左侧导航栏中，点击 **Overview** 返回实例概览页面。
+
+5. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
+
+6. 在连接对话框中，从 **Connection Type** 下拉列表中选择 **Public**。
+
+    - 如果提示 Public Endpoint 正在开启，请等待该过程完成。
+    - 如果你尚未设置密码，请在对话框中点击 **Set Root Password**。
+    - 如果需要验证服务器证书或连接失败且需要 CA 证书，请点击 **CA cert** 下载证书。
+    - 除 **Public** 连接类型外，{{{ .premium }}} 还支持 **Private Endpoint** 连接。详情请参阅[通过 AWS PrivateLink 连接到 {{{ .premium }}}](https://docs.pingcap.com/tidbcloud/connect-to-premium-via-aws-private-endpoint/?plan=premium)。
+
+7. 运行以下命令，将 `env.sh.example` 复制并重命名为 `env.sh`：
+
+    ```shell
+    cp env.sh.example env.sh
+    ```
+
+8. 复制并粘贴对应连接字符串至 `env.sh` 中。示例结果如下：
+
+    ```shell
+    export TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
+    export TIDB_PORT='4000'
+    export TIDB_USER='{user}'  # e.g. root
+    export TIDB_PASSWORD='{password}'
+    export TIDB_DB_NAME='test'
+    export USE_SSL='false'
+    ```
+
+    注意替换 `{}` 中的占位符为连接对话框中获得的值。
+
+9. 保存 `env.sh` 文件。
+
+</div>
 <div label="TiDB Cloud Dedicated">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Cloud Dedicated 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，选择你的 TiDB Cloud Dedicated 集群，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
 
@@ -208,7 +250,7 @@ cd tidb-java-mybatis-quickstart
 </configuration>
 ```
 
-请将 `${TIDB_JDBC_URL}`、`${TIDB_USER}`、`${TIDB_PASSWORD}` 等替换为你的 TiDB 集群的实际值。并替换 `${MAPPER_LOCATION}` 的值为你的 mapper XML 配置文件的位置。如果你有多个 mapper XML 配置文件，需要添加多个 `<mapper/>` 标签。随后编写以下函数：
+请将 `${TIDB_JDBC_URL}`、`${TIDB_USER}`、`${TIDB_PASSWORD}` 等替换为你的 TiDB 的实际值。并替换 `${MAPPER_LOCATION}` 的值为你的 mapper XML 配置文件的位置。如果你有多个 mapper XML 配置文件，需要添加多个 `<mapper/>` 标签。随后编写以下函数：
 
 ```java
 public SqlSessionFactory getSessionFactory() {
@@ -300,11 +342,11 @@ public SqlSessionFactory getSessionFactory() {
 
 - 关于 MyBatis 的更多使用方法，可以参考 [MyBatis 官方文档](http://www.mybatis.org/mybatis-3/)。
 - 你可以继续阅读开发者文档，以获取更多关于 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)、[删除数据](/develop/dev-guide-delete-data.md)、[单表读取](/develop/dev-guide-get-data-from-single-table.md)、[事务](/develop/dev-guide-transaction-overview.md)、[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
-- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://pingkai.cn/learn)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.cn/learner/certification-center)。
-- 我们还额外提供针对 Java 开发者的课程：[使用 Connector/J - TiDB v6](https://learn.pingcap.cn/learner/course/840002?utm_source=docs-cn-dev-guide) 及[在 TiDB 上开发应用的最佳实践 - TiDB v6](https://learn.pingcap.cn/learner/course/780002?utm_source=docs-cn-dev-guide)。
+- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://pingkai.cn/learn)支持，并在考试后提供相应的[资格认证](https://learn.pingkai.cn/learner/certification-center)。
+- 我们还额外提供针对 Java 开发者的课程：[使用 Connector/J - TiDB v6](https://learn.pingkai.cn/learner/course/840002?utm_source=docs-cn-dev-guide) 及[在 TiDB 上开发应用的最佳实践 - TiDB v6](https://learn.pingkai.cn/learner/course/780002?utm_source=docs-cn-dev-guide)。
 
 ## 需要帮助?
 
-- 在 [AskTUG 论坛](https://asktug.com/?utm_source=docs-cn-dev-guide) 上提问
+- 在 [AskTUG 论坛](https://pingkai.cn/tidbcommunity/forum/?utm_source=docs-cn-dev-guide) 上提问
 - [提交 TiDB Cloud 工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)
 - [提交 TiDB 工单](/support.md)

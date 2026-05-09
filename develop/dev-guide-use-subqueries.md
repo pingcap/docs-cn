@@ -128,4 +128,4 @@ WHERE
 
 - [子查询相关的优化](/subquery-optimization.md)
 - [关联子查询去关联](/correlated-subquery-optimization.md)
-- [TiDB 中的子查询优化技术](https://tidb.net/blog/b997a44c)
+- [TiDB 中的子查询优化技术](https://pingkai.cn/tidbcommunity/blog/b997a44c)

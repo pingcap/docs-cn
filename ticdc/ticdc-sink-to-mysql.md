@@ -118,6 +118,7 @@ MTIzNDU2Nzg=
 - `Update`
 - `Delete`
 - `Create`
+- `References`
 - `Drop`
 - `Alter`
 - `Create View`
