@@ -24,6 +24,7 @@ summary: 介绍 TiDB 中元数据锁的概念、原理、实现和影响。
 - [`DROP PARTITION`](/partitioned-table.md#分区管理)
 - [`TRUNCATE TABLE`](/sql-statements/sql-statement-truncate.md)
 - [`EXCHANGE PARTITION`](/partitioned-table.md#分区管理)
+- [`REORGANIZE PARTITION`](/partitioned-table.md#分区管理)
 - [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)
 - [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md)
 
