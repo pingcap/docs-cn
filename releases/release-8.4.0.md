@@ -280,8 +280,8 @@ TiDB 版本：8.4.0
 
 | 变量名 | 修改类型 | 描述 |
 |--------|------------------------------|------|
-| `log_bin` | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 被移除。该变量表示是否使用 TiDB Binlog，从 v8.4.0 开始被删除。|
-| `sql_log_bin` | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 被移除。该变量表示是否将更改写入 TiDB Binlog，从 v8.4.0 开始被删除。|
+| `log_bin` | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs-archive.pingcap.com/tidb/v8.3/tidb-binlog-overview/) 被移除。该变量表示是否使用 TiDB Binlog，从 v8.4.0 开始被删除。|
+| `sql_log_bin` | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs-archive.pingcap.com/tidb/v8.3/tidb-binlog-overview/) 被移除。该变量表示是否将更改写入 TiDB Binlog，从 v8.4.0 开始被删除。|
 | [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) | 废弃 | 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用[全局索引](/global-indexes.md)。你只需在执行 `CREATE TABLE` 或 `ALTER TABLE` 时给对应的列加上关键字 `GLOBAL` 即可创建全局索引。|
 | [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入) | 废弃 | 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用 [List 分区](/partitioned-table.md#list-分区)。|
 | [`tidb_enable_table_partition`](/system-variables.md#tidb_enable_table_partition) | 废弃 |  从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用[分区表](/partitioned-table.md)。|
@@ -318,7 +318,7 @@ TiDB 版本：8.4.0
 | PD | [`max-merge-region-keys`](/pd-configuration-file.md#max-merge-region-keys) | 修改 | 默认值从 `200000` 修改为 `540000`。|
 | PD | [`max-merge-region-size`](/pd-configuration-file.md#max-merge-region-size) | 修改 | 默认值从 `20` 修改为 `54`。|
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md) | 修改 | TiFlash 底层存储格式的默认版本从 `5` 修改为 `7`，以支持向量索引的构建与存储。由于该格式修改，升级 TiFlash 到 v8.4.0 或更高版本后，不支持原地降级到之前的版本。|
-| TiDB Binlog | `--enable-binlog` | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 被移除。该参数用于开启或关闭 TiDB 中 binlog 的生成，从 v8.4.0 开始被删除。|
+| TiDB Binlog | `--enable-binlog` | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs-archive.pingcap.com/tidb/v8.3/tidb-binlog-overview/) 被移除。该参数用于开启或关闭 TiDB 中 binlog 的生成，从 v8.4.0 开始被删除。|
 | TiCDC | [`claim-check-raw-value`](/ticdc/ticdc-sink-to-kafka.md#只发送-value-部分到外部存储) | 新增 | 控制 TiCDC 是否仅将 Kafka 消息的 `value` 部分发送到外部存储，该功能仅适用于非 Open Protocol 协议。|
 | TiDB Lightning | [`logical-import-prep-stmt`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 在逻辑导入模式下，该参数控制是否使用预处理语句和语句缓存来提高性能。默认值为 `false`。|
 | BR | [`--log.crypter.key`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据的加密密钥，十六进制字符串格式，`aes128-ctr` 对应 128 位（16 字节）密钥长度，`aes192-ctr` 为 24 字节，`aes256-ctr` 为 32 字节。|
@@ -347,7 +347,7 @@ TiDB 版本：8.4.0
 
 * 以下为从 v8.4.0 开始已移除的功能：
 
-    * [TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 在 v8.4.0 中被移除。从 v8.3.0 开始，TiDB Binlog 被完全废弃。如需进行增量数据同步，请使用 [TiCDC](/ticdc/ticdc-overview.md)。如需按时间点恢复 (point-in-time recovery, PITR)，请使用 [PITR](/br/br-pitr-guide.md)。在将 TiDB 集群升级到 v8.4.0 或之后版本前，务必先切换至 TiCDC 和 PITR。
+    * [TiDB Binlog](https://docs-archive.pingcap.com/tidb/v8.3/tidb-binlog-overview/) 在 v8.4.0 中被移除。从 v8.3.0 开始，TiDB Binlog 被完全废弃。如需进行增量数据同步，请使用 [TiCDC](/ticdc/ticdc-overview.md)。如需按时间点恢复 (point-in-time recovery, PITR)，请使用 [PITR](/br/br-pitr-guide.md)。在将 TiDB 集群升级到 v8.4.0 或之后版本前，务必先切换至 TiCDC 和 PITR。
 
 * 以下为计划将在未来版本中移除的功能：
 
