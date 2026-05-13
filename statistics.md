@@ -100,7 +100,7 @@ TiDB 会记录 Top-N 的值和出现次数。参数 `WITH NUM TOPN` 控制 Top-N
 
 > **注意：**
 >
-> 从 v9.0.0 开始，当 [`tidb_analyze_version = 2`](/system-variables.md#tidb_analyze_version-new-in-v510) 时，TiDB 不会为单列唯一索引及其对应的列收集 Top-N 统计信息，因为每个值最多只会出现一次。
+> 从 v9.0.0 开始，当 [`tidb_analyze_version = 2`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 时，TiDB 不会为单列唯一索引及其对应的列收集 Top-N 统计信息，因为每个值最多只会出现一次。
 
 ## 选择性收集统计信息
 
