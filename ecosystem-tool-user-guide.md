@@ -76,7 +76,7 @@ TiDB 提供了 TiUP 和 TiDB Operator 部署运维工具，满足你在不同系
 
 > **注意：**
 >
-> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。从 v7.5.0 开始，[Mydumper](https://docs.pingcap.com/tidb/v4.0/mydumper-overview) 废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
+> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。从 v7.5.0 开始，[Mydumper](https://docs-archive.pingcap.com/tidb/v4.0/mydumper-overview) 废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
 
 ### 全量导入 - TiDB Lightning
 
