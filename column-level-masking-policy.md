@@ -1,26 +1,25 @@
 ---
 title: 列级脱敏策略
 summary: 本文介绍如何使用列级脱敏策略来保护 TiDB 中的敏感数据。
-aliases: ['/docs/dev/column-level-masking-policy/']
 ---
 
 # 列级脱敏策略
 
-列级脱敏策略是一项安全功能，允许你在列级别应用脱敏规则来保护敏感数据。当对列应用脱敏策略时，TiDB 会根据定义的规则自动对返回给用户的数据进行脱敏，而原始数据在存储中保持不变。
+列级脱敏策略是 TiDB 中的一项安全功能，允许你为表中的指定列创建脱敏规则来保护敏感数据。当对列应用脱敏策略时，TiDB 会按照定义的规则自动对返回给用户的查询结果数据进行脱敏，而原始数据在存储中保持不变。
 
 此功能对于满足 PCI-DSS（支付卡行业数据安全标准）等合规要求以及数据隐私法规（如 GDPR - 通用数据保护条例、CCPA - 加州消费者隐私法案）特别有用，这些法规要求严格控制谁可以查看信用卡号、个人标识符和其他机密信息等敏感信息。
 
 ## 概述
 
-脱敏策略绑定到表列，并在查询结果时进行评估。策略使用 SQL 表达式根据当前用户身份或角色来确定如何对数据进行脱敏。
+脱敏策略绑定到表中的单个列。每个列最多只能绑定一个脱敏策略。策略表达式通常使用 SQL `CASE WHEN` 表达式，并结合 `CURRENT_USER()` 或 `CURRENT_ROLE()` 判断当前会话是否可以查看原始值。
 
 主要特性：
 
-- **结果时脱敏**：数据在返回给客户端时进行脱敏，而不是以脱敏形式存储
-- **支持用户/角色**：不同用户可以根据其权限看到不同级别的数据
-- **灵活的表达式**：使用 SQL `CASE WHEN` 表达式定义复杂的脱敏逻辑
-- **内置函数**：用于常见脱敏模式的预定义函数
-- **可选限制**：控制脱敏数据是否可用于某些操作
+- **结果阶段脱敏**：TiDB 在返回查询结果到客户端时应用脱敏逻辑，而不修改原始数据
+- **基于用户或角色控制可见性**：不同用户或不同角色可以根据其权限看到不同级别的数据。
+- **支持表达式脱敏**：可以使用 SQL `CASE WHEN` 表达式定义灵活的脱敏逻辑。
+- **提供内置脱敏函数**：支持完整脱敏、部分脱敏、返回 `NULL`、日期替换等常见脱敏方式。
+- **支持操作限制**：可以使用 `RESTRICT ON` 阻止某些语句将脱敏数据复制或写入其他表。
 
 ## 所需权限
 
@@ -33,8 +32,6 @@ aliases: ['/docs/dev/column-level-masking-policy/']
 | `DROP MASKING POLICY` | 删除脱敏策略 |
 
 可以使用 `GRANT` 语句授予这些权限：
-
-{{< copyable "sql" >}}
 
 ```sql
 GRANT CREATE MASKING POLICY ON *.* TO 'security_admin'@'%';
@@ -65,7 +62,7 @@ CREATE [OR REPLACE] MASKING POLICY [IF NOT EXISTS] <policy_name>
 - `RESTRICT ON`：可选。指定对于无法访问未脱敏数据的用户应阻止的操作
 - `ENABLE | DISABLE`：可选。策略是否处于活动状态。默认为 `ENABLE`。
 
-### 示例：基于用户身份进行脱敏
+### 示例：基于用户身份脱敏信用卡号
 
 {{< copyable "sql" >}}
 
@@ -84,26 +81,39 @@ CREATE MASKING POLICY cc_mask_policy ON customers(credit_card)
   ENABLE;
 ```
 
-使用此策略：
+使用此策略后：
 - 用户 `root@%` 和 `admin@%` 可以看到完整的信用卡号：`4532111111111111`
-- 其他用户看到脱敏版本：`4532********1111`
+- 其他用户看到脱敏后的信用卡号：`4532********1111`
 
 ## 内置脱敏函数
 
-TiDB 提供了四个用于常见数据脱敏模式的内置函数：
+TiDB 提供以下内置函数，用于常见的数据脱敏模式。
+
+- `MASK_PARTIAL()`
+- `MASK_FULL()`
+- `MASK_NULL()`
+- `MASK_DATE()`
 
 ### MASK_PARTIAL
 
-**函数与语法**
+`MASK_PARTIAL()` 用于对字符串的一部分进行脱敏。
+
+**语法**
 
 ```sql
 MASK_PARTIAL(column, preserve_left, preserve_right, mask_char)
 ```
+参数说明如下：
+
+- `column`：要脱敏的字符串列。
+- `preserve_left`：保留字符串开头指定数量的字符。
+- `preserve_right`：保留字符串结尾指定数量的字符。
+- `mask_char`：用于遮蔽的脱敏字符，例如 `'*'` 或 `'X'`。
 
 **逻辑与数据类型**
 
 - **逻辑**：通过遮蔽中间部分同时保留开头和结尾指定数量的字符，为字符串数据的部分脱敏提供细粒度控制。
-- **类型**：VARCHAR、CHAR、TEXT 系列、BLOB 系列
+- **类型**：VARCHAR、CHAR、TEXT 及其变体、BLOB 及其变体
 
 **使用场景与示例**
 
@@ -125,7 +135,7 @@ MASK_PARTIAL(phone, 3, 4, '*')
 -- 邮箱：显示第一个字符和域名
 MASK_PARTIAL(email, 1, 12, '*')
 -- 输入：  'alice@example.com'
--- 结果：  'a********e.com'
+-- 结果：  'a****@example.com'
 
 -- SSN：显示前 3 位和后 4 位
 MASK_PARTIAL(ssn, 3, 4, '*')
@@ -135,7 +145,9 @@ MASK_PARTIAL(ssn, 3, 4, '*')
 
 ### MASK_FULL
 
-**函数与语法**
+`MASK_FULL()` 用于完整脱敏一个值。
+
+**语法**
 
 ```sql
 MASK_FULL(column)
@@ -145,6 +157,7 @@ MASK_FULL(column)
 
 - **逻辑**：使用特定类型的默认掩码字符替换整个值。
 - **类型**：字符串、日期/DATETIME/TIMESTAMP、Duration、YEAR
+- **返回规则**
   - **字符串** → 返回相同长度的字符串，所有字符替换为 `'X'`
   - **日期/DATETIME/TIMESTAMP** → 返回 `1970-01-01`（保留原始类型和小数秒精度）
   - **Duration** → 返回 `00:00:00`
@@ -175,7 +188,9 @@ MASK_FULL(birth_date)
 
 ### MASK_NULL
 
-**函数与语法**
+`MASK_NULL()` 用于将值脱敏为 `NULL`。
+
+**语法**
 
 ```sql
 MASK_NULL(column)
@@ -206,22 +221,28 @@ MASK_NULL(api_key)
 
 ### MASK_DATE
 
-**函数与语法**
+`MASK_DATE()` 用于将日期或时间值替换为指定的日期字面量。
+
+**语法**
 
 ```sql
 MASK_DATE(column, date_literal)
-```
+参数说明如下：
+
+- `column`：要脱敏的列。
+- `date_literal`：用于替换原值的日期，格式为 `'YYYY-MM-DD'`，其中 Y/M/D 组件可以保留或作为固定值进行脱敏。
 
 **逻辑与数据类型**
 
 - **逻辑**：类型感知操作符，用于日期组件的部分脱敏。使用指定的字面量替换日期，同时保留原始列类型。
 - **类型**：DATE、DATETIME、TIMESTAMP
-- **占位符**：`date_literal` 遵循格式 `'YYYY-MM-DD'`，其中 Y/M/D 组件可以保留或作为固定值进行脱敏
-- **时间组件**：小时、分钟和秒重置为 `00:00:00`
+- **返回规则**
+    - 对于 `DATE`，返回指定的日期。
+    - 对于 `DATETIME` 或 `TIMESTAMP`，返回指定日期的零点时间，即 `YYYY-MM-DD 00:00:00`，并保留原始类型和小数秒精度。
 
 **使用场景与示例**
 
-- **场景**：保留年份用于趋势分析，或将出生日期通用化为标准日期（如 1 月 1 日）。
+- **场景**：保留年份用于趋势分析，或将出生日期替换为固定日期（如 1 月 1 日）。
 
 {{< copyable "sql" >}}
 
@@ -231,7 +252,7 @@ MASK_DATE(birth_date, '1985-01-01')
 -- 输入：  '1985-03-15'
 -- 结果：  '1985-01-01'
 
--- 保留年份，通用化月份和日期
+-- 保留年份，替换月份和日期为固定日期
 MASK_DATE(hire_date, '2020-01-01')
 -- 输入：  '2020-06-15'
 -- 结果：  '2020-01-01'
@@ -260,7 +281,7 @@ CREATE MASKING POLICY dob_mask ON customers(dob)
 
 ### 使用 current_user()
 
-你可以在脱敏表达式中使用 `current_user()` 来检查登录用户：
+你可以在脱敏表达式中使用 `CURRENT_USER()` 判断当前会话对应的用户账号。
 
 {{< copyable "sql" >}}
 
@@ -294,26 +315,30 @@ CREATE MASKING POLICY ssn_mask ON employees(ssn)
 -- 将角色授予授权用户
 GRANT data_viewer TO 'analyst'@'%';
 
--- 用户必须激活角色才能查看未脱敏的数据
+-- 用户需要先激活角色，才能按照角色条件查看未脱敏数据：
 SET ROLE data_viewer;
 ```
 
-注意：`current_role()` 和 `current_user()` 的数据格式是不一样的，前者类似 '\`data_viewer\`@\`%\`' 而后者类似于 'data_view@%'，区别是有无 \` 包裹。
-这个行为不是 bug，而是 MySQL 就是这样的行为。见 https://github.com/pingcap/tidb/issues/67227
+> **注意：**
+>
+> `CURRENT_USER()` 和 `CURRENT_ROLE()` 的返回格式不同。该行为并非 bug，与 MySQL 一致，详见 [#67227](https://github.com/pingcap/tidb/issues/67227)。
+>
+> - `CURRENT_USER()` 通常返回 `'user_name@host_name'`，例如 `'analyst@%'`。
+> - `CURRENT_ROLE()` 返回当前激活的角色，格式通常包含反引号，例如 ``'`data_viewer`@`%`'``。如果没有激活任何角色，返回 `'NONE'`。
 
-## RESTRICT ON 语义
+## `RESTRICT ON` 语义
 
-`RESTRICT ON` 子句允许你控制脱敏数据是否可用于某些操作。这通过防止通过特定 SQL 操作进行数据泄露提供了额外的安全性。
+`RESTRICT ON` 子句允许你控制脱敏数据是否可用于某些操作。通过该子句，你可以防止看到脱敏值的用户通过特定 SQL 操作复制或使用受保护列的数据，从而避免敏感信息泄露。
 
 ### 支持的操作
 
 | 操作 | 描述 |
 |-----------|-------------|
-| `INSERT_INTO_SELECT` | 阻止通过 `INSERT ... SELECT` 将脱敏数据插入另一个表 |
-| `UPDATE_SELECT` | 阻止通过 `UPDATE ... SET = (SELECT ...)` 使用脱敏数据进行更新 |
-| `DELETE_SELECT` | 阻止通过 `DELETE ... WHERE ... IN (SELECT ...)` 基于脱敏数据进行删除 |
-| `CTAS` | 阻止使用脱敏数据进行 Create Table As Select |
-| `NONE` | 无限制（默认） |
+| `INSERT_INTO_SELECT` | 阻止通过 `INSERT ... SELECT` 将受保护列的数据插入其他表 |
+| `UPDATE_SELECT` | 阻止通过 `UPDATE ... SET ... = (SELECT ...)` 使用受保护列的数据更新其他表 |
+| `DELETE_SELECT` | 阻止通过 `DELETE ... WHERE ... (SELECT ...)` 使用受保护列的数据作为条件删除数据 |
+| `CTAS` | 阻止通过 `CREATE TABLE ... AS SELECT` 使用受保护列的数据创建新表 |
+| `NONE` | 不限制上述操作，默认值 |
 
 ### 示例：使用 RESTRICT ON
 
@@ -329,14 +354,14 @@ CREATE MASKING POLICY sensitive_mask ON sensitive_data(value)
   RESTRICT ON (INSERT_INTO_SELECT, UPDATE_SELECT, DELETE_SELECT)
   ENABLE;
 
--- 普通用户在尝试以下操作时会收到错误：
--- 1. 将脱敏数据复制到另一个表
+-- 普通用户在尝试以下操作时，TiDB 会返回错误：
+-- 1. 将受保护列的数据复制到另一个表
 INSERT INTO other_table SELECT value FROM sensitive_data;  -- 错误
 
--- 2. 使用脱敏数据进行更新
+-- 2. 使用受保护列的数据更新另一个表
 UPDATE some_table SET x = (SELECT value FROM sensitive_data);  -- 错误
 
--- 3. 使用脱敏数据进行删除
+-- 3. 使用受保护列的数据作为删除条件
 DELETE FROM some_table WHERE x IN (SELECT value FROM sensitive_data);  -- 错误
 ```
 
@@ -349,13 +374,13 @@ DELETE FROM some_table WHERE x IN (SELECT value FROM sensitive_data);  -- 错误
 {{< copyable "sql" >}}
 
 ```sql
--- 显示表的所有脱敏策略
+-- 查看指定表上的所有脱敏策略
 SHOW MASKING POLICIES FOR customers;
 
--- 显示特定列的策略
+-- 查看特定列上的策略
 SHOW MASKING POLICIES FOR customers WHERE column_name = 'credit_card';
 
--- 显示包括脱敏策略信息的表创建语句
+-- 查看包括脱敏策略信息的表创建语句
 SHOW CREATE TABLE customers;
 ```
 
@@ -410,7 +435,7 @@ ALTER TABLE customers DROP MASKING POLICY cc_mask_policy;
 
 ## 使用 CREATE OR REPLACE
 
-要更新现有策略，使用 `CREATE OR REPLACE`：
+要创建策略或替换已有策略，可以使用 `CREATE OR REPLACE MASKING POLICY`：
 
 {{< copyable "sql" >}}
 
@@ -424,15 +449,17 @@ CREATE OR REPLACE MASKING POLICY email_mask ON customers(email)
   ENABLE;
 ```
 
+如果同名策略已经存在，TiDB 会使用新的定义替换原有策略。
+
 ## 行为注意事项
 
-### 结果时脱敏
+### 结果阶段脱敏
 
-脱敏策略在**结果时**应用，这意味着：
+TiDB 在查询结果阶段应用脱敏策略，这意味着：
 
-1. **存储不变**：原始数据存储时未经修改
-2. **查询处理使用原始值**：`JOIN`、`WHERE`、`GROUP BY`、`HAVING`、`ORDER BY` 等操作都使用原始值
-3. **仅输出被脱敏**：返回给客户端的数据根据策略进行脱敏
+1. **存储中的原始数据不变**：脱敏策略不会修改表中存储的值。
+2. **查询处理使用原始值**：`JOIN`、`WHERE`、`GROUP BY`、`HAVING`、`ORDER BY` 等操作仍基于原始值计算。
+3. **仅查询返回结果使用脱敏值**：返回给客户端的列值会根据策略表达式脱敏。
 
 理解这一点很重要：
 
@@ -458,23 +485,24 @@ SELECT * FROM users WHERE email = 'user@example.com';
 
 - **字符串类型**：`VARCHAR`、`CHAR`、`TEXT` 及其变体
 - **二进制类型**：`BINARY`、`VARBINARY`、`BLOB`
-- **日期/时间类型**：`DATE`、`TIME`、`DATETIME`、`TIMESTAMP`、`YEAR`
+- **日期和时间类型**：`DATE`、`TIME`、`DATETIME`、`TIMESTAMP`、`YEAR`
 
-对于 `LONGTEXT` 和大型 `BLOB` 类型，仅支持 `MASK_FULL` 和 `MASK_NULL`。
+对于 `LONGTEXT` 和大型 `BLOB` 类型，仅支持使用 `MASK_FULL()` 或 `MASK_NULL()` 进行完整脱敏或返回 `NULL`。
 
 ### 限制
 
-以下情况**不支持**：
+以下对象或场景不支持创建脱敏策略：
 
-- 视图上的脱敏策略
-- 生成列上的脱敏策略
-- 临时表上的脱敏策略
-- 系统表上的脱敏策略
-- 在脱敏策略处于活动状态时修改列类型或长度（先删除策略）
+- 视图
+- 生成列
+- 临时表
+- 系统表
+
+此外，如果列上存在脱敏策略，TiDB 会阻止修改该列的类型、长度或精度。要修改列定义，需要先删除该列上的脱敏策略，完成列变更后再重新创建策略。
 
 ### 级联行为
 
-当删除具有脱敏策略的列或表时，策略会自动从系统中删除。当重命名列或表时，脱敏策略仍然绑定到它。
+当删除带有脱敏策略的列或表时，TiDB 会同步删除列或表相关的脱敏策略。当重命名表或列时，脱敏策略仍然绑定到重命名后的表或列。
 
 ## 完整示例
 
@@ -543,7 +571,7 @@ GRANT salary_access TO hr_admin;
 
 ## MySQL 兼容性
 
-列级脱敏策略是 TiDB 特有的功能，与 MySQL **不兼容**。语法和行为是 TiDB 独有的。
+列级脱敏策略是 TiDB 特有的功能，与 MySQL 不兼容。相关 DDL 语法、内置脱敏函数和运行时行为均为 TiDB 扩展。
 
 使用 BR（备份与恢复）或 TiCDC 等工具复制数据时：
 
