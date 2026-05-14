@@ -113,3 +113,9 @@ tiup install tidb-lightning
 本教程对 TiDB Lightning 进行了简单的介绍，并快速部署了一套简单的 TiDB Lightning 集群，将全量备份数据导入到 TiDB 集群中。
 
 关于 TiDB Lightning 的详细功能和使用，参见 [TiDB Lightning 简介](/tidb-lightning/tidb-lightning-overview.md)。
+
+## 相关资源
+
+<RelatedResources>
+  <ResourceCard title="管理 TiDB 实验 6: 使用 TiDB Lightning 将数据导入 TiDB" type="lab" link="https://labs.pingcap.com/labs/dba_303_lab_ff5" imgSrc="https://lab-static.pingcap.com/quick-demo/dba_303_ch07_en.png" duration="60 分钟" />
+</RelatedResources>

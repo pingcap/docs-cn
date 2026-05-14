@@ -422,3 +422,9 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | view | `{{fn .DB}}.{{fn .Table}}-schema-view` |
 
 例如，使用 `--output-filename-template '{{define "table"}}{{fn .Table}}.$schema{{end}}{{define "data"}}{{fn .Table}}.{{printf "%09d" .Index}}{{end}}'`，Dumpling 会将表 `db.tbl:normal` 的 schema 写入名为 `tbl%3Anormal.$schema.sql` 的文件中，将数据写入 `tbl%3Anormal.000000000.sql`、`tbl%3Anormal.000000001.sql` 等文件中。
+
+## 相关资源
+
+<RelatedResources>
+  <ResourceCard title="管理 TiDB 实验 7: 使用 Dumpling 导出数据" type="lab" link="https://labs.pingcap.com/labs/dba_303_lab_ff6" imgSrc="https://lab-static.pingcap.com/quick-demo/dba_303_ch08_en.png" duration="60 分钟" />
+</RelatedResources>
