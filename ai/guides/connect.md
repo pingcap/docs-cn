@@ -46,7 +46,7 @@ db = TiDBClient.connect(
 
 > **注意：**
 >
-> 对于 TiDB Cloud Starter，当使用公共端点时，[连接数据库必须使用 TLS](https://docs.pingcap.com/tidbcloud/secure-connections-to-starter-clusters/)。`pytidb` 客户端会**自动**为 TiDB Cloud Starter 实例启用 TLS。
+> 对于 TiDB Cloud Starter，当使用公共端点时，[连接数据库必须使用 TLS](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-clusters/)。`pytidb` 客户端会**自动**为 TiDB Cloud Starter 实例启用 TLS。
 
 </div>
 <div label="TiDB Self-Managed">
@@ -99,7 +99,7 @@ db = TiDBClient.connect(
 
 > **注意：**
 >
-> 对于 TiDB Cloud Starter，当使用公共端点时，[连接数据库必须使用 TLS](https://docs.pingcap.com/tidbcloud/secure-connections-to-starter-clusters/)，因此需要在连接字符串中设置 `ssl_verify_cert=true&ssl_verify_identity=true`。
+> 对于 TiDB Cloud Starter，当使用公共端点时，[连接数据库必须使用 TLS](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-clusters/)，因此需要在连接字符串中设置 `ssl_verify_cert=true&ssl_verify_identity=true`。
 
 </div>
 <div label="TiDB Self-Managed">
