@@ -1690,7 +1690,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 该变量用来设置 DML 语句的执行方式。
     - `"standard"` 表示使用标准的 DML 执行方式，TiDB 事务在提交前缓存在内存中。适用于处理高并发且可能存在冲突的事务场景，为默认推荐使用的执行方式。
     - `"bulk"` 表示使用 Pipelined DML 执行方式，适合于处理因大量数据写入导致 TiDB 内存使用过多的情况。更多信息，请参考 [Pipelined DML](/pipelined-dml.md)。
-- 在 TiDB Cloud Essential and Premium 中，该变量只支持设置为 `"standard"`，不支持设置为 `"bulk"`。如果设置为 `"bulk"`，设置会被拒绝，因此不能通过 `tidb_dml_type = "bulk"` 启用 Pipelined DML。
+- 在 TiDB Cloud Essential 和 TiDB Cloud Premium 中，该变量只支持设置为 `"standard"`，不支持设置为 `"bulk"`。如果设置为 `"bulk"`，设置会被拒绝，因此不能通过 `tidb_dml_type = "bulk"` 启用 Pipelined DML。
 
 ### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -4931,7 +4931,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值：`leader`
 - 可选值：`leader`、`follower`、`leader-and-follower`、`prefer-leader`、`closest-replicas`、`closest-adaptive` 和 `learner`。其中，`learner` 从 v6.6.0 开始引入。
 - 这个变量用于控制 TiDB 的 Follower Read 功能的行为。从 v8.5.4 开始，该变量仅对只读 SQL 语句生效。
-- 在 TiDB Cloud Essential and Premium 中，该变量只支持 `leader`。如果将该变量设置为其他读取模式，设置会被拒绝。
+- 在 TiDB Cloud Essential 和 TiDB Cloud Premium 中，该变量只支持 `leader`。如果将该变量设置为其他读取模式，设置会被拒绝。
 - 关于使用方式与实现原理，见 [Follower Read](/follower-read.md)。
 
 ### `tidb_request_source_type` <span class="version-mark">从 v7.4.0 版本开始引入</span>
@@ -5668,7 +5668,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：枚举型
 - 默认值：
-    - TiDB Cloud Essential and Premium：`STRICT`
+    - TiDB Cloud Essential 和 TiDB Cloud Premium：`STRICT`
     - 其他 TiDB 集群：对于新创建的 v6.0.0 及以上集群，默认值为 `FAST`。对于升级版本的集群，如果升级前是低于 v6.0.0 的版本，升级后默认值为 `OFF`。
 - 可选值：`OFF`，`FAST`，`STRICT`
 - 这个变量用于设置 assertion 级别。assertion 是一项在事务提交过程中进行的数据索引一致性校验，它对正在写入的 key 是否存在进行检查。如果不符则说明数据索引不一致，会导致事务 abort。详见[数据索引一致性报错](/troubleshoot-data-inconsistency-errors.md)。
