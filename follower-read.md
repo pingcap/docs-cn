@@ -36,6 +36,10 @@ Follower Read 适用于以下场景：
 set [session | global] tidb_replica_read = '<目标值>';
 ```
 
+> **注意：**
+>
+> 仅适用于 TiDB X：TiDB X 不支持非 `leader` 读取模式，`tidb_replica_read` 仅可设置为 `leader`。如果设置为其他读取模式，设置会被拒绝。
+
 作用域：SESSION | GLOBAL
 
 默认值：leader
