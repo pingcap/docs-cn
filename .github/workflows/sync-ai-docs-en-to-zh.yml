@@ -225,6 +225,7 @@ jobs:
           SOURCE_FOLDER: ""
           SOURCE_FILES: ${{ steps.source_files.outputs.files }}
           SOURCE_FILES_TRANSLATION_MODE: ${{ inputs.source_files_translation_mode || 'incremental' }}
+          IGNORE_RESOURCE_CARD_SECTION: "Yes"
           TARGET_REPO_PATH: ${{ github.workspace }}/docs-cn
           AI_PROVIDER: ${{ inputs.ai_provider || 'azure' }}
           TERMS_PATH: ${{ github.workspace }}/docs-source/resources/terms.md
