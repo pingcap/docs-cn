@@ -98,7 +98,7 @@ tiup cluster upgrade <cluster-name> <version> --transfer-timeout 600
 
 - TiCDC v4.0.2 对 `changefeed` 的配置做了调整，请参阅[配置文件兼容注意事项](/ticdc/ticdc-compatibility.md#命令行参数和配置文件兼容性)。
 - 升级期间遇到的问题及其解决办法，请参阅[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#4-升级-faq)。
-- TiCDC 自 v6.3.0 起支持滚动升级，使用 TiUP 升级 TiCDC 节点期间，能够保证同步延迟稳定，不发生剧烈波动。满足以下条件将自动启用滚动升级：
+- TiCDC 自 v6.3.0 起支持滚动升级，但不推荐 TiCDC 老架构在滚动升级的过程中运行 Changefeed，建议暂停 Changefeed 再做 TiCDC 老架构的升级。TiCDC 新架构支持滚动升级的过程中运行 Changefeed。更多说明请参考 [TiCDC 历史版本滚动升级兼容性说明](/ticdc/ticdc-compatibility.md#历史版本升级的兼容性说明)。满足以下条件将自动启用滚动升级：
 
     - TiCDC 版本大于等于 v6.3.0。
     - TiUP 版本大于等于 v1.11.3。
