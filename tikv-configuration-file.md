@@ -2664,10 +2664,6 @@ Raft Engine 相关的配置项。
 + 在默认的一个 TSO 物理时钟更新周期内 (50ms)，PD 最多提供 262144 个 TSO，超过这个数量后 PD 会暂缓 TSO 请求的处理。这个配置用于避免 PD 的 TSO 消耗殆尽、影响其他业务的使用。如果增大这个参数，建议同时减小 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) 参数，以获得足够的 TSO。
 + 默认值：8192
 
-## resource-metering
-
-资源计量 (Resource Metering) 相关的配置项。
-
 ## resource-control
 
 资源控制 (Resource Control) 在 TiKV 存储层相关的配置项。
