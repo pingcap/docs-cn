@@ -4194,6 +4194,19 @@ SHOW WARNINGS;
 
 </details>
 
+### `tidb_opt_group_ndv_skew_ratio` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> TiDB 查询优化器会使用该变量。未经 TiDB 支持团队或工程团队指导，请勿调整此变量。
+
+- 作用域：SESSION | GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 1]`
+- 默认值：`0`
+- 该变量用于控制 group NDV（Number of Distinct Values，去重值数量）的 naive estimation 与 exponential backoff estimation 两种估算方式之间的比例。当设置为 `0` 时，使用 naive estimation；当设置为 `1` 时，使用 exponential backoff estimation；当取值介于 `0` 和 `1` 之间时，则表示两种估算方法按权重组合使用。
+
 ### `tidb_opt_scan_factor`
 
 - 作用域：SESSION | GLOBAL
