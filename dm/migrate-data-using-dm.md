@@ -186,3 +186,9 @@ DM 在运行过程中，DM-worker、DM-master 及 dmctl 都会通过日志输出
 
 - DM-master 日志目录：通过 DM-master 进程参数 `--log-file` 设置。如果使用 TiUP 部署 DM，则日志目录位于 `{log_dir}`。
 - DM-worker 日志目录：通过 DM-worker 进程参数 `--log-file` 设置。如果使用 TiUP 部署 DM，则日志目录位于 `{log_dir}`。
+
+## 相关资源
+
+<RelatedResources>
+  <ResourceCard title="管理 TiDB 实验 10: 使用 TiDB Data Migration 进行数据迁移" type="lab" link="https://labs.pingcap.com/labs/dba_303_lab_ff9" imgSrc="https://lab-static.pingcap.com/quick-demo/dba_303_ch11_en.png" duration="60 分钟" />
+</RelatedResources>
