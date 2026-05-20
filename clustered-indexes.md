@@ -217,3 +217,9 @@ mysql> split table t by (0, ''), (50000, ''), (100000, '');
 mysql> create table t (a bigint primary key nonclustered auto_random);
 ERROR 8216 (HY000): Invalid auto random: column a is not the integer primary key, or the primary key is nonclustered
 ```
+
+## 相关资源
+
+<RelatedResources>
+  <ResourceCard title="TiDB SQL 调优实验 1: 聚簇索引和非聚簇索引" type="lab" link="https://labs.pingcap.com/labs/dba_307_lab_ff0" imgSrc="https://lab-static.pingcap.com/quick-demo/307-01.png" duration="90 分钟" />
+</RelatedResources>
