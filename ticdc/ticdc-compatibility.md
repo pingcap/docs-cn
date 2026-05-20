@@ -43,12 +43,13 @@ TiCDC 依赖 TiDB、TiKV 和 PD 提供的上游变更数据及相关接口。随
 
 ### 老架构 TiCDC 升级建议
 
-对于老架构 TiCDC，**不建议在 TiDB 滚动升级期间持续运行 Changefeed**。升级时，建议按以下顺序执行：
+如果将老架构 TiCDC 升级到新架构，需要先暂停所有 Changefeed 再做升级。更多说明请参阅 [TiCDC 新架构升级指南](/ticdc/ticdc-architecture.md#升级指南)。
+
+如果是老架构 TiCDC 之间的升级，小版本之间可以正常滚动升级；如果是跨大版本升级（v8.5.0 -> v8.5.3 属于跨小版本，v8.1.x -> v8.5.x 属于跨大版本），**不建议在 TiDB 集群滚动升级期间持续运行 Changefeed**。需要跨大版本升级时，建议按以下顺序执行：
 
 1. 暂停所有 Changefeed。
-2. 先升级 TiCDC。
-3. 再升级 TiDB 集群中的其他组件。
-4. 升级完成后，恢复 Changefeed。
+2. 滚动升级 TiDB 集群。
+3. 升级完成后，恢复 Changefeed。
 
 例如，假设将集群从 v8.5.4 升级到 v8.5.5，如果使用 TiUP 管理集群，可以参考以下命令（以下示例以 `linux-amd64` 为例，其他平台请根据实际环境替换包名中的平台信息）：
 
@@ -58,35 +59,14 @@ tiup cdc:v8.5.4 cli changefeed pause \
   --server=http://<ticdc-host>:8300 \
   --changefeed-id=<changefeed-id>
 
-# 2. 先升级 TiCDC。
-wget https://tiup-mirrors.pingcap.com/cdc-v8.5.5-linux-amd64.tar.gz \
-  -O /tmp/cdc-v8.5.5-linux-amd64.tar.gz
-tiup cluster patch <cluster-name> /tmp/cdc-v8.5.5-linux-amd64.tar.gz -R cdc
+# 2. 滚动升级 TiDB 集群。
+tiup cluster upgrade <cluster-name> v8.5.5
 
-# 3. 再升级 TiDB 集群中的其他组件。
-#    需根据集群中实际存在的组件分别执行。以下示例包括 PD、TiKV 和 TiDB。
-wget https://tiup-mirrors.pingcap.com/pd-v8.5.5-linux-amd64.tar.gz \
-  -O /tmp/pd-v8.5.5-linux-amd64.tar.gz
-wget https://tiup-mirrors.pingcap.com/tikv-v8.5.5-linux-amd64.tar.gz \
-  -O /tmp/tikv-v8.5.5-linux-amd64.tar.gz
-wget https://tiup-mirrors.pingcap.com/tidb-v8.5.5-linux-amd64.tar.gz \
-  -O /tmp/tidb-v8.5.5-linux-amd64.tar.gz
-
-tiup cluster patch <cluster-name> /tmp/pd-v8.5.5-linux-amd64.tar.gz -R pd
-tiup cluster patch <cluster-name> /tmp/tikv-v8.5.5-linux-amd64.tar.gz -R tikv
-tiup cluster patch <cluster-name> /tmp/tidb-v8.5.5-linux-amd64.tar.gz -R tidb
-
-# 如果集群中还包含 TiFlash、TiProxy、TiKV-CDC 等组件，也需按相同方式分别执行 patch。
-
-# 4. 升级完成后，恢复所有 Changefeed（需对每个 Changefeed 分别执行一次）。
+# 3. 升级完成后，恢复所有 Changefeed（需对每个 Changefeed 分别执行一次）。
 tiup cdc:v8.5.5 cli changefeed resume \
   --server=http://<ticdc-host>:8300 \
   --changefeed-id=<changefeed-id>
 ```
-
-> **注意：**
->
-> `tiup cluster patch` 每次只能替换一个组件，因此第 3 步需要根据集群中实际存在的组件分别执行。
 
 ### 新架构 TiCDC 升级建议
 
