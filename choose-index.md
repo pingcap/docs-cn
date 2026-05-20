@@ -685,3 +685,9 @@ mysql> SHOW WARNINGS;  -- cannot hit plan cache since the JSON_CONTAINS predicat
 +---------+------+-------------------------------------------------------------------------------------------------------+
 1 row in set (0.01 sec)
 ```
+
+## 相关资源
+
+<RelatedResources>
+  <ResourceCard title="TiDB SQL 调优实验 1: 聚簇索引和非聚簇索引" type="lab" link="https://labs.pingcap.com/labs/dba_307_lab_ff0" imgSrc="https://lab-static.pingcap.com/quick-demo/307-01.png" duration="90 分钟" />
+</RelatedResources>

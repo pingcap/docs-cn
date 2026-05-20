@@ -150,3 +150,9 @@ WHERE `A` = 1 OR `A` = 2;
 - 从 BR v8.2.0 起，BR 数据恢复对 TiCDC 的限制被放宽：如果所恢复数据的 BackupTS（即备份时间）早于 Changefeed 的 [CheckpointTS](/ticdc/ticdc-classic-architecture.md#checkpointts)（即记录当前同步进度的时间戳），BR 数据恢复可以正常进行。考虑到 BackupTS 通常较早，此时可以认为绝大部分场景下，当集群存在 TiCDC 同步任务时，BR 都可以进行数据恢复。
 
 对上游存在较大事务的场景提供部分支持，详见 [TiCDC 是否支持同步大事务？有什么风险吗？](/ticdc/ticdc-faq.md#ticdc-支持同步大事务吗有什么风险吗)。
+
+## 相关资源
+
+<RelatedResources>
+  <ResourceCard title="管理 TiDB 实验 11: 使用 TiCDC 复制 TiDB 变更事件" type="lab" link="https://labs.pingcap.com/labs/dba_303_lab_ff10" imgSrc="https://lab-static.pingcap.com/quick-demo/dba_303_ch12_en.png" duration="60 分钟" />
+</RelatedResources>

@@ -344,3 +344,9 @@ TiDB Dashboard 中可以查看当前 [`RESOURCE_GROUPS`](/information-schema/inf
 * [ALTER RESOURCE GROUP](/sql-statements/sql-statement-alter-resource-group.md)
 * [DROP RESOURCE GROUP](/sql-statements/sql-statement-drop-resource-group.md)
 * [RESOURCE GROUP RFC](https://github.com/pingcap/tidb/blob/release-8.5/docs/design/2022-11-25-global-resource-control.md)
+
+## 相关资源
+
+<RelatedResources>
+  <ResourceCard title="管理 TiDB 实验 5: 使用资源控制功能管理数据库混合工作负载" type="lab" link="https://labs.pingcap.com/labs/demo_006" imgSrc="https://lab-static.pingcap.com/quick-demo/dba_303_ch05_en.png" duration="90 分钟" />
+</RelatedResources>
