@@ -387,3 +387,9 @@ tiup cluster display tidb-test
 - [TiCDC 常见问题](/ticdc/ticdc-faq.md)
 
 如果你想在不中断线上服务的情况下扩容或缩容 TiDB 集群，请参阅[使用 TiUP 扩容缩容 TiDB 集群](/scale-tidb-using-tiup.md)。
+
+## 相关资源
+
+<RelatedResources>
+  <ResourceCard title="管理 TiDB 实验 1: 使用 TiUP 部署 TiDB 集群" type="lab" link="https://labs.pingcap.com/labs/dba_303_lab_ff0" imgSrc="https://lab-static.pingcap.com/quick-demo/dba_303_ch01_en.png" duration="60 分钟" />
+</RelatedResources>
