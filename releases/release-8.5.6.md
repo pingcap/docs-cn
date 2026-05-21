@@ -43,14 +43,6 @@ TiDB 版本：8.5.6
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/identify-slow-queries)。
 
-- TiDB Dashboard 的 Top SQL 页面支持收集和展示 TiKV 网络流量和逻辑 I/O 指标 [#62916](https://github.com/pingcap/tidb/issues/62916) @[yibin87](https://github.com/yibin87)
-
-    在之前的版本中，TiDB Dashboard 在识别 Top SQL 时仅基于 CPU 相关指标，在复杂场景下难以从网络或存储访问角度定位性能瓶颈。
-
-    从 v8.5.6 起，你可以在 Top SQL 设置中打开 **TiKV 网络 IO 采集（多维度）**开关，以查看 TiKV 节点的 `Network Bytes` 和 `Logical IO Bytes` 等指标，并可以按 `By Query`、`By Table`、`By DB` 或 `By Region` 维度进行聚合分析，从而更全面地定位资源消耗热点。
-
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/top-sql)。
-
 ### SQL 功能
 
 - 支持列级权限管理 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf) @[fzzf678](https://github.com/fzzf678)
@@ -117,7 +109,6 @@ TiDB 版本：8.5.6
 | TiKV | [`gc.auto-compaction.mvcc-read-aware-enabled`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#mvcc-read-aware-enabled-从-v856-版本开始引入) | 新增 | 控制是否启用 MVCC-read-aware compaction。默认值为 `false`。 |
 | TiKV | [`gc.auto-compaction.mvcc-read-weight`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#mvcc-read-weight-从-v856-版本开始引入) | 新增 | 在计算 Region 的压缩优先级分数时，对 MVCC 读取活动应用的权重乘数。默认值为 `3.0`。 |
 | TiKV | [`gc.auto-compaction.mvcc-scan-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#mvcc-scan-threshold-从-v856-版本开始引入) | 新增 | 每次读取请求扫描的 MVCC 版本数量的最小值，用于将 Region 标记为 compaction 候选。默认值为 `1000`。 |
-| TiKV | [`resource-metering.enable-network-io-collection`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#enable-network-io-collection-从-v856-版本开始引入) | 新增 | 控制是否在 [Top SQL](https://docs.pingcap.com/zh/tidb/v8.5/top-sql) 中额外采集 TiKV 网络流量和逻辑 I/O 信息。默认值为 `false`。 |
 | TiCDC | [`sink.csv.output-field-header`](https://docs.pingcap.com/zh/tidb/v8.5/ticdc-csv#使用-csv) | 新增 | 控制 CSV 文件是否输出表头行。默认值为 `false`。仅适用于 TiCDC 新架构。 |
 
 ### 系统表变更
@@ -143,7 +134,6 @@ TiDB 版本：8.5.6
 
     - 新增 Load-based Compaction 机制，该机制可感知 MVCC 读取开销，并优先对读取开销较高的 Region 执行 Compaction 操作，以提升查询性能 [#19133](https://github.com/tikv/tikv/issues/19133) @[mittalrishabh](https://github.com/mittalrishabh)
     - 优化集群扩缩容过程中 stale range 的清理逻辑，不再通过 ingest SST 文件执行清理，而是直接删除过期 key，以降低对在线请求延迟的影响 [#18042](https://github.com/tikv/tikv/issues/18042) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 为 Top SQL 新增 TiKV 网络流量和逻辑 I/O 信息的采集支持，帮你更准确地诊断 SQL 性能问题 [#18815](https://github.com/tikv/tikv/issues/18815) @[yibin87](https://github.com/yibin87)
 
 + PD
 
