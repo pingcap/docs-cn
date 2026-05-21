@@ -3470,9 +3470,9 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`0`
 - 可选值：`0`，浮点数 `(0, 1]`，整数 `(1, 9223372036854775807]`
 - 当启用[内存仲裁模式](/configure-memory-usage.md#内存仲裁模式)后，该变量控制 TiDB 实例中仲裁者可分配的内存资源份额上限，详见 [TiDB 内存控制](/configure-memory-usage.md#手动保障内存安全)。
-    - `0`：默认资源份额上限为 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 值的 `95%`
+    - `0`：默认资源份额上限为 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 值的 `95%`。
     - 浮点数 `(0, 1]`：指定资源份额上限相对于 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的比例。例如，`0.8` 表示资源份额上限为 `tidb_server_memory_limit * 0.8`。
-    - 整数 `(1, 9223372036854775807]`：指定字节数
+    - 整数 `(1, 9223372036854775807]`：指定字节数。
 
 ### `tidb_mem_arbitrator_wait_averse` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
@@ -3486,7 +3486,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`0`
 - 可选值：`0`，`1`，`nolimit`
 - 当启用[内存仲裁模式](/configure-memory-usage.md#内存仲裁模式)后，该变量用于控制 SQL 等待内存资源时的行为，详见 [TiDB 内存控制](/configure-memory-usage.md#内存仲裁模式)。
-    - `0`（默认值）：表示禁用该功能，变量不生效
+    - `0`（默认值）：表示禁用该功能，变量不生效。
     - `1`：仅在 `priority` 模式下生效。SQL 订阅内存资源时自动绑定为高优先级；当全局内存资源不足时，SQL 会终止执行，而不是阻塞等待。
     - `nolimit`：SQL 的内存使用不受仲裁者限制。该取值可能增加 TiDB 实例发生 OOM 的风险。
 
