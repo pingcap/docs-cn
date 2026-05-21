@@ -43,14 +43,6 @@ TiDB 版本：8.5.6
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/identify-slow-queries)。
 
-- TiDB Dashboard 的 Top SQL 页面支持收集和展示 TiKV 网络流量和逻辑 I/O 指标 [#62916](https://github.com/pingcap/tidb/issues/62916) @[yibin87](https://github.com/yibin87)
-
-    在之前的版本中，TiDB Dashboard 在识别 Top SQL 时仅基于 CPU 相关指标，在复杂场景下难以从网络或存储访问角度定位性能瓶颈。
-
-    从 v8.5.6 起，你可以在 Top SQL 设置中打开 **TiKV 网络 IO 采集（多维度）**开关，以查看 TiKV 节点的 `Network Bytes` 和 `Logical IO Bytes` 等指标，并可以按 `By Query`、`By Table`、`By DB` 或 `By Region` 维度进行聚合分析，从而更全面地定位资源消耗热点。
-
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/top-sql)。
-
 ### SQL 功能
 
 - 支持列级权限管理 [#61706](https://github.com/pingcap/tidb/issues/61706) @[CbcWestwolf](https://github.com/CbcWestwolf) @[fzzf678](https://github.com/fzzf678)
@@ -101,8 +93,6 @@ TiDB 版本：8.5.6
 | [`tidb_analyze_version`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_analyze_version-从-v510-版本开始引入) | 修改 | 从 v8.5.6 开始，统计信息版本 1 (`tidb_analyze_version = 1`) 已废弃，并将在未来的版本中移除。建议使用统计信息版本 2 (`tidb_analyze_version = 2`)。 |
 | [`tidb_ignore_inlist_plan_digest`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_ignore_inlist_plan_digest-从-v760-版本开始引入) | 修改 | 默认值从 `OFF` 修改为 `ON`。默认值 `ON` 表示 TiDB 在生成执行计划摘要时，会忽略 `IN` 列表中的元素差异（包括元素数量的差异），并使用 `...` 代替 `IN` 列表中的元素。 |
 | [`tidb_service_scope`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_service_scope-从-v740-版本开始引入)   | 修改  | 从 v8.5.6 开始，该变量的取值大小写不敏感。TiDB 会将输入值转换为小写形式进行存储和比较。 |
-| [`InPacketBytes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#inpacketbytes-从-v856-版本开始引入) | 新增 | 这个变量只做内部统计使用，对用户不可见。 |
-| [`OutPacketBytes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#outpacketbytes-从-v856-版本开始引入) | 新增 | 这个变量只做内部统计使用，对用户不可见。 |
 | [`tidb_foreign_key_check_in_shared_lock`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_foreign_key_check_in_shared_lock-从-v856-版本开始引入) | 新增 | 用于控制在悲观事务中，外键约束检查对父表中的行加锁时是否使用共享锁（而非排他锁）。默认值为 `OFF`，代表默认使用排他锁。 |
 | [`tidb_max_dist_task_nodes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_max_dist_task_nodes-从-v856-版本开始引入)  | 新增 | 用于定义分布式框架任务可使用的 TiDB 节点数上限。默认值为 `-1`，表示启用自动模式。在自动模式下，TiDB 将按照 `min(3, tikv_nodes / 3)` 动态计算该值，其中 `tikv_nodes` 表示集群中 TiKV 节点的数量。 |
 | [`tidb_opt_join_reorder_through_sel`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_opt_join_reorder_through_sel-从-v856-版本开始引入)  | 新增 | 用于提升部分多表 JOIN 查询的连接顺序优化 (Join Reorder) 效果。当该变量值为 `ON` 时，在满足安全条件的前提下，优化器会将多个连续 JOIN 之间的过滤条件 (`Selection`) 一并纳入连接顺序优化的候选范围。在重建 JOIN 树时，优化器会将这些条件下推至更合适的位置，从而使更多表参与连接顺序优化。 |
@@ -117,7 +107,6 @@ TiDB 版本：8.5.6
 | TiKV | [`gc.auto-compaction.mvcc-read-aware-enabled`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#mvcc-read-aware-enabled-从-v856-版本开始引入) | 新增 | 控制是否启用 MVCC-read-aware compaction。默认值为 `false`。 |
 | TiKV | [`gc.auto-compaction.mvcc-read-weight`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#mvcc-read-weight-从-v856-版本开始引入) | 新增 | 在计算 Region 的压缩优先级分数时，对 MVCC 读取活动应用的权重乘数。默认值为 `3.0`。 |
 | TiKV | [`gc.auto-compaction.mvcc-scan-threshold`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#mvcc-scan-threshold-从-v856-版本开始引入) | 新增 | 每次读取请求扫描的 MVCC 版本数量的最小值，用于将 Region 标记为 compaction 候选。默认值为 `1000`。 |
-| TiKV | [`resource-metering.enable-network-io-collection`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#enable-network-io-collection-从-v856-版本开始引入) | 新增 | 控制是否在 [Top SQL](https://docs.pingcap.com/zh/tidb/v8.5/top-sql) 中额外采集 TiKV 网络流量和逻辑 I/O 信息。默认值为 `false`。 |
 | TiCDC | [`sink.csv.output-field-header`](https://docs.pingcap.com/zh/tidb/v8.5/ticdc-csv#使用-csv) | 新增 | 控制 CSV 文件是否输出表头行。默认值为 `false`。仅适用于 TiCDC 新架构。 |
 
 ### 系统表变更
@@ -143,8 +132,6 @@ TiDB 版本：8.5.6
 
     - 新增 Load-based Compaction 机制，该机制可感知 MVCC 读取开销，并优先对读取开销较高的 Region 执行 Compaction 操作，以提升查询性能 [#19133](https://github.com/tikv/tikv/issues/19133) @[mittalrishabh](https://github.com/mittalrishabh)
     - 优化集群扩缩容过程中 stale range 的清理逻辑，不再通过 ingest SST 文件执行清理，而是直接删除过期 key，以降低对在线请求延迟的影响 [#18042](https://github.com/tikv/tikv/issues/18042) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 为 Top SQL 新增 TiKV 网络流量和逻辑 I/O 信息的采集支持，帮你更准确地诊断 SQL 性能问题 [#18815](https://github.com/tikv/tikv/issues/18815) @[yibin87](https://github.com/yibin87)
-
 + PD
 
     - 删除不存在的 label 时，返回 `404` 而非 `200` [#10089](https://github.com/tikv/pd/issues/10089) @[lhy1024](https://github.com/lhy1024)
