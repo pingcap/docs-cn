@@ -17,7 +17,35 @@ summary: 了解 TiDB 的日志备份与 PITR 的架构设计。
 
 日志备份的流程如下：
 
-![BR log backup process design](/media/br/br-log-backup-ts.png)
+```mermaid
+sequenceDiagram
+    actor User
+    participant BR
+    participant PD
+    participant TiKV
+    participant TiDB
+    participant Storage
+
+    User->>BR: Run `br log start`
+    BR->>PD: Register log backup task
+    TiKV->>PD: Fetch log backup task
+    par TiKV handles the local log backup task
+        loop
+            TiKV->>TiKV: Read KV change data
+            TiKV->>PD: Fetch global checkpoint ts
+            TiKV->>TiKV: Generate local metadata
+            TiKV->>Storage: Upload log data & metadata
+            TiKV->>PD: Configure GC
+        end
+    and
+        loop
+            TiDB->>TiKV: Watch backup progress
+            TiDB->>PD: Report global checkpoint ts
+        end
+    end
+    User->>BR: Run `br log status`
+    BR->>PD: Fetch status of log backup task
+```
 
 系统组件和关键概念：
 
@@ -53,7 +81,29 @@ summary: 了解 TiDB 的日志备份与 PITR 的架构设计。
 
 PITR 的流程如下：
 
-![Point-in-time recovery process design](/media/br/pitr-ts.png)
+```mermaid
+sequenceDiagram
+    actor User
+    participant BR
+    participant TiKV
+    participant PD
+    participant Storage
+
+    User->>BR: Run `br restore point`
+    BR->>TiKV: Restore full data
+    loop restore log data
+        BR->>Storage: Read backup data
+        BR->>PD: Fetch Region info
+        BR->>TiKV: Request TiKV to restore data
+        loop TiKV handles restore request
+            TiKV->>Storage: Download KVs
+            TiKV->>TiKV: Rewrite KVs
+            TiKV->>TiKV: Apply KVs
+        end
+        TiKV->>BR: Report restore result
+        BR->>BR: Handle all restore results
+    end
+```
 
 完整的 PITR 交互流程描述如下：
 
