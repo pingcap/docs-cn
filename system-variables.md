@@ -3426,6 +3426,70 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：线程
 - TiFlash 中 request 执行的最大并发度。默认值为 `-1`，表示该系统变量无效，此时最大并发度取决于 TiFlash 配置项 `profiles.default.max_threads` 的设置。`0` 表示由 TiFlash 系统自动设置该值。
 
+### `tidb_mem_arbitrator_mode` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：枚举型
+- 默认值：`disable`
+- 可选值：`disable`、`standard`、`priority`
+- 该变量用于设置 TiDB 实例的内存管理模式，详见 [TiDB 内存控制](/configure-memory-usage.md#内存仲裁模式)。有以下取值：
+    - `disable`（默认值）：表示禁用内存仲裁模式，保持内存资源[先使用后上报](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入)的机制。
+    - `standard`：表示启用标准内存仲裁模式。SQL 需要使用内存资源时，先向内存仲裁者进行订阅，订阅成功后再分配内存资源。如果订阅失败，SQL 终止执行。
+    - `priority`：表示启用基于优先级的内存仲裁模式。SQL 需要使用内存资源时，先向内存仲裁者进行订阅，订阅成功后再分配内存资源。TiDB 根据 SQL 的[资源组优先级](/information-schema/information-schema-resource-groups.md)处理内存资源订阅请求。
+
+### `tidb_mem_arbitrator_query_reserved` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：整数型
+- 默认值：`0`
+- 单位：字节
+- 范围：`[0, 9223372036854775807]`
+- 当启用[内存仲裁模式](/configure-memory-usage.md#内存仲裁模式)后，该变量控制 SQL 执行前向内存仲裁者预先订阅的内存资源份额，详见 [TiDB 内存控制](/configure-memory-usage.md#手动保障内存安全)。
+
+### `tidb_mem_arbitrator_soft_limit` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串
+- 默认值：`0`
+- 可选值：`0`，浮点数 `(0, 1]`，整数 `(1, 9223372036854775807]`
+- 当启用[内存仲裁模式](/configure-memory-usage.md#内存仲裁模式)后，该变量控制 TiDB 实例中仲裁者可分配的内存资源份额上限，详见 [TiDB 内存控制](/configure-memory-usage.md#手动保障内存安全)。
+    - `0`：默认资源份额上限为 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 值的 `95%`
+    - 浮点数 `(0, 1]`：指定资源份额上限相对于 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的比例。例如，`0.8` 表示资源份额上限为 `tidb_server_memory_limit * 0.8`。
+    - 整数 `(1, 9223372036854775807]`：指定字节数
+
+### `tidb_mem_arbitrator_wait_averse` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：枚举型
+- 默认值：`0`
+- 可选值：`0`，`1`，`nolimit`
+- 当启用[内存仲裁模式](/configure-memory-usage.md#内存仲裁模式)后，该变量用于控制 SQL 等待内存资源时的行为，详见 [TiDB 内存控制](/configure-memory-usage.md#内存仲裁模式)。
+    - `0`（默认值）：表示禁用该功能，变量不生效
+    - `1`：仅在 `priority` 模式下生效。SQL 订阅内存资源时自动绑定为高优先级；当全局内存资源不足时，SQL 会终止执行，而不是阻塞等待。
+    - `nolimit`：SQL 的内存使用不受仲裁者限制。该取值可能增加 TiDB 实例发生 OOM 的风险。
+
 ### `tidb_mem_oom_action` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
