@@ -49,15 +49,15 @@ ClusterOption ::=
 
 ## 选项
 
-- **Targets（`RefreshTargetList`）**：
+- **刷新目标（`RefreshTargetList`）**：
     - `table_name`：刷新当前数据库中的指定表。
-    - `db_name.table_name`：刷新指定数据库中的指定表。。
+    - `db_name.table_name`：刷新指定数据库中的指定表。
     - `db_name.*`：刷新指定数据库中的所有表。
     - `*.*`：刷新集群中的所有表。
 - **`FULL`**：将完整的统计信息（例如直方图、TopN 和 CMSketch）加载到内存中，等同于针对本次操作将 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-new-in-v710) 设置为 `false`。当你需要立即获得完整统计信息时，可使用该选项。
-- **`LITE`**：执行轻量级初始化，等同于设置 `lite-init-stats = true`。该模式会跳过直方图和其他较重的数据结构的加载，直到真正需要时才进行加载。
+- **`LITE`**：执行轻量级初始化，等同于设置 `lite-init-stats = true`。该模式会跳过直方图等较重数据结构的加载，直到真正需要时才加载。
 - **`CLUSTER`**：将刷新请求发送到所有 TiDB 服务器。如果不指定该选项，则只有接收到该语句的 TiDB 节点会重新加载其内存中的统计信息。
-- **默认模式**：如果既未指定 `FULL`，也未指定 `LITE`，TiDB 会使用 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-new-in-v710) 的当前值。
+- **默认模式**：如果既未指定 `FULL`，也未指定 `LITE`，TiDB 会使用 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 的当前值。
 
 ## 示例
 
@@ -67,7 +67,7 @@ ClusterOption ::=
   REFRESH STATS orders;
   ```
 
-- 以轻量级初始化刷新 `sales` 中的所有表：
+- 以轻量级初始化方式刷新 `sales` 中的所有表：
 
   ```sql
   REFRESH STATS sales.* LITE;
@@ -85,7 +85,7 @@ ClusterOption ::=
 
 ## MySQL 兼容性
 
-`REFRESH STATS` 是 TiDB 特有的扩展，不属于 MySQL。
+`REFRESH STATS` 语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 
