@@ -3734,7 +3734,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`1.5`
 - 表示 TiDB 往临时磁盘读写一个字节数据的 I/O 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
-### `tidb_opt_index_join_max_scan_rows_ratio` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+### `tidb_opt_index_join_max_scan_rows_ratio`
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
