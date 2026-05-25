@@ -11,6 +11,7 @@
 
 - [DDL 最佳实践](/best-practices/ddl-introduction.md)
 - [将 UUID 用作主键的最佳实践](/best-practices/uuid.md)
+- [使用 TiDB 分区表的最佳实践](/best-practices/tidb-partitioned-tables-best-practices.md)
 - [多列索引优化最佳实践](/best-practices/multi-column-index-best-practices.md)
 - [管理索引和识别未使用索引的最佳实践](/best-practices/index-management-best-practices.md)
 

@@ -40,7 +40,7 @@ TiDB 简介，核心特性与应用场景
 
 <DocHomeCard href="/zh/tidb/stable/mysql-compatibility" label="与 MySQL 兼容性对比" icon="oss-mysql-blue">
 
-TiDB 高度兼容 MySQL 协议，以及 MySQL 5.7 和 MySQL 8.0 常用的功能及语法
+TiDB 高度兼容 MySQL 协议，以及 MySQL 8.x 常用的功能及语法
 
 </DocHomeCard>
 
