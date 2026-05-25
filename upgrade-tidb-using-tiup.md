@@ -203,8 +203,8 @@ tiup cluster upgrade <cluster-name> v8.5.0
 >
 > - 在线升级遵循 TiUP 预定义的组件升级顺序。在每一类组件内部，实例会以滚动方式逐个升级：
 >
->    - TiFlash：始终先升级 TiFlash。如果集群中包含 TiFlash，TiUP 会先对所有 TiFlash 实例进行滚动升级，然后再升级其他组件（如 PD、TiKV 和 TiDB）。未部署的组件类型会被跳过。
->    - TiKV：在升级 TiKV 时，TiUP 会通过 PD 将该 TiKV 节点上的所有 Region Leader 驱逐，然后再停止该实例。Leader 驱逐的默认超时时间为 5 分钟（300 秒）。如果达到超时时间，TiUP 会直接停止实例，而不会等待 Leader 驱逐完成。
+>     - TiFlash：始终先升级 TiFlash。如果集群中包含 TiFlash，TiUP 会先对所有 TiFlash 实例进行滚动升级，然后再升级其他组件（如 PD、TiKV 和 TiDB）。未部署的组件类型会被跳过。
+>     - TiKV：在升级 TiKV 时，TiUP 会通过 PD 将该 TiKV 节点上的所有 Region Leader 驱逐，然后再停止该实例。Leader 驱逐的默认超时时间为 5 分钟（300 秒）。如果达到超时时间，TiUP 会直接停止实例，而不会等待 Leader 驱逐完成。
 >
 > - 使用 `--force` 参数可以在不驱逐 leader 的前提下快速升级集群至新版本，但是该方式会忽略所有升级中的错误，在升级失败后得不到有效提示，请谨慎使用。
 > - 如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个更大的值，如 `--transfer-timeout 3600`，单位为秒。
