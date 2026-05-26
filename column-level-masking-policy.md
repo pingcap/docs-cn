@@ -71,7 +71,7 @@ INSERT INTO customers VALUES (1, 'Alice', 'alice@example.com', '4532111111111111
 -- 创建脱敏策略，仅向特定用户显示完整的信用卡号
 CREATE MASKING POLICY cc_mask_policy ON customers(credit_card)
   AS CASE
-      WHEN current_user() IN ('root@%', 'admin@%')
+      WHEN CURRENT_USER() IN ('root@%', 'admin@%')
         THEN credit_card
       ELSE MASK_PARTIAL(credit_card, 4, 4, '*')
     END
@@ -262,7 +262,7 @@ MASK_DATE(created_at, '2020-01-01')
 -- 对出生日期进行脱敏，仅显示年份
 CREATE MASKING POLICY dob_mask ON customers(dob)
   AS CASE
-      WHEN current_user() = 'hr_admin@%' THEN dob
+      WHEN CURRENT_USER() = 'hr_admin@%' THEN dob
       ELSE MASK_DATE(dob, '1985-01-01')
     END
   ENABLE;
@@ -270,22 +270,22 @@ CREATE MASKING POLICY dob_mask ON customers(dob)
 
 ## 基于用户和角色的条件脱敏
 
-### 使用 current_user()
+### 使用 CURRENT_USER()
 
 你可以在脱敏表达式中使用 `CURRENT_USER()` 判断当前会话对应的用户账号。
 
 ```sql
 CREATE MASKING POLICY email_mask ON customers(email)
   AS CASE
-      WHEN current_user() = 'support_user@%' THEN email
+      WHEN CURRENT_USER() = 'support_user@%' THEN email
       ELSE MASK_PARTIAL(email, 1, 7, '*')
     END
   ENABLE;
 ```
 
-### 使用 current_role()
+### 使用 CURRENT_ROLE()
 
-对于基于角色的访问控制，使用 `current_role()`：
+对于基于角色的访问控制，使用 `CURRENT_ROLE()`：
 
 ```sql
 -- 为可以查看未脱敏数据的用户创建角色
@@ -294,7 +294,7 @@ CREATE ROLE data_viewer;
 -- 基于角色创建脱敏策略
 CREATE MASKING POLICY ssn_mask ON employees(ssn)
   AS CASE
-      WHEN current_role() = '`data_viewer`@`%`' THEN ssn
+      WHEN CURRENT_ROLE() = '`data_viewer`@`%`' THEN ssn
       ELSE MASK_PARTIAL(ssn, 3, 4, '*')
     END
   ENABLE;
@@ -333,7 +333,7 @@ SET ROLE data_viewer;
 -- 创建带有限制的策略
 CREATE MASKING POLICY sensitive_mask ON sensitive_data(value)
   AS CASE
-      WHEN current_user() = 'admin@%' THEN value
+      WHEN CURRENT_USER() = 'admin@%' THEN value
       ELSE MASK_FULL(value)
     END
   RESTRICT ON (INSERT_INTO_SELECT, UPDATE_SELECT, DELETE_SELECT)
@@ -383,7 +383,7 @@ ALTER TABLE customers ENABLE MASKING POLICY cc_mask_policy;
 -- 更改脱敏表达式
 ALTER TABLE customers MODIFY MASKING POLICY cc_mask_policy
   SET EXPRESSION = CASE
-                    WHEN current_user() IN ('root@%', 'manager@%')
+                    WHEN CURRENT_USER() IN ('root@%', 'manager@%')
                       THEN credit_card
                     ELSE MASK_PARTIAL(credit_card, 4, 4, 'X')
                   END;
@@ -416,7 +416,7 @@ ALTER TABLE customers DROP MASKING POLICY cc_mask_policy;
 -- 使用新规则创建或替换策略
 CREATE OR REPLACE MASKING POLICY email_mask ON customers(email)
   AS CASE
-      WHEN current_user() IN ('admin@%', 'support@%') THEN email
+      WHEN CURRENT_USER() IN ('admin@%', 'support@%') THEN email
       ELSE MASK_PARTIAL(email, 1, 7, '*')
     END
   ENABLE;
@@ -440,7 +440,7 @@ TiDB 在查询结果阶段应用脱敏策略，这意味着：
 -- 创建脱敏邮箱列
 CREATE MASKING POLICY email_mask ON users(email)
   AS CASE
-      WHEN current_user() = 'admin@%' THEN email
+      WHEN CURRENT_USER() = 'admin@%' THEN email
       ELSE MASK_FULL(email)
     END
   ENABLE;
@@ -509,7 +509,7 @@ CREATE ROLE salary_access;
 -- 邮箱：向 HR 人员显示，其他人部分显示
 CREATE MASKING POLICY email_policy ON employees(email)
   AS CASE
-      WHEN current_user() IN ('hr_admin@%', 'hr_viewer@%') THEN email
+      WHEN CURRENT_USER() IN ('hr_admin@%', 'hr_viewer@%') THEN email
       ELSE MASK_PARTIAL(email, 1, 7, '*')
     END
   ENABLE;
@@ -517,7 +517,7 @@ CREATE MASKING POLICY email_policy ON employees(email)
 -- 薪资：仅向具有 salary_access 角色的人显示
 CREATE MASKING POLICY salary_policy ON employees(salary)
   AS CASE
-      WHEN current_role() = 'salary_access' THEN salary
+      WHEN CURRENT_ROLE() = 'salary_access' THEN salary
       ELSE NULL
     END
   ENABLE;
@@ -525,7 +525,7 @@ CREATE MASKING POLICY salary_policy ON employees(salary)
 -- SSN：严格脱敏，限制复制操作
 CREATE MASKING POLICY ssn_policy ON employees(ssn)
   AS CASE
-      WHEN current_user() = 'hr_admin@%' THEN ssn
+      WHEN CURRENT_USER() = 'hr_admin@%' THEN ssn
       ELSE MASK_PARTIAL(ssn, 3, 4, '*')
     END
   RESTRICT ON (INSERT_INTO_SELECT, UPDATE_SELECT)
