@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: install qiniu qshell
-        uses: foxundermoon/setup-qshell@v5
+        uses: foxundermoon/setup-qshell@v6
         with:
           version: '2.6.2'
 
