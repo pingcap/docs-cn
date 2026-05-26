@@ -24,7 +24,7 @@ jobs:
           HEAD_REF: ${{ github.event.pull_request.head.ref }}
         run: |
           git remote add head "$HEAD_CLONE_URL"
-          git fetch head "$HEAD_REF"
+          git fetch head -- "$HEAD_REF"
       - name: Find changes
         env:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
