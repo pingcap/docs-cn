@@ -12,6 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - run: |
+          REF="${GITHUB_BASE_REF:-$GITHUB_REF_NAME}"
           ./scripts/check-keywords.py \
           --download_from_url \
-          --parser_url https://github.com/pingcap/tidb/raw/refs/heads/${GITHUB_BASE_REF}/pkg/parser/parser.y
+          --parser_url "https://github.com/pingcap/tidb/raw/refs/heads/${REF}/pkg/parser/parser.y"
