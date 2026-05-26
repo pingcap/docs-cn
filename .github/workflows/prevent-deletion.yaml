@@ -16,31 +16,43 @@ jobs:
     steps:
       - name: Checkout base
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Fetch head
+        env:
+          HEAD_CLONE_URL: ${{ github.event.pull_request.head.repo.clone_url }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
         run: |
-          git remote add head ${{ github.event.pull_request.head.repo.clone_url }}
-          git fetch --depth=1 head ${{ github.event.pull_request.head.ref }}
+          git remote add head "$HEAD_CLONE_URL"
+          git fetch head "$HEAD_REF"
       - name: Find changes
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          git rev-parse '${{ github.event.pull_request.head.sha }}'
-          if git diff --merge-base --name-only --diff-filter 'D' HEAD '${{ github.event.pull_request.head.sha }}' | grep -E '^media/.*\.(jpg|png|jpeg|gif)$' >/tmp/changed_files; then
+          git rev-parse "$HEAD_SHA"
+          if git diff --merge-base --name-only --diff-filter 'D' HEAD "$HEAD_SHA" | grep -E '^media/.*\.(jpg|png|jpeg|gif)$' >/tmp/changed_files; then
             cat /tmp/changed_files
-            echo '{"name":"Image Deletion Check","head_sha":"${{ github.event.pull_request.head.sha }}","status":"completed","conclusion":"failure"}' > /tmp/body.json
+            jq -n --arg sha "$HEAD_SHA" \
+              '{name:"Image Deletion Check",head_sha:$sha,status:"completed",conclusion:"failure"}' > /tmp/body.json
             jq \
               --arg count "$(wc -l /tmp/changed_files | awk '{print $1}')" \
               --arg summary "$(cat /tmp/changed_files | sed 's/^/- /')" \
               '.output.title = "Found " + $count + " deleted images" | .output.summary = $summary' \
             /tmp/body.json > /tmp/body2.json
           else
-            echo '{"name":"Image Deletion Check","head_sha":"${{ github.event.pull_request.head.sha }}","status":"completed","conclusion":"success","output":{"title":"OK","summary":"No deleted images"}}' > /tmp/body2.json
+            jq -n --arg sha "$HEAD_SHA" \
+              '{name:"Image Deletion Check",head_sha:$sha,status:"completed",conclusion:"success",output:{title:"OK",summary:"No deleted images"}}' > /tmp/body2.json
           fi
       - name: Publish result
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
         run: |
           cat /tmp/body2.json
           curl \
             -sSL \
             -X POST \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: token ${{ github.token }}" \
+            -H "Authorization: token $GH_TOKEN" \
             -T '/tmp/body2.json' \
-          'https://api.github.com/repos/${{ github.repository }}/check-runs'
+          "https://api.github.com/repos/$REPO/check-runs"
