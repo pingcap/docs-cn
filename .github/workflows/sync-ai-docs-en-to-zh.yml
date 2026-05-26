@@ -42,21 +42,21 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         name: Checkout docs-cn
         with:
           ref: ${{ env.DOCS_CN_BASE }}
           path: docs-cn
           fetch-depth: 0
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         name: Checkout ai-pr-translator
         with:
           repository: ${{ env.AI_TRANSLATOR_REPO }}
           ref: ${{ env.AI_TRANSLATOR_REF }}
           path: ai-pr-translator
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         name: Setup Python
         with:
           python-version: "3.9"
@@ -189,7 +189,7 @@ jobs:
             echo "Resolved source files: ${out}"
           fi
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         name: Checkout source repo glossary
         if: steps.source_files.outputs.has_source_changes == 'true'
         with:
@@ -262,7 +262,7 @@ jobs:
 
       - name: Create PR
         if: steps.changes.outputs.has_changes == 'true'
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           path: docs-cn
           token: ${{ github.token }}
