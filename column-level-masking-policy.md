@@ -43,8 +43,6 @@ GRANT DROP MASKING POLICY ON *.* TO 'security_admin'@'%';
 
 ### 基本语法
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE [OR REPLACE] MASKING POLICY [IF NOT EXISTS] <policy_name>
   ON <table_name> (<column_name>)
@@ -64,8 +62,6 @@ CREATE [OR REPLACE] MASKING POLICY [IF NOT EXISTS] <policy_name>
 - `ENABLE | DISABLE`：可选。指定策略创建后是否立即生效。默认为 `ENABLE`。
 
 ### 示例：基于用户身份脱敏信用卡号
-
-{{< copyable "sql" >}}
 
 ```sql
 -- 创建包含敏感数据的表
@@ -122,8 +118,6 @@ MASK_PARTIAL(column, preserve_left, preserve_right, mask_char)
 
 - **场景**：脱敏信用卡、电话号码或电子邮件的中间数字，同时保留两端用于识别的字符。
 
-{{< copyable "sql" >}}
-
 ```sql
 -- 信用卡：显示前 4 位和后 4 位
 MASK_PARTIAL(credit_card, 4, 4, '*')
@@ -170,8 +164,6 @@ MASK_FULL(column)
 
 - **场景**：完全隐藏敏感 ID、电话号码或整个日期值。
 
-{{< copyable "sql" >}}
-
 ```sql
 -- 字符串：用 'X' 替换所有字符
 MASK_FULL(customer_id)
@@ -207,8 +199,6 @@ MASK_NULL(column)
 **使用场景与示例**
 
 - **场景**：完全隐藏薪资、密钥或其他高度敏感的数据，不允许任何部分披露。
-
-{{< copyable "sql" >}}
 
 ```sql
 -- 完全隐藏薪资
@@ -249,8 +239,6 @@ MASK_DATE(column, date_literal)
 
 - **场景**：保留年份用于趋势分析，或将出生日期替换为固定日期（如 1 月 1 日）。
 
-{{< copyable "sql" >}}
-
 ```sql
 -- 仅保留年份（设置为 1 月 1 日）
 MASK_DATE(birth_date, '1985-01-01')
@@ -270,8 +258,6 @@ MASK_DATE(created_at, '2020-01-01')
 
 **完整示例：**
 
-{{< copyable "sql" >}}
-
 ```sql
 -- 对出生日期进行脱敏，仅显示年份
 CREATE MASKING POLICY dob_mask ON customers(dob)
@@ -288,8 +274,6 @@ CREATE MASKING POLICY dob_mask ON customers(dob)
 
 你可以在脱敏表达式中使用 `CURRENT_USER()` 判断当前会话对应的用户账号。
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE MASKING POLICY email_mask ON customers(email)
   AS CASE
@@ -302,8 +286,6 @@ CREATE MASKING POLICY email_mask ON customers(email)
 ### 使用 current_role()
 
 对于基于角色的访问控制，使用 `current_role()`：
-
-{{< copyable "sql" >}}
 
 ```sql
 -- 为可以查看未脱敏数据的用户创建角色
@@ -347,8 +329,6 @@ SET ROLE data_viewer;
 
 ### 示例：使用 RESTRICT ON
 
-{{< copyable "sql" >}}
-
 ```sql
 -- 创建带有限制的策略
 CREATE MASKING POLICY sensitive_mask ON sensitive_data(value)
@@ -376,8 +356,6 @@ DELETE FROM some_table WHERE x IN (SELECT value FROM sensitive_data);  -- 错误
 
 使用 `SHOW MASKING POLICIES` 查看表上的策略：
 
-{{< copyable "sql" >}}
-
 ```sql
 -- 查看指定表上的所有脱敏策略
 SHOW MASKING POLICIES FOR customers;
@@ -391,8 +369,6 @@ SHOW CREATE TABLE customers;
 
 ### 启用或禁用策略
 
-{{< copyable "sql" >}}
-
 ```sql
 -- 临时禁用策略
 ALTER TABLE customers DISABLE MASKING POLICY cc_mask_policy;
@@ -402,8 +378,6 @@ ALTER TABLE customers ENABLE MASKING POLICY cc_mask_policy;
 ```
 
 ### 修改策略表达式
-
-{{< copyable "sql" >}}
 
 ```sql
 -- 更改脱敏表达式
@@ -417,8 +391,6 @@ ALTER TABLE customers MODIFY MASKING POLICY cc_mask_policy
 
 ### 修改 RESTRICT ON 设置
 
-{{< copyable "sql" >}}
-
 ```sql
 -- 为策略添加限制
 ALTER TABLE customers MODIFY MASKING POLICY cc_mask_policy
@@ -431,8 +403,6 @@ ALTER TABLE customers MODIFY MASKING POLICY cc_mask_policy
 
 ### 删除脱敏策略
 
-{{< copyable "sql" >}}
-
 ```sql
 -- 从列中删除脱敏策略
 ALTER TABLE customers DROP MASKING POLICY cc_mask_policy;
@@ -441,8 +411,6 @@ ALTER TABLE customers DROP MASKING POLICY cc_mask_policy;
 ## 使用 CREATE OR REPLACE
 
 要创建策略或替换已有策略，可以使用 `CREATE OR REPLACE MASKING POLICY`：
-
-{{< copyable "sql" >}}
 
 ```sql
 -- 使用新规则创建或替换策略
@@ -467,8 +435,6 @@ TiDB 在查询结果阶段应用脱敏策略，这意味着：
 3. **仅查询返回的结果使用脱敏值**：TiDB 会在最终结果返回给客户端前，根据策略表达式对列值或引用该列的返回表达式结果进行脱敏。
 
 理解这一点很重要：
-
-{{< copyable "sql" >}}
 
 ```sql
 -- 创建脱敏邮箱列
@@ -514,8 +480,6 @@ TiDB 不支持直接在视图上创建脱敏策略。但如果视图引用的原
 ## 完整示例
 
 以下是一个展示典型工作流的完整示例：
-
-{{< copyable "sql" >}}
 
 ```sql
 -- 1. 创建表
