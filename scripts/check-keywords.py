@@ -81,4 +81,4 @@ for line in lines:
                     print(f"Missing docs for non-reserved keyword from {section}: {kw}")
                 errors += 1
 
-sys.exit(errors)
+sys.exit(1 if errors else 0)
