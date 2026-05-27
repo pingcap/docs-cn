@@ -4,8 +4,8 @@ on:
   repository_dispatch:
   workflow_dispatch:
   schedule:
-    # Runs at 09:00 every Monday (Beijing time, UTC+8)
-    - cron: "0 1 * * 1"
+    # Runs at 13:00 every Wednesday (Beijing time, UTC+8)
+    - cron: "0 5 * * 3"
 
 env:
   # Branches to check (docs branch and TiDB parser branch share the same name).
