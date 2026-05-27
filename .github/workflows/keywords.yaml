@@ -1,18 +1,119 @@
 name: Keywords
 
 on:
-  pull_request:
-  push:
-    branches:
-      - 'master'
+  repository_dispatch:
+  workflow_dispatch:
+  schedule:
+    # Runs at 12:00 every Wednesday (Beijing time, UTC+8)
+    - cron: "0 4 * * 3"
+
+env:
+  # Branches to check (docs branch and TiDB parser branch share the same name).
+  # Edit this space-separated list to add or remove branches.
+  CHECK_BRANCHES: "master release-8.5"
+
+permissions:
+  contents: read
+  issues: write
 
 jobs:
   check-keywords:
+    if: github.repository == 'pingcap/docs-cn'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - run: |
-          REF="${GITHUB_BASE_REF:-$GITHUB_REF_NAME}"
-          ./scripts/check-keywords.py \
-          --download_from_url \
-          --parser_url "https://github.com/pingcap/tidb/raw/refs/heads/${REF}/pkg/parser/parser.y"
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Check keywords for all branches
+        id: check
+        run: |
+          mkdir -p /tmp/kw-results
+          has_failure=false
+
+          for branch in $CHECK_BRANCHES; do
+            git checkout "$branch" --quiet
+
+            set +e
+            output=$(python ./scripts/check-keywords.py \
+              --download_from_url \
+              --parser_url "https://github.com/pingcap/tidb/raw/refs/heads/${branch}/pkg/parser/parser.y" 2>&1)
+            exit_code=$?
+            set -e
+
+            if [ $exit_code -eq 0 ]; then
+              echo "pass" > "/tmp/kw-results/${branch}.status"
+            elif echo "$output" | grep -q "Failed to download parser file"; then
+              echo "::warning::Failed to download parser.y for branch ${branch}. Skipping."
+              echo "skip" > "/tmp/kw-results/${branch}.status"
+            else
+              has_failure=true
+              echo "fail" > "/tmp/kw-results/${branch}.status"
+              echo "$output" | grep -v "^Fetching " > "/tmp/kw-results/${branch}.errors"
+            fi
+          done
+
+          echo "has_failure=$has_failure" >> "$GITHUB_OUTPUT"
+
+      - name: Build issue report
+        if: steps.check.outputs.has_failure == 'true'
+        run: |
+          {
+            echo "# Weekly Keywords Check Report"
+            echo
+            echo "## Summary"
+            echo
+
+            for branch in $CHECK_BRANCHES; do
+              status=$(cat "/tmp/kw-results/${branch}.status")
+              case "$status" in
+                pass) echo "- **${branch}** — Keywords check result: ✅ pass" ;;
+                skip) echo "- **${branch}** — Keywords check result: ⚠️ skipped (download failed)" ;;
+                fail) echo "- **${branch}** — Keywords check result: ❌ mismatch" ;;
+              esac
+            done
+
+            echo
+            echo "---"
+            echo
+
+            for branch in $CHECK_BRANCHES; do
+              status=$(cat "/tmp/kw-results/${branch}.status")
+              if [ "$status" = "fail" ]; then
+                error_count=$(wc -l < "/tmp/kw-results/${branch}.errors" | tr -d ' ')
+                echo "## \`${branch}\` — ${error_count} issue(s)"
+                echo
+                echo "Comparing [\`keywords.md\`]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/${branch}/keywords.md)"
+                echo "against [TiDB parser (\`${branch}\`)](https://github.com/pingcap/tidb/blob/${branch}/pkg/parser/parser.y):"
+                echo
+                echo '```'
+                cat "/tmp/kw-results/${branch}.errors"
+                echo '```'
+                echo
+              fi
+            done
+
+            echo "## How to fix"
+            echo
+            echo "Update \`keywords.md\` on the affected branch to match the current TiDB parser keywords."
+            echo "See [check-keywords.py]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/master/scripts/check-keywords.py) for details."
+            echo
+            echo "---"
+            echo "**Run date:** $(date -u '+%Y-%m-%d %H:%M UTC')"
+            echo "**Workflow run:** $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          } > keywords-report.md
+
+      - name: Create issue
+        if: steps.check.outputs.has_failure == 'true'
+        uses: peter-evans/create-issue-from-file@v6
+        with:
+          title: "Weekly keywords check: mismatches found"
+          content-filepath: keywords-report.md
