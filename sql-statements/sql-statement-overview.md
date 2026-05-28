@@ -9,44 +9,44 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 
 ## Schema 管理与数据定义语句 (DDL)
 
-| SQL 语句 | 描述 |
-|----------|------|
-| [`ALTER DATABASE`](/sql-statements/sql-statement-alter-database.md) | 修改数据库。 |
-| [`ALTER SEQUENCE`](/sql-statements/sql-statement-alter-sequence.md) | 修改序列对象。 |
-| [`ALTER TABLE ... ADD COLUMN`](/sql-statements/sql-statement-add-column.md) | 在已有表中添加列。 |
-| [`ALTER TABLE ... ADD INDEX`](/sql-statements/sql-statement-add-index.md) | 在已有表中添加索引。 |
-| [`ALTER TABLE ... ALTER INDEX`](/sql-statements/sql-statement-alter-index.md) | 修改索引定义。 |
-| [`ALTER TABLE ... CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) | 修改列定义。 |
-| [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | 对表进行数据整理。 |
-| [`ALTER TABLE ... DROP COLUMN`](/sql-statements/sql-statement-drop-column.md) | 从表中删除列。 |
-| [`ALTER TABLE ... MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) | 修改列定义。 |
-| [`ALTER TABLE ... RENAME INDEX`](/sql-statements/sql-statement-rename-index.md) | 重命名索引。 |
-| [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md) | 修改表定义。 |
-| [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md) | 创建新数据库。 |
-| [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md) | 在表上创建新索引。 |
-| [`CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md) | 创建新序列对象。 |
-| [`CREATE TABLE LIKE`](/sql-statements/sql-statement-create-table-like.md) | 复制已有表的定义，但不复制任何数据。 |
-| [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) | 创建新表。 |
-| [`CREATE VIEW`](/sql-statements/sql-statement-create-view.md) | 创建新视图。 |
-| [`DROP DATABASE`](/sql-statements/sql-statement-drop-database.md) | 删除已有数据库。 |
-| [`DROP INDEX`](/sql-statements/sql-statement-drop-index.md) | 从表中删除索引。 |
-| [`DROP SEQUENCE`](/sql-statements/sql-statement-drop-sequence.md) | 删除序列对象。 |
-| [`DROP TABLE`](/sql-statements/sql-statement-drop-table.md) | 删除已有表。 |
-| [`DROP VIEW`](/sql-statements/sql-statement-drop-view.md) | 删除已有视图。 |
-| [`RENAME TABLE`](/sql-statements/sql-statement-rename-table.md) | 重命名表。 |
-| [`SHOW COLUMNS FROM`](/sql-statements/sql-statement-show-columns-from.md) | 显示表的列。 |
-| [`SHOW CREATE DATABASE`](/sql-statements/sql-statement-show-create-database.md) | 显示数据库的 `CREATE` 语句。 |
-| [`SHOW CREATE SEQUENCE`](/sql-statements/sql-statement-show-create-sequence.md) | 显示序列的 `CREATE` 语句。 |
-| [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) | 显示表的 `CREATE` 语句。 |
-| [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md) | 显示当前用户有权限访问的数据库列表。 |
-| [`SHOW FIELDS FROM`](/sql-statements/sql-statement-show-fields-from.md) | 显示表的列。 |
-| [`SHOW INDEXES`](/sql-statements/sql-statement-show-indexes.md) | 显示表的索引。 |
-| [`SHOW SCHEMAS`](/sql-statements/sql-statement-show-schemas.md) | `SHOW DATABASES` 的别名，显示当前用户有权限访问的数据库列表。 |
-| [`SHOW TABLE NEXT_ROW_ID`](/sql-statements/sql-statement-show-table-next-rowid.md) | 显示表中下一个行的 ID。 |
-| [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) | 显示 TiDB 中表的 Region 信息。 |
-| [`SHOW TABLE STATUS`](/sql-statements/sql-statement-show-table-status.md) | 显示 TiDB 中表的各种统计信息。 |
-| [`SHOW TABLES`](/sql-statements/sql-statement-show-tables.md) | 显示数据库中的表。 |
-| [`TRUNCATE`](/sql-statements/sql-statement-truncate.md) | 清空表中的所有数据。 |
+| SQL 语句                                                                      | 描述                                                                                                   |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| [`ALTER DATABASE`](/sql-statements/sql-statement-alter-database.md)           | 修改数据库。                                                                                           |
+| [`ALTER SEQUENCE`](/sql-statements/sql-statement-alter-sequence.md)           | 修改序列对象。                                                                                         |
+| [`ALTER TABLE ... ADD COLUMN`](/sql-statements/sql-statement-add-column.md)   | 在已有表中添加列。                                                                                     |
+| [`ALTER TABLE ... ADD INDEX`](/sql-statements/sql-statement-add-index.md)     | 在已有表中添加索引。                                                                                   |
+| [`ALTER TABLE ... ALTER INDEX`](/sql-statements/sql-statement-alter-index.md) | 修改索引定义。                                                                                         |
+| [`ALTER TABLE ... CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) | 修改列定义。                                                                                       |
+| [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | 对表进行数据整理。                                                                                 |
+| [`ALTER TABLE ... DROP COLUMN`](/sql-statements/sql-statement-drop-column.md) | 从表中删除列。                                                                                         |
+| [`ALTER TABLE ... MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) | 修改列定义。                                                                                       |
+| [`ALTER TABLE ... RENAME INDEX`](/sql-statements/sql-statement-rename-index.md) | 重命名索引。                                                                                       |
+| [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)                 | 修改表定义。                                                                                           |
+| [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md)         | 创建新数据库。                                                                                         |
+| [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md)               | 在表上创建新索引。                                                                                     |
+| [`CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md)         | 创建新序列对象。                                                                                       |
+| [`CREATE TABLE LIKE`](/sql-statements/sql-statement-create-table-like.md)     | 复制已有表的定义，但不复制任何数据。                                                                   |
+| [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md)               | 创建新表。                                                                                             |
+| [`CREATE VIEW`](/sql-statements/sql-statement-create-view.md)                 | 创建新视图。                                                                                           |
+| [`DROP DATABASE`](/sql-statements/sql-statement-drop-database.md)             | 删除已有数据库。                                                                                       |
+| [`DROP INDEX`](/sql-statements/sql-statement-drop-index.md)                   | 从表中删除索引。                                                                                       |
+| [`DROP SEQUENCE`](/sql-statements/sql-statement-drop-sequence.md)             | 删除序列对象。                                                                                         |
+| [`DROP TABLE`](/sql-statements/sql-statement-drop-table.md)                   | 删除已有表。                                                                                           |
+| [`DROP VIEW`](/sql-statements/sql-statement-drop-view.md)                     | 删除已有视图。                                                                                         |
+| [`RENAME TABLE`](/sql-statements/sql-statement-rename-table.md)               | 重命名表。                                                                                             |
+| [`SHOW COLUMNS FROM`](/sql-statements/sql-statement-show-columns-from.md)     | 显示表的列。                                                                                           |
+| [`SHOW CREATE DATABASE`](/sql-statements/sql-statement-show-create-database.md) | 显示数据库的 `CREATE` 语句。                                                                       |
+| [`SHOW CREATE SEQUENCE`](/sql-statements/sql-statement-show-create-sequence.md) | 显示序列的 `CREATE` 语句。                                                                         |
+| [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md)     | 显示表的 `CREATE` 语句。                                                                               |
+| [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md)           | 显示当前用户有权限访问的数据库列表。                                                                   |
+| [`SHOW FIELDS FROM`](/sql-statements/sql-statement-show-fields-from.md)       | 显示表的列。                                                                                           |
+| [`SHOW INDEXES`](/sql-statements/sql-statement-show-indexes.md)               | 显示表的索引。                                                                                         |
+| [`SHOW SCHEMAS`](/sql-statements/sql-statement-show-schemas.md)               | `SHOW DATABASES` 的别名，显示当前用户有权限访问的数据库列表。                                          |
+| [`SHOW TABLE NEXT_ROW_ID`](/sql-statements/sql-statement-show-table-next-rowid.md) | 显示表中下一个行的 ID。                                                                           |
+| [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md)   | 显示 TiDB 中表的 Region 信息。                                                                         |
+| [`SHOW TABLE STATUS`](/sql-statements/sql-statement-show-table-status.md)     | 显示 TiDB 中表的各种统计信息。                                                                         |
+| [`SHOW TABLES`](/sql-statements/sql-statement-show-tables.md)                 | 显示数据库中的表。                                                                                     |
+| [`TRUNCATE`](/sql-statements/sql-statement-truncate.md)                       | 清空表中的所有数据。                                                                                   |
 
 ## 数据操作语句 (DML)
 
@@ -74,64 +74,64 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 
 ## 预处理语句
 
-| SQL 语句 | 描述 |
-|----------|------|
+| SQL 语句                                               | 描述                                                     |
+| ------------------------------------------------------ | -------------------------------------------------------- |
 | [`DEALLOCATE`](/sql-statements/sql-statement-deallocate.md) | 释放预处理语句以释放相关资源。 |
-| [`EXECUTE`](/sql-statements/sql-statement-execute.md) | 使用特定参数值执行预处理语句。 |
-| [`PREPARE`](/sql-statements/sql-statement-prepare.md) | 创建包含占位符的预处理语句。 |
+| [`EXECUTE`](/sql-statements/sql-statement-execute.md)       | 使用特定参数值执行预处理语句。   |
+| [`PREPARE`](/sql-statements/sql-statement-prepare.md)       | 创建包含占位符的预处理语句。     |
 
 ## 管理语句
 
-| SQL 语句 | 描述 |
-|----------|------|
-| [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md) | 修改单个正在运行的 DDL 作业的相关参数。 |
-| [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) | 取消 DDL 作业。 |
-| [`ADMIN CHECK [TABLE\|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) | 检查表或索引的完整性。 |
-| [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md) | 计算表的校验和。 |
-| [`ADMIN CLEANUP INDEX`](/sql-statements/sql-statement-admin-cleanup.md) | 清理表中的索引。 |
-| [`ADMIN PAUSE DDL`](/sql-statements/sql-statement-admin-pause-ddl.md) | 暂停 DDL 作业。 |
-| [`ADMIN RESUME DDL`](/sql-statements/sql-statement-admin-resume-ddl.md) | 恢复 DDL 作业。 |
-| [`ADMIN SHOW DDL [JOBS\|JOB QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md) | 显示 DDL 作业信息或 DDL 对应的查询语句。 |
-| [`ADMIN`](/sql-statements/sql-statement-admin.md) | 执行各种管理任务。 |
-| [`FLUSH TABLES`](/sql-statements/sql-statement-flush-tables.md) | 用于提供 [MySQL 兼容性](/mysql-compatibility.md)，在 TiDB 中没有实际用途。 |
-| [`SET <variable>`](/sql-statements/sql-statement-set-variable.md) | 修改系统变量或用户变量。 |
-| [`SET [NAMES\|CHARACTER SET]`](/sql-statements/sql-statement-set-names.md) | 设置字符集和排序规则。 |
-| [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md) | 将 Region 切分为更小的 Region。 |
+| SQL 语句                                                                            | 描述                                                                                     |
+| ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md)          | 修改单个正在运行的 DDL 作业的相关参数。                                                  |
+| [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md)             | 取消 DDL 作业。                                                                          |
+| [`ADMIN CHECK [TABLE\|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) | 检查表或索引的完整性。                                                             |
+| [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)     | 计算表的校验和。                                                                        |
+| [`ADMIN CLEANUP INDEX`](/sql-statements/sql-statement-admin-cleanup.md)             | 清理表中的索引。                                                                        |
+| [`ADMIN PAUSE DDL`](/sql-statements/sql-statement-admin-pause-ddl.md)               | 暂停 DDL 作业。                                                                          |
+| [`ADMIN RESUME DDL`](/sql-statements/sql-statement-admin-resume-ddl.md)             | 恢复 DDL 作业。                                                                          |
+| [`ADMIN SHOW DDL [JOBS\|JOB QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md) | 显示 DDL 作业信息或 DDL 对应的查询语句。                                           |
+| [`ADMIN`](/sql-statements/sql-statement-admin.md)                                   | 执行各种管理任务。                                                                      |
+| [`FLUSH TABLES`](/sql-statements/sql-statement-flush-tables.md)                     | 用于提供 [MySQL 兼容性](/mysql-compatibility.md)，在 TiDB 中没有实际用途。              |
+| [`SET <variable>`](/sql-statements/sql-statement-set-variable.md)                   | 修改系统变量或用户变量。                                                                |
+| [`SET [NAMES\|CHARACTER SET]`](/sql-statements/sql-statement-set-names.md)         | 设置字符集和排序规则。                                                                  |
+| [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md)                     | 将 Region 切分为更小的 Region。                                                         |
 
 ## 数据导入和导出
 
-| SQL 语句 | 描述 |
-|----------|------|
-| [`CANCEL IMPORT JOB`](/sql-statements/sql-statement-cancel-import-job.md) | 取消正在进行的导入任务。 |
+| SQL 语句                                                             | 描述                                                                                                                                           |
+| -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`CANCEL IMPORT JOB`](/sql-statements/sql-statement-cancel-import-job.md) | 取消正在进行的导入任务。                                                                                                                 |
 | [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) | 通过 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)将数据导入到表中。 |
-| [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) | 从 Amazon S3 或 Google Cloud Storage 加载数据到表中。 |
-| [`SHOW IMPORT JOB`](/sql-statements/sql-statement-show-import-job.md) | 显示导入任务的状态。 |
+| [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)                 | 从 Amazon S3 或 Google Cloud Storage 加载数据到表中。                                                                                   |
+| [`SHOW IMPORT JOB`](/sql-statements/sql-statement-show-import-job.md)     | 显示导入任务的状态。                                                                                                                     |
 
 ## 备份和恢复
 
-| SQL 语句 | 描述 |
-|----------|------|
-| [`BACKUP`](/sql-statements/sql-statement-backup.md) | 对 TiDB 集群执行分布式备份操作。 |
-| [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md) | 将集群恢复到特定的时间点。 |
-| [`FLASHBACK DATABASE`](/sql-statements/sql-statement-flashback-database.md) | 恢复被 `DROP` 语句删除的数据库及其数据。 |
-| [`FLASHBACK TABLE`](/sql-statements/sql-statement-flashback-table.md) | 恢复被 `DROP` 或 `TRUNCATE` 操作删除的表及其数据。 |
-| [`RECOVER TABLE`](/sql-statements/sql-statement-recover-table.md) | 恢复被删除的表及其数据。 |
-| [`RESTORE`](/sql-statements/sql-statement-restore.md) | 从备份中恢复数据库。 |
-| [`SHOW BACKUPS`](/sql-statements/sql-statement-show-backups.md) | 显示备份任务。 |
-| [`SHOW RESTORES`](/sql-statements/sql-statement-show-backups.md) | 显示恢复任务。 |
+| SQL 语句                                                               | 描述                                                                 |
+| ---------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| [`BACKUP`](/sql-statements/sql-statement-backup.md)                    | 对 TiDB 集群执行分布式备份操作。                                     |
+| [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md) | 将集群恢复到特定的时间点。                                        |
+| [`FLASHBACK DATABASE`](/sql-statements/sql-statement-flashback-database.md) | 恢复被 `DROP` 语句删除的数据库及其数据。                          |
+| [`FLASHBACK TABLE`](/sql-statements/sql-statement-flashback-table.md)  | 恢复被 `DROP` 或 `TRUNCATE` 操作删除的表及其数据。                   |
+| [`RECOVER TABLE`](/sql-statements/sql-statement-recover-table.md)      | 恢复被删除的表及其数据。                                             |
+| [`RESTORE`](/sql-statements/sql-statement-restore.md)                  | 从备份中恢复数据库。                                                 |
+| [`SHOW BACKUPS`](/sql-statements/sql-statement-show-backups.md)        | 显示备份任务。                                                       |
+| [`SHOW RESTORES`](/sql-statements/sql-statement-show-backups.md)       | 显示恢复任务。                                                       |
 
 ## 放置策略
 
-| SQL 语句 | 描述 |
-|----------|------|
-| [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md) | 修改放置策略。 |
-| [`ALTER RANGE`](/sql-statements/sql-statement-alter-range.md) | 修改放置策略的范围。 |
-| [`CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-create-placement-policy.md) | 创建新的放置策略。 |
-| [`DROP PLACEMENT POLICY`](/sql-statements/sql-statement-drop-placement-policy.md) | 删除现有放置策略。 |
+| SQL 语句                                                                                   | 描述                                          |
+| ------------------------------------------------------------------------------------------ | --------------------------------------------- |
+| [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md)       | 修改放置策略。                                |
+| [`ALTER RANGE`](/sql-statements/sql-statement-alter-range.md)                             | 修改放置策略的范围。                          |
+| [`CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-create-placement-policy.md)     | 创建新的放置策略。                            |
+| [`DROP PLACEMENT POLICY`](/sql-statements/sql-statement-drop-placement-policy.md)         | 删除现有放置策略。                            |
 | [`SHOW CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-show-create-placement-policy.md) | 显示放置策略的 `CREATE` 语句。 |
-| [`SHOW PLACEMENT FOR`](/sql-statements/sql-statement-show-placement-for.md) | 显示指定表的放置策略。 |
-| [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md) | 显示可用的放置标签。 |
-| [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md) | 显示放置规则。 |
+| [`SHOW PLACEMENT FOR`](/sql-statements/sql-statement-show-placement-for.md)               | 显示指定表的放置策略。                        |
+| [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md)         | 显示可用的放置标签。                          |
+| [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md)                       | 显示放置规则。                                |
 
 ## 资源组
 
@@ -230,6 +230,7 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`DROP STATS`](/sql-statements/sql-statement-drop-stats.md) | 删除表的统计信息。 |
 | [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) | 工作方式类似于 `EXPLAIN`，但主要区别在于 `EXPLAIN ANALYZE` 会执行语句。 |
 | [`LOAD STATS`](/sql-statements/sql-statement-load-stats.md) | 将统计信息加载到 TiDB 中。 |
+| [`REFRESH STATS`](/sql-statements/sql-statement-refresh-stats.md) | 将持久化的统计信息重新加载到内存中，适用于特定表或整个集群。 |
 | [`SHOW ANALYZE STATUS`](/sql-statements/sql-statement-show-analyze-status.md) | 显示统计信息收集任务。 |
 | [`SHOW BINDINGS`](/sql-statements/sql-statement-show-bindings.md) | 显示已创建的 SQL 绑定。 |
 | [`SHOW COLUMN_STATS_USAGE`](/sql-statements/sql-statement-show-column-stats-usage.md) | 显示列统计信息的最近一次使用时间和收集时间。 |
