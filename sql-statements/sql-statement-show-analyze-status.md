@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-analyze-status/']
 | `Table_schema` |  数据库名    |
 | `Table_name` | 表名 |
 | `Partition_name` | 分区名 |
-| `Job_info` | 任务具体信息。当收集索引的统计信息时，该信息会包含索引名。当 `tidb_analyze_version = 2` 时，该信息会包含采样率等配置项。 |
+| `Job_info` | `ANALYZE` 子任务的简要描述。该描述包含 `ANALYZE` 的作用域（例如列、索引或全局统计信息合并），并可能包含实际生效的选项，例如 `buckets`、`topn`、`samplerate` 或 `samples`。
 | `Processed_rows` | 已经 `ANALYZE` 的行数 |
 | `Start_time` | 任务开始执行的时间 |
 | `End_time` | 任务结束执行的时间 |
@@ -40,30 +40,13 @@ ShowLikeOrWhereOpt ::= 'LIKE' SimpleExpr | 'WHERE' Expression
 
 ## 示例
 
+> **注意：**
+>
+> 从 v9.0.0 起，TiDB 不再支持使用统计信息版本 1（`tidb_analyze_version = 1`）收集新的统计信息。以下示例展示了基于统计信息版本 2 的 `ANALYZE` 行为。
+
 ```sql
 mysql> create table t(x int, index idx(x)) partition by hash(x) partitions 2;
 Query OK, 0 rows affected (0.69 sec)
-
-mysql> set @@tidb_analyze_version = 1;
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> analyze table t;
-Query OK, 0 rows affected (0.20 sec)
-
-mysql> show analyze status;
-+--------------+------------+----------------+-------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+------------------+----------+---------------------+
-| Table_schema | Table_name | Partition_name | Job_info          | Processed_rows | Start_time          | End_time            | State    | Fail_reason | Instance       | Process_ID | Remaining_seconds| Progress | Estimated_total_rows|
-+--------------+------------+----------------+-------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+------------------+----------+---------------------+
-| test         | t          | p1             | analyze index idx |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 | NULL       | NULL             | NULL     | NULL                |
-| test         | t          | p0             | analyze index idx |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 | NULL       | NULL             | NULL     | NULL                |
-| test         | t          | p1             | analyze columns   |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 | NULL       | NULL             | NULL     | NULL                |
-| test         | t          | p0             | analyze columns   |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 | NULL       | NULL             | NULL     | NULL                |
-| test         | t1         | p0             | analyze columns   |       28523259 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | running  | NULL        | 127.0.0.1:4000 | 690208308  | 0s               | 0.9843   | 28978290            |
-+--------------+------------+----------------+-------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+------------------+----------+---------------------+
-4 rows in set (0.01 sec)
-
-mysql> set @@tidb_analyze_version = 2;
-Query OK, 0 rows affected (0.00 sec)
 
 mysql> analyze table t;
 Query OK, 0 rows affected, 2 warnings (0.03 sec)
@@ -74,12 +57,8 @@ mysql> show analyze status;
 +--------------+------------+----------------+--------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+--------------------+----------+----------------------+
 | test         | t          | p1             | analyze table all columns with 256 buckets, 500 topn, 1 samplerate |              0 | 2022-05-27 11:30:12 | 2022-05-27 11:30:12 | finished | NULL        | 127.0.0.1:4000 | NULL       | NULL               | NULL     | NULL                 |
 | test         | t          | p0             | analyze table all columns with 256 buckets, 500 topn, 1 samplerate |              0 | 2022-05-27 11:30:12 | 2022-05-27 11:30:12 | finished | NULL        | 127.0.0.1:4000 | NULL       | NULL               | NULL     | NULL                 |
-| test         | t          | p1             | analyze index idx                                                  |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 | NULL       | NULL               | NULL     | NULL                 |
-| test         | t          | p0             | analyze index idx                                                  |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 | NULL       | NULL               | NULL     | NULL                 |
-| test         | t          | p1             | analyze columns                                                    |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 | NULL       | NULL               | NULL     | NULL                 |
-| test         | t          | p0             | analyze columns                                                    |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 | NULL       | NULL               | NULL     | NULL                 |
 +--------------+------------+----------------+--------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+--------------------+----------+----------------------+
-6 rows in set (0.00 sec)
+2 rows in set (0.00 sec)
 ```
 
 ## MySQL 兼容性
