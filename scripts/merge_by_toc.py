@@ -192,6 +192,26 @@ def replace_heading_func(diff_level=0):
 
     return replace_heading
 
+# remove <StickyHeaderTable> / </StickyHeaderTable> tags for PDF output
+sticky_header_table_pattern = re.compile(r'^\s*</?StickyHeaderTable>\s*$')
+
+def remove_sticky_header_table(text):
+    lines = text.split('\n')
+    result = []
+    i = 0
+    while i < len(lines):
+        if sticky_header_table_pattern.match(lines[i]):
+            prev_blank = len(result) > 0 and result[-1].strip() == ''
+            next_blank = i + 1 < len(lines) and lines[i + 1].strip() == ''
+            if prev_blank and next_blank:
+                i += 2
+            else:
+                i += 1
+        else:
+            result.append(lines[i])
+            i += 1
+    return '\n'.join(result)
+
 # remove copyable snippet code
 def remove_copyable(match):
     return ''
@@ -213,6 +233,7 @@ for type_, level, name in followups:
                 chapter = replace_variables(chapter, variables)
                 chapter = replace_link_wrap(chapter, name)
                 chapter = copyable_snippet_pattern.sub(remove_copyable, chapter)
+                chapter = remove_sticky_header_table(chapter)
                 chapter = extract_custom_ids_and_clean(chapter)
                 chapter = replace_custom_id_links(chapter)
 
