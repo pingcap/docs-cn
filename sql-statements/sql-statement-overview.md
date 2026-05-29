@@ -22,10 +22,12 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`ALTER TABLE ... MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md) | 修改列定义。                                                                                       |
 | [`ALTER TABLE ... RENAME INDEX`](/sql-statements/sql-statement-rename-index.md) | 重命名索引。                                                                                       |
 | [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)                 | 修改表定义。                                                                                           |
+| [`ALTER TABLE ... ADD/DROP/ENABLE/DISABLE/MODIFY MASKING POLICY`](/sql-statements/sql-statement-alter-table.md) | 管理表上的列脱敏策略。                                                                               |
 | [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md)         | 创建新数据库。                                                                                         |
 | [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md)               | 在表上创建新索引。                                                                                     |
 | [`CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md)         | 创建新序列对象。                                                                                       |
 | [`CREATE TABLE LIKE`](/sql-statements/sql-statement-create-table-like.md)     | 复制已有表的定义，但不复制任何数据。                                                                   |
+| [`CREATE MASKING POLICY`](/sql-statements/sql-statement-create-masking-policy.md) | 为表中的列创建数据脱敏策略。                                                               |
 | [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md)               | 创建新表。                                                                                             |
 | [`CREATE VIEW`](/sql-statements/sql-statement-create-view.md)                 | 创建新视图。                                                                                           |
 | [`DROP DATABASE`](/sql-statements/sql-statement-drop-database.md)             | 删除已有数据库。                                                                                       |
@@ -41,6 +43,7 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md)           | 显示当前用户有权限访问的数据库列表。                                                                   |
 | [`SHOW FIELDS FROM`](/sql-statements/sql-statement-show-fields-from.md)       | 显示表的列。                                                                                           |
 | [`SHOW INDEXES`](/sql-statements/sql-statement-show-indexes.md)               | 显示表的索引。                                                                                         |
+| [`SHOW MASKING POLICIES`](/sql-statements/sql-statement-show-masking-policies.md) | 显示表上定义的脱敏策略。                                                                           |
 | [`SHOW SCHEMAS`](/sql-statements/sql-statement-show-schemas.md)               | `SHOW DATABASES` 的别名，显示当前用户有权限访问的数据库列表。                                          |
 | [`SHOW TABLE NEXT_ROW_ID`](/sql-statements/sql-statement-show-table-next-rowid.md) | 显示表中下一个行的 ID。                                                                           |
 | [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md)   | 显示 TiDB 中表的 Region 信息。                                                                         |

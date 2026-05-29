@@ -57,6 +57,29 @@ AlterTableSpec ::=
     )
 |   'AFFINITY' EqOpt stringLit
 |   PlacementPolicyOption
+|   MaskingPolicyOption
+
+MaskingPolicyOption ::=
+    'ADD' 'MASKING' 'POLICY' PolicyName 'ON' '(' Identifier ')' 'AS' Expression MaskingPolicyRestrictOnOpt MaskingPolicyStateOpt
+|   'ENABLE' 'MASKING' 'POLICY' PolicyName
+|   'DISABLE' 'MASKING' 'POLICY' PolicyName
+|   'DROP' 'MASKING' 'POLICY' PolicyName
+|   'MODIFY' 'MASKING' 'POLICY' PolicyName 'SET' Identifier EqOpt Expression
+|   'MODIFY' 'MASKING' 'POLICY' PolicyName 'SET' 'RESTRICT' 'ON' '(' MaskingPolicyRestrictOperationList ')'
+|   'MODIFY' 'MASKING' 'POLICY' PolicyName 'SET' 'RESTRICT' 'ON' 'NONE'
+
+MaskingPolicyRestrictOnOpt ::=
+    ( 'RESTRICT' 'ON' '(' MaskingPolicyRestrictOperationList ')' )?
+|   'RESTRICT' 'ON' 'NONE'
+
+MaskingPolicyRestrictOperationList ::=
+    MaskingPolicyRestrictOperation ( ',' MaskingPolicyRestrictOperation )*
+
+MaskingPolicyRestrictOperation ::=
+    Identifier
+
+MaskingPolicyStateOpt ::=
+    ( 'ENABLE' | 'DISABLE' )?
 
 PlacementPolicyOption ::=
     "PLACEMENT" "POLICY" EqOpt PolicyName
@@ -161,6 +184,56 @@ Query OK, 0 rows affected, 1 warning (0.25 sec)
 +-------+------+---------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
+
+### 管理列脱敏策略
+
+`ALTER TABLE` 支持对表上的列脱敏策略进行管理，包括添加、启用、禁用、修改和删除脱敏策略。
+
+以下示例演示了如何通过 `ALTER TABLE` 添加一个脱敏策略：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 ADD MASKING POLICY p_mask_c1 ON (c1) AS MASK_FULL(c1) ENABLE;
+```
+
+```
+Query OK, 0 rows affected (0.10 sec)
+```
+
+禁用一个已有的脱敏策略：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 DISABLE MASKING POLICY p_mask_c1;
+```
+
+重新启用脱敏策略：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 ENABLE MASKING POLICY p_mask_c1;
+```
+
+修改脱敏策略的脱敏表达式：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 MODIFY MASKING POLICY p_mask_c1 SET c1 = MASK_PARTIAL(c1, 2, 2, '*');
+```
+
+删除脱敏策略：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 DROP MASKING POLICY p_mask_c1;
+```
+
+更多关于脱敏策略的说明，参见 [`CREATE MASKING POLICY`](/sql-statements/sql-statement-create-masking-policy.md) 和 [`SHOW MASKING POLICIES`](/sql-statements/sql-statement-show-masking-policies.md)。
 
 ## MySQL 兼容性
 
