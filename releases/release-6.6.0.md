@@ -13,7 +13,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 >
 > TiDB 6.6.0-DMR 的用户文档已[归档](https://docs-archive.pingcap.com/zh/tidb/v6.6)。如无特殊需求，建议使用 TiDB 数据库的[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.6/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.6.0-DMR#version-list)
+试用链接：[快速体验](https://docs-archive.pingcap.com/zh/tidb/v6.6/quick-start-with-tidb)
 
 在 6.6.0 版本中，你可以获得以下关键特性：
 
@@ -28,38 +28,38 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 <tbody>
   <tr>
     <td rowspan="3">可扩展性与性能<br /></td>
-      <td>TiKV 支持 <a href="https://docs.pingcap.com/zh/tidb/v6.6/partitioned-raft-kv" target="_blank">Partitioned Raft KV 存储引擎</a>（实验特性）</td>
+      <td>TiKV 支持 <a href="https://docs-archive.pingcap.com/zh/tidb/v6.6/partitioned-raft-kv" target="_blank">Partitioned Raft KV 存储引擎</a>（实验特性）</td>
       <td>TiKV 引入下一代存储引擎 Partitioned Raft KV，通过每个数据 Region 独享 RocksDB 实例，可将集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
   </tr>
   <tr>
-      <td>TiKV 支持<a href="https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_store_batch_size" target="_blank">批量聚合数据请求</a></td>
+      <td>TiKV 支持<a href="https://docs-archive.pingcap.com/zh/tidb/v6.6/system-variables#tidb_store_batch_size" target="_blank">批量聚合数据请求</a></td>
       <td>TiDB 支持将发送到相同 TiKV 实例的数据请求部分合并，减少子任务的数量和 RPC 请求的开销。在数据离散分布且 gRPC 线程池资源紧张的情况下，批量化请求能够提升性能超 50%。</td>
   </tr>
   <tr>
-    <td>TiFlash 支持 <a href="https://docs.pingcap.com/zh/tidb/v6.6/stale-read" target="_blank">Stale Read</a> 和<a href="https://docs.pingcap.com/zh/tidb/v6.6/explain-mpp#mpp-version-和-exchange-数据压缩" target="_blank">压缩数据交换</a></td>
+    <td>TiFlash 支持 <a href="https://docs-archive.pingcap.com/zh/tidb/v6.6/stale-read" target="_blank">Stale Read</a> 和<a href="https://docs-archive.pingcap.com/zh/tidb/v6.6/explain-mpp#mpp-version-和-exchange-数据压缩" target="_blank">压缩数据交换</a></td>
     <td>TiFlash 支持 Stale Read 功能，在非实时性要求的场景可提升查询性能。TiFlash 默认支持带压缩的数据交换，可提升并行处理的数据交换效率，TPC-H 总体性能提升约 10%，流量节省超 50%。</td>
   </tr>
   <tr>
     <td rowspan="2">稳定性与高可用<br /></td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/tidb-resource-control" target="_blank">资源管控</a>（实验特性）</td>
+    <td><a href="https://docs-archive.pingcap.com/zh/tidb/v6.6/tidb-resource-control" target="_blank">资源管控</a>（实验特性）</td>
     <td>引入资源管控框架，支持将资源配额映射到用户定义的资源组，在集群资源发生争用时，对资源组内用户的资源使用进行限制。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/sql-plan-management#根据历史执行计划创建绑定" target="_blank">绑定历史执行计划</a></td>
+    <td><a href="https://docs-archive.pingcap.com/zh/tidb/v6.6/sql-plan-management#根据历史执行计划创建绑定" target="_blank">绑定历史执行计划</a></td>
     <td>支持绑定历史执行计划，支持通过 TiDB Dashboard 快速绑定执行计划。</td>
   </tr>
   <tr>
     <td rowspan="2">功能特性与兼容性<br /></td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/foreign-key" target="_blank">外键约束</a>（实验特性）</td>
+    <td><a href="https://docs-archive.pingcap.com/zh/tidb/v6.6/foreign-key" target="_blank">外键约束</a>（实验特性）</td>
     <td>支持 MySQL 兼容的外键约束，帮助保持数据一致性和提升数据质量。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/sql-statement-create-index/#多值索引" target="_blank">多值索引</a>（实验特性）</td>
+    <td><a href="https://docs-archive.pingcap.com/zh/tidb/v6.6/sql-statement-create-index/#多值索引" target="_blank">多值索引</a>（实验特性）</td>
     <td>引入 MySQL 兼容的多值索引，增强 JSON 类型，提升 TiDB 对 MySQL 8.0 的兼容性。</td>
   </tr>
   <tr>
     <td>数据库管理与可观测性<br /></td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/dm-precheck/#physical-import-检查项" target="_blank">DM 集成物理导入模式</a>（实验特性）</td>
+    <td><a href="https://docs-archive.pingcap.com/zh/tidb/v6.6/dm-precheck/#physical-import-检查项" target="_blank">DM 集成物理导入模式</a>（实验特性）</td>
     <td>TiDB Data Migration (DM) 集成 TiDB Lightning 的物理导入模式模式，提升 DM 全量数据迁移时的性能，大数据量场景下的迁移时间最多可提升 10 倍。</td>
   </tr>
 </tbody>
@@ -79,15 +79,15 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 * 支持 DDL 分布式并行执行框架（实验特性）[#37125](https://github.com/pingcap/tidb/issues/37125) @[zimulala](https://github.com/zimulala)
 
-    在过去的版本中，整个 TiDB 集群中仅允许一个 TiDB 实例作为 DDL Owner 处理 Schema 变更任务。为了进一步提升 DDL 的并发性，TiDB v6.6.0 版本引入了 DDL 分布式并行执行框架，支持集群中所有的 TiDB 实例并发执行同一个任务的 `StateWriteReorganization` 阶段，加速 DDL 的执行。该功能由系统变量 [`tidb_ddl_distribute_reorg`](https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_ddl_distribute_reorg-从-v660-版本开始引入) 控制是否开启，目前只支持 `Add Index` 操作。
+    在过去的版本中，整个 TiDB 集群中仅允许一个 TiDB 实例作为 DDL Owner 处理 Schema 变更任务。为了进一步提升 DDL 的并发性，TiDB v6.6.0 版本引入了 DDL 分布式并行执行框架，支持集群中所有的 TiDB 实例并发执行同一个任务的 `StateWriteReorganization` 阶段，加速 DDL 的执行。该功能由系统变量 [`tidb_ddl_distribute_reorg`](https://docs-archive.pingcap.com/zh/tidb/v6.6/system-variables#tidb_ddl_distribute_reorg-从-v660-版本开始引入) 控制是否开启，目前只支持 `Add Index` 操作。
 
 ### 性能
 
 * 支持悲观锁队列的稳定唤醒模型 [#13298](https://github.com/tikv/tikv/issues/13298) @[MyonKeminta](https://github.com/MyonKeminta)
 
-    如果业务场景存在单点悲观锁冲突频繁的情况，原有的唤醒机制无法保证事务获取锁的时间，造成长尾延迟高，甚至获取锁超时。自 v6.6.0 起，你可以通过设置系统变量 [`tidb_pessimistic_txn_aggressive_locking`](https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_pessimistic_txn_aggressive_locking-%E4%BB%8E-v660-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 为 `ON` 开启悲观锁的稳定唤醒模型。在该唤醒模型下，队列的唤醒顺序可被严格控制，避免无效唤醒造成的资源浪费。在锁冲突严重的场景中，能够减少长尾延时，降低 P99 响应时间。
+    如果业务场景存在单点悲观锁冲突频繁的情况，原有的唤醒机制无法保证事务获取锁的时间，造成长尾延迟高，甚至获取锁超时。自 v6.6.0 起，你可以通过设置系统变量 [`tidb_pessimistic_txn_aggressive_locking`](https://docs-archive.pingcap.com/zh/tidb/v6.6/system-variables#tidb_pessimistic_txn_aggressive_locking-%E4%BB%8E-v660-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 为 `ON` 开启悲观锁的稳定唤醒模型。在该唤醒模型下，队列的唤醒顺序可被严格控制，避免无效唤醒造成的资源浪费。在锁冲突严重的场景中，能够减少长尾延时，降低 P99 响应时间。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_pessimistic_txn_aggressive_locking-%E4%BB%8E-v660-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5)。
+    更多信息，请参考[用户文档](https://docs-archive.pingcap.com/zh/tidb/v6.6/system-variables#tidb_pessimistic_txn_aggressive_locking-%E4%BB%8E-v660-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5)。
 
 * 批量聚合数据请求 [#39361](https://github.com/pingcap/tidb/issues/39361) @[cfzjywxk](https://github.com/cfzjywxk) @[you06](https://github.com/you06)
 
@@ -151,7 +151,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 * 支持 DDL 动态资源管控（实验特性）[#38025](https://github.com/pingcap/tidb/issues/38025) @[hawkingrei](https://github.com/hawkingrei)
 
-    TiDB v6.6.0 版本引入了 DDL 动态资源管控，通过自动控制 DDL 的 CPU 使用量，尽量降低 DDL 变更任务对线上业务的影响。该功能仅在开启 [DDL 分布式并行执行框架](https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_ddl_distribute_reorg-从-v660-版本开始引入)后生效。
+    TiDB v6.6.0 版本引入了 DDL 动态资源管控，通过自动控制 DDL 的 CPU 使用量，尽量降低 DDL 变更任务对线上业务的影响。该功能仅在开启 [DDL 分布式并行执行框架](https://docs-archive.pingcap.com/zh/tidb/v6.6/system-variables#tidb_ddl_distribute_reorg-从-v660-版本开始引入)后生效。
 
 ### 高可用
 
@@ -358,13 +358,13 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | [`tidb_store_batch_size`](/system-variables.md#tidb_store_batch_size) | 修改 | 该变量设置 `IndexLookUp` 算子回表时多个 Coprocessor Task 的 batch 大小。`0` 代表不使用 batch。自 v6.6.0 起，默认值由 `0` 调整为 `4`，即每批请求会有 4 个 Coprocessor Task 被 batch 到一个 task 中。 |
 | [`mpp_exchange_compression_mode`](/system-variables.md#mpp_exchange_compression_mode-从-v660-版本开始引入) |  新增  |  该变量用于选择 MPP Exchange 算子的数据压缩模式，当 TiDB 选择版本号为 `1` 的 MPP 执行计划时生效。默认值为 `UNSPECIFIED`，表示 TiDB 自动选择 `FAST` 压缩模式。|
 | [`mpp_version`](/system-variables.md#mpp_version-从-v660-版本开始引入) |  新增  |  该变量用于指定不同版本的 MPP 执行计划。指定后，TiDB 会选择指定版本的 MPP 执行计划。默认值为 `UNSPECIFIED`，表示 TiDB 自动选择最新版本 `1`。 |
-| [`tidb_ddl_distribute_reorg`](https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_ddl_distribute_reorg-从-v660-版本开始引入) | 新增 | 这个变量用来控制是否开启分布式执行 DDL reorg 阶段，来提升此阶段的速度。默认值为 `OFF`，表示默认不开启分布式执行 DDL reorg 阶段。目前此开关只对 `ADD INDEX` 语句有效。|
+| [`tidb_ddl_distribute_reorg`](https://docs-archive.pingcap.com/zh/tidb/v6.6/system-variables#tidb_ddl_distribute_reorg-从-v660-版本开始引入) | 新增 | 这个变量用来控制是否开启分布式执行 DDL reorg 阶段，来提升此阶段的速度。默认值为 `OFF`，表示默认不开启分布式执行 DDL reorg 阶段。目前此开关只对 `ADD INDEX` 语句有效。|
 | [`tidb_enable_historical_stats_for_capture`](/system-variables.md#tidb_enable_historical_stats_for_capture) | 新增 | 这个变量用来控制 `PLAN REPLAYER CAPTURE` 抓取的内容是否默认带历史统计信息。默认值为 `OFF`，表示默认不带历史统计信息。 |
 | [`tidb_enable_plan_cache_for_param_limit`](/system-variables.md#tidb_enable_plan_cache_for_param_limit-从-v660-版本开始引入) | 新增 | 这个变量用来控制 Prepared Plan Cache 是否缓存 `Limit` 后带有 `COUNT` 的执行计划。默认值为 `ON`，表示默认缓存这样的执行计划。目前不支持缓存 `Limit` 后面的 `COUNT` 具体参数值大于 10000 的执行计划。 |
 | [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) | 新增  | 该变量是[资源管控特性](/tidb-resource-control-ru-groups.md)的开关。默认值为 `OFF`。该变量设置为 `ON` 后，集群支持应用按照资源组做资源隔离。 |
 | [`tidb_historical_stats_duration`](/system-variables.md#tidb_historical_stats_duration-从-v660-版本开始引入) | 新增 | 这个变量用来控制历史统计信息在存储中的保留时间，默认值为 7 天。 |
 | [`tidb_index_join_double_read_penalty_cost_rate`](/system-variables.md#tidb_index_join_double_read_penalty_cost_rate-从-v660-版本开始引入) | 新增 | 用于控制是否给 index join 增加一些惩罚性代价。默认值为 `0`，即不开启该功能。 |
-| [`tidb_pessimistic_txn_aggressive_locking`](https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_pessimistic_txn_aggressive_locking-%E4%BB%8E-v660-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) | 新增 | 是否对悲观锁启用加强的悲观锁唤醒模型。默认值为 `OFF`，表示默认不对悲观锁启用加强的悲观锁唤醒模型。 |
+| [`tidb_pessimistic_txn_aggressive_locking`](https://docs-archive.pingcap.com/zh/tidb/v6.6/system-variables#tidb_pessimistic_txn_aggressive_locking-%E4%BB%8E-v660-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) | 新增 | 是否对悲观锁启用加强的悲观锁唤醒模型。默认值为 `OFF`，表示默认不对悲观锁启用加强的悲观锁唤醒模型。 |
 | [`tidb_stmt_summary_enable_persistent`](/system-variables.md#tidb_stmt_summary_enable_persistent-从-v660-版本开始引入) | 新增 | 只读变量。表示是否开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)。该变量的值与配置文件中 [`tidb_stmt_summary_enable_persistent`](/tidb-configuration-file.md#tidb_stmt_summary_enable_persistent-从-v660-版本开始引入) 的取值相同。 |
 | [`tidb_stmt_summary_filename`](/system-variables.md#tidb_stmt_summary_filename-从-v660-版本开始引入) | 新增 | 只读变量。表示当开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)后持久化数据所写入的文件。该变量的值与配置文件中 [`tidb_stmt_summary_filename`](/tidb-configuration-file.md#tidb_stmt_summary_filename-从-v660-版本开始引入) 的取值相同。 |
 | [`tidb_stmt_summary_file_max_backups`](/system-variables.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) | 新增 | 只读变量。表示当开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)后持久化数据文件的最大数量限制。该变量的值与配置文件中 [`tidb_stmt_summary_file_max_backups`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) 的取值相同。 |
@@ -408,8 +408,8 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | DM | [`on-duplicate-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制物理导入模式针对冲突数据的解决方式。默认值为 `"none"`，表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会出现数据索引不一致的问题。  |
 | DM | [`sorting-dir-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制物理导入模式用作本地排序的目录位置，该选项的默认值与 `dir` 配置项一致。 |
 | sync-diff-inspector   | [`skip-non-existing-table`](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)   |  新增 | 当下游数据库的表在上游不存在时，该配置项决定是否跳过对上下游数据库表数量不一致场景的校验。  |
-| TiSpark | [`spark.tispark.replica_read`](/tispark-overview.md#tispark-配置) | 新增 | 控制读取副本的类型，可选值为 `leader`、`follower`、`learner`。 |
-| TiSpark | [`spark.tispark.replica_read.label`](/tispark-overview.md#tispark-配置) | 新增 | 设置目标 TiKV 节点的标签。 |
+| TiSpark | [`spark.tispark.replica_read`](https://docs-archive.pingcap.com/zh/tidb/v6.6/tispark-overview#tispark-配置) | 新增 | 控制读取副本的类型，可选值为 `leader`、`follower`、`learner`。 |
+| TiSpark | [`spark.tispark.replica_read.label`](https://docs-archive.pingcap.com/zh/tidb/v6.6/tispark-overview#tispark-配置) | 新增 | 设置目标 TiKV 节点的标签。 |
 
 ### 其他
 

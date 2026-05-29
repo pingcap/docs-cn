@@ -43,7 +43,7 @@ log-level = "info"
 # gRPC 线程池大小
 # grpc-concurrency = 4
 # TiKV 每个实例之间的 gRPC 连接数
-# grpc-raft-conn-num = 10
+# grpc-raft-conn-num = 1
 
 # TiDB 过来的大部分读请求都会发送到 TiKV 的 Coprocessor 进行处理，该参数用于设置
 # coprocessor 线程的个数，如果业务是读请求比较多，增加 coprocessor 的线程数，但应比系统的

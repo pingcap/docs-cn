@@ -1,9 +1,9 @@
 ---
-title: 使用 TTL (Time to Live) 定期删除过期数据
+title: TTL (Time to Live)
 summary: Time to Live (TTL) 提供了行级别的生命周期控制策略。本篇文档介绍如何通过 TTL (Time to Live) 来管理表数据的生命周期。
 ---
 
-# 使用 TTL (Time to Live) 定期删除过期数据
+# TTL (Time to Live)
 
 Time to Live (TTL) 提供了行级别的生命周期控制策略。通过为表设置 TTL 属性，TiDB 可以周期性地自动检查并清理表中的过期数据。此功能在一些场景可以有效节省存储空间、提升性能。
 
@@ -116,7 +116,7 @@ CREATE TABLE message (
 
 上述语句的消息以 `expire_at` 列来作为过期时间，并按照消息类型来设定。如果是图片，则 5 天后过期，不然就 30 天后过期。
 
-TTL 还可以和 [JSON 类型](/data-type-json.md) 一起使用。例如：
+TTL 还可以和 [JSON 类型](/data-type-json.md)一起使用。例如：
 
 ```sql
 CREATE TABLE orders (
@@ -157,7 +157,7 @@ SET @@global.tidb_ttl_job_schedule_window_end_time = '05:00 +0000';
 
 ## TTL 的可观测性
 
-TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关指标的可视化图表。你可以在 TiDB -> TTL 的面板下看到这些信息。指标详情见 [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md) 中的 `TTL` 部分。
+TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关指标的可视化图表。你可以在 TiDB -> TTL 的面板下看到这些信息。指标详情见 [TiDB 重要监控指标详解](/grafana-tidb-dashboard.md)中的 `TTL` 部分。
 
 同时，可以通过以下三个系统表获得 TTL 任务执行的更多信息：
 

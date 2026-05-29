@@ -365,7 +365,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
     - 在 DM 运行过程中，上下游数据库的用户必须具备相应的读写权限。在启动同步任务过程中，DM 会自动进行[相应权限的检查](/dm/dm-precheck.md)。
 
-    - 同一套 DM 集群，混合部署不同版本的 DM-worker/DM-master/dmctl，见案例 [AskTUG-1049](https://asktug.com/t/dm1-0-0-ga-access-denied-for-user/1049/5)。
+    - 同一套 DM 集群，混合部署不同版本的 DM-worker/DM-master/dmctl，见案例 [AskTUG-1049](https://pingkai.cn/tidbcommunity/forum/t/topic/1049/5)。
 
 - 6.1.3 DM 同步任务中断并包含 `driver: bad connection` 错误。
 
@@ -403,7 +403,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
 - 6.1.7 DM 同步报错 `Error 1366: incorrect utf8 value eda0bdedb29d(\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd)`。
 
-    - 该值 MySQL 8.0 和 TiDB 都不能写入成功，但是 MySQL 5.7 可以写入成功。可以开启 TiDB 动态参数 `tidb_skip_utf8_check` 参数，跳过数据格式检查。
+    - 该值 MySQL 8.x 和 TiDB 都不能写入成功，但是 MySQL 5.7 可以写入成功。可以开启 TiDB 动态参数 `tidb_skip_utf8_check` 参数，跳过数据格式检查。
 
 ### 6.2 TiDB Lightning 问题
 

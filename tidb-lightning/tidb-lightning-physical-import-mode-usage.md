@@ -5,7 +5,7 @@ summary: 了解如何使用 TiDB Lightning 的物理导入模式。
 
 # 使用物理导入模式
 
-本文档介绍如何编写[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md) 的配置文件，如何进行性能调优、使用磁盘资源配额等内容。
+本文档介绍如何编写[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)的配置文件，如何进行性能调优、使用磁盘资源配额等内容。
 
 使用物理导入模式有一些限制，使用前请务必阅读[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
 
@@ -26,7 +26,7 @@ max-backups = 14
 check-requirements = true
 
 [mydumper]
-# 本地源数据目录或外部存储 URI。关于外部存储 URI 详情可参考 https://docs.pingcap.com/zh/tidb/v6.6/backup-and-restore-storages#uri-%E6%A0%BC%E5%BC%8F。
+# 本地源数据目录或外部存储 URI。关于外部存储 URI 详情可参考 https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages/#uri-格式。
 data-source-dir = "/data/my_database"
 
 [conflict]

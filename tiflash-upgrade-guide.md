@@ -19,7 +19,7 @@ aliases: ['/zh/tidb/dev/tiflash-620-upgrade-guide']
 >
 > - 不推荐跨主干版本升级包含 TiFlash 的 TiDB 集群，如从 v4.x 升级至 v6.x，请先升级至 v5.x，然后再升级至 v6.x。
 >
-> - v4.x. 已接近产品周期尾声，请尽早升级到 v5.x 及以上版本。具体的版本周期请参考 [TiDB 版本周期支持策略](https://pingcap.com/zh/tidb-release-support-policy)。
+> - v6.x. 已接近产品周期尾声，请尽早升级到 v7.x 及以上版本。具体的版本周期请参考 [TiDB 版本周期支持策略](https://pingkai.cn/tidb-release-support-policy)。
 >
 > - v6.0 作为非 LTS 版本，不会推出后续的 bug 修复版，请尽量使用 v6.1 及之后的 LTS 版本。
 
@@ -132,7 +132,7 @@ TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，减少数据的写放大
 
 ## 从 v7.x 升级至 v8.4 或以上版本
 
-从 v8.4 开始，为了支持[向量搜索功能](/vector-search/vector-search-index.md)，TiFlash 底层存储格式发生改动。因此，升级 TiFlash 到 v8.4 或以上版本后，不支持原地降级到之前的版本。
+从 v8.4 开始，为了支持[向量搜索功能](/ai/reference/vector-search-index.md)，TiFlash 底层存储格式发生改动。因此，升级 TiFlash 到 v8.4 或以上版本后，不支持原地降级到之前的版本。
 
 ## 从 v8.x 升级至 v9.0 或以上版本
 

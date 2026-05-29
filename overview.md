@@ -1,7 +1,7 @@
 ---
 title: TiDB 简介
 aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/','/docs-cn/overview','/docs-cn/stable/overview/','/docs-cn/stable/key-features/']
-summary: TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库，支持在线事务处理与在线分析处理 (HTAP)。具有水平扩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等特性。适用于高可用、强一致性要求高、数据规模大等各种应用场景。具有一键水平扩缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等五大核心特性，以及金融行业、海量数据及高并发的 OLTP、实时 HTAP、数据汇聚、二次加工处理等四大核心应用场景。
+summary: TiDB 是平凯星辰自主设计、研发的开源分布式关系型数据库，支持在线事务处理与在线分析处理 (HTAP)。具有水平扩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等特性。适用于高可用、强一致性要求高、数据规模大等各种应用场景。具有一键水平扩缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等五大核心特性，以及金融行业、海量数据及高并发的 OLTP、实时 HTAP、数据汇聚、二次加工处理等四大核心应用场景。
 ---
 
 # TiDB 简介
@@ -14,11 +14,7 @@ summary: TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型
 
 -->
 
-[TiDB](https://github.com/pingcap/tidb) 是 [PingCAP](https://pingcap.com/about-cn/) 公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 的融合型分布式数据库产品，具备水平扩容或者缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等重要特性。目标是为用户提供一站式 OLTP (Online Transactional Processing)、OLAP (Online Analytical Processing)、HTAP 解决方案。TiDB 适合高可用、强一致要求较高、数据规模较大等各种应用场景。
-
-关于 TiDB 的关键技术创新，请观看以下视频。
-
-<video src="https://docs-download.pingcap.com/media/videos/docs-cn%2FLesson01_intro.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson1.png"></video>
+[TiDB](https://github.com/pingcap/tidb) 是[平凯星辰](https://pingkai.cn/about)公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 的融合型分布式数据库产品，具备水平扩容或者缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等重要特性。目标是为用户提供一站式 OLTP (Online Transactional Processing)、OLAP (Online Analytical Processing)、HTAP 解决方案。TiDB 适合高可用、强一致要求较高、数据规模较大等各种应用场景。
 
 ## 五大核心特性
 
@@ -59,10 +55,6 @@ summary: TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型
 - 数据汇聚、二次加工处理的场景
 
     TiDB 适用于将企业分散在各个系统的数据汇聚在同一个系统，并进行二次加工处理生成 T+0 或 T+1 的报表。与 Hadoop 相比，TiDB 要简单得多，业务通过 ETL 工具或者 TiDB 的同步工具将数据同步到 TiDB，在 TiDB 中可通过 SQL 直接生成报表。
-
-关于 TiDB 典型应用场景和用户案例的介绍，请观看以下视频。
-
-<video src="https://docs-download.pingcap.com/media/videos/docs-cn%2FLesson06_scenarios.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_lesson6.png"></video>
 
 ## 另请参阅
 

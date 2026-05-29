@@ -9,7 +9,7 @@ summary: 了解 TiDB 8.5.1 版本的操作系统支持变更、兼容性变更�
 
 TiDB 版本：8.5.1
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v8.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v8.5.1#version-list)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v8.5/production-deployment-using-tiup)
 
 ## 操作系统支持变更
 

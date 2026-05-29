@@ -44,7 +44,7 @@ DM 的性能参数如下表所示。
 
 TiDB 的 `AUTO_INCREMENT` 与 MySQL 的 `AUTO_INCREMENT` 整体上看是相互兼容的。但因为 TiDB 作为分布式数据库，一般会有多个计算节点（client 端入口），应用数据写入时会将负载均分开，这就导致在有 `AUTO_INCREMENT` 列的表上，可能出现不连续的自增 ID。详细原理参考 [`AUTO_INCREMENT`](/auto-increment.md#实现原理)。
 
-如果业务对自增 ID 有强依赖，可以考虑使用[兼容 MySQL 的自增列模式](/auto-increment.md#兼容-mysql-的自增列模式) 或 [`SEQUENCE` 函数](/sql-statements/sql-statement-create-sequence.md#sequence-函数)。
+如果业务对自增 ID 有强依赖，可以考虑使用[兼容 MySQL 的自增列模式](/auto-increment.md#兼容-mysql-的自增列模式)或 [`SEQUENCE` 函数](/sql-statements/sql-statement-create-sequence.md#sequence-函数)。
 
 #### 是否使用聚簇索引
 

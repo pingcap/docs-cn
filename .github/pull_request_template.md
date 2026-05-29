@@ -26,7 +26,6 @@ For details, see [tips for choosing the affected versions (in Chinese)](https://
 - [ ] v7.1 (TiDB 7.1 versions)
 - [ ] v6.5 (TiDB 6.5 versions)
 - [ ] v6.1 (TiDB 6.1 versions)
-- [ ] v5.4 (TiDB 5.4 versions)
 
 ### What is the related PR or file link(s)?
 

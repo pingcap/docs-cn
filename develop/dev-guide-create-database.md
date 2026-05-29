@@ -1,7 +1,7 @@
 ---
 title: 创建数据库
 summary: 创建数据库的方法、规范及例子。
-aliases: ['/zh/tidb/dev/create-database']
+aliases: ['/zh/tidb/dev/create-database','/zh/tidb/stable/dev-guide-create-database/','/zh/tidb/dev/dev-guide-create-database/','/zh/tidbcloud/dev-guide-create-database/']
 ---
 
 # 创建数据库
@@ -16,7 +16,7 @@ aliases: ['/zh/tidb/dev/create-database']
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)。
 
 ## 什么是数据库
@@ -42,7 +42,11 @@ mysql
     -e "CREATE DATABASE IF NOT EXISTS bookshop;"
 ```
 
-要查看集群中的数据库，可在命令行执行一条 `SHOW DATABASES` 语句：
+## 查看数据库
+
+要查看数据库，可以执行 `SHOW DATABASES` 语句。
+
+示例：
 
 ```shell
 mysql
@@ -53,7 +57,7 @@ mysql
     -e "SHOW DATABASES;"
 ```
 
-运行结果为：
+以下为示例输出结果：
 
 ```
 +--------------------+

@@ -13,7 +13,7 @@ TiDB 版本：6.4.0-DMR
 >
 > TiDB 6.4.0-DMR 的用户文档已[归档](https://docs-archive.pingcap.com/zh/tidb/v6.4)。如无特殊需求，建议使用 TiDB 数据库的[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.4/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.4.0-DMR#version-list)
+试用链接：[快速体验](https://docs-archive.pingcap.com/zh/tidb/v6.4/quick-start-with-tidb)
 
 在 6.4.0-DMR 版本中，你可以获得以下关键特性：
 
@@ -310,7 +310,7 @@ TiDB 版本：6.4.0-DMR
 | TiDB | [`pessimistic-txn.constraint-check-in-place-pessimistic`](/tidb-configuration-file.md#constraint-check-in-place-pessimistic-从-v640-版本开始引入) | 新增 | 用于控制系统变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 的默认值，默认值为 `true`。|
 | TiDB | [`tidb-max-reuse-chunk`](/tidb-configuration-file.md#tidb-max-reuse-chunk-从-v640-版本开始引入) | 新增 | 用于控制每个连接最多缓存的 Chunk 对象数，默认值为 `64`。 |
 | TiDB | [`tidb-max-reuse-column`](/tidb-configuration-file.md#tidb-max-reuse-column-从-v640-版本开始引入) | 新增 | 用于控制每个连接最多缓存的 column 对象数，默认值为 `256`。 |
-| TiKV | [`cdc.raw-min-ts-outlier-threshold`](https://docs.pingcap.com/zh/tidb/v6.2/tikv-configuration-file#raw-min-ts-outlier-threshold-从-v620-版本开始引入) | 废弃 | 该配置不再生效。|
+| TiKV | [`cdc.raw-min-ts-outlier-threshold`](https://docs-archive.pingcap.com/zh/tidb/v6.2/tikv-configuration-file#raw-min-ts-outlier-threshold-从-v620-版本开始引入) | 废弃 | 该配置不再生效。|
 | TiKV | [`causal-ts.alloc-ahead-buffer`](/tikv-configuration-file.md#alloc-ahead-buffer-从-v640-版本开始引入) | 新增 | 预分配给 TSO 的缓存大小（以时长计算），默认值为 `3s`。|
 | TiKV | [`causal-ts.renew-batch-max-size`](/tikv-configuration-file.md#renew-batch-max-size-从-v640-版本开始引入)| 新增 | 单次时间戳请求的最大数量，默认值为 `8192`。 |
 | TiKV | [`raftstore.apply-yield-write-size`](/tikv-configuration-file.md#apply-yield-write-size-从-v640-版本开始引入) | 新增 | Apply 线程每一轮处理单个状态机写入的最大数据量，默认值为 `32KiB`。这是个软限制。|
@@ -323,7 +323,7 @@ TiDB 版本：6.4.0-DMR
 
 ### 其他
 
-- 从 v6.4.0 开始，`mysql.user` 表新增 `User_attributes` 和 `Token_issuer` 两个字段。如果从 v6.4.0 之前版本的备份数据[恢复 `mysql` schema 下的系统表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表) 到 v6.4.0 集群，BR 将返回 `mysql.user` 表的 `column count mismatch` 错误。如果你未选择恢复 `mysql` schema 下的系统表，则不会报错。
+- 从 v6.4.0 开始，`mysql.user` 表新增 `User_attributes` 和 `Token_issuer` 两个字段。如果从 v6.4.0 之前版本的备份数据[恢复 `mysql` schema 下的系统表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)到 v6.4.0 集群，BR 将返回 `mysql.user` 表的 `column count mismatch` 错误。如果你未选择恢复 `mysql` schema 下的系统表，则不会报错。
 - 针对命名规则符合 Dumpling [输出文件格式](/dumpling-overview.md#输出文件格式)但后缀名并非 gzip 压缩格式的文件（例如 `test-schema-create.sql.origin` 和 `test.table-schema.sql.origin`），Lightning 的处理方式发生了变化。在 v6.4.0 之前的版本中，如果待导入的文件中包含这类文件，Lightning 将跳过对这类文件的导入。从 v6.4.0 起，Lightning 将认为这些文件使用了不支持的压缩格式，导致导入失败。
 - 从 v6.4.0 开始，TiCDC 使用 Syncpoint 功能需要同步任务拥有下游集群的 `SYSTEM_VARIABLES_ADMIN` 或者 `SUPER` 权限。
 

@@ -62,7 +62,8 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 
 >**注意：**
 >
-> 记录在 `Query` 中的查询的长度会受到 [`tidb_stmt_summary_max_sql_length`](/system-variables.md#tidb_stmt_summary_max_sql_length-从-v40-版本开始引入) 系统变量的限制。
+> - 记录在 `Query` 中的查询的长度会受到 [`tidb_stmt_summary_max_sql_length`](/system-variables.md#tidb_stmt_summary_max_sql_length-从-v40-版本开始引入) 系统变量的限制。
+> - 对于预处理语句，参数会在查询末尾列出，例如：`[arguments: "foo", 123]`。不可打印的参数会以十六进制字面量显示，例如 `0x01`。
 
 点击**展开** (**Expand**) 可以展开相应项的完整内容，点击**复制** (**Copy**) 可以复制内容到剪贴板。
 

@@ -23,7 +23,7 @@ TiDB 版本：5.1
 
 > **注意：**
 >
-> 当从一个早期的 TiDB 版本升级到 TiDB 5.1 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Note](/releases/release-notes.md)。
+> 当从一个早期的 TiDB 版本升级到 TiDB 5.1 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Note](/releases/_index.md)。
 
 ### 系统变量
 
@@ -59,7 +59,7 @@ TiDB 版本：5.1
 
 ### 其他
 
-- 升级前，请检查 TiDB 配置项 [`feedback-probability`](https://docs.pingcap.com/zh/tidb/v5.1/tidb-configuration-file#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
+- 升级前，请检查 TiDB 配置项 [`feedback-probability`](https://docs-archive.pingcap.com/zh/tidb/v5.1/tidb-configuration-file#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
 - 为了提升 TiDB 性能，TiDB 的 Go 编译器版本从 go1.13.7 升级到了 go1.16.4。如果你是 TiDB 的开发者，为了能保证顺利编译，请对应升级你的 Go 编译器版本。
 - 请避免在对使用 TiDB Binlog 的集群进行滚动升级的过程中新创建聚簇索引表。
 - 请避免在 TiDB 滚动升级时执行 `alter table ... modify column` 或 `alter table ... change column`。

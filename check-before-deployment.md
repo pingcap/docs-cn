@@ -396,15 +396,15 @@ sudo systemctl enable ntpd.service
 
 在生产系统的 TiDB 中，建议对操作系统进行如下的配置优化：
 
-1. 关闭透明大页（即 Transparent Huge Pages，缩写为 THP）。数据库的内存访问模式往往是稀疏的而非连续的。当高阶内存碎片化比较严重时，分配 THP 页面会出现较高的延迟。
-2. 设置存储介质的 I/O 调度器。
+- 关闭[内存——透明大页](/tune-operating-system.md#内存透明大页) (Transparent Huge Pages, THP)。数据库的内存访问通常较为稀疏，当高阶内存出现明显碎片化时，THP 分配可能导致较高的内存分配延迟，因此建议关闭 THP 以避免性能抖动。
+- 设置存储介质的 [I/O 调度器](/tune-operating-system.md#io-调度器)。
 
     - 对于高速 SSD 存储介质，内核默认的 I/O 调度器可能会导致性能损失。建议将闪存存储的 I/O 调度器设置为先入先出 (First-in-first-out, FIFO) 的调度器，如 `noop` 或 `none`，这样内核将不做调度操作，直接将 I/O 请求传递给硬件，从而提升性能。
     - 对于 NVMe 存储介质，默认的 I/O 调度器为 `none`，无需进行调整。
 
-3. 为调整 CPU 频率的 cpufreq 模块选用 performance 模式。将 CPU 频率固定在其支持的最高运行频率上，不进行动态调节，可获取最佳的性能。
+- 将动态调整 CPU 频率的 [cpufreq 模块](/tune-operating-system.md#处理器动态节能技术)设置为 `performance` 模式。该模式会将 CPU 频率固定在其支持的最高运行频率上，不进行动态调节，因此可获得最佳性能。
 
-采用如下步骤检查操作系统的当前配置，并配置系统优化参数：
+具体的检查和配置步骤如下：
 
 1. 执行以下命令查看透明大页的开启状态。
 
@@ -712,12 +712,17 @@ sudo systemctl enable ntpd.service
 
 ## 手动配置 SSH 互信及 sudo 免密码
 
-对于有需求，通过手动配置中控机至目标节点互信的场景，可参考本段。通常推荐使用 TiUP 部署工具会自动配置 SSH 互信及免密登录，可忽略本段内容。
+本节介绍如何手动配置中控机到目标节点的 SSH 互信。如果你使用 TiUP 部署工具，SSH 互信和免密码登录会自动完成配置，可跳过本节。
+
+在配置 SSH 互信时，建议在所有目标节点上创建并使用 `tidb` 用户。一般情况下，系统并不强制要求各节点上的用户相同。但在以下场景中，请注意用户一致性的要求：
+
+- 使用备份恢复工具 (BR)：强烈建议使用同一用户执行所有 BR 和 TiDB 相关操作。
+- 使用 NFS 等网络存储：需要确保该用户在所有节点上的 UID 和 GID 相同。NFS 通过底层 UID 和 GID 来识别文件访问权限，如果各节点的 UID 或 GID 不一致，或者执行 BR 的用户与运行 TiDB 的用户不同（尤其是在没有 `sudo` 权限时），备份或恢复过程中可能会出现权限被拒绝 (Permission Denied) 错误。
 
 1. 以 `root` 用户依次登录到部署目标机器创建 `tidb` 用户并设置登录密码。
 
     ```bash
-    useradd tidb && \
+    useradd -m -d /home/tidb tidb
     passwd tidb
     ```
 

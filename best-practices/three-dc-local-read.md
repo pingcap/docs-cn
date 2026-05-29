@@ -1,6 +1,7 @@
 ---
 title: 在三数据中心下就近读取数据
 summary: 了解通过 Stale Read 功能在三数据中心下就近读取数据，减少跨数据中心请求。
+aliases: ['/zh/tidb/stable/three-dc-local-read/','/zh/tidb/dev/three-dc-local-read/']
 ---
 
 # 在三数据中心下就近读取数据

@@ -17,7 +17,28 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
 
 集群快照数据备份的流程如下：
 
-![snapshot backup process design](/media/br/br-snapshot-backup-ts.png)
+```mermaid
+sequenceDiagram
+    actor User
+    participant BR
+    participant PD
+    participant TiKV
+    participant Storage
+
+    User->>BR: Run `br backup full`
+    BR->>PD: Pause GC
+    BR->>PD: Fetch TiKV and Region info
+    BR->>TiKV: Request TiKV to back up data
+    loop TiKV handles the local snapshot backup task
+        TiKV->>TiKV: Scan KVs
+        TiKV->>TiKV: Generate SST
+        TiKV->>Storage: Upload SST
+    end
+    TiKV->>BR: Report backup result
+    BR->>BR: Handle all backup results
+    BR->>TiKV: Back up schemas
+    BR->>Storage: Upload backup metadata
+```
 
 完整的备份交互流程描述如下：
 
@@ -49,7 +70,27 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
 
 恢复集群快照备份数据的流程如下：
 
-![snapshot restore process design](/media/br/br-snapshot-restore-ts.png)
+```mermaid
+sequenceDiagram
+    actor User
+    participant BR
+    participant PD
+    participant TiKV
+    participant Storage
+
+    User->>BR: Run `br restore`
+    BR->>PD: Pause Region schedule
+    BR->>TiKV: Restore schema
+    BR->>PD: Split and scatter Regions
+    BR->>TiKV: Request TiKV to restore data
+    loop TiKV handles restore request
+        TiKV->>Storage: Download SST
+        TiKV->>TiKV: Rewrite KVs
+        TiKV->>TiKV: Ingest SST
+    end
+    TiKV->>BR: Report restore result
+    BR->>BR: Handle all restore results
+```
 
 完整的恢复交互流程描述如下：
 

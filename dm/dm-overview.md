@@ -14,7 +14,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/overview/','/docs-cn/tools/dm/overvi
 
 ## 产品特性
 
-- **与 TiDB 同样保持 MySQL 兼容性。**高度兼容 MySQL 协议、MySQL 5.7 和 MySQL 8.0 的常用功能及语法。
+- **与 TiDB 同样保持 MySQL 兼容性。**高度兼容 MySQL 协议、MySQL 5.7 和 MySQL 8.x 的常用功能及语法。
 - **支持 DML & DDL 事件同步。**支持解析和同步 binlog 中的 DML 和 DDL 事件。
 - **支持合库合表同步模式。**可以方便的将上游各个分片 MySQL 实例的各个分表数据，合并同步到下游 TiDB 的一张表。支持自定义编写同步规则以方便各种可能的同步需求，且具备自动识别和处理上游分片 MySQL 的 DDL 变更，大幅简化运维成本。
 - **内置多种过滤器以灵活适应不同场景。**支持以预定义事件类型、正则表达式、SQL 表达式等多种方式在数据同步过程中对 MySQL binlog 事件进行过滤。
@@ -37,7 +37,7 @@ tiup install dm dmctl
 
 + 数据库版本要求
 
-    - MySQL 版本 5.6 ~ 8.0
+    - MySQL 版本 5.6 ~ 8.4
     - MariaDB 版本 >= 10.1.2 （实验特性）
 
     > **注意：**
@@ -52,9 +52,9 @@ tiup install dm dmctl
 
     - DM 不会将视图的 DDL 语句同步到下游的 TiDB 集群，也不会将针对视图的 DML 语句同步到下游。在该场景下，建议用户在下游 TiDB 集群中自行创建视图。
 
-+ GBK 字符集兼容性限制
++ GBK 和 GB18030 字符集兼容性限制
 
-    - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB。
+    - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB，在 v9.0.0 之前不支持将 `charset=GB18030` 的表迁移到 TiDB。
 
 + Binlog 兼容性限制
 
@@ -73,7 +73,7 @@ tiup install dm dmctl
 您可以通过在线文档了解和使用 DM，如果您遇到无法解决的问题，可以选择以下途径之一联系我们。
 
 - [GitHub](https://github.com/pingcap/tiflow/tree/master/dm)
-- [AskTUG](https://asktug.com/tags/dm)
+- [AskTUG](https://pingkai.cn/tidbcommunity/forum/tags/dm)
 
 ## License
 

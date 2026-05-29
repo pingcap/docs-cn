@@ -1,7 +1,7 @@
 ---
 title: 创建表
 summary: 创建表的方法、规范及例子。
-aliases: ['/zh/tidb/dev/create-table']
+aliases: ['/zh/tidb/dev/create-table','/zh/tidb/stable/dev-guide-create-table/','/zh/tidb/dev/dev-guide-create-table/','/zh/tidbcloud/dev-guide-create-table/']
 ---
 
 # 创建表
@@ -16,13 +16,13 @@ aliases: ['/zh/tidb/dev/create-table']
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)。
 - [创建一个数据库](/develop/dev-guide-create-database.md)。
 
 ## 什么是表
 
-[表](/develop/dev-guide-schema-design-overview.md#表-table)是集群中的一种逻辑对象，它从属于[数据库](/develop/dev-guide-schema-design-overview.md#数据库-database)，用于保存从 SQL 中发送的数据。表以行和列的形式组织数据记录,一张表至少有一列。若在表中定义了 n 个列，那么每一行数据都将拥有与这 n 个列中完全一致的字段。
+[表](/develop/dev-guide-schema-design-overview.md#表-table)是 TiDB 中的一种逻辑对象，它从属于[数据库](/develop/dev-guide-schema-design-overview.md#数据库-database)，用于保存从 SQL 中发送的数据。表以行和列的形式组织数据记录,一张表至少有一列。若在表中定义了 n 个列，那么每一行数据都将拥有与这 n 个列中完全一致的字段。
 
 ## 命名表
 
@@ -80,7 +80,7 @@ CREATE TABLE `bookshop`.`users` (
 
 最后，又加入了一个字段名为 `balance` 用以表示用户的余额，类型为 [decimal](/data-type-numeric.md#decimal-类型)，且其精度为 15，比例为 2。简单的说明一下精度和比例代表的含义，精度代表字段数值的总位数，而比例代表小数点后有多少位。例如: `decimal(5,2)`，即精度为 5，比例为 2 时，其取值范围为 `-999.99` 到 `999.99`。`decimal(6,1)`，即精度为 6，比例为 1 时，其取值范围为 `-99999.9` 到 `99999.9`。`decimal` 类型为定点数，可精确保存数字，在需要精确数字的场景（如用户财产相关）中，请确保使用[定点数](/data-type-numeric.md#定点类型)类型。
 
-TiDB 支持许多其他的列数据类型，包含[整数](/data-type-numeric.md#整数类型)、[浮点数](/data-type-numeric.md#浮点类型)、[定点数](/data-type-numeric.md#定点类型)、[时间](/data-type-date-and-time.md#datetime-类型)、[枚举](/data-type-string.md#enum-类型) 等，可参考支持的列的[数据类型](/basic-features.md#数据类型函数和操作符)，并使用与你准备保存在数据库内的数据匹配的**数据类型**。
+TiDB 支持许多其他的列数据类型，包含[整数](/data-type-numeric.md#整数类型)、[浮点数](/data-type-numeric.md#浮点类型)、[定点数](/data-type-numeric.md#定点类型)、[时间](/data-type-date-and-time.md#datetime-类型)、[枚举](/data-type-string.md#enum-类型)等，可参考支持的列的[数据类型](/basic-features.md#数据类型函数和操作符)，并使用与你准备保存在数据库内的数据匹配的**数据类型**。
 
 稍微提升一下复杂度，例如选择定义一张 `books` 表，这张表将是 `bookshop` 数据的核心。它包含书的唯一标识、名称、书籍类型（如：杂志、动漫、教辅等）、库存、价格、出版时间等字段。
 
@@ -168,7 +168,7 @@ CREATE TABLE `bookshop`.`ratings` (
 
 如需在列上设置默认值，请使用 `DEFAULT` 约束。默认值将可以使你无需指定每一列的值，就可以插入数据。
 
-你可以将 `DEFAULT` 与[支持的 SQL 函数](/basic-features.md#数据类型函数和操作符)结合使用，将默认值的计算移出应用层，从而节省应用层的资源（当然，计算所消耗的资源并不会凭空消失，只是被转移到了 TiDB 集群中）。常见的，希望实现数据插入时，可默认填充默认的时间。还是使用 `ratings` 作为示例，可使用以下语句：
+你可以将 `DEFAULT` 与[支持的 SQL 函数](/basic-features.md#数据类型函数和操作符)结合使用，将默认值的计算移出应用层，从而节省应用层的资源（当然，计算所消耗的资源并不会凭空消失，而是由数据库来进行处理）。常见的，希望实现数据插入时，可默认填充默认的时间。还是使用 `ratings` 作为示例，可使用以下语句：
 
 ```sql
 CREATE TABLE `bookshop`.`ratings` (
@@ -236,11 +236,9 @@ CREATE TABLE `bookshop`.`users` (
 
 这种场景下，TiDB 就是一个比较理想的一站式数据库解决方案，TiDB 是一个 **HTAP (Hybrid Transactional and Analytical Processing)** 数据库，同时支持 OLTP 和 OLAP 场景。
 
+在 TiDB 中，你可以使用行存储引擎 [TiKV](/tikv-overview.md) 进行在线事务处理 (OLTP)，使用列存储引擎 [TiFlash](/tiflash/tiflash-overview.md) 进行在线分析处理（OLAP）。完成相关配置后，TiFlash 将基于 Raft Learner Consensus 算法实时从 TiKV 同步数据，从而确保 TiKV 与 TiFlash 之间的数据强一致。
+
 ### 同步列存数据
-
-当前，TiDB 支持两种数据分析引擎：**TiFlash** 和 **TiSpark**。大数据场景 (100 T) 下，推荐使用 TiFlash MPP 作为 HTAP 的主要方案，TiSpark 作为补充方案。希望了解更多关于 TiDB 的 HTAP 能力，可参考以下文章：[快速上手 HTAP](/quick-start-with-htap.md) 和[深入探索 HTAP](/explore-htap.md)。
-
-此处选用 [TiFlash](/tiflash/tiflash-overview.md) 为 `bookshop` 数据库的数据分析引擎。
 
 TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表，开启同步副本仅需一行 SQL，如下所示：
 
@@ -265,7 +263,7 @@ ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
 
 > **注意：**
 >
-> 如果你的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 {{{ .starter }}} 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster) 来创建一个含有 TiFlash 的集群。
+> 如果你的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-starter-instance)来创建一个含有 TiFlash 的实例。
 
 随后正常进行查询即可：
 

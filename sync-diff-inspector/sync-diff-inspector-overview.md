@@ -23,7 +23,7 @@ summary: sync-diff-inspector 是一个用于校验 MySQL/TiDB 中数据一致性
 
 sync-diff-inspector 的安装方法取决于 TiDB 版本。
 
-对于 TiDB v9.0.0 及以上版本，你可通过以下方式下载 sync-diff-inspector：
+对于 TiDB v8.5.6 及以上版本，你可通过以下方式下载 sync-diff-inspector：
 
 + 使用 TiUP 安装：
 
@@ -39,7 +39,7 @@ sync-diff-inspector 的安装方法取决于 TiDB 版本。
     docker pull pingcap/sync-diff-inspector:latest
     ```
 
-对于 TiDB v9.0.0 之前版本，你可通过以下方式下载 sync-diff-inspector：
+对于 TiDB v8.5.6 之前的版本，你可通过以下方式下载 sync-diff-inspector：
 
 + 下载来自 [`tidb-tools`](https://github.com/pingcap/tidb-tools) 仓库的 Binary 包。sync-diff-inspector 的安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
 
@@ -63,6 +63,7 @@ sync-diff-inspector 需要具备特定的数据库权限以获取表结构信息
 
 - `SELECT`：用于对比数据。
 - `RELOAD`：用于查看表结构。
+- `PROCESS`：当上下游都是 TiDB 时需要该权限，用于查询 `INFORMATION_SCHEMA.CLUSTER_INFO` 表。
 
 > **注意：**
 >
@@ -320,3 +321,9 @@ REPLACE INTO `sbtest`.`sbtest99`(`id`,`k`,`c`,`pad`) VALUES (3700000,2501808,'he
 * sync-diff-inspector 会优先使用 TiDB 的统计信息来划分 chunk，需要尽量保证统计信息精确，可以在**业务空闲期**手动执行 `analyze table {table_name}`。
 * table-rule 的规则需要特殊注意，例如设置了 `schema-pattern="test1"`，`table-pattern = "t_1"`，`target-schema="test2"`，`target-table = "t_2"`，会对比 source 中的表 `test1`.`t_1` 和 target 中的表 `test2`.`t_2`。sync-diff-inspector 默认开启 sharding，如果 source 中还有表 `test2`.`t_2`，则会把 source 端的表 `test1`.`t_1` 和表 `test2`.`t_2` 作为 sharding 与 target 中的表 `test2`.`t_2` 进行一致性校验。
 * 生成的 SQL 文件仅作为修复数据的参考，需要确认后再执行这些 SQL 修复数据。
+
+## 相关资源
+
+<RelatedResources>
+  <ResourceCard title="管理 TiDB 实验 9: 使用 sync-diff-inspector 进行数据检查" type="lab" link="https://labs.pingcap.com/labs/dba_303_lab_ff8" imgSrc="https://lab-static.pingcap.com/quick-demo/dba_303_ch10_en.png" duration="60 分钟" />
+</RelatedResources>

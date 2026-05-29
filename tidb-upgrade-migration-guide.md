@@ -222,7 +222,7 @@ tiup cluster start <new_cluster_name>     # 启动集群
     - 在旧集群进入只读模式后，获取旧集群当前的 `up-tso`：
 
         ```sql
-        SELECT tidb_current_ts();
+        BEGIN; SELECT TIDB_CURRENT_TSO(); ROLLBACK;
         ```
 
     - 观察 Changefeed `checkpointTs`，确保其大于 `up-tso`，即 TiCDC 已完成数据同步。
@@ -268,7 +268,7 @@ tiup cluster start <new_cluster_name>     # 启动集群
     2. 记录新集群当前的 TSO：
 
         ```sql
-        SELECT tidb_current_ts();
+        BEGIN; SELECT TIDB_CURRENT_TSO(); ROLLBACK;
         ```
 
     3. 配置逆向数据同步链路，并确认 Changefeed 任务正常：

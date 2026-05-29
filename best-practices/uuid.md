@@ -1,6 +1,7 @@
 ---
 title: 将 UUID 用作主键的最佳实践
 summary: 了解在 TiDB 中将 UUID 用作主键的最佳实践。
+aliases: ['/zh/tidb/stable/uuid/','/zh/tidb/dev/uuid/','/zh/tidbcloud/uuid/']
 ---
 
 # 将 UUID 用作主键的最佳实践
@@ -31,7 +32,7 @@ UUID 文本是一个包含 36 字符的字符串，如 `ab06f63e-8fe7-11ec-a514-
 
 为了演示 `swap_flag` 的效果，本文以表结构相同的两张表为例。区别在于，`uuid_demo_1` 表中插入的数据使用 `UUID_TO_BIN(?, 0)`，而 `uuid_demo_2` 表中使用 `UUID_TO_BIN(?, 1)`。
 
-在如下的[流量可视化页面](/dashboard/dashboard-key-visualizer.md)，你可以看到写入操作集中在 `uuid_demo_2` 表的单个 Region 中，而这个表中的二进制格式字段顺序被调换过。
+在如下的[流量可视化页面](/dashboard/dashboard-key-visualizer.md) (Key Visualizer)，你可以看到写入操作集中在 `uuid_demo_2` 表的单个 Region 中，而这个表中的二进制格式字段顺序被调换过。
 
 ![Key Visualizer](/media/best-practices/uuid_keyviz.png)
 
@@ -50,6 +51,11 @@ CREATE TABLE `uuid_demo_2` (
   PRIMARY KEY (`uuid`) CLUSTERED
 )
 ```
+
+关于流量可视化页面的更多信息，参见：
+
+- TiDB 的[流量可视化页面](/dashboard/dashboard-key-visualizer.md)
+- TiDB Cloud 的[流量可视化页面](https://docs.pingcap.com/zh/tidbcloud/tune-performance/#key-visualizer)
 
 ## 与 MySQL 兼容性
 

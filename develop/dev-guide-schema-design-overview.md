@@ -1,7 +1,7 @@
 ---
 title: 概述
 summary: TiDB 数据库模式设计的概述。
-aliases: ['/zh/tidb/dev/schema-design-overview']
+aliases: ['/zh/tidb/dev/schema-design-overview','/zh/tidb/stable/dev-guide-schema-design-overview/','/zh/tidb/dev/dev-guide-schema-design-overview/','/zh/tidbcloud/dev-guide-schema-design-overview/']
 ---
 
 # 概述

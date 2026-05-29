@@ -79,7 +79,35 @@ DM 在悲观模式下进行分表 DDL 的迁移有以下几点使用限制：
 
 基于上述例子，本部分介绍了 DM 在默认的悲观模式下合库合表过程中进行 DDL 迁移的实现原理。
 
-![shard-ddl-flow](/media/dm/shard-ddl-flow.png)
+```mermaid
+---
+config:
+    themeCSS: |
+        /* hide the ugly borders */
+        rect.rect {
+            stroke: none;
+        }
+---
+sequenceDiagram
+    autonumber
+    box rgba(0,255,0,0.08)
+        participant Worker1 as DM-worker 1
+    end
+    box rgba(255,255,0,0.08)
+        participant Master as DM-master
+    end
+    box rgba(0,255,0,0.08)
+        participant Worker2 as DM-worker 2
+    end
+
+    Worker1->>Master: 1. DDL info
+    Master->>Worker1: 2. DDL lock info
+    Worker2->>Master: 3. DDL info
+    Master->>Worker2: 4. DDL lock info
+    Master->>Worker1: 5. DDL execute request
+    Worker1->>Master: 6. DDL executed
+    Master-->>Worker2: 7. DDL ignore request
+```
 
 在这个例子中，DM-worker-1 负责迁移来自 MySQL 实例 1 的数据，DM-worker-2 负责迁移来自 MySQL 实例 2 的数据，DM-master 负责协调多个 DM-worker 间的 DDL 迁移。
 

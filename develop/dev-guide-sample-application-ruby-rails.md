@@ -1,6 +1,7 @@
 ---
 title: 使用 Rails 框架和 ActiveRecord ORM 连接 TiDB
 summary: 本文描述了 TiDB 和 Rails 框架的连接步骤，并给出了使用 Rails 框架和 ActiveRecord ORM 连接 TiDB 的简单示例代码片段。
+aliases: ['/zh/tidb/stable/dev-guide-sample-application-ruby-rails/','/zh/tidb/dev/dev-guide-sample-application-ruby-rails/','/zh/tidbcloud/dev-guide-sample-application-ruby-rails/']
 ---
 
 # 使用 Rails 框架和 ActiveRecord ORM 连接 TiDB
@@ -10,12 +11,12 @@ TiDB 是一个兼容 MySQL 的数据库，[Rails](https://github.com/rails/rails
 本文档将展示如何使用 TiDB 和 Rails 来完成以下任务：
 
 - 设置你的环境。
-- 使用 Rails 连接你的 TiDB 集群。
+- 使用 Rails 连接 TiDB。
 - 构建并运行你的应用程序。你也可以参考[示例代码片段](#示例代码片段)，完成基本的 CRUD 操作。
 
 > **注意：**
 >
-> 本文档适用于 {{{ .starter }}}、{{{ .essential }}}、TiDB Cloud Dedicated 以及本地部署的 TiDB。
+> 本文档适用于 {{{ .starter }}}、{{{ .essential }}}、{{{ .premium }}}、TiDB Cloud Dedicated 以及本地部署的 TiDB。
 
 ## 前置需求
 
@@ -28,8 +29,8 @@ TiDB 是一个兼容 MySQL 的数据库，[Rails](https://github.com/rails/rails
 
 如果你还没有 TiDB 集群，可以按照以下方式创建：
 
-- （推荐方式）参考[创建 {{{ .starter }}} 集群](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-cloud-cluster)，创建你自己的 TiDB Cloud 集群。
-- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
+- （推荐方式）[创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [部署本地测试 TiDB Self-Managed 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster)或[部署正式 TiDB Self-Managed 集群](/production-deployment-using-tiup.md)。
 
 ## 运行示例应用程序并连接到 TiDB
 
@@ -65,12 +66,12 @@ bundle add mysql2 dotenv
 
 ### 第 3 步：配置连接信息
 
-根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB 集群。
+根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB。
 
 <SimpleTab>
 <div label="{{{ .starter }}} 或 Essential">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，点击你的目标集群的名称，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，点击你的目标 {{{ .starter }}} 或 Essential 实例的名称，进入实例的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
@@ -92,14 +93,50 @@ bundle add mysql2 dotenv
 
    > **注意**
    >
-   > 对于 {{{ .starter }}}，当使用 Public Endpoint 时，必须使用 `ssl_mode=verify_identity` 查询参数启用 TLS 连接。
+   > 对于 {{{ .starter }}} 和 {{{ .essential }}}，当使用 Public Endpoint 时，必须使用 `ssl_mode=verify_identity` 查询参数启用 TLS 连接。
 
 7. 保存 `.env` 文件。
 
 </div>
+<div label="{{{ .premium }}}">
+
+1. 在 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，点击你目标 {{{ .premium }}} 实例的名字，进入实例的 **Overview** 页面。
+
+2. 在左侧导航栏中，点击 **Settings** > **Networking**。
+
+3. 在 **Networking** 页面，点击 **Public Endpoint** 的 **Enable**，然后点击 **Add IP Address**。
+
+    确保你的客户端 IP 地址已添加到访问列表中。
+
+4. 在左侧导航栏中，点击 **Overview** 返回实例概览页面。
+
+5. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
+
+6. 在连接对话框中，从 **Connection Type** 下拉列表中选择 **Public**。
+
+    - 如果提示 Public Endpoint 正在开启，请等待该过程完成。
+    - 如果你尚未设置密码，请在对话框中点击 **Set Root Password**。
+    - 如果需要验证服务器证书或连接失败且需要 CA 证书，请点击 **CA cert** 下载证书。
+    - 除 **Public** 连接类型外，{{{ .premium }}} 还支持 **Private Endpoint** 连接。详情请参阅[通过 AWS PrivateLink 连接到 {{{ .premium }}}](https://docs.pingcap.com/tidbcloud/connect-to-premium-via-aws-private-endpoint/?plan=premium)。
+
+7. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
+
+    ```shell
+    cp .env.example .env
+    ```
+
+8. 编辑 `.env` 文件，按照如下格式设置 `DATABASE_URL` 环境变量，将占位符 `{}` 替换为从连接对话框中复制的参数值：
+
+    ```dotenv
+    DATABASE_URL='mysql2://{user}:{password}@{host}:{port}/{database_name}'
+    ```
+
+9. 保存 `.env` 文件。
+
+</div>
 <div label="TiDB Cloud Dedicated">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，点击你的目标集群的名称，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，点击你的目标 TiDB Cloud Dedicated 集群的名称，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
@@ -172,7 +209,7 @@ bundle add mysql2 dotenv
     bundle exec rails runner ./quickstart.rb
     ```
 
-如果连接成功，你的终端将会输出所连接集群的版本信息：
+如果连接成功，你的终端将会输出 TiDB 版本信息：
 
 ```
 🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v8.5.0)
@@ -272,8 +309,10 @@ player.destroy
 
 - 从 [ActiveRecord 文档](https://guides.rubyonrails.org/active_record_basics.html)中了解更多关于 ActiveRecord ORM 的用法。
 - 你可以继续阅读开发者文档的其它章节来获取更多 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
-- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/category/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
+- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://pingkai.cn/learn)支持，并在考试后提供相应的[资格认证](https://learn.pingkai.cn/learner/certification-center)。
 
 ## 需要帮助？
 
-在 [AskTUG](https://asktug.com/) 论坛上提问。
+- 在 [AskTUG 论坛](https://pingkai.cn/tidbcommunity/forum/?utm_source=docs-cn-dev-guide) 上提问
+- [提交 TiDB Cloud 工单](https://tidb.support.pingcap.com/servicedesk/customer/portals)
+- [提交 TiDB 工单](/support.md)
