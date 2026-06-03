@@ -196,4 +196,4 @@ TiDB [使用 Grafana + Prometheus 监控系统状态](/tidb-monitoring-framework
 + 不希望做 Sharding 或者懒得做 Sharding
 + 访问模式上没有明显的热点
 + 需要事务、需要强一致、需要灾备
-+ 希望 Real-Time HTAP，减少数据管道
++ 希望 Real-Time HTAP，减少数据链路
