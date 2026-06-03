@@ -5494,6 +5494,17 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 单位：MiB
 - 只读变量。表示当开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)后持久化数据单个文件的大小限制。该变量的值与配置文件中 [`tidb_stmt_summary_file_max_size`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_size-从-v660-版本开始引入) 的取值相同。
 
+### `tidb_stmt_summary_group_by_user` <span class="version-mark">从 v8.5.7 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用于控制是否将执行 SQL 的用户纳入 [statement summary tables](/statement-summary-tables.md) 的聚合维度。当该变量值为 `OFF` 时，不同用户执行的相同 SQL digest 会聚合到同一行，`SAMPLE_USER` 字段显示其中一个采样用户。当该变量值为 `ON` 时，不同用户执行的相同 SQL digest 会聚合为不同行，每行的 `SAMPLE_USER` 字段表示该行对应的执行用户。
+- 修改该变量值会清空当前内存中的 statement summary 数据，因为修改前后的数据使用了不同的聚合维度。已经持久化到磁盘的历史数据不受影响。
+- 开启该变量后，statement summary 记录数可能随同一 SQL digest 的不同执行用户数量增加，进而增加内存占用。
+
 ### `tidb_stmt_summary_history_size` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -5537,6 +5548,17 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 > **注意:**
 >
 > 当启用 [`tidb_stmt_summary_enable_persistent`](/statement-summary-tables.md#持久化-statements-summary) 时，`tidb_stmt_summary_max_stmt_count` 仅限制 [`statements_summary`](/statement-summary-tables.md#statements_summary) 表在内存中可存储的 SQL digest 数量。
+
+### `tidb_stmt_summary_persist_evicted` <span class="version-mark">从 v8.5.7 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用于控制是否在开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)后，将被 LRU 驱逐的 statement summary 记录逐条写入 statement summary 日志。写入的 JSON 记录会带有 `"evicted": true` 标记，便于下游日志消费者识别这些记录。
+- 该变量仅对持久化的 statement summary 实现生效。`"evicted": true` 的记录不会作为 `statements_summary_history` 或 `cluster_statements_summary_history` 查询结果返回。
+- 开启该变量会使 statement summary 日志量随 LRU 驱逐频率增加。驱逐记录写入采用异步缓冲机制；当缓冲队列已满时，新的驱逐记录可能被丢弃。
 
 ### `tidb_stmt_summary_refresh_interval` <span class="version-mark">从 v4.0 版本开始引入</span>
 
