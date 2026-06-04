@@ -62,8 +62,6 @@ MaskingPolicyStateOpt ::=
 
 以下示例创建一个脱敏策略，对 `contacts` 表的 `phone` 列进行部分掩码，保留前 3 位和后 3 位，中间用 `*` 替换：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE contacts (
   id INT PRIMARY KEY,
@@ -81,8 +79,6 @@ Query OK, 0 rows affected (0.10 sec)
 ```
 
 插入数据并查询：
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO contacts VALUES (1, 'Alice', '1234567890');
@@ -104,8 +100,6 @@ Query OK, 1 row affected (0.01 sec)
 
 以下示例创建一个脱敏策略，对 `employees` 表的 `ssn` 列进行完全掩码：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE MASKING POLICY p_mask_ssn
   ON employees(ssn)
@@ -115,8 +109,6 @@ CREATE MASKING POLICY p_mask_ssn
 ### 创建一个带操作限制的脱敏策略
 
 以下示例创建一个脱敏策略，同时限制脱敏列不能用于 `INSERT INTO SELECT` 和 `CTAS` 操作：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE MASKING POLICY p_mask_credit_card
@@ -128,8 +120,6 @@ CREATE MASKING POLICY p_mask_credit_card
 ### 创建一个条件脱敏策略
 
 以下示例创建一个基于用户身份的条件脱敏策略，只有特定角色的用户才能看到原始数据：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE MASKING POLICY p_mask_salary

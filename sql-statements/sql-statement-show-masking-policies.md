@@ -28,8 +28,6 @@ WhereClauseOptional ::=
 
 创建脱敏策略后，使用 `SHOW MASKING POLICIES` 查看策略信息：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE employees (
   id INT PRIMARY KEY,
@@ -66,8 +64,6 @@ Query OK, 0 rows affected (0.08 sec)
 ```
 
 ### 使用 WHERE 子句过滤
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW MASKING POLICIES FOR employees WHERE Status = 'ENABLE';
