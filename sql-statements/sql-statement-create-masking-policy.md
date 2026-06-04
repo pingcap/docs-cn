@@ -11,7 +11,7 @@ summary: TiDB 数据库中 CREATE MASKING POLICY 的使用概况。
 
 ## 所需权限
 
-创建脱敏策略需要拥有表所在数据库的 `CREATE MASKING POLICY` 权限。
+创建脱敏策略需要拥有表所在数据库的 `CREATE MASKING POLICY` 权限（或者 `SUPER` 权限）。
 
 ## 语法图
 
