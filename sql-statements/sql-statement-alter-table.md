@@ -175,9 +175,11 @@ Query OK, 0 rows affected, 1 warning (0.25 sec)
 
 ### 管理列脱敏策略
 
-`ALTER TABLE` 支持对表上的列脱敏策略进行管理，包括添加、启用、禁用、修改和删除脱敏策略。
+`ALTER TABLE` 支持对表上的[列脱敏策略](column-level-masking-policy.md)进行管理，包括添加、启用、禁用、修改和删除脱敏策略。
 
-以下示例演示了如何通过 `ALTER TABLE` 添加一个脱敏策略：
+示例：
+
+添加并启用一个脱敏策略：
 
 ```sql
 ALTER TABLE t1 ADD MASKING POLICY p_mask_c1 ON (c1) AS MASK_FULL(c1) ENABLE;

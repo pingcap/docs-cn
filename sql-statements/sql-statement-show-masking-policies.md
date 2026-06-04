@@ -5,7 +5,7 @@ summary: TiDB 数据库中 SHOW MASKING POLICIES 的使用概况。
 
 # SHOW MASKING POLICIES
 
-`SHOW MASKING POLICIES` 语句用于查看指定表上定义的脱敏策略信息。
+`SHOW MASKING POLICIES` 语句用于查看指定表上定义的[列脱敏策略](column-level-masking-policy.md)信息。
 
 ## 所需权限
 
@@ -63,7 +63,10 @@ Query OK, 0 rows affected (0.08 sec)
 2 rows in set (0.01 sec)
 ```
 
-### 使用 WHERE 子句过滤
+### 使用 WHERE 子句过滤结果
+
+你还可以通过 `WHERE` 子句筛选满足条件的脱敏策略。例如，查看 `employee` 表中已启用的脱敏策略：
+
 
 ```sql
 SHOW MASKING POLICIES FOR employees WHERE Status = 'ENABLE';
@@ -71,7 +74,7 @@ SHOW MASKING POLICIES FOR employees WHERE Status = 'ENABLE';
 
 ## MySQL 兼容性
 
-该语句是 TiDB 对 MySQL 语法的扩展，在 MySQL 中不存在。
+该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

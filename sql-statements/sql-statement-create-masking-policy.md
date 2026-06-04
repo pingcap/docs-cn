@@ -5,9 +5,9 @@ summary: TiDB 数据库中 CREATE MASKING POLICY 的使用概况。
 
 # CREATE MASKING POLICY
 
-`CREATE MASKING POLICY` 用于为表中的列创建数据脱敏策略。脱敏策略会在查询结果返回时对敏感数据进行动态掩码处理，从而保护敏感数据不被未授权用户查看。
+`CREATE MASKING POLICY` 用于为表中的列创建[数据脱敏策略](column-level-masking-policy.md)。启用列脱敏策略后，TiDB 在返回查询结果时会根据策略定义对相应列的结果进行脱敏，从而防止敏感数据被未授权用户查看。
 
-脱敏策略绑定在表列上，支持基于当前用户身份（`current_user()`、`current_role()`）的条件脱敏逻辑。
+脱敏策略绑定到表中的列上，你可以在脱敏表达式中使用 `CURRENT_USER()` 或 `CURRENT_ROLE()` 函数，实现基于用户身份或角色的条件脱敏。
 
 ## 所需权限
 
@@ -45,7 +45,7 @@ MaskingPolicyStateOpt ::=
 | `Identifier`（括号内） | 目标列的名称。每个列最多只能绑定一个脱敏策略。 |
 | `Expression` | 脱敏表达式。可以使用内置脱敏函数（如 `MASK_FULL`、`MASK_PARTIAL`、`MASK_NULL`、`MASK_DATE`），也可以使用包含 `current_user()` 或 `current_role()` 的自定义表达式来实现基于身份的条件脱敏。 |
 | `RESTRICT ON (...)` | 可选。限制脱敏列参与特定的操作，防止通过这些操作间接获取原始数据。支持的操作包括 `INSERT INTO SELECT`、`UPDATE SELECT`、`DELETE SELECT`、`CTAS`。 |
-| `ENABLE` \| `DISABLE` | 可选。指定策略创建后是否立即生效。默认为 `ENABLE`。 |
+| `ENABLE` \| `DISABLE` | 可选。指定策略创建后是否立即启用。默认为 `ENABLE`。 |
 
 ### 内置脱敏函数
 
@@ -58,9 +58,9 @@ MaskingPolicyStateOpt ::=
 
 ## 示例
 
-### 创建一个部分掩码策略
+### 创建一个部分脱敏策略
 
-以下示例创建一个脱敏策略，对 `contacts` 表的 `phone` 列进行部分掩码，保留前 3 位和后 3 位，中间用 `*` 替换：
+以下示例创建一个脱敏策略，对 `contacts` 表的 `phone` 列进行部分脱敏，保留前 3 个字符和后 3 个字符，其余部分使用 `*` 替换：
 
 ```sql
 CREATE TABLE contacts (
@@ -96,9 +96,9 @@ Query OK, 1 row affected (0.01 sec)
 1 row in set (0.00 sec)
 ```
 
-### 创建一个完全掩码策略
+### 创建一个完全脱敏策略
 
-以下示例创建一个脱敏策略，对 `employees` 表的 `ssn` 列进行完全掩码：
+以下示例创建一个脱敏策略，对 `employees` 表的 `ssn` 列进行完全脱敏：
 
 ```sql
 CREATE MASKING POLICY p_mask_ssn
@@ -119,7 +119,7 @@ CREATE MASKING POLICY p_mask_credit_card
 
 ### 创建一个条件脱敏策略
 
-以下示例创建一个基于用户身份的条件脱敏策略，只有特定角色的用户才能看到原始数据：
+以下示例创建一个基于角色的条件脱敏策略。只有拥有 `hr_manager` 或 `ceo` 角色的用户可以查看原始数据，其他用户只能看到脱敏结果：
 
 ```sql
 CREATE MASKING POLICY p_mask_salary
@@ -129,7 +129,7 @@ CREATE MASKING POLICY p_mask_salary
 
 ## MySQL 兼容性
 
-该语句是 TiDB 对 MySQL 语法的扩展，在 MySQL 中不存在。
+该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

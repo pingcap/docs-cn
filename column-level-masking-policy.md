@@ -58,7 +58,7 @@ CREATE [OR REPLACE] MASKING POLICY [IF NOT EXISTS] <policy_name>
 - `column_name`：要应用脱敏策略的列名
 - `masking_expression`：定义脱敏逻辑的 SQL 表达式
 - `RESTRICT ON`：可选，用于阻止只能看到该列脱敏值的用户执行指定操作。例如，阻止这类用户通过 `INSERT ... SELECT`、`CREATE TABLE ... AS SELECT` 等语句将该列的数据写入其他表，从而避免脱敏策略被绕过。
-- `ENABLE | DISABLE`：可选。指定策略创建后是否立即生效。默认为 `ENABLE`。
+- `ENABLE | DISABLE`：可选。指定策略创建后是否立即启用。默认为 `ENABLE`。
 
 ### 示例：基于用户身份脱敏信用卡号
 
