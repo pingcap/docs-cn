@@ -169,8 +169,8 @@ CREATE TABLE `table5` (
     # 目标集群的信息，示例仅供参考。请把 IP 地址等信息替换成真实的信息。
     [tidb]
     # 目标集群的信息
-    host = ${host}              # 例如：172.16.32.1
-    port = ${port}              # 例如：4000
+    host = "${host}"            # 例如：172.16.32.1
+    port = "${port}"            # 例如：4000
     user = "${user_name}"       # 例如："root"
     password = "${password}"    # 例如："rootroot"
     status-port = ${status-port} # 导入过程 Lightning 需要在从 TiDB 的“状态端口”获取表结构信息，例如：10080

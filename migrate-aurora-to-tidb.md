@@ -47,8 +47,8 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --fi
 [tidb]
 
 # 目标 TiDB 集群信息。
-host = ${host}
-port = ${port}
+host = "${host}"
+port = "${port}"
 user = "${user_name}"
 password = "${password}"
 status-port = ${status-port}  # TiDB 的“状态端口”，通常为 10080
@@ -113,8 +113,8 @@ nohup tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
 [tidb]
 
 # 目标 TiDB 集群信息。
-host = ${host}
-port = ${port}
+host = "${host}"
+port = "${port}"
 user = "${user_name}"
 password = "${password}"
 status-port = ${status-port}  # TiDB 的“状态端口”，通常为 10080
