@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       source_pr_url:
-        description: 'Source PR URL (English docs repository)'
+        description: 'Source PR URL, or PR files commit range URL (English docs repository)'
         required: true
         type: string
         default: ''
@@ -71,19 +71,26 @@ jobs:
           SOURCE_URL: ${{ github.event.inputs.source_pr_url }}
           TARGET_URL: ${{ github.event.inputs.target_pr_url }}
         run: |
-          if [[ ! "$SOURCE_URL" =~ ^https://github\.com/[^/]+/[^/]+/pull/[0-9]+$ ]]; then
+          SOURCE_PATTERN='^https://github\.com/(pingcap)/(docs)/pull/([0-9]+)(/files/([0-9a-fA-F]{7,40})\.\.([0-9a-fA-F]{7,40}))?/?(\?[-A-Za-z0-9._~=&%]*)?$'
+          TARGET_PATTERN='^https://github\.com/(pingcap)/(docs-cn)/pull/([0-9]+)/?(\?[-A-Za-z0-9._~=&%]*)?$'
+
+          if [[ ! "$SOURCE_URL" =~ $SOURCE_PATTERN ]]; then
             echo "❌ Invalid source PR URL format"; exit 1
           fi
-          if [[ ! "$TARGET_URL" =~ ^https://github\.com/[^/]+/[^/]+/pull/[0-9]+$ ]]; then
-            echo "❌ Invalid target PR URL format"; exit 1
+          SOURCE_OWNER="${BASH_REMATCH[1]}"
+          SOURCE_REPO="${BASH_REMATCH[2]}"
+          SOURCE_PR="${BASH_REMATCH[3]}"
+          SOURCE_RANGE=""
+          if [[ -n "${BASH_REMATCH[5]}" && -n "${BASH_REMATCH[6]}" ]]; then
+            SOURCE_RANGE="${BASH_REMATCH[5]}..${BASH_REMATCH[6]}"
           fi
 
-          SOURCE_OWNER=$(echo "$SOURCE_URL" | cut -d'/' -f4)
-          SOURCE_REPO=$(echo "$SOURCE_URL" | cut -d'/' -f5)
-          SOURCE_PR=$(echo "$SOURCE_URL" | cut -d'/' -f7)
-          TARGET_OWNER=$(echo "$TARGET_URL" | cut -d'/' -f4)
-          TARGET_REPO=$(echo "$TARGET_URL" | cut -d'/' -f5)
-          TARGET_PR=$(echo "$TARGET_URL" | cut -d'/' -f7)
+          if [[ ! "$TARGET_URL" =~ $TARGET_PATTERN ]]; then
+            echo "❌ Invalid target PR URL format"; exit 1
+          fi
+          TARGET_OWNER="${BASH_REMATCH[1]}"
+          TARGET_REPO="${BASH_REMATCH[2]}"
+          TARGET_PR="${BASH_REMATCH[3]}"
 
           if [[ "$SOURCE_OWNER/$SOURCE_REPO" != "pingcap/docs" ]]; then
             echo "❌ Unsupported source repository: only pingcap/docs is supported"; exit 1
@@ -101,7 +108,11 @@ jobs:
             echo "target_pr<<EOF"; echo "$TARGET_PR"; echo "EOF"
           } >> $GITHUB_OUTPUT
 
-          echo "Source: ${SOURCE_OWNER}/${SOURCE_REPO}#${SOURCE_PR}"
+          if [[ -n "$SOURCE_RANGE" ]]; then
+            echo "Source: ${SOURCE_OWNER}/${SOURCE_REPO}#${SOURCE_PR} (${SOURCE_RANGE})"
+          else
+            echo "Source: ${SOURCE_OWNER}/${SOURCE_REPO}#${SOURCE_PR}"
+          fi
           echo "Target: ${TARGET_OWNER}/${TARGET_REPO}#${TARGET_PR}"
 
       - name: Get target PR branch info
