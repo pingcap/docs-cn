@@ -295,7 +295,7 @@ SHOW GRANTS FOR `rw_user`@`192.168.%`;
 * `TRAFFIC_CAPTURE_ADMIN` 允许执行、查看和取消流量捕获任务。详见 [TiProxy 流量回放](/tiproxy/tiproxy-traffic-replay.md)。
 * `TRAFFIC_REPLAY_ADMIN` 允许执行、查看和取消流量回放任务。详见 [TiProxy 流量回放](/tiproxy/tiproxy-traffic-replay.md)。
 * `CREATE MASKING POLICY` 允许创建列级脱敏策略。详见[列级脱敏策略](/column-level-masking-policy.md)。
-* `ALTER MASKING POLICY` 允许修改列级脱敏策略（启用/禁用、更改表达式等）。详见[列级脱敏策略](/column-level-masking-policy.md)。
+* `ALTER MASKING POLICY` 允许修改列级脱敏策略（启用或禁用策略、更改表达式等）。详见[列级脱敏策略](/column-level-masking-policy.md)。
 * `DROP MASKING POLICY` 允许删除列级脱敏策略。详见[列级脱敏策略](/column-level-masking-policy.md)。
 
 若要查看全部的动态权限，请执行 `SHOW PRIVILEGES` 语句。由于用户可使用插件来添加新的权限，因此可分配的权限列表可能因用户的 TiDB 安装情况而异。
