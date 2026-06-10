@@ -100,6 +100,12 @@ TiDB 提供以下内置函数，用于常见的数据脱敏模式。
 ```sql
 MASK_PARTIAL(column, preserve_left, preserve_right, mask_char)
 ```
+参数说明如下：
+
+- `column`：要脱敏的字符串列。
+- `preserve_left`：保留字符串开头指定数量的字符。
+- `preserve_right`：保留字符串结尾指定数量的字符。
+- `mask_char`：用于遮蔽的脱敏字符，例如 `'*'` 或 `'X'`。
 
 参数说明如下：
 
@@ -152,7 +158,7 @@ MASK_FULL(column)
 **逻辑与数据类型**
 
 - **逻辑**：使用特定类型的默认掩码字符替换整个值。
-- **类型**：字符串、日期/DATETIME/TIMESTAMP、Duration、YEAR
+- **类型**：字符串、`DATE`、`DATETIME`、`TIMESTAMP`、`TIME` 以及 `YEAR`
 - **返回规则**
     - **字符串** → 返回相同长度的字符串，所有字符替换为 `'X'`
     - **日期/DATETIME/TIMESTAMP** → 返回 `1970-01-01`（保留原始类型和小数秒精度）
@@ -172,7 +178,7 @@ MASK_FULL(customer_id)
 -- 字符串：完全隐藏邮箱
 MASK_FULL(email)
 -- 输入：  'alice@example.com'
--- 结果：  'XXXXXXXXXXXXXXXX'
+-- 结果：  'XXXXXXXXXXXXXXXXX'
 
 -- 日期：替换为默认日期
 MASK_FULL(birth_date)
@@ -258,7 +264,7 @@ MASK_DATE(created_at, '2020-01-01')
 **完整示例：**
 
 ```sql
--- 对出生日期进行脱敏，仅显示年份
+-- 对出生日期进行脱敏，显示为一个指定的固定日期
 CREATE MASKING POLICY dob_mask ON customers(dob)
   AS CASE
       WHEN CURRENT_USER() = 'hr_admin@%' THEN dob
@@ -381,7 +387,7 @@ ALTER TABLE customers ENABLE MASKING POLICY cc_mask_policy;
 ```sql
 -- 更改脱敏表达式
 ALTER TABLE customers MODIFY MASKING POLICY cc_mask_policy
-  SET EXPRESSION = CASE
+  SET credit_card = CASE
                     WHEN CURRENT_USER() IN ('root@%', 'manager@%')
                       THEN credit_card
                     ELSE MASK_PARTIAL(credit_card, 4, 4, 'X')
@@ -420,6 +426,8 @@ CREATE OR REPLACE MASKING POLICY email_mask ON customers(email)
     END
   ENABLE;
 ```
+
+如果同名策略已经存在，TiDB 会使用新的定义替换原有策略。
 
 如果同名策略已经存在，TiDB 会使用新的定义替换原有策略。
 
@@ -516,7 +524,7 @@ CREATE MASKING POLICY email_policy ON employees(email)
 -- 薪资：仅向具有 salary_access 角色的人显示
 CREATE MASKING POLICY salary_policy ON employees(salary)
   AS CASE
-      WHEN CURRENT_ROLE() = 'salary_access' THEN salary
+      WHEN CURRENT_ROLE() = '`salary_access`@`%`'  THEN salary
       ELSE NULL
     END
   ENABLE;

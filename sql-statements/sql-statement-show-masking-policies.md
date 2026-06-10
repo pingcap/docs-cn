@@ -65,7 +65,7 @@ Query OK, 0 rows affected (0.08 sec)
 
 ### 使用 WHERE 子句过滤结果
 
-你还可以通过 `WHERE` 子句筛选满足条件的脱敏策略。例如，查看 `employee` 表中已启用的脱敏策略：
+你还可以通过 `WHERE` 子句筛选满足条件的脱敏策略。例如，查看 `employees` 表中已启用的脱敏策略：
 
 
 ```sql

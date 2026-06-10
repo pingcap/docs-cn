@@ -44,7 +44,7 @@ MaskingPolicyStateOpt ::=
 | `TableName` | 目标表的名称。 |
 | `Identifier`（括号内） | 目标列的名称。每个列最多只能绑定一个脱敏策略。 |
 | `Expression` | 脱敏表达式。可以使用内置脱敏函数（如 `MASK_FULL`、`MASK_PARTIAL`、`MASK_NULL`、`MASK_DATE`），也可以使用包含 `CURRENT_USER()` 或 `CURRENT_ROLE()` 的自定义表达式来实现基于身份的条件脱敏。 |
-| `RESTRICT ON (...)` | 可选。限制在脱敏列上进行特定的操作，防止通过这些操作间接获取原始数据。可限制的操作包括 `INSERT INTO SELECT`、`UPDATE SELECT`、`DELETE SELECT`、`CTAS`。 |
+| `RESTRICT ON (...)` | 可选。限制在脱敏列上进行特定的操作，防止通过这些操作间接获取原始数据。可限制的操作包括 `INSERT_INTO_SELECT`、`UPDATE_SELECT`、`DELETE_SELECT`、`CTAS`。 |
 | `ENABLE` \| `DISABLE` | 可选。指定策略创建后是否立即启用。默认为 `ENABLE`。 |
 
 ### 内置脱敏函数
@@ -124,7 +124,7 @@ CREATE MASKING POLICY p_mask_credit_card
 ```sql
 CREATE MASKING POLICY p_mask_salary
   ON employees(salary)
-  AS IF(CURRENT_ROLE() IN ('hr_manager', 'ceo'), salary, MASK_NULL(salary)) ENABLE;
+  AS IF(CURRENT_ROLE() IN ('`hr_manager`@`%`', '`ceo`@`%`'), salary, MASK_NULL(salary)) ENABLE;
 ```
 
 ## MySQL 兼容性
