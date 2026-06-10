@@ -5,7 +5,7 @@ summary: TiDB 数据库中 CREATE MASKING POLICY 的使用概况。
 
 # CREATE MASKING POLICY
 
-`CREATE MASKING POLICY` 用于为表中的列创建[数据脱敏策略](column-level-masking-policy.md)。启用列脱敏策略后，TiDB 在返回查询结果时会根据策略定义对相应列的结果进行脱敏，从而防止敏感数据被未授权用户查看。
+`CREATE MASKING POLICY` 用于为表中的列创建[数据脱敏策略](/column-level-masking-policy.md)。启用列脱敏策略后，TiDB 在返回查询结果时会根据策略定义对相应列的结果进行脱敏，从而防止敏感数据被未授权用户查看。
 
 脱敏策略绑定到表中的列上，你可以在脱敏表达式中使用 `CURRENT_USER()` 或 `CURRENT_ROLE()` 函数，实现基于用户身份或角色的条件脱敏。
 

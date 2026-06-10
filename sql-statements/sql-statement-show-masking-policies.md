@@ -5,7 +5,7 @@ summary: TiDB 数据库中 SHOW MASKING POLICIES 的使用概况。
 
 # SHOW MASKING POLICIES
 
-`SHOW MASKING POLICIES` 语句用于查看指定表上定义的[列脱敏策略](column-level-masking-policy.md)信息。
+`SHOW MASKING POLICIES` 语句用于查看指定表上定义的[列脱敏策略](/column-level-masking-policy.md)信息。
 
 ## 所需权限
 

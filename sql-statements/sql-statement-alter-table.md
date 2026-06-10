@@ -175,7 +175,7 @@ Query OK, 0 rows affected, 1 warning (0.25 sec)
 
 ### 管理列脱敏策略
 
-`ALTER TABLE` 支持对表上的[列脱敏策略](column-level-masking-policy.md)进行管理，包括添加、启用、禁用、修改和删除脱敏策略。
+`ALTER TABLE` 支持对表上的[列脱敏策略](/column-level-masking-policy.md)进行管理，包括添加、启用、禁用、修改和删除脱敏策略。
 
 示例：
 
