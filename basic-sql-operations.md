@@ -100,7 +100,7 @@ CREATE TABLE person (
     );
 ```
 
-使用 `SHOW CREATE` 语句查看建表语句，即 DDL。例如：
+使用 `SHOW CREATE TABLE` 语句查看建表语句，即 DDL。例如：
 
 {{< copyable "sql" >}}
 
