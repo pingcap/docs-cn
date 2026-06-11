@@ -61,6 +61,16 @@ br 工具暂停 GC 的原理是通过执行 `SET config tikv gc.ratio-threshold 
 
 在恢复失败后，请避免向集群写入或删除数据、删除或创建表。由于备份数据中可能包含重命名表的 DDL 操作，断点恢复无法确认被删除的表或已存在的表是否是外部操作引起的，这会影响下次重试恢复的准确性。
 
+> **警告：**
+>
+> 我们已经明确发现，从 v8.5.5 开始，如果删除正在恢复的表，之后从 checkpoint 重新恢复，会导致：
+> - checksum 失败，或者……
+> - 数据于恢复完成后一段时间丢失。
+> 
+> 如果打算放弃恢复结果，请务必注意在移除已经恢复的表后使用 [`br abort`](/br/br-pitr-manual.md#中止恢复操作) 来删除 checkpoint，或者手动 drop checkpoint table。
+>
+> 参考：https://github.com/pingcap/tidb/issues/68709
+
 ### 不建议跨大版本重新恢复
 
 不建议进行跨大版本的断点恢复操作。对于使用 v8.5.0 之前长期支持 (Long-Term Support, LTS) 版本 br 恢复失败的集群，无法通过 v8.5.0 或更新的 LTS 版本 br 继续恢复，反之亦然。
