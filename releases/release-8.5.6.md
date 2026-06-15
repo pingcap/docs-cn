@@ -93,8 +93,6 @@ TiDB 版本：8.5.6
 | [`tidb_analyze_version`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_analyze_version-从-v510-版本开始引入) | 修改 | 从 v8.5.6 开始，统计信息版本 1 (`tidb_analyze_version = 1`) 已废弃，并将在未来的版本中移除。建议使用统计信息版本 2 (`tidb_analyze_version = 2`)。 |
 | [`tidb_ignore_inlist_plan_digest`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_ignore_inlist_plan_digest-从-v760-版本开始引入) | 修改 | 默认值从 `OFF` 修改为 `ON`。默认值 `ON` 表示 TiDB 在生成执行计划摘要时，会忽略 `IN` 列表中的元素差异（包括元素数量的差异），并使用 `...` 代替 `IN` 列表中的元素。 |
 | [`tidb_service_scope`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_service_scope-从-v740-版本开始引入)   | 修改  | 从 v8.5.6 开始，该变量的取值大小写不敏感。TiDB 会将输入值转换为小写形式进行存储和比较。 |
-| [`InPacketBytes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#inpacketbytes-从-v856-版本开始引入) | 新增 | 这个变量只做内部统计使用，对用户不可见。 |
-| [`OutPacketBytes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#outpacketbytes-从-v856-版本开始引入) | 新增 | 这个变量只做内部统计使用，对用户不可见。 |
 | [`tidb_foreign_key_check_in_shared_lock`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_foreign_key_check_in_shared_lock-从-v856-版本开始引入) | 新增 | 用于控制在悲观事务中，外键约束检查对父表中的行加锁时是否使用共享锁（而非排他锁）。默认值为 `OFF`，代表默认使用排他锁。 |
 | [`tidb_max_dist_task_nodes`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_max_dist_task_nodes-从-v856-版本开始引入)  | 新增 | 用于定义分布式框架任务可使用的 TiDB 节点数上限。默认值为 `-1`，表示启用自动模式。在自动模式下，TiDB 将按照 `min(3, tikv_nodes / 3)` 动态计算该值，其中 `tikv_nodes` 表示集群中 TiKV 节点的数量。 |
 | [`tidb_opt_join_reorder_through_sel`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_opt_join_reorder_through_sel-从-v856-版本开始引入)  | 新增 | 用于提升部分多表 JOIN 查询的连接顺序优化 (Join Reorder) 效果。当该变量值为 `ON` 时，在满足安全条件的前提下，优化器会将多个连续 JOIN 之间的过滤条件 (`Selection`) 一并纳入连接顺序优化的候选范围。在重建 JOIN 树时，优化器会将这些条件下推至更合适的位置，从而使更多表参与连接顺序优化。 |
