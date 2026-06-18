@@ -49,11 +49,11 @@ br operator base64ify --storage "s3://your/log/backup/storage/here" --load-creds
 > **注意：**
 >
 > - 如果执行以上命令时带了 `--load-cerds` 这个选项，编码出来的 Base64 中会包含从 BR 当前环境中加载的密钥信息，请注意安全保护和权限管控。
-> - 此处的 `--storage` 值应该和日志备份任务的 `log status` 命令输出的 storage 相同。
+> - 此处的 `--storage` 值应该与日志备份任务的 `log status` 命令输出相匹配。
 
 #### 第 2 步：执行日志压缩
 
-有了存储的 Base64 之后，你可以执行以下命令通过 `tikv-ctl` 发起压缩，注意 `tikv-ctl` 默认日志等级为 `warning`，启用 `--log-level info` 来获得更多信息：
+获得上一步中的 Base64 编码字符串后，你可以使用 `tikv-ctl` 开始执行压缩。默认情况下，`tikv-ctl` 的日志等级为 `warning`。使用 `--log-level info` 可获取更详细的信息：
 
 ```shell
 tikv-ctl --log-level info compact-log-backup \
@@ -63,7 +63,7 @@ tikv-ctl --log-level info compact-log-backup \
 
 参数解释如下：
 
-- `-s`：已获得的存储的 Base64。
+- `-s`：上一步中获得的 Base64 编码字符串。
 - `-N`：最大并发压缩日志任务的数量。
 - `--from`：压缩开始的时间戳。
 - `--until`：压缩结束的时间戳。
