@@ -53,7 +53,7 @@ br operator base64ify --storage "s3://your/log/backup/storage/here" --load-creds
 
 #### 第 2 步：执行日志压缩
 
-获得上一步中的 Base64 编码字符串后，你可以使用 `tikv-ctl` 开始压缩。默认情况下，`tikv-ctl` 的日志等级为 `warning`。使用 `--log-level info` 可获取更详细的信息：
+获得上一步中的 Base64 编码字符串后，你可以使用 `tikv-ctl` 开始执行压缩。默认情况下，`tikv-ctl` 的日志等级为 `warning`。使用 `--log-level info` 可获取更详细的信息：
 
 ```shell
 tikv-ctl --log-level info compact-log-backup \
