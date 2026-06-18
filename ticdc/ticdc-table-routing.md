@@ -1,11 +1,11 @@
 ---
 title: TiCDC 表路由
-summary: 了解如何配置 TiCDC 表路由，通过 target-schema 和 target-table 改写下游 schema 和表名，同时保持现有 topic、partition 等分发规则不变，并掌握冲突检测、DDL 改写、限制和排查方法。
+summary: 了解如何配置 TiCDC 表路由，通过 target-schema 和 target-table 改写下游 schema 和表名，掌握冲突检测、DDL 改写、限制和排查方法。
 ---
 
 # TiCDC 表路由
 
-TiCDC 表路由 (Table Routing) 允许你在 `sink.dispatchers` 中添加 `target-schema` 和 `target-table`，将上游表映射到指定的下游库名或表名。当下游命名规范与上游命名规范不一致时，例如需要将数据同步到归档库、影子库，或需要在共享下游系统中保证目标表名唯一时，可以使用表路由。
+TiCDC 表路由 (Table Routing) 允许你通过 changefeed 配置，将上游表映射到指定的下游库名或表名。
 
 表路由只会改变 TiCDC 输出到下游的库名和表名，不会改变行数据、列名、表结构、表过滤规则、Topic 分发规则、Partition 分发规则或列选择规则。
 
@@ -16,46 +16,37 @@ TiCDC 表路由 (Table Routing) 允许你在 `sink.dispatchers` 中添加 `targe
 - 将 `sales.orders` 同步到 `archive.sales_orders`，或同步到符合其他下游命名规范的表。
 - 将多个源库同步到同一个下游命名空间，同时保持目标表名唯一，例如将 `tenant_001.orders` 同步到 `tenant_mirror.tenant_001_orders`。
 - 构建迁移、容灾、归档或影子 Changefeed，避免写入与上游同名的下游对象。
-- 向 MQ 消费端或存储服务消费端暴露稳定的库表名，同时不改变现有 Topic、Partition 或存储服务 Sink 配置。
+- 向 MQ 消费端或存储服务消费端暴露稳定的库表名。
 
-表路由不适用于将多张上游表合并到一张下游表、将一张上游表拆分到多张下游表，或转换行数据内容。
+> **注意：**
+>
+> 表路由仅支持一对一的表名映射，不支持将多张上游表合并到一张下游表。
+> 表路由不支持将一张上游表拆分到多张下游表，或转换行数据内容。
 
 ## 配置表路由
 
-1. 准备下游环境。
+以下示例将 `sales.orders` 路由到 `archive.sales_orders`：
 
-    确保 TiCDC 具备所需的下游权限。如果 Changefeed 从上游库表创建之后开始同步，需要手动创建兼容的目标库表。如果 Changefeed 能捕获对应的上游 DDL 事件，TiCDC 会将 DDL 语句路由到目标名。
-
-2. 创建 Changefeed 配置文件。
-
-    以下示例将 `sales.orders` 路由到 `archive.sales_orders`：
-
-    ```toml
-    [filter]
-    rules = ["sales.orders"]
-
-    [sink]
-    [[sink.dispatchers]]
-    matcher = ["sales.orders"]
-    target-schema = "archive"
-    target-table = "{schema}_{table}"
-    ```
-
-3. 使用该配置文件创建 Changefeed。
-
-    ```shell
-    cdc cli changefeed create \
-        --server=http://127.0.0.1:8300 \
-        --changefeed-id="table-route-demo" \
-        --sink-uri="mysql://root:password@127.0.0.1:3306/" \
-        --config=changefeed.toml
-    ```
+```toml
+[sink]
+[[sink.dispatchers]]
+matcher = ["sales.orders"]
+target-schema = "archive"
+target-table = "{schema}_{table}"
+```
 
 Changefeed 启动后，`sales.orders` 的 DML 和 DDL 事件会写入下游的 `archive.sales_orders`。
 
+> **注意：**
+>
+> 同一个上游库中的不同表可以路由到不同的目标库。此类配置只适用于 DML 和表级 DDL。
+>
+> 对于 `CREATE DATABASE`、`DROP DATABASE` 和 `ALTER DATABASE` 这类库级 DDL，TiCDC 必须能从路由规则中确定唯一目标库，否则该 DDL 会同步失败。
+> 如果一个上游数据库映射到多个下游目标数据库，应提前创建下游目标库，或确保上游不会产生需要自动同步的库级 DDL。
+
 ## 配置字段
 
-表路由复用 `sink.dispatchers` 作为配置入口。你可以使用 `dispatchers = [...]` 写法，也可以使用 `[[sink.dispatchers]]` 写法。
+表路由功能使用 `sink.dispatchers` 作为配置入口。
 
 | 字段 | 描述 |
 | :--- | :--- |
@@ -68,7 +59,7 @@ Changefeed 启动后，`sales.orders` 的 DML 和 DDL 事件会写入下游的 `
 - 只有设置了 `target-schema` 或 `target-table` 的 dispatcher 规则才会参与表路由。
 - 如果一张表匹配多条表路由规则，`sink.dispatchers` 中第一条匹配的规则生效。
 - `matcher` 始终匹配上游库表名，而不是路由后的目标库表名。
-- Changefeed 配置项 `case-sensitive` 也会影响表路由的 matcher。详情参见 [`case-sensitive`](/ticdc/ticdc-changefeed-config.md#case-sensitive)。
+- Changefeed 配置项 `case-sensitive` 只影响表路由的 `matcher` 是否大小写敏感，不会改写 `{schema}` 和 `{table}` 的展开结果。详情参见 [`case-sensitive`](/ticdc/ticdc-changefeed-config.md#case-sensitive)。
 
 ### 占位符
 
@@ -76,8 +67,8 @@ Changefeed 启动后，`sales.orders` 的 DML 和 DDL 事件会写入下游的 `
 
 | 占位符 | 描述 |
 | :--- | :--- |
-| `{schema}` | 上游库名。 |
-| `{table}` | 上游表名。 |
+| `{schema}` | 上游库名，保留实际匹配到的库名大小写。 |
+| `{table}` | 上游表名，保留实际匹配到的表名大小写。 |
 
 `target-schema` 和 `target-table` 的值只能包含字面文本、`{schema}` 和 `{table}`。如果使用 `{db}` 这类未知占位符，TiCDC 会拒绝该 Changefeed 配置，并返回 `CDC:ErrInvalidTableRoutingRule` 错误。
 
@@ -133,7 +124,11 @@ target-table = "{schema}_{table}"
 - `crm.orders` 会路由到 `archive.crm_orders`。
 - `finance.orders` 会路由到 `archive.finance_orders`。
 
-### 同时使用表路由和 Topic、Partition 分发器
+> **注意：**
+>
+> 该配置场景是合库，不是合表。本功能不支持把多个不同库的同名表合并到一个下游数据表中。
+
+### 同时使用表路由和 Kafka Sink Topic、Partition 分发器
 
 同一条 dispatcher 规则可以同时包含表路由字段和已有分发字段：
 
@@ -150,25 +145,21 @@ target-schema = "public"
 target-table = "orders"
 ```
 
-在以上示例中，表路由将下游数据中暴露的库表名改为 `public.orders`。`topic` 和 `partition` 分发器仍然使用上游表 `sales.orders` 进行匹配和分发计算。
+在以上示例中，表路由将下游数据中暴露的库表名改为 `public.orders`。
+
+表路由不会改变 Topic 或 Partition 的分发结果，`topic` 和 `partition` 分发器仍然使用上游表 `sales.orders` 进行匹配和分发计算。
 
 ## 输出行为
 
-表路由对各类 Sink 输出的影响如下：
-
-| Sink 类型 | 输出行为 |
+| Sink | 行为 |
 | :--- | :--- |
-| MySQL 兼容数据库和 TiDB | DML 事件会写入目标库表。DDL 语句会被改写为作用于目标对象。 |
-| Kafka | 表示库名或表名的消息 payload 字段使用目标名。DDL 消息字段和 DDL 查询文本使用目标名。Topic 和 Partition 分发仍然使用上游名。 |
-| Pulsar | Canal-JSON payload 中表示库名或表名的字段使用目标名。Topic 和 Partition 分发仍然使用上游名。 |
-| 存储服务 | 存储路径、schema 文件、表定义文件和数据文件使用目标库表名。 |
-| Redo log | Redo 记录保留目标库表名。执行 redo apply 时，事件会回放到路由后的目标对象。 |
-
-对于 MQ Sink，表路由不会改变 Topic 或 Partition 的分发结果。例如，如果配置了 `topic = "{schema}_{table}"`，且源表为 `sales.orders`，即使 payload 中的表名被路由到 `archive.sales_orders`，TiCDC 仍然会将该事件分发到 `sales_orders` Topic。
+| MySQL Sink | DDL 和 DML 语句会写入路由后的目标库表。开启 Redo 功能时，执行 `redo apply` 会将事件回放到路由后的目标表。 |
+| Kafka Sink 和 Pulsar Sink | 协议 `payload` 和 DDL `query` 使用路由后的目标库表名；编码协议里的 `schema`、`table` 字段值也是路由后的目标库表。 |
+| Cloud Storage Sink | 根据路由后的目标库表名输出对应的存储路径、schema 文件、表定义文件和数据文件。 |
 
 ## DDL 行为
 
-启用表路由后，TiCDC 会改写 TiDB parser 支持的 DDL 语句，使结构化 DDL 字段和 SQL 文本使用一致的目标名。
+启用表路由后，TiCDC 会改写 DDL 语句，使结构化 DDL 字段和 SQL 文本使用一致的目标名。
 
 例如，如果配置以下规则：
 
@@ -193,11 +184,9 @@ RENAME TABLE `archive`.`temp_table_routed` TO `archive`.`renamed_table_routed`;
 
 如果 DDL 语句中包含表引用，且这些表引用匹配表路由规则，TiCDC 也会改写被引用的表名。例如，`CREATE VIEW` 语句中的表引用，以及 `ALTER TABLE` 语句中的外键引用都可以被路由。
 
-对于 `CREATE DATABASE` 和 `DROP DATABASE` 这类库级别 DDL，如果库名匹配表路由规则，TiCDC 会改写库名。如果同一个上游库匹配多条表路由规则，但这些规则解析出不同的目标库名，TiCDC 无法为该库级别 DDL 确定唯一目标库，Changefeed 会报表路由错误。
+对于 `CREATE DATABASE`、`DROP DATABASE` 和 `ALTER DATABASE ... CHARACTER SET/COLLATE` 这类库级 DDL，如果库名匹配表路由规则，TiCDC 会改写库名。**如果同一个上游库匹配多条表路由规则，但这些规则解析出不同的目标库名，TiCDC 无法为该库级 DDL 确定唯一目标库，Changefeed 会报表路由错误。**
 
-> **注意：**
->
-> 表路由的 DDL 改写依赖 TiDB parser 支持。如果 TiCDC 无法为表路由安全地解析和恢复某条 DDL 语句，Changefeed 会返回 `CDC:ErrTableRoutingFailed` 错误，而不会静默地将原始 DDL 发送到下游。TiCDC 识别为全文索引或混合索引的 DDL 语句不会被路由。
+创建或更新 Changefeed 时，TiCDC 会基于当前复制范围内的表检查目标表冲突。库级 DDL 是否能唯一路由，会在同步对应 DDL 时判断。
 
 ## 路由冲突检测
 
@@ -223,28 +212,17 @@ target-table = "{table}"
 
 如果 `sales.orders` 和 `crm.orders` 都在复制范围内，这两张表都会被路由到 `archive.orders`。TiCDC 会拒绝创建或更新 Changefeed，并返回 `CDC:ErrTableRouteConflict` 错误。
 
-TiCDC 也会检测 Changefeed 启动后出现的冲突。例如，通配符规则开始复制一张新建表，或者 `RENAME TABLE` 语句改变了源表名，且新的路由结果与已有目标表冲突时，Changefeed 会进入 Failed 状态，并返回 `CDC:ErrTableRouteConflict`。
-
 > **警告：**
 >
 > 路由冲突检测仅限于单个 Changefeed。如果多个 Changefeed 写入同一个下游系统，请确保这些 Changefeed 的表路由规则不会写入相同的目标对象。
-
-## 限制
-
-- 表路由仅支持一对一的表名映射，不支持将多张上游表合并到一张下游表。
-- 表路由不会转换行数据、列名、列类型或表结构。
-- `filter.rules`、`matcher`、`topic`、`partition` 和 `columns` 仍然使用上游库表名。
-- 移除表路由配置或回退 TiCDC 版本，不会重命名已写入的下游表、移动已写入的存储文件、改写已发送的 MQ 消息，或清理已经按目标名生成的 redo log。
-- 如果上游和下游位于同一个数据库实例，请确保路由后的目标库不在同一个 Changefeed 的复制范围内。否则，该 Changefeed 可能会复制自己写入下游的数据。
 
 ## 故障排查
 
 | 现象 | 可能原因 | 解决方法 |
 | :--- | :--- | :--- |
 | 创建 Changefeed 时报 `CDC:ErrInvalidTableRoutingRule` 错误。 | `target-schema` 或 `target-table` 包含无效占位符或无效的大括号。 | 只使用字面文本、`{schema}` 和 `{table}`。 |
-| 创建、更新 Changefeed 或运行时复制报 `CDC:ErrTableRouteConflict` 错误。 | 两张上游表被路由到同一个下游库表。 | 修改路由规则，确保每张上游表映射到唯一的目标表。例如，在 `target-table` 中添加 `{schema}`。 |
 | MQ Topic 名仍然使用上游库表名。 | 表路由不会改变 Topic 或 Partition 分发。 | 如果需要修改 Topic 名，请在 `sink.dispatchers` 中单独配置 `topic`。 |
-| DDL 语句报 `CDC:ErrTableRoutingFailed` 错误。 | 该 DDL 语句无法安全地用于表路由改写，或库级别路由存在歧义。 | 调整路由规则，过滤掉不支持的 DDL，或在下游手动处理该 DDL。 |
+| DDL 语句报 `CDC:ErrTableRoutingFailed` 错误。 | 该 DDL 语句无法安全地用于表路由改写，或库级别路由存在歧义。 | 调整路由规则。 |
 
 ## 相关文档
 
