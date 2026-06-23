@@ -76,7 +76,7 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
                   └─3358 /usr/bin/pulseaudio --daemonize=no --log-target=journal
         ```
 
-        如果你是在 `user@${uid}.service` 已经运行之后才更新 `/etc/security/limits.conf`，请在部署或重启 TiDB 服务前重启 `user@${uid}.service`，使用户 `systemd` 实例重新加载更新后的资源限制。重启 `user@${uid}.service` 会停止该用户管理的所有 user services；如果集群已经运行，请先正常停止集群，或在维护窗口内执行该操作。
+        如果你是在 `user@${uid}.service` 已经运行之后才更新 `/etc/security/limits.conf`，请在部署或重启 TiDB 服务前重启 `user@${uid}.service`，使用户 `systemd` 实例重新加载更新后的资源限制。重启 `user@${uid}.service` 会停止该用户管理的所有 systemd 用户服务；如果集群已经运行，请先正常停止集群，或在维护窗口内执行该操作。
 
         ```shell
         $ uid=$(id -u tidb) # Get the ID of the tidb user
@@ -91,9 +91,9 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
         $ grep "Max open files" "/proc/${pid}/limits"
         ```
 
-        如果检查结果中的 `Max open files` 仍小于 TiDB 所需值，请为 `user@${uid}.service` 配置 system-level drop-in，然后重启该服务并再次检查实际值。
+        如果上一步输出中的 `Hard Limit` 小于 `1000000`，请继续执行下一步，使用 `root` 用户为 `user@${uid}.service` 配置 `LimitNOFILE`。
 
-    4. 使用 `root` 用户为 `user@${uid}.service` 配置 `LimitNOFILE`。
+    4. 如果上一步输出中的 `Hard Limit` 小于 `1000000`，使用 `root` 用户为 `user@${uid}.service` 配置 `LimitNOFILE`。
 
         ```shell
         $ uid=$(id -u tidb)
@@ -106,7 +106,9 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
         $ systemctl restart user@${uid}.service
         ```
 
-    5. 执行 `systemctl --user`。如果没有报错，说明 `systemd user` 模式已正常启动。
+        配置并重启后，请重复第 3 步，确认 `Max open files` 的实际值已经符合要求。
+
+    5. 使用 `tidb` 用户执行 `systemctl --user`。如果没有报错，说明 `tidb` 用户的 `systemd` 用户服务模式已正常启动。
 
 3. 使用 `root` 用户执行以下命令，为 systemd 用户 `tidb` 启用驻留。
 
