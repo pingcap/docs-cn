@@ -2418,7 +2418,7 @@ Raft Engine 相关的配置项。
 + 默认值：`true`
 + 当该配置项为 `true` 时，TiKV 在访问 GCS 时会使用 `gcp_v2` 实现；当该配置项为 `false` 时，TiKV 会继续使用旧的 GCS 实现。
 + 如果你需要在 full backup 或 restore 场景下使用 Google Cloud 的 Workload Identity Federation (WIF)，需要将该配置项保持为 `true`。
-+ 关于 GCS 的鉴权方式和 WIF / ADC 的使用说明，参见 [备份存储](/br/backup-and-restore-storages.md)。
++ 关于 GCS 的鉴权方式和 WIF/ADC 的使用说明，参见[备份存储](/br/backup-and-restore-storages.md)。
 
 ## backup.hadoop
 
@@ -2481,7 +2481,7 @@ Raft Engine 相关的配置项。
 + 默认值：`true`
 + 当该配置项为 `true` 时，TiKV 在访问 GCS 时会使用 `gcp_v2` 实现；当该配置项为 `false` 时，TiKV 会继续使用旧的 GCS 实现。
 + 如果你需要在日志备份场景下使用 Google Cloud 的 Workload Identity Federation (WIF)，需要将该配置项保持为 `true`。
-+ 关于 GCS 的鉴权方式和 WIF / ADC 的使用说明，参见 [备份存储](/br/backup-and-restore-storages.md)。
++ 关于 GCS 的鉴权方式和 WIF/ADC 的使用说明，参见[备份存储](/br/backup-and-restore-storages.md)。
 
 ## cdc
 
