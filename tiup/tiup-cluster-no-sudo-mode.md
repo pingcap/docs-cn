@@ -88,10 +88,8 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
         ```shell
         $ uid=$(id -u tidb)
         $ pid=$(systemctl show "user@${uid}.service" --property MainPID --value)
-        $ grep "Max open files" "/proc/${pid}/limits"
+        $ grep -E '^(Limit|Max open files)' "/proc/${pid}/limits"
         ```
-
-        如果上一步输出中的 `Hard Limit` 小于 `1000000`，请继续执行下一步，使用 `root` 用户为 `user@${uid}.service` 配置 `LimitNOFILE`。
 
     4. 如果上一步输出中的 `Hard Limit` 小于 `1000000`，使用 `root` 用户为 `user@${uid}.service` 配置 `LimitNOFILE`。
 
