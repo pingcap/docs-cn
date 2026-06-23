@@ -2401,7 +2401,7 @@ Raft Engine 相关的配置项。
 + TiKV 备份数据到 S3 时，如果备份文件大于该配置项的值，会自动进行[分块上传](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/API/API_UploadPart.html)。根据压缩率的不同，96 MiB Region 产生的备份文件大约在 10 MiB~30 MiB 之间。
 + 默认值：5MiB
 
-### `gcp-v2-enable`
+### `gcp-v2-enable` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
 + 是否在使用 Google Cloud Storage (GCS) 执行 full backup 或 restore 时启用 `gcp_v2` 外部存储后端
 + 默认值：`true`
@@ -2464,7 +2464,7 @@ Raft Engine 相关的配置项。
 + 日志文件存放的临时目录，日志文件预先写入临时目录，然后 flush 到外部存储中。
 + 默认值：`${deploy-dir}/data/log-backup-temp`
 
-### `gcp-v2-enable`
+### `gcp-v2-enable` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
 + 是否在日志备份使用 Google Cloud Storage (GCS) 时启用 `gcp_v2` 外部存储后端。
 + 默认值：`true`
