@@ -151,19 +151,16 @@ tiup br restore db --db test -u "${PD_IP}:2379" \
     - br 命令行工具读取 `~/.config/gcloud/application_default_credentials.json` 文件。
     - 当 BR 在 GCE 或 GAE 中运行时，使用从元数据服务器中获取的凭据。
 
-> **注意：**
->
-> 如果你希望在 TiKV 侧使用 GCS 的 WIF 或 ADC，需要启用 `gcp_v2` 外部存储后端：
->
-> - full backup 和 restore：将 [TiKV 配置文件描述](/tikv-configuration-file.md) 中 `[backup].gcp-v2-enable` 设为 `true`
-> - log backup：将 [TiKV 配置文件描述](/tikv-configuration-file.md) 中 `[log-backup].gcp-v2-enable` 设为 `true`
->
-> 上述两个配置项的默认值均为 `true`。如果禁用 `gcp_v2`，TiKV 将继续使用旧版 GCS 实现。该实现仅支持 Service Account JSON，不支持直接使用 WIF。
+如果希望 TiKV 使用 GCS 的 WIF 或 ADC，需要启用 `gcp_v2` 外部存储后端。从 v8.5.7 开始，TiKV 默认启用 `gcp_v2` 外部存储后端。 你可以通过以下方式配置 `gcp_v2`：
+
+- full backup 和 restore：将 [TiKV 配置文件描述](/tikv-configuration-file.md) 中 `[backup].gcp-v2-enable` 设为 `true`
+- log backup：将 [TiKV 配置文件描述](/tikv-configuration-file.md) 中 `[log-backup].gcp-v2-enable` 设为 `true`
+
+上述两个配置项的默认值均为 `true`。如果禁用 `gcp_v2`，TiKV 将继续使用旧版 GCS 实现。该实现仅支持 Service Account JSON，不支持直接使用 WIF。
 
 > **注意：**
 >
-> `gcp_v2` 显式传入的 GCS JSON 凭据只支持 `service_account` 和 `external_account` 两种类型。
-> 如果你使用的是 ADC 生成的 `authorized_user` JSON，并且需要让 TiKV 直接访问 GCS，建议设置 `--send-credentials-to-tikv=false`，并在每个 TiKV 节点上配置 ADC。否则，BR 可能会把 `authorized_user` JSON 作为显式凭据发送给 TiKV，而 `gcp_v2` 不接受这类显式 JSON。
+> `gcp_v2` 显式传入的 GCS JSON 凭据只支持 `service_account` 和 `external_account` 两种类型。如果你使用的是 ADC 生成的 `authorized_user` JSON，并且需要让 TiKV 直接访问 GCS，建议设置 `--send-credentials-to-tikv=false`，并在每个 TiKV 节点上配置 ADC。否则，BR 可能会把 `authorized_user` JSON 作为显式凭据发送给 TiKV，而 `gcp_v2` 不接受这类显式 JSON。
 
 > **Tip:**
 >
