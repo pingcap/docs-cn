@@ -2414,7 +2414,7 @@ Raft Engine 相关的配置项。
 
 ### `gcp-v2-enable` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
-+ 是否在使用 Google Cloud Storage (GCS) 执行 full backup 或 restore 时启用 `gcp_v2` 外部存储后端
++ 是否在使用 Google Cloud Storage (GCS) 执行 full backup 或 restore 时启用 `gcp_v2` 外部存储后端。
 + 默认值：`true`
 + 当该配置项为 `true` 时，TiKV 在访问 GCS 时会使用 `gcp_v2` 实现；当该配置项为 `false` 时，TiKV 会继续使用旧的 GCS 实现。
 + 如果你需要在 full backup 或 restore 场景下使用 Google Cloud 的 Workload Identity Federation (WIF)，需要将该配置项保持为 `true`。
