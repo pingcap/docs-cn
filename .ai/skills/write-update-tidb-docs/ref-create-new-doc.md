@@ -34,7 +34,7 @@ Also confirm this content should be authored in Chinese directly. If it has an E
 
 Read the selected template before drafting. Use it as a structural skeleton; skip sections that do not apply.
 
-For features combining concept + usage + reference (common in TiDB), use the **new feature** template. Split into multiple pages only when content naturally exceeds ~1500 words per concern.
+For features combining concept + usage + reference (common in TiDB), use the **new feature** template. Split into multiple pages only when a single page would cover several distinct concerns and become hard to scan.
 
 ## 2. Choose file path and name
 
@@ -95,20 +95,15 @@ Every navigable page needs a TOC entry.
     - [Sub Page](/path/to/sub.md)
 ```
 
-**TOC title**: concise (3 to 7 words), match the doc H1 when feasible.
+**TOC title**: concise, and match the doc H1 when feasible.
 
 ## 4. Write front matter
 
-```yaml
----
-title: <same as H1>
-summary: <concise, verb-led sentence describing what the reader will learn or do>
----
-```
+Copy the front matter from the template you selected in Step 1 — do not retype a generic block, because the fields differ by template. For example, `resources/doc-templates/template-task.md` includes a `category` field (such as `category: how-to`), while `resources/doc-templates/template-new-feature.md` uses only `title` and `summary`.
 
 - `title` must match the H1 exactly.
-- `summary` must not start with `>`, `*`, `#`, `-`, or `[`. If it must, wrap the summary in quotation marks.
-- `summary` tells readers what they will learn or accomplish. Keep it one concise sentence and follow the length and phrasing of `summary` fields in nearby docs.
+- `summary` must be a complete sentence ending with a period, concisely summarizing the page, and must not start with `>`, `*`, `#`, `-`, or `[` (if it must, wrap the summary in quotation marks). See `.ai/shared/writing-style.md` (元数据).
+- Keep any other field the chosen template defines (for example, `category`); do not drop it.
 - Add `aliases` only if replacing an older page URL.
 
 ## 5. Draft the document
@@ -124,94 +119,24 @@ summary: <concise, verb-led sentence describing what the reader will learn or do
 
 ### Structure by doc type
 
-**New feature:**
+Use the selected template file in `resources/doc-templates/` as the single source of truth for section headings. Open it and follow its heading names and order exactly, deleting sections that do not apply. Do not invent a parallel set of headings here, because hand-maintained skeletons drift from the templates.
 
-```
-# Feature Name
-  Intro: what it does, why it matters, when to use it.
+For reference, the current `template-new-feature.md` uses these section headings (verify against the file, which is authoritative):
 
-## 使用场景
+- 使用场景
+- 前提条件（可选）
+- 使用方法/操作步骤
+- 参数说明
+- 使用限制
+- 兼容信息
+- 常见问题（可选）
+- 探索更多
 
-## 前提条件（如有）
-
-## 使用方式
-### 方法一：<name>（推荐）
-### 方法二：<name>
-
-## 参数说明（如适用）
-
-## 使用限制
-
-## 兼容性
-
-## 常见问题（如有）
-
-## 另请参阅
-```
-
-**Task:**
-
-```
-# Task Title
-  Intro: what this helps you accomplish.
-
-## 前提条件
-
-## 第 1 步：<verb phrase>
-
-## 第 2 步：<verb phrase>
-
-## 第 3 步：<verb phrase>
-
-## 下一步
-```
-
-**Concept:**
-
-```
-# Concept Title
-  Intro: what this concept is and why it matters.
-
-## 工作原理
-
-## 主要特性
-
-## 使用限制（如适用）
-
-## 下一步
-```
-
-**Reference:**
-
-```
-# Reference Title
-  Intro: what this reference covers.
-
-## Category 1
-### Item / parameter
-
-## Category 2
-### Item / parameter
-```
-
-**Troubleshooting:**
-
-```
-# Troubleshoot <Problem>
-  Intro: what problems this covers.
-
-## 常见原因
-### 原因一
-  现象 → 解决方案
-### 原因二
-
-## 其他原因
-### 原因三
-```
+The `template-task.md` uses an intro paragraph, a preparation/prerequisites section, then 第 1 步 / 第 2 步 ... step headings. Match the wording in the template rather than paraphrasing it.
 
 ### Co-authoring mode (for substantial docs)
 
-When the doc is expected to exceed ~800 words or has unclear scope:
+When the doc is substantial (several sections) or has unclear scope:
 
 1. Propose 3 to 5 core sections. Get confirmation.
 2. Start with the highest-value or most-uncertain section.

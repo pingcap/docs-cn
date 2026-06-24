@@ -9,8 +9,8 @@ Use this skill when the task is to review a documentation PR, a Markdown diff, o
 
 ## Default behavior
 
-- When the user asks you to review a specific doc PR, post the GitHub-ready committable suggestions and findings to that PR instead of only returning them in chat.
-- For safe line-level fixes, default to GitHub-ready committable suggestions in the PR review.
+- By default, present review findings in the conversation. Do not post comments, reviews, or committable suggestions to the GitHub PR unless the user explicitly asks you to publish them.
+- When the user does ask you to post to the PR, format safe line-level fixes as GitHub-ready committable suggestions so the author can apply them directly.
 - This repository also runs an automated AI review via `.github/workflows/doc_review.yml` (triggered by a `/bot-review` comment, driven by `doc-review-prompt.txt`). When mirroring the repo's review behavior, align with that prompt.
 
 ## Load this context first
@@ -60,7 +60,7 @@ Check issues in this order:
 
 ## Review rules
 
-- Highest-priority rule: for any line-level issue that can be fixed safely without changing technical meaning or broadening scope, default to a GitHub-ready committable suggestion instead of a plain review comment.
+- Formatting rule (applies when the user has asked you to post to the PR): for any line-level issue that can be fixed safely without changing technical meaning or broadening scope, prefer a GitHub-ready committable suggestion over a plain review comment.
 - This suggestion-first rule applies to both categories of review findings:
     - TiDB expert findings such as technical accuracy, logic, terminology, consistency, version fit, and user-impact issues
     - senior technical writer findings such as clarity, structure, wording, grammar, punctuation, Chinese/English spacing, heading style, and writing-style-guide issues

@@ -29,7 +29,7 @@ Use `resources/tidb-terms.md` (the TiDB 中英术语表) when terminology is unc
 
 This repository already automates several workflows. Prefer these over ad hoc processes:
 
-- `.github/workflows/sync-doc-pr-en-to-zh.yml`: translates an English source PR in `pingcap/docs` into a matching Chinese PR in `pingcap/docs-cn`.
+- `.github/workflows/sync-doc-pr-en-to-zh.yml`: syncs translated changes from an English source PR in `pingcap/docs` into an **existing** Chinese target PR in `pingcap/docs-cn` (it requires both `source_pr_url` and `target_pr_url`; it does not create the target PR). Manual dispatch only, restricted to authorized accounts.
 - `.github/workflows/sync-ai-docs-en-to-zh.yml`: weekly AI translation of `ai/` content and `TOC-ai.md` from `pingcap/docs` (`release-8.5`) into this repo. Do not hand-edit the Chinese `ai/` content; fix the English source in `pingcap/docs` instead.
 - `.github/workflows/doc_review.yml`: AI doc review triggered by a `/bot-review` comment, driven by `doc-review-prompt.txt`.
 

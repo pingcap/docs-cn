@@ -93,10 +93,9 @@ Then describe the question clearly, including what you searched and why the exis
 - Apply labels explicitly when creating or editing issues.
 - For issues created with `gh issue create`, add labels via the `-l` / `--label` flag since the CLI does not auto-apply template labels.
 - For existing issues, use `gh issue edit` to update labels.
-- Pick labels that match the existing taxonomy in this repository:
-    - **Type labels** describing the issue intent (for example, error/typo, enhancement, feature request, question, refactor).
-    - **Area labels** identifying the documentation area (for example, a specific component or feature).
-    - **Priority labels** when the issue affects published documentation accuracy or user-facing correctness.
+- Pick labels that match the existing taxonomy in this repository (verify exact names with `gh label list`):
+    - **Type labels** describing the issue intent, such as `type/bug`, `type/bugfix`, `type/enhancement`, `type/feature-request`, `type/question`, or `type/refactor`.
+    - **Area labels** identifying the documentation area. These vary, so look them up with `gh label list` instead of guessing.
     - **Workflow labels** such as `good first issue` or `help wanted` for community contribution signaling.
 - Before inventing a label, check which labels the repository already uses with `gh label list`.
 - If label permissions are missing, add a comment with `Suggested labels: ...` so maintainers can apply them.

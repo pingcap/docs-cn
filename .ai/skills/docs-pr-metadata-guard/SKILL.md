@@ -14,7 +14,7 @@ Before changing a PR body, read `.github/pull_request_template.md`.
 1. PR titles follow `pingcap/community` commit-message style (for example, `Fix typos in tidb-monitoring-api.md`). Titles and section content can be in Chinese or English; keep product names, commands, and paths in English.
 2. For a new PR, start from `.github/pull_request_template.md` instead of writing the body from scratch.
    - Copy the template into a local Markdown file and fill in the mutable fields.
-   - Submit with `gh pr create --body-file <local-file>`, or use `gh pr create -T .github/pull_request_template.md` to let `gh` load the template as the starting body text (the `-T` / `--template` flag for `gh pr create` takes a file path).
+   - Submit with `gh pr create --body-file <local-file>`. This is the reliable method. The `-T` / `--template` flag matches a template by **name** (the basename, for example `gh pr create -T pull_request_template.md`), not by path, so `-T .github/pull_request_template.md` will not match. Prefer `--body-file`.
    - Review the local file against the template before calling `gh`.
 3. Fill in the required sections with concrete information.
    - **What is changed, added or deleted? (Required)**: describe what changed and why in clear, specific language. Do not leave this blank or fill it with a generic placeholder.
@@ -22,7 +22,7 @@ Before changing a PR body, read `.github/pull_request_template.md`.
      - Default to `master` only for general improvements, wording fixes, missing-content additions, and corrections not tied to a specific released behavior.
      - Check the affected release version(s) together with `master` when the change involves version-specific behavior, compatibility changes, changed defaults, or fixes in published docs.
    - **What is the related PR or file link(s)?**: fill in the source link under `This PR is translated from:` when the PR is a translation from `pingcap/docs`. Fill in other reference links such as product PRs, issues, or related doc PRs under `Other reference link(s):`.
-   - **Do your changes match any of the following descriptions?**: check all that apply. If the change needs different wording on another branch, check `Need modification after applied to another branch` and comment `/label version-specific-changes-required` to trigger the bot.
+   - **Do your changes match any of the following descriptions?**: check all that apply. If the change needs different wording on another branch, check `Need modification after applied to another branch` and comment `/label requires-version-specific-changes` to trigger the bot. (Note: the PR template still prints the old command `/label version-specific-changes-required`, which the bot now rejects because the actual label is `requires-version-specific-changes`. Use the actual label name.)
 4. Choose the correct base branch.
    - Default to `master` for most documentation PRs.
    - Use a specific `release-X.Y` branch when the change is scoped to a single published version and does not apply to `master`.
@@ -73,7 +73,7 @@ When filling them in:
 
 - When a change applies to multiple versions, prefer a single PR on the latest applicable branch and use cherry-pick labels for remaining maintained versions.
 - Cherry-pick labels follow the pattern `needs-cherry-pick-release-X.Y` (for example, `needs-cherry-pick-release-8.5`, `needs-cherry-pick-release-7.5`).
-- If branch-specific wording differences are expected, check `Need modification after applied to another branch` and comment `/label version-specific-changes-required` so cherry-pick reviewers know follow-up edits are required.
+- If branch-specific wording differences are expected, check `Need modification after applied to another branch` and comment `/label requires-version-specific-changes` so cherry-pick reviewers know follow-up edits are required. (`requires-version-specific-changes` is the real label name; the command printed in the PR template, `/label version-specific-changes-required`, is a historical error that the bot rejects.)
 - The two other description checkboxes signal cherry-pick risk:
     - `Delete files` and `Change aliases` flag changes that need extra care during cherry-pick and link checking.
     - `Might cause conflicts after applied to another branch` warns reviewers that the automatic cherry-pick may not apply cleanly.

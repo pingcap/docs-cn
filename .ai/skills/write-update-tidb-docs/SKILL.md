@@ -32,7 +32,7 @@ Documentation generated from code fails most often by being well-formatted but f
 
 - Every concrete fact — default value, range, type, scope, version number, behavior, error message, syntax — must be traceable to an authoritative source: the PR diff, the code, tests, or an existing doc.
 - Never infer or invent a value because it "looks reasonable." A plausible-but-wrong default is worse than an acknowledged gap.
-- If a fact cannot be derived from the available sources, insert a clearly marked placeholder (for example, `<!-- TODO: confirm default -->`) and list it under **Open questions** in the plan, rather than guessing.
+- If a fact cannot be derived from the available sources, do not guess and do not bury an unverified value in the prose. Track it under **Open questions** in the plan and the completion report. A placeholder such as `<!-- TODO: confirm default -->` is allowed only as a temporary local drafting marker: it must be resolved before the task is complete, and it must never remain in a document that is committed or proposed in a PR. Do not mark the task done while any placeholder remains.
 - When the source and an existing doc disagree, note the conflict under **Open questions** in the plan instead of silently picking one.
 
 ## Accepted inputs

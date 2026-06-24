@@ -6,7 +6,10 @@ Use this file for EN -> ZH translation work that maps changes in `pingcap/docs` 
 
 - This guidance is for translating English docs work in `pingcap/docs` into Chinese docs work in `pingcap/docs-cn`.
 - Keep the translation faithful to the source change unless the target repo or branch requires a documented difference.
-- Prefer the repository automation when it applies: `.github/workflows/sync-doc-pr-en-to-zh.yml` translates an English source PR into a matching Chinese PR, and `.github/workflows/sync-ai-docs-en-to-zh.yml` translates `ai/` content weekly. Adapt these workflows instead of building a new translation process from scratch.
+- Prefer the repository automation when it applies:
+    - `.github/workflows/sync-doc-pr-en-to-zh.yml` does not open a new PR. It takes an English `source_pr_url` and an **existing** Chinese `target_pr_url`, then syncs the translated changes into that target PR. It is `workflow_dispatch`-only and restricted to authorized accounts. So create or identify the target Chinese PR first, then run the workflow to populate it.
+    - `.github/workflows/sync-ai-docs-en-to-zh.yml` translates `ai/` content and `TOC-ai.md` weekly.
+  Adapt these workflows instead of building a new translation process from scratch.
 
 ## Preserve structure
 
