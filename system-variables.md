@@ -669,7 +669,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 在 `SESSION` 作用域下，该变量为只读变量。
 - 该变量的行为与 MySQL 兼容。
 
-### `max_user_connections` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+### `max_user_connections` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
