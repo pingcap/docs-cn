@@ -68,7 +68,10 @@ br 工具暂停 GC 的原理是通过执行 `SET config tikv gc.ratio-threshold 
 > - 恢复因 checksum 校验失败而终止。
 > - 数据在恢复完成后一段时间丢失。
 > 
-> 如果确定要放弃当前的恢复结果，请使用 [`br abort`](/br/br-pitr-manual.md#中止恢复操作) 命令删除下游集群中存储的 checkpoint 数据，或者手动删除下游集群中的 checkpoint 数据表。
+> 如果确定要放弃当前的恢复结果，在 `DROP` 掉已经恢复的 table 之外，还需要：
+> 
+> - 对于 `restore point`，请执行 [`br abort`](/br/br-pitr-manual.md#中止恢复操作)。
+> - 对于 `restore full`，请手动删除下游集群中的 checkpoint 数据表（形如 `__TiDB_BR_Temporary_Snapshot_Restore_Checkpoint_<restoreID>`，你可以在 `mysql.tidb_restore_registry` 找到 restore 的 ID）。
 
 ### 不建议跨大版本重新恢复
 
