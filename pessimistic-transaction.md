@@ -77,7 +77,7 @@ BEGIN /*T! PESSIMISTIC */;
 
     > **注意：**
     >
-    > 此行为仅适用于 [Repeatable Read](/transaction-isolation-levels.md#repeatable-read-isolation-level) 隔离级别。在 `READ COMMITTED` 隔离级别下，`Point Get` 和 `Batch Point Get` 算子不会对不存在的键加锁。
+    > 此行为仅适用于 [可重复读 (Repeatable Read)](/transaction-isolation-levels.md#可重复读隔离级别-repeatable-read) 隔离级别。在 [读已提交 (Read Committed)](/transaction-isolation-levels.md#读已提交隔离级别-read-committed) 隔离级别下，`Point Get` 和 `Batch Point Get` 算子不会对不存在的键加锁。
 
 - 支持 `FOR UPDATE OF TABLES` 语法，对于存在多表 join 的语句，只对 `OF TABLES` 中包含的表关联的行进行悲观锁加锁操作。
 
