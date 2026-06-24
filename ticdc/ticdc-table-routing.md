@@ -1,11 +1,11 @@
 ---
 title: TiCDC 表路由
-summary: 了解如何配置 TiCDC 表路由，通过 target-schema 和 target-table 改写下游 schema 和表名，掌握冲突检测、DDL 改写、限制和排查方法。
+summary: 了解 TiCDC 新架构中的表路由配置，包括通过 target-schema 和 target-table 改写下游 schema 和表名、冲突检测、DDL 改写、限制和排查方法。
 ---
 
 # TiCDC 表路由
 
-TiCDC 表路由 (Table Routing) 允许你通过 changefeed 配置，将上游表映射到指定的下游库名或表名。
+TiCDC 表路由 (Table Routing) 允许你通过 changefeed 配置，将上游表映射到指定的下游库名或表名。该功能仅适用于 [TiCDC 新架构](/ticdc/ticdc-architecture.md)，不支持 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)。
 
 表路由只会改变 TiCDC 输出到下游的库名和表名，不会改变行数据、列名、表结构、表过滤规则、Topic 分发规则、Partition 分发规则或列选择规则。
 
@@ -24,6 +24,8 @@ TiCDC 表路由 (Table Routing) 允许你通过 changefeed 配置，将上游表
 > 表路由不支持将一张上游表拆分到多张下游表，或转换行数据内容。
 
 ## 配置表路由
+
+配置前，请先启用 TiCDC 新架构。详情参见 [`newarch`](/ticdc/ticdc-server-config.md#newarch-从-v854-release1-版本开始引入)。
 
 以下示例将 `sales.orders` 路由到 `archive.sales_orders`：
 
@@ -186,7 +188,7 @@ RENAME TABLE `archive`.`temp_table_routed` TO `archive`.`renamed_table_routed`;
 
 对于 `CREATE DATABASE`、`DROP DATABASE` 和 `ALTER DATABASE ... CHARACTER SET/COLLATE` 这类库级 DDL，如果库名匹配表路由规则，TiCDC 会改写库名。**如果同一个上游库匹配多条表路由规则，但这些规则解析出不同的目标库名，TiCDC 无法为该库级 DDL 确定唯一目标库，Changefeed 会报表路由错误。**
 
-创建或更新 Changefeed 时，TiCDC 会基于当前复制范围内的表检查目标表冲突。库级 DDL 是否能唯一路由，会在同步对应 DDL 时判断。
+创建或更新 Changefeed 时，TiCDC 会基于当前复制范围内的表检查目标表冲突。运行期间，TiCDC 会在同步 `CREATE TABLE`、`RENAME TABLE`、`DROP TABLE`、`DROP DATABASE` 等 DDL 时更新冲突检测状态。库级 DDL 是否能唯一路由，会在同步对应 DDL 时判断。
 
 ## 路由冲突检测
 
@@ -212,6 +214,10 @@ target-table = "{table}"
 
 如果 `sales.orders` 和 `crm.orders` 都在复制范围内，这两张表都会被路由到 `archive.orders`。TiCDC 会拒绝创建或更新 Changefeed，并返回 `CDC:ErrTableRouteConflict` 错误。
 
+Changefeed 运行期间，如果 `CREATE TABLE` 或 `RENAME TABLE` 等 DDL 使两个存活的上游表路由到同一个目标表，Changefeed 会失败并返回 `CDC:ErrTableRouteConflict` 错误。
+
+如果上游表被删除或重命名，TiCDC 会释放旧源表名占用的目标表。之后新源表名可以使用同一个目标表，前提是同一时刻没有两个存活的上游表路由到该目标表。
+
 > **警告：**
 >
 > 路由冲突检测仅限于单个 Changefeed。如果多个 Changefeed 写入同一个下游系统，请确保这些 Changefeed 的表路由规则不会写入相同的目标对象。
@@ -223,6 +229,7 @@ target-table = "{table}"
 | 创建 Changefeed 时报 `CDC:ErrInvalidTableRoutingRule` 错误。 | `target-schema` 或 `target-table` 包含无效占位符或无效的大括号。 | 只使用字面文本、`{schema}` 和 `{table}`。 |
 | MQ Topic 名仍然使用上游库表名。 | 表路由不会改变 Topic 或 Partition 分发。 | 如果需要修改 Topic 名，请在 `sink.dispatchers` 中单独配置 `topic`。 |
 | DDL 语句报 `CDC:ErrTableRoutingFailed` 错误。 | 该 DDL 语句无法安全地用于表路由改写，或库级别路由存在歧义。 | 调整路由规则。 |
+| Changefeed 运行中失败并报 `CDC:ErrTableRouteConflict` 错误。 | 新建表或重命名表后，两个不同的上游表被路由到同一个下游表。 | 调整表路由规则或上游 DDL，确保单个 Changefeed 内每个目标表只对应一个存活的上游表。 |
 
 ## 相关文档
 
