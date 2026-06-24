@@ -2488,7 +2488,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`ON`
 - 该变量用于控制 TiDB 在执行 `INSERT` 语句时，是否对显式写入 `NOT NULL` 列的 `NULL` 值进行严格校验。
 - 取值说明：
-    - `ON`：启用严格的 `NOT NULL` 校验。该行为更接近 MySQL 8.0 的标准语义。
+    - `ON`：启用严格的 `NOT NULL` 校验。该行为更接近 MySQL 8.0 的语义。
         - 在严格 SQL 模式下，如果向 `NOT NULL` 列插入 `NULL` 值，TiDB 会返回错误。
         - 在非严格 SQL 模式下：对于单行 `INSERT` 语句，如果向 `NOT NULL` 列插入 `NULL` 值，TiDB 会返回错误；对于多行 `INSERT` 语句，如果向 `NOT NULL` 列插入 `NULL` 值，TiDB 会将该错误降级为 warning，并写入该列数据类型对应的隐式默认值。
     - `OFF`：关闭严格的 `NOT NULL` 校验，用于兼容 TiDB 早期版本中较宽松的行为。关闭后，当向 `NOT NULL` 列插入 `NULL` 值时，TiDB 会将该错误降级为 warning，并写入该列数据类型对应的隐式默认值。例如，数字类型写入 `0`，字符串类型写入空字符串 `''`。
