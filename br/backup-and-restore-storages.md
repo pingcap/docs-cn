@@ -152,7 +152,7 @@ tiup br restore db --db test -u "${PD_IP}:2379" \
     - br 命令行工具读取 `~/.config/gcloud/application_default_credentials.json` 文件。
     - 当 BR 在 GCE 或 GAE 中运行时，使用从元数据服务器中获取的凭据。
 
-如果希望 TiKV 使用 GCS 的 WIF 或 ADC，需要启用 `gcp_v2` 外部存储后端。从 v8.5.7 开始，TiKV 默认启用 `gcp_v2` 外部存储后端。你可以通过以下方式配置 `gcp_v2`：
+如果希望 TiKV 使用 GCS 的 WIF 或 ADC，需要启用 `gcp_v2` 外部存储后端。**从 v8.5.7 开始，TiKV 默认启用 `gcp_v2` 外部存储后端。**你可以通过以下方式配置 `gcp_v2`：
 
 - full backup 和 restore：将 [TiKV 配置文件描述](/tikv-configuration-file.md) 中 `[backup].gcp-v2-enable` 设为 `true`
 - log backup：将 [TiKV 配置文件描述](/tikv-configuration-file.md) 中 `[log-backup].gcp-v2-enable` 设为 `true`
