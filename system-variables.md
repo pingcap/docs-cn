@@ -2430,7 +2430,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`ON`
 - 这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `information_schema.STATEMENTS_SUMMARY` 中，用于定位和排查 SQL 性能问题。
 
-### `tidb_enable_strict_not_null_check` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+### `tidb_enable_strict_not_null_check` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
