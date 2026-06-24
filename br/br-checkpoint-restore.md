@@ -63,13 +63,12 @@ br 工具暂停 GC 的原理是通过执行 `SET config tikv gc.ratio-threshold 
 
 > **警告：**
 >
-> 我们已经明确发现，从 v8.5.5 开始，如果删除正在恢复的表，之后从 checkpoint 重新恢复，会导致：
-> - checksum 失败，或者……
-> - 数据于恢复完成后一段时间丢失。
-> 
-> 如果打算放弃恢复结果，请务必注意在移除已经恢复的表后使用 [`br abort`](/br/br-pitr-manual.md#中止恢复操作) 来删除 checkpoint，或者手动 drop checkpoint table。
+> 从 v8.5.5 开始，如果你删除了正在恢复的表，之后再从 checkpoint 重试恢复，可能会遇到以下问题（详见 [#68709](https://github.com/pingcap/tidb/issues/68709))：
 >
-> 参考：https://github.com/pingcap/tidb/issues/68709
+> - 恢复因 checksum 校验失败而终止。
+> - 数据在恢复完成后一段时间丢失。
+> 
+> 如果确定要放弃当前的恢复结果，请使用 [`br abort`](/br/br-pitr-manual.md#中止恢复操作) 命令删除下游集群中存储的 checkpoint 数据，或者手动删除下游集群中的 checkpoint 数据表。
 
 ### 不建议跨大版本重新恢复
 
