@@ -384,9 +384,11 @@ Query OK, 1 row affected (0.00 sec)
 - 使用备份恢复工具 (BR)、同步工具 (TiCDC)、导入工具 (TiDB Lightning) 无法将定义了多值索引的表备份、同步、导入到低于 v6.6.0 版本的 TiDB。
 - 条件复杂的查询有可能无法选择到多值索引，多值索引支持的条件模式请参考[使用多值索引](/choose-index.md#使用多值索引)。
 
-## 部分索引
+## 部分索引 <span class="version-mark">从 v8.5.7 开始引入</span>
 
-部分索引是在表中行的子集上构建的索引，由条件表达式（称为部分索引的谓词）定义。该索引仅包含满足谓词的行的条目。
+从 v8.5.7 开始，TiDB 支持创建部分索引。
+
+部分索引是在表中部分行上构建的索引。条件表达式（称为谓词）用于定义这些行的子集。该索引仅包含满足谓词的行的条目。
 
 ### 创建部分索引
 
@@ -403,7 +405,7 @@ CREATE INDEX idx1 ON t1 (c1) WHERE c2 > 10;
 ALTER TABLE t1 ADD INDEX idx2 (c1, c2) WHERE c3 = 'abc';
 ```
 
-或者在创建表时指定部分索引：
+你也可以在创建表时指定部分索引：
 
 ```sql
 CREATE TABLE t2 (
@@ -423,7 +425,7 @@ CREATE TABLE t2 (
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
-    status varchar(20),
+    status VARCHAR(20),
     created_at DATETIME,
     score INT
 );
@@ -436,8 +438,8 @@ CREATE INDEX idx_pending_status ON users (created_at) WHERE status = 'pending';
 
 然后以下查询可以使用部分索引：
 
-```
-mysql> explain SELECT * FROM users WHERE status = 'active' AND name = 'John';
+```sql
+mysql> EXPLAIN SELECT * FROM users WHERE status = 'active' AND name = 'John';
 +-------------------------------+---------+-----------+-------------------------------------------+-------------------------------------------------------+
 | id                            | estRows | task      | access object                             | operator info                                         |
 +-------------------------------+---------+-----------+-------------------------------------------+-------------------------------------------------------+
@@ -448,7 +450,7 @@ mysql> explain SELECT * FROM users WHERE status = 'active' AND name = 'John';
 +-------------------------------+---------+-----------+-------------------------------------------+-------------------------------------------------------+
 4 rows in set (0.00 sec)
 
-mysql> explain SELECT * FROM users WHERE status = 'active' ORDER BY name;
+mysql> EXPLAIN SELECT * FROM users WHERE status = 'active' ORDER BY name;
 +-------------------------------+----------+-----------+-------------------------------------------+---------------------------------+
 | id                            | estRows  | task      | access object                             | operator info                   |
 +-------------------------------+----------+-----------+-------------------------------------------+---------------------------------+
@@ -459,7 +461,7 @@ mysql> explain SELECT * FROM users WHERE status = 'active' ORDER BY name;
 +-------------------------------+----------+-----------+-------------------------------------------+---------------------------------+
 4 rows in set (0.00 sec)
 
-mysql> explain SELECT * FROM users WHERE score > 10000 ORDER BY created_at;
+mysql> EXPLAIN SELECT * FROM users WHERE score > 10000 ORDER BY created_at;
 +-------------------------------+----------+-----------+-----------------------------------------------------+--------------------------------+
 | id                            | estRows  | task      | access object                                       | operator info                  |
 +-------------------------------+----------+-----------+-----------------------------------------------------+--------------------------------+
@@ -470,7 +472,7 @@ mysql> explain SELECT * FROM users WHERE score > 10000 ORDER BY created_at;
 +-------------------------------+----------+-----------+-----------------------------------------------------+--------------------------------+
 4 rows in set (0.00 sec)
 
-mysql> explain SELECT * FROM users WHERE status = 'pending';
+mysql> EXPLAIN SELECT * FROM users WHERE status = 'pending';
 +-------------------------+----------+-----------+---------------+----------------------------------+
 | id                      | estRows  | task      | access object | operator info                    |
 +-------------------------+----------+-----------+---------------+----------------------------------+
@@ -481,10 +483,10 @@ mysql> explain SELECT * FROM users WHERE status = 'pending';
 3 rows in set (0.00 sec)
 ```
 
-如果查询中的谓词不满足索引定义，即使使用 hint 也不会选择该索引：
+如果查询谓词与部分索引定义不匹配，即使使用 hint，TiDB 也不会选择该索引：
 
-```
-mysql> explain SELECT * FROM users use index(idx_high_score_users) WHERE score > 100 ORDER BY created_at;
+```sql
+mysql> EXPLAIN SELECT * FROM users USE INDEX(idx_high_score_users) WHERE score > 100 ORDER BY created_at;
 +---------------------------+----------+-----------+---------------+--------------------------------+
 | id                        | estRows  | task      | access object | operator info                  |
 +---------------------------+----------+-----------+---------------+--------------------------------+
@@ -499,22 +501,22 @@ mysql> explain SELECT * FROM users use index(idx_high_score_users) WHERE score >
 
 部分索引在以下场景中特别有用：
 
-- **选择性过滤**：当你经常基于特定条件查询一小部分行时
-- **条件唯一性**：当你需要只在某些条件下应用唯一约束时
+- **选择性过滤**：当你经常基于特定条件查询一小部分行时，可以使用部分索引。
+- **条件唯一性**：当你需要只在某些条件下应用唯一约束时，可以使用部分索引。
 
 ### 限制
 
-- 部分索引的 `WHERE` 子句支持基本比较运算符（`=`、`!=`、`<`、`<=`、`>`、`>=`）和具有常量值的 `IN` 谓词
-- 列和常量值的类型应该相同
-- 谓词只能引用同一表中的列
-- 部分索引不能用于表达式索引
+- 部分索引的 `WHERE` 子句支持基本比较运算符（`=`、`!=`、`<`、`<=`、`>`、`>=`）、`IS NULL`、`IS NOT NULL` 和具有常量值的 `IN` 谓词。
+- 列和常量值的类型必须相同。
+- 谓词只能引用同一表中的列。
+- 部分索引不能用于表达式索引。
 
 ### 性能优势
 
-部分索引提供几个优势：
+部分索引具有以下性能优势：
 
-1. **减少存储**：只有匹配谓词的行被索引，节省存储空间
-2. **更快的 DML**：在 INSERT、UPDATE 和 DELETE 操作期间维护数据子集的索引会更快
+- **减少存储**：只有匹配谓词的行会被索引，从而节省存储空间。
+- **更快的 DML**：在 `INSERT`、`UPDATE` 和 `DELETE` 操作期间，维护数据子集的索引会更快。
 
 ## 不可见索引
 
