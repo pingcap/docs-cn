@@ -80,11 +80,10 @@ category: xxx（如 how-to）
     ### tidb-lightning 全局配置
 
     [lightning]
-    # 用于拉取 web 界面和 Prometheus 监控项的 HTTP 端口。设置为 0 时为禁用状态。
+    # 用于拉取 Prometheus 监控项并暴露调试数据的 HTTP 端口。将其设置为 0 可禁用该端口。
     status-addr = ':8289'
 
-    # 切换为服务器模式并使用 web 界面
-    # 详情参见“TiDB Lightning web 界面”文档
+    # 用于启用服务器模式，并通过 HTTP API 提交导入任务。
     server-mode = false
 
     # 日志
