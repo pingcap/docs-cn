@@ -113,6 +113,8 @@ SHOW STATUS LIKE "Ssl%";
 6 rows in set (0.0062 sec)
 ```
 
+如果 `Ssl_cipher` 的值不为空，则表示连接已加密。
+
 除此以外，对于 MySQL 自带客户端，还可以使用 `STATUS` 或 `\s` 语句查看连接情况：
 
 {{< copyable "sql" >}}

@@ -59,7 +59,7 @@ TiDB 版本：6.1.1
 
     + TiDB Data Migration (DM)
 
-        - 用户可手动设置 Lightning Loader 并发数 [#5505](https://github.com/pingcap/tiflow/issues/5505) @[buchuitoudegou](https://github.com/buchuitoudegou)
+        - 用户可手动设置 TiDB Lightning Loader 并发数 [#5505](https://github.com/pingcap/tiflow/issues/5505) @[buchuitoudegou](https://github.com/buchuitoudegou)
 
     + TiCDC
 

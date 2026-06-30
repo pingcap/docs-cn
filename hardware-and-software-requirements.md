@@ -23,7 +23,8 @@ summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在
 
     | 操作系统                                       | 支持的 CPU 架构                         |
     |:-----------------------------------------------|:----------------------------------------|
-    | Red Hat Enterprise Linux 8.4 及以上的 8.x 版本 | <ul><li>x86_64</li><li>ARM 64</li></ul> |
+    | Red Hat Enterprise Linux 9.4 及以上的 9.x 版本 | <ul><li>x86_64</li><li>ARM 64</li></ul> |
+    | Red Hat Enterprise Linux 8.6 及以上的 8.x 版本 | <ul><li>x86_64</li><li>ARM 64</li></ul> |
     | Amazon Linux 2                                 | <ul><li>x86_64</li><li>ARM 64</li></ul> |
     | Amazon Linux 2023       |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
     | Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
@@ -37,6 +38,10 @@ summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在
     >     - 升级 TiDB 前，请务必检查你的操作系统版本。TiDB 在 v8.4.0 DMR 和 v8.5.0 版本中移除了对 glibc 2.17 的适配，以及对 CentOS Linux 7 的兼容性测试和支持，建议使用 Rocky Linux 9.1 及以上的版本。如果在使用 CentOS Linux 7 的情况下将 TiDB 升级到 v8.4.0 DMR 或 v8.5.0 版本，将存在导致集群不可用的风险。
     >     - 为了更好地服务仍在使用 CentOS Linux 7 的用户，TiDB 从 v8.5.1 版本起重新适配 glibc 2.17，恢复了对 CentOS Linux 7 的兼容性支持和测试。然而，由于 CentOS Linux 7 已到达 EOL，强烈建议用户参考该系统的[官方声明和安全建议](https://www.redhat.com/en/blog/centos-linux-has-reached-its-end-life-eol)，将生产环境迁移到 TiDB 支持的操作系统版本，如 Rocky Linux 9.1 及以上版本。
     > - 根据 [Red Hat Enterprise Linux Life Cycle](https://access.redhat.com/support/policy/updates/errata/#Life_Cycle_Dates)，Red Hat Enterprise Linux 7 的 Maintenance Support 于 2024 年 6 月 30 日终止。从 8.4 DMR 版本开始，TiDB 已结束对 Red Hat Enterprise Linux 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。如果将运行在 Red Hat Enterprise Linux 7 上的 TiDB 集群升级到 v8.4.0 或之后版本，将存在导致集群不可用的风险。升级 TiDB 前，请务必检查你的操作系统版本。
+
+    > **注意：**
+    >
+    > 对 Red Hat Enterprise Linux 9.x 版本的支持从 [TiUP](https://github.com/pingcap/tiup/releases) v1.16.5 开始。
 
 + 在以下操作系统以及对应的 CPU 架构组合上，你可以编译、构建和部署 TiDB，可使用 OLTP 和 OLAP 以及数据工具的基本功能。但由于这些组合尚未经过全面且系统的测试验证，TiDB **不保证企业级生产质量要求**：
 
@@ -140,7 +145,11 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 > - 生产环境中的 TiDB 和 PD 可以部署和运行在同一台服务器上，如对性能和可靠性有更高的要求，应尽可能分开部署。
 > - 强烈建议分别为生产环境中的 TiDB、TiKV 和 TiFlash 配置至少 8 核的 CPU。强烈推荐使用更高的配置，以获得更好的性能。
 > - TiKV 硬盘大小配置建议 PCIe SSD 不超过 4 TB，普通 SSD 不超过 1.5 TB。
-> - 如果你在云服务商（如 AWS、Google Cloud 或 Azure）上部署 TiDB 集群，建议 TiKV 节点使用云盘。在云环境中，TiKV 实例崩溃时，本地磁盘上的数据可能会丢失。
+> - 如果你在云服务商（如 AWS、Google Cloud 或 Azure）上部署 TiDB 集群，建议 TiKV 节点使用云盘，而不要使用实例存储 (Instance Store)。
+>
+>     - 实例存储的数据持久性相对较低。实例存储的生命期与虚拟机绑定，一旦实例出现重启、停止、迁移、硬件损坏、维护等，数据可能丢失。大部分云厂商明确将实例存储标记为“临时存储”，以 [AWS](https://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/Storage.html) 为例：“实例存储卷上的数据仅在关联实例的生命周期内保留；如果您停止、休眠或终止实例，则实例存储卷上的所有数据都会丢失。”
+>     - 实例存储通常不支持快照、跨节点或区域复制，一旦出现损坏或者故障，无法快速恢复。
+>     - 实例存储的容量与机型绑定，无法进行独立扩容。
 
 在部署 TiFlash 之前，请注意以下事项：
 

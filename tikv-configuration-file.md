@@ -512,9 +512,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + TiKV 启动时会预留一块空间用于保护磁盘空间。当磁盘剩余空间小于该预留空间时，TiKV 会限制部分写操作。预留空间形式上分为两个部分：预留空间的 80% 用作磁盘空间不足时的运维操作所需要的额外磁盘空间，剩余的 20% 为磁盘临时文件。在回收空间的过程中，如果额外使用的磁盘空间过多，导致存储耗尽时，该临时文件会成为恢复服务的最后一道防御。
 + 临时文件名为 `space_placeholder_file`，位于 `storage.data-dir` 目录下。当 TiKV 因磁盘空间耗尽而下线时，重启 TiKV 会自动删除该临时文件，并自动尝试回收空间。
-+ 当剩余空间不足时，TiKV 不会创建该临时文件。防御的有效性与预留空间的大小有关。预留空间大小的计算方式为磁盘容量的 5% 与该配置项之间的最大值。当该配置项的值为 `0MiB` 时，TiKV 会关闭磁盘防护功能。
++ 当剩余空间不足时，TiKV 不会创建该临时文件。防御的有效性与预留空间的大小有关。预留空间大小的计算方式为磁盘容量的 5% 与该配置项之间的最大值。如果将该配置项的值设置为 `0`，或带单位的零值（例如 `0KiB`、`0MiB` 或 `0GiB`），TiKV 会关闭磁盘防护功能。
 + 默认值：5GiB
-+ 单位：MiB|GiB
++ 单位：B|KB|KiB|MB|MiB|GB|GiB|TB|TiB|PB|PiB
 
 ### `enable-ttl`
 
@@ -1166,7 +1166,7 @@ raftstore 相关的配置项。
 ### `inspect-kvdb-interval` <span class="version-mark">从 v8.1.2 版本开始引入</span>
 
 + TiKV 进行慢节点检测时检查 KV 盘的间隔和超时时间。如果 KVDB 和 RaftDB 使用相同的挂载路径，该值将被覆盖为 0（不检测）。
-+ 默认值：2s
++ 默认值：`100ms`。在 v8.5.2 及之前版本中，默认值为 `2s`。
 
 ### `min-pending-apply-region-count` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
@@ -2663,24 +2663,6 @@ Raft Engine 相关的配置项。
 + 单次时间戳请求的最大数量。
 + 在默认的一个 TSO 物理时钟更新周期内 (50ms)，PD 最多提供 262144 个 TSO，超过这个数量后 PD 会暂缓 TSO 请求的处理。这个配置用于避免 PD 的 TSO 消耗殆尽、影响其他业务的使用。如果增大这个参数，建议同时减小 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) 参数，以获得足够的 TSO。
 + 默认值：8192
-
-## resource-metering
-
-资源计量 (Resource Metering) 相关的配置项。
-
-### `enable-network-io-collection` <span class="version-mark">从 v8.5.6 版本开始引入</span>
-
-+ 是否在 [Top SQL](/dashboard/top-sql.md) 中除了采集 CPU 数据外，还额外采集 TiKV 的网络流量和逻辑 I/O 信息。
-+ 开启后，TiKV 在处理请求时会额外记录这些指标：网络入站字节数、网络出站字节数、逻辑读字节数和逻辑写字节数。
-+ 上报资源消耗时，TiKV 会基于 CPU 时间、网络流量和逻辑 I/O 来筛选 Top N 记录，并额外按 Region 维度上报这些统计结果，便于更细粒度地分析热点请求或资源消耗来源。
-+ 默认值：false
-
-> **注意：**
->
-> 逻辑 I/O 与物理 I/O 含义不同，两者不能直接对应：
->
-> - 逻辑 I/O 指 TiKV 存储层处理请求时涉及的逻辑数据量，例如读取过程中扫描或处理的数据量，以及写请求自身的逻辑写入字节数。
-> - 物理 I/O 指底层存储设备实际发生的磁盘读写流量，会受到 block cache、compaction、flush 等因素的影响。
 
 ## resource-control
 

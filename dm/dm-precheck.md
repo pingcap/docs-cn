@@ -137,6 +137,16 @@ tiup dmctl check-task ./task.yaml
     - 检查是否有 `binlog_transaction_compression=OFF`（DM 不支持事务压缩）。
     - 如果配置了 `binlog_do_db` 或者 `binlog_ignore_db`，那么检查需要迁移的库表，是否满足 `binlog_do_db` 和 `binlog_ignore_db` 的条件。
 
+* （必须）MariaDB binlog 配置
+
+    - 检查 binlog 是否开启（DM 要求 binlog 必须开启）。
+    - 检查 `binlog_legacy_event_pos` 是否设置为 `ON`。
+    - 检查是否有 `binlog_format=ROW`（DM 只支持 ROW 格式的 binlog 迁移）。
+    - 检查是否有 `binlog_row_image=FULL`（DM 只支持 `binlog_row_image=FULL`）。
+    - 如果配置了 `binlog_do_db` 或者 `binlog_ignore_db`，那么检查需要迁移的库表，是否满足 `binlog_do_db` 和 `binlog_ignore_db` 的条件。
+    - 检查 `binlog_annotate_row_events` 是否设置为 `OFF`。
+    - 检查 `log_bin_compress` 是否设置为 `OFF`。
+
 * （必须）检查上游是否处于 [Online-DDL](/dm/feature-online-ddl.md) 过程中，即创建了 `ghost` 表，但还未执行 `rename` 的阶段。如果处于 online-DDL 中，则检查报错，请等待 DDL 结束后重试。
 
 ### 全量加增量数据迁移检查项

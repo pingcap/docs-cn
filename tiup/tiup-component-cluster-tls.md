@@ -15,6 +15,10 @@ tiup cluster tls <cluster-name> <enable/disable> [flags]
 
 `<cluster-name>` 为要启用自启的集群。
 
+> **注意：**
+>
+> 目前，`tiup cluster tls` 命令仅支持对只有一个 PD 节点的集群开启或关闭 TLS。对于包含多个 PD 节点的集群，执行 `tiup cluster tls` 命令会直接报错，因为切换 TLS 状态会导致 PD 节点之间通信异常。如需对多 PD 节点的集群开启或关闭 TLS，请先将 PD 节点 [`scale-in`](/tiup/tiup-component-cluster-scale-in.md) 到 1 个，再执行 `tiup cluster tls` 命令。
+
 ## 选项
 
 ### --clean-certificate

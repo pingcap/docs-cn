@@ -16,7 +16,7 @@ TiDB 是一个兼容 MySQL 的数据库。[mysql.js](https://github.com/mysqljs/
 
 > **注意**
 >
-> 本文档适用于 {{{ .starter }}}、{{{ .essential }}}、TiDB Cloud Dedicated 和本地部署的 TiDB。
+> 本文档适用于 {{{ .starter }}}、{{{ .essential }}}、{{{ .premium }}}、TiDB Cloud Dedicated 和本地部署的 TiDB。
 
 ## 前置需求
 
@@ -105,6 +105,47 @@ npm install mysql dotenv --save
     > 当你使用 Public Endpoint 连接 {{{ .starter }}} 集群时，**必须**启用 TLS 连接，请将 `TIDB_ENABLE_SSL` 修改为 `true`。
 
 7. 保存 `.env` 文件。
+
+</div>
+<div label="{{{ .premium }}}">
+
+1. 在 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，点击你目标 {{{ .premium }}} 实例的名字，进入实例的 **Overview** 页面。
+
+2. 在左侧导航栏中，点击 **Settings** > **Networking**。
+
+3. 在 **Networking** 页面，点击 **Public Endpoint** 的 **Enable**，然后点击 **Add IP Address**。
+
+    确保你的客户端 IP 地址已添加到访问列表中。
+
+4. 在左侧导航栏中，点击 **Overview** 返回实例概览页面。
+
+5. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
+
+6. 在连接对话框中，从 **Connection Type** 下拉列表中选择 **Public**。
+
+    - 如果提示 Public Endpoint 正在开启，请等待该过程完成。
+    - 如果你尚未设置密码，请在对话框中点击 **Set Root Password**。
+    - 如果需要验证服务器证书或连接失败且需要 CA 证书，请点击 **CA cert** 下载证书。
+    - 除 **Public** 连接类型外，{{{ .premium }}} 还支持 **Private Endpoint** 连接。详情请参阅[通过 AWS PrivateLink 连接到 {{{ .premium }}}](https://docs.pingcap.com/tidbcloud/connect-to-premium-via-aws-private-endpoint/?plan=premium)。
+
+7. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
+
+    ```shell
+    cp .env.example .env
+    ```
+
+8. 编辑 `.env` 文件，按照如下格式设置连接信息，将占位符 `{}` 替换为从连接对话框中复制的参数值：
+
+    ```dotenv
+    TIDB_HOST={host}
+    TIDB_PORT=4000
+    TIDB_USER={user}
+    TIDB_PASSWORD={password}
+    TIDB_DATABASE=test
+    TIDB_ENABLE_SSL=false
+    ```
+
+9. 保存 `.env` 文件。
 
 </div>
 

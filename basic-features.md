@@ -19,6 +19,8 @@ summary: 了解 TiDB 的功能概览。
 
 ## 数据类型，函数和操作符
 
+<StickyHeaderTable>
+
 | 数据类型，函数，操作符 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [数值类型](/data-type-numeric.md) |  Y |  Y |  Y  | Y | Y | Y | Y |
@@ -43,7 +45,11 @@ summary: 了解 TiDB 的功能概览。
 | [字符集和排序规则](/character-set-and-collation.md) [^1] |  Y |  Y |  Y  | Y | Y | Y | Y |
 | [用户级别锁](/functions-and-operators/locking-functions.md) |  Y |  Y |  Y  | Y | Y | Y | N |
 
+</StickyHeaderTable>
+
 ## 索引和约束
+
+<StickyHeaderTable>
 
 | 索引和约束 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -66,7 +72,11 @@ summary: 了解 TiDB 的功能概览。
 | [全局索引 (Global Index)](/global-indexes.md) | Y |  N | N  | N | N | N | N |
 | [向量索引](/ai/reference/vector-search-index.md) |  E |  N |  N  | N | N | N | N |
 
+</StickyHeaderTable>
+
 ## SQL 语句
+
+<StickyHeaderTable>
 
 | SQL 语句 [^3] | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -91,7 +101,11 @@ summary: 了解 TiDB 的功能概览。
 | [表级锁 (Table Lock)](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md) | E |  E  |  E  | E | E | E | E |
 | [物化列式存储的查询结果](/tiflash/tiflash-results-materialization.md) | Y |  Y |  Y  | Y | E | N | N |
 
+</StickyHeaderTable>
+
 ## 高级 SQL 功能
+
+<StickyHeaderTable>
 
 | 高级 SQL 功能 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -116,7 +130,11 @@ summary: 了解 TiDB 的功能概览。
 | [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner) |  E  |  E  |  E  | E | E | E | E |
 | [Runtime Filter](/runtime-filter.md) | Y |  Y  |  Y  | N | N | N | N |
 
+</StickyHeaderTable>
+
 ## 数据定义语言 (DDL)
+
+<StickyHeaderTable>
 
 | 数据定义语言 (DDL) | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -139,7 +157,11 @@ summary: 了解 TiDB 的功能概览。
 | [TiDB 加速建表](/accelerated-table-creation.md) | Y | E | N | N | N | N | N |
 | [设置 BDR Role 用于 TiCDC 双向同步时同步 DDL](/sql-statements/sql-statement-admin-bdr-role.md#admin-setshowunset-bdr-role) | Y | E | N | N | N | N | N |
 
+</StickyHeaderTable>
+
 ## 事务
+
+<StickyHeaderTable>
 
 | 事务 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -153,7 +175,11 @@ summary: 了解 TiDB 的功能概览。
 | [自动终止长时间未提交的空闲事务](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) |  Y |  Y  | N | N | N | N | N |
 | [批量 DML 语句的执行方式 (`tidb_dml_type = "bulk"`)](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) | E |  E | N | N | N | N | N |
 
+</StickyHeaderTable>
+
 ## 分区
+
+<StickyHeaderTable>
 
 | 分区 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -173,7 +199,11 @@ summary: 了解 TiDB 的功能概览。
 | [对现有表进行分区](/partitioned-table.md#对现有表进行分区) |  Y |  Y  |  Y  | N | N | N | N |
 | [全局索引 (Global Index)](/global-indexes.md) |  Y  |  N  |  N  | N | N | N | N |
 
+</StickyHeaderTable>
+
 ## 统计信息
+
+<StickyHeaderTable>
 
 | 统计信息 | 8.5 | 8.1 | 7.5  | 7.1 | 6.5 | 6.1 | 5.4 |
 |---|:----:|:----:|:---:|:---:|:---:|:---:|:---:|
@@ -190,7 +220,11 @@ summary: 了解 TiDB 的功能概览。
 | [轻量级统计信息初始化](/statistics.md#加载统计信息) |  Y  |  Y  |  Y   | E | N | N | N |
 | [显示统计信息收集的进度](/sql-statements/sql-statement-show-analyze-status.md) |  Y  |  Y  |  Y   | N | N | N | N |
 
+</StickyHeaderTable>
+
 ## 安全
+
+<StickyHeaderTable>
 
 | 安全 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -209,7 +243,11 @@ summary: 了解 TiDB 的功能概览。
 | [安全增强模式](/system-variables.md#tidb_enable_enhanced_security) |  Y |  Y |  Y  | Y | Y | Y | Y |
 | [日志脱敏](/log-redaction.md) |  Y |  Y |  Y  | Y | Y | Y | Y |
 
+</StickyHeaderTable>
+
 ## 数据导入和导出
+
+<StickyHeaderTable>
 
 | 数据导入和导出 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -219,14 +257,18 @@ summary: 了解 TiDB 的功能概览。
 | [Dumpling 逻辑导出](/dumpling-overview.md) | Y | Y | Y | Y | Y | Y | Y |
 | [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md) [^5] | Y | Y | Y | Y | Y | Y | Y |
 | [数据迁移工具](/migration-overview.md) | Y | Y | Y | Y | Y | Y | Y |
-| [TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) [^6] | 已移除 | Y | Y | Y | Y | Y | Y |
+| [TiDB Binlog](https://docs-archive.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview/) [^6] | 已移除 | Y | Y | Y | Y | Y | Y |
 | [Change data capture (CDC)](/ticdc/ticdc-overview.md) | Y | Y | Y | Y | Y | Y | Y |
 | [TiCDC 支持保存数据到存储服务 (Amazon S3/GCS/Azure Blob Storage/NFS)](/ticdc/ticdc-sink-to-cloud-storage.md) | Y | Y | Y | Y | E | N | N |
 | [TiCDC 支持在两个 TiDB 集群之间进行双向复制](/ticdc/ticdc-bidirectional-replication.md) | Y | Y | Y | Y | Y | N | N |
 | [TiCDC OpenAPI v2](/ticdc/ticdc-open-api-v2.md) | Y | Y | Y | Y | N | N | N |
 | [DM](/dm/dm-overview.md) 支持迁移 MySQL 8.0  | Y | Y | E | E | E | E | N |
 
+</StickyHeaderTable>
+
 ## 管理，可视化和工具
+
+<StickyHeaderTable>
 
 | 管理，可视化和工具 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -269,6 +311,8 @@ summary: 了解 TiDB 的功能概览。
 | [TiProxy](/tiproxy/tiproxy-overview.md) | Y | Y | N | N | N | N | N |
 | [Schema 缓存](/schema-cache.md) | Y | N | N | N | N | N | N |
 
+</StickyHeaderTable>
+
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 
 [^2]: 从 v6.5.0 起，系统变量 [`tidb_allow_function_for_expression_index`](/system-variables.md#tidb_allow_function_for_expression_index-从-v520-版本开始引入) 所列出的函数已通过表达式索引的测试，可以在生产环境中创建并使用，未来版本会持续增加。对于没有列出的函数，则不建议在生产环境中使用相应的表达式索引。详情请参考[表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引)。
@@ -279,4 +323,4 @@ summary: 了解 TiDB 的功能概览。
 
 [^5]: 从 [TiDB v7.0.0](/releases/release-7.0.0.md) 开始新增的参数 `FIELDS DEFINED NULL BY` 以及新增支持从 S3 和 GCS 导入数据，均为实验特性。从 [TiDB v7.6.0](/releases/release-7.6.0.md) 开始 `LOAD DATA` 的事务行为与 MySQL 的事务行为一致，包括事务内的 `LOAD DATA` 语句本身不再自动提交当前事务，也不会开启新事务，并且事务内的 `LOAD DATA` 语句可以被显式提交或者回滚。此外，`LOAD DATA` 语句会受 TiDB 事务模式设置（乐观/悲观）影响。
 
-[^6]: 从 v7.5.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 的数据同步功能被废弃。从 v8.3.0 开始，TiDB Binlog 被完全废弃。从 v8.4.0 开始，TiDB Binlog 被移除。如需进行增量数据同步，请使用 [TiCDC](/ticdc/ticdc-overview.md)。如需按时间点恢复 (point-in-time recovery, PITR)，请使用 [PITR](/br/br-pitr-guide.md)。在将 TiDB 集群升级到 v8.4.0 或之后版本前，务必先切换至 TiCDC 和 PITR。
+[^6]: 从 v7.5.0 开始，[TiDB Binlog](https://docs-archive.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview/) 的数据同步功能被废弃。从 v8.3.0 开始，TiDB Binlog 被完全废弃。从 v8.4.0 开始，TiDB Binlog 被移除。如需进行增量数据同步，请使用 [TiCDC](/ticdc/ticdc-overview.md)。如需按时间点恢复 (point-in-time recovery, PITR)，请使用 [PITR](/br/br-pitr-guide.md)。在将 TiDB 集群升级到 v8.4.0 或之后版本前，务必先切换至 TiCDC 和 PITR。

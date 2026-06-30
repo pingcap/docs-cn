@@ -42,6 +42,8 @@ PD Recover 的安装包位于 TiDB 离线工具包中。下载方式，请参考
 ./bin/pd-server --force-new-cluster --name=pd-127.0.0.10-2379 --data-dir=/path/to/existing/pd/data --client-urls=http://0.0.0.0:2379 --advertise-client-urls=http://127.0.0.1:2379 --peer-urls=http://0.0.0.0:2380 --advertise-peer-urls=http://127.0.0.1:2380 --config=conf/pd.toml
 ```
 
+该命令会启动一个临时的单节点 PD，用于让下一步的 `pd-recover` 连接并修复元数据。请保持该 PD 进程运行，并在另一个终端窗口中执行下一步。
+
 > **注意：**
 >
 > - 如果未在命令行中指定 `--data-dir`，请确保 `conf/pd.toml` 中的 `data-dir` 已正确指向该存活 PD 节点的原始数据目录，否则后续执行 `pd-recover` 时可能失败。
@@ -63,11 +65,11 @@ PD Recover 的安装包位于 TiDB 离线工具包中。下载方式，请参考
 
 ### 第 4 步：重启这个 PD
 
-当上一步出现 `recovery is successful` 的提示信息后，重启 PD。
+当上一步出现 `recovery is successful` 的提示信息后，停止第 2 步中使用 `--force-new-cluster` 启动的临时 PD 进程，然后使用正常方式重启该 PD，重启时不要再携带 `--force-new-cluster` 参数。
 
 ### 第 5 步：扩容 PD 并启动集群
 
-通过部署工具扩容 PD，并启动集群中的其他组件。至此服务恢复。
+确认第 4 步中的 PD 已正常启动并提供服务后，通过部署工具扩容 PD，并启动集群中的其他组件。至此服务恢复。
 
 ## 方式二：完全重建 PD 集群
 

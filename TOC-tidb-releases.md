@@ -91,12 +91,12 @@
   - [6.1.0](/releases/release-6.1.0.md)
 - v6.0
   - [6.0.0-DMR](/releases/release-6.0.0-dmr.md)
-- v5.4
-  - [5.4.3](/releases/release-5.4.3.md)
-  - [5.4.2](/releases/release-5.4.2.md)
-  - [5.4.1](/releases/release-5.4.1.md)
-  - [5.4.0](/releases/release-5.4.0.md)
 - End of Life 版本
+  - v5.4
+    - [5.4.3](/releases/release-5.4.3.md)
+    - [5.4.2](/releases/release-5.4.2.md)
+    - [5.4.1](/releases/release-5.4.1.md)
+    - [5.4.0](/releases/release-5.4.0.md)
   - v5.3
     - [5.3.4](/releases/release-5.3.4.md)
     - [5.3.3](/releases/release-5.3.3.md)

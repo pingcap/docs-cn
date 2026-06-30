@@ -11,7 +11,7 @@ aliases: ['/zh/tidb/stable/vector-search-overview/','/zh/tidb/dev/vector-search-
 > **注意：**
 >
 > - 向量搜索功能目前为 Beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB 自托管](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB 自托管和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB Self-Managed 和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 ## 概念
 
@@ -47,7 +47,7 @@ TiDB 向量搜索通过使用 [距离函数](/ai/reference/vector-search-functio
 
 ![The Schematic TiDB Vector Search](/media/vector-search/embedding-search.png)
 
-作为一款集成了向量搜索能力的关系型数据库，TiDB 允许你将数据及其对应的向量表示（即向量嵌入）一同存储在同一个数据库中。你可以选择以下任意一种存储方式：
+作为一款集成了向量搜索能力的关系型数据库，TiDB 允许你将数据及其对应的向量表示（向量嵌入）一同存储在同一个数据库中。你可以通过以下任意一种方式存储数据：
 
 - 在同一张表的不同列中存储数据及其对应的向量表示。
 - 在不同的表中分别存储数据及其对应的向量表示。此时，搜索数据时需要使用 `JOIN` 查询将表进行关联。

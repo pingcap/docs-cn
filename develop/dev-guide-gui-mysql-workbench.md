@@ -17,7 +17,7 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 
 > **注意**
 >
-> 本文档适用于 {{{ .starter }}}、{{{ .essential }}}、TiDB Cloud Dedicated 和本地部署的 TiDB。
+> 本文档适用于 {{{ .starter }}}、{{{ .essential }}}、{{{ .premium }}}、TiDB Cloud Dedicated 和本地部署的 TiDB。
 
 ## 前置需求
 
@@ -76,6 +76,42 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 7. 点击 **Test Connection** 以验证与你目标 {{{ .starter }}} 或 Essential 实例的连接。
 
 8. 如果连接测试成功，你可以看到 **Successfully made the MySQL connection** 信息。点击 **OK** 保存连接配置。
+
+</div>
+<div label="{{{ .premium }}}">
+
+1. 在 [**My TiDB**](https://tidbcloud.com/tidbs) 页面中，点击你目标 {{{ .premium }}} 实例的名字，进入实例的 **Overview** 页面。
+
+2. 在左侧导航栏中，点击 **Settings** > **Networking**。
+
+3. 在 **Networking** 页面，点击 **Public Endpoint** 的 **Enable**，然后点击 **Add IP Address**。
+
+    确保你的客户端 IP 地址已添加到访问列表中。
+
+4. 在左侧导航栏中，点击 **Overview** 返回实例概览页面。
+
+5. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
+
+6. 在连接对话框中，从 **Connection Type** 下拉列表中选择 **Public**。
+
+    - 如果提示 Public Endpoint 正在开启，请等待该过程完成。
+    - 如果你尚未设置密码，请在对话框中点击 **Set Root Password**。
+    - 如果需要验证服务器证书或连接失败且需要 CA 证书，请点击 **CA cert** 下载证书。
+    - 除 **Public** 连接类型外，{{{ .premium }}} 还支持 **Private Endpoint** 连接。详情请参阅[通过 AWS PrivateLink 连接到 {{{ .premium }}}](https://docs.pingcap.com/tidbcloud/connect-to-premium-via-aws-private-endpoint/?plan=premium)。
+
+7. 启动 MySQL Workbench，并点击 **MySQL Connections** 标题旁边的 **+**。
+
+8. 在 **Setup New Connection** 对话框中，配置以下连接参数：
+
+    - **Connection Name**：为该连接指定一个有意义的名称。
+    - **Hostname**：输入从 TiDB Cloud 连接对话框中获取的 `HOST` 参数。
+    - **Port**：输入从 TiDB Cloud 连接对话框中获取的 `PORT` 参数。
+    - **Username**：输入从 TiDB Cloud 连接对话框中获取的 `USERNAME` 参数。
+    - **Password**：点击 **Store in Keychain ...** 或 **Store in Vault**，输入 {{{ .premium }}} 实例的密码，然后点击 **OK** 保存密码。
+
+9. 点击 **Test Connection** 以验证与 {{{ .premium }}} 实例的连接。
+
+10. 如果连接测试成功，你可以看到 **Successfully made the MySQL connection** 信息。点击 **OK** 保存连接配置。
 
 </div>
 <div label="TiDB Cloud Dedicated">
