@@ -596,6 +596,19 @@ mysql> SELECT * FROM t1;
 - 默认值：`Apache License 2.0`
 - 这个变量表示 TiDB 服务器的安装许可证。
 
+### `max_allowed_packet` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`67108864`
+- 取值范围：`[1024, 1073741824]`
+- 该变量取值应为 1024 的整数倍。若取值无法被 1024 整除，则会提示 warning 并向下取整。例如设置为 1025 时，则 TiDB 中的实际取值为 1024。
+- 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
+- 在 `SESSION` 作用域下，该变量为只读变量。
+- 该变量的行为与 MySQL 兼容。
+
 ### `max_connections`
 
 - 作用域：GLOBAL
@@ -656,18 +669,17 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 1 row in set (0.00 sec)
 ```
 
-### `max_allowed_packet` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+### `max_user_connections` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
+- 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
-- 默认值：`67108864`
-- 取值范围：`[1024, 1073741824]`
-- 该变量取值应为 1024 的整数倍。若取值无法被 1024 整除，则会提示 warning 并向下取整。例如设置为 1025 时，则 TiDB 中的实际取值为 1024。
-- 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
-- 在 `SESSION` 作用域下，该变量为只读变量。
-- 该变量的行为与 MySQL 兼容。
+- 默认值：`0`
+- 取值范围：`[0, 100000]`
+- 该变量控制 TiDB 中单个用户允许连接至一个 TiDB Server 实例的最大连接数，用于资源控制。
+- 默认值为 `0`，表示不限制用户的连接数。当值大于 `0` 且用户连接数达到此值时，TiDB 服务端将拒绝该用户的连接。
+- 当该变量的取值超过 [`max_connections`](/tidb-configuration-file.md#max_connections) 时，TiDB 会采用 `max_connections` 的值作为单个用户实际可建立的最大连接数。例如，若某用户的 `max_user_connections` 设置为 `2000`，而 `max_connections` 为 `1000`，则该用户实际可连接至一个 TiDB Server 实例的最大连接数为 `1000`。
 
 ### `mpp_exchange_compression_mode` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
