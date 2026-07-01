@@ -130,7 +130,9 @@ REPLACE INTO dummydb.dummytbl (id, int_value, ...) VALUES (123, 888999, ...);  -
 
 ### 多 worker 外键因果关系
 
-当你将 `worker-count` 设置为大于 1 且同步任务包含带有外键的表时，DM 会在任务启动时从下游的 `CREATE TABLE` schema 中读取外键关系。对于每个 DML 操作，DM 会基于这些关系注入因果键，从而确保父表行及其依赖的子表行的操作被分配到同一个 DML worker 队列中。
+如果 `foreign_key_checks=1`、`worker-count > 1`，且同步任务包含带有外键的表，DM 会在任务启动时从下游的 `CREATE TABLE` schema 中读取外键关系。对于每个 DML 操作，DM 会基于这些关系注入因果键，从而确保 DM 将父表行及其依赖的子表行的操作分配到同一个 DML worker 队列中。
+
+从 v8.5.7 开始，在此模式下，DM 支持静态的一对一路由，例如 schema 或表重命名。DM 仍然拒绝将任务中的多个源表映射到同一个目标表的路由规则。
 
 详细限制参见 [DM 兼容性目录](/dm/dm-compatibility-catalog.md#外键-cascade-操作)。
 
