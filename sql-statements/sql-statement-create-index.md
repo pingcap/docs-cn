@@ -440,7 +440,7 @@ CREATE TABLE users (
 
 为常见查询模式创建部分索引：
 
-````sql
+```sql
 CREATE INDEX idx_active_users ON users (name) WHERE status = 'active';
 CREATE INDEX idx_high_score_users ON users (created_at) WHERE score > 1000;
 CREATE INDEX idx_pending_status ON users (status) WHERE status = 'pending';
