@@ -2747,7 +2747,7 @@ Raft Engine 相关的配置项。
 
 ### `bg-cpu-throttle-threshold` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
 
-+ 指定开始对后台任务进行限流时的 CPU 使用率百分比阈值。后台任务是指被标记为后台资源组的任务，包括 `import`、`br`、`ddl` 和 `stats` 任务类型（参见[后台任务类型](/tidb-resource-control-background-tasks.md#background-parameters)）。当 CPU 使用率达到该值时，TiKV 开始减少分配给后台任务的资源预算。随着 CPU 使用率从该阈值升高并接近 [`fg-cpu-throttle-threshold`](#fg-cpu-throttle-threshold-从-v857-和-v900-版本开始引入)，该预算会从配置的上限按线性方式缩减，最低降至 1 个 CPU 核心。
++ 指定开始对后台任务进行限流时的 CPU 使用率百分比阈值。后台任务是指被标记为后台资源组的任务，包括 `import`、`br`、`ddl` 和 `stats` 任务类型（参见[后台任务类型](/tidb-resource-control-background-tasks.md#background-参数说明)）。当 CPU 使用率达到该值时，TiKV 开始减少分配给后台任务的资源预算。随着 CPU 使用率从该阈值升高并接近 [`fg-cpu-throttle-threshold`](#fg-cpu-throttle-threshold-从-v857-和-v900-版本开始引入)，该预算会从配置的上限按线性方式缩减，最低降至 1 个 CPU 核心。
 + 默认值：`60.0`
 + 单位：百分比 (%)
 
