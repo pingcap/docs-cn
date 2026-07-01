@@ -2745,14 +2745,12 @@ Raft Engine 相关的配置项。
     + `conservative`：此策略会优先确保系统资源被充分利用，允许低优先级任务根据需要充分使用系统可用资源，因此对高优先级任务的性能影响更大。
 + 默认值：`moderate`
 
-### `bg-cpu-throttle-threshold` <span class="version-mark">v8.5.7 和 v9.0.0 版本开始引入</span>
 ### `bg-cpu-throttle-threshold` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
 
 + 指定开始对后台任务进行限流时的 CPU 使用率百分比阈值。后台任务是指被标记为后台资源组的任务，包括 `import`、`br`、`ddl` 和 `stats` 任务类型（参见[后台任务类型](/tidb-resource-control-background-tasks.md#background-parameters)）。当 CPU 使用率达到该值时，TiKV 开始减少分配给后台任务的资源预算。随着 CPU 使用率从该阈值升高并接近 [`fg-cpu-throttle-threshold`](#fg-cpu-throttle-threshold-从-v857-和-v900-版本开始引入)，该预算会从配置的上限按线性方式缩减，最低降至 1 个 CPU 核心。
 + 默认值：`60.0`
 + 单位：百分比 (%)
 
-### `fg-cpu-throttle-threshold` <span class="version-mark">v8.5.7 和 v9.0.0 版本开始引入</span>
 ### `fg-cpu-throttle-threshold` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
 
 + 指定完全激活前台流量保护时的 CPU 使用率百分比阈值。当 CPU 使用率达到该值时，后台任务会被完全限流到其最低下限，后台使用率预算也会被限制在该值。该阈值必须大于 [`bg-cpu-throttle-threshold`](#bg-cpu-throttle-threshold-从-v857-和-v900-版本开始引入)。
