@@ -4745,6 +4745,18 @@ SHOW WARNINGS;
 - 范围：`[0, 2147483647]`
 - 控制优化器估算逻辑的更迭。更改该变量值后，优化器的估算逻辑会产生较大的改变。目前该变量的有效值只有 `0`，不建议设为其它值。
 
+### `tidb_paging_size_bytes` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[0, 9223372036854775807]`
+- 单位：字节
+- 这个变量用来设置 coprocessor 协议中单个 paging 响应的字节数上限，用于在按行数分页（[`tidb_max_paging_size`](#tidb_max_paging_size-从-v630-版本开始引入)）之外，额外提供按字节分页的能力。默认值为 `0`，表示关闭按字节分页。该功能仅在开启[资源管控](/tidb-resource-control-ru-groups.md)时生效，供 PD 资源管控做 RU 预扣费使用。
+- 该变量是 TiDB 内部使用的变量，**不推荐**修改该变量的值。
+
 ### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
 
 > **警告：**
