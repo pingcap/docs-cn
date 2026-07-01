@@ -425,8 +425,10 @@ CREATE TABLE t2 (
 
 以下示例演示如何有效地使用部分索引：
 
+
+创建包含用户数据的表：
+
 ```sql
--- 创建包含用户数据的表
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
@@ -434,8 +436,11 @@ CREATE TABLE users (
     created_at DATETIME,
     score INT
 );
+```
 
--- 为常见查询模式创建部分索引
+为常见查询模式创建部分索引：
+
+````sql
 CREATE INDEX idx_active_users ON users (name) WHERE status = 'active';
 CREATE INDEX idx_high_score_users ON users (created_at) WHERE score > 1000;
 CREATE INDEX idx_pending_status ON users (status) WHERE status = 'pending';
@@ -488,7 +493,7 @@ mysql> EXPLAIN SELECT * FROM users WHERE status = 'pending';
 3 rows in set (0.00 sec)
 ```
 
-如果查询谓词与部分索引定义不匹配，即使使用 hint，TiDB 也不会选择该部分索引。例如，以下语句无法使用部分索引 `idx_high_score_users`，因为查询谓词 `score > 100` 与部分索引定义 `score > 1000` 不匹配：
+如果查询谓词不满足部分索引定义的条件，即使使用 hint，TiDB 也不会选择该部分索引。例如，以下语句无法使用部分索引 `idx_high_score_users`，因为查询谓词 `score > 100` 不满足部分索引定义 `score > 1000`：
 
 ```sql
 mysql> EXPLAIN SELECT * FROM users USE INDEX(idx_high_score_users) WHERE score > 100 ORDER BY created_at;
@@ -505,7 +510,7 @@ mysql> EXPLAIN SELECT * FROM users USE INDEX(idx_high_score_users) WHERE score >
 ### 限制
 
 - 部分索引的 `WHERE` 子句支持基本比较运算符（`=`、`!=`、`<`、`<=`、`>`、`>=`）、`IS NULL`、`IS NOT NULL` 和具有常量值的 `IN` 谓词。
-- 列和常量值必须具有相同的数据类型。
+- 谓词中的列和常量值必须具有相同的数据类型。
 - 谓词只能引用同一表中的列。
 - 不能在表达式索引上创建部分索引。
 
