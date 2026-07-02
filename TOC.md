@@ -547,7 +547,7 @@
       - [完整配置文件](/tidb-lightning/tidb-lightning-configuration.md)
       - [命令行参数](/tidb-lightning/tidb-lightning-command-line-full.md)
       - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
-      - [Web 接口](/tidb-lightning/tidb-lightning-web-interface.md)
+      - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
       - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
       - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   - [Dumpling](/dumpling-overview.md)
