@@ -1,17 +1,17 @@
 ---
-title: LATERAL 派生表
-summary: 了解 TiDB 中 LATERAL 派生表的语法和当前限制。
+title: 横向派生表
+summary: 了解 TiDB 中横向派生表 (`LATERAL` Derived Table) 的语法和当前限制。
 ---
 
-# LATERAL 派生表
+# 横向派生表
 
-**LATERAL 派生表**是 `FROM` 子句中的一种子查询，它可以引用同一 `FROM` 子句中更早出现的表的列。因此，它比标准派生表更强大，因为标准派生表中的子查询不能引用同一 `FROM` 子句中的外部列。
+横向派生表 (`LATERAL` Derived Table) 是 `FROM` 子句中的一种子查询，它可以引用同一个 `FROM` 子句中位于其前面的表中的列。相比而言，标准派生表中的子查询无法引用同一个 `FROM` 子句中其它表中的列，因此，横向派生表更加灵活。
 
-从 v8.5.7 和 v9.0.0 开始，TiDB 按照 MySQL 8.0 的语法（[WL#8652](https://dev.mysql.com/worklog/task/?id=8652)）识别用于派生表的 `LATERAL` 语法。
+从 v8.5.7 和 v9.0.0 开始，TiDB 支持解析 `LATERAL` 派生表语法，语法与 MySQL 8.0 的语法（[WL#8652](https://dev.mysql.com/worklog/task/?id=8652)）一致。
 
-> **Note:**
+> **注意：**
 >
-> 当前，TiDB 支持解析 `LATERAL` 派生表语法，但不支持执行使用该语法的查询。如果你尝试执行此类查询，TiDB 会返回错误。你可以在 issue [#40328](https://github.com/pingcap/tidb/issues/40328) 中跟踪完整执行支持的进展。
+> 目前，TiDB 仅支持解析 `LATERAL` 派生表语法，尚不支持执行使用该语法的查询。如果你尝试执行此类查询，TiDB 将返回错误。你可以在 issue [#40328](https://github.com/pingcap/tidb/issues/40328) 中了解对该功能的完整执行支持的开发进展。
 
 ## 语法
 
@@ -27,15 +27,15 @@ SELECT ... FROM table_ref [LEFT] JOIN LATERAL (subquery) [AS] alias [(col_list)]
 
 ## 示例
 
-### 逗号连接
+### 使用逗号连接 `LATERAL` 派生表
 
 ```sql
 SELECT * FROM t1, LATERAL (SELECT * FROM t2 WHERE t2.id = t1.id) AS dt;
 ```
 
-在此示例中，子查询引用了前一个表 `t1` 中的列 `t1.id`。普通派生表（不带 `LATERAL`）无法做到这一点。
+在此示例中，`t1` 和 `LATERAL` 派生表在同一个 `FROM` 子句中使用逗号连接。`LATERAL` 派生表中的子查询引用了位于其前面的表 `t1` 中的列 `t1.id`。普通派生表（不带 `LATERAL`）不支持此功能。
 
-### 带派生列列表的 LEFT JOIN
+### 在 `LEFT JOIN` 中使用 `LATERAL` 派生表（带派生列列表）
 
 ```sql
 SELECT t1.id, dt.val
@@ -44,23 +44,23 @@ LEFT JOIN LATERAL (SELECT t2.val FROM t2 WHERE t2.id = t1.id LIMIT 1) AS dt(val)
 ON TRUE;
 ```
 
-派生列列表 `(val)` 会重命名子查询返回的列。
+在此示例中，`LATERAL` 派生表作为 `LEFT JOIN` 的右表，可以引用左表 `t1` 中的列 `t1.id`。派生列列表 `(val)` 会将子查询返回的列重命名为 `val`。
 
 ## 与标准派生表的比较
 
-| 功能 | 标准派生表 | LATERAL 派生表 |
+| 功能 | 标准派生表 | 横向派生表 |
 |---|---|---|
-| 是否可以引用外部 `FROM` 列 | 否 | 是 |
+| 能否引用 `FROM` 子句中位于其前面的表中的列 | 否 | 是 |
 | 是否必须指定别名 | 是 | 是 |
-| 派生列列表 | 支持 | 支持 |
+| 是否支持派生列列表 | 支持 | 支持 |
 
 ## MySQL 兼容性
 
-TiDB 的 LATERAL 派生表语法在语法级别上与 MySQL 8.0 兼容。
+TiDB 的 `LATERAL` 派生表语法与 MySQL 8.0 语法兼容。
 
 ## 另请参阅
 
-- [Subquery Related Optimizations](/subquery-optimization.md)
-- [Decorrelation of Correlated Subquery](/correlated-subquery-optimization.md)
-- [Explain Statements That Use Subqueries](/explain-subqueries.md)
-- [MySQL Compatibility](/mysql-compatibility.md)
+- [子查询相关的优化](/subquery-optimization.md)
+- [关联子查询去关联](/correlated-subquery-optimization.md)
+- [用 EXPLAIN 查看子查询的执行计划](/explain-subqueries.md)
+- [MySQL 兼容性](/mysql-compatibility.md)

@@ -269,7 +269,7 @@
         - [子查询相关的优化](/subquery-optimization.md)
         - [列裁剪](/column-pruning.md)
         - [关联子查询去关联](/correlated-subquery-optimization.md)
-        - [LATERAL 派生表](/lateral-derived-tables.md)
+        - [横向派生表](/lateral-derived-tables.md)
         - [Max/Min 消除](/max-min-eliminate.md)
         - [谓词下推](/predicate-push-down.md)
         - [分区裁剪](/partition-pruning.md)
