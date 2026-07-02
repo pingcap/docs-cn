@@ -650,7 +650,7 @@ hot history 1629294000000 1631980800000 hot_region_type read region_id 1,2,3 sto
 }
 ```
 
-从 v8.5.7 和 v9.0.0 开始，`hot read` 和 `hot history` 命令包含 `flow_cpu`，`hot store` 命令包含 `cpu-read-rate`。这些字段显示用于 CPU 感知型读热点调度的读 CPU 使用量。
+从 v8.5.7 和 v9.0.0 开始，`hot read` 和 `hot history` 命令的输出中会显示 `flow_cpu` 字段，`hot store` 命令的输出中会显示 `cpu-read-rate` 字段。这些字段展示了读 CPU 使用情况，用于基于 CPU 使用情况的读热点调度。
 
 ### `label [store <name> <value>]`
 
