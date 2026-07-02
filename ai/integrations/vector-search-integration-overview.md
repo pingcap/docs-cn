@@ -11,7 +11,7 @@ aliases: ['/zh/tidb/stable/vector-search-integration-overview/','/zh/tidb/dev/ve
 > **注意：**
 >
 > - 向量搜索功能目前处于 beta 阶段，可能会在不事先通知的情况下发生变更。如果你发现 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/tidbcloud/select-cluster-tier#starter) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-dedicated)。对于 TiDB Self-Managed 和 TiDB Cloud Dedicated，TiDB 版本必须为 v8.4.0 或更高版本（推荐使用 v8.5.0 或更高版本）。
+> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB Self-Managed 和 TiDB Cloud Dedicated，TiDB 版本必须为 v8.4.0 或更高版本（推荐使用 v8.5.0 或更高版本）。
 
 ## Auto Embedding {#auto-embedding}
 
