@@ -19,9 +19,9 @@ aliases: ['/zh/tidbcloud/vector-search-hybrid-search/']
 
 ## 前提条件
 
-全文搜索目前仍处于早期阶段，我们正在持续向更多用户开放。目前，全文搜索仅在以下区域的 TiDB Cloud Starter 和 TiDB Cloud Essential 上可用：
+全文搜索目前仍处于早期阶段，我们正在持续向更多用户开放。目前，全文搜索仅在以下区域的 TiDB Cloud Starter 上可用：
 
-- AWS: `Oregon (us-west-2)`、`N. Virginia (us-east-1)`、`Tokyo (ap-northeast-1)`、`Frankfurt (eu-central-1)` 和 `Singapore (ap-southeast-1)`
+- AWS: `Frankfurt (eu-central-1)` 和 `Singapore (ap-southeast-1)`
 
 要完成本教程，请确保你在受支持的区域拥有一个 TiDB Cloud Starter 实例。如果还没有，请参阅[创建 TiDB Cloud Starter 实例](/develop/dev-guide-build-cluster-in-cloud.md)进行创建。
 
@@ -55,7 +55,7 @@ db = TiDBClient.connect(
 
 你可以通过以下方式在 [TiDB Cloud 控制台](https://tidbcloud.com) 获取这些连接参数：
 
-1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，然后点击目标 TiDB Cloud Starter 或 Essential 实例名称，进入其概览页面。
+1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，然后点击目标 TiDB Cloud Starter 实例名称，进入其概览页面。
 
 2. 点击右上角的 **Connect**。此时会弹出连接对话框，显示连接参数。
 
