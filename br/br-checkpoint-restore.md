@@ -63,15 +63,15 @@ br 工具暂停 GC 的原理是通过执行 `SET config tikv gc.ratio-threshold 
 
 > **警告：**
 >
-> 从 v8.5.5 开始，如果你删除了正在恢复的表，之后再从 checkpoint 重试恢复，可能会遇到以下问题（详见 [#68709](https://github.com/pingcap/tidb/issues/68709))：
+> 从 v8.5.5 开始，如果在恢复期间删除正在恢复的表，之后再从 checkpoint 重试恢复，可能会遇到以下问题（详见 [#68709](https://github.com/pingcap/tidb/issues/68709))：
 >
 > - 恢复因 checksum 校验失败而终止。
-> - 数据在恢复完成后一段时间丢失。
+> - 恢复完成一段时间后，已恢复的数据丢失。
 > 
-> 如果确定要放弃当前的恢复结果，在 `DROP` 掉已经恢复的 table 之外，还需要：
+> 如果确定要放弃当前的恢复结果，请先根据恢复类型执行以下操作之一，然后再 `DROP` 已经恢复的表：
 > 
 > - 对于 `restore point`，请执行 [`br abort`](/br/br-pitr-manual.md#中止恢复操作)。
-> - 对于 `restore full`，请手动删除下游集群中的 checkpoint 数据库（形如 `__TiDB_BR_Temporary_Snapshot_Restore_Checkpoint_<restoreID>`，你可以在 `mysql.tidb_restore_registry` 找到 restore 的 ID）。
+> - 对于 `restore full`，请手动删除下游集群中的 checkpoint 数据库。checkpoint 数据库的名称格式为 `__TiDB_BR_Temporary_Snapshot_Restore_Checkpoint_<restoreID>`，其中的 `<restoreID>` 可以在 `mysql.tidb_restore_registry` 中找到。
 
 ### 不建议跨大版本重新恢复
 
