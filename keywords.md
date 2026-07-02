@@ -450,7 +450,6 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - MOD (R)
 - MODE
 - MODIFY
-- MONITOR
 - MONTH
 
 <a id="N" class="letter" href="#N">N</a>
@@ -459,7 +458,6 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - NATIONAL
 - NATURAL (R)
 - NCHAR
-- NDVRATE
 - NEVER
 - NEXT
 - NEXTVAL
@@ -560,7 +558,6 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - RANGE (R)
 - RANK (R-Window)
 - RATE_LIMIT
-- RAW
 - READ (R)
 - REAL (R)
 - REBUILD
@@ -595,7 +592,6 @@ TiDB 从 v7.5.3 和 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/informa
 - RESTORES
 - RESTRICT (R)
 - RESUME
-- RETURNING
 - REUSE
 - REVERSE
 - REVOKE (R)
