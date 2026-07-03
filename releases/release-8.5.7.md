@@ -15,13 +15,13 @@ TiDB 版本：8.5.7
 
 ### 性能
 
-* 支持 CPU 感知的热点 Region 调度，以提升读取负载均衡能力 [#5718](https://github.com/tikv/pd/issues/5718) [#19373](https://github.com/tikv/tikv/issues/19373) @[lhy1024](https://github.com/lhy1024) <!--2382--> <!--tw:qiancai-->
+* 支持基于 TiKV CPU 使用情况的热点 Region 调度，以提升读取负载均衡能力 [#5718](https://github.com/tikv/pd/issues/5718) [#19373](https://github.com/tikv/tikv/issues/19373) @[lhy1024](https://github.com/lhy1024) <!--2382--> <!--tw:qiancai-->
 
-    在此前版本中，热点 Region 调度器主要基于查询速率和字节吞吐量来平衡读取热点。在某些工作负载下，即使 QPS 和字节吞吐量看似均衡，TiKV 的 CPU 使用率仍可能不均匀，例如不同查询的 CPU 开销差异较大，或不同 TiKV 节点的性能特征不同。
+    在之前的版本中，热点 Region 调度器主要基于查询速率和字节吞吐量来平衡读取热点。在某些工作负载下，即使 QPS 和字节吞吐量看似均衡，TiKV 的 CPU 使用量仍可能不均匀，例如不同查询的 CPU 开销差异较大，或不同 TiKV 节点的性能特征不同。
 
-    从 v8.5.7 开始，TiKV 会在 store heartbeat 中上报每个 Region 的读取 CPU 使用量，PD 可以将 CPU 使用量作为读取热点 Region 调度的一个维度。借助这一机制，PD 能更准确地识别基于 CPU 的读取热点，并在各个 TiKV store 之间进行均衡。
+    从 v8.5.7 起，TiKV 会在 store heartbeat 中上报热点 Region 的读取 CPU 使用量，PD 可以将 CPU 使用量作为读取热点 Region 调度的一个维度。借助这一机制，PD 能更准确地识别基于 CPU 的读取热点，并在各个 TiKV store 之间进行均衡。
 
-    该特性还新增了与 CPU 相关的热点统计信息和调度器控制项，包括 [hot store statistics](https://docs.pingcap.com/zh/tidb/v8.5/pd-control#hot-read--write--store--history-start_time-end_time-key-value) 中的 `cpu-read-rate` 字段，以及 [调度器配置 `min-hot-cpu-rate` 和 `cpu-rate-rank-step-ratio`](https://docs.pingcap.com/zh/tidb/v8.5/pd-control#scheduler-config-balance-hot-region-scheduler)。
+    此外，PD 新增了与 CPU 相关的热点统计信息和调度器控制项，包括 [hot store statistics](https://docs.pingcap.com/zh/tidb/v8.5/pd-control#hot-read--write--store--history-start_time-end_time-key-value) 中的 `cpu-read-rate` 字段，以及 [`min-hot-cpu-rate` 和 `cpu-rate-rank-step-ratio`](https://docs.pingcap.com/zh/tidb/v8.5/pd-control#scheduler-config-balance-hot-region-scheduler) 调度器配置。
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/troubleshoot-hot-spot-issues#scatter-read-hotspots)。
 
@@ -35,23 +35,23 @@ TiDB 版本：8.5.7
 
 ### SQL 功能
 
-* 支持部分索引，以减少索引存储和 DML 维护开销 [#62444](https://github.com/pingcap/tidb/issues/62444) @[YangKeao](https://github.com/YangKeao) @[winoros](https://github.com/winoros) @[wjhuang2016](https://github.com/wjhuang2016) <!--21903--> <!--2270--> <!--tw:qiancai-->
+* 支持部分索引，以降低索引存储成本，减少 DML 维护开销 [#62444](https://github.com/pingcap/tidb/issues/62444) @[YangKeao](https://github.com/YangKeao) @[winoros](https://github.com/winoros) @[wjhuang2016](https://github.com/wjhuang2016) <!--21903--> <!--2270--> <!--tw:qiancai-->
 
-    从 v8.5.7 开始，TiDB 支持部分索引。部分索引只会为满足索引 `WHERE` 子句中谓词条件的行创建索引。你可以通过 `CREATE INDEX ... WHERE ...`、`ALTER TABLE ... ADD INDEX ... WHERE ...`，或在 `CREATE TABLE` 中定义索引的方式创建部分索引。
+    从 v8.5.7 起，TiDB 支持部分索引。部分索引仅为满足索引 `WHERE` 子句中谓词条件的行创建索引项。你可以通过 `CREATE INDEX ... WHERE ...`、`ALTER TABLE ... ADD INDEX ... WHERE ...`，或在 `CREATE TABLE` 中定义索引的方式创建部分索引。
 
-    当你经常查询某个选择性子集的行，或需要仅在特定条件下生效的唯一约束时，部分索引会很有用。由于不满足谓词条件的行不会写入索引，部分索引有助于减少索引存储，并降低 `INSERT`、`UPDATE` 和 `DELETE` 操作期间的索引维护开销。
+    当你经常需要查询符合特定条件的部分行时，或者需要仅在特定条件下生效的唯一约束时，部分索引会非常有用。由于不满足谓词条件的行不会被写入索引，部分索引有助于节省索引存储空间，同时降低 `INSERT`、`UPDATE` 和 `DELETE` 操作期间的索引维护成本。
 
-    为了更有效地使用部分索引，建议定义与常见查询过滤条件相匹配的谓词。只有当查询谓词与部分索引谓词匹配或蕴含该谓词时，TiDB 才会选择该部分索引。目前，部分索引谓词支持基本比较运算符（`=`、`!=`、`<`、`<=`、`>`、`>=`）、`IS NULL`、`IS NOT NULL`，以及带常量值的 `IN` 谓词。
+    为了更有效地使用部分索引，在定义部分索引时，建议使用与你常用查询的过滤条件相匹配的谓词。只有当查询中国的谓词与部分索引的谓词匹配或满足部分索引的谓词条件时，TiDB 才会选择使用部分索引。目前，部分索引谓词支持基本比较运算符（`=`、`!=`、`<`、`<=`、`>`、`>=`）、`IS NULL`、`IS NOT NULL`，以及带常量值的 `IN` 谓词。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-create-index/#partial-indexes)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-create-index/#部分索引-从-v857-开始引入)。
 
 ### 可观测性
 
-* TiDB Dashboard 的 Top SQL 页面现已支持采集和展示 TiKV 网络流量与逻辑 I/O 指标 [#62916](https://github.com/pingcap/tidb/issues/62916) @[yibin87](https://github.com/yibin87) <!--tw:qiancai-->
+* TiDB Dashboard 的 Top SQL 页面支持收集和展示 TiKV 网络流量和逻辑 I/O 指标 [#62916](https://github.com/pingcap/tidb/issues/62916) @[yibin87](https://github.com/yibin87) <!--tw:qiancai-->
 
-    在此前版本中，TiDB Dashboard 仅基于 CPU 相关指标识别 Top SQL 查询，因此在复杂场景下较难定位与网络或存储访问相关的性能瓶颈。
+    在之前的版本中，TiDB Dashboard 在识别 Top SQL 时仅基于 CPU 相关指标，在复杂场景下难以从网络或存储访问角度定位性能瓶颈。
 
-    从 v8.5.7 开始，你可以在 Top SQL 设置中启用 **TiKV Network IO collection (multi-dimensional)**，查看 TiKV 节点上的 `Network Bytes` 和 `Logical IO Bytes` 等指标。你还可以从 `By Query`、`By Table`、`By DB` 和 `By Region` 等多个维度分析这些指标，从而更全面地识别资源热点。
+    从 v8.5.7 起，你可以在 Top SQL 设置中打开 **TiKV 网络 IO 采集（多维度）**开关，以查看 TiKV 节点的 `Network Bytes` 和 `Logical IO Bytes` 等指标，并可以按 `By Query`、`By Table`、`By DB` 或 `By Region` 维度进行聚合分析，从而更全面地定位资源消耗热点。
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/top-sql)。
 
@@ -67,18 +67,19 @@ TiDB 版本：8.5.7
 
 ## 兼容性变更
 
-对于新部署的 TiDB v8.5.6 集群（即不是从早于 v8.5.4 的版本升级而来的集群），你可以平滑升级到 v8.5.7。v8.5.7 的大多数变更对常规升级是安全的，但本版本仍包含若干行为变更、MySQL 兼容性变更、系统变量变更、配置参数变更以及废弃功能。在升级前，请务必仔细阅读本节内容。
+对于新部署的 TiDB v8.5.6 集群（即不是从早于 v8.5.5 的版本升级而来的集群），你可以平滑升级到 v8.5.7。v8.5.7 的大多数变更对常规升级是安全的，但本版本仍包含若干行为变更、MySQL 兼容性变更、系统变量变更、配置参数变更以及废弃功能。在升级前，请务必仔细阅读本节内容。
 
 ### 行为变更
 
-* TiKV 现在默认会拒绝已确认无效的 `max_ts` 更新请求，而不再仅记录日志。此变更通过阻止无效时间戳更新且避免 TiKV panic，提升了安全性。如需保留此前仅记录日志的行为，请将 `storage.max-ts.action-on-invalid-update` 设置为 `log` [#19755](https://github.com/tikv/tikv/issues/19755) @[ekexium](https://github.com/ekexium) <!-- component: tikv -->
-* 从 v8.5.7 开始，TiDB 默认启用[优化器修复控制项 `52869`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-fix-controls#52869-从-v810-版本开始引入)。该变更允许优化器在存在备选索引时自动考虑 `IndexMerge`，因此在某些情况下可能改变查询执行计划 [#26764](https://github.com/pingcap/tidb/issues/26764) @[time-and-fate](https://github.com/time-and-fate) <!--pr:<https://github.com/pingcap/docs-cn/pull/21744>;tw:qiancai-->
+* TiKV 现在默认会拒绝已确认无效的 `max_ts` 更新请求，而不再仅记录日志。此变更可以阻止无效时间戳更新，同时避免 TiKV panic，提升了安全性。如需保留此前仅记录日志的行为，请将 [`storage.max-ts.action-on-invalid-update`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#action-on-invalid-update-从-v857-版本开始引入) 设置为 `log` [#19755](https://github.com/tikv/tikv/issues/19755) @[ekexium](https://github.com/ekexium) <!-- component: tikv -->
+* 从 v8.5.7 起，TiDB 默认启用[优化器修复控制项 `52869`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-fix-controls#52869-从-v810-版本开始引入)。该变更允许优化器在存在备选索引时自动考虑 `IndexMerge`，因此在某些情况下可能改变查询执行计划 [#26764](https://github.com/pingcap/tidb/issues/26764) @[time-and-fate](https://github.com/time-and-fate) <!--pr:<https://github.com/pingcap/docs-cn/pull/21744>;tw:qiancai-->
 
 ### MySQL 兼容性
 
-* 支持解析派生表的 `LATERAL` 语法，以提升与 MySQL 8.0 的兼容性，包括逗号连接、`CROSS JOIN LATERAL` 和 `INNER JOIN LATERAL` 等常见用法 <!--2432--><!--tw:qiancai-->
+* 支持解析横向派生表的 `LATERAL` 语法，以提升与 MySQL 8.0 的兼容性，支持包括用逗号连接、`CROSS JOIN LATERAL` 和 `INNER JOIN LATERAL` 等常见用法 <!--2432--><!--tw:qiancai-->
 
     当前，TiDB 仅支持解析 [`LATERAL` 派生表语法](https://docs.pingcap.com/zh/tidb/v8.5/lateral-derived-tables)，暂不支持执行使用该语法的查询。如果你尝试执行此类查询，TiDB 会返回错误。你可以在 issue [#40328](https://github.com/pingcap/tidb/issues/40328) 中跟踪该功能完整执行支持的进展。
+
 * 支持在 `CREATE USER` 和 `ALTER USER` 中使用 `WITH MAX_USER_CONNECTIONS N`，以提升与 MySQL 的兼容性。TiDB 同时在 `mysql.user` 中新增 `max_user_connections` 列，并允许你使用 `max_user_connections` 系统变量控制单个用户在 TiDB server 实例上可建立的最大连接数。 <!--pr:<https://github.com/pingcap/docs-cn/pull/19898>;tw:lilin90-->
 
 ### 系统变量
@@ -86,13 +87,13 @@ TiDB 版本：8.5.7
 | 变量名 | 修改类型 | 描述 |
 |--------|------------------------------|------|
 | [`tidb_enable_telemetry`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_telemetry-从-v402-版本开始引入) | 废弃 | 从 v8.5.7 开始，TiDB 废弃该系统变量及 telemetry 功能。该变量仅为兼容性而保留，不再推荐使用。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21750>;tw:lilin90--> |
-| [`tidb_auto_analyze_concurrency`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_auto_analyze_concurrency-从-v840-版本开始引入) | 修改 | 默认值从 `1` 修改为 `3`，以加速统计信息收集任务并提升自动分析效率。如果你的集群是从更早版本升级而来，升级后该变量值保持不变。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21731>;tw:qiancai--> |
-| [`tidb_auto_build_stats_concurrency`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_auto_build_stats_concurrency-从-v650-版本开始引入) | 修改 | 默认值从 `1` 修改为 `2`，以提升自动 `ANALYZE` 的默认性能。如果你的集群是从更早版本升级而来，升级后该变量值保持不变。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21731>;tw:qiancai--> |
-| [`tidb_sysproc_scan_concurrency`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_sysproc_scan_concurrency-从-v650-版本开始引入) | 修改 | 默认值从 `1` 修改为 `4`，以加速 TiDB 执行内部 SQL 语句时的扫描操作。如果你的集群是从更早版本升级而来，升级后该变量值保持不变。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21731>;tw:qiancai--> |
+| [`tidb_auto_analyze_concurrency`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_auto_analyze_concurrency-从-v840-版本开始引入) | 修改 | 默认值从 `1` 修改为 `3`，加快统计信息收集任务的执行速度并提升自动 ANALYZE 效率。如果你的集群是从之前的版本升级而来的，升级后该变量的值保持不变。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21731>;tw:qiancai--> |
+| [`tidb_auto_build_stats_concurrency`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_auto_build_stats_concurrency-从-v650-版本开始引入) | 修改 | 默认值从 `1` 修改为 `2`，以提升自动 `ANALYZE` 的默认性能。如果你的集群是从之前的版本升级而来的，升级后该变量的值保持不变。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21731>;tw:qiancai--> |
+| [`tidb_sysproc_scan_concurrency`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_sysproc_scan_concurrency-从-v650-版本开始引入) | 修改 | 默认值从 `1` 修改为 `4`，以加快 TiDB 执行内部 SQL 语句时扫描操作的速度。如果你的集群是从之前的版本升级而来的，升级后该变量的值保持不变。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21731>;tw:qiancai--> |
 | [`max_user_connections`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#max_user_connections-从-v857-版本开始引入) | 新增 | 用于控制单个用户在 TiDB server 实例上可建立的最大连接数。默认值为 `0`，表示不限制。如果该变量值超过 `max_connections`，TiDB 会使用 `max_connections` 作为实际限制。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21732>;tw:lilin90--> |
 | [`performance_schema_session_connect_attrs_size`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#performance_schema_session_connect_attrs_size-从-v857-版本开始引入) | 新增 | 用于控制每个会话连接属性的总大小上限。默认值为 `4096` 字节。当大小超过该限制时，TiDB 会截断超出的属性，并新增 `_truncated` 来表示被截断的字节数。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21577>;tw:lilin90--> |
 | [`tidb_enable_batch_query_region`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_batch_query_region-从-v857-版本开始引入) | 新增 | 用于控制 TiDB 是否通过 `QueryRegion` gRPC stream 向 PD 批量发起 Region 信息点查请求。默认值为 `OFF`。启用后，在某些场景下可以减少发送到 PD 的请求数量，并降低 PD leader 的 CPU 开销。 <!--pr:<https://github.com/pingcap/docs-cn/pull/20040>;tw:qiancai--> |
-| [`tidb_enable_strict_not_null_check`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_strict_not_null_check-从-v857-版本开始引入) | 新增 | 用于控制当 `INSERT` 语句显式向 `NOT NULL` 列写入 `NULL` 值时，TiDB 是否执行严格校验。默认值为 `ON`。如果你的应用依赖此前写入隐式默认值的宽松行为，可以暂时将该变量设置为 `OFF`，以降低升级兼容性风险。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21600>;tw:qiancai--> |
+| [`tidb_enable_strict_not_null_check`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_strict_not_null_check-从-v857-版本开始引入) | 新增 | 用于控制当 `INSERT` 语句显式向 `NOT NULL` 列写入 `NULL` 值时，TiDB 是否执行严格校验。默认值为 `ON`。如果你的应用依赖此前写入隐式默认值的宽松行为，可以临时将该变量设置为 `OFF`，以降低升级兼容性风险。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21600>;tw:qiancai--> |
 
 ### 配置参数
 
