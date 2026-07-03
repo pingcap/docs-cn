@@ -72,39 +72,39 @@ TiDB 版本：8.5.7
 ### 行为变更
 
 * TiKV 现在默认会拒绝已确认无效的 `max_ts` 更新请求，而不再仅记录日志。此变更通过阻止无效时间戳更新且避免 TiKV panic，提升了安全性。如需保留此前仅记录日志的行为，请将 `storage.max-ts.action-on-invalid-update` 设置为 `log` [#19755](https://github.com/tikv/tikv/issues/19755) @[ekexium](https://github.com/ekexium) <!-- component: tikv -->
-* 从 v8.5.7 开始，TiDB 默认启用[优化器修复控制项 `52869`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-fix-controls#52869-从-v810-版本开始引入)。该变更允许优化器在存在备选索引时自动考虑 `IndexMerge`，因此在某些情况下可能改变查询执行计划 [#26764](https://github.com/pingcap/tidb/issues/26764) @[time-and-fate](https://github.com/time-and-fate) <!--pr:<https://github.com/pingcap/docs/pull/23142>;tw:qiancai-->
+* 从 v8.5.7 开始，TiDB 默认启用[优化器修复控制项 `52869`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-fix-controls#52869-从-v810-版本开始引入)。该变更允许优化器在存在备选索引时自动考虑 `IndexMerge`，因此在某些情况下可能改变查询执行计划 [#26764](https://github.com/pingcap/tidb/issues/26764) @[time-and-fate](https://github.com/time-and-fate) <!--pr:<https://github.com/pingcap/docs-cn/pull/21744>;tw:qiancai-->
 
 ### MySQL 兼容性
 
 * 支持解析派生表的 `LATERAL` 语法，以提升与 MySQL 8.0 的兼容性，包括逗号连接、`CROSS JOIN LATERAL` 和 `INNER JOIN LATERAL` 等常见用法 <!--2432--><!--tw:qiancai-->
 
     当前，TiDB 仅支持解析 [`LATERAL` 派生表语法](https://docs.pingcap.com/zh/tidb/v8.5/lateral-derived-tables)，暂不支持执行使用该语法的查询。如果你尝试执行此类查询，TiDB 会返回错误。你可以在 issue [#40328](https://github.com/pingcap/tidb/issues/40328) 中跟踪该功能完整执行支持的进展。
-* 支持在 `CREATE USER` 和 `ALTER USER` 中使用 `WITH MAX_USER_CONNECTIONS N`，以提升与 MySQL 的兼容性。TiDB 同时在 `mysql.user` 中新增 `max_user_connections` 列，并允许你使用 `max_user_connections` 系统变量控制单个用户在 TiDB server 实例上可建立的最大连接数。 <!--pr:<https://github.com/pingcap/docs/pull/23125>;tw:lilin90-->
+* 支持在 `CREATE USER` 和 `ALTER USER` 中使用 `WITH MAX_USER_CONNECTIONS N`，以提升与 MySQL 的兼容性。TiDB 同时在 `mysql.user` 中新增 `max_user_connections` 列，并允许你使用 `max_user_connections` 系统变量控制单个用户在 TiDB server 实例上可建立的最大连接数。 <!--pr:<https://github.com/pingcap/docs-cn/pull/19898>;tw:lilin90-->
 
 ### 系统变量
 
 | 变量名 | 修改类型 | 描述 |
 |--------|------------------------------|------|
-| [`tidb_enable_telemetry`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_telemetry-从-v402-版本开始引入) | 废弃 | 从 v8.5.7 开始，TiDB 废弃该系统变量及 telemetry 功能。该变量仅为兼容性而保留，不再推荐使用。 <!--pr:<https://github.com/pingcap/docs/pull/23171>;tw:lilin90--> |
-| [`tidb_auto_analyze_concurrency`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_auto_analyze_concurrency-从-v840-版本开始引入) | 修改 | 默认值从 `1` 修改为 `3`，以加速统计信息收集任务并提升自动分析效率。如果你的集群是从更早版本升级而来，升级后该变量值保持不变。 <!--pr:<https://github.com/pingcap/docs/pull/23115>;tw:qiancai--> |
-| [`tidb_auto_build_stats_concurrency`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_auto_build_stats_concurrency-从-v650-版本开始引入) | 修改 | 默认值从 `1` 修改为 `2`，以提升自动 `ANALYZE` 的默认性能。如果你的集群是从更早版本升级而来，升级后该变量值保持不变。 <!--pr:<https://github.com/pingcap/docs/pull/23115>;tw:qiancai--> |
-| [`tidb_sysproc_scan_concurrency`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_sysproc_scan_concurrency-从-v650-版本开始引入) | 修改 | 默认值从 `1` 修改为 `4`，以加速 TiDB 执行内部 SQL 语句时的扫描操作。如果你的集群是从更早版本升级而来，升级后该变量值保持不变。 <!--pr:<https://github.com/pingcap/docs/pull/23115>;tw:qiancai--> |
-| [`max_user_connections`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#max_user_connections-从-v857-版本开始引入) | 新增 | 用于控制单个用户在 TiDB server 实例上可建立的最大连接数。默认值为 `0`，表示不限制。如果该变量值超过 `max_connections`，TiDB 会使用 `max_connections` 作为实际限制。 <!--pr:<
-| [`performance_schema_session_connect_attrs_size`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#performance_schema_session_connect_attrs_size-从-v857-版本开始引入) | 新增 | 用于控制每个会话连接属性的总大小上限。默认值为 `4096` 字节。当大小超过该限制时，TiDB 会截断超出的属性，并新增 `_truncated` 来表示被截断的字节数。 <!--pr:<https://github.com/pingcap/docs/pull/22775>;tw:lilin90--> |
-| [`tidb_enable_batch_query_region`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_batch_query_region-从-v857-版本开始引入) | 新增 | 用于控制 TiDB 是否通过 `QueryRegion` gRPC stream 向 PD 批量发起 Region 信息点查请求。默认值为 `OFF`。启用后，在某些场景下可以减少发送到 PD 的请求数量，并降低 PD leader 的 CPU 开销。 <!--pr:<https://github.com/pingcap/docs/pull/23037>;tw:qiancai--> |
-| [`tidb_enable_strict_not_null_check`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_strict_not_null_check-从-v857-版本开始引入) | 新增 | 用于控制当 `INSERT` 语句显式向 `NOT NULL` 列写入 `NULL` 值时，TiDB 是否执行严格校验。默认值为 `ON`。如果你的应用依赖此前写入隐式默认值的宽松行为，可以暂时将该变量设置为 `OFF`，以降低升级兼容性风险。 <!--pr:<https://github.com/pingcap/docs/pull/22859>;tw:qiancai--> |
+| [`tidb_enable_telemetry`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_telemetry-从-v402-版本开始引入) | 废弃 | 从 v8.5.7 开始，TiDB 废弃该系统变量及 telemetry 功能。该变量仅为兼容性而保留，不再推荐使用。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21750>;tw:lilin90--> |
+| [`tidb_auto_analyze_concurrency`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_auto_analyze_concurrency-从-v840-版本开始引入) | 修改 | 默认值从 `1` 修改为 `3`，以加速统计信息收集任务并提升自动分析效率。如果你的集群是从更早版本升级而来，升级后该变量值保持不变。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21731>;tw:qiancai--> |
+| [`tidb_auto_build_stats_concurrency`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_auto_build_stats_concurrency-从-v650-版本开始引入) | 修改 | 默认值从 `1` 修改为 `2`，以提升自动 `ANALYZE` 的默认性能。如果你的集群是从更早版本升级而来，升级后该变量值保持不变。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21731>;tw:qiancai--> |
+| [`tidb_sysproc_scan_concurrency`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_sysproc_scan_concurrency-从-v650-版本开始引入) | 修改 | 默认值从 `1` 修改为 `4`，以加速 TiDB 执行内部 SQL 语句时的扫描操作。如果你的集群是从更早版本升级而来，升级后该变量值保持不变。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21731>;tw:qiancai--> |
+| [`max_user_connections`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#max_user_connections-从-v857-版本开始引入) | 新增 | 用于控制单个用户在 TiDB server 实例上可建立的最大连接数。默认值为 `0`，表示不限制。如果该变量值超过 `max_connections`，TiDB 会使用 `max_connections` 作为实际限制。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21732>;tw:lilin90--> |
+| [`performance_schema_session_connect_attrs_size`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#performance_schema_session_connect_attrs_size-从-v857-版本开始引入) | 新增 | 用于控制每个会话连接属性的总大小上限。默认值为 `4096` 字节。当大小超过该限制时，TiDB 会截断超出的属性，并新增 `_truncated` 来表示被截断的字节数。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21577>;tw:lilin90--> |
+| [`tidb_enable_batch_query_region`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_batch_query_region-从-v857-版本开始引入) | 新增 | 用于控制 TiDB 是否通过 `QueryRegion` gRPC stream 向 PD 批量发起 Region 信息点查请求。默认值为 `OFF`。启用后，在某些场景下可以减少发送到 PD 的请求数量，并降低 PD leader 的 CPU 开销。 <!--pr:<https://github.com/pingcap/docs-cn/pull/20040>;tw:qiancai--> |
+| [`tidb_enable_strict_not_null_check`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_strict_not_null_check-从-v857-版本开始引入) | 新增 | 用于控制当 `INSERT` 语句显式向 `NOT NULL` 列写入 `NULL` 值时，TiDB 是否执行严格校验。默认值为 `ON`。如果你的应用依赖此前写入隐式默认值的宽松行为，可以暂时将该变量设置为 `OFF`，以降低升级兼容性风险。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21600>;tw:qiancai--> |
 
 ### 配置参数
 
 | 配置文件或组件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| TiDB | [`enable-telemetry`](https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) | 废弃 | 从 v8.5.7 开始，TiDB 废弃该配置项及 telemetry 功能。该配置项仅为兼容性而保留，不再推荐使用。 <!--pr:<https://github.com/pingcap/docs/pull/23171>;tw:lilin90--> |
-| TiKV | [`backup.gcp-v2-enable`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#backupgcp-v2-enable-从-v857-版本开始引入) | 新增 | 用于控制 TiKV 在 GCS 全量备份与恢复中是否使用 `gcp_v2` 外部存储后端。默认值为 `true`。启用时，TiKV 使用 `gcp_v2`；关闭时，TiKV 使用旧版 GCS 实现。 <!--pr:<https://github.com/pingcap/docs/pull/23133>;tw:lilin90--> |
-| TiKV | [`log-backup.gcp-v2-enable`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#log-backupgcp-v2-enable-从-v857-版本开始引入) | 新增 | 用于控制 TiKV 在 GCS 日志备份中是否使用 `gcp_v2` 外部存储后端。默认值为 `true`。启用时，TiKV 使用 `gcp_v2`；关闭时，TiKV 使用旧版 GCS 实现。 <!--pr:<https://github.com/pingcap/docs/pull/23133>;tw:lilin90--> |
-| TiKV | [`resource-metering.enable-network-io-collection`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#resource-meteringenable-network-io-collection-从-v857-版本开始引入) | 新增 | 用于控制 TiKV 除 CPU 数据外，是否还为 Top SQL 采集网络流量和逻辑 I/O 信息。默认值为 `false`。 <!--pr:<https://github.com/pingcap/docs/pull/23062>;tw:qiancai--> |
-| TiKV | [`storage.max-ts.action-on-invalid-update`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#action-on-invalid-update-从-v857-版本开始引入) | 新增 | 用于决定 TiKV 如何处理无效的 `max-ts` 更新请求。默认值为 `"error"`，表示当 TiKV 检测到无效的 `max-ts` 更新请求时，会返回错误并停止处理该请求。 <!--pr:<https://github.com/pingcap/docs/pull/23197/files>;tw:qiancai--> |
-| TiKV | [`storage.max-ts.cache-sync-interval`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#cache-sync-interval-从-v857-版本开始引入) | 新增 | 用于控制 TiKV 更新本地 PD TSO 缓存的时间间隔。默认值为 `"15s"`。 <!--pr:<https://github.com/pingcap/docs/pull/23197/files>;tw:qiancai--> |
-| TiKV | [`storage.max-ts.max-drift`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#max-drift-从-v857-版本开始引入) | 新增 | 用于指定读写请求时间戳可超过 TiKV 中缓存的 PD TSO 的最大时间范围。默认值为 `"60s"`。 <!--pr:<https://github.com/pingcap/docs/pull/23197/files>;tw:qiancai--> |
+| TiDB | [`enable-telemetry`](https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) | 废弃 | 从 v8.5.7 开始，TiDB 废弃该配置项及 telemetry 功能。该配置项仅为兼容性而保留，不再推荐使用。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21750>;tw:lilin90--> |
+| TiKV | [`backup.gcp-v2-enable`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#backupgcp-v2-enable-从-v857-版本开始引入) | 新增 | 用于控制 TiKV 在 GCS 全量备份与恢复中是否使用 `gcp_v2` 外部存储后端。默认值为 `true`。启用时，TiKV 使用 `gcp_v2`；关闭时，TiKV 使用旧版 GCS 实现。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21469>;tw:lilin90--> |
+| TiKV | [`log-backup.gcp-v2-enable`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#log-backupgcp-v2-enable-从-v857-版本开始引入) | 新增 | 用于控制 TiKV 在 GCS 日志备份中是否使用 `gcp_v2` 外部存储后端。默认值为 `true`。启用时，TiKV 使用 `gcp_v2`；关闭时，TiKV 使用旧版 GCS 实现。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21469>;tw:lilin90--> |
+| TiKV | [`resource-metering.enable-network-io-collection`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#resource-meteringenable-network-io-collection-从-v857-版本开始引入) | 新增 | 用于控制 TiKV 除 CPU 数据外，是否还为 Top SQL 采集网络流量和逻辑 I/O 信息。默认值为 `false`。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21717>;tw:qiancai--> |
+| TiKV | [`storage.max-ts.action-on-invalid-update`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#action-on-invalid-update-从-v857-版本开始引入) | 新增 | 用于决定 TiKV 如何处理无效的 `max-ts` 更新请求。默认值为 `"error"`，表示当 TiKV 检测到无效的 `max-ts` 更新请求时，会返回错误并停止处理该请求。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21745>;tw:qiancai--> |
+| TiKV | [`storage.max-ts.cache-sync-interval`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#cache-sync-interval-从-v857-版本开始引入) | 新增 | 用于控制 TiKV 更新本地 PD TSO 缓存的时间间隔。默认值为 `"15s"`。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21745>;tw:qiancai--> |
+| TiKV | [`storage.max-ts.max-drift`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#max-drift-从-v857-版本开始引入) | 新增 | 用于指定读写请求时间戳可超过 TiKV 中缓存的 PD TSO 的最大时间范围。默认值为 `"60s"`。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21745>;tw:qiancai--> |
 
 ### 其他
 
@@ -113,7 +113,7 @@ TiDB 版本：8.5.7
 
 ## 废弃功能
 
-* 从 v8.5.7 开始，TiDB 和 TiDB Dashboard 中的 [telemetry](https://docs.pingcap.com/zh/tidb/v8.5/telemetry) 功能已废弃。 <!--pr:<https://github.com/pingcap/docs/pull/23171>;tw:lilin90-->
+* 从 v8.5.7 开始，TiDB 和 TiDB Dashboard 中的 [telemetry](https://docs.pingcap.com/zh/tidb/v8.5/telemetry) 功能已废弃。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21750>;tw:lilin90-->
 
 ## 移除功能
 
