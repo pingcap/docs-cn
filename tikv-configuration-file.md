@@ -2767,13 +2767,13 @@ Raft Engine 相关的配置项。
 
 + 指定当 compaction 压力低于 [`bg-compaction-pressure-threshold`](#bg-compaction-pressure-threshold-从-v857-和-v900-版本开始引入) 时，后台任务允许的最大写 I/O 速率。
 + 默认值：`"100GB"`
-+ 单位：字节每秒
++ 单位：字节/秒
 
 ### `bg-write-io-floor` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
 
-+ 指定即使在最大 compaction 压力下也能保证分配给后台任务的最小写 I/O 速率。该下限可防止后台任务被完全饿死。
++ 指定即使在最大 compaction 压力下也能保证分配给后台任务的最小写 I/O 速率，防止后台任务因写 I/O 不足而完全无法执行。
 + 默认值：`"10MB"`
-+ 单位：字节每秒
++ 单位：字节/秒
 
 ### `enable-fair-scheduling` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
 
@@ -2792,7 +2792,7 @@ Raft Engine 相关的配置项。
 
 ### `historical-usage-window-mins` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
 
-+ 指定 TiKV 用于计算各资源组历史 RU 基线的滑动时间窗口大小（单位：分钟）。较大的窗口可以平滑短期突发流量，而较小的窗口会使基线对近期使用情况更敏感。有效范围：`2-60`。**你必须重启 TiKV 才能使对此配置的更改生效。**
++ 指定 TiKV 用于计算各资源组历史 RU 基线的滑动时间窗口大小（单位：分钟）。较大的窗口可以平滑短期突发流量，而较小的窗口会使基线对近期使用情况更敏感。取值范围：`2-60`。**修改此配置后，需要重启 TiKV 才能生效。**
 + 默认值：`15`
 + 单位：分钟
 
