@@ -650,7 +650,7 @@ I/O rate limiter 相关的配置项。
     + `"panic"`：TiKV 会 panic。如果 TiKV 缓存的 PD TSO 没有及时更新，TiKV 会使用近似方法进行判断，此时被判定为非法的请求不会导致 TiKV panic。
     + `"error"`：TiKV 会返回错误，并终止对该请求的处理。
     + `"log"`：TiKV 会打印错误日志，并继续执行该请求。
-+ 默认值：`"panic"`
++ 默认值：`"panic"`。在 v9.0.0 版本之前，默认值为 `"error"`。
 
 ### `cache-sync-interval` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
 
