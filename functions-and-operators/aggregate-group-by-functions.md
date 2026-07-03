@@ -1,7 +1,7 @@
 ---
 title: GROUP BY 聚合函数
 aliases: ['/docs-cn/dev/functions-and-operators/aggregate-group-by-functions/','/docs-cn/dev/reference/sql/functions-and-operators/aggregate-group-by-functions/']
-summary: TiDB支持的聚合函数包括 COUNT、COUNT(DISTINCT)、SUM、AVG、MAX、MIN、GROUP_CONCAT、VARIANCE、VAR_POP、STD、STDDEV、VAR_SAMP、STDDEV_SAMP 和 JSON_OBJECTAGG。除了 GROUP_CONCAT 和 APPROX_PERCENTILE 外，这些聚合函数可以作为窗口函数使用。另外，TiDB 的 GROUP BY 子句支持 WITH ROLLUP 修饰符，还支持 SQL 模式 ONLY_FULL_GROUP_BY。与 MySQL 的区别在于 TiDB 对标准 SQL 有一些扩展，允许在 HAVING 子句中使用别名和非列表达式。
+summary: TiDB 支持的聚合函数包括 COUNT、COUNT(DISTINCT)、SUM、SUM_INT、AVG、MAX、MIN、GROUP_CONCAT、VARIANCE、VAR_POP、STD、STDDEV、VAR_SAMP、STDDEV_SAMP 和 JSON_OBJECTAGG。除了 GROUP_CONCAT、APPROX_PERCENTILE 和 APPROX_COUNT_DISTINCT 外，这些聚合函数可以作为窗口函数使用。另外，TiDB 的 GROUP BY 子句支持 WITH ROLLUP 修饰符，还支持 SQL 模式 ONLY_FULL_GROUP_BY。与 MySQL 的区别在于 TiDB 对标准 SQL 有一些扩展，允许在 HAVING 子句中使用别名和非列表达式。
 ---
 
 # GROUP BY 聚合函数
@@ -34,6 +34,53 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
 > - 如果在不包含 `GROUP BY` 子句的语句中使用聚合函数，则相当于对所有行进行分组。
 
 另外，TiDB 还支持以下聚合函数：
+
++ `SUM_INT(expr)`
+
+    该函数用于对整数表达式 `expr` 求和，功能类似于 `SUM(expr)`，但仅接受整数类型参数，包括 `TINYINT`、`SMALLINT`、`MEDIUMINT`、`INT` 和 `BIGINT`。对于有符号整数参数，返回类型为 `BIGINT`；对于无符号整数参数，返回类型为 `BIGINT UNSIGNED`。如果参与计算的非 `NULL` 值之和超出返回类型范围，TiDB 返回整数溢出错误。
+
+    `SUM_INT()` 默认忽略 `NULL` 值。如果没有非 `NULL` 值，返回 `NULL`。`SUM_INT()` 支持 `DISTINCT`，并可作为[窗口函数](/functions-and-operators/window-functions.md)使用。
+
+    以下是一个使用该函数的示例：
+
+    ```sql
+    DROP TABLE IF EXISTS t;
+    CREATE TABLE t(id INT PRIMARY KEY, a BIGINT, b BIGINT UNSIGNED);
+    INSERT INTO t VALUES(1, 1, 1), (2, 1, 1), (3, 2, 2), (4, NULL, NULL);
+    ```
+
+    ```sql
+    SELECT SUM_INT(a), SUM_INT(DISTINCT a), SUM_INT(b) FROM t;
+    ```
+
+    ```sql
+    +------------+---------------------+------------+
+    | SUM_INT(a) | SUM_INT(DISTINCT a) | SUM_INT(b) |
+    +------------+---------------------+------------+
+    |          4 |                   3 |          4 |
+    +------------+---------------------+------------+
+    1 row in set (0.00 sec)
+    ```
+
+    以下示例将 `SUM_INT()` 作为窗口函数使用：
+
+    ```sql
+    SELECT id, a, SUM_INT(a) OVER (ORDER BY id ROWS BETWEEN 1 PRECEDING AND CURRENT ROW) AS rolling_sum
+    FROM t
+    ORDER BY id;
+    ```
+
+    ```sql
+    +----+------+-------------+
+    | id | a    | rolling_sum |
+    +----+------+-------------+
+    |  1 |    1 |           1 |
+    |  2 |    1 |           2 |
+    |  3 |    2 |           3 |
+    |  4 | NULL |           2 |
+    +----+------+-------------+
+    4 rows in set (0.00 sec)
+    ```
 
 + `APPROX_PERCENTILE(expr, constant_integer_expr)`
 
@@ -88,7 +135,7 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
     2 rows in set (0.00 sec)
     ```
 
-上述聚合函数除 `GROUP_CONCAT()`、 `APPROX_PERCENTILE()` 和 `APPROX_COUNT_DISTINCT` 以外，均可作为[窗口函数](/functions-and-operators/window-functions.md)使用。
+上述聚合函数除 `GROUP_CONCAT()`、`APPROX_PERCENTILE()` 和 `APPROX_COUNT_DISTINCT()` 以外，均可作为[窗口函数](/functions-and-operators/window-functions.md)使用。
 
 ## GROUP BY 修饰符
 
