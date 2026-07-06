@@ -22,7 +22,7 @@ TiDB 根据表的变更次数自动调度 [`ANALYZE`](/sql-statements/sql-statem
 
 |  系统变量名 | 默认值 | 功能描述 |
 | --------- | ----- | --------- |
-| [`tidb_auto_analyze_concurrency`](/system-variables.md#tidb_auto_analyze_concurrency-从-v840-版本开始引入) | `1` | TiDB 集群中自动更新统计信息操作的并发度 |
+| [`tidb_auto_analyze_concurrency`](/system-variables.md#tidb_auto_analyze_concurrency-从-v840-版本开始引入) | `3` | TiDB 集群中自动更新统计信息操作的并发度 |
 | [`tidb_auto_analyze_end_time`](/system-variables.md#tidb_auto_analyze_end_time) | `23:59 +0000` | 一天中允许统计信息自动更新的结束时间 |
 | [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb_auto_analyze_partition_batch_size-从-v640-版本开始引入)   | `8192` | TiDB 自动 ANALYZE 分区表（即自动更新分区表的统计信息）时，每次同时 ANALYZE 分区的个数 |
 | [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) | `0.5` | 自动更新阈值 |
