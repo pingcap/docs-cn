@@ -1791,15 +1791,6 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
     - 集群中 Region 分裂、合并或 Leader 迁移等变更频繁，导致 Region Cache 大量失效并触发查询请求集中重试，从而产生大量 Region 信息查询请求。
 - 该变量与 [`pd_enable_follower_handle_region`](#pd_enable_follower_handle_region-从-v760-版本开始引入) 的优化方向互补：前者通过攒批减少发送到 PD 的请求数量，后者通过允许 PD follower 处理 Region 查询请求来降低 PD leader 的负载，两者可以同时开启。
 
-### `tidb_enable_binding_usage` <span class="version-mark">从 v9.0.0 版本开始引入</span>
-
-- 作用域: GLOBAL
-- 是否持久化到集群: 是
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：布尔型
-- 默认值：`ON`
-- 该变量控制是否收集 SQL 执行计划绑定的使用统计信息。当设置为 `ON` 时，TiDB 会每六个小时将 SQL 执行计划绑定的使用统计信息写入 `mysql.bind_info` 表。
-
 ### `tidb_enable_cascades_planner`
 
 > **警告：**
