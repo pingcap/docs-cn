@@ -107,7 +107,7 @@ TiDB 版本：8.5.7
 | TiKV | [`storage.max-ts.cache-sync-interval`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#cache-sync-interval-从-v857-版本开始引入) | 新增 | 用于控制 TiKV 更新本地 PD TSO 缓存的时间间隔。默认值为 `"15s"`。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21745>;tw:qiancai--> |
 | TiKV | [`storage.max-ts.max-drift`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#max-drift-从-v857-版本开始引入) | 新增 | 用于指定读写请求时间戳可超过 TiKV 中缓存的 PD TSO 的最大时间范围。默认值为 `"60s"`。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21745>;tw:qiancai--> |
 
-### 其他
+### 编译器版本
 
 * 为了提升 TiDB 性能，TiDB 的 Go 编译器版本从 go1.25.8 升级到了 go1.25.10。如果你是 TiDB 的开发者，为了确保顺利编译，请对应升级你的 Go 编译器版本。 [#953](https://github.com/PingCAP-QE/artifacts/pull/953) @[wuhuizuo](https://github.com/wuhuizuo) <!--2468--> <!--tw:lilin90-->
 * 为了提升 TiKV 性能，TiKV v8.5 的 Rust 编译器版本从 nightly-2023-12-28 升级到了 nightly-2025-02-28。如果你是 TiKV 的开发者，为了确保顺利编译，请对应升级你的 Rust 编译器版本。
