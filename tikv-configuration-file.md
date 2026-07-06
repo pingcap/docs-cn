@@ -636,6 +636,34 @@ I/O rate limiter 相关的配置项。
 + 可选值：`"read-only"`，`"write-only"`，`"all-io"`
 + 默认值：`"write-only"`
 
+## storage.max-ts
+
+`max-ts` 相关的配置项。
+
+`max-ts` 是当前 TiKV 节点已知的最大读时间戳，用于保证异步提交 (Async Commit) 和一阶段提交 (1PC) 事务的线性一致性以及事务并发控制语义。
+
+### `action-on-invalid-update` <span class="version-mark">从 v8.5.7 版本开始引入</span>
+
++ 指定当检测到非法的 `max-ts` 更新请求时，TiKV 的处理方式。如果某个读写请求使用的 TS 超过了 TiKV 缓存的 PD TSO + [`max-drift`](#max-drift-从-v857-版本开始引入)，TiKV 会将其视为非法的 `max-ts` 更新请求。非法的 `max-ts` 更新请求可能破坏 TiDB 集群的线性一致性和事务并发控制语义。
++ 可选值：
+    + `"panic"`：TiKV 会 panic。如果 TiKV 缓存的 PD TSO 没有及时更新，TiKV 会使用近似方法进行判断，此时被判定为非法的请求不会导致 TiKV panic。
+    + `"error"`：TiKV 会返回错误，并终止对该请求的处理。
+    + `"log"`：TiKV 会打印错误日志，并继续执行该请求。
++ 默认值：`"error"`
+
+### `cache-sync-interval` <span class="version-mark">从 v8.5.7 版本开始引入</span>
+
++ 控制 TiKV 更新本地 PD TSO 缓存的时间间隔。TiKV 定期从 PD 获取最新的时间戳，并将其缓存到本地，以便检查 `max-ts` 的合法性。
++ 默认值：`"15s"`
+
+### `max-drift` <span class="version-mark">从 v8.5.7 版本开始引入</span>
+
++ 定义当读写请求使用的 TS 超过 TiKV 缓存的 PD TSO 时，所允许的最长超出时间。
++ 如果某个读写请求使用的 TS 超过了 TiKV 缓存的 PD TSO + `max-drift`，TiKV 会将其视为非法的 `max-ts` 更新请求，并根据 [`action-on-invalid-update`](#action-on-invalid-update-从-v857-版本开始引入) 的配置进行处理。
++ 默认值：`"60s"`
++ 该值必须大于 [`cache-sync-interval`](#cache-sync-interval-从-v857-版本开始引入)，否则 TiKV 校验配置会失败并拒绝启动。
++ 建议设置为 [`cache-sync-interval`](#cache-sync-interval-从-v857-版本开始引入) 的 3 倍以上。
+
 ## pd
 
 ### `enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
@@ -2401,6 +2429,14 @@ Raft Engine 相关的配置项。
 + TiKV 备份数据到 S3 时，如果备份文件大于该配置项的值，会自动进行[分块上传](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/API/API_UploadPart.html)。根据压缩率的不同，96 MiB Region 产生的备份文件大约在 10 MiB~30 MiB 之间。
 + 默认值：5MiB
 
+### `gcp-v2-enable` <span class="version-mark">从 v8.5.7 版本开始引入</span>
+
++ 是否在使用 Google Cloud Storage (GCS) 执行 full backup 或 restore 时启用 `gcp_v2` 外部存储后端。
++ 默认值：`true`
++ 当该配置项为 `true` 时，TiKV 在访问 GCS 时会使用 `gcp_v2` 实现；当该配置项为 `false` 时，TiKV 会继续使用旧的 GCS 实现。
++ 如果你需要在 full backup 或 restore 场景下使用 Google Cloud 的 Workload Identity Federation (WIF)，需要将该配置项保持为 `true`。
++ 关于 GCS 的鉴权方式和 WIF/ADC 的使用说明，参见[备份存储](/br/backup-and-restore-storages.md)。
+
 ## backup.hadoop
 
 ### `home`
@@ -2455,6 +2491,14 @@ Raft Engine 相关的配置项。
 
 + 日志文件存放的临时目录，日志文件预先写入临时目录，然后 flush 到外部存储中。
 + 默认值：`${deploy-dir}/data/log-backup-temp`
+
+### `gcp-v2-enable` <span class="version-mark">从 v8.5.7 版本开始引入</span>
+
++ 是否在日志备份使用 Google Cloud Storage (GCS) 时启用 `gcp_v2` 外部存储后端。
++ 默认值：`true`
++ 当该配置项为 `true` 时，TiKV 在访问 GCS 时会使用 `gcp_v2` 实现；当该配置项为 `false` 时，TiKV 会继续使用旧的 GCS 实现。
++ 如果你需要在日志备份场景下使用 Google Cloud 的 Workload Identity Federation (WIF)，需要将该配置项保持为 `true`。
++ 关于 GCS 的鉴权方式和 WIF/ADC 的使用说明，参见[备份存储](/br/backup-and-restore-storages.md)。
 
 ## cdc
 
