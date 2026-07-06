@@ -596,6 +596,19 @@ mysql> SELECT * FROM t1;
 - 默认值：`Apache License 2.0`
 - 这个变量表示 TiDB 服务器的安装许可证。
 
+### `max_allowed_packet` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`67108864`
+- 取值范围：`[1024, 1073741824]`
+- 该变量取值应为 1024 的整数倍。若取值无法被 1024 整除，则会提示 warning 并向下取整。例如设置为 1025 时，则 TiDB 中的实际取值为 1024。
+- 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
+- 在 `SESSION` 作用域下，该变量为只读变量。
+- 该变量的行为与 MySQL 兼容。
+
 ### `max_connections`
 
 - 作用域：GLOBAL
@@ -656,18 +669,17 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 1 row in set (0.00 sec)
 ```
 
-### `max_allowed_packet` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+### `max_user_connections` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
+- 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
-- 默认值：`67108864`
-- 取值范围：`[1024, 1073741824]`
-- 该变量取值应为 1024 的整数倍。若取值无法被 1024 整除，则会提示 warning 并向下取整。例如设置为 1025 时，则 TiDB 中的实际取值为 1024。
-- 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
-- 在 `SESSION` 作用域下，该变量为只读变量。
-- 该变量的行为与 MySQL 兼容。
+- 默认值：`0`
+- 取值范围：`[0, 100000]`
+- 该变量控制 TiDB 中单个用户允许连接至一个 TiDB Server 实例的最大连接数，用于资源控制。
+- 默认值为 `0`，表示不限制用户的连接数。当值大于 `0` 且用户连接数达到此值时，TiDB 服务端将拒绝该用户的连接。
+- 当该变量的取值超过 [`max_connections`](/tidb-configuration-file.md#max_connections) 时，TiDB 会采用 `max_connections` 的值作为单个用户实际可建立的最大连接数。例如，若某用户的 `max_user_connections` 设置为 `2000`，而 `max_connections` 为 `1000`，则该用户实际可连接至一个 TiDB Server 实例的最大连接数为 `1000`。
 
 ### `mpp_exchange_compression_mode` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
@@ -730,6 +742,26 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 适合开启 Active PD Follower 的场景：
     - 集群 Region 数量较多，PD leader 由于处理心跳和调度任务的开销大，导致 CPU 资源紧张。
     - 集群中 TiDB 实例数量较多，Region 信息请求并发量较大，PD leader CPU 压力大。
+
+### `performance_schema_session_connect_attrs_size` <span class="version-mark">从 v8.5.7 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否适用于 Hint [`SET_VAR`](/optimizer-hints.md#set_varvar_namevar_value)：否
+- 类型：整数型
+- 默认值：`4096`
+- 取值范围：`[-1, 65536]`
+- 单位：Bytes
+- 控制每个会话连接属性的最大总大小。
+- 如果连接属性的总大小超过此值，TiDB 会截断超出的属性，并添加 `_truncated` 来表示被截断的字节数。
+- 在此限制内被接受的连接属性会写入慢日志中的 `Session_connect_attrs` 字段，并可通过 [`INFORMATION_SCHEMA.SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 和 `INFORMATION_SCHEMA.CLUSTER_SLOW_QUERY` 查询。
+- 你可以通过调整此变量来控制慢日志中记录的 `Session_connect_attrs` 大小。
+- 如果该值设置为 `-1`，表示未配置限制，TiDB 会将其视为最大 `65536` 字节。
+- 如果该值设置为 `0`，TiDB 不会保留客户端提供的会话连接属性，这实际上会禁用会话属性记录。
+
+> **注意：**
+>
+> TiDB 对握手连接属性强制施加 1 MiB 的硬性限制。若超过该硬性限制，连接将被拒绝。
 
 ### `plugin_dir`
 
@@ -2486,8 +2518,9 @@ Query OK, 0 rows affected (0.09 sec)
 > **警告：**
 >
 > - 在 v8.1.0 之前的版本中，TiDB 会定期向 PingCAP 上报遥测信息。
-> - 在 v8.1.0 到 v8.5.1 及其之间的版本中，TiDB 已移除遥测功能，`tidb_enable_telemetry` 变量不再生效。保留该变量仅用于与之前版本兼容。
-> - 从 v8.5.3 开始，TiDB 重新引入遥测功能，但其行为已更改为仅将遥测相关信息输出到日志文件，不再通过网络发送给 PingCAP。
+> - 在 v8.1.0 到 v8.5.2 及其之间的版本中，TiDB 已移除遥测功能，`tidb_enable_telemetry` 变量不再生效。保留该变量仅用于与之前版本兼容。
+> - 在 v8.5.3 到 v8.5.6 及其之间的版本中，TiDB 重新引入遥测功能，但其行为已更改为仅将遥测相关信息输出到日志文件，不再通过网络发送给 PingCAP。
+> - 从 v8.5.7 开始，TiDB 废弃了该系统变量和遥测功能。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
