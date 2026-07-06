@@ -1101,9 +1101,11 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
-- 默认值：`1`
+- 默认值：`3`
 - 范围：`[1, 2147483647]`
-- 这个变量用来设置 TiDB 集群中自动更新统计信息操作的并发度。在 v8.4.0 之前的版本中，该并发度固定为 `1`。你可以根据集群资源情况提高该并发度，从而加快统计信息收集任务的执行速度。
+- 这个变量用来设置 TiDB 集群中自动更新统计信息操作的并发度。你可以根据集群资源情况提高该并发度，从而加快统计信息收集任务的执行速度。
+- 在 v8.4.0 之前的版本中，该并发度固定为 `1`。
+- 从 v8.5.7 起，该变量的默认值从 `1` 更改为 `3`。如果你的集群是从之前的版本升级而来的，升级后该变量的值保持不变。
 
 ### `tidb_auto_analyze_end_time`
 
@@ -1164,9 +1166,10 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
-- 默认值：`1`
+- 默认值：`2`
 - 范围：`[1, 256]`
 - 这个变量用来设置执行统计信息自动更新的并发度。
+- 从 v8.5.7 起，该变量的默认值从 `1` 更改为 `2`。如果你的集群是从之前的版本升级而来的，升级后该变量的值保持不变。
 
 ### `tidb_backoff_lock_fast`
 
@@ -2461,6 +2464,26 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `information_schema.STATEMENTS_SUMMARY` 中，用于定位和排查 SQL 性能问题。
+
+### `tidb_enable_strict_not_null_check` <span class="version-mark">从 v8.5.7 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量用于控制 TiDB 在执行 `INSERT` 语句时，是否对显式写入 `NOT NULL` 列的 `NULL` 值进行严格校验。
+- 取值说明：
+    - `ON`：启用严格的 `NOT NULL` 校验。该行为更接近 MySQL 8.0 的语义。
+        - 在严格 SQL 模式下：如果向 `NOT NULL` 列插入 `NULL` 值，TiDB 会返回错误。
+        - 在非严格 SQL 模式下：对于单行 `INSERT` 语句，如果向 `NOT NULL` 列插入 `NULL` 值，TiDB 会返回错误；对于多行 `INSERT` 语句，如果向 `NOT NULL` 列插入 `NULL` 值，TiDB 会将该错误降级为 warning，并写入该列数据类型对应的隐式默认值。
+    - `OFF`：关闭严格的 `NOT NULL` 校验，用于兼容 TiDB 早期版本中较宽松的行为。关闭后，当向 `NOT NULL` 列插入 `NULL` 值时，TiDB 会将该错误降级为 warning，并写入该列数据类型对应的隐式默认值。例如，数字类型写入 `0`，字符串类型写入空字符串 `''`。
+
+> **注意：**
+>
+> - TiDB 早期版本对 `NOT NULL` 约束的校验相对宽松，向 `NOT NULL` 列插入 `NULL` 值时，可能会自动写入该列数据类型对应的隐式默认值。从 v8.5.0 起，TiDB 收紧了这类校验：即使在非严格 SQL 模式下，向 `NOT NULL` 列插入 `NULL` 值也可能直接返回错误。该行为更接近 MySQL 8.0 语义，但可能影响依赖 TiDB 早期宽松行为的存量业务。
+>
+> - 如果从 TiDB 早期版本升级到启用了严格 `NOT NULL` 校验的版本，并且现有业务逻辑依赖向 `NOT NULL` 列写入 `NULL` 后自动使用隐式默认值的行为，升级后相关 SQL 语句可能会返回错误。在无法立即修改业务逻辑的情况下，可以临时将该变量设置为 `OFF`，以降低升级兼容性风险。建议后续修改应用逻辑，避免向 `NOT NULL` 列显式写入 `NULL` 值。
 
 ### `tidb_enable_strict_double_type_check` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -5519,8 +5542,9 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
-- 默认值：`1`
+- 默认值：`4`
 - 范围：`[0, 4294967295]`，在 v7.5.0 及之前版本中最大值为 `256`。在 v8.2.0 之前版本中，最小值为 `1`。当设置为 `0` 时，TiDB 会根据集群规模自适应调整并发度。
+- 从 v8.5.7 起，该变量的默认值从 `1` 更改为 `4`。如果你的集群是从之前的版本升级而来的，升级后该变量的值保持不变。
 - 这个变量用来设置 TiDB 执行内部 SQL 语句（例如统计信息自动更新）时 scan 操作的并发度。
 
 ### `tidb_table_cache_lease` <span class="version-mark">从 v6.0.0 版本开始引入</span>
