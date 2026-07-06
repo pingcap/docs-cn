@@ -109,7 +109,7 @@ TiDB 版本：8.5.7
 
 ### 其他
 
-* 为了提升 TiDB 性能，TiDB 的 Go 编译器版本从 go1.25.8 升级到了 go1.25.10。如果你是 TiDB 的开发者，为了确保顺利编译，请对应升级你的 Go 编译器版本。 <!--2468--> <!--tw:lilin90-->
+* 为了提升 TiDB 性能，TiDB 的 Go 编译器版本从 go1.25.8 升级到了 go1.25.10。如果你是 TiDB 的开发者，为了确保顺利编译，请对应升级你的 Go 编译器版本。 [#953](https://github.com/PingCAP-QE/artifacts/pull/953) @[wuhuizuo](https://github.com/wuhuizuo) <!--2468--> <!--tw:lilin90-->
 * 为了提升 TiKV 性能，TiKV v8.5 的 Rust 编译器版本从 nightly-2023-12-28 升级到了 nightly-2025-02-28。如果你是 TiKV 的开发者，为了确保顺利编译，请对应升级你的 Rust 编译器版本。
 
 ## 废弃功能
