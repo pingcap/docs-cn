@@ -28,7 +28,7 @@ TiDB 的全文搜索功能提供以下能力：
 
 全文搜索仍处于早期阶段，我们正在持续向更多用户开放。目前，全文搜索仅在以下区域的 TiDB Cloud Starter 和 TiDB Cloud Essential 上可用：
 
-- AWS: `法兰克福 (eu-central-1)` 和 `新加坡 (ap-southeast-1)`
+- AWS: `Oregon (us-west-2)`、`N. Virginia (us-east-1)`、`Tokyo (ap-northeast-1)`、`Frankfurt (eu-central-1)` 和 `Singapore (ap-southeast-1)`
 
 要完成本教程，请确保你在支持的区域拥有一个 TiDB Cloud Starter 实例。如果还没有，请按照 [创建 TiDB Cloud Starter 实例](/develop/dev-guide-build-cluster-in-cloud.md) 创建。
 

@@ -81,11 +81,11 @@ trim-last-separator = false
 
 [tidb]
 # 目标集群的信息
-host = ${host}                # 例如：172.16.32.1
-port = ${port}                # 例如：4000
+host = "${host}"              # 例如：172.16.32.1
+port = "${port}"              # 例如：4000
 user = "${user_name}"         # 例如："root"
 password = "${password}"      # 例如："rootroot"
-status-port = ${status-port}  # 导入过程 Lightning 需要在从 TiDB 的“状态端口”获取表结构信息，例如：10080
+status-port = "${status-port}"  # 导入过程 Lightning 需要在从 TiDB 的“状态端口”获取表结构信息，例如：10080
 pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 ```
 
@@ -129,7 +129,6 @@ nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
 
 - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
 - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
-- 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
 
 导入完毕后，TiDB Lightning 会自动退出。查看 `tidb-lightning.log` 日志末尾是否有 `the whole procedure completed` 信息，如果有，表示导入成功。如果没有，则表示导入遇到了问题，可根据日志中的 error 提示解决遇到的问题。
 

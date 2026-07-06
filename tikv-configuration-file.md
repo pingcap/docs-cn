@@ -2429,6 +2429,14 @@ Raft Engine 相关的配置项。
 + TiKV 备份数据到 S3 时，如果备份文件大于该配置项的值，会自动进行[分块上传](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/API/API_UploadPart.html)。根据压缩率的不同，96 MiB Region 产生的备份文件大约在 10 MiB~30 MiB 之间。
 + 默认值：5MiB
 
+### `gcp-v2-enable` <span class="version-mark">从 v8.5.7 版本开始引入</span>
+
++ 是否在使用 Google Cloud Storage (GCS) 执行 full backup 或 restore 时启用 `gcp_v2` 外部存储后端。
++ 默认值：`true`
++ 当该配置项为 `true` 时，TiKV 在访问 GCS 时会使用 `gcp_v2` 实现；当该配置项为 `false` 时，TiKV 会继续使用旧的 GCS 实现。
++ 如果你需要在 full backup 或 restore 场景下使用 Google Cloud 的 Workload Identity Federation (WIF)，需要将该配置项保持为 `true`。
++ 关于 GCS 的鉴权方式和 WIF/ADC 的使用说明，参见[备份存储](/br/backup-and-restore-storages.md)。
+
 ## backup.hadoop
 
 ### `home`
@@ -2483,6 +2491,14 @@ Raft Engine 相关的配置项。
 
 + 日志文件存放的临时目录，日志文件预先写入临时目录，然后 flush 到外部存储中。
 + 默认值：`${deploy-dir}/data/log-backup-temp`
+
+### `gcp-v2-enable` <span class="version-mark">从 v8.5.7 版本开始引入</span>
+
++ 是否在日志备份使用 Google Cloud Storage (GCS) 时启用 `gcp_v2` 外部存储后端。
++ 默认值：`true`
++ 当该配置项为 `true` 时，TiKV 在访问 GCS 时会使用 `gcp_v2` 实现；当该配置项为 `false` 时，TiKV 会继续使用旧的 GCS 实现。
++ 如果你需要在日志备份场景下使用 Google Cloud 的 Workload Identity Federation (WIF)，需要将该配置项保持为 `true`。
++ 关于 GCS 的鉴权方式和 WIF/ADC 的使用说明，参见[备份存储](/br/backup-and-restore-storages.md)。
 
 ## cdc
 
@@ -2691,24 +2707,6 @@ Raft Engine 相关的配置项。
 + 单次时间戳请求的最大数量。
 + 在默认的一个 TSO 物理时钟更新周期内 (50ms)，PD 最多提供 262144 个 TSO，超过这个数量后 PD 会暂缓 TSO 请求的处理。这个配置用于避免 PD 的 TSO 消耗殆尽、影响其他业务的使用。如果增大这个参数，建议同时减小 PD 的 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval) 参数，以获得足够的 TSO。
 + 默认值：8192
-
-## resource-metering
-
-资源计量 (Resource Metering) 相关的配置项。
-
-### `enable-network-io-collection` <span class="version-mark">从 v8.5.6 版本开始引入</span>
-
-+ 是否在 [Top SQL](/dashboard/top-sql.md) 中除了采集 CPU 数据外，还额外采集 TiKV 的网络流量和逻辑 I/O 信息。
-+ 开启后，TiKV 在处理请求时会额外记录这些指标：网络入站字节数、网络出站字节数、逻辑读字节数和逻辑写字节数。
-+ 上报资源消耗时，TiKV 会基于 CPU 时间、网络流量和逻辑 I/O 来筛选 Top N 记录，并额外按 Region 维度上报这些统计结果，便于更细粒度地分析热点请求或资源消耗来源。
-+ 默认值：false
-
-> **注意：**
->
-> 逻辑 I/O 与物理 I/O 含义不同，两者不能直接对应：
->
-> - 逻辑 I/O 指 TiKV 存储层处理请求时涉及的逻辑数据量，例如读取过程中扫描或处理的数据量，以及写请求自身的逻辑写入字节数。
-> - 物理 I/O 指底层存储设备实际发生的磁盘读写流量，会受到 block cache、compaction、flush 等因素的影响。
 
 ## resource-control
 

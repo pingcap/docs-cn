@@ -46,12 +46,12 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --fi
 [tidb]
 
 # 目标 TiDB 集群信息。
-host = ${host}
-port = ${port}
+host = "${host}"
+port = "${port}"
 user = "${user_name}"
 password = "${password}"
-status-port = ${status-port}  # TiDB 的“状态端口”，通常为 10080
-pd-addr = "${ip}:${port}"     # 集群 PD 的地址，port 通常为 2379
+status-port = "${status-port}"  # TiDB 的“状态端口”，通常为 10080
+pd-addr = "${ip}:${port}"       # 集群 PD 的地址，port 通常为 2379
 
 [tikv-importer]
 # 采用默认的物理导入模式 ("local")。注意该模式在导入期间下游 TiDB 无法对外提供服务。
@@ -112,12 +112,12 @@ nohup tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
 [tidb]
 
 # 目标 TiDB 集群信息。
-host = ${host}
-port = ${port}
+host = "${host}"
+port = "${port}"
 user = "${user_name}"
 password = "${password}"
-status-port = ${status-port}  # TiDB 的“状态端口”，通常为 10080
-pd-addr = "${ip}:${port}"     # 集群 PD 的地址，port 通常为 2379
+status-port = "${status-port}"  # TiDB 的“状态端口”，通常为 10080
+pd-addr = "${ip}:${port}"       # 集群 PD 的地址，port 通常为 2379
 
 [tikv-importer]
 # 采用默认的物理导入模式 ("local")。注意该模式在导入期间下游 TiDB 无法对外提供服务。
@@ -133,7 +133,7 @@ sorted-kv-dir = "${path}"
 data-source-dir = "s3://my-bucket/sql-backup"
 
 [[mydumper.files]]
-# 解析 parquet 文件所需的表达式
+# 解析 Parquet 文件所需的表达式
 pattern = '(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
 schema = '$1'
 table = '$2'
@@ -156,7 +156,6 @@ type = '$3'
 
     - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
     - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
-    - 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
 
 3. 导入完毕后，TiDB Lightning 会自动退出。查看 `tidb-lightning.log` 日志末尾是否有 `the whole procedure completed` 信息，如果有，表示导入成功。如果没有，则表示导入遇到了问题，可根据日志中的 error 提示解决遇到的问题。
 

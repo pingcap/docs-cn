@@ -18,7 +18,7 @@ summary: 介绍如何使用 TiDB Lightning 从 Parquet 文件迁移数据到 TiD
 
 本节描述如何从 Hive 中导出能被 TiDB Lightning 读取的 Parquet 文件。
 
-Hive 中每个表都能通过标注 `STORED AS PARQUET LOCATION '/path/in/hdfs'` 的形式将表数据导出到 Parquet 文件中。因此，如果你需要导出一张名叫 `test` 的表，请执行以下步骤：
+你可以通过指定 `STORED AS PARQUET LOCATION '/path/in/hdfs'` 将 Hive 中的每个表导出为 Parquet 文件。因此，如果你需要导出一张名叫 `test` 的表，请执行以下步骤：
 
 1. 在 Hive 中执行如下 SQL 语句：
 
@@ -41,9 +41,9 @@ Hive 中每个表都能通过标注 `STORED AS PARQUET LOCATION '/path/in/hdfs'`
     DROP TABLE temp;
     ```
 
-3. 从 Hive 导出的 Parquet 文件可能不带有 `.parquet` 的后缀，无法被 TiDB Lightning 正确识别。因此，在进行导入之前，需要对导出的文件进行重命名，添加 `.parquet` 后缀，将完整的文件名修改为 TiDB Lightning 能识别的格式 `${db_name}.${table_name}.parquet`。更多文件类型和命名规则，请参考 [TiDB Lightning 数据源](/tidb-lightning/tidb-lightning-data-source.md)。你也可以通过设置正确的[自定义表达式](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)匹配数据文件。
+3. 从 Hive 导出的 Parquet 文件可能不带有 `.parquet` 后缀，因此 TiDB Lightning 无法正确识别这些文件。在进行导入之前，需要对这些文件进行重命名，添加 `.parquet` 后缀，将完整的文件名修改为 TiDB Lightning 能识别的格式，例如 `${db_name}.${table_name}.parquet`。更多文件类型和命名规则，请参考 [TiDB Lightning 数据源](/tidb-lightning/tidb-lightning-data-source.md)。你也可以通过设置正确的[自定义表达式](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)匹配数据文件。
 
-4. 将所有 Parquet 文件放到统一目录下，例如 `/data/my_datasource/` 或 `s3://my-bucket/sql-backup`。TiDB Lightning 将递归地寻找该目录及其子目录内的所有 `.parquet` 文件。
+4. 将所有 Parquet 文件放到统一目录下，例如 `/data/my_datasource/` 或 `s3://my-bucket/sql-backup`。TiDB Lightning 将递归搜索该目录及其子目录内的所有 `.parquet` 文件。
 
 ## 第 2 步：创建目标表结构
 
@@ -81,11 +81,11 @@ data-source-dir = "${data-path}" # 本地或 S3 路径，例如：'s3://my-bucke
 
 [tidb]
 # 目标集群的信息
-host = ${host}                # 例如：172.16.32.1
-port = ${port}                # 例如：4000
+host = "${host}"              # 例如：172.16.32.1
+port = "${port}"              # 例如：4000
 user = "${user_name}"         # 例如："root"
 password = "${password}"      # 例如："rootroot"
-status-port = ${status-port}  # 导入过程 Lightning 需要在从 TiDB 的“状态端口”获取表结构信息，例如：10080
+status-port = "${status-port}"  # 导入过程 Lightning 需要在从 TiDB 的“状态端口”获取表结构信息，例如：10080
 pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 ```
 
@@ -114,7 +114,6 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 
     - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
     - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
-    - 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
 
     导入完毕后，TiDB Lightning 会自动退出。
 

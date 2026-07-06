@@ -28,20 +28,20 @@ jobs:
 
     steps:
       - name: Checkout current repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       - name: Checkout ai-pr-translator repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: "qiancai/ai-pr-translator"
           ref: "main"
           path: "ai-pr-translator"
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: '3.9'
 

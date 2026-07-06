@@ -49,7 +49,7 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 
 - TiDB 目前暂不支持版本降级或升级后回退。
 - 支持 TiCDC，TiFlash 等组件版本的升级。
-- 如果集群中包含基于老架构的 TiCDC 历史版本（例如 `v8.1.2`），不建议在 TiDB 滚动升级期间持续运行 Changefeed。若目标 TiDB 版本高于老架构 TiCDC，必须先升级 TiCDC。升级的时候，建议按“暂停所有 Changefeed -> 升级 TiCDC -> 升级 TiDB 集群 -> 恢复 Changefeed”的顺序执行。更多说明请参考 [TiCDC 历史版本滚动升级兼容性说明](/ticdc/ticdc-compatibility.md#历史版本升级的兼容性说明)。
+- 如果集群中包含基于老架构的 TiCDC 历史版本（例如 `v8.1.2`），不建议在跨大版本升级期间持续运行 Changefeed。升级的时候，建议按“暂停所有 Changefeed -> 升级 TiCDC -> 升级 TiDB 集群 -> 恢复 Changefeed”的顺序执行。更多说明请参考 [TiCDC 历史版本滚动升级兼容性说明](/ticdc/ticdc-compatibility.md#历史版本升级的兼容性说明)。
 - 将 v6.3.0 之前的 TiFlash 升级至 v6.3.0 及之后的版本时，需要特别注意：在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。具体请参考 [6.3.0 版本 Release Notes](/releases/release-6.3.0.md#其他) 中的描述。
 - 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](/releases/_index.md)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
 - 升级 v5.3 之前版本的集群到 v5.3 及后续版本时，默认部署的 Prometheus 生成的 Alert 存在时间格式变化。该格式变化是从 Prometheus v2.27.1 开始引入的，详情见 [Prometheus commit](https://github.com/prometheus/prometheus/commit/7646cbca328278585be15fa615e22f2a50b47d06)。
@@ -210,7 +210,11 @@ tiup cluster upgrade <cluster-name> v{{{ .tidb-version }}}
 
 > **注意：**
 >
-> - 滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟（300 秒），超时后会直接停止该实例。
+> - 在线升级遵循 TiUP 预定义的组件升级顺序。在每一类组件内部，实例会以滚动方式逐个升级：
+>
+>     - TiFlash：始终先升级 TiFlash。如果集群中包含 TiFlash，TiUP 会先对所有 TiFlash 实例进行滚动升级，然后再升级其他组件（如 PD、TiKV 和 TiDB）。未部署的组件类型会被跳过。
+>     - TiKV：在升级 TiKV 时，TiUP 会通过 PD 将该 TiKV 节点上的所有 Region Leader 驱逐，然后再停止该实例。Leader 驱逐的默认超时时间为 5 分钟（300 秒）。如果达到超时时间，TiUP 会直接停止实例，而不会等待 Leader 驱逐完成。
+>
 > - 使用 `--force` 参数可以在不驱逐 leader 的前提下快速升级集群至新版本，但是该方式会忽略所有升级中的错误，在升级失败后得不到有效提示，请谨慎使用。
 > - 如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个更大的值，如 `--transfer-timeout 3600`，单位为秒。
 > - 如需将 TiFlash 从 v5.3.0 之前的版本升级到 v5.3.0 及之后的版本，必须进行 TiFlash 的停机升级，且 TiUP 版本小于 v1.12.0。具体升级步骤，请参考[使用 TiUP 升级](/tiflash-upgrade-guide.md#使用-tiup-升级)。

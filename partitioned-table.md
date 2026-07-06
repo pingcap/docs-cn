@@ -2087,3 +2087,9 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
     SET session tidb_partition_prune_mode = dynamic;
     source gatherGlobalStats.sql
     ```
+
+## 相关资源
+
+<RelatedResources>
+  <ResourceCard title="TiDB SQL 调优实验 2: 分区表" type="lab" link="https://labs.pingcap.com/labs/dba_307_lab_ff1" imgSrc="https://lab-static.pingcap.com/quick-demo/307-02.png" duration="90 分钟" />
+</RelatedResources>

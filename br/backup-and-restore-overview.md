@@ -179,3 +179,9 @@ TiDB v6.6.0 版本之前的 BR 版本兼容性矩阵：
 - [TiDB 快照备份与恢复使用指南](/br/br-snapshot-guide.md)
 - [TiDB 日志备份与 PITR 使用指南](/br/br-pitr-guide.md)
 - [备份存储](/br/backup-and-restore-storages.md)
+
+## 相关资源
+
+<RelatedResources>
+  <ResourceCard title="管理 TiDB 实验 8: 备份与还原" type="lab" link="https://labs.pingcap.com/labs/dba_303_lab_ff7" imgSrc="https://lab-static.pingcap.com/quick-demo/dba_303_ch09_en.png" duration="60 分钟" />
+</RelatedResources>
