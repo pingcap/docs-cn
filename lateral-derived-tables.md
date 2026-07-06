@@ -1,6 +1,6 @@
 ---
 title: 横向派生表
-summary: 了解 TiDB 中横向派生表 (`LATERAL` Derived Table) 的语法和当前限制。
+summary: 了解 TiDB 中横向派生表 (`LATERAL` derived table) 的语法和当前限制。
 ---
 
 # 横向派生表
