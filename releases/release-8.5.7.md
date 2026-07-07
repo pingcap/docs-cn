@@ -150,7 +150,6 @@ TiDB 版本：8.5.7
 
 + TiDB
 
-    - 改进部分索引与 BR 的兼容性，使 BR 在日志恢复期间修复 ingest 索引时能够保留其 `WHERE` 谓词 [#62664](https://github.com/pingcap/tidb/issues/62664) @[Leavrth](https://github.com/Leavrth) <!-- component: sql-infra -->
     - 提升包含 `OR` 和 `IN` 条件的 `ORDER BY ... LIMIT` 查询性能。优化器现在可以更有效地选择 `IndexMerge`，并支持在 `IndexMerge` 的 `IN` 条件路径上使用 merge sort，从而将 `Limit` 下推到部分路径，减少不必要的行读取和 I/O 开销 [#65712](https://github.com/pingcap/tidb/issues/65712) @[time-and-fate](https://github.com/time-and-fate) <!-- component: planner --> <!--2262--> <!--tw:qiancai-->
     - 改进慢查询可观测性，在 slow query log 中记录客户端连接属性，并在 `information_schema.slow_query` 和 `information_schema.cluster_slow_query` 中暴露这些属性；`performance_schema_session_connect_attrs_size` 现用于控制属性截断，并将被截断的字节数记录在 `_truncated` 中 [#66616](https://github.com/pingcap/tidb/issues/66616) @[jiong-nba](https://github.com/jiong-nba) <!-- component: observability --> <!--2374--> <!--tw:lilin90-->
     - 新增系统变量 `tidb_enable_strict_not_null_check`，用于控制 TiDB 是否对单行 `INSERT` 语句执行严格的 `NOT NULL` 检查，从而帮助依赖此前非严格行为的工作负载降低升级风险 [#68108](https://github.com/pingcap/tidb/issues/68108) @[xhebox](https://github.com/xhebox) <!-- component: sql-infra --> <!--2459-->
