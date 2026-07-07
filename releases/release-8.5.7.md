@@ -125,6 +125,7 @@ TiDB 版本：8.5.7
 | TiKV | [`storage.max-ts.action-on-invalid-update`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#action-on-invalid-update-从-v857-版本开始引入) | 新增 | 用于决定 TiKV 如何处理无效的 `max-ts` 更新请求。默认值为 `"error"`，表示当 TiKV 检测到无效的 `max-ts` 更新请求时，会返回错误并停止处理该请求。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21745>;tw:qiancai--> |
 | TiKV | [`storage.max-ts.cache-sync-interval`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#cache-sync-interval-从-v857-版本开始引入) | 新增 | 用于控制 TiKV 更新本地 PD TSO 缓存的时间间隔。默认值为 `"15s"`。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21745>;tw:qiancai--> |
 | TiKV | [`storage.max-ts.max-drift`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#max-drift-从-v857-版本开始引入) | 新增 | 用于指定读写请求时间戳可超过 TiKV 中缓存的 PD TSO 的最大时间范围。默认值为 `"60s"`。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21745>;tw:qiancai--> |
+| TiCDC | [`sink.dispatchers`](https://docs.pingcap.com/zh/tidb/v8.5/ticdc-changefeed-config#dispatchers) | 修改 | 当 Changefeed 下游为 MQ 类 Sink 时，可以通过 `dispatchers` 配置 event 分发器。从 v8.5.7 起，对于 [TiCDC 新架构](https://docs.pingcap.com/zh/tidb/v8.5/ticdc-architecture)，也可以通过 `dispatchers` 配置 [TiCDC 表路由](https://docs.pingcap.com/zh/tidb/v8.5/ticdc-table-routing)。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21723/files>;tw:qiancai--> |
 
 ### 编译器版本
 
