@@ -180,7 +180,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 #### `dispatchers`
 
-- 当 Changefeed 下游为 MQ 类 Sink 时，可以通过 dispatchers 配置 event 分发器。从 v8.5.7 起，对于 [TiCDC 新架构](/ticdc/ticdc-architecture.md)，也可以通过 `dispatchers` 配置表路由，将上游表映射到指定的下游库名或表名。更多信息，参见 [TiCDC 表路由](/ticdc/ticdc-table-routing.md)。
+- 当 Changefeed 下游为 MQ 类 Sink 时，可以通过 `dispatchers` 配置 event 分发器。从 v8.5.7 起，对于 [TiCDC 新架构](/ticdc/ticdc-architecture.md)，也可以通过 `dispatchers` 配置表路由，将上游表映射到指定的下游库名或表名。更多信息，参见 [TiCDC 表路由](/ticdc/ticdc-table-routing.md)。
 - 支持 partition 及 topic（从 v6.1 开始支持）两种 event 分发器。二者的详细说明见下一节。
 - matcher 的匹配语法和过滤器规则语法相同，matcher 匹配规则的详细说明见下一节。
 - 当下游 MQ 为 Pulsar 时，如果 partition 的路由规则未指定为 `ts`、`index-value`、`table`、`default` 中的任意一个，那么将会使用你设置的字符串作为每一条 Pulsar message 的 key 进行路由。例如，如果你指定的路由规则为 `'code'` 字符串，那么符合该 matcher 的所有 Pulsar message 都将会以 `'code'` 作为 key 进行路由。
