@@ -35,7 +35,7 @@ TiDB 版本：8.5.7
 
 ### SQL 功能
 
-* 支持部分索引，以降低索引存储成本，减少 DML 维护开销 [#62444](https://github.com/pingcap/tidb/issues/62444) @[YangKeao](https://github.com/YangKeao) @[winoros](https://github.com/winoros) @[wjhuang2016](https://github.com/wjhuang2016) <!--21903--> <!--2270--> <!--tw:qiancai-->
+* 支持部分索引，以降低索引存储成本，减少 DML 维护开销 [#62664](https://github.com/pingcap/tidb/issues/62444) [#62761](https://github.com/pingcap/tidb/issues/62761) [#62758](https://github.com/pingcap/tidb/issues/62758) [#63447](https://github.com/pingcap/tidb/issues/63447) [#64344](https://github.com/pingcap/tidb/issues/64344) @[YangKeao](https://github.com/YangKeao) @[winoros](https://github.com/winoros) @[wjhuang2016](https://github.com/wjhuang2016) <!--21903--> <!--2270--> <!--tw:qiancai-->
 
     从 v8.5.7 起，TiDB 支持部分索引。部分索引仅为满足索引 `WHERE` 子句中谓词条件的行创建索引项。你可以通过 `CREATE INDEX ... WHERE ...`、`ALTER TABLE ... ADD INDEX ... WHERE ...`，或在 `CREATE TABLE` 中定义索引的方式创建部分索引。
 
@@ -179,10 +179,6 @@ TiDB 版本：8.5.7
     - 在新初始化的集群中，通过为 `mysql.stats_*` 系统表使用聚簇主键来提升 `ANALYZE` 性能 [#66751](https://github.com/pingcap/tidb/issues/66751) @[0xPoe](https://github.com/0xPoe) <!-- component: planner -->
     - 改进优雅关闭处理，通过对 `COM_PING` 请求返回错误，让代理和负载均衡器能够检测到 TiDB server 正在关闭，并停止发送新连接 [#58007](https://github.com/pingcap/tidb/issues/58007) @[dveeden](https://github.com/dveeden) <!-- component: sql-infra -->
     - 加速包含大量生成列的表上的 `INSERT` 语句，显著提升宽表工作负载的性能 [#67916](https://github.com/pingcap/tidb/issues/67916) @[bb7133](https://github.com/bb7133) <!-- component: sql-infra -->
-    - 增强部分索引支持，使 TiDB 仅为满足部分索引条件的行写入索引项，并支持对带有部分索引的表执行 `ADMIN CHECK TABLE` [#62761](https://github.com/pingcap/tidb/issues/62761) @[YangKeao](https://github.com/YangKeao) <!-- component: sql-infra -->
-    - 支持部分索引，通过存储和校验索引谓词、在 `SHOW CREATE TABLE` 中展示这些谓词，并通过 `information_schema.tidb_indexes.PREDICATE` 暴露它们 [#62758](https://github.com/pingcap/tidb/issues/62758) @[YangKeao](https://github.com/YangKeao) <!-- component: sql-infra -->
-    - 支持在 `CREATE TABLE`、`CREATE INDEX` 和 `ALTER TABLE` 语句中使用带 `WHERE` 条件的部分索引语法 [#63447](https://github.com/pingcap/tidb/issues/63447) @[YangKeao](https://github.com/YangKeao) <!-- component: sql-infra -->
-    - 支持 TiDB planner 对部分索引的基础使用，使查询在简单场景下可以使用部分索引，从而提升带 `WHERE` 条件定义索引的查询规划能力 [#64344](https://github.com/pingcap/tidb/issues/64344) @[winoros](https://github.com/winoros) <!-- component: sql-infra, planner -->
     - 支持在 TiDB Dashboard 的 Slow Query 页面查看会话连接属性，包括可选的列表列和专用详情页签，同时兼容不提供该字段的早期 TiDB 版本 [#1899](https://github.com/pingcap/tidb-dashboard/issues/1899) @[yibin87](https://github.com/yibin87) <!-- component: tidb-dashboard -->
     - 改进事务时间戳校验，通过对非 TiDB 请求执行精确的 max-ts 检查，降低外部组件错误使用未来时间戳的风险 [#68799](https://github.com/pingcap/tidb/issues/68799) @[ekexium](https://github.com/ekexium) <!-- component: transaction -->
     - 优化自动提交的乐观事务，在首次执行时跳过锁解析，从而降低高冲突场景下的延迟 [#58675](https://github.com/pingcap/tidb/issues/58675) @[ekexium](https://github.com/ekexium) <!-- component: transaction -->
