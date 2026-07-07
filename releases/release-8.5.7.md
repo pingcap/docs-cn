@@ -65,6 +65,14 @@ TiDB 版本：8.5.7
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/dm-compatibility-catalog#外键级联操作)。
 
+* TiCDC 支持表路由 [#4941](https://github.com/pingcap/ticdc/issues/4941) @[3AceShowHand](https://github.com/3AceShowHand) <!--2471--><!--tw:qiancai-->
+
+    从 v8.5.7 起，TiCDC 新架构支持表路由功能。你可以在 Changefeed 的 `sink.dispatchers` 配置中使用 `target-schema` 和 `target-table`，将上游表映射到指定的下游库名或表名。
+
+    该功能适用于下游库表命名规范与上游不一致，或需要将多个源库同步到同一个目标库并保持目标表名唯一的场景。通过表路由，你可以为下游系统提供稳定且符合预期的目标库表名。
+
+    该功能仅适用于 TiCDC 新架构。更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/ticdc-table-routing)。
+
 ## 兼容性变更
 
 对于新部署的 TiDB v8.5.6 集群（即不是从早于 v8.5.5 的版本升级而来的集群），你可以平滑升级到 v8.5.7。v8.5.7 的大多数变更对常规升级是安全的，但本版本仍包含若干行为变更、MySQL 兼容性变更、系统变量变更、配置参数变更以及废弃功能。在升级前，请务必仔细阅读本节内容。
