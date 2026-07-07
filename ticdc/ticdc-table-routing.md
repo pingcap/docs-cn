@@ -43,8 +43,8 @@ Changefeed 启动后，`sales.orders` 的 DML 和 DDL 事件会写入下游的 `
 >
 > 同一个上游数据库中的不同表可以路由到不同的目标库。此类配置只适用于 DML 和表级 DDL。
 >
-> 对于 `CREATE DATABASE`、`DROP DATABASE` 和 `ALTER DATABASE` 这类库级 DDL，TiCDC 必须能根据路由规则确定唯一的目标库，否则该 DDL 同步会失败。
-> 如果要将同一个上游数据库中的不同表路由到不同的目标库，你需要提前创建下游目标库，并避免在上游执行需要自动同步的库级 DDL。
+> - 对于 `CREATE DATABASE`、`DROP DATABASE` 和 `ALTER DATABASE` 这类库级 DDL，TiCDC 必须能根据路由规则确定唯一的目标库，否则该 DDL 同步会失败。
+> - 如果要将同一个上游数据库中的不同表路由到不同的目标库，你需要提前创建下游目标库，并避免在上游执行需要自动同步的库级 DDL。
 
 ## 配置字段
 
