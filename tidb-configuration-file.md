@@ -180,8 +180,9 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 > **警告：**
 >
-> - 在 v8.1.0 到 v8.5.1 及其之间的版本中，TiDB 已移除遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。
-> - 从 v8.5.3 开始，TiDB 重新引入遥测功能，但其行为已更改为仅将遥测相关信息输出到日志文件，不再通过网络发送给 PingCAP。
+> - 在 v8.1.0 到 v8.5.2 及其之间的版本中，TiDB 已移除遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。
+> - 在 v8.5.3 到 v8.5.6 及其之间的版本中，TiDB 重新引入遥测功能，但其行为已更改为仅将遥测相关信息输出到日志文件，不再通过网络发送给 PingCAP。
+> - 从 v8.5.7 开始，TiDB 废弃了该配置项和遥测功能。
 
 + 用于控制是否在 TiDB 实例上开启遥测功能。
 + 默认值：false
@@ -346,7 +347,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 单位：秒
 + 在某些用户场景中，TiDB 日志可能是保存在热插拔盘或网络挂载盘上，这些磁盘可能会永久丢失。在这种场景下，TiDB 无法自动恢复，写日志操作会永久阻塞。尽管 TiDB 进程看起来仍在运行，但不会响应任何请求。该配置项用于处理这样的场景。
 
-## log.file
+### log.file
 
 日志文件相关的配置项。
 
@@ -656,17 +657,17 @@ opentracing 的相关的设置。
 + 开启 rpc metrics。
 + 默认值：false
 
-## opentracing.sampler
+### opentracing.sampler
 
 opentracing.sampler 相关的设置。
 
-### `type`
+#### `type`
 
 + opentracing 采样器的类型。字符串取值大小写不敏感。
 + 默认值："const"
 + 可选值："const"，"probabilistic"，"ratelimiting"，remote"
 
-### `param`
+#### `param`
 
 + 采样器参数。
     - 对于 const 类型，可选值为 0 或 1，表示是否开启。
@@ -675,41 +676,41 @@ opentracing.sampler 相关的设置。
     - 对于 remote 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
 + 默认值：1.0
 
-### `sampling-server-url`
+#### `sampling-server-url`
 
 + jaeger-agent 采样服务器的 HTTP URL 地址。
 + 默认值：""
 
-### `max-operations`
+#### `max-operations`
 
 + 采样器可追踪的最大操作数。如果一个操作没有被追踪，会启用默认的 probabilistic 采样器。
 + 默认值：0
 
-### `sampling-refresh-interval`
+#### `sampling-refresh-interval`
 
 + 控制远程轮询 jaeger-agent 采样策略的频率。
 + 默认值：0
 
-## opentracing.reporter
+### opentracing.reporter
 
 opentracing.reporter 相关的设置。
 
-### `queue-size`
+#### `queue-size`
 
 + reporter 在内存中记录 spans 个数的队列容量。
 + 默认值：0
 
-### `buffer-flush-interval`
+#### `buffer-flush-interval`
 
 + reporter 缓冲区的刷新频率。
 + 默认值：0
 
-### `log-spans`
+#### `log-spans`
 
 + 是否为所有提交的 span 打印日志。
 + 默认值：false
 
-### `local-agent-host-port`
+#### `local-agent-host-port`
 
 + reporter 向 jaeger-agent 发送 span 的地址。
 + 默认值：""
@@ -810,11 +811,11 @@ opentracing.reporter 相关的设置。
 + 用于控制给 TiKV 发送 RPC 请求时，是否使用新版本的 Region 副本选择器。
 + 默认值：true
 
-## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
+### tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
 本部分介绍 [Coprocessor Cache](/coprocessor-cache.md) 相关的配置项。
 
-### `capacity-mb`
+#### `capacity-mb`
 
 + 缓存的总数据量大小。当缓存空间满时，旧缓存条目将被逐出。值为 0.0 时表示关闭 Coprocessor Cache。
 + 默认值：1000.0
