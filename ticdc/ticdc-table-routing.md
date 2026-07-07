@@ -3,7 +3,7 @@ title: TiCDC 表路由
 summary: 了解 TiCDC 新架构中的表路由配置，包括如何通过 target-schema 和 target-table 改写下游库名和表名、如何处理 DDL 改写和路由冲突，以及如何排查常见问题。
 ---
 
-# TiCDC 表路由 <span class="version-mark">从 v8.5.7 版本开始引入</span>
+# TiCDC 表路由 <span class="version-mark">从 v8.5.7 开始引入</span>
 
 TiCDC 表路由 (Table Routing) 允许你通过 changefeed 配置，将上游表映射到指定的下游库名或表名。该功能仅适用于 [TiCDC 新架构](/ticdc/ticdc-architecture.md)，不支持 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)。
 
