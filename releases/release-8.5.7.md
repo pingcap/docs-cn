@@ -65,7 +65,7 @@ TiDB 版本：8.5.7
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/dm-compatibility-catalog#外键级联操作)。
 
-* TiCDC 支持表路由 [#4941](https://github.com/pingcap/ticdc/issues/4941) @[3AceShowHand](https://github.com/3AceShowHand) <!--2471--><!--tw:qiancai-->
+* TiCDC 支持表路由 [#4655](https://github.com/pingcap/ticdc/issues/4655) [#4941](https://github.com/pingcap/ticdc/issues/4941) @[3AceShowHand](https://github.com/3AceShowHand) <!--2471--><!--tw:qiancai-->
 
     从 v8.5.7 起，TiCDC 新架构支持表路由功能。你可以在 Changefeed 的 `sink.dispatchers` 配置中使用 `target-schema` 和 `target-table`，将上游表映射到指定的下游库名或表名。
 
@@ -234,7 +234,6 @@ TiDB 版本：8.5.7
         - 新增 Kafka sink URI 参数 `max-retry`，并默认对临时性的 Kafka producer send failure 启用有界重试，以提升 TiCDC Kafka sink 的稳定性 [#12655](https://github.com/pingcap/tiflow/issues/12655) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc -->
         - 为 TiCDC cloud storage sink 新增本地 spool，用于在刷新到外部存储前先将已接收的编码 DML 暂存在本地，从而在对象存储较慢时降低内存压力并提升稳定性 [#3745](https://github.com/pingcap/ticdc/issues/3745) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc -->
         - 支持 TiCDC 同步部分索引相关的 DDL 语句 [#3698](https://github.com/pingcap/ticdc/issues/3698) @[YangKeao](https://github.com/YangKeao) <!-- component: cdc -->
-        - 支持在 TiCDC 的 changefeed 级别配置表路由，包括在 dispatch rules 中自定义目标 schema 和目标表设置 [#4655](https://github.com/pingcap/ticdc/issues/4655) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc -->
         - 为 TiCDC blackhole sink 新增指标，以提升 changefeed 复制和 DDL 处理的可观测性 [#5362](https://github.com/pingcap/ticdc/issues/5362) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 优化 TiCDC log puller 性能，在处理 resolved-ts 密集型工作负载时，尤其是小批量场景下，降低 CPU 使用和内存分配 [#4697](https://github.com/pingcap/ticdc/issues/4697) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc -->
         - 优化 TiCDC MySQL sink 的冲突检测，以提升复制性能 [#4582](https://github.com/pingcap/ticdc/issues/4582) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
