@@ -11,7 +11,7 @@ aliases: ['/zh/tidb/stable/vector-search-integrate-with-jinaai-embedding/','/zh/
 > **注意：**
 >
 > - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)、[TiDB Cloud Essential](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#essential) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB Self-Managed 和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md)、[TiDB Cloud Starter](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter) 和 [TiDB Cloud Dedicated](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#tidb-cloud-dedicated)。对于 TiDB Self-Managed 和 TiDB Cloud Dedicated，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 ## 前置条件
 
@@ -61,11 +61,11 @@ pip install -r requirements.txt
 从 [Jina AI Embeddings API](https://jina.ai/embeddings/) 页面获取 Jina AI API key，然后根据你选择的 TiDB 部署方式配置环境变量。
 
 <SimpleTab>
-<div label="TiDB Cloud Starter or Essential">
+<div label="{{{ .starter }}}">
 
-对于 {{{ .starter }}} 或 Essential 实例，按以下步骤获取连接字符串并配置环境变量：
+对于 {{{ .starter }}} 实例，按以下步骤获取连接字符串并配置环境变量：
 
-1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击目标 {{{ .starter }}} 或 Essential 实例的名称进入其概览页。
+1. 进入 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击目标 {{{ .starter }}} 实例的名称进入其概览页。
 
 2. 点击右上角的 **Connect**，弹出连接对话框。
 
