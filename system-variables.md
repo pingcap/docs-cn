@@ -3782,7 +3782,7 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`OFF`
 - 该变量控制优化器是否对 `SELECT` 列表中包含子查询的所有查询应用 [`NO_DECORRELATE()`](/optimizer-hints.md#no_decorrelate) Hint。
 
-### `tidb_opt_enable_alternative_logical_plans` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
+### `tidb_opt_enable_alternative_logical_plans` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
