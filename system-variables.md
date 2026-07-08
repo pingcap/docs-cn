@@ -3968,7 +3968,7 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`OFF`
 - 该变量控制优化器是否在[关联子查询去关联](/correlated-subquery-optimization.md)场景中，额外构建一个“不去关联”的逻辑候选计划。
     - 默认情况下，TiDB 会优先尝试对关联子查询进行去关联改写。
-    - 开启该变量后，如果去关联后的候选计划没有生成与原始关联子查询保持相同访问方向的等价 `IndexJoin` 候选，优化器还会额外保留一个“不去关联”的候选计划。优化器会评估“去关联”和“不去关联”的候选计划，并选择两者之间代价更低的[执行计划](/explain-subqueries.md)。
+    - 开启该变量后，如果去关联后的候选计划未能生成与原始关联子查询访问方向相同的等价 `IndexJoin` 候选计划，优化器还会额外保留一个“不去关联”的候选计划。优化器会评估“去关联”和“不去关联”的候选计划，并选择两者之间代价更低的[执行计划](/explain-subqueries.md)。
 
 ### `tidb_opt_enable_semi_join_rewrite` <span class="version-mark">从 v8.5.4 和 v9.0.0 版本开始引入</span>
 
