@@ -138,7 +138,7 @@ TiDB 版本：8.5.7
 
 ## 废弃功能
 
-* 从 v8.5.7 开始，TiDB 和 TiDB Dashboard 中的 [telemetry](https://docs.pingcap.com/zh/tidb/v8.5/telemetry) 功能已废弃。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21750>;tw:lilin90-->
+* 从 v8.5.7 开始，TiDB 和 TiDB Dashboard 中的[遥测](https://docs.pingcap.com/zh/tidb/v8.5/telemetry)功能已废弃。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21750>;tw:lilin90-->
 
 ## 移除功能
 
