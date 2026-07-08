@@ -101,7 +101,9 @@ TiDB 版本：8.5.7
 | [`max_user_connections`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#max_user_connections-从-v857-版本开始引入) | 新增 | 用于控制单个用户在 TiDB server 实例上可建立的最大连接数。默认值为 `0`，表示不限制。如果该变量值超过 `max_connections`，TiDB 会使用 `max_connections` 作为实际限制。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21732>;tw:lilin90--> |
 | [`performance_schema_session_connect_attrs_size`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#performance_schema_session_connect_attrs_size-从-v857-版本开始引入) | 新增 | 用于控制每个会话连接属性的总大小上限。默认值为 `4096` 字节。当大小超过该限制时，TiDB 会截断超出的属性，并新增 `_truncated` 来表示被截断的字节数。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21577>;tw:lilin90--> |
 | [`tidb_enable_batch_query_region`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_batch_query_region-从-v857-版本开始引入) | 新增 | 用于控制 TiDB 是否通过 `QueryRegion` gRPC stream 向 PD 批量发起 Region 信息点查请求。默认值为 `OFF`。启用后，在某些场景下可以减少发送到 PD 的请求数量，并降低 PD leader 的 CPU 开销。 <!--pr:<https://github.com/pingcap/docs-cn/pull/20040>;tw:qiancai--> |
+| [`tidb_enable_cache_prepare_stmt`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_cache_prepare_stmt-从-v857-版本开始引入) | 新增 | 用于控制是否缓存 `Prepare` 语句的结果。默认值为 `OFF`。目前该变量为实验特性，不建议在生产环境中启用。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21776/files>;tw:qiancai--> |
 | [`tidb_enable_strict_not_null_check`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_strict_not_null_check-从-v857-版本开始引入) | 新增 | 用于控制当 `INSERT` 语句显式向 `NOT NULL` 列写入 `NULL` 值时，TiDB 是否执行严格校验。默认值为 `ON`。如果你的应用依赖此前写入隐式默认值的宽松行为，可以临时将该变量设置为 `OFF`，以降低升级兼容性风险。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21600>;tw:qiancai--> |
+| [`tidb_opt_enable_alternative_logical_plans`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_opt_enable_alternative_logical_plans-从-v857-版本开始引入) | 新增 | 用于控制优化器是否在关联子查询去关联场景中额外构建一个“不去关联”的逻辑候选计划。默认值为 `OFF`。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21775/files>;tw:qiancai--> |
 
 ### 配置参数
 
