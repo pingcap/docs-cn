@@ -2033,14 +2033,14 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 > **警告：**
 >
-> 目前该功能为实验特性，不建议在生产环境中打开。
+> 目前该变量为实验特性，不建议在生产环境中启用。该变量可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
-- 该变量来用控制是否缓存 prepare 语句的结果，正常的 prepare, execute 语句执行是一次 prepare，多次 execute，后续的所有 execute 都可以复用第一次 prepare 语句的结果。但是如果应用侧需要重复的发送 prepare 语句，可以打开此开关，这样相同的 prepare 语句结果会被缓存和复用，减少资源消耗。
+- 该变量用于控制是否缓存 `Prepare` 语句的结果。通常情况下，应用只需要执行一次 `Prepare`，然后多次执行 `Execute`，后续所有 `Execute` 都可以复用第一次 `Prepare` 生成的结果。如果应用需要重复发送相同的 `Prepare` 语句，可以开启该变量，这样 TiDB 可以缓存并复用相同 `Prepare` 语句的处理结果，从而减少资源消耗。
 
 
 ### `tidb_enable_gogc_tuner` <span class="version-mark">从 v6.4.0 版本开始引入</span>
