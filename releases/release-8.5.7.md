@@ -27,9 +27,11 @@ TiDB 版本：8.5.7
 
 ### 稳定性
 
-* 引入新的系统变量 `max_user_connections`，用于限制不同用户可建立的连接数 [#59203](https://github.com/pingcap/tidb/issues/59203) @[joccau](https://github.com/joccau) <!--2405--> <!--tw:lilin90-->
+* 支持限制 TiDB 实例中单个用户可建立的连接数 [#59203](https://github.com/pingcap/tidb/issues/59203) @[joccau](https://github.com/joccau) <!--2405--> <!--tw:lilin90-->
 
-    从 v8.5.7 开始，你可以使用系统变量 `max_user_connections` 限制单个用户在单个 TiDB server 实例上可建立的连接数。这有助于防止某个用户过度消耗 [token](https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file#token-limit)，从而导致其他用户请求响应被延迟。
+    从 v8.5.7 开始，你可以使用系统变量 `max_user_connections` 限制单个用户在单个 TiDB server 实例上可建立的最大连接数。这有助于防止某个用户过度消耗 [token](https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file#token-limit)，从而导致其他用户的请求响应出现延迟。
+
+    此外，你也可以在 `CREATE USER` 和 `ALTER USER` 语句中使用 `WITH MAX_USER_CONNECTIONS N` 限制对应用户允许登录的最大连接数。
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#max_user_connections-从-v857-版本开始引入)。
 
@@ -61,9 +63,9 @@ TiDB 版本：8.5.7
 
     从 v8.5.7 开始，当 `foreign_key_checks=1` 且 `syncer.worker-count > 1` 时，DM 支持静态一对一 schema/table 路由场景下的外键因果依赖。
 
-    在任务启动前，必须先创建下游 schema 和外键定义。该功能不支持多对一或分片合并路由、不支持复制过程中的动态外键 DDL、不支持 `compact` 或 `multiple-rows` DML boundary 选项，也不支持在 safe mode 下修改主键或唯一键值的 `UPDATE` 语句。启用外键因果依赖后，也不支持通过热更新方式修改 `worker-count`、`case-sensitive`、route rules、block-allow-list rules、binlog filter rules 或 `foreign_key_checks`。如果需要修改这些设置，请先停止任务，更新配置，再重新启动任务。
+    在同步任务启动前，必须先在下游创建目标 schema 和外键定义。该功能不支持多对一或分片合并路由，不支持同步过程中的动态外键 DDL，不支持 `syncer.compact` 或 `syncer.multiple-rows` 等会改变 DML 语句边界的选项，也不支持在 safe mode 下同步修改主键或唯一键值的 `UPDATE` 语句。启用外键因果依赖后，DM 也不支持通过热更新方式修改 `worker-count`、`case-sensitive`、route rules、block-allow-list rules、binlog filter rules 或 `foreign_key_checks`。如需修改这些配置，请先停止任务，更新配置后再重新启动任务。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/dm-compatibility-catalog#外键级联操作)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/dm-compatibility-catalog#外键-cascade-操作)。
 
 * TiCDC 支持表路由 [#4655](https://github.com/pingcap/ticdc/issues/4655) [#4941](https://github.com/pingcap/ticdc/issues/4941) [#4702](https://github.com/pingcap/ticdc/issues/4702) @[3AceShowHand](https://github.com/3AceShowHand) <!--2471--><!--tw:qiancai-->
 
