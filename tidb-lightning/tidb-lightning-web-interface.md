@@ -1,13 +1,26 @@
 ---
 title: TiDB Lightning Web 界面
-summary: 了解 TiDB Lightning 的服务器模式——通过 Web 界面来控制 TiDB Lightning。
+summary: 了解 TiDB Lightning Web 界面的移除以及推荐的替代方案。
 ---
 
 # TiDB Lightning Web 界面
 
 > **警告：**
 >
-> 从 v8.5.6 开始，TiDB Lightning Web 界面已废弃，并将在 v8.5.7 中移除。该 Web UI 自 v8.4.0 起已无法正常构建。请改用 [CLI](https://docs.pingcap.com/zh/tidb/v8.5/tidb-lightning-overview) 或 [`IMPORT INTO`](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-import-into) 语句。如果这对你的工作流程产生影响，请在 [#67697](https://github.com/pingcap/tidb/issues/67697) 中反馈。
+> 从 TiDB v8.5.7 开始，TiDB Lightning 不再支持 Web 界面。从 v8.5.6 开始，TiDB Lightning Web 界面已废弃。实际上，该 Web UI 自 v8.4.0 起已无法正常构建。
+
+要使用 TiDB Lightning 导入数据，请使用 TiDB Lightning 命令行工具：`tidb-lightning` 用于导入任务，`tidb-lightning-ctl` 用于 checkpoint 和故障排查操作。
+
+- 关于基本操作流程，参见 [TiDB Lightning 快速上手](/get-started-with-tidb-lightning.md)。
+- 关于命令行参数，参见 [TiDB Lightning 命令行参数](/tidb-lightning/tidb-lightning-command-line-full.md)。
+
+要检查导入进度，可以在 TiDB Lightning 日志中搜索 `progress` 关键字，或使用 [TiDB Lightning 监控面板](/tidb-lightning/monitor-tidb-lightning.md)。
+
+对于新的数据导入负载，你也可以使用 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 语句。
+
+> **注意：**
+>
+> 如果你使用的是仍带有 TiDB Lightning Web 界面的早期版本 TiDB，可以参考以下内容。
 
 TiDB Lightning 支持在网页上查看导入进度或执行一些简单任务管理，这就是 TiDB Lightning 的**服务器模式**。本文将介绍服务器模式下的 Web 界面和一些常见操作。
 
