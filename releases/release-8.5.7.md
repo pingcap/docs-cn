@@ -219,7 +219,7 @@ TiDB 版本：8.5.7
 
         - 优化 TiCDC event store 的写入路径和 iterator 路径，以减少内存分配并提升事件处理性能 [#4928](https://github.com/pingcap/ticdc/issues/4928) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
         - 移除 TiCDC 对 `tidb_ddl_history` 的依赖，转而依赖 `tidb_ddl_job` 来捕获 DDL，以支持加速表创建 [#2272](https://github.com/pingcap/ticdc/issues/2272) @[wlwilliamx](https://github.com/wlwilliamx) <!-- component: cdc -->
-        - 优化 TiCDC 热路径，以降低 CPU 开销并提升高吞吐场景下的复制性能 [#5107](https://github.com/pingcap/ticdc/issues/5107) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
+        - 优化 TiCDC 热路径，以降低 CPU 开销并提升高吞吐场景下的同步性能 [#5107](https://github.com/pingcap/ticdc/issues/5107) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
         - 新增 redo checkpoint 和 resolved timestamp 指标，以提升 TiCDC redo log 进度的可观测性 [#5264](https://github.com/pingcap/ticdc/issues/5264) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 通过避免持久化未变化的运行时状态，缓解大量 TiCDC changefeed 进入 warning 状态时的 etcd 压力 [#5268](https://github.com/pingcap/ticdc/issues/5268) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 增强 TiCDC 监控，在 Changefeed Error Details Grafana 面板中展示错误发生时间，帮助运维人员更高效地诊断 changefeed 故障 [#5085](https://github.com/pingcap/ticdc/issues/5085) @[wlwilliamx](https://github.com/wlwilliamx) <!-- component: cdc -->
@@ -230,9 +230,9 @@ TiDB 版本：8.5.7
         - 新增 Kafka sink URI 参数 `max-retry`，并默认对临时性的 Kafka producer send failure 启用有界重试，以提升 TiCDC Kafka sink 的稳定性 [#12655](https://github.com/pingcap/tiflow/issues/12655) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc -->
         - 为 TiCDC cloud storage sink 新增本地 spool，用于在刷新到外部存储前先将已接收的编码 DML 暂存在本地，从而在对象存储较慢时降低内存压力并提升稳定性 [#3745](https://github.com/pingcap/ticdc/issues/3745) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc -->
         - 支持 TiCDC 同步部分索引相关的 DDL 语句 [#3698](https://github.com/pingcap/ticdc/issues/3698) @[YangKeao](https://github.com/YangKeao) <!-- component: cdc -->
-        - 为 TiCDC blackhole sink 新增指标，以提升 changefeed 复制和 DDL 处理的可观测性 [#5362](https://github.com/pingcap/ticdc/issues/5362) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
+        - 为 TiCDC blackhole sink 新增指标，以提升 changefeed 同步和 DDL 处理的可观测性 [#5362](https://github.com/pingcap/ticdc/issues/5362) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 优化 TiCDC log puller 性能，在处理 resolved-ts 密集型工作负载时，尤其是小批量场景下，降低 CPU 使用和内存分配 [#4697](https://github.com/pingcap/ticdc/issues/4697) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc -->
-        - 优化 TiCDC MySQL sink 的冲突检测，以提升复制性能 [#4582](https://github.com/pingcap/ticdc/issues/4582) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
+        - 优化 TiCDC MySQL sink 的冲突检测，以提升同步性能 [#4582](https://github.com/pingcap/ticdc/issues/4582) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 提升 TiCDC resolve lock 的可观测性，并避免对同一 Region 重复执行 resolve 尝试，以减少不必要的锁解析工作，并通过新增指标和 dashboard 让问题排查更容易 [#5016](https://github.com/pingcap/ticdc/issues/5016) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
         - 在 TiCDC Grafana dashboard 中新增 Changefeed Operation History 面板，帮助排查最近由用户触发的 changefeed 操作，例如 create、update、pause、resume 和 delete [#5087](https://github.com/pingcap/ticdc/issues/5087) @[wlwilliamx](https://github.com/wlwilliamx) <!-- component: cdc -->
         - 支持解析和同步使用部分索引的 DDL 语句，包括带有 `WHERE` 子句的 `CREATE TABLE`、`CREATE INDEX` 和 `ALTER TABLE ... ADD INDEX` [#12503](https://github.com/pingcap/tiflow/issues/12503) @[YangKeao](https://github.com/YangKeao) <!-- component: cdc -->
@@ -302,7 +302,7 @@ TiDB 版本：8.5.7
     - 修复在高并发场景下，由于 token bucket 累积了过多令牌，PD 资源管控限速可能被削弱的问题 [#10744](https://github.com/tikv/pd/issues/10744) @[YuhaoZhang00](https://github.com/YuhaoZhang00) <!-- component: pd -->
     - 修复在重置 token bucket notification timer 时，resource group client controller 中发生 goroutine 泄漏的问题 [#9745](https://github.com/tikv/pd/issues/9745) @[lhy1024](https://github.com/lhy1024) <!-- component: pd -->
     - 修复当配置的 RU 填充速率远高于实际 RU 消耗时，发往 resource group 的 SQL 请求可能出现约 1 秒延迟尖峰的问题 [#10251](https://github.com/tikv/pd/issues/10251) @[JmPotato](https://github.com/JmPotato) <!-- component: pd --> <!--2413 -->
-    - 修复当 placement rules 要求的最高隔离级别未满足时，PD affinity scheduling 仍可能将 Region 误判为已正确复制，导致错误副本放置决策的问题 [#10149](https://github.com/tikv/pd/issues/10149) @[HunDunDM](https://github.com/HunDunDM) <!-- component: pd -->
+    - 修复当 placement rules 要求的最高隔离级别未满足时，PD affinity scheduling 仍可能将 Region 误判为已正确同步，导致错误副本放置决策的问题 [#10149](https://github.com/tikv/pd/issues/10149) @[HunDunDM](https://github.com/HunDunDM) <!-- component: pd -->
     - 修复当 region heartbeat breakdown 指标遇到主机 monotonic clock 短暂回退时，PD 可能因 `counter cannot decrease in value` 错误而 panic 的问题 [#10901](https://github.com/tikv/pd/issues/10901) @[JmPotato](https://github.com/JmPotato) <!-- component: pd -->
     - 修复当未配置 affinity groups 时，PD 错误上报 affinity checker operator limit 指标的问题 [#10687](https://github.com/tikv/pd/issues/10687) @[lhy1024](https://github.com/lhy1024) <!-- component: pd -->
     - 修复除非显式设置 `PD-Allow-Follower-Handle: true` 请求头，否则 PD follower 无法从本地已同步 Region cache 提供只读 region HTTP API 的问题 [#10681](https://github.com/tikv/pd/issues/10681) @[okJiang](https://github.com/okJiang) <!-- component: pd -->
@@ -343,8 +343,8 @@ TiDB 版本：8.5.7
         - 修复当较晚的 changefeed remove 请求到达时，如果较早的 close 请求仍在处理中，TiCDC 可能跳过下游 remove-only 清理的问题 [#4825](https://github.com/pingcap/ticdc/issues/4825) @[hongyunyan](https://github.com/hongyunyan) <!-- component: cdc -->
         - 修复当下游返回非标准 missing-table 错误码且 `tidb_cdc.ddl_ts_v1` 缺失时，TiCDC MySQL-compatible sink 可能卡住的问题 [#5003](https://github.com/pingcap/ticdc/issues/5003) @[hongyunyan](https://github.com/hongyunyan) <!-- component: cdc -->
         - 修复当 Kafka sink 初始化失败或 sink 被关闭时，TiCDC 可能泄漏 Kafka client 连接和后台资源的问题 [#12572](https://github.com/pingcap/tiflow/issues/12572) @[wlwilliamx](https://github.com/wlwilliamx) <!-- component: cdc -->
-        - 修复在复制大量活跃表时，TiCDC resolved-ts 延迟和 CPU 使用率可能周期性升高的问题 [#4887](https://github.com/pingcap/ticdc/issues/4887) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
-        - 修复当本地 EventService 移除 dispatcher 后 collector 又在本地重新注册该 dispatcher 时，TiCDC 复制可能停滞的问题 [#5088](https://github.com/pingcap/ticdc/issues/5088) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
+        - 修复在同步大量活跃表时，TiCDC resolved-ts 延迟和 CPU 使用率可能周期性升高的问题 [#4887](https://github.com/pingcap/ticdc/issues/4887) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
+        - 修复当本地 EventService 移除 dispatcher 后 collector 又在本地重新注册该 dispatcher 时，TiCDC 同步可能停滞的问题 [#5088](https://github.com/pingcap/ticdc/issues/5088) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
         - 修复在初始化 TiCDC Pulsar sink 且 producer 初始化失败时可能发生 panic 的问题 [#4937](https://github.com/pingcap/ticdc/issues/4937) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 修复路径被移除后，TiCDC 仍可能保留不准确的内存计数，从而导致 dynstream 中出现错误 pause 或 release 反馈的问题 [#4644](https://github.com/pingcap/ticdc/issues/4644) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc -->
         - 修复 TiCDC 在优雅处理 `SIGTERM` 关闭时以 code 1 退出的问题 [#4563](https://github.com/pingcap/ticdc/issues/4563) @[pingyu](https://github.com/pingyu) <!-- component: cdc -->
@@ -352,7 +352,7 @@ TiDB 版本：8.5.7
         - 修复 TiCDC 在应用包含 `CURRENT_TIMESTAMP` 等时间相关默认值列的 redo DDL 事件时可能发生 panic 的问题 [#4699](https://github.com/pingcap/ticdc/issues/4699) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 修复当多个 TiCDC 集群共享同一 PD/etcd 且 cluster ID 存在前缀关系时，TiCDC 在重启后可能加载其他集群 changefeed 的问题 [#4756](https://github.com/pingcap/ticdc/issues/4756) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 修复 TiCDC 在 bootstrap 和 failover 期间 redo readiness 中的数据竞争问题，该问题可能导致 failover 任务上报 `DATA RACE` 告警 [#4402](https://github.com/pingcap/ticdc/issues/4402) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc -->
-        - 修复当未显式指定源数据库名时，TiCDC 无法复制跨库 `RENAME TABLE` 操作的问题 [#4424](https://github.com/pingcap/ticdc/issues/4424) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
+        - 修复当未显式指定源数据库名时，TiCDC 无法同步跨库 `RENAME TABLE` 操作的问题 [#4424](https://github.com/pingcap/ticdc/issues/4424) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
         - 修复当 log puller 遇到临时性 gRPC `EOF` 错误时，TiCDC changefeed 可能失败或卡住的问题 [#4880](https://github.com/pingcap/ticdc/issues/4880) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
         - 修复当同步超大数量表时，TiCDC changefeed 初始化缓慢且 maintainer 延迟过高的问题 [#4951](https://github.com/pingcap/ticdc/issues/4951) @[hongyunyan](https://github.com/hongyunyan) <!-- component: cdc -->
         - 修复查询不存在 changefeed 时，TiCDC CLI 不返回错误的问题 [#4648](https://github.com/pingcap/ticdc/issues/4648) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
@@ -360,7 +360,7 @@ TiDB 版本：8.5.7
         - 修复在 bootstrap 失败后，TiCDC 重试 maintainer bootstrap 时可能发生 panic 的问题，现在 changefeed 会上报原始错误而不是直接崩溃 [#4509](https://github.com/pingcap/ticdc/issues/4509) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 修复在 stale lock 解析期间，TiCDC 可能留下未解析的 shared lock，从而影响 nextgen 部署中 shared-lock 的兼容性问题 [#5206](https://github.com/pingcap/ticdc/issues/5206) @[wfxr](https://github.com/wfxr) <!-- component: cdc -->
         - 修复 dispatcher 被移除后，TiCDC 仍可能意外重新调度该 dispatcher 的问题 [#4874](https://github.com/pingcap/ticdc/issues/4874) @[wlwilliamx](https://github.com/wlwilliamx) <!-- component: cdc -->
-        - 修复在重启后，如果重新创建的 dispatcher 从过期 checkpoint 启动，TiCDC 可能留下数据复制缺口的问题 [#3846](https://github.com/pingcap/ticdc/issues/3846) @[hongyunyan](https://github.com/hongyunyan) <!-- component: cdc -->
+        - 修复在重启后，如果重新创建的 dispatcher 从过期 checkpoint 启动，TiCDC 可能留下数据同步缺口的问题 [#3846](https://github.com/pingcap/ticdc/issues/3846) @[hongyunyan](https://github.com/hongyunyan) <!-- component: cdc -->
         - 修复处理 coordinator 消息时，TiCDC 可能卡住并失去响应的问题 [#4440](https://github.com/pingcap/ticdc/issues/4440) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 修复 create、pause 和 remove changefeed 操作在请求上下文被取消后，仍可能长时间挂起或卡住的问题 [#4417](https://github.com/pingcap/ticdc/issues/4417) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 修复在 log pulling 期间处理 fast region error 或 replication worker shutdown 时可能发生 panic 的问题 [#4472](https://github.com/pingcap/ticdc/issues/4472) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
@@ -369,18 +369,18 @@ TiDB 版本：8.5.7
         - 修复在关闭过程中仍有任务被提交或重新调度时，TiCDC thread pool 关闭可能卡住的问题 [#4640](https://github.com/pingcap/ticdc/issues/4640) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 修复在某些 DDL（如 `CREATE TABLE ... LIKE ...`）场景下，当 dispatcher 的 `WAITING` 状态被 maintainer 暂时忽略时，TiCDC 需要等待约 5 秒才推进 barrier 的问题 [#4810](https://github.com/pingcap/ticdc/issues/4810) @[zier-one](https://github.com/zier-one) <!-- component: cdc -->
         - 修复在暂停并恢复大量 changefeed 后，TiCDC changefeed 延迟增加且 CPU 使用率升高的问题 [#4653](https://github.com/pingcap/ticdc/issues/4653) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
-        - 修复当未显式指定源表 schema 时，TiCDC 无法复制跨库 `CREATE TABLE ... LIKE` 语句的问题 [#5025](https://github.com/pingcap/ticdc/issues/5025) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
-        - 修复当视图定义中使用未限定的源表名时，TiCDC 复制跨 schema `CREATE VIEW` 语句可能出错，导致下游复制失败或视图引用错误表的问题 [#5026](https://github.com/pingcap/ticdc/issues/5026) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
+        - 修复当未显式指定源表 schema 时，TiCDC 无法同步跨库 `CREATE TABLE ... LIKE` 语句的问题 [#5025](https://github.com/pingcap/ticdc/issues/5025) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
+        - 修复当视图定义中使用未限定的源表名时，TiCDC 同步跨 schema `CREATE VIEW` 语句可能出错，导致下游同步失败或视图引用错误表的问题 [#5026](https://github.com/pingcap/ticdc/issues/5026) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
         - 修复在 PD 节点扩缩容后，TiCDC 使用错误 etcd endpoint，导致已移除 PD 成员被重复加回的问题 [#12368](https://github.com/pingcap/tiflow/issues/12368) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 修复当提交无效 global checkpoint 时，TiCDC redo dispatcher 可能卡在 `Initializing` 状态，导致 redo 元数据停止推进的问题 [#4703](https://github.com/pingcap/ticdc/issues/4703) @[hongyunyan](https://github.com/hongyunyan) <!-- component: cdc -->
         - 修复处理超大数量表时，TiCDC changefeed 初始化缓慢的问题 [#5014](https://github.com/pingcap/ticdc/issues/5014) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
         - 修复在最后一个 changefeed 被移除后，TiCDC 仍可能在 PD 中残留过期集群级 service GC safepoint，从而阻塞上游 GC 推进的问题 [#4610](https://github.com/pingcap/ticdc/issues/4610) @[hongyunyan](https://github.com/hongyunyan) <!-- component: cdc -->
         - 修复当 `MultipleTableInfos` 非空时，TiCDC 可能无法正确解码或错误处理多表 DDL 事件的问题 [#4415](https://github.com/pingcap/ticdc/issues/4415) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc -->
-        - 修复 TiCDC 在复制 `EXCHANGE PARTITION` DDL 语句时，会破坏包含转义反引号的分区名的问题 [#4450](https://github.com/pingcap/ticdc/issues/4450) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
-        - 修复在并发更新 subscription checkpoint 时，TiCDC 可能在 event store 中生成乱序 checkpoint 更新，导致复制进度跟踪不一致的问题 [#4992](https://github.com/pingcap/ticdc/issues/4992) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
+        - 修复 TiCDC 在同步 `EXCHANGE PARTITION` DDL 语句时，会破坏包含转义反引号的分区名的问题 [#4450](https://github.com/pingcap/ticdc/issues/4450) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
+        - 修复在并发更新 subscription checkpoint 时，TiCDC 可能在 event store 中生成乱序 checkpoint 更新，导致同步进度跟踪不一致的问题 [#4992](https://github.com/pingcap/ticdc/issues/4992) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
         - 修复当 EventCollector 在关闭期间仍接收消息时，TiCDC 可能发生死锁并阻塞清理的问题 [#4434](https://github.com/pingcap/ticdc/issues/4434) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
-        - 修复在复制匿名 `ADD INDEX` DDL 语句时，TiCDC 可能在下游生成不一致索引名的问题，尤其是在重试或复制 `CREATE TABLE LIKE` 场景下 [#2327](https://github.com/pingcap/ticdc/issues/2327) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
-        - 修复当连接 watchdog 中止后，TiCDC 可能保留过期 CDC 连接，导致连接清理延迟，并在 sink 内存耗尽时使 changefeed 复制卡住的问题 [#19610](https://github.com/tikv/tikv/issues/19610) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
+        - 修复在同步匿名 `ADD INDEX` DDL 语句时，TiCDC 可能在下游生成不一致索引名的问题，尤其是在重试或同步 `CREATE TABLE LIKE` 场景下 [#2327](https://github.com/pingcap/ticdc/issues/2327) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
+        - 修复当连接 watchdog 中止后，TiCDC 可能保留过期 CDC 连接，导致连接清理延迟，并在 sink 内存耗尽时使 changefeed 同步卡住的问题 [#19610](https://github.com/tikv/tikv/issues/19610) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 修复 TiCDC 中重新注册的 capture 在重新上线后，仍可能因过期的延迟删除 tombstone 再次被移除的问题 [#4695](https://github.com/pingcap/ticdc/issues/4695) @[hongyunyan](https://github.com/hongyunyan) <!-- component: cdc -->
 
     + Dumpling
