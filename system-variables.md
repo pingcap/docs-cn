@@ -2042,7 +2042,6 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`OFF`
 - 该变量用于控制是否缓存 `Prepare` 语句的结果。通常情况下，应用只需要执行一次 `Prepare`，然后多次执行 `Execute`，后续所有 `Execute` 都可以复用第一次 `Prepare` 生成的结果。如果你的应用会重复发送相同的 `Prepare` 语句，可以开启该变量，这样 TiDB 可以缓存并复用相同 `Prepare` 语句的处理结果，从而减少资源消耗。
 
-
 ### `tidb_enable_gogc_tuner` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
