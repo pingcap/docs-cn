@@ -2043,7 +2043,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 > **警告：**
 >
-> 是否针对 prepare 进行 plan cache 缓存
+> 目前该功能为实验特性，不建议在生产环境中打开。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
