@@ -20,6 +20,8 @@ TiDB 之所以要进行这样的改写，是因为关联子查询每次子查询
 
 因此，在外部的值比较少的情况下，不解除关联依赖反而可能对执行性能更有帮助。这时可以通过使用 Optimizer Hint [`NO_DECORRELATE`](/optimizer-hints.md#no_decorrelate) 或[优化规则及表达式下推的黑名单](/blocklist-control-plan.md)中关闭“子查询去关联”优化规则的方式来关闭这个优化。在一般情况下，推荐使用 Optimizer Hint 并在需要时配合[执行计划管理](/sql-plan-management.md)功能来禁止解除关联。
 
+从 v8.5.7 起，你还可以使用系统变量 [`tidb_opt_enable_alternative_logical_plans`](/system-variables.md#tidb_opt_enable_alternative_logical_plans-从-v857-和-v900-版本开始引入) 来优化这类场景。开启后，如果[关联子查询去关联](/correlated-subquery-optimization.md)后的候选计划没有生成与原始关联子查询保持相同访问方向的等价 `IndexJoin` 候选，优化器会额外保留一个“不去关联”的候选计划，并同时评估“去关联”和“不去关联”两类候选计划，最终选择代价更低的[执行计划](/explain-subqueries.md)。
+
 ## 样例
 
 {{< copyable "sql" >}}
