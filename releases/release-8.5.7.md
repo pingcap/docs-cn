@@ -37,15 +37,15 @@ TiDB 版本：8.5.7
 
 ### SQL 功能
 
-* 支持部分索引，以降低索引存储成本，减少 DML 维护开销 [#62664](https://github.com/pingcap/tidb/issues/62444) [#62761](https://github.com/pingcap/tidb/issues/62761) [#62758](https://github.com/pingcap/tidb/issues/62758) [#63447](https://github.com/pingcap/tidb/issues/63447) [#64344](https://github.com/pingcap/tidb/issues/64344) @[YangKeao](https://github.com/YangKeao) @[winoros](https://github.com/winoros) @[wjhuang2016](https://github.com/wjhuang2016) <!--21903--> <!--2270--> <!--tw:qiancai-->
+* 支持部分索引，以降低索引存储成本，减少 DML 维护开销 [#62664](https://github.com/pingcap/tidb/issues/62664) [#62761](https://github.com/pingcap/tidb/issues/62761) [#62758](https://github.com/pingcap/tidb/issues/62758) [#63447](https://github.com/pingcap/tidb/issues/63447) [#64344](https://github.com/pingcap/tidb/issues/64344) @[YangKeao](https://github.com/YangKeao) @[winoros](https://github.com/winoros) @[wjhuang2016](https://github.com/wjhuang2016) <!--21903--> <!--2270--> <!--tw:qiancai-->
 
     从 v8.5.7 起，TiDB 支持部分索引。部分索引仅为满足索引 `WHERE` 子句中谓词条件的行创建索引项。你可以通过 `CREATE INDEX ... WHERE ...`、`ALTER TABLE ... ADD INDEX ... WHERE ...`，或在 `CREATE TABLE` 中定义索引的方式创建部分索引。
 
     当你经常需要查询符合特定条件的部分行时，或者需要仅在特定条件下生效的唯一约束时，部分索引会非常有用。由于不满足谓词条件的行不会被写入索引，部分索引有助于节省索引存储空间，同时降低 `INSERT`、`UPDATE` 和 `DELETE` 操作期间的索引维护成本。
 
-    为了更有效地使用部分索引，在定义部分索引时，建议使用与你常用查询的过滤条件相匹配的谓词。只有当查询中国的谓词与部分索引的谓词匹配或满足部分索引的谓词条件时，TiDB 才会选择使用部分索引。目前，部分索引谓词支持基本比较运算符（`=`、`!=`、`<`、`<=`、`>`、`>=`）、`IS NULL`、`IS NOT NULL`，以及带常量值的 `IN` 谓词。
+    为了更有效地使用部分索引，在定义部分索引时，建议使用与你常用查询的过滤条件相匹配的谓词。只有当查询中的谓词与部分索引的谓词匹配或满足部分索引的谓词条件时，TiDB 才会选择使用部分索引。目前，部分索引谓词支持基本比较运算符（`=`、`!=`、`<`、`<=`、`>`、`>=`）、`IS NULL`、`IS NOT NULL`，以及带常量值的 `IN` 谓词。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-create-index/#部分索引-从-v857-开始引入)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-create-index#部分索引-从-v857-开始引入)。
 
 ### 可观测性
 
@@ -77,7 +77,7 @@ TiDB 版本：8.5.7
 
 ## 兼容性变更
 
-对于新部署的 TiDB v8.5.6 集群（即不是从早于 v8.5.5 的版本升级而来的集群），你可以平滑升级到 v8.5.7。v8.5.7 的大多数变更对常规升级是安全的，但本版本仍包含若干行为变更、MySQL 兼容性变更、系统变量变更、配置参数变更以及废弃功能。在升级前，请务必仔细阅读本节内容。
+对于新部署的 TiDB v8.5.6 集群（即不是从之前的版本升级而来的 v8.5.6 集群），你可以平滑升级到 v8.5.7。v8.5.7 的大多数变更对常规升级是安全的，但本版本仍包含若干行为变更、MySQL 兼容性变更、系统变量变更、配置参数变更以及废弃功能。在升级前，请务必仔细阅读本节内容。
 
 ### 行为变更
 
@@ -86,9 +86,9 @@ TiDB 版本：8.5.7
 
 ### MySQL 兼容性
 
-* 支持解析横向派生表的 `LATERAL` 语法，以提升与 MySQL 8.0 的兼容性，支持包括用逗号连接、`CROSS JOIN LATERAL` 和 `INNER JOIN LATERAL` 等常见用法 <!--2432--><!--tw:qiancai-->
+* 支持解析横向派生表的 `LATERAL` 语法，以提升与 MySQL 8.0 的兼容性，包括用逗号连接、`CROSS JOIN LATERAL` 和 `INNER JOIN LATERAL` 等常见用法 <!--2432--><!--tw:qiancai-->
 
-    当前，TiDB 仅支持解析 [`LATERAL` 派生表语法](https://docs.pingcap.com/zh/tidb/v8.5/lateral-derived-tables)，暂不支持执行使用该语法的查询。如果你尝试执行此类查询，TiDB 会返回错误。你可以在 issue [#40328](https://github.com/pingcap/tidb/issues/40328) 中跟踪该功能完整执行支持的进展。
+    当前，TiDB 仅支持解析 [`LATERAL` 派生表语法](https://docs.pingcap.com/zh/tidb/v8.5/lateral-derived-tables)，暂不支持执行使用该语法的查询。如果你尝试执行此类查询，TiDB 会返回错误。你可以在 issue [#40328](https://github.com/pingcap/tidb/issues/40328) 中跟踪该功能完整执行能力的进展。
 
 * 支持在 `CREATE USER` 和 `ALTER USER` 中使用 `WITH MAX_USER_CONNECTIONS N`，以提升与 MySQL 的兼容性。TiDB 同时在 `mysql.user` 中新增 `max_user_connections` 列，并允许你使用 `max_user_connections` 系统变量控制单个用户在 TiDB server 实例上可建立的最大连接数。 <!--pr:<https://github.com/pingcap/docs-cn/pull/19898>;tw:lilin90-->
 
@@ -111,7 +111,7 @@ TiDB 版本：8.5.7
 
 | 配置文件或组件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| TiDB | [`enable-telemetry`](https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) | 废弃 | 从 v8.5.7 开始，TiDB 废弃该配置项及 telemetry 功能。该配置项仅为兼容性而保留，不再推荐使用。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21750>;tw:lilin90--> |
+| TiDB | [`enable-telemetry`](https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file#enable-telemetry-从-v402-版本开始引入) | 废弃 | 从 v8.5.7 开始，TiDB 废弃该配置项及 telemetry 功能。该配置项仅为兼容性而保留，不再推荐使用。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21750>;tw:lilin90--> |
 | TiKV | [`backup.gcp-v2-enable`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#backupgcp-v2-enable-从-v857-版本开始引入) | 新增 | 用于控制 TiKV 在 GCS 全量备份与恢复中是否使用 `gcp_v2` 外部存储后端。默认值为 `true`。启用时，TiKV 使用 `gcp_v2`；关闭时，TiKV 使用旧版 GCS 实现。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21469>;tw:lilin90--> |
 | TiKV | [`log-backup.gcp-v2-enable`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#log-backupgcp-v2-enable-从-v857-版本开始引入) | 新增 | 用于控制 TiKV 在 GCS 日志备份中是否使用 `gcp_v2` 外部存储后端。默认值为 `true`。启用时，TiKV 使用 `gcp_v2`；关闭时，TiKV 使用旧版 GCS 实现。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21469>;tw:lilin90--> |
 | TiKV | [`resource-control.admission-max-delayed-count`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#admission-max-delayed-count-从-v857-版本开始引入) | 新增 | 用于指定 TiKV 在准入控制延迟队列中可保留的最大并发请求数（读写合计）。默认值为 `10000`。将该值设置为 `0` 表示并发延迟数不受限制。 <!--pr:<https://github.com/pingcap/docs-cn/pull/21754/files>;tw:lilin90--> |
@@ -134,7 +134,7 @@ TiDB 版本：8.5.7
 ### 编译器版本
 
 * 为了提升 TiDB 性能，TiDB 的 Go 编译器版本从 go1.25.8 升级到了 go1.25.10。如果你是 TiDB 的开发者，为了确保顺利编译，请对应升级你的 Go 编译器版本。 [#953](https://github.com/PingCAP-QE/artifacts/pull/953) @[wuhuizuo](https://github.com/wuhuizuo) <!--2468--> <!--tw:lilin90-->
-* 为了提升 TiKV 性能，TiKV v8.5 的 Rust 编译器版本从 nightly-2023-12-28 升级到了 nightly-2025-02-28。如果你是 TiKV 的开发者，为了确保顺利编译，请对应升级你的 Rust 编译器版本。
+* 为了提升 TiKV 性能，TiKV 的 Rust 编译器版本从 nightly-2023-12-28 升级到了 nightly-2025-02-28。如果你是 TiKV 的开发者，为了确保顺利编译，请对应升级你的 Rust 编译器版本。
 
 ## 废弃功能
 
@@ -155,7 +155,7 @@ TiDB 版本：8.5.7
 + TiDB
 
     - 提升包含 `OR` 和 `IN` 条件的 `ORDER BY ... LIMIT` 查询性能。优化器现在可以更有效地选择 `IndexMerge`，并支持在 `IndexMerge` 的 `IN` 条件路径上使用 merge sort，从而将 `Limit` 下推到部分路径，减少不必要的行读取和 I/O 开销 [#65712](https://github.com/pingcap/tidb/issues/65712) @[time-and-fate](https://github.com/time-and-fate) <!-- component: planner --> <!--2262--> <!--tw:qiancai-->
-    - 改进慢查询可观测性，在 slow query log 中记录客户端连接属性，并可在 `INFORMATION_SCHEMA.SLOW_QUERY` 和 `INFORMATION_SCHEMA.CLUSTER_SLOW_QUERY` 中查询这些属性；`PERFORMANCE_SCHEMA_SESSION_CONNECT_ATTRS_SIZE` 现用于控制属性截断，并将被截断的字节数记录在 `_truncated` 中 [#66616](https://github.com/pingcap/tidb/issues/66616) @[jiong-nba](https://github.com/jiong-nba) <!-- component: observability --> <!--2374--> <!--tw:lilin90-->
+    - 改进慢查询可观测性，在 slow query log 中记录客户端连接属性，并可在 `INFORMATION_SCHEMA.SLOW_QUERY` 和 `INFORMATION_SCHEMA.CLUSTER_SLOW_QUERY` 中查询这些属性；`performance_schema_session_connect_attrs_size` 现用于控制属性截断，并将被截断的字节数记录在 `_truncated` 中 [#66616](https://github.com/pingcap/tidb/issues/66616) @[jiong-nba](https://github.com/jiong-nba) <!-- component: observability --> <!--2374--> <!--tw:lilin90-->
     - 新增系统变量 `tidb_enable_strict_not_null_check`，用于控制 TiDB 是否对单行 `INSERT` 语句执行严格的 `NOT NULL` 检查，从而帮助依赖此前非严格行为的工作负载降低升级风险 [#68108](https://github.com/pingcap/tidb/issues/68108) @[xhebox](https://github.com/xhebox) <!-- component: sql-infra --> <!--2459-->
     - 提升 runaway query watch 处理的性能和稳定性，包括更可靠的 TiDB 实例间 watch 同步，以及更高效的后台 flush 和 sync [#65746](https://github.com/pingcap/tidb/issues/65746) @[JmPotato](https://github.com/JmPotato) <!-- component: pd (Although it is listed under the PD component label, in fact it only involves changes on the TiDB side )--> <!--2385-->
     - 新增全局系统变量 `tidb_enable_batch_query_region`，用于控制 TiDB 是否向 PD 批量查询 Region 信息，从而提升获取 Region 信息的效率；该变量默认关闭 [#58439](https://github.com/pingcap/tidb/issues/58439) [#8690](https://github.com/tikv/pd/issues/8690) @[JmPotato](https://github.com/JmPotato) <!-- component: pd (this is only a change on the TiDB side,) --> <!--2463-->
@@ -330,7 +330,7 @@ TiDB 版本：8.5.7
 
         - 修复即使指定了 `--check-requirements=false`，BR restore 仍会因版本兼容性检查失败而无法继续执行的问题 [#67402](https://github.com/pingcap/tidb/issues/67402) @[RidRisR](https://github.com/RidRisR) <!-- component: br -->
         - 修复当 lock file 位于存储根目录时，BR `log truncate` 在兼容 S3 的存储中可能失败的问题 [#65897](https://github.com/pingcap/tidb/issues/65897) @[YuJuncen](https://github.com/YuJuncen) <!-- component: br -->
-        - 修复当备份中包含大量 `mDB:*` 元键多个版本时，BR PITR 在恢复元数据期间可能耗尽内存的问题 [#67196](https://github.com/pingcap/tidb/issues/67196) @[vldmit](https://github.com/vldmit) <!-- component: br -->
+        - 修复当备份中包含多个版本的大量 `mDB:*` 元键时，BR PITR 在恢复元数据期间可能耗尽内存的问题 [#67196](https://github.com/pingcap/tidb/issues/67196) @[vldmit](https://github.com/vldmit) <!-- component: br -->
         - 修复在启用 AWS FIPS endpoint 模式时，BR 可能无法访问自定义 AWS S3 endpoint 的问题 [#68966](https://github.com/pingcap/tidb/issues/68966) @[v01dstar](https://github.com/v01dstar) <!-- component: br -->
         - 修复当目标集群与备份集群的列数不一致时，BR 在 snapshot restore 期间仍会物理恢复 `mysql.user` 表，从而覆盖较新表结构而不是回退到逻辑恢复的问题 [#68861](https://github.com/pingcap/tidb/issues/68861) @[Leavrth](https://github.com/Leavrth) <!-- component: br -->
         - 修复 `br operator base64ify` 在生成的存储后端中无法保留 S3 Object Lock 状态的问题 [#68551](https://github.com/pingcap/tidb/issues/68551) @[YuJuncen](https://github.com/YuJuncen) <!-- component: br -->
