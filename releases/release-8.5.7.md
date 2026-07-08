@@ -82,7 +82,7 @@ TiDB 版本：8.5.7
 ### 行为变更
 
 * TiKV 现在默认会拒绝已确认无效的 `max_ts` 更新请求，而不再仅记录日志。此变更可以阻止无效时间戳更新，同时避免 TiKV panic，提升了安全性。如需保留此前仅记录日志的行为，请将 [`storage.max-ts.action-on-invalid-update`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#action-on-invalid-update-从-v857-版本开始引入) 设置为 `log` [#19755](https://github.com/tikv/tikv/issues/19755) @[ekexium](https://github.com/ekexium) <!-- component: tikv -->
-* 从 v8.5.7 起，TiDB 默认启用[优化器修复控制项 `52869`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-fix-controls#52869-从-v810-版本开始引入)。该变更允许优化器在存在备选索引时自动考虑 `IndexMerge`，因此在某些情况下可能改变查询执行计划 [#26764](https://github.com/pingcap/tidb/issues/26764) @[time-and-fate](https://github.com/time-and-fate) <!--pr:<https://github.com/pingcap/docs-cn/pull/21744>;tw:qiancai-->
+* 从 v8.5.7 起，TiDB 默认启用 [Optimizer Fix Controls `52869`](https://docs.pingcap.com/zh/tidb/v8.5/optimizer-fix-controls#52869-从-v810-版本开始引入)。该变更允许优化器在存在备选索引时自动考虑 `IndexMerge`，因此在某些情况下可能改变查询执行计划 [#26764](https://github.com/pingcap/tidb/issues/26764) @[time-and-fate](https://github.com/time-and-fate) <!--pr:<https://github.com/pingcap/docs-cn/pull/21744>;tw:qiancai-->
 
 ### MySQL 兼容性
 
