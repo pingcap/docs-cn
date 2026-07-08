@@ -2782,12 +2782,12 @@ Raft Engine 相关的配置项。
 
 ### `enable-read-admission-control` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
 
-+ 控制是否为读请求启用准入控制。启用后，当 CPU 使用率超过 [`fg-cpu-throttle-threshold`](#fg-cpu-throttle-threshold-从-v857-和-v900-版本开始引入) 时，来自超出基线资源组的读请求会被延迟，或以 `SchedTooBusy` 拒绝。该配置仅在同时启用 [`enable-fair-scheduling`](#enable-fair-scheduling-从-v857-和-v900-版本开始引入) 时生效。
++ 控制是否为读请求启用准入控制。启用后，当 CPU 使用率超过 [`fg-cpu-throttle-threshold`](#fg-cpu-throttle-threshold-从-v857-和-v900-版本开始引入) 时，来自超出基线资源组的读请求会被延迟，或以 `SchedTooBusy` 拒绝。
 + 默认值：`false`
 
 ### `enable-write-admission-control` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
 
-+ 控制是否为写请求启用准入控制。启用后，当 CPU 使用率超过 [`fg-cpu-throttle-threshold`](#fg-cpu-throttle-threshold-从-v857-和-v900-版本开始引入) 时，来自超出基线资源组的写请求会被延迟，或以 `SchedTooBusy` 拒绝。该配置仅在同时启用 [`enable-fair-scheduling`](#enable-fair-scheduling-从-v857-和-v900-版本开始引入) 时生效。
++ 控制是否为写请求启用准入控制。启用后，当 CPU 使用率超过 [`fg-cpu-throttle-threshold`](#fg-cpu-throttle-threshold-从-v857-和-v900-版本开始引入) 时，来自超出基线资源组的写请求会被延迟，或以 `SchedTooBusy` 拒绝。
 + 默认值：`false`
 
 ### `historical-usage-window-mins` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
