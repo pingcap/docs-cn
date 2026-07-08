@@ -65,7 +65,7 @@ TiDB 版本：8.5.7
 
     更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/dm-compatibility-catalog#外键级联操作)。
 
-* TiCDC 支持表路由 [#4655](https://github.com/pingcap/ticdc/issues/4655) [#4941](https://github.com/pingcap/ticdc/issues/4941) @[3AceShowHand](https://github.com/3AceShowHand) <!--2471--><!--tw:qiancai-->
+* TiCDC 支持表路由 [#4655](https://github.com/pingcap/ticdc/issues/4655) [#4941](https://github.com/pingcap/ticdc/issues/4941) [#4702](https://github.com/pingcap/ticdc/issues/4702) @[3AceShowHand](https://github.com/3AceShowHand) <!--2471--><!--tw:qiancai-->
 
     从 v8.5.7 起，TiCDC 新架构支持表路由功能。你可以在 Changefeed 的 `sink.dispatchers` 配置中使用 `target-schema` 和 `target-table`，将上游表映射到指定的下游库名或表名。
 
@@ -151,12 +151,12 @@ TiDB 版本：8.5.7
 + TiDB
 
     - 提升包含 `OR` 和 `IN` 条件的 `ORDER BY ... LIMIT` 查询性能。优化器现在可以更有效地选择 `IndexMerge`，并支持在 `IndexMerge` 的 `IN` 条件路径上使用 merge sort，从而将 `Limit` 下推到部分路径，减少不必要的行读取和 I/O 开销 [#65712](https://github.com/pingcap/tidb/issues/65712) @[time-and-fate](https://github.com/time-and-fate) <!-- component: planner --> <!--2262--> <!--tw:qiancai-->
-    - 改进慢查询可观测性，在 slow query log 中记录客户端连接属性，并在 `information_schema.slow_query` 和 `information_schema.cluster_slow_query` 中暴露这些属性；`performance_schema_session_connect_attrs_size` 现用于控制属性截断，并将被截断的字节数记录在 `_truncated` 中 [#66616](https://github.com/pingcap/tidb/issues/66616) @[jiong-nba](https://github.com/jiong-nba) <!-- component: observability --> <!--2374--> <!--tw:lilin90-->
+    - 改进慢查询可观测性，在 slow query log 中记录客户端连接属性，并可在 `INFORMATION_SCHEMA.SLOW_QUERY` 和 `INFORMATION_SCHEMA.CLUSTER_SLOW_QUERY` 中查询这些属性；`PERFORMANCE_SCHEMA_SESSION_CONNECT_ATTRS_SIZE` 现用于控制属性截断，并将被截断的字节数记录在 `_truncated` 中 [#66616](https://github.com/pingcap/tidb/issues/66616) @[jiong-nba](https://github.com/jiong-nba) <!-- component: observability --> <!--2374--> <!--tw:lilin90-->
     - 新增系统变量 `tidb_enable_strict_not_null_check`，用于控制 TiDB 是否对单行 `INSERT` 语句执行严格的 `NOT NULL` 检查，从而帮助依赖此前非严格行为的工作负载降低升级风险 [#68108](https://github.com/pingcap/tidb/issues/68108) @[xhebox](https://github.com/xhebox) <!-- component: sql-infra --> <!--2459-->
     - 提升 runaway query watch 处理的性能和稳定性，包括更可靠的 TiDB 实例间 watch 同步，以及更高效的后台 flush 和 sync [#65746](https://github.com/pingcap/tidb/issues/65746) @[JmPotato](https://github.com/JmPotato) <!-- component: pd (Although it is listed under the PD component label, in fact it only involves changes on the TiDB side )--> <!--2385-->
     - 新增全局系统变量 `tidb_enable_batch_query_region`，用于控制 TiDB 是否向 PD 批量查询 Region 信息，从而提升获取 Region 信息的效率；该变量默认关闭 [#58439](https://github.com/pingcap/tidb/issues/58439) [#8690](https://github.com/tikv/pd/issues/8690) @[JmPotato](https://github.com/JmPotato) <!-- component: pd (this is only a change on the TiDB side,) --> <!--2463-->
     - 改进多索引表查询的优化器性能，通过在代价估算前裁剪无关索引，降低查询规划时间，并避免不必要的全范围越界估算 [#63856](https://github.com/pingcap/tidb/issues/63856) @[terry1purcell](https://github.com/terry1purcell) @[qw4990](https://github.com/qw4990) <!-- component: planner --> <!--2315-->
-    - 增强 Blackbox exporter dashboard 中的 **Ping Latency** 面板，通过使用 `max_over_time` 告警规则新增 `Max Ping Latency` 指标。该变更使 dashboard 展示与 TiDB 告警逻辑保持一致，帮助你更容易识别延迟峰值并验证告警触发情况 [#1071](https://github.com/pingcap/monitoring/issues/1071) @[yibin87](https://github.com/yibin87) <!--2424--> <!--tw:qiancai-->
+    - 增强 Blackbox exporter dashboard 中的 **Ping Latency** 面板，通过使用 `max_over_time` 告警规则新增 `Max Ping Latency` 指标。该变更使 dashboard 展示与 TiDB 告警逻辑保持一致，有助于更容易地识别延迟峰值并验证告警触发情况 [#1071](https://github.com/pingcap/monitoring/issues/1071) @[yibin87](https://github.com/yibin87) <!--2424--> <!--tw:qiancai-->
     - 支持针对前缀索引上的 `TOPN` 查询进行部分有序索引优化，当 `tidb_opt_partial_ordered_index_for_topn` 设置为 `COST` 时，可提升 `ORDER BY ... LIMIT/OFFSET` 查询性能 [#66338](https://github.com/pingcap/tidb/issues/66338) @[xzhangxian1008](https://github.com/xzhangxian1008) @[winoros](https://github.com/winoros) <!-- component: execution -->
     - 优化使用 Stream Aggregate 的高基数 `GROUP BY` 查询性能，通过降低内存跟踪中的 CPU 开销实现 [#68475](https://github.com/pingcap/tidb/issues/68475) @[guo-shaoge](https://github.com/guo-shaoge) <!-- component: execution -->
     - 缓解高分区数且带本地索引的表上 `IndexLookUp` 查询的 coprocessor 请求突发问题，以提升查询稳定性并减少性能抖动 [#67545](https://github.com/pingcap/tidb/issues/67545) @[gengliqi](https://github.com/gengliqi) <!-- component: execution -->
@@ -221,7 +221,6 @@ TiDB 版本：8.5.7
         - 新增 redo checkpoint 和 resolved timestamp 指标，以提升 TiCDC redo log 进度的可观测性 [#5264](https://github.com/pingcap/ticdc/issues/5264) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 通过避免持久化未变化的运行时状态，缓解大量 TiCDC changefeed 进入 warning 状态时的 etcd 压力 [#5268](https://github.com/pingcap/ticdc/issues/5268) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 增强 TiCDC 监控，在 Changefeed Error Details Grafana 面板中展示错误发生时间，帮助运维人员更高效地诊断 changefeed 故障 [#5085](https://github.com/pingcap/ticdc/issues/5085) @[wlwilliamx](https://github.com/wlwilliamx) <!-- component: cdc -->
-        - 支持 TiCDC 中的表路由，通过在事件模型和 redo log 中保留下游 schema 和表名实现 [#4702](https://github.com/pingcap/ticdc/issues/4702) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc -->
         - 通过将每次 checker 运行中每个 group 的 split table merge 调度限制为最多 8 个 merge operator，缓解 TiCDC 增量扫描的 CPU 峰值 [#5047](https://github.com/pingcap/ticdc/issues/5047) @[hongyunyan](https://github.com/hongyunyan) <!-- component: cdc -->
         - 通过在 DML 事件进入写入流水线时即进行确认，而不是等待 flush 完成，提升 TiCDC cloud storage sink 的调度响应性和回调正确性，在保持 checkpoint 语义不变的前提下降低唤醒延迟 [#4269](https://github.com/pingcap/ticdc/issues/4269) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc -->
         - 减少 changefeed 之间的 TiCDC bootstrap 队首阻塞，在 sink 初始化较慢时提升 changefeed 创建和恢复吞吐量 [#5139](https://github.com/pingcap/ticdc/issues/5139) @[hongyunyan](https://github.com/hongyunyan) <!-- component: cdc -->
@@ -234,8 +233,7 @@ TiDB 版本：8.5.7
         - 优化 TiCDC MySQL sink 的冲突检测，以提升复制性能 [#4582](https://github.com/pingcap/ticdc/issues/4582) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 提升 TiCDC resolve lock 的可观测性，并避免对同一 Region 重复执行 resolve 尝试，以减少不必要的锁解析工作，并通过新增指标和 dashboard 让问题排查更容易 [#5016](https://github.com/pingcap/ticdc/issues/5016) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
         - 在 TiCDC Grafana dashboard 中新增 Changefeed Operation History 面板，帮助排查最近由用户触发的 changefeed 操作，例如 create、update、pause、resume 和 delete [#5087](https://github.com/pingcap/ticdc/issues/5087) @[wlwilliamx](https://github.com/wlwilliamx) <!-- component: cdc -->
-        - 支持 TiCDC 解析和复制使用部分索引的 DDL 语句，包括带有 `WHERE` 子句的 `CREATE TABLE`、`CREATE INDEX` 和 `ALTER TABLE ... ADD INDEX` [#12503](https://github.com/pingcap/tiflow/issues/12503) @[YangKeao](https://github.com/YangKeao) <!-- component: cdc -->
-        - 在 TiCDC 中新增核心表路由支持，用于处理路由后 DDL 事件元数据和 DDL 查询重写 [#4941](https://github.com/pingcap/ticdc/issues/4941) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc -->
+        - 支持解析和同步使用部分索引的 DDL 语句，包括带有 `WHERE` 子句的 `CREATE TABLE`、`CREATE INDEX` 和 `ALTER TABLE ... ADD INDEX` [#12503](https://github.com/pingcap/tiflow/issues/12503) @[YangKeao](https://github.com/YangKeao) <!-- component: cdc -->
         - 支持 MySQL sink 的表路由，使经过路由的 changefeed 能将 DDL 和 DML 应用到目标 schema 和表名上 [#4818](https://github.com/pingcap/ticdc/issues/4818) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc -->
         - 新增 TiCDC 指标，用于展示 warning 或 failed 状态 changefeed 的错误信息，使运维人员无需查看日志即可通过监控更方便地诊断问题 [#4498](https://github.com/pingcap/ticdc/issues/4498) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
 
@@ -390,7 +388,6 @@ TiDB 版本：8.5.7
         - 修复当 `MultipleTableInfos` 非空时，TiCDC 可能无法正确解码或错误处理多表 DDL 事件的问题 [#4415](https://github.com/pingcap/ticdc/issues/4415) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc -->
         - 修复 TiCDC 在复制 `EXCHANGE PARTITION` DDL 语句时，会破坏包含转义反引号的分区名的问题 [#4450](https://github.com/pingcap/ticdc/issues/4450) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
         - 修复在并发更新 subscription checkpoint 时，TiCDC 可能在 event store 中生成乱序 checkpoint 更新，导致复制进度跟踪不一致的问题 [#4992](https://github.com/pingcap/ticdc/issues/4992) @[lidezhu](https://github.com/lidezhu) <!-- component: cdc -->
-        - 修复在表路由后，如果视图使用未别名的表限定列且源表带 schema 限定，TiCDC 可能生成无效 `CREATE VIEW` 语句的问题 [#5043](https://github.com/pingcap/ticdc/issues/5043) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc -->
         - 修复当 EventCollector 在关闭期间仍接收消息时，TiCDC 可能发生死锁并阻塞清理的问题 [#4434](https://github.com/pingcap/ticdc/issues/4434) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 修复在复制匿名 `ADD INDEX` DDL 语句时，TiCDC 可能在下游生成不一致索引名的问题，尤其是在重试或复制 `CREATE TABLE LIKE` 场景下 [#2327](https://github.com/pingcap/ticdc/issues/2327) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
         - 修复当连接 watchdog 中止后，TiCDC 可能保留过期 CDC 连接，导致连接清理延迟，并在 sink 内存耗尽时使 changefeed 复制卡住的问题 [#19610](https://github.com/tikv/tikv/issues/19610) @[wk989898](https://github.com/wk989898) <!-- component: cdc -->
