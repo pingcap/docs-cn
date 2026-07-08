@@ -161,7 +161,7 @@ TiDB 版本：8.5.7
     - 新增全局系统变量 `tidb_enable_batch_query_region`，用于控制 TiDB 是否向 PD 批量查询 Region 信息，从而提升获取 Region 信息的效率；该变量默认关闭 [#58439](https://github.com/pingcap/tidb/issues/58439) [#8690](https://github.com/tikv/pd/issues/8690) @[JmPotato](https://github.com/JmPotato) <!-- component: pd (this is only a change on the TiDB side,) --> <!--2463-->
     - 改进多索引表查询的优化器性能，通过在代价估算前裁剪无关索引，降低查询规划时间，并避免不必要的全范围越界估算 [#63856](https://github.com/pingcap/tidb/issues/63856) @[terry1purcell](https://github.com/terry1purcell) @[qw4990](https://github.com/qw4990) <!-- component: planner --> <!--2315-->
     - 增强 Blackbox exporter dashboard 中的 **Ping Latency** 面板，通过使用 `max_over_time` 告警规则新增 `Max Ping Latency` 指标。该变更使 dashboard 展示与 TiDB 告警逻辑保持一致，有助于更容易地识别延迟峰值并验证告警触发情况 [#1071](https://github.com/pingcap/monitoring/issues/1071) @[yibin87](https://github.com/yibin87) <!--2424--> <!--tw:qiancai-->
-    - 支持针对前缀索引上的 `TOPN` 查询进行部分有序索引优化，当 `tidb_opt_partial_ordered_index_for_topn` 设置为 `COST` 时，可提升 `ORDER BY ... LIMIT/OFFSET` 查询性能 [#66338](https://github.com/pingcap/tidb/issues/66338) @[xzhangxian1008](https://github.com/xzhangxian1008) @[winoros](https://github.com/winoros) <!-- component: execution -->
+    - 支持在匹配的前缀索引上对 `ORDER BY ... LIMIT/OFFSET` 查询进行部分有序索引优化。当 `tidb_opt_partial_ordered_index_for_topn` 设置为 `COST` 时，TiDB 可利用索引的部分有序性减少全表扫描并提升 `TOPN` 查询性能 [#63280](https://github.com/pingcap/tidb/issues/63280) [#65813](https://github.com/pingcap/tidb/issues/65813) [#66338](https://github.com/pingcap/tidb/issues/66338) @[elsa0520](https://github.com/elsa0520) @[xzhangxian1008](https://github.com/xzhangxian1008) @[winoros](https://github.com/winoros) <!-- component: planner, execution -->
     - 优化使用 Stream Aggregate 的高基数 `GROUP BY` 查询性能，通过降低内存跟踪中的 CPU 开销实现 [#68475](https://github.com/pingcap/tidb/issues/68475) @[guo-shaoge](https://github.com/guo-shaoge) <!-- component: execution -->
     - 缓解高分区数且带本地索引的表上 `IndexLookUp` 查询的 coprocessor 请求突发问题，以提升查询稳定性并减少性能抖动 [#67545](https://github.com/pingcap/tidb/issues/67545) @[gengliqi](https://github.com/gengliqi) <!-- component: execution -->
     - 优化 `INSERT ... ON DUPLICATE KEY UPDATE` 语句的 CPU 和内存使用，通过减少执行过程中不必要的表达式缓冲区分配实现 [#65003](https://github.com/pingcap/tidb/issues/65003) @[windtalker](https://github.com/windtalker) <!-- component: execution, planner -->
@@ -171,10 +171,8 @@ TiDB 版本：8.5.7
     - 新增系统变量 `tidb_enable_cache_prepare_stmt`，用于缓存同一会话中重复执行的预处理语句，从而降低 prepare-per-request 工作负载的 CPU 开销 [#67815](https://github.com/pingcap/tidb/issues/67815) @[guo-shaoge](https://github.com/guo-shaoge) <!-- component: planner -->
     - 改进 Join Reorder，使 TiDB 能处理 join group 之间的 projection，减少不必要的 Cartesian Join，并让 `LEADING` Hint 在更多查询中生效 [#50229](https://github.com/pingcap/tidb/issues/50229) @[Reminiscent](https://github.com/Reminiscent) <!-- component: planner -->
     - 支持在 `LEADING` optimizer hint 中使用嵌套括号来指定更复杂的连接顺序，例如 `LEADING((a, b), (c, d))` [#63253](https://github.com/pingcap/tidb/issues/63253) @[guo-shaoge](https://github.com/guo-shaoge) <!-- component: planner -->
-    - 支持针对 `ORDER BY ... LIMIT` 查询进行部分有序索引优化，以减少全表扫描，该特性由系统变量 `tidb_opt_partial_ordered_index_for_topn` 控制 [#63280](https://github.com/pingcap/tidb/issues/63280) @[elsa0520](https://github.com/elsa0520) @[winoros](https://github.com/winoros) <!-- component: planner -->
     - 改进 Join 执行计划选择，避免在估算 probe 行数接近全表扫描时选择低效的 index join，从而提升某些 `HASHAGG` + join 场景下的查询性能 [#67610](https://github.com/pingcap/tidb/issues/67610) @[qw4990](https://github.com/qw4990) <!-- component: planner -->
     - 提升嵌套 `OR` 条件查询的性能，通过启用更高效的 `IndexMerge` 计划，并允许移除冗余全局过滤条件以便下推 `LIMIT` [#65822](https://github.com/pingcap/tidb/issues/65822) @[time-and-fate](https://github.com/time-and-fate) <!-- component: planner -->
-    - 支持针对 `TOPN` 查询进行部分有序索引优化，当 `tidb_opt_partial_ordered_index_for_topn` 设置为 `COST` 时，可提升 `ORDER BY ... LIMIT` 查询性能 [#65813](https://github.com/pingcap/tidb/issues/65813) @[winoros](https://github.com/winoros) <!-- component: planner -->
     - 支持 `FLUSH STATS_DELTA` 语句，用于持久化全部、数据库级或表级范围内待写入的优化器统计信息增量 [#65668](https://github.com/pingcap/tidb/issues/65668) @[0xPoe](https://github.com/0xPoe) <!-- component: planner -->
     - 改进查询优化，默认启用用于在存在备选索引时考虑 `IndexMerge` 的优化器修复控制项，使 TiDB 能在更多适用查询中选择 `IndexMerge` 计划 [#26764](https://github.com/pingcap/tidb/issues/26764) @[time-and-fate](https://github.com/time-and-fate) <!-- component: planner -->
     - 支持缓存使用 `set_var` 和 `resource_group` Hint 的预处理与非预处理查询，以提升带 Hint 查询的 plan cache 命中率 [#60920](https://github.com/pingcap/tidb/issues/60920) @[qw4990](https://github.com/qw4990) <!-- component: planner -->
@@ -250,7 +248,7 @@ TiDB 版本：8.5.7
 + TiDB
 
     - 修复当查询仍在运行时，TiDB 未能及时关闭已断开客户端连接，导致该连接在语句执行完成前仍保留在 `SHOW PROCESSLIST` 中的问题 [#57531](https://github.com/pingcap/tidb/issues/57531) @[Defined2014](https://github.com/Defined2014) <!-- component: sql-infra --> <!--2060-->
-    - 修复在出现 `RegionNotFound` 错误后，过期的 Region cache 条目仍可能继续被使用，导致重复重试失败和 Region 重载延迟的问题 [#1892](https://github.com/tikv/client-go/issues/1892) @[ekexium](https://github.com/ekexium) <!-- component: client-go -->
+    - 修复在出现 `RegionNotFound` 错误后，过期的 Region cache 条目仍可能继续被使用，导致重复重试、Region 重载延迟以及额外跨可用区流量的问题 [#1892](https://github.com/tikv/client-go/issues/1892) [#69197](https://github.com/pingcap/tidb/issues/69197) @[ekexium](https://github.com/ekexium) <!-- component: client-go, transaction -->
     - 修复在使用常量字符串参数评估向量化 `ILIKE` 时可能发生崩溃的问题 [#67001](https://github.com/pingcap/tidb/issues/67001) @[zanmato1984](https://github.com/zanmato1984) <!-- component: execution -->
     - 修复对无符号数值列或 `SET` 列执行点更新 `UPDATE` 语句时，可能产生与普通 `UPDATE` 语义及 MySQL 兼容性不一致的错误结果的问题 [#63455](https://github.com/pingcap/tidb/issues/63455) @[fzzf678](https://github.com/fzzf678) <!-- component: execution -->
     - 修复 TiDB 在极少数并发查询执行场景下可能因 `SIGSEGV` 崩溃的问题 [#66391](https://github.com/pingcap/tidb/issues/66391) @[bb7133](https://github.com/bb7133) <!-- component: execution -->
@@ -292,7 +290,6 @@ TiDB 版本：8.5.7
     - 修复客户端断开后，autocommit 写语句可能无法被及时中断的问题 [#68236](https://github.com/pingcap/tidb/issues/68236) @[King-Dylan](https://github.com/King-Dylan) <!-- component: sql-infra -->
     - 修复与非 TiDB 事务相关的请求可能错误通过未来时间戳校验，并在 `ScanLock`、backup range、`CheckTxnStatus`、`Cleanup` 和 `CheckSecondaryLocks` 中导致行为不一致的问题 [#19656](https://github.com/tikv/tikv/issues/19656) @[ekexium](https://github.com/ekexium) <!-- component: transaction -->
     - 修复在启用 `tidb_foreign_key_check_in_shared_lock` 时，悲观事务中的外键级联更新可能因 `use Op::SharedLock to prewrite on a shared lock` 而失败的问题 [#68133](https://github.com/pingcap/tidb/issues/68133) @[wfxr](https://github.com/wfxr) <!-- component: transaction -->
-    - 修复在出现 `RegionNotFound` 错误后，过期的 Region cache 条目仍可能继续被使用，导致重复重试并产生额外跨可用区流量的问题 [#69197](https://github.com/pingcap/tidb/issues/69197) @[ekexium](https://github.com/ekexium) <!-- component: transaction -->
 
 + TiKV
 
