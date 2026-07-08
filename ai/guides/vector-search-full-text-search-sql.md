@@ -26,7 +26,7 @@ TiDB 的全文搜索功能提供以下能力：
 
 ## 快速开始
 
-全文搜索仍处于早期阶段，我们正在持续向更多用户开放。目前，全文搜索仅在以下区域的 TiDB Cloud Starter 和 TiDB Cloud Essential 上可用：
+全文搜索仍处于早期阶段，我们正在持续向更多用户开放。目前，全文搜索仅在以下区域的 TiDB Cloud Starter 上可用：
 
 - AWS: `Oregon (us-west-2)`、`N. Virginia (us-east-1)`、`Tokyo (ap-northeast-1)`、`Frankfurt (eu-central-1)` 和 `Singapore (ap-southeast-1)`
 
