@@ -2040,6 +2040,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
+- 该变量来用控制是否缓存 prepare 语句的结果，正常的 prepare, execute 语句执行是一次 prepare，多次 execute，后续的所有 execute 都可以复用第一次 prepare 语句的结果。但是如果应用侧需要重复的发送 prepare 语句，可以打开此开关，这样相同的 prepare 语句结果会被缓存和复用，减少资源消耗。
+
 
 ### `tidb_enable_gogc_tuner` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
