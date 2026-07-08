@@ -250,7 +250,7 @@ TiDB 版本：8.5.7
     - 修复当查询仍在运行时，TiDB 未能及时关闭已断开客户端连接，导致该连接在语句执行完成前仍保留在 `SHOW PROCESSLIST` 中的问题 [#57531](https://github.com/pingcap/tidb/issues/57531) @[Defined2014](https://github.com/Defined2014) <!-- component: sql-infra --> <!--2060-->
     - 修复在出现 `RegionNotFound` 错误后，过期的 Region cache 条目仍可能继续被使用，导致重复重试、Region 重载延迟以及额外跨可用区流量的问题 [#1892](https://github.com/tikv/client-go/issues/1892) [#69197](https://github.com/pingcap/tidb/issues/69197) @[ekexium](https://github.com/ekexium) <!-- component: client-go, transaction -->
     - 修复在使用常量字符串参数评估向量化 `ILIKE` 时可能发生崩溃的问题 [#67001](https://github.com/pingcap/tidb/issues/67001) @[zanmato1984](https://github.com/zanmato1984) <!-- component: execution -->
-    - 修复对无符号数值列或 `SET` 列执行点更新 `UPDATE` 语句时，可能产生与普通 `UPDATE` 语义及 MySQL 兼容性不一致的错误结果的问题 [#63455](https://github.com/pingcap/tidb/issues/63455) @[fzzf678](https://github.com/fzzf678) <!-- component: execution -->
+    - 修复点更新 `UPDATE` 语句在对无符号数值列赋负值，或向 `SET` 列赋整数值时，可能使用与普通 `UPDATE` 不一致的赋值转换语义，导致结果不一致、越界错误或与 MySQL 兼容性不一致的问题 [#63455](https://github.com/pingcap/tidb/issues/63455) [#67534](https://github.com/pingcap/tidb/issues/67534) @[fzzf678](https://github.com/fzzf678) <!-- component: planner, execution -->
     - 修复 TiDB 在极少数并发查询执行场景下可能因 `SIGSEGV` 崩溃的问题 [#66391](https://github.com/pingcap/tidb/issues/66391) @[bb7133](https://github.com/bb7133) <!-- component: execution -->
     - 修复在使用大小写不同的用户变量时，查询可能生成次优执行计划并无法使用索引范围扫描的问题 [#66339](https://github.com/pingcap/tidb/issues/66339) @[qw4990](https://github.com/qw4990) <!-- component: planner -->
     - 修复多个会话并发命中全局绑定并破坏全局绑定缓存时，TiDB 可能发生内存耗尽的问题 [#68015](https://github.com/pingcap/tidb/issues/68015) @[qw4990](https://github.com/qw4990) <!-- component: planner -->
@@ -264,7 +264,6 @@ TiDB 版本：8.5.7
     - 修复带 `LEFT JOIN` 或 `RIGHT JOIN` 且 `WHERE` 子句中包含对 `NULL` 敏感布尔表达式的查询可能返回错误结果的问题 [#66824](https://github.com/pingcap/tidb/issues/66824) @[winoros](https://github.com/winoros) <!-- component: planner -->
     - 修复 `LEFT JOIN` 查询中包含 `IN (NULL, ...)` 等对 `NULL` 敏感谓词时，可能因 TiDB 错误简化外连接而返回错误结果的问题 [#66825](https://github.com/pingcap/tidb/issues/66825) @[winoros](https://github.com/winoros) <!-- component: planner -->
     - 修复当 null-reject 检查与参数值无关时，外连接上的预处理语句可能跳过 prepared plan cache 的问题 [#67048](https://github.com/pingcap/tidb/issues/67048) @[winoros](https://github.com/winoros) <!-- component: planner -->
-    - 修复点更新语句在无符号数值列或向 `SET` 列赋整数值时，可能使用与普通 `UPDATE` 语句不同的赋值转换语义，导致结果不一致或越界错误的问题 [#67534](https://github.com/pingcap/tidb/issues/67534) @[fzzf678](https://github.com/fzzf678) <!-- component: planner -->
     - 修复在为全范围索引扫描执行查询规划时，TiDB 可能记录不必要的异步索引直方图加载告警的问题 [#64791](https://github.com/pingcap/tidb/issues/64791) @[terry1purcell](https://github.com/terry1purcell) <!-- component: planner -->
     - 修复同步统计信息加载超时并回退到 pseudo 或 partial statistics 时生成的执行计划，可能在所需统计信息加载完成后仍被缓存和复用的问题 [#66585](https://github.com/pingcap/tidb/issues/66585) @[winoros](https://github.com/winoros) <!-- component: planner -->
     - 修复 TiDB 在外连接场景下可能生成错误 join order 并返回错误查询结果的问题 [#63887](https://github.com/pingcap/tidb/issues/63887) @[guo-shaoge](https://github.com/guo-shaoge) <!-- component: planner -->
@@ -285,8 +284,7 @@ TiDB 版本：8.5.7
     - 修复不包含生成列的表上的 `INSERT` 语句出现性能回退，导致常见工作负载吞吐下降的问题 [#68129](https://github.com/pingcap/tidb/issues/68129) @[bb7133](https://github.com/bb7133) <!-- component: sql-infra -->
     - 修复 `CONCAT_WS()` 将 `utf8mb4_0900_bin` 列与 `BLOB` 列组合时，返回 `ERROR 3854` 错误而非二进制结果的问题 [#68845](https://github.com/pingcap/tidb/issues/68845) @[tiancaiamao](https://github.com/tiancaiamao) <!-- component: sql-infra -->
     - 修复由于连接监控开销，autocommit `INSERT`、`UPDATE` 和 `DELETE` 语句出现性能回退的问题 [#68633](https://github.com/pingcap/tidb/issues/68633) @[King-Dylan](https://github.com/King-Dylan) <!-- component: sql-infra -->
-    - 修复在 `new_collation_enabled` 被禁用时，对大小写混合的 schema 名执行 `GRANT` 和 `REVOKE` 可能创建重复权限行，或无法找到现有权限的问题 [#66867](https://github.com/pingcap/tidb/issues/66867) @[expxiaoli](https://github.com/expxiaoli) <!-- component: sql-infra -->
-    - 修复在 `new_collation_enabled` 被禁用时，对大小写混合的 schema 名执行 `GRANT` 和 `REVOKE` 可能失败，或命中不一致权限行的问题 [#68406](https://github.com/pingcap/tidb/issues/68406) @[expxiaoli](https://github.com/expxiaoli) <!-- component: sql-infra -->
+    - 修复在 `new_collation_enabled` 被禁用时，对大小写混合的 schema 名执行 `GRANT` 和 `REVOKE` 可能失败、创建重复权限行，或无法命中已有权限行的问题；修复后，此类大小写混合标识符会映射到同一条权限记录 [#66867](https://github.com/pingcap/tidb/issues/66867) [#68406](https://github.com/pingcap/tidb/issues/68406) @[expxiaoli](https://github.com/expxiaoli) <!-- component: sql-infra -->
     - 修复客户端断开后，autocommit 写语句可能无法被及时中断的问题 [#68236](https://github.com/pingcap/tidb/issues/68236) @[King-Dylan](https://github.com/King-Dylan) <!-- component: sql-infra -->
     - 修复与非 TiDB 事务相关的请求可能错误通过未来时间戳校验，并在 `ScanLock`、backup range、`CheckTxnStatus`、`Cleanup` 和 `CheckSecondaryLocks` 中导致行为不一致的问题 [#19656](https://github.com/tikv/tikv/issues/19656) @[ekexium](https://github.com/ekexium) <!-- component: transaction -->
     - 修复在启用 `tidb_foreign_key_check_in_shared_lock` 时，悲观事务中的外键级联更新可能因 `use Op::SharedLock to prewrite on a shared lock` 而失败的问题 [#68133](https://github.com/pingcap/tidb/issues/68133) @[wfxr](https://github.com/wfxr) <!-- component: transaction -->
