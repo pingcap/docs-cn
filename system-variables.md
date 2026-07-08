@@ -3868,6 +3868,17 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`OFF`
 - 该变量控制优化器是否对 `SELECT` 列表中包含子查询的所有查询应用 [`NO_DECORRELATE()`](/optimizer-hints.md#no_decorrelate) Hint。
 
+### `tidb_opt_enable_alternative_logical_plans` <span class="version-mark">从 v8.5.7 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量控制优化器是否在[关联子查询去关联](/correlated-subquery-optimization.md)场景中，额外构建一个“不去关联”的逻辑候选计划。
+    - 默认情况下，TiDB 会优先尝试对关联子查询进行去关联改写。
+    - 开启该变量后，如果去关联后的候选计划未能生成与原始关联子查询访问方向相同的等价 `IndexJoin` 候选计划，优化器还会额外保留一个“不去关联”的候选计划。优化器会评估“去关联”和“不去关联”的候选计划，并选择两者之间代价更低的[执行计划](/explain-subqueries.md)。
+
 ### `tidb_opt_enable_semi_join_rewrite` <span class="version-mark">从 v8.5.4 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
