@@ -34,6 +34,9 @@ on:
 
 env:
   DOCS_CN_BASE: release-8.5
+  SOURCE_REPO: pingcap/docs
+  SOURCE_BRANCH: release-8.5
+  TERMS_BRANCH: master
   AI_TRANSLATOR_REPO: qiancai/ai-pr-translator
   AI_TRANSLATOR_REF: main
   SOURCE_FOLDER: ai
@@ -57,11 +60,29 @@ jobs:
           fetch-depth: 0
 
       - uses: actions/checkout@v6
+        name: Checkout docs source branch
+        with:
+          repository: ${{ env.SOURCE_REPO }}
+          ref: ${{ env.SOURCE_BRANCH }}
+          path: docs-source
+          fetch-depth: 500
+          persist-credentials: false
+
+      - uses: actions/checkout@v6
+        name: Checkout docs terms branch
+        with:
+          repository: ${{ env.SOURCE_REPO }}
+          ref: ${{ env.TERMS_BRANCH }}
+          path: docs-terms
+          persist-credentials: false
+
+      - uses: actions/checkout@v6
         name: Checkout ai-pr-translator
         with:
           repository: ${{ env.AI_TRANSLATOR_REPO }}
           ref: ${{ env.AI_TRANSLATOR_REF }}
           path: ai-pr-translator
+          persist-credentials: false
 
       - uses: actions/setup-python@v6
         name: Setup Python
@@ -73,6 +94,7 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
+          set -euo pipefail
           python -m pip install --upgrade pip
           pip install -r ai-pr-translator/scripts/requirements.txt
 
@@ -80,8 +102,6 @@ jobs:
         id: commits
         shell: bash
         working-directory: docs-cn
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
 
@@ -96,8 +116,8 @@ jobs:
           PY
           )
 
-          source_repo="${cursor_values[0]:-}"
-          source_branch="${cursor_values[1]:-}"
+          cursor_source_repo="${cursor_values[0]:-}"
+          cursor_source_branch="${cursor_values[1]:-}"
           base_ref="${cursor_values[2]:-}"
 
           if [ -z "${base_ref}" ]; then
@@ -105,37 +125,54 @@ jobs:
             exit 1
           fi
 
-          if [ -z "${source_repo}" ]; then
-            echo "latest_translation_commit.json does not contain source-repo" >&2
+          if [ -n "${cursor_source_repo}" ] && [ "${cursor_source_repo}" != "${SOURCE_REPO}" ]; then
+            echo "latest_translation_commit.json source-repo is ${cursor_source_repo}, expected ${SOURCE_REPO}" >&2
             exit 1
           fi
 
-          if [ -z "${source_branch}" ]; then
-            echo "latest_translation_commit.json does not contain source-branch" >&2
+          if [ -n "${cursor_source_branch}" ] && [ "${cursor_source_branch}" != "${SOURCE_BRANCH}" ]; then
+            echo "latest_translation_commit.json source-branch is ${cursor_source_branch}, expected ${SOURCE_BRANCH}" >&2
             exit 1
           fi
 
-          head_ref="$(git -c "http.extraheader=AUTHORIZATION: bearer ${GITHUB_TOKEN}" ls-remote "https://github.com/${source_repo}.git" "refs/heads/${source_branch}" | awk '{print $1}')"
+          if ! git -C "${GITHUB_WORKSPACE}/docs-source" cat-file -e "${base_ref}^{commit}" 2>/dev/null; then
+            echo "Base commit ${base_ref} is not in the shallow source checkout; deepening history..."
+            for _ in 1 2 3 4; do
+              git -C "${GITHUB_WORKSPACE}/docs-source" fetch --deepen=500 origin "${SOURCE_BRANCH}"
+              if git -C "${GITHUB_WORKSPACE}/docs-source" cat-file -e "${base_ref}^{commit}" 2>/dev/null; then
+                break
+              fi
+            done
+          fi
 
-          if [ -z "${head_ref}" ]; then
-            echo "Failed to resolve head sha for ${source_repo} ${source_branch}" >&2
+          if ! git -C "${GITHUB_WORKSPACE}/docs-source" cat-file -e "${base_ref}^{commit}" 2>/dev/null; then
+            if [ "$(git -C "${GITHUB_WORKSPACE}/docs-source" rev-parse --is-shallow-repository)" = "true" ]; then
+              git -C "${GITHUB_WORKSPACE}/docs-source" fetch --unshallow origin "${SOURCE_BRANCH}"
+            fi
+          fi
+
+          if ! git -C "${GITHUB_WORKSPACE}/docs-source" cat-file -e "${base_ref}^{commit}" 2>/dev/null; then
+            echo "Failed to fetch base commit ${base_ref} from ${SOURCE_REPO} ${SOURCE_BRANCH}" >&2
             exit 1
           fi
 
-          echo "source_repo=${source_repo}" >> "${GITHUB_OUTPUT}"
-          echo "source_branch=${source_branch}" >> "${GITHUB_OUTPUT}"
-          echo "base_ref=${base_ref}" >> "${GITHUB_OUTPUT}"
-          echo "head_ref=${head_ref}" >> "${GITHUB_OUTPUT}"
+          head_ref="$(git -C "${GITHUB_WORKSPACE}/docs-source" rev-parse HEAD)"
+
+          {
+            echo "source_repo=${SOURCE_REPO}"
+            echo "source_branch=${SOURCE_BRANCH}"
+            echo "base_ref=${base_ref}"
+            echo "head_ref=${head_ref}"
+          } >> "${GITHUB_OUTPUT}"
 
       - name: Resolve source file filter
         id: source_files
         shell: bash
         env:
-          GH_TOKEN: ${{ github.token }}
           INPUT_FILE_NAMES: ${{ inputs.file_names || '' }}
-          SOURCE_REPO: ${{ steps.commits.outputs.source_repo }}
           BASE_REF: ${{ steps.commits.outputs.base_ref }}
           HEAD_REF: ${{ steps.commits.outputs.head_ref }}
+          DOCS_SOURCE_PATH: ${{ github.workspace }}/docs-source
         run: |
           set -euo pipefail
 
@@ -178,7 +215,7 @@ jobs:
             done
           else
             readarray -t changed_files < <(
-              gh api "repos/${SOURCE_REPO}/compare/${BASE_REF}...${HEAD_REF}" --jq '.files[].filename'
+              git -C "${DOCS_SOURCE_PATH}" diff --name-only -M "${BASE_REF}" "${HEAD_REF}"
             )
             for rel in "${changed_files[@]}"; do
               if [[ "${rel}" == "${SOURCE_TOC_FILE}" || "${rel}" == "${SOURCE_FOLDER}"/* ]]; then
@@ -196,19 +233,10 @@ jobs:
             echo "Resolved source files: ${out}"
           fi
 
-      - uses: actions/checkout@v6
-        name: Checkout source repo glossary
-        if: steps.source_files.outputs.has_source_changes == 'true'
-        with:
-          repository: ${{ steps.commits.outputs.source_repo }}
-          ref: ${{ steps.commits.outputs.source_branch }}
-          path: docs-source
-          fetch-depth: 1
-          persist-credentials: false
-
       - name: Run commit sync workflow
         id: sync
         if: steps.source_files.outputs.has_source_changes == 'true'
+        continue-on-error: true
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -217,71 +245,85 @@ jobs:
           OPENAI_API_TOKEN: ${{ secrets.OPENAI_API_TOKEN }}
           AZURE_OPENAI_KEY: ${{ secrets.AZURE_OPENAI_KEY }}
           OPENAI_BASE_URL: ${{ secrets.AZURE_OPENAI_BASE_URL }}
-          SOURCE_REPO: ${{ steps.commits.outputs.source_repo }}
+          SOURCE_REPO: ${{ env.SOURCE_REPO }}
           TARGET_REPO: pingcap/docs-cn
-          SOURCE_BRANCH: ${{ steps.commits.outputs.source_branch }}
+          SOURCE_BRANCH: ${{ env.SOURCE_BRANCH }}
           SOURCE_BASE_REF: ${{ steps.commits.outputs.base_ref }}
           SOURCE_HEAD_REF: ${{ steps.commits.outputs.head_ref }}
+          # SOURCE_FILES already contains ai/ or TOC-ai.md paths, so keep SOURCE_FOLDER empty.
           SOURCE_FOLDER: ""
           SOURCE_FILES: ${{ steps.source_files.outputs.files }}
           SOURCE_FILES_TRANSLATION_MODE: ${{ inputs.source_files_translation_mode || 'incremental' }}
+          SOURCE_LANGUAGE: English
+          TARGET_LANGUAGE: Chinese
           IGNORE_RESOURCE_CARD_SECTION: "Yes"
+          SOURCE_REPO_PATH: ${{ github.workspace }}/docs-source
+          TARGET_REF: ${{ env.DOCS_CN_BASE }}
+          PREFER_LOCAL_TARGET_FOR_READ: "true"
           TARGET_REPO_PATH: ${{ github.workspace }}/docs-cn
           AI_PROVIDER: ${{ inputs.ai_provider || 'azure' }}
-          TERMS_PATH: ${{ github.workspace }}/docs-source/resources/terms.md
+          TERMS_PATH: ${{ github.workspace }}/docs-terms/resources/terms.md
+          FAIL_ON_TRANSLATION_ERROR: "true"
           SKIP_TRANSLATING_AI_DOCS_TO_ZH: "false"
         run: |
           set -euo pipefail
           cd ai-pr-translator/scripts
           python commit_sync_workflow.py
-      
-      - name: Detect translated changes
+
+      - name: Prepare translated changes
         id: changes
-        shell: bash
-        working-directory: docs-cn
-        run: |
-          set -euo pipefail
-
-          if [ -z "$(git status --porcelain)" ]; then
-            echo "has_changes=false" >> "${GITHUB_OUTPUT}"
-          else
-            echo "has_changes=true" >> "${GITHUB_OUTPUT}"
-          fi
-
-      - name: Update translation cursor
-        if: steps.changes.outputs.has_changes == 'true'
+        if: always() && steps.source_files.outputs.has_source_changes == 'true'
         shell: bash
         working-directory: docs-cn
         env:
           HEAD_REF: ${{ steps.commits.outputs.head_ref }}
-          SOURCE_REPO: ${{ steps.commits.outputs.source_repo }}
-          SOURCE_BRANCH: ${{ steps.commits.outputs.source_branch }}
+          FAILURE_REPORT: ${{ github.workspace }}/ai-pr-translator/scripts/temp_output/translation-failures.md
         run: |
           set -euo pipefail
 
-          if [ "${GITHUB_EVENT_NAME}" = "schedule" ]; then
+          if [ -s "${FAILURE_REPORT}" ]; then
+            delimiter="failure_summary_$(date +%s%N)_${RANDOM}"
+            {
+              echo "failure_summary<<${delimiter}"
+              cat "${FAILURE_REPORT}"
+              echo
+              echo "> Before merging this PR, manually translate the failed files above or rerun this workflow with workflow_dispatch and file_names set to those paths."
+              echo "${delimiter}"
+            } >> "${GITHUB_OUTPUT}"
+          fi
+
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "has_changes=false" >> "${GITHUB_OUTPUT}"
+            exit 0
+          fi
+
+          if [ "${GITHUB_EVENT_NAME}" = "schedule" ] && [ "${{ steps.sync.outcome }}" = "success" ]; then
             python -c 'import json, os; from pathlib import Path; Path("latest_translation_commit.json").write_text(json.dumps({"source-repo": os.environ["SOURCE_REPO"], "source-branch": os.environ["SOURCE_BRANCH"], "sha": os.environ["HEAD_REF"]}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")'
+          elif [ "${GITHUB_EVENT_NAME}" = "schedule" ]; then
+            echo "Skipping latest_translation_commit.json update because sync outcome is ${{ steps.sync.outcome }}."
           else
             echo "Skipping latest_translation_commit.json update for ${GITHUB_EVENT_NAME} run."
           fi
 
+          echo "has_changes=true" >> "${GITHUB_OUTPUT}"
+
       - name: Set build metadata
         id: build_meta
-        if: steps.changes.outputs.has_changes == 'true'
+        if: always() && steps.changes.outputs.has_changes == 'true'
         shell: bash
         run: |
           echo "date=$(TZ=Asia/Shanghai date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
           echo "id=$(TZ=Asia/Shanghai date +'%Y%m%d')-$(date +%s)" >> "$GITHUB_OUTPUT"
 
       - name: Create PR
-        if: steps.changes.outputs.has_changes == 'true'
+        if: always() && steps.changes.outputs.has_changes == 'true'
         uses: peter-evans/create-pull-request@v8
         with:
           path: docs-cn
           token: ${{ github.token }}
           branch: zh-translation/ai-${{ steps.build_meta.outputs.id }}
           base: ${{ env.DOCS_CN_BASE }}
-          title: "${{ env.DOCS_CN_BASE }}: translate AI doc changes from ${{ steps.commits.outputs.source_repo }} ${{ steps.commits.outputs.source_branch }} on ${{ steps.build_meta.outputs.date }}"
+          title: "${{ env.DOCS_CN_BASE }}: translate AI doc changes from ${{ env.SOURCE_REPO }} ${{ env.SOURCE_BRANCH }} on ${{ steps.build_meta.outputs.date }}"
           labels: |
             translation/no-need
           body: |
@@ -291,7 +333,7 @@ jobs:
 
             English commit diff:
 
-            https://github.com/${{ steps.commits.outputs.source_repo }}/compare/${{ steps.commits.outputs.base_ref }}...${{ steps.commits.outputs.head_ref }}
+            https://github.com/${{ env.SOURCE_REPO }}/compare/${{ steps.commits.outputs.base_ref }}...${{ steps.commits.outputs.head_ref }}
 
             ### Which TiDB version(s) do your changes apply to? (Required)
 
@@ -299,11 +341,15 @@ jobs:
 
             ### What is the related PR or file link(s)?
 
-            - Source repo: `${{ steps.commits.outputs.source_repo }}`
-            - Source branch: `${{ steps.commits.outputs.source_branch }}`
+            - Source repo: `${{ env.SOURCE_REPO }}`
+            - Source branch: `${{ env.SOURCE_BRANCH }}`
+            - Terms branch: `${{ env.TERMS_BRANCH }}`
             - Source paths: `${{ env.SOURCE_FOLDER }}/**`, `${{ env.SOURCE_TOC_FILE }}`
             - Source files: `${{ steps.source_files.outputs.files }}`
             - Source files translation mode: `${{ inputs.source_files_translation_mode || 'incremental' }}`
+            - Sync outcome: `${{ steps.sync.outcome }}`
+
+            ${{ steps.changes.outputs.failure_summary }}
 
             ### Do your changes match any of the following descriptions?
 
