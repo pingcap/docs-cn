@@ -15,7 +15,7 @@ aliases: ['/zh/tidb/stable/vector-search-integrate-with-langchain/','/zh/tidb/de
 
 > **提示**
 >
-> 你可以在 LangChain 文档中查看完整的[示例代码](https://docs.langchain.com/oss/python/integrations/vectorstores/tidb_vector)。
+> 你可以在 Jupyter Notebook 中查看完整的 [示例代码](https://github.com/langchain-ai/langchain/blob/master/docs/docs/integrations/vectorstores/tidb_vector.ipynb)，或直接在 [Colab](https://colab.research.google.com/github/langchain-ai/langchain/blob/master/docs/docs/integrations/vectorstores/tidb_vector.ipynb) 在线环境中运行。
 
 ## 前置条件
 
