@@ -9,7 +9,7 @@ summary: 了解 TiDB 6.1.7 版本的改进提升与错误修复。
 
 TiDB 版本：6.1.7
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.1/production-deployment-using-tiup)
+试用链接：[快速体验](https://docs-archive.pingcap.com/zh/tidb/v6.1/quick-start-with-tidb) | [生产部署](https://docs-archive.pingcap.com/zh/tidb/v6.1/production-deployment-using-tiup)
 
 ## 改进提升
 
