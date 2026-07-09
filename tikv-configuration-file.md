@@ -2745,64 +2745,64 @@ Raft Engine 相关的配置项。
     + `conservative`：此策略会优先确保系统资源被充分利用，允许低优先级任务根据需要充分使用系统可用资源，因此对高优先级任务的性能影响更大。
 + 默认值：`moderate`
 
-### `bg-cpu-throttle-threshold` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
+### `bg-cpu-throttle-threshold` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
-+ 指定开始对后台任务进行限流时的 CPU 使用率百分比阈值。后台任务是指被标记为后台资源组的任务，包括 `import`、`br`、`ddl` 和 `stats` 任务类型（参见[后台任务类型](/tidb-resource-control-background-tasks.md#background-参数说明)）。当 CPU 使用率达到该值时，TiKV 开始减少分配给后台任务的资源预算。随着 CPU 使用率从该阈值升高并接近 [`fg-cpu-throttle-threshold`](#fg-cpu-throttle-threshold-从-v857-和-v900-版本开始引入)，该预算会从配置的上限按线性方式缩减，最低降至 1 个 CPU 核心。
++ 指定开始对后台任务进行限流时的 CPU 使用率百分比阈值。后台任务是指被标记为后台资源组的任务，包括 `import`、`br`、`ddl` 和 `stats` 任务类型（参见[后台任务类型](/tidb-resource-control-background-tasks.md#background-参数说明)）。当 CPU 使用率达到该值时，TiKV 开始减少分配给后台任务的资源预算。随着 CPU 使用率从该阈值升高并接近 [`fg-cpu-throttle-threshold`](#fg-cpu-throttle-threshold-从-v857-版本开始引入)，该预算会从配置的上限按线性方式缩减，最低降至 1 个 CPU 核心。
 + 默认值：`60.0`
 + 单位：百分比 (%)
 
-### `fg-cpu-throttle-threshold` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
+### `fg-cpu-throttle-threshold` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
-+ 指定完全激活前台流量保护时的 CPU 使用率百分比阈值。当 CPU 使用率达到该值时，后台任务会被完全限流到其最低下限，后台使用率预算也会被限制在该值。该阈值必须大于 [`bg-cpu-throttle-threshold`](#bg-cpu-throttle-threshold-从-v857-和-v900-版本开始引入)。
++ 指定完全激活前台流量保护时的 CPU 使用率百分比阈值。当 CPU 使用率达到该值时，后台任务会被完全限流到其最低下限，后台使用率预算也会被限制在该值。该阈值必须大于 [`bg-cpu-throttle-threshold`](#bg-cpu-throttle-threshold-从-v857-版本开始引入)。
 + 默认值：`70.0`
 + 单位：百分比 (%)
 
-### `bg-compaction-pressure-threshold` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
+### `bg-compaction-pressure-threshold` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
-+ 指定开始对后台写 I/O 进行限流时的阈值，该阈值表示为 [`storage.flow-control.soft-pending-compaction-bytes-limit`](#soft-pending-compaction-bytes-limit) 的百分比。低于该阈值时，后台写 I/O 会逐步增加至 [`bg-write-io-ceiling`](#bg-write-io-ceiling-从-v857-和-v900-版本开始引入)。达到或超过该阈值时，随着 compaction 压力接近 100%，TiKV 会将后台写 I/O 按线性方式逐步降低至 [`bg-write-io-floor`](#bg-write-io-floor-从-v857-和-v900-版本开始引入)。
++ 指定开始对后台写 I/O 进行限流时的阈值，该阈值表示为 [`storage.flow-control.soft-pending-compaction-bytes-limit`](#soft-pending-compaction-bytes-limit) 的百分比。低于该阈值时，后台写 I/O 会逐步增加至 [`bg-write-io-ceiling`](#bg-write-io-ceiling-从-v857-版本开始引入)。达到或超过该阈值时，随着 compaction 压力接近 100%，TiKV 会将后台写 I/O 按线性方式逐步降低至 [`bg-write-io-floor`](#bg-write-io-floor-从-v857-版本开始引入)。
 + 默认值：`70.0`
 + 单位：百分比 (%)
 
-### `bg-write-io-ceiling` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
+### `bg-write-io-ceiling` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
-+ 指定当 compaction 压力低于 [`bg-compaction-pressure-threshold`](#bg-compaction-pressure-threshold-从-v857-和-v900-版本开始引入) 时，后台任务允许的最大写 I/O 速率。
++ 指定当 compaction 压力低于 [`bg-compaction-pressure-threshold`](#bg-compaction-pressure-threshold-从-v857-版本开始引入) 时，后台任务允许的最大写 I/O 速率。
 + 默认值：`"100GB"`
 + 单位：字节/秒
 
-### `bg-write-io-floor` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
+### `bg-write-io-floor` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
 + 指定即使在最大 compaction 压力下也能保证分配给后台任务的最小写 I/O 速率，防止后台任务因写 I/O 不足而完全无法执行。
 + 默认值：`"10MB"`
 + 单位：字节/秒
 
-### `enable-fair-scheduling` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
+### `enable-fair-scheduling` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
 + 控制是否为读请求启用基于 RU 的两阶段公平调度。启用后，当前 RU 消耗速率超过其历史基线的资源组会被放入统一读线程池队列中的较低优先级阶段，从而在不硬性拒绝请求的情况下保护持续性工作负载免受流量突增影响。
 + 默认值：`false`
 
-### `enable-read-admission-control` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
+### `enable-read-admission-control` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
-+ 控制是否为读请求启用准入控制。启用后，当 CPU 使用率超过 [`fg-cpu-throttle-threshold`](#fg-cpu-throttle-threshold-从-v857-和-v900-版本开始引入) 时，来自超出基线资源组的读请求会被延迟，或以 `SchedTooBusy` 拒绝。
++ 控制是否为读请求启用准入控制。启用后，当 CPU 使用率超过 [`fg-cpu-throttle-threshold`](#fg-cpu-throttle-threshold-从-v857-版本开始引入) 时，来自超出基线资源组的读请求会被延迟，或以 `SchedTooBusy` 拒绝。
 + 默认值：`false`
 
-### `enable-write-admission-control` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
+### `enable-write-admission-control` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
-+ 控制是否为写请求启用准入控制。启用后，当 CPU 使用率超过 [`fg-cpu-throttle-threshold`](#fg-cpu-throttle-threshold-从-v857-和-v900-版本开始引入) 时，来自超出基线资源组的写请求会被延迟，或以 `SchedTooBusy` 拒绝。
++ 控制是否为写请求启用准入控制。启用后，当 CPU 使用率超过 [`fg-cpu-throttle-threshold`](#fg-cpu-throttle-threshold-从-v857-版本开始引入) 时，来自超出基线资源组的写请求会被延迟，或以 `SchedTooBusy` 拒绝。
 + 默认值：`false`
 
-### `historical-usage-window-mins` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
+### `historical-usage-window-mins` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
 + 指定 TiKV 用于计算各资源组历史 RU 基线的滑动时间窗口大小（单位：分钟）。较大的窗口可以平滑短期突发流量，而较小的窗口会使基线对近期使用情况更敏感。取值范围：`2-60`。**修改此配置后，需要重启 TiKV 才能生效。**
 + 默认值：`15`
 + 单位：分钟
 
-### `baseline-burst-pct` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
+### `baseline-burst-pct` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
 + 指定资源组的历史 RU 基线之上可保留的余量百分比，超过该值后 TiKV 会认为该资源组“超出基线”。例如，如果将该值设置为 `20.0`，则资源组的历史 RU 速率必须超过 1.2×，公平调度才会降低其优先级，或准入控制才会对其进行限制。
 + 默认值：`20.0`
 + 单位：百分比 (%)
 
-### `admission-max-delayed-count` <span class="version-mark">从 v8.5.7 和 v9.0.0 版本开始引入</span>
+### `admission-max-delayed-count` <span class="version-mark">从 v8.5.7 版本开始引入</span>
 
 + 指定 TiKV 在准入控制延迟队列中可保留的最大并发请求数（读写合计）。达到该限制后，TiKV 会立即拒绝额外的超出基线请求，而不是继续延迟它们。将该值设置为 `0` 表示并发延迟数不受限制。
 + 默认值：`10000`
