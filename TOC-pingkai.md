@@ -177,6 +177,7 @@
       - [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
     - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
     - [日志过滤器](/ticdc/ticdc-filter.md)
+    - [表路由](/ticdc/ticdc-table-routing.md)
     - [DDL 同步](/ticdc/ticdc-ddl.md)
     - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
   - 监控告警
@@ -342,6 +343,7 @@
 - 性能调优
   - 优化手册
     - [优化概述](/performance-tuning-overview.md)
+    - [配置 TiDB 以优化性能](/tidb-performance-tuning-config.md)
     - [优化方法](/performance-tuning-methods.md)
     - [OLTP 负载性能优化实践](/performance-tuning-practices.md)
     - [TiFlash 性能分析方法](/tiflash-performance-tuning-methods.md)
@@ -381,6 +383,7 @@
         - [子查询相关的优化](/subquery-optimization.md)
         - [列裁剪](/column-pruning.md)
         - [关联子查询去关联](/correlated-subquery-optimization.md)
+        - [横向派生表](/lateral-derived-tables.md)
         - [Max/Min 消除](/max-min-eliminate.md)
         - [谓词下推](/predicate-push-down.md)
         - [分区裁剪](/partition-pruning.md)
