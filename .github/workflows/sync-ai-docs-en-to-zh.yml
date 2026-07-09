@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       file_names:
-        description: "Specify files to translate under docs/ai or TOC-ai.md (comma-separated list)"
+        description: "Specify files to translate under docs/ai, TOC-ai.md, or referenced image paths (comma-separated list)"
         required: true
         type: string
       source_files_translation_mode:
@@ -176,61 +176,23 @@ jobs:
         run: |
           set -euo pipefail
 
-          out=""
+          resolved_files="$(
+            python "${GITHUB_WORKSPACE}/docs-cn/scripts/resolve-ai-docs-source-files.py" \
+              --docs-source-path "${DOCS_SOURCE_PATH}" \
+              --base-ref "${BASE_REF}" \
+              --head-ref "${HEAD_REF}" \
+              --source-folder "${SOURCE_FOLDER}" \
+              --source-toc-file "${SOURCE_TOC_FILE}" \
+              --input-file-names "${INPUT_FILE_NAMES}"
+          )"
 
-          add_file() {
-            local rel="$1"
-            [ -z "${rel}" ] && return
-            case ",${out}," in
-              *",${rel},"*) return ;;
-            esac
-            if [ -z "${out}" ]; then
-              out="${rel}"
-            else
-              out="${out},${rel}"
-            fi
-          }
-
-          normalize_requested_file() {
-            local rel="$1"
-            rel="$(echo "${rel}" | xargs)"
-            rel="${rel#/}"
-            rel="${rel#docs/}"
-
-            if [ -z "${rel}" ]; then
-              return
-            fi
-
-            if [[ "${rel}" == "${SOURCE_TOC_FILE}" || "${rel}" == "${SOURCE_FOLDER}"/* ]]; then
-              add_file "${rel}"
-            else
-              add_file "${SOURCE_FOLDER}/${rel}"
-            fi
-          }
-
-          if [ -n "${INPUT_FILE_NAMES}" ]; then
-            IFS=',' read -ra items <<< "${INPUT_FILE_NAMES}"
-            for item in "${items[@]}"; do
-              normalize_requested_file "${item}"
-            done
-          else
-            readarray -t changed_files < <(
-              git -C "${DOCS_SOURCE_PATH}" diff --name-only -M "${BASE_REF}" "${HEAD_REF}"
-            )
-            for rel in "${changed_files[@]}"; do
-              if [[ "${rel}" == "${SOURCE_TOC_FILE}" || "${rel}" == "${SOURCE_FOLDER}"/* ]]; then
-                add_file "${rel}"
-              fi
-            done
-          fi
-
-          echo "files=${out}" >> "${GITHUB_OUTPUT}"
-          if [ -z "${out}" ]; then
+          echo "files=${resolved_files}" >> "${GITHUB_OUTPUT}"
+          if [ -z "${resolved_files}" ]; then
             echo "has_source_changes=false" >> "${GITHUB_OUTPUT}"
-            echo "No ${SOURCE_FOLDER}/ or ${SOURCE_TOC_FILE} changes detected."
+            echo "No ${SOURCE_FOLDER}/, ${SOURCE_TOC_FILE}, or referenced image changes detected."
           else
             echo "has_source_changes=true" >> "${GITHUB_OUTPUT}"
-            echo "Resolved source files: ${out}"
+            echo "Resolved source files: ${resolved_files}"
           fi
 
       - name: Run commit sync workflow
@@ -329,7 +291,7 @@ jobs:
           body: |
             ### What is changed, added or deleted? (Required)
 
-            Translate `pingcap/docs` AI documentation changes (`${{ env.SOURCE_FOLDER }}/**` and `${{ env.SOURCE_TOC_FILE }}`) to Chinese via `ai-pr-translator` commit-diff sync.
+            Translate `pingcap/docs` AI documentation changes (`${{ env.SOURCE_FOLDER }}/**`, `${{ env.SOURCE_TOC_FILE }}`, and referenced image changes) to Chinese via `ai-pr-translator` commit-diff sync.
 
             English commit diff:
 
@@ -344,7 +306,7 @@ jobs:
             - Source repo: `${{ env.SOURCE_REPO }}`
             - Source branch: `${{ env.SOURCE_BRANCH }}`
             - Terms branch: `${{ env.TERMS_BRANCH }}`
-            - Source paths: `${{ env.SOURCE_FOLDER }}/**`, `${{ env.SOURCE_TOC_FILE }}`
+            - Source paths: `${{ env.SOURCE_FOLDER }}/**`, `${{ env.SOURCE_TOC_FILE }}`, and referenced image changes
             - Source files: `${{ steps.source_files.outputs.files }}`
             - Source files translation mode: `${{ inputs.source_files_translation_mode || 'incremental' }}`
             - Sync outcome: `${{ steps.sync.outcome }}`
