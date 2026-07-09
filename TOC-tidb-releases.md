@@ -80,8 +80,6 @@
   - [6.3.0-DMR](/releases/release-6.3.0.md)
 - v6.2
   - [6.2.0-DMR](/releases/release-6.2.0.md)
-- v6.0
-  - [6.0.0-DMR](/releases/release-6.0.0-dmr.md)
 - End of Life 版本
   - v6.1
     - [6.1.7](/releases/release-6.1.7.md)
@@ -92,6 +90,8 @@
     - [6.1.2](/releases/release-6.1.2.md)
     - [6.1.1](/releases/release-6.1.1.md)
     - [6.1.0](/releases/release-6.1.0.md)
+  - v6.0
+    - [6.0.0-DMR](/releases/release-6.0.0-dmr.md)
   - v5.4
     - [5.4.3](/releases/release-5.4.3.md)
     - [5.4.2](/releases/release-5.4.2.md)
