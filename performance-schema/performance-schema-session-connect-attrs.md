@@ -65,7 +65,7 @@ TABLE SESSION_CONNECT_ATTRS;
 
 ## 大小限制与截断
 
-TiDB 使用全局系统变量 [`performance_schema_session_connect_attrs_size`](/system-variables.md#performance_schema_session_connect_attrs_size-从-v900-版本开始引入) 来控制每个会话连接属性的最大总大小。
+TiDB 使用全局系统变量 [`performance_schema_session_connect_attrs_size`](/system-variables.md#performance_schema_session_connect_attrs_size-从-v857-和-v900-版本开始引入) 来控制每个会话连接属性的最大总大小。
 
 - 默认值：`4096` 字节
 - 取值范围：`[-1, 65536]`
