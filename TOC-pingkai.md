@@ -869,6 +869,7 @@
       - [`PREPARE`](/sql-statements/sql-statement-prepare.md)
       - [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md)
       - [`RECOVER TABLE`](/sql-statements/sql-statement-recover-table.md)
+      - [`REFRESH STATS`](/sql-statements/sql-statement-refresh-stats.md)
       - [`RENAME USER`](/sql-statements/sql-statement-rename-user.md)
       - [`RENAME TABLE`](/sql-statements/sql-statement-rename-table.md)
       - [`REPLACE`](/sql-statements/sql-statement-replace.md)
@@ -1110,6 +1111,7 @@
   - [版本周期支持策略](https://pingkai.cn/tidb-release-support-policy)
   - [TiDB 离线包](/binary-package.md)
   - v8.5
+    - [8.5.7](/releases/release-8.5.7.md)
     - [8.5.6](/releases/release-8.5.6.md)
     - [8.5.5](/releases/release-8.5.5.md)
     - [8.5.4](/releases/release-8.5.4.md)
