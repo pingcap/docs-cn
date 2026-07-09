@@ -128,7 +128,7 @@ TiDB 版本：4.0.3
     - 修复 `getSchedulers` 可能导致数据争用的问题 [#2638](https://github.com/pingcap/pd/pull/2638)
     - 修复删除 `scheduler` 时导致死锁的问题 [#2637](https://github.com/pingcap/pd/pull/2637)
     - 修复 `balance-leader-scheduler` 没有考虑 placement rule 的问题 [#2636](https://github.com/pingcap/pd/pull/2636)
-    - 修复有时无法正确设置 `safepoint` 的问题，这可能会使 BR 和 dumpling 失败 [#2635](https://github.com/pingcap/pd/pull/2635)
+    - 修复有时无法正确设置 `safepoint` 的问题，这可能会使 BR 和 Dumpling 失败 [#2635](https://github.com/pingcap/pd/pull/2635)
     - 修复 `hot region scheduler` 中目标 store 选择错误的问题 [#2627](https://github.com/pingcap/pd/pull/2627)
     - 修复 PD Leader 切换时 TSO 请求可能花费太长时间的问题 [#2622](https://github.com/pingcap/pd/pull/2622)
     - 修复 PD Leader 切换后过期 `scheduler` 的问题 [#2608](https://github.com/pingcap/pd/pull/2608)
