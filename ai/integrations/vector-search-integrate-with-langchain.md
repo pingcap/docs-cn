@@ -11,7 +11,7 @@ aliases: ['/zh/tidb/stable/vector-search-integrate-with-langchain/','/zh/tidb/de
 > **注意：**
 >
 > - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md) 和 [{{{ .starter }}}](https://docs.pingcap.com/tidbcloud/select-cluster-tier#starter)。对于 TiDB Self-Managed，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md) 和 [{{{ .starter }}}](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)。对于 TiDB Self-Managed，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 > **提示**
 >
