@@ -23,7 +23,7 @@ TiDB 版本：8.5.7
 
     此外，PD 新增了与 CPU 相关的热点统计信息和调度器控制项，包括 [hot store statistics](https://docs.pingcap.com/zh/tidb/v8.5/pd-control#hot-read--write--store--history-start_time-end_time-key-value) 中的 `cpu-read-rate` 字段，以及 [`min-hot-cpu-rate` 和 `cpu-rate-rank-step-ratio`](https://docs.pingcap.com/zh/tidb/v8.5/pd-control#scheduler-config-balance-hot-region-scheduler) 调度器配置。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/troubleshoot-hot-spot-issues#scatter-read-hotspots)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v8.5/troubleshoot-hot-spot-issues#基于-tikv-cpu-使用情况的热点-region-调度)。
 
 ### 稳定性
 
