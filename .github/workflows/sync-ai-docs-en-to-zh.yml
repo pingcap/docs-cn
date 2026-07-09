@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       file_names:
-        description: "Specify files to translate under docs/ai, TOC-ai.md, or referenced image paths (comma-separated list)"
+        description: "Specify files to translate under docs/ai or TOC-ai.md (comma-separated list)"
         required: true
         type: string
       source_files_translation_mode:
