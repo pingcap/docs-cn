@@ -20,18 +20,19 @@ ShowLikeOrWhere ::=
 
 ## 示例
 
-查看 TiDB 定义的专用系统变量，关于这些变量的含义参见[系统变量和语法](/system-variables.md)。
+以下示例展示了如何使用 `SHOW [GLOBAL|SESSION] VARIABLES` 语句查看变量名或变量值符合特定模式的变量。关于这些变量的详细说明，参见[系统变量和语法](/system-variables.md)。
 
 {{< copyable "sql" >}}
 
 ```sql
-SHOW GLOBAL VARIABLES LIKE 'tidb%';
+SHOW GLOBAL VARIABLES LIKE 'tidb_stmt_summary%';
 ```
 
 ```sql
 +-------------------------------------+---------------------+
 | Variable_name                       | Value               |
 +-------------------------------------+---------------------+
+<<<<<<< HEAD
 | tidb_allow_batch_cop                | 0                   |
 | tidb_allow_remove_auto_inc          | 0                   |
 | tidb_auto_analyze_end_time          | 23:59 +0000         |
@@ -126,19 +127,20 @@ SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_slow_log_threshold             | 300                 |
 | tidb_slow_query_file                | tidb-slow.log       |
 | tidb_snapshot                       |                     |
+=======
+| tidb_stmt_summary_enable_persistent | OFF                 |
+| tidb_stmt_summary_file_max_backups  | 0                   |
+| tidb_stmt_summary_file_max_days     | 3                   |
+| tidb_stmt_summary_file_max_size     | 64                  |
+| tidb_stmt_summary_filename          | tidb-statements.log |
+>>>>>>> b99fe3592f (docs: use a shorter SHOW VARIABLES example (#21794))
 | tidb_stmt_summary_history_size      | 24                  |
-| tidb_stmt_summary_internal_query    | 0                   |
+| tidb_stmt_summary_internal_query    | OFF                 |
 | tidb_stmt_summary_max_sql_length    | 4096                |
 | tidb_stmt_summary_max_stmt_count    | 3000                |
 | tidb_stmt_summary_refresh_interval  | 1800                |
-| tidb_store_limit                    | 0                   |
-| tidb_txn_mode                       |                     |
-| tidb_use_plan_baselines             | on                  |
-| tidb_wait_split_region_finish       | 1                   |
-| tidb_wait_split_region_timeout      | 300                 |
-| tidb_window_concurrency             | 4                   |
 +-------------------------------------+---------------------+
-108 rows in set (0.01 sec)
+10 rows in set (0.001 sec)
 ```
 
 {{< copyable "sql" >}}
