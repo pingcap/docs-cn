@@ -21,7 +21,7 @@ ShowLikeOrWhere ::=
 
 ## 示例
 
-以下示例展示了如何使用 `SHOW [GLOBAL|SESSION] VARIABLES` 语句显示名称或值与特定模式匹配的变量。关于这些变量的详细说明，参见[系统变量和语法](/system-variables.md)。
+以下示例展示了如何使用 `SHOW [GLOBAL|SESSION] VARIABLES` 语句查看变量名或变量值符合特定模式的变量。关于这些变量的详细说明，参见[系统变量和语法](/system-variables.md)。
 
 {{< copyable "sql" >}}
 
