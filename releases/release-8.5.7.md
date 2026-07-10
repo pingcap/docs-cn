@@ -106,6 +106,7 @@ TiDB 版本：8.5.7
 | [`tidb_enable_cache_prepare_stmt`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_cache_prepare_stmt-从-v857-版本开始引入) | 新增 | 用于控制是否缓存 `Prepare` 语句的结果。默认值为 `OFF`。目前该变量为实验特性，不建议在生产环境中启用。|
 | [`tidb_enable_strict_not_null_check`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_strict_not_null_check-从-v857-版本开始引入) | 新增 | 用于控制当 `INSERT` 语句显式向 `NOT NULL` 列写入 `NULL` 值时，TiDB 是否执行严格校验。默认值为 `ON`。如果你的应用依赖此前写入隐式默认值的宽松行为，可以临时将该变量设置为 `OFF`，以降低升级兼容性风险。|
 | [`tidb_opt_enable_alternative_logical_plans`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_opt_enable_alternative_logical_plans-从-v857-版本开始引入) | 新增 | 用于控制优化器是否在关联子查询去关联场景中额外构建一个“不去关联”的逻辑候选计划。默认值为 `OFF`。|
+| [`tidb_opt_partial_ordered_index_for_topn`](https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_opt_partial_ordered_index_for_topn-从-v857-版本开始引入) | 新增 | 用于控制在 `ORDER BY ... LIMIT` 查询中是否启用基于索引部分有序性 (partial order) 的 TopN 优化。默认值为 `DISABLE`，表示关闭该优化。|
 
 ### 配置参数
 
