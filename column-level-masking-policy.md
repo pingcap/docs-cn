@@ -429,8 +429,6 @@ CREATE OR REPLACE MASKING POLICY email_mask ON customers(email)
 
 如果同名策略已经存在，TiDB 会使用新的定义替换原有策略。
 
-如果同名策略已经存在，TiDB 会使用新的定义替换原有策略。
-
 ## 行为注意事项
 
 ### 结果阶段脱敏
