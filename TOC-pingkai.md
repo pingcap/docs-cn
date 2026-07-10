@@ -1110,6 +1110,7 @@
   - [版本周期支持策略](https://pingkai.cn/tidb-release-support-policy)
   - [TiDB 离线包](/binary-package.md)
   - v8.5
+    - [8.5.7](/releases/release-8.5.7.md)
     - [8.5.6](/releases/release-8.5.6.md)
     - [8.5.5](/releases/release-8.5.5.md)
     - [8.5.4](/releases/release-8.5.4.md)
