@@ -99,7 +99,6 @@ OOM 常见的故障现象包括（但不限于）：
 
 - 调小同时读取的 Region 的数量，或降低算子并发度，以避免因高并发导致的内存问题。对应的系统变量包括：
     - [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency)
-    - [`tidb_index_serial_scan_concurrency`](/system-variables.md#tidb_index_serial_scan_concurrency)
     - [`tidb_executor_concurrency`](/system-variables.md#tidb_executor_concurrency-从-v50-版本开始引入)
 
 - 问题发生时间附近，session 的并发度过高，此时可能需要添加节点进行扩容。
