@@ -3220,7 +3220,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`1`
 - 范围：`[1, 256]`
 - 单位：线程
-- 该变量仅为向后兼容而保留。你可以通过调整 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 控制顺序索引扫描并发度，或通过调整 [`tidb_analyze_distsql_scan_concurrency`](#tidb_analyze_distsql_scan_concurrency-new-in-v760) 调优索引统计信息收集。
+- 该变量仅为向后兼容而保留。你可以通过调整 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 控制顺序索引扫描并发度，或通过调整 [`tidb_analyze_distsql_scan_concurrency`](#tidb_analyze_distsql_scan_concurrency-从-v760-版本开始引入) 调优索引统计信息收集。
 
 ### `tidb_init_chunk_size`
 
