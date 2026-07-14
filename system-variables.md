@@ -1320,7 +1320,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 取值范围：`[1, 256]`
 - 这个变量控制 `ANALYZE` 在以下方面的并发情况：
     - 合并从不同 Region 收集的样本的并发度。
-    - 为特殊索引（例如，基于生成虚拟列的索引）收集统计信息的并发度，例如 TiDB 可同时为多少个索引收集统计信息。
+    - 针对特殊索引（例如基于生成虚拟列的索引）收集统计信息的并发度，例如 TiDB 可同时为多少个特殊索引收集统计信息。
 
 ### `tidb_capture_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
