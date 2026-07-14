@@ -1320,7 +1320,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 取值范围：`[1, 256]`
 - 这个变量控制 `ANALYZE` 在以下方面的并发情况：
     - 合并从不同 Region 收集的样本的并发度。
-    - 针对特殊索引（例如，基于生成虚拟列的索引）的并发度，例如 TiDB 可同时为多少个特殊索引收集统计信息。
+    - 为特殊索引（例如，基于生成虚拟列的索引）收集统计信息的并发度，例如 TiDB 可同时为多少个索引收集统计信息。
 
 ### `tidb_capture_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -3211,7 +3211,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 > **警告：**
 >
-> 该变量已废弃，不再控制执行行为。顺序索引扫描目前可通过 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 控制并发度，而索引读取则可通过 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 的 [`tidb_analyze_distsql_scan_concurrency`](#tidb_analyze_distsql_scan_concurrency-从-v760-版本开始引入) 控制并发度。
+> 该变量已废弃，不再控制执行行为。顺序索引扫描的并发度现在由 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 控制，而 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 使用 [`tidb_analyze_distsql_scan_concurrency`](#tidb_analyze_distsql_scan_concurrency-从-v760-版本开始引入) 控制索引统计信息扫描的并发度。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -3220,7 +3220,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`1`
 - 范围：`[1, 256]`
 - 单位：线程
-- 该变量仅为向后兼容而保留。你可以通过调整 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 控制顺序索引扫描并发度，或通过调整 [`tidb_analyze_distsql_scan_concurrency`](#tidb_analyze_distsql_scan_concurrency-从-v760-版本开始引入) 调优索引统计信息收集。
+- 该变量仅为向后兼容而保留。你可以使用 [`tidb_executor_concurrency`](#tidb_executor_concurrency-从-v50-版本开始引入) 控制顺序索引扫描的并发度，或使用 [`tidb_analyze_distsql_scan_concurrency`](#tidb_analyze_distsql_scan_concurrency-从-v760-版本开始引入) 控制索引统计信息扫描的并发度。
 
 ### `tidb_init_chunk_size`
 
