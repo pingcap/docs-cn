@@ -65,6 +65,7 @@
       - [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
     - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
     - [日志过滤器](/ticdc/ticdc-filter.md)
+    - [表路由](/ticdc/ticdc-table-routing.md)
     - [DDL 同步](/ticdc/ticdc-ddl.md)
     - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
   - 监控告警
@@ -269,6 +270,7 @@
         - [子查询相关的优化](/subquery-optimization.md)
         - [列裁剪](/column-pruning.md)
         - [关联子查询去关联](/correlated-subquery-optimization.md)
+        - [横向派生表](/lateral-derived-tables.md)
         - [Max/Min 消除](/max-min-eliminate.md)
         - [谓词下推](/predicate-push-down.md)
         - [分区裁剪](/partition-pruning.md)

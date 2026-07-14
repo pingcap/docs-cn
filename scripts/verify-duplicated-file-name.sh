@@ -2,7 +2,14 @@
 
 echo $PWD
 
-DuplicateFilename=$(find . -name '*.md' ! -name '_*.md'  | rev | cut -d'/' -f1 | rev | sort | uniq -c -d)
+DuplicateFilename=$(
+  find . \
+    -path './node_modules' -prune -o \
+    -name '*.md' \
+    ! -name '_*.md' \
+    ! -name 'SKILL.md' \
+    -print | rev | cut -d'/' -f1 | rev | sort | uniq -c -d
+)
 
 if [ -z "$DuplicateFilename" ]
 then
