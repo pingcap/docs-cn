@@ -827,8 +827,9 @@ opentracing.reporter 相关的设置。
 
 ### `resolve-lock-lite-threshold` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
-+ 根据单个 Region 内一次 prewrite 请求涉及的 key 数量，控制 TiDB 解决锁冲突的方式。如果 key 数量小于该阈值，TiDB 只处理受影响 key 上的锁，以避免扫描整个 Region；否则，TiDB 会扫描该 Region 以处理相关锁。
-+ 默认值：v9.0.0 及以上版本中为 `512`。在 v9.0.0 之前，默认值为 `16`。
++ 根据单个 Region 内一次 prewrite 请求涉及的 key 数量，控制 TiDB 解决锁冲突的方式。当涉及的 key 数量小于该阈值时，TiDB 仅处理受影响 key 上的锁，从而避免扫描整个 Region；否则，TiDB 会扫描整个 Region 以处理相关锁。
+
++ 默认值：`512`。在 v9.0.0 之前的版本中，默认值为 `16`。
 
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
