@@ -1,7 +1,7 @@
 ---
 title: GROUP BY 聚合函数
 aliases: ['/docs-cn/dev/functions-and-operators/aggregate-group-by-functions/','/docs-cn/dev/reference/sql/functions-and-operators/aggregate-group-by-functions/']
-summary: TiDB 支持的聚合函数包括 COUNT、COUNT(DISTINCT)、SUM、SUM_INT、AVG、MAX、MIN、GROUP_CONCAT、VARIANCE、VAR_POP、STD、STDDEV、VAR_SAMP、STDDEV_SAMP 和 JSON_OBJECTAGG。除了 GROUP_CONCAT、APPROX_PERCENTILE 和 APPROX_COUNT_DISTINCT 外，这些聚合函数可以作为窗口函数使用。另外，TiDB 的 GROUP BY 子句支持 WITH ROLLUP 修饰符，还支持 SQL 模式 ONLY_FULL_GROUP_BY。与 MySQL 的区别在于 TiDB 对标准 SQL 有一些扩展，允许在 HAVING 子句中使用别名和非列表达式。
+summary: TiDB 支持的聚合函数包括 COUNT、COUNT(DISTINCT)、SUM、SUM_INT、MAX_COUNT、MIN_COUNT、AVG、MAX、MIN、GROUP_CONCAT、VARIANCE、VAR_POP、STD、STDDEV、VAR_SAMP、STDDEV_SAMP 和 JSON_OBJECTAGG。除了 GROUP_CONCAT、APPROX_PERCENTILE 和 APPROX_COUNT_DISTINCT 外，这些聚合函数可以作为窗口函数使用。另外，TiDB 的 GROUP BY 子句支持 WITH ROLLUP 修饰符，还支持 SQL 模式 ONLY_FULL_GROUP_BY。与 MySQL 的区别在于 TiDB 对标准 SQL 有一些扩展，允许在 HAVING 子句中使用别名和非列表达式。
 ---
 
 # GROUP BY 聚合函数
@@ -80,6 +80,67 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
     |  4 | NULL |           2 |
     +----+------+-------------+
     4 rows in set (0.00 sec)
+    ```
+
++ `MAX_COUNT([ALL] expr)` 和 `MIN_COUNT([ALL] expr)`
+
+    这两个函数是 TiDB 特有的聚合函数，用于统计组内最大值或最小值的出现次数。`MAX_COUNT(expr)` 返回 `expr` 的最大非 `NULL` 值在当前组中出现的行数；`MIN_COUNT(expr)` 返回 `expr` 的最小非 `NULL` 值在当前组中出现的行数。
+
+    这两个函数默认忽略 `NULL` 值。如果当前组中没有非 `NULL` 值，返回 `0`。返回类型为 `BIGINT`。这两个函数支持省略 `ALL` 或显式指定 `ALL`，但不支持 `DISTINCT`。例如，`MAX_COUNT(DISTINCT expr)` 和 `MIN_COUNT(DISTINCT expr)` 会返回语法错误。这两个函数也可作为[窗口函数](/functions-and-operators/window-functions.md)使用。
+
+    以下是一个使用这两个函数的示例：
+
+    ```sql
+    DROP TABLE IF EXISTS t;
+    CREATE TABLE t(a INT);
+    INSERT INTO t VALUES(1), (1), (2), (2), (2), (NULL);
+    ```
+
+    ```sql
+    SELECT MAX_COUNT(a), MIN_COUNT(a) FROM t;
+    ```
+
+    ```sql
+    +--------------+--------------+
+    | MAX_COUNT(a) | MIN_COUNT(a) |
+    +--------------+--------------+
+    |            3 |            2 |
+    +--------------+--------------+
+    1 row in set (0.00 sec)
+    ```
+
+    如果没有非 `NULL` 值，函数返回 `0`：
+
+    ```sql
+    SELECT MAX_COUNT(a), MIN_COUNT(a) FROM t WHERE a IS NULL;
+    ```
+
+    ```sql
+    +--------------+--------------+
+    | MAX_COUNT(a) | MIN_COUNT(a) |
+    +--------------+--------------+
+    |            0 |            0 |
+    +--------------+--------------+
+    1 row in set (0.00 sec)
+    ```
+
+    以下示例将 `MAX_COUNT()` 和 `MIN_COUNT()` 作为窗口函数使用：
+
+    ```sql
+    SELECT
+        MAX_COUNT(a) OVER () AS max_count,
+        MIN_COUNT(a) OVER () AS min_count
+    FROM t
+    LIMIT 1;
+    ```
+
+    ```sql
+    +-----------+-----------+
+    | max_count | min_count |
+    +-----------+-----------+
+    |         3 |         2 |
+    +-----------+-----------+
+    1 row in set (0.00 sec)
     ```
 
 + `APPROX_PERCENTILE(expr, constant_integer_expr)`
