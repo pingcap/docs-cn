@@ -22,6 +22,7 @@ Before changing a PR body, read `.github/pull_request_template.md`.
      - Default to `master` only for general improvements, wording fixes, missing-content additions, and corrections not tied to a specific released behavior.
      - Check the affected release version(s) together with `master` when the change involves version-specific behavior, compatibility changes, changed defaults, or fixes in published docs.
    - **What is the related PR or file link(s)?**: fill in the source link under `This PR is translated from:` when the PR is a translation from `pingcap/docs`. Fill in other reference links such as product PRs, issues, or related doc PRs under `Other reference link(s):`.
+   - **AI agent involvement**: when this section is present in the template, keep it intact. Check its checkbox only when the changes were primarily made by an AI agent on behalf of the PR author; otherwise leave it unchecked.
    - **Do your changes match any of the following descriptions?**: check all that apply. If the change needs different wording on another branch, check `Need modification after applied to another branch` and comment `/label requires-version-specific-changes` to trigger the bot. (Note: the PR template still prints the old command `/label version-specific-changes-required`, which the bot now rejects because the actual label is `requires-version-specific-changes`. Use the actual label name.)
 4. Choose the correct base branch.
    - Default to `master` for most documentation PRs.
@@ -59,7 +60,6 @@ The version checkboxes in the PR template follow a specific order from newest to
 - [ ] v7.5 (TiDB 7.5 versions)
 - [ ] v7.1 (TiDB 7.1 versions)
 - [ ] v6.5 (TiDB 6.5 versions)
-- [ ] v6.1 (TiDB 6.1 versions)
 ```
 
 When filling them in:
@@ -84,9 +84,10 @@ When filling them in:
 
 - The PR body contains the "What is changed, added or deleted? (Required)" heading with a non-empty description below it.
 - At least one version checkbox is checked under "Which TiDB version(s) do your changes apply to? (Required)".
-- The version checkbox section preserves the template's canonical version list (`master`, `v9.0`, `v8.5`, `v8.1`, `v7.5`, `v7.1`, `v6.5`, `v6.1`) and order.
+- The version checkbox section preserves the template's canonical version list (`master`, `v9.0`, `v8.5`, `v8.1`, `v7.5`, `v7.1`, `v6.5`) and order.
 - The "Tips for choosing the affected version(s)" paragraph and the `CONTRIBUTING.md` link are present between the version heading and the checkboxes.
 - The related-link fields (`This PR is translated from:` and `Other reference link(s):`) are present, even if left at their default values.
+- The `AI agent involvement` section is present when defined by the template, and its checkbox accurately reflects whether an AI agent primarily made the changes on the PR author's behalf.
 - The "Do your changes match any of the following descriptions?" section is present with its four checkboxes intact.
 - The first-time contributors' checklist is either correctly filled in or removed entirely as instructed.
 - The base branch matches the change scope: `master` by default, or a specific `release-X.Y` for version-scoped fixes.
