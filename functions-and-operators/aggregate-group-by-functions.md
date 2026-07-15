@@ -37,9 +37,9 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
 
 + `SUM_INT(expr)`
 
-    该函数用于对整数表达式 `expr` 求和，功能类似于 `SUM(expr)`，但仅接受整数类型参数，包括 `TINYINT`、`SMALLINT`、`MEDIUMINT`、`INT` 和 `BIGINT`。对于有符号整数参数，返回类型为 `BIGINT`；对于无符号整数参数，返回类型为 `BIGINT UNSIGNED`。如果参与计算的非 `NULL` 值之和超出返回类型范围，TiDB 返回整数溢出错误。
+    该函数用于对整数表达式 `expr` 求和，功能类似于 `SUM(expr)`，但仅接受整数类型参数，包括有符号和无符号的 `TINYINT`、`SMALLINT`、`MEDIUMINT`、`INT` 和 `BIGINT`。对于有符号整数参数，返回类型为 `BIGINT`；对于无符号整数参数，返回类型为 `BIGINT UNSIGNED`。如果参与计算的非 `NULL` 值之和超出返回类型范围，TiDB 返回整数溢出错误。
 
-    `SUM_INT()` 默认忽略 `NULL` 值。如果没有非 `NULL` 值，返回 `NULL`。`SUM_INT()` 支持 `DISTINCT`，并可作为[窗口函数](/functions-and-operators/window-functions.md)使用。
+    `SUM_INT()` 忽略 `NULL` 值。如果没有非 `NULL` 值，返回 `NULL`。`SUM_INT()` 支持 `DISTINCT`，并可作为[窗口函数](/functions-and-operators/window-functions.md)使用。
 
     以下是一个使用该函数的示例：
 
