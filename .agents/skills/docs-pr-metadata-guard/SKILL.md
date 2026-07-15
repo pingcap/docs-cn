@@ -27,7 +27,7 @@ Before changing a PR body, read `.github/pull_request_template.md`.
 4. Choose the correct base branch.
    - Default to `master` for most documentation PRs.
    - Use a specific `release-X.Y` branch when the change is scoped to a single published version and does not apply to `master`.
-   - Do not open PRs for the Chinese .agents/` content: it is auto-translated weekly from `pingcap/docs`. Fix the English source instead.
+   - Do not open PRs for the  `/ai` docs and `/tidb-cloud` docs: they are auto-translated weekly from `pingcap/docs`. Fix the English source instead.
 5. For an existing PR, update only the mutable sections.
    - Safe targets: the description text under "What is changed, added or deleted?", the version checkboxes, the related-link fields, and the description checkboxes.
    - Do not rename headings, reorder sections, or rewrite the template wholesale.
