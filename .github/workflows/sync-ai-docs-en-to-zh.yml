@@ -60,6 +60,16 @@ jobs:
           fetch-depth: 0
 
       - uses: actions/checkout@v6
+        name: Checkout docs-cn tools from master
+        with:
+          repository: pingcap/docs-cn
+          ref: master
+          path: docs-cn-tools
+          persist-credentials: false
+          sparse-checkout: scripts/resolve-ai-docs-source-files.py
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/checkout@v6
         name: Checkout docs source branch
         with:
           repository: ${{ env.SOURCE_REPO }}
@@ -177,7 +187,7 @@ jobs:
           set -euo pipefail
 
           resolved_files="$(
-            python "${GITHUB_WORKSPACE}/docs-cn/scripts/resolve-ai-docs-source-files.py" \
+            python "${GITHUB_WORKSPACE}/docs-cn-tools/scripts/resolve-ai-docs-source-files.py" \
               --docs-source-path "${DOCS_SOURCE_PATH}" \
               --base-ref "${BASE_REF}" \
               --head-ref "${HEAD_REF}" \
