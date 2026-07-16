@@ -49,6 +49,8 @@ env:
   AI_TRANSLATOR_REF: main
   SOURCE_FOLDER: ai
   SOURCE_TOC_FILE: TOC-ai.md
+  # Manual all-updated runs use the same global cursor behavior as scheduled runs.
+  COMMIT_SYNC_RUN_TYPE: ${{ (github.event_name == 'schedule' || inputs.translation_scope == 'Translate all updated files') && 'schedule' || 'workflow_dispatch' }}
 
 jobs:
   translate:
@@ -61,16 +63,32 @@ jobs:
 
     steps:
       - name: Validate manual inputs
-        if: github.event_name == 'workflow_dispatch' && inputs.translation_scope == 'Translate only specified files'
+        if: github.event_name == 'workflow_dispatch'
         shell: bash
         env:
+          TRANSLATION_SCOPE: ${{ inputs.translation_scope }}
           INPUT_FILE_NAMES: ${{ inputs.file_names }}
+          SOURCE_FILES_TRANSLATION_MODE: ${{ inputs.source_files_translation_mode }}
         run: |
           set -euo pipefail
-          if [ -z "${INPUT_FILE_NAMES//[[:space:]]/}" ]; then
-            echo "file_names is required when translation_scope is 'Translate only specified files'." >&2
-            exit 1
-          fi
+          case "${TRANSLATION_SCOPE}" in
+            "Translate all updated files")
+              if [ -n "${INPUT_FILE_NAMES//[[:space:]]/}" ]; then
+                echo "file_names must be empty when translation_scope is 'Translate all updated files'." >&2
+                exit 1
+              fi
+              if [ "${SOURCE_FILES_TRANSLATION_MODE}" != "incremental" ]; then
+                echo "source_files_translation_mode must be 'incremental' when translation_scope is 'Translate all updated files'." >&2
+                exit 1
+              fi
+              ;;
+            "Translate only specified files")
+              if [ -z "${INPUT_FILE_NAMES//[[:space:]]/}" ]; then
+                echo "file_names is required when translation_scope is 'Translate only specified files'." >&2
+                exit 1
+              fi
+              ;;
+          esac
 
       - uses: actions/checkout@v6
         name: Checkout docs-cn
@@ -289,12 +307,12 @@ jobs:
             exit 0
           fi
 
-          if [ "${GITHUB_EVENT_NAME}" = "schedule" ] && [ "${{ steps.sync.outcome }}" = "success" ]; then
+          if [ "${COMMIT_SYNC_RUN_TYPE}" = "schedule" ] && [ "${{ steps.sync.outcome }}" = "success" ]; then
             python -c 'import json, os; from pathlib import Path; Path("latest_translation_commit.json").write_text(json.dumps({"source-repo": os.environ["SOURCE_REPO"], "source-branch": os.environ["SOURCE_BRANCH"], "sha": os.environ["HEAD_REF"]}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")'
-          elif [ "${GITHUB_EVENT_NAME}" = "schedule" ]; then
+          elif [ "${COMMIT_SYNC_RUN_TYPE}" = "schedule" ]; then
             echo "Skipping latest_translation_commit.json update because sync outcome is ${{ steps.sync.outcome }}."
           else
-            echo "Skipping latest_translation_commit.json update for ${GITHUB_EVENT_NAME} run."
+            echo "Skipping latest_translation_commit.json update for ${COMMIT_SYNC_RUN_TYPE} run."
           fi
 
           echo "has_changes=true" >> "${GITHUB_OUTPUT}"
@@ -338,7 +356,7 @@ jobs:
             - Terms branch: `${{ env.TERMS_BRANCH }}`
             - Source paths: `${{ env.SOURCE_FOLDER }}/**`, `${{ env.SOURCE_TOC_FILE }}`, and referenced image changes
             - Source files: `${{ steps.source_files.outputs.files }}`
-            - Source files translation mode: `${{ inputs.source_files_translation_mode || 'incremental' }}`
+            - Source files translation mode: `${{ github.event_name == 'workflow_dispatch' && inputs.translation_scope == 'Translate only specified files' && inputs.source_files_translation_mode || 'incremental' }}`
             - Sync outcome: `${{ steps.sync.outcome }}`
 
             ${{ steps.changes.outputs.failure_summary }}
