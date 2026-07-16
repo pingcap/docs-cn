@@ -6,7 +6,7 @@ summary: sync-diff-inspector 是一个用于校验 MySQL/TiDB 中数据一致性
 
 # sync-diff-inspector 用户文档
 
-[sync-diff-inspector](https://github.com/pingcap/tiflow/tree/master/sync_diff_inspector) 是一款用于比较兼容 MySQL 的数据库（包括 MySQL 和 TiDB）之间数据一致性的工具。例如，它可以比较 MySQL 和 TiDB 中的数据、MySQL 和 MySQL 中的数据，或者 TiDB 和 TiDB 中的数据。此外，在少量数据不一致的场景下，你还可以使用该工具修复数据。
+[sync-diff-inspector](https://github.com/pingcap/tiflow/tree/master/sync_diff_inspector) 是一个用于校验兼容 MySQL 的数据库（包括 MySQL 和 TiDB）之间数据一致性的工具。例如，它可以比较 MySQL 和 TiDB 中的数据、MySQL 和 MySQL 中的数据，或者 TiDB 和 TiDB 中的数据。此外，在少量数据不一致的场景下，你还可以使用该工具修复数据。
 
 本文介绍 sync-diff-inspector 的主要功能，并说明如何配置以及使用该工具。
 
