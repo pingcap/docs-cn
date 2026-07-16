@@ -371,7 +371,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 #### tidb_build_stats_concurrency
 
-目前 ANALYZE 执行的时候会被切分成一个个小的任务，每个任务只负责某一个列或者索引。`tidb_build_stats_concurrency` 可以控制同时执行的任务的数量，其默认值是 4。
+该变量控制手动收集统计信息时，构建统计信息的并发度，例如可以同时处理的表或分区的分析任务的数量。其默认值为 `4`。
 
 #### tidb_distsql_scan_concurrency
 
