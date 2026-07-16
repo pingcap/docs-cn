@@ -10,7 +10,7 @@ aliases: ['/zh/tidb/stable/vector-search-data-types/','/zh/tidb/dev/vector-searc
 
 > **注意：**
 >
-> - 向量数据类型目前为公开预览版，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+> - 向量数据类型目前处于公测阶段，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
 > - 向量数据类型适用于 [TiDB Self-Managed](/overview.md) 和 [{{{ .starter }}}](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)。对于 TiDB Self-Managed，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 目前支持以下向量数据类型：
