@@ -63,16 +63,32 @@ jobs:
 
     steps:
       - name: Validate manual inputs
-        if: github.event_name == 'workflow_dispatch' && inputs.translation_scope == 'Translate only specified files'
+        if: github.event_name == 'workflow_dispatch'
         shell: bash
         env:
+          TRANSLATION_SCOPE: ${{ inputs.translation_scope }}
           INPUT_FILE_NAMES: ${{ inputs.file_names }}
+          SOURCE_FILES_TRANSLATION_MODE: ${{ inputs.source_files_translation_mode }}
         run: |
           set -euo pipefail
-          if [ -z "${INPUT_FILE_NAMES//[[:space:]]/}" ]; then
-            echo "file_names is required when translation_scope is 'Translate only specified files'." >&2
-            exit 1
-          fi
+          case "${TRANSLATION_SCOPE}" in
+            "Translate all updated files")
+              if [ -n "${INPUT_FILE_NAMES//[[:space:]]/}" ]; then
+                echo "file_names must be empty when translation_scope is 'Translate all updated files'." >&2
+                exit 1
+              fi
+              if [ "${SOURCE_FILES_TRANSLATION_MODE}" != "incremental" ]; then
+                echo "source_files_translation_mode must be 'incremental' when translation_scope is 'Translate all updated files'." >&2
+                exit 1
+              fi
+              ;;
+            "Translate only specified files")
+              if [ -z "${INPUT_FILE_NAMES//[[:space:]]/}" ]; then
+                echo "file_names is required when translation_scope is 'Translate only specified files'." >&2
+                exit 1
+              fi
+              ;;
+          esac
 
       - uses: actions/checkout@v6
         name: Checkout docs-cn
