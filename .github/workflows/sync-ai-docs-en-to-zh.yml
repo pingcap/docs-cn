@@ -9,12 +9,20 @@ on:
     - cron: "0 0 * * 4" # Runs at 08:00 every Thursday (Beijing time, UTC+8)
   workflow_dispatch:
     inputs:
-      file_names:
-        description: "Specify files to translate under docs/ai or TOC-ai.md (comma-separated list)"
+      translation_scope:
+        description: "Choose whether to translate all updated files or only specified files"
         required: true
+        type: choice
+        default: Translate all updated files
+        options:
+          - Translate all updated files
+          - Translate only specified files
+      file_names:
+        description: "Required for specified files: paths under docs/ai or TOC-ai.md (comma-separated)"
+        required: false
         type: string
       source_files_translation_mode:
-        description: "Translate specified files incrementally or as full files"
+        description: "For specified files only: translate incrementally or as full files"
         required: true
         type: choice
         default: incremental
@@ -52,6 +60,18 @@ jobs:
       pull-requests: write
 
     steps:
+      - name: Validate manual inputs
+        if: github.event_name == 'workflow_dispatch' && inputs.translation_scope == 'Translate only specified files'
+        shell: bash
+        env:
+          INPUT_FILE_NAMES: ${{ inputs.file_names }}
+        run: |
+          set -euo pipefail
+          if [ -z "${INPUT_FILE_NAMES//[[:space:]]/}" ]; then
+            echo "file_names is required when translation_scope is 'Translate only specified files'." >&2
+            exit 1
+          fi
+
       - uses: actions/checkout@v6
         name: Checkout docs-cn
         with:
@@ -179,7 +199,7 @@ jobs:
         id: source_files
         shell: bash
         env:
-          INPUT_FILE_NAMES: ${{ inputs.file_names || '' }}
+          INPUT_FILE_NAMES: ${{ github.event_name == 'workflow_dispatch' && inputs.translation_scope == 'Translate only specified files' && inputs.file_names || '' }}
           BASE_REF: ${{ steps.commits.outputs.base_ref }}
           HEAD_REF: ${{ steps.commits.outputs.head_ref }}
           DOCS_SOURCE_PATH: ${{ github.workspace }}/docs-source
@@ -225,7 +245,7 @@ jobs:
           # SOURCE_FILES already contains ai/ or TOC-ai.md paths, so keep SOURCE_FOLDER empty.
           SOURCE_FOLDER: ""
           SOURCE_FILES: ${{ steps.source_files.outputs.files }}
-          SOURCE_FILES_TRANSLATION_MODE: ${{ inputs.source_files_translation_mode || 'incremental' }}
+          SOURCE_FILES_TRANSLATION_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.translation_scope == 'Translate only specified files' && inputs.source_files_translation_mode || 'incremental' }}
           SOURCE_LANGUAGE: English
           TARGET_LANGUAGE: Chinese
           IGNORE_RESOURCE_CARD_SECTION: "Yes"
