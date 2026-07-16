@@ -4,7 +4,7 @@ summary: 学习如何仅使用 SQL 语句快速上手 TiDB 向量搜索，为你
 aliases: ['/zh/tidb/stable/vector-search-get-started-using-sql/','/zh/tidb/dev/vector-search-get-started-using-sql/','/zh/tidbcloud/vector-search-get-started-using-sql/']
 ---
 
-# 通过 SQL 快速上手 TiDB + AI <!--Corresponding EN commit: 37c45d52207b46f0d84339da42eb3b4f6f247129-->
+# 通过 SQL 快速上手 TiDB + AI
 
 TiDB 扩展了 MySQL 语法以支持[向量搜索](/ai/concepts/vector-search-overview.md)，并引入了新的[向量数据类型](/ai/reference/vector-search-data-types.md)以及若干[向量函数](/ai/reference/vector-search-functions-and-operators.md)。
 

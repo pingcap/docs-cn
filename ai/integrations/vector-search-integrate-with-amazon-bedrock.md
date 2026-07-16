@@ -4,7 +4,7 @@ summary: 学习如何集成 TiDB 向量搜索与 Amazon Bedrock，构建基于 R
 aliases: ['/zh/tidbcloud/vector-search-integrate-with-amazon-bedrock/']
 ---
 
-# 集成 TiDB 向量搜索与 Amazon Bedrock <!--Corresponding EN commit: 37c45d52207b46f0d84339da42eb3b4f6f247129-->
+# 集成 TiDB 向量搜索与 Amazon Bedrock
 
 > **注意：**
 >

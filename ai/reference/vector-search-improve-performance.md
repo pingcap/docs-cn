@@ -4,7 +4,7 @@ summary: 学习提升 TiDB 向量搜索性能的最佳实践。
 aliases: ['/zh/tidb/stable/vector-search-improve-performance/','/zh/tidb/dev/vector-search-improve-performance/','/zh/tidbcloud/vector-search-improve-performance/']
 ---
 
-# 提升向量搜索性能 <!--Corresponding EN commit: 37c45d52207b46f0d84339da42eb3b4f6f247129-->
+# 提升向量搜索性能
 
 TiDB 向量搜索支持执行近似最近邻（ANN）查询，用于查找与某个镜像、文档或其他输入相似的结果。要提升查询性能，请参考以下最佳实践。
 

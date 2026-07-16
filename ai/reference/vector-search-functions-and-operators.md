@@ -4,7 +4,7 @@ summary: 了解可用于向量数据类型的函数与运算符。
 aliases: ['/zh/tidb/stable/vector-search-functions-and-operators/','/zh/tidb/dev/vector-search-functions-and-operators/','/zh/tidbcloud/vector-search-functions-and-operators/']
 ---
 
-# 向量函数与运算符 <!--Corresponding EN commit: 37c45d52207b46f0d84339da42eb3b4f6f247129-->
+# 向量函数与运算符
 
 本文档列出了可用于向量数据类型的函数与运算符。
 

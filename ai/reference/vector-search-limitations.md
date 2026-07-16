@@ -4,7 +4,7 @@ summary: 了解 TiDB 向量搜索的限制。
 aliases: ['/zh/tidb/stable/vector-search-limitations/','/zh/tidb/dev/vector-search-limitations/','/zh/tidbcloud/vector-search-limitations/']
 ---
 
-# 向量搜索限制 <!--Corresponding EN commit: 37c45d52207b46f0d84339da42eb3b4f6f247129-->
+# 向量搜索限制
 
 本文档描述了 TiDB 向量搜索已知的限制。
 

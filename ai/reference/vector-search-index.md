@@ -4,7 +4,7 @@ summary: 了解如何在 TiDB 中构建和使用向量搜索索引，以加速 K
 aliases: ['/zh/tidb/stable/vector-search-index/','/zh/tidb/dev/vector-search-index/','/zh/tidbcloud/vector-search-index/']
 ---
 
-# 向量搜索索引 <!--Corresponding EN commit: 37c45d52207b46f0d84339da42eb3b4f6f247129-->
+# 向量搜索索引
 
 如 [向量搜索](/ai/concepts/vector-search-overview.md) 文档所述，向量搜索通过计算给定向量与数据库中所有向量之间的距离，找出 Top K-最近邻（KNN）。这种方式能够提供准确的结果，但当表中包含大量向量时，查询速度较慢，因为需要进行全表扫描。[^1]
 

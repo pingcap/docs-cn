@@ -4,7 +4,7 @@ summary: 学习如何将 TiDB 向量搜索集成到 Django ORM，用于存储嵌
 aliases: ['/zh/tidb/stable/vector-search-integrate-with-django-orm/','/zh/tidb/dev/vector-search-integrate-with-django-orm/','/zh/tidbcloud/vector-search-integrate-with-django-orm/']
 ---
 
-# 将 TiDB 向量搜索集成到 Django ORM <!--Corresponding EN commit: 37c45d52207b46f0d84339da42eb3b4f6f247129-->
+# 将 TiDB 向量搜索集成到 Django ORM
 
 本教程将指导你如何使用 [Django](https://www.djangoproject.com/) ORM 与 [TiDB 向量搜索](/ai/concepts/vector-search-overview.md) 进行交互，存储嵌入向量，并执行向量搜索查询。
 
