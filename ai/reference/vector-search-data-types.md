@@ -4,13 +4,13 @@ summary: 了解 TiDB 中的向量数据类型。
 aliases: ['/zh/tidb/stable/vector-search-data-types/','/zh/tidb/dev/vector-search-data-types/','/zh/tidbcloud/vector-search-data-types/']
 ---
 
-# 向量数据类型
+# 向量数据类型 <!--Corresponding EN commit: 37c45d52207b46f0d84339da42eb3b4f6f247129-->
 
 向量是一组浮点数序列，例如 `[0.3, 0.5, -0.1, ...]`。TiDB 提供了向量数据类型，专门针对高效存储和查询在 AI 应用中广泛使用的向量嵌入进行了优化。
 
 > **注意：**
 >
-> - 向量数据类型目前为 Beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+> - 向量数据类型目前为公开预览版，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
 > - 向量数据类型适用于 [TiDB Self-Managed](/overview.md) 和 [{{{ .starter }}}](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)。对于 TiDB Self-Managed，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 目前支持以下向量数据类型：

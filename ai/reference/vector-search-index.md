@@ -4,7 +4,7 @@ summary: 了解如何在 TiDB 中构建和使用向量搜索索引，以加速 K
 aliases: ['/zh/tidb/stable/vector-search-index/','/zh/tidb/dev/vector-search-index/','/zh/tidbcloud/vector-search-index/']
 ---
 
-# 向量搜索索引
+# 向量搜索索引 <!--Corresponding EN commit: 37c45d52207b46f0d84339da42eb3b4f6f247129-->
 
 如 [向量搜索](/ai/concepts/vector-search-overview.md) 文档所述，向量搜索通过计算给定向量与数据库中所有向量之间的距离，找出 Top K-最近邻（KNN）。这种方式能够提供准确的结果，但当表中包含大量向量时，查询速度较慢，因为需要进行全表扫描。[^1]
 
@@ -12,7 +12,7 @@ aliases: ['/zh/tidb/stable/vector-search-index/','/zh/tidb/dev/vector-search-ind
 
 > **注意：**
 >
-> - 向量搜索功能目前为 beta 版本，可能会在未提前通知的情况下发生变更。如果你发现 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+> - 向量搜索功能目前为公开预览版，可能会在未提前通知的情况下发生变更。如果你发现 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
 > - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md) 和 [{{{ .starter }}}](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)。对于 TiDB Self-Managed，TiDB 版本需为 v8.4.0 及以上（推荐 v8.5.0 及以上）。
 
 目前，TiDB 支持 [HNSW（Hierarchical Navigable Small World）](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) 向量搜索索引算法。

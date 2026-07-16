@@ -4,7 +4,7 @@ summary: 学习如何使用 Python 和 TiDB 向量搜索快速开发一个实现
 aliases: ['/zh/tidb/stable/vector-search-get-started-using-python/','/zh/tidb/dev/vector-search-get-started-using-python/','/zh/tidbcloud/vector-search-get-started-using-python/']
 ---
 
-# 使用 Python 快速入门 TiDB + AI
+# 使用 Python 快速入门 TiDB + AI <!--Corresponding EN commit: 37c45d52207b46f0d84339da42eb3b4f6f247129-->
 
 本教程演示如何开发一个简单的 AI 应用，提供 **语义搜索** 功能。与传统的关键字搜索不同，语义搜索能够智能理解你的查询背后的含义，并返回最相关的结果。例如，如果你有标题为 "dog"、"fish" 和 "tree" 的文档，当你搜索 "a swimming animal" 时，应用会识别出 "fish" 是最相关的结果。
 
@@ -12,7 +12,7 @@ aliases: ['/zh/tidb/stable/vector-search-get-started-using-python/','/zh/tidb/de
 
 > **注意：**
 >
-> - 向量搜索功能目前为 beta 版本，可能会在不提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+> - 向量搜索功能目前为公开预览版，可能会在不提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
 > - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md) 和 [{{{ .starter }}}](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)。对于 TiDB Self-Managed，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 ## 前置条件

@@ -4,13 +4,13 @@ summary: 了解可用于向量数据类型的函数与运算符。
 aliases: ['/zh/tidb/stable/vector-search-functions-and-operators/','/zh/tidb/dev/vector-search-functions-and-operators/','/zh/tidbcloud/vector-search-functions-and-operators/']
 ---
 
-# 向量函数与运算符
+# 向量函数与运算符 <!--Corresponding EN commit: 37c45d52207b46f0d84339da42eb3b4f6f247129-->
 
 本文档列出了可用于向量数据类型的函数与运算符。
 
 > **注意：**
 >
-> - 向量函数与运算符目前为 Beta 版本，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+> - 向量函数与运算符目前为公开预览版，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
 > - 向量数据类型适用于 [TiDB Self-Managed](/overview.md) 和 [{{{ .starter }}}](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)。对于 TiDB Self-Managed，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 ## 向量函数

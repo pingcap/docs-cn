@@ -4,13 +4,13 @@ summary: 了解 TiDB 向量搜索的限制。
 aliases: ['/zh/tidb/stable/vector-search-limitations/','/zh/tidb/dev/vector-search-limitations/','/zh/tidbcloud/vector-search-limitations/']
 ---
 
-# 向量搜索限制
+# 向量搜索限制 <!--Corresponding EN commit: 37c45d52207b46f0d84339da42eb3b4f6f247129-->
 
 本文档描述了 TiDB 向量搜索已知的限制。
 
 > **注意：**
 >
-> - 向量搜索功能目前为 beta 版本，可能会在没有提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+> - 向量搜索功能目前为公开预览版，可能会在没有提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
 > - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md) 和 [{{{ .starter }}}](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)。对于 TiDB Self-Managed，TiDB 版本必须为 v8.4.0 或以上版本（推荐使用 v8.5.0 或以上版本）。
 
 ## 向量数据类型限制
