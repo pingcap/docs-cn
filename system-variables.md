@@ -1936,9 +1936,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 可选值：`OFF`、`ON`
 - 该变量用于控制 TiDB 是否将客户端成功登录和退出事件写入 TiDB 日志。
-- 对于频繁创建和关闭连接的业务，开启该变量可能会产生大量日志。
+- 如果你的业务负载会频繁创建和关闭连接，开启该变量可能会产生大量日志。
 
 ### `tidb_enable_ddl` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
