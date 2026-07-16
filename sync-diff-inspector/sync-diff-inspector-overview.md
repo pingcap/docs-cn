@@ -6,7 +6,7 @@ summary: sync-diff-inspector 是一个用于校验 MySQL/TiDB 中数据一致性
 
 # sync-diff-inspector 用户文档
 
-[sync-diff-inspector](https://github.com/pingcap/tiflow/tree/master/sync_diff_inspector) 是一个用于对 MySQL 兼容数据库（包括 MySQL 和 TiDB）中存储的数据进行比较的工具。例如，它可以比较 MySQL 和 TiDB 中的数据、MySQL 和 MySQL 中的数据，或者 TiDB 和 TiDB 中的数据。此外，你还可以在少量数据不一致的场景中使用该工具来修复数据。
+[sync-diff-inspector](https://github.com/pingcap/tiflow/tree/master/sync_diff_inspector) 是一款用于比较兼容 MySQL 的数据库（包括 MySQL 和 TiDB）之间数据一致性的工具。例如，它可以比较 MySQL 和 TiDB 中的数据、MySQL 和 MySQL 中的数据，或者 TiDB 和 TiDB 中的数据。此外，在少量数据不一致的场景下，你还可以使用该工具修复数据。
 
 本文介绍 sync-diff-inspector 的主要功能，并说明如何配置以及使用该工具。
 
@@ -55,10 +55,10 @@ sync-diff-inspector 的安装方法取决于 TiDB 版本。
 
 * 数据类型支持说明：
 
-    * **FLOAT/DOUBLE**：float 类型在 TiDB 和 MySQL 中的实现方式不同，在计算校验和时，`FLOAT` 和 `DOUBLE` 会分别取 6 位和 15 位有效数字。如果不使用该特性，需要设置 `ignore-columns` 忽略这些列的检查。
-    * **JSON**：支持比较。请注意，上下游 JSON 字符串值的排序规则和字符集差异可能导致误报。
-    * **BLOB/VARBINARY**：支持按二进制数据进行逐字节比较。
-    * **BIT**：支持 MySQL 到 TiDB 的比较。已验证支持位宽 1、8、16 和 64。如果你的 schema 使用了非标准位宽或应用层转换，请执行有针对性的验证测试。
+    * **FLOAT/DOUBLE**：TiDB 与 MySQL 对浮点类型的实现存在差异。计算校验和时，`FLOAT` 和 `DOUBLE` 分别采用 6 位和 15 位有效数字。如果不希望使用该特性，可以通过设置 `ignore-columns` 跳过这些列的检查。
+    * **JSON**：支持比较。需要注意的是，上下游之间 `JSON` 字符串值的排序规则 (collation) 和字符集差异可能导致误报数据不一致。
+    * **BLOB/VARBINARY**：支持比较，按二进制数据逐字节进行校验。
+    * **BIT**：支持 MySQL 与 TiDB 之间的数据比较。已验证支持位宽为 1、8、16 和 64 的 `BIT` 类型。如果你的表结构使用了非标准位宽，或应用层对数据进行了转换，建议先进行针对性的验证测试。
 
 * 支持对不包含主键或者唯一索引的表进行校验，但是如果数据不一致，生成的用于修复的 SQL 可能无法正确修复数据。
 
@@ -184,14 +184,13 @@ target-tables = ["schema*.test*", "test2.t2"]
 range = "age > 10 AND age < 20"
 #（可选）指定用于划分 chunk 的列，如果不配置该项，sync-diff-inspector 会选取一些合适的列（主键／唯一键／索引）
 index-fields = ["col1","col2"]
-#（可选）忽略某些列的检查，例如 sync-diff-inspector 目前还不支持的一些类型（json，bit，blob 等），
-# 或者是浮点类型数据在 TiDB 和 MySQL 中的表现可能存在差异，可以使用 ignore-columns 忽略检查这些列
+# （可选）忽略你希望排除的数据列，不参与一致性校验。
+# 例如，已知在不同实现之间存在差异的列（如浮点类型），或者希望单独验证的列。
 ignore-columns = ["",""]
 #（可选）指定划分该表的 chunk 的大小，若不指定可以删去或者将其配置为 0。
 chunk-size = 0
 #（可选）指定该表的 collation，若不指定可以删去或者将其配置为空字符串。
 collation = ""
-
 ```
 
 ## 运行 sync-diff-inspector
@@ -321,10 +320,13 @@ REPLACE INTO `sbtest`.`sbtest99`(`id`,`k`,`c`,`pad`) VALUES (3700000,2501808,'he
 ## 注意事项
 
 * sync-diff-inspector 在校验数据时会消耗一定的服务器资源，需要避免在业务高峰期间校验。
-* 在对比 MySQL 和 TiDB 中的数据之前，请先确认表的字符集和 `collation` 配置。对于包含 UTF-8 数据的 `varchar`、`text` 或 `JSON` 列，尤其是这些列属于主键或唯一键时，这一点尤为重要。MySQL 8.0 默认使用 `utf8mb4_0900_ai_ci`（大小写不敏感、重音不敏感），而 TiDB 通常使用 `utf8mb4_bin`（二进制/大小写敏感）。这种不匹配会导致 sync-diff-inspector 对相同的 UTF-8 字符串和 JSON 字符串值报告误差异。为避免误报，请统一上下游表的排序规则（例如 `utf8mb4_bin`），或使用 `ignore-columns` 排除受影响的 UTF-8 文本列和 JSON 列。
-* 如果在 sync-diff-inspector 的配置文件中配置 `collation` 并显式指定上下游在基于 chunk 的比较中使用相同的排序规则，需要注意：索引字段的顺序取决于表的排序规则配置。如果排序规则不同，一方可能无法使用索引。此外，如果上下游的字符集不同（例如 MySQL 使用 `utf8` 而 TiDB 使用 `utf8mb4`），则无法统一排序规则配置。
-* 即使数据在逻辑上相同，以下场景也可能产生误差异：(1) 上下游排序规则不同的 VARCHAR 和 TEXT 列（例如 `utf8mb4_0900_ai_ci` 与 `utf8mb4_bin`）会对相同的字符串值报告差异；(2) 包含字符串值的 JSON 列也会受到相同的基于排序规则的比较问题影响；(3) 自动填充的 TIMESTAMP 列（例如 `DEFAULT CURRENT_TIMESTAMP` 或 `ON UPDATE CURRENT_TIMESTAMP`）在 schema 于不同时间加载或比较存在轻微时间差异的数据时，可能会引入噪声。
-* 如果你要验证包含自动填充时间戳列的数据集，建议为验证数据设置确定性的 TIMESTAMP 值，而不是依赖 `DEFAULT CURRENT_TIMESTAMP`；如果这些列的精确值对你的验证目标并不关键，也可以使用 `ignore-columns` 排除自动填充的 TIMESTAMP 列。
+* 在比较 MySQL 与 TiDB 之间的数据之前，请先确认表的字符集和 `collation` 配置一致。这一点对于包含 UTF-8 数据的 `VARCHAR`、`TEXT` 或 `JSON` 列尤为重要，尤其是这些列属于主键或唯一键时。MySQL 8.0 默认使用 `utf8mb4_0900_ai_ci`（大小写不敏感、重音不敏感），而 TiDB 通常使用 `utf8mb4_bin`（二进制、大小写敏感）。这种差异可能导致 sync-diff-inspector 将内容完全相同的 UTF-8 字符串或 JSON 字符串值误判为不一致。为避免误报，建议上下游表使用相同的排序规则（例如 `utf8mb4_bin`），或者通过 `ignore-columns` 排除受影响的 UTF-8 文本列和 JSON 列。
+* 如果你在 sync-diff-inspector 配置文件中设置了 `collation`，并在基于 Chunk 的比较过程中显式指定上下游使用相同的排序规则，需要注意：索引字段的排序顺序取决于表本身的 `collation` 配置。如果上下游的排序规则不同，其中一侧可能无法使用索引。此外，如果上下游字符集不同（例如 MySQL 使用 `utf8`，而 TiDB 使用 `utf8mb4`），则无法统一 `collation` 配置。
+* 即使数据在逻辑上完全一致，以下场景仍可能导致误报数据差异：
+    * 上下游 VARCHAR 或 TEXT 列使用不同的排序规则（例如 `utf8mb4_0900_ai_ci` 与 `utf8mb4_bin`），相同的字符串值也可能被判定为不同。
+    * 包含字符串值的 JSON 列同样会受到排序规则差异的影响。
+    * 自动填充的 TIMESTAMP 列（例如使用 `DEFAULT CURRENT_TIMESTAMP` 或 `ON UPDATE CURRENT_TIMESTAMP`）在不同时间导入数据，或比较存在轻微时间差的数据时，可能产生无意义的差异。
+* 如果待校验的数据集包含自动填充的 TIMESTAMP 列，建议在构造验证数据时使用固定的 TIMESTAMP 值，而不要依赖 `DEFAULT CURRENT_TIMESTAMP`。如果这些列的精确值并非验证重点，也可以通过 `ignore-columns` 将其排除，以减少误报。
 * 如果上下游表的主键不一致，例如在 MySQL 中进行分表后合并到 TiDB，并使用原主键和分片键组成复合主键的场景，sync-diff-inspector 将不会使用原主键列来划分 chunk。此时，你需要通过 `index-fields` 配置原主键列，并将 `check-data-only` 设置为 `true`。
 * sync-diff-inspector 会优先使用 TiDB 的统计信息来划分 chunk，需要尽量保证统计信息精确，可以在**业务空闲期**手动执行 `analyze table {table_name}`。
 * table-rule 的规则需要特殊注意，例如设置了 `schema-pattern="test1"`，`table-pattern = "t_1"`，`target-schema="test2"`，`target-table = "t_2"`，会对比 source 中的表 `test1`.`t_1` 和 target 中的表 `test2`.`t_2`。sync-diff-inspector 默认开启 sharding，如果 source 中还有表 `test2`.`t_2`，则会把 source 端的表 `test1`.`t_1` 和表 `test2`.`t_2` 作为 sharding 与 target 中的表 `test2`.`t_2` 进行一致性校验。
