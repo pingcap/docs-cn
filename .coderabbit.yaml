@@ -11,6 +11,8 @@ reviews:
 
   auto_review:
     enabled: true
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 2
     drafts: false
     # CodeRabbit always includes the default branch. Keep target branches explicit so auto review remains enabled even if the default branch changes.
     base_branches:
