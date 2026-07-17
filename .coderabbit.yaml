@@ -6,6 +6,7 @@ early_access: false
 # Controls how comments are written, not how many comments are posted.
 tone_instructions: >-
   Be concise, direct, and professional. Avoid praise, filler, and subjective style preferences.
+
 reviews:
   # Keep assertive to catch language, clarity, and consistency issues.
   profile: assertive
