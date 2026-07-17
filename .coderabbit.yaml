@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+language: zh-CN
+early_access: false
+
+reviews:
+  # Include documentation wording, grammar, spelling, and punctuation issues.
+  profile: assertive
+  request_changes_workflow: false
+  poem: false
+  in_progress_fortune: false
+
+  auto_review:
+    enabled: true
+    drafts: false
+    # CodeRabbit always includes the default branch. Keep target branches explicit so auto review remains enabled even if the default branch changes.
+    base_branches:
+      - '^master$'
+      - '^release-8\.5$'
+
+  path_instructions:
+    - path: '**/*.md'
+      instructions: |
+        - Act as a senior technical writer when reviewing Chinese documentation.
+        - Provide ready-to-commit suggestions in Chinese that PR authors can apply directly.
+        - Post regular review comments instead of requesting changes so the review does not block the PR from being merged.
+        - Make feedback specific, actionable, and tied to the changed content. Avoid praise-only edits.
+
+knowledge_base:
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - files: .agents/shared/writing-style.md
+        applyTo: '**/*.md'
+
+chat:
+  art: false
