@@ -4,7 +4,6 @@ language: zh-CN
 early_access: false
 
 reviews:
-  # Include documentation wording, grammar, spelling, and punctuation issues.
   profile: assertive
   request_changes_workflow: false
   poem: false
