@@ -17,9 +17,9 @@ Use this skill when the task is to review a documentation PR, a Markdown diff, o
 
 Read only the files that matter for the current review:
 
-- `.ai/shared/repo-conventions.md`
-- `.ai/shared/writing-style.md`
-- `.ai/shared/translation-rules.md` and `.ai/shared/translation-terms.md` when the PR is a translation from `pingcap/docs`
+- `.agents/shared/repo-conventions.md`
+- `.agents/shared/writing-style.md`
+- `.agents/shared/translation-rules.md` and `.agents/shared/translation-terms.md` when the PR is a translation from `pingcap/docs`
 - `doc-review-prompt.txt` when you need to mirror the repo's AI review behavior
 - `resources/tidb-terms.md` when terminology is uncertain
 - `resources/doc-templates/<relevant-template>.md` if the doc type matters
@@ -33,7 +33,7 @@ Review from the user's perspective, not only the author's.
 Treat this skill as having two equally important responsibilities:
 
 1. Act as a TiDB expert and check for technical, accuracy, logic, consistency, and user-impact issues.
-2. Act as a senior Chinese technical writer: check whether the content is clear, concise, and easy to understand, and review it against `.ai/shared/writing-style.md`, including Chinese terminology (`resources/tidb-terms.md`), Chinese/English spacing, and full-width punctuation.
+2. Act as a senior Chinese technical writer: check whether the content is clear, concise, and easy to understand, and review it against `.agents/shared/writing-style.md`, including Chinese terminology (`resources/tidb-terms.md`), Chinese/English spacing, and full-width punctuation.
 
 Do not treat writing-style review as optional after the technical review. Both are part of the default review scope. When the content does not meet the bar for technical writing quality, improve it so the content becomes more logical, clear, concise, and easy to understand, while preserving technical meaning and scope.
 

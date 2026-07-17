@@ -27,7 +27,7 @@ Do not invent new product behavior, prerequisites, warnings, or version claims.
 
 ## Chinese-language quality
 
-After translating, the Chinese text must read as native documentation, not literal word-for-word conversion. Apply `.ai/shared/writing-style.md`:
+After translating, the Chinese text must read as native documentation, not literal word-for-word conversion. Apply `.agents/shared/writing-style.md`:
 
 - Add a space between Chinese and adjacent English words, numbers, or inline code.
 - Use full-width Chinese punctuation in prose and half-width punctuation inside code.
@@ -36,7 +36,7 @@ After translating, the Chinese text must read as native documentation, not liter
 ## Terminology
 
 - Use `resources/tidb-terms.md` (the TiDB 中英术语表) as the source of truth for terminology.
-- Use `.ai/shared/translation-terms.md` as a quick reference for high-frequency terms.
+- Use `.agents/shared/translation-terms.md` as a quick reference for high-frequency terms.
 - If a term is missing or ambiguous, keep the source term until you can verify the preferred translation.
 
 ## PR traceability

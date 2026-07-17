@@ -22,7 +22,7 @@ This is an overview of the full workflow below — the create-vs-update decision
 
 Decide early whether this content should originate in English:
 
-- Many TiDB docs are authored in English in `pingcap/docs` and then translated into `pingcap/docs-cn`. If the same content is needed in both languages, coordinate so the English and Chinese sides stay traceable. When the English source already exists or is being written, prefer translating it (see `.ai/shared/translation-rules.md`) over writing an independent Chinese version that can drift.
+- Many TiDB docs are authored in English in `pingcap/docs` and then translated into `pingcap/docs-cn`. If the same content is needed in both languages, coordinate so the English and Chinese sides stay traceable. When the English source already exists or is being written, prefer translating it (see `.agents/shared/translation-rules.md`) over writing an independent Chinese version that can drift.
 - The `ai/` content is AI-translated weekly from `pingcap/docs` (`release-8.5`). Do not write or edit it directly here; author the English source in `pingcap/docs`.
 - Some Chinese-original content has no English counterpart. In that case, write it directly in this repository following the workflow below.
 
@@ -54,19 +54,19 @@ Multiple inputs can be combined. More context = fewer questions needed.
 - Inspect first, confirm when uncertain, then edit.
 - Prefer updating existing docs over creating new pages.
 - Not every code change needs a doc update. Documentation must justify its maintenance cost.
-- Write in Chinese, following `.ai/shared/writing-style.md` and `resources/tidb-terms.md`. Keep product names, commands, flags, paths, and config keys in English.
+- Write in Chinese, following `.agents/shared/writing-style.md` and `resources/tidb-terms.md`. Keep product names, commands, flags, paths, and config keys in English.
 - If the user asks about local changes without naming files, start with `git status -u` or `git show --name-status`.
 
 ## Step 1: Load shared context
 
 Always read before making any doc changes:
 
-- `.ai/shared/repo-conventions.md`
-- `.ai/shared/writing-style.md`
+- `.agents/shared/repo-conventions.md`
+- `.agents/shared/writing-style.md`
 
 Read only when relevant:
 
-- `.ai/shared/translation-rules.md` and `.ai/shared/translation-terms.md` — when translation from `pingcap/docs` is involved
+- `.agents/shared/translation-rules.md` and `.agents/shared/translation-terms.md` — when translation from `pingcap/docs` is involved
 - `resources/tidb-terms.md` — when terminology is uncertain
 
 ## Step 2: Analyze the input
@@ -116,7 +116,7 @@ Extract key user-facing facts. Ask focused questions only for facts that cannot 
 | Version-specific behavior across maintained versions | `master` + `needs-cherry-pick-release-X.Y` labels |
 | `ai/` content | Do not edit here; author the English source in `pingcap/docs` |
 
-Follow the repository's cherry-pick model (see `.ai/shared/repo-conventions.md`): default to a single PR on the latest applicable branch (usually `master`) and rely on cherry-pick labels for other maintained versions, rather than opening parallel PRs per branch. When in doubt, target `master`.
+Follow the repository's cherry-pick model (see `.agents/shared/repo-conventions.md`): default to a single PR on the latest applicable branch (usually `master`) and rely on cherry-pick labels for other maintained versions, rather than opening parallel PRs per branch. When in doubt, target `master`.
 
 ### Version number for "从 vX.Y 起" notes
 
@@ -169,7 +169,7 @@ This skill produces **local edits + validation + a completion report**. It does 
 | Guard PR template metadata when opening the PR | `docs-pr-metadata-guard` skill |
 | Guard issue template metadata | `docs-issue-metadata-guard` skill |
 | Review the resulting documentation PR | `review-doc-pr` skill |
-| Translate an English PR from `pingcap/docs` into Chinese | `.github/workflows/sync-doc-pr-en-to-zh.yml` (see `.ai/shared/translation-rules.md`) |
+| Translate an English PR from `pingcap/docs` into Chinese | `.github/workflows/sync-doc-pr-en-to-zh.yml` (see `.agents/shared/translation-rules.md`) |
 | Keep `ai/` content in sync | `.github/workflows/sync-ai-docs-en-to-zh.yml` |
 
 ## Output format

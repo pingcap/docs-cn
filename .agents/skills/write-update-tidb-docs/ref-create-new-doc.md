@@ -1,10 +1,10 @@
 # Create New TiDB Documentation
 
-Self-contained workflow for creating a new Chinese documentation page in `pingcap/docs-cn`. Follow these steps sequentially if the [write-update-tidb-docs](/.ai/skills/write-update-tidb-docs/SKILL.md) skill has determined that a new page is needed.
+Self-contained workflow for creating a new Chinese documentation page in `pingcap/docs-cn`. Follow these steps sequentially if the [write-update-tidb-docs](/.agents/skills/write-update-tidb-docs/SKILL.md) skill has determined that a new page is needed.
 
 ## Confirm the decision to create
 
-This is a final sanity re-check of the create-vs-update decision already made in Step 4 (the authoritative decision point) of the [write-update-tidb-docs](/.ai/skills/write-update-tidb-docs/SKILL.md) skill — not a second, independent decision. If any criterion below fails, switch to `ref-update-existing-doc.md`.
+This is a final sanity re-check of the create-vs-update decision already made in Step 4 (the authoritative decision point) of the [write-update-tidb-docs](/.agents/skills/write-update-tidb-docs/SKILL.md) skill — not a second, independent decision. If any criterion below fails, switch to `ref-update-existing-doc.md`.
 
 A new page is justified when all of these are true:
 
@@ -102,7 +102,7 @@ Every navigable page needs a TOC entry.
 Copy the front matter from the template you selected in Step 1 — do not retype a generic block, because the fields differ by template. For example, `resources/doc-templates/template-task.md` includes a `category` field (such as `category: how-to`), while `resources/doc-templates/template-new-feature.md` uses only `title` and `summary`.
 
 - `title` must match the H1 exactly.
-- `summary` must be a complete sentence ending with a period, concisely summarizing the page, and must not start with `>`, `*`, `#`, `-`, or `[` (if it must, wrap the summary in quotation marks). See `.ai/shared/writing-style.md` (元数据).
+- `summary` must be a complete sentence ending with a period, concisely summarizing the page, and must not start with `>`, `*`, `#`, `-`, or `[` (if it must, wrap the summary in quotation marks). See `.agents/shared/writing-style.md` (元数据).
 - Keep any other field the chosen template defines (for example, `category`); do not drop it.
 - Add `aliases` only if replacing an older page URL.
 
@@ -115,7 +115,7 @@ Copy the front matter from the template you selected in Step 1 — do not retype
 - Define jargon on first use.
 - Include realistic, runnable examples.
 - End with related resources or next steps.
-- Apply Chinese writing conventions from `.ai/shared/writing-style.md`: Chinese/English spacing, full-width punctuation in prose, and terminology from `resources/tidb-terms.md`.
+- Apply Chinese writing conventions from `.agents/shared/writing-style.md`: Chinese/English spacing, full-width punctuation in prose, and terminology from `resources/tidb-terms.md`.
 
 ### Structure by doc type
 

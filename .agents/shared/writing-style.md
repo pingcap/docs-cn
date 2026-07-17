@@ -45,7 +45,7 @@
 
 ## 元数据
 
-- 发布的正文 Markdown 文档开头必须包含元数据（front matter）。`TOC*.md`、`README.md`、`resources/doc-templates/` 以及 `.ai/` 等非发布文档不要求遵循此项。
+- 发布的正文 Markdown 文档开头必须包含元数据（front matter）。`TOC*.md`、`README.md`、`resources/doc-templates/` 以及 `.agents/` 等非发布文档不要求遵循此项。
 - 元数据必须使用 `---` 包裹。
 - 元数据至少包含 `title` 和 `summary`。
 - `title` 必须与一级标题一致。
