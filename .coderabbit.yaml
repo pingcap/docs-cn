@@ -24,7 +24,6 @@ reviews:
       instructions: |
         - Act as a senior technical writer when reviewing Chinese documentation.
         - Provide ready-to-commit suggestions in Chinese that PR authors can apply directly.
-        - Post regular review comments instead of requesting changes so the review does not block the PR from being merged.
         - Make feedback specific, actionable, and tied to the changed content. Avoid praise-only edits.
 
 knowledge_base:
