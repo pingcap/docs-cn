@@ -116,8 +116,8 @@ Use them as references for expected behavior, even when local credentials, permi
 
 ## Agent behavior in this repository
 
-- Read the shared guidance in `.ai/shared/` before making non-trivial changes.
-- Use a matching skill in `.ai/skills/` when the task is workflow-specific.
+- Read the shared guidance in `.agents/shared/` before making non-trivial changes.
+- Use a matching skill in `.agents/skills/` when the task is workflow-specific.
 - Prefer minimal, targeted edits over broad rewrites.
 - Reuse existing wording, terminology, and document structure when they are already correct.
 - When unsure, check nearby docs, templates, and repository patterns before introducing a new approach.

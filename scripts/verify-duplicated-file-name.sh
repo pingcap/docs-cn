@@ -8,6 +8,7 @@ DuplicateFilename=$(
     -name '*.md' \
     ! -name '_*.md' \
     ! -name 'SKILL.md' \
+    ! -name 'README.md' \
     -print | rev | cut -d'/' -f1 | rev | sort | uniq -c -d
 )
 
