@@ -107,13 +107,6 @@ MASK_PARTIAL(column, preserve_left, preserve_right, mask_char)
 - `preserve_right`：保留字符串结尾指定数量的字符。
 - `mask_char`：用于遮蔽的脱敏字符，例如 `'*'` 或 `'X'`。
 
-参数说明如下：
-
-- `column`：要脱敏的字符串列。
-- `preserve_left`：保留字符串开头指定数量的字符。
-- `preserve_right`：保留字符串结尾指定数量的字符。
-- `mask_char`：用于遮蔽的脱敏字符，例如 `'*'` 或 `'X'`。
-
 **逻辑与数据类型**
 
 - **逻辑**：通过遮蔽中间部分同时保留开头和结尾指定数量的字符，为字符串数据的部分脱敏提供细粒度控制。
