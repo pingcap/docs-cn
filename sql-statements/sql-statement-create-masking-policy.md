@@ -108,13 +108,13 @@ CREATE MASKING POLICY p_mask_ssn
 
 ### 创建一个带操作限制的脱敏策略
 
-以下示例创建一个脱敏策略，同时限制脱敏列不能用于 `INSERT INTO SELECT` 和 `CTAS` 操作：
+以下示例创建一个脱敏策略，同时限制脱敏列不能用于 `INSERT ... SELECT` 和 `CREATE TABLE ... AS SELECT` 操作：
 
 ```sql
 CREATE MASKING POLICY p_mask_credit_card
   ON users(credit_card)
   AS MASK_FULL(credit_card)
-  RESTRICT ON (INSERT INTO SELECT, CTAS) ENABLE;
+  RESTRICT ON (INSERT_INTO_SELECT, CTAS) ENABLE;
 ```
 
 ### 创建一个条件脱敏策略

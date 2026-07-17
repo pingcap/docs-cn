@@ -380,7 +380,7 @@ ALTER TABLE customers ENABLE MASKING POLICY cc_mask_policy;
 ```sql
 -- 更改脱敏表达式
 ALTER TABLE customers MODIFY MASKING POLICY cc_mask_policy
-  SET credit_card = CASE
+  SET EXPRESSION = CASE
                     WHEN CURRENT_USER() IN ('root@%', 'manager@%')
                       THEN credit_card
                     ELSE MASK_PARTIAL(credit_card, 4, 4, 'X')
