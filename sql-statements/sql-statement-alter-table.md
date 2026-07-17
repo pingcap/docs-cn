@@ -64,7 +64,7 @@ MaskingPolicyOption ::=
 |   'ENABLE' 'MASKING' 'POLICY' PolicyName
 |   'DISABLE' 'MASKING' 'POLICY' PolicyName
 |   'DROP' 'MASKING' 'POLICY' PolicyName
-|   'MODIFY' 'MASKING' 'POLICY' PolicyName 'SET' Identifier EqOpt Expression
+|   'MODIFY' 'MASKING' 'POLICY' PolicyName 'SET' 'EXPRESSION' '=' Expression
 |   'MODIFY' 'MASKING' 'POLICY' PolicyName 'SET' 'RESTRICT' 'ON' '(' MaskingPolicyRestrictOperationList ')'
 |   'MODIFY' 'MASKING' 'POLICY' PolicyName 'SET' 'RESTRICT' 'ON' 'NONE'
 
