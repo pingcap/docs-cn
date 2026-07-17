@@ -15,8 +15,15 @@ summary: 安装 tdc release 二进制、以交互或自动化方式配置 profil
 
 ### macOS 和 Linux
 
+运行安装程序：
+
 ```bash
 curl -fsSL https://github.com/tidbcloud/tdc/releases/latest/download/install.sh | sh -s -- --yes
+```
+
+安装完成后，将 tdc 加入当前 shell 并验证安装：
+
+```bash
 export PATH="$HOME/.tdc/bin:$PATH"
 tdc --version
 ```
@@ -25,10 +32,17 @@ Installer 会将 `tdc` 和 `tdc-drive9` companion 放入 `~/.tdc/bin`。请将 P
 
 ### Windows
 
+运行安装程序：
+
 ```powershell
 $script = "$env:TEMP\install-tdc.ps1"
 iwr https://github.com/tidbcloud/tdc/releases/latest/download/install.ps1 -OutFile $script
 powershell -ExecutionPolicy Bypass -File $script -Yes
+```
+
+安装完成后，将 tdc 加入当前 PowerShell session 并验证安装：
+
+```powershell
 $env:Path = "$HOME\.tdc\bin;$env:Path"
 tdc --version
 ```

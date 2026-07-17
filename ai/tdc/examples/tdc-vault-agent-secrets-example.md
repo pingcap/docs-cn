@@ -5,11 +5,23 @@ summary: 保存 secret、将一个 field 委派给 agent、注入进程、审计
 
 # 向 Agent 委派文件系统 Vault Secret
 
-本示例在不共享文件系统 owner token 的情况下，向 agent 临时开放一个 field。
+本示例在不共享文件系统 owner token 或完整 secret 的情况下，向 Agent 临时开放一个 secret field。
 
 > **注意：**
 >
 > tdc 当前处于预览（Preview）阶段，其功能和命令行界面可能会发生变更，恕不另行通知。
+
+## Agent 面临的问题
+
+Agent 可能只需要一个 API endpoint 或 token 来完成短期任务。把完整 secret 放进 prompt、`.env` 文件或沙箱镜像，会让 secret 暴露给超出所需范围和生命周期的环境。共享文件系统 owner token 同样会授予远多于一个 secret field 的权限。
+
+## 普通环境变量和文件为什么不够
+
+环境变量和文件可以传递 secret，但不能形成限定 scope、自动过期的委派，也不提供访问审计。独立的云 secret manager 可以提供这些控制，但每个沙箱都需要额外配置一套身份、策略和集成路径。
+
+## tdc 如何改变工作流
+
+文件系统 owner 只需保存一次 secret，并创建一个仅覆盖所需 field 的短期 grant。Agent 只接收委派的 Vault token，并将允许访问的值注入子进程。Owner 可以检查 audit event 并撤销 grant，而无需轮换或暴露文件系统 owner credential。
 
 ## 前置条件
 

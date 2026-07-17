@@ -25,17 +25,19 @@ tdc fs-git clone-git-workspace \
   --target-path /path/to/workspace/tidb
 ```
 
-对于大型 repository，创建 blobless workspace 并同步 hydrate：
+对于大型 repository，创建 blobless workspace 并在后台 hydrate：
 
 ```bash
 tdc fs-git clone-git-workspace \
   --repo-url https://github.com/pingcap/tidb.git \
   --target-path /path/to/workspace/tidb \
   --blobless \
-  --hydrate sync
+  --hydrate background
 ```
 
-`--hydrate` 接受 `auto`、`background`、`sync` 或 `off`。
+命令注册 workspace 后便会返回，因此文件树可以立即使用，而 clean content 和 Git object 会继续在后台 hydrate。Hydration 完成前的读取会使用 Git lazy fetch 保证正确性。这样可以将大部分仓库下载工作移出 Agent 启动的关键路径。
+
+`--hydrate` 接受 `auto`、`background`、`sync` 或 `off`。调用方必须等待 hydration 完成后再继续时（例如执行确定性 benchmark），使用 `sync`。
 
 ## Hydrate 已有 workspace
 

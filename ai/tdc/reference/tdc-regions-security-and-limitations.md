@@ -28,10 +28,14 @@ Alibaba Cloud 当前在 tdc 中只支持 Singapore。用户不能配置原始 se
 
 ## 文件系统 region
 
-文件系统 endpoint 的可用性由托管的 Drive9 region manifest 解析。本文发布时，TiDB Cloud native Filesystem mode 支持：
+文件系统 endpoint 的可用性由托管的 Drive9 region manifest 解析。本文发布时，TiDB Cloud native Filesystem mode 支持以下区域：
 
-- `aws-us-east-1`；
-- `aws-ap-southeast-1`。
+| 云服务提供商 | Canonical region code |
+| --- | --- |
+| AWS | `aws-ap-southeast-1` |
+| AWS | `aws-us-east-1` |
+| AWS | `aws-us-west-2` |
+| Alibaba Cloud | `ali-ap-southeast-1` |
 
 托管的 manifest 是权威来源，在 Preview 阶段可能变化。位于其他 TiDB Cloud region 的 profile 仍可以管理 Starter 数据库，但在 manifest 支持该部署区域之前，文件系统命令会返回 endpoint 不受支持的错误。
 

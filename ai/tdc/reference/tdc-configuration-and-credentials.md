@@ -43,7 +43,7 @@ Profile 命名空间的选择顺序如下：
 2. `TDC_PROFILE`；
 3. `default`。
 
-显式空 profile 无效。环境凭证不会创建 `[env]` profile，也不会修改所选命名空间。
+显式空 profile 无效。
 
 ## TiDB Cloud API 凭证
 
