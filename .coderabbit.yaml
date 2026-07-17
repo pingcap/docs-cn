@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+language: zh-CN
+early_access: false
+
+# Controls how comments are written, not how many comments are posted.
+tone_instructions: >-
+  Be concise, direct, and professional. Avoid praise, filler, and subjective style preferences.
+
+reviews:
+  # Keep assertive to catch language, clarity, and consistency issues.
+  profile: assertive
+  request_changes_workflow: false
+  poem: false
+  in_progress_fortune: false
+
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 2
+    drafts: false
+    # CodeRabbit always includes the default branch. Keep target branches explicit so auto review remains enabled even if the default branch changes.
+    base_branches:
+      - '^master$'
+      - '^release-8\.5$'
+
+  path_instructions:
+    - path: '**/*.md'
+      instructions: |
+        - Act as a senior technical writer when reviewing Chinese documentation.
+        - Provide ready-to-commit suggestions in Chinese that PR authors can apply directly.
+        - Make feedback specific, actionable, and tied to the changed content. Avoid praise-only comments, summaries of correct content, duplicate comments, broad rewrites, and low-value nitpicks.
+
+knowledge_base:
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - files: .agents/shared/writing-style.md
+        applyTo: '**/*.md'
+
+chat:
+  art: false
