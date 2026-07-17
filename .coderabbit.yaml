@@ -3,7 +3,12 @@
 language: zh-CN
 early_access: false
 
+# Controls how comments are written, not how many comments are posted.
+tone_instructions: >-
+  Be concise, direct, and professional. Avoid praise, filler, and subjective style preferences.
+  
 reviews:
+  # Keep assertive to catch language, clarity, and consistency issues.
   profile: assertive
   request_changes_workflow: false
   poem: false
@@ -24,7 +29,7 @@ reviews:
       instructions: |
         - Act as a senior technical writer when reviewing Chinese documentation.
         - Provide ready-to-commit suggestions in Chinese that PR authors can apply directly.
-        - Make feedback specific, actionable, and tied to the changed content. Avoid praise-only edits.
+        - Make feedback specific, actionable, and tied to the changed content. Avoid praise-only comments, summaries of correct content, duplicate comments, broad rewrites, and low-value nitpicks.
 
 knowledge_base:
   code_guidelines:
