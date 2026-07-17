@@ -229,6 +229,7 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`DROP BINDING`](/sql-statements/sql-statement-drop-binding.md) | 删除 SQL 语句的执行计划绑定。 |
 | [`DROP STATS`](/sql-statements/sql-statement-drop-stats.md) | 删除表的统计信息。 |
 | [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) | 工作方式类似于 `EXPLAIN`，但主要区别在于 `EXPLAIN ANALYZE` 会执行语句。 |
+| [`FLUSH STATS_DELTA`](/sql-statements/sql-statement-flush-stats-delta.md) | 立即将 TiDB 内存中待处理的统计信息 delta 持久化到系统表中。 |
 | [`LOAD STATS`](/sql-statements/sql-statement-load-stats.md) | 将统计信息加载到 TiDB 中。 |
 | [`REFRESH STATS`](/sql-statements/sql-statement-refresh-stats.md) | 将持久化的统计信息重新加载到内存中，适用于特定表或整个集群。 |
 | [`SHOW ANALYZE STATUS`](/sql-statements/sql-statement-show-analyze-status.md) | 显示统计信息收集任务。 |
