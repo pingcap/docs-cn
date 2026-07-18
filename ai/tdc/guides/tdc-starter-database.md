@@ -66,10 +66,11 @@ tdc db delete-db-cluster \
   --dry-run
 
 tdc db delete-db-cluster \
-  --db-cluster-id "<cluster-id>"
+  --db-cluster-id "<cluster-id>" \
+  --wait
 ```
 
-tdc 会在内部解析集群名称，无需名称确认 flag。
+tdc 会在内部解析集群名称，无需名称确认 flag。不指定 `--wait` 时，TiDB Cloud 接受异步删除请求后命令立即返回。指定该 flag 后，tdc 最多等待 12 分钟，直到集群状态为 `DELETED` 或无法再访问。
 
 ## 管理分支
 
@@ -78,14 +79,15 @@ tdc 会在内部解析集群名称，无需名称确认 flag。
 ```bash
 tdc db create-db-cluster-branch \
   --db-cluster-id "<cluster-id>" \
-  --db-cluster-branch-name development
+  --db-cluster-branch-name development \
+  --wait
 
 tdc db list-db-cluster-branches \
   --db-cluster-id "<cluster-id>" \
   --page-size 20
 ```
 
-使用 `--page-token` 继续读取分页 branch list。
+使用 `--page-token` 继续读取分页 branch list。不指定 `--wait` 时，创建请求被接受后命令立即返回；指定该 flag 后，tdc 最多等待五分钟，直到分支状态为 `ACTIVE`。
 
 查看并删除分支：
 

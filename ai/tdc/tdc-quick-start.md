@@ -77,6 +77,7 @@ tdc organization list-projects --output text
 tdc fs create-file-system \
   --file-system-name quickstart-fs \
   --set-default \
+  --wait \
   --output text
 ```
 
@@ -112,19 +113,9 @@ tdc fs delete-file-system \
 export TDC_DB_CLUSTER_ID="$(tdc db create-db-cluster \
   --db-cluster-name quickstart-db \
   --db-cluster-type starter \
+  --wait \
   --query id \
   --output text)"
-```
-
-等待集群进入 active 状态：
-
-```bash
-until [ "$(tdc db describe-db-cluster \
-  --db-cluster-id "$TDC_DB_CLUSTER_ID" \
-  --query state \
-  --output text)" = "ACTIVE" ]; do
-  sleep 5
-done
 ```
 
 创建 SQL 用户并运行只读验证查询：
@@ -145,7 +136,9 @@ tdc db execute-sql-statement \
 清理资源：
 
 ```bash
-tdc db delete-db-cluster --db-cluster-id "$TDC_DB_CLUSTER_ID"
+tdc db delete-db-cluster \
+  --db-cluster-id "$TDC_DB_CLUSTER_ID" \
+  --wait
 unset TDC_DB_CLUSTER_ID
 ```
 

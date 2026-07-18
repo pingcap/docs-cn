@@ -26,14 +26,18 @@ Data-plane 命令也可以通过 `TDC_FS_TOKEN`、`TDC_REGION_CODE` 和 `TDC_FS_
 ```bash
 tdc fs create-file-system \
   --file-system-name workspace \
-  --set-default
+  --set-default \
+  --wait
 ```
+
+不指定 `--wait` 时，Drive9 接受异步创建请求后 tdc 立即返回。指定该 flag 后，tdc 最多等待 10 分钟，直到可以通过公开的 Drive9 data-plane CLI 读取根目录。等待失败不会删除资源或本地保存的凭证。
 
 JSON 响应包含 `fs_token`。在不显示完整结果的情况下获取：
 
 ```bash
 export TDC_FS_TOKEN="$(tdc fs create-file-system \
   --file-system-name sandbox \
+  --wait \
   --query fs_token \
   --output text)"
 ```
@@ -66,7 +70,7 @@ tdc fs delete-file-system \
   --confirm-file-system-name workspace
 ```
 
-Create 和 delete 支持 `--dry-run`。删除需要 TiDB Cloud API key 和本地已注册资源；仅有 FS token 不能删除资源。
+Create 和 delete 支持 `--dry-run`。删除需要 TiDB Cloud API key 和本地已注册资源；仅有 FS token 不能删除资源。Drive9 的删除是异步操作，请求成功被接受时返回 `status: "deleting"`，同时 tdc 会移除所选资源的本地 registry entry 和凭证。
 
 ## 在多个文件系统中选择
 
