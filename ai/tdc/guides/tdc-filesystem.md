@@ -221,6 +221,88 @@ tdc fs mount-file-system \
 | Linux | FUSE | FUSE3 和 `/dev/fuse` 访问权限；显式 WebDAV 需要 `davfs2` | FUSE 支持 drain 和 cache 控制 |
 | Windows | WebDAV | Windows WebClient service | Mount path 必须是 `X:` 之类的 drive letter；不支持 FUSE 和 vault mount |
 
+### 在 Docker 和 Docker Compose 中挂载
+
+只在镜像内安装 FUSE3 并不足以完成挂载。Docker host 必须提供 `/dev/fuse`，并授予容器执行 mount 的权限。以下 Dockerfile 安装 Ubuntu 所需软件包和 tdc，但不会把任何 cloud 或 Filesystem 凭证写入镜像：
+
+```dockerfile
+FROM ubuntu:24.04
+
+ARG TDC_VERSION=latest
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates curl fuse3 \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL https://github.com/tidbcloud/tdc/releases/latest/download/install.sh \
+    | sh -s -- --yes --version "${TDC_VERSION}"
+
+ENV PATH="/root/.tdc/bin:${PATH}"
+
+RUN mkdir -p /workspace
+
+CMD ["bash"]
+```
+
+构建镜像，然后在运行时传入 Filesystem owner token、canonical region code 和 Filesystem name：
+
+```bash
+docker build -t tdc-fuse .
+
+docker run --rm -it \
+  --device /dev/fuse \
+  --cap-add SYS_ADMIN \
+  --security-opt apparmor=unconfined \
+  --env TDC_FS_TOKEN \
+  --env TDC_REGION_CODE \
+  --env TDC_FS_FILE_SYSTEM_NAME \
+  tdc-fuse
+```
+
+这三个环境变量必须已经存在于 host shell。进入容器后，按照普通文件系统方式进行挂载和使用：
+
+```bash
+tdc fs mount --mount-path /workspace
+printf 'hello from Docker\n' > /workspace/hello.txt
+tdc fs drain --mount-path /workspace
+tdc fs umount --mount-path /workspace
+```
+
+在 `compose.yaml` 中配置等价的运行时设置：
+
+```yaml
+services:
+  agent:
+    build:
+      context: .
+      args:
+        TDC_VERSION: latest
+    devices:
+      - /dev/fuse:/dev/fuse
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - apparmor=unconfined
+    environment:
+      TDC_FS_TOKEN: ${TDC_FS_TOKEN}
+      TDC_REGION_CODE: ${TDC_REGION_CODE}
+      TDC_FS_FILE_SYSTEM_NAME: ${TDC_FS_FILE_SYSTEM_NAME}
+    stdin_open: true
+    tty: true
+```
+
+启动交互式容器：
+
+```bash
+docker compose run --rm agent
+```
+
+`fuse3` 会提供 `/usr/bin/fusermount3`。如果挂载返回 `fusermount3: mount failed: Permission denied`，请确认 host 存在 `/dev/fuse`，并确认所有必要的 `devices`、`cap_add` 和 AppArmor 设置均已传入容器。`apparmor=unconfined` 适用于 Ubuntu 等启用了 AppArmor 的 host；未启用 AppArmor 时可以省略。
+
+> **警告：**
+>
+> `SYS_ADMIN` 和不受限制的 AppArmor profile 会削弱容器隔离。仅在专用且可信的 agent container 中使用。Rootless Docker 和 managed container platform 可能禁止这些设置；无法授予 FUSE 权限时，请改用无需 mount 的 tdc fs data-plane 命令。Mount 位于容器的 mount namespace，容器停止后就会消失，因此在停止可能仍有 pending write 的容器前执行 drain 和 unmount。
+
 即使安装了 macFUSE，macOS 的自动选择也始终是 WebDAV。如需使用 FUSE，请从 [macFUSE 官网](https://macfuse.github.io/)安装受支持版本，完成 installer 要求的批准或重启，然后执行：
 
 ```bash
