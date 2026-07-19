@@ -40,12 +40,12 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Checkout ai-pr-translator repository
+      - name: Checkout ai-markdown-translator repository
         uses: actions/checkout@v6
         with:
-          repository: "qiancai/ai-pr-translator"
+          repository: "qiancai/ai-markdown-translator"
           ref: "main"
-          path: "ai-pr-translator"
+          path: "ai-markdown-translator"
           persist-credentials: false
 
       - name: Checkout docs repository glossary
@@ -63,7 +63,7 @@ jobs:
           python-version: '3.9'
 
       - name: Install dependencies
-        run: pip install -r ai-pr-translator/scripts/requirements.txt
+        run: pip install -r ai-markdown-translator/scripts/requirements.txt
 
       - name: Extract PR information
         id: extract_info
@@ -194,7 +194,7 @@ jobs:
           TARGET_REPO_PATH: ${{ github.workspace }}/target_repo
           TERMS_PATH: ${{ github.workspace }}/docs-master/resources/terms.md
         run: |
-          cd ai-pr-translator/scripts
+          cd ai-markdown-translator/scripts
           if python main_workflow.py; then
             echo "sync_success=true" >> $GITHUB_OUTPUT
             echo "✅ Sync script completed successfully"
