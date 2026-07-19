@@ -8,6 +8,10 @@ aliases: ['/zh/tidb/dev/pitr-monitoring-and-alert/']
 
 本文介绍备份恢复的监控和告警，包括如何部署监控、监控指标及常用告警项。
 
+## 快照备份与恢复监控
+
+你可以在 Grafana 的 [**TiKV-Details** > **Backup & Import** 面板](/grafana-tikv-dashboard.md#backup--import)查看快照备份与恢复相关的监控指标。
+
 ## 日志备份监控
 
 日志备份支持功能使用 [Prometheus](https://prometheus.io/) 采集监控指标，目前所有的监控指标都内置在 TiKV 中。
