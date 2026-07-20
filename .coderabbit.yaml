@@ -28,7 +28,7 @@ reviews:
     - path: '**/*.md'
       instructions: |
         - Act as a senior technical writer when reviewing Chinese documentation.
-        - Provide ready-to-commit suggestions in Chinese that PR authors can apply directly.
+        - For every actionable wording, grammar, terminology, or formatting issue, provide a GitHub committable suggestion block in Chinese containing the exact replacement text whenever the fix can be applied to contiguous lines in the diff. Do not provide only a prose description of the replacement. If a committable suggestion cannot be provided, explain why and provide the exact replacement text.
         - Make feedback specific, actionable, and tied to the changed content. Avoid praise-only comments, summaries of correct content, duplicate comments, broad rewrites, and low-value nitpicks.
 
 knowledge_base:
