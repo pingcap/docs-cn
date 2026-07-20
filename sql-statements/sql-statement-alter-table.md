@@ -57,6 +57,29 @@ AlterTableSpec ::=
     )
 |   'AFFINITY' EqOpt stringLit
 |   PlacementPolicyOption
+|   MaskingPolicyOption
+
+MaskingPolicyOption ::=
+    'ADD' 'MASKING' 'POLICY' PolicyName 'ON' '(' Identifier ')' 'AS' Expression MaskingPolicyRestrictOnOpt MaskingPolicyStateOpt
+|   'ENABLE' 'MASKING' 'POLICY' PolicyName
+|   'DISABLE' 'MASKING' 'POLICY' PolicyName
+|   'DROP' 'MASKING' 'POLICY' PolicyName
+|   'MODIFY' 'MASKING' 'POLICY' PolicyName 'SET' Identifier EqOpt Expression
+|   'MODIFY' 'MASKING' 'POLICY' PolicyName 'SET' 'RESTRICT' 'ON' '(' MaskingPolicyRestrictOperationList ')'
+|   'MODIFY' 'MASKING' 'POLICY' PolicyName 'SET' 'RESTRICT' 'ON' 'NONE'
+
+MaskingPolicyRestrictOnOpt ::=
+    ( 'RESTRICT' 'ON' '(' MaskingPolicyRestrictOperationList ')' )?
+|   'RESTRICT' 'ON' 'NONE'
+
+MaskingPolicyRestrictOperationList ::=
+    MaskingPolicyRestrictOperation ( ',' MaskingPolicyRestrictOperation )*
+
+MaskingPolicyRestrictOperation ::=
+    Identifier
+
+MaskingPolicyStateOpt ::=
+    ( 'ENABLE' | 'DISABLE' )?
 
 PlacementPolicyOption ::=
     "PLACEMENT" "POLICY" EqOpt PolicyName
@@ -66,8 +89,6 @@ PlacementPolicyOption ::=
 ## 示例
 
 创建一张表，并插入初始数据：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
@@ -81,8 +102,6 @@ Records: 5  Duplicates: 0  Warnings: 0
 ```
 
 执行以下查询需要扫描全表，因为 `c1` 列未被索引：
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
@@ -100,8 +119,6 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 ```
 
 你可以使用 [`ALTER TABLE .. ADD INDEX`](/sql-statements/sql-statement-add-index.md) 语句在 `t1` 表上添加索引。添加后，`EXPLAIN` 的分析结果显示 `SELECT * FROM t1 WHERE c1 = 3;` 查询已使用效率更高的索引范围扫描：
-
-{{< copyable "sql" >}}
 
 ```sql
 ALTER TABLE t1 ADD INDEX (c1);
@@ -121,8 +138,6 @@ Query OK, 0 rows affected (0.30 sec)
 
 TiDB 允许用户为 DDL 操作指定使用某一种 `ALTER` 算法。注意这仅为一种指定，并不改变实际的用于更改表的算法：
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER TABLE t1 DROP INDEX c1, ALGORITHM=INSTANT;
 ```
@@ -133,8 +148,6 @@ Query OK, 0 rows affected (0.24 sec)
 
 如果某一 DDL 操作要求使用 `INPLACE` 算法，而用户指定 `ALGORITHM=INSTANT`，会导致报错：
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER TABLE t1 ADD INDEX (c1), ALGORITHM=INSTANT;
 ```
@@ -144,8 +157,6 @@ ERROR 1846 (0A000): ALGORITHM=INSTANT is not supported. Reason: Cannot alter tab
 ```
 
 但如果为 `INPLACE` 操作指定 `ALGORITHM=COPY`，会产生警告而非错误，这是因为 TiDB 将该指定解读为*该算法或更好的算法*。由于 TiDB 使用的算法可能不同于 MySQL，所以这一行为可用于 MySQL 兼容性。
-
-{{< copyable "sql" >}}
 
 ```sql
 ALTER TABLE t1 ADD INDEX (c1), ALGORITHM=COPY;
@@ -161,6 +172,48 @@ Query OK, 0 rows affected, 1 warning (0.25 sec)
 +-------+------+---------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
+
+### 管理列脱敏策略
+
+`ALTER TABLE` 支持对表上的[列脱敏策略](/column-level-masking-policy.md)进行管理，包括添加、启用、禁用、修改和删除脱敏策略。
+
+示例：
+
+添加并启用一个脱敏策略：
+
+```sql
+ALTER TABLE t1 ADD MASKING POLICY p_mask_c1 ON (c1) AS MASK_FULL(c1) ENABLE;
+```
+
+```
+Query OK, 0 rows affected (0.10 sec)
+```
+
+禁用一个已有的脱敏策略：
+
+```sql
+ALTER TABLE t1 DISABLE MASKING POLICY p_mask_c1;
+```
+
+重新启用脱敏策略：
+
+```sql
+ALTER TABLE t1 ENABLE MASKING POLICY p_mask_c1;
+```
+
+修改脱敏策略的脱敏表达式：
+
+```sql
+ALTER TABLE t1 MODIFY MASKING POLICY p_mask_c1 SET c1 = MASK_PARTIAL(c1, 2, 2, '*');
+```
+
+删除脱敏策略：
+
+```sql
+ALTER TABLE t1 DROP MASKING POLICY p_mask_c1;
+```
+
+更多关于脱敏策略的说明，参见 [`CREATE MASKING POLICY`](/sql-statements/sql-statement-create-masking-policy.md) 和 [`SHOW MASKING POLICIES`](/sql-statements/sql-statement-show-masking-policies.md)。
 
 ## MySQL 兼容性
 
