@@ -188,7 +188,7 @@ WHERE last_access_time IS NOT NULL AND percentage_access_0 + percentage_access_0
 
 ## 虚拟索引 (Hypothetical indexes)
 
-在 `EXPLAIN` 语句中，你可以使用 `/*+ HYPO_INDEX(...) */` 这种 SQL 注释语法定义一个供查询规划器考虑的虚拟索引。这样，你就可以轻量级地测试索引对查询性能的效果，而无需承担实际创建索引的开销。
+在 `EXPLAIN` 语句中，你可以使用 `/*+ HYPO_INDEX(...) */` SQL 注释语法定义一个供查询优化器考虑的虚拟索引。通过定义虚拟索引，你可以在不实际创建索引的情况下轻量级地测试索引对查询性能的效果。
 
 例如，`/*+ HYPO_INDEX(t, idx_ab, a, b) */` 注释指示查询规划器在表 `t` 上为列 `a` 和 `b` 创建一个名为 `idx_ab` 的虚拟索引。优化器会生成该索引的元数据，但不会实际创建索引。在查询优化过程中，如果适用，优化器会考虑该虚拟索引，而不会产生实际创建索引的开销。
 
