@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+language: zh-CN
+early_access: false
+
+# Controls how comments are written, not how many comments are posted.
+tone_instructions: >-
+  Be concise, direct, and professional. Avoid praise, filler, and subjective style preferences.
+
+reviews:
+  # Keep assertive to catch language, clarity, and consistency issues.
+  profile: assertive
+  request_changes_workflow: false
+  poem: false
+  in_progress_fortune: false
+  # This only hides the AI-agent prompt section in CodeRabbit review comments.
+  enable_prompt_for_ai_agents: false
+
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 3
+    drafts: false
+    # CodeRabbit always includes the default branch. Keep target branches explicit so auto review remains enabled even if the default branch changes.
+    base_branches:
+      - '^master$'
+      - '^release-8\.5$'
+
+  path_instructions:
+    - path: '**/*.md'
+      instructions: |
+        - Act as a senior technical writer with deep database expertise when reviewing the documentation.
+        - For every actionable issue, provide a GitHub committable suggestion block containing the exact replacement text whenever the fix can be safely and completely applied to contiguous lines in the diff. Use a regular review comment only when a committable suggestion is not appropriate, such as when the fix requires changes outside the diff, spans noncontiguous lines, needs clarification from the author, or cannot be expressed as an exact replacement.
+        - When a GitHub committable suggestion is included, do not repeat the replacement text in a separate "Proposed wording" section, diff block, or prose. Use "Proposed wording" only when a committable suggestion cannot be provided but a safe, deterministic replacement is known.
+        - Make feedback specific, actionable, and tied to the changed content. Avoid praise-only comments, summaries of correct content, duplicate comments, broad rewrites, and low-value nitpicks.
+
+knowledge_base:
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - files: .agents/shared/writing-style.md
+        applyTo: '**/*.md'
+
+chat:
+  art: false
