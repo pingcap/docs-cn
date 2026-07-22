@@ -3506,7 +3506,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：枚举型
-- 默认值：`disable`
+- 默认值：`priority`
 - 可选值：`disable`、`standard`、`priority`
 - 该变量用于设置 TiDB 实例的内存管理模式，详见 [TiDB 内存控制](/configure-memory-usage.md#内存仲裁模式)。有以下取值：
     - `disable`（默认值）：表示禁用内存仲裁模式，保持内存资源[先使用后上报](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入)的机制。
