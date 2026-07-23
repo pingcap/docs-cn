@@ -133,6 +133,14 @@ TiUP 还支持部署 TiDB、TiFlash、TiCDC 以及监控系统。本指南介绍
 
         如果只需要某一特定平台的组件，也可以通过 `--os` 和 `--arch` 参数来指定。
 
+        如果要为已有离线镜像补充部分集群组件的新版本，用于执行 `tiup cluster upgrade <cluster-name> <version> --<component>-version <component-version>` 等命令，需要同时确认离线镜像中有可用的 TiUP Cluster 组件。通过 `--pd`、`--tikv` 等参数指定组件时，`tiup mirror clone` 只克隆对应组件，不会自动克隆或更新 `cluster` 组件。例如，要补充 v8.5.2 版本的 PD 和 TiKV 包，并确保离线环境中有 v1.16.1 版本的 TiUP Cluster 组件，可执行如下命令：
+
+        ```bash
+        tiup mirror clone tiup-custom-mirror-v8.5.2 --cluster v1.16.1 --pd v8.5.2 --tikv v8.5.2 --os=linux --arch=amd64
+        ```
+
+        如果目标离线环境已有可用的 TiUP Cluster 组件，且不需要更新该组件，则可以不指定 `--cluster`。但仍需确保当前镜像中已有可运行的 `cluster` 组件，否则后续无法在离线环境中执行 `tiup cluster ...` 命令。
+
     2. 参考上文“使用 TiUP 制作离线镜像”第 2 步的方式，将此不完整的离线镜像传输到隔离环境的中控机。
 
     3. 在隔离环境的中控机上，查看当前使用的离线镜像路径。较新版本的 TiUP 可以直接通过命令获取当前的镜像地址：
@@ -145,7 +153,7 @@ TiUP 还支持部署 TiDB、TiFlash、TiCDC 以及监控系统。本指南介绍
 
     4. 将不完整的离线镜像合并到已有的离线镜像中：
 
-        首先将当前离线镜像中的 `keys` 目录复制到 `$HOME/.tiup` 目录中：
+        首先将当前离线镜像中的 `keys` 目录复制到 `$HOME/.tiup` 目录中。`tiup mirror merge` 需要使用当前镜像的管理员密钥对合并后的元信息重新签名；如果 `$HOME/.tiup/keys` 中已经有对应私钥，可以跳过此步骤。
 
         ```bash
         cp -r ${base_mirror}/keys $HOME/.tiup/
@@ -157,7 +165,7 @@ TiUP 还支持部署 TiDB、TiFlash、TiCDC 以及监控系统。本指南介绍
         tiup mirror merge tiup-custom-mirror-v1.12.3
         ```
 
-    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.12.3` 版本出现在结果中。
+    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.12.3` 版本出现在结果中。如果是部分组件升级场景，还应使用 `tiup list <component>` 检查本次补充的组件版本，例如 `tiup list pd`、`tiup list tikv` 或 `tiup list cluster`。
 
 #### 部署离线环境 TiUP 组件
 
