@@ -382,22 +382,20 @@ write-key-threshold = 30000
 SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="database1" AND TABLE_NAME="table1" AND IS_INDEX=0;
 ```
 
-## 配置 Kafka 消息大小
+## Kafka 消息大小限制
 
-Kafka 通过以下参数控制可以接收的消息大小：
+Kafka 对可以接收的消息大小设有默认限制，通常无需调整。只有当 changefeed 需要发送的单条消息超过当前限制时，才需要调大该限制，或者使用[大消息处理功能](#处理超过-kafka-topic-限制的消息)。
 
 | 参数 | 作用 |
 | --- | --- |
-| Kafka Topic `max.message.bytes` | 控制目标 Kafka Topic 可以接收的消息大小。 |
-| Kafka broker `message.max.bytes` | 当目标 Topic 没有配置独立限制时，控制 broker 可以接收的消息大小。 |
+| Kafka Topic `max.message.bytes` | 为指定 Topic 设置消息大小限制，覆盖 broker 的默认值。 |
+| Kafka broker `message.max.bytes` | Topic 未设置 `max.message.bytes` 时使用的默认值。 |
 
-Kafka sink 启动时，TiCDC 会读取目标 Topic 的 `max.message.bytes`。如果无法从 Topic 配置中获取该参数，TiCDC 会读取 broker 的 `message.max.bytes`。
-
-如果 TiCDC 返回 `ErrMessageTooLarge`，或者 Kafka 返回 `Message was too large`，参见[使用 TiCDC 同步消息到 Kafka 时遇到消息过大错误的处理方法](/ticdc/troubleshoot-ticdc.md#使用-ticdc-同步消息到-kafka-时遇到-errmessagetoolarge-或-message-was-too-large该如何处理)。
+Kafka Sink 启动时会读取目标 Topic 当前生效的消息大小限制，用于在发送前判断消息是否过大。如果编码后的单条消息超过该限制且未配置大消息处理，Kafka Sink 会返回 `ErrMessageTooLarge`。处理方法参见[Kafka Sink 返回 `ErrMessageTooLarge` 时，如何处理？](/ticdc/troubleshoot-ticdc.md#kafka-sink-返回-errmessagetoolarge-时如何处理)。
 
 > **注意：**
 >
-> 如果 Kafka Sink 因 Kafka ACL 等原因无法读取 Topic 或 broker 的消息大小配置，会使用 changefeed 的 `max-message-bytes` 作为本地消息大小限制。若需要 Kafka Sink 自动读取 Kafka 的消息大小限制，请确保 changefeed 使用的 Kafka 账号具有相应的配置读取权限。
+> 如果 Kafka Sink 因 Kafka ACL 等原因无法读取 Topic 或 broker 的消息大小配置，会使用 changefeed 的 `max-message-bytes` 作为本地消息大小限制。如果该值与 Kafka 实际生效的限制不一致，Kafka Sink 可能无法准确判断消息能否发送，调大 Kafka 的限制后也可能无法自动恢复。请确保 changefeed 使用的 Kafka 账号具有读取 Topic 和 broker 配置的权限；如果无法授予该权限，需要手动保持 changefeed 的 `max-message-bytes` 与 Kafka 的消息大小限制一致。
 
 ## 处理超过 Kafka Topic 限制的消息
 
