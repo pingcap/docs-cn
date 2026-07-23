@@ -106,11 +106,15 @@ Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skippin
 
 处理方式取决于 TiCDC 版本：
 
-**v8.5.8 及之后版本**：根据错误信息中的消息大小调大 Kafka Topic 的 `max.message.bytes`。changefeed 自动重建会读取该配置恢复同步。
+**v8.5.8 及之后版本**：根据错误信息中的消息大小，调大 Kafka Topic 的 `max.message.bytes`。Kafka Sink 重建时会重新读取该配置，changefeed 随后自动恢复同步。
 
-如果调大 Kafka 的消息大小限制后同步任务没有自动恢复，请确认 changefeed 使用的 Kafka 账号具有读取 Topic 和 broker 配置的权限。更多信息参见[Kafka 消息大小限制](/ticdc/ticdc-sink-to-kafka.md#kafka-消息大小限制)。
+如果 changefeed 未自动恢复，请确认其使用的 Kafka 账号具有读取 Topic 和 broker 配置的权限。更多信息参见[Kafka 消息大小限制](/ticdc/ticdc-sink-to-kafka.md#kafka-消息大小限制)。
 
-**v8.5.8 之前的版本**：确认导致错误的待发送消息的大小，调整 Kafka Topic 的 `max.message.bytes` 该值，暂停 changefeed，然后调整 changefeed 的 `max-message-bytes` 为该值。恢复 changefeed。
+**v8.5.8 之前的版本**：
+
+1. 根据错误信息确认待发送消息的大小。
+2. 将 Kafka Topic 的 `max.message.bytes` 调整为不小于该消息大小。
+3. 暂停 changefeed，将 `max-message-bytes` 设置为与 `max.message.bytes` 相同的值，然后恢复 changefeed。
 
 调整 Kafka 消息大小限制时，还需要检查以下相关配置：
 
