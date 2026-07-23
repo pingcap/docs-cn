@@ -40,6 +40,8 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
         EOF
         ```
 
+        在 no-sudo 模式下，TiDB 服务由每个用户自己的 `systemd` 实例（`user@<UID>.service`）管理。`/etc/security/limits.conf` 中的配置可能会在 `user@<UID>.service` 启动时通过 PAM 应用，但实际生效的文件描述符上限仍取决于该用户 `systemd` 实例本身获得的资源限制。因此，在某些系统上，即使已经配置 `/etc/security/limits.conf`，`user@<UID>.service` 的 `Max open files` 仍可能小于 TiDB 所需值。
+
 2. 在每台部署目标机器上，为 `tidb` 用户启动 `systemd user` 模式。该步骤是必须的，请勿跳过。
 
     1. 使用 `tidb` 用户设置 `XDG_RUNTIME_DIR` 环境变量。
@@ -74,7 +76,37 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
                   └─3358 /usr/bin/pulseaudio --daemonize=no --log-target=journal
         ```
 
-    3. 执行 `systemctl --user`。如果没有报错，说明 `systemd user` 模式已正常启动。
+        如果你是在 `user@${uid}.service` 已经运行之后才更新 `/etc/security/limits.conf`，请在部署或重启 TiDB 服务前重启 `user@${uid}.service`，使用户 `systemd` 实例重新加载更新后的资源限制。重启 `user@${uid}.service` 会停止该用户管理的所有 systemd 用户服务；如果集群已经运行，请先正常停止集群，或在维护窗口内执行该操作。
+
+        ```shell
+        $ uid=$(id -u tidb) # Get the ID of the tidb user
+        $ systemctl restart user@${uid}.service
+        ```
+
+    3. 检查运行中的 `user@${uid}.service` 实际生效的 `Max open files` 值。
+
+        ```shell
+        $ uid=$(id -u tidb)
+        $ pid=$(systemctl show "user@${uid}.service" --property MainPID --value)
+        $ grep -E '^(Limit|Max open files)' "/proc/${pid}/limits"
+        ```
+
+    4. 如果上一步输出中的 `Hard Limit` 小于 `1000000`，使用 `root` 用户为 `user@${uid}.service` 配置 `LimitNOFILE`。
+
+        ```shell
+        $ uid=$(id -u tidb)
+        $ install -d -m 0755 "/etc/systemd/system/user@${uid}.service.d"
+        $ cat <<'EOF' > "/etc/systemd/system/user@${uid}.service.d/limit-nofile.conf"
+        [Service]
+        LimitNOFILE=1000000
+        EOF
+        $ systemctl daemon-reload
+        $ systemctl restart user@${uid}.service
+        ```
+
+        配置并重启后，请重复第 3 步，确认 `Max open files` 的实际值已经符合要求。
+
+    5. 使用 `tidb` 用户执行 `systemctl --user`。如果没有报错，说明 `tidb` 用户的 `systemd` 用户服务模式已正常启动。
 
 3. 使用 `root` 用户执行以下命令，为 systemd 用户 `tidb` 启用驻留。
 
