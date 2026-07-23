@@ -174,7 +174,7 @@ TiDB 版本：8.5.7
     - 支持在 `LEADING` optimizer hint 中使用嵌套括号来指定更复杂的连接顺序，例如 `LEADING((a, b), (c, d))` [#63253](https://github.com/pingcap/tidb/issues/63253) @[guo-shaoge](https://github.com/guo-shaoge)
     - 改进 Join 执行计划选择，避免在估算 probe 行数接近全表扫描时选择低效的 index join，从而提升某些 `HASHAGG` + join 场景下的查询性能 [#67610](https://github.com/pingcap/tidb/issues/67610) @[qw4990](https://github.com/qw4990)
     - 提升嵌套 `OR` 条件查询的性能，通过启用更高效的 `IndexMerge` 计划，并允许移除冗余全局过滤条件以便下推 `LIMIT` [#65822](https://github.com/pingcap/tidb/issues/65822) @[time-and-fate](https://github.com/time-and-fate)
-    - 支持 `FLUSH STATS_DELTA` 语句，用于持久化全部、数据库级或表级范围内待写入的优化器统计信息增量 [#65668](https://github.com/pingcap/tidb/issues/65668) @[0xPoe](https://github.com/0xPoe)
+    - 支持 [`FLUSH STATS_DELTA`](https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-flush-stats-delta) 语句，用于持久化全部、数据库级或表级范围内待写入的优化器统计信息 delta [#65668](https://github.com/pingcap/tidb/issues/65668) @[0xPoe](https://github.com/0xPoe)
     - 改进查询优化，默认启用用于在存在备选索引时考虑 `IndexMerge` 的优化器修复控制项，使 TiDB 能在更多适用查询中选择 `IndexMerge` 计划 [#26764](https://github.com/pingcap/tidb/issues/26764) @[time-and-fate](https://github.com/time-and-fate)
     - 支持缓存使用 `set_var` 和 `resource_group` Hint 的预处理与非预处理查询，以提升带 Hint 查询的 plan cache 命中率 [#60920](https://github.com/pingcap/tidb/issues/60920) @[qw4990](https://github.com/qw4990)
     - 优化使用 `IndexMerge` 的 `ORDER BY ... LIMIT` 和 `ORDER BY ... TOPN` 查询，在可能的情况下将 `Limit` 或 `TopN` 下推到各个 partial path，从而减少某些查询计划中不必要的扫描和排序 [#68773](https://github.com/pingcap/tidb/issues/68773) @[time-and-fate](https://github.com/time-and-fate)
