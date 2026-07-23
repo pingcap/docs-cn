@@ -716,6 +716,7 @@ mysql> SELECT * FROM T2;
 
     - TiDB v4.0.10 及更高的 v4.0.x 版本、v5.0.0 及更高的版本可通过 tidb-server 配置项 [`performance.txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 调整，低于 TiDB v4.0.10 的版本支持的单行容量为 6 MiB。
     - 从 v7.6.0 开始，你可以使用 [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) 系统变量动态修改该配置项的值。
+    - 注意，TiKV 对单个写入请求的数据量大小也有限制。若单个写入请求的数据量超出 [`raftstore.raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)（默认值为 8 MiB），TiKV 会拒绝处理该请求。当单行记录较大时，需要同时调整 TiDB 的 `tidb_txn_entry_size_limit` 和 TiKV 的 `raftstore.raft-entry-max-size`。
 
 - 支持的最大单个事务容量为 1 TiB。
 
