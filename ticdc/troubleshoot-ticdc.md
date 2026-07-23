@@ -106,12 +106,11 @@ Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skippin
 
 处理方式取决于 TiCDC 版本：
 
-| TiCDC 版本 | 处理方式 |
-| --- | --- |
-| v8.5.8 及之后版本 | 根据错误信息中的消息大小调大 Kafka Topic 的 `max.message.bytes`。如果目标 Topic 使用 broker 的默认配置，请调大 Kafka server 的 `message.max.bytes`。Kafka Sink 重试或重建后会重新读取 Kafka 配置，changefeed 随后自动恢复，无需修改、暂停或恢复 changefeed。 |
-| v8.5.8 之前的版本 | 调大 changefeed 的 `max-message-bytes`，并确保 Kafka Topic 的 `max.message.bytes` 或 broker 的 `message.max.bytes` 不小于待发送消息的大小。更新 changefeed 配置后，Kafka Sink 会使用新的限制。 |
+**v8.5.8 及之后版本**：根据错误信息中的消息大小调大 Kafka Topic 的 `max.message.bytes`。changefeed 自动重建会读取该配置恢复同步。
 
-对于 v8.5.8 及之后版本，如果调大 Kafka 的消息大小限制后同步任务没有自动恢复，请确认 changefeed 使用的 Kafka 账号具有读取 Topic 和 broker 配置的权限。更多信息参见[Kafka 消息大小限制](/ticdc/ticdc-sink-to-kafka.md#kafka-消息大小限制)。
+如果调大 Kafka 的消息大小限制后同步任务没有自动恢复，请确认 changefeed 使用的 Kafka 账号具有读取 Topic 和 broker 配置的权限。更多信息参见[Kafka 消息大小限制](/ticdc/ticdc-sink-to-kafka.md#kafka-消息大小限制)。
+
+**v8.5.8 之前的版本**：确认导致错误的待发送消息的大小，调整 Kafka Topic 的 `max.message.bytes` 该值，暂停 changefeed，然后调整 changefeed 的 `max-message-bytes` 为该值。恢复 changefeed。
 
 调整 Kafka 消息大小限制时，还需要检查以下相关配置：
 
@@ -143,7 +142,7 @@ cdc cli changefeed resume -c test-cf --server=http://127.0.0.1:8300
 3. 恢复被暂停的 changefeed。
 
 > **注意：**
-> 
+>
 > 虽然将 changefeed 的 `start-ts` 设为报错时的 `checkpoint-ts` 值加上 1，然后重建任务也可以跳过该 DDL 语句，但同时会导致 TiCDC 丢失 `checkpointTs+1` 时刻对应的 DML 数据变更。严禁在生产环境执行这样的操作。
 
 ```shell
@@ -156,5 +155,5 @@ cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://roo
 该问题通常是由于 TiCDC 与 Kafka 集群连接失败导致。你可以通过检查 Kafka 的日志以及网络状况来排查。一个常见的原因是在创建同步任务时没有指定正确的 `kafka-version` 参数，导致 TiCDC 内部的 Kafka client 在访问 Kafka server 时使用了错误的 Kafka API 版本。你可以通过配置 [`--sink-uri`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 指定正确的 `kafka-version` 参数来修复。例如：
 
 ```shell
-cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri "kafka://127.0.0.1:9092/test?topic=test&protocol=open-protocol&kafka-version=2.4.0" 
+cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri "kafka://127.0.0.1:9092/test?topic=test&protocol=open-protocol&kafka-version=2.4.0"
 ```
