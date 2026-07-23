@@ -5,7 +5,7 @@ summary: TiDB 数据库中 FLUSH STATS_DELTA 的使用概况。
 
 # FLUSH STATS_DELTA <span class="version-mark">从 v8.5.7 和 v9.0.0 开始引入</span>
 
-通过 `FLUSH STATS_DELTA`，你可以将 TiDB 内存中缓存的待持久化的统计信息 delta 立即持久化到 [`mysql.stats_meta`](/mysql-schema/mysql-schema.md#statistics-system-tables) 系统表中。
+通过 `FLUSH STATS_DELTA`，你可以将 TiDB 内存中缓存的待持久化的统计信息 delta 立即持久化到 [`mysql.stats_meta`](/mysql-schema/mysql-schema.md#统计信息相关系统表) 系统表中。
 
 当执行 `INSERT`、`UPDATE`、`DELETE` 等 DML 语句修改数据时，TiDB 会记录每张受影响的表中总行数和修改行数的变化，并将这些变化（即统计信息 delta）缓存在执行这些语句的 TiDB 节点的内存中。默认情况下，TiDB 每隔 20 * [`stats-lease`](/tidb-configuration-file.md#stats-lease)（默认 60 秒）会将这些 delta 持久化到 `mysql.stats_meta` 系统表中。详情参考[自动更新](/statistics.md#自动更新)。
 
