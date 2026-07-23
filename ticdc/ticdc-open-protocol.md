@@ -46,14 +46,14 @@ Value:
 
 ### 控制 Message 中的 Event 数量和大小
 
-使用 Open Protocol 将数据同步到 Kafka 时，TiCDC 会先分别序列化每个 Row Changed Event，再将多个序列化后的 Event 组成一条 Kafka message。你可以通过以下参数控制一条 Kafka message 中的 Event 数量和大小：
+在 Open Protocol 中，每个 Row Changed Event 会先被单独序列化，多个序列化后的 Event 可以组成一条 Message。对于 Kafka Sink，你可以通过以下参数控制一条 Kafka message 中的 Event 数量和大小：
 
 | 参数 | 作用 |
 | --- | --- |
 | `max-batch-size` | 每条 Kafka message 最多包含的 Row Changed Event 数量，默认值为 `16`。 |
 | `max-message-bytes` | Kafka message 的大小阈值。实际生效值为 `min(TiCDC max-message-bytes, Kafka 消息大小限制)`。Kafka 消息大小限制的确定方式参见[配置 Kafka 消息大小](/ticdc/ticdc-sink-to-kafka.md#配置-kafka-消息大小)。 |
 
-当 Kafka message 中的 Event 数量已经达到 `max-batch-size`，或者继续加入下一个序列化后的 Event 会使消息超过实际生效的大小阈值时，TiCDC 会创建一条新的 Kafka message。例如：
+当 Kafka message 中的 Event 数量已经达到 `max-batch-size`，或者继续加入下一个序列化后的 Event 会使消息超过实际生效的大小阈值时，后续 Event 会被写入一条新的 Kafka message。例如：
 
 ```shell
 --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=open-protocol&max-message-bytes=1048576&max-batch-size=64"
