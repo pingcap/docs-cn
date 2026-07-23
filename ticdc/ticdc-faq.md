@@ -238,14 +238,6 @@ cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="kafka://127
     * `replica.fetch.max.bytes`，将 Kafka 的 `server.properties` 中该参数调大到 `1073741824` (1 GB)。
     * `fetch.message.max.bytes`，适当调大 `consumer.properties` 中该参数，确保大于 `message.max.bytes`。
 
-## TiCDC 把数据同步到 Kafka 时，能在 TiDB 中控制单条消息大小的上限吗？
-
-`max-message-bytes` 控制 TiCDC 将多条行变更合并为一条 Kafka message 时的大小，默认值为 `10 MB`。该参数不限制单条行变更编码后的消息大小。Kafka 能接收的消息大小由 Topic 的 `max.message.bytes` 或 broker 的 `message.max.bytes` 决定。
-
-对于 Open Protocol，一条 Kafka message 可能包含多条行变更。可以通过 `max-message-bytes` 控制合 batch 的大小，并通过 `max-batch-size` 控制每条 Kafka message 中的最大行变更数量。如果单条行变更编码后的消息超过 `max-message-bytes`，但没有超过 Kafka 的消息大小限制，TiCDC 仍会将其作为一条独立的 Kafka message 发送。
-
-如果需要限制 Kafka 实际接收的消息大小，请配置 Kafka Topic 的 `max.message.bytes` 或 broker 的 `message.max.bytes`。详情参见[配置 Kafka 消息大小](/ticdc/ticdc-sink-to-kafka.md#配置-kafka-消息大小)。
-
 ## 在一个事务中对一行进行多次修改，TiCDC 会输出多条行变更事件吗？
 
 不会，在进行事务操作时，对于在一个事务内多次修改同一行的情况，TiDB 仅会将最新一次的修改结果发送给 TiKV。因此 TiCDC 仅能获取到最新一次修改的结果。

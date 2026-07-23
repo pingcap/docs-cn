@@ -44,6 +44,25 @@ Value:
 * 长度及协议版本号均为大端序 int64 类型
 * 当前协议版本号为 `1`
 
+### 控制 Message 中的 Event 数量和大小
+
+使用 Open Protocol 将数据同步到 Kafka 时，TiCDC 可以将多个 Row Changed Event 编码到同一条 Kafka message 中。相关参数如下：
+
+| 参数 | 作用 |
+| --- | --- |
+| `max-batch-size` | 每条 Kafka message 最多包含的 Row Changed Event 数量，默认值为 `16`。 |
+| `max-message-bytes` | TiCDC 将多个 Row Changed Event 编码到同一条 Kafka message 时使用的大小阈值。实际生效值参见[配置 Kafka 消息大小](/ticdc/ticdc-sink-to-kafka.md#配置-kafka-消息大小)。 |
+
+当继续加入一个 Row Changed Event 会使消息大小超过 `max-message-bytes`，或者消息中的 Event 数量已经达到 `max-batch-size` 时，TiCDC 会创建一条新的 Kafka message。例如：
+
+```shell
+--sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=open-protocol&max-message-bytes=1048576&max-batch-size=64"
+```
+
+`max-message-bytes` 不会拆分单个 Row Changed Event。从 v8.5.8 起，如果单个 Row Changed Event 编码后的消息超过 `max-message-bytes`，但没有超过 Kafka 的消息大小限制，TiCDC 会将其作为一条独立的 Kafka message 发送。
+
+关于 Kafka 消息大小限制以及 `ErrMessageTooLarge` 的处理方法，参见[配置 Kafka 消息大小](/ticdc/ticdc-sink-to-kafka.md#配置-kafka-消息大小)和[使用 TiCDC 同步消息到 Kafka 时遇到消息过大错误的处理方法](/ticdc/troubleshoot-ticdc.md#使用-ticdc-同步消息到-kafka-时-kafka-报错-message-was-too-large该如何处理)。
+
 ## Event 格式定义
 
 本部分介绍 Row Changed Event、DDL Event 和 Resolved Event 的格式定义。

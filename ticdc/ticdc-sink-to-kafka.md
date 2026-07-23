@@ -77,13 +77,13 @@ URI 中可配置的的参数如下：
 | `kafka-version`      | 下游 Kafka 版本号。该值需要与下游 Kafka 的实际版本保持一致。 |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`）。 |
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）。|
-| `max-message-bytes`  | TiCDC 将多条行变更编码到同一条 Kafka message 时使用的大小阈值（可选，默认值 `10 MB`，最大值为 `100 MB`）。该参数不限制单条行变更编码后的消息大小。Kafka 能接收的消息大小由 topic 的 `max.message.bytes` 或 broker 的 `message.max.bytes` 决定。从 v5.0.6 和 v4.0.6 开始，该参数的默认值分别从 `64 MB` 和 `256 MB` 调整至 `10 MB`。|
+| `max-message-bytes`  | TiCDC 将多条行变更编码到同一条 Kafka message 时使用的大小阈值（可选，默认值 `10 MB`，最大值为 `100 MB`）。该参数不限制单条行变更编码后的消息大小。Kafka 能接收的消息大小由 topic 的 `max.message.bytes` 或 broker 的 `message.max.bytes` 决定。从 v5.0.6 和 v4.0.6 开始，该参数的默认值分别从 `64 MB` 和 `256 MB` 调整至 `10 MB`。使用 Open Protocol 时的详细说明，参见[控制 Message 中的 Event 数量和大小](/ticdc/ticdc-open-protocol.md#控制-message-中的-event-数量和大小)。|
 | `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`），需要大于等于 Kafka 中 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 的值。 |
 | `required-acks`      | 在 `Produce` 请求中使用的配置项，用于告知 broker 需要收到多少副本确认后才进行响应。可选值有：`0`（`NoResponse`：不发送任何响应，只有 TCP ACK），`1`（`WaitForLocal`：仅等待本地提交成功后再响应）和 `-1`（`WaitForAll`：等待所有同步副本提交后再响应。最小同步副本数量可通过 broker 的 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 配置项进行配置）。（可选，默认值为 `-1`）。                      |
 | `compression`        | 设置发送消息时使用的压缩算法（可选值为 `none`、`lz4`、`gzip`、`snappy` 和 `zstd`，默认值为 `none`）。注意 Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。|
 | `auto-create-topic` | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否要自动创建该 topic（可选，默认值 `true`）。 |
 | `enable-tidb-extension` | 可选，默认值是 `false`。当输出协议为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 [WATERMARK 事件](/ticdc/ticdc-canal-json.md#watermark-event)，并在 Kafka 消息中添加 TiDB 扩展字段。从 6.1.0 开始，该参数也可以和输出协议 `avro` 一起使用。如果该值为 `true`，TiCDC 会在 Kafka 消息中添加[三个 TiDB 扩展字段](/ticdc/ticdc-avro-protocol.md#tidb-扩展字段)。|
-| `max-batch-size` |  从 v4.0.9 开始引入。当消息协议支持把多条变更记录输出至一条 Kafka 消息时，该参数用于指定这一条 Kafka 消息中变更记录的最多数量。目前，仅当 Kafka 消息的 `protocol` 为 `open-protocol` 时有效（可选，默认值 `16`）。|
+| `max-batch-size` |  从 v4.0.9 开始引入。当消息协议支持把多条变更记录输出至一条 Kafka 消息时，该参数用于指定这一条 Kafka 消息中变更记录的最多数量。目前，仅当 Kafka 消息的 `protocol` 为 `open-protocol` 时有效（可选，默认值 `16`）。详细说明参见[控制 Message 中的 Event 数量和大小](/ticdc/ticdc-open-protocol.md#控制-message-中的-event-数量和大小)。|
 | `enable-tls` | 连接下游 Kafka 实例是否使用 TLS（可选，默认值 `false`）。 |
 | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选）。 |
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选）。 |
@@ -112,10 +112,6 @@ URI 中可配置的的参数如下：
 * 如果你在创建 changefeed 时，使用了尚未存在的 Topic，那么 TiCDC 会尝试使用 `partition-num` 和 `replication-factor` 参数自行创建 Topic，建议明确指定这两个参数。
 * 在大多数情况下，建议使用 `canal-json` 协议。
 * 如果 TiCDC 上游的数据变更很少，比如可能会出现超过 10 分钟没有数据变更的情况，建议在 Kafka broker 的配置文件中调大 Kafka 的连接空闲超时时间，详情参考[为什么 TiCDC 同步到 Kafka 的任务经常因 `broken pipe` 报错而失败](/ticdc/ticdc-faq.md#为什么-ticdc-同步到-kafka-的任务经常因-broken-pipe-报错而失败)。
-
-> **注意：**
->
-> 当 `protocol` 为 `open-protocol` 时，TiCDC 会将多个事件编码到同一个 Kafka message 中，并使用 `max-message-bytes` 控制合 batch 的大小。如果单条数据变更编码后的消息超过 `max-message-bytes`，但没有超过 Kafka Topic 的 `max.message.bytes`，TiCDC 仍会将其作为一条独立的 Kafka message 发送。
 
 ### TiCDC 使用 Kafka 的认证与授权
 
@@ -388,33 +384,24 @@ SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="databa
 
 ## 配置 Kafka 消息大小
 
-TiCDC Kafka sink 和 Kafka 分别通过以下参数控制消息大小：
+Kafka 通过以下参数控制可以接收的消息大小：
 
 | 参数 | 作用 |
 | --- | --- |
-| TiCDC `max-message-bytes` | 控制 TiCDC 将多条行变更合并为一条 Kafka message 时的大小。默认值为 `10 MB`。 |
 | Kafka Topic `max.message.bytes` | 控制目标 Kafka Topic 可以接收的消息大小。 |
-| Kafka broker `message.max.bytes` | 当目标 Topic 不存在或没有使用独立限制时，控制 broker 可以接收的消息大小。 |
+| Kafka broker `message.max.bytes` | 当目标 Topic 没有配置独立限制时，控制 broker 可以接收的消息大小。 |
 
-Kafka sink 启动时，TiCDC 会读取目标 Topic 的 `max.message.bytes`。如果目标 Topic 不存在，TiCDC 会读取 broker 的 `message.max.bytes`。TiCDC 实际使用的 batch 大小阈值为：
+Kafka sink 启动时，TiCDC 会读取目标 Topic 的 `max.message.bytes`。如果无法从 Topic 配置中获取该参数，TiCDC 会读取 broker 的 `message.max.bytes`。
+
+TiCDC 实际使用的 batch 大小阈值为：
 
 ```text
 min(TiCDC max-message-bytes, Kafka 消息大小限制)
 ```
 
-`max-message-bytes` 只影响 TiCDC 是否继续向当前 batch 合入更多行变更，不会阻止 Kafka 已经能够接收的单条消息。
+从 v8.5.8 起，TiCDC 将 batch 大小阈值与 Kafka 的消息大小限制分开处理。TiCDC 的 `max-message-bytes` 用于控制 batch 大小，不会阻止 Kafka 已经能够接收的单条消息。使用 Open Protocol 时，参见[控制 Message 中的 Event 数量和大小](/ticdc/ticdc-open-protocol.md#控制-message-中的-event-数量和大小)。
 
-例如，使用以下配置时：
-
-```text
-TiCDC max-message-bytes = 10 MiB
-Kafka Topic max.message.bytes = 20 MiB
-单条行变更编码后的消息大小 = 12 MiB
-```
-
-TiCDC 不会再向这条 12 MiB 的消息合入其他行变更，但可以将它作为一条独立的 Kafka message 发送。
-
-如果单条消息超过 Kafka 当前的消息大小限制，TiCDC 会返回 `ErrMessageTooLarge`。此时，请调大 Kafka Topic 的 `max.message.bytes`。如果目标 Topic 使用 broker 的默认配置，请调大 broker 的 `message.max.bytes`。Kafka sink 重试或重建后会重新读取 Kafka 配置，不需要同时修改 TiCDC changefeed 的 `max-message-bytes`。
+如果 TiCDC 返回 `ErrMessageTooLarge`，或者 Kafka 返回 `Message was too large`，参见[使用 TiCDC 同步消息到 Kafka 时遇到消息过大错误的处理方法](/ticdc/troubleshoot-ticdc.md#使用-ticdc-同步消息到-kafka-时-kafka-报错-message-was-too-large该如何处理)。
 
 > **注意：**
 >

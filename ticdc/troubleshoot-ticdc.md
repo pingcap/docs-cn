@@ -104,7 +104,7 @@ Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skippin
 
 ## 使用 TiCDC 同步消息到 Kafka 时 Kafka 报错 `Message was too large`，该如何处理？
 
-TiCDC `max-message-bytes` 参数只控制 TiCDC 合 batch 的大小，不控制 Kafka 能接收的消息大小。出现该错误时，请根据错误信息中的消息大小调大 Kafka Topic 的 `max.message.bytes`。如果目标 Topic 使用 broker 的默认配置，请调大 Kafka server 的 `message.max.bytes`。
+当 TiCDC 返回 `ErrMessageTooLarge` 或 Kafka 返回 `Message was too large` 时，表示待发送的消息超过了 Kafka 当前允许的消息大小。请根据错误信息中的消息大小调大 Kafka Topic 的 `max.message.bytes`。如果目标 Topic 使用 broker 的默认配置，请调大 Kafka server 的 `message.max.bytes`。
 
 ```
 # Topic 能接收消息的最大字节数
@@ -117,7 +117,9 @@ replica.fetch.max.bytes=<不小于 message.max.bytes>
 fetch.message.max.bytes=<不小于 Kafka 中实际允许的消息大小>
 ```
 
-Kafka sink 重试或重建后会重新读取 Kafka 配置。通常不需要同时修改 changefeed 的 `max-message-bytes`。更多信息参见[配置 Kafka 消息大小](/ticdc/ticdc-sink-to-kafka.md#配置-kafka-消息大小)。
+从 v8.5.8 起，Kafka sink 重试或重建后会重新读取 Kafka 配置。调大 Kafka 的消息大小限制后，TiCDC 可以在重试过程中自动恢复同步，不需要同时修改 changefeed 的 `max-message-bytes`，也不需要暂停或恢复 changefeed。
+
+如果不希望调大 Kafka 的消息大小限制，可以配置 `large-message-handle-option`，使用 Claim-Check 或只输出 Handle Key 的方式处理大消息。更多信息参见[配置 Kafka 消息大小](/ticdc/ticdc-sink-to-kafka.md#配置-kafka-消息大小)和[处理超过 Kafka Topic 限制的消息](/ticdc/ticdc-sink-to-kafka.md#处理超过-kafka-topic-限制的消息)。
 
 ## TiCDC 同步时，在下游执行 DDL 语句失败会有什么表现，如何恢复？
 
