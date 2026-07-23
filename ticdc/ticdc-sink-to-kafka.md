@@ -157,13 +157,12 @@ URI 中可配置的的参数如下：
     - 对 Cluster 资源类型的 `DescribeConfig` 权限。
 
   各权限的使用场景如下：
-  
     | 资源类型 | 操作类型      |  使用场景                            |
-    | :-------------| :------------- | :--------------------------------|
-    | Cluster      | `DescribeConfig` | Changefeed 运行过程中，获取集群元数据 |
-    | Topic         | `Describe`           | Changefeed 启动时，尝试创建 Topic   |                
-    | Topic         | `Create`              | Changefeed 启动时，尝试创建 Topic   |
-    | Topic         | `Write`                | 发送数据到 Topic                   | 
+    | :-------------| :--------------- | :--------------------------------|
+    | Cluster       | `DescribeConfig` | Changefeed 运行过程中，获取集群元数据 |
+    | Topic         | `Describe`       | Changefeed 启动时，尝试创建 Topic   |
+    | Topic         | `Create`         | Changefeed 启动时，尝试创建 Topic   |
+    | Topic         | `Write`          | 发送数据到 Topic                   |
 
     创建或启动 Changefeed 时，如果指定的 Kafka Topic 已存在，可以不用开启 `Describe` 和 `Create` 权限。
 
@@ -384,22 +383,22 @@ SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="databa
 
 ## Kafka 消息大小限制
 
-Kafka 对可以接收的消息大小设有默认限制，通常无需调整。只有当 changefeed 需要发送的单条消息超过当前限制时，才需要调大该限制，或者使用[大消息处理功能](#处理超过-kafka-topic-限制的消息)。
+Kafka 会限制每个 Topic 可以接收的消息大小。目标 Topic 当前生效的限制由以下配置决定：
 
 | 参数 | 作用 |
 | --- | --- |
-| Kafka Topic `max.message.bytes` | 为指定 Topic 设置消息大小限制，覆盖 broker 的默认值。 |
-| Kafka broker `message.max.bytes` | Topic 未设置 `max.message.bytes` 时使用的默认值。 |
+| Kafka Topic [`max.message.bytes`](https://kafka.apache.org/43/configuration/topic-configs/#topicconfigs_max.message.bytes) | 为指定 Topic 设置消息大小限制，覆盖 broker 的默认值。 |
+| Kafka broker [`message.max.bytes`](https://kafka.apache.org/43/configuration/broker-configs/#brokerconfigs_message.max.bytes) | Topic 未设置 `max.message.bytes` 时使用的默认值。 |
 
 Kafka Sink 启动时会读取目标 Topic 当前生效的消息大小限制，用于在发送前判断消息是否过大。如果编码后的单条消息超过该限制且未配置大消息处理，Kafka Sink 会返回 `ErrMessageTooLarge`。处理方法参见[Kafka Sink 返回 `ErrMessageTooLarge` 时，如何处理？](/ticdc/troubleshoot-ticdc.md#kafka-sink-返回-errmessagetoolarge-时如何处理)。
 
 > **注意：**
 >
-> 如果 Kafka Sink 因 Kafka ACL 等原因无法读取 Topic 或 broker 的消息大小配置，会使用 changefeed 的 `max-message-bytes` 作为本地消息大小限制。如果该值与 Kafka 实际生效的限制不一致，Kafka Sink 可能无法准确判断消息能否发送，调大 Kafka 的限制后也可能无法自动恢复。请确保 changefeed 使用的 Kafka 账号具有读取 Topic 和 broker 配置的权限；如果无法授予该权限，需要手动保持 changefeed 的 `max-message-bytes` 与 Kafka 的消息大小限制一致。
+> 如果 Kafka Sink 因 Kafka ACL 等原因无法读取 Topic 或 broker 的消息大小配置，会使用 changefeed 的 `max-message-bytes` 作为本地消息大小限制。如果该值与 Kafka 实际生效的限制不一致，Kafka Sink 可能无法准确判断消息能否发送，调大 Kafka 的限制后也可能无法自动恢复。请确保 changefeed 使用的 Kafka 账号具有读取 Topic 和 broker 配置的权限；如果无法授予该权限，需要设置 changefeed 的 `max-message-bytes` 与 Kafka 的消息大小限制一致。
 
 ## 处理超过 Kafka Topic 限制的消息
 
-Kafka Topic 对可以接收的消息大小有限制，该限制由 [`max.message.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes) 参数控制。当原始消息超过 Kafka 当前的消息大小限制时，TiCDC 可以通过 `large-message-handle-option` 处理该消息。
+当消息超过 Kafka 大小限制时，可以配置 `large-message-handle-option`，避免消息因过大而无法发送。
 
 目前，如下功能支持 Canal-JSON 和 Open Protocol 两种编码协议。使用 Canal-JSON 协议时，你需要在 `sink-uri` 中设置 `enable-tidb-extension=true`。
 
