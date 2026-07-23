@@ -104,16 +104,20 @@ Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skippin
 
 ## 使用 TiCDC 同步消息到 Kafka 时 Kafka 报错 `Message was too large`，该如何处理？
 
-仅在 Sink URI 中为 Kafka 配置 `max-message-bytes` 参数不能有效控制输出到 Kafka 的消息大小，需要在 Kafka server 配置中加入如下配置以增加 Kafka 接收消息的字节数限制。
+TiCDC `max-message-bytes` 参数只控制 TiCDC 合 batch 的大小，不控制 Kafka 能接收的消息大小。出现该错误时，请根据错误信息中的消息大小调大 Kafka Topic 的 `max.message.bytes`。如果目标 Topic 使用 broker 的默认配置，请调大 Kafka server 的 `message.max.bytes`。
 
 ```
-# broker 能接收消息的最大字节数
-message.max.bytes=2147483648
+# Topic 能接收消息的最大字节数
+max.message.bytes=<不小于待发送消息的大小>
+# broker 能接收消息的最大字节数，使用 broker 默认限制时配置
+message.max.bytes=<不小于待发送消息的大小>
 # broker 可复制的消息的最大字节数
-replica.fetch.max.bytes=2147483648
+replica.fetch.max.bytes=<不小于 message.max.bytes>
 # 消费者端的可读取的最大消息字节数
-fetch.message.max.bytes=2147483648
+fetch.message.max.bytes=<不小于 Kafka 中实际允许的消息大小>
 ```
+
+Kafka sink 重试或重建后会重新读取 Kafka 配置。通常不需要同时修改 changefeed 的 `max-message-bytes`。更多信息参见[配置 Kafka 消息大小](/ticdc/ticdc-sink-to-kafka.md#配置-kafka-消息大小)。
 
 ## TiCDC 同步时，在下游执行 DDL 语句失败会有什么表现，如何恢复？
 

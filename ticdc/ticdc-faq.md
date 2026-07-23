@@ -240,9 +240,11 @@ cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="kafka://127
 
 ## TiCDC 把数据同步到 Kafka 时，能在 TiDB 中控制单条消息大小的上限吗？
 
-对于 Avro 和 Canal-JSON 格式，消息是以行变更为单位发送的，一条 Kafka Message 仅包含一条行变更。一般情况下，消息的大小不会超过 Kafka 单条消息上限，因此，一般不需要限制单条消息大小。如果单条 Kafka 消息大小确实超过 Kafka 上限，请参考[为什么 TiCDC 到 Kafka 的同步任务延时越来越大](/ticdc/ticdc-faq.md#为什么-ticdc-到-kafka-的同步任务延时越来越大)。
+`max-message-bytes` 控制 TiCDC 将多条行变更合并为一条 Kafka message 时的大小，默认值为 `10 MB`。该参数不限制单条行变更编码后的消息大小。Kafka 能接收的消息大小由 Topic 的 `max.message.bytes` 或 broker 的 `message.max.bytes` 决定。
 
-对于 Open Protocol 格式，一条 Kafka Message 可能包含多条行变更。因此，有可能存在某条 Kafka Message 消息过大。可以通过 `max-message-bytes` 控制每次向 Kafka broker 发送消息的最大数据量（可选，默认值 10 MB），通过 `max-batch-size` 参数指定每条 kafka 消息中变更记录的最大数量（可选，默认值 `16`）。
+对于 Open Protocol，一条 Kafka message 可能包含多条行变更。可以通过 `max-message-bytes` 控制合 batch 的大小，并通过 `max-batch-size` 控制每条 Kafka message 中的最大行变更数量。如果单条行变更编码后的消息超过 `max-message-bytes`，但没有超过 Kafka 的消息大小限制，TiCDC 仍会将其作为一条独立的 Kafka message 发送。
+
+如果需要限制 Kafka 实际接收的消息大小，请配置 Kafka Topic 的 `max.message.bytes` 或 broker 的 `message.max.bytes`。详情参见[配置 Kafka 消息大小](/ticdc/ticdc-sink-to-kafka.md#配置-kafka-消息大小)。
 
 ## 在一个事务中对一行进行多次修改，TiCDC 会输出多条行变更事件吗？
 
