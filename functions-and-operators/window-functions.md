@@ -1,7 +1,7 @@
 ---
 title: 窗口函数
 aliases: ['/docs-cn/dev/functions-and-operators/window-functions/','/docs-cn/dev/reference/sql/functions-and-operators/window-functions/']
-summary: TiDB 中的窗口函数与 MySQL 8.0 基本一致。可以将 `tidb_enable_window_function` 设置为 `0` 来解决升级后无法解析语法的问题。TiDB 支持除 `GROUP_CONCAT()` 和 `APPROX_PERCENTILE()` 以外的所有 `GROUP BY` 聚合函数。其他支持的窗口函数包括 `CUME_DIST()`、`DENSE_RANK()`、`FIRST_VALUE()`、`LAG()`、`LAST_VALUE()`、`LEAD()`、`NTH_VALUE()`、`NTILE()`、`PERCENT_RANK()`、`RANK()` 和 `ROW_NUMBER()`。这些函数可以下推到 TiFlash。
+summary: TiDB 中的窗口函数与 MySQL 8.0 基本一致。可以将 `tidb_enable_window_function` 设置为 `0` 来解决升级后无法解析语法的问题。TiDB 支持除 `GROUP_CONCAT()`、`APPROX_PERCENTILE()` 和 `APPROX_COUNT_DISTINCT()` 以外的所有 `GROUP BY` 聚合函数作为窗口函数，包括 `SUM_INT()`、`MAX_COUNT()` 和 `MIN_COUNT()`。其他支持的窗口函数包括 `CUME_DIST()`、`DENSE_RANK()`、`FIRST_VALUE()`、`LAG()`、`LAST_VALUE()`、`LEAD()`、`NTH_VALUE()`、`NTILE()`、`PERCENT_RANK()`、`RANK()` 和 `ROW_NUMBER()`。这些函数可以下推到 TiFlash。
 ---
 
 # 窗口函数
@@ -16,7 +16,7 @@ TiDB 中窗口函数的使用方法与 MySQL 8.0 基本一致，详情可参见 
 
 [本页](/tiflash/tiflash-supported-pushdown-calculations.md)列出的窗口函数可以下推到 TiFlash。
 
-TiDB 支持除 `GROUP_CONCAT()` 和 `APPROX_PERCENTILE()` 以外的所有 [`GROUP BY` 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)作为窗口函数。此外，TiDB 支持的其他窗口函数如下：
+TiDB 支持除 `GROUP_CONCAT()`、`APPROX_PERCENTILE()` 和 `APPROX_COUNT_DISTINCT()` 以外的所有 [`GROUP BY` 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)作为窗口函数，包括 `SUM_INT()`、`MAX_COUNT()` 和 `MIN_COUNT()`。此外，TiDB 支持的其他窗口函数如下：
 
 | 函数名 | 功能描述 |
 | :-------------- | :------------------------------------- |
