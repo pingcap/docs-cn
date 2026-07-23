@@ -70,9 +70,59 @@ ALTER TABLE stock_items ADD FULLTEXT INDEX (title) WITH PARSER MULTILINGUAL ADD_
 
 `WITH PARSER <PARSER_NAME>` 子句中可用的 parser 包括：
 
-- `STANDARD`：速度快，适用于英文内容，通过空格和标点切分单词。
+- `STANDARD`：速度快，适用于英文内容，通过空格和标点切分单词。所有文本在建立索引和搜索时都会转换为小写（不区分大小写匹配）。
 
 - `MULTILINGUAL`：支持多种语言，包括英文、中文、日文和韩文。
+
+### 管理全文索引 {#manage-full-text-indexes}
+
+创建全文索引时，指定索引名称是可选的。如果不指定，TiDB 默认使用第一个被索引列的名称作为索引名。
+
+```sql
+-- 不指定索引名称时，TiDB 使用第一个被索引列名（"title"）作为索引名
+ALTER TABLE stock_items ADD FULLTEXT INDEX (title) WITH PARSER MULTILINGUAL;
+
+-- 指定索引名称
+ALTER TABLE stock_items ADD FULLTEXT INDEX ft_title (title) WITH PARSER MULTILINGUAL;
+```
+
+**查看现有索引名称：**
+
+```sql
+-- Key_name 列显示索引名称
+SHOW INDEX FROM stock_items;
+
+-- 或查询 INFORMATION_SCHEMA
+SELECT INDEX_NAME, COLUMN_NAME, INDEX_TYPE
+FROM INFORMATION_SCHEMA.STATISTICS
+WHERE TABLE_SCHEMA = 'your_database' AND TABLE_NAME = 'stock_items';
+```
+
+**删除全文索引：**
+
+```sql
+-- 先使用 SHOW INDEX 确认索引名称
+ALTER TABLE stock_items DROP INDEX title;
+```
+
+#### 指定索引名称 {#specify-an-index-name}
+
+在 `CREATE TABLE` 和 `ALTER TABLE` 语句中，你都可以在 `FULLTEXT INDEX` 或 `FULLTEXT KEY` 后指定索引名称：
+
+```sql
+-- 在 CREATE TABLE 中指定名称
+CREATE TABLE users (
+    id INT,
+    name TEXT,
+    FULLTEXT INDEX ft_name (name) WITH PARSER STANDARD
+);
+
+-- 在 ALTER TABLE 中指定名称
+ALTER TABLE users ADD FULLTEXT INDEX ft_name (name) WITH PARSER STANDARD;
+
+-- 使用独立的 CREATE FULLTEXT INDEX（必须指定索引名称）
+CREATE FULLTEXT INDEX ft_name ON users (name) WITH PARSER STANDARD;
+```
 
 ### 插入文本数据
 
@@ -151,6 +201,71 @@ SELECT COUNT(*) FROM stock_items
 |        5 |
 +----------+
 ```
+
+#### 多词搜索：分词与查询语义
+
+使用 `fts_match_word()` 时，查询字符串会按照 parser 的规则进行分词，并且每个 token 都会被独立匹配。
+
+STANDARD parser 使用空格和标点作为分隔符，将字符串切分为单词。MULTILINGUAL parser 则根据特定语言的分词规则对字符串进行切分。
+
+```sql
+-- 此查询会被切分为两个 token："Alice" 和 "Smith"
+SELECT * FROM users WHERE fts_match_word('Alice Smith', name);
+```
+
+`fts_match_word()` 使用 **OR** 语义：如果文档包含任意一个 token，就会匹配；匹配到的 token 越多，相关性得分越高。
+
+```sql
+-- 以下查询返回 name 列中包含
+-- "Alice" 或 "Smith" 或两者都包含的所有行
+SELECT * FROM users WHERE fts_match_word('Alice Smith', name);
+```
+
+一个常见误解是，`fts_match_word('Alice X', name)` 会将 `"Alice X"` 视为一个单独实体来进行精确匹配。实际上，它会被切分为 `Alice` 和 `X`，并使用 OR 语义。由于 `X` 是一个非常短的查询词，它可能匹配许多不相关的文档。请避免使用非常短的查询词或单个字母。
+
+> **注意：**
+>
+> TiDB 全文搜索不支持精确短语匹配，即不支持要求所有查询 token 按指定顺序连续出现的匹配方式。
+
+#### 前缀搜索
+
+**不支持。**
+
+#### 重复词项对相关性得分的影响
+
+`fts_match_word()` 返回的相关性得分基于 **BM25** 算法。如果查询字符串包含重复词项，则该词项的词频在评分中会加倍。
+
+```sql
+-- "Alice" 出现两次；在 BM25 评分中，Alice 的词频为 2
+SELECT * FROM users WHERE fts_match_word('Alice alice bob', name);
+```
+
+在此示例中，匹配 `Alice` 的文档相比 `bob` 会获得两倍的权重贡献。这是 BM25 算法的预期行为，因为它基于词频（TF）来评估相关性。
+
+#### 相关性评分算法
+
+TiDB 全文搜索使用 **BM25Tantivy** 算法来计算相关性得分。该算法是经典 BM25（Okapi BM25）算法的一个变体，使用 Count-Min Sketch 来近似文档频率（DF），以提升性能。
+
+**BM25 公式（标准形式）：**
+
+```
+score(D, Q) = sum_{t in Q} IDF(t) * TF(t, D) * (k1 + 1) / (TF(t, D) + k1 * (1 - b + b * |D| / avgdl))
+```
+
+其中：
+
+- `t`：查询词项
+- `Q`：查询字符串（分词后的所有 token）
+- `D`：正在评估的文档
+- `TF(t, D)`：词项 `t` 在文档中的词频
+- `IDF(t)`：逆文档频率，用于衡量词项的稀有程度
+- `|D|`：文档长度
+- `avgdl`：所有文档的平均文档长度
+- `k1`、`b`：BM25 调优参数
+
+TiDB 的实现使用固定值 `k1 = 1.2` 和 `b = 0.75`，这是信息检索中 BM25 的标准默认值。
+
+返回的得分是一个非负浮点数。值越高，表示与查询的相关性越高。不同数据集之间的得分不能直接比较。
 
 ## 高级示例：与其他表 join 搜索结果
 
