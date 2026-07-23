@@ -3877,6 +3877,16 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`1.5`
 - 表示 TiDB 往临时磁盘读写一个字节数据的 I/O 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
+### `tidb_opt_index_join_max_scan_rows_ratio` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 范围：`[0, 18446744073709551615]`
+- 默认值：`0`
+- 控制优化器在处理 Join 查询时限制选择 IndexJoin 算子的阈值。优化器会估算 IndexJoin 和 HashJoin 分别需要扫描的行数，并计算 IndexJoin 要扫描的行数与 HashJoin 要扫描的行数的比值。如果该比值大于或等于该变量的值，优化器会避免选择 IndexJoin。默认值 `0` 表示关闭该限制。
+
 ### `tidb_opt_distinct_agg_push_down`
 
 - 作用域：SESSION
