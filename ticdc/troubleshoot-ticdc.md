@@ -102,9 +102,18 @@ Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skippin
 - 如果 PD 是由 v4.0.8 或更低版本滚动升级到新版，详见 [PD issue #3366](https://github.com/tikv/pd/issues/3366)。
 - 对于其他情况，请将上述命令执行结果反馈到 [AskTUG 论坛](https://pingkai.cn/tidbcommunity/forum/tags/ticdc)。
 
-## 使用 TiCDC 同步消息到 Kafka 时 Kafka 报错 `Message was too large`，该如何处理？
+## 使用 TiCDC 同步消息到 Kafka 时遇到 `ErrMessageTooLarge` 或 `Message was too large`，该如何处理？
 
-当 TiCDC 返回 `ErrMessageTooLarge` 或 Kafka 返回 `Message was too large` 时，表示待发送的消息超过了 Kafka 当前允许的消息大小。请根据错误信息中的消息大小调大 Kafka Topic 的 `max.message.bytes`。如果目标 Topic 使用 broker 的默认配置，请调大 Kafka server 的 `message.max.bytes`。
+处理方式取决于 TiCDC 版本：
+
+| TiCDC 版本 | 处理方式 |
+| --- | --- |
+| v8.5.8 及之后版本 | 根据错误信息中的消息大小调大 Kafka Topic 的 `max.message.bytes`。如果目标 Topic 使用 broker 的默认配置，请调大 Kafka server 的 `message.max.bytes`。Kafka sink 重试或重建后会重新读取 Kafka 配置并自动恢复同步，不需要修改、暂停或恢复 changefeed。 |
+| v8.5.8 之前的版本 | 调大 changefeed 的 `max-message-bytes`，并确保 Kafka Topic 的 `max.message.bytes` 或 broker 的 `message.max.bytes` 不小于待发送消息的大小。更新 changefeed 配置后，TiCDC 会使用新的限制重新创建 Kafka sink。 |
+
+对于 v8.5.8 及之后版本，如果调大 Kafka 的消息大小限制后同步任务没有自动恢复，请确认 TiCDC 使用的 Kafka 账号具有读取 Topic 和 broker 配置的权限。更多信息参见[配置 Kafka 消息大小](/ticdc/ticdc-sink-to-kafka.md#配置-kafka-消息大小)。
+
+调整 Kafka 消息大小限制时，还需要检查以下相关配置：
 
 ```
 # Topic 能接收消息的最大字节数
@@ -117,9 +126,7 @@ replica.fetch.max.bytes=<不小于 message.max.bytes>
 fetch.message.max.bytes=<不小于 Kafka 中实际允许的消息大小>
 ```
 
-从 v8.5.8 起，Kafka sink 重试或重建后会重新读取 Kafka 配置。调大 Kafka 的消息大小限制后，TiCDC 可以在重试过程中自动恢复同步，不需要同时修改 changefeed 的 `max-message-bytes`，也不需要暂停或恢复 changefeed。
-
-如果不希望调大 Kafka 的消息大小限制，可以配置 `large-message-handle-option`，使用 Claim-Check 或只输出 Handle Key 的方式处理大消息。更多信息参见[配置 Kafka 消息大小](/ticdc/ticdc-sink-to-kafka.md#配置-kafka-消息大小)和[处理超过 Kafka Topic 限制的消息](/ticdc/ticdc-sink-to-kafka.md#处理超过-kafka-topic-限制的消息)。
+如果不希望调大 Kafka 的消息大小限制，可以配置 `large-message-handle-option`，使用 Claim-Check 或只输出 Handle Key 的方式处理大消息。更多信息参见[处理超过 Kafka Topic 限制的消息](/ticdc/ticdc-sink-to-kafka.md#处理超过-kafka-topic-限制的消息)。
 
 ## TiCDC 同步时，在下游执行 DDL 语句失败会有什么表现，如何恢复？
 
