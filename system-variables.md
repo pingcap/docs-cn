@@ -4751,10 +4751,10 @@ SHOW WARNINGS;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：整数型
-- 默认值：`4194304`（即 4 MiB）
+- 默认值：`0`
 - 范围：`[0, 9223372036854775807]`
 - 单位：字节
-- 控制 coprocessor 协议中单个分页响应的字节数上限，用于在 [`tidb_max_paging_size`](#tidb_max_paging_size-从-v630-版本开始引入) 所提供的按行数分页机制之外，额外提供按字节数分页的能力。默认值为 `4194304`（即 4 MiB），设为 `0` 表示关闭按字节数分页。该功能仅在开启[资源管控](/tidb-resource-control-ru-groups.md)且当前语句所属资源组具有固定的 RU 配额时生效，供 PD 的资源管控模块在执行语句前根据扫描数据量预估并预扣 RU。
+- 控制 coprocessor 协议中单个分页响应的字节数上限，用于在 [`tidb_max_paging_size`](#tidb_max_paging_size-从-v630-版本开始引入) 所提供的按行数分页机制之外，额外提供按字节数分页的能力。默认值为 `0`，表示关闭按字节数分页。该功能仅在开启[资源管控](/tidb-resource-control-ru-groups.md)且当前语句所属资源组具有固定的 RU 配额时生效，供 PD 的资源管控模块在执行语句前根据扫描数据量预估并预扣 RU。如需启用，可考虑设置为 `4194304`（即 4 MiB）。
 - 该变量为 TiDB 内部变量，**不推荐**修改该变量的值。
 
 ### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
