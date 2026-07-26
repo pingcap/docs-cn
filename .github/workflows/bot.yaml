@@ -1,0 +1,58 @@
+name: Issue notification
+
+on:
+  issues:
+    types:
+      - opened
+
+permissions: {}
+
+jobs:
+  notify:
+    if: github.repository == 'pingcap/docs-cn'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send issue notification
+        env:
+          ASSIGNEES: ${{ join(github.event.issue.assignees.*.login, ', ') }}
+          ISSUE_CREATED_AT: ${{ github.event.issue.created_at }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_REPORTER: ${{ github.event.issue.user.login }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          REPOSITORY: ${{ github.repository }}
+          WEBHOOK_URL: ${{ secrets.BOT_WEBHOOK_URL }}
+        run: |
+          issue_date="$(date -u -d "$ISSUE_CREATED_AT" +%F)"
+          assignees="${ASSIGNEES:-Unassigned}"
+          message="[$issue_date]: GitHub issue #$ISSUE_NUMBER is created in $REPOSITORY.
+
+          Issue title: $ISSUE_TITLE
+          Issue URL: $ISSUE_URL
+          Issue reporter: $ISSUE_REPORTER
+          Assignee: $assignees"
+
+          payload="$(jq -n \
+            --arg text "$message" \
+            '{"msg_type":"text","content":{"text":$text}}')"
+
+          for attempt in 1 2 3; do
+            if curl --connect-timeout 10 \
+                --fail-with-body \
+                --header "Content-Type: application/json" \
+                --max-time 30 \
+                --show-error \
+                --silent \
+                --data-binary "$payload" \
+                "$WEBHOOK_URL"; then
+              exit 0
+            fi
+
+            if [ "$attempt" -lt 3 ]; then
+              echo "Webhook request failed. Retrying in 5 seconds..." >&2
+              sleep 5
+            fi
+          done
+
+          echo "Webhook request failed after 3 attempts." >&2
+          exit 1
