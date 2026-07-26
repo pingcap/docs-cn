@@ -199,6 +199,7 @@ worker_servers:
     - `remote_write`：参考 Prometheus [`<remote_write>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) 文档
     - `remote_read`：参考 Prometheus [`<remote_read>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_read) 文档
 - `external_alertmanagers`：若配置了 `external_alertmanagers`，Prometheus 会将配置行为报警通知到集群外的 Alertmanager。该字段为一个数组，数组的元素为每个外部的 Alertmanager，由 `host` 和 `web_port` 字段构成
+- `external_labels`：从 TiUP v1.17.0 开始引入，用于为 Prometheus 配置全局 `external_labels`，字段值为 key/value 对。可用于为 Prometheus `remote_write`、联邦抓取和告警附加稳定元数据。TiUP 会自动管理 `cluster` 和 `monitor` 这两个保留 label，因此不要在该字段中配置它们。以 `__` 开头的 label 名同样保留不可用，且所有 label 名都必须符合 Prometheus label name 规则。若使用不支持该字段的旧版 TiUP 打开包含该字段的拓扑文件，不会忽略未知字段，而是直接解析失败
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
@@ -219,6 +220,9 @@ worker_servers:
 monitoring_servers:
   - host: 10.0.1.11
     rule_dir: /local/rule/dir
+    external_labels:
+      environment: production
+      region: us-east-1
     remote_config:
       remote_write:
       - queue_config:
