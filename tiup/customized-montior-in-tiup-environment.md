@@ -72,6 +72,28 @@ monitoring_servers:
 
 上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 会将 additional_scrape_conf 字段的内容会添加到 Prometheus 配置文件的对应参数中。
 
+### 自定义 Prometheus external labels
+
+从 TiUP v1.17.0 开始，你可以在拓扑文件中配置 Prometheus 全局 `external_labels`。
+
+1. 打开 TiDB 集群的拓扑配置文件 topology.yaml。
+
+2. 在 monitoring_servers 的配置部分添加 `external_labels` 字段。
+
+    以下为 topology.yaml 文件中的 monitoring_servers 配置示例：
+
+    ```yaml
+    monitoring_servers:
+    - host: xxxxxxx
+      external_labels:
+        environment: production
+        region: us-east-1
+    ```
+
+3. 不要配置保留 label `cluster` 和 `monitor`，也不要使用以 `__` 开头的 label 名；所有 label 名都必须符合 Prometheus label name 规则。
+
+上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 会将 `external_labels` 字段渲染到 Prometheus 全局 `external_labels` 配置中。若使用不支持该字段的旧版 TiUP 打开包含该字段的拓扑文件，不会忽略未知字段，而是直接解析失败。
+
 ## 自定义 Grafana 配置
 
 目前，TiUP 支持自定义 Grafana Dashboard 和其他配置。
