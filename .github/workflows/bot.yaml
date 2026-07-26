@@ -36,23 +36,14 @@ jobs:
             --arg text "$message" \
             '{"msg_type":"text","content":{"text":$text}}')"
 
-          for attempt in 1 2 3; do
-            if curl --connect-timeout 10 \
-                --fail-with-body \
-                --header "Content-Type: application/json" \
-                --max-time 30 \
-                --show-error \
-                --silent \
-                --data-binary "$payload" \
-                "$WEBHOOK_URL"; then
-              exit 0
-            fi
-
-            if [ "$attempt" -lt 3 ]; then
-              echo "Webhook request failed. Retrying in 5 seconds..." >&2
-              sleep 5
-            fi
-          done
-
-          echo "Webhook request failed after 3 attempts." >&2
-          exit 1
+          curl --connect-timeout 10 \
+            --fail-with-body \
+            --header "Content-Type: application/json" \
+            --max-time 30 \
+            --retry 2 \
+            --retry-connrefused \
+            --retry-delay 5 \
+            --show-error \
+            --silent \
+            --data-binary "$payload" \
+            "$WEBHOOK_URL"
