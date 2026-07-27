@@ -40,7 +40,7 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
         EOF
         ```
 
-        在 no-sudo 模式下，TiDB 服务由每个用户自己的 `systemd` 实例（`user@<UID>.service`）管理。`/etc/security/limits.conf` 中的配置可能会在 `user@<UID>.service` 启动时通过 PAM 应用，但实际生效的文件描述符上限仍取决于该用户 `systemd` 实例本身获得的资源限制。因此，在某些系统上，即使已经配置 `/etc/security/limits.conf`，`user@<UID>.service` 的 `Max open files` 仍可能小于 TiDB 所需值。
+        在 no-sudo 模式下，TiDB 服务由每个用户自己的 `systemd` 实例（`user@<UID>.service`）管理。`/etc/security/limits.conf` 中的配置可能会在 `user@<UID>.service` 启动时通过 PAM 应用，但实际生效的文件描述符上限仍取决于该用户 `systemd` 实例本身的资源限制。因此，在某些系统上，即使已经配置 `/etc/security/limits.conf`，`user@<UID>.service` 的 `Max open files` 仍可能小于 TiDB 所需值。
 
 2. 在每台部署目标机器上，为 `tidb` 用户启动 `systemd user` 模式。该步骤是必须的，请勿跳过。
 
