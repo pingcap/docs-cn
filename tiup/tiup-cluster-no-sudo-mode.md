@@ -91,20 +91,7 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
         $ grep -E '^(Limit|Max open files)' "/proc/${pid}/limits"
         ```
 
-    4. 如果上一步输出中的 `Hard Limit` 小于 `1000000`，使用 `root` 用户为 `user@${uid}.service` 配置 `LimitNOFILE`。
-
-        ```shell
-        $ uid=$(id -u tidb)
-        $ install -d -m 0755 "/etc/systemd/system/user@${uid}.service.d"
-        $ cat <<'EOF' > "/etc/systemd/system/user@${uid}.service.d/limit-nofile.conf"
-        [Service]
-        LimitNOFILE=1000000
-        EOF
-        $ systemctl daemon-reload
-        $ systemctl restart user@${uid}.service
-        ```
-
-        配置并重启后，请重复第 3 步，确认 `Max open files` 的实际值已经符合要求。
+        4. 如果上一步输出中的 `Soft Limit` 或 `Hard Limit` 小于 `1000000`，使用 `root` 用户为 `user@${uid}.service` 配置 `LimitNOFILE`。
 
     5. 使用 `tidb` 用户执行 `systemctl --user`。如果没有报错，说明 `tidb` 用户的 `systemd` 用户服务模式已正常启动。
 
