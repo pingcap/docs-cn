@@ -83,7 +83,7 @@ summary: 了解如何使用 TiUP no-sudo 模式部署运维 TiDB 线上集群。
         $ systemctl restart user@${uid}.service
         ```
 
-    3. 检查运行中的 `user@${uid}.service` 实际生效的 `Max open files` 值。
+    3. 使用 `root` 用户检查运行中的 `user@${uid}.service` 实际生效的 `Max open files` 值。
 
         ```shell
         $ uid=$(id -u tidb)
