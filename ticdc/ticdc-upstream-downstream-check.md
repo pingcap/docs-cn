@@ -1,7 +1,7 @@
 ---
 title: 主从集群一致性读和数据校验
 aliases: ['/docs-cn/dev/sync-diff-inspector/upstream-downstream-diff/','/docs-cn/dev/reference/tools/sync-diff-inspector/tidb-diff/', '/zh/tidb/dev/upstream-downstream-diff']
-summary: TiCDC 提供了 Syncpoint 功能，通过利用 TiDB 的 snapshot 特性，在同步过程中维护了一个上下游具有一致性 snapshot 的 `ts-map`。启用 Syncpoint 功能后，可以进行一致性快照读和数据一致性校验。要开启 Syncpoint 功能，只需在创建同步任务时把 TiCDC 的配置项 `enable-sync-point` 设置为 `true`。通过配置 `snapshot` 可以对 TiDB 主从集群的数据进行校验。
+summary: TiCDC 提供了 Syncpoint 功能，通过利用 TiDB 的 snapshot 特性，在同步过程中维护了一个上下游具有一致性 snapshot 的 `ts-map`。启用 Syncpoint 功能后，可以进行一致性快照读和数据一致性校验。要开启 Syncpoint 功能，只需在创建同步任务时把 changefeed 配置项 `enable-sync-point` 设置为 `true`。通过配置 `snapshot` 可以对 TiDB 主从集群的数据进行校验。
 ---
 
 # TiDB 主从集群数据校验和快照读
@@ -14,7 +14,7 @@ Syncpoint 通过利用 TiDB 提供的 snapshot 特性，让 TiCDC 在同步过�
 
 启用 Syncpoint 功能后，你可以使用[一致性快照读](#一致性快照读)和[数据一致性校验](#数据一致性校验)。
 
-要开启 Syncpoint 功能，只需在创建同步任务时把 TiCDC 的配置项 `enable-sync-point` 设置为 `true`。开启 Syncpoint 功能后，TiCDC 会向下游 TiDB 集群写入如下信息：
+要开启 Syncpoint 功能，只需在创建同步任务时把 changefeed 配置项 `enable-sync-point` 设置为 `true`。开启 Syncpoint 功能后，TiCDC 会向下游 TiDB 集群写入如下信息：
 
 1. 在数据的同步过程中，TiCDC 会定期（使用 `sync-point-interval` 参数配置）对齐上下游的快照，并将上下游的 TSO 的对应关系保存在下游的 `tidb_cdc.syncpoint_v1` 表中。
 
@@ -100,7 +100,7 @@ select * from tidb_cdc.syncpoint_v1;
 
 ## 注意事项
 
-- TiCDC 在创建 Changefeed 前，请确保 TiCDC 的配置项 `enable-sync-point` 已设置为 `true`，这样才会开启 Syncpoint 功能，在下游保存 `ts-map`。配置项 `sync-point-interval` 的默认格式为 `"h m s"`，例如 `"1h30m30s"`，最小值为 `"30s"`。完整的配置信息请参考 [TiCDC 同步任务配置文件描述](/ticdc/ticdc-changefeed-config.md)。
+- 在创建 Changefeed 前，请确保 changefeed 配置项 `enable-sync-point` 已设置为 `true`，这样才会开启 Syncpoint 功能，在下游保存 `ts-map`。配置项 `sync-point-interval` 的默认格式为 `"h m s"`，例如 `"1h30m30s"`，最小值为 `"30s"`。完整的配置信息请参考 [TiCDC 同步任务配置文件描述](/ticdc/ticdc-changefeed-config.md)。
 - 在使用 Syncpoint 功能进行数据校验时，需要调整 TiKV 的 GC 时间，保证在校验时 snapshot 对应的历史数据不会被执行 GC。建议调整为 1 个小时，在校验后再还原 GC 设置。
 - 以上配置只展示了 `Datasource config` 部分，完整配置请参考 [sync-diff-inspector 用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)。
 - 从 v6.4.0 开始，TiCDC 使用 Syncpoint 功能需要同步任务拥有下游集群的 `SYSTEM_VARIABLES_ADMIN` 或者 `SUPER` 权限。
