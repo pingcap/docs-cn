@@ -51,7 +51,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 在合入 (Merge) PR 之前，请务必检查以下内容：
 
-- [ ] 文档内容准确、清晰、简洁，遵循写作规范。参考 [PingCAP 中文技术文档风格 — 极简指南](#pingcap-中文技术文档风格--极简指南)。
+- [ ] 文档内容准确、清晰、简洁，遵循写作规范。参考 [TiDB 中文技术文档风格 — 极简指南](#pingcap-中文技术文档风格--极简指南)。
 - [ ] PR 的各元素完整、准确，包括：
     - [ ] 标题清晰、有意义，包括修改的类型+文档所属的模块。参考 [Commit Message and Pull Request Style](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md)。例如：
         - Fix typos in tidb-monitoring-api.md
@@ -62,13 +62,13 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 - [ ] 如果新增文档、删除文档，需要同时更新 `TOC.md`，删除文档时需要在文件开头添加 `aliases` 确保旧链接能够正常跳转。
 - [ ] 预览文档，确保文档格式正确、清晰、可读，特别注意表格、图片、列表等特殊样式能够正常显示。
 
-## PingCAP 中文技术文档风格 — 极简指南
+## TiDB 中文技术文档风格 — 极简指南
 
 ![One Page Style Guide](/media/one-page-style-guide.png)
 
 参考文档：
 
-- [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
+- [TiDB 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
 - [TiDB 中文用户文档模板](/resources/doc-templates)
 
 ## 提交 Pull Request 的详细流程

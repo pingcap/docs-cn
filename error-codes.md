@@ -16,7 +16,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 >
 > 有一部分错误码属于内部错误，正常情况下 TiDB 会自行处理不会直接返回给用户，故没有在此列出。
 >
-> 如果你遇到了这里没有列出的错误码，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
+> 如果你遇到了这里没有列出的错误码，请从 {{{ .company }}} 官方或 TiDB 社区[获取支持](/support.md)。
 
 * Error Number: 8001
 
@@ -28,7 +28,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8003
 
-    [`ADMIN CHECK TABLE`](/sql-statements/sql-statement-admin-check-table-index.md) 命令在遇到行数据跟索引不一致的时候返回该错误，在检查表中数据是否有损坏时常出现。出现该错误时，请向 PingCAP 工程师或通过官方论坛寻求帮助。
+    [`ADMIN CHECK TABLE`](/sql-statements/sql-statement-admin-check-table-index.md) 命令在遇到行数据跟索引不一致的时候返回该错误，在检查表中数据是否有损坏时常出现。出现该错误时，请向 {{{ .company }}} 工程师或通过官方论坛寻求帮助。
 
 * Error Number: 8004
 
@@ -66,7 +66,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8024
 
-    非法的事务。当事务执行时，发现没有获取事务的 ID (Start Timestamp)，代表正在执行的事务是一个非法的事务，将返回该错误。通常情况下不会出现该问题，当发生时，请向 PingCAP 工程师或通过官方论坛寻求帮助。
+    非法的事务。当事务执行时，发现没有获取事务的 ID (Start Timestamp)，代表正在执行的事务是一个非法的事务，将返回该错误。通常情况下不会出现该问题，当发生时，请向 {{{ .company }}} 工程师或通过官方论坛寻求帮助。
 
 * Error Number: 8025
 
@@ -138,11 +138,11 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8051
 
-    TiDB 在解析客户端发送的 Exec 参数列表时遇到了未知的数据类型。如果遇到这个错误，请检查客户端是否正常，如果客户端正常请向 PingCAP 工程师或通过官方论坛寻求帮助。
+    TiDB 在解析客户端发送的 Exec 参数列表时遇到了未知的数据类型。如果遇到这个错误，请检查客户端是否正常，如果客户端正常请向 {{{ .company }}} 工程师或通过官方论坛寻求帮助。
 
 * Error Number: 8052
 
-    来自客户端的数据包的序列号错误。如果遇到这个错误，请检查客户端是否正常，如果客户端正常请向 PingCAP 工程师或通过官方论坛寻求帮助。
+    来自客户端的数据包的序列号错误。如果遇到这个错误，请检查客户端是否正常，如果客户端正常请向 {{{ .company }}} 工程师或通过官方论坛寻求帮助。
 
 * Error Number: 8055
 
@@ -212,7 +212,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8108
 
-    不支持的执行计划类型。该错误为内部处理的错误，如果遇到该报错请向 PingCAP 工程师或通过官方论坛寻求帮助。
+    不支持的执行计划类型。该错误为内部处理的错误，如果遇到该报错请向 {{{ .company }}} 工程师或通过官方论坛寻求帮助。
 
 * Error Number: 8109
 
@@ -360,7 +360,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8215
 
-    Admin Repair 表失败，如果遇到该报错请向 PingCAP 工程师或通过官方论坛寻求帮助。
+    Admin Repair 表失败，如果遇到该报错请向 {{{ .company }}} 工程师或通过官方论坛寻求帮助。
 
 * Error Number: 8216
 
@@ -368,7 +368,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8223
 
-    检测出数据与索引不一致的错误，如果遇到该报错请向 PingCAP 工程师或通过官方论坛寻求帮助。
+    检测出数据与索引不一致的错误，如果遇到该报错请向 {{{ .company }}} 工程师或通过官方论坛寻求帮助。
 
 * Error Number: 8224
 

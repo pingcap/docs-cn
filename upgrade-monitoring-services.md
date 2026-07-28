@@ -18,7 +18,7 @@ summary: 介绍如何升级 TiDB 集群监控组件 Prometheus、Grafana 和 Ale
 
 ## 升级 Prometheus
 
-为了更好地兼容 TiDB，推荐使用 TiDB 官方安装包中自带的 Prometheus 组件安装包，该组件包中的 Prometheus 版本是固定的。如果你需要使用更高版本的 Prometheus，可以在 Prometheus 官网的 [Release Note 页面](https://github.com/prometheus/prometheus/releases)查看新版本特性，选择适合你生产环境的版本，或者咨询 PingCAP 技术支持服务寻求版本建议。
+为了更好地兼容 TiDB，推荐使用 TiDB 官方安装包中自带的 Prometheus 组件安装包，该组件包中的 Prometheus 版本是固定的。如果你需要使用更高版本的 Prometheus，可以在 Prometheus 官网的 [Release Note 页面](https://github.com/prometheus/prometheus/releases)查看新版本特性，选择适合你生产环境的版本，或者咨询 {{{ .company }}} 技术支持服务寻求版本建议。
 
 在以下升级步骤中，你需要先从 Prometheus 官网下载所需版本的软件安装包，然后将其构造为可被 TiUP 使用的 Prometheus 组件安装包。
 
@@ -57,7 +57,7 @@ tiup cluster patch <cluster-name> prometheus-v{new-version}.tar.gz -R prometheus
 
 ## 升级 Grafana
 
-为了更好地兼容 TiDB，推荐使用 TiDB 官方安装包中自带的 Grafana 组件安装包，该组件包中的 Grafana 版本是固定的。如果你需要使用更高版本的 Grafana，可以在 Grafana 官网的 [Release Note 页面](https://grafana.com/docs/grafana/latest/whatsnew/)查看新版本特性，选择适合你生产环境的版本，或者咨询 PingCAP 技术支持服务寻求版本建议。
+为了更好地兼容 TiDB，推荐使用 TiDB 官方安装包中自带的 Grafana 组件安装包，该组件包中的 Grafana 版本是固定的。如果你需要使用更高版本的 Grafana，可以在 Grafana 官网的 [Release Note 页面](https://grafana.com/docs/grafana/latest/whatsnew/)查看新版本特性，选择适合你生产环境的版本，或者咨询 {{{ .company }}} 技术支持服务寻求版本建议。
 
 在以下升级步骤中，你需要先从 Grafana 官网下载所需版本的软件安装包，然后将其构造为可被 TiUP 使用的 Grafana 组件安装包。
 

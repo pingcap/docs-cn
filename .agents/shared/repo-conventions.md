@@ -6,7 +6,7 @@ This file captures the repository-specific rules that agents should follow in `p
 
 - `pingcap/docs-cn` stores the Chinese TiDB documentation source.
 - `pingcap/docs` stores the English TiDB documentation source.
-- This repository is the source for the Chinese TiDB documentation published on the PingCAP documentation website.
+- This repository is the source for the Chinese TiDB documentation published on the TiDB documentation website.
 - Much of the Chinese content corresponds to an English source in `pingcap/docs`. When a change has an English counterpart, keep the two sides traceable instead of editing only one.
 
 ## Repository versions and branches

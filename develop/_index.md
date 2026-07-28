@@ -145,7 +145,7 @@ aliases: ['zh/tidbcloud/dev-guide-overview/','zh/tidb/dev/dev-guide-overview/','
 </DevToolCard>
 </DevLangAccordion>
 
-除了上述指南之外，PingCAP 还与社区合作，支持[第三方 MySQL 驱动、ORM 以及工具](/develop/dev-guide-third-party-support.md)。
+除了上述指南之外，{{{ .company }}} 还与社区合作，支持[第三方 MySQL 驱动、ORM 以及工具](/develop/dev-guide-third-party-support.md)。
 
 ## 使用 MySQL 客户端软件
 

@@ -6,7 +6,7 @@ summary: TiDB Dashboard 常见问题汇总，包括访问、界面功能方面�
 
 # TiDB Dashboard 常见问题
 
-本文汇总了使用 TiDB Dashboard 过程中的常见问题与解决办法。若无法找到对应问题，或者根据指引操作后问题仍然存在，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
+本文汇总了使用 TiDB Dashboard 过程中的常见问题与解决办法。若无法找到对应问题，或者根据指引操作后问题仍然存在，请从 {{{ .company }}} 官方或 TiDB 社区[获取支持](/support.md)。
 
 ## 访问
 
@@ -116,7 +116,7 @@ NgMonitoring 是 TiDB v5.4.0 及以上集群中内置的高级监控组件，用
         tiup cluster reload ${cluster-name} --role prometheus
         ```
 
-如果执行完上述步骤后依然提示 NgMonitoring 未启动，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
+如果执行完上述步骤后依然提示 NgMonitoring 未启动，请从 {{{ .company }}} 官方或 TiDB 社区[获取支持](/support.md)。
 
 </details>
 

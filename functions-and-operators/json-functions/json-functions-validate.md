@@ -248,12 +248,12 @@ SELECT JSON_SCHEMA_VALID('{"type": "string", "pattern": "^Ti"}', '"TiDB"');
 ```
 
 ```sql
-SELECT JSON_SCHEMA_VALID('{"type": "string", "pattern": "^Ti"}', '"PingCAP"');
+SELECT JSON_SCHEMA_VALID('{"type": "string", "pattern": "^Ti"}', '"Vector"');
 ```
 
 ```
 +------------------------------------------------------------------------+
-| JSON_SCHEMA_VALID('{"type": "string", "pattern": "^Ti"}', '"PingCAP"') |
+| JSON_SCHEMA_VALID('{"type": "string", "pattern": "^Ti"}', '"Vector"') |
 +------------------------------------------------------------------------+
 |                                                                      0 |
 +------------------------------------------------------------------------+

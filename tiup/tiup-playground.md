@@ -171,7 +171,7 @@ tiup playground scale-in --pid 86526
 
 ## 部署 TiProxy
 
-[TiProxy](/tiproxy/tiproxy-overview.md) 是 PingCAP 的官方代理组件，位于客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持、服务发现等功能。
+[TiProxy](/tiproxy/tiproxy-overview.md) 是 {{{ .company }}} 的官方代理组件，位于客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持、服务发现等功能。
 
 从 TiUP v1.15.0 版本起，你可以通过 TiUP Playground 为集群部署 TiProxy。
 
