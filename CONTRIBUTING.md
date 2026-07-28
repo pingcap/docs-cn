@@ -51,7 +51,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 在合入 (Merge) PR 之前，请务必检查以下内容：
 
-- [ ] 文档内容准确、清晰、简洁，遵循写作规范。参考 [TiDB 中文技术文档风格 — 极简指南](#pingcap-中文技术文档风格--极简指南)。
+- [ ] 文档内容准确、清晰、简洁，遵循写作规范。参考 [TiDB 中文技术文档风格 — 极简指南](`#tidb-中文技术文档风格--极简指南`)。
 - [ ] PR 的各元素完整、准确，包括：
     - [ ] 标题清晰、有意义，包括修改的类型+文档所属的模块。参考 [Commit Message and Pull Request Style](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md)。例如：
         - Fix typos in tidb-monitoring-api.md
