@@ -116,7 +116,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
     {{< copyable "sql" >}}
 
     ```sql
-    use pingcap;
+    use my_data;
     ```
 
     预期输出
