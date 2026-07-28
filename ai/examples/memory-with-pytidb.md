@@ -109,6 +109,7 @@ python main.py
 Chat with AI (type 'exit' to quit)
 You: Hello, I am Mini256.
 AI: Hello, Mini256! How can I assist you today?
+You: I work on a project related to TiDB.
 AI: That's great to hear, Mini256! How is the project going?
 You: I am developing pytidb (A Python SDK for TiDB) which helps developers easily connect to TiDB.
 AI: That sounds like a great project, Mini256! Developing a Python SDK for TiDB can make it much easier for developers to integrate with TiDB and interact with it using Python. If you need any advice on best practices, libraries to use, or specific features to implement, feel free to ask!
