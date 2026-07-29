@@ -723,9 +723,9 @@ SELECT INSERT('He likes tennis', 10, 100, '🍣');
 ```
 
 ```sql
-SELECT INSERT('CloudNative 数据库', 1, 12, 'TiDB');
+SELECT INSERT('Example 数据库', 1, 7, 'TiDB');
 +-------------------------------------------+
-| INSERT('CloudNative 数据库', 1, 12, 'TiDB')    |
+| INSERT('Example 数据库', 1, 7, 'TiDB')    |
 +-------------------------------------------+
 | TiDB 数据库                               |
 +-------------------------------------------+
