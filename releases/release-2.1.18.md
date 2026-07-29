@@ -1,7 +1,7 @@
 ---
 title: TiDB 2.1.18 Release Notes
 summary: TiDB 2.1.18 发布，修复了多项 SQL 优化器和执行引擎的问题，改进了 Server、DDL 和 Monitor 功能，同时 TiDB Ansible 也有多项更新。
-aliases: ['/zh/tidb/dev/release-2.1.18/', '/zh/tidb/v2.1/release-2.1.18']
+aliases: ['/zh/tidb/dev/release-2.1.18/', '/zh/tidb/v2.1/release-2.1.18', '/docs-cn/dev/releases/release-2.1.18/', '/docs-cn/dev/releases/2.1.18/']
 ---
 
 # TiDB 2.1.18 Release Notes
