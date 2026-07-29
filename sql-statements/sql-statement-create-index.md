@@ -311,10 +311,10 @@ mysql> CREATE TABLE customers (
 当被定义为唯一索引时，试图插入重复数据将会报错：
 
 ```sql
-mysql> INSERT INTO customers VALUES (1, 'example-company', '{"zipcode": [1,2]}');
+mysql> INSERT INTO customers VALUES (1, 'company-a', '{"zipcode": [1,2]}');
 Query OK, 1 row affected (0.01 sec)
 
-mysql> INSERT INTO customers VALUES (1, 'example-company', '{"zipcode": [2,3]}');
+mysql> INSERT INTO customers VALUES (1, 'company-a', '{"zipcode": [2,3]}');
 ERROR 1062 (23000): Duplicate entry '2' for key 'customers.zips'
 ```
 
@@ -357,13 +357,13 @@ ERROR 1235 (42000): This version of TiDB doesn't yet support 'more than one mult
 
 ```sql
 -- zipcode 字段中的所有元素必须为 UNSIGNED 类型
-mysql> INSERT INTO customers VALUES (1, 'example-company', '{"zipcode": [-1]}');
+mysql> INSERT INTO customers VALUES (1, 'company-a', '{"zipcode": [-1]}');
 ERROR 3752 (HY000): Value is out of range for expression index 'zips' at row 1
 
-mysql> INSERT INTO customers VALUES (1, 'example-company', '{"zipcode": ["1"]}'); -- 与 MySQL 不兼容
+mysql> INSERT INTO customers VALUES (1, 'company-a', '{"zipcode": ["1"]}'); -- 与 MySQL 不兼容
 ERROR 3903 (HY000): Invalid JSON value for CAST for expression index 'zips'
 
-mysql> INSERT INTO customers VALUES (1, 'example-company', '{"zipcode": [1]}');
+mysql> INSERT INTO customers VALUES (1, 'company-a', '{"zipcode": [1]}');
 Query OK, 1 row affected (0.00 sec)
 ```
 
