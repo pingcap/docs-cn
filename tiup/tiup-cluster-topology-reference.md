@@ -535,6 +535,7 @@ scheduling_servers:
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
 - `additional_args`：从 TiUP v1.15.0 开始引入，用于配置 Prometheus 额外运行参数。该字段是一个数组，数组元素为 Prometheus 运行参数。例如，要开启 Prometheus 热加载功能，可以将该字段配置为 `--web.enable-lifecycle`
+- `external_labels`：从 TiUP v1.17.0 开始引入，该字段用于以键值对的形式配置 Prometheus 全局 `external_labels`。你可以使用该字段为 Prometheus 的 `remote_write`、联邦抓取 (federation) 和告警附加稳定元数据。TiUP 会自动管理并保留 `cluster` 和 `monitor` 标签，因此不要在该字段中配置这些标签。此外，以 `__` 开头的标签名称同样是保留的，所有标签名称都必须符合 Prometheus 标签命名规则。如果使用不支持该字段的早期版本 TiUP 读取拓扑配置文件，TiUP 不会忽略该字段，而是直接解析失败。
 - `additional_scrape_conf`：自定义 Prometheus scrape 配置。在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 会将 `additional_scrape_conf` 字段的内容添加到 Prometheus 配置文件的对应参数中。更多信息，请参考[自定义监控组件的配置](/tiup/customized-montior-in-tiup-environment.md#自定义-prometheus-scrape-配置)
 
 以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
@@ -555,6 +556,9 @@ monitoring_servers:
     rule_dir: /local/rule/dir
     additional_args:
     - --web.enable-lifecycle
+    external_labels:
+      environment: production
+      region: us-east-1
     remote_config:
       remote_write:
       - queue_config:
