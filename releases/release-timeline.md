@@ -1,6 +1,7 @@
 ---
 title: TiDB 版本发布时间线
 summary: 了解 TiDB 的版本发布时间线。
+aliases: ['/zh/tidb/dev/release-timeline/']
 ---
 
 # TiDB 版本发布时间线

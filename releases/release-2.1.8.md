@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.1.8 Release Notes
 summary: TiDB 2.1.8 发布，修复了多个函数和语句的兼容性问题，优化了日志格式规范和统计信息估算准确性。PD 和 TiKV 也有多项修复和优化。工具方面，Lightning 和 Binlog Pump 等新增了多项配置和性能优化。TiDB Ansible 修改了操作系统版本限制和滚动升级版本限制。
+aliases: ['/zh/tidb/dev/release-2.1.8/', '/zh/tidb/v2.1/release-2.1.8']
 ---
 
 # TiDB 2.1.8 Release Notes

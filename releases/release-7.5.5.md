@@ -1,6 +1,7 @@
 ---
 title: TiDB 7.5.5 Release Notes
 summary: 了解 TiDB 7.5.5 版本的兼容性变更、改进提升，以及错误修复。
+aliases: ['/zh/tidb/dev/release-7.5.5/', '/zh/tidb/v7.5/release-7.5.5']
 ---
 
 # TiDB 7.5.5 Release Notes

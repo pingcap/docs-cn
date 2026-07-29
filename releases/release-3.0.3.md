@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.0.3 Release Notes
 summary: TiDB 3.0.3 发布，包含了多项 SQL 优化器和执行引擎的修复，以及 Server、DDL、Monitor、TiKV、PD、Tools 和 TiDB Ansible 的更新和修复。
+aliases: ['/zh/tidb/dev/release-3.0.3/', '/zh/tidb/v3.0/release-3.0.3']
 ---
 
 # TiDB 3.0.3 Release Notes

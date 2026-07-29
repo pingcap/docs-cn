@@ -1,6 +1,7 @@
 ---
 title: TiDB 5.2.3 Release Note
 summary: TiDB 5.2.3 发布日期为 2021 年 12 月 3 日，修复了 TiKV 中的 `GcKeys` 任务被多个键调用时无法正常进行的问题。这可能导致 Compaction Filter GC 不删除 MVCC deletion 信息。
+aliases: ['/zh/tidb/dev/release-5.2.3/', '/zh/tidb/v5.2/release-5.2.3']
 ---
 
 # TiDB 5.2.3 Release Note
