@@ -31,8 +31,7 @@ summary: 本文档介绍如何使用 Figma 绘制图片。
 
 > **注意：**
 >
-> - **tidb-sketch-book** 文件包含绘图时常用的各种图形。绘图时，建议使用该文件中的图形元素和配色，以保持图片风格统一。
-> - 如果不能打开该文件，请联系 [Jingyi Chen](mailto:chenjingyi@pingcap.com)。
+> **tidb-sketch-book** 文件包含绘图时常用的各种图形。绘图时，建议使用该文件中的图形元素和配色，以保持图片风格统一。
 
 ![tidb-sketch-book](/media/figma-guide/tidb-sketch-book.png)
 

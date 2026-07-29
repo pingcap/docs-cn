@@ -224,7 +224,7 @@ const prisma = new PrismaClient({ adapter });
    // 插入
    const user = await prisma.user.create({
      data: {
-       email: 'test@pingcap.com',
+       email: 'test@example.com',
        name: 'test',
      },
    })
@@ -246,19 +246,19 @@ const prisma = new PrismaClient({ adapter });
    ```js
    const createUser1 = prisma.user.create({
      data: {
-       email: 'test1@pingcap.com',
+       email: 'test1@example.com',
        name: 'test1',
      },
    })
    const createUser2 = prisma.user.create({
      data: {
-       email: 'test1@pingcap.com',
+       email: 'test1@example.com',
        name: 'test1',
      },
    })
    const createUser3 = prisma.user.create({
      data: {
-       email: 'test2@pingcap.com',
+       email: 'test2@example.com',
        name: 'test2',
      },
    })

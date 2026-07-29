@@ -396,7 +396,7 @@ WHERE t.c1 IS NULL;
 
 ### 执行时出现报错 `Failed to restore the delete statement, probably because of unsupported type of the shard column`
 
-划分列的类型暂时不支持 `ENUM`、`BIT`、`SET`、`JSON` 类型，请尝试重新指定一个划分列。推荐使用整数或字符串类型的列。如果划分列不是这些类型，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
+划分列的类型暂时不支持 `ENUM`、`BIT`、`SET`、`JSON` 类型，请尝试重新指定一个划分列。推荐使用整数或字符串类型的列。如果划分列不是这些类型，请从 {{{ .company }}} 官方或 TiDB 社区[获取支持](/support.md)。
 
 ### 非事务 `DELETE` 出现和普通的 `DELETE` 不等价的“异常”行为
 

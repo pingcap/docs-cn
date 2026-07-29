@@ -1,7 +1,7 @@
 ---
 title: TiDB 4.0.2 Release Notes
 aliases: ['/docs-cn/dev/releases/release-4.0.2/']
-summary: TiDB 4.0.2 发布，兼容性改进和新功能增加。TiDB 默认收集使用情况信息，并分享给 PingCAP 用于改善产品。新增功能包括支持 INSERT 语句中使用 MEMORY_QUOTA() hint，基于 TLS 证书 SAN 属性的登录认证，以及其他函数和表的新增配置项。Bug 修复包括执行计划不正确、运行时错误、内存统计过大等问题。PD、TiKV、TiFlash 和 TiCDC 也有相关改进和修复。Tools 中 Backup & Restore (BR) 提升了多表场景下的恢复数据性能。
+summary: TiDB 4.0.2 发布，兼容性改进和新功能增加。TiDB 默认收集使用情况信息，并分享给 {{{ .company }}} 用于改善产品。新增功能包括支持 INSERT 语句中使用 MEMORY_QUOTA() hint，基于 TLS 证书 SAN 属性的登录认证，以及其他函数和表的新增配置项。Bug 修复包括执行计划不正确、运行时错误、内存统计过大等问题。PD、TiKV、TiFlash 和 TiCDC 也有相关改进和修复。Tools 中 Backup & Restore (BR) 提升了多表场景下的恢复数据性能。
 ---
 
 # TiDB 4.0.2 Release Notes
@@ -25,7 +25,7 @@ TiDB 版本：4.0.2
 
 ## 新更改
 
-- TiDB 及 TiDB Dashboard 默认收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品 [#18180](https://github.com/pingcap/tidb/pull/18180)。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)文档。
+- TiDB 及 TiDB Dashboard 默认收集使用情况信息，并将这些信息分享给 {{{ .company }}} 用于改善产品 [#18180](https://github.com/pingcap/tidb/pull/18180)。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)文档。
 
 ## 新功能
 

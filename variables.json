@@ -6,5 +6,8 @@
   "essential": "TiDB Cloud Essential",
   "dedicated": "TiDB Cloud Dedicated",
   "premium": "TiDB Cloud Premium",
-  "console-url": "tidbcloud.com"
+  "console-url": "tidbcloud.com",
+  "company": "PingCAP",
+  "enterprise-edition-url": "pingcap.com/tidb-enterprise/",
+  "support-ticket-url": "tidb.support.pingcap.com"
 }

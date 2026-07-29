@@ -162,17 +162,17 @@ Payload 是 JWT 的主体部分，用于保存用户的信息。Payload 中的�
 * `sub`：TiDB 中要求该值与待认证的用户名相同。
 * `iat`：发布 token 的时间戳。TiDB 中要求该值不得晚于认证时的时间，也不得早于认证前 15 分钟。
 * `exp`：token 到期的时间戳。如果 token 在认证时已经过期，则认证失败。
-* `email`：邮件地址。创建用户时可以通过 `ATTRIBUTE '{"email": "xxxx@pingcap.com"}'` 指定 email 信息。如果创建用户时未指定 email 信息，则该声明应设置为空字符串；否则该声明应该与创建用户时的设置值相同。
+* `email`：邮件地址。创建用户时可以通过 `ATTRIBUTE '{"email": "xxxx@example.com"}'` 指定 email 信息。如果创建用户时未指定 email 信息，则该声明应设置为空字符串；否则该声明应该与创建用户时的设置值相同。
 
 Payload 示例：
 
 ```json
 {
-  "email": "user@pingcap.com",
+  "email": "user@example.com",
   "exp": 1703305494,
   "iat": 1703304594,
   "iss": "issuer-abc",
-  "sub": "user@pingcap.com"
+  "sub": "user@example.com"
 }
 ```
 
@@ -204,12 +204,12 @@ Signature 用于对 Header 和 Payload 这两部分数据进行签名。
 
 2. 启动 `tidb-server`，并定期更新保存 JWKS 至 `auth-token-jwks` 指定的路径。
 
-3. 创建使用 `tidb_auth_token` 认证的用户，并根据需要通过 `REQUIRE TOKEN_ISSUER` 和 `ATTRIBUTE '{"email": "xxxx@pingcap.com"}` 指定 `iss` 与 `email` 信息。
+3. 创建使用 `tidb_auth_token` 认证的用户，并根据需要通过 `REQUIRE TOKEN_ISSUER` 和 `ATTRIBUTE '{"email": "xxxx@example.com"}` 指定 `iss` 与 `email` 信息。
 
-    例如，创建一个使用 `tidb_auth_token` 认证的用户 `user@pingcap.com`：
+    例如，创建一个使用 `tidb_auth_token` 认证的用户 `user@example.com`：
 
     ```sql
-    CREATE USER 'user@pingcap.com' IDENTIFIED WITH 'tidb_auth_token' REQUIRE TOKEN_ISSUER 'issuer-abc' ATTRIBUTE '{"email": "user@pingcap.com"}';
+    CREATE USER 'user@example.com' IDENTIFIED WITH 'tidb_auth_token' REQUIRE TOKEN_ISSUER 'issuer-abc' ATTRIBUTE '{"email": "user@example.com"}';
     ```
 
 4. 生成并签发用于认证的 token，通过 mysql 客户端的 `mysql_clear_text` 插件进行认证。
@@ -217,7 +217,7 @@ Signature 用于对 Header 和 Payload 这两部分数据进行签名。
     通过 `go install github.com/cbcwestwolf/generate_jwt` 安装 JWT 生成工具。该工具仅用于生成测试 `tidb_auth_token` 的 JWT。例如：
 
     ```text
-    generate_jwt --kid "the-key-id-0" --sub "user@pingcap.com" --email "user@pingcap.com" --iss "issuer-abc"
+    generate_jwt --kid "the-key-id-0" --sub "user@example.com" --email "user@example.com" --iss "issuer-abc"
     ```
 
     打印公钥和 token 形式如下：
@@ -232,21 +232,21 @@ Signature 用于对 Header 和 Payload 这两部分数据进行签名。
     hXDTMJ5FNi8zHhvzyBKHU0kBTS1UNUbP9wIDAQAB
     -----END PUBLIC KEY-----
 
-    eyJhbGciOiJSUzI1NiIsImtpZCI6InRoZS1rZXktaWQtMCIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAcGluZ2NhcC5jb20iLCJleHAiOjE3MDMzMDU0OTQsImlhdCI6MTcwMzMwNDU5NCwiaXNzIjoiaXNzdWVyLWFiYyIsInN1YiI6InVzZXJAcGluZ2NhcC5jb20ifQ.T4QPh2hTB5on5xCuvtWiZiDTuuKvckggNHtNaovm1F4RvwUv15GyOqj9yMstE-wSoV5eLEcPC2HgE6eN1C6yH_f4CU-A6n3dm9F1w-oLbjts7aYCl8OHycVYnq609fNnb8JLsQAmd1Zn9C0JW899-WSOQtvjLqVSPe9prH-cWaBVDQXzUJKxwywQzk9v-Z1Njt9H3Rn9vvwwJEEPI16VnaNK38I7YG-1LN4fAG9jZ6Zwvz7vb_s4TW7xccFf3dIhWTEwOQ5jDPCeYkwraRXU8NC6DPF_duSrYJc7d7Nu9Z2cr-E4i1Rt_IiRTuIIzzKlcQGg7jd9AGEfGe_SowsA-w
+    <the-token-generated>
     ```
 
-    复制上面最后一行的 token 用于登录：
+    复制生成的 token 用于登录：
 
     ```Shell
-    mycli -h 127.0.0.1 -P 4000 -u 'user@pingcap.com' -p '<the-token-generated>'
+    mycli -h 127.0.0.1 -P 4000 -u 'user@example.com' -p '<the-token-generated>'
     ```
 
     注意这里使用的 mysql 客户端必须支持 `mysql_clear_password` 插件。[mycli](https://www.mycli.net/) 默认开启这一插件，如果使用 [mysql 命令行客户端](https://dev.mysql.com/doc/refman/8.0/en/mysql.html)则需要 `--enable-cleartext-plugin` 选项来开启这个插件：
 
     ```Shell
-    mysql -h 127.0.0.1 -P 4000 -u 'user@pingcap.com' -p'<the-token-generated>' --enable-cleartext-plugin
+    mysql -h 127.0.0.1 -P 4000 -u 'user@example.com' -p'<the-token-generated>' --enable-cleartext-plugin
     ```
 
-    如果在生成 token 的时候指定了错误的 `--sub`（比如 `--sub "wronguser@pingcap.com"`），则无法使用该 token 进行认证。
+    如果在生成 token 的时候指定了错误的 `--sub`（比如 `--sub "wronguser@example.com"`），则无法使用该 token 进行认证。
 
 可以使用 [jwt.io](https://jwt.io/) 提供的 debugger 对 token 进行编解码。

@@ -102,16 +102,16 @@ SELECT BIT_LENGTH("TiDB");
 每个字符 8 位 x 4 个字符 = 32 位
 
 ```sql
-SELECT BIT_LENGTH("PingCAP 123");
+SELECT BIT_LENGTH("TiDB 123");
 
 +---------------------------+
-| BIT_LENGTH("PingCAP 123") |
+| BIT_LENGTH("TiDB 123")    |
 +---------------------------+
-|                        88 |
+|                        64 |
 +---------------------------+
 ```
 
-每个字符 8 位（空格也会被计算在内，因为它是非字母数字字符） x 11 个字符 = 88 位
+每个字符 8 位（空格也会被计算在内，因为它是非字母数字字符） x 8 个字符 = 64 位
 
 ```sql
 SELECT CustomerName, BIT_LENGTH(CustomerName) AS BitLengthOfName FROM Customers;
@@ -723,9 +723,9 @@ SELECT INSERT('He likes tennis', 10, 100, '🍣');
 ```
 
 ```sql
-SELECT INSERT('PingCAP 数据库', 1, 7, 'TiDB');
+SELECT INSERT('Example 数据库', 1, 7, 'TiDB');
 +-------------------------------------------+
-| INSERT('PingCAP 数据库', 1, 7, 'TiDB')    |
+| INSERT('Example 数据库', 1, 7, 'TiDB')    |
 +-------------------------------------------+
 | TiDB 数据库                               |
 +-------------------------------------------+

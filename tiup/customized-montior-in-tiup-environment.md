@@ -135,7 +135,7 @@ grafana_servers:
       log.file.level: warning
       smtp.enabled: true
       smtp.host: {IP}:{port}
-      smtp.user: example@pingcap.com
+      smtp.user: example@example.com
       smtp.password: {password}
       smtp.skip_verify: true
 ```

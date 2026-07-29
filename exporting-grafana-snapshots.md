@@ -5,7 +5,7 @@ summary: 了解如何将 Grafana 监控数据导出为快照以及如何将快�
 
 > **警告：**
 >
-> - 从 TiDB v6.0.0 起，PingCAP 不再维护 MetricsTool 工具。从 v6.1.0 起，不再维护 MetricsTool 的文档。
+> - 从 TiDB v6.0.0 起，{{{ .company }}} 不再维护 MetricsTool 工具。从 v6.1.0 起，不再维护 MetricsTool 的文档。
 > - 如需导出监控数据，建议使用 [PingCAP Clinic 诊断服务](/clinic/clinic-introduction.md)一键导出诊断 TiDB 集群时所需要的信息，包括监控数据、日志、集群拓扑、配置、参数等。
 
 # 将 Grafana 监控数据导出成快照
@@ -40,9 +40,9 @@ MetricsTool 导出的快照文件包含快照生成时的监控指标实际数�
 
 快照文件包含所选时间范围内所有图表和面板数据的值，但不保存数据源的原始监控指标，所以无法在 Visualizer 中编辑查询表达式。
 
-### Visualizer 会将上传的快照文件保存到 PingCAP 的服务器上吗？
+### Visualizer 会将上传的快照文件保存到 {{{ .company }}} 的服务器上吗？
 
-不会。快照文件解析全部在浏览器中完成，Visualizer 不会将任何信息发送给 PingCAP。你可以放心地使用 Visualizer 查看带有敏感信息的快照文件，不用担心信息会泄露给第三方。
+不会。快照文件解析全部在浏览器中完成，Visualizer 不会将任何信息发送给 {{{ .company }}}。你可以放心地使用 Visualizer 查看带有敏感信息的快照文件，不用担心信息会泄露给第三方。
 
 ### 可以在所有监控指标数据都加载完毕前就运行脚本吗？
 
