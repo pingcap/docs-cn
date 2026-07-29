@@ -1,0 +1,13 @@
+{
+  "tidb": "TiDB",
+  "tidb-version": "v8.5.0",
+  "tidb-operator-version": "v1.6.4",
+  "starter": "TiDB Cloud Starter",
+  "essential": "TiDB Cloud Essential",
+  "dedicated": "TiDB Cloud Dedicated",
+  "premium": "TiDB Cloud Premium",
+  "console-url": "tidbcloud.com",
+  "company": "平凯星辰",
+  "enterprise-edition-url": "pingkai.cn/",
+  "support-ticket-url": "support.pingkai.cn/portal"
+}
