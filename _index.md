@@ -126,7 +126,7 @@ hide_commit: true
 
 [系统变量](https://docs.pingcap.com/zh/tidb/v7.1/system-variables)
 
-[发布历史](https://docs.pingcap.com/zh/tidb/v7.1/release-notes)
+[发布历史](https://docs.pingcap.com/zh/releases/tidb-self-managed/)
 
 [常见问题](https://docs.pingcap.com/zh/tidb/v7.1/faq-overview)
 
