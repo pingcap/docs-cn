@@ -28,11 +28,19 @@ hide_commit: true
 
 <LearningPath label="开发" icon="doc8">
 
+<<<<<<< HEAD
 [开发者手册概览](https://docs.pingcap.com/zh/tidb/v6.5/dev-guide-overview)
 
 [快速开始](https://docs.pingcap.com/zh/tidb/v6.5/dev-guide-build-cluster-in-cloud)
 
 [示例程序](https://docs.pingcap.com/zh/tidb/v6.5/dev-guide-sample-application-spring-boot)
+=======
+[开发者手册概览](https://docs.pingcap.com/zh/developer/)
+
+[快速开始](https://docs.pingcap.com/zh/developer/dev-guide-build-cluster-in-cloud/)
+
+[连接到 TiDB](https://docs.pingcap.com/zh/developer/dev-guide-connect-to-tidb/)
+>>>>>>> d382ca3463 (chore: update developer guide links in _index.md (#21852))
 
 </LearningPath>
 
