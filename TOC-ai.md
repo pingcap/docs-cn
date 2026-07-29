@@ -7,10 +7,15 @@
 
 - [使用 Python 快速上手](/ai/quickstart-via-python.md)
 - [使用 SQL 快速上手](/ai/quickstart-via-sql.md)
+- TiDB Cloud CLI (tdc) (Preview)
+  - [概览](/ai/tdc/tdc-overview.md)
+  - [快速开始](/ai/tdc/tdc-quick-start.md)
 
 ## 基础概念
 
 - [向量搜索](/ai/concepts/vector-search-overview.md)
+- TiDB Cloud CLI (tdc) (Preview)
+  - [概念与架构](/ai/tdc/concepts/tdc-concepts-and-architecture.md)
 
 ## 使用指南
 
@@ -30,6 +35,14 @@
   - [Join 查询](/ai/guides/join-queries.md)
   - [Raw SQL 查询](/ai/guides/raw-queries.md)
   - [事务](/ai/guides/transactions.md)
+- TiDB Cloud CLI (tdc) (Preview)
+  - [安装、配置和更新 tdc](/ai/tdc/guides/tdc-install-configure-update.md)
+  - [组织](/ai/tdc/guides/tdc-organization.md)
+  - [Starter 数据库](/ai/tdc/guides/tdc-starter-database.md)
+  - [文件系统](/ai/tdc/guides/tdc-filesystem.md)
+  - [文件系统 Git](/ai/tdc/guides/tdc-filesystem-git.md)
+  - [文件系统 Journal](/ai/tdc/guides/tdc-filesystem-journal.md)
+  - [文件系统 Vault](/ai/tdc/guides/tdc-filesystem-vault.md)
 
 ## 代码示例
 
@@ -44,6 +57,14 @@
   - [RAG 应用](/ai/examples/rag-with-pytidb.md)
   - [对话记忆](/ai/examples/memory-with-pytidb.md)
   - [文本转 SQL](/ai/examples/text2sql-with-pytidb.md)
+- TiDB Cloud CLI (tdc) (Preview)
+  - [Agent 沙箱](/ai/tdc/examples/tdc-agent-sandbox-example.md)
+  - [日常工作流](/ai/tdc/examples/tdc-daily-workflow-example.md)
+  - [使用不同角色查询 SQL](/ai/tdc/examples/tdc-query-sql-with-roles-example.md)
+  - [在多台机器间共享文件系统](/ai/tdc/examples/tdc-share-filesystem-across-machines-example.md)
+  - [为 Agent 准备 Git 工作区](/ai/tdc/examples/tdc-git-workspace-for-agents-example.md)
+  - [记录 Agent 工作流](/ai/tdc/examples/tdc-journal-agent-workflow-example.md)
+  - [向 Agent 委派 Vault 密钥](/ai/tdc/examples/tdc-vault-agent-secrets-example.md)
 
 ## 集成指南
 
@@ -84,3 +105,8 @@
 - [性能调优](/ai/reference/vector-search-improve-performance.md)
 - [限制](/ai/reference/vector-search-limitations.md)
 - [更新记录](/ai/reference/vector-search-changelogs.md)
+- TiDB Cloud CLI (tdc) (Preview)
+  - [CLI 参考](/ai/tdc/reference/tdc-cli-reference.md)
+  - [配置与凭证](/ai/tdc/reference/tdc-configuration-and-credentials.md)
+  - [区域、安全与限制](/ai/tdc/reference/tdc-regions-security-and-limitations.md)
+  - [故障排查](/ai/tdc/reference/tdc-troubleshooting.md)
