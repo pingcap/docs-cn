@@ -10,8 +10,8 @@ aliases: ['/zh/tidb/dev/choose-driver-or-orm','/zh/tidb/stable/dev-guide-choose-
 >
 > TiDB 支持等级说明：
 >
-> - **Full**：表明 TiDB 已经兼容该工具的绝大多数功能，并且在该工具的新版本中对其保持兼容。PingCAP 将定期地对 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)中的新版本进行兼容性测试。
-> - **Compatible**：表明由于该工具已适配 MySQL，而 TiDB 高度兼容 MySQL 协议，因此 TiDB 可以兼容该工具的大部分功能。但 PingCAP 并未对该工具作出完整的兼容性验证，有可能出现一些意外的行为。
+> - **Full**：表明 TiDB 已经兼容该工具的绝大多数功能，并且在该工具的新版本中对其保持兼容。{{{ .company }}} 将定期地对 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)中的新版本进行兼容性测试。
+> - **Compatible**：表明由于该工具已适配 MySQL，而 TiDB 高度兼容 MySQL 协议，因此 TiDB 可以兼容该工具的大部分功能。但 {{{ .company }}} 并未对该工具作出完整的兼容性验证，有可能出现一些意外的行为。
 >
 > 关于更多 TiDB 支持的第三方工具，你可以查看 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)。
 
@@ -274,7 +274,7 @@ go get -u gorm.io/driver/mysql
 
 支持等级：**Full**
 
-[Django](https://docs.djangoproject.com/) 是一个流行的 Python Web 开发框架。为解决 TiDB 与 Django 的兼容性问题，PingCAP 开发了一个专门的适配器 `django-tidb`。你可以参考 [`django-tidb` 文档](https://github.com/pingcap/django-tidb#installation-guide)进行安装。
+[Django](https://docs.djangoproject.com/) 是一个流行的 Python Web 开发框架。为解决 TiDB 与 Django 的兼容性问题，{{{ .company }}} 开发了一个专门的适配器 `django-tidb`。你可以参考 [`django-tidb` 文档](https://github.com/pingcap/django-tidb#installation-guide)进行安装。
 
 使用 Django 构建 TiDB 应用程序的例子，可参阅[使用 Django 连接到 TiDB](/develop/dev-guide-sample-application-python-django.md)。
 

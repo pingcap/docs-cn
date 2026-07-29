@@ -9,7 +9,7 @@ summary: 了解 TiDB 的功能概览。
 
 > **注意：**
 >
-> PingCAP 不提供基于 DMR 版本的 bug 修复版本，如有 bug，会在后续版本中修复。如无特殊需求，建议使用[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
+> {{{ .company }}} 不提供基于 DMR 版本的 bug 修复版本，如有 bug，会在后续版本中修复。如无特殊需求，建议使用[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
 >
 > 下表中出现的缩写字母含义如下：
 >

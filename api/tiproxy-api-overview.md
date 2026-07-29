@@ -5,7 +5,7 @@ summary: 了解 TiProxy 的 API。
 
 # TiProxy API 概览
 
-[TiProxy](/tiproxy/tiproxy-overview.md) 是 PingCAP 的官方代理组件，它放置在客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持、服务发现等功能。
+[TiProxy](/tiproxy/tiproxy-overview.md) 是 {{{ .company }}} 的官方代理组件，它放置在客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持、服务发现等功能。
 
 TiProxy 是可选组件，你也可以使用第三方的代理组件，或者直接连接到 TiDB server。
 

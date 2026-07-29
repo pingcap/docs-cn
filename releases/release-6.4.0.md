@@ -202,7 +202,7 @@ TiDB 版本：6.4.0-DMR
 
     ```sql
     CREATE USER 'newuser1'@'%' COMMENT 'This user is created only for test';
-    CREATE USER 'newuser2'@'%' ATTRIBUTE '{"email": "user@pingcap.com"}';
+    CREATE USER 'newuser2'@'%' ATTRIBUTE '{"email": "user@example.com"}';
     SELECT * FROM INFORMATION_SCHAME.USER_ATTRIBUTES;
     ```
 
@@ -211,7 +211,7 @@ TiDB 版本：6.4.0-DMR
     | USER      | HOST | ATTRIBUTE                                         |
     +-----------+------+---------------------------------------------------+
     | newuser1  | %    | {"comment": "This user is created only for test"} |
-    | newuser1  | %    | {"email": "user@pingcap.com"}                     |
+    | newuser1  | %    | {"email": "user@example.com"}                     |
     +-----------+------+---------------------------------------------------+
     2 rows in set (0.00 sec)
     ```

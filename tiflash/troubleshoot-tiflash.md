@@ -33,7 +33,7 @@ TiFlash 无法正常启动可能由多个因素导致，可以通过以下步骤
 
     如果在虚拟机上部署时遇到此问题，建议将虚拟机的 CPU 架构改成 Haswell，然后重新部署 TiFlash。
 
-如果遇到上述方法无法解决的问题，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
+如果遇到上述方法无法解决的问题，请从 {{{ .company }}} 官方或 TiDB 社区[获取支持](/support.md)。
 
 ## 部分查询返回 Region Unavailable 的错误
 
@@ -264,7 +264,7 @@ show warnings;
     - 如果 `pd.log` 日志出现 `table-<table_id>-r` 关键字及 `add operator` 调度日志，或者 **Scheduler/Patrol Region time** 看板的耗时值大小正常，说明 PD 调度正常。
     - 如果没有 `add-rule-peer` 调度日志，或者 **Patrol Region time** 显示的值超过 30 分钟，PD 调度存在异常或者速度比较慢，收集相关组件的日志[获取支持](/support.md)。
 
-如果遇到上述方法无法解决的问题，请收集必要的信息如 TiDB、PD、TiFlash 日志等，从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
+如果遇到上述方法无法解决的问题，请收集必要的信息如 TiDB、PD、TiFlash 日志等，从 {{{ .company }}} 官方或 TiDB 社区[获取支持](/support.md)。
 
 ## 数据同步慢
 

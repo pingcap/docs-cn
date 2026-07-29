@@ -11,7 +11,7 @@ PingCAP Clinic 由 [Diag 诊断客户端](https://github.com/pingcap/diag)（以
 
 ## 使用场景
 
-- 当集群出现问题，需要远程咨询 PingCAP 技术支持时，为了提高定位和解决问题的效率，你可以使用 Diag 采集诊断数据，上传数据到 Clinic Server 并获取数据链接，然后将数据链接提供给技术支持人员。
+- 当集群出现问题，需要远程咨询 {{{ .company }}} 技术支持时，为了提高定位和解决问题的效率，你可以使用 Diag 采集诊断数据，上传数据到 Clinic Server 并获取数据链接，然后将数据链接提供给技术支持人员。
 - 在集群正常运行时，需要检查集群的运行状态，你可以使用 Diag 采集诊断数据，上传数据到 Clinic Server 并查看 Health Report 的结果。
 
 > **注意：**
@@ -144,7 +144,7 @@ PingCAP Clinic 由 [Diag 诊断客户端](https://github.com/pingcap/diag)（以
 
     诊断数据默认包括集群名称、集群拓扑信息、诊断数据包中的日志内容和基于诊断数据包中的 metrics 信息重建的 Grafana Dashboard 信息。
 
-    你可以通过这些数据自己查找并诊断集群问题，或者，你也可以将链接发给与你对接的 PingCAP 技术支持人员，以协助远程定位集群问题。
+    你可以通过这些数据自己查找并诊断集群问题，或者，你也可以将链接发给与你对接的 {{{ .company }}} 技术支持人员，以协助远程定位集群问题。
 
 4. 查看 Health Report 结果。
 
