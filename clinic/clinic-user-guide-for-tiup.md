@@ -17,7 +17,7 @@ summary: 详细介绍在使用 TiUP 部署的 TiDB 集群或 DM 集群上如何�
 
 - [远程定位集群问题](#远程定位集群问题)
 
-    - 当集群出现问题，需要远程咨询 PingCAP 技术支持时，你可以先使用 Diag 采集诊断数据，然后将其数据上传到 Clinic Server，最后把数据链接提供给技术支持人员，协助远程定位集群问题。
+    - 当集群出现问题，需要远程咨询 {{{ .company }}} 技术支持时，你可以先使用 Diag 采集诊断数据，然后将其数据上传到 Clinic Server，最后把数据链接提供给技术支持人员，协助远程定位集群问题。
     - 当集群出现问题，但无法马上进行问题分析时，你可以先使用 Diag 采集数据，并将其数据保存下来，用于自己后期进行问题分析。
 
 - [本地快速检查集群状态](#本地快速检查集群状态)
@@ -226,7 +226,7 @@ summary: 详细介绍在使用 TiUP 部署的 TiDB 集群或 DM 集群上如何�
 
 ### 第 4 步：上传数据
 
-如需将集群诊断数据提供给 PingCAP 技术支持人员，请先将数据上传到 Clinic Server 后，再把获取到的数据访问链接发送给技术支持人员。Clinic Server 为 PingCAP Clinic 的云服务，可提供安全的诊断数据存储和共享。
+如需将集群诊断数据提供给 {{{ .company }}} 技术支持人员，请先将数据上传到 Clinic Server 后，再把获取到的数据访问链接发送给技术支持人员。Clinic Server 为 PingCAP Clinic 的云服务，可提供安全的诊断数据存储和共享。
 
 根据集群的网络连接情况，你可以选择以下上传方式之一：
 
@@ -247,7 +247,7 @@ summary: 详细介绍在使用 TiUP 部署的 TiDB 集群或 DM 集群上如何�
  tiup diag upload
  ```
 
-完成上传后，Diag 会提示诊断数据的下载路径 `Download URL`。你可以打开 `Download URL` 中的链接查看数据，也可以将 `Download URL` 中的链接发给与你对接的 PingCAP 技术支持人员。
+完成上传后，Diag 会提示诊断数据的下载路径 `Download URL`。你可以打开 `Download URL` 中的链接查看数据，也可以将 `Download URL` 中的链接发给与你对接的 {{{ .company }}} 技术支持人员。
 
 #### 方式 2：打包后上传
 
@@ -274,7 +274,7 @@ summary: 详细介绍在使用 TiUP 部署的 TiDB 集群或 DM 集群上如何�
     tiup diag upload ${filepath}
     ```
 
-    完成上传后，Diag 会提示诊断数据的下载路径 `Download URL`。你可以打开 `Download URL` 中的链接，在 Clinic Server 页面进行数据查看，也可以将 `Download URL` 中的链接发给与你对接的 PingCAP 技术支持人员。
+    完成上传后，Diag 会提示诊断数据的下载路径 `Download URL`。你可以打开 `Download URL` 中的链接，在 Clinic Server 页面进行数据查看，也可以将 `Download URL` 中的链接发给与你对接的 {{{ .company }}} 技术支持人员。
 
 ## 本地快速检查集群状态
 

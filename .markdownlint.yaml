@@ -1,4 +1,4 @@
-comment: 'Markdownlint Rules for PingCAP docs-cn'
+comment: 'Markdownlint Rules for TiDB Chinese Documentation'
 
 # disable all by default
 default: false
@@ -81,7 +81,7 @@ no-space-in-links: true
 no-empty-links: true
 
 # proper-names:
-#   names: ['TiDB', 'TiKV', 'PingCAP']
+#   names: ['TiDB', 'TiKV', 'TiFlash']
 #   code_blocks: false
 
 # MD045

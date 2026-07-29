@@ -49,10 +49,10 @@ TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不�
     Country Name (2 letter code) [AU]:US
     State or Province Name (full name) [Some-State]:California
     Locality Name (eg, city) []:San Francisco
-    Organization Name (eg, company) [Internet Widgits Pty Ltd]:PingCAP Inc.
+    Organization Name (eg, company) [Internet Widgits Pty Ltd]:Example Inc.
     Organizational Unit Name (eg, section) []:TiDB
     Common Name (e.g. server FQDN or YOUR name) []:TiDB admin
-    Email Address []:s@pingcap.com
+    Email Address []:s@example.com
     ```
 
     > **注意：**
@@ -73,10 +73,10 @@ TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不�
     Country Name (2 letter code) [AU]:US
     State or Province Name (full name) [Some-State]:California
     Locality Name (eg, city) []:San Francisco
-    Organization Name (eg, company) [Internet Widgits Pty Ltd]:PingCAP Inc.
+    Organization Name (eg, company) [Internet Widgits Pty Ltd]:Example Inc.
     Organizational Unit Name (eg, section) []:TiKV
     Common Name (e.g. server FQDN or YOUR name) []:TiKV Test Server
-    Email Address []:k@pingcap.com
+    Email Address []:k@example.com
 
     Please enter the following 'extra' attributes
     to be sent with your certificate request
@@ -106,7 +106,7 @@ TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不�
 
     ```bash
     Signature ok
-    subject=C = US, ST = California, L = San Francisco, O = PingCAP Inc., OU = TiKV, CN = TiKV Test Server, emailAddress = k@pingcap.com
+    subject=C = US, ST = California, L = San Francisco, O = Example Inc., OU = TiKV, CN = TiKV Test Server, emailAddress = k@example.com
     Getting CA Private Key
     ```
 
@@ -130,10 +130,10 @@ TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不�
     Country Name (2 letter code) [AU]:US
     State or Province Name (full name) [Some-State]:California
     Locality Name (eg, city) []:San Francisco
-    Organization Name (eg, company) [Internet Widgits Pty Ltd]:PingCAP Inc.
+    Organization Name (eg, company) [Internet Widgits Pty Ltd]:Example Inc.
     Organizational Unit Name (eg, section) []:TiDB
     Common Name (e.g. server FQDN or YOUR name) []:tpch-user1
-    Email Address []:zz@pingcap.com
+    Email Address []:zz@example.com
 
     Please enter the following 'extra' attributes
     to be sent with your certificate request
@@ -163,7 +163,7 @@ TiDB 支持基于证书鉴权的登录方式。采用这种方式，TiDB 对不�
 
     ```bash
     Signature ok
-    subject=C = US, ST = California, L = San Francisco, O = PingCAP Inc., OU = TiDB, CN = tpch-user1, emailAddress = zz@pingcap.com
+    subject=C = US, ST = California, L = San Francisco, O = Example Inc., OU = TiDB, CN = tpch-user1, emailAddress = zz@example.com
     Getting CA Private Key
     ```
 

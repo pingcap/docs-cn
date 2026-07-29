@@ -100,7 +100,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-kysely-example/']
      PRIMARY KEY (`id`) USING BTREE
    );
    
-   insert into test.person values (1,'pingcap','male')
+   insert into test.person values (1,'company-a','male')
    ```
 
 2. 在项目根目录下，创建名为 `hello-world.ts` 的文件，并添加以下代码：
@@ -212,7 +212,7 @@ mysql://[username]:[password]@[host]/[database]
      PRIMARY KEY (`id`) USING BTREE
    );
    
-   insert into test.person values (1,'pingcap','male')
+   insert into test.person values (1,'company-a','male')
    ```
 
 2. 在项目的 `app` 目录下，创建文件 `/api/edge-function-example/route.ts`，并添加以下代码：

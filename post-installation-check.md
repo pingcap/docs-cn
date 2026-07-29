@@ -100,12 +100,12 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
     1 row in set (0.00 sec)
     ```
 
-+ 创建 PingCAP database
++ 创建 `my_data` database
 
     {{< copyable "sql" >}}
 
     ```sql
-    create database pingcap;
+    create database my_data;
     ```
 
     ```sql
@@ -115,7 +115,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
     {{< copyable "sql" >}}
 
     ```sql
-    use pingcap;
+    use my_data;
     ```
 
     预期输出

@@ -259,7 +259,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     [PingCAP Clinic](https://clinic.pingcap.com.cn) 为 TiDB 集群提供诊断服务，支持远程定位集群问题和本地快速检查集群状态，用于从全生命周期确保 TiDB 集群稳定运行、预测可出现的集群问题、降低问题出现概率、快速定位并修复问题。
 
-    当 TiDB 集群出现问题，需要邀请 PingCAP 技术支持人员协助定位问题时，你可以通过 PingCAP Clinic 服务采集并上传诊断数据，从而大大提高定位问题的速度。
+    当 TiDB 集群出现问题，需要邀请 {{{ .company }}} 技术支持人员协助定位问题时，你可以通过 PingCAP Clinic 服务采集并上传诊断数据，从而大大提高定位问题的速度。
 
     [用户文档](/clinic/clinic-introduction.md)
 
@@ -269,7 +269,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     TiDB Enterprise Manager 不仅为 TiDB 集群提供全生命周期的可视化管理，也同时一站式提供 TiDB 数据库的参数管理、数据库版本升级、克隆集群、主备集群切换、数据导入导出、数据同步、数据备份恢复服务，能有效提高 TiDB 集群运维效率，降低企业运维成本。
 
-    TiDB Enterprise Manager 当前为企业版特性。要获取 TiDB Enterprise Manager 及其文档，请[联系我们](https://pingkai.cn/contact)。
+    TiDB Enterprise Manager 当前为企业版特性。要获取 TiDB Enterprise Manager 及其文档，请[联系我们](/support.md)。
 
 - 支持监控组件的自定义配置
 

@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/stable/dev-guide-sample-application-java-hibernate/','/zh/ti
 
 # 使用 Hibernate 连接到 TiDB
 
-TiDB 是一个兼容 MySQL 的数据库。[Hibernate](https://hibernate.org/orm/) 是当前比较流行的开源 Java 应用持久层框架。由于 TiDB 与 MySQL 高度兼容，建议使用 `org.hibernate.dialect.MySQLDialect` 作为 Hibernate 的方言 (Dialect)，以获得更好的长期兼容性。或者，也可以使用 TiDB 特定的方言 (`org.hibernate.community.dialect.TiDBDialect`)，该方言位于 [Hibernate community dialects](https://github.com/hibernate/hibernate-orm/tree/main/hibernate-community-dialects) 项目中，但该项目并非由 PingCAP 维护。如果你在使用 `MySQLDialect` 时遇到兼容性问题，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
+TiDB 是一个兼容 MySQL 的数据库。[Hibernate](https://hibernate.org/orm/) 是当前比较流行的开源 Java 应用持久层框架。由于 TiDB 与 MySQL 高度兼容，建议使用 `org.hibernate.dialect.MySQLDialect` 作为 Hibernate 的方言 (Dialect)，以获得更好的长期兼容性。或者，也可以使用 TiDB 特定的方言 (`org.hibernate.community.dialect.TiDBDialect`)，该方言位于 [Hibernate community dialects](https://github.com/hibernate/hibernate-orm/tree/main/hibernate-community-dialects) 项目中，但该项目并非由 {{{ .company }}} 维护。如果你在使用 `MySQLDialect` 时遇到兼容性问题，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
 
 本文档将展示如何使用 TiDB 和 Hibernate 来完成以下任务：
 

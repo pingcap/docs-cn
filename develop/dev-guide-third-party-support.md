@@ -8,16 +8,16 @@ aliases: ['/zh/tidb/stable/dev-guide-third-party-support/','/zh/tidb/dev/dev-gui
 
 > **注意：**
 >
-> 本文档仅列举了常见的 TiDB 支持的[第三方工具](https://en.wikipedia.org/wiki/Third-party_source)，未被列入其中的第三方工具并非代表不支持，但 PingCAP 无法了解其是否使用到 TiDB 不支持的特性，从而无法保证兼容性。
+> 本文档仅列举了常见的 TiDB 支持的[第三方工具](https://en.wikipedia.org/wiki/Third-party_source)，未被列入其中的第三方工具并非代表不支持，但 {{{ .company }}} 无法了解其是否使用到 TiDB 不支持的特性，从而无法保证兼容性。
 
 TiDB [高度兼容 MySQL 协议](/mysql-compatibility.md)，使得大部分适配 MySQL 的 Driver、ORM 及其他工具与 TiDB 兼容。本文主要介绍这些工具和它们的支持等级。
 
 ## 支持等级
 
-PingCAP 与开源社区合作，通过三方工具提供以下支持：
+{{{ .company }}} 与开源社区合作，通过三方工具提供以下支持：
 
-- Full：表明 PingCAP 已经支持该工具的绝大多数功能兼容性，并且在新版本中对其保持兼容，将定期地对下表中记录的新版本进行兼容性测试。
-- Compatible：表明由于该工具已适配 MySQL，而 TiDB 高度兼容 MySQL 协议，因此可以使用此工具的大部分功能。但 PingCAP 并未对该工具作出完整的兼容性验证，有可能出现一些意外的行为。
+- Full：表明 {{{ .company }}} 已经支持该工具的绝大多数功能兼容性，并且在新版本中对其保持兼容，将定期地对下表中记录的新版本进行兼容性测试。
+- Compatible：表明由于该工具已适配 MySQL，而 TiDB 高度兼容 MySQL 协议，因此可以使用此工具的大部分功能。但 {{{ .company }}} 并未对该工具作出完整的兼容性验证，有可能出现一些意外的行为。
 
 > **注意：**
 >
