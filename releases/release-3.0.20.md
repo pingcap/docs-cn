@@ -1,7 +1,7 @@
 ---
 title: TiDB 3.0.20 Release Notes
 summary: TiDB 3.0.20 发布，兼容性更改包括废弃 `enable-streaming` 配置项。改进提升包括优化 `LOAD DATA` 语句执行报错信息。Bug 修复包括缓存悲观事务提交状态问题、查询统计信息不准确问题等。TiKV 修复事务删除 key 报错问题，PD 修复启动时打印过量日志问题。
-aliases: ['/zh/tidb/dev/release-3.0.20/', '/zh/tidb/v3.0/release-3.0.20']
+aliases: ['/zh/tidb/dev/release-3.0.20/','/zh/tidb/v3.0/release-3.0.20']
 ---
 
 # TiDB 3.0.20 Release Notes

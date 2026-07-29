@@ -1,7 +1,7 @@
 ---
 title: TiDB 5.4.2 Release Notes
 summary: TiDB 5.4.2 发布日期为 2022 年 7 月 8 日。该版本存在 bug，建议升级至 v5.4.3。此版本提升了 TiDB、TiKV、PD 和 Tools 的稳定性和可用性，并修复了多个 bug。
-aliases: ['/zh/tidb/dev/release-5.4.2/', '/zh/tidb/v5.4/release-5.4.2']
+aliases: ['/zh/tidb/dev/release-5.4.2/','/zh/tidb/v5.4/release-5.4.2']
 ---
 
 # TiDB 5.4.2 Release Notes

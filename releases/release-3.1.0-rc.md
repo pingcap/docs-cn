@@ -1,7 +1,7 @@
 ---
 title: TiDB 3.1 RC Release Notes
 summary: TiDB 3.1 RC 发布日期为 2020 年 4 月 2 日。该版本存在已知问题，建议使用最新版本 3.1.x。新功能包括性能提升、数据恢复、TLS 证书动态更新等。Bug 修复包括信息 schema 错误、DDL 卡住、冲突检测失效等。PD 修复了数据竞争、规则未遵守等问题。工具方面优化了性能、修复了数据错误和无法恢复的问题。
-aliases: ['/zh/tidb/dev/release-3.1.0-rc/', '/zh/tidb/v3.1/release-3.1.0-rc', '/docs-cn/dev/releases/release-3.1.0-rc/', '/docs-cn/dev/releases/3.1.0-rc/']
+aliases: ['/zh/tidb/dev/release-3.1.0-rc/','/zh/tidb/v3.1/release-3.1.0-rc','/docs-cn/dev/releases/release-3.1.0-rc/','/docs-cn/dev/releases/3.1.0-rc/']
 ---
 
 # TiDB 3.1 RC Release Notes

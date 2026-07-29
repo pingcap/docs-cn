@@ -1,7 +1,7 @@
 ---
 title: TiDB 8.1.2 Release Notes
 summary: 了解 TiDB 8.1.2 版本的兼容性变更、改进提升和错误修复。
-aliases: ['/zh/tidb/dev/release-8.1.2/', '/zh/tidb/v8.1/release-8.1.2']
+aliases: ['/zh/tidb/dev/release-8.1.2/','/zh/tidb/v8.1/release-8.1.2']
 ---
 
 # TiDB 8.1.2 Release Notes

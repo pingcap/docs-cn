@@ -1,7 +1,7 @@
 ---
 title: TiDB 8.3.0 Release Notes
 summary: 了解 TiDB 8.3.0 版本的新功能、兼容性变更、改进提升，以及错误修复。
-aliases: ['/zh/tidb/dev/release-8.3.0/', '/zh/tidb/v8.3/release-8.3.0']
+aliases: ['/zh/tidb/dev/release-8.3.0/','/zh/tidb/v8.3/release-8.3.0']
 ---
 
 # TiDB 8.3.0 Release Notes

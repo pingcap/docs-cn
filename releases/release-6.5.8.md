@@ -1,7 +1,7 @@
 ---
 title: TiDB 6.5.8 Release Notes
 summary: 了解 TiDB 6.5.8 版本的兼容性变更、改进提升，以及错误修复。
-aliases: ['/zh/tidb/dev/release-6.5.8/', '/zh/tidb/v6.5/release-6.5.8']
+aliases: ['/zh/tidb/dev/release-6.5.8/','/zh/tidb/v6.5/release-6.5.8']
 ---
 
 # TiDB 6.5.8 Release Notes

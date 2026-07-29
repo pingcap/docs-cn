@@ -1,7 +1,7 @@
 ---
 title: TiDB 3.0.17 Release Notes
 summary: TiDB 3.0.17 发布，修复了多个 bug，包括查询返回错误和函数处理问题。优化了配置项和 HTTP API 访问速度。TiKV 修复了数据读取和调度问题，新增了配置支持。TiDB Lightning 解决了参数不生效的问题，并新增了更简单易用的过滤规则。
-aliases: ['/zh/tidb/dev/release-3.0.17/', '/zh/tidb/v3.0/release-3.0.17', '/docs-cn/dev/releases/release-3.0.17/']
+aliases: ['/zh/tidb/dev/release-3.0.17/','/zh/tidb/v3.0/release-3.0.17','/docs-cn/dev/releases/release-3.0.17/']
 ---
 
 # TiDB 3.0.17 Release Notes

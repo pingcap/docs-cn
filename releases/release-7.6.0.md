@@ -1,7 +1,7 @@
 ---
 title: TiDB 7.6.0 Release Notes
 summary: 了解 TiDB 7.6.0 版本的新功能、兼容性变更、改进提升，以及错误修复。
-aliases: ['/zh/tidb/dev/release-7.6.0/', '/zh/tidb/v7.6/release-7.6.0']
+aliases: ['/zh/tidb/dev/release-7.6.0/','/zh/tidb/v7.6/release-7.6.0']
 ---
 
 # TiDB 7.6.0 Release Notes

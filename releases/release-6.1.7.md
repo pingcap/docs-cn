@@ -1,7 +1,7 @@
 ---
 title: TiDB 6.1.7 Release Notes
 summary: 了解 TiDB 6.1.7 版本的改进提升与错误修复。
-aliases: ['/zh/tidb/dev/release-6.1.7/', '/zh/tidb/v6.1/release-6.1.7']
+aliases: ['/zh/tidb/dev/release-6.1.7/','/zh/tidb/v6.1/release-6.1.7']
 ---
 
 # TiDB 6.1.7 Release Notes

@@ -1,7 +1,7 @@
 ---
 title: TiDB 6.1.2 Release Notes
 summary: TiDB 6.1.2 发布，包括 TiDB、TiKV、Tools 和 Bug 修复。提升改进包括允许在一张表上同时设置数据放置规则和 TiFlash 副本。Bug 修复包括修复数据库级别的权限清理不正确的问题。
-aliases: ['/zh/tidb/dev/release-6.1.2/', '/zh/tidb/v6.1/release-6.1.2']
+aliases: ['/zh/tidb/dev/release-6.1.2/','/zh/tidb/v6.1/release-6.1.2']
 ---
 
 # TiDB 6.1.2 Release Notes

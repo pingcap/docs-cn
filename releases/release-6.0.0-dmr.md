@@ -1,7 +1,7 @@
 ---
 title: TiDB 6.0.0 Release Notes
 summary: 了解 TiDB 6.0.0 版本的新功能、兼容性变更、改进提升，以及错误修复。
-aliases: ['/zh/tidb/dev/release-6.0.0-dmr/', '/zh/tidb/v6.0/release-6.0.0-dmr']
+aliases: ['/zh/tidb/dev/release-6.0.0-dmr/','/zh/tidb/v6.0/release-6.0.0-dmr']
 ---
 
 # TiDB 6.0.0 Release Notes
