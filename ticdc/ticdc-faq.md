@@ -403,11 +403,13 @@ BR (Backup & Restore) 工具是将直接将数据生成 SST 文件并导入 TiKV
 
 ## 如何理解 DML 和 DDL 语句之间的执行顺序？
 
-目前，TiCDC 采用了以下执行顺序：
+对于大多数 DDL，TiCDC 采用以下执行顺序：
 
 1. TiCDC 阻塞受 DDL 影响的表的同步进度，直到 DDL `commitTS` 的时间点，以确保在 DDL `commitTS` 之前执行的 DML 先成功同步到下游。
-2. TiCDC 继续同步 DDL。当存在多个 DDL 时，TiCDC 是以串行的方式进行同步的。
+2. TiCDC 继续同步 DDL。当存在多个 DDL 时，TiCDC 通常以串行的方式进行同步。
 3. 当 DDL 在下游执行完成之后，TiCDC 继续同步 DDL `commitTS` 之后执行的 DML。
+
+对于 `ADD INDEX` 和 `CREATE INDEX`，当下游是 TiDB 时，TiCDC 会异步执行这两类 DDL，不会等待其在下游执行完成后再返回，以减小对 Changefeed 同步延迟的影响。更多信息，请参考[创建和添加索引 DDL 的异步执行](/ticdc/ticdc-ddl.md#创建和添加索引-ddl-的异步执行)。
 
 ## 如何对比上下游数据的一致性？
 
