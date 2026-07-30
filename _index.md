@@ -128,7 +128,11 @@ summary: TiDB 是 {{{ .company }}} 公司自主设计、研发的开源分布式
 
 [系统变量](https://docs.pingcap.com/zh/tidb/dev/system-variables)
 
+<<<<<<< HEAD
 [发布历史](https://docs.pingcap.com/zh/releases/tidb-self-managed)
+=======
+[发布历史](https://docs.pingcap.com/zh/releases/tidb-self-managed/)
+>>>>>>> 23f792f14e (chore: update developer guide links in _index.md (#21852) (#21856))
 
 [常见问题](https://docs.pingcap.com/zh/tidb/dev/faq-overview)
 
