@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.0.8 release notes
 summary: TiDB 2.0.8 版本在 2.0.7 版的基础上做出了改进，包括功能改进和 Bug 修复。TiKV 也修复了节点宕机时内存持续上升的问题。
+aliases: ['/zh/tidb/dev/release-2.0.8/','/zh/tidb/v2.0/release-2.0.8','/docs-cn/dev/releases/release-2.0.8/','/docs-cn/dev/releases/208/','/zh/tidb/v5.4/release-2.0.8','/zh/tidb/v6.1/release-2.0.8','/zh/tidb/v6.5/release-2.0.8','/zh/tidb/v7.1/release-2.0.8','/zh/tidb/v7.5/release-2.0.8','/zh/tidb/v8.1/release-2.0.8']
 ---
 
 # TiDB 2.0.8 Release Notes

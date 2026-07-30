@@ -1,6 +1,7 @@
 ---
 title: TiDB 4.0 Beta Release Notes
 summary: TiDB 4.0 Beta 发布说明：TiDB 版本 4.0.0-beta 和 TiDB Ansible 版本 4.0.0-beta 已发布。更新内容包括性能优化、新功能支持、bug 修复等。详细信息请查阅官方发布说明。
+aliases: ['/zh/tidb/dev/release-4.0.0-beta/','/zh/tidb/v4.0/release-4.0.0-beta','/docs-cn/dev/releases/release-4.0.0-beta/','/docs-cn/dev/releases/4.0.0-beta/','/zh/tidb/v5.4/release-4.0.0-beta','/zh/tidb/v6.1/release-4.0.0-beta','/zh/tidb/v6.5/release-4.0.0-beta','/zh/tidb/v7.1/release-4.0.0-beta','/zh/tidb/v7.5/release-4.0.0-beta','/zh/tidb/v8.1/release-4.0.0-beta']
 ---
 
 # TiDB 4.0 Beta Release Notes

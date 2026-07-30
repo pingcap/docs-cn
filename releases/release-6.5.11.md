@@ -1,6 +1,7 @@
 ---
 title: TiDB 6.5.11 Release Notes
 summary: 了解 TiDB 6.5.11 版本的兼容性变更、改进提升和错误修复。
+aliases: ['/zh/tidb/dev/release-6.5.11/','/zh/tidb/v6.5/release-6.5.11','/zh/tidb/v5.4/release-6.5.11','/zh/tidb/v6.1/release-6.5.11','/zh/tidb/v7.1/release-6.5.11','/zh/tidb/v7.5/release-6.5.11','/zh/tidb/v8.1/release-6.5.11']
 ---
 
 # TiDB 6.5.11 Release Notes

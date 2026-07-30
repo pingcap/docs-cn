@@ -1,6 +1,7 @@
 ---
 title: TiDB 6.5.5 Release Notes
 summary: 了解 TiDB 6.5.5 版本的改进提升与错误修复。
+aliases: ['/zh/tidb/dev/release-6.5.5/','/zh/tidb/v6.5/release-6.5.5','/zh/tidb/v5.4/release-6.5.5','/zh/tidb/v6.1/release-6.5.5','/zh/tidb/v7.1/release-6.5.5','/zh/tidb/v7.5/release-6.5.5','/zh/tidb/v8.1/release-6.5.5']
 ---
 
 # TiDB 6.5.5 Release Notes

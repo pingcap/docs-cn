@@ -1,6 +1,7 @@
 ---
 title: TiDB 7.1.2 Release Notes
 summary: 了解 TiDB 7.1.2 版本的兼容性变更、改进提升，以及错误修复。
+aliases: ['/zh/tidb/dev/release-7.1.2/','/zh/tidb/v7.1/release-7.1.2','/zh/tidb/v5.4/release-7.1.2','/zh/tidb/v6.1/release-7.1.2','/zh/tidb/v6.5/release-7.1.2','/zh/tidb/v7.5/release-7.1.2','/zh/tidb/v8.1/release-7.1.2']
 ---
 
 # TiDB 7.1.2 Release Notes

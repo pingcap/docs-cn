@@ -1,6 +1,7 @@
 ---
 title: TiDB 4.0.0 Beta.1 Release Notes
 summary: TiDB 4.0.0 Beta.1 发布，包含兼容性变化、新功能和 Bug 修复。兼容性变化包括配置项类型修改和默认值调整。新增慢日志系统表支持查询任意时间段的日志，SQL 性能诊断功能和 Sequence 功能。Bug 修复包括视图创建、时区修改和函数表达式问题。TiKV 和 PD 也有新增功能和 Bug 修复。TiDB Ansible 新增部署多个 Grafana/Prometheus/Alertmanager 的功能和 TiFlash 监控 Dashboard。
+aliases: ['/zh/tidb/dev/release-4.0.0-beta.1/','/zh/tidb/v4.0/release-4.0.0-beta.1','/docs-cn/dev/releases/release-4.0.0-beta.1/','/docs-cn/dev/releases/4.0.0-beta.1/','/zh/tidb/v5.4/release-4.0.0-beta.1','/zh/tidb/v6.1/release-4.0.0-beta.1','/zh/tidb/v6.5/release-4.0.0-beta.1','/zh/tidb/v7.1/release-4.0.0-beta.1','/zh/tidb/v7.5/release-4.0.0-beta.1','/zh/tidb/v8.1/release-4.0.0-beta.1']
 ---
 
 # TiDB 4.0.0 Beta.1 Release Notes
