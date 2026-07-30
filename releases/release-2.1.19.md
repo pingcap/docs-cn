@@ -1,7 +1,7 @@
 ---
 title: TiDB 2.1.19 Release Notes
 summary: TiDB 2.1.19 发布，包含了对 SQL 优化器、SQL 执行引擎、Server、DDL、TiKV、PD 和 TiDB Ansible 的多项修复和优化。修复了多个查询和更新语句中可能出现的错误，提升了系统稳定性和性能。
-aliases: ['/zh/tidb/dev/release-2.1.19/','/zh/tidb/v2.1/release-2.1.19','/docs-cn/dev/releases/release-2.1.19/','/docs-cn/dev/releases/2.1.19/']
+aliases: ['/zh/tidb/dev/release-2.1.19/','/zh/tidb/v2.1/release-2.1.19','/docs-cn/dev/releases/release-2.1.19/','/docs-cn/dev/releases/2.1.19/','/zh/tidb/v5.4/release-2.1.19','/zh/tidb/v6.1/release-2.1.19','/zh/tidb/v6.5/release-2.1.19','/zh/tidb/v7.1/release-2.1.19','/zh/tidb/v7.5/release-2.1.19','/zh/tidb/v8.1/release-2.1.19']
 ---
 
 # TiDB 2.1.19 Release Notes

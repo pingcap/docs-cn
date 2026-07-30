@@ -1,7 +1,7 @@
 ---
 title: TiDB 8.5.1 Release Notes
 summary: 了解 TiDB 8.5.1 版本的操作系统支持变更、兼容性变更、改进提升，以及错误修复。
-aliases: ['/zh/tidb/dev/release-8.5.1/','/zh/tidb/v8.5/release-8.5.1']
+aliases: ['/zh/tidb/dev/release-8.5.1/','/zh/tidb/v8.5/release-8.5.1','/zh/tidb/v5.4/release-8.5.1','/zh/tidb/v6.1/release-8.5.1','/zh/tidb/v6.5/release-8.5.1','/zh/tidb/v7.1/release-8.5.1','/zh/tidb/v7.5/release-8.5.1','/zh/tidb/v8.1/release-8.5.1']
 ---
 
 # TiDB 8.5.1 Release Notes

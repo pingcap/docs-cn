@@ -1,7 +1,7 @@
 ---
 title: TiDB 3.0.0 Beta.1 Release Notes
 summary: TiDB 3.0.0 Beta.1 发布，对系统稳定性、易用性、功能、优化器、统计信息和执行引擎做了很多改进。包括 SQL 优化器、SQL 执行引擎、权限管理、Server、DDL、PD、TiKV 和 Tools 的更新。
-aliases: ['/zh/tidb/dev/release-3.0.0-beta.1/','/zh/tidb/v3.0/release-3.0.0-beta.1','/docs-cn/dev/releases/release-3.0.0-beta.1/','/docs-cn/dev/releases/3.0.0-beta.1/']
+aliases: ['/zh/tidb/dev/release-3.0.0-beta.1/','/zh/tidb/v3.0/release-3.0.0-beta.1','/docs-cn/dev/releases/release-3.0.0-beta.1/','/docs-cn/dev/releases/3.0.0-beta.1/','/zh/tidb/v5.4/release-3.0.0-beta.1','/zh/tidb/v6.1/release-3.0.0-beta.1','/zh/tidb/v6.5/release-3.0.0-beta.1','/zh/tidb/v7.1/release-3.0.0-beta.1','/zh/tidb/v7.5/release-3.0.0-beta.1','/zh/tidb/v8.1/release-3.0.0-beta.1']
 ---
 
 # TiDB 3.0.0 Beta.1 Release Notes

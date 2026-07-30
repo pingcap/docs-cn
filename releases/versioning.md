@@ -1,6 +1,7 @@
 ---
 title: TiDB 版本规则
 summary: 了解 TiDB 版本发布的规则。
+aliases: ['/zh/tidb/dev/versioning','/zh/tidb/v5.4/versioning','/zh/tidb/v6.1/versioning','/zh/tidb/v6.5/versioning','/zh/tidb/v7.1/versioning','/zh/tidb/v7.5/versioning','/zh/tidb/v8.1/versioning']
 ---
 
 # TiDB 版本规则

@@ -1,7 +1,7 @@
 ---
 title: TiDB 4.0.9 Release Notes
 summary: TiDB 4.0.9 发布日期为 2020 年 12 月 21 日。该版本包含兼容性更改、新功能、优化提升、Bug 修复等内容。兼容性更改包括废弃配置文件中的某些配置项。新功能包括 TiFlash 支持存储引擎的新数据分布在多个硬盘上等。优化提升方面包括避免生成 (index) merge join 以得到更好的执行计划等。Bug 修复方面包括修复了前缀索引和 `OR` 条件一起使用时结果不正确的问题等。
-aliases: ['/zh/tidb/dev/release-4.0.9/','/zh/tidb/v4.0/release-4.0.9']
+aliases: ['/zh/tidb/dev/release-4.0.9/','/zh/tidb/v4.0/release-4.0.9','/zh/tidb/v5.4/release-4.0.9','/zh/tidb/v6.1/release-4.0.9','/zh/tidb/v6.5/release-4.0.9','/zh/tidb/v7.1/release-4.0.9','/zh/tidb/v7.5/release-4.0.9','/zh/tidb/v8.1/release-4.0.9']
 ---
 
 # TiDB 4.0.9 Release Notes

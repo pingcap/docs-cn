@@ -1,7 +1,7 @@
 ---
 title: TiDB 4.0.11 Release Notes
 summary: TiDB 4.0.11 发布，新增支持 `uft8_unicode_ci` 和 `utf8mb4_unicode_ci` 排序规则。TiKV 支持 `utf8mb4_unicode_ci` 和 `cast_year_as_time` 排序规则。TiFlash 增加排队处理 Coprocessor 任务的线程池。改进包括重排由 `outer join` 简化的 `inner join` 顺序，Grafana 面板支持多集群，Bug 修复包括修复异常的 `unicode_ci` 常数传递等。PD 修复成员健康的监控显示不正确的问题。TiFlash 修复 Decimal 类型的 `min`/`max` 计算结果错误等。Tools 修复 TiCDC 服务在同时发生 `ErrTaskStatusNotExists` 和 `capture` 会话关闭的情况下的非预期的退出等。
-aliases: ['/zh/tidb/dev/release-4.0.11/','/zh/tidb/v4.0/release-4.0.11']
+aliases: ['/zh/tidb/dev/release-4.0.11/','/zh/tidb/v4.0/release-4.0.11','/zh/tidb/v5.4/release-4.0.11','/zh/tidb/v6.1/release-4.0.11','/zh/tidb/v6.5/release-4.0.11','/zh/tidb/v7.1/release-4.0.11','/zh/tidb/v7.5/release-4.0.11','/zh/tidb/v8.1/release-4.0.11']
 ---
 
 # TiDB 4.0.11 Release Notes
