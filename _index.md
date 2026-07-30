@@ -29,11 +29,11 @@ summary: TiDB 是 {{{ .company }}} 公司自主设计、研发的开源分布式
 
 <LearningPath label="开发" icon="doc8">
 
-[开发者手册概览](https://docs.pingcap.com/zh/tidb/v8.5/dev-guide-overview)
+[开发者手册概览](https://docs.pingcap.com/zh/developer/)
 
-[快速开始](https://docs.pingcap.com/zh/tidb/v8.5/dev-guide-build-cluster-in-cloud)
+[快速开始](https://docs.pingcap.com/zh/developer/dev-guide-build-cluster-in-cloud/)
 
-[示例程序](https://docs.pingcap.com/zh/tidb/v8.5/dev-guide-sample-application-spring-boot)
+[连接到 TiDB](https://docs.pingcap.com/zh/developer/dev-guide-connect-to-tidb/)
 
 </LearningPath>
 
@@ -127,7 +127,7 @@ summary: TiDB 是 {{{ .company }}} 公司自主设计、研发的开源分布式
 
 [系统变量](https://docs.pingcap.com/zh/tidb/v8.5/system-variables)
 
-[发布历史](https://docs.pingcap.com/zh/tidb/v8.5/release-notes)
+[发布历史](https://docs.pingcap.com/zh/releases/tidb-self-managed/)
 
 [常见问题](https://docs.pingcap.com/zh/tidb/v8.5/faq-overview)
 
