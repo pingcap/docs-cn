@@ -173,7 +173,7 @@ summary: 详细介绍在使用 TiUP 部署的 TiDB 集群或 DM 集群上如何�
     > - 如需收集全量诊断数据，可以使用命令 `tiup diag collect <cluster-name> --include="system,monitor,log,config,db_vars,perf,debug"`。
 
     - `-l`：传输文件时的带宽限制，单位为 Kbit/s，默认值为 `100000`（即 scp 的 `-l` 参数）。
-    - `-N/--node`：支持只收集指定节点的数据，格式为 `ip:port`。
+    - `-N/--node`：支持只收集指定节点的数据，格式为 `ip:port`。由于 Metrics 数据是从 Prometheus 服务上统一采集，不支持只收集指定节点的 Metrics 数据，该参数对 Metrics 收集无效。
     - `--include`：只收集特定类型的数据，可选值为 `system`，`monitor`，`log`，`config`，`db_vars`。如需同时列出多种类型的数据，你可以使用逗号 `,` 来分割不同的数据类型。
     - `--exclude`：不收集特定类型的数据，可选值为 `system`，`monitor`，`log`，`config`，`db_vars`。如需同时列出多种类型的数据，你可以使用逗号 `,` 来分割不同的数据类型。
     - `--metricsfilter`：只收集指定的 Prometheus 监控指标。你可以使用以逗号分隔的指标前缀列表来指定要收集的指标。例如，`--metricsfilter=tidb,pd` 将收集以 `tidb` 开头的指标和以 `pd` 开头的指标。
@@ -301,7 +301,7 @@ summary: 详细介绍在使用 TiUP 部署的 TiDB 集群或 DM 集群上如何�
     诊断结果会在命令行中返回，示例如下：
 
     ```bash
-    Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag check diag-fNTnz5MGhr6
+    Starting component `diag`: /root/.tiup/components/diag/v1.1.0/diag check diag-fNTnz5MGhr6
 
     # 诊断结果
     lili 2022-01-24T09:33:57+08:00
