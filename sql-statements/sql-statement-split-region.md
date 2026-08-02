@@ -378,6 +378,31 @@ region3:   [ 2<<61     ,  3<<61 )
 region4:   [ 3<<61     ,  +inf  )
 ```
 
+## 持久化区域分割策略
+
+TiDB 从 v9.0.0 版本开始引入了持久化区域分割策略，允许在 `CREATE TABLE` 和 `ALTER TABLE` 语句中通过 `SPLIT BETWEEN ... AND ... REGIONS` 子句定义区域分割规则。与 `SPLIT TABLE` 语句的临时分割不同，持久化分割策略会保存在表定义中，可以避免分区表重复手动操作。
+
+```sql
+-- 创建表时定义持久化分割策略
+CREATE TABLE orders (
+    order_id BIGINT PRIMARY KEY,
+    customer_id INT,
+    order_date DATE,
+    INDEX idx_customer(customer_id),
+    INDEX idx_date(order_date)
+) SPLIT BETWEEN (0) AND (1000000) REGIONS 16
+  SPLIT INDEX `idx_customer` BETWEEN (0) AND (10000) REGIONS 10
+  SPLIT INDEX `idx_date` BETWEEN ('2020-01-01') AND ('2025-01-01') REGIONS 20;
+
+-- 修改已有表的分割策略
+ALTER TABLE orders
+    SPLIT BETWEEN (0) AND (2000000) REGIONS 32
+    SPLIT INDEX `idx_customer` BETWEEN (0) AND (20000) REGIONS 16;
+
+-- 查看持久化分割策略
+SHOW CREATE TABLE orders\G
+```
+
 ## 注意事项
 
 Split Region 语句切分的 Region 会受到 PD 中 [Region merge](/best-practices/pd-scheduling-best-practices.md#region-merge) 调度的控制，需要使用[表属性](/table-attributes.md)或者[动态修改](/pd-control.md) Region merge 相关的配置项，避免新切分的 Region 不久后又被 PD 重新合并的情况。
@@ -389,5 +414,7 @@ Split Region 语句切分的 Region 会受到 PD 中 [Region merge](/best-practi
 ## 另请参阅
 
 * [SHOW TABLE REGIONS](/sql-statements/sql-statement-show-table-regions.md)
+* [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
+* [ALTER TABLE](/sql-statements/sql-statement-alter-table.md)
 
 * Session 变量：[`tidb_scatter_region`](/system-variables.md#tidb_scatter_region)，[`tidb_wait_split_region_finish`](/system-variables.md#tidb_wait_split_region_finish) 和[`tidb_wait_split_region_timeout`](/system-variables.md#tidb_wait_split_region_timeout).
