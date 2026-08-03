@@ -22,7 +22,7 @@ summary: 为应用开发者介绍 TiDB 中的向量搜索功能，包括相关�
 
 ## 集成
 
-为提高开发效率，你可以将 TiDB 向量搜索与主流 AI 框架（如 LlamaIndex 和 LangChain）、嵌入服务（如 Jina AI）以及 ORM 库（如 SQLAlchemy、Peewee 和 Django ORM）进行集成。你可以根据自己的使用场景选择最合适的集成方式。
+为提高开发效率，你可以将 TiDB 向量搜索与主流 AI 框架（如 LlamaIndex）、嵌入服务（如 Jina AI）以及 ORM 库（如 SQLAlchemy、Peewee 和 Django ORM）进行集成。你可以根据自己的使用场景选择最合适的集成方式。
 
 更多信息，请参阅[向量搜索集成概述](/ai/integrations/vector-search-integration-overview.md)。
 
