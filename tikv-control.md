@@ -546,6 +546,32 @@ success!
 > - `-p` 选项指定 PD 的 endpoint，不使用 `http` 前缀，用于查询指定的 `region_id` 是否有效。
 > - 对于指定 Region 的 peers 所在的每个 store，均须执行该命令。
 
+### Flashback
+
+TiDB v6.4.0 引入了 [FLASHBACK CLUSTER TO TIMESTAMP 语法](/sql-statements/sql-statement-flashback-to-timestamp.md)，其功能是将集群的数据恢复到特定的时间点。为了更方便脱离 TiDB 进行使用，我们提供了 `flashback` 指令，支持在 TiKV 层面进行
+
+- `--pd` 选项可以指定 PD 的 endpoints。
+- `-v` 选项可以指定需要 Flashback 的时间点。
+- 默认情况下，会对整个集群进行 Flashback。也提供如下方式对指定 Region 进行操作：
+    - 如果需要操作指定的 Region，可以使用 `-r` 选项，多个 Region 以 `,` 分隔
+    - 要操作某个 key 范围中的所有 Region，可在命令中使用 `--start` 和 `--end` 参数（默认不限范围，采用 Hex 格式）
+
+需要对整个集群进行操作时，用法及输出内容如下所示：
+
+```shell
+tikv-ctl --pd 127.0.0.1:2379 flashback --version 430315739761082369
+```
+
+```
+flashback all stores success!
+```
+
+> **注意：**
+>
+> - 在使用前，需要通过 `./pd-ctl config set halt-scheduling true` [停止 PD 调度](pd-control.md#config-show--set-option-value--placement-rules)。
+> - 该命令采用最新的时间戳写入特定时间点的旧数据，但不会删除当前数据，所以在使用前请确保集群有足够的存储空间来同时容纳旧数据和当前数据。
+> - 该命令只支持本地模式。在运行成功后，会打印 `flashback all stores success!`。
+
 ### Ldb 命令
 
 `ldb` 命令行工具提供多种数据访问以及数据库管理命令。下方列出了一些示例用法。详细信息请在运行 `tikv-ctl ldb` 命令时查看帮助消息或查阅 RocksDB 文档。
