@@ -779,7 +779,7 @@ Key 中的字段解释如下：
 
 ### 数据类型映射
 
-TiCDC Debezium 消息中的数据格式映射基本遵循 [Debezium 的数据类型映射规则](https://debezium.io/documentation/reference/2.4/connectors/mysql.html#mysql-data-types)，与 Debezium Connector for MySQL 原生消息大体一致。但是对于部分数据类型，TiCDC Debezium 的处理方式与 Debezium Connector Message 存在一定差异，具体如下：
+TiCDC Debezium 消息中的数据格式映射基本遵循 [Debezium 的数据类型映射规则](https://debezium.io/documentation/reference/stable/connectors/mysql.html#mysql-data-types)，与 Debezium Connector for MySQL 原生消息大体一致。但是对于部分数据类型，TiCDC Debezium 的处理方式与 Debezium Connector Message 存在一定差异，具体如下：
 
 - 目前 TiDB 不支持空间数据类型，包括 GEOMETRY、LINESTRING、POLYGON、MULTIPOINT、MULTILINESTRING、MULTIPOLYGON、GEOMETRYCOLLECTION。
 
