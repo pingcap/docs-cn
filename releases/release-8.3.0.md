@@ -242,7 +242,7 @@ TiDB 版本：8.3.0
 
     * 从 v7.5.0 开始，[TiDB Binlog](https://docs-archive.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview/) 的数据同步功能被废弃。从 v8.3.0 开始，TiDB Binlog 被完全废弃，并计划在未来版本中移除。如需进行增量数据同步，请使用 [TiCDC](/ticdc/ticdc-overview.md)。如需按时间点恢复 (point-in-time recovery, PITR)，请使用 [PITR](/br/br-pitr-guide.md)。
     * 从 v8.3.0 开始，系统变量 [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) 被废弃。TiDB 默认收集 [predicate columns](/glossary.md#predicate-columns) 的统计信息。更多信息，参见 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入)。
-    * 从 v8.3.0 开始，[`INL_MERGE_JOIN`](/optimizer-hints.md#inl_merge_join) Optimizer Hint 已废弃且不再生效，因为它可能返回错误结果。如果查询中指定了该 Hint，TiDB 会忽略它并选择其他 Join 算法。 [#54064](https://github.com/pingcap/tidb/issues/54064) @[AilinKid](https://github.com/AilinKid)
+    * 从 v8.3.0 开始，[`INL_MERGE_JOIN`](/optimizer-hints.md#inl_merge_join) Optimizer Hint 已废弃且不再生效，因为它可能返回错误结果。如果查询中指定了该 Hint，TiDB 会忽略它并选择其他 Join 算法。[#54064](https://github.com/pingcap/tidb/issues/54064) @[AilinKid](https://github.com/AilinKid)
 
 * 以下为计划将在未来版本中废弃的功能：
 
