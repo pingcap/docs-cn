@@ -242,6 +242,7 @@ TiDB 版本：8.3.0
 
     * 从 v7.5.0 开始，[TiDB Binlog](https://docs-archive.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview/) 的数据同步功能被废弃。从 v8.3.0 开始，TiDB Binlog 被完全废弃，并计划在未来版本中移除。如需进行增量数据同步，请使用 [TiCDC](/ticdc/ticdc-overview.md)。如需按时间点恢复 (point-in-time recovery, PITR)，请使用 [PITR](/br/br-pitr-guide.md)。
     * 从 v8.3.0 开始，系统变量 [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) 被废弃。TiDB 默认收集 [predicate columns](/glossary.md#predicate-columns) 的统计信息。更多信息，参见 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入)。
+    * 从 v8.3.0 开始，`INL_MERGE_JOIN` Optimizer Hint 被废弃，因为它可能返回错误结果 [#54064](https://github.com/pingcap/tidb/issues/54064) @[AilinKid](https://github.com/AilinKid)
 
 * 以下为计划将在未来版本中废弃的功能：
 
@@ -329,7 +330,6 @@ TiDB 版本：8.3.0
     - 修复来自 DM 同步的表超过索引列最大长度 `max-index-length` 时，同步失败的问题 [#55138](https://github.com/pingcap/tidb/issues/55138) @[lance6716](https://github.com/lance6716)
     - 修复开启 `tidb_enable_inl_join_inner_multi_pattern` 时，执行 SQL 语句可能报错 `runtime error: index out of range` 的问题 [#54535](https://github.com/pingcap/tidb/issues/54535) @[joechenrh](https://github.com/joechenrh)
     - 修复 TiDB 在统计信息初始化的过程中，无法通过 <kbd>Control</kbd>+<kbd>C</kbd> 的方式退出 TiDB 的问题 [#54589](https://github.com/pingcap/tidb/issues/54589) @[tiancaiamao](https://github.com/tiancaiamao)
-    - 修复 `INL_MERGE_JOIN` Optimizer Hint 返回错误结果的问题，将其废弃 [#54064](https://github.com/pingcap/tidb/issues/54064) @[AilinKid](https://github.com/AilinKid)
     - 修复关联子查询中包含 `WITH ROLLUP` 时 TiDB 可能 panic 并报错 `runtime error: index out of range` 的问题 [#54983](https://github.com/pingcap/tidb/issues/54983) @[AilinKid](https://github.com/AilinKid)
     - 修复当 SQL 查询的过滤条件中包含虚拟列，且执行条件中包含 `UnionScan` 时，谓词无法正常下推的问题 [#54870](https://github.com/pingcap/tidb/issues/54870) @[qw4990](https://github.com/qw4990)
     - 修复开启 `tidb_enable_inl_join_inner_multi_pattern` 时，执行 SQL 语句可能报错 `runtime error: invalid memory address or nil pointer dereference` 的问题 [#55169](https://github.com/pingcap/tidb/issues/55169) @[hawkingrei](https://github.com/hawkingrei)
