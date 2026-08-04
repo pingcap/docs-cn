@@ -126,7 +126,13 @@ GRANT SELECT ON `db1`.* TO 'your_user'@'your_wildcard_of_host';
 
 > **注意：**
 >
-> 在某些较早的 MariaDB 版本中，`PROCESS` 权限不足以让 dump 单元查询 InnoDB 元数据。在 DM v8.5.6 中，当 dump 处理单元在 MariaDB 10.4.34 上查询 `INNODB_TABLESPACES_SCRUBBING`，或在 MariaDB 10.5.1 和 10.5.2 上查询 `INNODB_TABLESPACES_ENCRYPTION` 时，会出现此行为。在相同的冒烟测试中，MariaDB 10.5.9、10.6.13 和 10.11.16 无需 `SUPER` 即可完成。如果 dump 处理单元返回 `Error 1227 (42000): Access denied; you need (at least one of) the SUPER privilege(s) for this operation`，请授予 `SUPER` 权限。由于 `SUPER` 是一个范围较广的权限，因此仅当出现此特定错误，且你的安全策略允许时，才应授予该权限。
+> 在某些较早的 MariaDB 版本中，`PROCESS` 权限不足以让 dump 单元查询 InnoDB 元数据。在 DM v8.5.6 中，当 dump 处理单元在 MariaDB 10.4.34 上查询 `INNODB_TABLESPACES_SCRUBBING`，或在 MariaDB 10.5.1 和 10.5.2 上查询 `INNODB_TABLESPACES_ENCRYPTION` 时，会出现此行为。在相同的冒烟测试中，MariaDB 10.5.9、10.6.13 和 10.11.16 无需 `SUPER` 即可完成。
+>
+> 如果 dump 处理单元返回以下错误，请授予 `SUPER` 权限。由于 `SUPER` 是一个范围较广的权限，因此仅当出现此特定错误，且你的安全策略允许时，才应授予该权限。
+>
+> ```
+> Error 1227 (42000): Access denied; you need (at least one of) the SUPER privilege(s) for this operation
+> ```
 
 ### 下游数据库用户权限
 
