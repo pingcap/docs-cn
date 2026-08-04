@@ -6,7 +6,7 @@ summary: DM-worker 是 DM (Data Migration) 的一个组件，负责执行数据�
 
 # DM-worker 简介
 
-DM-worker 是 TiDB Data Migration (DM) 的一个组件，负责执行 DM-master 分配的任务和子任务。对于全量和增量迁移，它会从一个兼容 MySQL 的上游源实例导出数据，并将导出的数据加载到目标 TiDB 集群中。随后，它作为复制客户端读取上游 binlog，对事件进行转换和过滤，并将其应用到目标端。DM-master 会向 DM-worker 查询数据源和子任务状态。
+DM-worker 是 TiDB Data Migration (DM) 的一个组件，负责执行 DM-master 分配的任务和子任务。在全量和增量数据迁移中，它会从一个兼容 MySQL 的上游源实例导出数据，并将导出的数据加载到目标 TiDB 集群中。随后，它作为复制客户端读取上游 binlog，对事件进行转换和过滤，并将其应用到目标端。DM-master 会向 DM-worker 查询数据源和子任务状态。
 
 ## 关键概念
 
@@ -15,7 +15,7 @@ DM-worker 是 TiDB Data Migration (DM) 的一个组件，负责执行 DM-master 
 
 > **注意：**
 >
-> DM-worker 是一个兼容 MySQL 的 binlog 客户端，而不是备用数据库副本服务器。它从兼容 MySQL 的数据源读取并重放数据到 TiDB 目标端。要从源 TiDB 集群复制数据，请使用 [TiCDC](/ticdc/ticdc-overview.md)。
+> DM-worker 是一个兼容 MySQL 的 binlog 客户端，而不是备用数据库副本服务器。它负责从兼容 MySQL 的源实例读取数据，并将其回放到目标 TiDB 集群。要从源 TiDB 集群复制数据，请使用 [TiCDC](/ticdc/ticdc-overview.md)。
 
 ## DM-worker 处理单元
 
@@ -23,7 +23,7 @@ DM-worker 是 TiDB Data Migration (DM) 的一个组件，负责执行 DM-master 
 
 ### Relay 日志
 
-Relay log 是可选功能，默认关闭。启用后，DM-worker 会先将上游 binlog event 存储到本地磁盘，然后 binlog replication 处理单元再读取这些 event。当长时间的全量迁移或阻塞任务可能持续超过上游 binlog 保留时间，或者同一数据源的多个任务需要复用同一条 binlog 流时，建议启用 relay log。relay log 会消耗磁盘、I/O 和 CPU 资源，并可能增加复制延时。有关配置和运维细节，请参见 [DM relay log](/dm/relay-log.md)。
+Relay log 是可选功能，默认关闭。启用后，DM-worker 会先将上游 binlog event 存储到本地磁盘，然后 binlog replication 处理单元再读取这些 event。如果长时间运行的全量迁移或阻塞的迁移任务可能持续超过上游 binlog 的保留期限，或者同一数据源的多个任务需要共享同一条 binlog 流，建议启用 Relay Log。启用 Relay Log 会消耗磁盘、I/O 和 CPU 资源，并可能增加数据复制延迟。有关配置和运维细节，参见 [DM relay log](/dm/relay-log.md)。
 
 ### dump 处理单元
 
@@ -43,7 +43,7 @@ Binlog replication/sync 处理单元读取上游 MySQL/MariaDB 的 binlog event 
 
 ### 上游数据库用户权限
 
-上游数据库用户所需的权限取决于数据库类型（MySQL/MariaDB）和版本。
+上游数据库用户所需的权限取决于数据库类型 (MySQL/MariaDB) 和版本。
 
 > **注意：**
 >
@@ -73,7 +73,7 @@ GRANT RELOAD, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'your_user'@'your_
 GRANT SELECT ON `db1`.* TO 'your_user'@'your_wildcard_of_host';
 ```
 
-对于从早于 10.5.2 的 MariaDB 执行全量数据导出，还需要授予 `PROCESS`，以便 dump 处理单元可以查询 InnoDB 元信息：
+如果从早于 10.5.2 的 MariaDB 执行全量数据导出，还需要授予 `PROCESS` 权限，以便 dump 处理单元可以查询 InnoDB 元信息：
 
 ```sql
 GRANT PROCESS ON *.* TO 'your_user'@'your_wildcard_of_host';
@@ -113,7 +113,7 @@ GRANT SELECT ON `db1`.* TO 'your_user'@'your_wildcard_of_host';
 >
 > 由于 MariaDB 报告这些权限的方式与 MySQL 不同，即使账户已具备所需权限，`dmctl check-task` 也可能报告权限错误。
 >
-> 对于 DM v8.5.6，如果前置检查在复制权限、dump 权限或 dump 连接数检查中返回 `[code=26005] fail to check synchronization configuration`，请仅将以下内容添加到任务配置文件中：
+> 对于 DM v8.5.6，如果前置检查在复制权限、dump 权限或 dump 连接数检查中返回 `[code=26005] fail to check synchronization configuration`，请将以下内容添加到任务配置文件中：
 >
 > ```yaml
 > ignore-checking-items:
@@ -126,7 +126,7 @@ GRANT SELECT ON `db1`.* TO 'your_user'@'your_wildcard_of_host';
 
 > **注意：**
 >
-> 在某些较旧的 MariaDB 版本中，`PROCESS` 对于 dump 处理单元查询 InnoDB 元信息来说并不充分。在 DM v8.5.6 中，当 dump 处理单元在 MariaDB 10.4.34 上查询 `INNODB_TABLESPACES_SCRUBBING`，或在 MariaDB 10.5.1 和 10.5.2 上查询 `INNODB_TABLESPACES_ENCRYPTION` 时，会出现此行为。在相同的冒烟测试中，MariaDB 10.5.9、10.6.13 和 10.11.16 无需 `SUPER` 即可完成。如果 dump 处理单元返回 `Error 1227 (42000): Access denied; you need (at least one of) the SUPER privilege(s) for this operation`，请授予 `SUPER`。由于 `SUPER` 是一个范围较广的权限，因此仅当出现此确切错误且你的安全策略允许时才授予它。
+> 在某些较早的 MariaDB 版本中，`PROCESS` 权限不足以让 dump 单元查询 InnoDB 元数据。在 DM v8.5.6 中，当 dump 处理单元在 MariaDB 10.4.34 上查询 `INNODB_TABLESPACES_SCRUBBING`，或在 MariaDB 10.5.1 和 10.5.2 上查询 `INNODB_TABLESPACES_ENCRYPTION` 时，会出现此行为。在相同的冒烟测试中，MariaDB 10.5.9、10.6.13 和 10.11.16 无需 `SUPER` 即可完成。如果 dump 处理单元返回 `Error 1227 (42000): Access denied; you need (at least one of) the SUPER privilege(s) for this operation`，请授予 `SUPER` 权限。由于 `SUPER` 是一个范围较广的权限，因此仅当出现此特定错误，且你的安全策略允许时，才应授予该权限。
 
 ### 下游数据库用户权限
 
