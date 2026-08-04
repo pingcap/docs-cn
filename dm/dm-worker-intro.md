@@ -5,24 +5,24 @@ summary: DM-worker 是 DM (Data Migration) 的一个组件，负责执行数据�
 
 # DM-worker 简介
 
-DM-worker 是 DM (Data Migration) 的一个组件，负责执行具体的数据迁移任务。
+DM-worker 是 TiDB Data Migration (DM) 的一个组件，负责执行 DM-master 分配的任务和子任务。在全量和增量数据迁移中，它会从一个兼容 MySQL 的上游源实例导出数据，并将导出的数据加载到目标 TiDB 集群中。随后，它作为复制客户端读取上游 binlog，对事件进行转换和过滤，并将其应用到目标端。DM-master 会向 DM-worker 查询数据源和子任务状态。
 
-其主要功能如下：
+## 关键概念
 
-- 注册为一台 MySQL 或 MariaDB 服务器的 slave。
-- 读取 MySQL 或 MariaDB 的 binlog event，并将这些 event 持久化保存在本地 (relay log)。
-- 单个 DM-worker 支持迁移一个 MySQL 或 MariaDB 实例的数据到下游的多个 TiDB 实例。
-- 多个 DM-Worker 支持迁移多个 MySQL 或 MariaDB 实例的数据到下游的一个 TiDB 实例。
+- 如果某个 worker 实例离线，DM-master 可以自动将其任务重新调度到另一个可用 worker 上，以恢复数据复制。注意，这不适用于全量导出/导入阶段。
+- 单个 DM-worker 进程一次只能连接到**一个**上游源数据库实例。要从多个数据源迁移数据，例如合并分表时，必须运行多个 DM-worker 进程。
+
+> **注意：**
+>
+> DM-worker 是一个兼容 MySQL 的 binlog 客户端，而不是备用数据库副本服务器。它负责从兼容 MySQL 的源实例读取数据，并将其回放到目标 TiDB 集群。要从源 TiDB 集群复制数据，请使用 [TiCDC](/ticdc/ticdc-overview.md)。
 
 ## DM-worker 处理单元
 
-DM-worker 任务包含如下多个逻辑处理单元。
+根据任务模式的不同，DM-worker 子任务会运行 dump、load 和 binlog replication 处理单元。DM-worker 还可以为其绑定的数据源运行可选的 relay log 处理单元。
 
-### Relay log
+### Relay 日志
 
-Relay log 持久化保存从上游 MySQL 或 MariaDB 读取的 binlog，并对 binlog replication 处理单元提供读取 binlog event 的功能。
-
-其原理和功能与 MySQL relay log 类似，详见 [MySQL Relay Log](https://dev.mysql.com/doc/refman/8.0/en/replica-logs-relaylog.html)。
+Relay log 是可选功能，默认关闭。启用后，DM-worker 会先将上游 binlog event 存储到本地磁盘，然后 binlog replication 处理单元再读取这些 event。如果长时间运行的全量迁移或阻塞的迁移任务可能持续超过上游 binlog 的保留期限，或者同一数据源的多个任务需要共享同一条 binlog 流，建议启用 Relay Log。启用 Relay Log 会消耗磁盘、I/O 和 CPU 资源，并可能增加数据复制延迟。有关配置和运维细节，参见 [DM relay log](/dm/relay-log.md)。
 
 ### dump 处理单元
 
@@ -42,7 +42,21 @@ Binlog replication/sync 处理单元读取上游 MySQL/MariaDB 的 binlog event 
 
 ### 上游数据库用户权限
 
-上游数据库 (MySQL/MariaDB) 用户必须拥有以下权限：
+上游数据库用户所需的权限取决于数据库类型 (MySQL/MariaDB) 和版本。
+
+> **注意：**
+>
+> - 如果从托管型 MySQL 服务（例如 Amazon RDS、Aurora、ApsaraDB RDS for MySQL、Azure Database for MySQL 或 Google Cloud SQL）迁移数据，且该服务不允许执行 `FLUSH TABLES WITH READ LOCK` (FTWRL)，还需要授予 `LOCK TABLES` 权限。使用默认的 `consistency=auto` 设置时，如果 FTWRL 不可用，DM 会回退到 `LOCK TABLES`。
+>
+>     ```sql
+>     GRANT LOCK TABLES ON db1.* TO 'your_user'@'your_wildcard_of_host';
+>     ```
+>
+> - 如果还需要将其他数据库的数据迁移到 TiDB，请确保已向相应数据库的用户授予相同的权限。
+
+#### MySQL 和 MariaDB（MariaDB 10.5.2 之前）
+
+对于 MySQL，以及早于 10.5.2 的 MariaDB 版本，用户必须具有以下权限：
 
 | 权限 | 作用域 |
 |:----|:----|
@@ -51,26 +65,73 @@ Binlog replication/sync 处理单元读取上游 MySQL/MariaDB 的 binlog event 
 | `REPLICATION SLAVE` | Global |
 | `REPLICATION CLIENT` | Global |
 
+要授予这些权限，请执行以下语句：
+
+```sql
+GRANT RELOAD, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'your_user'@'your_wildcard_of_host';
+GRANT SELECT ON `db1`.* TO 'your_user'@'your_wildcard_of_host';
+```
+
+如果从早于 10.5.2 的 MariaDB 执行全量数据导出，还需要授予 `PROCESS` 权限，以便 dump 处理单元可以查询 InnoDB 元信息：
+
+```sql
+GRANT PROCESS ON *.* TO 'your_user'@'your_wildcard_of_host';
+```
+
+#### MariaDB 10.5.2 到 10.5.8
+
+从 [MariaDB 10.5.2](https://mariadb.com/docs/release-notes/community-server/old-releases/10.5/10.5.2) 开始，`REPLICATION CLIENT` 权限被重命名为 `BINLOG MONITOR`，并且多个复制语句使用了通过切分 `SUPER` 而新建的权限。对于 MariaDB 10.5.2 到 10.5.8，用户必须具有以下权限：
+
+| 权限 | 作用域 | 说明 |
+|:---|:---|:---|
+| `SELECT` | Tables | 全量数据导出所需。 |
+| `PROCESS` | Global | 全量数据导出期间查询 InnoDB 元信息所需。 |
+| `RELOAD` | Global | `FLUSH TABLES WITH READ LOCK` 所需。 |
+| `BINLOG MONITOR` | Global | 由 `REPLICATION CLIENT` 重命名而来；允许监控 binlog。 |
+| `REPLICATION SLAVE` | Global | 允许读取 binlog event。 |
+| `REPLICATION SLAVE ADMIN` | Global | 允许管理复制状态（例如 `SHOW SLAVE STATUS`）。 |
+| `REPLICATION MASTER ADMIN`| Global | 允许监控主库（例如 `SHOW SLAVE HOSTS`）。 |
+
+要授予这些权限，请执行以下语句：
+
+```sql
+GRANT PROCESS, RELOAD, BINLOG MONITOR, REPLICATION SLAVE, REPLICATION SLAVE ADMIN, REPLICATION MASTER ADMIN ON *.* TO 'your_user'@'your_wildcard_of_host';
+GRANT SELECT ON `db1`.* TO 'your_user'@'your_wildcard_of_host';
+```
+
+#### MariaDB 10.5.9 或更高版本
+
+从 [MariaDB 10.5.9](https://mariadb.com/docs/release-notes/community-server/old-releases/10.5/10.5.9) 开始，`SHOW SLAVE STATUS` 和 `SHOW REPLICA STATUS` 需要 `REPLICA MONITOR` 权限。MariaDB 在 `SHOW GRANTS` 中将此权限显示为 `SLAVE MONITOR`。请授予 MariaDB 10.5.2 到 10.5.8 中列出的权限，并额外授予 `REPLICA MONITOR`：
+
+```sql
+GRANT PROCESS, RELOAD, BINLOG MONITOR, REPLICATION SLAVE, REPLICATION SLAVE ADMIN, REPLICATION MASTER ADMIN, REPLICA MONITOR ON *.* TO 'your_user'@'your_wildcard_of_host';
+GRANT SELECT ON `db1`.* TO 'your_user'@'your_wildcard_of_host';
+```
+
 > **注意：**
 >
-> 如果从托管型 MySQL 服务（例如 Amazon RDS、Aurora、ApsaraDB RDS for MySQL、Azure Database for MySQL 或 Google Cloud SQL）迁移数据，且该服务不允许执行 `FLUSH TABLES WITH READ LOCK` (FTWRL)，还需要授予 `LOCK TABLES` 权限。使用默认的 `consistency=auto` 设置时，如果 FTWRL 不可用，DM 会回退到 `LOCK TABLES`。
+> 由于 MariaDB 报告这些权限的方式与 MySQL 不同，即使账户已具备所需权限，`dmctl check-task` 也可能报告权限错误。
+>
+> 对于 DM v8.5.6，如果前置检查在复制权限、dump 权限或 dump 连接数检查中返回 `[code=26005] fail to check synchronization configuration`，请将以下内容添加到任务配置文件中：
+>
+> ```yaml
+> ignore-checking-items:
+>   - replication_privilege
+>   - dump_privilege
+>   - conn_number
+> ```
+>
+> 此变通方法仅跳过受 MariaDB 权限解析器影响的这三项检查。使用前，请手动验证相应权限和连接数限制。更多信息，请参见 [DM precheck](/dm/dm-precheck.md)。
 
-如果要迁移 `db1` 的数据到 TiDB，可执行如下的 `GRANT` 语句：
-
-{{< copyable "sql" >}}
-
-```sql
-GRANT RELOAD,REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'your_user'@'your_wildcard_of_host';
-GRANT SELECT ON db1.* TO 'your_user'@'your_wildcard_of_host';
-```
-
-对于不允许执行 `FLUSH TABLES WITH READ LOCK` (FTWRL) 的托管型 MySQL 服务，还需要授予 `LOCK TABLES` 权限：
-
-```sql
-GRANT LOCK TABLES ON db1.* TO 'your_user'@'your_wildcard_of_host';
-```
-
-如果还要迁移其他数据库的数据到 TiDB，请确保已赋予这些库跟 `db1` 一样的权限。
+> **注意：**
+>
+> 在某些较早的 MariaDB 版本中，`PROCESS` 权限不足以让 dump 单元查询 InnoDB 元数据。在 DM v8.5.6 中，当 dump 处理单元在 MariaDB 10.4.34 上查询 `INNODB_TABLESPACES_SCRUBBING`，或在 MariaDB 10.5.1 和 10.5.2 上查询 `INNODB_TABLESPACES_ENCRYPTION` 时，会出现此行为。在相同的冒烟测试中，MariaDB 10.5.9、10.6.13 和 10.11.16 无需 `SUPER` 即可完成。
+>
+> 如果 dump 处理单元返回以下错误，请授予 `SUPER` 权限。由于 `SUPER` 是一个范围较广的权限，因此仅当出现此特定错误，且你的安全策略允许时，才应授予该权限。
+>
+> ```
+> Error 1227 (42000): Access denied; you need (at least one of) the SUPER privilege(s) for this operation
+> ```
 
 ### 下游数据库用户权限
 
@@ -98,13 +159,11 @@ GRANT ALL ON dm_meta.* TO 'your_user'@'your_wildcard_of_host';
 
 ### 处理单元所需的最小权限
 
+下表列出了 MySQL 和早于 10.5.2 的 MariaDB 版本中，各处理单元所需的最小权限。对于 MariaDB 10.5.2 及更高版本，请参见前一节中的权限表。
+
 | 处理单元 | 最小上游 (MySQL/MariaDB) 权限 | 最小下游 (TiDB) 权限 | 最小系统权限 |
 |:----|:--------------------|:------------|:----|
-| Relay log | `REPLICATION SLAVE` (读取 binlog）<br/>`REPLICATION CLIENT` (`show master status`, `show slave status`) | 无 | 本地读/写磁盘 |
-| Dump | `SELECT`<br/>`RELOAD`（获取读锁将表数据刷到磁盘，进行一些操作后，再释放读锁对表进行解锁）| 无 | 本地写磁盘 |
+| Relay log | `REPLICATION SLAVE` (读取 binlog)<br/>`REPLICATION CLIENT` (`SHOW MASTER STATUS`, `SHOW SLAVE STATUS`) | 无 | 本地读/写磁盘 |
+| Dump | `SELECT`<br/>`RELOAD` (`FLUSH TABLES WITH READ LOCK`)<br/>`PROCESS`（仅 MariaDB，用于查询 InnoDB 元信息） | 无 | 本地写磁盘 |
 | Load | 无 | `SELECT`（查询 checkpoint 历史）<br/>`CREATE`（创建数据库或表）<br/>`DELETE`（删除 checkpoint）<br/>`INSERT`（插入 dump 数据）| 读/写本地文件 |
-| Binlog replication | `REPLICATION SLAVE`（读 binlog）<br/>`REPLICATION CLIENT` (`show master status`, `show slave status`) | `SELECT`（显示索引和列）<br/>`INSERT` (DML)<br/>`UPDATE` (DML)<br/>`DELETE` (DML)<br/>`CREATE`（创建数据库或表）<br/>`DROP`（删除数据库或表）<br/>`ALTER`（修改表）<br/>`INDEX`（创建或删除索引）| 本地读/写磁盘 |
-
-> **注意：**
->
-> 这些权限并非一成不变。随着需求改变，这些权限也可能会改变。
+| Binlog replication | `REPLICATION SLAVE` (reads the binlog)<br/>`REPLICATION CLIENT` (`SHOW MASTER STATUS`, `SHOW SLAVE STATUS`) | `SELECT`（显示索引和列）<br/>`INSERT` (DML)<br/>`UPDATE` (DML)<br/>`DELETE` (DML)<br/>`CREATE`（创建数据库或表）<br/>`DROP`（删除数据库或表）<br/>`ALTER`（修改表）<br/>`INDEX`（创建或删除索引）| 本地读/写磁盘 |
