@@ -142,7 +142,11 @@ SELECT /*+ NO_INDEX_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 
 ### INL_MERGE_JOIN
 
-`INL_MERGE_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Merge Join 算法，该算法与 Index Nested Loop Join 使用条件完全一样。
+> **警告：** 
+>
+> 从 TiDB v8.3.0 开始，`INL_MERGE_JOIN` Hint 已废弃且不再生效，因为它可能返回错误结果。如果查询中指定了该 Hint，TiDB 会忽略它并选择其他 Join 算法。
+
+在 v8.3.0 之前，`INL_MERGE_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Merge Join 算法，该算法与 Index Nested Loop Join 使用条件完全一样。
 
 ### NO_INDEX_MERGE_JOIN(t1_name [, tl_name ...])
 
