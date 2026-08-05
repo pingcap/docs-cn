@@ -8,7 +8,7 @@ aliases: ['/zh/tidbcloud/serverless-driver/']
 
 > **注意：**
 >
-> serverless driver 目前为公开预览版，仅适用于 {{{ .starter }}} 或 {{{ .essential }}} 实例。
+> serverless driver 目前处于公测阶段，仅适用于 {{{ .starter }}} 或 {{{ .essential }}} 实例。
 
 ## 为什么要使用 TiDB Cloud serverless driver (PREVIEW)
 
