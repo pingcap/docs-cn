@@ -7,7 +7,7 @@ summary: 了解 TiDB Cloud 和 TiDB 可用的 API。
 
 TiDB 提供了多种 API，可用于查询和运维集群、管理数据同步、监控系统状态等场景。本文介绍 [TiDB Cloud](https://docs.pingcap.com/zh/tidbcloud/) 和 [TiDB](https://docs.pingcap.com/zh/tidb/stable/) 的可用 API。
 
-## TiDB Cloud API (beta)
+## TiDB Cloud API (PREVIEW)
 
 [TiDB Cloud API](/api/tidb-cloud-api-overview.md) 是一个 [REST 接口](https://zh.wikipedia.org/wiki/表现层状态转换)。通过该 API，你可以以编程方式访问和操作 TiDB Cloud 中的各类管理资源，例如项目、集群、备份、恢复、导入、账单以及 Data Service。
 

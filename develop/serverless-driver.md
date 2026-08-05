@@ -1,24 +1,24 @@
 ---
-title: TiDB Cloud serverless driver (Beta)
+title: TiDB Cloud serverless driver (PREVIEW)
 summary: 了解如何从 serverless 和边缘环境连接到 {{{ .starter }}} 或 {{{ .essential }}}。
 aliases: ['/zh/tidbcloud/serverless-driver/']
 ---
 
-# TiDB Cloud serverless driver (Beta)
+# TiDB Cloud serverless driver (PREVIEW)
 
 > **注意：**
 >
-> serverless driver 目前为 Beta 版本，仅适用于 {{{ .starter }}} 或 {{{ .essential }}} 实例。
+> serverless driver 目前为公开预览版，仅适用于 {{{ .starter }}} 或 {{{ .essential }}} 实例。
 
-## 为什么要使用 TiDB Cloud serverless driver (Beta)
+## 为什么要使用 TiDB Cloud serverless driver (PREVIEW)
 
 传统的基于 TCP 的 MySQL driver 不适用于 serverless 函数，是因为它们假设数据库连接是持久存在的，而这与 serverless 函数的短生命周期特性相矛盾。此外，在 [Vercel Edge Functions](https://vercel.com/docs/functions/edge-functions) 和 [Cloudflare Workers](https://workers.cloudflare.com/) 等边缘环境中，由于可能缺乏完整的 TCP 支持和 Node.js 兼容性，这些 driver 可能根本无法工作。
 
-[TiDB Cloud serverless driver (Beta)](https://github.com/tidbcloud/serverless-js) 是一款面向 JavaScript 的驱动，允许你通过 HTTP（serverless 环境普遍支持的通信方式）连接到 {{{ .starter }}} 或 {{{ .essential }}} 实例。借助该 driver，你可以从边缘环境连接到 {{{ .starter }}} 或 {{{ .essential }}} 实例，减少 TCP 带来的连接开销，同时保持与传统基于 TCP 的 MySQL driver 类似的开发体验。
+[TiDB Cloud serverless driver (PREVIEW)](https://github.com/tidbcloud/serverless-js) 是一款面向 JavaScript 的驱动，允许你通过 HTTP（serverless 环境普遍支持的通信方式）连接到 {{{ .starter }}} 或 {{{ .essential }}} 实例。借助该 driver，你可以从边缘环境连接到 {{{ .starter }}} 或 {{{ .essential }}} 实例，减少 TCP 带来的连接开销，同时保持与传统基于 TCP 的 MySQL driver 类似的开发体验。
 
 > **注意：**
 >
-> 如果你更倾向于使用 RESTful API 进行编程而不是 SQL 或 ORM，可以使用 [Data Service (Beta)](https://docs.pingcap.com/zh/tidbcloud/data-service-overview)。
+> 如果你更倾向于使用 RESTful API 进行编程而不是 SQL 或 ORM，可以使用 [Data Service (PREVIEW)](https://docs.pingcap.com/zh/tidbcloud/data-service-overview)。
 
 ## 安装 serverless driver
 
