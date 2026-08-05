@@ -8,7 +8,7 @@ aliases: ['/zh/tidbcloud/api-overview/']
 
 > **注意：**
 >
-> TiDB Cloud API 目前处于 beta 阶段。
+> TiDB Cloud API 目前处于公测阶段。
 
 TiDB Cloud API 是一个 [REST 接口](https://zh.wikipedia.org/wiki/表现层状态转换)，提供了以编程方式访问和操作 TiDB Cloud 中的各类管理资源的能力。通过该 API，你可以自动且高效地管理项目、集群、备份、恢复、导入、账单，以及 [Data Service](https://docs.pingcap.com/tidbcloud/data-service-overview) 中的相关资源。
 

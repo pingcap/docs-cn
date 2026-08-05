@@ -49,7 +49,7 @@
       - [Rails](/develop/dev-guide-sample-application-ruby-rails.md)
     - C#
       - [C#](/develop/dev-guide-sample-application-cs.md)
-  - 通过 TiDB Cloud Serverless Driver 连接 ![BETA](/media/blank_transparent_placeholder.png)
+  - 通过 TiDB Cloud Serverless Driver 连接 ![PREVIEW](/media/blank_transparent_placeholder.png)
     - [概览](/develop/serverless-driver.md)
     - [Node.js 示例](/develop/serverless-driver-node-example.md)
     - [Prisma 示例](/develop/serverless-driver-prisma-example.md)
@@ -78,7 +78,7 @@
     - [Follower Read](/develop/dev-guide-use-follower-read.md)
     - [Stale Read](/develop/dev-guide-use-stale-read.md)
   - [HTAP 查询](/develop/dev-guide-hybrid-oltp-and-olap-queries.md)
-- [向量搜索](/develop/dev-guide-vector-search.md) ![BETA](/media/blank_transparent_placeholder.png)
+- [向量搜索](/develop/dev-guide-vector-search.md) ![PREVIEW](/media/blank_transparent_placeholder.png)
 - 事务处理
   - [概览](/develop/dev-guide-transaction-overview.md)
   - [乐观事务和悲观事务](/develop/dev-guide-optimistic-and-pessimistic-transaction.md)

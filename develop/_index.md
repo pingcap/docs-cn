@@ -21,7 +21,7 @@ aliases: ['zh/tidbcloud/dev-guide-overview/','zh/tidb/dev/dev-guide-overview/','
 你可以使用自己熟悉的编程语言，结合以下包含示例代码的文档来构建你的应用程序。
 
 <DevLangAccordion label="JavaScript" defaultExpanded>
-<DevToolCard title="Serverless Driver（beta）" logo="tidb" docLink="/developer/serverless-driver" githubLink="https://github.com/tidbcloud/serverless-js">
+<DevToolCard title="Serverless Driver（PREVIEW）" logo="tidb" docLink="/developer/serverless-driver" githubLink="https://github.com/tidbcloud/serverless-js">
 
 在边缘环境中通过 HTTPS 连接到 TiDB（仅适用于 TiDB Cloud）。
 
