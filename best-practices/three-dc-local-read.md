@@ -19,6 +19,10 @@ aliases: ['/zh/tidb/stable/three-dc-local-read/','/zh/tidb/dev/three-dc-local-re
 zone=dc-1
 ```
 
+给 TiKV 配置标签请参考 [设置 TiKV 和 TiFlash 的 `labels`](/schedule-replicas-by-topology-labels.md#设置-tikv-和-tiflash-的-labels)。
+
+给 TiDB 配置标签请参考 [TiDB 配置文件描述 `label`](/tidb-configuration-file.md#label)。
+
 ## 使用 Stale Read 就近读取数据
 
 [Stale Read](/stale-read.md) 为用户提供了一种读取历史数据的一种机制。使用 Stale Read 功能，你能从指定时间点或时间范围内读取对应的历史数据，从而避免数据同步带来延迟。在部分跨数据中心部署的场景中使用 Stale Read 功能，通过牺牲一定的实时性，TiDB 可就近访问对应数据所在当前中心的副本，避免跨数据中心的网络延迟，降低整体查询的访问延迟。
