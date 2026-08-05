@@ -109,14 +109,7 @@ TiCDC 新架构除以下特殊说明外，其余部分与老架构完全兼容�
 
 ## 使用限制
 
-目前，TiCDC 新架构已完整实现旧架构的全部功能，但其中部分功能尚未经过全面的测试验证。为确保系统稳定性，暂不建议在核心生产环境中使用以下功能：
-
-- [Syncpoint](/ticdc/ticdc-upstream-downstream-check.md)
-- [Redo Log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制)
-- [Pulsar Sink](/ticdc/ticdc-sink-to-pulsar.md)
-- [Storage Sink](/ticdc/ticdc-sink-to-cloud-storage.md)
-
-此外，TiCDC 新架构目前暂不支持将大事务拆分为多个批次同步至下游，因此在处理超大事务时仍存在 OOM 风险，请在使用前评估相关影响。
+TiCDC 新架构目前暂不支持将大事务拆分为多个批次同步至下游，因此在处理超大事务时仍存在 OOM 风险，请在使用前评估相关影响。
 
 ## 升级指南
 
