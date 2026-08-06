@@ -36,11 +36,10 @@ TiDB 向量搜索支持存储最多 16383 维的向量，能够满足大多数 e
 
 ## AI 框架 {#ai-frameworks}
 
-TiDB 为以下 AI 框架提供官方支持，使你能够轻松将基于这些框架开发的 AI 应用集成到 TiDB 向量搜索中。
+TiDB 为以下 AI 框架提供官方支持，使你能够轻松将基于该框架开发的 AI 应用集成到 TiDB 向量搜索中。
 
 | AI 框架 | 教程                                                                                          |
 |---------------|---------------------------------------------------------------------------------------------------|
-| LangChain     | [Integrate Vector Search with LangChain](/ai/integrations/vector-search-integrate-with-langchain.md)   |
 | LlamaIndex    | [Integrate Vector Search with LlamaIndex](/ai/integrations/vector-search-integrate-with-llamaindex.md) |
 
 你还可以将 TiDB 用于 AI 应用中的多种任务，例如文档存储和知识图谱存储。
