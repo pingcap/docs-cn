@@ -68,7 +68,7 @@ FLUSH STATS_DELTA t;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-此时，TiDB 已将该表的行数变化持久化到 `mysql.stats_meta` 系统表。你可以使用 `SHOW STATS_META` 查看已持久化的值。注意，`SHOW STATS_META` 会从你当前连接的 TiDB 节点内存中读取统计信息。该 TiDB 节点会在 [`stats-lease`](/tidb-configuration-file.md#stats-lease)（默认 `3s`）周期内加载已持久化的值，因此刷新后的值可能会在短暂延迟后才显示在输出中：
+此时，TiDB 已将该表的行数变化持久化到 `mysql.stats_meta` 系统表。你可以使用 `SHOW STATS_META` 查看已持久化的值。注意，`SHOW STATS_META` 会从你当前连接的 TiDB 节点内存中读取统计信息。该 TiDB 节点会每隔 [`stats-lease`](/tidb-configuration-file.md#stats-lease) 时间（默认 `3s`）加载已持久化的值，因此刷新后的值可能会在短暂延迟后才显示在输出中：
 
 ```sql
 SHOW STATS_META WHERE table_name = 't';
