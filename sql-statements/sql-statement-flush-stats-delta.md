@@ -7,7 +7,7 @@ summary: TiDB 数据库中 FLUSH STATS_DELTA 的使用概况。
 
 通过 `FLUSH STATS_DELTA`，你可以将 TiDB 内存中缓存的待持久化的统计信息 delta 立即持久化到 [`mysql.stats_meta`](/mysql-schema/mysql-schema.md#统计信息相关系统表) 系统表中。
 
-当执行 `INSERT`、`UPDATE`、`DELETE` 等 DML 语句修改数据时，TiDB 会记录每张受影响的表中总行数和修改行数的变化，并将这些变化（即统计信息 delta）缓存在执行这些语句的 TiDB 节点的内存中。默认情况下，TiDB 每隔 20 * [`stats-lease`](/tidb-configuration-file.md#stats-lease)（默认 60 秒）会将这些 delta 持久化到 `mysql.stats_meta` 系统表中。详情参考[自动更新](/statistics.md#自动更新)。
+当执行 `INSERT`、`UPDATE`、`DELETE` 等 DML 语句修改数据时，TiDB 会记录每张受影响的表中总行数和修改行数的变化，并将这些变化（即统计信息 delta）缓存在执行这些语句的 TiDB 节点的内存中。默认情况下，TiDB 每隔 20 * [`stats-lease`](/tidb-configuration-file.md#stats-lease)（默认间隔 60 秒）会将这些 delta 持久化到 `mysql.stats_meta` 系统表中。详情参考[自动更新](/statistics.md#自动更新)。
 
 由于[表的统计信息健康度](/sql-statements/sql-statement-show-stats-healthy.md)、[`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md) 的输出，以及统计信息自动收集的调度都依赖于已持久化的统计信息元数据，当你希望已持久化的统计信息元数据能立即反映最近的数据变更时（例如，在验证优化器行为的测试场景中），`FLUSH STATS_DELTA` 就会很有用。在你执行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 时，无需提前执行 `FLUSH STATS_DELTA`，因为 TiDB 会在收集某张表的统计信息之前，自动刷新该表待持久化的统计信息 delta。
 
@@ -99,8 +99,8 @@ FLUSH STATS_DELTA *.* CLUSTER;
 
 执行 `FLUSH STATS_DELTA` 时，需要对操作对象拥有 `SELECT` 权限：
 
-- 对于 `table_name` 或 `db_name.table_name`，你需要具有目标表的 `SELECT` 权限；
-- 对于 `db_name.*`，你需要具有目标数据库的 `SELECT` 权限；
+- 对于 `table_name` 或 `db_name.table_name`，你需要具有目标表的 `SELECT` 权限。
+- 对于 `db_name.*`，你需要具有目标数据库的 `SELECT` 权限。
 - 对于 `*.*`，你需要具有全局 `SELECT` 权限。
 
 与其他 `FLUSH` 语句不同，`FLUSH STATS_DELTA` 不需要 `RELOAD` 权限。
