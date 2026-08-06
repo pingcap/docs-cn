@@ -3,7 +3,7 @@ title: FLUSH STATS_DELTA
 summary: TiDB 数据库中 FLUSH STATS_DELTA 的使用概况。
 ---
 
-# FLUSH STATS_DELTA <span class="version-mark">从 v8.5.7 和 v9.0.0 开始引入</span>
+# FLUSH STATS_DELTA <span class="version-mark">从 v8.5.7 开始引入</span>
 
 通过 `FLUSH STATS_DELTA`，你可以将 TiDB 内存中缓存的待持久化的统计信息 delta 立即持久化到 [`mysql.stats_meta`](/mysql-schema/mysql-schema.md#统计信息相关系统表) 系统表中。
 
