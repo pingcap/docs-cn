@@ -60,7 +60,6 @@ TiDB 是面向 AI 应用的分布式 SQL 数据库，支持向量搜索、全文
 | --- | --- |
 | [集成概览](/ai/integrations/vector-search-integration-overview.md) | 所有可用集成的概览。 |
 | [Embedding Providers](/ai/integrations/vector-search-auto-embedding-overview.md#available-text-embedding-models) | 为 OpenAI、Cohere、Jina AI 等提供统一接口。 |
-| [LangChain](/ai/integrations/vector-search-integrate-with-langchain.md) | 将 TiDB 作为 LangChain 的向量存储。 |
 | [LlamaIndex](/ai/integrations/vector-search-integrate-with-llamaindex.md) | 将 TiDB 作为 LlamaIndex 的向量存储。 |
 | [MCP Server](/ai/integrations/tidb-mcp-server.md) | 将 TiDB 连接到 Claude Code、Cursor 及其他 AI 驱动的 IDE。 |
 
