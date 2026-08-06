@@ -13,19 +13,13 @@ on:
         required: true
         type: string
         default: ''
-      ai_provider:
-        description: 'AI Provider to use for translation'
-        required: false
-        type: choice
-        options:
-          - deepseek
-          - gemini
-          - azure
-        default: 'azure'
 
 permissions:
   contents: write
   pull-requests: write
+
+env:
+  PRODUCT: TiDB
 
 jobs:
   sync-docs:
@@ -184,13 +178,11 @@ jobs:
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEEPSEEK_API_TOKEN: ${{ secrets.DEEPSEEK_API_TOKEN }}
-          GEMINI_API_TOKEN: ${{ secrets.GEMINI_API_TOKEN }}
           AZURE_OPENAI_KEY: ${{ secrets.AZURE_OPENAI_KEY }}
           OPENAI_BASE_URL: ${{ secrets.AZURE_OPENAI_BASE_URL }}
           SOURCE_PR_URL: ${{ github.event.inputs.source_pr_url }}
           TARGET_PR_URL: ${{ github.event.inputs.target_pr_url }}
-          AI_PROVIDER: ${{ github.event.inputs.ai_provider }}
+          AI_PROVIDER: azure
           TARGET_REPO_PATH: ${{ github.workspace }}/target_repo
           TERMS_PATH: ${{ github.workspace }}/docs-master/resources/terms.md
         run: |
@@ -212,7 +204,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SOURCE_PR_URL: ${{ github.event.inputs.source_pr_url }}
           TARGET_PR_URL: ${{ github.event.inputs.target_pr_url }}
-          AI_PROVIDER: ${{ github.event.inputs.ai_provider }}
           TARGET_BRANCH: ${{ steps.target_branch.outputs.target_branch }}
           TARGET_BASE_BRANCH: ${{ steps.target_branch.outputs.base_branch }}
         run: |
@@ -261,8 +252,8 @@ jobs:
             echo "Base ref ${BASE_REF} not found in cloned fork. Skipping placeholder cleanup."
           fi
 
-          if ! printf "Auto-sync: Update Chinese docs from English PR\n\nSynced from: %s\nTarget PR: %s\nAI Provider: %s\n\nCo-authored-by: github-actions[bot] <github-actions[bot]@users.noreply.github.com>" \
-            "$SOURCE_PR_URL" "$TARGET_PR_URL" "$AI_PROVIDER" | git commit -F -; then
+          if ! printf "Auto-sync: Update Chinese docs from English PR\n\nSynced from: %s\nTarget PR: %s\n\nCo-authored-by: github-actions[bot] <github-actions[bot]@users.noreply.github.com>" \
+            "$SOURCE_PR_URL" "$TARGET_PR_URL" | git commit -F -; then
             echo "push_success=false" >> $GITHUB_OUTPUT
             echo "Failed to create a commit for the translated changes."
             exit 1
