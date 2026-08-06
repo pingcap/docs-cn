@@ -27,6 +27,9 @@ permissions:
   contents: write
   pull-requests: write
 
+env:
+  PRODUCT: TiDB
+
 jobs:
   sync-docs:
     runs-on: ubuntu-latest

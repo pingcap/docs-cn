@@ -41,6 +41,7 @@ on:
         default: azure
 
 env:
+  PRODUCT: TiDB
   DOCS_CN_BASE: release-8.5
   SOURCE_REPO: pingcap/docs
   SOURCE_BRANCH: release-8.5
