@@ -29,16 +29,6 @@ on:
         options:
           - incremental
           - full
-      ai_provider:
-        description: "AI provider to use for translation"
-        required: false
-        type: choice
-        options:
-          - azure
-          - deepseek
-          - gemini
-          - openai
-        default: azure
 
 env:
   PRODUCT: TiDB
@@ -251,9 +241,6 @@ jobs:
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          DEEPSEEK_API_TOKEN: ${{ secrets.DEEPSEEK_API_TOKEN }}
-          GEMINI_API_TOKEN: ${{ secrets.GEMINI_API_TOKEN }}
-          OPENAI_API_TOKEN: ${{ secrets.OPENAI_API_TOKEN }}
           AZURE_OPENAI_KEY: ${{ secrets.AZURE_OPENAI_KEY }}
           OPENAI_BASE_URL: ${{ secrets.AZURE_OPENAI_BASE_URL }}
           SOURCE_REPO: ${{ env.SOURCE_REPO }}
@@ -272,7 +259,7 @@ jobs:
           TARGET_REF: ${{ env.DOCS_CN_BASE }}
           PREFER_LOCAL_TARGET_FOR_READ: "true"
           TARGET_REPO_PATH: ${{ github.workspace }}/docs-cn
-          AI_PROVIDER: ${{ inputs.ai_provider || 'azure' }}
+          AI_PROVIDER: azure
           TERMS_PATH: ${{ github.workspace }}/docs-terms/resources/terms.md
           FAIL_ON_TRANSLATION_ERROR: "true"
           SKIP_TRANSLATING_AI_DOCS_TO_ZH: "false"
