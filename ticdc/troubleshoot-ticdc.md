@@ -102,18 +102,34 @@ Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skippin
 - 如果 PD 是由 v4.0.8 或更低版本滚动升级到新版，详见 [PD issue #3366](https://github.com/tikv/pd/issues/3366)。
 - 对于其他情况，请将上述命令执行结果反馈到 [AskTUG 论坛](https://pingkai.cn/tidbcommunity/forum/tags/ticdc)。
 
-## 使用 TiCDC 同步消息到 Kafka 时 Kafka 报错 `Message was too large`，该如何处理？
+## Kafka Sink 返回 `ErrMessageTooLarge` 时，如何处理？
 
-仅在 Sink URI 中为 Kafka 配置 `max-message-bytes` 参数不能有效控制输出到 Kafka 的消息大小，需要在 Kafka server 配置中加入如下配置以增加 Kafka 接收消息的字节数限制。
+处理方式取决于 TiCDC 版本：
+
+**v8.5.8 及之后版本**：根据错误信息中的消息大小，调大 Kafka Topic 的 `max.message.bytes`。Kafka Sink 重建时会重新读取该配置，changefeed 随后自动恢复同步。
+
+如果 changefeed 未自动恢复，请确认其使用的 Kafka 账号具有读取 Topic 和 broker 配置的权限。更多信息参见[Kafka 消息大小限制](/ticdc/ticdc-sink-to-kafka.md#kafka-消息大小限制)。
+
+**v8.5.8 之前的版本**：
+
+1. 根据错误信息确认待发送消息的大小。
+2. 将 Kafka Topic 的 `max.message.bytes` 调整为不小于该消息大小。
+3. 暂停 changefeed，将 `max-message-bytes` 设置为与 `max.message.bytes` 相同的值，然后恢复 changefeed。
+
+调整 Kafka 消息大小限制时，还需要检查以下相关配置：
 
 ```
-# broker 能接收消息的最大字节数
-message.max.bytes=2147483648
+# Topic 能接收消息的最大字节数
+max.message.bytes=<不小于待发送消息的大小>
+# broker 能接收消息的最大字节数，使用 broker 默认限制时配置
+message.max.bytes=<不小于待发送消息的大小>
 # broker 可复制的消息的最大字节数
-replica.fetch.max.bytes=2147483648
+replica.fetch.max.bytes=<不小于 message.max.bytes>
 # 消费者端的可读取的最大消息字节数
-fetch.message.max.bytes=2147483648
+fetch.message.max.bytes=<不小于 Kafka 中实际允许的消息大小>
 ```
+
+如果不希望调大 Kafka 的消息大小限制，可以配置 `large-message-handle-option`，使用 Claim-Check 或只输出 Handle Key 的方式处理大消息。更多信息参见[处理超过 Kafka Topic 限制的消息](/ticdc/ticdc-sink-to-kafka.md#处理超过-kafka-topic-限制的消息)。
 
 ## TiCDC 同步时，在下游执行 DDL 语句失败会有什么表现，如何恢复？
 
@@ -130,7 +146,7 @@ cdc cli changefeed resume -c test-cf --server=http://127.0.0.1:8300
 3. 恢复被暂停的 changefeed。
 
 > **注意：**
-> 
+>
 > 虽然将 changefeed 的 `start-ts` 设为报错时的 `checkpoint-ts` 值加上 1，然后重建任务也可以跳过该 DDL 语句，但同时会导致 TiCDC 丢失 `checkpointTs+1` 时刻对应的 DML 数据变更。严禁在生产环境执行这样的操作。
 
 ```shell
@@ -143,5 +159,5 @@ cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://roo
 该问题通常是由于 TiCDC 与 Kafka 集群连接失败导致。你可以通过检查 Kafka 的日志以及网络状况来排查。一个常见的原因是在创建同步任务时没有指定正确的 `kafka-version` 参数，导致 TiCDC 内部的 Kafka client 在访问 Kafka server 时使用了错误的 Kafka API 版本。你可以通过配置 [`--sink-uri`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 指定正确的 `kafka-version` 参数来修复。例如：
 
 ```shell
-cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri "kafka://127.0.0.1:9092/test?topic=test&protocol=open-protocol&kafka-version=2.4.0" 
+cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri "kafka://127.0.0.1:9092/test?topic=test&protocol=open-protocol&kafka-version=2.4.0"
 ```
