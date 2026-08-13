@@ -5,16 +5,16 @@ summary: 了解 TiCDC Debezium Protocol 的概念和使用方法。
 
 # TiCDC Debezium Protocol
 
-[Debezium](https://debezium.io/) 是一个用于捕获数据库变更的工具。它会将捕获的数据库变更的每一条记录转化为一个被称为“事件” (event) 的消息 (message)，并将这些事件发送到 Kafka 中。从 v8.0.0 起，TiCDC 支持将 TiDB 的变更以 Debezium 的格式直接传输到 Kafka，为之前使用 Debezium 的 MySQL 集成的用户简化了从 MySQL 数据库迁移的过程。从 [TiCDC v8.5.4-release.1](https://github.com/pingcap/ticdc/releases/tag/v8.5.4-release.1)（[新 TiCDC 架构](/ticdc/ticdc-architecture.md)）和 v9.0.0 起，TiCDC 支持 DDL 事件和 WATERMARK 事件。
+[Debezium](https://debezium.io/) 是一个用于捕获数据库变更的工具。它会将捕获的数据库变更的每一条记录转化为一个被称为“事件” (event) 的消息 (message)，并将这些事件发送到 Kafka 中。从 v8.0.0 起，TiCDC 支持将 TiDB 的变更以 Debezium 的格式直接传输到 Kafka，为之前使用 Debezium 的 MySQL 集成的用户简化了从 MySQL 数据库迁移的过程。从 [TiCDC v8.5.4-release.1](https://github.com/pingcap/ticdc/releases/tag/v8.5.4-release.1)（[TiCDC 新架构](/ticdc/ticdc-architecture.md)）和 v9.0.0 起，TiCDC 支持 DDL 事件和 WATERMARK 事件。
 
 ## 使用 Debezium 消息格式
 
 当使用 Kafka 作为下游 Sink 时，你可以将 `sink-uri` 的 `protocol` 字段指定为 `debezium`，TiCDC 将以 event 为基本单位封装构造 Debezium 消息，向下游发送 TiDB 的数据变更事件。
 
 <SimpleTab>
-<div label="New TiCDC architecture">
+<div label="TiCDC 新架构">
 
-要使用新 TiCDC 架构，请将 TiCDC 配置项 [`newarch`](/ticdc/ticdc-server-config.md#newarch-从-v854-版本开始引入-release1) 设置为 `true`。
+要使用 TiCDC 新架构，请将 TiCDC 配置项 [`newarch`](/ticdc/ticdc-server-config.md#newarch-从-v854-版本开始引入-release1) 设置为 `true`。
 
 Debezium 协议支持以下类型的事件：
 
@@ -23,7 +23,7 @@ Debezium 协议支持以下类型的事件：
 - WATERMARK 事件：表示一个特殊的时间点。在这个时间点之前收到的事件是完整的。仅适用于 TiDB 扩展字段，当你在 `sink-uri` 中设置 [`enable-tidb-extension`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 为 `true` 时生效。
 
 </div>
-<div label="Classic TiCDC architecture">
+<div label="TiCDC 老架构">
 
 Debezium 协议仅支持 Row Changed 事件，并会直接忽略 DDL 事件和 WATERMARK 事件。Row changed 事件表示一行中的数据变更。当某一行发生变更时，会发送 Row Changed 事件，其中包含该行变更前后的相关信息。WATERMARK 事件标记表的复制进度，表示所有早于该 watermark 的事件都已发送到下游。
 
@@ -44,7 +44,7 @@ Debezium 输出格式中包含当前行的 Schema 信息，以便下游消费者
 
 本节介绍 DDL 事件、DML 事件和 WATERMARK 事件的消息格式。
 
-### DDL 事件（新 TiCDC 架构）
+### DDL 事件（TiCDC 新架构）
 
 > **注意：**
 >
@@ -595,7 +595,7 @@ Key 中的字段只包含主键或唯一索引列。字段解释如下：
 | `schema.optional`     | 布尔值   |  该字段是否为选填项。值为 `true` 表示该字段为选填项。   |
 | `schema.type`     | 字符串   |  字段的类型。   |
 
-### WATERMARK 事件（新 TiCDC 架构）
+### WATERMARK 事件（TiCDC 新架构）
 
 > **注意：**
 >
