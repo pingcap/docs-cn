@@ -144,6 +144,13 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 - `ignore-update-new-value-expr = "gender = 'male'"` 表示过滤掉新值 `gender = 'male'` 的 `UPDATE` DML。
 
+##### `ignore-update-only-columns` <span class="version-mark">从 v8.5.8 版本开始引入</span>
+
+- 该配置项是一个列名数组，仅适用于 Kafka 下游。
+- `ignore-update-only-columns = ["version", "updated_at"]` 表示当一条 `UPDATE` DML 仅变更 `version`、`updated_at` 中的一个或多个列时，过滤掉该事件。如果该事件还变更了列表之外的列，TiCDC 会将该事件发送到下游。
+- 如果发生值变更的列包含主键列或唯一键列，则无论该列是否在列表中，TiCDC 都不会过滤该事件。
+- 对于非 Kafka 下游，TiCDC 接受该配置，但不会根据该配置过滤事件。更多匹配规则和限制，请参考 [Changefeed 日志过滤器](/ticdc/ticdc-filter.md#event-filter-事件过滤器-从-v620-版本开始引入)。
+
 ### scheduler
 
 #### `enable-table-across-nodes`
