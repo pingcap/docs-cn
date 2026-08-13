@@ -14,7 +14,7 @@ summary: 了解 TiCDC Debezium Protocol 的概念和使用方法。
 <SimpleTab>
 <div label="TiCDC 新架构">
 
-要使用 TiCDC 新架构，请将 TiCDC 配置项 [`newarch`](/ticdc/ticdc-server-config.md#newarch-从-v854-版本开始引入-release1) 设置为 `true`。
+要使用 TiCDC 新架构，请将 TiCDC 配置项 [`newarch`](/ticdc/ticdc-server-config.md#newarch-从-v854-release1-版本开始引入) 设置为 `true`。
 
 Debezium 协议支持以下类型的事件：
 
