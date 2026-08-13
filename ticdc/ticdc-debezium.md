@@ -48,7 +48,7 @@ Debezium 输出格式中包含当前行的 Schema 信息，以便下游消费者
 
 > **注意：**
 >
-> DDL 事件仅在[新 TiCDC 架构](/ticdc/ticdc-architecture.md)中受支持。在[经典 TiCDC 架构](/ticdc/ticdc-classic-architecture.md)中，DDL 事件会被忽略。
+> DDL 事件仅在 [TiCDC 新架构](/ticdc/ticdc-architecture.md)中受支持。在 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)中，DDL 事件会被忽略。
 
 TiCDC 会将一个 DDL 事件转换为一条 Kafka 消息，其中消息的 key 和 value 都按照 Debezium 协议进行编码。
 
@@ -599,7 +599,7 @@ Key 中的字段只包含主键或唯一索引列。字段解释如下：
 
 > **注意：**
 >
-> WATERMARK 事件仅在[新 TiCDC 架构](/ticdc/ticdc-architecture.md)中受支持。在[经典 TiCDC 架构](/ticdc/ticdc-classic-architecture.md)中，WATERMARK 事件会被忽略。
+> WATERMARK 事件仅在 [TiCDC 新架构](/ticdc/ticdc-architecture.md)中受支持。在 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)中，WATERMARK 事件会被忽略。
 
 TiCDC 会将一个 WATERMARK 事件转换为一条 Kafka 消息，其中消息的 key 和 value 都按照 Debezium 协议进行编码。
 
