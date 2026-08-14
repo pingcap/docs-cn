@@ -16,7 +16,7 @@ summary: 了解 TiCDC Debezium Protocol 的概念和使用方法。
 
 要使用 TiCDC 新架构，请将 TiCDC 配置项 [`newarch`](/ticdc/ticdc-server-config.md#newarch-从-v854-release1-版本开始引入) 设置为 `true`。
 
-Debezium 协议支持以下类型的事件：
+对于 TiCDC 新架构，Debezium 协议支持以下类型的事件：
 
 - DDL 事件：表示 DDL 变更记录。在上游 DDL 语句成功执行后，DDL 事件被发送到每个 MQ (Message Queue) 分区。
 - DML 事件：表示一行数据变更记录。在行变更发生时，DML 事件被发出，包含变更后该行的相关信息。
@@ -25,7 +25,7 @@ Debezium 协议支持以下类型的事件：
 </div>
 <div label="TiCDC 老架构">
 
-Debezium 协议仅支持 Row Changed 事件，并会直接忽略 DDL 事件和 WATERMARK 事件。Row changed 事件表示一行中的数据变更。当某一行发生变更时，会发送 Row Changed 事件，其中包含该行变更前后的相关信息。WATERMARK 事件标记表的复制进度，表示所有早于该 watermark 的事件都已发送到下游。
+对于 TiCDC 老架构，Debezium 协议仅支持 Row Changed 事件，并会直接忽略 DDL 事件和 WATERMARK 事件。Row changed 事件表示一行中的数据变更。当某一行发生变更时，会发送 Row Changed 事件，其中包含该行变更前后的相关信息。WATERMARK 事件标记表的复制进度，表示所有早于该 watermark 的事件都已发送到下游。
 
 </div>
 </SimpleTab>
@@ -48,7 +48,7 @@ Debezium 输出格式中包含当前行的 Schema 信息，以便下游消费者
 
 > **注意：**
 >
-> DDL 事件仅在 [TiCDC 新架构](/ticdc/ticdc-architecture.md)中受支持。在 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)中，DDL 事件会被忽略。
+> DDL 事件仅在 [TiCDC 新架构](/ticdc/ticdc-architecture.md)中支持。在 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)中，DDL 事件会被忽略。
 
 TiCDC 会将一个 DDL 事件转换为一条 Kafka 消息，其中消息的 key 和 value 都按照 Debezium 协议进行编码。
 
@@ -599,7 +599,7 @@ Key 中的字段只包含主键或唯一索引列。字段解释如下：
 
 > **注意：**
 >
-> WATERMARK 事件仅在 [TiCDC 新架构](/ticdc/ticdc-architecture.md)中受支持。在 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)中，WATERMARK 事件会被忽略。
+> WATERMARK 事件仅在 [TiCDC 新架构](/ticdc/ticdc-architecture.md)中支持。在 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)中，WATERMARK 事件会被忽略。
 
 TiCDC 会将一个 WATERMARK 事件转换为一条 Kafka 消息，其中消息的 key 和 value 都按照 Debezium 协议进行编码。
 
