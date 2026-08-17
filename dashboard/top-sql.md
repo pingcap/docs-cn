@@ -91,6 +91,8 @@ server_configs:
 
 开启 **TiKV 网络 IO 采集（多维度）** 后，设置面板中会显示 **开启 TiKV 详细 IO 维度** (Enable detailed TiKV IO dimensions) 开关。开启该开关并保存后，Top SQL 会将逻辑读、逻辑写和 Read IOPS 作为独立维度采集和筛选：
 
+![开启 TiKV 详细 IO 维度](/media/dashboard/v9.0-top-sql-settings-enable-detailed-io.png)
+
 - **Order By Logical Read**：按照 TiKV 请求在存储层读取或处理的逻辑数据字节数排序。
 - **Order By Logical Write**：按照 TiKV 写请求自身的逻辑写入字节数排序。
 - **Order By Read IOPS**：按照前台 TiKV 请求触发的 RocksDB block read 次数排序。
@@ -130,9 +132,11 @@ server_configs:
     - 通过 `Limit` 选择展示 Top `5`、`20` 或 `100` 类 SQL 查询。
     - 默认的聚合维度为 `By Query`。如果当前选择的是 TiKV 节点，还可以选择按照 `By Table`、`By DB` 或 `By Region` 维度进行聚合。
 
-        ![选择聚合维度](/media/dashboard/v8.5-top-sql-usage-select-agg-by.png)
+        ![选择聚合维度](/media/dashboard/v9.0-top-sql-usage-select-agg-by.png)
 
     - 默认的排序方式是 `Order By CPU`（按 CPU 耗时排序）。如果当前选择的是 TiKV 节点且已[开启 TiKV 网络 IO 采集（多维度）](#开启-tikv-网络-io-采集可选从-v857-和-v900-开始引入)，还可以选择 `Order By Network`（按网络字节数排序）。如果未开启[TiKV 详细 IO 维度](#开启-tikv-详细-io-维度可选)，还可以选择 `Order By Logical IO`（按逻辑 IO 字节数排序）；开启详细 IO 维度后，`Order By Logical IO` 会替换为 `Order By Logical Read`、`Order By Logical Write` 和 `Order By Read IOPS`。
+
+        ![选择排序方式](/media/dashboard/v9.0-top-sql-usage-select-order-by.png)
 
     > **注意**
     >
@@ -140,13 +144,13 @@ server_configs:
 
 5. 观察图表和表格中的资源消耗热点记录。
 
-    ![图表表格](/media/dashboard/v8.5-top-sql-usage-chart.png)
+    ![图表表格](/media/dashboard/v9.0-top-sql-usage-chart.png)
 
     柱状图表示当前排序维度下的资源消耗，不同颜色表示不同记录。表格会按照当前排序维度展示累计值，并在最后提供 `Others` 行，用于汇总所有非 Top N 记录。
 
 6. 在 `By Query` 视图中，点击表格中的某一行 SQL，即可查看该类 SQL 的执行计划详情。
 
-    ![详情](/media/dashboard/v8.5-top-sql-details.png)
+    ![详情](/media/dashboard/v9.0-top-sql-details.png)
 
     你可以在 SQL 详情中查看对应的 SQL 模板、SQL 模板 ID、Plan 模板 ID 以及执行计划文本。SQL 详情表会根据节点类型展示不同指标：
 
@@ -161,7 +165,7 @@ server_configs:
 
 7. 在 TiKV 节点上，如果需要从更高维度定位热点，可以切换到 `By Table`、`By DB` 或 `By Region`，查看聚合后的结果。
 
-    ![按 DB 维度聚合结果页面](/media/dashboard/v8.5-top-sql-usage-agg-by-db-detail.png)
+    ![按 DB 维度聚合结果页面](/media/dashboard/v9.0-top-sql-usage-agg-by-db-detail.png)
 
 8. 基于这些初步线索，进一步在 [SQL 语句分析](/dashboard/dashboard-statement-list.md)或[慢查询](/dashboard/dashboard-slow-query.md)页面中分析根因。
 
