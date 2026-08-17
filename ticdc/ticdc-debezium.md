@@ -5,7 +5,7 @@ summary: 了解 TiCDC Debezium Protocol 的概念和使用方法。
 
 # TiCDC Debezium Protocol
 
-[Debezium](https://debezium.io/) 是一个用于捕获数据库变更的工具。它会将捕获的数据库变更的每一条记录转化为一个被称为“事件” (event) 的消息 (message)，并将这些事件发送到 Kafka 中。从 v8.0.0 起，TiCDC 支持将 TiDB 的变更以 Debezium 的格式直接传输到 Kafka，为之前使用 Debezium 的 MySQL 集成的用户简化了从 MySQL 数据库迁移的过程。从 v9.0.0 起，TiCDC 支持 DDL 事件和 WATERMARK 事件。
+[Debezium](https://debezium.io/) 是一个用于捕获数据库变更的工具。它会将捕获的数据库变更的每一条记录转化为一个被称为“事件” (event) 的消息 (message)，并将这些事件发送到 Kafka 中。从 v8.0.0 起，TiCDC 支持将 TiDB 的行数据变更（DML 事件）以 Debezium 的格式直接传输到 Kafka，为之前使用 Debezium 的 MySQL 集成的用户简化了从 MySQL 数据库迁移的过程。从 [TiCDC v8.5.4-release.1](https://github.com/pingcap/ticdc/releases/tag/v8.5.4-release.1)（[TiCDC 新架构](/ticdc/ticdc-architecture.md)）和 v9.0.0 起，TiCDC 支持以 Debezium 的格式同步 DDL 事件和 WATERMARK 事件。
 
 ## 使用 Debezium 消息格式
 
