@@ -110,7 +110,7 @@ Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skippin
 
 如果 changefeed 未自动恢复，请确认其使用的 Kafka 账号具有读取 Topic 和 broker 配置的权限。更多信息参见[Kafka 消息大小限制](/ticdc/ticdc-sink-to-kafka.md#kafka-消息大小限制)。
 
-**v8.5.8 之前的版本**：
+**v8.5.9 之前的版本**：
 
 1. 根据错误信息确认待发送消息的大小。
 2. 将目标 Kafka Topic 的 `max.message.bytes` 调整为不小于该消息大小。
