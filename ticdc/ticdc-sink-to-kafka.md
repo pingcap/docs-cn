@@ -383,7 +383,7 @@ SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="databa
 
 ## Kafka 消息大小限制
 
-Kafka 会限制每个 Topic 可以接收的消息大小。目标 Topic 当前生效的限制由以下配置决定：
+Kafka 会限制每个 Topic 可以接收的单条消息大小。目标 Topic 实际生效的消息大小限制由以下配置决定：
 
 | 参数 | 作用 |
 | --- | --- |
