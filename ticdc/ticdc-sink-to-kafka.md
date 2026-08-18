@@ -394,7 +394,7 @@ Kafka Sink 启动时会读取目标 Topic 当前生效的消息大小限制，�
 
 > **注意：**
 >
-> 如果 Kafka Sink 因 Kafka ACL 等原因无法读取 Topic 或 broker 的消息大小配置，会使用 changefeed 的 `max-message-bytes` 作为本地消息大小限制。如果该值与 Kafka 实际生效的限制不一致，Kafka Sink 可能无法准确判断消息能否发送，调大 Kafka 的限制后也可能无法自动恢复。请确保 changefeed 使用的 Kafka 账号具有读取 Topic 和 broker 配置的权限；如果无法授予该权限，需要设置 changefeed 的 `max-message-bytes` 与 Kafka 的消息大小限制一致。
+> 如果 Kafka Sink 因 Kafka ACL 等原因无法读取 Topic 或 broker 的消息大小配置，会使用 changefeed 的 `max-message-bytes` 作为本地消息大小限制。此时，如果 `max-message-bytes` 与 Kafka 实际生效的限制不一致，Kafka Sink 可能无法准确判断消息能否发送，调大 Kafka 的限制后也可能无法自动恢复。请确保 changefeed 使用的 Kafka 账号具有读取 Topic 和 broker 配置的权限；如果无法授予该权限，请将 changefeed 的 `max-message-bytes` 设置为与 Kafka 实际生效的消息大小限制一致。
 
 ## 处理超过 Kafka Topic 限制的消息
 
