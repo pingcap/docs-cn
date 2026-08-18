@@ -77,7 +77,7 @@ URI 中可配置的的参数如下：
 | `kafka-version`      | 下游 Kafka 版本号。该值需要与下游 Kafka 的实际版本保持一致。 |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`）。 |
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）。|
-| `max-message-bytes`  | Open Protocol Message 的大小阈值（可选，默认值 `10 MB`，最大值为 `100 MB`）。实际生效规则参见[控制 Message 中的 Event 数量和大小](/ticdc/ticdc-open-protocol.md#控制-message-中的-event-数量和大小)。|
+| `max-message-bytes`  | Open Protocol 批量编码时每条 Message 的大小阈值（可选，默认值 `10 MB`，最大值为 `100 MB`）。实际生效规则参见[控制 Message 中的 Event 数量和大小](/ticdc/ticdc-open-protocol.md#控制-message-中的-event-数量和大小)。|
 | `max-batch-size` | 每条 Open Protocol Message 最多包含的 Row Changed Event 数量（可选，默认值 `16`）。详细说明参见[控制 Message 中的 Event 数量和大小](/ticdc/ticdc-open-protocol.md#控制-message-中的-event-数量和大小)。|
 | `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`），需要大于等于 Kafka 中 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 的值。 |
 | `required-acks`      | 在 `Produce` 请求中使用的配置项，用于告知 broker 需要收到多少副本确认后才进行响应。可选值有：`0`（`NoResponse`：不发送任何响应，只有 TCP ACK），`1`（`WaitForLocal`：仅等待本地提交成功后再响应）和 `-1`（`WaitForAll`：等待所有同步副本提交后再响应。最小同步副本数量可通过 broker 的 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 配置项进行配置）。（可选，默认值为 `-1`）。                      |
