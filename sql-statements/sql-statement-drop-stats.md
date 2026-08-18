@@ -81,12 +81,21 @@ DROP STATS t;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
+执行 `DROP STATS` 后，`SHOW STATS_META` 仍会返回该表的行数和修改计数。
+`DROP STATS` 会清除 TopN、bucket 等直方图相关统计信息，但不会删除
+`STATS_META` 中对应的记录。
+
 ```sql
 SHOW STATS_META WHERE db_name='test' and table_name='t';
 ```
 
 ```
-Empty set (0.00 sec)
++---------+------------+----------------+---------------------+--------------+-----------+
+| Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
++---------+------------+----------------+---------------------+--------------+-----------+
+| test    | t          |                | 2020-05-25 20:34:33 |            0 |         0 |
++---------+------------+----------------+---------------------+--------------+-----------+
+1 row in set (0.00 sec)
 ```
 
 ## MySQL 兼容性
