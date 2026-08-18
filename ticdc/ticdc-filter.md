@@ -123,7 +123,7 @@ ignore-update-only-columns = ["version", "updated_at"] # 当 update DML 仅变�
 - `ignore-insert-value-expr`：配置一个遵循默认 SQL Mode 的 SQL 表达式，用于过滤掉带有指定值的 INSERT 类型的 DML 事件。
 - `ignore-update-old-value-expr`：配置一个遵循默认 SQL Mode 的 SQL 表达式，用于过滤掉带有指定旧值的 UPDATE 类型的 DML 事件。
 - `ignore-update-new-value-expr`：配置一个遵循默认 SQL Mode 的 SQL 表达式，用于过滤掉带有指定新值的 UPDATE 类型的 DML 事件。
-- `ignore-update-only-columns` <span class="version-mark">从 v8.5.8 版本开始引入</span>：指定一组列名。对于匹配 `matcher` 的表，如果一条 UPDATE 事件中发生值变更的列全部包含在该列表中，TiCDC 会过滤掉该事件；如果任意发生值变更的列不在该列表中，TiCDC 会将该事件发送到下游。该配置仅适用于 Kafka 下游，不影响 INSERT 和 DELETE 事件。
+- `ignore-update-only-columns`：指定一组列名，从 v8.5.9 版本开始引入。对于匹配 `matcher` 的表，如果一条 UPDATE 事件中发生值变更的列全部包含在该列表中，TiCDC 会过滤掉该事件；如果任意发生值变更的列不在该列表中，TiCDC 会将该事件发送到下游。该配置仅适用于 Kafka 下游，不影响 INSERT 和 DELETE 事件。
 
     使用该配置时，请注意以下事项：
 
