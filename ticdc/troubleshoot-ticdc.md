@@ -113,7 +113,7 @@ Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skippin
 **v8.5.8 之前的版本**：
 
 1. 根据错误信息确认待发送消息的大小。
-2. 将 Kafka Topic 的 `max.message.bytes` 调整为不小于该消息大小。
+2. 将目标 Kafka Topic 的 `max.message.bytes` 调整为不小于该消息大小。
 3. 暂停 changefeed，将 `max-message-bytes` 设置为与 `max.message.bytes` 相同的值，然后恢复 changefeed。
 
 调整 Kafka 消息大小限制时，还需要检查以下相关配置，确保 Kafka 能正常接收、复制和消费调大后的消息：：
