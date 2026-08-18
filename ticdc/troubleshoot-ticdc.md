@@ -106,7 +106,12 @@ Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skippin
 
 这条报错说明 TiCDC 待发送的消息超过了 Kafka 当前允许的消息大小。处理方式取决于 TiCDC 版本。
 
-**v8.5.8 及之后版本**：根据错误信息中的消息大小，调大 Kafka Topic 的 `max.message.bytes`。Kafka Sink 重建时会重新读取该配置，changefeed 随后自动恢复同步。
+**v8.5.9 及之后版本**：
+
+1. 根据错误信息确认待发送消息的大小。
+2. 将目标 Kafka Topic 的 `max.message.bytes` 调整为不小于该消息大小。
+
+无需修改 changefeed 的 `max-message-bytes`。Kafka Sink 重建后会重新读取 Kafka 当前生效的消息大小限制，changefeed 随后会自动恢复同步。
 
 如果 changefeed 未自动恢复，请确认其使用的 Kafka 账号具有读取 Topic 和 broker 配置的权限。更多信息参见[Kafka 消息大小限制](/ticdc/ticdc-sink-to-kafka.md#kafka-消息大小限制)。
 
