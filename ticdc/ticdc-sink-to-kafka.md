@@ -387,8 +387,8 @@ Kafka 会限制每个 Topic 可以接收的单条消息大小。目标 Topic 实
 
 | 参数 | 作用 |
 | --- | --- |
-| Kafka Topic [`max.message.bytes`](https://kafka.apache.org/43/configuration/topic-configs/#topicconfigs_max.message.bytes) | 为指定 Topic 设置消息大小限制，覆盖 broker 的默认值。 |
-| Kafka broker [`message.max.bytes`](https://kafka.apache.org/43/configuration/broker-configs/#brokerconfigs_message.max.bytes) | Topic 未设置 `max.message.bytes` 时使用的默认值。 |
+| Kafka Topic [`max.message.bytes`](https://kafka.apache.org/43/configuration/topic-configs/#topicconfigs_max.message.bytes) | 为指定的 Topic 设置可接收的最大消息大小。针对该 Topic，该值将优先于 broker 的 `message.max.bytes` 值生效。 |
+| Kafka broker [`message.max.bytes`](https://kafka.apache.org/43/configuration/broker-configs/#brokerconfigs_message.max.bytes) | 当 Topic 未显式设置 `max.message.bytes` 的值时，broker 的 `message.max.bytes` 值将作为该 Topic 可接收的最大消息大小。 |
 
 Kafka Sink 启动时会读取目标 Topic 当前生效的消息大小限制，用于在发送前判断消息是否过大。如果编码后的单条消息超过该限制且未配置 `large-message-handle-option`，Kafka Sink 会返回 `ErrMessageTooLarge`。处理方法参见[Kafka Sink 返回 `ErrMessageTooLarge` 时，如何处理？](/ticdc/troubleshoot-ticdc.md#kafka-sink-返回-errmessagetoolarge-时如何处理)。
 
