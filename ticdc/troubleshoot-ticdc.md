@@ -104,7 +104,7 @@ Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skippin
 
 ## Kafka Sink 返回 `ErrMessageTooLarge` 时，如何处理？
 
-处理方式取决于 TiCDC 版本：
+这条报错说明 TiCDC 待发送的消息超过了 Kafka 当前允许的消息大小。处理方式取决于 TiCDC 版本。
 
 **v8.5.8 及之后版本**：根据错误信息中的消息大小，调大 Kafka Topic 的 `max.message.bytes`。Kafka Sink 重建时会重新读取该配置，changefeed 随后自动恢复同步。
 
