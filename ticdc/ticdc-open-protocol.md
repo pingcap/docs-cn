@@ -51,7 +51,7 @@ Open Protocol 可将一个或多个 Row Changed Event 编码为一条 Message。
 | 参数 | 作用 |
 | --- | --- |
 | `max-batch-size` | 每条 Message 最多包含的 Row Changed Event 数量，默认值为 `16`。 |
-| `max-message-bytes` | 控制 Message 的大小阈值。 |
+| `max-message-bytes` | 将多个 Row Changed Event 编码为一条 Message 时的大小阈值，默认值为 `10 MB`。 |
 
 Kafka Sink 会比较 changefeed 中配置的 `max-message-bytes` 与 Kafka 允许的消息大小限制，并使用其中的较小值作为 Message 大小的实际阈值，避免批量编码后的 Message 超过 Kafka 允许的大小。Kafka 消息大小限制的确定方式参见 [Kafka 消息大小限制](/ticdc/ticdc-sink-to-kafka.md#kafka-消息大小限制)。
 
