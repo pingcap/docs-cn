@@ -1,10 +1,10 @@
 ---
-title: 迁移使用 GH-ost/PT-osc 的源数据库
+title: 迁移使用 gh-ost/pt-osc 的源数据库
 aliases: ['/docs-cn/tidb-data-migration/dev/feature-online-ddl-scheme/','/zh/tidb-data-migration/stable/feature-online-ddl-scheme']
-summary: 使用 GH-ost/PT-osc 进行在线 DDL 工具执行 DDL 时，会产生锁表操作，阻塞数据库读写。为降低影响，可选择在线 DDL 工具 gh-ost 和 pt-osc。在 DM 迁移 MySQL 到 TiDB 时，可开启 `online-ddl` 配置，实现 DM 工具与 gh-ost 或 pt-osc 的协同。 DM 与 online DDL 工具协作细节包括 gh-ost 和 pt-osc 的实现过程，以及自定义规则配置。
+summary: 使用 gh-ost/pt-osc 进行在线 DDL 工具执行 DDL 时，会产生锁表操作，阻塞数据库读写。为降低影响，可选择在线 DDL 工具 gh-ost 和 pt-osc。在 DM 迁移 MySQL 到 TiDB 时，可开启 `online-ddl` 配置，实现 DM 工具与 gh-ost 或 pt-osc 的协同。 DM 与 online DDL 工具协作细节包括 gh-ost 和 pt-osc 的实现过程，以及自定义规则配置。
 ---
 
-# 迁移使用 GH-ost/PT-osc 的源数据库
+# 迁移使用 gh-ost/pt-osc 的源数据库
 
 在生产业务中执行 DDL 时，产生的锁表操作会一定程度阻塞数据库的读取或者写入。为了把对读写的影响降到最低，用户往往会选择 online DDL 工具执行 DDL。常见的 Online DDL 工具有 [gh-ost](https://github.com/github/gh-ost) 和 [pt-osc](https://www.percona.com/doc/percona-toolkit/3.0/pt-online-schema-change.html)。
 
