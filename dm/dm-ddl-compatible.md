@@ -140,4 +140,4 @@ DM 同步过程中，根据 DDL 语句以及所处场景的不同，将采用不
 
 ## Online DDL
 
-Online DDL 特性也会对 DDL 事件进行特殊处理，详情可参考[迁移使用 GH-ost/PT-osc 的源数据库](/dm/feature-online-ddl.md)。
+Online DDL 特性也会对 DDL 事件进行特殊处理，详情可参考[迁移使用 gh-ost/pt-osc 的源数据库](/dm/feature-online-ddl.md)。
