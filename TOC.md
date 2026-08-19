@@ -451,7 +451,7 @@
         - [悲观模式](/dm/feature-shard-merge-pessimistic.md)
         - [乐观模式](/dm/feature-shard-merge-optimistic.md)
         - [手动处理 Sharding DDL Lock](/dm/manually-handling-sharding-ddl-locks.md)
-      - [迁移使用 GH-ost/PT-osc 的数据源](/dm/feature-online-ddl.md)
+      - [迁移使用 gh-ost/pt-osc 的数据源](/dm/feature-online-ddl.md)
       - [上下游列数量不一致的迁移](/migrate-with-more-columns-downstream.md)
       - [增量数据校验](/dm/dm-continuous-data-validation.md)
     - 运维管理
