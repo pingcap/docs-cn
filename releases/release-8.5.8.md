@@ -11,7 +11,7 @@ TiDB 版本：8.5.8
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v8.5/production-deployment-using-tiup) | [下载离线包](https://pingkai.cn/download#tidb-community)
 
-## 提升改进
+## 改进提升
 
 + TiDB
 
