@@ -22,7 +22,6 @@ TiDB 版本：8.5.8
     + TiCDC
 
         - 优化 TiCDC Changefeed 在忽略删除事件时的扫描性能，减少包含大量删除操作的工作负载在追赶历史数据期间不必要的 DML 解码 [#5430](https://github.com/pingcap/ticdc/issues/5430) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5767 -->
-        - 支持同时按事件数量和总字节数配置 TiCDC Changefeed 的事件收集器批处理，使不同工作负载和下游场景下的批次大小更加稳定 [#3237](https://github.com/pingcap/ticdc/issues/3237) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5942 -->
         - 引入自适应扫描窗口算法，提升 TiCDC Event Service 在内存压力下的稳定性和吞吐量，减少 DDL 或同步点场景中的 Dispatcher 饥饿和重置事件 [#4172](https://github.com/pingcap/ticdc/issues/4172) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5761 -->
         - 优化 TiCDC Kafka Sink 校验流程，使校验更加轻量和完整：避免在校验期间执行仅在启动阶段需要的操作，对已有 Topic 也会检查 Schema Registry 等编码器依赖，并且仅在 TiCDC 需要创建 Topic 时校验 `replication-factor` [#5618](https://github.com/pingcap/ticdc/issues/5618) [#5720](https://github.com/pingcap/ticdc/issues/5720) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5811 -->
         - 优化启用 Claim-Check 时 TiCDC Kafka Sink 的资源使用，由同一 Sink 中的所有 Encoder 共享一个 `ClaimCheck` 实例，减少外部存储客户端和连接的资源开销 [#5719](https://github.com/pingcap/ticdc/issues/5719) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5811 -->
