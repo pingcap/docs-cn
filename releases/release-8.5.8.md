@@ -47,7 +47,7 @@ TiDB 版本：8.5.8
     - 修复无权限用户可通过 `INFORMATION_SCHEMA.USER_ATTRIBUTES` 读取其他用户属性的问题 [#70277](https://github.com/pingcap/tidb/issues/70277) @[djshow832](https://github.com/djshow832) <!-- component: sql-infra --> <!-- pr: https://github.com/pingcap/tidb/pull/70317 -->
     - 修复内存使用量频繁超过告警阈值时，记录 OOM 诊断 Goroutine Profile 可能延长 Stop-the-World 暂停时间并增加查询延迟的问题 [#62080](https://github.com/pingcap/tidb/issues/62080) @[YangKeao](https://github.com/YangKeao) <!-- component: sql-infra --> <!-- pr: https://github.com/pingcap/tidb/pull/70228 -->
     - 修复在悲观事务中执行 `LOAD DATA LOCAL INFILE` 时，遇到可重试的锁冲突后可能会在内部重试，从而导致客户端连接状态不同步，并返回无效序列错误而非原始死锁错误的问题 [#69793](https://github.com/pingcap/tidb/issues/69793) @[lance6716](https://github.com/lance6716) <!-- component: transaction, sql-infra, execution --> <!-- pr: https://github.com/pingcap/tidb/pull/70194 -->
-    - 修复执行 `ALTER TABLE ... REORGANIZE PARTITION` 时，重建的全局索引可能缺少对应索引项（这些索引项本应来自分区顺序位于重组分区之后、但未参与重组的分区中的行），从而导致使用这些索引的查询漏掉数据行，并且受影响的值无法正确执行唯一性约束的问题 [#70023](https://github.com/pingcap/tidb/issues/70023) @[mjonss](https://github.com/mjonss) <!-- component: ddl --> <!-- pr: https://github.com/pingcap/tidb/pull/70479 -->
+    - 修复执行 `ALTER TABLE ... REORGANIZE PARTITION` 时，重建的全局索引可能缺少对应索引项（这些索引项本应来自分区顺序位于重组分区之后、但未参与重组的分区中的行），从而导致使用这些索引的查询漏掉数据行，并可能导致插入重复的索引值的问题 [#70023](https://github.com/pingcap/tidb/issues/70023) @[mjonss](https://github.com/mjonss) <!-- component: ddl --> <!-- pr: https://github.com/pingcap/tidb/pull/70479 -->
     - 修复 Join 操作、`UPDATE` 语句和 `DELETE` 语句可能为初始 Chunk 分配过多内存的问题，该问题在高并发或处理宽行的场景下尤为明显 [#68545](https://github.com/pingcap/tidb/issues/68545) @[solotzg](https://github.com/solotzg) <!-- component: execution --> <!-- pr: https://github.com/pingcap/tidb/pull/69965 -->
 
 + TiKV
