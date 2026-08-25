@@ -70,7 +70,7 @@ TiDB 版本：8.5.8
     - 修复客户端指定任意 `ConfigPath` 或类似路径的配置名称时，PD GlobalConfig gRPC API 可能访问预期命名空间之外的 etcd Key 的问题 [#11079](https://github.com/tikv/pd/issues/11079) @[rleungx](https://github.com/rleungx) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11075 -->
     - 修复 PD 可能与调用方通过 `pd-forwarded-host` 指定的任意地址建立出站 gRPC 连接，而没有将转发目标限制为当前 PD Leader 公布的客户端 URL 的问题 [#11070](https://github.com/tikv/pd/issues/11070) @[rleungx](https://github.com/rleungx) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11091 -->
     - 修复新创建的资源组控制器与周期性状态更新发生竞争时，资源组客户端可能持续发送 `NaN` Token 请求的问题 [#11022](https://github.com/tikv/pd/issues/11022) @[JmPotato](https://github.com/JmPotato) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11028 -->
-    - 修复在 PD Resource Manager Leader 切换后或新的 TiDB 实例加入时，新建的 Resource Control 客户端可能收到零 RU 分配，导致临时延迟尖峰或 `ERROR 8252 Exceeded resource group quota limitation` 的问题 [#11148](https://github.com/tikv/pd/issues/11148) @[JmPotato](https://github.com/JmPotato) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11150 --> <!-- exported-on-2026-08-24 -->
+    - 修复在 PD Resource Manager Leader 切换后或新的 TiDB 实例加入时，新建的 Resource Control 客户端可能被分配到 0 RU，导致短暂的延迟尖峰或出现 `ERROR 8252 Exceeded resource group quota limitation` 错误的问题 [#11148](https://github.com/tikv/pd/issues/11148) @[JmPotato](https://github.com/JmPotato) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11150 --> <!-- exported-on-2026-08-24 -->
 
 + TiFlash
 
