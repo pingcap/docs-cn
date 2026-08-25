@@ -60,6 +60,8 @@ TiDB 版本：8.5.8
     - 修复 TiKV In-Memory Engine 在发生 etcd compaction 错误后可能停止更新 Region Label，导致 Label Watch 无限重试的问题 [#19792](https://github.com/tikv/tikv/issues/19792) @[akashchakrabortymsc-cmd](https://github.com/akashchakrabortymsc-cmd) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19898 -->
     - 修复当内存引擎缓存预热卡住，且在 ACK 截止时间前重复收到 Leader Transfer 请求时，Region Leader 转移可能被无限阻塞的问题 [#19776](https://github.com/tikv/tikv/issues/19776) @[overvenus](https://github.com/overvenus) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19921 -->
     - 修复 RocksDB Compaction 短暂出现峰值时，TiKV 可能执行不必要的写入流控的问题 [#19667](https://github.com/tikv/tikv/issues/19667) @[hbisheng](https://github.com/hbisheng) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19828 -->
+    - 修复在目标 Store 完成注册前，如果 PD 临时返回 `store-not-found` 错误，TiKV 可能永久阻塞 Raft 连接的问题 [#19980](https://github.com/tikv/tikv/issues/19980) @[LykxSassinator](https://github.com/LykxSassinator) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19999 --> <!-- exported-on-2026-08-24 -->
+    - 修复 TiKV 在执行外部 SST Ingest 时不再允许前台写入，导致 Ingest 期间写入延迟增加的问题 [#19954](https://github.com/tikv/tikv/issues/19954) @[gengliqi](https://github.com/gengliqi) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19977 --> <!-- exported-on-2026-08-24 -->
 
 + PD
 
@@ -68,6 +70,11 @@ TiDB 版本：8.5.8
     - 修复客户端指定任意 `ConfigPath` 或类似路径的配置名称时，PD GlobalConfig gRPC API 可能访问预期命名空间之外的 etcd Key 的问题 [#11079](https://github.com/tikv/pd/issues/11079) @[rleungx](https://github.com/rleungx) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11075 -->
     - 修复 PD 可能与调用方通过 `pd-forwarded-host` 指定的任意地址建立出站 gRPC 连接，而没有将转发目标限制为当前 PD Leader 公布的客户端 URL 的问题 [#11070](https://github.com/tikv/pd/issues/11070) @[rleungx](https://github.com/rleungx) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11091 -->
     - 修复新创建的资源组控制器与周期性状态更新发生竞争时，资源组客户端可能持续发送 `NaN` Token 请求的问题 [#11022](https://github.com/tikv/pd/issues/11022) @[JmPotato](https://github.com/JmPotato) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11028 -->
+    - 修复在 PD Resource Manager Leader 切换后或新的 TiDB 实例加入时，新建的 Resource Control 客户端可能收到零 RU 分配，导致临时延迟尖峰或 `ERROR 8252 Exceeded resource group quota limitation` 的问题 [#11148](https://github.com/tikv/pd/issues/11148) @[JmPotato](https://github.com/JmPotato) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11150 --> <!-- exported-on-2026-08-24 -->
+
++ TiFlash
+
+    - 修复 TiFlash 资源管控可能使本地准入控制器 Token 长时间维持在较低水平，导致请求在流量突增期间持续排队或被意外限流的问题 [#10996](https://github.com/pingcap/tiflash/issues/10996) @[yongman](https://github.com/yongman) <!-- component: tiflash --> <!-- pr: https://github.com/pingcap/tiflash/pull/11015 --> <!-- exported-on-2026-08-24 -->
 
 + 工具
 
