@@ -80,7 +80,7 @@ DROP STATS t;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-执行 `DROP STATS` 后，`SHOW STATS_META` 仍会返回该表的行数和修改计数。`DROP STATS` 会清除 TopN、直方图桶（bucket）等统计信息，但不会删除 `STATS_META` 中对应的记录。
+`DROP STATS` 会清除 TopN、直方图桶（bucket）等统计信息，但不会删除 `STATS_META` 中对应的记录。因此，执行 `DROP STATS` 后，`SHOW STATS_META` 仍会返回该表的 `Modify_count` 和 `Row_count` 信息。
 
 ```sql
 SHOW STATS_META WHERE db_name='test' and table_name='t';
