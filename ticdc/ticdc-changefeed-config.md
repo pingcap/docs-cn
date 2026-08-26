@@ -347,6 +347,14 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 - 是否输出行数据更改前的值。关闭后，UPDATE 事件不会输出 "before" 字段的数据。
 - 默认值：`true`
 
+##### `include-start-ts` <span class="version-mark">从 v8.5.9 版本开始引入</span>
+
+- 控制 Debezium JSON DML 消息是否包含 `source.start_ts`（源事务的原始 PD TSO）。
+- 默认值：`false`
+- 该参数只有当 sink 类型为 MQ 且输出协议为 Debezium JSON 时才生效。与 Debezium Avro 一起设置会被拒绝。
+- 你也可以设置等价的 URI 参数 `debezium-include-start-ts`。显式指定的 URI 参数优先于该配置项，包括使用 `false` 覆盖 `true`。
+- 关于消息格式和消费者精度要求，请参考 [TiCDC Debezium Protocol](/ticdc/ticdc-debezium.md#包含事务开始-tso)。
+
 ### consistent
 
 consistent 中的字段用于配置 Changefeed 的数据一致性。详细信息请参考[灾难场景的最终一致性复制](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制)。
