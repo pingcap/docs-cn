@@ -118,6 +118,7 @@ TiDB 版本：8.5.8
         - 修复多次执行 Redo Apply 时 TiCDC 可能耗尽内存的问题。修复后，事件收集器支持同时按事件数量和总字节数进行批处理，并支持在 Changefeed 配置中覆盖批处理设置 [#5950](https://github.com/pingcap/ticdc/issues/5950) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5942 -->
         - 修复对分区表执行 `TRUNCATE TABLE` 后，当 Event Service 扫描窗口被固定且 DDL Barrier 无法推进时，TiCDC Changefeed 可能卡住的问题 [#4365](https://github.com/pingcap/ticdc/issues/4365) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5761 -->
         - 修复全局扫描窗口被固定且某个 Dispatcher 存在待处理的同步点 Barrier 时，TiCDC Event Service 扫描进度可能停滞的问题 [#5546](https://github.com/pingcap/ticdc/issues/5546) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5761 -->
+        - 修复并发操作期间可能创建重复 Dispatcher，导致 TiCDC 下游数据不一致的竞态条件问题 [#6069](https://github.com/pingcap/ticdc/issues/6069) @[wk989898](https://github.com/wk989898) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/6086 --> <!-- exported-on-2026-08-26 -->
 
     + TiDB Lightning
 
