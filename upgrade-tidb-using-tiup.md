@@ -61,23 +61,7 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 
 ### 2.1 查阅兼容性变更
 
-<<<<<<< HEAD
 查阅 TiDB v8.5.0 release notes 中的[兼容性变更](/releases/release-8.5.0.md#兼容性变更)。如果有任何变更影响到了你的升级，请采取相应的措施。
-=======
-查阅 TiDB release notes 中的兼容性变更。如果有任何变更影响到了你的升级，请采取相应的措施。
-
-以下为从 v8.4.0 升级至当前版本 (v{{{ .tidb-version }}}) 所需查阅的 release notes。如果从 v8.3.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本的 [Release Notes](/releases/_index.md)。
-
-- TiDB v8.5.0 [兼容性变更](/releases/release-8.5.0.md#兼容性变更)
-- TiDB v8.5.1 [Release Notes](/releases/release-8.5.1.md)
-- TiDB v8.5.2 [Release Notes](/releases/release-8.5.2.md)
-- TiDB v8.5.3 [兼容性变更](/releases/release-8.5.3.md#兼容性变更)
-- TiDB v8.5.4 [兼容性变更](/releases/release-8.5.4.md#兼容性变更)
-- TiDB v8.5.5 [兼容性变更](/releases/release-8.5.5.md#兼容性变更)
-- TiDB v8.5.6 [兼容性变更](https://docs.pingcap.com/zh/tidb/stable/release-8.5.6/#兼容性变更)
-- TiDB v8.5.7 [兼容性变更](https://docs.pingcap.com/zh/tidb/stable/release-8.5.7/#兼容性变更)
-- TiDB v8.5.8 [Release Notes](/releases/release-8.5.8.md)
->>>>>>> f63483b6e8 (add the release notes for v8.5.8 (#21892))
 
 ### 2.2 升级 TiUP 或更新 TiUP 离线镜像
 
