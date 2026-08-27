@@ -126,3 +126,7 @@ TiDB 版本：8.5.8
         - 修复导入出错或重试后，本地 Engine 文件未正确清理时，`IMPORT INTO` 可能因 `lock held by current process` 错误而失败的问题 [#65645](https://github.com/pingcap/tidb/issues/65645) @[D3Hunter](https://github.com/D3Hunter) <!-- component: lightning --> <!-- pr: https://github.com/pingcap/tidb/pull/69478 -->
         - 修复 `IMPORT INTO` 对重复的字典编码 Parquet `DECIMAL` 值可能静默写入错误数据的问题 [#70365](https://github.com/pingcap/tidb/issues/70365) @[joechenrh](https://github.com/joechenrh) <!-- component: lightning --> <!-- pr: https://github.com/pingcap/tidb/pull/70461 -->
         - 修复任务生成被取消时，`IMPORT INTO` 或相关的 Local Backend Ingest 任务可能卡住的问题 [#69240](https://github.com/pingcap/tidb/issues/69240) @[D3Hunter](https://github.com/D3Hunter) <!-- component: lightning, dxf --> <!-- pr: https://github.com/pingcap/tidb/pull/70234 -->
+
+> **注意：**
+>
+> 以上 Release Notes 主要介绍 TiDB v8.5.8 中面向用户的变更。如需查看 v8.5.7 与 v8.5.8 之间的代码变更，请参考 GitHub 上的 issue [#68750](https://github.com/pingcap/tidb/issues/68750#issuecomment-5436067898)。
