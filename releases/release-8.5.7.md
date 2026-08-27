@@ -10,7 +10,7 @@ aliases: ['/zh/tidb/dev/release-8.5.7/','/zh/tidb/v8.5/release-8.5.7','/zh/tidb/
 
 TiDB 版本：8.5.7
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v8.5/production-deployment-using-tiup) | [下载离线包](https://pingkai.cn/download#tidb-community)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v8.5/production-deployment-using-tiup)
 
 ## 新功能
 
