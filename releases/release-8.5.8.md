@@ -5,13 +5,13 @@ summary: 了解 TiDB 8.5.8 的改进和错误修复。
 
 # TiDB 8.5.8 Release Notes
 
-发版日期：2026 年 xx 月 xx 日
+发版日期：2026 年 8 月 27 日
 
 TiDB 版本：8.5.8
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v8.5/production-deployment-using-tiup) | [下载离线包](https://pingkai.cn/download#tidb-community)
 
-## 提升改进
+## 改进提升
 
 + TiDB
 
@@ -22,7 +22,6 @@ TiDB 版本：8.5.8
     + TiCDC
 
         - 优化 TiCDC Changefeed 在忽略删除事件时的扫描性能，减少包含大量删除操作的工作负载在追赶历史数据期间不必要的 DML 解码 [#5430](https://github.com/pingcap/ticdc/issues/5430) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5767 -->
-        - 支持同时按事件数量和总字节数配置 TiCDC Changefeed 的事件收集器批处理，使不同工作负载和下游场景下的批次大小更加稳定 [#3237](https://github.com/pingcap/ticdc/issues/3237) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5942 -->
         - 引入自适应扫描窗口算法，提升 TiCDC Event Service 在内存压力下的稳定性和吞吐量，减少 DDL 或同步点场景中的 Dispatcher 饥饿和重置事件 [#4172](https://github.com/pingcap/ticdc/issues/4172) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5761 -->
         - 优化 TiCDC Kafka Sink 校验流程，使校验更加轻量和完整：避免在校验期间执行仅在启动阶段需要的操作，对已有 Topic 也会检查 Schema Registry 等编码器依赖，并且仅在 TiCDC 需要创建 Topic 时校验 `replication-factor` [#5618](https://github.com/pingcap/ticdc/issues/5618) [#5720](https://github.com/pingcap/ticdc/issues/5720) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5811 -->
         - 优化启用 Claim-Check 时 TiCDC Kafka Sink 的资源使用，由同一 Sink 中的所有 Encoder 共享一个 `ClaimCheck` 实例，减少外部存储客户端和连接的资源开销 [#5719](https://github.com/pingcap/ticdc/issues/5719) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5811 -->
@@ -47,7 +46,7 @@ TiDB 版本：8.5.8
     - 修复无权限用户可通过 `INFORMATION_SCHEMA.USER_ATTRIBUTES` 读取其他用户属性的问题 [#70277](https://github.com/pingcap/tidb/issues/70277) @[djshow832](https://github.com/djshow832) <!-- component: sql-infra --> <!-- pr: https://github.com/pingcap/tidb/pull/70317 -->
     - 修复内存使用量频繁超过告警阈值时，记录 OOM 诊断 Goroutine Profile 可能延长 Stop-the-World 暂停时间并增加查询延迟的问题 [#62080](https://github.com/pingcap/tidb/issues/62080) @[YangKeao](https://github.com/YangKeao) <!-- component: sql-infra --> <!-- pr: https://github.com/pingcap/tidb/pull/70228 -->
     - 修复在悲观事务中执行 `LOAD DATA LOCAL INFILE` 时，遇到可重试的锁冲突后可能会在内部重试，从而导致客户端连接状态不同步，并返回无效序列错误而非原始死锁错误的问题 [#69793](https://github.com/pingcap/tidb/issues/69793) @[lance6716](https://github.com/lance6716) <!-- component: transaction, sql-infra, execution --> <!-- pr: https://github.com/pingcap/tidb/pull/70194 -->
-    - 修复执行 `ALTER TABLE ... REORGANIZE PARTITION` 时，重建的全局索引可能缺少对应索引项（这些索引项本应来自分区顺序位于重组分区之后、但未参与重组的分区中的行），从而导致使用这些索引的查询漏掉数据行，并且受影响的值无法正确执行唯一性约束的问题 [#70023](https://github.com/pingcap/tidb/issues/70023) @[mjonss](https://github.com/mjonss) <!-- component: ddl --> <!-- pr: https://github.com/pingcap/tidb/pull/70479 -->
+    - 修复执行 `ALTER TABLE ... REORGANIZE PARTITION` 时，重建的全局索引可能缺少对应索引项（这些索引项本应来自分区顺序位于重组分区之后、但未参与重组的分区中的行），从而导致使用这些索引的查询漏掉数据行，并可能导致插入重复的索引值的问题 [#70023](https://github.com/pingcap/tidb/issues/70023) @[mjonss](https://github.com/mjonss) <!-- component: ddl --> <!-- pr: https://github.com/pingcap/tidb/pull/70479 -->
     - 修复 Join 操作、`UPDATE` 语句和 `DELETE` 语句可能为初始 Chunk 分配过多内存的问题，该问题在高并发或处理宽行的场景下尤为明显 [#68545](https://github.com/pingcap/tidb/issues/68545) @[solotzg](https://github.com/solotzg) <!-- component: execution --> <!-- pr: https://github.com/pingcap/tidb/pull/69965 -->
 
 + TiKV
@@ -61,6 +60,8 @@ TiDB 版本：8.5.8
     - 修复 TiKV In-Memory Engine 在发生 etcd compaction 错误后可能停止更新 Region Label，导致 Label Watch 无限重试的问题 [#19792](https://github.com/tikv/tikv/issues/19792) @[akashchakrabortymsc-cmd](https://github.com/akashchakrabortymsc-cmd) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19898 -->
     - 修复当内存引擎缓存预热卡住，且在 ACK 截止时间前重复收到 Leader Transfer 请求时，Region Leader 转移可能被无限阻塞的问题 [#19776](https://github.com/tikv/tikv/issues/19776) @[overvenus](https://github.com/overvenus) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19921 -->
     - 修复 RocksDB Compaction 短暂出现峰值时，TiKV 可能执行不必要的写入流控的问题 [#19667](https://github.com/tikv/tikv/issues/19667) @[hbisheng](https://github.com/hbisheng) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19828 -->
+    - 修复在目标 Store 完成注册前，如果 PD 临时返回 `store-not-found` 错误，TiKV 可能永久阻塞 Raft 连接的问题 [#19980](https://github.com/tikv/tikv/issues/19980) @[LykxSassinator](https://github.com/LykxSassinator) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19999 --> <!-- exported-on-2026-08-24 -->
+    - 修复 TiKV 在执行外部 SST Ingest 时不再允许前台写入，导致 Ingest 期间写入延迟增加的问题 [#19954](https://github.com/tikv/tikv/issues/19954) @[gengliqi](https://github.com/gengliqi) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19977 --> <!-- exported-on-2026-08-24 -->
 
 + PD
 
@@ -69,6 +70,11 @@ TiDB 版本：8.5.8
     - 修复客户端指定任意 `ConfigPath` 或类似路径的配置名称时，PD GlobalConfig gRPC API 可能访问预期命名空间之外的 etcd Key 的问题 [#11079](https://github.com/tikv/pd/issues/11079) @[rleungx](https://github.com/rleungx) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11075 -->
     - 修复 PD 可能与调用方通过 `pd-forwarded-host` 指定的任意地址建立出站 gRPC 连接，而没有将转发目标限制为当前 PD Leader 公布的客户端 URL 的问题 [#11070](https://github.com/tikv/pd/issues/11070) @[rleungx](https://github.com/rleungx) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11091 -->
     - 修复新创建的资源组控制器与周期性状态更新发生竞争时，资源组客户端可能持续发送 `NaN` Token 请求的问题 [#11022](https://github.com/tikv/pd/issues/11022) @[JmPotato](https://github.com/JmPotato) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11028 -->
+    - 修复在 PD Resource Manager Leader 切换后或新的 TiDB 实例加入时，新建的 Resource Control 客户端可能被分配到 0 RU，导致短暂的延迟尖峰或出现 `ERROR 8252 Exceeded resource group quota limitation` 错误的问题 [#11148](https://github.com/tikv/pd/issues/11148) @[JmPotato](https://github.com/JmPotato) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11150 --> <!-- exported-on-2026-08-24 -->
+
++ TiFlash
+
+    - 修复 TiFlash 资源管控可能使本地准入控制器 Token 长时间维持在较低水平，导致请求在流量突增期间持续排队或被意外限流的问题 [#10996](https://github.com/pingcap/tiflash/issues/10996) @[yongman](https://github.com/yongman) <!-- component: tiflash --> <!-- pr: https://github.com/pingcap/tiflash/pull/11015 --> <!-- exported-on-2026-08-24 -->
 
 + 工具
 
@@ -112,6 +118,7 @@ TiDB 版本：8.5.8
         - 修复多次执行 Redo Apply 时 TiCDC 可能耗尽内存的问题。修复后，事件收集器支持同时按事件数量和总字节数进行批处理，并支持在 Changefeed 配置中覆盖批处理设置 [#5950](https://github.com/pingcap/ticdc/issues/5950) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5942 -->
         - 修复对分区表执行 `TRUNCATE TABLE` 后，当 Event Service 扫描窗口被固定且 DDL Barrier 无法推进时，TiCDC Changefeed 可能卡住的问题 [#4365](https://github.com/pingcap/ticdc/issues/4365) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5761 -->
         - 修复全局扫描窗口被固定且某个 Dispatcher 存在待处理的同步点 Barrier 时，TiCDC Event Service 扫描进度可能停滞的问题 [#5546](https://github.com/pingcap/ticdc/issues/5546) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5761 -->
+        - 修复 TiCDC 中的一个竞态条件，该问题可能导致重复创建 Dispatcher，进而造成下游数据不一致 [#6069](https://github.com/pingcap/ticdc/issues/6069) @[wk989898](https://github.com/wk989898) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/6086 --> <!-- exported-on-2026-08-26 -->
 
     + TiDB Lightning
 
