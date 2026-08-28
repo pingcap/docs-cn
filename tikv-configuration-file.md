@@ -1381,7 +1381,7 @@ RocksDB 相关的配置项。
 ### `compaction-readahead-size`
 
 + 开启 RocksDB compaction 过程中的预读功能，该项指定预读数据的大小。如果使用的是机械磁盘，建议该值至少为 2MiB。
-+ 默认值：2MiB
++ 默认值：2MiB（v8.5.7 之前的版本中默认值为 0）
 + 最小值：0
 + 单位：B|KiB|MiB|GiB
 
@@ -2005,7 +2005,7 @@ raftdb 相关配置项。
 
 + 控制在 RocksDB compaction 时是否开启预读取功能，并指定预读取数据的大小。
 + 如果使用机械硬盘，建议将该值至少设置为 `2MiB`。
-+ 默认值：`2MiB`
++ 默认值：`2MiB`（v8.5.7 之前的版本中默认值为 0）
 + 最小值：`0`
 + 单位：B|KiB|MiB|GiB
 
