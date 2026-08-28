@@ -8,7 +8,8 @@ summary: 使用 Top SQL 找到消耗 CPU、网络和逻辑 I/O 资源较多的�
 在 TiDB Dashboard 的 Top SQL 页面，你可以查看和分析指定的 TiDB 或 TiKV 节点在一段时间内资源消耗最高的 SQL 查询。
 
 - 开启 Top SQL 后，该功能会持续采集现有 TiDB 和 TiKV 节点的 CPU 负载数据，并最多保留 30 天。
-- 从 v8.5.7 和 v9.0.0 起，你还可以在 Top SQL 设置中开启 **TiKV 网络 IO 采集（多维度）**，以进一步查看指定 TiKV 节点的 `Network Bytes`、`Logical IO Bytes` 等指标，并按 `By Query`、`By Table`、`By DB` 或 `By Region` 维度进行聚合分析。在支持的 TiKV 集群中，你还可以开启 **TiKV 详细 IO 维度**，分别分析逻辑读、逻辑写和 Read IOPS 热点。
+- 从 v8.5.7 和 v9.0.0 起，你还可以在 Top SQL 设置中开启 **TiKV 网络 IO 采集（多维度）**，以进一步查看指定 TiKV 节点的 `Network Bytes`、`Logical IO Bytes` 等指标，并按 `By Query`、`By Table`、`By DB` 或 `By Region` 维度进行聚合分析。
+- 从 v8.5.9 起，开启 TiKV 网络 IO 采集后，你还可以进一步开启 **TiKV 详细 IO 维度**，分别分析逻辑读、逻辑写和 Read IOPS 热点。
 
 Top SQL 具有以下功能：
 
@@ -82,28 +83,29 @@ SET GLOBAL tidb_enable_top_sql = 1;
 server_configs:
   tikv:
     resource-metering.enable-network-io-collection: true
-    resource-metering.enable-detailed-io-collection: true
 ```
 
 关于 TiUP 拓扑配置的更多信息，请参见 [TiUP 集群拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)。
 
-#### 开启 TiKV 详细 IO 维度（可选）
+#### 开启 TiKV 详细 I/O 维度（可选）<span class="version-mark">从 v8.5.9 版本开始引入</span>
 
 开启 **TiKV 网络 IO 采集（多维度）** 后，设置面板中会显示 **开启 TiKV 详细 IO 维度** (Enable detailed TiKV IO dimensions) 开关。开启该开关并保存后，Top SQL 会将逻辑读、逻辑写和 Read IOPS 作为独立维度采集和筛选：
 
-![开启 TiKV 详细 IO 维度](/media/dashboard/v9.0-top-sql-settings-enable-detailed-io.png)
+![开启 TiKV 详细 IO 维度](/media/dashboard/v8.5.9-top-sql-settings-enable-detailed-io.png)
 
 - **Order By Logical Read**：按照 TiKV 请求在存储层读取或处理的逻辑数据字节数排序。
 - **Order By Logical Write**：按照 TiKV 写请求自身的逻辑写入字节数排序。
 - **Order By Read IOPS**：按照前台 TiKV 请求触发的 RocksDB block read 次数排序。
 
-开启详细 IO 维度后，原来的 `Order By Logical IO` 会替换为上述三个独立维度。`Order By CPU` 和 `Order By Network` 不受影响。
+开启详细 I/O 维度后，原来的 `Order By Logical IO` 会替换为上述三个独立维度。`Order By CPU` 和 `Order By Network` 不受影响。
 
 `Read IOPS` 仅归因于前台 TiKV 请求上下文中记录的 RocksDB block read，不等同于底层存储设备的实际 IOPS，因此不能直接与 `iostat` 等设备层监控指标对比。
 
-只有集群中所有 TiKV 节点均成功开启 TiKV 网络 IO 采集和详细 IO 维度时，Top SQL 才显示这三个独立维度。如果集群中包含不支持该配置的旧 TiKV 节点，或者存在配置未开启、节点不可达等情况，Top SQL 会将详细 IO 维度视为未开启。
+只有集群中所有 TiKV 节点均成功开启 TiKV 网络 IO 采集和详细 I/O 维度时，Top SQL 才显示这三个独立维度。如果集群中包含不支持该配置的旧 TiKV 节点，或者存在配置未开启、节点不可达等情况，Top SQL 会将详细 I/O 维度视为未开启。
 
-开启详细 IO 维度会增加上报数据量和存储开销。数据展示可能存在约 1 分钟延迟。
+开启详细 I/O 维度会增加上报数据量和存储开销。数据展示可能存在约 1 分钟延迟。
+
+对于后续新扩容的 TiKV 节点，详细 I/O 配置不会自动生效。如果希望新增节点自动开启网络 I/O 采集和详细 I/O 维度，还需要在前述 TiUP 集群拓扑文件的 `server_configs.tikv` 下增加 `resource-metering.enable-detailed-io-collection: true`。
 
 ## 使用 Top SQL
 
@@ -132,25 +134,25 @@ server_configs:
     - 通过 `Limit` 选择展示 Top `5`、`20` 或 `100` 类 SQL 查询。
     - 默认的聚合维度为 `By Query`。如果当前选择的是 TiKV 节点，还可以选择按照 `By Table`、`By DB` 或 `By Region` 维度进行聚合。
 
-        ![选择聚合维度](/media/dashboard/v9.0-top-sql-usage-select-agg-by.png)
+        ![选择聚合维度](/media/dashboard/v8.5.9-top-sql-usage-select-agg-by.png)
 
-    - 默认的排序方式是 `Order By CPU`（按 CPU 耗时排序）。如果当前选择的是 TiKV 节点且已[开启 TiKV 网络 IO 采集（多维度）](#开启-tikv-网络-io-采集可选从-v857-和-v900-开始引入)，还可以选择 `Order By Network`（按网络字节数排序）。如果未开启[TiKV 详细 IO 维度](#开启-tikv-详细-io-维度可选)，还可以选择 `Order By Logical IO`（按逻辑 IO 字节数排序）；开启详细 IO 维度后，`Order By Logical IO` 会替换为 `Order By Logical Read`、`Order By Logical Write` 和 `Order By Read IOPS`。
+    - 默认的排序方式是 `Order By CPU`（按 CPU 耗时排序）。如果当前选择的是 TiKV 节点且已[开启 TiKV 网络 IO 采集（多维度）](#开启-tikv-网络-io-采集可选从-v857-和-v900-开始引入)，还可以选择 `Order By Network`（按网络字节数排序）。如果未开启[TiKV 详细 I/O 维度](#开启-tikv-详细-io-维度可选从-v859-版本开始引入)，还可以选择 `Order By Logical IO`（按逻辑 IO 字节数排序）；开启详细 I/O 维度后，`Order By Logical IO` 会替换为 `Order By Logical Read`、`Order By Logical Write` 和 `Order By Read IOPS`。
 
-        ![选择排序方式](/media/dashboard/v9.0-top-sql-usage-select-order-by.png)
+        ![选择排序方式](/media/dashboard/v8.5.9-top-sql-usage-select-order-by.png)
 
     > **注意**
     >
-    > `By Region` 以及 CPU 以外的排序维度仅在 [TiKV 网络 IO 采集（多维度）](#开启-tikv-网络-io-采集可选从-v857-和-v900-开始引入)开启时可选。`Order By Logical Read`、`Order By Logical Write` 和 `Order By Read IOPS` 还要求[TiKV 详细 IO 维度](#开启-tikv-详细-io-维度可选)在所有 TiKV 节点上均已开启。若网络 IO 采集未开启，但历史数据仍然存在，页面会继续展示历史数据，并提示新数据无法完整采集。
+    > `By Region` 以及 CPU 以外的排序维度仅在 [TiKV 网络 IO 采集（多维度）](#开启-tikv-网络-io-采集可选从-v857-和-v900-开始引入)开启时可选。`Order By Logical Read`、`Order By Logical Write` 和 `Order By Read IOPS` 还要求[TiKV 详细 I/O 维度](#开启-tikv-详细-io-维度可选从-v859-版本开始引入)在所有 TiKV 节点上均已开启。若网络 IO 采集未开启，但历史数据仍然存在，页面会继续展示历史数据，并提示新数据无法完整采集。
 
 5. 观察图表和表格中的资源消耗热点记录。
 
-    ![图表表格](/media/dashboard/v9.0-top-sql-usage-chart.png)
+    ![图表表格](/media/dashboard/v8.5.9-top-sql-usage-chart.png)
 
     柱状图表示当前排序维度下的资源消耗，不同颜色表示不同记录。表格会按照当前排序维度展示累计值，并在最后提供 `Others` 行，用于汇总所有非 Top N 记录。
 
 6. 在 `By Query` 视图中，点击表格中的某一行 SQL，即可查看该类 SQL 的执行计划详情。
 
-    ![详情](/media/dashboard/v9.0-top-sql-details.png)
+    ![详情](/media/dashboard/v8.5.9-top-sql-details.png)
 
     你可以在 SQL 详情中查看对应的 SQL 模板、SQL 模板 ID、Plan 模板 ID 以及执行计划文本。SQL 详情表会根据节点类型展示不同指标：
 
@@ -165,7 +167,7 @@ server_configs:
 
 7. 在 TiKV 节点上，如果需要从更高维度定位热点，可以切换到 `By Table`、`By DB` 或 `By Region`，查看聚合后的结果。
 
-    ![按 DB 维度聚合结果页面](/media/dashboard/v9.0-top-sql-usage-agg-by-db-detail.png)
+    ![按 DB 维度聚合结果页面](/media/dashboard/v8.5.9-top-sql-usage-agg-by-db-detail.png)
 
 8. 基于这些初步线索，进一步在 [SQL 语句分析](/dashboard/dashboard-statement-list.md)或[慢查询](/dashboard/dashboard-slow-query.md)页面中分析根因。
 
@@ -197,7 +199,7 @@ SET GLOBAL tidb_enable_top_sql = 0;
 - Top SQL 页面仍可查看之前已采集到的尚未过期的历史网络 IO 和逻辑 IO 数据。
 - 新的网络 IO 和逻辑 IO 数据，以及 `By Region` 数据将不再继续采集。
 
-### 停用 TiKV 详细 IO 维度
+### 停用 TiKV 详细 I/O 维度
 
 如果你希望继续使用 `Order By Network`、`Order By Logical IO` 和 `By Region`，但不再分别采集逻辑读、逻辑写和 Read IOPS，可以关闭 **开启 TiKV 详细 IO 维度** 开关并保存。关闭后，`Order By Logical Read`、`Order By Logical Write` 和 `Order By Read IOPS` 不再显示，排序选项恢复为合并的 `Order By Logical IO`。
 
@@ -209,7 +211,7 @@ SET GLOBAL tidb_enable_top_sql = 0;
 
 **2. 该功能开启后对集群是否有性能影响？**
 
-开启 Top SQL 对集群性能有轻微影响。根据测算，该功能对集群的平均性能影响小于 3%。如果你同时开启了 TiKV 网络 IO 采集（多维度），还会额外增加一定的存储和查询开销；开启 TiKV 详细 IO 维度还会进一步增加上报数据量和存储开销。
+开启 Top SQL 对集群性能有轻微影响。根据测算，该功能对集群的平均性能影响小于 3%。如果你同时开启了 TiKV 网络 IO 采集（多维度），还会额外增加一定的存储和查询开销；开启 TiKV 详细 I/O 维度还会进一步增加上报数据量和存储开销。
 
 **3. 该功能目前是什么状态？**
 
