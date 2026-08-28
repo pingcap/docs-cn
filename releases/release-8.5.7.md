@@ -114,6 +114,8 @@ TiDB 版本：8.5.7
 | 配置文件或组件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiDB | [`enable-telemetry`](https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file#enable-telemetry-从-v402-版本开始引入) | 废弃 | 从 v8.5.7 开始，TiDB 废弃该配置项及 telemetry 功能。该配置项仅为兼容性而保留，不再推荐使用。|
+| TiKV | [`raftdb.compaction-readahead-size`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#compaction-readahead-size-1) | 修改 | 默认值从 `0`（禁用预读）修改为 `2MiB`，以提升 compaction 的读取性能。|
+| TiKV | [`rocksdb.compaction-readahead-size`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#compaction-readahead-size) | 修改 | 默认值从 `0`（禁用预读）修改为 `2MiB`，以提升 compaction 的读取性能。|
 | TiKV | [`backup.gcp-v2-enable`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#backupgcp-v2-enable-从-v857-版本开始引入) | 新增 | 用于控制 TiKV 在 GCS 全量备份与恢复中是否使用 `gcp_v2` 外部存储后端。默认值为 `true`。启用时，TiKV 使用 `gcp_v2`；关闭时，TiKV 使用旧版 GCS 实现。|
 | TiKV | [`log-backup.gcp-v2-enable`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#log-backupgcp-v2-enable-从-v857-版本开始引入) | 新增 | 用于控制 TiKV 在 GCS 日志备份中是否使用 `gcp_v2` 外部存储后端。默认值为 `true`。启用时，TiKV 使用 `gcp_v2`；关闭时，TiKV 使用旧版 GCS 实现。|
 | TiKV | [`resource-control.admission-max-delayed-count`](https://docs.pingcap.com/zh/tidb/v8.5/tikv-configuration-file#admission-max-delayed-count-从-v857-版本开始引入) | 新增 | 用于指定 TiKV 在准入控制延迟队列中可保留的最大并发请求数（读写合计）。默认值为 `10000`。将该值设置为 `0` 表示并发延迟数不受限制。|
