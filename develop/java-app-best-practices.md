@@ -62,7 +62,7 @@ Java 应用尽管可以选择在不同的框架中封装，但在最底层一般
 
     如果需要在 `resultset` 读取完成或 close 前进行查询避免上述报错，可在 URL 中添加配置参数 `clobberStreamingResults=true`，这样会自动 close `resultset`，但之前流式查询未被读取的结果集会丢失。
 
-- 方式二：使用 Cursor Fetch，首先需[设置 `FetchSize`](http://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数，且在 JDBC URL 中配置 `useCursorFetch = true`。
+- 方式二：使用 Cursor Fetch，首先需[设置 `FetchSize`](https://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数，且在 JDBC URL 中配置 `useCursorFetch = true`。
 
 TiDB 同时支持以上两种方式，但更推荐使用第一种将 `FetchSize` 设置为 `Integer.MIN_VALUE` 的方式，比第二种功能实现更简单且执行效率更高。
 
