@@ -53,6 +53,8 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0;
 
 * v5.1 版本及后续版本将不再支持设置系统表的 replica。在集群升级前，需要清除相关系统表的 replica，否则升级到较高版本后将无法再修改系统表的 replica 设置。
 
+* 从 v9.0.0 开始，新增 TiFlash / 列存副本（`SET TIFLASH REPLICA n`，`n > 0`）以及依赖该副本的相关 DDL 受系统变量 [`tidb_columnar_storage_enabled`](/system-variables.md#tidb_columnar_storage_enabled-从-v900-版本开始引入) 控制。当该变量为 `OFF` 时，上述操作会被拒绝；`SET TIFLASH REPLICA 0` 仍可用于清理副本。
+
 > **注意：**
 >
 > 目前，使用 TiCDC 同步表到下游 TiDB 集群时，不支持为表创建 TiFlash 副本，即 TiCDC 不支持同步 TiFlash 相关的 DDL，例如:

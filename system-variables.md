@@ -1577,6 +1577,23 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
     - [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 语句。
     - 用于将数据导入本地部署的 TiDB 的 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 语句。
 
+### `tidb_columnar_storage_enabled` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量控制在集群中，是否允许新增 TiFlash 副本，以及依赖该副本的相关 DDL。
+- 当该变量为 `OFF` 时，以下操作会被拒绝，并返回可操作的错误信息：
+    - `ALTER TABLE ... SET TIFLASH REPLICA n`（`n > 0`）
+    - `ALTER DATABASE ... SET TIFLASH REPLICA n`（`n > 0`，且存在需要真正修改副本数的表）
+    - 会持久化 TiFlash 副本元数据（副本数大于 0）的 `CREATE TABLE` / `CREATE TABLE LIKE`
+    - 会自动设置副本数为 1 的带 columnar / vector / fulltext 索引的建表语句
+    - `ALTER TABLE ADD COLUMNAR INDEX`（即使表上已有残留副本元数据）
+- `ALTER TABLE/DATABASE ... SET TIFLASH REPLICA 0` 始终允许执行，用于清理副本元数据。
+- 默认值为 `ON`，以保证升级兼容：已有集群和滚动升级不会因缺失该变量而被阻塞。
+
 ### `tidb_ddl_error_count_limit`
 
 - 作用域：GLOBAL
