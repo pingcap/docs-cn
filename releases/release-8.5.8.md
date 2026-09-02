@@ -21,6 +21,7 @@ TiDB 版本：8.5.8
 
     + TiCDC
 
+        - 升级 TiDB、`golang.org/x/crypto`、AWS SDK 和其他依赖，以缓解 TiCDC 中已知安全漏洞带来的风险 [#12775](https://github.com/pingcap/tiflow/issues/12775) [#5827](https://github.com/pingcap/ticdc/issues/5827) [#5693](https://github.com/pingcap/ticdc/issues/5693) [#5445](https://github.com/pingcap/ticdc/issues/5445) @[asddongmen](https://github.com/asddongmen) @[wk989898](https://github.com/wk989898) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/tiflow/pull/12776 --> <!-- pr: https://github.com/pingcap/ticdc/pull/5829 --> <!-- pr: https://github.com/pingcap/ticdc/pull/5700 -->
         - 优化 TiCDC Changefeed 在忽略删除事件时的扫描性能，减少包含大量删除操作的工作负载在追赶历史数据期间不必要的 DML 解码 [#5430](https://github.com/pingcap/ticdc/issues/5430) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5767 -->
         - 引入自适应扫描窗口算法，提升 TiCDC Event Service 在内存压力下的稳定性和吞吐量，减少 DDL 或同步点场景中的 Dispatcher 饥饿和重置事件 [#4172](https://github.com/pingcap/ticdc/issues/4172) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5761 -->
         - 优化 TiCDC Kafka Sink 校验流程，使校验更加轻量和完整：避免在校验期间执行仅在启动阶段需要的操作，对已有 Topic 也会检查 Schema Registry 等编码器依赖，并且仅在 TiCDC 需要创建 Topic 时校验 `replication-factor` [#5618](https://github.com/pingcap/ticdc/issues/5618) [#5720](https://github.com/pingcap/ticdc/issues/5720) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5811 -->
@@ -51,6 +52,7 @@ TiDB 版本：8.5.8
 
 + TiKV
 
+    - 升级 Rust 依赖，修复 TiKV 中潜在的安全漏洞 [#19931](https://github.com/tikv/tikv/issues/19931) @[hbisheng](https://github.com/hbisheng) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19933 -->
     - 修复 TiKV 会对快速处理完成的 Raftstore 消息批次执行不必要的慢日志消息格式化，造成额外 CPU 开销的问题 [#19861](https://github.com/tikv/tikv/issues/19861) @[pingyu](https://github.com/pingyu) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19910 -->
     - 修复 TiKV Coprocessor 计算下推的 `LIKE` 表达式时，如果涉及格式错误的 UTF-8 输入或模式、`BIT` 值或某些排序规则，可能导致 TiKV panic 的问题 [#66597](https://github.com/pingcap/tidb/issues/66597) [#67082](https://github.com/pingcap/tidb/issues/67082) [#19811](https://github.com/tikv/tikv/issues/19811) @[jebter](https://github.com/jebter) <!-- component: execution, tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19893 --> <!-- pr: https://github.com/tikv/tikv/pull/19894 -->
     - 修复外部 SST Ingest 与前台写入并发竞争时，TiKV 可能生成不一致的 MVCC 状态，进而导致事务状态检查发生 panic 的问题 [#19891](https://github.com/tikv/tikv/issues/19891) @[gengliqi](https://github.com/gengliqi) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19916 -->
@@ -84,6 +86,10 @@ TiDB 版本：8.5.8
         - 修复使用 BR 对设置了 `AUTO_ID_CACHE=1` 的表执行时间点恢复后，首次执行 `INSERT` 可能出现重复键错误的问题 [#69485](https://github.com/pingcap/tidb/issues/69485) @[vldmit](https://github.com/vldmit) <!-- component: br --> <!-- pr: https://github.com/pingcap/tidb/pull/70253 -->
         - 修复停止日志备份任务后，BR 日志备份会残留过期的 GC Safepoint，可能影响清理和 Safepoint 管理的问题 [#19832](https://github.com/tikv/tikv/issues/19832) @[Leavrth](https://github.com/Leavrth) <!-- component: br --> <!-- pr: https://github.com/tikv/tikv/pull/19911 -->
         - 修复多个恢复任务并发运行时，BR 无法正确更新 SST 下载限速，可能导致其中某个任务的限速变更不生效的问题 [#19454](https://github.com/tikv/tikv/issues/19454) @[Leavrth](https://github.com/Leavrth) <!-- component: br --> <!-- pr: https://github.com/tikv/tikv/pull/19924 -->
+
+    + DM
+
+        - 升级 OpenTelemetry 和 `kin-openapi` 依赖，修复 DM 中潜在的安全漏洞 [#12637](https://github.com/pingcap/tiflow/issues/12637) @[GMHDBJD](https://github.com/GMHDBJD) <!-- component: dm --> <!-- pr: https://github.com/pingcap/tiflow/pull/12784 -->
 
     + TiCDC
 
