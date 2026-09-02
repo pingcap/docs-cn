@@ -9,6 +9,10 @@ summary: 了解 TiDB 7.5.7 版本的兼容性变更、改进提升，以及错�
 
 TiDB 版本：7.5.7
 
+> **警告：**
+>
+> 该版本存在一些已知问题，已在新版本中修复，建议使用 7.5.x 的最新版本。
+
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v7.5/production-deployment-using-tiup) | [下载离线包](https://pingkai.cn/download#tidb-community)
 
 ## 兼容性变更
