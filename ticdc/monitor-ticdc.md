@@ -1,4 +1,4 @@
----
+﻿---
 title: TiCDC 详细监控指标
 summary: 了解 TiCDC 详细的监控指标。
 aliases: ['/zh/tidb/dev/ticdc-grafana-dashboard']
@@ -52,6 +52,10 @@ TiCDC 新架构的监控面板主要包括以下部分：
 - TiCDC Input Bytes/s：TiCDC 每秒从上游接收的数据量
 - Sink Event Row Count/s：TiCDC 每秒向下游写入的数据行数
 - Sink Write Bytes/s：TiCDC 每秒向下游写入的数据量
+- Upstream Write Bytes / s：上游数据库的写入吞吐量
+- TiCDC Input Bytes / s：TiCDC 每秒从上游接收的数据量
+- Sink Event Row Count / s：TiCDC 每秒向下游写入的数据行数
+- Sink Write Bytes / s：TiCDC 每秒向下游写入的数据量
 - The Status of Changefeeds：各 Changefeed 的状态
 - Table Dispatcher Count：各 Changefeed 对应的 Dispatcher 数量
 - Memory Quota：Event Collector 内存配额及使用量，使用量过大时会导致限流
@@ -71,6 +75,9 @@ TiCDC 新架构的监控面板主要包括以下部分：
 - Memory Usage：TiCDC 节点使用的内存
 - Ownership History：TiCDC 集群中 Owner 节点的历史记录
 - PD Leader History：上游 TiDB 集群中 PD Leader 节点的历史记录
+- Build Info：TiCDC 构建信息。
+- Log Write Speed：日志写入速度。
+- Log Size & Disk Usage：日志大小与磁盘占用。
 
 ### Log Puller 面板
 
@@ -81,11 +88,15 @@ TiCDC 新架构的监控面板主要包括以下部分：
 **Log Puller** 面板的各指标说明如下：
 
 - Input Events/s：TiCDC 每秒收到的事件数
-- Unresolved Region Request Count：TiCDC 已经发送但尚未完成的 Region 增量扫描请求数
+- Input Events / s：TiCDC 每秒收到的事件数
+- Unresolved Region Request Count ：TiCDC 已经发送但尚未完成的 Region 增量扫描请求数
 - Region Request Finish Scan Duration：Region 增量扫描的耗时
 - Subscribed Region Count：订阅的 Region 总数
 - Memory Quota：Log Puller 内存配额及使用量，使用量过大会导致限流
 - Resolved Ts Batch Size (Regions)：单个 Resolved Ts 事件包含的 Region 数量
+- Region Event Handle Duration：Region 事件处理耗时。
+- Region Event Consume Callback Duration：Region 事件回调消费耗时。
+- Dropped Resolve Lock Tasks / s：丢弃的 Resolve Lock 任务速率。
 
 ### Event Store 面板
 
@@ -105,12 +116,31 @@ TiCDC 新架构的监控面板主要包括以下部分：
 - Write Worker Busy Ratio：Event Store 写线程的 I/O 时间占总运行时间的比例
 - Compressed Rows/s：Event Store 每秒压缩的数据行数（仅当行大小超过设定阈值时触发压缩）
 - Write Duration：Event Store 写入操作的耗时
+- Write Queue Duration：Event Store 写入队列耗时。
+- Write Prepare Duration：Event Store 写入准备耗时。
 - Write Batch Size：单次写入操作的批量数据大小
 - Write Batch Event Count：单次写入批次中包含的行变更数
 - Data Size On Disk：Event Store 在磁盘上占用的数据总量
 - Data Size In Memory：Event Store 在内存中占用的数据总量
 - Scan Requests/s：Event Store 每秒执行的扫描请求数量
 - Scan Bytes/s：Event Store 每秒扫描的数据量
+- EventStore Resolved Ts Lag ：Event Store 的 Resolved Ts 延迟。
+- EventService Resolved Ts Lag ：Event Service 的 Resolved Ts 延迟。
+- Input Event Count / s：Event Store 每秒处理的事件数。
+- Input Bytes / s：Event Store 每秒处理的数据量。
+- Write Requests / s：Event Store 每秒执行的写入请求数量。
+- Compressed Rows / s：Event Store 每秒压缩的数据行数。
+- Scan Requests / s：Event Store 每秒执行的扫描请求数量。
+- Scan Bytes / s：Event Store 每秒扫描的数据量。
+- Scan Operation Duration ：Event Store 扫描操作耗时。
+- Subscription Num：订阅数量。
+- pebble block cache access /s：Pebble block cache 访问次数。
+- pebble block cache hit ratio：Pebble block cache 命中率。
+- pebble compaction duration seconds：Pebble compaction 耗时。
+- pebble flush duration seconds：Pebble flush 耗时。
+- pebble compaction bytes：Pebble compaction 数据量。
+- pebble level files：Pebble 各层文件数。
+- pebble write stall / s：Pebble 写入阻塞速率。
 
 ### Sink 面板
 
@@ -125,6 +155,243 @@ TiCDC 新架构的监控面板主要包括以下部分：
 - Output DDL Executing Duration：当前节点上对应 Changefeed 执行 DDL Event 的耗时
 - Sink Error Count / m：Sink 模块每分钟的报错信息数量
 - Output DDL Count / Minutes：当前节点上对应 Changefeed 每分钟执行的 DDL 数量
+- Conflict Detect Duration：冲突检测耗时。
+- Full Flush Duration：全量 Flush 耗时。
+- Backend Flush Duration：后端 Flush 耗时。
+- Worker Input Rows / s：Worker 输入行数速率。
+- Worker Batch Duration Percentile：Worker 批处理耗时分位数。
+- Worker Batch Size Percentile：Worker 批大小分位数。
+- Worker Send Message Duration Percentile：Worker 发送消息耗时分位数。
+- Kafka Outgoing Bytes：Kafka 发送字节数。
+- Kafka Inflight Requests：Kafka 在途请求数。
+- Kafka Request Latency：Kafka 请求延迟。
+- Kafka Request Rate：Kafka 请求速率。
+- Kafka Records Per Request：每次 Kafka 请求的记录数。
+- Kafka Producer Compression Ratio：Kafka 生产端压缩比。
+- Encoder Group Input Channel Size：Encoder 组输入通道大小。
+- Encoder Group Output Channel Size：Encoder 组输出通道大小。
+- Claim Check Send Message Count：Claim Check 发送消息数量。
+- Claim Check Send Message Duration Percentile：Claim Check 发送消息耗时分位数。
+- Worker Send CheckpointTs Message Count：Worker 发送 CheckpointTs 消息数量。
+- Worker Encode and Send Checkpoint Message Duration：Worker 编码并发送 Checkpoint 消息耗时。
+- Row Affected Count / m：每分钟受影响行数。
+- Write Bytes/s：写入字节速率。
+- File Count：文件数量。
+- Flush duration：Flush 操作耗时。
+
+### 其他面板补充
+
+#### Lag Summary
+
+- Maintainer Checkpoint Lag：Maintainer Checkpoint Lag 相关指标。
+- Maintainer Resolved Ts lag：Maintainer Resolved Ts lag 相关指标。
+- EventStore Resolved Ts Lag ：EventStore Resolved Ts Lag  相关指标。
+- EventService Resolved Ts Lag ：EventService Resolved Ts Lag  相关指标。
+- DispatcherManager Checkpoint Lag：DispatcherManager Checkpoint Lag 相关指标。
+- DispatcherManager Resolved Ts Lag：DispatcherManager Resolved Ts Lag 相关指标。
+- EventCollector Resolved Ts Lag：EventCollector Resolved Ts Lag 相关指标。
+
+#### Dataflow
+
+- Puller Output Events / s：Puller Output Events / s 相关指标。
+- Puller Output Event Rows：Puller Output Event Rows 相关指标。
+- EventService Output Event Row / s：EventService Output Event Row / s 相关指标。
+- EventService Output Event Rows：EventService Output Event Rows 相关指标。
+- Event Collector Received Event Rows / s：Event Collector Received Event Rows / s 相关指标。
+- Event Collector Received Event Rows：Event Collector Received Event Rows 相关指标。
+- Sink Flush Rows / s：Sink Flush Rows / s 相关指标。
+- Sink Flush Rows：Sink Flush Rows 相关指标。
+
+#### Changefeed
+
+- Node Table Count：Node Table Count 相关指标。
+- Changefeed Table Count：Changefeed Table Count 相关指标。
+- GC Time：GC Time 相关指标。
+- Changefeed Checkpoint：Changefeed Checkpoint 相关指标。
+- Changefeed Resolved Ts：Changefeed Resolved Ts 相关指标。
+- Changefeed Checkpoint Lag：Changefeed Checkpoint Lag 相关指标。
+- Changefeed Resolved Ts Lag：Changefeed Resolved Ts Lag 相关指标。
+
+#### Lag analyze
+
+- Changefeed Checkpoint Lag：Changefeed Checkpoint Lag 相关指标。
+- Changefeed Resolved Ts Lag：Changefeed Resolved Ts Lag 相关指标。
+- Eventfeed Error / m：Eventfeed Error / m 相关指标。
+- PD Operator / m：PD Operator / m 相关指标。
+- TiDB Query Duration：TiDB Query Duration 相关指标。
+- TiKV Min Resolved Ts Lag：TiKV Min Resolved Ts Lag 相关指标。
+- Sink Write Rows / s：Sink Write Rows / s 相关指标。
+- Sink Write Duration：Sink Write Duration 相关指标。
+- TiKV Scan Tasks / m：TiKV Scan Tasks / m 相关指标。
+- TiKV Scan Region Time / m：TiKV Scan Region Time / m 相关指标。
+- TiKV Leader Change：TiKV Leader Change 相关指标。
+- TiKV Admin Apply / s：TiKV Admin Apply / s 相关指标。
+- TiKV Advance Resolved Ts / s：TiKV Advance Resolved Ts / s 相关指标。
+- TiKV Unresolved Region Count：TiKV Unresolved Region Count 相关指标。
+- TiKV Check Leader Region Count Percentile：TiKV Check Leader Region Count Percentile 相关指标。
+- TiKV Advance Resolved Ts Fail / m：TiKV Advance Resolved Ts Fail / m 相关指标。
+- TiKV Check Leader Duration Percentile：TiKV Check Leader Duration Percentile 相关指标。
+- TiKV CDC Incremental Scan Long Duration Region Count：TiKV CDC Incremental Scan Long Duration Region Count 相关指标。
+
+#### Coordinator
+
+- Changefeed Status：Changefeed Status 相关指标。
+- Coordinator Operator Cost Duration：Coordinator Operator Cost Duration 相关指标。
+- Coordinator History：Coordinator History 相关指标。
+
+#### Maintainer
+
+- Maintainer Checkpoint Lag：Maintainer Checkpoint Lag 相关指标。
+- Maintainer Resolved Ts Lag：Maintainer Resolved Ts Lag 相关指标。
+- Changefeed Maintainer Count：Changefeed Maintainer Count 相关指标。
+- Maintainer Handle Event Duration：Maintainer Handle Event Duration 相关指标。
+- Maintainer Event Channel Length：Maintainer Event Channel Length 相关指标。
+
+#### Schema Store
+
+- Resolved Ts Lag：Resolved Ts Lag 相关指标。
+- Register Table Num：Register Table Num 相关指标。
+- Get Table Info Count / s：Get Table Info Count / s 相关指标。
+- Get Table Info Duration：Get Table Info Duration 相关指标。
+- Shared Column Schema Count：Shared Column Schema Count 相关指标。
+- Wait Resolved Ts Duration：Wait Resolved Ts Duration 相关指标。
+
+#### Event Service
+
+- Scan window interval：Scan window interval 相关指标。
+- Scan window base ts：Scan window base ts 相关指标。
+- Event Service Scan Duration：Event Service Scan Duration 相关指标。
+- Event Service Scan Duration：Event Service Scan Duration 相关指标。
+- Event Service Scanned Entry Count：Event Service Scanned Entry Count 相关指标。
+- Event Service Scanned Transaction Count：Event Service Scanned Transaction Count 相关指标。
+- Event Service Scanned Entry Bytes / s：Event Service Scanned Entry Bytes / s 相关指标。
+- Event Service Scanned Transaction Bytes / s：Event Service Scanned Transaction Bytes / s 相关指标。
+- Event Service Finished Scan Task Count：Event Service Finished Scan Task Count 相关指标。
+- Event Service Resolved Ts Lag：Event Service Resolved Ts Lag 相关指标。
+- Event Service Pending Scan Task：Event Service Pending Scan Task 相关指标。
+- Event Service Dispatcher Status：Event Service Dispatcher Status 相关指标。
+- Event Service Available Memory：Event Service Available Memory 相关指标。
+- Event Service Channel Size：Event Service Channel Size 相关指标。
+- Scanned Entry Count / s：Scanned Entry Count / s 相关指标。
+- Reset Dispatcher / s：Reset Dispatcher / s 相关指标。
+- Skip Scan Count / s：Skip Scan Count / s 相关指标。
+- Intterrupt Scan Count / s：Intterrupt Scan Count / s 相关指标。
+- Decode DMLEvent Duration：Decode DMLEvent Duration 相关指标。
+- EventService Output Different DML Event Types / s：EventService Output Different DML Event Types / s 相关指标。
+
+#### Message Center
+
+- Sent Message Count Per Second：Sent Message Count Per Second 相关指标。
+- Slow Message Count：Slow Message Count 相关指标。
+
+#### Dispatcher
+
+- Table Dispatcher Manager Count：Table Dispatcher Manager Count 相关指标。
+- Table Dispatcher Count：Table Dispatcher Count 相关指标。
+- Table Trigger Dispatcher Count：Table Trigger Dispatcher Count 相关指标。
+- Create Dispatcher Duration：Create Dispatcher Duration 相关指标。
+- Dispatcher Request Handle Result：Dispatcher Request Handle Result 相关指标。
+- Event Collector Registered Dispatcher Count：Event Collector Registered Dispatcher Count 相关指标。
+- Event Collector Received Resolved Ts / s：Event Collector Received Resolved Ts / s 相关指标。
+- Event Collector Handle Message Duration：Event Collector Handle Message Duration 相关指标。
+- Block Statuses Channel Length：Block Statuses Channel Length 相关指标。
+- Block Status Request Queue Length：Block Status Request Queue Length 相关指标。
+- Event Collector Receive Event Lag：Event Collector Receive Event Lag 相关指标。
+
+#### Dynamic Stream
+
+- DS Input Channel Length：DS Input Channel Length 相关指标。
+- DS Pending Queue Length：DS Pending Queue Length 相关指标。
+- P99 - Batch Count：P99 - Batch Count 相关指标。
+- Avg - Batch Count：Avg - Batch Count 相关指标。
+- P99 - Batch Bytes：P99 - Batch Bytes 相关指标。
+- Avg - Batch Bytes：Avg - Batch Bytes 相关指标。
+- P99 - Batch Duration：P99 - Batch Duration 相关指标。
+- Avg - Batch Duration：Avg - Batch Duration 相关指标。
+
+#### Scheduler
+
+- Table Replication State：Table Replication State 相关指标。
+- Schedule Tasks：Schedule Tasks 相关指标。
+- Span Count：Span Count 相关指标。
+- Table Count：Table Count 相关指标。
+- Operator Count：Operator Count 相关指标。
+- Total Operator Count：Total Operator Count 相关指标。
+- Split Span Check Duration：Split Span Check Duration 相关指标。
+- Operator Cost Duration：Operator Cost Duration 相关指标。
+- Slowest Table Checkpoint：Slowest Table Checkpoint 相关指标。
+- Slowest Table ID：Slowest Table ID 相关指标。
+- Slowest Table Replication State：Slowest Table Replication State 相关指标。
+- Slowest Table Resolved Ts：Slowest Table Resolved Ts 相关指标。
+
+#### Active Active
+
+- Conflict Skip Rows / s：Conflict Skip Rows / s 相关指标。
+
+#### TiKV
+
+- gRPC Message Count：gRPC Message Count 相关指标。
+- CDC Network Traffic：CDC Network Traffic 相关指标。
+- CDC CPU：CDC CPU 相关指标。
+- CDC Memory Quota：CDC Memory Quota 相关指标。
+- Captured Region Count：Captured Region Count 相关指标。
+- Initial Scan Tasks Status：Initial Scan Tasks Status 相关指标。
+- Incremental Scan Duration Percentile：Incremental Scan Duration Percentile 相关指标。
+- Initial Scan Duration：Initial Scan Duration 相关指标。
+- Incremental Scan Sink Duration Percentile：Incremental Scan Sink Duration Percentile 相关指标。
+- CDC Total Scan Bytes：CDC Total Scan Bytes 相关指标。
+- Incremental Scan Speed：Incremental Scan Speed 相关指标。
+- Incremental Scan Disk Speed：Incremental Scan Disk Speed 相关指标。
+- Min Resolved Ts：Min Resolved Ts 相关指标。
+- Resolved Ts Lag Duration Percentile：Resolved Ts Lag Duration Percentile 相关指标。
+- Old Value Cache Hit：Old Value Cache Hit 相关指标。
+- Min Resolved Region：Min Resolved Region 相关指标。
+- Old Value Seek Duration：Old Value Seek Duration 相关指标。
+- Old Value Cache Size：Old Value Cache Size 相关指标。
+- Old Value Seek Duration：Old Value Seek Duration 相关指标。
+- Old Value Seek Operation：Old Value Seek Operation 相关指标。
+
+#### Redo
+
+- Redo Fsync Duration：Redo Fsync Duration 相关指标。
+- Redo Flushall Duration：Redo Flushall Duration 相关指标。
+- Redo Write Log Duration：Redo Write Log Duration 相关指标。
+- Redo Flush Log Duration：Redo Flush Log Duration 相关指标。
+- Redo Write Rows / s：Redo Write Rows / s 相关指标。
+- Redo Write Bytes / s：Redo Write Bytes / s 相关指标。
+- Worker Busy Ratio：Worker Busy Ratio 相关指标。
+- Memory Quota：Memory Quota 相关指标。
+
+#### Runtime $runtime_instance
+
+- Memory Usage：Memory Usage 相关指标。
+- Estimated Live Objects：Estimated Live Objects 相关指标。
+- GC STW Duration (last 256 GC cycles)：GC STW Duration (last 256 GC cycles) 相关指标。
+- Allocator Throughput：Allocator Throughput 相关指标。
+
+#### Pulsar Sink
+
+- Pulsar Published DDL Schema Count：Pulsar Published DDL Schema Count 相关指标。
+- Pulsar Published DDL Schema Success：Pulsar Published DDL Schema Success 相关指标。
+- Pulsar Published DDL Schema Fail：Pulsar Published DDL Schema Fail 相关指标。
+- Pulsar Published DML Schema Count：Pulsar Published DML Schema Count 相关指标。
+- Pulsar Published DML Schema Success：Pulsar Published DML Schema Success 相关指标。
+- Pulsar Published DML Schema Fail：Pulsar Published DML Schema Fail 相关指标。
+- Pulsar Client Bytes Published：Pulsar Client Bytes Published 相关指标。
+- Pulsar Client Connections Opened：Pulsar Client Connections Opened 相关指标。
+- Pulsar Client RPC Count：Pulsar Client RPC Count 相关指标。
+- Pulsar Client Producer Latency：Pulsar Client Producer Latency 相关指标。
+- Pulsar Client Producer RPC Latency：Pulsar Client Producer RPC Latency 相关指标。
+- Pulsar Client Producer Pending Messages：Pulsar Client Producer Pending Messages 相关指标。
+- Pulsar Client Producer Pending Messages：Pulsar Client Producer Pending Messages 相关指标。
+
+#### DDL
+
+- Output DDL Executing Duration：Output DDL Executing Duration 相关指标。
+- Sink Running DDL Count：Sink Running DDL Count 相关指标。
+- Maintainer Blocking DDL Count：Maintainer Blocking DDL Count 相关指标。
+- Sink DDL Count / m：Sink DDL Count / m 相关指标。
+- Handle DDL Duration：Handle DDL Duration 相关指标。
 
 ## TiCDC 老架构监控指标
 
