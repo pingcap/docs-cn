@@ -30,7 +30,7 @@ For details, see [tips for choosing the affected versions (in Chinese)](https://
 
 <!--Reference links help reviewers review your PR quickly. If this documentation update is related to a code change, link the corresponding code PR below.-->
 
-- Related code change PR(s) (if applicable):
+- Related code change pull requests (if applicable):
 - This PR is translated from:
 - Other reference link(s):
 
