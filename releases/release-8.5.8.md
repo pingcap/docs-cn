@@ -21,12 +21,12 @@ TiDB 版本：8.5.8
 
     + TiCDC
 
-        - 升级 TiDB、`golang.org/x/crypto`、AWS SDK 和其他依赖，以缓解 TiCDC 中已知安全漏洞带来的风险 [#12775](https://github.com/pingcap/tiflow/issues/12775) [#5827](https://github.com/pingcap/ticdc/issues/5827) [#5693](https://github.com/pingcap/ticdc/issues/5693) [#5445](https://github.com/pingcap/ticdc/issues/5445) @[asddongmen](https://github.com/asddongmen) @[wk989898](https://github.com/wk989898) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/tiflow/pull/12776 --> <!-- pr: https://github.com/pingcap/ticdc/pull/5829 --> <!-- pr: https://github.com/pingcap/ticdc/pull/5700 -->
         - 优化 TiCDC Changefeed 在忽略删除事件时的扫描性能，减少包含大量删除操作的工作负载在追赶历史数据期间不必要的 DML 解码 [#5430](https://github.com/pingcap/ticdc/issues/5430) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5767 -->
         - 引入自适应扫描窗口算法，提升 TiCDC Event Service 在内存压力下的稳定性和吞吐量，减少 DDL 或同步点场景中的 Dispatcher 饥饿和重置事件 [#4172](https://github.com/pingcap/ticdc/issues/4172) @[asddongmen](https://github.com/asddongmen) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5761 -->
         - 优化 TiCDC Kafka Sink 校验流程，使校验更加轻量和完整：避免在校验期间执行仅在启动阶段需要的操作，对已有 Topic 也会检查 Schema Registry 等编码器依赖，并且仅在 TiCDC 需要创建 Topic 时校验 `replication-factor` [#5618](https://github.com/pingcap/ticdc/issues/5618) [#5720](https://github.com/pingcap/ticdc/issues/5720) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5811 -->
         - 优化启用 Claim-Check 时 TiCDC Kafka Sink 的资源使用，由同一 Sink 中的所有 Encoder 共享一个 `ClaimCheck` 实例，减少外部存储客户端和连接的资源开销 [#5719](https://github.com/pingcap/ticdc/issues/5719) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5811 -->
         - 简化并统一 TiCDC Kafka Sink 的错误处理，对配置错误、Admin API 错误和 Producer 错误采用一致的分类和封装方式，使重试判断和问题排查更加容易 [#5790](https://github.com/pingcap/ticdc/issues/5790) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5811 -->
+        - 升级 TiDB、`golang.org/x/crypto`、AWS SDK 和其他依赖，以缓解 TiCDC 中已知安全漏洞带来的风险 [#12775](https://github.com/pingcap/tiflow/issues/12775) [#5827](https://github.com/pingcap/ticdc/issues/5827) [#5693](https://github.com/pingcap/ticdc/issues/5693) [#5445](https://github.com/pingcap/ticdc/issues/5445) @[asddongmen](https://github.com/asddongmen) @[wk989898](https://github.com/wk989898) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/tiflow/pull/12776 --> <!-- pr: https://github.com/pingcap/ticdc/pull/5829 --> <!-- pr: https://github.com/pingcap/ticdc/pull/5700 -->
 
 ## 错误修复
 
@@ -52,7 +52,6 @@ TiDB 版本：8.5.8
 
 + TiKV
 
-    - 升级 Rust 依赖，修复 TiKV 中潜在的安全漏洞 [#19931](https://github.com/tikv/tikv/issues/19931) @[hbisheng](https://github.com/hbisheng) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19933 -->
     - 修复 TiKV 会对快速处理完成的 Raftstore 消息批次执行不必要的慢日志消息格式化，造成额外 CPU 开销的问题 [#19861](https://github.com/tikv/tikv/issues/19861) @[pingyu](https://github.com/pingyu) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19910 -->
     - 修复 TiKV Coprocessor 计算下推的 `LIKE` 表达式时，如果涉及格式错误的 UTF-8 输入或模式、`BIT` 值或某些排序规则，可能导致 TiKV panic 的问题 [#66597](https://github.com/pingcap/tidb/issues/66597) [#67082](https://github.com/pingcap/tidb/issues/67082) [#19811](https://github.com/tikv/tikv/issues/19811) @[jebter](https://github.com/jebter) <!-- component: execution, tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19893 --> <!-- pr: https://github.com/tikv/tikv/pull/19894 -->
     - 修复外部 SST Ingest 与前台写入并发竞争时，TiKV 可能生成不一致的 MVCC 状态，进而导致事务状态检查发生 panic 的问题 [#19891](https://github.com/tikv/tikv/issues/19891) @[gengliqi](https://github.com/gengliqi) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19916 -->
@@ -64,6 +63,7 @@ TiDB 版本：8.5.8
     - 修复 RocksDB Compaction 短暂出现峰值时，TiKV 可能执行不必要的写入流控的问题 [#19667](https://github.com/tikv/tikv/issues/19667) @[hbisheng](https://github.com/hbisheng) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19828 -->
     - 修复在目标 Store 完成注册前，如果 PD 临时返回 `store-not-found` 错误，TiKV 可能永久阻塞 Raft 连接的问题 [#19980](https://github.com/tikv/tikv/issues/19980) @[LykxSassinator](https://github.com/LykxSassinator) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19999 --> <!-- exported-on-2026-08-24 -->
     - 修复 TiKV 在执行外部 SST Ingest 时不再允许前台写入，导致 Ingest 期间写入延迟增加的问题 [#19954](https://github.com/tikv/tikv/issues/19954) @[gengliqi](https://github.com/gengliqi) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19977 --> <!-- exported-on-2026-08-24 -->
+    - 升级 Rust 依赖，修复 TiKV 中潜在的安全漏洞 [#19931](https://github.com/tikv/tikv/issues/19931) @[hbisheng](https://github.com/hbisheng) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19933 -->
 
 + PD
 
