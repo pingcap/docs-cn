@@ -67,7 +67,7 @@ TiDB 版本：8.5.8
 
 + PD
 
-    - 修复 PD `/metric/query` 和 `/metric/query_range` 接口可能被用于发起 SSRF 攻击或泄露上游响应详细信息的问题 @[rleungx](https://github.com/rleungx) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11107 -->
+    - 修复 PD `/metric/query` 和 `/metric/query_range` 接口可能被用于发起 SSRF 攻击或泄露上游响应详细信息的问题 [#11081](https://github.com/tikv/pd/issues/11081) @[rleungx](https://github.com/rleungx) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11107 -->
     - 修复同一资源组内各 TiDB 实例请求速率不均衡时，RU Token 可能分配不均，导致高需求实例的 RU 等待时间过长和延迟升高的问题 [#9605](https://github.com/tikv/pd/issues/9605) @[JmPotato](https://github.com/JmPotato) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/10024 -->
     - 修复客户端指定任意 `ConfigPath` 或类似路径的配置名称时，PD GlobalConfig gRPC API 可能访问预期命名空间之外的 etcd Key 的问题 [#11079](https://github.com/tikv/pd/issues/11079) @[rleungx](https://github.com/rleungx) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11075 -->
     - 修复 PD 可能与调用方通过 `pd-forwarded-host` 指定的任意地址建立出站 gRPC 连接，而没有将转发目标限制为当前 PD Leader 公布的客户端 URL 的问题 [#11070](https://github.com/tikv/pd/issues/11070) @[rleungx](https://github.com/rleungx) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11091 -->
