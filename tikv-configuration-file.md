@@ -2727,6 +2727,13 @@ Raft Engine 相关的配置项。
 > - 逻辑 I/O 指 TiKV 存储层处理请求时涉及的逻辑数据量，例如读取过程中扫描或处理的数据量，以及写请求自身的逻辑写入字节数。
 > - 物理 I/O 指底层存储设备实际发生的磁盘读写流量，会受到 block cache、compaction、flush 等因素的影响。
 
+### `enable-detailed-io-collection` <span class="version-mark">从 v8.5.9 版本开始引入</span>
+
++ 是否为 [Top SQL](/dashboard/top-sql.md) 开启 TiKV 详细 I/O 维度。该配置仅在 `enable-network-io-collection` 同时开启时生效。
++ 开启后，TiKV 会分别根据逻辑读字节数、逻辑写字节数和 RocksDB block read 次数筛选 Top N 记录，并将这些指标上报给 Top SQL。
++ Top SQL 将前台 TiKV 请求上下文中记录的 RocksDB block read 次数展示为 `Read IOPS`。该指标不等同于底层存储设备的实际 IOPS。
++ 默认值：false
+
 ## resource-control
 
 资源控制 (Resource Control) 在 TiKV 存储层相关的配置项。
