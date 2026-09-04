@@ -1,11 +1,7 @@
 {
   "tidb": "TiDB",
-<<<<<<< HEAD
   "tidb-version": "v8.5.0",
-=======
-  "tidb-version": "8.5.8",
   "ticdc-version": "8.5.8",
->>>>>>> 34087e135a (docs: use ticdc-version variable in TiCDC examples (#21911))
   "tidb-operator-version": "v1.6.4",
   "starter": "TiDB Cloud Starter",
   "essential": "TiDB Cloud Essential",
