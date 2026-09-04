@@ -28,7 +28,7 @@ For details, see [tips for choosing the affected versions (in Chinese)](https://
 
 ### What is the related PR or file link(s)?
 
-<!--Reference links help reviewers review your PR quickly. If this documentation update is related to a code change, link the corresponding code PR below.-->
+<!--Reference links help reviewers review your PR quickly. If this documentation update is related to code changes, link the corresponding code PRs below.-->
 
 - Related code change PR links (if applicable):
 - This PR is translated from:
