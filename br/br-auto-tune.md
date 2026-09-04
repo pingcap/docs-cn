@@ -28,7 +28,7 @@ summary: 了解 TiDB 的自动调节备份功能，在集群资源占用率较�
 TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调节功能，因此，在开启或关闭该功能时，无需重启集群。你可以运行以下命令动态启动或停止备份自动调节功能：
 
 ```shell
-tikv-ctl modify-tikv-config -n backup.enable-auto-tune -v <true|false>
+tikv-ctl --host=<tikv-ip>:20160 modify-tikv-config -n backup.enable-auto-tune -v <true|false>
 ```
 
 在离线备份场景中，你也可以使用 `tikv-ctl` 把 `backup.num-threads` 修改为更大的数字，从而提升备份速度。
