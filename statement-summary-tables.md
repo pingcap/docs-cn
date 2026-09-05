@@ -81,6 +81,7 @@ select * from employee where id in (...) and salary between ? and ?;
 >
 > - 在 TiDB 中，statement summary tables 中字段的时间单位是纳秒 (ns)，而 MySQL 中的时间单位是皮秒 (ps)。
 > - 从 v7.5.1 和 v7.6.0 版本开始，对于开启[资源管控](/tidb-resource-control-ru-groups.md)的集群，`statements_summary` 会分资源组进行聚合，即在不同资源组执行的相同语句会被收集为不同的记录。
+> - 从 v8.5.7 开始，你可以通过 [`tidb_stmt_summary_group_by_user`](/system-variables.md#tidb_stmt_summary_group_by_user-从-v857-版本开始引入) 控制是否按执行用户进一步聚合 statement summary。当该变量值为 `ON` 时，不同用户执行的相同 SQL digest 会被收集为不同的记录，每条记录的 `SAMPLE_USER` 字段表示该记录对应的执行用户。
 
 ## `statements_summary_history`
 
@@ -124,6 +125,8 @@ select * from employee where id in (...) and salary between ? and ?;
 
 - `tidb_stmt_summary_max_sql_length`：字段 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 的最大显示长度，默认值是 4096。
 - `tidb_stmt_summary_internal_query`：是否统计 TiDB 的内部 SQL。1 代表统计，0 代表不统计，默认不统计。
+- `tidb_stmt_summary_group_by_user`：是否按执行用户进一步聚合 statement summary。1 代表按用户聚合，0 代表不按用户聚合，默认不按用户聚合。开启后，不同用户执行的相同 SQL digest 会聚合为不同行，可能增加 statement summary 的记录数和内存占用。修改该变量值会清空当前内存中的 statement summary 数据。
+- `tidb_stmt_summary_persist_evicted`：是否在开启 [statement summary 持久化](#持久化-statements-summary)后，将被 LRU 驱逐的 statement summary 记录逐条写入 statement summary 日志。1 代表写入，0 代表不写入，默认不写入。开启后，日志中会出现带有 `"evicted": true` 标记的 JSON 记录，日志量会随 LRU 驱逐频率增加。
 
 statement summary 配置示例如下：
 
@@ -217,6 +220,7 @@ tidb_stmt_summary_enable_persistent = true
 >
 > - 当开启持久化后，由于不再于内存中维护历史数据，因此[参数配置](#参数配置)一节所描述的 `tidb_stmt_summary_history_size` 将不再生效，而是由 [`tidb_stmt_summary_file_max_days`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_days-从-v660-版本开始引入)、[`tidb_stmt_summary_file_max_size`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_size-从-v660-版本开始引入) 和 [`tidb_stmt_summary_file_max_backups`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) 这三项配置来决定历史数据在磁盘上的保留数量和时间。
 > - `tidb_stmt_summary_refresh_interval` 取值越小，数据写入到磁盘就越实时，但写入磁盘的冗余数据也会随之增多。
+> - 从 v8.5.7 开始，你可以开启 [`tidb_stmt_summary_persist_evicted`](/system-variables.md#tidb_stmt_summary_persist_evicted-从-v857-版本开始引入)，将被 LRU 驱逐的记录逐条写入 statement summary 日志。写入的 JSON 记录带有 `"evicted": true` 标记，供下游日志消费者识别，不会作为 `statements_summary_history` 或 `cluster_statements_summary_history` 查询结果返回。
 
 ## 排查示例
 
