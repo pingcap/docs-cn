@@ -27,6 +27,47 @@ Debezium 输出格式中包含当前行的 Schema 信息，以便下游消费者
 
 此外，Debezium 原有格式中并不包含 TiDB 专有的 `CommitTS` 事务唯一标识等重要字段。为了保证数据的完整性，TiCDC 在 Debezium 格式中增加了 `CommitTs` 和 `ClusterID` 两个字段，用于标识 TiDB 数据变更的相关信息。
 
+### 包含事务开始 TSO <span class="version-mark">从 v8.5.9 版本开始引入</span>
+
+默认情况下，Debezium JSON DML 消息包含 `source.commit_ts`，但不包含事务开始 TSO。你可以选择仅在 DML 行事件中包含 `source.start_ts`（源事务开始时的原始 PD TSO）。该选项默认关闭。
+
+你可以通过以下任一方式开启该选项：
+
+- 在 `sink-uri` 中：
+
+    ```
+    kafka://127.0.0.1:9092/topic-name?protocol=debezium&debezium-include-start-ts=true
+    ```
+
+- 在 changefeed 配置文件中：
+
+    ```toml
+    [sink.debezium]
+    include-start-ts = true
+    ```
+
+显式指定的 URI 参数优先于配置文件，包括使用 `debezium-include-start-ts=false` 覆盖 `include-start-ts = true`。
+
+开启该选项后：
+
+- DML 消息的 value 会在 `commit_ts` 旁增加整型字段 `source.start_ts`，JSON schema 将该字段声明为 `int64`。
+- DDL 事件、WATERMARK 事件、key 消息和 Debezium Avro 不受影响。将该选项与 Debezium Avro 协议一起使用会被拒绝。
+- 如需回滚，关闭该选项即可。关闭期间产出的消息与此前格式保持兼容。
+
+> **注意：**
+>
+> `start_ts` 是原始的 uint64 PD TSO，不是毫秒时间戳。消费者必须将其作为 64 位整数或十进制字符串处理。不要将其解析为 JavaScript `Number` 或 IEEE-754 `float64`，后者无法精确表示 18 位 TSO。
+
+开启该选项后，`source` 字段类似如下：
+
+```json
+"source": {
+    "commit_ts": 447507027004751877,
+    "start_ts": 447507027004751800,
+    "cluster_id": "default"
+}
+```
+
 ## 消息格式定义
 
 本节介绍 DDL 事件、DML 事件和 WATERMARK 事件的消息格式。
@@ -570,6 +611,7 @@ Key 中的字段只包含主键或唯一索引列。字段解释如下：
 | `payload.before`    | JSON   | 这条事件语句变更前的数据值。对于 `"c"` 事件，`before` 字段的值为 `null`。  |
 | `payload.after`     | JSON   | 这条事件语句变更后的数据值。对于 `"d"` 事件，`after` 字段的值为 `null`。   |
 | `payload.source.commit_ts`     | 数值  | 该事件的 `CommitTs` 值。                    |
+| `payload.source.start_ts`      | 数值  | 源事务的开始 TSO。仅在启用 `debezium-include-start-ts` 或 `[sink.debezium] include-start-ts` 时出现。原始 uint64 PD TSO，不是毫秒时间戳。 |
 | `payload.source.db`     | 字符串   | 事件发生的数据库的名称。                    |
 | `payload.source.table`     | 字符串  |  事件发生的数据表的名称。                   |
 | `schema.fields`     | JSON   |  `payload` 中各个字段的类型信息，包括对应行数据变更前后 schema 的信息。      |

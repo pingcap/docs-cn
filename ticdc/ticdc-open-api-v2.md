@@ -371,6 +371,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | 参数名                | 说明                                                                 |
 |:-------------------|:-------------------------------------------------------------------|
 | `output_old_value` | `BOOLEAN` 类型，是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "before" 字段的数据。 |
+| `include_start_ts` | `BOOLEAN` 类型。从 v8.5.9 开始引入。控制 Debezium JSON DML 消息是否包含 `source.start_ts`（源事务的原始 PD TSO）。默认值为 `false`。 |
 
 ### 使用样例
 
