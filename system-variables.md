@@ -5048,6 +5048,19 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 这个变量用来设置 `Projection` 算子的并发度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
+### `tidb_query_cop_store_limit` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：整数型
+- 默认值：`15`
+- 范围：`[0, 256]`
+- 这个变量用于限制单条查询语句对每个 TiKV Store 的并发 Coprocessor 请求尝试数。
+- 当该变量设置为 `0` 时，禁用查询级别的按 Store 限流；设置为大于 `0` 的值 `N` 时，单条查询语句对每个 TiKV Store 最多允许 `N` 个 Coprocessor 请求尝试同时执行。
+- 该变量不会覆盖 [`tidb_distsql_scan_concurrency`](#tidb_distsql_scan_concurrency)。后者控制单个 DistSQL 请求的扫描并发度，本变量控制单条查询语句在每个 TiKV Store 上的物理请求并发度。单条查询语句包含多个 DistSQL 请求时，本变量仍对这些请求共享生效。
+- 将该变量设置为较小的值可以降低 TiKV Store 的瞬时压力，但可能增加查询延迟。
+
 ### `tidb_query_log_max_len`
 
 - 作用域：GLOBAL
