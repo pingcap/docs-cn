@@ -120,6 +120,13 @@ TableOption ::=
 |    'TTL' EqOpt TimeColumnName '+' 'INTERVAL' Expression TimeUnit (TTLEnable EqOpt ( 'ON' | 'OFF' ))? (TTLJobInterval EqOpt stringLit)?
 |   'AFFINITY' EqOpt StringName
 |   PlacementPolicyOption
+|   'SPLIT' ('INDEX' IndexName | PRIMARY KEY )? 'BETWEEN' RowValue 'AND' RowValue 'REGIONS' NUM
+
+RowValue ::=
+    '(' ValuesOpt ')'
+
+ValuesOpt ::=
+    ( LiteralValue | Expr ) (',' (LiteralValue | Expr) )*
 
 OnCommitOpt ::=
     ('ON' 'COMMIT' 'DELETE' 'ROWS')?
@@ -174,6 +181,9 @@ TiDB 支持以下 `table_option`。TiDB 会解析并忽略其他 `table_option` 
 |`COLLATE`       |指定该表所使用的字符集排序规则        | `COLLATE` = 'utf8mb4_bin'|
 |`COMMENT`       |注释信息                              | `COMMENT` = 'comment info'|
 |`AFFINITY`      |为表或分区开启亲和性调度。非分区表可设置为 `'table'`，分区表可设置为 `'partition'`。设置为 `'none'` 或留空可关闭亲和性调度 |`AFFINITY` = 'table'|
+|`SPLIT BETWEEN lower AND upper REGIONS N`|指定表的持久化区域分割策略，在指定范围内均匀切分 N 个 Region。该策略会保存到表定义中，进行 DDL 后会自动执行区域分割 |`SPLIT BETWEEN (0) AND (1000000) REGIONS 16`|
+|`SPLIT INDEX idx_name BETWEEN lower AND upper REGIONS N`|指定单个索引的持久化区域分割策略，在指定范围内均匀切分 N 个 Region |`SPLIT INDEX idx_name BETWEEN (0) AND (100000) REGIONS 8`|
+|`SPLIT PRIMARY KEY BETWEEN lower AND upper REGIONS N`|指定主键索引的持久化区域分割策略，在指定范围内均匀切分 N 个 Region |`SPLIT INDEX idx_name BETWEEN (0) AND (100000) REGIONS 8`|
 
 > **注意：**
 >
@@ -259,6 +269,43 @@ mysql> DESC t1;
 +-------+--------------+------+------+---------+----------------+
 2 rows in set (0.00 sec)
 ```
+
+创建表时指定持久化区域分割策略：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE orders (
+    order_id BIGINT PRIMARY KEY,
+    customer_id INT,
+    order_date DATE,
+    INDEX idx_customer(customer_id),
+    INDEX idx_date(order_date)
+) SPLIT BETWEEN (0) AND (1000000) REGIONS 16
+  SPLIT BETWEEN (0) AND (10000) REGIONS 10 INDEX idx_customer
+  SPLIT BETWEEN ('2020-01-01') AND ('2025-01-01') REGIONS 20 INDEX idx_date;
+```
+
+```sql
+mysql> CREATE TABLE orders (
+    ->     order_id BIGINT PRIMARY KEY,
+    ->     customer_id INT,
+    ->     order_date DATE,
+    ->     INDEX idx_customer(customer_id),
+    ->     INDEX idx_date(order_date)
+    -> ) SPLIT BETWEEN (0) AND (1000000) REGIONS 16
+    ->   SPLIT BETWEEN (0) AND (10000) REGIONS 10 INDEX idx_customer
+    ->   SPLIT BETWEEN ('2020-01-01') AND ('2025-01-01') REGIONS 20 INDEX idx_date;
+Query OK, 0 rows affected (2.35 sec)
+```
+
+> **注意：**
+>
+> - 持久化区域分割策略与 `PRE_SPLIT_REGIONS` 的区别：
+>   - `PRE_SPLIT_REGIONS` 基于 `SHARD_ROW_ID_BITS` 或 `AUTO_RANDOM` 自动计算分割点，只能进行 2 的幂次方个 Region 分割
+>   - `SPLIT BETWEEN ... AND ... REGIONS` 允许指定任意范围和任意数量的 Region 分割，与 `SPLIT TABLE` 类似
+> - 分区表的每个分区都遵循表的持久化分割策略
+> - 聚集索引表不允许对主键指定分割策略
 
 ## MySQL 兼容性
 
