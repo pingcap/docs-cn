@@ -524,7 +524,7 @@ sudo systemctl enable ntpd.service
 
             > **注意：**
             >
-            > TuneD v2.23.0 之前的版本使用 `/etc/tuned/<profile_name>/tuned.conf`。TuneD v2.23.0 及以上版本使用 `/etc/tuned/profiles/<profile_name>/tuned.conf`。这两种路径格式都只适用于各自对应的版本范围，另一侧版本无法识别。
+            > 在默认配置下，TuneD v2.23.0 之前的版本使用 `/etc/tuned/<profile_name>/tuned.conf`；TuneD v2.23.0 及以上版本使用 `/etc/tuned/profiles/<profile_name>/tuned.conf`。如果修改了 `profile_dirs`，请以实际配置为准。
 
             ```
             [main]
