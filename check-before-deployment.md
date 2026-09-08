@@ -519,7 +519,7 @@ sudo systemctl enable ntpd.service
 
             > **注意：**
             >
-            > TuneD v2.23.0 及以上版本会将用户自定义策略存放在 `/etc/tuned/profiles/<profile_name>/` 下。如果将策略直接放在 `/etc/tuned/<profile_name>/` 下，TuneD 无法识别该策略。
+            > 在 TuneD v2.23.0 及以上版本中，用户自定义策略须存放在 `/etc/tuned/profiles/<profile_name>/` 下。如果将策略直接放在 `/etc/tuned/<profile_name>/` 下，TuneD 无法识别该策略。
 
             ```
             [main]
