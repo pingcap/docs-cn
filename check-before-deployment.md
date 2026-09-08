@@ -513,13 +513,18 @@ sudo systemctl enable ntpd.service
         2. 创建新的 tuned 策略。
 
             ```bash
+            # 适用于 TuneD v2.23.0 之前的版本
+            mkdir -p /etc/tuned/balanced-tidb-optimal/
+            vi /etc/tuned/balanced-tidb-optimal/tuned.conf
+
+            # 适用于 TuneD v2.23.0 及之后的版本
             mkdir -p /etc/tuned/profiles/balanced-tidb-optimal/
             vi /etc/tuned/profiles/balanced-tidb-optimal/tuned.conf
             ```
 
             > **注意：**
             >
-            > 在 TuneD v2.23.0 及以上版本中，用户自定义策略须存放在 `/etc/tuned/profiles/<profile_name>/` 下。如果将策略直接放在 `/etc/tuned/<profile_name>/` 下，TuneD 无法识别该策略。
+            > TuneD v2.23.0 之前的版本使用 `/etc/tuned/<profile_name>/tuned.conf`。TuneD v2.23.0 及以上版本使用 `/etc/tuned/profiles/<profile_name>/tuned.conf`。这两种路径格式都只适用于各自对应的版本范围，另一侧版本无法识别。
 
             ```
             [main]
