@@ -5835,6 +5835,15 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[1, 256]`
 - 这个变量用于设置每个 TiDB 节点上 TTL 删除任务的最大并发数。更多信息，请参考 [Time to Live](/time-to-live.md)。
 
+### `tidb_ttl_enable_index_scan`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 默认值：`ON`
+- 类型：布尔型
+- 这个变量用于控制新创建的 TTL 任务是否可以使用以 TTL 列开头且符合条件的二级索引或非聚簇主键索引。设置为 `OFF` 时，新创建的 TTL 任务按照表键顺序扫描。修改该变量不会改变正在运行的 TTL 子任务的扫描路径。有关索引适用条件和滚动升级期间的行为，请参考[使用索引扫描过期行](/time-to-live.md#使用索引扫描过期行)。
+
 ### `tidb_ttl_job_enable` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 - 作用域：GLOBAL
