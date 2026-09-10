@@ -1311,7 +1311,7 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 引用该变量的文档：
 
 - [TiDB 中的各种超时](/develop/dev-guide-timeouts-in-tidb.md)
-- [系统变量](/system-variables.md#tidb_dml_max_execution_time-从-v900-版本开始引入)
+- [系统变量](/system-variables.md#tidb_dml_max_execution_time-从-v859-和-v900-版本开始引入)
 
 ### tidb_dml_type
 

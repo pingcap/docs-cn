@@ -1740,7 +1740,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 >
 > 自 v7.0.0 起，`tidb_dml_batch_size` 对 [`LOAD DATA` 语句](/sql-statements/sql-statement-load-data.md)不再生效。
 
-### `tidb_dml_max_execution_time` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+### `tidb_dml_max_execution_time` <span class="version-mark">从 v8.5.9 和 v9.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
