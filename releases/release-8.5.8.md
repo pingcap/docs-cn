@@ -26,6 +26,7 @@ TiDB 版本：8.5.8
         - 优化 TiCDC Kafka Sink 校验流程，使校验更加轻量和完整：避免在校验期间执行仅在启动阶段需要的操作，对已有 Topic 也会检查 Schema Registry 等编码器依赖，并且仅在 TiCDC 需要创建 Topic 时校验 `replication-factor` [#5618](https://github.com/pingcap/ticdc/issues/5618) [#5720](https://github.com/pingcap/ticdc/issues/5720) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5811 -->
         - 优化启用 Claim-Check 时 TiCDC Kafka Sink 的资源使用，由同一 Sink 中的所有 Encoder 共享一个 `ClaimCheck` 实例，减少外部存储客户端和连接的资源开销 [#5719](https://github.com/pingcap/ticdc/issues/5719) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5811 -->
         - 简化并统一 TiCDC Kafka Sink 的错误处理，对配置错误、Admin API 错误和 Producer 错误采用一致的分类和封装方式，使重试判断和问题排查更加容易 [#5790](https://github.com/pingcap/ticdc/issues/5790) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/ticdc/pull/5811 -->
+        - 升级 TiDB、`golang.org/x/crypto`、AWS SDK 和其他依赖，以缓解 TiCDC 中已知安全漏洞带来的风险 [#12775](https://github.com/pingcap/tiflow/issues/12775) [#5827](https://github.com/pingcap/ticdc/issues/5827) [#5693](https://github.com/pingcap/ticdc/issues/5693) [#5445](https://github.com/pingcap/ticdc/issues/5445) @[asddongmen](https://github.com/asddongmen) @[wk989898](https://github.com/wk989898) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/tiflow/pull/12776 --> <!-- pr: https://github.com/pingcap/ticdc/pull/5829 --> <!-- pr: https://github.com/pingcap/ticdc/pull/5700 -->
 
 ## 错误修复
 
@@ -62,10 +63,11 @@ TiDB 版本：8.5.8
     - 修复 RocksDB Compaction 短暂出现峰值时，TiKV 可能执行不必要的写入流控的问题 [#19667](https://github.com/tikv/tikv/issues/19667) @[hbisheng](https://github.com/hbisheng) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19828 -->
     - 修复在目标 Store 完成注册前，如果 PD 临时返回 `store-not-found` 错误，TiKV 可能永久阻塞 Raft 连接的问题 [#19980](https://github.com/tikv/tikv/issues/19980) @[LykxSassinator](https://github.com/LykxSassinator) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19999 --> <!-- exported-on-2026-08-24 -->
     - 修复 TiKV 在执行外部 SST Ingest 时不再允许前台写入，导致 Ingest 期间写入延迟增加的问题 [#19954](https://github.com/tikv/tikv/issues/19954) @[gengliqi](https://github.com/gengliqi) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19977 --> <!-- exported-on-2026-08-24 -->
+    - 升级 Rust 依赖，修复 TiKV 中潜在的安全漏洞 [#19931](https://github.com/tikv/tikv/issues/19931) @[hbisheng](https://github.com/hbisheng) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19933 -->
 
 + PD
 
-    - 修复 PD `/metric/query` 和 `/metric/query_range` 接口可能被用于发起 SSRF 攻击或泄露上游响应详细信息的问题 @[rleungx](https://github.com/rleungx) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11107 -->
+    - 修复 PD `/metric/query` 和 `/metric/query_range` 接口可能被用于发起 SSRF 攻击或泄露上游响应详细信息的问题 [#11081](https://github.com/tikv/pd/issues/11081) @[rleungx](https://github.com/rleungx) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11107 -->
     - 修复同一资源组内各 TiDB 实例请求速率不均衡时，RU Token 可能分配不均，导致高需求实例的 RU 等待时间过长和延迟升高的问题 [#9605](https://github.com/tikv/pd/issues/9605) @[JmPotato](https://github.com/JmPotato) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/10024 -->
     - 修复客户端指定任意 `ConfigPath` 或类似路径的配置名称时，PD GlobalConfig gRPC API 可能访问预期命名空间之外的 etcd Key 的问题 [#11079](https://github.com/tikv/pd/issues/11079) @[rleungx](https://github.com/rleungx) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11075 -->
     - 修复 PD 可能与调用方通过 `pd-forwarded-host` 指定的任意地址建立出站 gRPC 连接，而没有将转发目标限制为当前 PD Leader 公布的客户端 URL 的问题 [#11070](https://github.com/tikv/pd/issues/11070) @[rleungx](https://github.com/rleungx) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/11091 -->
@@ -84,6 +86,10 @@ TiDB 版本：8.5.8
         - 修复使用 BR 对设置了 `AUTO_ID_CACHE=1` 的表执行时间点恢复后，首次执行 `INSERT` 可能出现重复键错误的问题 [#69485](https://github.com/pingcap/tidb/issues/69485) @[vldmit](https://github.com/vldmit) <!-- component: br --> <!-- pr: https://github.com/pingcap/tidb/pull/70253 -->
         - 修复停止日志备份任务后，BR 日志备份会残留过期的 GC Safepoint，可能影响清理和 Safepoint 管理的问题 [#19832](https://github.com/tikv/tikv/issues/19832) @[Leavrth](https://github.com/Leavrth) <!-- component: br --> <!-- pr: https://github.com/tikv/tikv/pull/19911 -->
         - 修复多个恢复任务并发运行时，BR 无法正确更新 SST 下载限速，可能导致其中某个任务的限速变更不生效的问题 [#19454](https://github.com/tikv/tikv/issues/19454) @[Leavrth](https://github.com/Leavrth) <!-- component: br --> <!-- pr: https://github.com/tikv/tikv/pull/19924 -->
+
+    + DM
+
+        - 升级 OpenTelemetry 和 `kin-openapi` 依赖，修复 DM 中潜在的安全漏洞 [#12637](https://github.com/pingcap/tiflow/issues/12637) @[GMHDBJD](https://github.com/GMHDBJD) <!-- component: dm --> <!-- pr: https://github.com/pingcap/tiflow/pull/12784 -->
 
     + TiCDC
 
