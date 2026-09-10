@@ -5842,7 +5842,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`ON`
 - 类型：布尔型
-- 这个变量用于控制 TTL 任务是否可以使用以 TTL 列开头且符合条件的二级索引或非聚簇主键索引。设置为 `OFF` 时，TTL 任务按照表键顺序扫描。有关索引适用条件，请参考[使用索引扫描过期行](/time-to-live.md#使用索引扫描过期行)。
+- 这个变量用于控制 TTL 任务是否可以使用以 TTL 列开头且符合条件的二级索引或非聚簇主键。设置为 `OFF` 时，TTL 任务按照表键顺序扫描。有关索引适用条件，请参考[使用索引扫描过期行](/time-to-live.md#使用索引扫描过期行)。
 
 ### `tidb_ttl_job_enable` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
