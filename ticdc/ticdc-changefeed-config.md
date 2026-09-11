@@ -347,13 +347,23 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 - 是否输出行数据更改前的值。关闭后，UPDATE 事件不会输出 "before" 字段的数据。
 - 默认值：`true`
 
-##### `include-start-ts` <span class="version-mark">从 v8.5.9 版本开始引入</span>
+##### `include-start-ts`
 
 - 控制 Debezium JSON DML 消息是否包含 `source.start_ts`（源事务的原始 PD TSO）。
 - 默认值：`false`
-- 该参数只有当 sink 类型为 MQ 且输出协议为 Debezium JSON 时才生效。与 Debezium Avro 一起设置会被拒绝。
-- 你也可以设置等价的 URI 参数 `debezium-include-start-ts`。显式指定的 URI 参数优先于该配置项，包括使用 `false` 覆盖 `true`。
+- 需要使用 [TiCDC 新架构](/ticdc/ticdc-architecture.md)。该参数仅对 `protocol = "debezium"` 的 MQ sink 生效。在其他协议（包括 `debezium-avro`）中开启该选项会被拒绝。
+- 你也可以设置等价的 URI 参数 `debezium-include-start-ts`。显式指定的 URI 参数优先于该配置项，包括使用 `debezium-include-start-ts=false` 覆盖 `[sink.debezium] include-start-ts = true`。
 - 关于消息格式和消费者精度要求，请参考 [TiCDC Debezium Protocol](/ticdc/ticdc-debezium.md#包含事务开始-tso)。
+
+#### sink.simple
+
+##### `include-start-ts`
+
+- 控制 Simple JSON DML 消息是否包含顶层字段 `startTs`（源事务的原始 PD TSO）。
+- 默认值：`false`
+- 需要使用 [TiCDC 新架构](/ticdc/ticdc-architecture.md)。该参数仅对使用 `protocol = "simple"` 和 JSON 编码的 MQ sink 生效。在其他协议或 `encoding-format = "avro"` 下开启该选项会被拒绝。
+- 显式指定的 URI 参数 `simple-include-start-ts` 优先于该配置项，包括使用 `simple-include-start-ts=false` 覆盖 `[sink.simple] include-start-ts = true`。
+- 配置示例和整数精度要求详见 [TiCDC Simple Protocol](/ticdc/ticdc-simple-protocol.md#包含事务开始-tso)。
 
 ### consistent
 
