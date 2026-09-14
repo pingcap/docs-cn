@@ -1756,11 +1756,11 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
     - 使用已废弃的 batch-dml 特性执行的 DML 语句，以及启用 [`tidb_batch_commit`](#tidb_batch_commit) 时的 DML 和 `COMMIT` 语句。
     - 使用 [Pipelined DML](/pipelined-dml.md) 执行的语句。如果设置了 `tidb_dml_type = 'bulk'`，但语句回退到普通 DML 执行方式，该变量仍然生效。
     - `EXPLAIN ANALYZE` 语句以及上述适用范围以外的其他语句，例如 `LOAD DATA` 和 `IMPORT INTO`。
-- 如需限制 `SELECT` 语句的执行时间，请使用 [`max_execution_time`](#max_execution_time) 或 [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) Hint。这两项设置不会覆盖 DML 语句的 `tidb_dml_max_execution_time` 限制。
 
 > **注意：**
 >
 > - 语句实际结束时间可能超过设置的超时时间。
+> - 对于 `COMMIT` 和自动提交 DML，如果语句超时且 TiDB 无法确定事务是否已提交，会关闭客户端连接。此时客户端可能收到连接断开错误，而不是语句超时错误。连接断开并不表示事务已回滚，事务可能已经提交。
 > - 启用该变量时，建议设置较长的超时时间，并根据正常的 DML 执行和事务提交耗时预留充足余量。TiDB 中断语句后，已经发送到 TiKV 的请求仍可能继续执行或排队等待。过短的超时时间加上应用频繁重试，可能使重试请求与尚未结束的请求叠加，增加 TiKV 负载并加剧故障期间的请求积压。应用重试时，建议采用带随机抖动的指数退避，以减少重试给 TiKV 带来的额外负载。
 
 ### `tidb_dml_type` <span class="version-mark">从 v8.0.0 版本开始引入</span>
