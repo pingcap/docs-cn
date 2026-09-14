@@ -28,7 +28,7 @@ TiDB 版本：7.5.8
 + TiKV
 
     - 修复由于外部 SST 导入与前台写入之间存在竞争，TiKV 可能因 `txn record found but not expected` 发生 panic 的问题 [#19891](https://github.com/tikv/tikv/issues/19891) @[gengliqi](https://github.com/gengliqi) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19914 -->
-    - 修复停止日志备份任务后，BR 遗留不再需要的 GC service safepoint，可能导致 GC 无法按预期推进的问题 [#19832](https://github.com/tikv/tikv/issues/19832) @[Leavrth](https://github.com/Leavrth) <!-- component: br --> <!-- pr: https://github.com/tikv/tikv/pull/19913 -->
+    - 修复停止日志备份任务后，BR 遗留了不再需要的 GC service safepoint，可能导致 GC 无法按预期推进的问题 [#19832](https://github.com/tikv/tikv/issues/19832) @[Leavrth](https://github.com/Leavrth) <!-- component: br --> <!-- pr: https://github.com/tikv/tikv/pull/19913 -->
     - 修复在 TiCDC 重启或网络故障后，TiKV 与 TiCDC 之间的残留连接可能无法被完全清理，导致 TiKV CDC 内存配额耗尽并使 Changefeed 卡住的问题 [#18169](https://github.com/tikv/tikv/issues/18169) [#19610](https://github.com/tikv/tikv/issues/19610) @[asddongmen](https://github.com/asddongmen) @[wk989898](https://github.com/wk989898) <!-- component: cdc --> <!-- pr: https://github.com/tikv/tikv/pull/18864 --> <!-- pr: https://github.com/tikv/tikv/pull/19689 -->
     - 修复在 TiKV 出现 I/O 阻塞时，由于与 PD 相关的工作被 I/O 操作阻塞，TiKV 吞吐量可能持续下降的问题 [#17939](https://github.com/tikv/tikv/issues/17939) @[LykxSassinator](https://github.com/LykxSassinator) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/18969 -->
     - 修复在 TiDB Lightning 导入数据期间，TiKV 可能因空指针解引用而崩溃的问题 [#18671](https://github.com/tikv/tikv/issues/18671) [#18756](https://github.com/tikv/tikv/issues/18756) @[Dog-Du](https://github.com/Dog-Du) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19908 -->
