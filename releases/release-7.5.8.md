@@ -21,16 +21,16 @@ TiDB 版本：7.5.8
 
 + TiDB
 
-    - 修复由于 `UNION` 查询清理与 worker goroutine 之间的竞争，TiDB 可能因 `SIGSEGV` 崩溃的问题 [#66391](https://github.com/pingcap/tidb/issues/66391) @[bb7133](https://github.com/bb7133) <!-- component: execution --> <!-- pr: https://github.com/pingcap/tidb/pull/67003 -->
-    - 修复在某些场景下，由于代价高昂的全范围检查，TiDB 在查询规划期间消耗过多 CPU 的问题 [#63235](https://github.com/pingcap/tidb/issues/63235) @[terry1purcell](https://github.com/terry1purcell) @[qw4990](https://github.com/qw4990) <!-- component: planner --> <!-- pr: https://github.com/pingcap/tidb/pull/64058 --> <!-- pr: https://github.com/pingcap/tidb/pull/63813 -->
-    - 修复当 `tidb_opt_objective` 设置为 `determinate` 时，新添加索引在异步加载统计信息期间可能发生 panic 的问题 [#64274](https://github.com/pingcap/tidb/issues/64274) @[0xPoe](https://github.com/0xPoe) <!-- component: planner --> <!-- pr: https://github.com/pingcap/tidb/pull/64292 -->
+    - 修复由于 `UNION` 查询的清理过程与 worker goroutine 的退出过程之间存在竞争，TiDB 可能因 `SIGSEGV` 崩溃的问题 [#66391](https://github.com/pingcap/tidb/issues/66391) @[bb7133](https://github.com/bb7133) <!-- component: execution --> <!-- pr: https://github.com/pingcap/tidb/pull/67003 -->
+    - 修复在某些场景下，由于开销较大的全范围检查，TiDB 在查询规划期间消耗过多 CPU 的问题 [#63235](https://github.com/pingcap/tidb/issues/63235) @[terry1purcell](https://github.com/terry1purcell) @[qw4990](https://github.com/qw4990) <!-- component: planner --> <!-- pr: https://github.com/pingcap/tidb/pull/64058 --> <!-- pr: https://github.com/pingcap/tidb/pull/63813 -->
+    - 修复当 `tidb_opt_objective` 设置为 `determinate` 时，TiDB 在异步加载新添加索引的统计信息期间可能发生 panic 的问题 [#64274](https://github.com/pingcap/tidb/issues/64274) @[0xPoe](https://github.com/0xPoe) <!-- component: planner --> <!-- pr: https://github.com/pingcap/tidb/pull/64292 -->
 
 + TiKV
 
     - 修复由于外部 SST 导入与前台写入之间存在竞争，TiKV 可能因 `txn record found but not expected` 发生 panic 的问题 [#19891](https://github.com/tikv/tikv/issues/19891) @[gengliqi](https://github.com/gengliqi) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19914 -->
-    - 修复停止日志备份任务后，BR 遗留过期的 GC service safepoint，可能导致 GC 无法按预期推进的问题 [#19832](https://github.com/tikv/tikv/issues/19832) @[Leavrth](https://github.com/Leavrth) <!-- component: br --> <!-- pr: https://github.com/tikv/tikv/pull/19913 -->
-    - 修复在 TiCDC 重启或网络故障后，TiKV 与 TiCDC 之间的陈旧连接可能无法被完全清理，导致 TiKV CDC 内存配额耗尽并使 changefeed 卡住的问题 [#18169](https://github.com/tikv/tikv/issues/18169) [#19610](https://github.com/tikv/tikv/issues/19610) @[asddongmen](https://github.com/asddongmen) @[wk989898](https://github.com/wk989898) <!-- component: cdc --> <!-- pr: https://github.com/tikv/tikv/pull/18864 --> <!-- pr: https://github.com/tikv/tikv/pull/19689 -->
-    - 修复在 TiKV 发生 I/O 卡住时，由于与 PD 相关的工作被 I/O 操作阻塞，TiKV 吞吐量可能持续下降的问题 [#17939](https://github.com/tikv/tikv/issues/17939) @[LykxSassinator](https://github.com/LykxSassinator) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/18969 -->
+    - 修复停止日志备份任务后，BR 遗留不再需要的 GC service safepoint，可能导致 GC 无法按预期推进的问题 [#19832](https://github.com/tikv/tikv/issues/19832) @[Leavrth](https://github.com/Leavrth) <!-- component: br --> <!-- pr: https://github.com/tikv/tikv/pull/19913 -->
+    - 修复在 TiCDC 重启或网络故障后，TiKV 与 TiCDC 之间的残留连接可能无法被完全清理，导致 TiKV CDC 内存配额耗尽并使 Changefeed 卡住的问题 [#18169](https://github.com/tikv/tikv/issues/18169) [#19610](https://github.com/tikv/tikv/issues/19610) @[asddongmen](https://github.com/asddongmen) @[wk989898](https://github.com/wk989898) <!-- component: cdc --> <!-- pr: https://github.com/tikv/tikv/pull/18864 --> <!-- pr: https://github.com/tikv/tikv/pull/19689 -->
+    - 修复在 TiKV 出现 I/O 阻塞时，由于与 PD 相关的工作被 I/O 操作阻塞，TiKV 吞吐量可能持续下降的问题 [#17939](https://github.com/tikv/tikv/issues/17939) @[LykxSassinator](https://github.com/LykxSassinator) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/18969 -->
     - 修复在 TiDB Lightning 导入数据期间，TiKV 可能因空指针解引用而崩溃的问题 [#18671](https://github.com/tikv/tikv/issues/18671) [#18756](https://github.com/tikv/tikv/issues/18756) @[Dog-Du](https://github.com/Dog-Du) <!-- component: tikv --> <!-- pr: https://github.com/tikv/tikv/pull/19908 -->
 
 + PD
@@ -45,5 +45,5 @@ TiDB 版本：7.5.8
 
     + TiCDC
 
-        - 修复 Kafka Changefeed 在重试失败的 DDL 或 checkpoint 事件投递时泄漏 Kafka client，导致内存持续增长的问题 [#12666](https://github.com/pingcap/tiflow/issues/12666) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/tiflow/pull/12678 -->
-        - 修复当 admin 或 producer 初始化失败，或关闭 admin 与同步 producer 包装器时，Kafka sink 可能泄漏底层 Sarama client 的问题 [#12572](https://github.com/pingcap/tiflow/issues/12572) @[wlwilliamx](https://github.com/wlwilliamx) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/tiflow/pull/12592 -->
+        - 修复 Kafka Changefeed 在 DDL 或 checkpoint 事件投递失败后重试时泄漏 Kafka client，导致内存持续增长的问题 [#12666](https://github.com/pingcap/tiflow/issues/12666) @[3AceShowHand](https://github.com/3AceShowHand) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/tiflow/pull/12678 -->
+        - 修复当 admin 或 producer 初始化失败，或关闭 admin 包装器或同步 producer 包装器时，Kafka sink 可能泄漏底层 Sarama client 的问题 [#12572](https://github.com/pingcap/tiflow/issues/12572) @[wlwilliamx](https://github.com/wlwilliamx) <!-- component: cdc --> <!-- pr: https://github.com/pingcap/tiflow/pull/12592 -->
