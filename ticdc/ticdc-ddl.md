@@ -36,10 +36,10 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 | `DROP PRIMARY KEY` | Y | N | Y |
 | `CREATE TABLE` | Y | N | Y |
 | `DROP TABLE` | Y | N | Y |
-| `ADD COLUMN` | Y | N | Y |
+| `ADD COLUMN` | Y | Y：添加有效索引<br>N：没有添加有效索引 | Y |
 | `DROP COLUMN` | Y | N | Y |
 | `TRUNCATE TABLE` | Y | N | Y |
-| `MODIFY COLUMN` | Y | N | Y |
+| `MODIFY COLUMN` | Y | Y：添加有效索引<br>N：没有添加有效索引 | Y |
 | `RENAME TABLE` | Y | N | Y |
 | `ALTER COLUMN DEFAULT VALUE` | Y | N | Y |
 | `ALTER TABLE COMMENT` | Y | N | Y |
