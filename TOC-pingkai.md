@@ -80,10 +80,10 @@
       - [Stale Read](/develop/dev-guide-use-stale-read.md)
     - [HTAP 查询](/develop/dev-guide-hybrid-oltp-and-olap-queries.md)
   - 向量搜索
-    - [概述](/ai/concepts/vector-search-overview.md)
+    - [概述](/ai/guides/vector-search-overview.md)
     - 快速入门
-      - [使用 SQL 开始向量搜索](/ai/quickstart-via-sql.md)
-      - [使用 Python 开始向量搜索](/ai/quickstart-via-python.md)
+      - [使用 SQL 快速上手向量搜索](/ai/guides/quickstart-via-sql.md)
+      - [使用 Python 快速上手向量搜索](/ai/guides/quickstart-via-python.md)
     - 集成
       - [集成概览](/ai/integrations/vector-search-integration-overview.md)
       - AI 框架

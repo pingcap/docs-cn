@@ -5,7 +5,7 @@ summary: 为应用开发者介绍 TiDB 中的向量搜索功能，包括相关�
 
 # 向量搜索
 
-[向量搜索](/ai/concepts/vector-search-overview.md) 支持在文档、图像、音频和视频等多种数据类型上进行语义相似性搜索。熟悉 MySQL 的开发人员可以基于该功能轻松构建人工智能 (AI) 应用。
+[向量搜索](/ai/guides/vector-search-overview.md) 支持在文档、图像、音频和视频等多种数据类型上进行语义相似性搜索。熟悉 MySQL 的开发人员可以基于该功能轻松构建人工智能 (AI) 应用。
 
 ## 快速开始
 

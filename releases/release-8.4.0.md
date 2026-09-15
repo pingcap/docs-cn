@@ -207,7 +207,7 @@ TiDB 版本：8.4.0
 
     此外，你可以创建并利用[向量搜索索引](/ai/reference/vector-search-index.md)来提升向量搜索的性能。需要注意的是，TiDB 的向量搜索索引依赖于 TiFlash。在使用向量搜索索引之前，需要确保 TiDB 集群中已部署 TiFlash 节点。
 
-    更多信息，请参考[用户文档](/ai/concepts/vector-search-overview.md)。
+    更多信息，请参考[用户文档](/ai/guides/vector-search-overview.md)。
 
 ### 数据库管理
 
