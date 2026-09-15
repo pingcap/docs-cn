@@ -100,7 +100,7 @@ ti fs delete-file-system \
 
 ## 安全与运维说明 {#security-and-operational-notes}
 
-- 将 `TI_FS_TOKEN` 视为所有者凭据。
+- 将 `TI_FS_TOKEN` 视为所有者凭证。
 - 不要将其放入镜像、仓库、命令行参数或操作日志中。
 - 删除沙箱不会删除远端 Filesystem。
 - 优雅的卸载会刷写待处理的 FUSE 写入；不经卸载直接删除沙箱则不会。
@@ -108,4 +108,4 @@ ti fs delete-file-system \
 ## 后续内容 {#what-s-next}
 
 - [TiDB Cloud Filesystem CLI 命令参考](/ai/ti/reference/ti-filesystem.md)
-- [TiDB Cloud CLI 配置与凭据](/ai/ti/reference/ti-configuration-and-credentials.md)
+- [TiDB Cloud CLI 配置与凭证](/ai/ti/reference/ti-configuration-and-credentials.md)

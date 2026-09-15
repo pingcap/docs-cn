@@ -62,7 +62,7 @@ ti fs fork-layer \
 ti fs list-layer-chain --layer-ref experiment
 ```
 
-Checkpoints 挂载是只读的。要从 checkpoints 继续工作，请基于它派生一个新的可写 layer 。
+Checkpoints 挂载是只读的。要从 checkpoints 继续工作，请基于它派生一个新的可写 layer。
 
 ## 完成 layer 中的工作 {#finish-work-in-a-layer}
 
@@ -90,7 +90,7 @@ Checkpoints 挂载是只读的。要从 checkpoints 继续工作，请基于它�
 
 ## 将本地状态迁移到另一台机器 {#move-local-state-to-another-machine}
 
-当 FUSE 挂载使用 write-back cache 时，部分数据可能仍保留在其本地叠加 layer 目录中。要将这些本地状态迁移到另一台机器，请将其打包到一个显式指定的远程归档路径：
+当 FUSE 挂载使用 write-back 缓存时，部分数据可能仍保留在其本地叠加 layer 目录中。要将这些本地状态迁移到另一台机器，请将其打包到一个显式指定的远程归档路径：
 
 ```shell
 ti fs pack-file-system \

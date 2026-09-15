@@ -24,8 +24,8 @@ ti db delete-db-cluster-branch
 
 ## 选项 {#options}
 
-- `--db-cluster-branch-id <string>`: Starter DB cluster branch ID。\[required]
-- `--db-cluster-id <string>`: Starter DB cluster ID。\[required]
+- `--db-cluster-branch-id <string>`: TiDB Cloud Starter 实例的 branch ID。\[required]
+- `--db-cluster-id <string>`: TiDB Cloud Starter 实例的 ID。\[required]
 - `--dry-run`: 验证请求而不应用更改。
 - `--help`: 显示帮助信息。
 - `--version`: 显示版本信息。

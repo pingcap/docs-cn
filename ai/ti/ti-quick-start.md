@@ -23,7 +23,7 @@ summary: 安装并配置 TiDB Cloud CLI，然后创建并使用 TiDB Cloud Files
 
 <SimpleTab>
 
-<div label="macOS or Linux">
+<div label="macOS 或 Linux">
 
 1. 在 macOS 或 Linux 上，运行以下命令安装 TiDB Cloud CLI：
 

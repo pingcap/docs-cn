@@ -1,9 +1,9 @@
 ---
-title: 配置 TiDB Cloud Filesystem AI Providers
+title: 配置 TiDB Cloud Filesystem AI 提供方
 summary: 了解如何使用 CLI 检查并配置 TiDB Cloud Filesystem 的媒体内容提取和向量嵌入 provider。
 ---
 
-# 配置 TiDB Cloud Filesystem AI Providers
+# 配置 TiDB Cloud Filesystem AI 提供方
 
 TiDB Cloud Filesystem 可以选择性地从媒体文件中提取文本，并为存储的内容生成向量嵌入。要启用这些能力，你可以通过 CLI 配置一个或多个 AI provider。
 

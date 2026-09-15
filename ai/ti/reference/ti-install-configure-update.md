@@ -1,6 +1,6 @@
 ---
 title: 安装、配置和更新 TiDB Cloud CLI
-summary: 安装 TiDB Cloud CLI 发布版本，配置配置（Profile），检查版本，应用更新，以及卸载 CLI。
+summary: 安装 TiDB Cloud CLI 发布版本，配置 Profile，检查版本，应用更新，以及卸载 CLI。
 ---
 
 # 安装、配置和更新 TiDB Cloud CLI
@@ -25,7 +25,7 @@ summary: 安装 TiDB Cloud CLI 发布版本，配置配置（Profile），检查
 
 <SimpleTab groupId="operating-systems">
 
-<div label="macOS or Linux" value="macos-or-linux">
+<div label="macOS 或 Linux" value="macos-or-linux">
 
 1. 在 macOS 或 Linux 上，运行以下命令安装 TiDB Cloud CLI：
 
@@ -213,7 +213,7 @@ ti fs-vault unmount-vault --mount-path <vault-mount-path>
 
 <SimpleTab groupId="operating-systems">
 
-<div label="macOS or Linux" value="macos-or-linux">
+<div label="macOS 或 Linux" value="macos-or-linux">
 
 1. 删除二进制文件：
 
@@ -255,7 +255,7 @@ ti fs-vault unmount-vault --mount-path <vault-mount-path>
 
 <SimpleTab groupId="operating-systems">
 
-<div label="macOS or Linux" value="macos-or-linux">
+<div label="macOS 或 Linux" value="macos-or-linux">
 
 在 macOS 或 Linux 上：
 

@@ -97,7 +97,7 @@ ti db list-db-clusters \
 
 无效的表达式会导致失败，不会用部分输出替代命令结果。
 
-## Dry-run {#dry-run}
+## 试运行 (Dry-run) {#dry-run}
 
 支持 `--dry-run` 的变更型控制平面命令会验证本地选项、配置、凭证、Region 和请求结构，然后在不执行远程变异的情况下报告一个计划。
 
@@ -156,7 +156,7 @@ ti [ERROR]: <message>
 
 | 文档 | 用途 |
 | --- | --- |
-| [安装、配置和更新 TiDB Cloud CLI](/ai/ti/reference/ti-install-configure-update.md) | 安装发布版本、配置配置（Profile）、更新并卸载 `ti` |
+| [安装、配置和更新 TiDB Cloud CLI](/ai/ti/reference/ti-install-configure-update.md) | 安装发布版本、配置 Profile、更新并卸载 `ti` |
 | [TiDB Cloud CLI 配置和凭证](/ai/ti/reference/ti-configuration-and-credentials.md) | 了解配置（Profile）、优先级规则、凭证和本地状态 |
 | [TiDB Cloud CLI Regions、安全性和限制](/ai/ti/reference/ti-regions-security-and-limitations.md) | 查看支持的 Region、凭证边界、平台支持和限制 |
 | [从 `tdc` 迁移到 TiDB Cloud CLI](/ai/ti/reference/ti-migrate-from-tdc.md) | 从 `tdc` v0.1.x 迁移本地状态和环境变量 |

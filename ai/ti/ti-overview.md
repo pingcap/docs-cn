@@ -10,7 +10,7 @@ summary: 了解何时使用 TiDB Cloud CLI (`ti`) 来管理 TiDB Cloud Starter �
 > **注意：**
 >
 > - TiDB Cloud CLI (`ti`) 目前处于公测阶段。其功能和命令行接口可能会在不事先通知的情况下发生变化。
-> - TiDB Cloud 当前提供两个作用域不同的 CLI：[`ti`](https://github.com/tidbcloud/ti-cli) 和 [`ticloud`](https://github.com/tidbcloud/tidbcloud-cli)。要了解何时使用 `ti` 或 `ticloud`，请参见[ `ti` 与 `ticloud` 的区别](#differences-between-ti-and-ticloud)和[何时使用 TiDB Cloud CLI (`ti`)](#when-to-use-tidb-cloud-cli-ti)。
+> - TiDB Cloud 当前提供两个作用域不同的 CLI：[`ti`](https://github.com/tidbcloud/ti-cli) 和 [`ticloud`](https://github.com/tidbcloud/tidbcloud-cli)。要了解何时使用 `ti` 或 `ticloud`，请参见[`ti` 与 `ticloud` 的区别](#differences-between-ti-and-ticloud)和[何时使用 TiDB Cloud CLI (`ti`)](#when-to-use-tidb-cloud-cli-ti)。
 
 ## TiDB Cloud Filesystem {#tidb-cloud-filesystem}
 
