@@ -10,7 +10,7 @@ TiDB 提供数据和工作空间能力，用于构建 AI 应用和运行 AI agen
 - 对于应用开发，你可以使用 SQL 或 [TiDB AI 的 Python SDK (`pytidb`)](https://github.com/pingcap/pytidb)，结合结构化数据、向量搜索、全文搜索、混合搜索和 AI 驱动的检索来开发。
 - 对于 AI agent 和自动化，你可以使用 [TiDB Cloud CLI (`ti`)](https://github.com/tidbcloud/ti-cli) 管理 TiDB Cloud Starter 实例和 SQL 工作流，并使用 TiDB Cloud Filesystems 作为跨本地机器、CI 作业和临时 agent 沙箱的持久化共享存储。Filesystems 还支持挂载工作空间、Git 工作流、日志（Journal）和委托 Secrets。
 
-## Get started {#get-started}
+## 快速开始 {#get-started}
 
 快速体验 TiDB 的 AI 能力。
 

@@ -17,8 +17,8 @@ summary: 创建一个 Filesystem，从第二台机器安全地访问它，并验
 
 | 参与方 | 凭证 | 在工作流中的角色 |
 | --- | --- | --- |
-| Machine A | 已配置的 `ti` 配置（Profile）及其 FS 所有者令牌 | 创建并管理 Filesystem，写入初始数据，并为机器 B 生成令牌 |
-| Machine B | 它自己的 FS 所有者令牌和 Filesystem 的 Region 代码 | 无需 TiDB Cloud API 密钥或复制的配置（Profile）即可访问 Filesystem |
+| 机器 A | 已配置的 `ti` 配置（Profile）及其 FS 所有者令牌 | 创建并管理 Filesystem，写入初始数据，并为机器 B 生成令牌 |
+| 机器 B | 它自己的 FS 所有者令牌和 Filesystem 的 Region 代码 | 无需 TiDB Cloud API 密钥或复制的配置（Profile）即可访问 Filesystem |
 | TiDB Cloud Filesystem | 不适用 | 提供两台机器共同使用的共享远程命名空间 |
 
 为每台机器使用单独的令牌，可以在不影响机器 A 的情况下对机器 B 执行（权限）回收。由于这两个令牌都授予 owner 访问权限，因此应将它们作为 Secret 进行传输和存储。
