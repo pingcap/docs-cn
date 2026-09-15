@@ -324,6 +324,6 @@ for doc in results:
 ## 另请参阅
 
 - [Auto Embedding 概览](/ai/integrations/vector-search-auto-embedding-overview.md)
-- [向量搜索](/ai/concepts/vector-search-overview.md)
+- [向量搜索](/ai/guides/vector-search-overview.md)
 - [向量函数与运算符](/ai/reference/vector-search-functions-and-operators.md)
 - [混合搜索](/ai/guides/vector-search-hybrid-search.md)

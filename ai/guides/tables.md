@@ -1,6 +1,7 @@
 ---
 title: 使用表
 summary: 了解如何在 TiDB 中使用表。
+aliases: ['/zh/ai/basic-with-pytidb/']
 ---
 
 # 使用表
@@ -446,3 +447,51 @@ SHOW TABLES;
 
 </div>
 </SimpleTab>
+
+## 运行完整的 `pytidb` 增删改查示例
+
+`pytidb` 仓库提供了一个完整示例，该示例会连接到 TiDB，创建一个包含文本、向量和 JSON 列的表，并执行增删改查操作。
+
+开始之前，请确保你已具备以下条件：
+
+- Python 3.10 或更高版本。
+- 一个 {{{ .starter }}} 实例。你可以在 [TiDB Cloud](https://tidbcloud.com/free-trial) 上创建。
+
+运行该示例：
+
+1. 克隆 `pytidb` 仓库并进入示例目录：
+
+    ```bash
+    git clone https://github.com/pingcap/pytidb.git
+    cd pytidb/examples/basic/
+    ```
+
+2. 创建并激活虚拟环境，然后安装所需的软件包：
+
+    ```bash
+    python -m venv .venv
+    source .venv/bin/activate
+    pip install -r reqs.txt
+    ```
+
+3. 在 [TiDB Cloud 控制台](https://tidbcloud.com/)中，前往 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击你的 {{{ .starter }}} 实例名称，然后点击右上角的 **Connect** 以获取连接参数。
+
+4. 创建一个 `.env` 文件并设置连接参数：
+
+    ```bash
+    cat > .env <<'EOF'
+    TIDB_HOST={gateway-region}.prod.aws.tidbcloud.com
+    TIDB_PORT=4000
+    TIDB_USERNAME={prefix}.root
+    TIDB_PASSWORD={password}
+    TIDB_DATABASE=test
+    EOF
+    ```
+
+5. 运行示例：
+
+    ```bash
+    python main.py
+    ```
+
+该示例会打印每个增删改查操作的结果，并在结束时删除示例表。要查看具体实现，请参见 [`pytidb` basic example](https://github.com/pingcap/pytidb/tree/main/examples/basic)。

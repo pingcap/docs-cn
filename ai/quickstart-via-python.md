@@ -1,12 +1,12 @@
 ---
-title: 使用 Python 快速上手 TiDB + AI
+title: 通过 Python 快速上手 TiDB + AI
 summary: 学习如何使用 Python SDK 在 TiDB 中开始向量搜索。
 aliases: ['/zh/tidb/stable/vector-search-get-started-using-python/','/zh/tidb/dev/vector-search-get-started-using-python/','/zh/tidbcloud/vector-search-get-started-using-python/']
 ---
 
-# 使用 Python 快速上手 TiDB + AI
+# 通过 Python 快速上手 TiDB + AI
 
-本文档演示了如何使用 Python SDK 在 TiDB 中开始 [向量搜索](/ai/concepts/vector-search-overview.md)。跟随本文中的步骤，你将构建你的第一个基于 TiDB 的 AI 应用。
+本文档演示了如何使用 Python SDK 在 TiDB 中开始 [向量搜索](/ai/guides/vector-search-overview.md)。跟随本文中的步骤，你将构建你的第一个基于 TiDB 的 AI 应用。
 
 通过学习本教程，你将掌握：
 
@@ -18,7 +18,7 @@ aliases: ['/zh/tidb/stable/vector-search-get-started-using-python/','/zh/tidb/de
 > **注意：**
 >
 > - 向量搜索功能目前处于公测阶段，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md) 和 [{{{ .starter }}}](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)。对于 TiDB Self-Managed，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 及以上）。
+> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md) 和 [{{{ .starter }}}](https://docs.pingcap.com/tidbcloud/select-cluster-tier/?plan=starter#starter)。对于 TiDB Self-Managed，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 及以上）。
 
 ## 前置条件
 
@@ -108,7 +108,7 @@ client = TiDBClient.connect(
 
 ## 创建嵌入 function
 
-在使用 [嵌入模型](/ai/concepts/vector-search-overview.md#embedding-model) 时，你可以利用嵌入 function 在插入和查询阶段自动将数据向量化。该功能原生支持 OpenAI、Jina AI、Hugging Face、Sentence Transformers 等主流嵌入模型。
+在使用 [嵌入模型](/ai/guides/vector-search-overview.md#embedding-model) 时，你可以利用嵌入 function 在插入和查询阶段自动将数据向量化。该功能原生支持 OpenAI、Jina AI、Hugging Face、Sentence Transformers 等主流嵌入模型。
 
 <SimpleTab>
 <div label="OpenAI">

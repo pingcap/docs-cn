@@ -8,12 +8,12 @@ aliases: ['/zh/tidb/stable/vector-search-get-started-using-python/','/zh/tidb/de
 
 本教程演示如何开发一个简单的 AI 应用，提供 **语义搜索** 功能。与传统的关键字搜索不同，语义搜索能够智能理解你的查询背后的含义，并返回最相关的结果。例如，如果你有标题为 "dog"、"fish" 和 "tree" 的文档，当你搜索 "a swimming animal" 时，应用会识别出 "fish" 是最相关的结果。
 
-在本教程中，你将使用 [TiDB 向量搜索](/ai/concepts/vector-search-overview.md)、Python、[TiDB Vector SDK for Python](https://github.com/pingcap/tidb-vector-python) 以及 AI 模型来开发该 AI 应用。
+在本教程中，你将使用 [TiDB 向量搜索](/ai/guides/vector-search-overview.md)、Python、[TiDB Vector SDK for Python](https://github.com/pingcap/tidb-vector-python) 以及 AI 模型来开发该 AI 应用。
 
 > **注意：**
 >
 > - 向量搜索功能目前处于公测阶段，可能会在不提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md) 和 [{{{ .starter }}}](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)。对于 TiDB Self-Managed，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md) 和 [{{{ .starter }}}](https://docs.pingcap.com/tidbcloud/select-cluster-tier/?plan=starter#starter)。对于 TiDB Self-Managed，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 ## 前置条件
 
@@ -51,7 +51,7 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 ```
 
 - `tidb-vector`：用于与 TiDB 向量搜索交互的 Python 客户端。
-- [`sentence-transformers`](https://sbert.net)：一个 Python 库，提供用于从文本生成 [向量嵌入](/ai/concepts/vector-search-overview.md#vector-embedding) 的预训练模型。
+- [`sentence-transformers`](https://sbert.net)：一个 Python 库，提供用于从文本生成 [向量嵌入](/ai/guides/vector-search-overview.md#vector-embedding) 的预训练模型。
 
 ### 第 3 步：配置 TiDB 连接字符串 {#step-3-configure-the-tidb-connection-string}
 
@@ -117,7 +117,7 @@ TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
 
 ### 步骤 4. 初始化嵌入模型
 
-[嵌入模型](/ai/concepts/vector-search-overview.md#embedding-model) 用于将数据转换为 [向量嵌入](/ai/concepts/vector-search-overview.md#vector-embedding)。本示例使用预训练模型 [**msmarco-MiniLM-L12-cos-v5**](https://huggingface.co/sentence-transformers/msmarco-MiniLM-L12-cos-v5) 进行文本嵌入。该轻量级模型由 `sentence-transformers` 库提供，可将文本数据转换为 384 维的向量嵌入。
+[嵌入模型](/ai/guides/vector-search-overview.md#embedding-model) 用于将数据转换为 [向量嵌入](/ai/guides/vector-search-overview.md#vector-embedding)。本示例使用预训练模型 [**msmarco-MiniLM-L12-cos-v5**](https://huggingface.co/sentence-transformers/msmarco-MiniLM-L12-cos-v5) 进行文本嵌入。该轻量级模型由 `sentence-transformers` 库提供，可将文本数据转换为 384 维的向量嵌入。
 
 要设置模型，将以下代码复制到 `example.py` 文件中。该代码初始化了一个 `SentenceTransformer` 实例，并定义了后续使用的 `text_to_embedding()` 函数。
 

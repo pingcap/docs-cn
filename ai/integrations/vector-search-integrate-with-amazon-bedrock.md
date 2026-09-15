@@ -10,12 +10,12 @@ aliases: ['/zh/tidbcloud/vector-search-integrate-with-amazon-bedrock/']
 >
 > 本文档仅适用于 TiDB Cloud，不适用 TiDB Self-Managed。
 
-本教程演示如何将 [TiDB 向量搜索](/ai/concepts/vector-search-overview.md) 与 [Amazon Bedrock](https://aws.amazon.com/bedrock/) 集成，以构建基于 RAG（检索增强生成）的问答机器人。
+本教程演示如何将 [TiDB 向量搜索](/ai/guides/vector-search-overview.md) 与 [Amazon Bedrock](https://aws.amazon.com/bedrock/) 集成，以构建基于 RAG（检索增强生成）的问答机器人。
 
 > **注意：**
 >
 > - 向量搜索功能目前处于公测阶段，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md) 和 [{{{ .starter }}}](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)。对于 TiDB Self-Managed，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md) 和 [{{{ .starter }}}](https://docs.pingcap.com/tidbcloud/select-cluster-tier/?plan=starter#starter)。对于 TiDB Self-Managed，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 > **提示**
 >
@@ -37,7 +37,7 @@ aliases: ['/zh/tidbcloud/vector-search-integrate-with-amazon-bedrock/']
 
 - 一个 TiDB Cloud Starter 实例
 
-    如果你还没有 TiDB Cloud Starter 实例，请[创建一个 TiDB Cloud Starter 实例](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)。
+    如果你还没有 TiDB Cloud Starter 实例，请[创建一个 TiDB Cloud Starter 实例](https://docs.pingcap.com/tidbcloud/select-cluster-tier/?plan=starter#starter)。
 
 - 一个具有 [Amazon Bedrock 所需权限](https://docs.aws.amazon.com/bedrock/latest/userguide/security_iam_id-based-policy-examples.html) 的 AWS 账户，并且能够访问以下模型：
 

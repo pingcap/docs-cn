@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/stable/vector-search-get-started-using-sql/','/zh/tidb/dev/v
 
 # 通过 SQL 快速上手 TiDB + AI
 
-TiDB 扩展了 MySQL 语法以支持[向量搜索](/ai/concepts/vector-search-overview.md)，并引入了新的[向量数据类型](/ai/reference/vector-search-data-types.md)以及若干[向量函数](/ai/reference/vector-search-functions-and-operators.md)。
+TiDB 扩展了 MySQL 语法以支持[向量搜索](/ai/guides/vector-search-overview.md)，并引入了新的[向量数据类型](/ai/reference/vector-search-data-types.md)以及若干[向量函数](/ai/reference/vector-search-functions-and-operators.md)。
 
 本文档演示了如何仅使用 SQL 语句快速上手 TiDB 向量搜索。你将学习如何使用 [MySQL 命令行客户端](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)完成以下操作：
 
@@ -18,7 +18,7 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/ai/concepts/vector-search-ov
 > **注意：**
 >
 > - 向量搜索功能目前处于公测阶段，可能会在未提前通知的情况下发生变更。如果你发现了 bug，可以在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues)。
-> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md) 和 [{{{ .starter }}}](https://docs.pingcap.com/zh/tidbcloud/select-cluster-tier/#starter)。对于 TiDB Self-Managed，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
+> - 向量搜索功能适用于 [TiDB Self-Managed](/overview.md) 和 [{{{ .starter }}}](https://docs.pingcap.com/tidbcloud/select-cluster-tier/?plan=starter#starter)。对于 TiDB Self-Managed，TiDB 版本需为 v8.4.0 或更高（推荐 v8.5.0 或更高）。
 
 ## 前置条件
 
@@ -72,7 +72,7 @@ mysql --comments --host 127.0.0.1 --port 4000 -u root
 
 ### 步骤 2. 创建向量表
 
-在创建表时，你可以通过指定 `VECTOR` 数据类型，将某一列定义为[向量](/ai/concepts/vector-search-overview.md#vector-embedding)列。
+在创建表时，你可以通过指定 `VECTOR` 数据类型，将某一列定义为[向量](/ai/guides/vector-search-overview.md#vector-embedding)列。
 
 例如，要创建一个包含三维 `VECTOR` 列的 `embedded_documents` 表，可在 MySQL CLI 中执行如下 SQL 语句：
 
@@ -95,7 +95,7 @@ Query OK, 0 rows affected (0.27 sec)
 
 ### 步骤 3. 向表中插入向量嵌入
 
-向 `embedded_documents` 表中插入三条带有[向量嵌入](/ai/concepts/vector-search-overview.md#vector-embedding)的文档：
+向 `embedded_documents` 表中插入三条带有[向量嵌入](/ai/guides/vector-search-overview.md#vector-embedding)的文档：
 
 ```sql
 INSERT INTO embedded_documents
@@ -116,7 +116,7 @@ Records: 3  Duplicates: 0  Warnings: 0
 >
 > 本示例简化了向量嵌入的维度，仅使用三维向量进行演示。
 >
-> 在实际应用中，[嵌入模型](/ai/concepts/vector-search-overview.md#embedding-model)通常会生成数百甚至数千维的向量嵌入。
+> 在实际应用中，[嵌入模型](/ai/guides/vector-search-overview.md#embedding-model)通常会生成数百甚至数千维的向量嵌入。
 
 ### 步骤 4. 查询向量表
 
