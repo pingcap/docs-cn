@@ -16,8 +16,8 @@ TiDB 提供数据和工作空间能力，用于构建 AI 应用和运行 AI agen
 
 | 目标 | 从这里开始 |
 | --- | --- |
-| 使用向量搜索构建 AI 应用 | [通过 Python 开始使用向量搜索](/ai/quickstart-via-python.md) 或 [通过 SQL 开始使用向量搜索](/ai/quickstart-via-sql.md) |
-| 使用 TiDB Cloud 构建 agent 和自动化工作流 | [开始使用 TiDB Cloud CLI](/ai/ti/ti-quick-start.md) |
+| 使用向量搜索构建 AI 应用 | [通过 Python 快速上手向量搜索](/ai/quickstart-via-python.md) 或 [通过 SQL 快速上手向量搜索](/ai/quickstart-via-sql.md) |
+| 使用 TiDB Cloud 构建 agent 和自动化工作流 | [快速上手 TiDB Cloud CLI](/ai/ti/ti-quick-start.md) |
 
 ## 使用 TiDB 构建 AI 应用 {#build-ai-applications-with-tidb}
 
@@ -99,7 +99,7 @@ TiDB Cloud CLI (`ti`) 让用户、脚本、CI 作业和 AI agent 能够通过终
 | 你想做什么 | 从这里开始 |
 | --- | --- |
 | 了解 `ti` 管理什么以及何时使用它 | [TiDB Cloud CLI 概览](/ai/ti/ti-overview.md) |
-| 安装并配置 `ti`，然后完成第一个工作流 | [TiDB Cloud CLI 快速上手](/ai/ti/ti-quick-start.md) |
+| 安装并配置 `ti`，然后完成第一个工作流 | [TiDB Cloud CLI 快速上手指南](/ai/ti/ti-quick-start.md) |
 | 自动化 TiDB Cloud Starter 实例、分支和 SQL 操作 | [管理 TiDB Cloud Starter 实例](/ai/ti/guides/manage-starter-instances.md) |
 | 在机器、CI 作业和沙箱之间持久化并共享文件 | [管理 Filesystem 资源](/ai/ti/guides/manage-filesystem-resources.md) 和 [使用 Filesystem 数据](/ai/ti/guides/work-with-filesystem-data.md) |
 | 使用挂载工作区、Git 工作区、日志（Journal）或委托 Secret | [挂载 Filesystem](/ai/ti/guides/mount-filesystem.md)、[管理 Git 工作区](/ai/ti/guides/manage-git-workspaces.md)、[使用 Filesystem 日志（Journal）](/ai/ti/guides/use-filesystem-journals.md) 和 [管理 Filesystem Vault Secret](/ai/ti/guides/manage-filesystem-vault-secrets.md) |

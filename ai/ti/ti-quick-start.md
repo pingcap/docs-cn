@@ -1,9 +1,9 @@
 ---
-title: TiDB Cloud CLI 快速入门
+title: TiDB Cloud CLI 快速上手指南
 summary: 安装并配置 TiDB Cloud CLI，然后创建并使用 TiDB Cloud Filesystem，或查询 TiDB Cloud Starter 数据库。
 ---
 
-# TiDB Cloud CLI 快速入门
+# TiDB Cloud CLI 快速上手指南
 
 [TiDB Cloud CLI (`ti`)](https://github.com/tidbcloud/ti-cli) 是一个命令行工具，用于管理 [TiDB Cloud Starter](https://docs.pingcap.com/tidbcloud/select-cluster-tier/?plan=starter#starter) 实例和 [TiDB Cloud Filesystem](/ai/ti/ti-overview.md#tidb-cloud-filesystem)。它同时支持交互式使用和自动化场景，并以 JSON 作为命令的默认输出格式。
 

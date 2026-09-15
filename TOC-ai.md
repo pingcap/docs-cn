@@ -5,9 +5,9 @@
 
 ## 快速开始
 
-- [通过 Python 开始使用向量搜索](/ai/quickstart-via-python.md)
-- [通过 SQL 开始使用向量搜索](/ai/quickstart-via-sql.md)
-- [开始使用 TiDB Cloud CLI](/ai/ti/ti-quick-start.md)
+- [通过 Python 快速上手向量搜索](/ai/quickstart-via-python.md)
+- [通过 SQL 快速上手向量搜索](/ai/quickstart-via-sql.md)
+- [快速上手 TiDB Cloud CLI](/ai/ti/ti-quick-start.md)
 
 ## 使用指南
 
@@ -50,7 +50,7 @@
     - [配置 Filesystem AI 提供方](/ai/ti/guides/configure-filesystem-ai-providers.md)
     - [管理 Filesystem 访问令牌](/ai/ti/guides/manage-filesystem-tokens.md)
     - [使用 Filesystem 数据](/ai/ti/guides/work-with-filesystem-data.md)
-    - [管理 Filesystem 层和检查点](/ai/ti/guides/manage-filesystem-layers.md)
+    - [管理 Filesystem Layers 和 Checkpoints](/ai/ti/guides/manage-filesystem-layers.md)
     - [挂载 TiDB Cloud Filesystem](/ai/ti/guides/mount-filesystem.md)
     - [管理 Git 工作区](/ai/ti/guides/manage-git-workspaces.md)
     - [使用 Filesystem 日志（Journal）](/ai/ti/guides/use-filesystem-journals.md)
