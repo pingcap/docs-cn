@@ -5,7 +5,7 @@ summary: 了解 TiDB 7.5.8 的改进和错误修复。
 
 # TiDB 7.5.8 Release Notes
 
-发版日期：待定
+发版日期：2026 年 9 月 15 日
 
 TiDB 版本：7.5.8
 

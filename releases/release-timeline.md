@@ -19,6 +19,7 @@ aliases: ['/zh/tidb/dev/release-timeline/','/zh/tidb/v5.4/release-timeline','/zh
 | [8.5.6](/releases/release-8.5.6.md) | 2026-04-14 |
 | [8.5.5](/releases/release-8.5.5.md) | 2026-01-15 |
 | [8.5.4](/releases/release-8.5.4.md) | 2025-11-27 |
+| [7.5.8](/releases/release-7.5.8.md) | 2026-09-15 |
 | [7.5.7](/releases/release-7.5.7.md) | 2025-09-04 |
 | [8.5.3](/releases/release-8.5.3.md) | 2025-08-14 |
 | [8.5.2](/releases/release-8.5.2.md) | 2025-06-12 |
