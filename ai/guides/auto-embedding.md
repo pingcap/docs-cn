@@ -9,7 +9,7 @@ Auto Embedding 功能会为你的文本数据自动生成向量嵌入。
 
 > **注意：**
 >
-> 有关 Auto Embedding 的完整示例，请参见 [Auto Embedding Example](/ai/examples/auto-embedding-with-pytidb.md)。
+> 有关 Auto Embedding 的完整示例，请参见 [Auto Embedding Example](/ai/guides/auto-embedding-with-pytidb.md)。
 
 ## 基本用法
 

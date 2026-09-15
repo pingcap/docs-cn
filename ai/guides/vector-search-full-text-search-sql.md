@@ -6,7 +6,7 @@ aliases: ['/zh/tidbcloud/vector-search-full-text-search-sql/']
 
 # 使用 SQL 进行全文搜索
 
-与关注语义相似度的 [向量搜索](/ai/concepts/vector-search-overview.md) 不同，全文搜索允许你根据精确关键字搜索文档。在检索增强生成（RAG）场景中，你可以将全文搜索与向量搜索结合使用，以提升搜索质量。
+与关注语义相似度的 [向量搜索](/ai/guides/vector-search-overview.md) 不同，全文搜索允许你根据精确关键字搜索文档。在检索增强生成（RAG）场景中，你可以将全文搜索与向量搜索结合使用，以提升搜索质量。
 
 TiDB 的全文搜索功能提供以下能力：
 

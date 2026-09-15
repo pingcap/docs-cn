@@ -9,7 +9,7 @@ summary: 了解如何在你的应用中使用向量搜索。
 
 > **注意：**
 >
-> 有关向量搜索的完整示例，请参见 [向量搜索示例](/ai/examples/vector-search-with-pytidb.md)。
+> 有关向量搜索的完整示例，请参见 [向量搜索示例](/ai/guides/vector-search-with-pytidb.md)。
 
 ## 基本用法
 
@@ -113,7 +113,7 @@ VALUES
 
 > **注意：**
 >
-> 在实际应用中，嵌入通常由[嵌入模型](/ai/concepts/vector-search-overview.md#embedding-model)生成。
+> 在实际应用中，嵌入通常由[嵌入模型](/ai/guides/vector-search-overview.md#embedding-model)生成。
 
 为方便起见，pytidb 提供了 Auto Embedding 功能，可以在插入、修改或查询时自动为你的文本字段生成向量嵌入，无需手动处理。
 

@@ -5,45 +5,162 @@
 
 ## 快速开始
 
-- [使用 Python 快速上手](/ai/quickstart-via-python.md)
-- [使用 SQL 快速上手](/ai/quickstart-via-sql.md)
-
-## 基础概念
-
-- [向量搜索](/ai/concepts/vector-search-overview.md)
+- [通过 Python 开始使用向量搜索](/ai/quickstart-via-python.md)
+- [通过 SQL 开始使用向量搜索](/ai/quickstart-via-sql.md)
+- [开始使用 TiDB Cloud CLI](/ai/ti/ti-quick-start.md)
 
 ## 使用指南
 
-- [连接 TiDB](/ai/guides/connect.md)
-- [使用表](/ai/guides/tables.md)
-- 搜索功能
-  - [向量搜索](/ai/guides/vector-search.md)
+- [通过 Python 连接到 TiDB](/ai/guides/connect.md)
+- 搜索与检索
+  - 向量搜索
+    - [概览](/ai/guides/vector-search-overview.md)
+    - [向量搜索指南](/ai/guides/vector-search.md)
+    - [向量搜索示例](/ai/guides/vector-search-with-pytidb.md)
   - 全文搜索
     - [使用 Python 进行全文搜索](/ai/guides/vector-search-full-text-search-python.md)
     - [使用 SQL 进行全文搜索](/ai/guides/vector-search-full-text-search-sql.md)
-  - [混合搜索](/ai/guides/vector-search-hybrid-search.md)
-  - [图片搜索](/ai/guides/image-search.md)
-- 高级功能
-  - [自动生成向量](/ai/guides/auto-embedding.md)
-  - [过滤](/ai/guides/filtering.md)
+    - [全文搜索示例](/ai/guides/fulltext-search-with-pytidb.md)
+  - 混合搜索
+    - [混合搜索指南](/ai/guides/vector-search-hybrid-search.md)
+    - [混合搜索示例](/ai/guides/hybrid-search-with-pytidb.md)
+  - Auto Embeddings
+    - [auto embedding 指南](/ai/guides/auto-embedding.md)
+    - [auto embedding 示例](/ai/guides/auto-embedding-with-pytidb.md)
+  - 图片搜索
+    - [图片搜索指南](/ai/guides/image-search.md)
+    - [图片搜索示例](/ai/guides/image-search-with-pytidb.md)
   - [重排序](/ai/guides/reranking.md)
+- 处理数据
+  - [使用表](/ai/guides/tables.md)
+  - [过滤](/ai/guides/filtering.md)
   - [Join 查询](/ai/guides/join-queries.md)
   - [Raw SQL 查询](/ai/guides/raw-queries.md)
   - [事务](/ai/guides/transactions.md)
-
-## 代码示例
-
-- [增删改查](/ai/examples/basic-with-pytidb.md)
-- [自动生成向量](/ai/examples/auto-embedding-with-pytidb.md)
-- 搜索与检索
-  - [向量搜索](/ai/examples/vector-search-with-pytidb.md)
-  - [全文搜索](/ai/examples/fulltext-search-with-pytidb.md)
-  - [混合搜索](/ai/examples/hybrid-search-with-pytidb.md)
-  - [图片搜索](/ai/examples/image-search-with-pytidb.md)
-- AI 应用
-  - [RAG 应用](/ai/examples/rag-with-pytidb.md)
-  - [对话记忆](/ai/examples/memory-with-pytidb.md)
-  - [文本转 SQL](/ai/examples/text2sql-with-pytidb.md)
+- 构建 AI 应用
+  - [RAG 示例](/ai/guides/rag-with-pytidb.md)
+  - [对话内存示例](/ai/guides/memory-with-pytidb.md)
+  - [Text-to-SQL 示例](/ai/guides/text2sql-with-pytidb.md)
+- TiDB Cloud CLI
+  - [概览](/ai/ti/ti-overview.md)
+  - [安装、配置和更新 TiDB Cloud CLI](/ai/ti/reference/ti-install-configure-update.md)
+  - [管理 TiDB Cloud Starter 实例](/ai/ti/guides/manage-starter-instances.md)
+  - 管理 TiDB Cloud Filesystem
+    - [管理 Filesystem 资源](/ai/ti/guides/manage-filesystem-resources.md)
+    - [配置 Filesystem AI 提供方](/ai/ti/guides/configure-filesystem-ai-providers.md)
+    - [管理 Filesystem 访问令牌](/ai/ti/guides/manage-filesystem-tokens.md)
+    - [使用 Filesystem 数据](/ai/ti/guides/work-with-filesystem-data.md)
+    - [管理 Filesystem 层和检查点](/ai/ti/guides/manage-filesystem-layers.md)
+    - [挂载 TiDB Cloud Filesystem](/ai/ti/guides/mount-filesystem.md)
+    - [管理 Git 工作区](/ai/ti/guides/manage-git-workspaces.md)
+    - [使用 Filesystem 日志（Journal）](/ai/ti/guides/use-filesystem-journals.md)
+    - [管理 Filesystem Vault Secrets](/ai/ti/guides/manage-filesystem-vault-secrets.md)
+  - 面向用户和自动化的场景
+    - [运行日常 TiDB Cloud CLI 工作流](/ai/ti/guides/ti-daily-workflow-example.md)
+    - [使用显式 SQL 角色查询 TiDB Cloud Starter](/ai/ti/guides/ti-query-sql-with-roles-example.md)
+    - [在多台机器之间共享 TiDB Cloud Filesystem](/ai/ti/guides/ti-share-filesystem-across-machines-example.md)
+    - [使用 TiDB Cloud Filesystem 在隔离作业之间交接 CI 制品](/ai/ti/guides/ti-ci-artifact-handoff-example.md)
+  - 面向 AI Agent 的场景
+    - [在 Agent 沙箱中使用 TiDB Cloud Filesystem](/ai/ti/guides/ti-agent-sandbox-example.md)
+    - [使用 TiDB Cloud Filesystem 在一次性沙箱之间持久化 Agent 状态](/ai/ti/guides/ti-persistent-agent-state-example.md)
+    - [使用 TiDB Cloud Filesystem 在并行 Agent 之间共享只读数据集](/ai/ti/guides/ti-parallel-agent-dataset-example.md)
+    - [在 TiDB Cloud Filesystem 上为 Agent 准备 Git 工作区](/ai/ti/guides/ti-git-workspace-for-agents-example.md)
+    - [在 TiDB Cloud Filesystem Journal 中记录 Agent 工作流](/ai/ti/guides/ti-journal-agent-workflow-example.md)
+    - [将 TiDB Cloud Filesystem Vault Secrets 委托给 Agent](/ai/ti/guides/ti-vault-agent-secrets-example.md)
+  - 命令参考
+    - [概览](/ai/ti/reference/ti-cli-reference.md)
+    - [configure](/ai/ti/reference/ti-configure.md)
+    - [update](/ai/ti/reference/ti-update.md)
+    - 用于管理 TiDB Cloud Starter 实例的 `ti db` 命令
+      - [概览](/ai/ti/reference/ti-starter-database.md)
+      - [create-db-cluster](/ai/ti/reference/ti-db-create-db-cluster.md)
+      - [list-db-clusters](/ai/ti/reference/ti-db-list-db-clusters.md)
+      - [describe-db-cluster](/ai/ti/reference/ti-db-describe-db-cluster.md)
+      - [update-db-cluster](/ai/ti/reference/ti-db-update-db-cluster.md)
+      - [delete-db-cluster](/ai/ti/reference/ti-db-delete-db-cluster.md)
+      - [create-db-cluster-branch](/ai/ti/reference/ti-db-create-db-cluster-branch.md)
+      - [list-db-cluster-branches](/ai/ti/reference/ti-db-list-db-cluster-branches.md)
+      - [describe-db-cluster-branch](/ai/ti/reference/ti-db-describe-db-cluster-branch.md)
+      - [delete-db-cluster-branch](/ai/ti/reference/ti-db-delete-db-cluster-branch.md)
+      - [create-db-sql-users](/ai/ti/reference/ti-db-create-db-sql-users.md)
+      - [format-db-connection-string](/ai/ti/reference/ti-db-format-db-connection-string.md)
+      - [execute-sql-statement](/ai/ti/reference/ti-db-execute-sql-statement.md)
+    - 用于管理 TiDB Cloud Filesystem 的 `ti fs` 命令
+      - [概览](/ai/ti/reference/ti-filesystem.md)
+      - [create-file-system](/ai/ti/reference/ti-fs-create-file-system.md)
+      - [import-file-system-token](/ai/ti/reference/ti-fs-import-file-system-token.md)
+      - [generate-file-system-token](/ai/ti/reference/ti-fs-generate-file-system-token.md)
+      - [generate-file-system-scoped-token](/ai/ti/reference/ti-fs-generate-file-system-scoped-token.md)
+      - [list-file-system-tokens](/ai/ti/reference/ti-fs-list-file-system-tokens.md)
+      - [enable-file-system-token](/ai/ti/reference/ti-fs-enable-file-system-token.md)
+      - [disable-file-system-token](/ai/ti/reference/ti-fs-disable-file-system-token.md)
+      - [delete-file-system-token](/ai/ti/reference/ti-fs-delete-file-system-token.md)
+      - [refresh-file-system-token](/ai/ti/reference/ti-fs-refresh-file-system-token.md)
+      - [list-file-systems](/ai/ti/reference/ti-fs-list-file-systems.md)
+      - [describe-file-system](/ai/ti/reference/ti-fs-describe-file-system.md)
+      - [describe-file-system-extract-configuration](/ai/ti/reference/ti-fs-describe-file-system-extract-configuration.md)
+      - [update-file-system-extract-configuration](/ai/ti/reference/ti-fs-update-file-system-extract-configuration.md)
+      - [describe-file-system-embedding-configuration](/ai/ti/reference/ti-fs-describe-file-system-embedding-configuration.md)
+      - [update-file-system-embedding-configuration](/ai/ti/reference/ti-fs-update-file-system-embedding-configuration.md)
+      - [check-file-system](/ai/ti/reference/ti-fs-check-file-system.md)
+      - [delete-file-system](/ai/ti/reference/ti-fs-delete-file-system.md)
+      - [copy-file](/ai/ti/reference/ti-fs-copy-file.md)
+      - [read-file](/ai/ti/reference/ti-fs-read-file.md)
+      - [list-files](/ai/ti/reference/ti-fs-list-files.md)
+      - [describe-file](/ai/ti/reference/ti-fs-describe-file.md)
+      - [move-file](/ai/ti/reference/ti-fs-move-file.md)
+      - [delete-file](/ai/ti/reference/ti-fs-delete-file.md)
+      - [create-directory](/ai/ti/reference/ti-fs-create-directory.md)
+      - [chmod-file](/ai/ti/reference/ti-fs-chmod-file.md)
+      - [create-symlink](/ai/ti/reference/ti-fs-create-symlink.md)
+      - [create-hardlink](/ai/ti/reference/ti-fs-create-hardlink.md)
+      - [search-file-content](/ai/ti/reference/ti-fs-search-file-content.md)
+      - [find-files](/ai/ti/reference/ti-fs-find-files.md)
+      - [create-layer](/ai/ti/reference/ti-fs-create-layer.md)
+      - [list-layers](/ai/ti/reference/ti-fs-list-layers.md)
+      - [fork-layer](/ai/ti/reference/ti-fs-fork-layer.md)
+      - [list-layer-chain](/ai/ti/reference/ti-fs-list-layer-chain.md)
+      - [describe-layer](/ai/ti/reference/ti-fs-describe-layer.md)
+      - [diff-layer](/ai/ti/reference/ti-fs-diff-layer.md)
+      - [create-layer-checkpoint](/ai/ti/reference/ti-fs-create-layer-checkpoint.md)
+      - [delete-layer](/ai/ti/reference/ti-fs-delete-layer.md)
+      - [rollback-layer](/ai/ti/reference/ti-fs-rollback-layer.md)
+      - [commit-layer](/ai/ti/reference/ti-fs-commit-layer.md)
+      - [pack-file-system](/ai/ti/reference/ti-fs-pack-file-system.md)
+      - [unpack-file-system](/ai/ti/reference/ti-fs-unpack-file-system.md)
+      - [mount-file-system](/ai/ti/reference/ti-fs-mount-file-system.md)
+      - [drain-file-system](/ai/ti/reference/ti-fs-drain-file-system.md)
+      - [unmount-file-system](/ai/ti/reference/ti-fs-unmount-file-system.md)
+    - 用于管理 TiDB Cloud Filesystem Git 工作区的 `ti fs-git` 命令
+      - [概览](/ai/ti/reference/ti-filesystem-git.md)
+      - [clone-git-workspace](/ai/ti/reference/ti-fs-git-clone-git-workspace.md)
+      - [hydrate-git-workspace](/ai/ti/reference/ti-fs-git-hydrate-git-workspace.md)
+      - [add-git-worktree](/ai/ti/reference/ti-fs-git-add-git-worktree.md)
+      - [remove-git-worktree](/ai/ti/reference/ti-fs-git-remove-git-worktree.md)
+    - 用于管理 TiDB Cloud Filesystem 日志（Journal）的 `ti fs-journal` 命令
+      - [概览](/ai/ti/reference/ti-filesystem-journal.md)
+      - [create-journal](/ai/ti/reference/ti-fs-journal-create-journal.md)
+      - [append-journal-entries](/ai/ti/reference/ti-fs-journal-append-journal-entries.md)
+      - [read-journal-entries](/ai/ti/reference/ti-fs-journal-read-journal-entries.md)
+      - [search-journal-entries](/ai/ti/reference/ti-fs-journal-search-journal-entries.md)
+      - [verify-journal](/ai/ti/reference/ti-fs-journal-verify-journal.md)
+    - 用于管理 TiDB Cloud Filesystem Vault Secrets 的 `ti fs-vault` 命令
+      - [概览](/ai/ti/reference/ti-filesystem-vault.md)
+      - [create-secret](/ai/ti/reference/ti-fs-vault-create-secret.md)
+      - [replace-secret](/ai/ti/reference/ti-fs-vault-replace-secret.md)
+      - [read-secret](/ai/ti/reference/ti-fs-vault-read-secret.md)
+      - [list-secrets](/ai/ti/reference/ti-fs-vault-list-secrets.md)
+      - [delete-secret](/ai/ti/reference/ti-fs-vault-delete-secret.md)
+      - [create-grant](/ai/ti/reference/ti-fs-vault-create-grant.md)
+      - [delete-grant](/ai/ti/reference/ti-fs-vault-delete-grant.md)
+      - [list-audit-events](/ai/ti/reference/ti-fs-vault-list-audit-events.md)
+      - [run-with-secret](/ai/ti/reference/ti-fs-vault-run-with-secret.md)
+      - [mount-vault](/ai/ti/reference/ti-fs-vault-mount-vault.md)
+      - [unmount-vault](/ai/ti/reference/ti-fs-vault-unmount-vault.md)
+  - [TiDB Cloud CLI 配置和凭证](/ai/ti/reference/ti-configuration-and-credentials.md)
+  - [TiDB Cloud CLI 的 Region、安全性和限制](/ai/ti/reference/ti-regions-security-and-limitations.md)
+  - [从 tdc 迁移到 TiDB Cloud CLI](/ai/ti/reference/ti-migrate-from-tdc.md)
+  - [排查 TiDB Cloud CLI 故障](/ai/ti/reference/ti-troubleshooting.md)
 
 ## 集成指南
 

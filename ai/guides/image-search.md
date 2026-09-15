@@ -11,7 +11,7 @@ TiDB 通过 **向量搜索** 实现图像搜索。借助 Auto Embedding，你可
 
 > **注意：**
 >
-> 有关图像搜索的完整示例，请参见 [Image Search Example](/ai/examples/image-search-with-pytidb.md)。
+> 有关图像搜索的完整示例，请参见 [Image Search Example](/ai/guides/image-search-with-pytidb.md)。
 
 ## 基本用法
 
@@ -107,5 +107,5 @@ results = table.search("orange tabby cat").limit(3).to_list()
 ## 另请参阅
 
 - [Auto Embedding 指南](/ai/guides/auto-embedding.md)
-- [向量搜索指南](/ai/concepts/vector-search-overview.md)
-- [Image Search Example](/ai/examples/image-search-with-pytidb.md)
+- [向量搜索指南](/ai/guides/vector-search-overview.md)
+- [Image Search Example](/ai/guides/image-search-with-pytidb.md)
