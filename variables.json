@@ -1,7 +1,7 @@
 {
   "tidb": "TiDB",
-  "tidb-version": "7.5.7",
-  "tidb-release-date": "2025-09-04",
+  "tidb-version": "7.5.8",
+  "tidb-release-date": "2026-09-17",
   "starter": "TiDB Cloud Starter",
   "essential": "TiDB Cloud Essential",
   "dedicated": "TiDB Cloud Dedicated",
