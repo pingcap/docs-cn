@@ -61,7 +61,7 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 | **上游** | TiDB，MySQL |
 | **下游** | TiDB，MySQL |
 | **主要优势** | 提供了修复数据的功能，适用于修复少量不一致的数据。|
-| **使用限制** | <ul><li>对于 MySQL 和 TiDB 之间的数据同步不支持在线校验。</li><li>不支持 JSON、BIT、BINARY、BLOB 等类型的数据。</li></ul> |
+| **使用限制** | <ul><li>对于 MySQL 和 TiDB 之间的数据同步不支持在线校验。</li><li>不同数据类型的支持情况有所不同。JSON、BLOB/VARBINARY 和 BIT 类型受支持；关于 FLOAT/DOUBLE 和排序规则相关注意事项，请参见 <a href="/sync-diff-inspector/sync-diff-inspector-overview.md">sync-diff-inspector 的使用限制</a>。</li></ul> |
 
 ## 使用 TiUP 快速安装
 
