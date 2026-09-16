@@ -35,7 +35,7 @@ TiDB 版本：7.5.8
 + PD
 
     - 修复在 TiDB Lightning 导入期间并发调用 `SetRegionLabelRule` 时，PD 可能出现 goroutine 激增并变得不稳定的问题 [#9854](https://github.com/tikv/pd/issues/9854) @[lhy1024](https://github.com/lhy1024) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/9897 -->
-    - 修复 TiKV 缩容后，已删除 store 的 `pd_cluster_status` 监控指标仍然残留的问题 [#9942](https://github.com/tikv/pd/issues/9942) @[okJiang](https://github.com/okJiang) <!-- component: pd --> <!-- pr: https://github.com/tikv/pd/pull/10188 -->
+    - 修复 TiKV 缩容后，已删除 store 的 `pd_cluster_status` 监控指标仍然残留的问题 [#9942](https://github.com/tikv/pd/issues/9942) @[okJiang](https://github.com/okJiang) <!-- pr: https://github.com/tikv/pd/pull/10188 -->
 
 + TiFlash
 
@@ -45,7 +45,7 @@ TiDB 版本：7.5.8
 
     + BR
 
-        - 修复停止日志备份任务后，BR 遗留了不再需要的 GC service safepoint，可能导致 GC 无法按预期推进的问题 [#19832](https://github.com/tikv/tikv/issues/19832) @[Leavrth](https://github.com/Leavrth) <!-- component: br --> <!-- pr: https://github.com/tikv/tikv/pull/19913 -->
+        - 修复停止日志备份任务后，BR 遗留了不再需要的 GC service safepoint，可能导致 GC 无法按预期推进的问题 [#19832](https://github.com/tikv/tikv/issues/19832) @[Leavrth](https://github.com/Leavrth) <!-- pr: https://github.com/tikv/tikv/pull/19913 -->
 
     + TiCDC
 
