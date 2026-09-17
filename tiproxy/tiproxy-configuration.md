@@ -67,11 +67,38 @@ SQL 端口的配置。
 + 单位：秒
 + 在 TiProxy 关闭前，最多等待 `graceful-close-conn-timeout` 秒，连接的当前事务完成后将关闭连接。超时之后 TiProxy 将强制关闭所有连接。`graceful-close-conn-timeout` 发生在 `graceful-wait-before-shutdown` 之后。建议将此超时时间设置为长于事务的生命周期。
 
+#### `fail-backend-list` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`[]`
++ 支持热加载：是
++ 指定需要从路由中剔除的后端列表。当某个 TiDB server 已确认故障时，可将其加入该列表。TiProxy 会停止向这些后端路由新连接，并迁出其上的现有连接。列表中的每一项可以是以下两种形式之一：
+
+    - 后端 Pod 名称，例如 `"db-tidb-0"`
+    - 后端地址，格式为 `<ip>:<port>`，例如 `"10.0.0.10:4000"`
+
++ 如果应用该列表后将没有任何可路由的后端，TiProxy 会忽略该列表，以保证请求仍可路由。
+
+#### `failover-timeout` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`60`
++ 支持热加载：是
++ 单位：秒
++ 取值范围：`>= 0`
++ 当后端出现在 [`fail-backend-list`](#fail-backend-list) 中时，TiProxy 会迁出该后端上的现有连接。如果超过 `failover-timeout` 秒后该后端上仍有剩余连接，TiProxy 将强制关闭这些连接。`0` 表示立即强制关闭剩余连接。
+
 #### `max-connections`
 
 + 默认值：`0`
 + 支持热加载：是
 + 每个 TiProxy 实例最多可以接受 `max-connections` 个连接。`0` 表示没有限制。
+
+#### `high-memory-usage-reject-threshold` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`0.9`
++ 支持热加载：是
++ 取值范围：`[0, 1]`
++ 当 TiProxy 的内存使用率达到或超过该阈值时，TiProxy 拒绝新连接，并且 HTTP 状态返回不健康。已有连接不受影响。如果配置了 [`ha.virtual-ip`](#virtual-ip)，该实例还会释放虚拟 IP。例如，`0.9` 表示内存使用率达到 90% 时生效。
++ `0` 表示不因内存使用率拒绝新连接。如果设置大于 `0` 且小于 `0.5` 的值，TiProxy 会将其调整为 `0.5`。
 
 #### `conn-buffer-size`
 
