@@ -48,7 +48,7 @@ summary: TiUP 可用于将 TiDB 4.0 版本及更高版本升级至 TiDB 8.0。�
 
 查阅 TiDB release notes 中的兼容性变更。如果有任何变更影响到了你的升级，请采取相应的措施。
 
-以下为从 v7.5.0 升级至当前版本 (v{{{ .tidb-version }}}) 所需兼容性变更信息。如果从 v7.4.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 [release notes](https://docs.pingcap.com/zh/releases/tidb-self-managed/) 中提到的兼容性变更信息。
+以下为从 v7.5.0 升级至当前版本 (v{{{ .tidb-version }}}) 所需的兼容性变更信息。如果从 v7.4.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 [release notes](https://docs.pingcap.com/zh/releases/tidb-self-managed/) 中提到的兼容性变更信息。
 
 - TiDB v7.5.0 release notes 中的[兼容性变更](/releases/release-7.5.0.md#兼容性变更)
 - TiDB v7.5.1 release notes 中的[兼容性变更](/releases/release-7.5.1.md#兼容性变更)
@@ -58,6 +58,7 @@ summary: TiUP 可用于将 TiDB 4.0 版本及更高版本升级至 TiDB 8.0。�
 - TiDB v7.5.5 release notes 中的[兼容性变更](/releases/release-7.5.5.md#兼容性变更)
 - TiDB v7.5.6 release notes 中的[兼容性变更](/releases/release-7.5.6.md#兼容性变更)
 - TiDB v7.5.7 release notes 中的[兼容性变更](/releases/release-7.5.7.md#兼容性变更)
+- [TiDB v7.5.8 release notes](https://docs.pingcap.com/zh/tidb/stable/release-7.5.8/)
 
 ### 2.2 升级 TiUP 或更新 TiUP 离线镜像
 
