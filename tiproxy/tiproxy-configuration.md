@@ -318,6 +318,20 @@ server_configs:
 + 支持热加载：否
 + 指定绑定虚拟 IP 的网络接口，例如 `"eth0"`。只有同时设置 [`ha.virtual-ip`](#virtual-ip) 和 `ha.interface` 时，该 TiProxy 实例才能绑定虚拟 IP。
 
+#### `garp-burst-count` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`5`
++ 支持热加载：否
++ 取值范围：`>= 0`
++ 指定新实例绑定虚拟 IP 后立即发送的 GARP（Gratuitous ARP，无偿 ARP）包数量。GARP 用于通知交换机和主机更新虚拟 IP 对应的 MAC 地址，使客户端流量尽快切到新的 TiProxy 实例。连续发送多个包可以降低首个报文丢失导致切换延迟的风险。`0` 会被自动调整为 `1`。
+
+#### `garp-refresh-count` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`30`
++ 支持热加载：否
++ 取值范围：`>= 0`
++ 指定接管虚拟 IP 后补充发送 GARP 的次数，两次发送间隔为 1 秒，每次发送 [`garp-burst-count`](#garp-burst-count) 个包。用于在故障切换后的一段时间内刷新上游设备中过期的虚拟 IP 到 MAC 地址缓存，避免流量仍被转发到旧实例。`0` 表示接管后不再补充发送。
+
 ### `labels`
 
 + 默认值：`{}`
