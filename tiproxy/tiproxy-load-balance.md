@@ -189,7 +189,7 @@ pd_servers:
 
 ## 基于连接数的负载均衡
 
-TiProxy 将连接从连接数较多的 TiDB server 迁移到连接数较少的 TiDB server。该策略不可配置且优先级最低。
+TiProxy 将连接从连接数较多的 TiDB server 迁移到连接数较少的 TiDB server。该策略优先级最低。从 TiProxy v1.3.3 开始，你可以通过 [`balance.conn-count`](/tiproxy/tiproxy-configuration.md#conn-count) 调整迁移速率和触发阈值。
 
 TiProxy 通常根据 CPU 使用率来识别 TiDB server 的负载。该策略通常在以下场景下生效：
 
