@@ -200,9 +200,9 @@ TiProxy 通常根据 CPU 使用率来识别 TiDB server 的负载。该策略通
 
 TiProxy 支持通过配置项 [`policy`](/tiproxy/tiproxy-configuration.md#policy) 配置上述负载均衡策略的组合和优先级。
 
-- `resource`：资源优先策略，优先级顺序依次为基于状态、标签、健康度、内存、CPU、地理位置、连接数的负载均衡。
-- `location`：地理优先策略，优先级顺序依次为基于状态、标签、地理位置、健康度、内存、CPU、连接数的负载均衡。
-- `connection`：最小连接数策略，优先级顺序依次为基于状态、标签、连接数的负载均衡。
+- `resource`：资源优先策略，优先级顺序依次为基于标签、状态、健康度、内存、CPU、地理位置、连接数的负载均衡。
+- `location`：地理优先策略，优先级顺序依次为基于标签、状态、地理位置、健康度、内存、CPU、连接数的负载均衡。
+- `connection`：最小连接数策略，优先级顺序依次为基于标签、状态、连接数的负载均衡。
 
 关于负载均衡的更多配置项，请参阅 [`balance`](/tiproxy/tiproxy-configuration.md#balance)。
 

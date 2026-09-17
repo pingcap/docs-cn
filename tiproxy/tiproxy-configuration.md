@@ -84,7 +84,7 @@ SQL 端口的配置。
 + 支持热加载：是
 + 单位：秒
 + 取值范围：`>= 0`
-+ 当后端出现在 [`fail-backend-list`](#fail-backend-list) 中时，TiProxy 会迁出该后端上的现有连接。如果超过 `failover-timeout` 秒后该后端上仍有剩余连接，TiProxy 将强制关闭这些连接。`0` 表示立即强制关闭剩余连接。
++ 当后端出现在 [`fail-backend-list`](#fail-backend-list-从-v133-版本开始引入) 中时，TiProxy 会迁出该后端上的现有连接。如果超过 `failover-timeout` 秒后该后端上仍有剩余连接，TiProxy 将强制关闭这些连接。`0` 表示立即强制关闭剩余连接。
 
 #### `max-connections`
 
@@ -330,7 +330,7 @@ server_configs:
 + 默认值：`30`
 + 支持热加载：否
 + 取值范围：`>= 0`
-+ 指定接管虚拟 IP 后补充发送 GARP 的次数，两次发送间隔为 1 秒，每次发送 [`garp-burst-count`](#garp-burst-count) 个包。用于在故障切换后的一段时间内刷新上游设备中过期的虚拟 IP 到 MAC 地址缓存，避免流量仍被转发到旧实例。`0` 表示接管后不再补充发送。
++ 指定接管虚拟 IP 后补充发送 GARP 的次数，两次发送间隔为 1 秒，每次发送 [`garp-burst-count`](#garp-burst-count-从-v133-版本开始引入) 个包。用于在故障切换后的一段时间内刷新上游设备中过期的虚拟 IP 到 MAC 地址缓存，避免流量仍被转发到旧实例。`0` 表示接管后不再补充发送。
 
 ### `labels`
 
