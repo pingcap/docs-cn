@@ -9,8 +9,8 @@ summary: 介绍 TiProxy 的负载均衡策略及其适用场景。
 
 默认配置下，这些策略的优先级从高到低依次为：
 
-1. 基于标签的负载均衡：优先将请求路由到与 TiProxy 实例自身具有相同标签的 TiDB server，以实现计算层的资源隔离。
-2. 基于状态的负载均衡：当某个 TiDB server 正在关闭时，TiProxy 将连接从该 TiDB server 迁移到在线的 TiDB server。
+1. 基于标签的负载均衡：优先将连接请求路由到与 TiProxy 实例自身具有相同标签的 TiDB server，以实现计算层的资源隔离。
+2. 基于状态的负载均衡：当某个 TiDB server 无法正常提供服务或正在关闭时，TiProxy 将连接从该 TiDB server 迁移到在线的 TiDB server。
 3. 基于健康度的负载均衡：当某个 TiDB server 的健康度异常时，TiProxy 将连接从该 TiDB server 迁移到健康度正常的 TiDB server。
 4. 基于内存的负载均衡：当某个 TiDB server 存在 Out of Memory (OOM) 风险时，TiProxy 将连接从该 TiDB server 迁移到内存使用量较低的 TiDB server。
 5. 基于 CPU 的负载均衡：当某个 TiDB server 的 CPU 使用率远高于其他 TiDB server 时，TiProxy 将连接从该 TiDB server 迁移到 CPU 使用率较低的 TiDB server。
@@ -98,7 +98,7 @@ pd_servers:
 
 ## 基于状态的负载均衡
 
-TiProxy 定时通过 SQL 端口和状态端口检查 TiDB 是否已下线或正在关闭。
+TiProxy 定时通过 SQL 端口和状态端口检查 TiDB server 是否能够正常提供服务，包括是否已下线或正在关闭。
 
 ## 基于健康度的负载均衡
 
