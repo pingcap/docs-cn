@@ -294,7 +294,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 
 - 统计信息表（`mysql.stat_*`）
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
-- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
+- [其他系统表](https://github.com/pingcap/tidb/blob/release-7.1/br/pkg/restore/systable_restore.go#L31)
 
 ### 恢复的时候，报错 `cannot file rewrite rule`，该如何处理？
 
