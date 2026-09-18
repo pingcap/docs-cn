@@ -256,8 +256,8 @@ console.log(rsh.affectedRows);
 
 ## 注意事项
 
-- 推荐使用[连接池](https://github.com/sidorares/node-mysql2#using-connection-pools)来管理数据库连接，以减少频繁建立和销毁连接所带来的性能开销。
-- 为了避免 SQL 注入的风险，推荐使用[预处理语句](https://github.com/sidorares/node-mysql2#using-prepared-statements)执行 SQL。
+- 推荐使用[连接池](https://sidorares.github.io/node-mysql2/zh-CN/docs#using-connection-pools)来管理数据库连接，以减少频繁建立和销毁连接所带来的性能开销。
+- 为了避免 SQL 注入的风险，推荐使用[预处理语句](https://sidorares.github.io/node-mysql2/zh-CN/docs#sql预处理的使用)执行 SQL。
 - 在不涉及大量复杂 SQL 语句的场景下，推荐使用 ORM 框架（例如：[Sequelize](https://sequelize.org/)、[TypeORM](https://typeorm.io/) 或 [Prisma](https://www.prisma.io/)）来提升你的开发效率。
 
 ## 下一步
