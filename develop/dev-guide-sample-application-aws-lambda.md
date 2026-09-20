@@ -336,8 +336,8 @@ console.log(rsh.affectedRows);
 
 ## 注意事项
 
-- 推荐使用[连接池](https://github.com/sidorares/node-mysql2#using-connection-pools)来管理数据库连接，以减少频繁建立和销毁连接所带来的性能开销。
-- 为了避免 SQL 注入的风险，推荐使用[预处理语句](https://github.com/sidorares/node-mysql2#using-prepared-statements)执行 SQL。
+- 推荐使用[连接池](https://sidorares.github.io/node-mysql2/docs#using-connection-pools)来管理数据库连接，以减少频繁建立和销毁连接所带来的性能开销。
+- 为了避免 SQL 注入的风险，推荐使用[预处理语句](https://sidorares.github.io/node-mysql2/zh-CN/docs#sql预处理的使用)执行 SQL。
 - 在不涉及大量复杂 SQL 语句的场景下，推荐使用 ORM 框架（例如：[Sequelize](https://sequelize.org/)、[TypeORM](https://typeorm.io/) 或 [Prisma](https://www.prisma.io/)）来提升你的开发效率。
 - 如需为你的应用程序构建一个 RESTful API，建议[将 AWS Lambda 与 Amazon API Gateway 结合使用](https://docs.aws.amazon.com/zh_cn/lambda/latest/dg/services-apigateway.html)。
 - 关于使用 TiDB Serverless 和 AWS Lambda 设计高性能应用程序的更多信息，可以参考[这篇博客](https://aws.amazon.com/blogs/apn/designing-high-performance-applications-using-serverless-tidb-cloud-and-aws-lambda/)。
