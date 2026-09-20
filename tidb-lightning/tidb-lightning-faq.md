@@ -27,7 +27,7 @@ summary: TiDB Lightning 常见问题的摘要：TiDB Lightning 的版本选择�
 ## 如何正确重启 TiDB Lightning？
 
 1. [结束 `tidb-lightning` 进程](#如何正确结束-tidb-lightning-进程)。
-2. 启动一个新的 `tidb-lightning` 任务：执行之前的启动命令，例如 `nohup tiup tidb-lightning:<version> -config tidb-lightning.toml`。请将 `<version>` 替换为原导入任务使用的 TiDB Lightning 版本号。
+2. 重新执行原导入任务的启动命令，以启动一个新的 `tidb-lightning` 任务，例如 `nohup tiup tidb-lightning:<version> -config tidb-lightning.toml`。请将 `<version>` 替换为原导入任务使用的 TiDB Lightning 版本号。
 
 ## 如何校验导入的数据的正确性？
 

@@ -37,7 +37,7 @@ strict-format = true
 
 **原因 4**：TiDB Lightning 版本太旧。
 
-较新的版本可能会改善导入速度。升级时，建议保持 TiDB Lightning 与目标 TiDB 集群的版本一致。
+较新的 TiDB Lightning 版本可能会改善导入性能。升级时，建议使用与目标 TiDB 集群相同版本的 TiDB Lightning。
 
 ## `tidb-lightning` 进程意外退出
 
