@@ -256,14 +256,14 @@ console.log(rsh.affectedRows);
 
 ## 注意事项
 
-- 推荐使用[连接池](https://github.com/sidorares/node-mysql2#using-connection-pools)来管理数据库连接，以减少频繁建立和销毁连接所带来的性能开销。
-- 为了避免 SQL 注入的风险，推荐使用[预处理语句](https://github.com/sidorares/node-mysql2#using-prepared-statements)执行 SQL。
+- 推荐使用[连接池](https://sidorares.github.io/node-mysql2/docs#using-connection-pools)来管理数据库连接，以减少频繁建立和销毁连接所带来的性能开销。
+- 为了避免 SQL 注入的风险，推荐使用[预处理语句](https://sidorares.github.io/node-mysql2/docs#using-prepared-statements)执行 SQL。
 - 在不涉及大量复杂 SQL 语句的场景下，推荐使用 ORM 框架（例如：[Sequelize](https://sequelize.org/)、[TypeORM](https://typeorm.io/) 或 [Prisma](https://www.prisma.io/)）来提升你的开发效率。
 
 ## 下一步
 
 - 关于使用 ORM 框架和 Next.js 构建复杂应用程序的更多细节，可以参考 [tidb-prisma-vercel-demo](https://github.com/pingcap/tidb-prisma-vercel-demo)。
-- 关于 mysql2 的更多使用方法，可以参考 [mysql2 的官方文档](https://sidorares.github.io/node-mysql2/zh-CN/docs)。
+- 关于 mysql2 的更多使用方法，可以参考 [mysql2 的官方文档](https://sidorares.github.io/node-mysql2/docs/documentation)。
 - 你可以继续阅读开发者文档的其它章节来获取更多 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
 - 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://pingkai.cn/learn)支持，并在考试后提供相应的[资格认证](https://learn.pingkai.cn/learner/certification-center)。
 

@@ -140,7 +140,7 @@ tiup br restore full --pd "${PD_IP}:2379" \
 
 - 统计信息表 (`mysql.stat_*`)
 - 系统变量表 (`mysql.tidb`、`mysql.global_variables`)
-- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
+- [其他系统表](https://github.com/pingcap/tidb/blob/release-6.5/br/pkg/restore/systable_restore.go#L31)
 
 当恢复系统权限相关数据的时候，请注意：在恢复数据前 BR 会检查目标集群的系统表是否跟备份数据中的系统表兼容。这里的兼容是指满足以下所有条件：
 
