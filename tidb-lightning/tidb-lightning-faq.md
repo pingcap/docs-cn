@@ -1,16 +1,16 @@
 ---
 title: TiDB Lightning 常见问题
 aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-faq/','/docs-cn/dev/faq/tidb-lightning/']
-summary: TiDB Lightning 常见问题的摘要：TiDB Lightning 对TiDB/TiKV/PD 的最低版本要求，支持导入多个库，对下游数据库的账号权限要求，导数据过程中某个表报错不会影响其他表，正确重启 TiDB Lightning 的步骤，校验导入数据的正确性方法，支持的数据源格式，禁止导入不合规数据的方法，结束 tidb-lightning 进程的操作，使用千兆网卡的建议，TiDB Lightning 预留空间的原因，清除与 TiDB Lightning 相关的中间数据的步骤，获取 TiDB Lightning 运行时的 goroutine 信息的方法，TiDB Lightning 不兼容 Placement Rules in SQL 的原因，使用 TiDB Lightning 和 Dumpling 复制 schema 的步骤。
+summary: TiDB Lightning 常见问题的摘要：TiDB Lightning 的版本选择建议，支持导入多个库，对下游数据库的账号权限要求，导数据过程中某个表报错不会影响其他表，正确重启 TiDB Lightning 的步骤，校验导入数据的正确性方法，支持的数据源格式，禁止导入不合规数据的方法，结束 tidb-lightning 进程的操作，使用千兆网卡的建议，TiDB Lightning 预留空间的原因，清除与 TiDB Lightning 相关的中间数据的步骤，获取 TiDB Lightning 运行时的 goroutine 信息的方法，TiDB Lightning 不兼容 Placement Rules in SQL 的原因，使用 TiDB Lightning 和 Dumpling 复制 schema 的步骤。
 ---
 
 # TiDB Lightning 常见问题
 
 本文列出了一些使用 TiDB Lightning 时可能会遇到的问题与答案。
 
-## TiDB Lightning 对 TiDB/TiKV/PD 的最低版本要求是多少？
+## 应该使用哪个版本的 TiDB Lightning？
 
-建议使用与目标 TiDB 集群相同版本的 TiDB Lightning。如果使用 Local-backend 模式，最低版本要求为 4.0.0。如果使用 Importer-backend 或 TiDB-backend 模式最低版本要求是 2.0.9。
+建议使用与目标 TiDB 集群相同版本的 TiDB Lightning。
 
 ## TiDB Lightning 支持导入多个库吗？
 
