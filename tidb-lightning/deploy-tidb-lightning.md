@@ -23,19 +23,19 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 
    安装完成后，`~/.bashrc` 已将 TiUP 加入到路径中，你需要新开一个终端或重新声明全局变量 `source ~/.bashrc` 来使用 TiUP。(也可能是`~/.profile`，以 TiUP 输出为准。)
 
-2. 安装 TiUP Lightning 组件：
+2. 使用 TiUP 安装 TiDB Lightning。建议使用与目标 TiDB 集群相同版本的 TiDB Lightning。请将 `<version>` 替换为目标 TiDB 集群的版本号（例如 `v8.5.0`）：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup install tidb-lightning
+    tiup install tidb-lightning:<version>
     ```
 
 ## 手动部署
 
 ### 下载 TiDB Lightning 安装包
 
-参考[工具下载](/download-ecosystem-tools.md)文档下载 TiDB Lightning 安装包（TiDB Lightning 完全兼容较低版本的 TiDB 集群，建议选择最新稳定版本）。
+参考[工具下载](/download-ecosystem-tools.md)文档下载 TiDB Lightning 安装包。建议使用与目标 TiDB 集群相同版本的 TiDB Lightning。
 
 解压 Lightning 压缩包即可获得 `tidb-lightning` 可执行文件。
 

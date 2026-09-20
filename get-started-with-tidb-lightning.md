@@ -1,7 +1,7 @@
 ---
 title: TiDB Lightning 快速上手
 aliases: ['/docs-cn/dev/get-started-with-tidb-lightning/','/docs-cn/dev/how-to/get-started/tidb-lightning/']
-summary: TiDB Lightning 可快速将 MySQL 数据导入到 TiDB 集群中。首先使用 Dumpling 导出数据，然后部署 TiDB 集群。安装最新版本的 TiDB Lightning 并启动，最后检查数据导入情况。详细功能和使用请参考 TiDB Lightning 简介。
+summary: TiDB Lightning 可快速将 MySQL 数据导入到 TiDB 集群中。首先使用 Dumpling 导出数据，然后部署 TiDB 集群。安装与目标 TiDB 集群相同版本的 TiDB Lightning 并启动，最后检查数据导入情况。详细功能和使用请参考 TiDB Lightning 简介。
 ---
 
 # TiDB Lightning 快速上手
@@ -51,10 +51,10 @@ summary: TiDB Lightning 可快速将 MySQL 数据导入到 TiDB 集群中。首�
 
 ## 第 3 步：安装 TiDB Lightning
 
-运行如下命令，安装 TiDB Lightning 的最新版本：
+建议使用与目标 TiDB 集群相同版本的 TiDB Lightning。运行如下命令安装 TiDB Lightning，请将 `<version>` 替换为目标 TiDB 集群的版本号（例如 `v8.5.0`）：
 
 ```shell
-tiup install tidb-lightning
+tiup install tidb-lightning:<version>
 ```
 
 ## 第 4 步：启动 TiDB Lightning
@@ -96,11 +96,11 @@ tiup install tidb-lightning
     pd-addr = "172.16.31.3:2379,56.78.90.12:3456"
     ```
 
-2. 运行 `tidb-lightning`。为避免直接在命令行使用 `nohup` 启动程序时因 `SIGHUP` 信号导致的程序退出，建议将 `nohup` 命令放入脚本中。示例如下：
+2. 运行 `tidb-lightning`。为避免直接在命令行使用 `nohup` 启动程序时因 `SIGHUP` 信号导致的程序退出，建议将 `nohup` 命令放入脚本中。在以下示例中，请将 `<version>` 替换为第 3 步中安装的版本号：
 
     ```shell
     #!/bin/bash
-    nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
+    nohup tiup tidb-lightning:<version> -config tidb-lightning.toml > nohup.out &
     ```
 
 ## 第 5 步：检查数据

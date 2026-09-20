@@ -10,7 +10,7 @@ summary: TiDB Lightning 常见问题的摘要：TiDB Lightning 对TiDB/TiKV/PD �
 
 ## TiDB Lightning 对 TiDB/TiKV/PD 的最低版本要求是多少？
 
-TiDB Lightning 的版本应与集群相同。如果使用 Local-backend 模式，最低版本要求为 4.0.0。如果使用 Importer-backend 或 TiDB-backend 模式最低版本要求是 2.0.9，但建议使用最新的稳定版本 3.0。
+建议使用与目标 TiDB 集群相同版本的 TiDB Lightning。如果使用 Local-backend 模式，最低版本要求为 4.0.0。如果使用 Importer-backend 或 TiDB-backend 模式最低版本要求是 2.0.9。
 
 ## TiDB Lightning 支持导入多个库吗？
 
@@ -27,7 +27,7 @@ TiDB Lightning 的版本应与集群相同。如果使用 Local-backend 模式�
 ## 如何正确重启 TiDB Lightning？
 
 1. [结束 `tidb-lightning` 进程](#如何正确结束-tidb-lightning-进程)。
-2. 启动一个新的 `tidb-lightning` 任务：执行之前的启动命令，例如 `nohup tiup tidb-lightning -config tidb-lightning.toml`。
+2. 启动一个新的 `tidb-lightning` 任务：执行之前的启动命令，例如 `nohup tiup tidb-lightning:<version> -config tidb-lightning.toml`。请将 `<version>` 替换为原导入任务使用的 TiDB Lightning 版本号。
 
 ## 如何校验导入的数据的正确性？
 
