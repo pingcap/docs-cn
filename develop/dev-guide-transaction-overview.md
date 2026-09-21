@@ -6,6 +6,10 @@ aliases: ['/zh/tidb/stable/dev-guide-transaction-overview/','/zh/tidb/dev/dev-gu
 
 # 事务概览
 
+> **警告：**
+>
+> TiDB 计划在未来版本废弃[乐观事务模式](/optimistic-transaction.md)。从 v7.1.0 开始，不推荐设置 `tidb_txn_mode` 的值为 `"optimistic"` 或 `""`。
+
 TiDB 支持完整的分布式事务，提供[乐观事务](/optimistic-transaction.md)与[悲观事务](/pessimistic-transaction.md)（TiDB 3.0 中引入）两种事务模型。本文主要介绍涉及到事务的语句、乐观事务和悲观事务、事务的隔离级别，以及乐观事务应用端重试和错误处理。
 
 ## 拓展学习视频
