@@ -67,11 +67,39 @@ SQL 端口的配置。
 + 单位：秒
 + 在 TiProxy 关闭前，最多等待 `graceful-close-conn-timeout` 秒，连接的当前事务完成后将关闭连接。超时之后 TiProxy 将强制关闭所有连接。`graceful-close-conn-timeout` 发生在 `graceful-wait-before-shutdown` 之后。建议将此超时时间设置为长于事务的生命周期。
 
+#### `fail-backend-list` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`[]`
++ 支持热加载：是
++ 指定需要从路由中剔除的后端列表。确认某个 TiDB server 发生故障后，可将其加入该列表。TiProxy 会停止向这些后端路由新连接，并迁出其上的现有连接。列表中的每一项可以是以下两种形式之一：
+
+    - 后端 Pod 名称，例如 `"db-tidb-0"`
+    - 后端地址，格式为 `<ip>:<port>`，例如 `"10.0.0.10:4000"`
+
++ 如果应用该列表后将没有任何可路由的后端，TiProxy 会忽略该列表，以保证连接请求仍可路由。
+
+#### `failover-timeout` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`60`
++ 支持热加载：是
++ 单位：秒
++ 取值范围：`>= 0`
++ 当后端出现在 [`fail-backend-list`](#fail-backend-list-从-v133-版本开始引入) 中时，TiProxy 会迁出该后端上的现有连接。如果超过 `failover-timeout` 秒后该后端上仍有剩余连接，TiProxy 将强制关闭这些连接。`0` 表示立即强制关闭剩余连接。
+
 #### `max-connections`
 
 + 默认值：`0`
 + 支持热加载：是
 + 每个 TiProxy 实例最多可以接受 `max-connections` 个连接。`0` 表示没有限制。
+
+#### `high-memory-usage-reject-threshold` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`0.9`
++ 支持热加载：是
++ 取值范围：`[0, 1]`
++ 当 TiProxy 的内存使用率达到或超过该阈值时，TiProxy 拒绝新连接，同时状态端口会返回不健康状态，已有连接不受影响。如果配置了 [`ha.virtual-ip`](#virtual-ip)，该实例还会释放虚拟 IP。例如，`0.9` 表示内存使用率达到 90% 时，TiProxy 拒绝新连接。
+
++ `0` 表示不因内存使用率拒绝新连接。如果设置的值大于 `0` 且小于 `0.5`，TiProxy 会将其调整为 `0.5`。
 
 #### `conn-buffer-size`
 
@@ -129,6 +157,138 @@ TiProxy 负载均衡策略的配置。
 + 可选值：`resource`、`location`、`connection`
 + 指定负载均衡策略。各个可选值的含义请参阅 [TiProxy 负载均衡策略](/tiproxy/tiproxy-load-balance.md#负载均衡策略配置)。
 
+<<<<<<< HEAD
+=======
+#### `routing-policy` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`prefer-idle`
++ 支持热加载：是
++ 可选值：`prefer-idle`、`random`、`idlest`
++ 指定新连接的路由策略：
+
+    - `prefer-idle`：排除需要迁出连接的后端后，在剩余可路由后端中随机选择。适用于大多数场景。
+    - `random`：在可路由的后端中随机选择，其中最空闲的后端被选中的概率略高。适用于新连接创建较为密集的场景。
+    - `idlest`：始终将新连接路由到最空闲的可路由后端。适用于长连接且连接创建不密集的场景。
+
+#### `status` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
+基于状态的负载均衡配置。
+
+##### `migrations-per-second` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`0`
++ 支持热加载：是
++ 取值范围：`>= 0`
++ 指定基于状态的负载均衡每秒迁移的连接数。`0` 表示由 TiProxy 根据当前连接数自动计算迁移速率。当 TiDB server 正在关闭时，可适当增大该值以加快连接迁移。
+
+#### `health` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
+基于健康度的负载均衡配置。仅当 [`policy`](#policy) 为 `resource` 或 `location` 时生效。
+
+##### `enabled` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`true`
++ 支持热加载：是
++ 是否启用[基于健康度的负载均衡](/tiproxy/tiproxy-load-balance.md#基于健康度的负载均衡)。
+
+##### `migrations-per-second` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`0`
++ 支持热加载：是
++ 取值范围：`>= 0`
++ 指定基于健康度的负载均衡每秒迁移的连接数。`0` 表示由 TiProxy 自动计算迁移速率。
+
+#### `memory` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
+基于内存的负载均衡配置。仅当 [`policy`](#policy) 为 `resource` 或 `location` 时生效。
+
+##### `enabled` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`true`
++ 支持热加载：是
++ 是否启用[基于内存的负载均衡](/tiproxy/tiproxy-load-balance.md#基于内存的负载均衡)。
+
+##### `migrations-per-second` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`0`
++ 支持热加载：是
++ 取值范围：`>= 0`
++ 指定基于内存的负载均衡每秒迁移的连接数。`0` 表示由 TiProxy 自动计算迁移速率。
+
+#### `cpu` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
+基于 CPU 的负载均衡配置。仅当 [`policy`](#policy) 为 `resource` 或 `location` 时生效。
+
+##### `enabled` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`true`
++ 支持热加载：是
++ 是否启用[基于 CPU 的负载均衡](/tiproxy/tiproxy-load-balance.md#基于-cpu-的负载均衡)。
+
+##### `migrations-per-second` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`0`
++ 支持热加载：是
++ 取值范围：`>= 0`
++ 指定基于 CPU 的负载均衡每秒迁移的连接数。`0` 表示由 TiProxy 自动计算迁移速率。不建议在 CPU 热点不稳定时将该值设置得过大，以免引起连接来回迁移。
+
+##### `min-balance-usage` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`0`
++ 支持热加载：是
++ 取值范围：`[0, 1]`
++ 当源后端的 CPU 使用率低于该阈值时，不触发基于 CPU 的连接迁移。例如，`0.2` 表示源后端 CPU 使用率低于 20% 时不迁移。
+
+##### `max-usage-gap` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`1`
++ 支持热加载：是
++ 取值范围：`0` 或 `[0.05, 1]`
++ 指定触发基于 CPU 的连接迁移所需的最小 CPU 使用率差值。当源后端与目标后端的 CPU 使用率差值达到该阈值时触发迁移。例如，`0.1` 表示差值达到 10% 时即可触发迁移。默认值 `1` 表示仅依赖自适应规则判断是否迁移。`0` 表示该参数使用默认值。当需要后端 CPU 使用率更均衡时，可以适当调小该值。
+
+#### `location` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
+基于地理位置的负载均衡配置。仅当 [`policy`](#policy) 为 `resource` 或 `location` 时生效。
+
+##### `enabled` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`true`
++ 支持热加载：是
++ 是否启用[基于地理位置的负载均衡](/tiproxy/tiproxy-load-balance.md#基于地理位置的负载均衡)。
+
+##### `migrations-per-second` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`0`
++ 支持热加载：是
++ 取值范围：`>= 0`
++ 指定基于地理位置的负载均衡每秒迁移的连接数。`0` 表示使用默认迁移速率。
+
+#### `conn-count` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
+基于连接数的负载均衡配置。
+
+##### `migrations-per-second` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`0`
++ 支持热加载：是
++ 取值范围：`>= 0`
++ 指定基于连接数的负载均衡每秒迁移的连接数。`0` 表示由 TiProxy 自动计算迁移速率。若观察到连接频繁来回迁移，可适当减小该值。
+
+##### `count-ratio-threshold` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`1.2`
++ 支持热加载：是
++ 取值范围：`0` 或 `> 1`
++ 指定触发基于连接数迁移的连接数比值阈值。当连接数最多的后端与连接数最少的后端之比超过该阈值时，TiProxy 开始迁移连接。增大该值可降低迁移频率。`0` 表示该参数使用默认值。
+
+### `enable-traffic-replay`
+
++ 默认值：`true`
++ 支持热加载：是
++ 可选值：`true`、`false`
++ 指定是否开启[流量回放](/tiproxy/tiproxy-traffic-replay.md)功能。如果为 `false`，则在流量捕获和流量回放时会报错。
+
+>>>>>>> 46c3a8fdd6 (Update TiProxy to v1.3.3 (#21940))
 ### ha
 
 TiProxy 的高可用配置。
@@ -161,6 +321,20 @@ server_configs:
 + 默认值：`""`
 + 支持热加载：否
 + 指定绑定虚拟 IP 的网络接口，例如 `"eth0"`。只有同时设置 [`ha.virtual-ip`](#virtual-ip) 和 `ha.interface` 时，该 TiProxy 实例才能绑定虚拟 IP。
+
+#### `garp-burst-count` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`5`
++ 支持热加载：否
++ 取值范围：`>= 0`
++ 指定 TiProxy 实例接管并绑定虚拟 IP 后立即发送的 GARP（Gratuitous ARP，无偿 ARP）包数量。GARP 用于通知交换机和主机更新虚拟 IP 对应的 MAC 地址，使客户端流量尽快切换到接管虚拟 IP 的 TiProxy 实例。连续发送多个包可以降低首个 GARP 报文丢失导致切换延迟的风险。`0` 会被自动调整为 `1`。
+
+#### `garp-refresh-count` <span class="version-mark">从 v1.3.3 版本开始引入</span>
+
++ 默认值：`30`
++ 支持热加载：否
++ 取值范围：`>= 0`
++ 指定接管虚拟 IP 后补充发送 GARP 的次数，两次发送间隔为 1 秒，每次发送 [`garp-burst-count`](#garp-burst-count-从-v133-版本开始引入) 个包。用于在故障切换后的一段时间内刷新上游设备中之前的虚拟 IP 到 MAC 地址映射，避免流量仍被转发到旧实例。`0` 表示接管后不再补充发送。
 
 ### `labels`
 

@@ -9,8 +9,8 @@ summary: 介绍 TiProxy 的负载均衡策略及其适用场景。
 
 默认配置下，这些策略的优先级从高到低依次为：
 
-1. 基于状态的负载均衡：当某个 TiDB server 正在关闭时，TiProxy 将连接从该 TiDB server 迁移到在线的 TiDB server。
-2. 基于标签的负载均衡：优先将请求路由到与 TiProxy 实例自身具有相同标签的 TiDB server，以实现计算层的资源隔离。
+1. 基于标签的负载均衡：优先将连接请求路由到与 TiProxy 实例自身具有相同标签的 TiDB server，以实现计算层的资源隔离。
+2. 基于状态的负载均衡：当某个 TiDB server 无法正常提供服务或正在关闭时，TiProxy 将连接从该 TiDB server 迁移到在线的 TiDB server。
 3. 基于健康度的负载均衡：当某个 TiDB server 的健康度异常时，TiProxy 将连接从该 TiDB server 迁移到健康度正常的 TiDB server。
 4. 基于内存的负载均衡：当某个 TiDB server 存在 Out of Memory (OOM) 风险时，TiProxy 将连接从该 TiDB server 迁移到内存使用量较低的 TiDB server。
 5. 基于 CPU 的负载均衡：当某个 TiDB server 的 CPU 使用率远高于其他 TiDB server 时，TiProxy 将连接从该 TiDB server 迁移到 CPU 使用率较低的 TiDB server。
@@ -18,10 +18,6 @@ summary: 介绍 TiProxy 的负载均衡策略及其适用场景。
 7. 基于连接数的负载均衡：当某个 TiDB server 的连接数远高于其他 TiDB server 时，TiProxy 将连接从该 TiDB server 迁移到连接数较少的 TiDB server。
 
 如需调整负载均衡策略的优先级，请参考[负载均衡策略配置](#负载均衡策略配置)。
-
-## 基于状态的负载均衡
-
-TiProxy 定时通过 SQL 端口和状态端口检查 TiDB 是否已下线或正在关闭。
 
 ## 基于标签的负载均衡
 
@@ -99,6 +95,10 @@ pd_servers:
   - host: pd-host-2
   - host: pd-host-3
 ```
+
+## 基于状态的负载均衡
+
+TiProxy 定时通过 SQL 端口和状态端口检查 TiDB server 是否能够正常提供服务，包括是否已下线或正在关闭。
 
 ## 基于健康度的负载均衡
 
@@ -189,7 +189,7 @@ pd_servers:
 
 ## 基于连接数的负载均衡
 
-TiProxy 将连接从连接数较多的 TiDB server 迁移到连接数较少的 TiDB server。该策略不可配置且优先级最低。
+TiProxy 将连接从连接数较多的 TiDB server 迁移到连接数较少的 TiDB server。该策略优先级最低。
 
 TiProxy 通常根据 CPU 使用率来识别 TiDB server 的负载。该策略通常在以下场景下生效：
 
@@ -200,9 +200,11 @@ TiProxy 通常根据 CPU 使用率来识别 TiDB server 的负载。该策略通
 
 TiProxy 支持通过配置项 [`policy`](/tiproxy/tiproxy-configuration.md#policy) 配置上述负载均衡策略的组合和优先级。
 
-- `resource`：资源优先策略，优先级顺序依次为基于状态、标签、健康度、内存、CPU、地理位置、连接数的负载均衡。
-- `location`：地理优先策略，优先级顺序依次为基于状态、标签、地理位置、健康度、内存、CPU、连接数的负载均衡。
-- `connection`：最小连接数策略，优先级顺序依次为基于状态、标签、连接数的负载均衡。
+- `resource`：资源优先策略，优先级顺序依次为基于标签、状态、健康度、内存、CPU、地理位置、连接数的负载均衡。
+- `location`：地理优先策略，优先级顺序依次为基于标签、状态、地理位置、健康度、内存、CPU、连接数的负载均衡。
+- `connection`：最小连接数策略，优先级顺序依次为基于标签、状态、连接数的负载均衡。
+
+关于负载均衡的更多配置项，请参阅 [`balance`](/tiproxy/tiproxy-configuration.md#balance)。
 
 ## 资源
 
