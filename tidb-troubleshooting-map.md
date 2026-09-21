@@ -418,7 +418,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
     - 表结构太复杂。每条索引都会额外增加 KV 对，如果有 N 条索引，实际导入的大小就差不多是 [Dumpling](/dumpling-overview.md) 文件的 N+1 倍。如果索引不太重要，可以考虑先从 schema 去掉，待导入完成后再使用 `CREATE INDEX` 加回去。
 
-    - TiDB Lightning 版本太旧。尝试使用最新的版本，可能会有改善。
+    - TiDB Lightning 版本太旧。较新的 TiDB Lightning 版本可能会改善导入性能。升级时，建议使用与目标 TiDB 集群相同版本的 TiDB Lightning。
 
 - 6.2.3 `checksum failed: checksum mismatched remote vs local`
 
