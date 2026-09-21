@@ -140,11 +140,13 @@ LIMIT
 
     若从 Amazon S3 导入，则需将有权限访问该 S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 TiDB Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 
+    建议使用与目标 TiDB 集群相同版本的 TiDB Lightning。将 `<version>` 替换为目标 TiDB 集群的版本号。
+
     ```shell
     #!/bin/bash
     export AWS_ACCESS_KEY_ID=${access_key}
     export AWS_SECRET_ACCESS_KEY=${secret_key}
-    nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
+    nohup tiup tidb-lightning:<version> -config tidb-lightning.toml > nohup.out 2>&1 &
     ```
 
     再使用脚本启动 tidb-lightning。
