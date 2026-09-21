@@ -1,11 +1,6 @@
 ---
 title: TiDB Lightning 快速上手
-<<<<<<< HEAD
-summary: TiDB Lightning 可快速将 MySQL 数据导入到 TiDB 集群中。首先使用 Dumpling 导出数据，然后部署 TiDB 集群。安装最新版本的 TiDB Lightning 并启动，最后检查数据导入情况。详细功能和使用请参考 TiDB Lightning 简介。
-=======
-aliases: ['/docs-cn/dev/get-started-with-tidb-lightning/','/docs-cn/dev/how-to/get-started/tidb-lightning/']
 summary: TiDB Lightning 可快速将 MySQL 数据导入到 TiDB 集群中。首先使用 Dumpling 导出数据，然后部署 TiDB 集群。安装与目标 TiDB 集群相同版本的 TiDB Lightning 并启动，最后检查数据导入情况。详细功能和使用请参考 TiDB Lightning 简介。
->>>>>>> d1ddc4d189 (tidb-lightning: recommend matching TiDB Lightning and TiDB versions (#21945))
 ---
 
 # TiDB Lightning 快速上手
