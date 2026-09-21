@@ -157,8 +157,6 @@ TiProxy 负载均衡策略的配置。
 + 可选值：`resource`、`location`、`connection`
 + 指定负载均衡策略。各个可选值的含义请参阅 [TiProxy 负载均衡策略](/tiproxy/tiproxy-load-balance.md#负载均衡策略配置)。
 
-<<<<<<< HEAD
-=======
 #### `routing-policy` <span class="version-mark">从 v1.3.3 版本开始引入</span>
 
 + 默认值：`prefer-idle`
@@ -281,14 +279,6 @@ TiProxy 负载均衡策略的配置。
 + 取值范围：`0` 或 `> 1`
 + 指定触发基于连接数迁移的连接数比值阈值。当连接数最多的后端与连接数最少的后端之比超过该阈值时，TiProxy 开始迁移连接。增大该值可降低迁移频率。`0` 表示该参数使用默认值。
 
-### `enable-traffic-replay`
-
-+ 默认值：`true`
-+ 支持热加载：是
-+ 可选值：`true`、`false`
-+ 指定是否开启[流量回放](/tiproxy/tiproxy-traffic-replay.md)功能。如果为 `false`，则在流量捕获和流量回放时会报错。
-
->>>>>>> 46c3a8fdd6 (Update TiProxy to v1.3.3 (#21940))
 ### ha
 
 TiProxy 的高可用配置。
