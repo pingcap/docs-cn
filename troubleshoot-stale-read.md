@@ -160,7 +160,7 @@ TiKV 每 10 秒检查以下监控项：
 
 ### 解决 CheckLeader 问题
 
-为了解决 CheckLeader 问题，你可以检查网络和 [**TiKV-Details** > **Resolved-TS** 监控面板](/grafana-tikv-dashboard.md#resolved-ts)中的 **Check Leader Duration** 指标。
+为了解决 CheckLeader 问题，你可以检查网络和 [**TiKV-Details** > **Resolved TS** 监控面板](/grafana-tikv-dashboard.md#resolved-ts)中的 **Check leader duration** 指标。
 
 ## 示例
 
