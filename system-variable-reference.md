@@ -1332,6 +1332,12 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [系统变量](/system-variables.md#tidb_enable_1pc-从-v50-版本开始引入)
 - [TiDB 5.0 Release Notes](/releases/release-5.0.0.md)
 
+### tidb_enable_adaptive_limit_scan
+
+引用该变量的文档：
+
+- [系统变量](/system-variables.md#tidb_enable_adaptive_limit_scan-从-v900-版本开始引入)
+
 ### tidb_enable_analyze_snapshot
 
 引用该变量的文档：
