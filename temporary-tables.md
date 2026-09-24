@@ -295,7 +295,6 @@ SET GLOBAL tidb_tmp_table_max_size=268435456;
 以下是本地临时表和全局临时表都不支持的功能：
 
 - 不支持 `AUTO_RANDOM` 列
-- 不支持 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 表选项
 - 不支持分区表
 - 不支持 `SPLIT REGION` 语句
 - 不支持 `ADMIN CHECK TABLE` 和 `ADMIN CHECKSUM TABLE` 语句
