@@ -154,7 +154,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 - `enable-table-across-nodes` 开启后，有两种分配模式：
 
     1. 按 Region 的数量分配，即每个 TiCDC 节点处理 Region 的个数基本相等。当某个表 Region 个数大于 [`region-threshold`](#region-threshold) 值时，会将表分配到多个节点处理。
-    2. 按写入的流量分配，即每个 TiCDC 节点处理 Region 总修改行数基本相当。只有当表中每分钟修改行数超过 `write-key-threshold` 值时，该表才会生效。
+    2. 按写入流量分配，即让每个 TiCDC 节点处理的写入负载大致相当。在 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)中，该模式使用上游 PD Region 的 `written_keys` 统计信息；在 [TiCDC 新架构](/ticdc/ticdc-architecture.md)中，该模式使用 Sink DML event 的每秒字节数。只有当表的写入流量超过 `write-key-threshold` 值时，该模式才会生效。
 
   两种方式配置一种即可生效，当 `region-threshold` 和 `write-key-threshold` 同时配置时，TiCDC 将优先采用按流量分配的模式，即 `write-key-threshold`。
 
@@ -172,7 +172,9 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 #### `write-key-threshold`
 
-- 默认值：`0`，代表默认不会采用流量的分配模式
+- 默认值：`0`，表示默认关闭按流量分配的模式。
+- 在 [TiCDC 新架构](/ticdc/ticdc-architecture.md)中，该值的单位是 Sink DML event 的每秒字节数。当 `scheduler.enable-table-across-nodes = true` 时，如果设置了大于 `0` 且小于 `10485760`（10 MiB）的值，TiCDC 会自动将其调整为 `10485760`。
+- 在 [TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)中，该值表示老架构拆表时使用的上游 PD Region `written_keys` 统计阈值。
 
 ### sink
 
