@@ -315,6 +315,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `cloud_storage_config`        | storage sink 配置。（非必选）                                                                              |
 | `open`                        | Open Protocol 配置。（非必选）                                                                             |
 | `debezium`                    | Debezium Protocol 配置。（非必选）                                                                             |
+| `simple` | Simple 协议配置。（非必选） |
 
 `sink.column_selectors` 是一个数组，元素参数说明如下：
 
@@ -371,6 +372,13 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | 参数名                | 说明                                                                 |
 |:-------------------|:-------------------------------------------------------------------|
 | `output_old_value` | `BOOLEAN` 类型，是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "before" 字段的数据。 |
+| `include_start_ts` | `BOOLEAN` 类型，默认值为 `false`。需要使用 TiCDC 新架构和 `protocol=debezium` 的 MQ sink。开启后，Debezium JSON DML 消息包含 `source.start_ts`。显式指定的 URI 参数 `debezium-include-start-ts` 优先于该配置项，包括使用 `false` 覆盖 `true`。在其他协议（包括 `debezium-avro`）中开启该选项会被拒绝。 |
+
+`sink.simple` 参数说明如下：
+
+| 参数名 | 说明 |
+|:-------|:-----|
+| `include_start_ts` | `BOOLEAN` 类型，默认值为 `false`。需要使用 TiCDC 新架构，以及 `protocol=simple` 和 JSON 编码的 MQ sink。开启后，DML 消息包含顶层整数字段 `startTs`。显式指定的 URI 参数 `simple-include-start-ts` 优先于该配置项，包括使用 `false` 覆盖 `true`。在其他协议或 `encoding-format=avro` 下开启该选项会被拒绝。 |
 
 ### 使用样例
 
