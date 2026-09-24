@@ -354,7 +354,7 @@ column-selectors = [
 
 ## 横向扩展大单表的负载到多个 TiCDC 节点
 
-该功能可以按照大单表的数据量和每分钟的修改行数将表的同步范围切分为多个，并使各个范围之间所同步的数据量和修改行数基本相同。该功能将这些范围分布到多个 TiCDC 节点进行同步，使得多个 TiCDC 节点可以同时同步大单表。该功能可以解决以下两个问题：
+该功能可以将大单表的同步范围切分为多个，并分发到多个 TiCDC 节点并行同步。当表的 Region 数超过 `region-threshold`，或者写入流量超过 `write-key-threshold` 时，TiCDC 就会拆分该表。在 TiCDC 老架构中，`write-key-threshold` 使用上游 PD Region 的 `written_keys` 统计信息；在 TiCDC 新架构中，`write-key-threshold` 使用 Sink DML event 的每秒字节数。该功能可以解决以下两个问题：
 
 - 单个 TiCDC 节点不能及时同步大单表。
 - TiCDC 节点之间资源（CPU、内存等）消耗不均匀。
@@ -371,14 +371,16 @@ column-selectors = [
 enable-table-across-nodes = true
 # 打开该功能后，该功能只对 Region 个数大于 `region-threshold` 值的表生效。对于 TiCDC 新架构，该参数默认值为 `10000`；对于 TiCDC 老架构，该参数默认值为 `100000`。
 region-threshold = 10000
-# 打开该功能后，该功能会对每分钟修改行数大于 `write-key-threshold` 值的表生效。
+# 打开该功能后，该功能会对写入流量大于 `write-key-threshold` 值的表生效。
 # 注意：
-# * 该参数默认值为 0，代表该功能默认不会按表的修改行数来切分表的同步范围。
-# * 你可以根据集群负载来配置该参数，如 30000，代表当表每分钟的更新行数超过 30000 时，该功能将会切分表的同步范围。
+# * 该参数默认值为 0，表示默认关闭按流量切分表同步范围的模式。
+# * 在 TiCDC 老架构中，`write-key-threshold` 使用上游 PD Region 的 `written_keys` 统计信息。
+# * 在 TiCDC 新架构中，`write-key-threshold` 的单位是 Sink DML event 的每秒字节数。如果设置了大于 0 且小于 10485760（10 MiB）的值，TiCDC 会自动将其调整为 10485760，因此不要直接沿用老架构中的取值。
+# * 在 TiCDC 新架构中，10485760（10 MiB）是不需要再被自动调整的最小正值。
 # * 当 `region-threshold` 和 `write-key-threshold` 同时配置时，
-#   TiCDC 将优先检查修改行数是否大于 `write-key-threshold`，
+#   TiCDC 将优先检查写入流量是否大于 `write-key-threshold`，
 #   如果不超过，则再检查 Region 个数是否大于 `region-threshold`。
-write-key-threshold = 30000
+write-key-threshold = 10485760
 ```
 
 一个表包含的 Region 个数可用如下 SQL 查询：
