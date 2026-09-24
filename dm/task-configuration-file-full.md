@@ -189,6 +189,10 @@ syncers:                             # sync 处理单元的运行配置参数
     # 如 DELETE FROM tb WHERE a=1; DELETE FROM tb WHERE a=2 会变成 DELETE FROM tb WHERE (a) IN (1),(2)；其中 a 为主键
     multiple-rows: false
 
+    # 当该值设置为大于 0 时，DM 会为所有新创建的 AUTO_INCREMENT 表设置 AUTO_ID_CACHE 大小为对应的值。
+    # 例如，如果设置为 30，语句 `CREATE TABLE tb (`id` INT AUTO_INCREMENT);` 将被修改为 `CREATE TABLE tb (`id` INT AUTO_INCREMENT) /*T![auto_id_cache] AUTO_ID_CACHE = 30 */;`
+    auto-id-cache-size: 0
+
 validators:              # 增量数据校验的运行配置参数
   global:                # 配置名称
     # full：校验每一行中每一列数据是否正确
