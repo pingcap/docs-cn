@@ -1,11 +1,11 @@
 ---
 title: ti fs list-layers
-summary: 列出 TiDB Cloud Filesystem 中的层。
+summary: 列出文件系统中的层。
 ---
 
 # ti fs list-layers
 
-列出所选 Filesystem 的层。
+列出所选文件系统的层。
 
 > **注意：**
 >
@@ -24,7 +24,7 @@ ti fs list-layers
 ## 选项 {#options}
 
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略此选项，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略此选项，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--version`：显示版本信息。
 
@@ -32,10 +32,10 @@ ti fs list-layers
 
 ## 示例 {#examples}
 
-- 列出 Filesystem 层：
+- 列出文件系统层：
 
     ```bash
-    # Return all layers available in the selected Filesystem.
+    # 返回所选文件系统中所有可用的层。
     ti fs list-layers --file-system-id <file-system-id>
     ```
 

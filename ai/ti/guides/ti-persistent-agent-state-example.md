@@ -1,6 +1,6 @@
 ---
 title: 使用 TiDB Cloud Filesystem 在可丢弃沙箱之间持久化 Agent 状态
-summary: 在替换 agent 沙箱时，将计划、检查点、输出和工作流历史保存在 TiDB Cloud Filesystem 中。
+summary: 在替换 agent 沙箱时，将计划、检查点、输出和工作流历史保存在文件系统中。
 ---
 
 # 使用 TiDB Cloud Filesystem 在可丢弃沙箱之间持久化 Agent 状态
@@ -13,7 +13,7 @@ summary: 在替换 agent 沙箱时，将计划、检查点、输出和工作流�
 
 ## 工作原理 {#how-it-works}
 
-一台受信任的机器负责预配一个 Filesystem。每个沙箱只会接收到 Filesystem 访问令牌和 region code。该访问令牌用于标识 Filesystem，因此 agent 可以将持久化的任务状态写入远程命名空间，并在日志（Journal）中记录工作流状态变更，而无需获得 TiDB Cloud 控制平面的密钥。
+一台受信任的机器负责预配一个文件系统。每个沙箱只会接收到文件系统访问令牌和 region code。该访问令牌用于标识文件系统，因此 agent 可以将持久化的任务状态写入远程命名空间，并在日志（Journal）中记录工作流状态变更，而无需获得 TiDB Cloud 控制平面的密钥。
 
 ## 前提条件 {#prerequisites}
 
@@ -22,7 +22,7 @@ summary: 在替换 agent 沙箱时，将计划、检查点、输出和工作流�
 - 在受信任的机器上安装 `jq`。
 - 使用安全的 Secret 管理器或加密的沙箱输入来传输访问令牌。
 
-## 步骤 1：预配状态 Filesystem {#step-1-provision-the-state-filesystem}
+## 步骤 1：预配状态文件系统 {#step-1-provision-the-state-file-system}
 
 在受信任的机器上执行：
 
@@ -76,18 +76,18 @@ ti fs-journal read-journal-entries --journal-id task-42 --after-seq 0
 
 ## 清理 {#cleanup}
 
-当沙箱不再使用该 Filesystem 后，在受信任的机器上将其删除：
+当沙箱不再使用该文件系统后，在受信任的机器上将其删除：
 
 ```bash
 rm -f ./filesystem.json
 ti fs delete-file-system --file-system-id "$FILE_SYSTEM_ID"
 ```
 
-删除 Filesystem 也会同时删除其中的任务文件和日志（Journal）。
+删除文件系统也会同时删除其中的任务文件和日志（Journal）。
 
 ## 安全与运维说明 {#security-and-operational-notes}
 
-- FS token 是 owner 凭证。请将其保存在运行时 Secret 存储中，不要将其包含在镜像或任务提示中。
+- 文件系统访问令牌是 owner 凭证。请将其保存在运行时 Secret 存储中，不要将其包含在镜像或任务提示中。
 - 已完成的直接数据平面写入会立即在远端可见。对于挂载的 FUSE 写入，在删除沙箱之前请先优雅地卸载。
 - 日志（Journal）用于保留有序的工作流证据；任务文件用于保留可变的工作状态。当你既需要状态又需要历史记录时，请同时使用两者。
 

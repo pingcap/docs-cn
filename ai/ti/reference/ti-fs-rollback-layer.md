@@ -1,6 +1,6 @@
 ---
 title: ti fs rollback-layer
-summary: 回滚 TiDB Cloud Filesystem 的一个层。
+summary: 回滚文件系统的一个层。
 ---
 
 # ti fs rollback-layer
@@ -28,7 +28,7 @@ ti fs rollback-layer
 - `--layer-id <string>`：层的 ID。\[必需]
 - `--dry-run`：验证请求而不应用更改。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略此选项，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 在本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略此选项，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统在本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--version`：显示版本信息。
 

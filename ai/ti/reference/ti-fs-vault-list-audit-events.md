@@ -1,6 +1,6 @@
 ---
 title: ti fs-vault list-audit-events
-summary: 列出 Filesystem Vault 审计事件。
+summary: 列出文件系统 Vault 审计事件。
 ---
 
 # ti fs-vault list-audit-events
@@ -29,7 +29,7 @@ ti fs-vault list-audit-events
 
 - `--agent-id <string>`：按 agent ID 过滤。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--limit <int32>`：返回的最大事件数。\[default: 100]
 - `--secret-name <string>`：按 Vault Secret 名称过滤。

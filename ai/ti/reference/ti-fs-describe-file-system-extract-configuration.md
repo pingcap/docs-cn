@@ -1,11 +1,11 @@
 ---
 title: ti fs describe-file-system-extract-configuration
-summary: 描述 TiDB Cloud Filesystem 的媒体内容提取配置。
+summary: 描述文件系统的媒体内容提取配置。
 ---
 
 # ti fs describe-file-system-extract-configuration
 
-显示 Filesystem 的 image、audio 或 video 媒体内容提取配置。此配置为可选项；如果未自定义，不会影响 Filesystem 的正常操作。此命令需要 TiDB Cloud API 凭证，不使用 Filesystem 访问令牌。
+显示文件系统的 image、audio 或 video 媒体内容提取配置。此配置为可选项；如果未自定义，不会影响文件系统的正常操作。此命令需要 TiDB Cloud API 凭证，不使用文件系统访问令牌。
 
 > **注意：**
 >
@@ -23,7 +23,7 @@ ti fs describe-file-system-extract-configuration
 
 ## 选项 {#options}
 
-- `--file-system-id <string>`：设置不可变的 Filesystem ID。\[必需]
+- `--file-system-id <string>`：设置不可变的文件系统 ID。\[必需]
 - `--media-type <string>`：选择 `image`、`audio` 或 `video`。\[必需]
 - `--help`：显示帮助信息。
 - `--version`：显示版本信息。

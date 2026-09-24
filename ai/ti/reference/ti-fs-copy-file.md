@@ -1,6 +1,6 @@
 ---
 title: ti fs copy-file
-summary: 复制文件到 TiDB Cloud Filesystem、从中复制文件，或在其中复制文件。
+summary: 复制文件到文件系统、从中复制文件，或在其中复制文件。
 ---
 
 # ti fs copy-file
@@ -58,7 +58,7 @@ ti fs copy-file
 - `--from-local <string>`：本地源路径。
 - `--from-remote <string>`：TiDB Cloud 文件系统中的源路径。
 - `--from-stdin`：从 stdin 读取并写入到 `--to-remote`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 存储的本地令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统存储的本地令牌。
 - `--help`：显示帮助信息。
 - `--layer-id <string>`：将复制的单个文件写入文件系统 layer，而不是基础文件系统。不能与 `--recursive` 组合使用。
 - `--overwrite`：替换已存在的目标文件。
@@ -77,7 +77,7 @@ ti fs copy-file
 - 上传本地文件：
 
     ```bash
-    # Copy a local report into the selected remote Filesystem.
+    # Copy a local report into the selected remote file system.
     ti fs copy-file --file-system-id <file-system-id> --from-local ./report.md --to-remote /reports/report.md
     ```
 
@@ -109,7 +109,7 @@ ti fs copy-file
     ti fs copy-file --file-system-id <file-system-id> --from-local ./tail.log --to-remote /logs/app.log --append
     ```
 
-- 将标准输入流式传输到 Filesystem：
+- 将标准输入流式传输到文件系统：
 
     ```bash
     # Upload generated content without creating an intermediate local file.

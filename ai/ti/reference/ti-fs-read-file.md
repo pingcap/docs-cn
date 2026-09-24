@@ -1,6 +1,6 @@
 ---
 title: ti fs read-file
-summary: 从 TiDB Cloud Filesystem 读取文件。
+summary: 从文件系统读取文件。
 ---
 
 # ti fs read-file
@@ -28,7 +28,7 @@ ti fs read-file
 
 - `--path <string>`：所选文件系统中的文件路径。\[必需]
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--length <int64>`：范围读取的字节长度。
 - `--offset <int64>`：范围读取的从零开始的字节偏移。

@@ -1,11 +1,11 @@
 ---
 title: ti fs disable-file-system-token
-summary: 临时禁用 TiDB Cloud Filesystem 访问令牌。
+summary: 临时禁用文件系统令牌而不删除它。
 ---
 
 # ti fs disable-file-system-token
 
-临时禁用一个 Filesystem 访问令牌而不撤销它。你稍后可以使用 [`ti fs enable-file-system-token`](/ai/ti/reference/ti-fs-enable-file-system-token.md) 重新启用该令牌。对于已知被本地挂载使用的令牌，必须先执行刷写并卸载。使用所有者令牌进行身份验证时，只能禁用范围受限令牌；使用 TiDB Cloud API key 时，则可以禁用任意类型的令牌。
+临时禁用一个文件系统令牌而不撤销它。你稍后可以使用 [`ti fs enable-file-system-token`](/ai/ti/reference/ti-fs-enable-file-system-token.md) 重新启用该令牌。对于已知被本地挂载使用的令牌，必须先执行刷写并卸载。使用所有者令牌进行身份验证时，只能禁用范围受限令牌；使用 TiDB Cloud API key 时，则可以禁用任意类型的令牌。
 
 > **Note:**
 >
@@ -25,9 +25,9 @@ ti fs disable-file-system-token
 
 ## 选项 {#options}
 
-- `--file-system-id <string>`：指定拥有该令牌的 Filesystem。使用 TiDB Cloud API 凭证时为必需；当所有者令牌提供该 ID 时则为可选。
+- `--file-system-id <string>`：指定拥有该令牌的文件系统。使用 TiDB Cloud API 凭证时为必需；当所有者令牌提供该 ID 时则为可选。
 - `--token-id <string>`：指定由 list 命令返回的不可变令牌 ID。此选项为必需。
-- `--fs-token <string>`：使用 Filesystem 所有者令牌为该请求授予权限。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。如果没有可用的 Filesystem 令牌，命令会使用已配置的 TiDB Cloud API keys。
+- `--fs-token <string>`：使用文件系统所有者令牌为该请求授予权限。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统本地存储的令牌。如果没有可用的文件系统令牌，命令会使用已配置的 TiDB Cloud API keys。
 - `--dry-run`：验证凭证、标识符以及已知的本地挂载冲突，但不禁用令牌。
 - `--help`：显示帮助信息。
 - `--version`：显示版本信息。
@@ -50,7 +50,7 @@ ti fs disable-file-system-token
 - 使用所有者令牌禁用范围受限令牌：
 
     ```bash
-    # Inject TI_FS_TOKEN from a secret manager. The owner token identifies the Filesystem.
+    # Inject TI_FS_TOKEN from a secret manager. The owner token identifies the file system.
     # Drain any local mount that uses the target token first.
     ti fs disable-file-system-token \
       --token-id "<scoped-token-id>"

@@ -1,6 +1,6 @@
 ---
 title: ti fs list-files
-summary: 列出 TiDB Cloud Filesystem 中的文件。
+summary: 列出文件系统中的文件。
 ---
 
 # ti fs list-files
@@ -25,7 +25,7 @@ ti fs list-files
 ## 选项 {#options}
 
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--path <string>`：文件系统目录路径。\[默认值：/]
 - `--version`：显示版本信息。
@@ -37,7 +37,7 @@ ti fs list-files
 - 列出远程目录：
 
     ```bash
-    # Return the entries under a specific Filesystem path.
+    # 返回特定文件系统路径下的条目。
     ti fs list-files --file-system-id <file-system-id> --path /reports
     ```
 

@@ -5,7 +5,7 @@ summary: 将构建输出持久化到 TiDB Cloud Filesystem，并在后续的 CI 
 
 # 使用 TiDB Cloud Filesystem 在隔离的作业之间交接 CI 制品
 
-此工作流使用 Filesystem 作为隔离的 CI 作业或 runner 之间的持久交接点。当构建输出需要在生产者作业结束后继续保留，并在后续消费者作业中可用，同时又不想引入特定于提供商的制品 API、保留模型和下载工作流时，可以使用此方案。
+此工作流使用文件系统作为隔离的 CI 作业或 runner 之间的持久交接点。当构建输出需要在生产者作业结束后继续保留，并在后续消费者作业中可用，同时又不想引入特定于提供商的制品 API、保留模型和下载工作流时，可以使用此方案。
 
 > **Note:**
 >
@@ -13,11 +13,11 @@ summary: 将构建输出持久化到 TiDB Cloud Filesystem，并在后续的 CI 
 
 ## 工作原理 {#how-it-works}
 
-该流水线会将一个 Filesystem 访问令牌和 Region 同时注入到两个作业中。该令牌用于标识 Filesystem。生产者会将输出上传到特定于运行的路径下，例如 `/ci/${RUN_ID}/`，而消费者则会在另一台 runner 上从该精确路径下载或流式读取数据。两个作业都不需要 TiDB Cloud API key，也不需要复制 `~/.ti/` 目录。
+该流水线会将一个文件系统访问令牌和 Region 同时注入到两个作业中。该令牌用于标识文件系统。生产者会将输出上传到特定于运行的路径下，例如 `/ci/${RUN_ID}/`，而消费者则会在另一台 runner 上从该精确路径下载或流式读取数据。两个作业都不需要 TiDB Cloud API key，也不需要复制 `~/.ti/` 目录。
 
 ## 前提条件 {#prerequisites}
 
-在一台受信任的机器上[创建一个 Filesystem](/ai/ti/guides/manage-filesystem-resources.md#create-a-filesystem)，并将以下值保存为受保护的 CI Secret 或变量：
+在一台受信任的机器上[创建一个文件系统](/tidb-cloud-filesystem/manage-filesystem-resources.md#create-a-file-system)，并将以下值保存为受保护的 CI Secret 或变量：
 
 ```text
 TI_FS_TOKEN
@@ -67,7 +67,7 @@ ti fs copy-file --from-remote "/ci/${RUN_ID}/app.tar.gz" --to-stdout \
 ti fs delete-file --path "/ci/${RUN_ID}" --recursive
 ```
 
-使用唯一的运行 ID，并且不要在单个作业中删除整个 Filesystem。删除 Filesystem 需要受信任的控制平面配置，因此应保持为单独所有者执行的操作。
+使用唯一的运行 ID，并且不要在单个作业中删除整个文件系统。删除文件系统需要受信任的控制平面配置，因此应保持为单独所有者执行的操作。
 
 ## 后续内容 {#what-s-next}
 

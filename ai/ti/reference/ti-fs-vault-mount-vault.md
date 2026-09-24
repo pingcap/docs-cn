@@ -1,6 +1,6 @@
 ---
 title: ti fs-vault mount-vault
-summary: 挂载一个只读的 Filesystem Vault 视图。
+summary: 挂载一个只读的文件系统 Vault 视图。
 ---
 
 # ti fs-vault mount-vault
@@ -32,7 +32,7 @@ ti fs-vault mount-vault
 - `--mount-path <string>`：本地挂载路径。\[必需]
 - `--dry-run`：验证请求但不应用更改。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置所有者 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 在本地存储的令牌。对于委派认证，请改用 `--vault-token` 或 `TI_VAULT_TOKEN`。
+- `--fs-token <string>`：设置文件系统所有者令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统在本地存储的令牌。对于委派认证，请改用 `--vault-token` 或 `TI_VAULT_TOKEN`。
 - `--help`：显示帮助信息。
 - `--ready-timeout <duration>`：等待后台挂载就绪的时间。\[默认值：`30s`]
 - `--vault-token <string>`：委派的 `ti fs-vault` 令牌；推荐使用 `TI_VAULT_TOKEN`。

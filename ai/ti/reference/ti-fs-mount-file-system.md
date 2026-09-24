@@ -1,11 +1,11 @@
 ---
 title: ti fs mount-file-system
-summary: 挂载一个 TiDB Cloud Filesystem。
+summary: 挂载一个文件系统。
 ---
 
 # ti fs mount-file-system
 
-通过 automatic、FUSE 或 WebDAV 模式挂载一个 Filesystem。该命令的别名是 `ti fs mount`。
+通过 automatic、FUSE 或 WebDAV 模式挂载一个文件系统。该命令的别名是 `ti fs mount`。
 
 该命令会在后台启动挂载过程，等待挂载就绪，然后输出结果。如果启动失败，错误信息中会包含用于诊断的日志路径。使用 `ti fs unmount-file-system` 结束挂载。
 
@@ -53,7 +53,7 @@ ti fs mount-file-system
 - `--driver <string>`：挂载驱动：`auto`、`fuse` 或 `webdav`。\[default: auto]
 - `--dry-run`：验证请求但不应用更改。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，该命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，则该命令会使用为所选 Filesystem 在本地存储的令牌。
+- `--fs-token <string>`：设置文件系统令牌。如果省略，该命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，则该命令会使用为所选文件系统在本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--layer-ref <string>`：通过可写层 ID、唯一名称或[标签引用](/ai/ti/reference/ti-filesystem.md#layer-references)进行挂载。需要 FUSE。
 - `--local-root <string>`：本地叠加层根目录。如果省略，则使用 `~/.ti/local/fs/<mount-hash>`。
@@ -74,7 +74,7 @@ ti fs mount-file-system
 
 ## 示例 {#examples}
 
-- 使用默认驱动挂载一个 Filesystem：
+- 使用默认驱动挂载一个文件系统：
 
     ```bash
     # Let the CLI select the default driver for the current platform.

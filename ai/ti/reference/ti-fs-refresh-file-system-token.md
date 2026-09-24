@@ -1,11 +1,11 @@
 ---
 title: ti fs refresh-file-system-token
-summary: 轮转一个 TiDB Cloud Filesystem 访问令牌，并一次性返回其替换后的明文值。
+summary: 轮转一个文件系统访问令牌，并一次性返回其替换后的明文值。
 ---
 
 # ti fs refresh-file-system-token
 
-轮转提供的 Filesystem 访问令牌，并一次性返回其替换值。认证变更传播后，旧值将停止生效，这个过程大约需要 10 秒。
+轮转提供的文件系统访问令牌，并一次性返回其替换值。认证变更传播后，旧值将停止生效，这个过程大约需要 10 秒。
 
 > **Warning:**
 >
@@ -29,7 +29,7 @@ ti fs refresh-file-system-token
 
 ## 选项 {#options}
 
-- `--file-system-id <string>`：校验从提供的令牌中解码出的 Filesystem ID。加载本地已选中的令牌时，此选项为必需。
+- `--file-system-id <string>`：校验从提供的令牌中解码出的文件系统 ID。加载本地已选中的令牌时，此选项为必需。
 - `--fs-token <string>`：提供当前令牌。建议优先使用 `TI_FS_TOKEN`，以避免在 shell 历史记录和进程列表中暴露。默认按以下顺序获取：`TI_FS_TOKEN`，然后是本地已选中的凭证。
 - `--ttl <duration>`：设置新的正生命周期，单位为整秒，最长可达 365 天。省略此选项可保留之前的生命周期时长。
 - `--dry-run`：在不轮转令牌的情况下，校验令牌选择、Region、TTL 以及已知的本地挂载冲突。

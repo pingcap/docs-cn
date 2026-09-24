@@ -17,7 +17,7 @@ summary: 安装 TiDB Cloud CLI 发布版本，配置 Profile，检查版本，�
 
 > **Note:**
 >
-> 如果你之前使用过 TiDB Cloud CLI `tdc` v0.1.x，请先卸载由 `tdc` 启动的所有 Filesystem 或 Vault 挂载，并在安装 `ti` 之前阅读[从 tdc 迁移到 TiDB Cloud CLI](/ai/ti/reference/ti-migrate-from-tdc.md)。
+> 如果你之前使用过 TiDB Cloud CLI `tdc` v0.1.x，请先卸载由 `tdc` 启动的所有文件系统或 Vault 挂载，并在安装 `ti` 之前阅读[从 tdc 迁移到 TiDB Cloud CLI](/ai/ti/reference/ti-migrate-from-tdc.md)。
 
 ## 安装 TiDB Cloud CLI {#install-tidb-cloud-cli}
 
@@ -165,13 +165,13 @@ ti update --dry-run
 
 > **Note:**
 >
-> 如果你有活动中的 Filesystem 或 Vault 挂载，请在更新前停止写入端并卸载挂载，以便 `ti` 和 Filesystem 运行时一起更新。例如：
+> 如果你有活动中的文件系统或 Vault 挂载，请在更新前停止写入端并卸载挂载，以便 `ti` 和文件系统运行时一起更新。例如：
 >
 > ```bash
 > ti fs unmount-file-system --mount-path <mount-path>
 > ```
 >
-> 对于 Vault 挂载，请使用 `ti fs-vault unmount-vault --mount-path <mount-path>`。详情请参见[挂载 TiDB Cloud Filesystem](/ai/ti/guides/mount-filesystem.md)和[管理 Filesystem Vault Secrets](/ai/ti/guides/manage-filesystem-vault-secrets.md)。
+> 对于 Vault 挂载，请使用 `ti fs-vault unmount-vault --mount-path <mount-path>`。详情请参见[挂载文件系统](/tidb-cloud-filesystem/filesystem-mount.md)和[管理文件系统的 Vault Secrets](/tidb-cloud-filesystem/manage-filesystem-vault-secrets.md)。
 
 应用最新更新：
 
@@ -191,25 +191,25 @@ ti update --target-version <version>
 
 如果你从未使用过 `tdc` v0.1.x，请跳过本节。
 
-如果你之前使用过 `tdc` v0.1.x，`ti` 可以将 `~/.tdc/` 中受支持的本地配置（Profile）、凭证、偏好设置和 Filesystem 状态迁移到 `~/.ti/`。在安装 `ti` 之前，请先卸载由 `tdc` 启动的所有 Filesystem 或 Vault 挂载。
+如果你之前使用过 `tdc` v0.1.x，`ti` 可以将 `~/.tdc/` 中受支持的本地配置（Profile）、凭证、偏好设置和文件系统状态迁移到 `~/.ti/`。在安装 `ti` 之前，请先卸载由 `tdc` 启动的所有文件系统或 Vault 挂载。
 
 有关完整迁移流程（包括会迁移和不会迁移的状态、目录冲突解决方式以及旧版环境变量兼容性），请参见[从 tdc 迁移到 TiDB Cloud CLI](/ai/ti/reference/ti-migrate-from-tdc.md)。
 
 ## 卸载 TiDB Cloud CLI {#uninstall-tidb-cloud-cli}
 
-在卸载之前，请先停止写入器，并卸载所有处于活动状态的 Filesystem 或 Vault 挂载。
+在卸载之前，请先停止写入器，并卸载所有处于活动状态的文件系统或 Vault 挂载。
 
 例如，运行与挂载类型对应的命令：
 
 ```bash
-# Filesystem mount
+# 文件系统挂载
 ti fs unmount-file-system --mount-path <filesystem-mount-path>
 
 # Vault mount
 ti fs-vault unmount-vault --mount-path <vault-mount-path>
 ```
 
-详情请参阅[挂载 TiDB Cloud Filesystem](/ai/ti/guides/mount-filesystem.md)和[管理 Filesystem Vault Secrets](/ai/ti/guides/manage-filesystem-vault-secrets.md)。
+详情请参阅[挂载文件系统](/tidb-cloud-filesystem/filesystem-mount.md)和[管理文件系统的 Vault Secrets](/tidb-cloud-filesystem/manage-filesystem-vault-secrets.md)。
 
 <SimpleTab groupId="operating-systems">
 
@@ -247,11 +247,11 @@ ti fs-vault unmount-vault --mount-path <vault-mount-path>
 
 ### 删除本地状态 {#remove-local-state}
 
-删除二进制文件后，会保留配置（Profile）、凭证、Filesystem 注册信息、DB SQL 凭证、日志以及挂载定位文件。
+删除二进制文件后，会保留配置（Profile）、凭证、文件系统注册信息、DB SQL 凭证、日志以及挂载定位文件。
 
 > **注意：**
 >
-> 仅当你打算永久删除所有本地 TiDB Cloud CLI 状态时，才删除 `~/.ti/`。删除本地状态不会删除远程 TiDB Cloud Starter 实例或 Filesystem 资源。
+> 仅当你打算永久删除所有本地 TiDB Cloud CLI 状态时，才删除 `~/.ti/`。删除本地状态不会删除远程 TiDB Cloud Starter 实例或文件系统资源。
 
 <SimpleTab groupId="operating-systems">
 

@@ -19,5 +19,5 @@ summary: 参考所有 `ti fs-journal` 命令，用于创建、追加、读取、
 
 ## 另请参阅 {#see-also}
 
-- [使用 TiDB Cloud Filesystem Journals](/ai/ti/guides/use-filesystem-journals.md)
-- [在 TiDB Cloud Filesystem Journal 中记录 Agent 工作流](/ai/ti/guides/ti-journal-agent-workflow-example.md)
+- [使用 TiDB Cloud Filesystem Journals](/tidb-cloud-filesystem/use-filesystem-journals.md)
+- [在文件系统日志（Journal）中记录 Agent 工作流](/ai/ti/guides/ti-journal-agent-workflow-example.md)

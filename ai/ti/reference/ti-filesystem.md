@@ -1,6 +1,6 @@
 ---
 title: TiDB Cloud Filesystem CLI 命令参考
-summary: 参考所有用于 Filesystem 资源、文件、层、打包和挂载的 `ti fs` 命令。
+summary: 参考所有用于文件系统资源、文件、层、打包和挂载的 `ti fs` 命令。
 ---
 
 # TiDB Cloud Filesystem CLI 命令参考
@@ -13,12 +13,12 @@ summary: 参考所有用于 Filesystem 资源、文件、层、打包和挂载�
 
 | 命令 | 描述 |
 | --- | --- |
-| [`create-file-system`](/ai/ti/reference/ti-fs-create-file-system.md) | 创建一个 Filesystem 及其初始所有者令牌。 |
-| [`list-file-systems`](/ai/ti/reference/ti-fs-list-file-systems.md) | 列出当前生效 Region 中的 Filesystem。 |
-| [`describe-file-system`](/ai/ti/reference/ti-fs-describe-file-system.md) | 按 ID 描述一个 Filesystem。 |
-| [`check-file-system`](/ai/ti/reference/ti-fs-check-file-system.md) | 检查 Filesystem 选择、路由、凭证以及数据平面访问。 |
-| [`delete-file-system`](/ai/ti/reference/ti-fs-delete-file-system.md) | 永久删除一个 Filesystem。 |
-| [`import-file-system-token`](/ai/ti/reference/ti-fs-import-file-system-token.md) | 在本地导入并选中一个现有的 Filesystem 访问令牌。 |
+| [`create-file-system`](/ai/ti/reference/ti-fs-create-file-system.md) | 创建一个文件系统及其初始所有者令牌。 |
+| [`list-file-systems`](/ai/ti/reference/ti-fs-list-file-systems.md) | 列出当前生效 Region 中的文件系统。 |
+| [`describe-file-system`](/ai/ti/reference/ti-fs-describe-file-system.md) | 按 ID 描述一个文件系统。 |
+| [`check-file-system`](/ai/ti/reference/ti-fs-check-file-system.md) | 检查文件系统选择、路由、凭证以及数据平面访问。 |
+| [`delete-file-system`](/ai/ti/reference/ti-fs-delete-file-system.md) | 永久删除一个文件系统。 |
+| [`import-file-system-token`](/ai/ti/reference/ti-fs-import-file-system-token.md) | 在本地导入并选中一个现有的文件系统访问令牌。 |
 | [`generate-file-system-token`](/ai/ti/reference/ti-fs-generate-file-system-token.md) | 生成一个额外的所有者令牌。 |
 | [`generate-file-system-scoped-token`](/ai/ti/reference/ti-fs-generate-file-system-scoped-token.md) | 生成一个受路径、操作和有效期限制的令牌。 |
 | [`list-file-system-tokens`](/ai/ti/reference/ti-fs-list-file-system-tokens.md) | 列出不含 Secret 的令牌元信息。 |
@@ -33,7 +33,7 @@ summary: 参考所有用于 Filesystem 资源、文件、层、打包和挂载�
 
 ## AI 提供方配置命令 {#ai-provider-configuration-commands}
 
-这些命令用于配置可选的提供方，以便从媒体文件中提取内容并生成向量嵌入。普通的 Filesystem 资源和文件操作不需要 AI 提供方配置。
+这些命令用于配置可选的提供方，以便从媒体文件中提取内容并生成向量嵌入。普通的文件系统资源和文件操作不需要 AI 提供方配置。
 
 | 命令 | 描述 |
 | --- | --- |
@@ -46,7 +46,7 @@ summary: 参考所有用于 Filesystem 资源、文件、层、打包和挂载�
 
 | 命令 | 描述 |
 | --- | --- |
-| [`copy-file`](/ai/ti/reference/ti-fs-copy-file.md) | 在本地存储与 Filesystem 之间，或在 Filesystem 内部复制文件。 |
+| [`copy-file`](/ai/ti/reference/ti-fs-copy-file.md) | 在本地存储与文件系统之间，或在文件系统内部复制文件。 |
 | [`read-file`](/ai/ti/reference/ti-fs-read-file.md) | 读取远程文件或字节范围。 |
 | [`list-files`](/ai/ti/reference/ti-fs-list-files.md) | 列出远程路径下的条目。 |
 | [`describe-file`](/ai/ti/reference/ti-fs-describe-file.md) | 描述远程文件或目录。 |
@@ -64,7 +64,7 @@ summary: 参考所有用于 Filesystem 资源、文件、层、打包和挂载�
 | 命令 | 描述 |
 | --- | --- |
 | [`create-layer`](/ai/ti/reference/ti-fs-create-layer.md) | 创建一个隔离的可写层。 |
-| [`list-layers`](/ai/ti/reference/ti-fs-list-layers.md) | 列出 Filesystem 中的层。 |
+| [`list-layers`](/ai/ti/reference/ti-fs-list-layers.md) | 列出文件系统中的层。 |
 | [`fork-layer`](/ai/ti/reference/ti-fs-fork-layer.md) | 从父 tip 或检查点派生一个子层。 |
 | [`list-layer-chain`](/ai/ti/reference/ti-fs-list-layer-chain.md) | 列出某个层被固定的祖先链。 |
 | [`describe-layer`](/ai/ti/reference/ti-fs-describe-layer.md) | 按 ID 描述一个层。 |
@@ -72,8 +72,8 @@ summary: 参考所有用于 Filesystem 资源、文件、层、打包和挂载�
 | [`create-layer-checkpoint`](/ai/ti/reference/ti-fs-create-layer-checkpoint.md) | 在层中创建一个持久检查点。 |
 | [`delete-layer`](/ai/ti/reference/ti-fs-delete-layer.md) | 在逻辑上放弃一个层。 |
 | [`rollback-layer`](/ai/ti/reference/ti-fs-rollback-layer.md) | 在不提交其变更的情况下回滚一个层。 |
-| [`commit-layer`](/ai/ti/reference/ti-fs-commit-layer.md) | 将某个层的变更应用到基础 Filesystem。 |
-| [`pack-file-system`](/ai/ti/reference/ti-fs-pack-file-system.md) | 将选定的本地叠加层状态归档到 Filesystem。 |
+| [`commit-layer`](/ai/ti/reference/ti-fs-commit-layer.md) | 将某个层的变更应用到基础文件系统。 |
+| [`pack-file-system`](/ai/ti/reference/ti-fs-pack-file-system.md) | 将选定的本地叠加层状态归档到文件系统。 |
 | [`unpack-file-system`](/ai/ti/reference/ti-fs-unpack-file-system.md) | 从归档中恢复本地叠加层状态。 |
 
 ### 层引用 {#layer-references}
@@ -94,9 +94,9 @@ summary: 参考所有用于 Filesystem 资源、文件、层、打包和挂载�
 
 | 命令 | 描述 |
 | --- | --- |
-| [`mount-file-system`](/ai/ti/reference/ti-fs-mount-file-system.md) | 将 Filesystem 挂载到本地路径。 |
+| [`mount-file-system`](/ai/ti/reference/ti-fs-mount-file-system.md) | 将文件系统挂载到本地路径。 |
 | [`drain-file-system`](/ai/ti/reference/ti-fs-drain-file-system.md) | 从在线 FUSE 挂载中刷写待处理的写入。 |
-| [`unmount-file-system`](/ai/ti/reference/ti-fs-unmount-file-system.md) | 刷写并卸载一个 Filesystem。 |
+| [`unmount-file-system`](/ai/ti/reference/ti-fs-unmount-file-system.md) | 刷写并卸载一个文件系统。 |
 
 ## 命令别名 {#command-aliases}
 
@@ -124,12 +124,12 @@ summary: 参考所有用于 Filesystem 资源、文件、层、打包和挂载�
 
 ## 另请参阅 {#see-also}
 
-- [管理 TiDB Cloud Filesystem 资源](/ai/ti/guides/manage-filesystem-resources.md)
-- [配置 TiDB Cloud Filesystem AI 提供方](/ai/ti/guides/configure-filesystem-ai-providers.md)
-- [管理 TiDB Cloud Filesystem 令牌](/ai/ti/guides/manage-filesystem-tokens.md)
-- [使用 TiDB Cloud Filesystem 数据](/ai/ti/guides/work-with-filesystem-data.md)
-- [管理 Filesystem 层和检查点](/ai/ti/guides/manage-filesystem-layers.md)
-- [挂载 TiDB Cloud Filesystem](/ai/ti/guides/mount-filesystem.md)
-- [在 TiDB Cloud Filesystem 上管理 Git 工作区](/ai/ti/guides/manage-git-workspaces.md)
-- [使用 TiDB Cloud Filesystem Journals](/ai/ti/guides/use-filesystem-journals.md)
-- [管理 TiDB Cloud Filesystem Vault Secrets](/ai/ti/guides/manage-filesystem-vault-secrets.md)
+- [管理文件系统](/tidb-cloud-filesystem/manage-filesystem-resources.md)
+- [为文件系统配置 AI 提供方](/tidb-cloud-filesystem/configure-filesystem-ai-providers.md)
+- [管理文件系统令牌](/tidb-cloud-filesystem/manage-filesystem-tokens.md)
+- [使用文件和目录](/tidb-cloud-filesystem/work-with-filesystem-data.md)
+- [管理文件系统层和检查点](/tidb-cloud-filesystem/manage-filesystem-layers.md)
+- [挂载文件系统](/tidb-cloud-filesystem/filesystem-mount.md)
+- [在 TiDB Cloud Filesystem 上管理 Git 工作区](/tidb-cloud-filesystem/manage-git-workspaces.md)
+- [在文件系统中使用日志（Journal）](/tidb-cloud-filesystem/use-filesystem-journals.md)
+- [管理文件系统的 Vault Secrets](/tidb-cloud-filesystem/manage-filesystem-vault-secrets.md)

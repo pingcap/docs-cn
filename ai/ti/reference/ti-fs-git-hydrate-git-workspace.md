@@ -1,6 +1,6 @@
 ---
 title: ti fs-git hydrate-git-workspace
-summary: 为 Filesystem Git 工作区补全干净的 Git 对象。
+summary: 为文件系统 Git 工作区补全干净的 Git 对象。
 ---
 
 # ti fs-git hydrate-git-workspace
@@ -27,7 +27,7 @@ ti fs-git hydrate-git-workspace
 
 - `--target-path <string>`：挂载的 `ti fs` 工作区路径。\[必需]
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 在本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统在本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--timeout <duration>`：补全过程的最长持续时间。\[默认值：`30m0s`]
 - `--version`：显示版本信息。

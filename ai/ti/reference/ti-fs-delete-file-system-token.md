@@ -1,11 +1,11 @@
 ---
 title: ti fs delete-file-system-token
-summary: 永久（权限）回收 TiDB Cloud Filesystem 访问令牌。
+summary: 永久（权限）回收一个文件系统访问令牌，使其无法再进行身份验证。
 ---
 
 # ti fs delete-file-system-token
 
-永久（权限）回收一个 Filesystem 访问令牌。变更传播完成后，该令牌将停止用于身份验证，并且不再出现在列表结果中。所有者令牌可以（权限）回收同一 Filesystem 中的任意一种令牌；范围受限令牌不能使用此命令。
+永久（权限）回收一个文件系统访问令牌。变更传播完成后，该令牌将停止用于身份验证，并且不再出现在列表结果中。所有者令牌可以（权限）回收同一文件系统中的任意一种令牌；范围受限令牌不能使用此命令。
 
 > **Note:**
 >
@@ -25,9 +25,9 @@ ti fs delete-file-system-token
 
 ## 选项 {#options}
 
-- `--file-system-id <string>`：指定拥有该令牌的 Filesystem。使用 TiDB Cloud API 凭证时为必填；当由所有者令牌提供该 ID 时为可选。
+- `--file-system-id <string>`：指定拥有该令牌的文件系统。使用 TiDB Cloud API 凭证时为必填；当由所有者令牌提供该 ID 时为可选。
 - `--token-id <string>`：指定由 list 命令返回的不可变令牌 ID。此选项为必填。
-- `--fs-token <string>`：使用所有者 Filesystem 访问令牌为该请求授予权限。如果省略，命令将使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令将使用为所选 Filesystem 本地存储的令牌。如果没有可用的 Filesystem 访问令牌，命令将使用已配置的 TiDB Cloud API keys。
+- `--fs-token <string>`：使用文件系统所有者令牌为该请求授予权限。如果省略，命令将使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令将使用为所选文件系统本地存储的令牌。如果没有可用的文件系统访问令牌，命令将使用已配置的 TiDB Cloud API keys。
 - `--dry-run`：校验凭证、标识符以及已知的本地挂载冲突，而不（权限）回收该令牌。
 - `--help`：显示帮助信息。
 - `--version`：显示版本信息。
@@ -48,7 +48,7 @@ ti fs delete-file-system-token
 - 使用所有者令牌（权限）回收令牌：
 
     ```bash
-    # The owner token identifies the Filesystem; use the immutable ID of the token being revoked.
+    # The owner token identifies the file system; use the immutable ID of the token being revoked.
     TI_FS_TOKEN="<owner-fs-token>" ti fs delete-file-system-token \
       --token-id "<old-token-id>"
     ```
