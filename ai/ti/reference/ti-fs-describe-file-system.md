@@ -24,7 +24,7 @@ ti fs describe-file-system
 
 ## 选项 {#options}
 
-- `--file-system-id <string>`：设置不可变的 Filesystem ID。\[必需]
+- `--file-system-id <string>`：设置不可变的 文件系统 ID。\[必需]
 - `--help`：显示帮助信息。
 - `--version`：显示版本信息。
 
@@ -32,7 +32,7 @@ ti fs describe-file-system
 
 ## 示例 {#examples}
 
-- 描述一个 Filesystem：
+- 描述一个 文件系统：
 
     ```bash
     # Return remote status and whether this machine has a matching local token.

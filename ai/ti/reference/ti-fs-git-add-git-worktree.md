@@ -39,7 +39,7 @@ ti fs-git add-git-worktree
 - `--detach`：创建一个 detached 的链接工作树。
 - `--dry-run`：验证请求而不应用更改。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略此选项，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略此选项，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--hydrate <string>`：clean-data hydration 模式：`auto`、`background`、`sync` 或 `off`。使用 `auto` 时，链接到 blobless 基础工作区的工作树会在后台执行 hydration，而链接到非 blobless 基础工作区的工作树不会执行单独的 hydration 步骤。`background` 和 `sync` 要求基础工作区为 blobless；`off` 会跳过 hydration。\[默认值：auto]
 - `--version`：显示版本信息。

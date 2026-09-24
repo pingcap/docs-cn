@@ -1,11 +1,11 @@
 ---
 title: ti fs-vault unmount-vault
-summary: 卸载一个 Filesystem Vault 视图。
+summary: 卸载一个文件系统 Vault 视图。
 ---
 
 # ti fs-vault unmount-vault
 
-卸载本地的 Filesystem Vault 文件系统。
+卸载本地的文件系统 Vault 挂载。
 
 > **注意：**
 >

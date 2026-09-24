@@ -30,7 +30,7 @@ ti fs-git remove-git-worktree
 - `--dry-run`：验证请求但不应用更改。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
 - `--force`：即使已链接工作树存在本地更改，也强制移除。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 存储的本地令牌。
+- `--fs-token <string>`：设置文件系统令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统存储的本地令牌。
 - `--help`：显示帮助信息。
 - `--version`：显示版本信息。
 

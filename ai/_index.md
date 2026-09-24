@@ -1,6 +1,6 @@
 ---
 title: TiDB for AI
-summary: 使用 SQL、集成搜索、TiDB Cloud Starter 和持久化共享 Filesystems，通过 TiDB 构建 AI 应用和 agent 工作流。
+summary: 使用 SQL、集成搜索、TiDB Cloud Starter 和持久化共享文件系统，通过 TiDB 构建 AI 应用和 agent 工作流。
 ---
 
 # TiDB for AI
@@ -8,7 +8,7 @@ summary: 使用 SQL、集成搜索、TiDB Cloud Starter 和持久化共享 Files
 TiDB 提供数据和工作空间能力，用于构建 AI 应用和运行 AI agent 工作流。
 
 - 对于应用开发，你可以使用 SQL 或 [TiDB AI 的 Python SDK (`pytidb`)](https://github.com/pingcap/pytidb)，结合结构化数据、向量搜索、全文搜索、混合搜索和 AI 驱动的检索来开发。
-- 对于 AI agent 和自动化，你可以使用 [TiDB Cloud CLI (`ti`)](https://github.com/tidbcloud/ti-cli) 管理 TiDB Cloud Starter 实例和 SQL 工作流，并使用 TiDB Cloud Filesystems 作为跨本地机器、CI 作业和临时 agent 沙箱的持久化共享存储。Filesystems 还支持挂载工作空间、Git 工作流、日志（Journal）和委托 Secrets。
+- 对于 AI agent 和自动化，你可以使用 [TiDB Cloud CLI (`ti`)](https://github.com/tidbcloud/ti-cli) 管理 TiDB Cloud Starter 实例和 SQL 工作流，并使用 [TiDB Cloud Filesystem](/tidb-cloud-filesystem/_index.md) 作为跨本地机器、CI 作业和临时 agent 沙箱的持久化共享存储。TiDB Cloud Filesystem 还提供挂载工作空间、Git 工作流、日志（Journal）和委托 Secrets。
 
 ## 快速开始 {#get-started}
 
@@ -101,8 +101,8 @@ TiDB Cloud CLI (`ti`) 让用户、脚本、CI 作业和 AI agent 能够通过终
 | 了解 `ti` 管理什么以及何时使用它 | [TiDB Cloud CLI 概览](/ai/ti/ti-overview.md) |
 | 安装并配置 `ti`，然后完成第一个工作流 | [TiDB Cloud CLI 快速上手指南](/ai/ti/ti-quick-start.md) |
 | 自动化 TiDB Cloud Starter 实例、分支和 SQL 操作 | [管理 TiDB Cloud Starter 实例](/ai/ti/guides/manage-starter-instances.md) |
-| 在机器、CI 作业和沙箱之间持久化并共享文件 | [管理 Filesystem 资源](/ai/ti/guides/manage-filesystem-resources.md) 和 [使用 Filesystem 数据](/ai/ti/guides/work-with-filesystem-data.md) |
-| 使用挂载工作区、Git 工作区、日志（Journal）或委托 Secret | [挂载 Filesystem](/ai/ti/guides/mount-filesystem.md)、[管理 Git 工作区](/ai/ti/guides/manage-git-workspaces.md)、[使用 Filesystem 日志（Journal）](/ai/ti/guides/use-filesystem-journals.md) 和 [管理 Filesystem Vault Secret](/ai/ti/guides/manage-filesystem-vault-secrets.md) |
+| 在机器、CI 作业和沙箱之间持久化并共享文件 | [通过 TiDB Cloud CLI 使用 TiDB Cloud Filesystem](/ai/ti/guides/manage-filesystems-via-cli.md) |
+| 使用挂载工作区、Git 工作区、日志（Journal）或委托 Secret | [挂载文件系统](/tidb-cloud-filesystem/filesystem-mount.md)、[管理 Git 工作区](/tidb-cloud-filesystem/manage-git-workspaces.md)、[在文件系统中使用日志（Journal）](/tidb-cloud-filesystem/use-filesystem-journals.md) 和 [管理文件系统的 Vault Secret](/tidb-cloud-filesystem/manage-filesystem-vault-secrets.md) |
 | 查看端到端自动化或 agent 示例 | [运行每日 TiDB Cloud CLI 工作流](/ai/ti/guides/ti-daily-workflow-example.md) 或 [在 Agent Sandbox 中使用 TiDB Cloud Filesystem](/ai/ti/guides/ti-agent-sandbox-example.md) |
 | 查询命令、全局选项、输出行为和错误 | [TiDB Cloud CLI 命令参考](/ai/ti/reference/ti-cli-reference.md) |
 

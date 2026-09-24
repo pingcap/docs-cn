@@ -5,7 +5,7 @@ summary: 列出单个 TiDB Cloud Filesystem 的令牌元信息。
 
 # ti fs list-file-system-tokens
 
-列出某个 Filesystem 的令牌。输出中绝不会包含令牌值。
+列出某个 文件系统 的令牌。输出中绝不会包含令牌值。
 
 > **Note:**
 >
@@ -26,8 +26,8 @@ ti fs list-file-system-tokens
 
 ## 选项 {#options}
 
-- `--file-system-id <string>`：指定要列出其令牌的 Filesystem。使用 TiDB Cloud API 凭据时为必填；当 `--fs-token` 或 `TI_FS_TOKEN` 提供所有者令牌时为可选，因为 `ti` 会从该令牌中推导出 ID。
-- `--fs-token <string>`：使用 Filesystem 所有者令牌为请求授予权限。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。如果没有可用的 Filesystem 令牌，命令会使用已配置的 TiDB Cloud API 密钥。范围受限令牌不能列出令牌元信息。
+- `--file-system-id <string>`：指定要列出其令牌的 文件系统。使用 TiDB Cloud API 凭据时为必填；当 `--fs-token` 或 `TI_FS_TOKEN` 提供所有者令牌时为可选，因为 `ti` 会从该令牌中推导出 ID。
+- `--fs-token <string>`：使用 文件系统 所有者令牌为请求授予权限。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 文件系统 本地存储的令牌。如果没有可用的 文件系统 令牌，命令会使用已配置的 TiDB Cloud API 密钥。范围受限令牌不能列出令牌元信息。
 - `--include-expired`：包含已过期的令牌元信息。已被（权限）回收的令牌不会由服务返回。
 - `--help`：显示帮助信息。
 - `--offset <int32>`：设置从 0 开始的令牌偏移 [default: 0]。
@@ -61,7 +61,7 @@ ti fs list-file-system-tokens
 - 使用所有者令牌列出令牌元信息：
 
     ```bash
-    # The owner token identifies the Filesystem, so --file-system-id is not needed.
+    # The owner token identifies the 文件系统, so --file-system-id is not needed.
     TI_FS_TOKEN="<owner-fs-token>" ti fs list-file-system-tokens --output text
     ```
 

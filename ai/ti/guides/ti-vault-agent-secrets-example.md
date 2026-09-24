@@ -1,11 +1,11 @@
 ---
-title: 将 TiDB Cloud Filesystem Vault Secret 委派给 Agent
+title: 将文件系统 Vault Secret 委派给 Agent
 summary: 存储一个 Secret，将其中一个字段授予 agent，将其注入到进程中，审计访问，并回收授权。
 ---
 
-# 将 TiDB Cloud Filesystem Vault Secret 委派给 Agent
+# 将文件系统 Vault Secret 委派给 Agent
 
-此工作流可让 agent 临时访问某个 Secret 的单个字段，而无需共享 Filesystem 所有者令牌或完整 Secret。当 agent 只需要为某个任务使用一个凭证，但不应在 prompt、`.env` 文件或 sandbox 镜像中保留该值时，请使用此方法。
+此工作流可让 agent 临时访问某个 Secret 的单个字段，而无需共享文件系统所有者令牌或完整 Secret。当 agent 只需要为某个任务使用一个凭证，但不应在 prompt、`.env` 文件或 sandbox 镜像中保留该值时，请使用此方法。
 
 > **Note:**
 >
@@ -13,15 +13,15 @@ summary: 存储一个 Secret，将其中一个字段授予 agent，将其注入�
 
 ## 工作原理 {#how-it-works}
 
-Filesystem 所有者只需存储一次 Secret，并创建一个作用域限定到所需字段的短期授权。agent 仅接收 Vault 委派令牌，并可将允许的值注入到子进程中。所有者可以查看审计事件，并在不轮换或暴露 Filesystem 所有者凭证的情况下回收该授权。
+文件系统所有者只需存储一次 Secret，并创建一个作用域限定到所需字段的短期授权。agent 仅接收 Vault 委派令牌，并可将允许的值注入到子进程中。所有者可以查看审计事件，并在不轮换或暴露文件系统所有者凭证的情况下回收该授权。
 
 ## 为什么使用这种方法 {#why-use-this-approach}
 
-普通的环境变量和文件也可以传递 Secret，但它们无法提供带作用域和过期时间的委派机制，也无法提供访问审计轨迹。共享 Filesystem 所有者令牌还会授予比单个 Secret 字段所需更广泛的访问权限。单独的云 Secret 管理器也能提供类似控制，但它要求为每个 sandbox 额外配置身份、策略和集成路径。
+普通的环境变量和文件也可以传递 Secret，但它们无法提供带作用域和过期时间的委派机制，也无法提供访问审计轨迹。共享文件系统所有者令牌还会授予比单个 Secret 字段所需更广泛的访问权限。单独的云 Secret 管理器也能提供类似控制，但它要求为每个 sandbox 额外配置身份、策略和集成路径。
 
 ## 前提条件 {#prerequisites}
 
-- 选择一个具有 owner 访问权限的 Filesystem。
+- 选择一个具有 owner 访问权限的文件系统。
 - 安装 `jq`。
 - 将源 Secret 值存储在受保护的文件中。
 

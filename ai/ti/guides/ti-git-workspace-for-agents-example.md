@@ -17,7 +17,7 @@ summary: 快速让大型 Git 工作区可见，在后台补全干净对象，并
 
 ## 前提条件 {#prerequisites}
 
-- 选择一个 Filesystem。
+- 选择一个 文件系统。
 - 使用 Linux FUSE，或在 macOS 上安装 macFUSE 并显式指定 `--driver fuse`。Git 工作区依赖 FUSE 将远程 Git 树和工作区变更组合到挂载路径中；WebDAV 挂载不提供这种集成。
 - 安装 Git 并配置仓库认证。
 
@@ -82,7 +82,7 @@ ti fs-git remove-git-worktree \
 ti fs unmount-file-system --mount-path /path/to/workspace
 ```
 
-仅当可以丢弃未提交更改时，才对工作树移除使用 `--force`。Filesystem 卸载会自动执行优雅的刷写；仅当你需要在不卸载的情况下将远程工作刷写出去时，才单独使用 `ti fs drain-file-system`。
+仅当可以丢弃未提交更改时，才对工作树移除使用 `--force`。文件系统卸载会自动执行优雅的刷写；仅当你需要在不卸载的情况下将远程工作刷写出去时，才单独使用 `ti fs drain-file-system`。
 
 ## 安全与操作说明 {#security-and-operational-notes}
 

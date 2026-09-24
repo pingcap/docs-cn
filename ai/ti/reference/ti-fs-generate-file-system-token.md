@@ -5,7 +5,7 @@ summary: 为一个 TiDB Cloud Filesystem 生成额外的所有者令牌。
 
 # ti fs generate-file-system-token
 
-使用 TiDB Cloud API 凭证为一个 Filesystem 生成所有者令牌。令牌值只会显示在命令输出中，之后无法再次获取。使用 `--store-locally` 可将令牌保存到本地凭证存储中。现有的 Filesystem 访问令牌不能用于生成所有者令牌。
+使用 TiDB Cloud API 凭证为一个文件系统生成所有者令牌。令牌值只会显示在命令输出中，之后无法再次获取。使用 `--store-locally` 可将令牌保存到本地凭证存储中。现有的文件系统令牌不能用于生成所有者令牌。
 
 > **Note:**
 >
@@ -27,11 +27,11 @@ ti fs generate-file-system-token
 
 ## 选项 {#options}
 
-- `--file-system-id <string>`：指定拥有该令牌的 Filesystem。FS 令牌不能替代此选项，也不能用于授予权限以生成所有者令牌。此选项为必填项。
+- `--file-system-id <string>`：指定拥有该令牌的文件系统。文件系统令牌不能替代此选项，也不能用于授予权限以生成所有者令牌。此选项为必填项。
 - `--token-name <string>`：设置一个最长为 64 字节的操作令牌名称。名称不要求唯一。此选项为必填项。
 - `--ttl <duration>`：设置一个以整秒为单位的正有效期，最长为 365 天。必须且只能指定 `--ttl` 和 `--no-expiration` 其中之一。
 - `--no-expiration`：创建一个永不过期的令牌。必须且只能指定 `--ttl` 和 `--no-expiration` 其中之一。
-- `--store-locally`：为此配置（Profile）和 Filesystem 存储并选中生成的令牌。
+- `--store-locally`：为此配置（Profile）和文件系统存储并选中生成的令牌。
 - `--replace`：替换当前已选中的本地令牌。需要与 `--store-locally` 一起使用，且不会对之前的远程令牌执行（权限）回收。
 - `--dry-run`：在不生成令牌的情况下，验证凭证、Region、有效期以及本地存储前置条件。
 - `--help`：显示帮助信息。

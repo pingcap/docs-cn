@@ -1,6 +1,6 @@
 ---
 title: ti fs delete-file
-summary: 从 TiDB Cloud Filesystem 中删除文件。
+summary: 从文件系统中删除文件。
 ---
 
 # ti fs delete-file
@@ -29,7 +29,7 @@ ti fs delete-file
 - `--path <string>`：TiDB Cloud 文件系统中的文件或目录路径。\[必需]
 - `--dry-run`：验证请求但不应用更改。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--recursive`：递归删除目录。
 - `--version`：显示版本信息。
@@ -41,7 +41,7 @@ ti fs delete-file
 - 删除远程文件：
 
     ```bash
-    # Remove one object from the selected Filesystem.
+    # Remove one object from the selected file system.
     ti fs delete-file --file-system-id <file-system-id> --path /reports/obsolete.md
     ```
 

@@ -45,28 +45,18 @@
   - [概览](/ai/ti/ti-overview.md)
   - [安装、配置和更新 TiDB Cloud CLI](/ai/ti/reference/ti-install-configure-update.md)
   - [管理 TiDB Cloud Starter 实例](/ai/ti/guides/manage-starter-instances.md)
-  - 管理 TiDB Cloud Filesystem
-    - [管理 Filesystem 资源](/ai/ti/guides/manage-filesystem-resources.md)
-    - [配置 Filesystem AI 提供方](/ai/ti/guides/configure-filesystem-ai-providers.md)
-    - [管理 Filesystem 访问令牌](/ai/ti/guides/manage-filesystem-tokens.md)
-    - [使用 Filesystem 数据](/ai/ti/guides/work-with-filesystem-data.md)
-    - [管理 Filesystem Layers 和 Checkpoints](/ai/ti/guides/manage-filesystem-layers.md)
-    - [挂载 TiDB Cloud Filesystem](/ai/ti/guides/mount-filesystem.md)
-    - [管理 Git 工作区](/ai/ti/guides/manage-git-workspaces.md)
-    - [使用 Filesystem 日志（Journal）](/ai/ti/guides/use-filesystem-journals.md)
-    - [管理 Filesystem Vault Secrets](/ai/ti/guides/manage-filesystem-vault-secrets.md)
+  - [管理 TiDB Cloud Filesystem](/ai/ti/guides/manage-filesystems-via-cli.md)
   - 面向用户和自动化的场景
     - [运行日常 TiDB Cloud CLI 工作流](/ai/ti/guides/ti-daily-workflow-example.md)
     - [使用显式 SQL 角色查询 TiDB Cloud Starter](/ai/ti/guides/ti-query-sql-with-roles-example.md)
-    - [在多台机器之间共享 TiDB Cloud Filesystem](/ai/ti/guides/ti-share-filesystem-across-machines-example.md)
     - [使用 TiDB Cloud Filesystem 在隔离作业之间交接 CI 制品](/ai/ti/guides/ti-ci-artifact-handoff-example.md)
   - 面向 AI Agent 的场景
     - [在 Agent 沙箱中使用 TiDB Cloud Filesystem](/ai/ti/guides/ti-agent-sandbox-example.md)
     - [使用 TiDB Cloud Filesystem 在一次性沙箱之间持久化 Agent 状态](/ai/ti/guides/ti-persistent-agent-state-example.md)
     - [使用 TiDB Cloud Filesystem 在并行 Agent 之间共享只读数据集](/ai/ti/guides/ti-parallel-agent-dataset-example.md)
     - [在 TiDB Cloud Filesystem 上为 Agent 准备 Git 工作区](/ai/ti/guides/ti-git-workspace-for-agents-example.md)
-    - [在 TiDB Cloud Filesystem Journal 中记录 Agent 工作流](/ai/ti/guides/ti-journal-agent-workflow-example.md)
-    - [将 TiDB Cloud Filesystem Vault Secrets 委托给 Agent](/ai/ti/guides/ti-vault-agent-secrets-example.md)
+    - [在文件系统日志（Journal）中记录 Agent 工作流](/ai/ti/guides/ti-journal-agent-workflow-example.md)
+    - [将文件系统 Vault Secrets 委托给 Agent](/ai/ti/guides/ti-vault-agent-secrets-example.md)
   - 命令参考
     - [概览](/ai/ti/reference/ti-cli-reference.md)
     - [configure](/ai/ti/reference/ti-configure.md)
@@ -85,7 +75,7 @@
       - [create-db-sql-users](/ai/ti/reference/ti-db-create-db-sql-users.md)
       - [format-db-connection-string](/ai/ti/reference/ti-db-format-db-connection-string.md)
       - [execute-sql-statement](/ai/ti/reference/ti-db-execute-sql-statement.md)
-    - 用于管理 TiDB Cloud Filesystem 的 `ti fs` 命令
+    - 用于管理 TiDB Cloud Filesystem 中文件系统的 `ti fs` 命令
       - [概览](/ai/ti/reference/ti-filesystem.md)
       - [create-file-system](/ai/ti/reference/ti-fs-create-file-system.md)
       - [import-file-system-token](/ai/ti/reference/ti-fs-import-file-system-token.md)
@@ -131,20 +121,20 @@
       - [mount-file-system](/ai/ti/reference/ti-fs-mount-file-system.md)
       - [drain-file-system](/ai/ti/reference/ti-fs-drain-file-system.md)
       - [unmount-file-system](/ai/ti/reference/ti-fs-unmount-file-system.md)
-    - 用于管理 TiDB Cloud Filesystem Git 工作区的 `ti fs-git` 命令
+    - 用于管理文件系统 Git 工作区的 `ti fs-git` 命令
       - [概览](/ai/ti/reference/ti-filesystem-git.md)
       - [clone-git-workspace](/ai/ti/reference/ti-fs-git-clone-git-workspace.md)
       - [hydrate-git-workspace](/ai/ti/reference/ti-fs-git-hydrate-git-workspace.md)
       - [add-git-worktree](/ai/ti/reference/ti-fs-git-add-git-worktree.md)
       - [remove-git-worktree](/ai/ti/reference/ti-fs-git-remove-git-worktree.md)
-    - 用于管理 TiDB Cloud Filesystem 日志（Journal）的 `ti fs-journal` 命令
+    - 用于管理文件系统日志（Journal）的 `ti fs-journal` 命令
       - [概览](/ai/ti/reference/ti-filesystem-journal.md)
       - [create-journal](/ai/ti/reference/ti-fs-journal-create-journal.md)
       - [append-journal-entries](/ai/ti/reference/ti-fs-journal-append-journal-entries.md)
       - [read-journal-entries](/ai/ti/reference/ti-fs-journal-read-journal-entries.md)
       - [search-journal-entries](/ai/ti/reference/ti-fs-journal-search-journal-entries.md)
       - [verify-journal](/ai/ti/reference/ti-fs-journal-verify-journal.md)
-    - 用于管理 TiDB Cloud Filesystem Vault Secrets 的 `ti fs-vault` 命令
+    - 用于管理文件系统 Vault Secrets 的 `ti fs-vault` 命令
       - [概览](/ai/ti/reference/ti-filesystem-vault.md)
       - [create-secret](/ai/ti/reference/ti-fs-vault-create-secret.md)
       - [replace-secret](/ai/ti/reference/ti-fs-vault-replace-secret.md)

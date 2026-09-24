@@ -27,5 +27,5 @@ summary: 参考所有 `ti fs-vault` 命令，用于管理 Secret、委派访问�
 
 ## 另请参阅 {#see-also}
 
-- [管理 TiDB Cloud Filesystem Vault Secret](/ai/ti/guides/manage-filesystem-vault-secrets.md)
+- [管理 TiDB Cloud Filesystem Vault Secret](/tidb-cloud-filesystem/manage-filesystem-vault-secrets.md)
 - [将 TiDB Cloud Filesystem Vault Secret 委派给 Agent](/ai/ti/guides/ti-vault-agent-secrets-example.md)

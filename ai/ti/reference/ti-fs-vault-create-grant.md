@@ -1,6 +1,6 @@
 ---
 title: ti fs-vault create-grant
-summary: 创建委派给单个 agent 和作用域的 Filesystem Vault grant。
+summary: 创建委派 file system Vault grant。
 ---
 
 # ti fs-vault create-grant
@@ -36,7 +36,7 @@ ti fs-vault create-grant
 - `--ttl <duration>`：grant 的生存时间，例如 `1h`。\[必需]
 - `--dry-run`：验证请求而不应用更改。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略此选项，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略此选项，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 文件系统 本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--label-hint <string>`：可选的 grant 标签提示。
 - `--token-only`：仅输出委派 bearer token。

@@ -1,11 +1,11 @@
 ---
 title: ti fs-vault delete-secret
-summary: 从 Filesystem Vault 中删除一个 Secret。
+summary: 从 file system Vault 中删除一个 Secret。
 ---
 
 # ti fs-vault delete-secret
 
-删除一个 Filesystem Vault Secret。
+删除一个 file system Vault Secret。
 
 > **注意：**
 >
@@ -28,7 +28,7 @@ ti fs-vault delete-secret
 - `--secret-name <string>`：Vault Secret 名称。\[必需]
 - `--dry-run`：验证请求，但不应用更改。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 文件系统 本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--version`：显示版本信息。
 

@@ -13,7 +13,7 @@ summary: 上传一份非结构化数据集，并将同一个只读挂载的命�
 
 ## 工作原理 {#how-it-works}
 
-所有者只需上传一次语料，并为每个工作进程创建一个范围受限的只读 Filesystem 访问令牌。每个工作进程都选择同一个 Filesystem，并以只读方式挂载该语料，因此普通工具无需存储 SDK 即可遍历同一个公共命名空间。这样可以减少启动时间，并避免生成彼此独立的时间点副本。如果工作进程需要产出结果，应将结果写入另一个可写的输出 Filesystem 中的不同路径，而不是写入数据集所在的 Filesystem。
+所有者只需上传一次语料，并为每个工作进程创建一个范围受限的只读文件系统访问令牌。每个工作进程都选择同一个文件系统，并以只读方式挂载该语料，因此普通工具无需存储 SDK 即可遍历同一个公共命名空间。这样可以减少启动时间，并避免生成彼此独立的时间点副本。如果工作进程需要产出结果，应将结果写入另一个可写的输出文件系统中的不同路径，而不是写入数据集所在的文件系统。
 
 ## 前提条件 {#prerequisites}
 
@@ -50,7 +50,7 @@ ti fs generate-file-system-scoped-token \
   --allow /datasets/corpus:read,list > ./worker-1-token.json
 ```
 
-通过 Secret 管理器传输 `worker-1-token.json` 中的 `fs_token` 以及 Filesystem 的 Region 代码。对每个工作进程使用唯一的 subject 重复执行令牌生成命令。所有者令牌仅保留在可信机器上，并在安全存储这些令牌后删除这些 JSON 文件。
+通过 Secret 管理器传输 `worker-1-token.json` 中的 `fs_token` 以及文件系统的 Region 代码。对每个工作进程使用唯一的 subject 重复执行令牌生成命令。所有者令牌仅保留在可信机器上，并在安全存储这些令牌后删除这些 JSON 文件。
 
 ## 第 2 步：在每个工作进程中挂载 {#step-2-mount-in-each-worker}
 
@@ -58,7 +58,7 @@ ti fs generate-file-system-scoped-token \
 >
 > 为每个工作进程分配一个范围受限令牌，该令牌仅允许在语料路径下执行 `read` 和 `list`。`--read-only` 挂载选项可以防止通过挂载发生意外写入，但不会改变令牌本身的权限。
 
-将工作进程的范围受限令牌注入为 `TI_FS_TOKEN`，并将 `TI_REGION_CODE` 设置为 Filesystem 所在 Region，然后执行：
+将工作进程的范围受限令牌注入为 `TI_FS_TOKEN`，并将 `TI_REGION_CODE` 设置为文件系统所在 Region，然后执行：
 
 ```bash
 mkdir -p "$HOME/corpus"
@@ -76,13 +76,13 @@ find "$HOME/corpus" -type f -name '*.pdf' -print
 
 ## 清理 {#cleanup}
 
-在终止每个工作进程之前，先卸载其中挂载的 Filesystem：
+在终止每个工作进程之前，先卸载其中挂载的文件系统：
 
 ```bash
 ti fs unmount-file-system --mount-path "$HOME/corpus"
 ```
 
-在所有工作进程都卸载 Filesystem 后，如果你不再需要该数据集，可在可信机器上将其删除：
+在所有工作进程都卸载文件系统后，如果你不再需要该数据集，可在可信机器上将其删除：
 
 ```bash
 rm -f ./filesystem.json ./worker-*-token.json
@@ -92,11 +92,11 @@ ti fs delete-file-system --file-system-id "$TI_FS_FILE_SYSTEM_ID"
 ## 安全与运维说明 {#security-and-operational-notes}
 
 - 不要将所有者令牌分发给工作进程。应为每个工作进程生成单独的短期范围受限令牌，以便通过凭证强制执行只读访问。
-- 如果工作进程要写入同一个输出 Filesystem，请按代理或运行 ID 对结果路径进行分区。
+- 如果工作进程要写入同一个输出文件系统，请按代理或运行 ID 对结果路径进行分区。
 - 在无法使用 FUSE 或 WebDAV 挂载的平台上，可直接使用 `read-file`、`find-files` 和 `copy-file --to-local`。
 
 ## 后续内容 {#what-s-next}
 
 - [TiDB Cloud Filesystem CLI 命令参考](/ai/ti/reference/ti-filesystem.md)
-- [在代理沙箱中使用 Filesystem](/ai/ti/guides/ti-agent-sandbox-example.md)
+- [在代理沙箱中使用文件系统](/ai/ti/guides/ti-agent-sandbox-example.md)
 - [TiDB Cloud CLI Regions、安全性与限制](/ai/ti/reference/ti-regions-security-and-limitations.md)

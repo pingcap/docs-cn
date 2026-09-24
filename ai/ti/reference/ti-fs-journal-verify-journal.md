@@ -1,6 +1,6 @@
 ---
 title: ti fs-journal verify-journal
-summary: 验证一个 Filesystem 日志（Journal）的哈希链。
+summary: 验证一个文件系统日志（Journal）的哈希链。
 ---
 
 # ti fs-journal verify-journal
@@ -26,7 +26,7 @@ ti fs-journal verify-journal
 
 - `--journal-id <string>`：Journal ID。\[必需]
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--version`：显示版本信息。
 

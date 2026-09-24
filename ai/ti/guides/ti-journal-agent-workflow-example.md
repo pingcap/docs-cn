@@ -1,9 +1,9 @@
 ---
-title: 在 TiDB Cloud Filesystem Journal 中记录 Agent 工作流
+title: 在文件系统日志中记录 Agent 工作流
 summary: 创建日志，追加结构化的 agent 事件，搜索工作流，并验证日志哈希链。
 ---
 
-# 在 TiDB Cloud Filesystem Journal 中记录 Agent 工作流
+# 在文件系统日志中记录 Agent 工作流
 
 此工作流会将规划、工具调用、测试、重试和交接记录为结构化、有序且可验证的事件历史。当运维人员需要跨多个 worker 还原实际发生的过程，而不是依赖零散的控制台输出或仅显示最新状态的可变状态文件时，请使用此工作流。
 
@@ -13,11 +13,11 @@ summary: 创建日志，追加结构化的 agent 事件，搜索工作流，并�
 
 ## 工作原理 {#how-it-works}
 
-Filesystem 日志（Journal）会存储结构化的仅追加条目，这些条目包含序列信息、可搜索字段、可选的幂等键以及哈希链验证。与普通文本文件不同，日志条目一旦写入后就不能再编辑或截断，生产者也无需自行实现解析、并发或重试去重机制。Agent 会追加诸如 `task.started` 和 `test.finished` 之类的语义事件；运维人员则可以查询工作流并验证已存储的链。
+文件系统日志（Journal）会存储结构化的仅追加条目，这些条目包含序列信息、可搜索字段、可选的幂等键以及哈希链验证。与普通文本文件不同，日志条目一旦写入后就不能再编辑或截断，生产者也无需自行实现解析、并发或重试去重机制。Agent 会追加诸如 `task.started` 和 `test.finished` 之类的语义事件；运维人员则可以查询工作流并验证已存储的链。
 
 ## 前提条件 {#prerequisites}
 
-通过已配置的 profile 或 FS token 环境选择一个 Filesystem。
+通过已配置的 profile 或文件系统令牌环境选择一个文件系统。
 
 ## 步骤 1：创建日志 {#step-1-create-the-journal}
 
@@ -67,7 +67,7 @@ ti fs-journal search-journal-entries \
 
 > **Note:**
 >
-> `search-journal-entries` 会搜索所选 Filesystem 中的所有日志，因为它不接受 journal ID。因此，在此示例中，其他具有相同标签和事件字段的日志也可能匹配该搜索。
+> `search-journal-entries` 会搜索所选文件系统中的所有日志，因为它不接受 journal ID。因此，在此示例中，其他具有相同标签和事件字段的日志也可能匹配该搜索。
 
 `--entry-type` 和 `--status` 过滤器会匹配每个 `--entry-json` 对象中的 `type` 和 `status` 字段。在此示例中，它们会选出 payload 中包含 `"type":"task.finished"` 和 `"status":"completed"` 的条目。
 
@@ -83,7 +83,7 @@ ti fs-journal verify-journal \
 
 ## 清理 {#cleanup}
 
-日志是仅追加的，目前在公开的 `ti` 命令集中没有删除命令。对于会创建一次性日志的实验，请使用专用的测试 Filesystem 和唯一的日志 ID，例如 `jrn-test-<run-id>`。仅当其中包含的文件或日志都不再需要时，才删除其所在的 Filesystem。
+日志是仅追加的，目前在公开的 `ti` 命令集中没有删除命令。对于会创建一次性日志的实验，请使用专用的测试文件系统和唯一的日志 ID，例如 `jrn-test-<run-id>`。仅当其中包含的文件或日志都不再需要时，才删除其所在的文件系统。
 
 ## 安全与运维说明 {#security-and-operational-notes}
 

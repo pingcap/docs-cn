@@ -1,6 +1,6 @@
 ---
 title: ti fs-journal create-journal
-summary: 创建一个仅追加的 Filesystem 日志（Journal）。
+summary: 创建一个仅追加的文件系统日志（Journal）。
 ---
 
 # ti fs-journal create-journal
@@ -32,10 +32,10 @@ ti fs-journal create-journal
 - `--actor <string>`：Actor，格式为 `type:id`。两部分都是用户定义的非空字符串；CLI 会将 `type` 转换为小写。
 - `--dry-run`：验证请求而不应用更改。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，该命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，则该命令会使用为所选 Filesystem 在本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，该命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，则该命令会使用为所选文件系统在本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--journal-id <string>`：日志（Journal）ID；省略时自动生成。
-- `--journal-kind <string>`：用户定义的日志（Journal）类别。必须包含 1 到 64 个字符，以小写字母开头，并且只能使用小写字母、数字、下划线（`_`）、句点（`.`）或连字符（`-`）。\[default: agent]
+- `--journal-kind <string>`：用户定义的日志（Journal）类别。必须包含 1 到 64 个字符，以小写字母开头，并且只能使用小写字母、数字、下划线（`_`）、句点（`.`）或连字符（`-`）。\\[default: agent]
 - `--label <string>`：日志（Journal）标签，格式为 `key=value`；可重复指定。
 - `--title <string>`：日志（Journal）标题。
 - `--version`：显示版本信息。

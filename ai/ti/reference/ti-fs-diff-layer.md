@@ -1,6 +1,6 @@
 ---
 title: ti fs diff-layer
-summary: 显示 TiDB Cloud Filesystem layer 中的更改。
+summary: 显示文件系统 layer 中的更改。
 ---
 
 # ti fs diff-layer
@@ -27,7 +27,7 @@ ti fs diff-layer
 
 - `--layer-id <string>`：layer 的 ID。\[必需]
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略此选项，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略此选项，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--max-seq <int64>`：要包含的最高 layer 序列；`0` 表示包含所有序列。
 - `--version`：显示版本信息。

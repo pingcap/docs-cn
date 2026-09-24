@@ -1,6 +1,6 @@
 ---
 title: ti fs-vault read-secret
-summary: 从 Filesystem Vault 读取 Secret。
+summary: 从 file system Vault 读取 Secret。
 ---
 
 # ti fs-vault read-secret
@@ -31,7 +31,7 @@ ti fs-vault read-secret
 - `--field <string>`：可选，要读取的字段名称。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
 - `--format <string>`：读取输出格式：`json`、`raw` 或 `env`。\[默认值：json]
-- `--fs-token <string>`：设置所有者 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。对于委派认证，请改用 `--vault-token` 或 `TI_VAULT_TOKEN`。
+- `--fs-token <string>`：设置文件系统所有者令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统本地存储的令牌。对于委派认证，请改用 `--vault-token` 或 `TI_VAULT_TOKEN`。
 - `--help`：显示帮助信息。
 - `--vault-token <string>`：委派 `ti fs-vault` 令牌；建议优先使用 `TI_VAULT_TOKEN`。
 - `--version`：显示版本信息。
