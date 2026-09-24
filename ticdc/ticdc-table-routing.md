@@ -41,10 +41,10 @@ Changefeed 启动后，`sales.orders` 的 DML 和 DDL 事件会写入下游的 `
 
 > **注意：**
 >
-> 同一个上游数据库中的不同表可以路由到不同的目标库，但此类配置只适用于 DML 和表级 DDL。
+> 同一个上游数据库中的不同表可以路由到不同的目标库（分库），但此类配置只适用于 DML 和表级 DDL。
 >
-> - 对于 `CREATE DATABASE`、`DROP DATABASE` 和 `ALTER DATABASE` 这类库级 DDL，TiCDC 必须能根据路由规则确定唯一的目标库，否则该 DDL 同步会失败。
-> - 如果要将同一个上游数据库中的不同表路由到不同的目标库，你需要提前创建下游目标库，并避免在上游执行需要自动同步的库级 DDL。
+> - 分库时，请提前创建下游目标库，并避免在同步期间执行源库的 `CREATE DATABASE`、`ALTER DATABASE` 和 `DROP DATABASE`。TiCDC 不会将一条库级 DDL 拆分为多个目标库的操作。事件过滤仅标记 DDL 不写入下游，被过滤的 DDL 仍参与路由处理，因此过滤配置无法避免目标库冲突导致的同步失败。
+> - 当前库级路由会检查显式规则之间的目标库冲突，但未命中规则的表所使用的默认目标库不参与检查。例如，只配置 `sales.orders` 路由到 `archive.orders`，而 `sales.customers` 保持原名同步时，`DROP DATABASE sales` 会被改写为 `DROP DATABASE archive`，删除整个 `archive` 库及其数据，并保留下游的 `sales.customers`。请勿依赖路由报错来保护分库场景。
 
 ## 配置字段
 
@@ -113,6 +113,10 @@ target-table = "{table}_bak"
 [filter]
 rules = ["sales.*", "crm.*", "finance.*"]
 
+[[filter.event-filters]]
+matcher = ["sales.*", "crm.*", "finance.*"]
+ignore-event = ["drop schema"]
+
 [sink]
 [[sink.dispatchers]]
 matcher = ["sales.*", "crm.*", "finance.*"]
@@ -129,6 +133,12 @@ target-table = "{schema}_{table}"
 > **注意：**
 >
 > 该配置仅适用于合库，不适用于合表。表路由不支持将多个不同库中的同名表合并到同一张下游表。
+
+> **警告：**
+>
+> 合库时，应过滤源库的 `DROP DATABASE` 事件。未配置过滤时，`DROP DATABASE sales` 会被改写为 `DROP DATABASE archive`。下游执行该语句后，整个 `archive` 库及其中的表和数据都会被删除，包括 `crm` 和 `finance` 对应的目标表。目标表名唯一无法避免此风险。
+
+上述示例通过 `ignore-event = ["drop schema"]` 过滤三个源库的删库事件，`matcher` 使用上游库表名。请在执行源库删除前确保过滤配置已生效。过滤后，下游库表和数据保留，需手动清理不再需要的目标表。详情参见 [Event Filter 事件过滤器](/ticdc/ticdc-filter.md#event-filter-事件过滤器-从-v620-版本开始引入)。
 
 ### 同时使用表路由和 Kafka Sink Topic、Partition 分发器
 
