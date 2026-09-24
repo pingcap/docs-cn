@@ -79,7 +79,7 @@ TiDB Cloud 当前提供两个作用域不同的 CLI：`ti` 和 [`ticloud`](https
 
 ## 后续步骤 {#next-steps}
 
-如果你是第一次使用 TiDB Cloud CLI，请先阅读[快速开始](/ai/ti/ti-quick-start.md)，安装 `ti`、配置 profile，并完成一个基础的 TiDB Cloud Starter 或 文件系统 工作流。
+如果你是第一次使用 TiDB Cloud CLI，请先阅读[快速开始](/ai/ti/ti-quick-start.md)，安装 `ti`、配置 profile，并完成一个基础的 TiDB Cloud Starter 或文件系统工作流。
 
 然后根据你的目标继续阅读：
 

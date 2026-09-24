@@ -25,9 +25,9 @@ ti fs disable-file-system-token
 
 ## 选项 {#options}
 
-- `--file-system-id <string>`：指定拥有该令牌的 文件系统。使用 TiDB Cloud API 凭证时为必需；当所有者令牌提供该 ID 时则为可选。
+- `--file-system-id <string>`：指定拥有该令牌的文件系统。使用 TiDB Cloud API 凭证时为必需；当所有者令牌提供该 ID 时则为可选。
 - `--token-id <string>`：指定由 list 命令返回的不可变令牌 ID。此选项为必需。
-- `--fs-token <string>`：使用文件系统所有者令牌为该请求授予权限。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 文件系统 本地存储的令牌。如果没有可用的文件系统令牌，命令会使用已配置的 TiDB Cloud API keys。
+- `--fs-token <string>`：使用文件系统所有者令牌为该请求授予权限。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统本地存储的令牌。如果没有可用的文件系统令牌，命令会使用已配置的 TiDB Cloud API keys。
 - `--dry-run`：验证凭证、标识符以及已知的本地挂载冲突，但不禁用令牌。
 - `--help`：显示帮助信息。
 - `--version`：显示版本信息。

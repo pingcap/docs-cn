@@ -17,7 +17,7 @@ summary: 快速让大型 Git 工作区可见，在后台补全干净对象，并
 
 ## 前提条件 {#prerequisites}
 
-- 选择一个 文件系统。
+- 选择一个文件系统。
 - 使用 Linux FUSE，或在 macOS 上安装 macFUSE 并显式指定 `--driver fuse`。Git 工作区依赖 FUSE 将远程 Git 树和工作区变更组合到挂载路径中；WebDAV 挂载不提供这种集成。
 - 安装 Git 并配置仓库认证。
 

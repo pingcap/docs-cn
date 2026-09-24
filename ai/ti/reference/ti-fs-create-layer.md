@@ -5,7 +5,7 @@ summary: 在文件系统中创建一个 layer。
 
 # ti fs create-layer
 
-创建一个 layer，用于在 文件系统 基础路径之上记录隔离的变更。如果省略 `--layer-id`，则由服务生成一个。
+创建一个 layer，用于在文件系统基础路径之上记录隔离的变更。如果省略 `--layer-id`，则由服务生成一个。
 
 > **Note:**
 >

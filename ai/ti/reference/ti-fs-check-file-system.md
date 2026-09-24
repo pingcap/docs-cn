@@ -5,7 +5,7 @@ summary: 检查 TiDB Cloud Filesystem 的连通性。
 
 # ti fs check-file-system
 
-验证所选 文件系统 是否已正确配置且可访问，包括其 Region、凭证以及文件访问。
+验证所选文件系统是否已正确配置且可访问，包括其 Region、凭证以及文件访问。
 
 > **Note:**
 >

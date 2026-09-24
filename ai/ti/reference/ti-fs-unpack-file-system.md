@@ -1,6 +1,6 @@
 ---
 title: ti fs unpack-file-system
-summary: 恢复本地 文件系统 叠加层状态。
+summary: 恢复本地文件系统叠加层状态。
 ---
 
 # ti fs unpack-file-system

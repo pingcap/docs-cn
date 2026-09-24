@@ -36,9 +36,9 @@ summary: 参考支持的区域、认证边界、安全最佳实践以及当前 T
 | --- | --- |
 | `ti configure`、所有 `ti db` 控制平面操作 | TiDB Cloud API 公钥/私钥 |
 | `ti fs create-file-system` | TiDB Cloud API key |
-| `ti fs delete-file-system` | TiDB Cloud API key 和 文件系统 ID |
-| 描述或修改文件系统的媒体内容提取和向量嵌入配置 | TiDB Cloud API key 和显式 文件系统 ID |
-| 生成、列出、启用、禁用或删除文件系统访问令牌 | TiDB Cloud API key 和显式 文件系统 ID |
+| `ti fs delete-file-system` | TiDB Cloud API key 和文件系统 ID |
+| 描述或修改文件系统的媒体内容提取和向量嵌入配置 | TiDB Cloud API key 和显式文件系统 ID |
+| 生成、列出、启用、禁用或删除文件系统访问令牌 | TiDB Cloud API key 和显式文件系统 ID |
 | 刷新文件系统访问令牌 | 仅当前 FS bearer token |
 | 远程文件、层、pack、挂载、Git、日志（Journal）和 owner vault 操作 | FS owner token 或已注册资源凭证 |
 | 委派 vault 的读、列出、运行或挂载 | 与作用域匹配的 Vault 委派令牌 |

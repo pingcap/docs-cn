@@ -78,7 +78,7 @@ TiDB Cloud CLI 不接受也不存储项目选择器。创建 TiDB Cloud Starter 
 
 ## 文件系统凭证与远端资源清单 {#file-system-credentials-and-remote-inventory}
 
-一个配置可以访问多个 文件系统。按 region 划分作用域的远端资源清单是资源是否存在及其状态的权威来源。本地状态仅存储凭证及其路由提示：
+一个配置可以访问多个文件系统。按 region 划分作用域的远端资源清单是资源是否存在及其状态的权威来源。本地状态仅存储凭证及其路由提示：
 
 ```text
 ~/.ti/fs_credentials/<profile-key>/<file-system-id-key>/credentials
@@ -86,22 +86,22 @@ TiDB Cloud CLI 不接受也不存储项目选择器。创建 TiDB Cloud Starter 
 
 该凭证包含服务端分配的文件系统 ID、规范 region code、所选 `api_key`，以及可选的权威令牌元信息，并使用仅所有者可访问的权限。`ti fs list-file-systems` 会读取远端资源，并仅关联非敏感的 `has_local_token` 提示。
 
-一个远端 文件系统 可以有多个令牌，但每个配置对每个 文件系统 最多只存储一个已选令牌。本地存储表示的是操作层面的选择，而不是远端令牌清单的副本。通过预配或较早导入方式创建的凭证可能不包含 `token_id`、`scope_kind`、`token_name`、`expires_at` 或 `scopes`；它们对数据面使用仍然有效，并且 `ti` 不会根据令牌列表中的行去推导缺失的元信息。
+一个远端文件系统可以有多个令牌，但每个配置对每个文件系统最多只存储一个已选令牌。本地存储表示的是操作层面的选择，而不是远端令牌清单的副本。通过预配或较早导入方式创建的凭证可能不包含 `token_id`、`scope_kind`、`token_name`、`expires_at` 或 `scopes`；它们对数据面使用仍然有效，并且 `ti` 不会根据令牌列表中的行去推导缺失的元信息。
 
 `ti fs generate-file-system-token` 不会更改已选凭证，除非设置了 `--store-locally`。`--replace` 只会更改本地选择，不会使之前的远端令牌失效。若刷新来源于本地凭证，则会以原子方式替换该凭证。若刷新来源于命令行参数或 `TI_FS_TOKEN`，则会返回替换后的明文，而不会写入本地状态。
 
-`ti fs generate-file-system-scoped-token` 仅接受所有者令牌，并且可以将其权威路径作用域存储到本地。令牌 JWT 本身包含 文件系统 ID，但不包含令牌类型、令牌 ID 或作用域。因此，显式提供的令牌或环境变量中的令牌会直接传递给服务进行授予权限，而不是在本地进行分类。`TI_FS_TOKEN` 可以包含所有者令牌或范围受限令牌；可执行的操作取决于其服务端能力。
+`ti fs generate-file-system-scoped-token` 仅接受所有者令牌，并且可以将其权威路径作用域存储到本地。令牌 JWT 本身包含文件系统 ID，但不包含令牌类型、令牌 ID 或作用域。因此，显式提供的令牌或环境变量中的令牌会直接传递给服务进行授予权限，而不是在本地进行分类。`TI_FS_TOKEN` 可以包含所有者令牌或范围受限令牌；可执行的操作取决于其服务端能力。
 
-文件系统所有者令牌可授予 文件系统 数据访问，以及令牌清单或生命周期操作的权限。它们不能授予 TiDB Cloud Filesystem 资源的创建、列出、描述或删除权限，也不能生成另一个所有者令牌。这些操作需要 TiDB Cloud API 凭证。`ti fs delete-file-system` 还额外要求显式指定 `--file-system-id`；绝不会使用嵌入在 `TI_FS_TOKEN` 中的 ID 来选择要删除的 文件系统。
+文件系统所有者令牌可授予文件系统数据访问，以及令牌清单或生命周期操作的权限。它们不能授予 TiDB Cloud Filesystem 资源的创建、列出、描述或删除权限，也不能生成另一个所有者令牌。这些操作需要 TiDB Cloud API 凭证。`ti fs delete-file-system` 还额外要求显式指定 `--file-system-id`；绝不会使用嵌入在 `TI_FS_TOKEN` 中的 ID 来选择要删除的文件系统。
 
 资源选择顺序如下：
 
 1. 显式指定的 `--file-system-id`；
 2. `TI_FS_FILE_SYSTEM_ID`；
-3. 从显式提供的 文件系统 令牌中推导 ID；
+3. 从显式提供的文件系统令牌中推导 ID；
 4. 否则以 `fs.missing_file_system_id` 失败。
 
-`ti` 绝不会根据已保存的默认值或本地凭证数量来推导 文件系统。对于单次命令，请使用 `--file-system-id`；对于 shell、沙箱或自动化环境，请使用 `TI_FS_FILE_SYSTEM_ID`。
+`ti` 绝不会根据已保存的默认值或本地凭证数量来推导文件系统。对于单次命令，请使用 `--file-system-id`；对于 shell、沙箱或自动化环境，请使用 `TI_FS_FILE_SYSTEM_ID`。
 
 用于远端 `fs`、`fs-git`、`fs-journal` 和所有者 `fs-vault` 操作的 FS 所有者凭证选择顺序如下：
 
@@ -158,7 +158,7 @@ password = "..."
 
 ## 配套运行时状态与挂载定位文件 {#companion-state-and-mount-locators}
 
-安装程序包含 `ti-drive9`，这是执行 `ti fs`、`ti fs-git`、`ti fs-journal` 和 `ti fs-vault` 操作的配套运行时。你无需直接调用它。每个已注册的 文件系统 都有独立隔离的配套运行时主目录：
+安装程序包含 `ti-drive9`，这是执行 `ti fs`、`ti fs-git`、`ti fs-journal` 和 `ti fs-vault` 操作的配套运行时。你无需直接调用它。每个已注册的文件系统都有独立隔离的配套运行时主目录：
 
 ```text
 ~/.ti/drive9-home/<profile-key>/<resource-key>/
@@ -172,7 +172,7 @@ password = "..."
 ~/.ti/mounts/<mount-hash>.locator.json
 ```
 
-该定位文件记录了在同一个 `HOME` 下执行刷写和卸载所需的部署位置及配套运行时主目录信息。它不包含 文件系统 令牌。成功卸载后会将其删除。
+该定位文件记录了在同一个 `HOME` 下执行刷写和卸载所需的部署位置及配套运行时主目录信息。它不包含文件系统令牌。成功卸载后会将其删除。
 
 ## 操作日志 {#operation-logs}
 

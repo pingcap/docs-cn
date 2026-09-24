@@ -29,9 +29,9 @@ ti fs update-file-system-extract-configuration
 
 ## 选项 {#options}
 
-- `--file-system-id <string>`：设置不可变的 文件系统 ID。\[required]
+- `--file-system-id <string>`：设置不可变的文件系统 ID。\[required]
 - `--media-type <string>`：选择 `image`、`audio` 或 `video`。\[required]
-- `--dry-run`：在不联系 文件系统 后端或 AI provider 的情况下验证该请求。
+- `--dry-run`：在不联系文件系统后端或 AI provider 的情况下验证该请求。
 - `--enabled <boolean>`：显式启用或禁用媒体内容提取。输入 `true` 或 `false`。
 - `--prompt <string>`：设置一个最大为 8 KiB 的 prompt。传入空字符串可恢复后端默认 prompt 行为。
 - `--provider-api-base <string>`：设置有效的 HTTPS provider 基础 URL。
@@ -42,7 +42,7 @@ ti fs update-file-system-extract-configuration
 
 有关所有命令共享的选项，请参见[全局选项](/ai/ti/reference/ti-cli-reference.md#global-options)。
 
-provider API key 仅接受通过 `TI_FS_AI_PROVIDER_API_KEY` 提供。它会被发送到 文件系统 后端进行验证和加密存储，`ti` 不会在本地存储它，并且返回时只会以掩码形式显示。`openai` 支持镜像、音频和视频。Alibaba Cloud Model Studio Qwen ASR 可通过 `qwen-asr` 用于音频。其他服务仅在其实现了完全符合要求的 OpenAI-compatible contract 时才可用。不支持原生 Anthropic、Gemini、Vertex AI、Bedrock 和 Azure OpenAI 接口。
+provider API key 仅接受通过 `TI_FS_AI_PROVIDER_API_KEY` 提供。它会被发送到文件系统后端进行验证和加密存储，`ti` 不会在本地存储它，并且返回时只会以掩码形式显示。`openai` 支持镜像、音频和视频。Alibaba Cloud Model Studio Qwen ASR 可通过 `qwen-asr` 用于音频。其他服务仅在其实现了完全符合要求的 OpenAI-compatible contract 时才可用。不支持原生 Anthropic、Gemini、Vertex AI、Bedrock 和 Azure OpenAI 接口。
 
 在发生超时或响应丢失后，不要盲目重试修改操作。provider 可能已经对验证收费，后端也可能已经保存了配置。请先运行对应的 describe 命令。
 

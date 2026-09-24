@@ -5,7 +5,7 @@ summary: 列出指定 Region 中的远程文件系统。
 
 # ti fs list-file-systems
 
-列出在所选 Region 中，使用当前所选 TiDB Cloud 凭证可访问的所有 文件系统。结果包括显示名称、标签、状态、配额与使用量，以及 `has_local_token`，该字段表示此机器上是否存在匹配的本地 token。结果中绝不会包含 token 值。
+列出在所选 Region 中，使用当前所选 TiDB Cloud 凭证可访问的所有文件系统。结果包括显示名称、标签、状态、配额与使用量，以及 `has_local_token`，该字段表示此机器上是否存在匹配的本地 token。结果中绝不会包含 token 值。
 
 在可用时，配额数据还包括媒体和视频内容提取限制及使用量。
 
@@ -36,14 +36,14 @@ ti fs list-file-systems
 
 ## 示例 {#examples}
 
-- 列出远程管理的 文件系统：
+- 列出远程管理的文件系统：
 
     ```bash
     # Return the remote inventory for the profile's region without exposing tokens.
     ti fs list-file-systems
     ```
 
-- 按显示元信息过滤 文件系统：
+- 按显示元信息过滤文件系统：
 
     ```bash
     # Match a display-name substring and one exact organization-visible label.

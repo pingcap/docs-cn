@@ -13,7 +13,7 @@ summary: 在替换 agent 沙箱时，将计划、检查点、输出和工作流�
 
 ## 工作原理 {#how-it-works}
 
-一台受信任的机器负责预配一个 文件系统。每个沙箱只会接收到 文件系统 访问令牌和 region code。该访问令牌用于标识 文件系统，因此 agent 可以将持久化的任务状态写入远程命名空间，并在日志（Journal）中记录工作流状态变更，而无需获得 TiDB Cloud 控制平面的密钥。
+一台受信任的机器负责预配一个文件系统。每个沙箱只会接收到文件系统访问令牌和 region code。该访问令牌用于标识文件系统，因此 agent 可以将持久化的任务状态写入远程命名空间，并在日志（Journal）中记录工作流状态变更，而无需获得 TiDB Cloud 控制平面的密钥。
 
 ## 前提条件 {#prerequisites}
 
@@ -22,7 +22,7 @@ summary: 在替换 agent 沙箱时，将计划、检查点、输出和工作流�
 - 在受信任的机器上安装 `jq`。
 - 使用安全的 Secret 管理器或加密的沙箱输入来传输访问令牌。
 
-## 步骤 1：预配状态 文件系统 {#step-1-provision-the-state-file-system}
+## 步骤 1：预配状态文件系统 {#step-1-provision-the-state-file-system}
 
 在受信任的机器上执行：
 
@@ -76,14 +76,14 @@ ti fs-journal read-journal-entries --journal-id task-42 --after-seq 0
 
 ## 清理 {#cleanup}
 
-当沙箱不再使用该 文件系统 后，在受信任的机器上将其删除：
+当沙箱不再使用该文件系统后，在受信任的机器上将其删除：
 
 ```bash
 rm -f ./filesystem.json
 ti fs delete-file-system --file-system-id "$FILE_SYSTEM_ID"
 ```
 
-删除 文件系统 也会同时删除其中的任务文件和日志（Journal）。
+删除文件系统也会同时删除其中的任务文件和日志（Journal）。
 
 ## 安全与运维说明 {#security-and-operational-notes}
 

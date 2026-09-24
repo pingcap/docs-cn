@@ -1,6 +1,6 @@
 ---
 title: 在 Agent 沙箱中使用 TiDB Cloud Filesystem
-summary: 在受信任的机器上预配 文件系统，并让一个干净的 agent 沙箱在无需 TiDB Cloud API keys 和配置的情况下进行访问。
+summary: 在受信任的机器上预配文件系统，并让一个干净的 agent 沙箱在无需 TiDB Cloud API keys 和配置的情况下进行访问。
 ---
 
 # 在 Agent 沙箱中使用 TiDB Cloud Filesystem
@@ -13,11 +13,11 @@ summary: 在受信任的机器上预配 文件系统，并让一个干净的 age
 
 > **Note:**
 >
-> 如需亲手实践此工作流，请打开 [TiDB Cloud Filesystem for Agent Sandbox Lab](https://labs.tidb.io/labs/demo_901)。此交互式 Lab Guide 将引导你在 agent 沙箱中使用持久化的 文件系统。
+> 如需亲手实践此工作流，请打开 [TiDB Cloud Filesystem for Agent Sandbox Lab](https://labs.tidb.io/labs/demo_901)。此交互式 Lab Guide 将引导你在 agent 沙箱中使用持久化的文件系统。
 
 ## 工作原理 {#how-it-works}
 
-受信任的机器只需预配一次 文件系统。沙箱仅接收 文件系统 所有者令牌和 Region 代码，因此它可以使用普通文件操作，以及数据平面、挂载、Git、日志（Journal）和 Vault 工作流，而无需执行 `ti configure`、复制 `~/.ti/` 目录或使用 TiDB Cloud API keys。这也避免了通用对象存储 API 所需的、与应用相关的上传和下载逻辑。该令牌用于标识 文件系统。当 agent 只需要部分选定的 Secret 时，请使用 Vault 委派令牌而不是所有者令牌。
+受信任的机器只需预配一次文件系统。沙箱仅接收文件系统所有者令牌和 Region 代码，因此它可以使用普通文件操作，以及数据平面、挂载、Git、日志（Journal）和 Vault 工作流，而无需执行 `ti configure`、复制 `~/.ti/` 目录或使用 TiDB Cloud API keys。这也避免了通用对象存储 API 所需的、与应用相关的上传和下载逻辑。该令牌用于标识文件系统。当 agent 只需要部分选定的 Secret 时，请使用 Vault 委派令牌而不是所有者令牌。
 
 ## 前提条件 {#prerequisites}
 
@@ -35,7 +35,7 @@ export FILE_SYSTEM_ID="$(jq -r '.file_system_id' ./filesystem.json)"
 export TI_FS_TOKEN="$(jq -r '.fs_token' ./filesystem.json)"
 ```
 
-将令牌存储到 Secret 管理器中，记录 `FILE_SYSTEM_ID` 以便进行控制平面清理，并记录创建 文件系统 时使用的 Region 代码。在安全存储令牌后，删除 `filesystem.json`。
+将令牌存储到 Secret 管理器中，记录 `FILE_SYSTEM_ID` 以便进行控制平面清理，并记录创建文件系统时使用的 Region 代码。在安全存储令牌后，删除 `filesystem.json`。
 
 ## 第 2 步：注入最小化的沙箱环境 {#step-2-inject-the-minimum-sandbox-environment}
 
@@ -66,7 +66,7 @@ ti fs read-file --path /sandbox/status.txt
 sandbox ready
 ```
 
-## 第 4 步：可选地挂载 文件系统 {#step-4-optionally-mount-the-file-system}
+## 第 4 步：可选地挂载文件系统 {#step-4-optionally-mount-the-file-system}
 
 在使用 FUSE 的 Linux 上：
 
@@ -102,7 +102,7 @@ ti fs delete-file-system \
 
 - 将 `TI_FS_TOKEN` 视为所有者凭证。
 - 不要将其放入镜像、仓库、命令行参数或操作日志中。
-- 删除沙箱不会删除远端 文件系统。
+- 删除沙箱不会删除远端文件系统。
 - 优雅的卸载会刷写待处理的 FUSE 写入；不经卸载直接删除沙箱则不会。
 
 ## 后续内容 {#what-s-next}

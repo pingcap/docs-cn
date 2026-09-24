@@ -1,6 +1,6 @@
 ---
 title: ti fs-vault mount-vault
-summary: 挂载一个只读的 文件系统 Vault 视图。
+summary: 挂载一个只读的文件系统 Vault 视图。
 ---
 
 # ti fs-vault mount-vault
