@@ -15,7 +15,7 @@ summary: 了解 TiFlash 的数据校验机制以及相关的工具。
 
 ## 校验机制简介
 
-TiFlash 的数据校验功能基于 DTFile（即 DeltaTree File）提供。DTFile 是 TiFlash 落盘数据的存储文件，共有三版格式：
+TiFlash 的数据校验功能基于 DTFile（即 DeltaTree File）提供。`storage.format_version` 的数值表示 TiFlash 的整体存储格式版本，并不等同于本文介绍的 DTFile 校验机制代际。DTFile 校验机制目前共有三代：
 
 | 版本 | 状态 | 校验机制 | 备注 |
 | :-- | :-- | :-- |:-- |
@@ -23,16 +23,17 @@ TiFlash 的数据校验功能基于 DTFile（即 DeltaTree File）提供。DTFil
 | V2 | v6.0.0 之前的默认格式 | 在数据文件中内嵌哈希值 | 在 V1 的基础上增加了列数据的统计信息 |
 | V3 | v6.0.0 及之后的默认格式 | 包含元数据，标记数据校验，支持多种哈希算法 | 于 v5.4 版本引入 |
 
+在当前版本中，`storage.format_version` 支持 `2` 到 `7`。不同的 `storage.format_version` 可能共用同一代 DTFile 校验机制，同时也会调整 TiFlash 的其他存储组件。关于 `storage.format_version` 当前的可选值和默认值，请参见 [TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)。
+
 DTFile 存储在数据文件夹目录下的 stable 文件夹内。目前启用的格式均为文件夹形式，即具体数据均储存在名字类似 `dmf_<file id>` 的文件夹下的多个子文件中。
 
 ### 使用数据校验
 
 TiFlash 支持自动和手动进行数据校验：
 
-- 自动数据校验 （`storage.format_version` 配置项）：
-    - v6.0.0 之后默认使用 DTFile V3 版本校验机制。
-    - v6.0.0 之前默认使用 DTFile V2 版本校验机制。
-    - 如需切换版本校验机制，参见 [TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)。默认配置经过大量测试，不推荐修改。
+- 自动数据校验（`storage.format_version` 配置项）：
+    - 本文中的 DTFile 校验机制代际，并不是按 `storage.format_version` 的数值顺序一一对应。
+    - 如需查看 `storage.format_version` 当前的默认值和可选值，参见 [TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)。默认配置经过大量测试，不推荐修改。
 - 手动数据校验，参见 [DTTool 使用文档](/tiflash/tiflash-command-line-flags.md#dttool-inspect)。
 
 > **警告：**
