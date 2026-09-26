@@ -20,12 +20,12 @@ DTFile（即 DeltaTree File）是 TiFlash 落盘数据的存储文件。TiFlash 
 | 数据校验机制版本 | 状态 | 校验机制 | 备注 |
 | :-- | :-- | :-- |:-- |
 | V1 | 已废弃 | 在数据文件中内嵌哈希值 | |
-| V2 | v6.0.0 之前的默认格式 | 在数据文件中内嵌哈希值 | 在 V1 的基础上增加了列数据的统计信息 |
-| V3 | v6.0.0 及之后的默认格式 | 包含元数据，标记数据校验，支持多种哈希算法 | 于 v5.4 版本引入 |
+| V2 | v6.0.0 之前的默认校验机制 | 在数据文件中内嵌哈希值 | 在 V1 的基础上增加了列数据的统计信息 |
+| V3 | v6.0.0 及之后的默认校验机制 | 包含元数据，标记数据校验，支持多种哈希算法 | 于 v5.4 版本引入 |
 
 >**注意：**
 >
-> 上表中的 V1、V2、V3 指 TiFlash 对 DTFile 数据进行校验时采用的校验机制版本，并非 DTFile 自身的存储文件格式，DTFile 的存储文件格式由配置项 [`storage.format_version`](/tiflash/tiflash-configuration.md#format_version) 单独控制。
+> 上表中的 V1、V2、V3 指 TiFlash 对 DTFile 数据进行校验时采用的校验机制版本，并非 DTFile 存储格式配置项 [`storage.format_version`](/tiflash/tiflash-configuration.md#format_version) 的取值。
 
 DTFile 存储在数据文件夹目录下的 stable 文件夹内。目前启用的格式均为文件夹形式，即具体数据均储存在名字类似 `dmf_<file id>` 的文件夹下的多个子文件中。
 
@@ -34,8 +34,9 @@ DTFile 存储在数据文件夹目录下的 stable 文件夹内。目前启用�
 TiFlash 支持自动和手动进行数据校验：
 
 - 自动数据校验：
-    - 对于 `storage.format_version` 版本 `5` 或更高格式版本的 DTFile 文件， TiFlash 对它们进行数据校验时采用 V3 校验机制。
-    -对于`storage.format_version` 版本 `4` 或之前格式版本的 DTFile 文件， TiFlash 对它们进行数据校验时采用 V2 校验机制。
+    针对不同的 [`storage.format_version`](/tiflash/tiflash-configuration.md#format_version) 的 DTFile，自动数据校验机制版本不同：
+    - 在 TiFlash v6.0.0 或更高版本中，`storage.format_version` 的默认值格式为  `3` 或更高，TiFlash 对这些存储格式的数据进行数据校验时采用 V3 校验机制。
+    - 在 TiFlash  v6.0.0 之前的版本中，`storage.format_version` 的默认值格式低于  `3`，TiFlash 对这些存储格式的数据进行数据校验时采用 V2 校验机制。
     - 如需查看 `storage.format_version` 当前的默认值和可选值，参见 [TiFlash 配置文件](/tiflash/tiflash-configuration.md#format_version)。默认配置经过大量测试，不推荐修改。
 - 手动数据校验，参见 [DTTool 使用文档](/tiflash/tiflash-command-line-flags.md#dttool-inspect)。
 
