@@ -34,15 +34,17 @@ DTFile 存储在数据文件夹目录下的 stable 文件夹内。目前启用�
 TiFlash 支持自动和手动进行数据校验：
 
 - 自动数据校验：
-    针对不同的 [`storage.format_version`](/tiflash/tiflash-configuration.md#format_version) 的 DTFile，自动数据校验机制版本不同：
-    - 在 TiFlash v6.0.0 或更高版本中，`storage.format_version` 的默认值格式为  `3` 或更高，TiFlash 对这些存储格式的数据进行数据校验时采用 V3 校验机制。
-    - 在 TiFlash  v6.0.0 之前的版本中，`storage.format_version` 的默认值格式低于  `3`，TiFlash 对这些存储格式的数据进行数据校验时采用 V2 校验机制。
-    - 如需查看 `storage.format_version` 当前的默认值和可选值，参见 [TiFlash 配置文件](/tiflash/tiflash-configuration.md#format_version)。默认配置经过大量测试，不推荐修改。
+
+    针对不同的 [`storage.format_version`](/tiflash/tiflash-configuration.md#format_version) 的 DTFile，TiFlash 采用的数据校验机制版本可能不同：
+
+    - 对于 `storage.format_version` 为 `2` 的 DTFile，TiFlash 使用 V2 校验机制。在 TiFlash v6.0.0 之前，`storage.format_version` 的默认值为 `2`，因此 TiFlash 默认使用 V2 校验机制。
+    - 对于 `storage.format_version` 为 `3` 或更高值的 DTFile，TiFlash 使用 V3 校验机制。从 TiFlash v6.0.0 开始，`storage.format_version` 的默认值为 `3` 或更高，因此 TiFlash 默认使用 V3 校验机制。
+    - 如需查看当前 TiFlash 版本中 `storage.format_version` 的默认值和可选值，参见 [TiFlash 配置文件](/tiflash/tiflash-configuration.md#format_version)。默认配置经过大量测试，不推荐修改。
 - 手动数据校验，参见 [DTTool 使用文档](/tiflash/tiflash-command-line-flags.md#dttool-inspect)。
 
 > **警告：**
 >
-> 设置使用 V3 版本后，新生成的 DTFile 将无法被 v5.4.0 以前 TiFlash 直接正常读取。v5.4.0 后 TiFlash 同时支持 V2，V3 版本，不会主动进行版本的升降级。如果需要迁移到新的版本，或者需要回退到旧的版本，需要手动使用 DTTool 进行[版本切换](/tiflash/tiflash-command-line-flags.md#dttool-migrate)。
+> 设置使用 V3 校验机制后，新生成的 DTFile 将无法被 v5.4.0 以前 TiFlash 直接正常读取。v5.4.0 后 TiFlash 同时支持 V2 和 V3 校验机制，不会主动进行版本的升降级。如果需要迁移到新的版本，或者需要回退到旧的版本，需要手动使用 DTTool 进行[版本切换](/tiflash/tiflash-command-line-flags.md#dttool-migrate)。
 
 ### 校验工具
 
