@@ -910,7 +910,7 @@ TiDB 服务状态相关配置。
 
 ### `tidb_general_log`
 
-+ 用于控制是否以 info 日志级别记录该 TiDB 服务器上的每一条查询。
++ 用于控制是否在 TiDB 日志中记录成功执行的 SQL 语句。要查看这些记录，请将 [`log.level`](#level) 设置为 `"info"` 或 `"debug"`。
 + 默认值：`false`
 + 可选值：`true` 或 `false`
 
