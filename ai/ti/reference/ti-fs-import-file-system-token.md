@@ -1,11 +1,11 @@
 ---
 title: ti fs import-file-system-token
-summary: 导入现有的 TiDB Cloud Filesystem 令牌。
+summary: 将现有的文件系统令牌导入到所选的本地配置（Profile）中。
 ---
 
 # ti fs import-file-system-token
 
-验证现有的 Filesystem 访问令牌，并将其存储到所选的本地配置（Profile）中。Filesystem ID 会从令牌中派生；你可以使用可选的 `--file-system-id` 来验证该令牌是否属于预期的 Filesystem。
+验证现有的文件系统令牌，并将其存储到所选的本地配置（Profile）中。文件系统 ID 会从令牌中派生；你可以使用可选的 `--file-system-id` 来验证该令牌是否属于预期的文件系统。
 
 > **Note:**
 >

@@ -1,11 +1,11 @@
 ---
 title: ti fs delete-file-system
-summary: 删除 TiDB Cloud Filesystem。
+summary: 删除文件系统。
 ---
 
 # ti fs delete-file-system
 
-开始删除一个 Filesystem。删除操作会在命令返回后以异步方式运行。你必须指定 `--file-system-id`；显示名称、标签和 Filesystem 访问令牌都不能用于标识要删除的 Filesystem。此命令需要 TiDB Cloud API 凭证。
+开始删除一个文件系统。删除操作会在命令返回后以异步方式运行。你必须指定 `--file-system-id`；显示名称、标签和文件系统令牌都不能用于标识要删除的文件系统。此命令需要 TiDB Cloud API 凭证。
 
 > **注意：**
 >
@@ -23,7 +23,7 @@ ti fs delete-file-system
 
 ## 选项 {#options}
 
-- `--file-system-id <string>`：设置不可变的 Filesystem ID。FS tokens 不能替代此选项，也不能用于授予删除 Filesystem 的权限。\[required]
+- `--file-system-id <string>`：设置不可变的文件系统 ID。文件系统令牌不能替代此选项，也不能用于授予删除文件系统的权限。\[required]
 - `--dry-run`：验证请求而不应用更改。
 - `--help`：显示帮助信息。
 - `--version`：显示版本信息。
@@ -32,17 +32,17 @@ ti fs delete-file-system
 
 ## 示例 {#examples}
 
-- 删除一个 Filesystem：
+- 删除一个文件系统：
 
     ```bash
     # Request asynchronous deletion and remove only the matching local credential after acceptance.
     ti fs delete-file-system --file-system-id <file-system-id>
     ```
 
-- 预览 Filesystem 删除：
+- 预览文件系统删除：
 
     ```bash
-    # Validate the selected Filesystem without sending the deletion request.
+    # Validate the selected file system without sending the deletion request.
     ti fs delete-file-system --file-system-id <file-system-id> --dry-run
     ```
 
