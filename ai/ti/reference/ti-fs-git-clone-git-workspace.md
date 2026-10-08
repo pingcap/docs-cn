@@ -5,7 +5,7 @@ summary: 将 Git 仓库克隆到已挂载的 TiDB Cloud Filesystem 中。
 
 # ti fs-git clone-git-workspace
 
-将仓库克隆到已挂载的 Filesystem 路径中。数据填充可以同步运行，也可以在后台运行。
+将仓库克隆到已挂载的文件系统路径中。数据填充可以同步运行，也可以在后台运行。
 
 > **注意：**
 >
@@ -33,7 +33,7 @@ ti fs-git clone-git-workspace
 - `--blobless`：创建无 blob 的部分本地 `.git`，并单独填充干净的 blob。
 - `--dry-run`：验证请求而不应用更改。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略此选项，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 在本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略此选项，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统在本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--hydrate <string>`：干净数据填充模式：`auto`、`background`、`sync` 或 `off`。使用 `auto` 时，无 blob 克隆会在后台进行填充，而非无 blob 克隆不会运行单独的填充步骤。`background` 和 `sync` 需要 `--blobless`；`off` 会跳过填充。\[默认值：auto]
 - `--version`：显示版本信息。
@@ -45,7 +45,7 @@ ti fs-git clone-git-workspace
 - 正常克隆一个仓库：
 
     ```bash
-    # Create a complete Git checkout in the mounted Filesystem path.
+    # Create a complete Git checkout in the mounted file system path.
     ti fs-git clone-git-workspace --file-system-id <file-system-id> --repo-url https://github.com/pingcap/tidb.git --target-path /path/to/workspace/tidb
     ```
 

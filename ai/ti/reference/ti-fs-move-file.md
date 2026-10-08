@@ -1,6 +1,6 @@
 ---
 title: ti fs move-file
-summary: 在 TiDB Cloud Filesystem 中移动文件。
+summary: 在文件系统中移动文件。
 ---
 
 # ti fs move-file
@@ -31,7 +31,7 @@ ti fs move-file
 - `--to-remote <string>`：目标文件路径。\[必需]
 - `--dry-run`：验证请求，但不应用更改。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 在本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统在本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--overwrite`：替换已存在的目标文件。
 - `--version`：显示版本信息。
@@ -43,7 +43,7 @@ ti fs move-file
 - 移动远程文件：
 
     ```bash
-    # Rename or relocate an object entirely within the selected Filesystem.
+    # Rename or relocate an object entirely within the selected file system.
     ti fs move-file --file-system-id <file-system-id> --from-remote /draft.md --to-remote /reports/final.md
     ```
 

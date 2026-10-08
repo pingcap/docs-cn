@@ -1,6 +1,6 @@
 ---
 title: ti fs-journal read-journal-entries
-summary: 从 Filesystem 日志（Journal）中读取条目。
+summary: 从文件系统日志（Journal）中读取条目。
 ---
 
 # ti fs-journal read-journal-entries
@@ -29,7 +29,7 @@ ti fs-journal read-journal-entries
 - `--journal-id <string>`：Journal ID。\[必需]
 - `--after-seq <int64>`：读取此序列号之后的条目。如果省略或设置为 `0`，则从最早的条目开始读取。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，此命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，则此命令会使用为所选 Filesystem 在本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，此命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，则此命令会使用为所选文件系统在本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--limit <int32>`：最多读取的条目数。\[默认值：100]
 - `--version`：显示版本信息。

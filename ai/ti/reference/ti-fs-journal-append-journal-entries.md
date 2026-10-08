@@ -1,6 +1,6 @@
 ---
 title: ti fs-journal append-journal-entries
-summary: 向 Filesystem 日志（Journal）追加条目。
+summary: 向文件系统日志（Journal）追加条目。
 ---
 
 # ti fs-journal append-journal-entries
@@ -36,7 +36,7 @@ ti fs-journal append-journal-entries
 - `--entry-json <string>`：单个 JSON 日志条目对象；可重复指定。支持的字段请参见[条目 JSON 格式](#entry-json-format)。
 - `--entry-type <string>`：当输入对象省略 `type` 时使用的条目类型。如果输入对象中显式指定了 `type`，则其优先级更高。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，该命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，该命令会使用为所选 Filesystem 本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，该命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，该命令会使用为所选文件系统本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--idempotency-key <string>`：用于对同一追加请求的重试进行去重的键。如果省略，每次调用都会获得一个新的键。
 - `--json-array`：从 stdin 读取 JSON 数组，而不是 JSONL。

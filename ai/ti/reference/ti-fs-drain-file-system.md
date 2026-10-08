@@ -5,7 +5,7 @@ summary: 刷写已挂载的 TiDB Cloud Filesystem。
 
 # ti fs drain-file-system
 
-在保持挂载在线的同时，将 FUSE 挂载中的待处理写入刷写到远端 Filesystem。该命令的别名是 `ti fs drain`。对于 WebDAV 挂载，请先停止写入端并使用 `ti fs unmount-file-system`；对其运行 `drain-file-system` 会返回错误。
+在保持挂载在线的同时，将 FUSE 挂载中的待处理写入刷写到远端 文件系统。该命令的别名是 `ti fs drain`。对于 WebDAV 挂载，请先停止写入端并使用 `ti fs unmount-file-system`；对其运行 `drain-file-system` 会返回错误。
 
 > **Note:**
 >
@@ -37,7 +37,7 @@ ti fs drain-file-system
 - 刷写待处理写入：
 
     ```bash
-    # Flush queued FUSE writes while leaving the Filesystem mounted.
+    # Flush queued FUSE writes while leaving the file system mounted.
     ti fs drain-file-system --mount-path /path/to/workspace --timeout 30s
     ```
 

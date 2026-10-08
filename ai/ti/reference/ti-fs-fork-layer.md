@@ -1,6 +1,6 @@
 ---
 title: ti fs fork-layer
-summary: 在 TiDB Cloud Filesystem 中派生一个写时复制的子层。
+summary: 在文件系统中派生一个写时复制的子层。
 ---
 
 # ti fs fork-layer
@@ -34,7 +34,7 @@ ti fs fork-layer
 - `--checkpoint-id <string>`：将子层固定到父层的此检查点。如果省略，则固定到已序列化的父层 tip。
 - `--dry-run`：验证请求而不应用更改。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，此命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，此命令会使用为所选 Filesystem 在本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，此命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，此命令会使用为所选文件系统在本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--layer-id <string>`：稳定的子层 ID。如果省略，则由服务生成。
 - `--layer-name <string>`：便于人类识别的子层名称。

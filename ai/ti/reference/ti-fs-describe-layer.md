@@ -1,11 +1,11 @@
 ---
 title: ti fs describe-layer
-summary: 描述 TiDB Cloud Filesystem 中的一个 layer。
+summary: 描述文件系统中的一个 layer。
 ---
 
 # ti fs describe-layer
 
-描述一个 Filesystem layer。
+描述一个文件系统 layer。
 
 > **注意：**
 >
@@ -26,7 +26,7 @@ ti fs describe-layer
 
 - `--layer-id <string>`：指定文件系统 layer 的 ID。\[必需]
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略此选项，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 在本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略此选项，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统在本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--version`：显示版本信息。
 

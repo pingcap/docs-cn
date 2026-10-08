@@ -1,6 +1,6 @@
 ---
 title: ti fs create-directory
-summary: 在 TiDB Cloud Filesystem 中创建目录。
+summary: 在文件系统中创建目录。
 ---
 
 # ti fs create-directory
@@ -29,7 +29,7 @@ ti fs create-directory
 - `--path <string>`：要创建的目录的文件系统路径。\[必需]
 - `--dry-run`：验证请求而不应用更改。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--mode <string>`：目录模式，使用八进制值表示，例如 0755。
 - `--version`：显示版本信息。
