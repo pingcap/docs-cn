@@ -43,10 +43,14 @@ tiup dmctl check-task ./task.yaml
     - MySQL 版本 > 5.5
     - MariaDB 版本 >= 10.1.2
 
-    > **警告：**
+    > **注意：**
     >
+<<<<<<< HEAD
     > - 使用 DM 从 MySQL v8.0 迁移数据到 TiDB 目前为实验特性（从 DM v2.0 引入），不建议在生产环境下使用。
     > - 使用 DM 从 MariaDB 迁移数据到 TiDB 目前为实验特性，不建议在生产环境下使用。
+=======
+    > 对于具有实验 (experimental) 兼容性的 MariaDB 版本，你可以尝试使用 DM 迁移数据。常见迁移场景已经过验证，但测试覆盖有限。在生产环境中使用前，请验证你的迁移场景。有关特定版本的兼容性级别和限制，请参见 [DM 兼容性目录](/dm/dm-compatibility-catalog.md)。
+>>>>>>> 3450c2b29e (dm: clarify Experimental source compatibility guidance (#21969))
 
 - 上游 MySQL 表结构的兼容性
 

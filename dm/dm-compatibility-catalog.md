@@ -12,6 +12,8 @@ TiDB Data Migration (DM) 数据迁移工具可以将数据从不同类型的数�
 - **未测试**：DM 尽量保证兼容 MySQL 协议和 binlog，但并非所有 MySQL 分支或版本都包含在 DM 的测试矩阵中。如果某个分支或版本使用了与 MySQL 兼容的协议和 binlog 格式，理论上应能正常工作，但在使用前必须在你自己的环境中验证兼容性。
 - **不兼容**：DM 存在已知不兼容的情况，不建议在生产环境中使用。
 
+这些兼容性级别描述的是验证成熟度，并不表示支持响应时间或 bug 修复承诺。如果你遇到问题，可以在 [GitHub](https://github.com/pingcap/tiflow/issues) 上报告。
+
 ## 数据源
 
 | 数据源 |级别 | 说明 |
@@ -21,11 +23,18 @@ TiDB Data Migration (DM) 数据迁移工具可以将数据从不同类型的数�
 | MySQL 5.7                | 正式支持            |      |
 | MySQL 8.0                | 正式支持            | 不支持 [binlog 事务压缩 (`Transaction_payload_event`)](https://dev.mysql.com/doc/refman/8.0/en/binary-log-transaction-compression.html)。 |
 | MySQL 8.1 ~ 8.3          | 未测试              | 不支持 [binlog 事务压缩 (`Transaction_payload_event`)](https://dev.mysql.com/doc/refman/8.0/en/binary-log-transaction-compression.html)。     |
-| MySQL 8.4                | 实验支持（适用于从 v8.5.6 起的 TiDB 版本） | 不支持 [binlog 事务压缩 (`Transaction_payload_event`)](https://dev.mysql.com/doc/refman/8.4/en/binary-log-transaction-compression.html)。 |
+| MySQL 8.4                | 实验支持（适用于从 v8.5.6 起的 TiDB 版本） | 不支持 [binlog 事务压缩 (`Transaction_payload_event`)](https://dev.mysql.com/doc/refman/8.4/en/binary-log-transaction-compression.html)。参见 [MySQL 8.4 说明](#mysql-84-说明)。 |
 | MySQL 9.x                | 未测试              |      |
 | MariaDB < 10.1.2         | 不兼容              | 与时间类型的 binlog 不兼容。 |
 | MariaDB 10.1.2 ~ 10.5.10 | 实验支持            |      |
 | MariaDB > 10.5.10        | 未测试              | 在绕过[前置检查](/dm/dm-precheck.md)后，理论上大多数情况下可以正常工作。参见 [MariaDB 说明](#mariadb-说明)。 |
+
+### MySQL 8.4 说明
+
+MySQL 8.4 数据源的支持级别为**实验支持** (experimental)，而非正式支持。在生产环境中使用前，请根据你使用的确切数据源版本、DM 版本和迁移配置验证兼容性。验证你计划使用的迁移模式，并检查数据一致性。
+
+- 对于增量复制，请设置 `binlog_transaction_compression=OFF`。DM 不支持压缩的 binlog 事务事件。
+- 如果你的数据源使用 tagged GTID，请在迁移前验证其与你的 DM 版本的兼容性。tagged GTID 还需要进一步的兼容性测试。详情请参见 [tagged GTID issue](https://github.com/pingcap/tiflow/issues/12629) 和 [compatibility testing tracker](https://github.com/pingcap/tiflow/issues/12412)。
 
 ### 外键 `CASCADE` 操作
 
