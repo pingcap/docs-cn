@@ -31,7 +31,7 @@ TiDB Data Migration (DM) 数据迁移工具可以将数据从不同类型的数�
 
 ### MySQL 8.4 说明
 
-MySQL 8.4 数据源的支持级别为**实验支持**，而非正式支持。在生产环境中使用前，请根据你使用的确切数据源版本、DM 版本和迁移配置验证兼容性。验证你计划使用的迁移模式，并检查数据一致性。
+MySQL 8.4 数据源的支持级别为**实验支持** (experimental)，而非正式支持。在生产环境中使用前，请根据你使用的确切数据源版本、DM 版本和迁移配置验证兼容性。验证你计划使用的迁移模式，并检查数据一致性。
 
 - 对于增量复制，请设置 `binlog_transaction_compression=OFF`。DM 不支持压缩的 binlog 事务事件。
 - 如果你的数据源使用 tagged GTID，请在迁移前验证其与你的 DM 版本的兼容性。tagged GTID 还需要进一步的兼容性测试。详情请参见 [tagged GTID issue](https://github.com/pingcap/tiflow/issues/12629) 和 [compatibility testing tracker](https://github.com/pingcap/tiflow/issues/12412)。
