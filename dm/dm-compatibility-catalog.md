@@ -23,7 +23,7 @@ TiDB Data Migration (DM) 数据迁移工具可以将数据从不同类型的数�
 | MySQL 5.7                | 正式支持            |      |
 | MySQL 8.0                | 正式支持            | 不支持 [binlog 事务压缩 (`Transaction_payload_event`)](https://dev.mysql.com/doc/refman/8.0/en/binary-log-transaction-compression.html)。 |
 | MySQL 8.1 ~ 8.3          | 未测试              | 不支持 [binlog 事务压缩 (`Transaction_payload_event`)](https://dev.mysql.com/doc/refman/8.0/en/binary-log-transaction-compression.html)。     |
-| MySQL 8.4                | 实验支持（适用于从 v8.5.6 起的 TiDB 版本） | 不支持 [binlog 事务压缩 (`Transaction_payload_event`)](https://dev.mysql.com/doc/refman/8.4/en/binary-log-transaction-compression.html)。参见 [MySQL 8.4 说明](#mysql-84-notes)。 |
+| MySQL 8.4                | 实验支持（适用于从 v8.5.6 起的 TiDB 版本） | 不支持 [binlog 事务压缩 (`Transaction_payload_event`)](https://dev.mysql.com/doc/refman/8.4/en/binary-log-transaction-compression.html)。参见 [MySQL 8.4 说明](#mysql-84-说明)。 |
 | MySQL 9.x                | 未测试              |      |
 | MariaDB < 10.1.2         | 不兼容              | 与时间类型的 binlog 不兼容。 |
 | MariaDB 10.1.2 ~ 10.5.10 | 实验支持            |      |
@@ -31,10 +31,10 @@ TiDB Data Migration (DM) 数据迁移工具可以将数据从不同类型的数�
 
 ### MySQL 8.4 说明
 
-MySQL 8.4 源的支持级别为实验支持，而非正式支持。在生产环境中使用前，请根据你使用的确切源版本、DM 版本和迁移配置验证兼容性。验证你计划使用的迁移模式，并检查数据一致性。
+MySQL 8.4 数据源的支持级别为**实验支持**，而非正式支持。在生产环境中使用前，请根据你使用的确切数据源版本、DM 版本和迁移配置验证兼容性。验证你计划使用的迁移模式，并检查数据一致性。
 
 - 对于增量复制，请设置 `binlog_transaction_compression=OFF`。DM 不支持压缩的 binlog 事务事件。
-- 如果你的源使用 tagged GTID，请在迁移前验证其与你的 DM 版本的兼容性。tagged GTID 还需要进一步的兼容性测试。详情请参见 [tagged GTID issue](https://github.com/pingcap/tiflow/issues/12629) 和 [compatibility testing tracker](https://github.com/pingcap/tiflow/issues/12412)。
+- 如果你的数据源使用 tagged GTID，请在迁移前验证其与你的 DM 版本的兼容性。tagged GTID 还需要进一步的兼容性测试。详情请参见 [tagged GTID issue](https://github.com/pingcap/tiflow/issues/12629) 和 [compatibility testing tracker](https://github.com/pingcap/tiflow/issues/12412)。
 
 ### 外键 `CASCADE` 操作
 
