@@ -12,7 +12,7 @@ TiDB Data Migration (DM) 数据迁移工具可以将数据从不同类型的数�
 - **未测试**：DM 尽量保证兼容 MySQL 协议和 binlog，但并非所有 MySQL 分支或版本都包含在 DM 的测试矩阵中。如果某个分支或版本使用了与 MySQL 兼容的协议和 binlog 格式，理论上应能正常工作，但在使用前必须在你自己的环境中验证兼容性。
 - **不兼容**：DM 存在已知不兼容的情况，不建议在生产环境中使用。
 
-这些兼容性级别描述的是验证成熟度，并不表示支持响应时间或 bug 修复承诺。如果你遇到问题，可以在 [GitHub](https://github.com/pingcap/tiflow/issues) 上报告。
+这些兼容性级别描述的是验证成熟度，并不表示支持响应时间或 bug 修复承诺。如果你遇到问题，可以在 GitHub 上[提交 issue](https://github.com/pingcap/tiflow/issues)。
 
 ## 数据源
 
