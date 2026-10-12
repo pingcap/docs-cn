@@ -503,12 +503,16 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 11. 测试完成之后，可以通过执行以下步骤来清理集群：
 
-    1. 按下 <kbd>Control</kbd>+<kbd>C</kbd> 键停掉上述启用的 TiDB 服务。
-
-    2. 等待服务退出操作完成后，执行以下命令：
+    1. 停止集群：
 
         ```shell
-        tiup clean --all
+        tiup cluster stop <cluster-name>
+        ```
+
+    2. 集群停止后，销毁集群：
+
+        ```shell
+        tiup cluster destroy <cluster-name>
         ```
 
 ## 探索更多
