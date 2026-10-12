@@ -5,7 +5,14 @@ on:
 jobs:
   rebase:
     name: Rebase
-    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase')
+    if: >
+      github.event.issue.pull_request != '' &&
+      contains(github.event.comment.body, '/rebase') &&
+      (
+        github.event.comment.user.login == 'qiancai' ||
+        github.event.comment.user.login == 'lilin90' ||
+        github.event.comment.user.login == 'seominjea1942'
+      )
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the latest code
