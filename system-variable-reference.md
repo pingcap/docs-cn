@@ -3992,6 +3992,13 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [TiDB 7.1.6 Release Notes](/releases/release-7.1.6.md)
 - [TiDB 6.5.0 Release Notes](/releases/release-6.5.0.md)
 
+### tidb_ttl_enable_index_scan
+
+引用该变量的文档：
+
+- [使用 TTL (Time to Live) 定期删除过期数据](/time-to-live.md)
+- [系统变量](/system-variables.md#tidb_ttl_enable_index_scan)
+
 ### tidb_ttl_job_enable
 
 引用该变量的文档：
