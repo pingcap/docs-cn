@@ -312,6 +312,32 @@ CDC000005.csv
 }
 ```
 
+## 列选择功能
+
+自从 v8.5.8 开始，TiCDC 新架构支持列选择功能。可以对事件中的列进行选择，只将指定的列的数据变更事件发送到下游。
+
+以如下示例配置文件中的 `column-selectors` 配置项为例：
+
+```toml
+[sink]
+column-selectors = [
+    {matcher = ['test.t1'], columns = ['a', 'b']},
+    {matcher = ['test.*'], columns = ["*", "!b"]},
+    {matcher = ['test1.t1'], columns = ['column*', '!column1']},
+    {matcher = ['test3.t'], columns = ["column?", "!column1"]},
+]
+```
+
+- 对于表 `test.t1`，只发送 `a` 和 `b` 两列的数据。
+- 对于属于库 `test` 的表（除 `t1` 外），发送除 `b` 列之外的所有列的数据。
+- 对于表 `test1.t1`，发送所有以 `column` 开头的列，但是不发送 `column1` 列的数据。
+- 对于表 `test3.t`，发送所有以 `column` 开头且列名长度为 7 的列，但是不发送 `column1` 列的数据。
+- 不匹配任何规则的表将不进行列过滤，发送所有列的数据。
+
+> **注意：**
+>
+> 经过 `column-selectors` 规则过滤后，表中的数据必须要有主键或者唯一键被同步，否则在 changefeed 创建或运行时会报错。
+
 ## 数据类型
 
 本章节主要介绍 `schema_{table-version}_{hash}.json` 文件（以下简称为 schema 文件）中使用的各种数据类型。数据类型定义为 `T(M[, D])`，详见[数据类型概述](/data-type-overview.md#数据类型概述)。
