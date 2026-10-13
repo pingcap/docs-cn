@@ -20,7 +20,7 @@ jobs:
       (
         github.event_name == 'issue_comment' &&
         contains(github.event.comment.body, '/bot-review') &&
-        (github.event.comment.user.login == 'hfxsd' || github.event.comment.user.login == 'likidu' || github.event.comment.user.login == 'lilin90' || github.event.comment.user.login == 'Oreoxmt' || github.event.comment.user.login == 'qiancai')
+        (github.event.comment.user.login == 'lilin90' || github.event.comment.user.login == 'qiancai' || github.event.comment.user.login == 'seominjea1942')
       )
     steps:
 
@@ -32,35 +32,34 @@ jobs:
       - name: Extract review parameters
         id: extract
         if: github.event_name == 'issue_comment'
+        env:
+          COMMENT: ${{ github.event.comment.body }}
         run: |
-          COMMENT="${{ github.event.comment.body }}"
-
+          # Treat the comment as data and accept only complete review commands.
           # Match commit range
-          if [[ "$COMMENT" =~ \/bot-review:[[:space:]]*([a-f0-9]{7,40})[[:space:]]*\.\.[[:space:]]*([a-f0-9]{7,40}) ]]; then
-            echo "BASE_SHA=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
-            echo "HEAD_SHA=${BASH_REMATCH[2]}" >> $GITHUB_OUTPUT
-            echo "REVIEW_MODE=commit_range" >> $GITHUB_OUTPUT
+          if [[ "$COMMENT" =~ ^\/bot-review:[[:space:]]*([a-f0-9]{7,40})[[:space:]]*\.\.[[:space:]]*([a-f0-9]{7,40})[[:space:]]*$ ]]; then
+            printf 'BASE_SHA=%s\nHEAD_SHA=%s\nREVIEW_MODE=commit_range\n' "${BASH_REMATCH[1]}" "${BASH_REMATCH[2]}" >> "$GITHUB_OUTPUT"
             printf "Detected commit range with regex: %s..%s\\n" "${BASH_REMATCH[1]}" "${BASH_REMATCH[2]}"
 
           # Match a single commit
-          elif [[ "$COMMENT" =~ \/bot-review:[[:space:]]+([a-f0-9]{7,40}) ]]; then
-            echo "COMMIT_SHA=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
-            echo "REVIEW_MODE=single_commit" >> $GITHUB_OUTPUT
+          elif [[ "$COMMENT" =~ ^\/bot-review:[[:space:]]+([a-f0-9]{7,40})[[:space:]]*$ ]]; then
+            printf 'COMMIT_SHA=%s\nREVIEW_MODE=single_commit\n' "${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
             printf "Detected single commit: %s\\n" "${BASH_REMATCH[1]}"
 
           # Match "/bot-review" or "/bot-review "
           elif [[ "$COMMENT" =~ ^\/bot-review[[:space:]]*$ ]]; then
-            echo "REVIEW_MODE=latest" >> $GITHUB_OUTPUT
+            echo "REVIEW_MODE=latest" >> "$GITHUB_OUTPUT"
             echo "Detected default review mode"
 
           # Invalid format
           else
-            echo "REVIEW_MODE=invalid" >> $GITHUB_OUTPUT
+            echo "REVIEW_MODE=invalid" >> "$GITHUB_OUTPUT"
             echo "Invalid bot-review command format"
+            exit 1
           fi
 
           echo "Parameters output:"
-          cat $GITHUB_OUTPUT
+          cat "$GITHUB_OUTPUT"
 
       - name: AI Doc Reviewer
         uses: qiancai/ai-doc-reviewer@main
