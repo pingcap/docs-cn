@@ -146,6 +146,28 @@ tiup br restore full \
 --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
+**恢复到不同的库表名（实验特性）**
+
+从 TiDB v9.0.0 开始，你可以使用 `--rename` 在恢复时修改目标库表名，例如把整个 `test` 库恢复到 `test_restore` 库：
+
+```shell
+tiup br restore full \
+--pd "${PD_IP}:2379" \
+--rename 'test:test_restore' \
+--storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
+```
+
+也可以只把其中一张表改名，例如把 `test.usertable` 恢复到 `test.usertable_restore`：
+
+```shell
+tiup br restore full \
+--pd "${PD_IP}:2379" \
+--rename 'test.usertable:test.usertable_restore' \
+--storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
+```
+
+`--rename` 可以指定多个，且表级规则优先于库级规则。该功能目前为实验特性，不建议在生产环境中使用。详细说明和注意事项参见[恢复到不同的库表名](/br/br-snapshot-manual.md#恢复到不同的库表名)。
+
 ### 恢复 `mysql` 数据库下的表
 
 在使用快照备份功能备份集群时，BR 会将系统表备份为库名带有 `__TiDB_BR_Temporary_` 前缀的表。例如，`mysql.user` 表会被备份为 `__TiDB_BR_Temporary_mysql.user`。因此，在执行快照恢复时，BR 会首先恢复这些带有 `__TiDB_BR_Temporary_` 前缀的表，避免与目标集群中现有的系统表数据发生冲突。在恢复系统表时，BR 会通过 `REPLACE INTO` 语句将数据从带有 `__TiDB_BR_Temporary_` 前缀的表写入对应的系统表。

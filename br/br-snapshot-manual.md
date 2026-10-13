@@ -19,6 +19,7 @@ summary: 介绍备份与恢复 TiDB 集群快照的命令行。
     - [恢复单个数据库的数据](#恢复单个数据库的数据)
     - [恢复单张表的数据](#恢复单张表的数据)
     - [使用表库功能过滤恢复数据](#使用表库功能过滤恢复数据)
+    - [恢复到不同的库表名](#恢复到不同的库表名)
     - [恢复系统表中存储的执行计划绑定信息](#恢复系统表中存储的执行计划绑定信息)
 - [恢复加密的快照备份数据](#恢复加密的快照备份数据)
 - [校验和](#校验和)
@@ -231,7 +232,8 @@ tiup br restore db \
 
 > **注意：**
 >
-> 由于备份数据的元文件 `backupmeta` 记录了数据库名 `--db`，因此只能将数据恢复到同名的数据库，否则无法恢复成功。推荐把备份文件恢复到另一个集群的同名数据库中。
+> - 默认情况下，由于备份数据的元文件 `backupmeta` 记录了数据库名 `--db`，只能将数据恢复到同名的数据库，否则无法恢复成功。推荐把备份文件恢复到另一个集群的同名数据库中。
+> - 从 TiDB v9.0.0 开始，你可以通过 `--rename` 把数据恢复到不同名的数据库，例如 `--rename 'test:test_restore'`，该功能为实验特性，详情参见[恢复到不同的库表名](#恢复到不同的库表名)。
 
 ### 恢复单张表的数据
 
@@ -264,6 +266,61 @@ tiup br restore full \
     --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --log-file restorefull.log
 ```
+
+### 恢复到不同的库表名
+
+> **警告：**
+>
+> 该功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+从 TiDB v9.0.0 开始，你可以使用 `--rename` 把快照备份数据恢复到与备份时不同名的数据库或表。该功能适用于以下场景：
+
+- 把备份数据恢复到同一个集群，同时避免与已有库表重名。
+- 做数据对比或回归验证时，把生产备份恢复到测试集群的另一个库名下。
+
+`--rename` 支持库级和表级两种规则：
+
+- `源库名:目标库名`：把整个源库恢复到目标库。
+- `源库名.源表名:目标库名.目标表名`：把源库中的单张表恢复到目标库或同一库下的另一张表。
+
+规则中的源和目标必须同为库名或同为表名，否则 BR 会报错。如果库名或表名包含 `-` 等特殊字符，可以使用 MySQL 反引号包裹标识符。
+
+一条恢复命令中可以指定多个 `--rename`，也可以指定多组库级和表级规则。当同一个源对象同时匹配库级规则和表级规则时，表级规则优先。
+
+`--rename` 的库表名匹配不区分大小写，因此 `--rename 'a:b'` 和 `--rename 'A:c'` 会被判定为两条重复的源库规则。BR 会在恢复开始前校验重命名规则，以下情况会直接报错：
+
+- 两条库级规则指定了相同的源库，或两条表级规则指定了相同的源表。
+- 两条库级规则指定了相同的目标库，或两条表级规则指定了相同的目标表。
+- 多个源对象被路由到同一个目标对象。
+
+注意，多个恢复任务同时写入同一个目标库时，恢复 registry 会将其视为冲突，需要串行执行。
+
+以下示例把 `rename_source` 库整体恢复到 `restored_schema` 库，但其中的 `orders` 表单独恢复到 `archive.orders_backup`：
+
+```shell
+tiup br restore full \
+    --pd "${PD_IP}:2379" \
+    --rename 'rename_source:restored_schema' \
+    --rename 'table_source.orders:archive.orders_backup' \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
+    --log-file restorefull.log
+```
+
+恢复完成后，目标集群中会存在 `restored_schema` 库和 `archive.orders_backup` 表，不会创建原来的 `rename_source` 库和 `table_source.orders` 表。
+
+`--rename` 只改变目标库表名，不过滤数据。如果需要只恢复部分库表，请配合 `--filter` 使用。
+
+`--rename` 的使用限制如下：
+
+- 不支持 `br restore raw` 和 `br restore txn`。
+- 不支持增量快照恢复，即增量备份的数据无法通过 `--rename` 恢复到不同名的库表。
+- 不能与 `--no-schema` 同时使用。
+
+> **注意：**
+>
+> - 目标库表不能已存在数据，否则恢复会因为冲突而失败。
+> - 通过 `--rename` 新建的库，即使恢复过程中该库下的表都被路由到其他库，该库仍会保留。
+> - 增量备份的恢复不支持 `--rename`，详情参见[增量备份与恢复](/br/br-incremental-guide.md#使用限制)。
 
 ### 恢复系统表中存储的执行计划绑定信息
 

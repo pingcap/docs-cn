@@ -429,6 +429,7 @@ Flags:
   --pitr-batch-count uint32    specify the batch count to restore log. (default 8)
   --pitr-batch-size uint32     specify the batch size to retore log. (default 16777216)
   --pitr-concurrency uint32    specify the concurrency to restore log. (default 16)
+  --rename stringArray         rename an exact source schema or table during restore, in source:target form. Restores that write to the same target schema are treated as conflicting by the restore registry: run them serially and let each one finish before the next starts. A schema created for a rename is retained even if the restore ends up dropping every table in it
   --restored-ts string         the point of restore, used for log restore. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23+0800'
   --start-ts string            the start timestamp which log restore from. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23+0800'
 
@@ -554,6 +555,39 @@ tiup br restore point --pd="${PD_IP}:2379" \
 >     - 表 B (table id = 2) 在 `restored-ts` 前的某个时刻，表名不匹配 `--filter` 正则表达式，但在 `restored-ts` 时刻匹配，则 PITR 会恢复这张表。
 >     - 表 C (table id = 3) 在 `restored-ts` 前的某个时刻，表名匹配 `--filter` 正则表达式，但在 `restored-ts` 时刻**不**匹配，则 PITR **不会**恢复这张表。
 > - 你可以使用库表过滤功能在线恢复部分数据。在线恢复过程中，不要创建与恢复对象同名的库表，否则恢复任务会因冲突而失败。在该恢复过程中，由 PITR 创建的表都不可读写，直至恢复完成后，这些表才可正常读写。
+
+### 恢复到不同的库表名
+
+> **警告：**
+>
+> 该功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+从 TiDB v9.0.0 开始，PITR 支持在恢复时把备份数据中的库表映射到不同的目标库表名，规则和用法与[快照恢复的 `--rename`](/br/br-snapshot-manual.md#恢复到不同的库表名) 一致：
+
+- `源库名:目标库名`：把整个源库恢复到目标库。
+- `源库名.源表名:目标库名.目标表名`：把源库中的单张表恢复到目标库或同一库下的另一张表。
+- 一条命令中可以指定多个 `--rename`，且表级规则优先于库级规则。
+- 库表名匹配不区分大小写，重复的源、重复的目标以及多个源对象落到同一个目标都会在恢复开始前报错。
+
+以下示例把 `rename_source` 库恢复到 `restored_schema` 库，并把 `table_source.orders` 表单独恢复到 `archive.orders_backup`：
+
+```shell
+tiup br restore point \
+    --pd "${PD_IP}:2379" \
+    --storage 's3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+    --full-backup-storage 's3://backup-101/snapshot-202205120000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}' \
+    --restored-ts "${RESTORED_TS}" \
+    --rename 'rename_source:restored_schema' \
+    --rename 'table_source.orders:archive.orders_backup'
+```
+
+如果你的 PITR 流程包含多次恢复（例如先恢复到时间点 T1，之后只恢复 `[T1, T2)` 区间的日志），每次恢复都必须携带同一组 `--rename` 规则。BR 会把重命名规则记录到恢复 checkpoint 和 PITR ID Map 中，当后续恢复使用的规则与已记录的不一致时，会报错 `restore rename rules do not match the log restore checkpoint` 并中断恢复。
+
+> **注意：**
+>
+> - 如果后续的日志恢复没有携带 `--rename`，br 命令行工具会尝试写入备份中的原始库表名，导致恢复失败或数据落到错误的库表中。
+> - 目标库表不能已存在数据，且 `--rename` 不能与 `--no-schema` 同时使用。
+> - 通过 `--rename` 新建的库，即使恢复过程中该库下的表都被路由到其他库，该库仍会保留。
 
 ### 并发恢复操作
 
