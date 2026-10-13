@@ -59,7 +59,7 @@ summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在
     > **注意：**
     >
     > - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
-    > - TiDB 将不再支持 Ubuntu 16.04。强烈建议升级到 Ubuntu LTS 20.04 或更高版本。
+    > - TiDB 将不再支持 Ubuntu 16.04。为满足 TiDB 的操作系统兼容性要求，强烈建议使用 Ubuntu 20.04 LTS 或更高的 LTS 版本。
     > - CentOS Stream 8 已于 2024 年 5 月 31 日 [End of Builds](https://blog.centos.org/2023/04/end-dates-are-coming-for-centos-stream-8-and-centos-linux-7/)。
 
 + 对于以上两个表格中所列操作系统的 32 位版本，TiDB 在这些 32 位操作系统以及对应的 CPU 架构上**不保障**可编译、可构建以及可部署，或 TiDB 不主动适配这些 32 位的操作系统。
