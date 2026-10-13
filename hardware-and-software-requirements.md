@@ -59,7 +59,7 @@ summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在
     > **注意：**
     >
     > - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
-    > - Ubuntu 16.04 和 Ubuntu 18.04 不受支持。强烈建议使用 Ubuntu LTS 20.04 或更高版本。
+    > - TiDB 将不再支持 Ubuntu 16.04。强烈建议使用 Ubuntu LTS 20.04 或更高版本。
     > - CentOS Stream 8 已于 2024 年 5 月 31 日 [End of Builds](https://blog.centos.org/2023/04/end-dates-are-coming-for-centos-stream-8-and-centos-linux-7/)。
 
 + 对于以上两个表格中所列操作系统的 32 位版本，TiDB 在这些 32 位操作系统以及对应的 CPU 架构上**不保障**可编译、可构建以及可部署，或 TiDB 不主动适配这些 32 位的操作系统。
@@ -75,7 +75,11 @@ summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在
 |  GCC      |   7.x      |
 |  LLVM     |  17.0 及以上版本  |
 
-运行 TiDB 所需的依赖库：glibc（TiDB v8.5.0 需要 2.28-151.el8 或更高版本；TiDB v8.5.1 及后续 v8.5 版本需要 2.17 或更高版本）
+运行时所需的依赖库：glibc（2.28-151.el8 版本）
+
+> **注意：**
+>
+> 对于 TiDB v8.5.1 及之后的 v8.5.x 版本，如果你仍在使用 CentOS Linux 7，TiDB 也支持 glibc 2.17。
 
 ### Docker 镜像依赖
 
@@ -180,7 +184,7 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 | TiKV |  20180 | TiKV 状态信息上报通信端口 |
 | PD | 2379 | 提供 TiDB 和 PD 通信端口 |
 | PD | 2380 | PD 集群节点间通信端口 |
-|TiFlash|9000|TiFlash TCP 服务端口（从 v7.1.0 开始，TiUP 部署默认关闭；不建议配置）|
+|TiFlash|9000|TiFlash TCP 服务端口（TiFlash v7.1.0 及以上版本由 TiUP v1.12.5 及以上版本部署时默认关闭；不建议配置）|
 |TiFlash|3930|TiFlash RAFT 服务和 Coprocessor 服务端口|
 |TiFlash|20170|TiFlash Proxy 服务端口|
 |TiFlash|20292|Prometheus 拉取 TiFlash Proxy metrics 端口|
