@@ -64,7 +64,7 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 
 > **注意：**
 >
-> 针对 MySQL Sink 的 Changefeed，除了满足上述任一条件，表还需要满足**有且仅有一个主键或非空唯一键**，才可以被 TiCDC 拆分并分发，以保证表级任务拆分模式下数据同步的正确性。
+> 针对 MySQL Sink 的 Changefeed，除了满足上述任一条件，表还需要满足含有[**聚簇索引**](https://docs.pingcap.com/zh/tidb/stable/clustered-indexes/#%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95)，才可以被 TiCDC 拆分并分发，以保证表级任务拆分模式下数据同步的正确性。
 
 ### 表级任务拆分配置建议
 
