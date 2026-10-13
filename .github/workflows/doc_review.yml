@@ -20,7 +20,7 @@ jobs:
       (
         github.event_name == 'issue_comment' &&
         contains(github.event.comment.body, '/bot-review') &&
-        (github.event.comment.user.login == 'hfxsd' || github.event.comment.user.login == 'likidu' || github.event.comment.user.login == 'lilin90' || github.event.comment.user.login == 'Oreoxmt' || github.event.comment.user.login == 'qiancai')
+        (github.event.comment.user.login == 'lilin90' || github.event.comment.user.login == 'qiancai' || github.event.comment.user.login == 'seominjea1942')
       )
     steps:
 
