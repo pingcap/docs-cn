@@ -75,7 +75,7 @@
       - [create-db-sql-users](/ai/ti/reference/ti-db-create-db-sql-users.md)
       - [format-db-connection-string](/ai/ti/reference/ti-db-format-db-connection-string.md)
       - [execute-sql-statement](/ai/ti/reference/ti-db-execute-sql-statement.md)
-    - 用于管理 TiDB Cloud Filesystem 中文件系统的 `ti fs` 命令
+    - `ti fs` 命令（管理 TiDB Cloud Filesystem 中的文件系统）
       - [概览](/ai/ti/reference/ti-filesystem.md)
       - [create-file-system](/ai/ti/reference/ti-fs-create-file-system.md)
       - [import-file-system-token](/ai/ti/reference/ti-fs-import-file-system-token.md)
@@ -121,20 +121,20 @@
       - [mount-file-system](/ai/ti/reference/ti-fs-mount-file-system.md)
       - [drain-file-system](/ai/ti/reference/ti-fs-drain-file-system.md)
       - [unmount-file-system](/ai/ti/reference/ti-fs-unmount-file-system.md)
-    - 用于管理文件系统 Git 工作区的 `ti fs-git` 命令
+    - `ti fs-git` 命令（管理文件系统 Git 工作区）
       - [概览](/ai/ti/reference/ti-filesystem-git.md)
       - [clone-git-workspace](/ai/ti/reference/ti-fs-git-clone-git-workspace.md)
       - [hydrate-git-workspace](/ai/ti/reference/ti-fs-git-hydrate-git-workspace.md)
       - [add-git-worktree](/ai/ti/reference/ti-fs-git-add-git-worktree.md)
       - [remove-git-worktree](/ai/ti/reference/ti-fs-git-remove-git-worktree.md)
-    - 用于管理文件系统日志（Journal）的 `ti fs-journal` 命令
+    - `ti fs-journal` 命令（管理文件系统日志 (Journal)）
       - [概览](/ai/ti/reference/ti-filesystem-journal.md)
       - [create-journal](/ai/ti/reference/ti-fs-journal-create-journal.md)
       - [append-journal-entries](/ai/ti/reference/ti-fs-journal-append-journal-entries.md)
       - [read-journal-entries](/ai/ti/reference/ti-fs-journal-read-journal-entries.md)
       - [search-journal-entries](/ai/ti/reference/ti-fs-journal-search-journal-entries.md)
       - [verify-journal](/ai/ti/reference/ti-fs-journal-verify-journal.md)
-    - 用于管理文件系统 Vault Secret 的 `ti fs-vault` 命令
+    - `ti fs-vault` 命令（管理文件系统 Vault Secret）
       - [概览](/ai/ti/reference/ti-filesystem-vault.md)
       - [create-secret](/ai/ti/reference/ti-fs-vault-create-secret.md)
       - [replace-secret](/ai/ti/reference/ti-fs-vault-replace-secret.md)
