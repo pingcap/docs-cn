@@ -5,7 +5,7 @@ summary: 参考支持的区域、认证边界、安全最佳实践以及当前 T
 
 # TiDB Cloud CLI 区域、安全性与限制
 
-本文档介绍 TiDB Cloud CLI 当前的区域、认证、平台和预览边界。有关文件系统区域和限制，请参见 [TiDB Cloud Filesystem 区域和限制](/tidb-cloud-filesystem/filesystem-regions-and-limitations.md)。
+本文档介绍 TiDB Cloud CLI 当前的区域、认证、平台和预览边界。有关文件系统区域和限制，请参见 [TiDB Cloud Filesystem 区域和限制](https://docs.pingcap.com/tidbcloud-filesystem/filesystem-regions-and-limitations/)。
 
 > **注意：**
 >
@@ -55,7 +55,7 @@ TiDB Cloud API 调用使用 Digest 认证。SQL HTTPS 执行使用通过 TLS 传
 - 在执行破坏性的控制平面操作前，先使用 `--dry-run`。确保 `~/.ti/credentials`、资源凭证和 DB SQL 凭证仅对所有者可读。
 - 在共享诊断信息前，请先检查本地操作日志。日志不包含 SQL 文本、路径、payload 和凭证值，但命令名称、（命令行）标记/参数名称、配置（Profile）和区域元信息、状态码以及操作时序信息仍可能是敏感信息。
 
-有关 Filesystem 访问令牌、挂载、Vault 和 AI provider 安全性的更多信息，请参见 [Authorization](/tidb-cloud-filesystem/filesystem-authorization.md)、[管理 Filesystem 访问令牌](/tidb-cloud-filesystem/manage-filesystem-tokens.md) 和 [为 Filesystem 配置 AI Providers](/tidb-cloud-filesystem/configure-filesystem-ai-providers.md)。
+有关 Filesystem 访问令牌、挂载、Vault 和 AI provider 安全性的更多信息，请参见 [Authorization](https://docs.pingcap.com/tidbcloud-filesystem/filesystem-authorization/)、[管理 Filesystem 访问令牌](https://docs.pingcap.com/tidbcloud-filesystem/manage-filesystem-tokens/) 和 [为 Filesystem 配置 AI Providers](https://docs.pingcap.com/tidbcloud-filesystem/configure-filesystem-ai-providers/)。
 
 ## 产品限制 {#product-limitations}
 
@@ -67,6 +67,6 @@ TiDB Cloud API 调用使用 Digest 认证。SQL HTTPS 执行使用通过 TLS 传
 
 ## 相关文档 {#related-documentation}
 
-- [TiDB Cloud Filesystem 区域和限制](/tidb-cloud-filesystem/filesystem-regions-and-limitations.md)
+- [TiDB Cloud Filesystem 区域和限制](https://docs.pingcap.com/tidbcloud-filesystem/filesystem-regions-and-limitations/)
 - [TiDB Cloud CLI 配置与凭证](/ai/ti/reference/ti-configuration-and-credentials.md)
 - [排查 TiDB Cloud CLI 故障](/ai/ti/reference/ti-troubleshooting.md)

@@ -18,5 +18,5 @@ summary: 参考所有 `ti fs-git` 命令，用于克隆、hydrate 和管理链�
 
 ## 另请参阅 {#see-also}
 
-- [在 TiDB Cloud Filesystem 上管理 Git 工作区](/tidb-cloud-filesystem/manage-git-workspaces.md)
+- [在 TiDB Cloud Filesystem 上管理 Git 工作区](https://docs.pingcap.com/tidbcloud-filesystem/manage-git-workspaces/)
 - [在 TiDB Cloud Filesystem 上为 Agents 准备 Git 工作区](/ai/ti/guides/ti-git-workspace-for-agents-example.md)

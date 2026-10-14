@@ -64,7 +64,7 @@ ti fs mount-file-system
 - `--read-cache-size-mb <int64>`：FUSE 读缓存大小，单位为 MiB。0 表示使用默认值。\[default: 128]
 - `--read-cache-ttl <duration>`：FUSE 读缓存生存时间。\[default: `30s`]
 - `--read-only`：只读挂载模式。需要 FUSE；WebDAV 不接受此选项。请显式使用 `--driver fuse`，或使用范围受限令牌在服务级别强制执行只读访问。
-- `--ready-timeout <duration>`：等待后台挂载就绪的时间。这是启动超时，而不是后续文件读写的超时。[挂载后验证文件 I/O](/tidb-cloud-filesystem/filesystem-mount.md#verify-a-mount-before-using-it)。\[default: `30s`]
+- `--ready-timeout <duration>`：等待后台挂载就绪的时间。这是启动超时，而不是后续文件读写的超时。[挂载后验证文件 I/O](https://docs.pingcap.com/tidbcloud-filesystem/filesystem-mount/#verify-a-mount-before-using-it)。\[default: `30s`]
 - `--remote-path <string>`：要挂载的文件系统根路径。\[default: /]
 - `--unpack-archive-path <string>`：在挂载前恢复打包归档。
 - `--version`：显示版本信息。

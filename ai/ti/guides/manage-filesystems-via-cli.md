@@ -24,7 +24,7 @@ echo "Hello from my workspace" | ti fs copy-file --file-system-id "<file-system-
 ti fs read-file --file-system-id "<file-system-id>" --path /hello.txt
 ```
 
-读取操作会返回 `Hello from my workspace`。有关受支持的 Region、详细设置步骤以及清理说明，请参阅[TiDB Cloud Filesystem 快速上手](/tidb-cloud-filesystem/filesystem-quick-start.md)。
+读取操作会返回 `Hello from my workspace`。有关受支持的 Region、详细设置步骤以及清理说明，请参阅[TiDB Cloud Filesystem 快速上手](https://docs.pingcap.com/tidbcloud-filesystem/filesystem-quick-start/)。
 
 ## 更多文件系统任务 {#more-file-system-tasks}
 
@@ -32,15 +32,15 @@ ti fs read-file --file-system-id "<file-system-id>" --path /hello.txt
 
 | 你想执行的操作 | 指南 |
 | --- | --- |
-| 从另一台机器、CI 作业或代理环境访问现有文件系统 | [访问现有文件系统](/tidb-cloud-filesystem/access-filesystem.md) |
-| 上传、下载、读取、整理、检查或搜索文件和目录 | [使用文件和目录](/tidb-cloud-filesystem/work-with-filesystem-data.md) |
-| 生成、导入、设置作用域、检查、禁用、刷新或回收访问令牌 | [管理文件系统令牌](/tidb-cloud-filesystem/manage-filesystem-tokens.md) |
-| 与其他用户、机器、CI 作业或代理共享文件系统中的文件 | [共享文件系统](/tidb-cloud-filesystem/filesystem-sharing.md) |
-| 通过本地文件路径访问文件系统中的文件 | [挂载文件系统](/tidb-cloud-filesystem/filesystem-mount.md) |
-| 使用 layer 和 checkpoint 隔离变更 | [管理文件系统 layer 和 checkpoint](/tidb-cloud-filesystem/manage-filesystem-layers.md) |
-| 在已挂载的文件系统上使用 Git 仓库 | [管理 Git 工作区](/tidb-cloud-filesystem/manage-git-workspaces.md) |
-| 记录并验证有序的工作流事件 | [在文件系统中使用日志（Journal）](/tidb-cloud-filesystem/use-filesystem-journals.md) |
-| 存储、委派、注入、审计和回收 Secret | [管理文件系统的 Vault Secret](/tidb-cloud-filesystem/manage-filesystem-vault-secrets.md) |
-| 为媒体内容提取或语义搜索配置 AI 提供方 | [为文件系统配置 AI 提供方](/tidb-cloud-filesystem/configure-filesystem-ai-providers.md) |
+| 从另一台机器、CI 作业或代理环境访问现有文件系统 | [访问现有文件系统](https://docs.pingcap.com/tidbcloud-filesystem/access-filesystem/) |
+| 上传、下载、读取、整理、检查或搜索文件和目录 | [使用文件和目录](https://docs.pingcap.com/tidbcloud-filesystem/work-with-filesystem-data/) |
+| 生成、导入、设置作用域、检查、禁用、刷新或回收访问令牌 | [管理文件系统令牌](https://docs.pingcap.com/tidbcloud-filesystem/manage-filesystem-tokens/) |
+| 与其他用户、机器、CI 作业或代理共享文件系统中的文件 | [共享文件系统](https://docs.pingcap.com/tidbcloud-filesystem/filesystem-sharing/) |
+| 通过本地文件路径访问文件系统中的文件 | [挂载文件系统](https://docs.pingcap.com/tidbcloud-filesystem/filesystem-mount/) |
+| 使用 layer 和 checkpoint 隔离变更 | [管理文件系统 layer 和 checkpoint](https://docs.pingcap.com/tidbcloud-filesystem/manage-filesystem-layers/) |
+| 在已挂载的文件系统上使用 Git 仓库 | [管理 Git 工作区](https://docs.pingcap.com/tidbcloud-filesystem/manage-git-workspaces/) |
+| 记录并验证有序的工作流事件 | [在文件系统中使用日志（Journal）](https://docs.pingcap.com/tidbcloud-filesystem/use-filesystem-journals/) |
+| 存储、委派、注入、审计和回收 Secret | [管理文件系统的 Vault Secret](https://docs.pingcap.com/tidbcloud-filesystem/manage-filesystem-vault-secrets/) |
+| 为媒体内容提取或语义搜索配置 AI 提供方 | [为文件系统配置 AI 提供方](https://docs.pingcap.com/tidbcloud-filesystem/configure-filesystem-ai-providers/) |
 
 有关语法、（命令行）标记/参数和输出字段，请参阅[`ti fs` 命令参考](/ai/ti/reference/ti-filesystem.md)。

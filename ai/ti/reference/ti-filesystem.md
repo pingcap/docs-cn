@@ -124,12 +124,12 @@ summary: 参考所有用于文件系统资源、文件、层、打包和挂载�
 
 ## 另请参阅 {#see-also}
 
-- [管理文件系统](/tidb-cloud-filesystem/manage-filesystem-resources.md)
-- [为文件系统配置 AI 提供方](/tidb-cloud-filesystem/configure-filesystem-ai-providers.md)
-- [管理文件系统令牌](/tidb-cloud-filesystem/manage-filesystem-tokens.md)
-- [使用文件和目录](/tidb-cloud-filesystem/work-with-filesystem-data.md)
-- [管理文件系统层和检查点](/tidb-cloud-filesystem/manage-filesystem-layers.md)
-- [挂载文件系统](/tidb-cloud-filesystem/filesystem-mount.md)
-- [在 TiDB Cloud Filesystem 上管理 Git 工作区](/tidb-cloud-filesystem/manage-git-workspaces.md)
-- [在文件系统中使用日志（Journal）](/tidb-cloud-filesystem/use-filesystem-journals.md)
-- [管理文件系统的 Vault Secrets](/tidb-cloud-filesystem/manage-filesystem-vault-secrets.md)
+- [管理文件系统](https://docs.pingcap.com/tidbcloud-filesystem/manage-filesystem-resources/)
+- [为文件系统配置 AI 提供方](https://docs.pingcap.com/tidbcloud-filesystem/configure-filesystem-ai-providers/)
+- [管理文件系统令牌](https://docs.pingcap.com/tidbcloud-filesystem/manage-filesystem-tokens/)
+- [使用文件和目录](https://docs.pingcap.com/tidbcloud-filesystem/work-with-filesystem-data/)
+- [管理文件系统层和检查点](https://docs.pingcap.com/tidbcloud-filesystem/manage-filesystem-layers/)
+- [挂载文件系统](https://docs.pingcap.com/tidbcloud-filesystem/filesystem-mount/)
+- [在 TiDB Cloud Filesystem 上管理 Git 工作区](https://docs.pingcap.com/tidbcloud-filesystem/manage-git-workspaces/)
+- [在文件系统中使用日志（Journal）](https://docs.pingcap.com/tidbcloud-filesystem/use-filesystem-journals/)
+- [管理文件系统的 Vault Secrets](https://docs.pingcap.com/tidbcloud-filesystem/manage-filesystem-vault-secrets/)

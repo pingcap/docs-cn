@@ -73,7 +73,7 @@ ti fs-git add-git-worktree \
 git -C /path/to/workspace/tidb-agent-task status
 ```
 
-在移除工作树之前，请先提交所需的更改。在丢弃机器之前，请通过推送或经验证的本地 Git 元信息备份来[保留并验证 Git 历史记录](/tidb-cloud-filesystem/manage-git-workspaces.md#preserve-work-before-leaving-a-machine)。
+在移除工作树之前，请先提交所需的更改。在丢弃机器之前，请通过推送或经验证的本地 Git 元信息备份来[保留并验证 Git 历史记录](https://docs.pingcap.com/tidbcloud-filesystem/manage-git-workspaces/#preserve-work-before-leaving-a-machine)。
 
 ## 清理 {#cleanup}
 

@@ -125,7 +125,7 @@ TiDB Cloud Filesystem 是一种持久化、可共享的云文件系统，可用�
 
     > **Tip:**
     >
-    > 为了简化起见，本快速上手使用创建文件系统时返回的所有者令牌。为了实现最小权限访问，你可以生成范围受限令牌，以将访问限制为特定路径和操作。更多信息，请参见 [Manage File System Tokens](/tidb-cloud-filesystem/manage-filesystem-tokens.md)。
+    > 为了简化起见，本快速上手使用创建文件系统时返回的所有者令牌。为了实现最小权限访问，你可以生成范围受限令牌，以将访问限制为特定路径和操作。更多信息，请参见 [Manage File System Tokens](https://docs.pingcap.com/tidbcloud-filesystem/manage-filesystem-tokens/)。
 
 2. 在你要使用该文件系统的环境中，将上一步中的所有者令牌设置为 `TI_FS_TOKEN`，然后按如下方式将文件系统挂载到本地路径。该环境可以是你创建文件系统时所在的同一台机器、另一台机器，或 AI agent sandbox。
 
@@ -187,6 +187,6 @@ TiDB Cloud Filesystem 是一种持久化、可共享的云文件系统，可用�
 ## 后续步骤 {#what-s-next}
 
 - 阅读[TiDB Cloud 命令行接口概览](/ai/ti/ti-overview.md)，了解 `ti` 管理哪些资源以及何时使用它。
-- 按照任务指南管理 [TiDB Cloud Starter](https://docs.pingcap.com/tidbcloud/select-cluster-tier/?plan=starter#starter) 或 [TiDB Cloud Filesystem](/tidb-cloud-filesystem/manage-filesystem-resources.md)。
+- 按照任务指南管理 [TiDB Cloud Starter](https://docs.pingcap.com/tidbcloud/select-cluster-tier/?plan=starter#starter) 或 [TiDB Cloud Filesystem](https://docs.pingcap.com/tidbcloud-filesystem/manage-filesystem-resources/)。
 - 查阅 [TiDB Cloud CLI 命令参考](/ai/ti/reference/ti-cli-reference.md)，了解命令组、全局选项和 CLI 的共享行为。
 - 了解 [TiDB Cloud CLI 配置与凭证](/ai/ti/reference/ti-configuration-and-credentials.md)，以设置多个配置（Profile）或非交互式身份验证。

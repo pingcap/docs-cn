@@ -5,7 +5,7 @@ summary: 了解如何安全地诊断 TiDB Cloud CLI API 身份验证、Starter �
 
 # 排查 TiDB Cloud CLI
 
-使用本文档排查 CLI 身份验证、Starter、SQL 以及命令中断相关故障。有关文件系统令牌、Region、配套进程和挂载的问题，请参见 [排查 TiDB Cloud Filesystem](/tidb-cloud-filesystem/filesystem-troubleshooting.md)。仅在需要时添加 `--debug`；在分享脱敏输出前仍应先自行检查。
+使用本文档排查 CLI 身份验证、Starter、SQL 以及命令中断相关故障。有关文件系统令牌、Region、配套进程和挂载的问题，请参见 [排查 TiDB Cloud Filesystem](https://docs.pingcap.com/tidbcloud-filesystem/filesystem-troubleshooting/)。仅在需要时添加 `--debug`；在分享脱敏输出前仍应先自行检查。
 
 > **注意：**
 >

@@ -79,7 +79,7 @@ ti fs mount-file-system \
 cat "$HOME/workspace/sandbox/status.txt"
 ```
 
-在 macOS 上，省略 `--driver fuse` 以使用 WebDAV，这不需要安装 FUSE。当你需要 Git 工作区、layer 或在线刷写等 FUSE 特有能力时，请安装 macFUSE 并选择 FUSE。有关平台要求和挂载路径限制，请参见[挂载文件系统](/tidb-cloud-filesystem/filesystem-mount.md)。
+在 macOS 上，省略 `--driver fuse` 以使用 WebDAV，这不需要安装 FUSE。当你需要 Git 工作区、layer 或在线刷写等 FUSE 特有能力时，请安装 macFUSE 并选择 FUSE。有关平台要求和挂载路径限制，请参见[挂载文件系统](https://docs.pingcap.com/tidbcloud-filesystem/filesystem-mount/)。
 
 挂载后，你可以在相同的 FS 环境中使用 `ti fs-git`、`ti fs-journal` 和由所有者授予权限的 `ti fs-vault` 命令。当 agent 只需要部分选定的 Secret 字段时，请向其提供委派的 `TI_VAULT_TOKEN`，而不是所有者令牌。
 
@@ -91,7 +91,7 @@ cat "$HOME/workspace/sandbox/status.txt"
 ti fs unmount-file-system --mount-path "$HOME/workspace"
 ```
 
-对于 FUSE 挂载，当你需要在保持挂载在线的同时验证远端持久性时，请单独使用 `ti fs drain-file-system --mount-path "$HOME/workspace"`。WebDAV 不支持 `drain-file-system`。更多信息，请参见[安全结束](/tidb-cloud-filesystem/filesystem-mount.md#finish-safely)。然后回到受信任的机器上：
+对于 FUSE 挂载，当你需要在保持挂载在线的同时验证远端持久性时，请单独使用 `ti fs drain-file-system --mount-path "$HOME/workspace"`。WebDAV 不支持 `drain-file-system`。更多信息，请参见[安全结束](https://docs.pingcap.com/tidbcloud-filesystem/filesystem-mount/#finish-safely)。然后回到受信任的机器上：
 
 ```bash
 ti fs delete-file-system \

@@ -17,7 +17,7 @@ summary: 将构建输出持久化到 TiDB Cloud Filesystem，并在后续的 CI 
 
 ## 前提条件 {#prerequisites}
 
-在一台受信任的机器上[创建一个文件系统](/tidb-cloud-filesystem/manage-filesystem-resources.md#create-a-file-system)，并将以下值保存为受保护的 CI Secret 或变量：
+在一台受信任的机器上[创建一个文件系统](https://docs.pingcap.com/tidbcloud-filesystem/manage-filesystem-resources/#create-a-file-system)，并将以下值保存为受保护的 CI Secret 或变量：
 
 ```text
 TI_FS_TOKEN

@@ -171,7 +171,7 @@ ti update --dry-run
 > ti fs unmount-file-system --mount-path <mount-path>
 > ```
 >
-> 对于 Vault 挂载，请使用 `ti fs-vault unmount-vault --mount-path <mount-path>`。详情请参见[挂载文件系统](/tidb-cloud-filesystem/filesystem-mount.md)和[管理文件系统的 Vault Secret](/tidb-cloud-filesystem/manage-filesystem-vault-secrets.md)。
+> 对于 Vault 挂载，请使用 `ti fs-vault unmount-vault --mount-path <mount-path>`。详情请参见[挂载文件系统](https://docs.pingcap.com/tidbcloud-filesystem/filesystem-mount/)和[管理文件系统的 Vault Secret](https://docs.pingcap.com/tidbcloud-filesystem/manage-filesystem-vault-secrets/)。
 
 应用最新更新：
 
@@ -209,7 +209,7 @@ ti fs unmount-file-system --mount-path <filesystem-mount-path>
 ti fs-vault unmount-vault --mount-path <vault-mount-path>
 ```
 
-详情请参阅[挂载文件系统](/tidb-cloud-filesystem/filesystem-mount.md)和[管理文件系统的 Vault Secret](/tidb-cloud-filesystem/manage-filesystem-vault-secrets.md)。
+详情请参阅[挂载文件系统](https://docs.pingcap.com/tidbcloud-filesystem/filesystem-mount/)和[管理文件系统的 Vault Secret](https://docs.pingcap.com/tidbcloud-filesystem/manage-filesystem-vault-secrets/)。
 
 <SimpleTab groupId="operating-systems">
 
