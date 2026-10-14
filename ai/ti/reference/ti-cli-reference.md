@@ -52,10 +52,10 @@ ti db describe-db-cluster
 | `configure` | 配置本地配置（Profile）、API key 和默认 Region。 | [`ti configure`](/ai/ti/reference/ti-configure.md) |
 | `update` | 检查并安装 TiDB Cloud CLI 更新。 | [`ti update`](/ai/ti/reference/ti-update.md) |
 | `db` | 管理 TiDB Cloud Starter 实例、分支、SQL 用户、连接和 SQL 语句。 | [`ti db` 命令](/ai/ti/reference/ti-starter-database.md) |
-| `fs` | 管理 Filesystem 资源、AI provider、token、数据、层和挂载。 | [`ti fs` 命令](/ai/ti/reference/ti-filesystem.md) |
-| `fs-git` | 管理已挂载 Filesystem 上的 Git workspace。 | [`ti fs-git` 命令](/ai/ti/reference/ti-filesystem-git.md) |
-| `fs-journal` | 管理可验证的 Filesystem 日志（Journal）。 | [`ti fs-journal` 命令](/ai/ti/reference/ti-filesystem-journal.md) |
-| `fs-vault` | 管理 Filesystem Vault Secret 和委托访问。 | [`ti fs-vault` 命令](/ai/ti/reference/ti-filesystem-vault.md) |
+| `fs` | 管理文件系统资源、AI provider、token、数据、层和挂载。 | [`ti fs` 命令](/ai/ti/reference/ti-filesystem.md) |
+| `fs-git` | 管理已挂载文件系统上的 Git workspace。 | [`ti fs-git` 命令](/ai/ti/reference/ti-filesystem-git.md) |
+| `fs-journal` | 管理可验证的文件系统日志（Journal）。 | [`ti fs-journal` 命令](/ai/ti/reference/ti-filesystem-journal.md) |
+| `fs-vault` | 管理文件系统 Vault Secret 和委托访问。 | [`ti fs-vault` 命令](/ai/ti/reference/ti-filesystem-vault.md) |
 
 要在终端中列出可用命令，请运行 `ti help` 或 `ti <command-group> help`。
 
@@ -148,7 +148,7 @@ ti [ERROR]: <message>
 
 错误会写入 stderr，成功的命令输出会写入 stdout。用法和配置失败会在远程变异发生之前返回非零退出码。运行时和远程 API 失败也会返回非零退出码。交互式配置被中断时会返回退出码 `130`。
 
-`--debug` 可以显示已脱敏的请求和解析上下文。它不得显示 API key、FS token、DB 密码、SQL 文本、文件内容或连接字符串。
+`--debug` 可以显示已脱敏的请求和解析上下文。它不得显示 API key、文件系统 token、DB 密码、SQL 文本、文件内容或连接字符串。
 
 ## 相关文档 {#related-documentation}
 

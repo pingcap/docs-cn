@@ -47,10 +47,10 @@ ti fs generate-file-system-scoped-token
 
 - `--ttl <duration>`：设置一个有限的正令牌有效期，并解析为整秒。此选项为必需项。
 - `--allow <prefix:ops>`：允许在一个远程路径前缀下执行操作。对多个前缀可重复使用此选项。操作包括 `read`、`list`、`search`、`write` 和 `delete`；其中 `search` 需要 `read`。此选项为必需项。
-- `--file-system-id <string>`：校验嵌入在所有者令牌中的 Filesystem ID。仅当加载本地存储的所有者令牌时，此选项才是必需的。
-- `--fs-token <string>`：提供所有者 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。
+- `--file-system-id <string>`：校验嵌入在所有者令牌中的文件系统 ID。仅当加载本地存储的所有者令牌时，此选项才是必需的。
+- `--fs-token <string>`：提供文件系统所有者令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统本地存储的令牌。
 - `--subject <string>`：设置一个可选的服务端审计标签，最大长度为 64 字节。它不是唯一选择器。
-- `--store-locally`：为此配置（Profile）和 Filesystem 存储并选中生成的范围受限令牌。
+- `--store-locally`：为此配置（Profile）和文件系统存储并选中生成的范围受限令牌。
 - `--replace`：替换当前已选中的本地令牌。需要与 `--store-locally` 一起使用，且不会（权限）回收之前的远程令牌。
 - `--dry-run`：在不生成令牌的情况下，校验所有者凭证、Region、有效期、作用域以及本地存储前置条件。
 - `--help`：显示帮助信息。

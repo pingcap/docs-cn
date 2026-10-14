@@ -1,6 +1,6 @@
 ---
 title: ti fs pack-file-system
-summary: 打包本地 Filesystem 叠加层状态。
+summary: 打包本地文件系统叠加层状态。
 ---
 
 # ti fs pack-file-system
@@ -33,13 +33,13 @@ ti fs pack-file-system
 - `--archive-path <string>`：打包后归档的路径。
 - `--dry-run`：验证请求而不应用更改。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--local-root <string>`：包含叠加层目录的本地叠加层根路径。
 - `--mount-path <string>`：本地挂载路径。
 - `--mount-profile <string>`：选择一个[挂载预设](/ai/ti/reference/ti-filesystem.md#mount-profiles-and-local-overlays)：`coding-agent`、`portable` 或 `none`。如果省略，则使用 `none`。
 - `--path <string>`：用于打包的本地叠加层路径；可重复指定。
-- `--remote-root <string>`：由本地叠加层表示的 TiDB Cloud 文件系统根路径。\[default: /]
+- `--remote-root <string>`：由本地叠加层表示的文件系统根路径。\[default: /]
 - `--version`：显示版本信息。
 
 有关所有命令共享的选项，请参见[全局选项](/ai/ti/reference/ti-cli-reference.md#global-options)。

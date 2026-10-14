@@ -1,6 +1,6 @@
 ---
 title: ti fs unmount-file-system
-summary: 卸载一个 TiDB Cloud Filesystem。
+summary: 卸载一个文件系统。
 ---
 
 # ti fs unmount-file-system
@@ -42,10 +42,10 @@ ti fs unmount-file-system
 
 ## 示例 {#examples}
 
-- 卸载一个 Filesystem：
+- 卸载一个文件系统：
 
     ```bash
-    # Gracefully flush pending writes and detach the Filesystem mount.
+    # Gracefully flush pending writes and detach the file system mount.
     ti fs unmount-file-system --mount-path /path/to/workspace
     ```
 

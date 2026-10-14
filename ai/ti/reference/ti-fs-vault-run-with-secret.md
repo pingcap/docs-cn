@@ -1,6 +1,6 @@
 ---
 title: ti fs-vault run-with-secret
-summary: 使用 Filesystem Vault Secret 运行一个进程。
+summary: 使用 file system Vault Secret 运行一个进程。
 ---
 
 # ti fs-vault run-with-secret
@@ -30,7 +30,7 @@ ti fs-vault run-with-secret
 
 - `--secret-path <string>`: `/n/vault/<secret-name>` 形式的规范 Vault 路径。例如，创建为 `db-prod` 的 Secret 路径为 `/n/vault/db-prod`。\[required]
 - `--file-system-id <string>`: 选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`: 设置所有者 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。对于委托认证，请改用 `--vault-token` 或 `TI_VAULT_TOKEN`。
+- `--fs-token <string>`: 设置文件系统所有者令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 文件系统 本地存储的令牌。对于委托认证，请改用 `--vault-token` 或 `TI_VAULT_TOKEN`。
 - `--help`: 显示帮助信息。
 - `--vault-token <string>`: 委托的 `ti fs-vault` 令牌；优先使用 `TI_VAULT_TOKEN`。
 - `--version`: 显示版本信息。

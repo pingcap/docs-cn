@@ -1,11 +1,11 @@
 ---
 title: ti fs create-layer
-summary: 在 TiDB Cloud Filesystem 中创建一个 layer。
+summary: 在文件系统中创建一个 layer。
 ---
 
 # ti fs create-layer
 
-创建一个 layer，用于在 Filesystem 基础路径之上记录隔离的变更。如果省略 `--layer-id`，则由服务生成一个。
+创建一个 layer，用于在文件系统基础路径之上记录隔离的变更。如果省略 `--layer-id`，则由服务生成一个。
 
 > **Note:**
 >
@@ -30,12 +30,12 @@ ti fs create-layer
 
 ## 选项 {#options}
 
-- `--base-root-path <string>`: TiDB Cloud 文件系统中的基础根路径。\[必需]
+- `--base-root-path <string>`: 文件系统中的基础根路径。\[必需]
 - `--actor-id <string>`: 用于标识 layer 所有者的 Actor ID（例如 agent 名称）。
 - `--dry-run`: 验证请求但不应用更改。
 - `--durability-mode <string>`: 设置 layer 的持久性模式。唯一明确支持的值是 `restore-safe`，它会将变更保存在远程 layer 中，以便在本地环境结束后仍可恢复该 layer。如果省略，服务将使用 `restore-safe`。
 - `--file-system-id <string>`: 选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`: 设置 Filesystem 访问令牌。如果省略，该命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，该命令会使用为所选 Filesystem 在本地存储的令牌。
+- `--fs-token <string>`: 设置文件系统访问令牌。如果省略，该命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，该命令会使用为所选 文件系统 在本地存储的令牌。
 - `--help`: 显示帮助信息。
 - `--layer-id <string>`: layer ID。通常由服务自动生成。
 - `--layer-name <string>`: layer 的名称。

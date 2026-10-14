@@ -1,6 +1,6 @@
 ---
 title: 运行日常 TiDB Cloud CLI 工作流
-summary: 检查资源、管理 TiDB Cloud Starter 实例和 Filesystem、检查 TiDB Cloud CLI 更新并清理资源。
+summary: 检查资源、管理 TiDB Cloud Starter 实例和文件系统、检查 TiDB Cloud CLI 更新并清理资源。
 ---
 
 # 运行日常 TiDB Cloud CLI 工作流
@@ -14,7 +14,7 @@ summary: 检查资源、管理 TiDB Cloud Starter 实例和 Filesystem、检查 
 ## 前提条件 {#prerequisites}
 
 - 安装 `ti` 并运行 `ti configure`。
-- 确保你的组织具有一个 TiDB Cloud Starter 实例和一个 Filesystem 的容量。
+- 确保你的组织具有一个 TiDB Cloud Starter 实例和一个文件系统的容量。
 
 ## 步骤 1：检查当前资源 {#step-1-inspect-current-resources}
 
@@ -58,7 +58,7 @@ ti db execute-sql-statement \
   --output text
 ```
 
-## 步骤 4：创建并使用 Filesystem {#step-4-create-and-use-a-filesystem}
+## 步骤 4：创建并使用文件系统 {#step-4-create-and-use-a-filesystem}
 
 ```bash
 export TI_FS_FILE_SYSTEM_ID="$(ti fs create-file-system \
@@ -91,7 +91,7 @@ ti update --check
 ti update --dry-run
 ```
 
-如果另一个工作流存在活动中的 Filesystem 或 Vault 挂载，请在应用更新前先停止写入端并卸载它，以便 `ti` 和 Filesystem 运行时一起更新。有关说明，请参见[更新 TiDB Cloud CLI](/ai/ti/reference/ti-install-configure-update.md#update-tidb-cloud-cli)。
+如果另一个工作流存在活动中的文件系统或 Vault 挂载，请在应用更新前先停止写入端并卸载它，以便 `ti` 和文件系统运行时一起更新。有关说明，请参见[更新 TiDB Cloud CLI](/ai/ti/reference/ti-install-configure-update.md#update-tidb-cloud-cli)。
 
 在适当的时候应用更新：
 
@@ -115,7 +115,7 @@ ti db delete-db-cluster \
 
 ## 安全说明 {#security-notes}
 
-- 不要回显 FS token 或格式化后的数据库连接字符串。
+- 不要回显文件系统 token 或格式化后的数据库连接字符串。
 - 使用唯一的自动化前缀，并且只删除该次运行创建的资源。
 - 使用 `--dry-run` 预览破坏性操作。
 

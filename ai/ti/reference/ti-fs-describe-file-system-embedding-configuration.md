@@ -1,11 +1,11 @@
 ---
 title: ti fs describe-file-system-embedding-configuration
-summary: 描述 TiDB Cloud Filesystem 的嵌入配置。
+summary: 描述文件系统的向量嵌入配置。
 ---
 
 # ti fs describe-file-system-embedding-configuration
 
-显示 Filesystem 的嵌入配置。此配置为可选项；如果未自定义，不会影响 Filesystem 的正常操作。此命令需要 TiDB Cloud API 凭证，不使用 Filesystem 访问令牌。
+显示文件系统的向量嵌入配置。此配置为可选项；如果未自定义，不会影响文件系统的正常操作。此命令需要 TiDB Cloud API 凭证，不使用文件系统访问令牌。
 
 `source` 字段用于报告该配置是 `custom`、`default`、`none` 还是 `database_auto`。
 
@@ -24,7 +24,7 @@ ti fs describe-file-system-embedding-configuration
 
 ## 选项 {#options}
 
-- `--file-system-id <string>`：设置不可变的 Filesystem ID。\[必需]
+- `--file-system-id <string>`：设置不可变的文件系统 ID。\[必需]
 - `--help`：显示帮助信息。
 - `--version`：显示版本信息。
 

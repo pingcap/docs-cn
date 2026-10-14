@@ -1,6 +1,6 @@
 ---
 title: ti fs chmod-file
-summary: 更改 TiDB Cloud Filesystem 中的文件权限。
+summary: 更改文件系统中的文件权限。
 ---
 
 # ti fs chmod-file
@@ -30,7 +30,7 @@ ti fs chmod-file
 - `--path <string>`：文件或目录路径。\[required]
 - `--dry-run`：验证请求但不应用更改。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--version`：显示版本信息。
 

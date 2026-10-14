@@ -1,11 +1,11 @@
 ---
 title: 在 TiDB Cloud Filesystem 上为智能体准备 Git 工作区
-summary: 快速让大型 Git 工作区可见，在后台补全干净对象，并让智能体在完整下载完成前开始工作。
+summary: 了解如何在大型 Git 仓库完成下载前启动智能体任务，并在移除机器前保留工作。
 ---
 
 # 在 TiDB Cloud Filesystem 上为智能体准备 Git 工作区
 
-此工作流将大型仓库 clone 从启动智能体任务的关键路径中移除。当临时智能体需要在完整下载完成之前检查或修改大型仓库时，请使用此工作流。
+在大型仓库完成下载前启动智能体任务。当临时机器上的智能体需要立即检查或编辑文件时，可使用带后台补全的 blobless Git 工作区。
 
 > **Note:**
 >
@@ -13,11 +13,13 @@ summary: 快速让大型 Git 工作区可见，在后台补全干净对象，并
 
 ## 工作原理 {#how-it-works}
 
-`ti fs-git clone-git-workspace --blobless --hydrate background` 会注册一个 Git 工作区，该工作区可以在替换后的智能体运行时之间共享，并且在所有干净 blob 完成下载之前就暴露其文件树。该命令会立即返回，因此智能体可以在 `ti` 于后台补全干净树和本地 Git 对象数据库的同时检查路径并开始工作。与普通 clone 不同，初始对象传输不会阻塞整个工作流。与仅使用原生 blobless partial clone 不同，后台补全可以减少智能体关键路径上重复的按需抓取。在补全完成前到达的读请求仍会回退到 Git 的惰性抓取，以保证正确性。普通 Git 仍然负责修改、提交、抓取和推送。
+`ti fs-git clone-git-workspace --blobless --hydrate background` 会注册一个 Git 工作区，并在所有干净 blob 完成下载之前暴露其文件树。智能体可以在 `ti` 下载其余干净文件内容并填充本地 Git 对象数据库的同时开始工作。这个后台过程称为补全，可减少重复的按需抓取。在补全完成前的读操作会使用 Git 的惰性抓取来检索缺失的数据。
+
+替换后的智能体运行时可以访问已注册的工作区。在丢弃原始机器之前，请按照下方清理指南中的说明保留本地 Git 历史记录。使用你常用的工具编辑文件，并使用 Git 命令进行提交、抓取和推送。
 
 ## 前提条件 {#prerequisites}
 
-- 选择一个 Filesystem。
+- 选择一个文件系统。
 - 使用 Linux FUSE，或在 macOS 上安装 macFUSE 并显式指定 `--driver fuse`。Git 工作区依赖 FUSE 将远程 Git 树和工作区变更组合到挂载路径中；WebDAV 挂载不提供这种集成。
 - 安装 Git 并配置仓库认证。
 
@@ -71,7 +73,7 @@ ti fs-git add-git-worktree \
 git -C /path/to/workspace/tidb-agent-task status
 ```
 
-在移除工作树之前，请先提交或推送所需的更改。
+在移除工作树之前，请先提交所需的更改。在丢弃机器之前，请通过推送或经验证的本地 Git 元信息备份来[保留并验证 Git 历史记录](https://docs.pingcap.com/tidbcloud-filesystem/manage-git-workspaces/#preserve-work-before-leaving-a-machine)。
 
 ## 清理 {#cleanup}
 
@@ -82,13 +84,13 @@ ti fs-git remove-git-worktree \
 ti fs unmount-file-system --mount-path /path/to/workspace
 ```
 
-仅当可以丢弃未提交更改时，才对工作树移除使用 `--force`。Filesystem 卸载会自动执行优雅的刷写；仅当你需要在不卸载的情况下将远程工作刷写出去时，才单独使用 `ti fs drain-file-system`。
+仅当可以丢弃未提交更改时，才对工作树移除使用 `--force`。文件系统卸载会自动执行优雅的刷写；仅当你需要在不卸载的情况下将远程工作刷写出去时，才单独使用 `ti fs drain-file-system`。
 
 ## 安全与操作说明 {#security-and-operational-notes}
 
 - 仓库凭据由 Git 管理，而不是 `ti`。
 - `coding-agent` 挂载预设会将 Git 元信息、依赖关系目录、缓存、构建输出以及其他生成文件保留在本地机器上，以提升性能。
-- 由 `coding-agent` 配置保留在本地的文件会随着临时机器消失。请提交或推送所需的 Git 更改，并使用带有显式 `--path` 值的 [`pack-file-system`](/ai/ti/reference/ti-fs-pack-file-system.md) 来保留其他无法重新构建的本地文件。
+- 由 `coding-agent` 配置保留在本地的文件会随着临时机器消失。仅有本地提交并不能在不同机器之间保留 Git 历史记录。请推送并验证所需的提交，并使用带有显式 `--path` 值的 [`pack-file-system`](/ai/ti/reference/ti-fs-pack-file-system.md) 来保留其他无法重新构建的本地文件。
 
 ## 后续内容 {#what-s-next}
 

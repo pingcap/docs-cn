@@ -1,6 +1,6 @@
 ---
 title: ti fs-journal search-journal-entries
-summary: 搜索 Filesystem 日志（Journal）及其条目。
+summary: 搜索文件系统日志（Journal）及其条目。
 ---
 
 # ti fs-journal search-journal-entries
@@ -38,7 +38,7 @@ ti fs-journal search-journal-entries
 - `--cursor <string>`：上一页返回的游标。继续查询时，请重复使用原始请求中的筛选条件。
 - `--entry-type <string>`：条目类型筛选器。
 - `--file-system-id <string>`：选择文件系统。你也可以设置 `TI_FS_FILE_SYSTEM_ID`。
-- `--fs-token <string>`：设置 Filesystem 访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选 Filesystem 在本地存储的令牌。
+- `--fs-token <string>`：设置文件系统访问令牌。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，命令会使用为所选文件系统在本地存储的令牌。
 - `--help`：显示帮助信息。
 - `--include-entries`：在匹配结果中包含完整的条目负载。
 - `--journal-kind <string>`：日志（Journal）类型筛选器。
