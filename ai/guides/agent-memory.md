@@ -14,7 +14,7 @@ summary: 了解如何使用 SQL 在一张 TiDB 表中存储 AI agent memory，�
 - 一个 {{{ .starter }}} 实例。你可以在 [TiDB Cloud](https://tidbcloud.com/free-trial) 上创建一个免费的 {{{ .starter }}} 实例。
 - 一个已连接到该实例的 MySQL 客户端。在 [TiDB Cloud console](https://tidbcloud.com/) 中，进入 {{{ .starter }}} 实例的概览页面，然后点击 **Connect** 获取连接参数。
 
-这些示例使用了 3 维向量，并手动指定其值，以便更容易理解 SQL 示例和查询结果。这些向量仅用于演示，不代表由嵌入模型生成的向量嵌入。在你的应用中，请将向量维度设置为嵌入模型的输出大小，例如 `VECTOR(1536)`，并使用该模型生成每个 embedding。
+本文中的这些示例使用了 3 维向量，并手动指定其值，从而使 SQL 示例和查询结果更加容易理解。这些向量仅用于演示，不代表由嵌入模型生成的向量嵌入。在你的应用中，请将向量维度设置为嵌入模型的输出大小，例如 `VECTOR(1536)`，并使用该模型生成每个 embedding。
 
 ## 第 1 步：创建 memory 表 {#step-1-create-the-memory-table}
 
