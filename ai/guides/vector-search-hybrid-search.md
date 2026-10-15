@@ -15,7 +15,7 @@ aliases: ['/zh/tidbcloud/vector-search-hybrid-search/']
 
 ![Hybrid Search](/media/vector-search/hybrid-search-overview.svg)
 
-本教程演示如何在 TiDB 中使用 [pytidb](https://github.com/pingcap/pytidb) Python SDK 实现混合搜索，该 SDK 内置了 embedding 和重排序支持。使用 pytidb 并非强制要求——你也可以直接使用 SQL 进行搜索，并根据需要使用自定义的重排序模型。
+本教程演示如何在 TiDB 中使用 [pytidb](https://github.com/pingcap/pytidb) Python SDK 实现混合搜索，该 SDK 内置了向量嵌入和重排序支持。使用 pytidb 并非强制要求；你也可以直接使用 SQL 进行搜索，并根据需要使用自定义的重排序模型。若要了解完全使用 SQL 编写的混合搜索，请参见[使用 SQL 进行混合搜索](/ai/guides/vector-search-hybrid-search-sql.md)。
 
 ## 前提条件
 

@@ -87,21 +87,30 @@ LIMIT 10
 
 ## 向量索引与过滤条件联合使用
 
-包含预过滤（使用 `WHERE` 子句）的查询无法利用向量索引，因为根据 SQL 语义，这类查询并非在全表范围内查找 K-最近邻。例如：
+`WHERE` 过滤条件放在什么位置，决定了向量搜索是否可以使用向量索引。这有两种模式，它们会在准确性和速度之间朝相反方向权衡。
+
+### 在向量搜索之前过滤 {#filter-before-the-vector-search}
+
+先使用 `WHERE` 进行过滤、再按距离排序的查询，要求只在匹配的行中查找 K 个最近邻。向量索引无法回答这个问题，因此 TiDB 会扫描表、应用过滤条件，并为每一行匹配的行计算距离：
 
 ```sql
--- 对于以下查询，`WHERE` 过滤在 KNN 之前执行，因此无法使用向量索引：
+-- The WHERE filter is applied before the K-nearest-neighbor search, so the vector index is not used:
 
 SELECT * FROM vec_table
 WHERE category = "document"
+  AND VEC_COSINE_DISTANCE(embedding, '[1, 2, 3]') IS NOT NULL
 ORDER BY VEC_COSINE_DISTANCE(embedding, '[1, 2, 3]')
 LIMIT 5;
 ```
 
-要在带有过滤条件的场景下使用向量索引，应先通过向量搜索查询 K-最近邻，再对结果进行过滤：
+通过排除距离为 `NULL` 的行，结果是精确的：你会得到满足过滤条件且余弦距离有效的 5 行最近数据；如果这样的行少于 5 行，则返回全部这些行。如果输入向量为 `NULL`，或者余弦距离未定义（例如零向量），`VEC_COSINE_DISTANCE()` 会返回 `NULL`。如果不排除这些行，`NULL` 值在正序排序时会排在非 `NULL` 值之前，并可能占据结果中的前几个位置。其成本会随着通过过滤条件的行数增加而增长，因此这种模式适合选择性较强的过滤条件。
+
+### 在向量搜索之后过滤 {#filter-after-the-vector-search}
+
+要使用向量索引，请先在子查询中查找 K 个最近邻，然后再对结果进行过滤：
 
 ```sql
--- 对于以下查询，`WHERE` 过滤在 KNN 之后执行，因此可以使用向量索引：
+-- The WHERE filter is applied after the K-nearest-neighbor search, so the query can use the vector index:
 
 SELECT * FROM
 (
@@ -110,9 +119,30 @@ SELECT * FROM
   LIMIT 5
 ) t
 WHERE category = "document";
-
--- 注意，如果部分结果被过滤，最终返回的结果可能少于 5 条。
 ```
+
+该查询返回的行数可能少于 5 行，甚至可能没有结果，因为过滤条件会在找到最近邻之后移除部分结果。为了降低这种情况发生的概率，可以在子查询中获取比实际需要更多的最近邻，并在最终结果中再加上限制：
+
+```sql
+SELECT * FROM
+(
+  SELECT *, VEC_COSINE_DISTANCE(embedding, '[1, 2, 3]') AS distance
+  FROM vec_table
+  ORDER BY distance
+  LIMIT 50
+) t
+WHERE category = "document"
+ORDER BY distance
+LIMIT 5;
+```
+
+获取更多最近邻可以提高得到 5 行结果的概率，但不能保证一定得到。请根据过滤条件通常会移除多少行来选择内部的 `LIMIT`。
+
+要确认查询使用的是哪种模式，请对其运行 `EXPLAIN`，并在 `operator info` 列中查找 `annIndex:`。详情请参见[检查是否使用了向量索引](#check-whether-the-vector-index-is-used)。
+
+> **注意：**
+>
+> 你不能在分区表上创建向量索引。无论是带有向量索引的 `CREATE TABLE ... PARTITION BY`，还是在分区表上执行 `ALTER TABLE ... ADD VECTOR INDEX`，都会返回 `ERROR 8200 (HY000): Unsupported add columnar index: partition table is currently not supported`。如果你对表进行了分区（例如按租户分区），则其上的向量搜索会扫描选定的分区，而不会使用向量索引。
 
 ## 查看索引构建进度 {#view-index-build-progress}
 

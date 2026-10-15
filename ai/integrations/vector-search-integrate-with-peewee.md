@@ -207,7 +207,7 @@ db = MySQLDatabase(
 
 #### 定义向量列
 
-创建一个包含名为 `peewee_demo_documents` 的表，并存储 3 维向量。
+创建一个名为 `peewee_demo_documents` 的表，其中包含一个存储 3 维向量的列。
 
 ```python
 class Document(Model):
