@@ -211,7 +211,7 @@ if TIDB_CA_PATH:
 
 #### 定义向量列
 
-`tidb-django` 提供了 `VectorField`，用于在表中存储向量嵌入。
+`django-tidb` 提供了 `VectorField`，用于在表中存储向量嵌入。
 
 创建一个包含名为 `embedding` 的 3 维向量列的表。
 

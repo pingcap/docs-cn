@@ -51,7 +51,8 @@ TiDB 提供数据和工作空间能力，用于构建 AI 应用和运行 AI agen
 
 | 文档 | 描述 |
 | --- | --- |
-| [混合搜索指南](/ai/guides/vector-search-hybrid-search.md) | 结合向量搜索和全文搜索以获得更好的结果。 |
+| [混合搜索](/ai/guides/vector-search-hybrid-search.md) | 使用 `pytidb` 结合向量搜索和全文搜索。 |
+| [使用 SQL 进行混合搜索](/ai/guides/vector-search-hybrid-search-sql.md) | 在单个 SQL 查询中使用 Reciprocal Rank Fusion (RRF) 结合向量搜索和全文搜索。 |
 | [混合搜索示例](/ai/guides/hybrid-search-with-pytidb.md) | 使用 `pytidb` 的混合搜索示例。 |
 
 #### Auto embedding {#auto-embeddings}

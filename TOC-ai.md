@@ -22,7 +22,8 @@
     - [使用 SQL 进行全文搜索](/ai/guides/vector-search-full-text-search-sql.md)
     - [全文搜索示例](/ai/guides/fulltext-search-with-pytidb.md)
   - 混合搜索
-    - [混合搜索指南](/ai/guides/vector-search-hybrid-search.md)
+    - [混合搜索](/ai/guides/vector-search-hybrid-search.md)
+    - [使用 SQL 进行混合搜索](/ai/guides/vector-search-hybrid-search-sql.md)
     - [混合搜索示例](/ai/guides/hybrid-search-with-pytidb.md)
   - Auto Embeddings
     - [auto embedding 指南](/ai/guides/auto-embedding.md)
@@ -39,7 +40,8 @@
   - [事务](/ai/guides/transactions.md)
 - 构建 AI 应用
   - [RAG 示例](/ai/guides/rag-with-pytidb.md)
-  - [对话内存示例](/ai/guides/memory-with-pytidb.md)
+  - [Agent 内存指南](/ai/guides/agent-memory.md)
+  - [AI Agent Memory 示例](/ai/guides/memory-with-pytidb.md)
   - [Text-to-SQL 示例](/ai/guides/text2sql-with-pytidb.md)
 - TiDB Cloud CLI
   - [概览](/ai/ti/ti-overview.md)
