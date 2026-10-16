@@ -25,6 +25,8 @@ summary: 参考支持的区域、认证边界、安全最佳实践以及当前 T
 | AWS | 法兰克福 | `aws-eu-central-1` | 支持 | 不支持 |
 | AWS | 东京 | `aws-ap-northeast-1` | 支持 | 不支持 |
 | Alibaba Cloud | 新加坡 | `alicloud-ap-southeast-1` | 支持 | 支持 |
+| Google Cloud | 南卡罗来纳 | `gcp-us-east1` | 不支持 | 支持 |
+| Microsoft Azure | 美国中部 | `azure-centralus` | 不支持 | 支持 |
 
 如果你配置的区域支持 TiDB Cloud Starter 但不支持 TiDB Cloud Filesystem，则你仍然可以在该区域管理 Starter 实例。文件系统命令会因 `unsupported endpoint` 错误而失败。
 
