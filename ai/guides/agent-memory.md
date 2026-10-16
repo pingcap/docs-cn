@@ -192,7 +192,7 @@ LIMIT 3;
 
 > **Note:**
 >
-> 执行 `DELETE` 后，在垃圾回收移除旧行版本之前，仍然可以在短时间内通过 [stale read](/stale-read.md)（例如 `SELECT ... AS OF TIMESTAMP`）读取到已删除的行。TiDB 会至少保留旧版本到 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-new-in-v50) 所设置的时长，默认值为 10 分钟。
+> 执行 `DELETE` 后，在垃圾回收移除旧行版本之前，仍然可以在短时间内通过 [stale read](/stale-read.md)（例如 `SELECT ... AS OF TIMESTAMP`）读取到已删除的行。TiDB 会至少保留旧版本到 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 所设置的时长，默认值为 10 分钟。
 
 ## 另请参阅 {#see-also}
 

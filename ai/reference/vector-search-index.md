@@ -85,7 +85,7 @@ LIMIT 10
 
 要在向量搜索中使用索引，确保 `ORDER BY ... LIMIT` 子句使用的距离函数与创建向量索引时指定的距离函数一致。
 
-## 向量索引与过滤条件联合使用
+## 向量索引与过滤条件联合使用 {#use-the-vector-index-with-filters}
 
 `WHERE` 过滤条件放在什么位置，决定了向量搜索是否可以使用向量索引。这有两种模式，它们会在准确性和速度之间朝相反方向权衡。
 
@@ -176,7 +176,7 @@ SELECT * FROM INFORMATION_SCHEMA.TIFLASH_INDEXES;
 
 此外，你还可以通过执行 `ADMIN SHOW DDL JOBS;` 并查看 `row count`，监控 DDL 任务的执行进度。但该方法并不完全准确，因为 `row count` 的值来自 `TIFLASH_INDEXES` 中的 `rows_stable_indexed` 字段。你可以将此方法作为索引进度的参考。
 
-## 检查是否使用了向量索引
+## 检查是否使用了向量索引 {#check-whether-the-vector-index-is-used}
 
 使用 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 或 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 语句，可以检查查询是否使用了向量索引。当 `TableFullScan` 执行器的 `operator info` 列中出现 `annIndex:` 时，表示该表扫描正在利用向量索引。
 
