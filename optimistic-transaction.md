@@ -6,6 +6,10 @@ aliases: ['/docs-cn/dev/optimistic-transaction/','/docs-cn/dev/reference/transac
 
 # TiDB 乐观事务模型
 
+> **警告：**
+>
+> TiDB 计划在未来版本废弃乐观事务模式。从 v7.1.0 开始，不推荐设置 [`tidb_txn_mode`](/system-variables.md#tidb_txn_mode) 的值为 `"optimistic"` 或 `""`。
+
 乐观事务模型下，将修改冲突视为事务提交的一部分。因此并发事务不常修改同一行时，可以跳过获取行锁的过程进而提升性能。但是并发事务频繁修改同一行（冲突）时，乐观事务的性能可能低于[悲观事务](/pessimistic-transaction.md)。
 
 启用乐观事务前，请确保应用程序可正确处理 `COMMIT` 语句可能返回的错误。如果不确定应用程序将会如何处理，建议改为使用悲观事务。
