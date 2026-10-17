@@ -57,6 +57,13 @@ AlterTableSpec ::=
     )
 |   'AFFINITY' EqOpt stringLit
 |   PlacementPolicyOption
+|   'SPLIT' ('INDEX' IndexName | PRIMARY KEY)? 'BETWEEN' RowValue 'AND' RowValue 'REGIONS' NUM
+
+RowValue ::=
+    '(' ValuesOpt ')'
+
+ValuesOpt ::=
+    ( LiteralValue | Expr ) (',' (LiteralValue | Expr) )*
 
 PlacementPolicyOption ::=
     "PLACEMENT" "POLICY" EqOpt PolicyName
@@ -161,6 +168,24 @@ Query OK, 0 rows affected, 1 warning (0.25 sec)
 +-------+------+---------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
+
+修改已有表的持久化区域分割策略：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE orders
+    SPLIT BETWEEN (0) AND (2000000) REGIONS 32
+    SPLIT INDEX idx_customer BETWEEN (0) AND (20000) REGIONS 16;
+```
+
+```sql
+Query OK, 0 rows affected (3.56 sec)
+```
+
+> **注意：**
+> - 分区表的每个分区都遵循表的持久化分割策略
+> - 聚集索引表不允许对主键指定分割策略
 
 ## MySQL 兼容性
 
