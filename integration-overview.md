@@ -14,3 +14,9 @@ summary: 了解使用 TiCDC 进行数据集成的具体场景。
 ## 与 Apache Kafka 和 Apache Flink 进行数据集成
 
 你可以使用 TiCDC 将 TiDB 的增量数据同步到 Apache Kafka，并使用 Apache Flink 消费 Kafka 中的数据。参见[与 Apache Kafka 和 Apache Flink 进行数据集成](/replicate-data-to-kafka.md)。
+
+## 与 Microsoft Fabric 进行数据集成
+
+你可以使用 TiCDC 将 TiDB 的增量数据同步到 Microsoft Fabric。借助 [open mirroring](https://learn.microsoft.com/en-us/fabric/mirroring/open-mirroring)，TiCDC 可以将变更数据直接写入 Fabric 中的镜像数据库。来自任意 TiDB 部署的数据均能够持续、近实时地同步到 Microsoft Fabric OneLake，从而让数据可以被 AI 和分析工作负载即时使用。
+
+更多详情，参见英文博客[使用 TiCDC 将 TiDB 同步至 Microsoft Fabric 中的镜像数据库](https://www.pingcap.com/blog/replicate-tidb-mirrored-database-microsoft-fabric-ticdc/)。
