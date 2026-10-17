@@ -54,11 +54,25 @@ tiup br backup full -u "${PD_IP}:2379" \
 --storage "s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
+如果你想用临时安全凭证，那么还需要参数 `session-token`（在 URI 中，需要先进行百分号编码），例如：
+
+```shell
+./br backup full -u "${PD_IP}:2379" \
+--storage "s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secret-access-key}&session-token=${session-token}"
+```
+
 **从 Amazon S3 恢复快照备份数据**
 
 ```shell
 tiup br restore full -u "${PD_IP}:2379" \
 --storage "s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secret-access-key}"
+```
+
+如果你想用临时安全凭证，那么还需要参数 `session-token`（在 URI 中，需要先进行百分号编码），例如：
+
+```shell
+./br restore full -u "${PD_IP}:2379" \
+--storage "s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secret-access-key}&session-token=${session-token}"
 ```
 
 </div>
@@ -123,7 +137,9 @@ tiup br restore db --db test -u "${PD_IP}:2379" \
     如果指定访问密钥和秘密访问密钥，将按照指定的访问密钥和秘密访问密钥进行鉴权。除了在 URI 中指定密钥外，还支持以下方式：
 
     - br 命令行工具读取 `$AWS_ACCESS_KEY_ID` 和 `$AWS_SECRET_ACCESS_KEY` 环境变量
+    - br 命令行工具读取 `$AWS_ACCESS_KEY_ID`、`$AWS_SECRET_ACCESS_KEY` 和 `$AWS_SESSION_TOKEN` 环境变量
     - br 命令行工具读取 `$AWS_ACCESS_KEY` 和 `$AWS_SECRET_KEY` 环境变量
+    - br 命令行工具读取 `$AWS_ACCESS_KEY`、`$AWS_SECRET_KEY` 和 `$AWS_SESSION_TOKEN` 环境变量
     - br 命令行工具读取共享凭证文件，路径由 `$AWS_SHARED_CREDENTIALS_FILE` 环境变量指定
     - br 命令行工具读取共享凭证文件，路径为 `~/.aws/credentials`
 
