@@ -45,3 +45,11 @@ tiup mirror clone <target-dir> [global version] [flags]
 ### --{component}（strings，默认为空）
 
 指定要克隆的 `{component}` 组件的版本列表。`{component}` 为组件名，可选的组件名可执行 [`tiup list --all`](/tiup/tiup-command-list.md) 查看。
+
+如果指定了一个或多个组件参数，TiUP 只会克隆这些组件及指定版本，不会自动克隆其他组件。例如，`--pd v8.5.2 --tikv v8.5.2` 只克隆 PD 和 TiKV 组件，不会自动克隆 TiUP Cluster 组件。如果克隆出来的镜像需要用于执行 `tiup cluster ...` 命令，且目标环境中没有可用的 `cluster` 组件，请同时指定 `--cluster <version>`。
+
+例如，要制作一个用于离线部分组件升级的镜像，补充 v8.5.2 版本的 PD 和 TiKV 包，并确保镜像中包含 v1.16.1 版本的 TiUP Cluster 组件，可执行如下命令：
+
+```shell
+tiup mirror clone tiup-custom-mirror-v8.5.2 --cluster v1.16.1 --pd v8.5.2 --tikv v8.5.2 --os=linux --arch=amd64
+```
