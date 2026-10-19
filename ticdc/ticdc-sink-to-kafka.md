@@ -66,7 +66,7 @@ Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
 --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
 ```
 
-URI 中可配置的的参数如下：
+URI 中可配置的参数如下：
 
 | 参数               | 描述                                                         |
 | :------------------ | :------------------------------------------------------------ |

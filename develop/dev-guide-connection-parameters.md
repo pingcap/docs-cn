@@ -103,7 +103,7 @@ connections = ((core_count * 2) + effective_spindle_count)
 - **core_count**: CPU 核心数。
 - **effective_spindle_count**: 直译为**有效主轴数**，实际上是说你有多少个硬盘（非 [SSD](https://en.wikipedia.org/wiki/Solid-state_drive)），因为每个旋转的硬盘可以被称为是一个旋转轴。例如，你使用的是一个有 16 个磁盘组成的 [RAID](https://en.wikipedia.org/wiki/RAID) 阵列的服务器，那么 **effective_spindle_count** 应为 16。此处经验公式，实际上是衡量你的服务器可以管理多少 I/O 并发请求，因为 **HDD** 通常只能串行请求。
 
-要特别说明的是，在这个经验公式的的下方，也看到了一处说明：
+要特别说明的是，在这个经验公式的下方，也看到了一处说明：
 
 > ```
 > A formula which has held up pretty well across a lot of benchmarks for years is
