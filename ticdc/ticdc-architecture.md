@@ -66,43 +66,42 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 >
 > 针对 MySQL Sink 的 Changefeed，除了满足上述任一条件，表还需要满足**有且仅有一个主键或非空唯一键**，才可以被 TiCDC 拆分并分发，以保证拆表模式下数据同步的正确性。
 
-
 ## Storage Sink 文件名变更和消费说明
 
 从 v8.5.5 起，切换至 TiCDC 新架构并且开启表级任务拆分后，对于 [Storage Sink](/ticdc/ticdc-sink-to-cloud-storage.md)，记录数据变更的文件名格式将从 `CDC{num}.{extension}` 变更为 `CDC_{uuid}_{num}.{extension}`，Index 文件名格式将从 `CDC.index` 变更为 `CDC_{uuid}.index`。其中，`uuid` 用于标识表拆分后的子同步任务，`num` 表示文件序号。
 
 - 数据变更记录路径
 
-  ```
-  {scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC_{uuid}_{num}.{extension}
-  ```
+    ```
+    {scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC_{uuid}_{num}.{extension}
+    ```
 
 - Index 文件路径
 
-  ```
-  {scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/meta/CDC_{uuid}.index
-  ```
+    ```
+    {scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/meta/CDC_{uuid}.index
+    ```
 
 开启表级任务拆分后，在 `{schema}/{table}/{table-version-separator}/` 目录下，同一张表可能存在多个 `uuid` 不同、序号相同的数据文件。例如：
 
-  ```
-  ├── metadata
-  └── test
-      ├── tbl_1
-      │   ├── 437752935075545091
-      │   │   ├── CDC_11_000001.json
-      │   │   ├── CDC_11_000002.json
-      │   │   ├── CDC_22_000001.json
-      │   │   └── meta
-      │   │       ├── CDC_11.index
-      │   │       └── CDC_22.index
-      │   ├── 437752935075546092
-      │   │   ├── CDC_33_000001.json
-      │   │   ├── CDC_44_000001.json
-      │   │   └── meta
-      │   │       ├── CDC_33.index 
-      │   │       └── CDC_44.index 
-  ```
+```
+├── metadata
+└── test
+    ├── tbl_1
+    │   ├── 437752935075545091
+    │   │   ├── CDC_11_000001.json
+    │   │   ├── CDC_11_000002.json
+    │   │   ├── CDC_22_000001.json
+    │   │   └── meta
+    │   │       ├── CDC_11.index
+    │   │       └── CDC_22.index
+    │   ├── 437752935075546092
+    │   │   ├── CDC_33_000001.json
+    │   │   ├── CDC_44_000001.json
+    │   │   └── meta
+    │   │       ├── CDC_33.index
+    │   │       └── CDC_44.index
+```
 
 由于多个子同步任务并行写文件，可能会出现某个数据文件尚未完全写入就被下游读取的情况，导致这部分数据未被成功读取。为了避免这种情况，编写下游消费程序时，请按照以下顺序读取数据：
 
