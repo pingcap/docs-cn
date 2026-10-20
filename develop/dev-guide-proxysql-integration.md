@@ -128,7 +128,7 @@ systemctl start docker
 2. 获取该 {{{ .starter }}} 实例的 `hostname`、`port` 及 `username` 供后续使用。
 
     1. 在 [**My TiDB**](https://tidbcloud.com/tidbs) 页面，点击你的目标 {{{ .starter }}} 实例名称，进入其概览页面。
-    2. 在集群概览页面的 **Connection** 面板中，复制 `Endpoint`、`Port` 与 `User` 字段，其中 `Endpoint` 是该 {{{ .starter }}} 实例的的 `hostname`。
+    2. 在集群概览页面的 **Connection** 面板中，复制 `Endpoint`、`Port` 与 `User` 字段，其中 `Endpoint` 是该 {{{ .starter }}} 实例的 `hostname`。
 
 #### 步骤 2. 生成 ProxySQL 配置文件
 

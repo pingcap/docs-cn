@@ -1,6 +1,11 @@
 ---
 title: 时区支持
+<<<<<<< HEAD
 summary: TiDB 的时区设置由 `time_zone` 系统变量控制，可以在会话级别或全局级别进行设置。`TIMESTAMP` 数据类型的的显示值受时区设置影响，但 `DATETIME`、`DATE` 或 `TIME` 数据类型不受影响。在数据迁移时，需要特别注意主库和从库的时区设置是否一致。
+=======
+aliases: ['/docs-cn/dev/configure-time-zone/','/docs-cn/dev/how-to/configure/time-zone/']
+summary: TiDB 的时区设置由 `time_zone` 系统变量控制，可以在会话级别或全局级别进行设置。`TIMESTAMP` 数据类型的显示值受时区设置影响，但 `DATETIME`、`DATE` 或 `TIME` 数据类型不受影响。在数据迁移时，需要特别注意主库和从库的时区设置是否一致。
+>>>>>>> 8860d46818 (Fix duplicated "的" typos in Chinese docs (#21985))
 ---
 
 # 时区支持
