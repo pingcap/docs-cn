@@ -62,7 +62,7 @@ jobs:
           cat "$GITHUB_OUTPUT"
 
       - name: AI Doc Reviewer
-        uses: qiancai/ai-doc-reviewer@main
+        uses: qiancai/ai-doc-reviewer@538773b4670be62244886f4e79b944a1bd49dd88 # main
         continue-on-error: false  # Ensure workflow fails if the action fails
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
