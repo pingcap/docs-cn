@@ -37,7 +37,7 @@ env:
   SOURCE_BRANCH: release-8.5
   TERMS_BRANCH: master
   AI_TRANSLATOR_REPO: qiancai/ai-markdown-translator
-  AI_TRANSLATOR_REF: main
+  AI_TRANSLATOR_REF: c52e9188383f8a2d7056a072da63310e8346a001 # main
   SOURCE_FOLDER: ai
   SOURCE_TOC_FILE: TOC-ai.md
   # Manual all-updated runs use the same global cursor behavior as scheduled runs.
