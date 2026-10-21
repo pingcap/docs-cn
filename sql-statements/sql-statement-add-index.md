@@ -113,7 +113,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 2 rows in set (0.00 sec)
 ```
 
-## 部分索引 <span class="version-mark">从 v8.5.7 和 v9.0.0 开始引入</span>
+## 部分索引 <span class="version-mark">从 v8.5.7 开始引入</span>
 
 部分索引是基于表中部分行构建的索引。在添加部分索引时，你可以使用条件表达式（称为谓词）来定义这些行的子集。该索引仅包含满足谓词条件的行对应的索引条目。
 
