@@ -114,7 +114,7 @@ tiup dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test --filetype csv --sql 'se
 
 以上命令中：
 
-- `--sql` 选项仅仅可用于导出 CSV 文件的场景。上述命令将在要导出的所有表上执行 `SELECT * FROM <table-name> WHERE id < 100` 语句。如果部分表没有指定的字段，那么导出会失败。
+- `--sql` 选项仅可用于导出 CSV 文件。Dumpling 会直接执行 `--sql` 指定的 SQL 语句，而不是为每个待导出的表生成查询语句。在这个示例中，Dumpling 执行的是 ``SELECT * FROM `test`.`sbtest1` WHERE id < 100``。如果 SQL 语句引用了不存在的列，导出会失败。
 - 使用 `--sql` 配置导出时，Dumpling 无法获知导出的表库信息，此时可以使用 `--output-filename-template` 选项来指定 CSV 文件的文件名格式，以方便后续使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入数据文件。例如 `--output-filename-template='test.sbtest1.{{.Index}}'` 指定导出的 CSV 文件为 `test.sbtest1.000000000`、`test.sbtest1.000000001` 等。
 - 你可以使用 `--csv-separator`、`--csv-delimiter` 等选项，配置 CSV 文件的格式。具体信息可查阅 [Dumpling 主要选项表](#dumpling-主要选项表)。
 
