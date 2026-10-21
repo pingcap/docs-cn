@@ -354,7 +354,7 @@ column-selectors = [
 
 ## 横向扩展大单表的负载到多个 TiCDC 节点
 
-该功能可以将大单表的同步范围切分为多个，并分发到多个 TiCDC 节点并行同步。当表的 Region 数超过 `region-threshold`，或者写入流量超过 `write-key-threshold` 时，TiCDC 就会拆分该表。在 TiCDC 老架构中，`write-key-threshold` 使用上游 PD Region 的 `written_keys` 统计信息；在 TiCDC 新架构中，`write-key-threshold` 使用 Sink DML event 的每秒字节数。该功能可以解决以下两个问题：
+该功能可以将大单表的同步范围切分为多个，并分发到多个 TiCDC 节点并行同步。启用该功能后，TiCDC 可以根据表的 Region 数量拆分同步范围；当 `write-key-threshold` 大于 `0` 时，也可以根据写入流量拆分同步范围。在 TiCDC 老架构中，`write-key-threshold` 使用上游 PD Region 的 `written_keys` 统计信息；在 TiCDC 新架构中，`write-key-threshold` 使用 Sink DML event 的每秒字节数。该功能可以解决以下两个问题：
 
 - 单个 TiCDC 节点不能及时同步大单表。
 - TiCDC 节点之间资源（CPU、内存等）消耗不均匀。
