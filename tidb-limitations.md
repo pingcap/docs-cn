@@ -73,6 +73,15 @@ summary: TiDB 中的使用限制包括标识符长度限制、数据库、表、
 | VARCHAR    | 16383 字符    |
 | TEXT       | 65535 字节    |
 | BLOB       | 65535 字节    |
+| MEDIUMTEXT | 单行大小限制：默认为 6 MiB，可通过 `txn-entry-size-limit` 调整至 120 MiB |
+| LONGTEXT   | 单行大小限制：默认为 6 MiB，可通过 `txn-entry-size-limit` 调整至 120 MiB |
+| MEDIUMBLOB | 单行大小限制：默认为 6 MiB，可通过 `txn-entry-size-limit` 调整至 120 MiB |
+| LONGBLOB   | 单行大小限制：默认为 6 MiB，可通过 `txn-entry-size-limit` 调整至 120 MiB |
+| JSON       | 单行大小限制：默认为 6 MiB，可通过 `txn-entry-size-limit` 调整至 120 MiB |
+
+> **注意：**
+>
+> 上表中的 `TEXT` 和 `BLOB` 限制与 MySQL 对应类型的限制一致。如需存储超过 65,535 字节的值，请使用 `MEDIUMTEXT`、`LONGTEXT`、`MEDIUMBLOB` 或 `LONGBLOB`。`JSON` 值的大小同样受单行大小限制约束。
 
 ## SQL Statements 的限制
 
