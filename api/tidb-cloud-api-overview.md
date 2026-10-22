@@ -1,7 +1,7 @@
 ---
 title: TiDB Cloud API 概览
 summary: 了解 TiDB Cloud API 的定义、特性，以及如何使用该 API 管理 TiDB Cloud 集群。
-aliases: ['/zh/tidbcloud/api-overview/']
+aliases: ['/zh/tidbcloud/api-overview/','/zh/tidbcloud/api-temporary-maintenance/']
 ---
 
 # TiDB Cloud API 概览
