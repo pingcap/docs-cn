@@ -56,6 +56,12 @@ tiup cluster display tidb-test
 mysql -u root -h ${tidb_server_host_IP_address} -P 4000
 ```
 
+如果你使用 `tiup cluster start tidb-test --init` 安全启动集群，则需要追加 `-p` 并输入自动生成的密码：
+
+```shell
+mysql -u root -p -h ${tidb_server_host_IP_address} -P 4000
+```
+
 其中，`${tidb_server_host_IP_address}` 是在[初始化集群拓扑文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)时为 `tidb_servers` 配置的 IP 地址之一，例如 `10.0.1.7`。
 
 输出下列信息表示登录成功：
