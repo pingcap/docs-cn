@@ -65,23 +65,24 @@ summary: TiDB 中的使用限制包括标识符长度限制、数据库、表、
 
 ## 数据类型限制
 
-| 类型       | 最大限制   |
-|:----------|:----------|
-| CHAR       | 255 字符      |
-| BINARY     | 255 字节      |
-| VARBINARY  | 65535 字节    |
-| VARCHAR    | 16383 字符    |
-| TEXT       | 65535 字节    |
-| BLOB       | 65535 字节    |
-| MEDIUMTEXT | 单行大小限制：默认为 6 MiB，可通过 `txn-entry-size-limit` 调整至 120 MiB |
-| LONGTEXT   | 单行大小限制：默认为 6 MiB，可通过 `txn-entry-size-limit` 调整至 120 MiB |
-| MEDIUMBLOB | 单行大小限制：默认为 6 MiB，可通过 `txn-entry-size-limit` 调整至 120 MiB |
-| LONGBLOB   | 单行大小限制：默认为 6 MiB，可通过 `txn-entry-size-limit` 调整至 120 MiB |
-| JSON       | 单行大小限制：默认为 6 MiB，可通过 `txn-entry-size-limit` 调整至 120 MiB |
-
 > **注意：**
 >
-> 上表中的 `TEXT` 和 `BLOB` 限制与 MySQL 对应类型的限制一致。如需存储超过 65,535 字节的值，请使用 `MEDIUMTEXT`、`LONGTEXT`、`MEDIUMBLOB` 或 `LONGBLOB`。`JSON` 值的大小同样受单行大小限制约束。
+> - `TEXT` 和 `BLOB` 的大小限制与 MySQL 中对应数据类型的限制一致。如需存储超过 65,535 字节的值，请使用 `MEDIUMTEXT`、`LONGTEXT`、`MEDIUMBLOB` 或 `LONGBLOB`。
+> - 单行大小限制适用于整行数据，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 配置项进行调整。
+
+| 类型       | 单个值的最大大小 | 单行大小限制 |
+|:-----------|:----------------|:-------------|
+| CHAR       | 255 个字符      | 默认为 6 MiB，最大可调整至 120 MiB |
+| BINARY     | 255 字节        | 默认为 6 MiB，最大可调整至 120 MiB |
+| VARBINARY  | 65,535 字节     | 默认为 6 MiB，最大可调整至 120 MiB |
+| VARCHAR    | 16,383 个字符（utf8mb4 字符集） | 默认为 6 MiB，最大可调整至 120 MiB |
+| TEXT       | 65,535 字节     | 默认为 6 MiB，最大可调整至 120 MiB |
+| BLOB       | 65,535 字节     | 默认为 6 MiB，最大可调整至 120 MiB |
+| MEDIUMTEXT | 16,777,215 字节 | 默认为 6 MiB，最大可调整至 120 MiB |
+| LONGTEXT   | 4,294,967,295 字节 | 默认为 6 MiB，最大可调整至 120 MiB |
+| MEDIUMBLOB | 16,777,215 字节 | 默认为 6 MiB，最大可调整至 120 MiB |
+| LONGBLOB   | 4,294,967,295 字节 | 默认为 6 MiB，最大可调整至 120 MiB |
+| JSON       | 未单独指定      | 默认为 6 MiB，最大可调整至 120 MiB |
 
 ## SQL Statements 的限制
 
