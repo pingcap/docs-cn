@@ -176,7 +176,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
 4. （可选）校验数据。
 
-    通过 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 工具，可以验证上下游数据在某个时间点的一致性。从上述备份和恢复命令的输出可以看到，上游集群备份的时间点为 431434047157698561，下游集群完成数据恢复的时间点为 431434141450371074。
+    通过 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 工具，可以验证上下游数据在某个时间点的一致性。从上述备份命令的输出可以看到，上游集群备份的时间点为 431434047157698561。需要注意的是，RESTORE 语句返回的 BackupTS 是本次恢复所依据的备份快照时间点，并非恢复完成的时间点，因此下游集群的 `snapshot` 应配置为恢复完成之后的时间点。
 
     ```shell
     sync_diff_inspector -C ./config.yaml
@@ -204,7 +204,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
         port = 4000
         user = "root"
         password = ""
-        snapshot = "431434141450371074" # 配置为实际的恢复时间点
+        snapshot = "431434141450371074" # 替换为恢复完成之后的时间点，可执行 SELECT (UNIX_TIMESTAMP(now()) * 1000) << 18 AS tso; 获取当前 TSO
 
     ######################### Task config #########################
     [task]
