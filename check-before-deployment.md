@@ -513,10 +513,27 @@ sudo systemctl enable ntpd.service
 
         2. 创建新的 tuned 策略。
 
+            先通过本机 `man tuned.conf` 确认自定义策略的默认目录。如果在 `/etc/tuned/tuned-main.conf` 中显式设置了 `profile_dirs`，则以该配置指定的搜索目录为准。根据实际的自定义策略目录，选择下面对应的一组命令执行。如果本机使用其他目录，请将命令中的 `/etc/tuned/` 或 `/etc/tuned/profiles/` 替换为该目录。
+
+            > **注意：**
+            >
+            > TuneD 从 v2.23.0 起将自定义策略的默认目录改为 `/etc/tuned/profiles/`，但部分发行版（例如 RHEL 9、Rocky Linux 9）仍使用 `/etc/tuned/`。因此，不能仅根据 TuneD 版本号选择目录。
+
+            如果自定义策略目录为 `/etc/tuned/`：
+
             ```bash
-            mkdir /etc/tuned/balanced-tidb-optimal/
+            mkdir -p /etc/tuned/balanced-tidb-optimal/
             vi /etc/tuned/balanced-tidb-optimal/tuned.conf
             ```
+
+            如果自定义策略目录为 `/etc/tuned/profiles/`：
+
+            ```bash
+            mkdir -p /etc/tuned/profiles/balanced-tidb-optimal/
+            vi /etc/tuned/profiles/balanced-tidb-optimal/tuned.conf
+            ```
+
+            将以下内容写入 `tuned.conf` 并保存：
 
             ```
             [main]
@@ -534,6 +551,12 @@ sudo systemctl enable ntpd.service
             ```
 
             `include=balanced` 表示在现有的 balanced 策略基础上添加操作系统优化配置。
+
+            保存配置后，执行以下命令，确认列表中包含 `balanced-tidb-optimal`。如果未出现，请检查 `tuned.conf` 是否保存在实际策略搜索目录下。
+
+            ```bash
+            tuned-adm list
+            ```
 
         3. 应用新的 tuned 策略。
 
