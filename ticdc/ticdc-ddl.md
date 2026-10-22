@@ -95,7 +95,7 @@ rules = ['test.t*']
 | `RENAME TABLE test.n1 TO test.t1` | 报错，并停止同步。 | 旧表名 test.n1 不符合 filter 规则，但是新表名 test.t1 符合 filter 规则，这是非法操作。请参考错误提示信息进行处理 |
 | `RENAME TABLE ignore.t1 TO test.t1` | 报错，并停止同步。 | 理由同上 |
 
-以上规则适用于新老架构。如果旧表名匹配过滤规则而新表名不匹配，TiCDC 会同步 Rename DDL，随后停止同步该表的后续数据变更，不会额外向下游发送 `DROP TABLE`。如果旧表名不匹配而新表名匹配，TiCDC 会报 `CDC:ErrSyncRenameTableFailed` 错误，因为仅同步 Rename 无法补齐该表此前未同步的数据。
+以上规则适用于新老架构。如果旧表名匹配过滤规则而新表名不匹配，TiCDC 会同步 Rename DDL，随后停止同步该表的后续数据变更。如果旧表名不匹配而新表名匹配，TiCDC 会报 `CDC:ErrSyncRenameTableFailed` 错误，因为仅同步 Rename 无法补齐该表此前未同步的数据。
 
 #### 一条 DDL 语句内 rename 多个表
 
