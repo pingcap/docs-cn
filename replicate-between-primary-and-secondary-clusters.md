@@ -204,7 +204,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
         port = 4000
         user = "root"
         password = ""
-        snapshot = "431434141450371074" # 替换为恢复完成之后的时间点，可执行 SELECT (UNIX_TIMESTAMP(now()) * 1000) << 18 AS tso; 获取当前 TSO
+        snapshot = "" # RESTORE 完成后填入恢复完成之后的时间点，可执行 SELECT (UNIX_TIMESTAMP(now()) * 1000) << 18 AS tso; 获取当前 TSO
 
     ######################### Task config #########################
     [task]
