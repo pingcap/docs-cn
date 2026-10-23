@@ -1769,6 +1769,21 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 > - 对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 以下版本，升级后默认值为 `OFF`。
 > - 启用该参数仅意味着一阶段提交成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
+### `tidb_enable_adaptive_limit_scan` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量用于控制是否对符合条件的有序 `LIMIT` 扫描启用自适应准入控制，以减少执行器为提前停止的查询预取的工作量。当前仅支持有序的 `IndexLookUpJoin` 和直接 `IndexLookUp` 计划。
+- 对于新创建的集群，该变量的默认值为 `ON`。对于从早期版本升级的集群，如果集群中没有该变量的持久化值，升级后默认值为 `OFF`；如果已有显式值，则保留该值。
+- 将该变量设置为 `OFF` 后，后续语句将恢复原有的执行行为。
+
 ### `tidb_enable_analyze_snapshot` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
