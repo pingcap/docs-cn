@@ -5,6 +5,6 @@ approvers:
 
 reviewers:
   - sig-develop-docs-reviewers
-  
+
 labels:
-  - area/develop  
+  - area/develop
