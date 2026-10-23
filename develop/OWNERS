@@ -3,5 +3,8 @@
 approvers:
   - sig-develop-docs-approvers
 
+reviewers:
+  - sig-develop-docs-reviewers
+
 labels:
   - area/develop

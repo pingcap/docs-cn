@@ -2,7 +2,6 @@
 # The members of 'sig-community-*' are synced from memberships defined in repository: https://github.com/pingcap/community.
 aliases:
   sig-develop-docs-approvers:
-    - qiancai
     - seominjea1942
   sig-community-reviewers:
     - 3pointer
