@@ -1,20 +1,6 @@
 # See the OWNERS docs at https://www.kubernetes.dev/docs/guide/owners/#owners_aliases
 # The members of 'sig-community-*' are synced from memberships defined in repository: https://github.com/pingcap/community.
 aliases:
-  sig-develop-docs-approvers:
-    - Oreoxmt
-    - qiancai
-    - ran-huang
-  sig-develop-docs-reviewers:
-    - Icemap
-    - sykp241095
-    - shizn
-    - winkyao
-    - shczhen
-    - hooopo
-    - Mini256
-    - wd0517
-    - it2911
   sig-community-reviewers:
     - 3pointer
     - GMHDBJD
