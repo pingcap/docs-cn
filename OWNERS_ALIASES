@@ -1,9 +1,8 @@
 aliases:
   sig-develop-docs-approvers:
-    - Oreoxmt
-    - qiancai
-    - ran-huang
+    - seominjea1942
   sig-develop-docs-reviewers:
+<<<<<<< HEAD
     - Icemap
     - sykp241095
     - shizn
@@ -13,3 +12,40 @@ aliases:
     - Mini256
     - wd0517
     - it2911
+=======
+    - seominjea1942
+  sig-community-reviewers:
+    - 3pointer
+    - GMHDBJD
+    - Joyinqin
+    - KanShiori
+    - Yisaer
+    - amyangfei
+    - anotherrachel
+    - aylei
+    - crazycs520
+    - dveeden
+    - ericsyh
+    - glkappe
+    - junlan-zhang
+    - lucklove
+    - lysu
+    - ngaut
+    - superlzs0476
+    - tiancaiamao
+    - weekface
+    - zimulala
+  sig-community-approvers:
+    - Icemap
+    - Oreoxmt
+    - breezewish
+    - csuzhangxc
+    - hfxsd
+    - jackysp
+    - kissmydb
+    - lance6716
+    - lilin90
+    - overvenus
+    - qiancai
+    - tangenta
+>>>>>>> 44f09ae6d0 (owners: remove develop docs aliases (#22000))
