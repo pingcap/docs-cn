@@ -162,6 +162,7 @@ TiDB 版本：8.5.5
 
 * 从 v8.5.5 开始，在数据恢复期间，目标表的 Table Mode 会自动设置为 `restore`，处于 `restore` 模式的表禁止用户执行任何读写操作。当数据恢复完成后，Table Mode 会自动切换为 `normal` 状态，用户可以正常读写该表，从而确保数据恢复期间的任务稳定性和数据一致性。
 * 从 v8.5.5 开始，当参数 `--load-stats` 设置为 `false` 时，BR 不再向 `mysql.stats_meta` 表写入恢复表的统计信息。你可以在恢复完成后手动执行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)，以更新相关统计信息。
+* 从 v8.5.5 开始，在 [TiCDC 新架构](/ticdc/ticdc-architecture.md)下启用表级任务拆分（`scheduler.enable-table-across-nodes = true`）后，Storage Sink 的数据文件名格式从 `CDC{num}.{extension}` 变更为 `CDC_{uuid}_{num}.{extension}`，Index 文件名格式从 `CDC.index` 变更为 `CDC_{uuid}.index`。更多信息，请参考 [Storage Sink 文件名变更和消费说明](/ticdc/ticdc-architecture.md#storage-sink-文件名变更和消费说明)。
 
 ### MySQL 兼容性
 
