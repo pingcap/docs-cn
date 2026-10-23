@@ -76,6 +76,49 @@ TiCDC 新架构通过将整体架构拆分成有状态和无状态的两部分�
 - [`scheduler.region-count-per-span`](/ticdc/ticdc-changefeed-config.md#region-count-per-span-从-v854-版本开始引入)：默认值为 `100`。在 Changefeed 初始化阶段，满足拆分条件的表会按照该参数进行拆分。拆分后，每个子表最多包含 `region-count-per-span` 个 Region。
 - [`scheduler.write-key-threshold`](/ticdc/ticdc-changefeed-config.md#write-key-threshold)：默认值为 `0`（表示关闭）。当表的 Sink 写入流量超过该阈值时，TiCDC 会触发拆分。建议保持默认值 `0`。
 
+## Storage Sink 文件名变更和消费说明
+
+从 v8.5.5 起，切换至 TiCDC 新架构并且开启表级任务拆分后，对于 [Storage Sink](/ticdc/ticdc-sink-to-cloud-storage.md)，记录数据变更的文件名格式将从 `CDC{num}.{extension}` 变更为 `CDC_{uuid}_{num}.{extension}`，Index 文件名格式将从 `CDC.index` 变更为 `CDC_{uuid}.index`。其中，`uuid` 用于标识表拆分后的子同步任务，`num` 表示文件序号。
+
+- 数据变更记录路径
+
+    ```
+    {scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC_{uuid}_{num}.{extension}
+    ```
+
+- Index 文件路径
+
+    ```
+    {scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/meta/CDC_{uuid}.index
+    ```
+
+开启表级任务拆分后，在 `{schema}/{table}/{table-version-separator}/` 目录下，同一张表可能存在多个 `uuid` 不同、序号相同的数据文件。例如：
+
+```
+├── metadata
+└── test
+    ├── tbl_1
+    │   ├── 437752935075545091
+    │   │   ├── CDC_11_000001.json
+    │   │   ├── CDC_11_000002.json
+    │   │   ├── CDC_22_000001.json
+    │   │   └── meta
+    │   │       ├── CDC_11.index
+    │   │       └── CDC_22.index
+    │   ├── 437752935075546092
+    │   │   ├── CDC_33_000001.json
+    │   │   ├── CDC_44_000001.json
+    │   │   └── meta
+    │   │       ├── CDC_33.index
+    │   │       └── CDC_44.index
+```
+
+由于多个子同步任务并行写文件，可能会出现某个数据文件尚未完全写入就被下游读取的情况，导致这部分数据未被成功读取。为了避免这种情况，编写下游消费程序时，请按照以下顺序读取数据：
+
+1. 读取各个子同步任务对应的 `meta/CDC_{uuid}.index` 文件（例如，`CDC_11.index`），获取当前已经写入完成的文件名（例如，`CDC_11_000002.json`）。
+2. 依次读取与该 Index 文件对应的 `uuid` 相同，且文件序号小于或等于该文件名中序号的文件（例如，`CDC_11_000001.json` 和 `CDC_11_000002.json`）。
+3. 从所有子任务的文件中读取 DML 事件后，将 DML 事件按 `commit-ts` 排序，然后按排序后的顺序在下游处理。
+
 ## 兼容性说明
 
 TiCDC 新架构除以下特殊说明外，其余部分与老架构完全兼容。
