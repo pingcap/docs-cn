@@ -210,7 +210,10 @@ pd-server 相关配置项。
 
 + 控制 PD 日志脱敏的开关
 + 可选值：`false`、`true`、`"marker"`
-+ 默认值：`false`
++ 默认值：从 v9.0.0 版本开始，默认值为 `true`。在 v9.0.0 版本之前，默认值为 `false`。
++ 开启后，仅对支持脱敏的日志和输出生效，包括 PD 日志、operator 附加信息、[Online Unsafe Recovery](/online-unsafe-recovery.md) 计划和返回给客户端的部分错误信息。operator 附加信息中的 key 会显示为脱敏占位符，而非真实 key。
++ 审计（audit）日志不受此配置项影响，仍记录原始请求内容；少量其他日志仍可能包含原始 key，见 [#11406](https://github.com/tikv/pd/issues/11406)。
++ 该配置项不支持在线修改，修改后需重启 PD 生效。如需关闭脱敏，设置为 `false`。
 + 具体使用方法参见[日志脱敏](/log-redaction.md#pd-组件日志脱敏)。
 
 ## log
