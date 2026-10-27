@@ -98,7 +98,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-drizzle-example/']
 
 1. 在你的 {{{ .starter }}} 实例中创建一张表。
 
-   你可以使用 [TiDB Cloud 控制台的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-chat2query/) 执行 SQL 语句。以下为示例：
+   你可以使用 [TiDB Cloud 控制台的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-sql-editor) 执行 SQL 语句。以下为示例：
 
    ```sql
    CREATE TABLE `test`.`users` (
@@ -208,7 +208,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-drizzle-example/']
 
 1. 在你的 {{{ .starter }}} 集群中创建一张表。
 
-   你可以使用 [TiDB Cloud 控制台的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-chat2query/) 执行 SQL 语句。以下为示例：
+   你可以使用 [TiDB Cloud 控制台的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-sql-editor) 执行 SQL 语句。以下为示例：
 
    ```sql
    CREATE TABLE `test`.`users` (
