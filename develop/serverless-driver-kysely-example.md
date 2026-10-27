@@ -90,7 +90,7 @@ aliases: ['/zh/tidbcloud/serverless-driver-kysely-example/']
 
 1. 在你的 {{{ .starter }}} 实例中创建一张表并插入一些数据。
 
-    你可以使用 [TiDB Cloud 控制台的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-sql-editor) 执行 SQL 语句。以下为示例：
+    你可以使用 [TiDB Cloud 控制台的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-sql-editor/?plan=starter&compatibility=mysql) 执行 SQL 语句。以下为示例：
 
    ```sql
    CREATE TABLE `test`.`person`  (
@@ -202,7 +202,7 @@ mysql://[username]:[password]@[host]/[database]
 
 1. 在你的 {{{ .starter }}} 实例中创建一张表并插入一些数据。
 
-    你可以使用 [TiDB Cloud 控制台的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-sql-editor) 执行 SQL 语句。以下为示例：
+    你可以使用 [TiDB Cloud 控制台的 SQL Editor](https://docs.pingcap.com/tidbcloud/explore-data-with-sql-editor/?plan=starter&compatibility=mysql) 执行 SQL 语句。以下为示例：
 
    ```sql
    CREATE TABLE `test`.`person`  (
