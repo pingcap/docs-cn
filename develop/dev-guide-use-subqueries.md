@@ -88,7 +88,7 @@ WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_year) > 34;
 
 因此在处理过程中，TiDB 会尝试对[关联子查询去关联](/correlated-subquery-optimization.md)，以从执行计划层面上提高查询效率。
 
-例如，假设想要查找那些大于其它相同性别作家的平均年龄的的作家，SQL 语句可以这样写：
+例如，假设想要查找那些大于其它相同性别作家的平均年龄的作家，SQL 语句可以这样写：
 
 ```sql
 SELECT * FROM authors a1 WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_year) > (

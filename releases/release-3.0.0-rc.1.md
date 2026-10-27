@@ -22,7 +22,7 @@ TiDB Ansible 版本：3.0.0-rc.1
     - 利用列之间的顺序相关性提升代价估算准确度，并提供启发式参数 `tidb_opt_correlation_exp_factor` 用于控制在相关性无法被直接用于估算的场景下对索引扫描的偏好程度。[#9839](https://github.com/pingcap/tidb/pull/9839)
     - 当过滤条件中包含相关列时，在抽取复合索引的访问条件时尽可能多地匹配索引的前缀列。[#10053](https://github.com/pingcap/tidb/pull/10053)
     - 用动态规划决定连接的执行顺序，当参与连接的表数量不多于 `tidb_opt_join_reorder_threshold` 时启用。[#8816](https://github.com/pingcap/tidb/pull/8816)
-    - 在构造 Index Join 的的内表中，以复合索引作为访问条件时，尽可能多地匹配索引的前缀列。[#8471](https://github.com/pingcap/tidb/pull/8471)
+    - 在构造 Index Join 的内表中，以复合索引作为访问条件时，尽可能多地匹配索引的前缀列。[#8471](https://github.com/pingcap/tidb/pull/8471)
     - 提升对单列索引上值为 NULL 的行数估算准确度。[#9474](https://github.com/pingcap/tidb/pull/9474)
     - 在逻辑优化阶段消除聚合函数时特殊处理 `GROUP_CONCAT` ，防止产生错误的执行结果。[#9967](https://github.com/pingcap/tidb/pull/9967)
     - 当过滤条件为常量时，正确地将它下推到连接算子的子节点上。[#9848](https://github.com/pingcap/tidb/pull/9848)

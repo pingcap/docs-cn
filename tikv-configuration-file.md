@@ -819,7 +819,7 @@ raftstore 相关的配置项。
 
 ### `raft-log-reserve-max-ticks` <span class="version-mark">从 v5.3 版本开始引入</span>
 
-+ 超过本配置项设置的的 tick 数后，即使剩余 Raft 日志的数量没有达到 `raft-log-gc-threshold` 设置的值，TiKV 也会进行 GC 操作。
++ 超过本配置项设置的 tick 数后，即使剩余 Raft 日志的数量没有达到 `raft-log-gc-threshold` 设置的值，TiKV 也会进行 GC 操作。
 + 默认值：6
 + 最小值：大于 0
 

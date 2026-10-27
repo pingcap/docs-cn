@@ -124,7 +124,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud','/zh/tidb/stable/dev-guide-build
 
 ## 第 3 步：运行 SQL
 
-尝试运行一下你在 TiDB Cloud 上的的第一个 SQL 吧：
+尝试运行一下你在 TiDB Cloud 上的第一个 SQL 吧：
 
 ```sql
 SELECT 'Hello TiDB Cloud!';
