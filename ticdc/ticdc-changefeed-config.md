@@ -218,8 +218,10 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 #### `encoder-concurrency`
 
 - 编码数据时所用编码器的线程数。
-- 该参数在下游为消息队列时生效。从 v8.5.9 起，对于 [TiCDC 新架构](/ticdc/ticdc-architecture.md)，该参数在下游为存储服务时也会生效。
-- 默认值：`32`
+- 默认值：`32`，新老架构的配置默认值相同。
+- 当下游为消息队列时，该参数在新老架构中均生效。
+- 当下游为存储服务时，[TiCDC 老架构](/ticdc/ticdc-classic-architecture.md)固定使用 `8` 个编码器线程，不受该参数控制。[TiCDC 新架构](/ticdc/ticdc-architecture.md)计划从 v8.5.9 起支持该参数；在该支持交付前，也固定使用 `8` 个编码器线程。
+- 新架构支持该参数后，存储服务下游按配置值设置编码器线程数，使用默认配置时为 `32`。对于已有任务中该配置值缺失或为 `0` 的情况，仍使用 `8` 个编码器线程。
 
 #### `enable-kafka-sink-v2`
 

@@ -306,7 +306,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `csv`                         | CSV 配置。（非必选）                                                                                       |
 | `date_separator`              | `STRING` 类型，文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。（非必选）             |
 | `dispatchers`                 | 事件分发配置数组。（非必选）                                                                                     |
-| `encoder_concurrency`         | `INT` 类型。MQ sink 中编码器的线程数。默认值为 `16`。（非必选）                                                          |
+| `encoder_concurrency`         | `INT` 类型。编码器的线程数，配置默认值为 `32`，新老架构相同。下游为消息队列时生效；新架构计划从 v8.5.9 起支持存储服务下游。老架构的存储服务下游固定使用 `8` 个编码器线程。新架构的兼容性说明，参见 [`encoder-concurrency`](/ticdc/ticdc-changefeed-config.md#encoder-concurrency)。（非必选） |
 | `protocol`                    | `STRING` 类型，对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持以下协议：`canal-json`、`open-protocol`、`avro`、`debezium` 和 `simple`。    |
 | `schema_registry`             | `STRING` 类型，schema registry 地址。（非必选）                                                               |
 | `terminator`                  | `STRING` 类型，换行符，用来分隔两个数据变更事件。默认值为空，表示使用 `"\r\n"` 作为换行符。（非必选）                                       |
