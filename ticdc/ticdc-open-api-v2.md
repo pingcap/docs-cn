@@ -306,7 +306,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `csv`                         | CSV 配置。（非必选）                                                                                       |
 | `date_separator`              | `STRING` 类型，文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。（非必选）             |
 | `dispatchers`                 | 事件分发配置数组。（非必选）                                                                                     |
-| `encoder_concurrency`         | `INT` 类型。编码器的线程数，配置默认值为 `32`，新老架构相同。下游为消息队列时生效；新架构计划从 v8.5.9 起支持存储服务下游。老架构的存储服务下游固定使用 `8` 个编码器线程。新架构的兼容性说明，参见 [`encoder-concurrency`](/ticdc/ticdc-changefeed-config.md#encoder-concurrency)。（非必选） |
+| `encoder_concurrency`         | `INT` 类型。编码器的线程数，各类下游的行为说明见下文。（非必选）                                                    |
 | `protocol`                    | `STRING` 类型，对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持以下协议：`canal-json`、`open-protocol`、`avro`、`debezium` 和 `simple`。    |
 | `schema_registry`             | `STRING` 类型，schema registry 地址。（非必选）                                                               |
 | `terminator`                  | `STRING` 类型，换行符，用来分隔两个数据变更事件。默认值为空，表示使用 `"\r\n"` 作为换行符。（非必选）                                       |
@@ -315,6 +315,14 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `cloud_storage_config`        | storage sink 配置。（非必选）                                                                              |
 | `open`                        | Open Protocol 配置。（非必选）                                                                             |
 | `debezium`                    | Debezium Protocol 配置。（非必选）                                                                             |
+
+`sink.encoder_concurrency` 的行为按下游类型和 TiCDC 架构区分：
+
+- 消息队列下游：新老架构均支持配置编码器线程数，默认值为 `32`。
+- 存储服务下游（TiCDC 老架构）：固定使用 `8` 个编码器线程，不受该参数控制。
+- 存储服务下游（TiCDC 新架构）：计划从 v8.5.9 起支持配置编码器线程数。支持前固定使用 `8` 个编码器线程；支持后按该参数的配置值设置线程数，使用默认配置时为 `32`。
+
+新架构支持该参数后，对于已有存储服务任务中该配置值缺失或为 `0` 的情况，仍使用 `8` 个编码器线程。更多信息，参见 [`encoder-concurrency`](/ticdc/ticdc-changefeed-config.md#encoder-concurrency)。
 
 `sink.column_selectors` 是一个数组，元素参数说明如下：
 
