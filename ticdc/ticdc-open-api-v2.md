@@ -167,6 +167,9 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
           ],
           "ignore_update_new_value_expr": "string",
           "ignore_update_old_value_expr": "string",
+          "ignore_update_only_columns": [
+            "string"
+          ],
           "matcher": [
             "string"
           ]
@@ -290,6 +293,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `ignore_sql`                   | `STRING ARRAY` 类型，如 `["^drop", "add column"]` 表示过滤掉以 `DROP` 开头或者包含 `ADD COLUMN` 的 DDL。（非必选） |
 | `ignore_update_new_value_expr` | `STRING ARRAY` 类型，如 `"gender = 'male'"` 表示过滤掉新值 `gender = 'male'` 的 UPDATE DML。（非必选）          |
 | `ignore_update_old_value_expr` | `STRING ARRAY` 类型，如 `"age < 18"` 表示过滤掉旧值 `age < 18` 的 UPDATE DML。（非必选）                        |
+| `ignore_update_only_columns`   | `STRING ARRAY` 类型，从 v8.5.9 版本开始引入，仅适用于 Kafka 下游。如果 UPDATE 事件中发生值变更的列全部包含在该数组中，则过滤掉该事件，例如 `["version", "updated_at"]`。（非必选） |
 | `matcher`                      | `STRING ARRAY` 类型，是一个白名单，如 `["test.worker"]`，表示该过滤规则只应用于 `test` 库中的 `worker` 表。（非必选）             |
 
 `mounter` 参数说明如下：
@@ -413,6 +417,9 @@ curl -X POST -H "Content-type: application/json" http://127.0.0.1:8300/api/v2/ch
           ],
           "ignore_update_new_value_expr": "string",
           "ignore_update_old_value_expr": "string",
+          "ignore_update_only_columns": [
+            "string"
+          ],
           "matcher": [
             "string"
           ]
@@ -598,6 +605,9 @@ curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
           ],
           "ignore_update_new_value_expr": "string",
           "ignore_update_old_value_expr": "string",
+          "ignore_update_only_columns": [
+            "string"
+          ],
           "matcher": [
             "string"
           ]
