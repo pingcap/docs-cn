@@ -106,7 +106,7 @@ Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skippin
 
 TiCDC 的 Kafka Sink URI 参数 `max-message-bytes` 和 Kafka Topic 参数 `max.message.bytes` 需要配套配置。在 Sink URI 中，参数名为 `max-message-bytes`；Kafka Topic 配置名为 `max.message.bytes`。
 
-TiCDC 会根据 Sink URI 路径中的默认 Topic 的 `max.message.bytes` 确定消息大小上限。如果配置了 [Topic 分发器](/ticdc/ticdc-sink-to-kafka.md#topic-分发器)，数据可能发送到另一个 Topic；实际接收消息的 Topic 也必须允许该消息大小。只修改 Sink URI 或其中一个 Topic，仍可能出现消息过大的错误。
+TiCDC 使用 Sink URI 中的 `max-message-bytes` 作为发送消息的上限。如果默认 Topic 的 `max.message.bytes` 更小，Kafka sink 可能将有效上限调整为该值。如果配置了 [Topic 分发器](/ticdc/ticdc-sink-to-kafka.md#topic-分发器)，数据可能发送到另一个 Topic；实际接收消息的 Topic 也必须允许该消息大小。只修改 Sink URI 或其中一个 Topic，仍可能出现消息过大的错误。
 
 先使用 `cdc cli changefeed query` 查看当前 Sink URI 中的默认 Topic，并检查 changefeed 配置中的 Topic 分发规则，确认实际接收消息的 Topic：
 
