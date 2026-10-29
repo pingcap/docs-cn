@@ -33,7 +33,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 - 与[同步部署模式 (DR Auto-Sync)](/two-data-centers-in-one-city-deployment.md) 特性不兼容。
 - 与 TiDB 系统变量 [`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v530-版本开始引入) 不兼容。
 - 由于集群中可能存在[静默 Region](/tikv-configuration-file.md#hibernate-regions)，`scheduling` 微服务在进行主备切换时，为避免冗余调度，集群可能存在最长 [`peer-stale-state-check-interval`](/tikv-configuration-file.md#peer-stale-state-check-interval) 时间内（默认为五分钟）没有调度的现象。
-- `scheduling` 微服务不支持已废弃的 `label-property` 配置，启用 `scheduling` 微服务后，`reject-leader` 类型的 label property 不生效。如需让 Leader 不调度到特定 store，请使用 [Placement Rules](/configure-placement-rules.md) 或 `evict-leader-scheduler`。
+- `scheduling` 微服务不支持已废弃的 `label-property` 配置，启用 `scheduling` 微服务后，`reject-leader` 类型的 label property 不生效。如需让 Leader 不调度到特定 store，请使用 [Placement Rules](/configure-placement-rules.md) 或 `evict-leader-scheduler`。如果没有可用的 `scheduling` 微服务、PD 通过 `enable-scheduling-fallback`（默认开启）自行调度，`label-property` 会重新生效。
 
 ## 使用方法
 
