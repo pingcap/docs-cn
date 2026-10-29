@@ -7,7 +7,7 @@ summary: 安装并配置 TiDB Cloud CLI，然后创建并使用文件系统，�
 
 [TiDB Cloud CLI (`ti`)](https://github.com/tidbcloud/ti-cli) 是一个命令行工具，用于管理 [TiDB Cloud Starter](https://docs.pingcap.com/tidbcloud/select-cluster-tier/?plan=starter#starter) 实例和 [TiDB Cloud Filesystem 中的文件系统](/ai/ti/ti-overview.md#tidb-cloud-filesystem)。它同时支持交互式使用和自动化场景，并以 JSON 作为命令的默认输出格式。
 
-本文档将指导你安装并配置 TiDB Cloud CLI (`ti`)，然后完成一个使用 TiDB Cloud Starter 或 TiDB Cloud Filesystem 的基础工作流。有关 CLI 的概览、功能和支持的工作流，请参见[TiDB Cloud 命令行接口概览](/ai/ti/ti-overview.md)。
+本文档将指导你安装并配置 TiDB Cloud CLI (`ti`)，然后完成一个使用 TiDB Cloud Starter 或 TiDB Cloud Filesystem 的基础工作流。有关 CLI 的概览、功能和支持的工作流，请参见[TiDB Cloud CLI (`ti`) 概述](/ai/ti/ti-overview.md)。
 
 > **Note:**
 >
@@ -130,7 +130,7 @@ TiDB Cloud Filesystem 是一种持久化、可共享的云文件系统，可用�
 2. 在你要使用该文件系统的环境中，将上一步中的所有者令牌设置为 `TI_FS_TOKEN`，然后按如下方式将文件系统挂载到本地路径。该环境可以是你创建文件系统时所在的同一台机器、另一台机器，或 AI agent sandbox。
 
     ```bash
-    # export TI_FS_TOKEN="<owner-token>" # If you are continuing on a different environment as step 1, pass in the TI_FS_TOKEN you get from step 1 here.
+    # export TI_FS_TOKEN="<owner-token>" # If you are continuing in a different environment from step 1, pass in the TI_FS_TOKEN you get from step 1 here.
     mkdir ~/mnt-test
     ti fs mount-file-system --mount-path ~/mnt-test --region aws-us-west-2
     echo 'Hello from TiDB Cloud Filesystem' >> ~/mnt-test/hello.txt
@@ -186,7 +186,7 @@ TiDB Cloud Filesystem 是一种持久化、可共享的云文件系统，可用�
 
 ## 后续步骤 {#what-s-next}
 
-- 阅读[TiDB Cloud 命令行接口概览](/ai/ti/ti-overview.md)，了解 `ti` 管理哪些资源以及何时使用它。
+- 阅读[TiDB Cloud CLI (`ti`) 概述](/ai/ti/ti-overview.md)，了解 `ti` 管理哪些资源以及何时使用它。
 - 按照任务指南管理 [TiDB Cloud Starter](https://docs.pingcap.com/tidbcloud/select-cluster-tier/?plan=starter#starter) 或 [TiDB Cloud Filesystem](https://docs.pingcap.com/tidbcloud-filesystem/manage-filesystem-resources/)。
 - 查阅 [TiDB Cloud CLI 命令参考](/ai/ti/reference/ti-cli-reference.md)，了解命令组、全局选项和 CLI 的共享行为。
 - 了解 [TiDB Cloud CLI 配置与凭证](/ai/ti/reference/ti-configuration-and-credentials.md)，以设置多个配置（Profile）或非交互式身份验证。

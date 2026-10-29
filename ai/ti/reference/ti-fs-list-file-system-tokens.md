@@ -30,8 +30,8 @@ ti fs list-file-system-tokens
 - `--fs-token <string>`：使用文件系统所有者令牌为请求授予权限。如果省略，命令会使用 `TI_FS_TOKEN` 环境变量。如果两者都未提供，则该命令需要 TiDB Cloud API 凭据和 `--file-system-id`。它不会自动使用本地存储的所有者令牌。范围受限令牌不能列出令牌元信息。
 - `--include-expired`：包含已过期的令牌元信息。已被（权限）回收的令牌不会由服务返回。
 - `--help`：显示帮助信息。
-- `--offset <int32>`：设置从 0 开始的令牌偏移 [default: 0]。
-- `--limit <int32>`：设置返回的最大令牌数量，范围为 1 到 200 [default: 50]。
+- `--offset <int32>`：设置从 0 开始的令牌偏移 \[default: 0]。
+- `--limit <int32>`：设置返回的最大令牌数量，范围为 1 到 200 \[default: 50]。
 - `--version`：显示版本信息。
 
 有关所有命令共享的选项，请参见[全局选项](/ai/ti/reference/ti-cli-reference.md#global-options)。
