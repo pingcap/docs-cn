@@ -303,7 +303,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 - 开启后，会在变更数据列前增加 `"is-update"` 列。该列用来标识当前行的变更数据是来自 Update 事件，还是原始的 INSERT/DELETE 事件。如果当前行的变更数据来自 UPDATE 事件，则 `"is-update"` 列为 `true`，否则为 `false`。
 - 默认值：`false`
 
-从 v8.0.0 开始，TiCDC 新增了 Simple Protocol 消息编码协议，以下为该协议的配置参数。关于该协议的详情，请参考 [TiCDC Simple Protocol](/ticdc/ticdc-simple-protocol.md)。
+从 v8.0.0 开始，TiCDC 新增了 Simple Protocol 消息编码协议。关于该协议的详情，请参考 [TiCDC Simple Protocol](/ticdc/ticdc-simple-protocol.md)。
 
 以下为 Simple Protocol 参数，用来控制 bootstrap 消息的发送行为。
 
@@ -326,6 +326,14 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 - 默认值：`true`
 
 #### sink.kafka-config.codec-config
+
+以下配置项用于 Kafka 消息编码器。
+
+##### `avro-include-before-value` <span class="version-mark">从 v8.5.9 版本开始引入</span>
+
+- 是否在 Avro 消息中输出行数据更改前的值。该参数仅适用于 [TiCDC 新架构](/ticdc/ticdc-architecture.md)，且仅在输出协议为 `avro` 时生效。
+- 开启后，Value 中新增 `_ticdc_before` 字段，Update 和 Delete 事件通过该字段输出旧值，Insert 事件中该字段为 `null`。Delete 事件也包含 Value，并通过 `_tidb_op=d` 标识。详情请参考[输出旧值](/ticdc/ticdc-avro-protocol.md#输出旧值)。
+- 默认值：`false`
 
 ##### `encoding-format`
 
