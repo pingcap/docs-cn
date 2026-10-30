@@ -90,7 +90,7 @@ CREATE TABLE `messages` (
     {{< copyable "shell-regular" >}}
 
     ```
-    tiup dmctl --master-addr 172.16.10.71:8261 binlog-schema update -s mysql-01 task-test -d log -t message log.message.sql
+    tiup dmctl --master-addr 172.16.10.71:8261 binlog-schema update -s mysql-01 task-test log messages log.messages.sql
     ```
 
 3. 使用 `resume-task` 命令恢复处于 Paused 状态的同步任务。
