@@ -22,7 +22,6 @@ filters:
     schema-pattern: "test_*"
     table-pattern: "t_*"
     events: ["truncate table", "drop table"]
-    sql-pattern: ["^DROP\\s+PROCEDURE", "^CREATE\\s+PROCEDURE"]
     action: Ignore
 ```
 
@@ -97,19 +96,29 @@ filters:
     action: Do
 ```
 
-### 过滤 TiDB 不支持的 SQL 语句
+### 处理 TiDB 不支持或 DM 无法解析的 SQL 语句
+
+对于 `CREATE PROCEDURE`、`DROP PROCEDURE` 和 `ALTER PROCEDURE`，无需配置过滤规则。DM 会自动跳过这些语句。
+
+在 MySQL 中添加或删除分区时，DM 通常会将变更同步到 TiDB。对于 DM 和 TiDB 都支持的分区操作，无需配置过滤规则。要查看 TiDB 支持分区类型的操作，请参阅[分区管理](/partitioned-table.md#分区管理)。
+
+如果 DM 在处理使用 `ADD PARTITION` 或 `DROP PARTITION` 的 `ALTER TABLE` 语句时报解析错误，并且你不需要将该分区变更同步到 TiDB，则可以使用如下规则跳过该语句。DM 的解析错误并不一定意味着 TiDB 不支持该操作。
+
+当 DM 无法解析某条语句时，它无法应用仅针对特定 schema 或 table 的过滤规则。此时，你需要使用 `schema-pattern: "*"` 且不设置 `table-pattern` 的全局过滤规则。该规则会对迁移任务中所有表的匹配语句生效。
+
+> **警告：**
+>
+> 为避免过滤掉需要迁移的数据，请尽可能严格地配置该全局过滤规则。
+>
+> 以下正则表达式匹配 SQL 文本，包括字符串字面量，因此可能误过滤其他 DDL 语句。例如，如果 `ALTER TABLE ... ADD COLUMN` 语句的默认值中包含 `ADD PARTITION`，该语句也可能被跳过。使用此规则前，请确认这些正则表达式不会匹配任何需要同步的 DDL 语句。
 
 ```
 filters:
-  filter-procedure-rule:
+  filter-partition-rule:
     schema-pattern: "*"
-    sql-pattern: [".*\\s+DROP\\s+PROCEDURE", ".*\\s+CREATE\\s+PROCEDURE", "ALTER\\s+TABLE[\\s\\S]*ADD\\s+PARTITION", "ALTER\\s+TABLE[\\s\\S]*DROP\\s+PARTITION"]
+    sql-pattern: ["ALTER\\s+TABLE[\\s\\S]*ADD\\s+PARTITION", "ALTER\\s+TABLE[\\s\\S]*DROP\\s+PARTITION"]
     action: Ignore
 ```
-
-> **注意：**
->
-> 全局过滤规则的设置必须尽可能严格，以避免过滤掉需要迁移的数据。
 
 ## 探索更多
 
