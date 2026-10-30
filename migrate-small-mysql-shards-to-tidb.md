@@ -153,12 +153,12 @@ routes:
     #   source-regexp: "(.*)"
     #   target-column: "c_source"
 
-# 过滤部分 DDL 事件
+# 过滤部分不兼容的 DDL 事件
 filters:
   sale-filter-rule:
     schema-pattern: "store_*"
     table-pattern: "sale_*"
-    events: ["truncate table", "drop table", "delete"]
+    events: ["truncate table", "drop table"]
     action: Ignore
   store-filter-rule:
     schema-pattern: "store_*"
