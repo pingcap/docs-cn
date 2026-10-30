@@ -100,9 +100,9 @@ filters:
 
 对于 `CREATE PROCEDURE`、`DROP PROCEDURE` 和 `ALTER PROCEDURE`，无需配置过滤规则。DM 会自动跳过这些语句。
 
-在 MySQL 中添加或删除分区时，DM 通常会将变更同步到 TiDB。对于 DM 和 TiDB 都支持的分区操作，无需配置过滤规则。要查看 TiDB 对你的表分区类型支持哪些操作，请参见[分区管理](/partitioned-table.md#分区管理)。
+在 MySQL 中添加或删除分区时，DM 通常会将变更同步到 TiDB。对于 DM 和 TiDB 都支持的分区操作，无需配置过滤规则。要查看 TiDB 支持分区类型的操作，请参阅[分区管理](/partitioned-table.md#分区管理)。
 
-如果 DM 在处理使用 `ADD PARTITION` 或 `DROP PARTITION` 的 `ALTER TABLE` 语句时报告解析错误，并且你不需要将该分区变更同步到 TiDB，则可以使用如下规则跳过该语句。DM 的解析错误并不一定意味着 TiDB 不支持该操作。
+如果 DM 在处理使用 `ADD PARTITION` 或 `DROP PARTITION` 的 `ALTER TABLE` 语句时报解析错误，并且你不需要将该分区变更同步到 TiDB，则可以使用如下规则跳过该语句。DM 的解析错误并不一定意味着 TiDB 不支持该操作。
 
 当 DM 无法解析某条语句时，它无法应用仅针对特定 schema 或 table 的过滤规则。此时，你需要使用 `schema-pattern: "*"` 且不设置 `table-pattern` 的全局过滤规则。该规则会对迁移任务中所有表的匹配语句生效。
 
