@@ -3502,26 +3502,18 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_mem_arbitrator_mode` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-> **警告：**
->
-> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：枚举型
-- 默认值：`disable`
+- 默认值：`priority`
 - 可选值：`disable`、`standard`、`priority`
 - 该变量用于设置 TiDB 实例的内存管理模式，详见 [TiDB 内存控制](/configure-memory-usage.md#内存仲裁模式)。有以下取值：
-    - `disable`（默认值）：表示禁用内存仲裁模式，保持内存资源[先使用后上报](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入)的机制。
+    - `disable`：表示禁用内存仲裁模式，保持内存资源[先使用后上报](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入)的机制。
     - `standard`：表示启用标准内存仲裁模式。SQL 需要使用内存资源时，先向内存仲裁者进行订阅，订阅成功后再分配内存资源。如果订阅失败，SQL 终止执行。
     - `priority`：表示启用基于优先级的内存仲裁模式。SQL 需要使用内存资源时，先向内存仲裁者进行订阅，订阅成功后再分配内存资源。TiDB 根据 SQL 的[资源组优先级](/information-schema/information-schema-resource-groups.md)处理内存资源订阅请求。
 
 ### `tidb_mem_arbitrator_query_reserved` <span class="version-mark">从 v9.0.0 版本开始引入</span>
-
-> **警告：**
->
-> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：SESSION
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
@@ -3532,10 +3524,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 当启用[内存仲裁模式](/configure-memory-usage.md#内存仲裁模式)后，该变量控制 SQL 执行前向内存仲裁者预先订阅的内存资源份额，详见 [TiDB 内存控制](/configure-memory-usage.md#手动保障内存安全)。
 
 ### `tidb_mem_arbitrator_soft_limit` <span class="version-mark">从 v9.0.0 版本开始引入</span>
-
-> **警告：**
->
-> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -3549,10 +3537,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - 整数 `(1, 9223372036854775807]`：指定字节数
 
 ### `tidb_mem_arbitrator_wait_averse` <span class="version-mark">从 v9.0.0 版本开始引入</span>
-
-> **警告：**
->
-> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：SESSION
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否

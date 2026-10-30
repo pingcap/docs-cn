@@ -240,10 +240,6 @@ Golang 自 Go 1.19 版本开始引入 [`GOMEMLIMIT`](https://pkg.go.dev/runtime@
 
 从 v9.0.0 开始，TiDB 引入了内存仲裁模式。该模式在每个 TiDB 实例内引入全局内存仲裁者，通过自上向下地集中管理和调度该实例的内存资源，缓解上述问题。
 
-> **警告：**
->
-> 该功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 你可以通过系统变量 [`tidb_mem_arbitrator_mode`](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 或 TiDB 配置文件参数 `instance.tidb_mem_arbitrator_mode` 开启内存仲裁模式。
 
 - `disable`：表示禁用内存仲裁模式
