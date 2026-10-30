@@ -104,16 +104,16 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
 TiDB 需要充足的内存来运行。如果 TiDB 使用的内存被换出 (swapped out) 然后再换入 (swapped back in)，这可能会导致延迟激增。如果您想保持稳定的性能，建议永久禁用系统 swap，但可能在内存偏小时触发 OOM 问题。如果想避免此类 OOM 问题，则可只将 swap 优先级调低，但不做永久关闭。
 
-- 开启并使用 swap 可能会引入性能抖动问题，对于低延迟、稳定性要求高的数据库服务，建议永久关闭操作系统层 swap。要永久关闭 swap，可使用以下方法：
+- 启用并使用 swap 可能引入性能抖动问题。对于时延敏感和稳定性要求较高的数据库服务，建议永久关闭操作系统层面的 swap。关闭 swap 可以使用以下方法：
 
     - 在操作系统初始化阶段，不单独划分 swap 分区盘。
-    - 如果在操作系统初始化阶段，已经单独划分了 swap 分区盘，并且启用了 swap，则使用以下命令进行关闭：
+    - 如果在操作系统初始化阶段，已经单独划分了 swap 分区盘，并且启用了 swap，则使用以下命令立即关闭 swap：
 
         ```bash
-        echo "vm.swappiness = 0">> /etc/sysctl.conf
-        sysctl -p
-        swapoff -a && swapon -a
+        swapoff -a
         ```
+
+    - 如果希望重启后仍保持 swap 关闭状态，请删除或注释掉 `/etc/fstab` 中对应的 swap 条目。
 
 - 如果主机内存偏小，关闭系统 swap 可能会更容易触发 OOM 问题，可参考以如下方法将 swap 优先级调低，但不做永久关闭：
 
@@ -808,7 +808,7 @@ sudo yum -y install numactl
 1. 使用 TiUP 安装 TiDB 集群，参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)完成 `tidb-test` 集群的部署。如果本地已有集群，可跳过这一步。
 
     ```bash
-    tiup cluster deploy tidb-test v6.1.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+    tiup cluster deploy tidb-test v{{{ .tidb-version }}} ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
     ```
 
 2. 执行 `tiup cluster exec` 命令，以 `sudo` 权限在 `tidb-test` 集群所有目标主机上安装 NUMA。
