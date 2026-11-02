@@ -316,7 +316,7 @@ Topic 表达式的基本规则为 `[tenant_and_namespace][prefix]{schema}[middle
     - 将 `RENAME TABLE test.table1 TO test.table10` 的 DDL 事件发送到名为 `test_table1` 的 topic 中，
     - 将 `RENAME TABLE test.table2 TO test.table20` 的 DDL 事件发送到名为 `test.table2` 的 topic 中。
 
-DDL 消息中的 SQL 文本可能经过格式化或重建。例如，新架构会将 `ALTER TABLE ... RENAME` 改写为带完整库表名的 `RENAME TABLE`，拆分多表 Rename 后的每条 SQL 带尾部分号。消费者解析时需兼容这些形式，详情参见 [DDL SQL 文本的处理](/ticdc/ticdc-ddl.md#ddl-sql-文本的处理)。
+DDL 消息中的 SQL 文本可能经过格式化或重建。例如，新架构会将 `ALTER TABLE ... RENAME` 改写为带完整库表名的 `RENAME TABLE`，拆分多表 Rename 后的每条 SQL 带尾部分号。消费者解析时需兼容这些形式。多表 Rename 拆分后不保证上游单条 DDL 的原子性；互换表名时，消费者需按正确顺序处理所有相关的重命名步骤。详情参见 [Rename table 类型的 DDL 注意事项](/ticdc/ticdc-ddl.md#rename-table-类型的-ddl-注意事项) 和 [DDL SQL 文本的处理](/ticdc/ticdc-ddl.md#ddl-sql-文本的处理)。
 
 ### Partition 分发器
 
