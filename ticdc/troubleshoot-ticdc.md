@@ -113,7 +113,7 @@ TiCDC 使用 Sink URI 中的 `max-message-bytes` 作为发送消息的上限。�
 cdc cli changefeed query --server=http://127.0.0.1:8300 --changefeed-id=test-cf
 ```
 
-以下示例将默认 Topic `default-topic` 和实际接收消息的 Topic `routed-topic` 的上限都设置为 10 MiB。将 Kafka 地址和 Topic 名称替换为实际值；如果没有配置 Topic 分发器，只需修改默认 Topic。
+以下示例将默认 Topic `default-topic` 和一个分发后的 Topic `routed-topic` 的上限都设置为 10 MiB。将 Kafka 地址和 Topic 名称替换为实际值。如果 Topic 分发器会将消息发送到多个 Topic，需要修改所有可能接收消息的 Topic；如果没有配置 Topic 分发器，只需修改默认 Topic。
 
 ```shell
 bin/kafka-configs.sh --bootstrap-server localhost:9092 \
