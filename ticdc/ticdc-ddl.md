@@ -113,7 +113,7 @@ rules = ['test.t*']
 | DDL | 老架构 | 新架构 | 原因 |
 | --- | --- | --- | --- |
 | `RENAME TABLE test.t1 TO test.t2, test.t3 TO test.t4` | 同步 | 同步 | 新旧库表名均匹配过滤规则 |
-| `RENAME TABLE test.t1 TO test.ignore1, test.t3 TO test.ignore2` | 同步 | 同步 | 旧表名和目标库匹配过滤规则。同步 Rename 后，停止同步改名后的表 |
+| `RENAME TABLE test.t1 TO test.ignore1, test.t3 TO test.ignore2` | 同步 | 同步 | 旧表名匹配过滤规则，且目标库在同步范围内。同步 Rename 后，停止同步改名后的表 |
 | `RENAME TABLE test.t1 TO ignore.t1, test.t2 TO test.t22` | 报错 | 同步 | 目标库 `ignore` 不在同步范围内。新架构同步 Rename 后，停止同步 `ignore.t1`，继续同步 `test.t22` |
 | `RENAME TABLE test.t1 TO test.t2, ignore.t1 TO ignore.t2` | 仅同步 `test.t1` 的重命名步骤 | 仅同步 `test.t1` 的重命名步骤 | `ignore.t1` 和 `ignore.t2` 均不匹配过滤规则 |
 | `RENAME TABLE test.t1 TO test.t2, ignore.t1 TO test.t3` | 报错 | 报错 | `ignore.t1` 不匹配而 `test.t3` 匹配过滤规则 |
@@ -133,7 +133,7 @@ TiCDC 会解析、格式化或重建 DDL SQL，因此同步到下游的 SQL 文�
 
 | DDL 或场景 | 新架构的 SQL 文本处理 | 适用条件 |
 | --- | --- | --- |
-| 单表 Rename | 统一重建为带完整库表名的 `RENAME TABLE db.old_table TO db.new_table` | 包括 `ALTER TABLE ... RENAME AS/TO ...` 和普通 `RENAME TABLE ... TO ...`，未启用表路由时也会改写 |
+| 单表 Rename | 统一重建为带完整库表名的 `RENAME TABLE db.old_table TO db.new_table` | 包括 `ALTER TABLE ... RENAME AS ...`、`ALTER TABLE ... RENAME TO ...` 和普通 `RENAME TABLE ... TO ...`，未启用表路由时也会改写 |
 | 多表 Rename | 按原顺序重建为多条单表 `RENAME TABLE`，每条子语句带尾部 `;` | MySQL Sink 接收组合 SQL；Kafka、Pulsar 等逐表输出的路径会将其拆分为多条消息 |
 | 批量建表 | 拆分后的每条 `CREATE TABLE` 语句带尾部 `;` | 上游批量建表产生一个包含多张表的 DDL 事件，且下游按单表事件输出 |
 | `CREATE TABLE ... LIKE ...` | 为 `LIKE` 引用表补全库名 | 原 SQL 未限定引用表的库名，且 DDL 元数据表明引用表与目标表位于不同库 |
