@@ -129,9 +129,9 @@ TiCDC 新架构除以下特殊说明外，其余部分与老架构完全兼容�
 
 ### DDL 同步行为变更
 
-TiCDC 新老架构在 Rename DDL 的同步行为上有以下差异：
+TiCDC 新老架构在 `RENAME` DDL 的同步行为上有以下差异：
 
-- **互换表名**：老架构不支持同步互换表名的 DDL（例如 `RENAME TABLE a TO c, b TO a, c TO b;`），新架构支持通过临时表名完成此类同步。同步时需保留所有相互依赖的重命名步骤。
+- **互换表名**：对于使用中间表名来交换两个表名的 DDL（例如 `RENAME TABLE a TO c, b TO a, c TO b;`），老架构不支持同步，新架构支持同步。同步时，必须保留所有相互依赖的重命名步骤。
 - **表过滤**：两种架构均以旧表名是否匹配过滤规则决定是否同步 Rename。旧表名不匹配而新表名匹配时，Changefeed 会报错并停止同步。对于多表 Rename，老架构还要求目标库位于同步范围内；新架构按各个重命名步骤分别判断。例如，当 `filter.rules = ['test.t*']` 时，新架构可以同步 `RENAME TABLE test.t1 TO ignore.t1, test.t2 TO test.t22;`，随后停止同步改名后的 `ignore.t1`。详情参见 [Rename table 类型的 DDL 注意事项](/ticdc/ticdc-ddl.md#rename-table-类型的-ddl-注意事项)。
 
 ### DDL SQL 文本差异
