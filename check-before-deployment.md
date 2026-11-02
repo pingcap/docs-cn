@@ -106,7 +106,7 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
 - 方案一：禁用 swap，适用于对延迟敏感的工作负载。
 
-    1. 安装操作系统时，不创建 swap 分区或 swap 文件。如果已经启用 swap，请执行以下命令立即禁用：
+    1. 安装操作系统时，不创建 swap 分区或 swap 文件。如果已经启用 swap，请先确认可用内存足以容纳已换出的数据，再执行以下命令禁用：
 
         ```bash
         swapoff -a
@@ -114,13 +114,13 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
     2. 为防止系统启动时启用 swap，请删除或注释掉 `/etc/fstab` 中的所有 swap 条目。
 
-        在使用 `systemd-gpt-auto-generator` 的主机上，即使 `/etc/fstab` 中没有对应条目，与根分区位于同一磁盘上的 GPT swap 分区也可能被自动启用。在这些主机上，执行以下命令列出 swap 单元：
+        在使用 `systemd-gpt-auto-generator` 的主机上，即使 `/etc/fstab` 中没有对应条目，与根分区位于同一磁盘上的 GPT swap 分区也可能被自动启用。在这些主机上，执行以下命令列出 swap 单元文件：
 
         ```bash
-        systemctl list-units --type=swap --all
+        systemctl list-unit-files --type=swap
         ```
 
-        对每个对应的 swap 单元，执行以下命令以防止自动启用。将 `<swap-unit>` 替换为输出中的实际单元名称，例如 `dev-sda2.swap`：
+        对每个需要永久禁用的 swap 单元，执行以下命令以防止自动启用。将 `<swap-unit>` 替换为输出中的实际单元名称，例如 `dev-sda2.swap`：
 
         ```bash
         systemctl mask <swap-unit>
@@ -130,7 +130,7 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
     3. 禁用 swap 后，以及下次重启后，分别执行 `cat /proc/swaps` 进行验证。如果 swap 已禁用，输出应仅包含表头行。
 
-- 方案二：内存不足时保留 swap。
+- 方案二：保留 swap，并降低内核使用 swap 的倾向，适用于主机内存较小的场景。
 
     设置 `vm.swappiness=0` 可降低内核使用 swap 的倾向。此设置不会禁用 swap：内核在内存紧张时仍可能使用 swap。执行以下命令，将设置保存到 `/etc/sysctl.conf` 并使其立即生效：
 
