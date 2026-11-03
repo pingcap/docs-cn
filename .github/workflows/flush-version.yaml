@@ -39,7 +39,7 @@ jobs:
             exit 0
           fi
 
-          if [[ ! "$VERSION" =~ ^(dev|v[0-9]+\.[0-9]+(\.[0-9]+)?)$ ]]; then
+          if [[ ! "$VERSION" =~ ^(dev|stable|v[0-9]+\.[0-9]+(\.[0-9]+)?)$ ]]; then
             echo "Invalid version: expected dev, vMAJOR.MINOR, or vMAJOR.MINOR.PATCH" >&2
             exit 1
           fi
