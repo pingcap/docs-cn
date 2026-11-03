@@ -99,7 +99,13 @@ rules = ['test.t*']
 
 #### 一条 DDL 语句内 rename 多个表
 
-如果一条 DDL 语句重命名多个表，新架构会按单表 Rename 的规则逐个判断：旧表名匹配时同步对应的重命名步骤；新旧表名均不匹配时忽略该步骤；旧表名不匹配而新表名匹配时，Changefeed 会报错并停止同步。老架构还要求需要同步的重命名步骤的目标库位于同步范围内，并且不支持同步互换表名的 Rename DDL。
+如果一条 DDL 语句重命名多个表，新架构会按单表 Rename 的规则逐个判断：
+
+- 如果旧表名匹配过滤规则，TiCDC 会同步对应的重命名步骤。
+- 如果新旧表名均不匹配过滤规则，TiCDC 会忽略该步骤。
+- 如果旧表名不匹配而新表名匹配过滤规则，Changefeed 会报错并停止同步。
+
+此外，老架构还要求每个需要同步的重命名步骤的目标库位于同步范围内，并且不支持同步互换表名的 `RENAME TABLE` 语句。
 
 假设你的 changefeed 的配置文件如下：
 
@@ -113,13 +119,13 @@ rules = ['test.t*']
 | DDL | 老架构 | 新架构 | 原因 |
 | --- | --- | --- | --- |
 | `RENAME TABLE test.t1 TO test.t2, test.t3 TO test.t4` | 同步 | 同步 | 新旧库表名均匹配过滤规则 |
-| `RENAME TABLE test.t1 TO test.ignore1, test.t3 TO test.ignore2` | 同步 | 同步 | 旧表名匹配过滤规则，且目标库在同步范围内。同步 Rename 后，停止同步改名后的表 |
+| `RENAME TABLE test.t1 TO test.ignore1, test.t3 TO test.ignore2` | 同步 | 同步 | 两种架构都要求旧表名匹配过滤规则，老架构还额外要求目标库在同步范围内。同步 Rename 后，TiCDC 停止同步改名后的表的后续数据变更 |
 | `RENAME TABLE test.t1 TO ignore.t1, test.t2 TO test.t22` | 报错 | 同步 | 目标库 `ignore` 不在同步范围内。新架构同步 Rename 后，停止同步 `ignore.t1`，继续同步 `test.t22` |
 | `RENAME TABLE test.t1 TO test.t2, ignore.t1 TO ignore.t2` | 仅同步 `test.t1` 的重命名步骤 | 仅同步 `test.t1` 的重命名步骤 | `ignore.t1` 和 `ignore.t2` 均不匹配过滤规则 |
 | `RENAME TABLE test.t1 TO test.t2, ignore.t1 TO test.t3` | 报错 | 报错 | `ignore.t1` 不匹配而 `test.t3` 匹配过滤规则 |
 | `RENAME TABLE test.t1 TO test.t4, test.t3 TO test.t1, test.t4 TO test.t3` | 报错 | 同步 | 通过临时表名 `test.t4` 交换两个表的名字，新架构保留各个重命名步骤的顺序 |
 
-新架构将一次多表 Rename 作为一个整体协调相关表的同步进度，但下游 SQL 会被重建为多条单表 Rename。MySQL Sink 执行由分号分隔的多条子语句，Kafka 和 Pulsar Sink 则拆分为单表 DDL 消息。因此，下游执行不保证保留上游单条多表 Rename 语句的原子性。使用临时表名互换表名时，需要保留所有相互依赖的步骤，避免通过过滤规则移除其中的步骤。
+新架构会协调一次多表 Rename 涉及的所有表的同步进度，但会将下游 SQL 重建为多条单表 `RENAME TABLE` 语句。MySQL Sink 执行由分号分隔的多条子语句，Kafka 和 Pulsar Sink 则拆分为单表 DDL 消息。因此，下游执行不保证保留上游单条多表 Rename 语句的原子性。使用临时表名互换表名时，需要保留所有相互依赖的步骤，避免通过过滤规则移除其中的步骤。
 
 ### DDL 语句注意事项
 
@@ -152,7 +158,7 @@ TiCDC 会解析、格式化或重建 DDL SQL，因此同步到下游的 SQL 文�
 
 对于 `RENAME TABLE a TO b, c TO d`，按单表事件输出时，老架构第一条 SQL 为 ``RENAME TABLE `db`.`a` TO `db`.`b` ``，新架构为 ``RENAME TABLE `db`.`a` TO `db`.`b`;``。尾部分号来自新架构的多表 DDL 拆分处理。
 
-编写下游消费者或比较新老架构输出时，应解析 SQL 并结合 DDL 类型和库表元数据判断结果，避免依赖 SQL 文本完全相同。库名、表名、索引名及其大小写仍需按具体场景校验，避免忽略名称解析或表路由错误。
+编写下游消费者或比较新老架构输出时，应解析 SQL，并结合 DDL 类型和库表元数据判断其含义，而不是直接比较 SQL 文本。库名、表名、索引名及其大小写仍需按具体场景校验，避免忽略名称解析或表路由错误。
 
 ### 使用 Event Filter 过滤 DDL 事件的注意事项
 
@@ -179,7 +185,7 @@ ignore-event = ["create table", "drop table", "truncate table", "rename table"]
 | `RENAME TABLE test.t1 TO test.t2;` | 忽略 | 同步 | `test.t1` 符合 Event Filter，`RENAME TABLE` 事件被忽略，但不影响 DML 事件的同步  |
 | `RENAME TABLE test.t1 TO test.ignore;` | 忽略 | 忽略 | `test.t1` 符合 Event Filter，`RENAME TABLE` 事件被忽略，`test.ignore` 符合 Table Filter 过滤规则，因此 DDL 和 DML 事件均被忽略  |
 
-使用 `ignore-sql` 过滤多表 Rename 时，需要注意新老架构的匹配输入不同：老架构在拆分为单表 DDL 事件后匹配每条 SQL；新架构逐表应用事件过滤规则时，匹配的是重建后的整组 Rename SQL。如果同一条事件过滤规则的 `matcher` 匹配多张表，`ignore-sql` 匹配到其中一个重命名步骤，也可能过滤该规则覆盖的其他重命名步骤。切换架构前，应检查此类过滤规则的实际匹配结果。
+使用 `ignore-sql` 过滤多表 Rename 时，需要注意新老架构的匹配输入不同。老架构在拆分为单表 DDL 事件后，使用 `ignore-sql` 匹配每条 SQL。新架构逐表应用事件过滤规则时，使用 `ignore-sql` 匹配整个多表重命名操作重建后的 SQL。如果同一条事件过滤规则的 `matcher` 匹配多张表，`ignore-sql` 匹配到其中一个重命名步骤，也可能过滤该规则覆盖的其他重命名步骤。切换架构前，应检查此类过滤规则的实际匹配结果。
 
 > **注意：**
 >
