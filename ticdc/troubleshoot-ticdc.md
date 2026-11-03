@@ -126,7 +126,7 @@ bin/kafka-configs.sh --bootstrap-server localhost:9092 \
   --alter --add-config max.message.bytes=10485760
 ```
 
-分别查询两个 Topic，确认输出中的 `max.message.bytes` 为 `10485760`：
+查询默认 Topic 和所有可能接收消息的分发 Topic，确认各 Topic 的 `max.message.bytes` 已更新为目标值。以下命令对应上述示例；未配置 Topic 分发器时，只需查询默认 Topic。
 
 ```shell
 bin/kafka-configs.sh --bootstrap-server localhost:9092 \
