@@ -104,7 +104,7 @@ Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skippin
 
 ## 使用 TiCDC 同步消息到 Kafka 时 Kafka 报错 `Message was too large`，该如何处理？
 
-TiCDC 的 Kafka Sink URI 参数 `max-message-bytes` 和 Kafka Topic 参数 `max.message.bytes` 需要配套配置。在 Sink URI 中，参数名为 `max-message-bytes`；Kafka Topic 配置名为 `max.message.bytes`。
+遇到此错误时，需要同时检查 TiCDC Kafka Sink URI 中的 `max-message-bytes` 和接收消息的 Kafka Topic 的 `max.message.bytes`，确保两者配置兼容。
 
 TiCDC 使用 Sink URI 中的 `max-message-bytes` 作为发送消息的上限，而 Kafka Topic 的 `max.message.bytes` 限制接收的记录批次（record batch）的大小（启用压缩时为压缩后的大小）。TiCDC 还会根据默认 Topic 的 `max.message.bytes` 调整实际发送上限，并预留协议开销。如果配置了 [Topic 分发器](/ticdc/ticdc-sink-to-kafka.md#topic-分发器)，数据可能发送到另一个 Topic；实际接收消息的 Topic 也必须允许该消息大小。只修改 Sink URI 或其中一个 Topic，仍可能出现消息过大的错误。
 
