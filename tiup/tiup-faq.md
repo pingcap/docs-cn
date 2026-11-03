@@ -21,7 +21,7 @@ TiUP 暂时不支持外部开发的组件，但是 TiUP Team 已经制定了 TiU
 
 ## tiup-playground 和 tiup-cluster 有什么区别？
 
-TiUP Playground 组件主要定位是快速上手和搭建单机的开发环境，支持 Linux/macOS，要运行一个指定版本的 TiUP 集群更加简单。TiUP Cluster 组件主要是部署生产环境集群，通常是一个大规模的集群，还包含运维相关操作。TiUP Playground 部署的 TiDB 集群可能会缺失部分功能和运维操作，不建议用于完整的功能性测试和稳定性测试。
+TiUP Playground 组件主要定位是快速上手和搭建单机的开发环境，支持 Linux/macOS，要运行一个指定版本的 TiUP 集群更加简单。TiUP Cluster 组件主要是部署生产环境集群，通常是一个大规模的集群，还包含运维相关操作。TiUP Playground 部署的 TiDB 集群可能会缺失部分功能和运维操作，不建议用于完整的功能性测试、稳定性测试和性能测试。
 
 ## 怎么样编写 tiup-cluster 组件的拓扑文件？
 
