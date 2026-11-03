@@ -222,7 +222,10 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 - 设置 TiDB Lightning 导入数据的模式。
 - 默认值：`"local"`
 - 可选值：
-    - `"local"`：[物理导入模式 (Physical Import Mode)](/tidb-lightning/tidb-lightning-physical-import-mode.md)。适用于导入 TiB 级以上的数据量。采用该导入模式时，在数据导入期间，下游 TiDB 无法对外提供服务。
+    - `"local"`：[物理导入模式 (Physical Import Mode)](/tidb-lightning/tidb-lightning-physical-import-mode.md)。适用于导入 TiB 级以上的数据量。采用该导入模式时，在数据导入期间，下游 TiDB 只能提供有限服务。如果 TiDB Lightning 版本为 v6.2.0 及以上且 TiDB 版本为 v6.1.0 及以上，TiDB Lightning 默认只会暂停目标表对应 Region 的调度。导入仍可能影响集群性能。
+
+        导入期间，请勿对目标表执行 DDL 或 DML 操作。避免读取目标表，因为读取结果可能不一致。
+
     - `"tidb"`：[逻辑导入模式 (Logical Import Mode)](/tidb-lightning/tidb-lightning-logical-import-mode.md)。适用于导入 TiB 级以下的数据量。采用该导入模式时，在数据导入期间，下游 TiDB 仍可正常提供服务。
 
 #### `parallel-import`
@@ -445,6 +448,7 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 
 - 行尾定界字符，支持一个或多个字符。
 - 默认值：`""`，表示 `"\n"`（换行）和 `"\r\n"`（回车+换行），均表示行尾
+- 如果你设置了 `mydumper.strict-format = true`，则需要将该参数设置为与源文件行尾定界符一致的非空值。若该值为空，TiDB Lightning 会报告配置错误。
 
 #### `header`
 
