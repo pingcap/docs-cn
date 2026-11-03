@@ -50,6 +50,7 @@ ignore-delete-value-expr = "name = 'john'" # 过滤掉包含 name = 'john' 条�
 ignore-insert-value-expr = "id >= 100" # 过滤掉包含 id >= 100 条件的 insert DML
 ignore-update-old-value-expr = "age < 18 or name = 'lili'" # 过滤掉旧值 age < 18 或 name = 'lili' 的 update DML
 ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 gender = 'male' 且 age > 18 的 update DML
+ignore-update-only-columns = ["version", "updated_at"] # 当 update DML 仅变更 version 和 updated_at 列时，过滤掉该事件
 ```
 
 配置参数说明：
@@ -122,6 +123,14 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 - `ignore-insert-value-expr`：配置一个遵循默认 SQL Mode 的 SQL 表达式，用于过滤掉带有指定值的 INSERT 类型的 DML 事件。
 - `ignore-update-old-value-expr`：配置一个遵循默认 SQL Mode 的 SQL 表达式，用于过滤掉带有指定旧值的 UPDATE 类型的 DML 事件。
 - `ignore-update-new-value-expr`：配置一个遵循默认 SQL Mode 的 SQL 表达式，用于过滤掉带有指定新值的 UPDATE 类型的 DML 事件。
+- `ignore-update-only-columns`：指定一组列名，从 v8.5.9 版本开始引入。对于匹配 `matcher` 的表，如果一条 UPDATE 事件中发生值变更的列全部包含在该列表中，TiCDC 会过滤掉该事件；如果任意发生值变更的列不在该列表中，TiCDC 会将该事件发送到下游。该配置仅适用于 Kafka 下游，不影响 INSERT 和 DELETE 事件。
+
+    使用该配置时，请注意以下事项：
+
+    - 即使发生值变更的主键列或唯一键列已包含在列表中，TiCDC 也不会过滤该 UPDATE 事件。
+    - 列名的大小写匹配规则由 Changefeed 配置项 `case-sensitive` 控制。
+    - 如果列表中的列在匹配的表中不存在，TiCDC 会输出警告日志并忽略该列。列表中其他有效列仍会参与过滤判断。
+    - 对于非 Kafka 下游，TiCDC 接受该配置，但不会根据该配置过滤事件。
 
 > **注意：**
 >
