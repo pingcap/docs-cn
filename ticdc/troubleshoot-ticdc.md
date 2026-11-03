@@ -160,7 +160,13 @@ cdc cli changefeed update --server=http://127.0.0.1:8300 --changefeed-id=test-cf
 cdc cli changefeed resume --server=http://127.0.0.1:8300 --changefeed-id=test-cf
 ```
 
-最后确认查询结果中的 Sink URI 包含 `max-message-bytes=10485760`，changefeed 恢复为 `normal`，且 `checkpoint-ts` 持续推进。
+恢复任务后，执行以下命令，确认查询结果中的 Sink URI 包含更新后的 `max-message-bytes` 参数，且 changefeed 状态恢复为 `normal`：
+
+```shell
+cdc cli changefeed query --server=http://127.0.0.1:8300 --changefeed-id=test-cf
+```
+
+间隔一段时间重复查询，确认 `checkpoint-ts` 持续推进，并检查 TiCDC 日志中是否再次出现消息过大的错误。
 
 ## TiCDC 同步时，在下游执行 DDL 语句失败会有什么表现，如何恢复？
 
