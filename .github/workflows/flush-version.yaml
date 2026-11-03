@@ -26,7 +26,7 @@ jobs:
   flush-pdf:
     name: Flush PDF by Version
     runs-on: ubuntu-latest
-    if: contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.actor)
+    if: contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.triggering_actor)
     env:
       CDN_BASE_URL: "https://docs-download.pingcap.com/pdf"
     steps:

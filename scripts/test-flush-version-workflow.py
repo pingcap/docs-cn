@@ -39,7 +39,8 @@ class FlushVersionWorkflowTest(unittest.TestCase):
             self.assertIn(login, condition)
         for former_login in ["hfxsd", "likidu", "Oreoxmt"]:
             self.assertNotIn(former_login, condition)
-        self.assertIn("github.actor", condition)
+        self.assertIn("github.triggering_actor", condition)
+        self.assertNotIn("github.actor", condition)
 
     def test_version_is_passed_as_data(self):
         for step in self.job["steps"]:
