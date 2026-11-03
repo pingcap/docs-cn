@@ -136,16 +136,29 @@ bin/kafka-configs.sh --bootstrap-server localhost:9092 \
   --entity-type topics --entity-name routed-topic --describe
 ```
 
-然后修改 changefeed 的 Sink URI。以下示例使用 `cdc cli changefeed update --sink-uri` 将 `max-message-bytes` 设置为同样的值。`--sink-uri` 接收完整 URI，更新时需要保留原有的协议、认证和其他参数。若 changefeed 正在运行，需要先将其暂停。
+然后修改 changefeed 的 Sink URI。`--sink-uri` 接收完整 URI，更新时需要保留原有的协议、认证和其他参数。以下示例将 `max-message-bytes` 设置为 `10485760`；实际使用时请替换为确定的目标值。
+
+若 changefeed 正在运行，先暂停任务，再查询并确认其状态为 `stopped`。若任务已处于 `stopped` 或 `failed` 状态，可直接执行更新命令。
 
 ```shell
 cdc cli changefeed pause --server=http://127.0.0.1:8300 --changefeed-id=test-cf
+```
 
+```shell
+cdc cli changefeed query --server=http://127.0.0.1:8300 --changefeed-id=test-cf
+```
+
+执行更新命令，检查输出的配置差异，并按提示确认应用：
+
+```shell
 cdc cli changefeed update --server=http://127.0.0.1:8300 --changefeed-id=test-cf \
   --sink-uri='kafka://127.0.0.1:9092/default-topic?protocol=canal-json&max-message-bytes=10485760'
+```
 
+确认更新成功后，再恢复任务：
+
+```shell
 cdc cli changefeed resume --server=http://127.0.0.1:8300 --changefeed-id=test-cf
-cdc cli changefeed query --server=http://127.0.0.1:8300 --changefeed-id=test-cf
 ```
 
 最后确认查询结果中的 Sink URI 包含 `max-message-bytes=10485760`，changefeed 恢复为 `normal`，且 `checkpoint-ts` 持续推进。
