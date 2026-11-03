@@ -78,7 +78,7 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
 
 ## tidb-server 内存占用过高时的报警
 
-当 tidb-server 实例的内存使用量超过内存阈值（默认为总内存量的 70%）且满足以下任一条件时，TiDB 将记录相关状态文件，并打印报警日志。
+未启用内存仲裁模式时，当 tidb-server 实例的内存使用量超过内存阈值（默认为总内存量的 70%）且满足以下任一条件时，TiDB 将记录相关状态文件，并打印报警日志。
 
 - 第一次内存使用量超过内存阈值。
 - 内存使用量超过内存阈值，且距离上一次报警超过 60 秒。
@@ -232,13 +232,17 @@ Golang 自 Go 1.19 版本开始引入 [`GOMEMLIMIT`](https://pkg.go.dev/runtime@
 
 ## 内存仲裁模式
 
-在 TiDB v9.0.0 之前的版本中，[内存控制机制](#如何配置-tidb-server-实例使用内存的阈值)存在下列问题：
+内存仲裁模式从 Self-Managed v9.0.0 和 TiDB-X-CLOUD.202609 开始引入。在此之前，[内存控制机制](#如何配置-tidb-server-实例使用内存的阈值)存在下列问题：
 
 - TiDB 实例内存使用量超过限制时，TiDB 可能随机终止正在运行的 SQL 语句。
 - 内存资源采用先使用后上报的机制，且不同 SQL 之间的内存使用信息相互隔离，TiDB 难以从实例级别统一调度和控制内存资源。
 - 内存压力较大时，Go 垃圾回收 (Garbage Collection, GC) 的开销显著升高，严重时可能导致内存溢出 (OOM) 问题。
 
-从 v9.0.0 开始，TiDB 引入了内存仲裁模式。该模式在每个 TiDB 实例内引入全局内存仲裁者，通过自上向下地集中管理和调度该实例的内存资源，缓解上述问题。
+该模式在每个 TiDB 实例内引入全局内存仲裁者，通过自上向下地集中管理和调度该实例的内存资源，缓解上述问题。
+
+> **警告：**
+>
+> 该功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 你可以通过系统变量 [`tidb_mem_arbitrator_mode`](/system-variables.md#tidb_mem_arbitrator_mode-从-v900-版本开始引入) 或 TiDB 配置文件参数 `instance.tidb_mem_arbitrator_mode` 开启内存仲裁模式。
 
@@ -246,7 +250,7 @@ Golang 自 Go 1.19 版本开始引入 [`GOMEMLIMIT`](https://pkg.go.dev/runtime@
 
 - `standard` 或 `priority`：表示启用内存仲裁模式。启用后：
     - 内存资源的使用按照先订阅后分配的机制，由每个 TiDB 实例内的内存仲裁者统一调度。
-    - 预期 TiDB 实例的整体内存使用量不会超过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的限制，且[内存占用过高时的报警](#tidb-server-内存占用过高时的报警)不再生效。
+    - 预期 TiDB 实例的整体内存使用量不会超过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的限制，且由 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 控制的[内存占用过高时的报警](#tidb-server-内存占用过高时的报警)不再生效。启用内存仲裁后，TiDB 会自动采集 Go heap profile 辅助诊断，详见下文。
     - 以下系统变量的控制行为依旧有效：
         - [`tidb_mem_oom_action`](/system-variables.md#tidb_mem_oom_action-从-v610-版本开始引入)
         - [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)
@@ -319,6 +323,14 @@ TiDB 内部会缓存部分 SQL 的历史最大内存使用量，并在 SQL 下�
 - `Mem Pool Stats`：各类内存池的数量
 - `Runtime Mem Pressure`：内存压力值，即实际内存使用量和已分配内存份额的比率
 - `Waiting Tasks`：排队等待内存分配的各类任务数量
+
+#### 自动采集 Go heap profile
+
+启用内存仲裁模式后，TiDB 会自动采集 Go heap profile（`.pprof`）辅助诊断内存占用。这项采集是诊断机制，不会重新启用由 `tidb_memory_usage_alarm_ratio` 控制的内存报警。
+
+- 常规抓取阈值为实例内存使用量达到 `tidb_server_memory_limit` 的 `70%`、`80%` 和 `85%`；达到 `90%` 后停止常规抓取。
+- 如果 TiDB 实例进入 OOM 风险、仲裁器已分配的内存份额为 `0`，且 `out-of-control` 内存大于 `0`，则每 `30` 秒最多抓取一次紧急 profile。
+- `.pprof` 文件及其 `.meta.json` 元数据保存在 TiDB 日志目录下的 `mem_arbitrator/heap_profiles/`，最多保留最近 `10` 组。若日志文件路径未包含目录，则保存在 `temp-dir/mem_arbitrator-<port>/heap_profiles/`。
 
 [`SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 新增 `Mem_arbitration` 字段，表示 SQL 等待内存资源的总耗时。[TiDB Dashboard 慢查询页面](/dashboard/dashboard-slow-query.md) 中的 `Mem Arbitration` 列也会显示该信息。
 
