@@ -104,16 +104,70 @@ Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skippin
 
 ## 使用 TiCDC 同步消息到 Kafka 时 Kafka 报错 `Message was too large`，该如何处理？
 
-仅在 Sink URI 中为 Kafka 配置 `max-message-bytes` 参数不能有效控制输出到 Kafka 的消息大小，需要在 Kafka server 配置中加入如下配置以增加 Kafka 接收消息的字节数限制。
+遇到此错误时，需要同时检查 TiCDC Kafka Sink URI 中的 `max-message-bytes` 和接收消息的 Kafka Topic 的 `max.message.bytes`，确保两者配置兼容。
 
+TiCDC 使用 Sink URI 中的 `max-message-bytes` 作为发送消息的上限，而 Kafka Topic 的 `max.message.bytes` 限制接收的记录批次（record batch）的大小（启用压缩时为压缩后的大小）。TiCDC 还会根据默认 Topic 的 `max.message.bytes` 调整实际发送上限，并预留协议开销。如果配置了 [Topic 分发器](/ticdc/ticdc-sink-to-kafka.md#topic-分发器)，数据可能发送到另一个 Topic；实际接收消息的 Topic 也必须允许该消息大小。只修改 Sink URI 或其中一个 Topic，仍可能出现消息过大的错误。
+
+先使用 `cdc cli changefeed query` 查看当前 Sink URI 中的默认 Topic，并检查 changefeed 配置中的 Topic 分发规则，确认所有可能接收消息的 Topic：
+
+```shell
+cdc cli changefeed query --server=http://127.0.0.1:8300 --changefeed-id=test-cf
 ```
-# broker 能接收消息的最大字节数
-message.max.bytes=2147483648
-# broker 可复制的消息的最大字节数
-replica.fetch.max.bytes=2147483648
-# 消费者端的可读取的最大消息字节数
-fetch.message.max.bytes=2147483648
+
+以下以 10 MiB（`10485760` 字节）为例，将默认 Topic `default-topic` 和一个分发后的 Topic `routed-topic` 的上限设置为该值。请根据实际消息大小和现有配置确定目标上限；如果现有上限更高，不要直接将其降低为示例值。将命令中的 Kafka 地址、Topic 名称和上限值替换为实际值。如果 Topic 分发器会将消息发送到多个 Topic，需要修改所有可能接收消息的 Topic；如果没有配置 Topic 分发器，只需修改默认 Topic。
+
+```shell
+bin/kafka-configs.sh --bootstrap-server localhost:9092 \
+  --entity-type topics --entity-name default-topic \
+  --alter --add-config max.message.bytes=10485760
+
+bin/kafka-configs.sh --bootstrap-server localhost:9092 \
+  --entity-type topics --entity-name routed-topic \
+  --alter --add-config max.message.bytes=10485760
 ```
+
+查询默认 Topic 和所有可能接收消息的分发 Topic，确认各 Topic 的 `max.message.bytes` 已更新为目标值。以下命令对应上述示例；未配置 Topic 分发器时，只需查询默认 Topic。
+
+```shell
+bin/kafka-configs.sh --bootstrap-server localhost:9092 \
+  --entity-type topics --entity-name default-topic --describe
+
+bin/kafka-configs.sh --bootstrap-server localhost:9092 \
+  --entity-type topics --entity-name routed-topic --describe
+```
+
+然后修改 changefeed 的 Sink URI。`--sink-uri` 接收完整 URI，更新时需要保留原有的协议、认证和其他参数。以下示例将 `max-message-bytes` 设置为 `10485760`；实际使用时请替换为确定的目标值。
+
+若 changefeed 正在运行，先暂停任务，再查询并确认其状态为 `stopped`。若任务已处于 `stopped` 或 `failed` 状态，可直接执行更新命令。
+
+```shell
+cdc cli changefeed pause --server=http://127.0.0.1:8300 --changefeed-id=test-cf
+```
+
+```shell
+cdc cli changefeed query --server=http://127.0.0.1:8300 --changefeed-id=test-cf
+```
+
+执行更新命令，检查输出的配置差异，并按提示确认应用：
+
+```shell
+cdc cli changefeed update --server=http://127.0.0.1:8300 --changefeed-id=test-cf \
+  --sink-uri='kafka://127.0.0.1:9092/default-topic?protocol=canal-json&max-message-bytes=10485760'
+```
+
+确认更新成功后，再恢复任务：
+
+```shell
+cdc cli changefeed resume --server=http://127.0.0.1:8300 --changefeed-id=test-cf
+```
+
+恢复任务后，执行以下命令，确认查询结果中的 Sink URI 包含更新后的 `max-message-bytes` 参数，且 changefeed 状态恢复为 `normal`：
+
+```shell
+cdc cli changefeed query --server=http://127.0.0.1:8300 --changefeed-id=test-cf
+```
+
+间隔一段时间重复查询，确认 `checkpoint-ts` 持续推进，并检查 TiCDC 日志中是否再次出现消息过大的错误。
 
 ## TiCDC 同步时，在下游执行 DDL 语句失败会有什么表现，如何恢复？
 
