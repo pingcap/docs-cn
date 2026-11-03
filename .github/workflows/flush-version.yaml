@@ -20,15 +20,30 @@ on:
       #   options: ['en', 'zh']
       #   description: "The language"
 
+permissions: {}
+
 jobs:
   flush-pdf:
     name: Flush PDF by Version
     runs-on: ubuntu-latest
+    if: contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.triggering_actor)
     env:
-      TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
-      TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
       CDN_BASE_URL: "https://docs-download.pingcap.com/pdf"
     steps:
+      - name: Validate version
+        env:
+          DOCUMENT_TYPE: ${{ inputs.type }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          if [[ "$DOCUMENT_TYPE" == "tidb cloud" ]]; then
+            exit 0
+          fi
+
+          if [[ ! "$VERSION" =~ ^(dev|stable|v[0-9]+\.[0-9]+(\.[0-9]+)?)$ ]]; then
+            echo "Invalid version: expected dev, vMAJOR.MINOR, or vMAJOR.MINOR.PATCH" >&2
+            exit 1
+          fi
+
       - name: Set up Python environment
         uses: actions/setup-python@v6
         with:
@@ -40,9 +55,11 @@ jobs:
 
       - name: Print PDF to a file (tidb)
         if: ${{ inputs.type == 'tidb' }}
+        env:
+          VERSION: ${{ inputs.version }}
         run: |
-          echo "${CDN_BASE_URL}/tidb-${{inputs.version}}-en-manual.pdf" >> links.txt
-          echo "${CDN_BASE_URL}/tidb-${{inputs.version}}-zh-manual.pdf" >> links.txt
+          printf '%s\n' "${CDN_BASE_URL}/tidb-${VERSION}-en-manual.pdf" >> links.txt
+          printf '%s\n' "${CDN_BASE_URL}/tidb-${VERSION}-zh-manual.pdf" >> links.txt
           cat links.txt
 
       - name: Print PDF to a file (tidb cloud)
@@ -53,12 +70,17 @@ jobs:
 
       - name: Print PDF to a file (tidb operator)
         if: ${{ inputs.type == 'tidb operator' }}
+        env:
+          VERSION: ${{ inputs.version }}
         run: |
-          echo "${CDN_BASE_URL}/tidb-in-kubernetes-${{inputs.version}}-en-manual.pdf" >> links.txt
-          echo "${CDN_BASE_URL}/tidb-in-kubernetes-${{inputs.version}}-zh-manual.pdf" >> links.txt
+          printf '%s\n' "${CDN_BASE_URL}/tidb-in-kubernetes-${VERSION}-en-manual.pdf" >> links.txt
+          printf '%s\n' "${CDN_BASE_URL}/tidb-in-kubernetes-${VERSION}-zh-manual.pdf" >> links.txt
           cat links.txt
 
       - name: Refresh URLs
+        env:
+          TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+          TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
         run: |
           cat links.txt | jq -nR '[inputs | select(length>0)]' | tee links.json
           tccli cdn PurgeUrlsCache --Urls "$(cat links.json)" | tee result.json
