@@ -1074,6 +1074,13 @@ summary: 查看 TiDB 所有的系统变量，以及引用这些变量的文档�
 - [TiDB 8.1.1 Release Notes](/releases/release-8.1.1.md)
 - [TiDB 7.4.0 Release Notes](/releases/release-7.4.0.md)
 
+### tidb_columnar_storage_enabled
+
+引用该变量的文档：
+
+- [构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)
+- [系统变量](/system-variables.md#tidb_columnar_storage_enabled-从-v900-版本开始引入)
+
 ### tidb_committer_concurrency
 
 引用该变量的文档：
