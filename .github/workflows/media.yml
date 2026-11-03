@@ -15,7 +15,6 @@ jobs:
     name: Upload media files
     runs-on: ubuntu-latest
     env:
-      COSCLI_PATH: ${{ runner.temp }}/coscli
       COSCLI_SHA256: 7165f2ae16c5f7ac495864c963ca574a76e04ec72680d7bc8a8eee3234d8cf91
       COSCLI_VERSION: 1.0.8
     steps:
@@ -27,6 +26,8 @@ jobs:
       #    printf "%s\n" ${{ secrets.AWS_ACCESS_KEY }} ${{ secrets.AWS_SECRET_KEY }} ${{ secrets.AWS_REGION }} "json" | aws configure
 
       - name: Install coscli
+        env:
+          COSCLI_PATH: ${{ runner.temp }}/coscli
         run: |
           curl --fail --location --silent --show-error \
             --output "$COSCLI_PATH" \
@@ -37,6 +38,7 @@ jobs:
 
       - name: Upload to COS
         env:
+          COSCLI_PATH: ${{ runner.temp }}/coscli
           TENCENTCLOUD_BUCKET_ID: ${{ secrets.TENCENTCLOUD_BUCKET_ID }}
           TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
           TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}

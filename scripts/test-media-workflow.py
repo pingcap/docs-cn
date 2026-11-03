@@ -37,6 +37,7 @@ class MediaWorkflowTest(unittest.TestCase):
 
     def test_coscli_release_and_checksum_are_pinned(self):
         job_env = self.upload_job["env"]
+        self.assertNotIn("COSCLI_PATH", job_env)
         self.assertEqual(job_env["COSCLI_VERSION"], "1.0.8")
         self.assertEqual(
             job_env["COSCLI_SHA256"],
@@ -47,6 +48,11 @@ class MediaWorkflowTest(unittest.TestCase):
         self.assertIn("curl --fail", install)
         self.assertIn("sha256sum --check", install)
         self.assertNotIn("cosbrowser.cloud.tencent.com/software/coscli", install)
+
+    def test_runner_path_is_scoped_to_steps(self):
+        expected = "${{ runner.temp }}/coscli"
+        self.assertEqual(self.install_step["env"]["COSCLI_PATH"], expected)
+        self.assertEqual(self.upload_step["env"]["COSCLI_PATH"], expected)
 
     def test_cos_credentials_are_scoped_to_upload_step(self):
         for name in ["TENCENTCLOUD_SECRET_ID", "TENCENTCLOUD_SECRET_KEY"]:
