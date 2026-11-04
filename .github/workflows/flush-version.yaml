@@ -45,13 +45,13 @@ jobs:
           fi
 
       - name: Set up Python environment
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.12'
           architecture: 'x64'
 
       - name: Install Tencent Cloud CLI
-        run: pip3 install tccli
+        run: pip3 install tccli==3.1.194.1
 
       - name: Print PDF to a file (tidb)
         if: ${{ inputs.type == 'tidb' }}
