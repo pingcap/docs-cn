@@ -17,7 +17,7 @@ aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrat
 
 将所有 SQL 文件放到统一目录下，例如 `/data/my_datasource/` 或 `s3://my-bucket/sql-backup`。默认情况下，TiDB Lightning 会递归搜索该目录及其子目录中符合 `${db_name}.${table_name}.sql` 或 `${db_name}.${table_name}.001.sql` 等命名模式的 SQL 数据文件。
 
-如果你的 SQL 文件使用了不同的命名方式，请配置 [`[[mydumper.files]]`](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配) 来匹配这些文件。自定义规则会禁用默认的文件匹配规则。若希望在使用自定义规则的同时继续匹配符合默认命名模式的文件，请在 `[mydumper]` 下设置 `default-file-rules = true`。否则，自定义规则需要覆盖所有必需的数据文件和表结构文件。
+如果你的 SQL 文件使用了不同的命名方式，请配置 [`[[mydumper.files]]`](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配) 来匹配这些文件。自定义规则会禁用默认的文件匹配规则。若希望在使用自定义规则的同时继续匹配符合默认命名模式的文件，请在 `[mydumper]` 下设置 `default-file-rules = true`。否则，自定义规则需要能涵盖所有必需的数据文件和表结构文件。
 
 ## 第 2 步：定义目标表结构
 
