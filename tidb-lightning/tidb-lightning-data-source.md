@@ -248,11 +248,14 @@ TiDB Lightning 并不完全支持 `LOAD DATA` 语句中的所有配置项。例�
 
 导入文件的大小统一约为 256 MB 时，TiDB Lightning 可达到最佳工作状态。如果导入单个 CSV 大文件，TiDB Lightning 只能使用一个线程来处理，这会降低导入速度。
 
-要解决此问题，可先将 CSV 文件分割为多个文件。对于通用格式的 CSV 文件，在没有读取整个文件的情况下无法快速确定行的开始和结束位置。因此，默认情况下 TiDB Lightning 不会自动分割 CSV 文件。但如果你确定待导入的 CSV 文件符合特定的限制要求，则可以启用 `strict-format` 设置。启用后，TiDB Lightning 会将单个 CSV 大文件分割为单个大小为 256 MB 的多个文件块进行并行处理。
+要解决此问题，可先将 CSV 文件分割为多个文件。对于通用格式的 CSV 文件，在没有读取整个文件的情况下无法快速确定行的开始和结束位置。因此，默认情况下 TiDB Lightning 不会自动分割 CSV 文件。但如果你确定待导入的 CSV 文件符合特定的限制要求，则可以启用 `strict-format` 设置。启用后，TiDB Lightning 会根据 `max-region-size` 将单个 CSV 大文件分割为多个文件块进行并行处理。`max-region-size` 的默认值为 `256MiB`。使用 `strict-format` 时，还需要将 `mydumper.csv.terminator` 设置为源文件实际使用的非空行结束符。
 
 ```toml
 [mydumper]
 strict-format = true
+
+[mydumper.csv]
+terminator = "\n" # 根据源文件实际使用的行结束符，将其设置为 "\n"、"\r" 或 "\r\n"。
 ```
 
 严格格式的 CSV 文件中，每个字段仅占一行，即必须满足以下条件之一：
