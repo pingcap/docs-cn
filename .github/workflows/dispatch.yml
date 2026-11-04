@@ -19,22 +19,52 @@ on:
       - release-4.0
       - release-3.0
 
+permissions: {}
+
 jobs:
   trigger:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Extract sha
-        id: extract
-        shell: bash
+      - name: Trigger docs-staging workflow
+        env:
+          DOCS_STAGING_TOKEN: ${{ secrets.DOCS_STAGING }}
+          SOURCE_BRANCH: ${{ github.ref_name }}
+          SOURCE_REPOSITORY: ${{ github.repository }}
         run: |
-          echo "sha=$(sha=${{ github.sha }}; echo ${sha:0:6})" >> $GITHUB_OUTPUT
+          CURL_CONFIG="$(mktemp "${RUNNER_TEMP}/docs-dispatch.XXXXXX.conf")"
+          PAYLOAD_FILE="$(mktemp "${RUNNER_TEMP}/docs-dispatch.XXXXXX.json")"
+          export CURL_CONFIG PAYLOAD_FILE
+          trap 'rm -f "$CURL_CONFIG" "$PAYLOAD_FILE"' EXIT
 
-      - name: trigger docs-staging workflow
-        run: |
-          curl \
-          -X POST \
-          -H "Accept: application/vnd.github+json" \
-          -H "Authorization: token ${{ secrets.DOCS_STAGING }}" \
-          https://api.github.com/repos/pingcap/docs-staging/actions/workflows/update.yml/dispatches \
-          -d '{"ref":"main","inputs":{"full": "false", "repo":"${{ github.repository }}","branch":"${{ github.ref_name }}"}}'
+          python3 <<'PY'
+          import json
+          import os
+
+          with open(os.environ["CURL_CONFIG"], "w", encoding="utf-8") as config_file:
+              config_file.write(
+                  f'header = "Authorization: Bearer {os.environ["DOCS_STAGING_TOKEN"]}"\n'
+              )
+          os.chmod(os.environ["CURL_CONFIG"], 0o600)
+
+          payload = {
+              "ref": "main",
+              "inputs": {
+                  "full": "false",
+                  "repo": os.environ["SOURCE_REPOSITORY"],
+                  "branch": os.environ["SOURCE_BRANCH"],
+              },
+          }
+          with open(os.environ["PAYLOAD_FILE"], "w", encoding="utf-8") as payload_file:
+              json.dump(payload, payload_file)
+          os.chmod(os.environ["PAYLOAD_FILE"], 0o600)
+          PY
+
+          curl --fail-with-body --silent --show-error \
+            --config "$CURL_CONFIG" \
+            --request POST \
+            --header "Accept: application/vnd.github+json" \
+            --header "Content-Type: application/json" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            --data-binary "@$PAYLOAD_FILE" \
+            https://api.github.com/repos/pingcap/docs-staging/actions/workflows/update.yml/dispatches
