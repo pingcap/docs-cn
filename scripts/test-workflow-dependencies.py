@@ -1,6 +1,7 @@
 """Test dependency integrity controls in maintenance workflows."""
 
 import os
+from http.client import IncompleteRead
 from pathlib import Path
 import runpy
 import subprocess
@@ -93,13 +94,12 @@ class WorkflowDependencyTest(unittest.TestCase):
         self.assertIn(
             'git show "refs/remotes/origin/${branch}:keywords.md"', scripts
         )
+        self.assertIn('${branch}.reason', scripts)
+        self.assertIn('${branch}.parser-sha', scripts)
+        self.assertIn('blob/${parser_sha}/pkg/parser/parser.y', scripts)
         self.assertNotIn('git checkout "$branch"', scripts)
 
-    def test_keyword_download_handles_unknown_charset(self):
-        response = mock.MagicMock()
-        response.headers.get_content_charset.return_value = "unknown-charset"
-        response.read.return_value = b"parser content"
-
+    def run_keyword_download_with_response(self, response):
         original_directory = Path.cwd()
         with tempfile.TemporaryDirectory(prefix="keyword-charset-test-") as directory:
             try:
@@ -125,8 +125,29 @@ class WorkflowDependencyTest(unittest.TestCase):
             finally:
                 os.chdir(original_directory)
 
-        self.assertIn("Failed to download parser file", str(exit_context.exception))
-        self.assertIn("unknown encoding", str(exit_context.exception))
+        return str(exit_context.exception)
+
+    def test_keyword_download_handles_unknown_charset(self):
+        response = mock.MagicMock()
+        response.headers.get_content_charset.return_value = "unknown-charset"
+        response.read.return_value = b"parser content"
+
+        error = self.run_keyword_download_with_response(response)
+        self.assertIn("Failed to download parser file", error)
+        self.assertIn("unknown encoding", error)
+
+    def test_keyword_download_handles_transport_errors(self):
+        for transport_error in [
+            IncompleteRead(b"partial", 20),
+            ConnectionResetError("connection reset"),
+        ]:
+            with self.subTest(error=type(transport_error).__name__):
+                response = mock.MagicMock()
+                response.headers.get_content_charset.return_value = "utf-8"
+                response.read.side_effect = transport_error
+
+                error = self.run_keyword_download_with_response(response)
+                self.assertIn("Failed to download parser file", error)
 
     def test_keyword_download_uses_standard_library(self):
         with tempfile.TemporaryDirectory(prefix="keyword-download-test-") as directory:

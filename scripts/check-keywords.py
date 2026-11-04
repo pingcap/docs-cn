@@ -1,5 +1,6 @@
 #!/bin/python3
 import argparse
+from http.client import IncompleteRead
 import re
 import sys
 from pathlib import Path
@@ -24,7 +25,15 @@ if args.download_from_url:
         with urlopen(args.parser_url, timeout=30) as response:
             encoding = response.headers.get_content_charset() or "utf-8"
             lines = response.read().decode(encoding).splitlines()
-    except (HTTPError, URLError, TimeoutError, UnicodeError, LookupError) as e:
+    except (
+        HTTPError,
+        URLError,
+        TimeoutError,
+        ConnectionError,
+        IncompleteRead,
+        UnicodeError,
+        LookupError,
+    ) as e:
         sys.exit(f"Failed to download parser file: {e}")
 else:
     parser = Path(args.parser_file)

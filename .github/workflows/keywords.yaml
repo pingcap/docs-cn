@@ -42,14 +42,17 @@ jobs:
             if ! ref_line="$(git ls-remote --exit-code https://github.com/pingcap/tidb.git "refs/heads/${branch}")"; then
               echo "::warning::Failed to resolve TiDB branch ${branch}. Skipping."
               echo "skip" > "/tmp/kw-results/${branch}.status"
+              echo "branch resolution failed" > "/tmp/kw-results/${branch}.reason"
               continue
             fi
             parser_sha="${ref_line%%$'\t'*}"
             if [[ ! "$parser_sha" =~ ^[0-9a-f]{40}$ ]]; then
               echo "::warning::Invalid commit SHA for TiDB branch ${branch}. Skipping."
               echo "skip" > "/tmp/kw-results/${branch}.status"
+              echo "invalid branch commit SHA" > "/tmp/kw-results/${branch}.reason"
               continue
             fi
+            echo "$parser_sha" > "/tmp/kw-results/${branch}.parser-sha"
 
             set +e
             output=$(python ./scripts/check-keywords.py \
@@ -63,6 +66,7 @@ jobs:
             elif echo "$output" | grep -q "Failed to download parser file"; then
               echo "::warning::Failed to download parser.y for branch ${branch}. Skipping."
               echo "skip" > "/tmp/kw-results/${branch}.status"
+              echo "parser download failed" > "/tmp/kw-results/${branch}.reason"
             else
               has_failure=true
               echo "fail" > "/tmp/kw-results/${branch}.status"
@@ -85,7 +89,10 @@ jobs:
               status=$(cat "/tmp/kw-results/${branch}.status")
               case "$status" in
                 pass) echo "- **${branch}** — Keywords check result: ✅ pass" ;;
-                skip) echo "- **${branch}** — Keywords check result: ⚠️ skipped (download failed)" ;;
+                skip)
+                  reason=$(cat "/tmp/kw-results/${branch}.reason")
+                  echo "- **${branch}** — Keywords check result: ⚠️ skipped (${reason})"
+                  ;;
                 fail) echo "- **${branch}** — Keywords check result: ❌ mismatch" ;;
               esac
             done
@@ -97,11 +104,12 @@ jobs:
             for branch in $CHECK_BRANCHES; do
               status=$(cat "/tmp/kw-results/${branch}.status")
               if [ "$status" = "fail" ]; then
+                parser_sha=$(cat "/tmp/kw-results/${branch}.parser-sha")
                 error_count=$(wc -l < "/tmp/kw-results/${branch}.errors" | tr -d ' ')
                 echo "## \`${branch}\` — ${error_count} issue(s)"
                 echo
                 echo "Comparing [\`keywords.md\`]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/${branch}/keywords.md)"
-                echo "against [TiDB parser (\`${branch}\`)](https://github.com/pingcap/tidb/blob/${branch}/pkg/parser/parser.y):"
+                echo "against [TiDB parser (\`${branch}\`)](https://github.com/pingcap/tidb/blob/${parser_sha}/pkg/parser/parser.y):"
                 echo
                 echo '```'
                 cat "/tmp/kw-results/${branch}.errors"
