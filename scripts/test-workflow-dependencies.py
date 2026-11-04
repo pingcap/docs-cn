@@ -68,6 +68,12 @@ class WorkflowDependencyTest(unittest.TestCase):
         self.assertNotIn("pip install", scripts)
         self.assertIn("git ls-remote", scripts)
         self.assertIn("${parser_sha}", scripts)
+        self.assertIn('git show "${branch}:keywords.md"', scripts)
+        self.assertNotIn('git checkout "$branch"', scripts)
+
+    def test_keyword_download_handles_unknown_charset(self):
+        script = (ROOT / "scripts/check-keywords.py").read_text()
+        self.assertIn("LookupError", script)
 
     def test_keyword_download_uses_standard_library(self):
         with tempfile.TemporaryDirectory(prefix="keyword-download-test-") as directory:
