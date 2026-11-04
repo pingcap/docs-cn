@@ -323,7 +323,7 @@ alertmanager_servers:
 
 - label 调度配置
 
-    当多个 TiKV 实例部署在同一台物理机上时，机器故障可能会导致某个 Raft Group 丢失默认 3 个副本中的 2 个副本，从而不可用。配置 host 级别的 label 后，PD 可以将副本分散到不同的物理机上，以降低这种风险。
+    当多个 TiKV 实例部署在同一台物理机上时，机器故障可能会导致某个 Raft Group 丢失其默认 3 个副本中的 2 个副本，从而导致该 Raft Group 不可用。配置 host 级别的 label 后，PD 可以将副本分散到不同的物理机上，以降低这种风险。
 
     - TiKV 配置
 
