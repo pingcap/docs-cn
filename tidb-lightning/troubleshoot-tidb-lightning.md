@@ -35,7 +35,7 @@ TiDB Lightning 的正常速度为每条线程每 2 分钟导入一个 256 MB 的
 strict-format = true
 
 [mydumper.csv]
-terminator = "\n" # 或 "\r" 或 "\r\n"，取决于源文件实际使用的行结束符。
+terminator = "\n" # 根据源文件实际使用的行结束符，将其设置为 "\n"、"\r" 或 "\r\n"。
 ```
 
 **原因 4**：TiDB Lightning 版本太旧。
