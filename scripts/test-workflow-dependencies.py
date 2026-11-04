@@ -2,9 +2,12 @@
 
 import os
 from pathlib import Path
+import runpy
 import subprocess
+import sys
 import tempfile
 import unittest
+from unittest import mock
 
 import yaml
 
@@ -68,12 +71,43 @@ class WorkflowDependencyTest(unittest.TestCase):
         self.assertNotIn("pip install", scripts)
         self.assertIn("git ls-remote", scripts)
         self.assertIn("${parser_sha}", scripts)
-        self.assertIn('git show "${branch}:keywords.md"', scripts)
+        self.assertIn(
+            'git show "refs/remotes/origin/${branch}:keywords.md"', scripts
+        )
         self.assertNotIn('git checkout "$branch"', scripts)
 
     def test_keyword_download_handles_unknown_charset(self):
-        script = (ROOT / "scripts/check-keywords.py").read_text()
-        self.assertIn("LookupError", script)
+        response = mock.MagicMock()
+        response.headers.get_content_charset.return_value = "unknown-charset"
+        response.read.return_value = b"parser content"
+
+        original_directory = Path.cwd()
+        with tempfile.TemporaryDirectory(prefix="keyword-charset-test-") as directory:
+            try:
+                os.chdir(directory)
+                with (
+                    mock.patch(
+                        "urllib.request.urlopen"
+                    ) as mocked_urlopen,
+                    mock.patch.object(
+                        sys,
+                        "argv",
+                        [
+                            "check-keywords.py",
+                            "--download_from_url",
+                            "--parser_url",
+                            "https://example.invalid/parser.y",
+                        ],
+                    ),
+                    self.assertRaises(SystemExit) as exit_context,
+                ):
+                    mocked_urlopen.return_value.__enter__.return_value = response
+                    runpy.run_path(str(ROOT / "scripts/check-keywords.py"))
+            finally:
+                os.chdir(original_directory)
+
+        self.assertIn("Failed to download parser file", str(exit_context.exception))
+        self.assertIn("unknown encoding", str(exit_context.exception))
 
     def test_keyword_download_uses_standard_library(self):
         with tempfile.TemporaryDirectory(prefix="keyword-download-test-") as directory:

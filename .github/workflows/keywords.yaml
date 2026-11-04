@@ -37,7 +37,7 @@ jobs:
           has_failure=false
 
           for branch in $CHECK_BRANCHES; do
-            git show "${branch}:keywords.md" > keywords.md
+            git show "refs/remotes/origin/${branch}:keywords.md" > keywords.md
 
             if ! ref_line="$(git ls-remote --exit-code https://github.com/pingcap/tidb.git "refs/heads/${branch}")"; then
               echo "::warning::Failed to resolve TiDB branch ${branch}. Skipping."
