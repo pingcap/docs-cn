@@ -77,9 +77,6 @@ jobs:
     needs: upload
     runs-on: ubuntu-latest
     name: Refresh CDN Cache
-    env:
-      TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
-      TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
@@ -94,4 +91,7 @@ jobs:
         run: pipx install tccli==3.1.194.1
 
       - name: Purge production CDN cache
+        env:
+          TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+          TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
         run: tccli cdn PurgePathCache --Paths '["https://docs-download.pingcap.com/media/images/docs-cn/"]' --FlushType delete

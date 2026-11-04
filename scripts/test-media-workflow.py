@@ -24,6 +24,11 @@ class MediaWorkflowTest(unittest.TestCase):
         cls.upload_step = next(
             step for step in cls.upload_job["steps"] if step.get("name") == "Upload to COS"
         )
+        cls.purge_step = next(
+            step
+            for step in cls.refresh_job["steps"]
+            if step.get("name") == "Purge production CDN cache"
+        )
 
     def test_workflow_has_read_only_repository_access(self):
         self.assertEqual(self.workflow["permissions"], {"contents": "read"})
@@ -122,6 +127,15 @@ Path(os.environ["MOCK_RESULT"]).write_text(str(config_path))
             if step.get("name") == "Install Tencent Cloud CLI"
         )
         self.assertEqual(install["run"], "pipx install tccli==3.1.194.1")
+
+    def test_cdn_credentials_are_scoped_to_purge_step(self):
+        self.assertNotIn("env", self.refresh_job)
+        for name in ["TENCENTCLOUD_SECRET_ID", "TENCENTCLOUD_SECRET_KEY"]:
+            expression = "${{ secrets." + name + " }}"
+            self.assertEqual(self.purge_step["env"][name], expression)
+            for step in self.refresh_job["steps"]:
+                if step is not self.purge_step:
+                    self.assertNotIn(name, step.get("env", {}))
 
 
 if __name__ == "__main__":
