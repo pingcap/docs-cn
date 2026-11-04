@@ -6,12 +6,19 @@ on:
       - release-*
     paths:
       - media/**
+
+permissions:
+  contents: read
+
 jobs:
   upload:
     name: Upload media files
     runs-on: ubuntu-latest
+    env:
+      COSCLI_SHA256: 7165f2ae16c5f7ac495864c963ca574a76e04ec72680d7bc8a8eee3234d8cf91
+      COSCLI_VERSION: 1.0.8
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       #- name: Configure awscli
       #  run: |
       #    pip3 install --upgrade setuptools
@@ -19,40 +26,72 @@ jobs:
       #    printf "%s\n" ${{ secrets.AWS_ACCESS_KEY }} ${{ secrets.AWS_SECRET_KEY }} ${{ secrets.AWS_REGION }} "json" | aws configure
 
       - name: Install coscli
+        env:
+          COSCLI_PATH: ${{ runner.temp }}/coscli
         run: |
-          wget https://cosbrowser.cloud.tencent.com/software/coscli/coscli-linux-amd64
-          mv coscli-linux-amd64 coscli
-          chmod 755 coscli
+          curl --fail --location --silent --show-error \
+            --output "$COSCLI_PATH" \
+            "https://github.com/tencentyun/coscli/releases/download/v${COSCLI_VERSION}/coscli-v${COSCLI_VERSION}-linux-amd64"
+          echo "${COSCLI_SHA256}  ${COSCLI_PATH}" | sha256sum --check -
+          chmod 755 "$COSCLI_PATH"
+          "$COSCLI_PATH" --version
 
       - name: Upload to COS
+        env:
+          COSCLI_PATH: ${{ runner.temp }}/coscli
+          TENCENTCLOUD_BUCKET_ID: ${{ secrets.TENCENTCLOUD_BUCKET_ID }}
+          TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+          TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
         run: |
-          ./coscli sync media/ cos://${{ secrets.TENCENTCLOUD_BUCKET_ID }}/media/images/docs-cn \
-            --init-skip \
+          COSCLI_CONFIG="$(mktemp "${RUNNER_TEMP}/coscli.XXXXXX.yaml")"
+          export COSCLI_CONFIG
+          trap 'rm -f "$COSCLI_CONFIG"' EXIT
+
+          python3 <<'PY'
+          import json
+          import os
+
+          config = {
+              "cos": {
+                  "base": {
+                      "disableencryption": "true",
+                      "mode": "SecretKey",
+                      "protocol": "https",
+                      "secretid": os.environ["TENCENTCLOUD_SECRET_ID"],
+                      "secretkey": os.environ["TENCENTCLOUD_SECRET_KEY"],
+                  }
+              }
+          }
+          with open(os.environ["COSCLI_CONFIG"], "w", encoding="utf-8") as config_file:
+              json.dump(config, config_file)
+          os.chmod(os.environ["COSCLI_CONFIG"], 0o600)
+          PY
+
+          "$COSCLI_PATH" sync media/ "cos://${TENCENTCLOUD_BUCKET_ID}/media/images/docs-cn" \
+            --config-path "$COSCLI_CONFIG" \
             --recursive \
             --routines 16 \
-            --secret-id ${{ secrets.TENCENTCLOUD_SECRET_ID }} \
-            --secret-key ${{ secrets.TENCENTCLOUD_SECRET_KEY }} \
             --endpoint cos.ap-beijing.myqcloud.com
 
   cdn-refresh:
     needs: upload
     runs-on: ubuntu-latest
     name: Refresh CDN Cache
-    env:
-      TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
-      TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
       - name: Set up Python environment
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.12'
           architecture: 'x64'
 
       - name: Install Tencent Cloud CLI
-        run: pipx install tccli
+        run: pipx install tccli==3.1.194.1
 
       - name: Purge production CDN cache
+        env:
+          TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+          TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
         run: tccli cdn PurgePathCache --Paths '["https://docs-download.pingcap.com/media/images/docs-cn/"]' --FlushType delete
