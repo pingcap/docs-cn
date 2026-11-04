@@ -1,9 +1,11 @@
 #!/bin/python3
 import argparse
-import requests
+from http.client import IncompleteRead
 import re
 import sys
 from pathlib import Path
+from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
 
 aparser = argparse.ArgumentParser()
 aparser.add_argument(
@@ -20,10 +22,18 @@ args = aparser.parse_args()
 if args.download_from_url:
     try:
         print(f"Fetching {args.parser_url}")
-        r = requests.get(args.parser_url, timeout=30)
-        r.raise_for_status()
-        lines = r.text.splitlines()
-    except requests.RequestException as e:
+        with urlopen(args.parser_url, timeout=30) as response:
+            encoding = response.headers.get_content_charset() or "utf-8"
+            lines = response.read().decode(encoding).splitlines()
+    except (
+        HTTPError,
+        URLError,
+        TimeoutError,
+        ConnectionError,
+        IncompleteRead,
+        UnicodeError,
+        LookupError,
+    ) as e:
         sys.exit(f"Failed to download parser file: {e}")
 else:
     parser = Path(args.parser_file)

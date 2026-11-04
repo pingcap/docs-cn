@@ -21,17 +21,14 @@ jobs:
     if: github.repository == 'pingcap/docs-cn'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: "3.x"
-
-      - name: Install dependencies
-        run: pip install requests
 
       - name: Check keywords for all branches
         id: check
@@ -40,12 +37,27 @@ jobs:
           has_failure=false
 
           for branch in $CHECK_BRANCHES; do
-            git checkout "$branch" --quiet
+            git show "refs/remotes/origin/${branch}:keywords.md" > keywords.md
+
+            if ! ref_line="$(git ls-remote --exit-code https://github.com/pingcap/tidb.git "refs/heads/${branch}")"; then
+              echo "::warning::Failed to resolve TiDB branch ${branch}. Skipping."
+              echo "skip" > "/tmp/kw-results/${branch}.status"
+              echo "branch resolution failed" > "/tmp/kw-results/${branch}.reason"
+              continue
+            fi
+            parser_sha="${ref_line%%$'\t'*}"
+            if [[ ! "$parser_sha" =~ ^[0-9a-f]{40}$ ]]; then
+              echo "::warning::Invalid commit SHA for TiDB branch ${branch}. Skipping."
+              echo "skip" > "/tmp/kw-results/${branch}.status"
+              echo "invalid branch commit SHA" > "/tmp/kw-results/${branch}.reason"
+              continue
+            fi
+            echo "$parser_sha" > "/tmp/kw-results/${branch}.parser-sha"
 
             set +e
             output=$(python ./scripts/check-keywords.py \
               --download_from_url \
-              --parser_url "https://github.com/pingcap/tidb/raw/refs/heads/${branch}/pkg/parser/parser.y" 2>&1)
+              --parser_url "https://raw.githubusercontent.com/pingcap/tidb/${parser_sha}/pkg/parser/parser.y" 2>&1)
             exit_code=$?
             set -e
 
@@ -54,6 +66,7 @@ jobs:
             elif echo "$output" | grep -q "Failed to download parser file"; then
               echo "::warning::Failed to download parser.y for branch ${branch}. Skipping."
               echo "skip" > "/tmp/kw-results/${branch}.status"
+              echo "parser download failed" > "/tmp/kw-results/${branch}.reason"
             else
               has_failure=true
               echo "fail" > "/tmp/kw-results/${branch}.status"
@@ -76,7 +89,10 @@ jobs:
               status=$(cat "/tmp/kw-results/${branch}.status")
               case "$status" in
                 pass) echo "- **${branch}** — Keywords check result: ✅ pass" ;;
-                skip) echo "- **${branch}** — Keywords check result: ⚠️ skipped (download failed)" ;;
+                skip)
+                  reason=$(cat "/tmp/kw-results/${branch}.reason")
+                  echo "- **${branch}** — Keywords check result: ⚠️ skipped (${reason})"
+                  ;;
                 fail) echo "- **${branch}** — Keywords check result: ❌ mismatch" ;;
               esac
             done
@@ -88,11 +104,12 @@ jobs:
             for branch in $CHECK_BRANCHES; do
               status=$(cat "/tmp/kw-results/${branch}.status")
               if [ "$status" = "fail" ]; then
+                parser_sha=$(cat "/tmp/kw-results/${branch}.parser-sha")
                 error_count=$(wc -l < "/tmp/kw-results/${branch}.errors" | tr -d ' ')
                 echo "## \`${branch}\` — ${error_count} issue(s)"
                 echo
                 echo "Comparing [\`keywords.md\`]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/${branch}/keywords.md)"
-                echo "against [TiDB parser (\`${branch}\`)](https://github.com/pingcap/tidb/blob/${branch}/pkg/parser/parser.y):"
+                echo "against [TiDB parser (\`${branch}\`)](https://github.com/pingcap/tidb/blob/${parser_sha}/pkg/parser/parser.y):"
                 echo
                 echo '```'
                 cat "/tmp/kw-results/${branch}.errors"
@@ -113,7 +130,7 @@ jobs:
 
       - name: Create issue
         if: steps.check.outputs.has_failure == 'true'
-        uses: peter-evans/create-issue-from-file@v6
+        uses: peter-evans/create-issue-from-file@fca9117c27cdc29c6c4db3b86c48e4115a786710 # v6
         with:
           title: "Weekly keywords check: mismatches found"
           content-filepath: keywords-report.md

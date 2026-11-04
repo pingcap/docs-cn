@@ -5,31 +5,35 @@ on:
   schedule:
     - cron: "0 0 * * 0" # auto flush pdf on sunday
 
+permissions:
+  contents: read
+
 jobs:
   flush-pdf:
     name: Flush PDF
     runs-on: ubuntu-latest
-    env:
-      TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
-      TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
       - name: Set up Python environment
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.12'
           architecture: 'x64'
 
       - name: Install Tencent Cloud CLI
-        run: pip3 install tccli
+        run: pip3 install tccli==3.1.194.1
 
-      - name: Download PDF list
-        run: |
-          curl https://raw.githubusercontent.com/pingcap/docs-cn/master/resources/cdnfresh.txt --output cdnfresh.txt
-          cat cdnfresh.txt
+      - name: Print PDF list
+        run: cat resources/cdnfresh.txt
 
       - name: Refresh URLs
+        env:
+          TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+          TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
         run: |
-          cat cdnfresh.txt | jq -nR '[inputs | select(length>0)]' | tee cdnfresh.json
+          jq -nR '[inputs | select(length>0)]' < resources/cdnfresh.txt | tee cdnfresh.json
           tccli cdn PurgeUrlsCache --Urls "$(cat cdnfresh.json)" | tee result.json
           task_id="$(cat result.json | jq .TaskId)"
           if [ -z "${task_id}" ]; then
