@@ -13,7 +13,14 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
-WORKFLOW_NAMES = ["flush.yaml", "flush-version.yaml", "link.yaml", "keywords.yaml"]
+# media.yml is covered by the separate media workflow hardening change.
+WORKFLOW_NAMES = [
+    "flush.yaml",
+    "flush-version.yaml",
+    "link.yaml",
+    "link-fail-fast.yaml",
+    "keywords.yaml",
+]
 
 
 class WorkflowDependencyTest(unittest.TestCase):
@@ -61,6 +68,18 @@ class WorkflowDependencyTest(unittest.TestCase):
         self.assertTrue((ROOT / ".lycheeignore").is_file())
         self.assertNotIn("raw.githubusercontent.com", scripts)
         self.assertNotIn("Download Exclude Path", scripts)
+
+    def test_link_issue_write_permission_is_isolated(self):
+        workflow = self.workflows["link.yaml"]
+        self.assertEqual(workflow["permissions"], {"contents": "read"})
+        self.assertEqual(
+            workflow["jobs"]["linkChecker"]["permissions"],
+            {"contents": "read"},
+        )
+        self.assertEqual(
+            workflow["jobs"]["createIssue"]["permissions"],
+            {"actions": "read", "contents": "read", "issues": "write"},
+        )
 
     def test_keywords_has_no_runtime_package_install(self):
         workflow = self.workflows["keywords.yaml"]
