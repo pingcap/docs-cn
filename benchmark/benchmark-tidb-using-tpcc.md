@@ -53,7 +53,7 @@ tiup bench tpcc -H 172.16.5.140,172.16.5.141 -P 4000 -D tpcc --warehouses 1000 -
 
 基于不同的机器配置，这个过程可能会持续几个小时。如果是小型集群，可以使用较小的 WAREHOUSE 值进行测试。
 
-数据导入完成后，可以通过命令 `tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 4 check` 验证数据正确性。
+数据导入完成后，可以通过命令 `tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 check` 验证数据正确性。
 
 ## 运行测试
 
@@ -86,12 +86,12 @@ tiup bench tpcc -H 172.16.5.140,172.16.5.141 -P 4000 -D tpcc --warehouses 1000 -
 [Summary] STOCK_LEVEL - Takes(s): 487.6, Count: 41, TPM: 5.0, Sum(ms): 9318, Avg(ms): 227, 90th(ms): 512, 99th(ms): 1000, 99.9th(ms): 1000
 ```
 
-测试完成之后，也可以运行 `tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 4 check` 进行数据正确性验证。
+测试完成之后，也可以运行 `tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 check` 进行数据正确性验证。
 
 ## 清理测试数据
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 4 cleanup
+tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 cleanup
 ```

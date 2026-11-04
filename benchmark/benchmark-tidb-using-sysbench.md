@@ -95,19 +95,9 @@ db-driver=mysql
 
 > **注意：**
 >
-> 如果 TiDB 启用了乐观事务模型（默认为悲观锁模式），当发现并发冲突时，会回滚事务。将 `tidb_disable_txn_auto_retry` 设置为 `off` 会开启事务冲突后的自动重试机制，可以尽可能避免事务冲突报错导致 Sysbench 程序退出的问题。
+> 从 v8.0.0 开始，TiDB 不再支持对显式乐观事务进行自动重试。如果乐观事务冲突导致 Sysbench 停止运行，请切换为悲观事务模式，或在客户端应用中实现事务重试。
 
-在数据导入前，需要对 TiDB 进行简单设置。在 MySQL 客户端中执行如下命令：
-
-{{< copyable "sql" >}}
-
-```sql
-set global tidb_disable_txn_auto_retry = off;
-```
-
-然后退出客户端。
-
-重新启动 MySQL 客户端执行以下 SQL 语句，创建数据库 `sbtest`：
+在 MySQL 客户端中执行以下 SQL 语句，创建名为 `sbtest` 的数据库：
 
 {{< copyable "sql" >}}
 
