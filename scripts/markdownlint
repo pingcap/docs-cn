@@ -2,11 +2,16 @@
 
 cd "$(dirname "$0")/.."
 
-if ! program=$(command -v markdownlint) &>/dev/null ; then
-  program=./node_modules/.bin/markdownlint
-  if ! test -x "$program"; then
-    npm ci --ignore-scripts
-  fi
+program=./node_modules/.bin/markdownlint
+expected_version=$(node -p 'require("./package-lock.json").packages["node_modules/markdownlint-cli"].version')
+installed_version=
+
+if test -x "$program"; then
+  installed_version=$(node "$program" --version)
+fi
+
+if [[ "$installed_version" != "$expected_version" ]]; then
+  npm ci --ignore-scripts --include=dev
 fi
 
 exec node "$program" "$@"

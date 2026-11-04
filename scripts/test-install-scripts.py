@@ -25,7 +25,9 @@ class InstallScriptTest(unittest.TestCase):
 
     def test_markdownlint_uses_clean_locked_install(self):
         script = (ROOT / "scripts/markdownlint").read_text()
-        self.assertIn("npm ci --ignore-scripts", script)
+        self.assertIn("npm ci --ignore-scripts --include=dev", script)
+        self.assertIn('packages["node_modules/markdownlint-cli"].version', script)
+        self.assertIn('node "$program" --version', script)
         self.assertNotIn("npm install", script)
         self.assertNotIn("rm -f package-lock.json", script)
 
