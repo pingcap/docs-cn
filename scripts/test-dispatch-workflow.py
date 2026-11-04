@@ -92,6 +92,49 @@ Path(os.environ["MOCK_RESULT"]).write_text(f"{config_path}\\n{payload_path}\\n")
             for path in result_file.read_text().splitlines():
                 self.assertFalse(Path(path).exists())
 
+    def test_dispatch_cleans_up_private_files_when_curl_fails(self):
+        with tempfile.TemporaryDirectory(prefix="dispatch-workflow-test-") as directory:
+            workdir = Path(directory)
+            mock_curl = workdir / "curl"
+            result_file = workdir / "result"
+            mock_curl.write_text(
+                """#!/usr/bin/env python3
+import os
+from pathlib import Path
+import sys
+
+config_path = Path(sys.argv[sys.argv.index("--config") + 1])
+payload_arg = sys.argv[sys.argv.index("--data-binary") + 1]
+payload_path = Path(payload_arg[1:])
+Path(os.environ["MOCK_RESULT"]).write_text(f"{config_path}\\n{payload_path}\\n")
+sys.exit(22)
+"""
+            )
+            mock_curl.chmod(0o755)
+
+            result = subprocess.run(
+                [
+                    "bash", "--noprofile", "--norc", "-eo", "pipefail", "-c",
+                    self.step["run"],
+                ],
+                cwd=workdir,
+                env={
+                    **os.environ,
+                    "DOCS_STAGING_TOKEN": "dummy-token",
+                    "MOCK_RESULT": str(result_file),
+                    "PATH": f"{workdir}:{os.environ['PATH']}",
+                    "RUNNER_TEMP": str(workdir),
+                    "SOURCE_BRANCH": "master",
+                    "SOURCE_REPOSITORY": "pingcap/docs-cn",
+                },
+                capture_output=True,
+                text=True,
+                timeout=5,
+            )
+            self.assertEqual(result.returncode, 22)
+            for path in result_file.read_text().splitlines():
+                self.assertFalse(Path(path).exists())
+
 
 if __name__ == "__main__":
     unittest.main()
