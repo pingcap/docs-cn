@@ -254,7 +254,7 @@ TiDB Lightning 并不完全支持 `LOAD DATA` 语句中的所有配置项。例�
 strict-format = true
 
 [mydumper.csv]
-terminator = "\n" # 或 "\r" 或 "\r\n"，取决于源文件实际使用的行结束符。
+terminator = "\n" # 根据源文件实际使用的行结束符，将其设置为 "\n"、"\r" 或 "\r\n"。
 ```
 
 严格格式的 CSV 文件中，每个字段仅占一行，即必须满足以下条件之一：

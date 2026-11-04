@@ -117,7 +117,7 @@ pd-addr = "${ip}:${port}" # 集群 PD 的地址，Lightning 通过 PD 获取部�
 strict-format = true
 
 [mydumper.csv]
-terminator = "\n" # 或 "\r" 或 "\r\n"，取决于源文件实际使用的行结束符。
+terminator = "\n" # 根据源文件实际使用的行结束符，将其设置为 "\n"、"\r" 或 "\r\n"。
 ```
 
 ## 第 5 步：执行导入
