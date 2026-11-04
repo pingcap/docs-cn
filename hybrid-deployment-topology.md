@@ -323,7 +323,7 @@ alertmanager_servers:
 
 - label 调度配置
 
-    由于采用单机多实例部署 TiKV，为了避免物理机宕机导致 Region Group 默认 3 副本的 2 副本丢失，导致集群不可用的问题，可以通过 label 来实现 PD 智能调度，保证同台机器的多 TiKV 实例不会出现 Region Group 只有 2 副本的情况。
+    当多个 TiKV 实例部署在同一台物理机上时，机器故障可能会导致某个 Raft Group 丢失其默认 3 个副本中的 2 个副本，从而导致该 Raft Group 不可用。配置 host 级别的 label 后，PD 可以将副本分散到不同的物理机上，以降低这种风险。
 
     - TiKV 配置
 
@@ -346,11 +346,10 @@ alertmanager_servers:
 
 - `numa_node` 绑核
 
-    - 在实例参数模块配置对应的 `numa_node` 参数，并添加对应的物理 CPU 的核数；
-
+    - 在实例配置中，将 `numa_node` 设置为 NUMA 节点 ID，例如 `"0"` 或 `"0,1"`。
     - numa 绑核使用前，确认已经安装 numactl 工具，以及物理机对应的物理机 CPU 的信息后，再进行参数配置；
 
-    - `numa_node` 这个配置参数与 `numactl --membind` 配置对应。
+    - 配置 `numa_node` 后，TiUP 会通过 `numactl` 将该实例的 CPU 和内存绑定到指定的 NUMA 节点。
 
 > **注意：**
 >
