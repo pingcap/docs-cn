@@ -346,7 +346,6 @@ alertmanager_servers:
 - `numa_node` 绑核
 
     - 在实例配置中，将 `numa_node` 设置为 NUMA 节点 ID，例如 `"0"` 或 `"0,1"`。
-    
     - numa 绑核使用前，确认已经安装 numactl 工具，以及物理机对应的物理机 CPU 的信息后，再进行参数配置；
 
     - `numa_node` 参数对应 `numactl` 配置的 CPU 和内存绑定策略。
