@@ -11,7 +11,7 @@ if test -x "$program"; then
 fi
 
 if [[ "$installed_version" != "$expected_version" ]]; then
-  npm ci --ignore-scripts --include=dev
+  npm ci --ignore-scripts --include=dev || exit 1
 fi
 
 exec node "$program" "$@"
