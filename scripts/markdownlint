@@ -2,17 +2,10 @@
 
 cd "$(dirname "$0")/.."
 
-if ! program=$(which markdownlint) &>/dev/null ; then
+if ! program=$(command -v markdownlint) &>/dev/null ; then
   program=./node_modules/.bin/markdownlint
-  if ! test -f ./node_modules/.bin/markdownlint; then
-    had_lock=
-    if test -f package-json.lock ; then
-      had_lock=true
-    fi
-    npm install --save-dev 'markdownlint-cli@0.17.0'
-    if [[ -z "$had_lock"  ]] ; then
-      rm -f package-lock.json
-    fi
+  if ! test -x "$program"; then
+    npm ci --ignore-scripts
   fi
 fi
 
