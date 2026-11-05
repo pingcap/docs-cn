@@ -25,7 +25,10 @@ assert "stats auth admin:pingcap123" not in HAPROXY
 assert "bind <management-ip>:8080" in HAPROXY
 assert "stats auth <admin-user>:<strong-password>" in HAPROXY
 assert "不要将 HAProxy 监控页面直接暴露到公网" in HAPROXY
-assert not re.search(r"^\s*stats\s+admin\b", HAPROXY, re.MULTILINE)
+assert not re.search(
+    r"^\s*stats\s+admin\s+if\s+TRUE\b", HAPROXY, re.IGNORECASE | re.MULTILINE
+)
+assert "stats admin if AUTH_ADMIN" in HAPROXY
 assert "监控页面保持为只读" in HAPROXY
 
 assert all(
@@ -44,10 +47,13 @@ assert "不要选择 **Skip**" in GRAFANA
 assert '--web.listen-address="127.0.0.1:9090"' in GRAFANA
 assert "--web.enable-admin-api" not in GRAFANA
 assert "不启用 Prometheus 管理 API" in GRAFANA
+assert "将 `--web.external-url` 设置为" in GRAFANA
 
-assert "systemctl stop firewalld" not in FIREWALL
-assert "systemctl disable firewalld" not in FIREWALL
-assert "--set-default-zone trusted" not in FIREWALL
+assert not re.search(r"systemctl\s+(?:stop|disable)\b[^\n]*\bfirewalld\b", FIREWALL)
+assert not re.search(r"--set-default-zone(?:=|\s+)trusted\b", FIREWALL)
 assert "仅允许可信来源访问必需端口" in FIREWALL
+assert "--add-rich-rule" in FIREWALL
+assert "<management-network-cidr>" in FIREWALL
+assert "firewall-cmd --reload" in FIREWALL
 
 print("admin credential guidance checks passed")

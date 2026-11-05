@@ -152,7 +152,7 @@ rule_files:
     --storage.tsdb.retention="15d" &
 ```
 
-此示例仅监听本机回环地址，且不启用 Prometheus 管理 API。由于 Grafana 与 Prometheus 均部署在 Node1 上，Grafana 可以通过本机地址访问 Prometheus。如果需要从其他机器访问 Prometheus，请勿直接监听所有网络接口，而应通过受信任的管理网络以及启用 TLS 和身份验证的反向代理提供访问，并使用防火墙或安全组限制来源地址。
+此示例仅监听本机回环地址，且不启用 Prometheus 管理 API。由于 Grafana 与 Prometheus 均部署在 Node1 上，Grafana 可以通过本机地址访问 Prometheus。如果需要从其他机器访问 Prometheus，请先将 `--web.external-url` 设置为反向代理提供的 HTTPS URL，并确保路径前缀与代理配置一致。请勿直接监听所有网络接口，而应通过受信任的管理网络以及启用 TLS 和身份验证的反向代理提供访问，并使用防火墙或安全组限制来源地址。
 
 ### 第 4 步：在 Node1 上启动 Grafana
 

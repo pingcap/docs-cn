@@ -180,58 +180,57 @@ sudo firewall-cmd --state
 sudo systemctl status firewalld.service
 ```
 
-如果 `firewalld` 未运行，启动服务并将其配置为开机自动启动：
+如果使用 `firewalld` 作为主机防火墙，且该服务未运行，请启动服务并将其配置为开机自动启动。如果已使用其他主机防火墙或等效网络访问控制，请不要执行以下命令；请在现有控制中配置相同的来源和端口限制：
 
 ```bash
 sudo systemctl enable --now firewalld.service
 ```
 
-使用以下命令为 TiDB 集群组件配置防火墙。这些示例仅供参考，请根据实际环境调整区域名称、可信来源、端口和服务。对于状态、监控和管理端口，还应使用来源地址规则将访问范围限制在管理网络内。
+使用以下命令为 TiDB 集群组件配置防火墙。这些 IPv4 示例使用 rich rules 限制来源地址。执行前，必须将 `<application-network-cidr>`、`<cluster-network-cidr>` 和 `<management-network-cidr>` 替换为实际的可信网段；如果使用 IPv6，请配置等效的 IPv6 规则。
 
-为 TiDB 组件配置防火墙：
+允许应用网络访问 TiDB SQL 端口，并仅允许管理网络访问 TiDB 状态端口：
 
 ```bash
-firewall-cmd --permanent --new-service tidb
-firewall-cmd --permanent --service tidb --set-description="TiDB Server"
-firewall-cmd --permanent --service tidb --set-short="TiDB"
-firewall-cmd --permanent --service tidb --add-port=4000/tcp
-firewall-cmd --permanent --service tidb --add-port=10080/tcp
-firewall-cmd --permanent --zone=public --add-service=tidb
+sudo firewall-cmd --permanent --zone=public \
+  --add-rich-rule='rule family="ipv4" source address="<application-network-cidr>" port port="4000" protocol="tcp" accept'
+sudo firewall-cmd --permanent --zone=public \
+  --add-rich-rule='rule family="ipv4" source address="<management-network-cidr>" port port="10080" protocol="tcp" accept'
 ```
 
-为 TiKV 组件配置防火墙：
+允许集群网络访问 TiKV 服务端口，并仅允许管理网络访问 TiKV 状态端口：
 
 ```bash
-firewall-cmd --permanent --new-service tikv
-firewall-cmd --permanent --service tikv --set-description="TiKV Server"
-firewall-cmd --permanent --service tikv --set-short="TiKV"
-firewall-cmd --permanent --service tikv --add-port=20160/tcp
-firewall-cmd --permanent --service tikv --add-port=20180/tcp
-firewall-cmd --permanent --zone=public --add-service=tikv
+sudo firewall-cmd --permanent --zone=public \
+  --add-rich-rule='rule family="ipv4" source address="<cluster-network-cidr>" port port="20160" protocol="tcp" accept'
+sudo firewall-cmd --permanent --zone=public \
+  --add-rich-rule='rule family="ipv4" source address="<management-network-cidr>" port port="20180" protocol="tcp" accept'
 ```
 
-为 PD 组件配置防火墙：
+仅允许集群网络访问 PD 客户端和节点通信端口：
 
 ```bash
-firewall-cmd --permanent --new-service pd
-firewall-cmd --permanent --service pd --set-description="PD Server"
-firewall-cmd --permanent --service pd --set-short="PD"
-firewall-cmd --permanent --service pd --add-port=2379/tcp
-firewall-cmd --permanent --service pd --add-port=2380/tcp
-firewall-cmd --permanent --zone=public --add-service=pd
+sudo firewall-cmd --permanent --zone=public \
+  --add-rich-rule='rule family="ipv4" source address="<cluster-network-cidr>" port port="2379-2380" protocol="tcp" accept'
 ```
 
-为 Prometheus 配置防火墙：
+仅允许管理网络访问 Prometheus：
 
 ```bash
-firewall-cmd --permanent --zone=public --add-service=prometheus
-firewall-cmd --permanent --service=prometheus --add-port=12020/tcp
+sudo firewall-cmd --permanent --zone=public \
+  --add-rich-rule='rule family="ipv4" source address="<management-network-cidr>" port port="12020" protocol="tcp" accept'
 ```
 
-为 Grafana 配置防火墙：
+仅允许管理网络访问 Grafana：
 
 ```bash
-firewall-cmd --permanent --zone=public --add-service=grafana
+sudo firewall-cmd --permanent --zone=public \
+  --add-rich-rule='rule family="ipv4" source address="<management-network-cidr>" port port="3000" protocol="tcp" accept'
+```
+
+添加所有永久规则后，重新加载 `firewalld` 使规则立即生效：
+
+```bash
+sudo firewall-cmd --reload
 ```
 
 ## 检测及安装 NTP 服务

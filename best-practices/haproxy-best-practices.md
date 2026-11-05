@@ -199,7 +199,26 @@ listen tidb-cluster                        # 配置 database 负载均衡。
 >
 > - 启动 HAProxy 前，必须将 `<management-ip>`、`<admin-user>` 和 `<strong-password>` 替换为实际值。请为监控页面设置唯一的强密码，不要使用示例密码、默认密码或其他系统已使用的密码。
 > - 通过防火墙或安全组将 `8080` 端口限制在受信任的管理网络内，不要将 HAProxy 监控页面直接暴露到公网。`stats auth` 使用 HTTP Basic Authentication；如果未通过传输层安全协议（Transport Layer Security，TLS）或其他受保护的管理通道访问，用户名和密码可能被网络中的其他方截获。
-> - 此示例将监控页面保持为只读。不要向所有通过身份验证的账户授予启用或禁用后端服务器的权限。如确需通过监控页面管理后端服务器，请使用独立的管理员身份和访问控制列表，并记录管理操作。
+> - 此示例将监控页面保持为只读。不要向所有通过身份验证的账户授予启用或禁用后端服务器的权限。
+
+如确需通过监控页面管理后端服务器，请删除示例中的 `stats auth` 配置，并使用 `userlist` 和 ACL 将只读账户与管理员账户分开。例如：
+
+```haproxy
+userlist stats-users
+   group admins users <admin-user>
+   group readers users <read-only-user>
+   user <admin-user> password <admin-password-hash>
+   user <read-only-user> password <read-only-password-hash>
+
+listen admin_stats
+   # ...其余监控页面配置...
+   acl AUTH http_auth(stats-users)
+   acl AUTH_ADMIN http_auth_group(stats-users) admins
+   stats http-request auth unless AUTH
+   stats admin if AUTH_ADMIN
+```
+
+不要使用无条件的 `TRUE` 管理规则。请保留 HTTP 请求日志，并将日志发送到受保护的集中式日志系统，以便审计管理操作。
 
 如要通过 `SHOW PROCESSLIST` 查看连接来源 IP，需要配置使用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)连接 TiDB。
 
