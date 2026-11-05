@@ -300,7 +300,7 @@ summary: 了解如何将数据从一个 TiDB 集群迁移至另一 TiDB 集群�
 2. 创建下游到上游集群的 changefeed。由于此时上下游数据是一致的，且没有新数据写入，因此可以不指定 start-ts，默认为当前时间：
 
     ```shell
-    tiup cdc cli changefeed create --server=http://172.16.6.125:8300 --sink-uri="mysql://root:@172.16.6.122:4000" --changefeed-id="downstream -to-upstream"
+    tiup cdc cli changefeed create --server=http://172.16.6.125:8300 --sink-uri="mysql://root:@172.16.6.122:4000" --changefeed-id="downstream-to-upstream"
     ```
 
 3. 将写业务迁移到下游集群，观察一段时间后，等新集群表现稳定，便可以弃用原集群。
