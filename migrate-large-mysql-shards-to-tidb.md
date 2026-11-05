@@ -9,14 +9,14 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB，�
 
 如果分库分表合并迁移在 1 TiB 以内，请参考[从小数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-small-mysql-shards-to-tidb.md)，支持全量和增量且更为简单。
 
-在本文的示例中，假设有两个数据库 my_db1 和 my_db2，使用 Dumpling 分别从 my_db1 中导出 table1 和 table2 两个表，从 my_db2 中导出 table3 和 table4 两个表，然后再用 TiDB Lightning 把导出的 4 个表合并导入到下游 TiDB 中的同一个库 my_db 的同一个表格 table5 中。
+在本文的示例中，假设有两个数据库 my_db1 和 my_db2，使用 Dumpling 分别从 my_db1 中导出 table1 和 table2 两个表，从 my_db2 中导出 table3 和 table4 两个表，然后再用 TiDB Lightning 把导出的 4 个表合并导入到目标 TiDB 集群中的 `my_db.table5`。
 
 本文将以三个步骤演示导入流程：
 
 1. 使用 Dumpling 导出全量数据备份。在本文档示例中，分别从两个源数据库中各导出两个表：
     - 从实例 1 MySQL 的 my_db1 导出 table1、table2
     - 从实例 2 MySQL 的 my_db2 导出 table3、table4
-2. 启动 TiDB Lightning 执行导入 TiDB 中的 mydb.table5
+2. 启动 TiDB Lightning 将数据导入 TiDB 中的 `my_db.table5`
 3. 使用 DM 进行增量数据迁移（可选）
 
 ## 前提条件
@@ -113,12 +113,13 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
 ### 在下游创建 schema
 
-在下游创建 `mydb.table5`。
+在下游创建 `my_db.table5`。
 
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE `table5` (
+CREATE DATABASE IF NOT EXISTS `my_db`;
+CREATE TABLE `my_db`.`table5` (
   `id` bigint NOT NULL,
   `sid` bigint NOT NULL,
   `pid` bigint NOT NULL,

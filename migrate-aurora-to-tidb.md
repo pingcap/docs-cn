@@ -256,13 +256,13 @@ mysql-instances:
 在你启动数据迁移任务之前，建议使用 `check-task` 命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率：
 
 ```shell
-tiup dmctl --master-addr ${advertise-addr} check-task task.yaml
+tiup dmctl --master-addr ${advertise-addr} check-task task1.yaml
 ```
 
 使用 `tiup dmctl` 执行以下命令启动数据迁移任务。
 
 ```shell
-tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
+tiup dmctl --master-addr ${advertise-addr} start-task task1.yaml
 ```
 
 该命令中的参数描述如下：
