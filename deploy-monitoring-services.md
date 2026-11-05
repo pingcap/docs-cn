@@ -206,7 +206,9 @@ url = https://grafana.net
 
 ```
 
-启动 Grafana 前，必须将 `<grafana-admin-user>` 和 `<grafana-strong-password>` 替换为自定义的管理员用户名和唯一的强密码。示例使用三个双引号包裹密码，以确保 `#` 和 `;` 被解析为密码字符而不是注释。不要使用 `admin` 作为密码，也不要将实际密码提交到版本控制系统。`admin_user` 和 `admin_password` 仅在首次启动并创建管理员账号时生效。对于已有的 Grafana 实例，请在 Grafana 中修改密码。
+启动 Grafana 前，必须将 `<grafana-admin-user>` 和 `<grafana-strong-password>` 替换为自定义的管理员用户名和唯一的强密码。示例使用三个双引号包裹密码，以确保 `#` 和 `;` 被解析为密码字符而不是注释。Grafana 会展开配置值中的 `${NAME}`、`$__env{NAME}` 和 `$__file{PATH}`，即使这些表达式位于三个双引号内也不例外，因此请勿在密码中使用这些表达式。不要使用 `admin` 作为密码，也不要将实际密码提交到版本控制系统。`admin_user` 和 `admin_password` 仅在首次启动并创建管理员账号时生效。对于已有的 Grafana 实例，请在 Grafana 中修改密码。
+
+编辑完成后，由启动 Grafana 的同一系统用户执行 `chmod 600 conf/grafana.ini`，确保只有该用户能够读取和修改包含管理员密码的配置文件。
 
 启动 Grafana 服务：
 
