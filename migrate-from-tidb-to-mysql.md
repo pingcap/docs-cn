@@ -173,7 +173,7 @@ summary: 了解如何将数据从 TiDB 集群迁移至与 MySQL 兼容的数据�
     >
     > 创建 changefeed 前，请先确认每个需要同步的表至少具有一个[有效索引](/ticdc/ticdc-overview.md#有效索引)：主键，或者所有列都显式定义为 `NOT NULL` 且不存在虚拟生成列的唯一索引。默认情况下，TiCDC 不会同步没有有效索引的表中的数据变更。后续再添加有效索引，只会让之后的数据变更开始同步，不会补回此前已跳过的变更。更多信息，请参见 [DDL 白名单](/ticdc/ticdc-ddl.md#ddl-白名单)。
     >
-    > 对于没有有效索引的表，建议优先补充有效索引。或者，你也可以在 changefeed 配置文件中将 [`force-replicate`](/ticdc/ticdc-changefeed-config.md#force-replicate) 设置为 `true`，并在创建 changefeed 时通过 `--config` 指定该配置文件。但该选项不能保证数据一致性，并且可能导致数据重复。
+    > 对于没有有效索引的表，建议优先补充有效索引。或者，你也可以在 changefeed 配置文件开头（所有 `[xxx]` 配置段之前）添加 [`force-replicate = true`](/ticdc/ticdc-changefeed-config.md#force-replicate)，并在创建 changefeed 时通过 `--config` 指定该配置文件。但该选项不能保证数据一致性，并且可能导致数据重复。
 
     在上游集群中，执行以下命令创建从上游到下游集群的同步链路：
 
