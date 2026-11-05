@@ -16,11 +16,14 @@ jobs:
   review:
     runs-on: ubuntu-latest
     if: >
-      github.event_name == 'workflow_dispatch' ||
+      contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.triggering_actor) &&
       (
-        github.event_name == 'issue_comment' &&
-        contains(github.event.comment.body, '/bot-review') &&
-        (github.event.comment.user.login == 'lilin90' || github.event.comment.user.login == 'qiancai' || github.event.comment.user.login == 'seominjea1942')
+        github.event_name == 'workflow_dispatch' ||
+        (
+          github.event_name == 'issue_comment' &&
+          contains(github.event.comment.body, '/bot-review') &&
+          contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.event.comment.user.login)
+        )
       )
     steps:
 

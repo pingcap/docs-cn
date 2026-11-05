@@ -24,7 +24,8 @@ env:
 jobs:
   sync-docs:
     runs-on: ubuntu-latest
-    if: contains(fromJson('["hfxsd","likidu","lilin90","Oreoxmt","qiancai"]'), github.actor)
+    # Check the rerun initiator, not the actor that started the original run.
+    if: contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.triggering_actor)
 
     steps:
       - name: Checkout current repository
