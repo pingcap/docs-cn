@@ -1,9 +1,5 @@
 name: Sync AI Docs from EN to ZH
 
-concurrency:
-  group: sync-ai-docs-en-to-zh
-  cancel-in-progress: true
-
 on:
   schedule:
     - cron: "0 0 * * 4" # Runs at 08:00 every Thursday (Beijing time, UTC+8)
@@ -45,6 +41,9 @@ env:
 
 jobs:
   translate:
+    concurrency:
+      group: sync-ai-docs-en-to-zh
+      cancel-in-progress: true
     # Scheduled first attempts run automatically; reruns and manual runs require an active maintainer.
     if: >
       github.repository == 'pingcap/docs-cn' &&
