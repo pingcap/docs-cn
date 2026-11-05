@@ -42,6 +42,8 @@ PR_SYNC_CONDITION = """
 contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.triggering_actor)
 """
 
+FLUSH_CONDITION = AI_SYNC_CONDITION
+
 
 def load_workflow(workflow_name):
     """Load a workflow without evaluating any GitHub expressions."""
@@ -77,6 +79,25 @@ class PrivilegedWorkflowActorTest(unittest.TestCase):
     def test_pr_sync_guards_manual_runs_and_reruns(self):
         condition = load_job("sync-doc-pr-en-to-zh.yml", "sync-docs")["if"]
         self.assertEqual(normalize(condition), normalize(PR_SYNC_CONDITION))
+
+    def test_pdf_flush_guards_manual_runs_and_scheduled_reruns(self):
+        condition = load_job("flush.yaml", "flush-pdf")["if"]
+        self.assertEqual(normalize(condition), normalize(FLUSH_CONDITION))
+
+    def test_ci_uses_read_only_repository_permissions(self):
+        permissions = load_workflow("ci.yaml")["permissions"]
+        self.assertEqual(permissions, {"contents": "read"})
+
+    def test_dispatch_disables_github_token_and_scopes_cross_repo_token(self):
+        workflow = load_workflow("dispatch.yml")
+        self.assertEqual(workflow["permissions"], {})
+
+        trigger_step = load_job("dispatch.yml", "trigger")["steps"][1]
+        self.assertEqual(
+            trigger_step["env"],
+            {"DOCS_STAGING_TOKEN": "${{ secrets.DOCS_STAGING }}"},
+        )
+        self.assertNotIn("secrets.DOCS_STAGING", trigger_step["run"])
 
 
 if __name__ == "__main__":

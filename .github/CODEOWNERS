@@ -1,0 +1,6 @@
+# Require trusted automation maintainers to review changes that can alter
+# approval policy, execute privileged workflows, or consume repository secrets.
+/.github/ @lilin90 @qiancai
+/scripts/ @lilin90 @qiancai
+/OWNERS @lilin90 @qiancai
+/OWNERS_ALIASES @lilin90 @qiancai
