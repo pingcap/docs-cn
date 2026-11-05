@@ -15,7 +15,7 @@
     "micromark-extension-frontmatter": "^1.0.0",
     "micromark-extension-gfm": "^2.0.1",
     "micromark-extension-mdxjs": "^1.0.0",
-    "octokit": "^3.1.0",
+    "octokit": "^3.1.2",
     "unist-util-visit": "^4.1.0"
   },
   "devDependencies": {
