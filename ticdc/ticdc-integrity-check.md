@@ -109,4 +109,4 @@ fn checksum(columns) {
 > **注意：**
 >
 > - 开启 Checksum 校验功能后，DECIMAL 和 UNSIGNED BIGINT 类型的数据会被转换为字符串类型。因此在下游消费者代码中需要将其转换为对应的数值类型，然后进行 Checksum 相关计算。
-> - Delete 事件只含有 Handle Key 列的内容，而 Checksum 是基于所有列计算的，所以 Delete 事件不参与到 Checksum 的校验中。
+> - 使用 Avro 协议且未开启 `avro-include-before-value` 时，Delete 事件只含有 Handle Key 列的内容，而 Checksum 是基于所有列计算的，所以 Delete 事件不参与到 Checksum 的校验中。从 v8.5.9 开始，仅 [TiCDC 新架构](/ticdc/ticdc-architecture.md)支持开启 [`avro-include-before-value`](/ticdc/ticdc-avro-protocol.md#输出旧值)。开启后，Delete 事件的 Value 包含删除前的行数据，其 Checksum 也基于删除前的行数据计算。

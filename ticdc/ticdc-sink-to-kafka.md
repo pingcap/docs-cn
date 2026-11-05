@@ -105,6 +105,7 @@ URI 中可配置的参数如下：
 | `write-timeout` | 向下游 Kafka 发送 request 的超时时长，默认值为 `10s`。 |
 | `avro-decimal-handling-mode` | 仅在输出协议是 `avro` 时有效。该参数决定了如何处理 DECIMAL 类型的字段，值可以是 `string` 或 `precise`，表明映射成字符串还是浮点数。 |
 | `avro-bigint-unsigned-handling-mode` | 仅在输出协议是 `avro` 时有效。该参数决定了如何处理 BIGINT UNSIGNED 类型的字段，值可以是 `string` 或 `long`，表明映射成字符串还是 64 位整型。|
+| `avro-include-before-value` | 从 v8.5.9 开始引入，仅适用于 [TiCDC 新架构](/ticdc/ticdc-architecture.md)，且仅在输出协议是 `avro` 时有效，默认值为 `false`。开启后，Value 中新增 `_ticdc_before` 字段，用于输出行数据更改前的值；Delete 事件也包含 Value，并通过 `_tidb_op=d` 标识。即使未开启 `enable-tidb-extension`，消息也会包含 `_tidb_op` 字段。详情请参考[输出旧值](/ticdc/ticdc-avro-protocol.md#输出旧值)。 |
 
 ### 最佳实践
 

@@ -76,19 +76,52 @@ Value 数据格式默认与 Key 数据格式相同，但是 Value 的 `fields` �
 
 > **注意：**
 > 
-> Avro 协议在编码 DML 事件时，操作方式如下：
+> 默认情况下，Avro 协议在编码 DML 事件时，操作方式如下：
 > 
 > - 对于 Delete 事件，只编码 Key 部分，Value 部分为空。
 > - 对于 Insert 事件，编码所有列数据到 Value 部分。
 > - 对于 Update 事件，只编码更新后的所有列数据到 Value 部分。
 >
-> Avro 协议不会对 Update 和 Delete 事件的旧值进行编码。此外，为了与大多数依赖 `null` 记录来识别删除 (`delete.on.null`) 的 Confluent sink 连接器兼容，即使开启 `enable-tidb-extension` 选项，Delete 事件也不包含 TiDB 扩展字段信息，如 `_tidb_commit_ts`。如果你需要这些功能，请考虑使用其他协议，例如 Canal-JSON 或 Debezium。
+> 默认情况下，Avro 协议不会在 Value 中输出 Update 和 Delete 事件的旧值。即使开启 `enable-tidb-extension` 选项，Delete 事件也不包含 TiDB 扩展字段信息，如 `_tidb_commit_ts`。如需输出旧值，可以开启 [`avro-include-before-value`](#输出旧值) 选项。
+
+### 输出旧值
+
+该功能从 v8.5.9 开始引入，仅适用于 [TiCDC 新架构](/ticdc/ticdc-architecture.md)。
+
+`avro-include-before-value` 用于控制是否在 Avro 消息中输出行数据更改前的值，默认值为 `false`。可以在 `sink-uri` 中设置 `avro-include-before-value=true` 来开启此功能：
+
+```shell
+cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-avro-before" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&avro-include-before-value=true" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
+```
+
+也可以在 changefeed 配置文件中设置此选项：
+
+```toml
+[sink.kafka-config.codec-config]
+avro-include-before-value = true
+```
+
+开启后，Key 的编码方式不变，Value 中新增 `_ticdc_before` 字段。不同类型的 DML 事件编码如下：
+
+| 事件类型 | Value 顶层列字段 | `_ticdc_before` | `_tidb_op` |
+| :------- | :--------------- | :-------------- | :--------- |
+| Insert | 插入后的行数据 | `null` | `c` |
+| Update | 更新后的行数据 | 更新前的行数据 | `u` |
+| Delete | 删除前的行数据 | 删除前的行数据 | `d` |
+
+`_ticdc_before` 的 Avro 类型为 `null` 与嵌套 `record` 的联合类型，默认值为 `null`。嵌套 `record` 中的列定义与 Value 顶层的列定义相同。
+
+开启 `avro-include-before-value` 后，即使 `enable-tidb-extension=false`，Value 中也会包含 `_tidb_op` 字段，用于区分 Insert、Update 和 Delete 事件。如果同时开启 `enable-tidb-extension`，Delete 事件也会包含 `_tidb_commit_ts` 和 `_tidb_commit_physical_time` 等 TiDB 扩展字段。
+
+> **注意：**
+>
+> 开启 `avro-include-before-value` 后，Delete 事件的 Value 不再为 `null`。如果下游 Confluent sink 连接器依赖空 Value 识别删除 (`delete.on.null`)，需要在开启前确认下游能够根据 `_tidb_op` 处理 Delete 事件。
 
 ## TiDB 扩展字段
 
-默认情况下，Avro 只编码在 DML 事件中发生数据变更的行的所有列数据信息，不收集数据变更的类型和 TiDB 专有的 CommitTS 事务唯一标识信息。为了解决这个问题，TiCDC 在 Avro 协议格式中附加了 TiDB 扩展字段。当 `sink-uri` 中设置 `enable-tidb-extension` 为 `true` （默认为 `false`）后，TiCDC 生成 Avro 消息时，会在 Value 部分新增三个字段：
+默认情况下，Avro 只编码在 DML 事件中发生数据变更的行的所有列数据信息，不收集数据变更的类型和 TiDB 专有的 CommitTS 事务唯一标识信息。为了解决这个问题，TiCDC 在 Avro 协议格式中附加了 TiDB 扩展字段。当 `sink-uri` 中设置 `enable-tidb-extension` 为 `true` （默认为 `false`）后，TiCDC 生成 Avro 消息时，Value 部分会包含以下三个字段：
 
-- `_tidb_op`：DML 的类型，"c" 表示插入，"u" 表示更新。
+- `_tidb_op`：DML 的类型，`c` 表示插入，`u` 表示更新，`d` 表示删除。Delete 事件仅在开启 `avro-include-before-value` 时包含该字段。
 - `_tidb_commit_ts`：事务唯一标识信息。
 - `_tidb_commit_physical_time`：事务标识信息中现实时间的时间戳。
 
@@ -297,10 +330,12 @@ TiCDC Avro 协议支持被 [`io.confluent.kafka.serializers.KafkaAvroDeserialize
 
 ### 区分事件类型
 
-消费者程序可以按照如下规则区分 DML 事件类型：
+未开启 `avro-include-before-value` 时，消费者程序可以按照如下规则区分 DML 事件类型：
 
 * 只有 Key 部分，则是 Delete 事件。
 * 含有 Value 部分，则是 Insert 或 Update 事件。如果用户开启了 [TiDB 扩展字段功能](#tidb-扩展字段)，可以根据其中的 `_tidb_op` 字段，判断该条事件变更是 Insert 或 Update。如果未开启 TiDB 扩展字段功能，则无法区分。
+
+开启 `avro-include-before-value` 后，三种 DML 事件都包含 Value，消费者应根据 `_tidb_op` 判断事件类型：`c` 表示 Insert，`u` 表示 Update，`d` 表示 Delete，不能再仅根据 Value 是否为空识别 Delete 事件。
 
 ## Topic 分发
 
