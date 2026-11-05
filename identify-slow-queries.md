@@ -72,7 +72,7 @@ Slow Query 基础信息：
     - `col1:allEvicted`：`col1` 列对应的统计信息没有完全加载
     - `idx1:allEvicted`：`idx1` 索引对应的统计信息没有完全加载
 * `Succ`：表示语句是否执行成功。
-* `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间。常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
+* `Backoff_time`：coprocessor task 的累计 backoff 时间，单位为秒，不包含 `Point_Get` 请求的 backoff。常见原因包括锁冲突、Region 分裂以及 TiKV server 繁忙。
 * `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
 * `Binary_plan`：表示以二进制格式编码后的语句的执行计划，用 [`SELECT tidb_decode_binary_plan('xxx...')`](/functions-and-operators/tidb-functions.md#tidb_decode_binary_plan) SQL 语句可以解析出具体的执行计划。传递的信息和 `Plan` 字段基本相同，但是解析出的执行计划的格式会和 `Plan` 字段不同。
 * `Prepared`：表示这个语句是否是 `Prepare` 或 `Execute` 的请求。
@@ -86,7 +86,7 @@ Slow Query 基础信息：
 * `Exec_retry_time`：表示这个语句的重试执行时间。例如某个查询一共执行了三次（前两次失败），则 `Exec_retry_time` 表示前两次的执行时间之和，`Query_time` 减去 `Exec_retry_time` 则为最后一次执行时间。
 * `KV_total`：表示这个语句在 TiKV/TiFlash 上所有 RPC 请求花费的时间。
 * `PD_total`：表示这个语句在 PD 上所有 RPC 请求花费的时间。
-* `Backoff_total`：表示这个语句在执行过程中所有 backoff 花费的时间。
+* `Backoff_total`：当前语句执行统计上下文中记录的 client-go backoff 睡眠累计时间，单位为秒。它可以包含 coprocessor 和事务 backoff，但不代表语句的全部等待时间。`Backoff_total`、`Backoff_time` 和 `Commit_backoff_time` 可能存在重叠，不能相加。值为 `0` 不能证明该语句没有发生 backoff，因为执行统计可能缺失。
 * `Write_sql_response_total`：表示这个语句把结果发送回客户端花费的时间。
 * `Result_rows`：表示这个语句查询结果的行数。
 * `Warnings`：表示这个语句执行过程中产生的警告，采用 JSON 格式。通常和 [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md) 语句的输出结果一致，但是可能会包含 [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md) 中没有的警告，因而可以提供更多诊断信息。这类警告将被标记为 `IsExtra: true`。
@@ -96,6 +96,9 @@ Slow Query 基础信息：
 
 * `Prewrite_time`：表示事务两阶段提交中第一阶段（prewrite 阶段）的耗时。
 * `Commit_time`：表示事务两阶段提交中第二阶段（commit 阶段）的耗时。
+* `Commit_backoff_time`：所有 prewrite batch 中最长的累计 backoff 时间与 commit 阶段累计 backoff 时间之和，单位为秒。
+* `Prewrite_Backoff_types`：累计 backoff 时间最长的 prewrite batch 中的 backoff 类型，并非所有 prewrite batch 的类型并集。
+* `Commit_Backoff_types`：commit 阶段的 backoff 类型。
 * `Get_commit_ts_time`：表示事务两阶段提交中第二阶段（commit 阶段）获取 commit 时间戳的耗时。
 * `Local_latch_wait_time`：表示事务两阶段提交中第二阶段（commit 阶段）发起前在 TiDB 侧等锁的耗时。
 * `Write_keys`：表示该事务向 TiKV 的 Write CF 写入 Key 的数量。
@@ -411,6 +414,19 @@ TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY`](/information-schema/information-sch
 关于查询 `CLUSTER_SLOW_QUERY` 表，TiDB 会把相关的计算和判断下推到其他节点执行，而不是把其他节点的慢查询数据都取回来在一台 TiDB 上执行。
 
 ## 查询 `SLOW_QUERY`/`CLUSTER_SLOW_QUERY` 示例
+
+### 按事务 backoff 类型筛选
+
+要查找最近一小时事务提交阶段发生 `txnLock` backoff 的慢查询，可以查询 [`Prewrite_Backoff_types` 和 `Commit_Backoff_types` 列](/information-schema/information-schema-slow-query.md#backoff-类型列)：
+
+```sql
+SELECT time, query, prewrite_backoff_types, commit_backoff_types
+FROM information_schema.slow_query
+WHERE time >= NOW() - INTERVAL 1 HOUR
+  AND commit_backoff_types LIKE '%txnLock%';
+```
+
+类型列为空不能排除其他阶段或路径发生 backoff：coprocessor 阶段的类型仍可在同一行的 `Backoff_Detail` 列中查看，`Point_Get` 请求的 backoff 只体现在 `Backoff_total` 中。使用 `CLUSTER_SLOW_QUERY` 查询所有节点前，请先确认[滚动升级期间的查询要求](/information-schema/information-schema-slow-query.md#cluster_slow_query-table)。
 
 ### 搜索 Top N 的慢查询
 
