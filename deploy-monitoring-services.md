@@ -177,8 +177,8 @@ domain = 192.168.199.113
 [analytics]
 check_for_updates = true
 [security]
-admin_user = admin
-admin_password = admin
+admin_user = <grafana-admin-user>
+admin_password = <grafana-strong-password>
 [snapshots]
 [users]
 [auth.anonymous]
@@ -205,6 +205,8 @@ url = https://grafana.net
 
 ```
 
+启动 Grafana 前，必须将 `<grafana-admin-user>` 和 `<grafana-strong-password>` 替换为自定义的管理员用户名和唯一的强密码。不要使用 `admin` 作为密码，也不要将实际密码提交到版本控制系统。`admin_password` 仅在首次启动并创建管理员账号时生效。对于已有的 Grafana 实例，请在 Grafana 中修改密码。
+
 启动 Grafana 服务：
 
 {{< copyable "shell-regular" >}}
@@ -223,12 +225,12 @@ url = https://grafana.net
 1. 登录 Grafana 界面。
 
     - 默认地址：`http://localhost:3000`
-    - 默认账户：admin
-    - 默认密码：admin
+    - 管理员账户：在 `[security]` 中配置的 `<grafana-admin-user>`
+    - 管理员密码：在 `[security]` 中配置的 `<grafana-strong-password>`
 
     > **注意：**
     >
-    > **Change Password** 步骤可以选择 **Skip**。
+    > 如果 Grafana 提示执行 **Change Password** 步骤，必须设置新的唯一强密码，不要选择 **Skip**。
 
 2. 点击 Grafana 侧边栏菜单 **Configuration** 中的 **Data Source**。
 

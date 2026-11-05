@@ -176,14 +176,14 @@ defaults                                   # 默认配置。
    timeout server 30000s                   # 服务器端非活动连接的超时时间。
 
 listen admin_stats                         # frontend 和 backend 的组合体，此监控组的名称可按需进行自定义。
-   bind 0.0.0.0:8080                       # 监听端口。
+   bind <management-ip>:8080               # 仅监听受信任管理网络的 IP 地址和端口。
    mode http                               # 监控运行的模式，此处为 `http` 模式。
    option httplog                          # 开始启用记录 HTTP 请求的日志功能。
    maxconn 10                              # 最大并发连接数。
    stats refresh 30s                       # 每隔 30 秒自动刷新监控页面。
    stats uri /haproxy                      # 监控页面的 URL。
    stats realm HAProxy                     # 监控页面的提示信息。
-   stats auth admin:pingcap123             # 监控页面的用户和密码，可设置多个用户名。
+   stats auth <admin-user>:<strong-password> # 监控页面的用户和密码，启动前必须替换占位符。
    stats hide-version                      # 隐藏监控页面上的 HAProxy 版本信息。
    stats  admin if TRUE                    # 手工启用或禁用后端服务器（HAProxy 1.4.9 及之后版本开始支持）。
 
@@ -195,6 +195,12 @@ listen tidb-cluster                        # 配置 database 负载均衡。
    server tidb-2 10.9.39.208:4000 check inter 2000 rise 2 fall 3
    server tidb-3 10.9.64.166:4000 check inter 2000 rise 2 fall 3
 ```
+
+> **警告：**
+>
+> - 启动 HAProxy 前，必须将 `<management-ip>`、`<admin-user>` 和 `<strong-password>` 替换为实际值。请为监控页面设置唯一的强密码，不要使用示例密码、默认密码或其他系统已使用的密码。
+> - 通过防火墙或安全组将 `8080` 端口限制在受信任的管理网络内，不要将 HAProxy 监控页面直接暴露到公网。`stats auth` 使用 HTTP Basic Authentication，因此还应通过 TLS 或其他受保护的管理通道访问该页面。
+> - `stats admin if TRUE` 允许用户手动启用或禁用后端服务器。如果只需查看监控信息，请删除此配置项。
 
 如要通过 `SHOW PROCESSLIST` 查看连接来源 IP，需要配置使用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)连接 TiDB。
 
