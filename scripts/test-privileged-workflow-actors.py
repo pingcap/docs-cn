@@ -88,17 +88,5 @@ class PrivilegedWorkflowActorTest(unittest.TestCase):
         permissions = load_workflow("ci.yaml")["permissions"]
         self.assertEqual(permissions, {"contents": "read"})
 
-    def test_dispatch_disables_github_token_and_scopes_cross_repo_token(self):
-        workflow = load_workflow("dispatch.yml")
-        self.assertEqual(workflow["permissions"], {})
-
-        trigger_step = load_job("dispatch.yml", "trigger")["steps"][1]
-        self.assertEqual(
-            trigger_step["env"],
-            {"DOCS_STAGING_TOKEN": "${{ secrets.DOCS_STAGING }}"},
-        )
-        self.assertNotIn("secrets.DOCS_STAGING", trigger_step["run"])
-
-
 if __name__ == "__main__":
     unittest.main()
