@@ -145,13 +145,14 @@ rule_files:
 ```bash
 ./prometheus \
     --config.file="./prometheus.yml" \
-    --web.listen-address=":9090" \
-    --web.external-url="http://192.168.199.113:9090/" \
-    --web.enable-admin-api \
+    --web.listen-address="127.0.0.1:9090" \
+    --web.external-url="http://127.0.0.1:9090/" \
     --log.level="info" \
     --storage.tsdb.path="./data.metrics" \
     --storage.tsdb.retention="15d" &
 ```
+
+此示例仅监听本机回环地址，且不启用 Prometheus 管理 API。由于 Grafana 与 Prometheus 均部署在 Node1 上，Grafana 可以通过本机地址访问 Prometheus。如果需要从其他机器访问 Prometheus，请先将 `--web.external-url` 设置为反向代理提供的 HTTPS URL，并确保路径前缀与代理配置一致。请勿直接监听所有网络接口，而应通过受信任的管理网络以及启用 TLS 和身份验证的反向代理提供访问，并使用防火墙或安全组限制来源地址。
 
 ### 第 4 步：在 Node1 上启动 Grafana
 
@@ -177,8 +178,8 @@ domain = 192.168.199.113
 [analytics]
 check_for_updates = true
 [security]
-admin_user = admin
-admin_password = admin
+admin_user = <grafana-admin-user>
+admin_password = """<grafana-strong-password>"""
 [snapshots]
 [users]
 [auth.anonymous]
@@ -205,6 +206,10 @@ url = https://grafana.net
 
 ```
 
+启动 Grafana 前，必须将 `<grafana-admin-user>` 和 `<grafana-strong-password>` 替换为自定义的管理员用户名和唯一的强密码。示例使用三个双引号包裹密码，以确保 `#` 和 `;` 被解析为密码字符而不是注释。Grafana 会展开配置值中的 `${NAME}`、`$__env{NAME}` 和 `$__file{PATH}`，即使这些表达式位于三个双引号内也不例外，因此请勿在密码中使用这些表达式。不要使用 `admin` 作为密码，也不要将实际密码提交到版本控制系统。`admin_user` 和 `admin_password` 仅在首次启动并创建管理员账号时生效。对于已有的 Grafana 实例，请在 Grafana 中修改密码。
+
+编辑完成后，由启动 Grafana 的同一系统用户执行 `chmod 600 conf/grafana.ini`，确保只有该用户能够读取和修改包含管理员密码的配置文件。
+
 启动 Grafana 服务：
 
 {{< copyable "shell-regular" >}}
@@ -223,12 +228,12 @@ url = https://grafana.net
 1. 登录 Grafana 界面。
 
     - 默认地址：`http://localhost:3000`
-    - 默认账户：admin
-    - 默认密码：admin
+    - 管理员账户：首次创建管理员账号时使用 `[security]` 中配置的 `<grafana-admin-user>`；已有实例使用当前管理员账户
+    - 管理员密码：首次创建管理员账号时使用 `[security]` 中配置的 `<grafana-strong-password>`；已有实例使用当前管理员密码
 
     > **注意：**
     >
-    > **Change Password** 步骤可以选择 **Skip**。
+    > 如果 Grafana 提示执行 **Change Password** 步骤，必须设置新的唯一强密码，不要选择 **Skip**。
 
 2. 点击 Grafana 侧边栏菜单 **Configuration** 中的 **Data Source**。
 
