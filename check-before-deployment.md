@@ -169,79 +169,24 @@ TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运
     >
     > 如果目录不存在，TiDB 在启动时会自动创建该目录。如果目录创建失败，或者 TiDB 对该目录没有读写权限，[Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 在运行时会被禁用。
 
-## 检测目标部署机器的防火墙
+## 配置目标部署机器的防火墙
 
-在 TiDB 集群中，必须将节点间的访问端口打通才可以保证读写请求、数据心跳等信息的正常的传输。在普遍线上场景中，数据库到业务服务和数据库节点的网络联通都是在安全域内完成数据交互。如果没有特殊安全的要求，建议将目标节点的防火墙进行关闭。如不关闭防火墙，建议[按照端口使用规则](/hardware-and-software-requirements.md#网络要求)，将端口信息配置到防火墙服务的白名单中。
+在 TiDB 集群中，必须开放必要的节点间端口，才能正常传输读写请求和数据心跳等信息。同时，应保持主机防火墙或等效的网络访问控制（例如云安全组）处于启用状态，并[按照端口使用规则](/hardware-and-software-requirements.md#网络要求)，仅允许可信来源访问必需端口。不要停止或禁用防火墙，也不要使用默认允许所有流量的区域。尤其要将组件的状态、监控和管理端口限制在受信任的管理网络内。
 
-### 停止并禁用防火墙
+检查 `firewalld` 状态（以下示例使用 CentOS Linux release 7.7.1908 (Core)）：
 
-本节介绍如何停止并禁用目标部署机器的防火墙服务。
-
-1. 检查防火墙状态（以 CentOS Linux release 7.7.1908 (Core) 为例）
-
-    ```shell
-    sudo firewall-cmd --state
-    sudo systemctl status firewalld.service
-    ```
-
-2. 停止防火墙服务
-
-    ```bash
-    sudo systemctl stop firewalld.service
-    ```
-
-3. 禁用防火墙自动启动服务
-
-    ```bash
-    sudo systemctl disable firewalld.service
-    ```
-
-4. 检查防火墙状态
-
-    ```bash
-    sudo systemctl status firewalld.service
-    ```
-
-### 更改防火墙区域
-
-如果不希望完全禁用防火墙，可以使用限制较少的区域。默认的 `public` 区域仅允许特定的服务和端口，而 `trusted` 区域默认允许所有流量。
-
-将默认区域设置为 `trusted`：
-
-```bash
-firewall-cmd --set-default-zone trusted
+```shell
+sudo firewall-cmd --state
+sudo systemctl status firewalld.service
 ```
 
-查看默认区域：
+如果 `firewalld` 未运行，启动服务并将其配置为开机自动启动：
 
 ```bash
-firewall-cmd --get-default-zone
-# trusted
+sudo systemctl enable --now firewalld.service
 ```
 
-列出某个区域的策略：
-
-```bash
-firewall-cmd --zone=trusted --list-all
-# trusted
-#   target: ACCEPT
-#   icmp-block-inversion: no
-#   interfaces:
-#   sources:
-#   services:
-#   ports:
-#   protocols:
-#   forward: yes
-#   masquerade: no
-#   forward-ports:
-#   source-ports:
-#   icmp-blocks:
-#   rich rules:
-```
-
-### 配置防火墙
-
-使用以下命令为 TiDB 集群组件配置防火墙。这些示例仅供参考，请根据实际环境调整区域名称、端口和服务。
+使用以下命令为 TiDB 集群组件配置防火墙。这些示例仅供参考，请根据实际环境调整区域名称、可信来源、端口和服务。对于状态、监控和管理端口，还应使用来源地址规则将访问范围限制在管理网络内。
 
 为 TiDB 组件配置防火墙：
 

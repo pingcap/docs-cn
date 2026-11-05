@@ -185,7 +185,6 @@ listen admin_stats                         # frontend 和 backend 的组合体�
    stats realm HAProxy                     # 监控页面的提示信息。
    stats auth <admin-user>:<strong-password> # 监控页面的用户和密码，启动前必须替换占位符。
    stats hide-version                      # 隐藏监控页面上的 HAProxy 版本信息。
-   stats  admin if TRUE                    # 手工启用或禁用后端服务器（HAProxy 1.4.9 及之后版本开始支持）。
 
 listen tidb-cluster                        # 配置 database 负载均衡。
    bind 0.0.0.0:3390                       # 浮动 IP 和监听端口。
@@ -200,7 +199,7 @@ listen tidb-cluster                        # 配置 database 负载均衡。
 >
 > - 启动 HAProxy 前，必须将 `<management-ip>`、`<admin-user>` 和 `<strong-password>` 替换为实际值。请为监控页面设置唯一的强密码，不要使用示例密码、默认密码或其他系统已使用的密码。
 > - 通过防火墙或安全组将 `8080` 端口限制在受信任的管理网络内，不要将 HAProxy 监控页面直接暴露到公网。`stats auth` 使用 HTTP Basic Authentication；如果未通过传输层安全协议（Transport Layer Security，TLS）或其他受保护的管理通道访问，用户名和密码可能被网络中的其他方截获。
-> - `stats admin if TRUE` 允许通过 `stats auth` 验证的所有账户启用或禁用后端服务器。除非需要手动控制，否则请删除此配置项；如果保留，请仅允许受信任的运维人员访问，因为 HAProxy 管理 POST 请求容易受到跨站请求伪造（CSRF）攻击。
+> - 此示例将监控页面保持为只读。不要向所有通过身份验证的账户授予启用或禁用后端服务器的权限。如确需通过监控页面管理后端服务器，请使用独立的管理员身份和访问控制列表，并记录管理操作。
 
 如要通过 `SHOW PROCESSLIST` 查看连接来源 IP，需要配置使用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)连接 TiDB。
 

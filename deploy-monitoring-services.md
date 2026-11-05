@@ -145,13 +145,14 @@ rule_files:
 ```bash
 ./prometheus \
     --config.file="./prometheus.yml" \
-    --web.listen-address=":9090" \
-    --web.external-url="http://192.168.199.113:9090/" \
-    --web.enable-admin-api \
+    --web.listen-address="127.0.0.1:9090" \
+    --web.external-url="http://127.0.0.1:9090/" \
     --log.level="info" \
     --storage.tsdb.path="./data.metrics" \
     --storage.tsdb.retention="15d" &
 ```
+
+此示例仅监听本机回环地址，且不启用 Prometheus 管理 API。由于 Grafana 与 Prometheus 均部署在 Node1 上，Grafana 可以通过本机地址访问 Prometheus。如果需要从其他机器访问 Prometheus，请勿直接监听所有网络接口，而应通过受信任的管理网络以及启用 TLS 和身份验证的反向代理提供访问，并使用防火墙或安全组限制来源地址。
 
 ### 第 4 步：在 Node1 上启动 Grafana
 
