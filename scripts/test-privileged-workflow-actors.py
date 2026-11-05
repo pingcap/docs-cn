@@ -42,6 +42,8 @@ PR_SYNC_CONDITION = """
 contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.triggering_actor)
 """
 
+FLUSH_CONDITION = AI_SYNC_CONDITION
+
 
 def load_workflow(workflow_name):
     """Load a workflow without evaluating any GitHub expressions."""
@@ -78,6 +80,13 @@ class PrivilegedWorkflowActorTest(unittest.TestCase):
         condition = load_job("sync-doc-pr-en-to-zh.yml", "sync-docs")["if"]
         self.assertEqual(normalize(condition), normalize(PR_SYNC_CONDITION))
 
+    def test_pdf_flush_guards_manual_runs_and_scheduled_reruns(self):
+        condition = load_job("flush.yaml", "flush-pdf")["if"]
+        self.assertEqual(normalize(condition), normalize(FLUSH_CONDITION))
+
+    def test_ci_uses_read_only_repository_permissions(self):
+        permissions = load_workflow("ci.yaml")["permissions"]
+        self.assertEqual(permissions, {"contents": "read"})
 
 if __name__ == "__main__":
     unittest.main()
