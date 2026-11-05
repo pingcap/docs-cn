@@ -4823,6 +4823,22 @@ SHOW WARNINGS;
 - 范围：`[0, 2147483647]`
 - 控制优化器估算逻辑的更迭。更改该变量值后，优化器的估算逻辑会产生较大的改变。目前该变量的有效值只有 `0`，不建议设为其它值。
 
+### `tidb_paging_size_bytes` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[0, 9223372036854775807]`
+- 单位：字节
+- 该变量用于设置 TiKV coprocessor 请求的每页字节预算，仅在开启[资源管控](/tidb-resource-control-ru-groups.md)且当前语句所属资源组具有有限突发额度时生效。对于 `BURSTABLE=UNLIMITED` 的资源组，该预算不生效。
+- 按字节数分页与 [`tidb_enable_paging`](#tidb_enable_paging-从-v540-版本开始引入) 控制的按行数分页相互独立。将该变量设为 `0` 仅关闭按字节数分页，不影响按行数分页；关闭 `tidb_enable_paging` 也不会关闭按字节数分页。
+- 使用 `SET GLOBAL tidb_paging_size_bytes = ...` 修改该变量。更新对当前 TiDB 实例上已有连接和新建连接的后续语句生效，包括已开启事务中的后续语句，无需重新连接。语句在初始化分布式执行上下文时读取本实例的全局值；已初始化的执行上下文及其分页请求保留原有预算。其他 TiDB 实例通过系统变量缓存异步同步该值，因此各实例不保证同时生效。
+- 不支持通过 `SET SESSION` 或未指定作用域的 `SET` 修改该变量，这两种操作都会返回错误。使用 `SET_VAR` Hint 会产生警告，且不会覆盖全局值。可以通过 `@@GLOBAL.tidb_paging_size_bytes` 或 `@@tidb_paging_size_bytes` 查询当前实例的全局值。
+- 执行 `SET GLOBAL tidb_paging_size_bytes = 0` 或 `SET GLOBAL tidb_paging_size_bytes = DEFAULT` 可关闭按字节数分页，生效时机与其他全局值更新相同。
+- 该变量为 TiDB 内部变量，**不推荐**修改该变量的值。
+
 ### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
 
 > **警告：**
