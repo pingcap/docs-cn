@@ -71,7 +71,8 @@ Scheduling 节点用于提供 PD 的 `scheduling` 微服务。本文档仅在 PD
 
 - 控制 Scheduling 节点日志脱敏的开关
 - 该配置项值设为 true 时将对 Scheduling 日志脱敏，遮蔽日志中的用户信息。
-- 默认值：false
+- 默认值：从 v9.0.0 版本开始，默认值为 true。在 v9.0.0 版本之前，默认值为 false。
+- 开启后仅对支持脱敏的日志和输出生效；该配置项不支持在线修改，修改后需重启 Scheduling 节点。
 
 ## log
 

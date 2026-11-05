@@ -65,7 +65,11 @@ TiKV 侧的日志脱敏需要将 [`security.redact-info-log`](/tikv-configuratio
 
 ## PD 组件日志脱敏
 
-PD 侧的日志脱敏需要将 [`security.redact-info-log`](/pd-configuration-file.md#redact-info-log-从-v50-版本开始引入) 的值设为 `true` 或 `"marker"`。该配置项值默认为 `false`，即关闭脱敏。
+PD 侧的日志脱敏需要将 [`security.redact-info-log`](/pd-configuration-file.md#redact-info-log-从-v50-版本开始引入) 的值设为 `true` 或 `"marker"`。从 v9.0.0 版本开始，未在配置文件中显式设置时，该配置项默认为 `true`，即开启脱敏；在 v9.0.0 版本之前，默认值为 `false`。
+
+开启后，脱敏仅对支持脱敏的日志和输出生效，包括 PD 日志、operator 附加信息、[Online Unsafe Recovery](/online-unsafe-recovery.md) 计划和返回给客户端的部分错误信息。operator 附加信息中的 key 会显示为脱敏占位符，而非真实 key。审计（audit）日志不受此配置项影响，仍记录原始请求内容；少量其他日志仍可能包含原始 key，见 [#11406](https://github.com/tikv/pd/issues/11406)。
+
+该配置项不支持在线修改，修改后需重启 PD 生效。TSO、Scheduling 等 PD 微服务读取同一配置，未在各自配置文件中显式设置时也默认为 `true`。TiKV 和 TiDB 的日志脱敏默认仍为关闭；排查问题时如需查看原始 key，需要分别关闭各组件的脱敏并重启对应组件。
 
 ## TiFlash 组件日志脱敏
 
