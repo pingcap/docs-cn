@@ -24,6 +24,7 @@ env:
 jobs:
   sync-docs:
     runs-on: ubuntu-latest
+    # Check the rerun initiator, not the actor that started the original run.
     if: contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.triggering_actor)
 
     steps:

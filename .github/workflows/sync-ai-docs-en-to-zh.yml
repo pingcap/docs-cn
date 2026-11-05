@@ -45,6 +45,7 @@ env:
 
 jobs:
   translate:
+    # Scheduled first attempts run automatically; reruns and manual runs require an active maintainer.
     if: >
       github.repository == 'pingcap/docs-cn' &&
       (
