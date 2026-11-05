@@ -24,13 +24,16 @@ MPP 模式的工作原理见下图。
 | tidb_enforce_mpp=off（默认） | 不使用 MPP 模式。  | 优化器根据代价估算选择。（默认） |
 | tidb_enforce_mpp=on  | 不使用 MPP 模式。  | TiDB 无视代价估算，选择 MPP 模式。      |
 
-例如，如果你不想使用 MPP 模式，可以通过以下语句来设置：
+例如，如果你不想使用 MPP 模式，但在 TiDB v7.3.0 及之后版本中仍希望由 TiFlash 执行查询，可以通过以下语句来设置：
 
 {{< copyable "sql" >}}
 
 ```sql
 set @@session.tidb_allow_mpp=0;
+set @@session.tidb_allow_tiflash_cop=1;
 ```
+
+如果关闭 MPP 模式后不需要 TiFlash 执行查询，只设置 `tidb_allow_mpp=0` 即可。
 
 如果想要通过优化器代价估算来智能选择是否使用 MPP（默认情况），可以通过如下语句来设置：
 
