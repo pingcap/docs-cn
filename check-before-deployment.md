@@ -102,20 +102,37 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
 ## 检测及关闭系统 swap
 
-TiDB 需要充足的内存来运行。如果 TiDB 使用的内存被换出 (swapped out) 然后再换入 (swapped back in)，这可能会导致延迟激增。如果您想保持稳定的性能，建议永久禁用系统 swap，但可能在内存偏小时触发 OOM 问题。如果想避免此类 OOM 问题，则可只将 swap 优先级调低，但不做永久关闭。
+将 TiDB 使用的内存换出 (swapped out) 到磁盘后再换入 (swapped back in)，可能会导致延迟激增。为保持稳定的性能，建议永久禁用系统 swap。但如果主机内存偏小，禁用 swap 可能更容易触发内存不足 (out-of-memory, OOM) 问题。请根据内存容量和延迟要求，选择以下方案之一：
 
-- 开启并使用 swap 可能会引入性能抖动问题，对于低延迟、稳定性要求高的数据库服务，建议永久关闭操作系统层 swap。要永久关闭 swap，可使用以下方法：
+- 方案一：禁用 swap，适用于对延迟敏感的工作负载。
 
-    - 在操作系统初始化阶段，不单独划分 swap 分区盘。
-    - 如果在操作系统初始化阶段，已经单独划分了 swap 分区盘，并且启用了 swap，则使用以下命令进行关闭：
+    1. 安装操作系统时，不创建 swap 分区或 swap 文件。如果已经启用 swap，请先确认可用内存足以容纳已换出的数据，再执行以下命令禁用：
 
         ```bash
-        echo "vm.swappiness = 0">> /etc/sysctl.conf
-        sysctl -p
-        swapoff -a && swapon -a
+        swapoff -a
         ```
 
-- 如果主机内存偏小，关闭系统 swap 可能会更容易触发 OOM 问题，可参考以如下方法将 swap 优先级调低，但不做永久关闭：
+    2. 为防止系统启动时启用 swap，请删除或注释掉 `/etc/fstab` 中的所有 swap 条目。
+
+        在使用 `systemd-gpt-auto-generator` 的主机上，即使 `/etc/fstab` 中没有对应条目，与根分区位于同一磁盘上的 GPT swap 分区也可能被自动启用。在这些主机上，执行以下命令列出 swap 单元文件：
+
+        ```bash
+        systemctl list-unit-files --type=swap
+        ```
+
+        对每个需要永久禁用的 swap 单元，执行以下命令以防止自动启用。将 `<swap-unit>` 替换为输出中的实际单元名称，例如 `dev-sda2.swap`：
+
+        ```bash
+        systemctl mask <swap-unit>
+        ```
+
+        更多信息，请参阅 [systemd-gpt-auto-generator](https://www.freedesktop.org/software/systemd/man/latest/systemd-gpt-auto-generator.html) 和 [systemctl mask](https://www.freedesktop.org/software/systemd/man/latest/systemctl.html)。
+
+    3. 禁用 swap 后，以及下次重启后，分别执行 `cat /proc/swaps` 进行验证。如果 swap 已禁用，输出应仅包含表头行。
+
+- 方案二：保留 swap，并降低内核使用 swap 的倾向，适用于主机内存较小的场景。
+
+    设置 `vm.swappiness=0` 可降低内核使用 swap 的倾向。此设置不会禁用 swap：内核在内存紧张时仍可能使用 swap。执行以下命令，将设置保存到 `/etc/sysctl.conf` 并使其立即生效：
 
     ```bash
     echo "vm.swappiness = 0">> /etc/sysctl.conf
@@ -808,7 +825,7 @@ sudo yum -y install numactl
 1. 使用 TiUP 安装 TiDB 集群，参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)完成 `tidb-test` 集群的部署。如果本地已有集群，可跳过这一步。
 
     ```bash
-    tiup cluster deploy tidb-test v6.1.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+    tiup cluster deploy tidb-test {{{ .tidb-version }}} ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
     ```
 
 2. 执行 `tiup cluster exec` 命令，以 `sudo` 权限在 `tidb-test` 集群所有目标主机上安装 NUMA。

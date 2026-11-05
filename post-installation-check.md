@@ -26,7 +26,13 @@ tiup cluster display tidb-test
 
 ### 查看 TiDB Dashboard 检查 TiDB 集群状态
 
-1. 通过 `{pd-ip}:{pd-port}/dashboard` 登录 TiDB Dashboard，登录用户和口令为 TiDB 数据库 `root` 用户和口令。如果你修改过数据库的 `root` 密码，则以修改后的密码为准，默认密码为空。
+1. 使用 TiDB `root` 账号及其当前密码，通过 `{pd-ip}:{pd-port}/dashboard` 登录 TiDB Dashboard。
+
+    > **注意：**
+    >
+    > 如果使用 `--init` 初始化集群，TiUP 会生成初始 root 密码；否则，初始密码为空。
+    >
+    > 如果你修改过密码，请使用修改后的密码。不带 `--init` 重启集群不会重置已有密码。
 
     ![TiDB-Dashboard](/media/tiup/tidb-dashboard.png)
 
@@ -48,9 +54,15 @@ tiup cluster display tidb-test
 >
 > 登录数据库前，你需要安装 MySQL 客户端。
 
-执行以下命令登录数据库：
+使用 root 密码登录时，执行以下命令，并在提示时输入密码。如果你使用推荐的[安全启动方式](/production-deployment-using-tiup.md#第-7-步启动集群)（`tiup cluster start tidb-test --init`），请使用 TiUP 命令输出中显示的密码；如果你之后修改过密码，请使用修改后的密码：
 
 {{< copyable "shell-regular" >}}
+
+```shell
+mysql -u root -p -h ${tidb_server_host_IP_address} -P 4000
+```
+
+如果集群首次启动时未使用 `--init`，且尚未设置 root 密码，则省略 `-p`：
 
 ```shell
 mysql -u root -h ${tidb_server_host_IP_address} -P 4000
