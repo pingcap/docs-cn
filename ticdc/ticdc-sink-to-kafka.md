@@ -273,10 +273,14 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 
 例如，对于 `matcher = ['test.*'], topic = {schema}_{table}` 这样的 dispatchers 配置，DDL 事件分发情况如下：
 
-- 若 DDL 事件中涉及单张表，则将 DDL 事件原样发送到相应的 topic 中。
+- 若 DDL 事件中涉及单张表，则将该 DDL 事件发送到相应的 topic 中。
     - 对于 DDL 事件 `drop table test.table1`，该事件会被发送到名为 `test_table1` 的 topic 中。
 - 若 DDL 事件中涉及多张表（`rename table` / `drop table` / `drop view` 都可能涉及多张表），则将单个 DDL 事件拆分为多个发送到相应的 topic 中。
     - 对于 DDL 事件 `rename table test.table1 to test.table10, test.table2 to test.table20`，则将 `rename table test.table1 to test.table10` 的 DDL 事件发送到名为 `test_table1` 的 topic 中，将 `rename table test.table2 to test.table20` 的 DDL 事件发送到名为 `test.table2` 的 topic 中。
+
+DDL 消息中的 SQL 文本可能经过格式化或重建。在新架构中，单表 `ALTER TABLE ... RENAME` 语句会被改写为带完整库表名的 `RENAME TABLE` 语句。新架构拆分多表 `RENAME TABLE` 语句后，每条 SQL 语句都以分号结尾。消费者解析时需支持这些 SQL 形式。
+
+多表 Rename 拆分后不保证上游原始 DDL 语句的原子性。互换表名时，消费者需按正确顺序处理所有相关的重命名步骤。详情参见 [Rename table 类型的 DDL 注意事项](/ticdc/ticdc-ddl.md#rename-table-类型的-ddl-注意事项) 和 [DDL SQL 文本的处理](/ticdc/ticdc-ddl.md#ddl-sql-文本的处理)。
 
 ### Partition 分发器
 
