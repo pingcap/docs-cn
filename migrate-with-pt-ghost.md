@@ -25,7 +25,7 @@ summary: 介绍在使用 DM 持续增量数据同步，上游使用 pt-osc/gh-os
 ## ********* 基本信息配置 *********
 name: test                      # 任务名称，需要全局唯一
 task-mode: all                  # 任务模式，可设为 "full"、"incremental"、"all"
-shard-mode: ""                  # 可选。默认值为 ""，表示禁用分片 DDL 合并。如果需要 DM 协调分片表之间的 schema 变更，请将该参数设置为 "pessimistic"。在深入了解 "optimistic" 的原理和使用限制后，也可以设置为 "optimistic"
+shard-mode: ""                  # 可选。默认值为 ""，表示禁用分片 DDL 协调。仅在分库分表合并任务中需要 DM 协调各分表的表结构变更时，将该参数设置为 "pessimistic"。在深入了解 "optimistic" 的原理和使用限制后，也可以设置为 "optimistic"
 meta-schema: "dm_meta"          # 下游储存 `meta` 信息的数据库
 online-ddl: true                # 开启 DM 的 online DDL 支持特性。兼容上游使用 gh-ost 、pt-osc 两种工具的自动处理
 ```
@@ -45,8 +45,8 @@ online-ddl: true                # 开启 DM 的 online DDL 支持特性。兼容
 
 - 不在下游新建镜像表 (ghost table)；
 - 记录变更 DDL；
-- 同步 real table 的 DML 事件，并忽略 ghost table 的 DML 事件；
-- 当上游通过重命名将 ghost table 替换为 real table 时，在下游 real table 上应用已记录的 DDL。
+- 同步目标表的 DML 事件，并忽略镜像表的 DML 事件；
+- 当上游通过重命名用镜像表替换目标表时，在下游目标表上应用已记录的 DDL。
 
 ![dm-online-ddl](/media/dm/dm-online-ddl.png)
 
