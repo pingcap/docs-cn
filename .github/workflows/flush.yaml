@@ -23,6 +23,7 @@ jobs:
         ) ||
         (
           github.event_name == 'workflow_dispatch' &&
+          github.ref == 'refs/heads/master' &&
           contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.triggering_actor)
         )
       )
