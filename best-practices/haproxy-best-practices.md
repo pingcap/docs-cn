@@ -199,8 +199,8 @@ listen tidb-cluster                        # 配置 database 负载均衡。
 > **警告：**
 >
 > - 启动 HAProxy 前，必须将 `<management-ip>`、`<admin-user>` 和 `<strong-password>` 替换为实际值。请为监控页面设置唯一的强密码，不要使用示例密码、默认密码或其他系统已使用的密码。
-> - 通过防火墙或安全组将 `8080` 端口限制在受信任的管理网络内，不要将 HAProxy 监控页面直接暴露到公网。`stats auth` 使用 HTTP Basic Authentication，因此还应通过 TLS 或其他受保护的管理通道访问该页面。
-> - `stats admin if TRUE` 允许用户手动启用或禁用后端服务器。如果只需查看监控信息，请删除此配置项。
+> - 通过防火墙或安全组将 `8080` 端口限制在受信任的管理网络内，不要将 HAProxy 监控页面直接暴露到公网。`stats auth` 使用 HTTP Basic Authentication；如果未通过传输层安全协议（Transport Layer Security，TLS）或其他受保护的管理通道访问，用户名和密码可能被网络中的其他方截获。
+> - `stats admin if TRUE` 允许通过 `stats auth` 验证的所有账户启用或禁用后端服务器。除非需要手动控制，否则请删除此配置项；如果保留，请仅允许受信任的运维人员访问，因为 HAProxy 管理 POST 请求容易受到跨站请求伪造（CSRF）攻击。
 
 如要通过 `SHOW PROCESSLIST` 查看连接来源 IP，需要配置使用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)连接 TiDB。
 

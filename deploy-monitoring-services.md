@@ -178,7 +178,7 @@ domain = 192.168.199.113
 check_for_updates = true
 [security]
 admin_user = <grafana-admin-user>
-admin_password = <grafana-strong-password>
+admin_password = """<grafana-strong-password>"""
 [snapshots]
 [users]
 [auth.anonymous]
@@ -205,7 +205,7 @@ url = https://grafana.net
 
 ```
 
-启动 Grafana 前，必须将 `<grafana-admin-user>` 和 `<grafana-strong-password>` 替换为自定义的管理员用户名和唯一的强密码。不要使用 `admin` 作为密码，也不要将实际密码提交到版本控制系统。`admin_password` 仅在首次启动并创建管理员账号时生效。对于已有的 Grafana 实例，请在 Grafana 中修改密码。
+启动 Grafana 前，必须将 `<grafana-admin-user>` 和 `<grafana-strong-password>` 替换为自定义的管理员用户名和唯一的强密码。示例使用三个双引号包裹密码，以确保 `#` 和 `;` 被解析为密码字符而不是注释。不要使用 `admin` 作为密码，也不要将实际密码提交到版本控制系统。`admin_user` 和 `admin_password` 仅在首次启动并创建管理员账号时生效。对于已有的 Grafana 实例，请在 Grafana 中修改密码。
 
 启动 Grafana 服务：
 
@@ -225,8 +225,8 @@ url = https://grafana.net
 1. 登录 Grafana 界面。
 
     - 默认地址：`http://localhost:3000`
-    - 管理员账户：在 `[security]` 中配置的 `<grafana-admin-user>`
-    - 管理员密码：在 `[security]` 中配置的 `<grafana-strong-password>`
+    - 管理员账户：首次创建管理员账号时使用 `[security]` 中配置的 `<grafana-admin-user>`；已有实例使用当前管理员账户
+    - 管理员密码：首次创建管理员账号时使用 `[security]` 中配置的 `<grafana-strong-password>`；已有实例使用当前管理员密码
 
     > **注意：**
     >
