@@ -64,6 +64,12 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r reqs.txt
 ```
+> **注意：**
+>
+> - macOS 和 Linux 上 Python 解释器通常为 `python3`。如果执行 `python` 时提示 `command not found: python`，请将命令中的 `python` 替换为 `python3`。
+> - 在 Windows 上，激活虚拟环境的命令为 `.venv\Scripts\activate`。
+> - 激活成功后，命令行提示符前会出现 `(.venv)`，可据此确认虚拟环境已生效。
+
 
 ### 步骤 4. 设置环境变量
 
