@@ -16,11 +16,17 @@ summary: 了解如何将数据从 TiDB 集群迁移至与 MySQL 兼容的数据�
 
 1. 部署上游 TiDB 集群。
 
-    使用 TiUP Playground 快速部署上下游测试集群。更多部署信息，请参考 [TiUP 官方文档](/tiup/tiup-cluster.md)。
+    使用 TiUP Playground 部署上游 TiDB 集群。更多信息，请参见[本地快速部署 TiDB 集群](/tiup/tiup-playground.md)。
+
+    [TiCDC](/ticdc/ticdc-overview.md) 用于将上游 TiDB 集群中的增量数据变更同步到下游兼容 MySQL 的数据库。下面的示例将 TiCDC 的 `gc-ttl` 设置为 `172800` 秒（48 小时）。这个值需要覆盖全量导出、全量导入以及增量同步追平所需的时间。更多信息，请参见[第 2 步中的 GC 注意事项](#第-2-步迁移全量数据)。
 
     ```shell
+    # 创建 TiCDC 配置文件
+    cat > ticdc.toml <<'EOF'
+    gc-ttl = 172800
+    EOF
     # 创建上游集群
-    tiup playground --db 1 --pd 1 --kv 1 --tiflash 0 --ticdc 1
+    tiup playground --db 1 --pd 1 --kv 1 --tiflash 0 --ticdc 1 --ticdc.config ticdc.toml
     # 查看集群状态
     tiup status
     ```
@@ -75,13 +81,17 @@ summary: 了解如何将数据从 TiDB 集群迁移至与 MySQL 兼容的数据�
     ```
 
     ```
-    +-------------------------+：
+    +-------------------------+
     | @@global.tidb_gc_enable |
     +-------------------------+
     |                       0 |
     +-------------------------+
     1 row in set (0.00 sec)
     ```
+
+    > **注意：**
+    >
+    > TiCDC 中 `gc-ttl` 的默认值为 24 小时。如果后续[增量同步任务](#第-3-步迁移增量数据)的同步延迟超过 `gc-ttl`，任务可能会因 `ErrGCTTLExceeded` 而失败。对于耗时较长的迁移，请按照[第 1 步](#第-1-步搭建环境)中的示例，在启动 TiCDC 之前配置更大的值。更多信息，请参见[TiCDC 的 `gc-ttl` 是什么](/ticdc/ticdc-faq.md#ticdc-的-gc-ttl-是什么)。
 
 2. 备份数据。
 
@@ -114,7 +124,7 @@ summary: 了解如何将数据从 TiDB 集群迁移至与 MySQL 兼容的数据�
     执行以下指令，将 Dumpling 导出的上游全量数据导入到下游 MySQL 实例：
 
     ```shell
-    myloader -h 127.0.0.1 -P 3306 -d ./dumpling_output/
+    myloader -h 127.0.0.1 -P 3306 -u root -p my-secret-pw -d ./dumpling_output/
     ```
 
 4. （可选）校验数据。
@@ -141,7 +151,7 @@ summary: 了解如何将数据从 TiDB 集群迁移至与 MySQL 兼容的数据�
             host = "127.0.0.1" # 需要替换为实际下游集群 ip
             port = 3306
             user = "root"
-            password = ""
+            password = "my-secret-pw"
 
     ######################### Task config #########################
     [task]
@@ -159,11 +169,19 @@ summary: 了解如何将数据从 TiDB 集群迁移至与 MySQL 兼容的数据�
 
 2. 创建同步任务。
 
+    > **注意：**
+    >
+    > 创建 changefeed 前，请先确认每个需要同步的表至少具有一个[有效索引](/ticdc/ticdc-overview.md#有效索引)：主键，或者所有列都显式定义为 `NOT NULL` 且不存在虚拟生成列的唯一索引。默认情况下，TiCDC 不会同步没有有效索引的表中的数据变更。后续再添加有效索引，只会同步其之后的数据变更，不会补回此前已跳过的变更。更多信息，请参见 [DDL 白名单](/ticdc/ticdc-ddl.md#ddl-白名单)。
+    >
+    > 对于没有有效索引的表，建议优先补充有效索引。或者，你也可以在 changefeed 配置文件开头（所有 `[xxx]` 配置段之前）添加 [`force-replicate = true`](/ticdc/ticdc-changefeed-config.md#force-replicate)，并在创建 changefeed 时通过 `--config` 指定该配置文件。但该选项不能保证数据一致性，并且可能导致数据重复。
+
     在上游集群中，执行以下命令创建从上游到下游集群的同步链路：
 
     ```shell
-    tiup cdc:v<CLUSTER_VERSION> cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:@127.0.0.1:3306" --changefeed-id="upstream-to-downstream" --start-ts="434217889191428107"
+    tiup cdc:v<CLUSTER_VERSION> cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:***@127.0.0.1:3306" --changefeed-id="upstream-to-downstream" --start-ts="434217889191428107"
     ```
+
+    请将 `***` 替换为你在[第 1 步：搭建环境](#第-1-步搭建环境)中为下游 MySQL root 账户配置的密码。对于 Docker 示例，请使用 `my-secret-pw`。
 
     以上命令中：
 
@@ -205,7 +223,7 @@ summary: 了解如何将数据从 TiDB 集群迁移至与 MySQL 兼容的数据�
 
 ## 第 4 步：平滑切换业务
 
-通过 TiCDC 创建上下游的同步链路后，原集群的写入数据会以非常低的延迟同步到新集群，此时可以逐步将读流量迁移到新集群了。观察一段时间，如果新集群表现稳定，就可以将写流量接入新集群，步骤如下：
+创建 changefeed 后，TiCDC 会将纳入同步范围的上游表中的数据变更同步到下游集群。请先确认增量同步已追平，再逐步将读流量迁移到新集群。在写流量迁移到下游之前，上游的新写入仍需要时间同步到下游，因此下游的查询结果可能暂时落后于上游。观察一段时间，如果新集群表现稳定，就可以将写流量接入新集群，步骤如下：
 
 1. 停止上游集群的写业务。确认上游数据已全部同步到下游后，停止上游到下游集群的 changefeed。
 
