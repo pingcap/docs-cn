@@ -162,7 +162,7 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 | TiKV |  20180 | TiKV 状态信息上报通信端口 |
 | PD | 2379 | 提供 TiDB 和 PD 通信端口 |
 | PD | 2380 | PD 集群节点间通信端口 |
-|TiFlash|9000|TiFlash TCP 服务端口|
+|TiFlash|9000|TiFlash TCP 服务端口（TiFlash v7.1.0 及以上版本由 TiUP v1.12.5 及以上版本部署时默认关闭；不建议配置）|
 |TiFlash|3930|TiFlash RAFT 服务和 Coprocessor 服务端口|
 |TiFlash|20170|TiFlash Proxy 服务端口|
 |TiFlash|20292|Prometheus 拉取 TiFlash Proxy metrics 端口|
