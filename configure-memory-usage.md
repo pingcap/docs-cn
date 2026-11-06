@@ -317,7 +317,7 @@ TiDB 内部会缓存部分 SQL 的历史最大内存使用量，并在 SQL 下�
 
 - `Work Mode`：TiDB 实例的内存管理模式
 - `Arbitration Exec`：仲裁处理各类请求的统计
-- `Events`：仲裁模式下各类事件的统计。需要重点关注 `mem-risk`（内存风险）和`oom-risk`（`OOM` 风险）
+- `Events`：仲裁模式下各类事件的统计。需要重点关注 `mem-risk`（处理内存风险的次数）和`oom-risk`（处理 `OOM` 风险的次数）
 - `Mem Quota Stats`：各类内存份额占用。需要重点关注 `out-of-control`、`wait-alloc`（等待分配的总内存份额）、`mem-inuse`（实际内存使用量）
 - `Mem Quota Arbitration`：内存资源订阅请求处理耗时
 - `Mem Pool Stats`：各类内存池的数量
