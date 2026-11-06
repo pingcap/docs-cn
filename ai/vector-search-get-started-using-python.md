@@ -134,7 +134,7 @@ def text_to_embedding(text):
     return embedding.tolist()
 ```
 
-`trust_remote_code=False` 可避免在加载模型时执行模型仓库提供的自定义代码。如果需要使用依赖自定义代码的其他模型，请先审查并固定模型版本，再决定是否启用远程代码。
+使用 Hugging Face Hub 模型 ID 时，`trust_remote_code=False` 可避免从 Hub 动态加载模型仓库提供的自定义代码。此设置不能替代对本地模型目录的审查；如果改用本地目录或需要自定义代码的其他模型，请先检查其中的配置和代码文件并固定模型版本，再决定是否启用远程代码。
 
 ### 第 5 步：连接到 TiDB {#step-5-connect-to-tidb}
 
