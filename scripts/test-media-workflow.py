@@ -51,7 +51,8 @@ class MediaWorkflowTest(unittest.TestCase):
         for extension in ["gif", "jpeg", "jpg", "png", "svg"]:
             self.assertIn(f"*.{extension}", stage)
         self.assertIn('cp "$media_file" "$destination"', stage)
-        self.assertNotIn("TENCENTCLOUD_SECRET", self.stage_step.get("env", {}))
+        for name in ("TENCENTCLOUD_SECRET_ID", "TENCENTCLOUD_SECRET_KEY"):
+            self.assertNotIn(name, self.stage_step.get("env", {}))
         self.assertIn('sync "$MEDIA_UPLOAD_DIR/"', self.upload_step["run"])
         self.assertNotIn("sync media/", self.upload_step["run"])
 
