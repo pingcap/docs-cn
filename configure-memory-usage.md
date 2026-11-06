@@ -324,13 +324,13 @@ TiDB 内部会缓存部分 SQL 的历史最大内存使用量，并在 SQL 下�
 - `Runtime Mem Pressure`：内存压力值，即实际内存使用量和已分配内存份额的比率
 - `Waiting Tasks`：排队等待内存分配的各类任务数量
 
-#### 自动采集 Go heap profile
+#### 自动采集 heap profile
 
-启用内存仲裁模式后，TiDB 会自动采集 Go heap profile（`.pprof`）辅助诊断内存占用。这项采集是诊断机制，不会重新启用由 `tidb_memory_usage_alarm_ratio` 控制的内存报警。
+启用内存仲裁模式后，TiDB 会自动采集 Go heap profile（`.pprof`）辅助诊断内存使用。
 
 - 常规抓取阈值为实例内存使用量达到 `tidb_server_memory_limit` 的 `70%`、`80%` 和 `85%`；达到 `90%` 后停止常规抓取。
-- 如果 TiDB 实例进入 OOM 风险、仲裁器已分配的内存份额为 `0`，且 `out-of-control` 内存大于 `0`，则每 `30` 秒最多抓取一次紧急 profile。
-- `.pprof` 文件及其 `.meta.json` 元数据保存在 TiDB 日志目录下的 `mem_arbitrator/heap_profiles/`，最多保留最近 `10` 组。若日志文件路径未包含目录，则保存在 `temp-dir/mem_arbitrator-<port>/heap_profiles/`。
+- 如果 TiDB 实例进入 OOM 风险、且仲裁器已分配的内存份额为 `0`，则紧急抓取 profile。
+- `.pprof` 文件及其 `.meta.json` 元数据保存在 TiDB 日志目录下的 `mem_arbitrator/heap_profiles/`，最多保留最近 `10` 组。
 
 [`SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 新增 `Mem_arbitration` 字段，表示 SQL 等待内存资源的总耗时。[TiDB Dashboard 慢查询页面](/dashboard/dashboard-slow-query.md) 中的 `Mem Arbitration` 列也会显示该信息。
 
