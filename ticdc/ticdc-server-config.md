@@ -107,6 +107,12 @@ summary: 了解 TiCDC 详细的命令行参数和配置文件定义。
 
 <!-- 示例值：`["username_1", "username_2"]` -->
 
+#### `redact-info-log` <span class="version-mark">从 v8.5.6 版本开始引入</span>
+
+- 控制日志脱敏。仅 [TiCDC 新架构](/ticdc/ticdc-architecture.md) 支持该参数。
+- 默认值：`false`，表示禁用日志脱敏
+- 将该值设置为 `true` 时，会将日志中的敏感值替换为 `?`；将其设置为 `"marker"` 时，会在保留敏感值原始内容的同时，用 `‹` 和 `›` 将其括起来。
+
 ### `capture-session-ttl`
 
 - TiCDC 与 etcd 服务间的 session 时长。可选。
