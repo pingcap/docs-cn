@@ -250,7 +250,7 @@ Golang 自 Go 1.19 版本开始引入 [`GOMEMLIMIT`](https://pkg.go.dev/runtime@
 
 - `standard` 或 `priority`：表示启用内存仲裁模式。启用后：
     - 内存资源的使用按照先订阅后分配的机制，由每个 TiDB 实例内的内存仲裁者统一调度。
-    - 预期 TiDB 实例的整体内存使用量不会超过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的限制，且由 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 控制的[内存占用过高时的报警](#tidb-server-内存占用过高时的报警)不再生效。启用内存仲裁后，TiDB 会自动采集 Go heap profile 辅助诊断，详见下文。
+    - 预期 TiDB 实例的整体内存使用量不会超过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的限制，且[内存占用过高时的报警](#tidb-server-内存占用过高时的报警)不再生效，TiDB 会自动采集 heap profile 辅助诊断。
     - 以下系统变量的控制行为依旧有效：
         - [`tidb_mem_oom_action`](/system-variables.md#tidb_mem_oom_action-从-v610-版本开始引入)
         - [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)
