@@ -187,8 +187,10 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
 2. 安装 MySQL：
 
     ```shell
-    sudo yum install -y mysql-community-server --nogpgcheck
+    sudo yum install -y mysql-community-server
     ```
+
+    如果安装程序报告 GPG 签名验证错误，请按照 [MySQL Yum 仓库文档](https://dev.mysql.com/doc/mysql-yum-repo-quick-guide/en/)更新仓库配置或导入官方 GPG 密钥。不要通过禁用签名验证来绕过错误。
 
 3. 启动 MySQL：
 
