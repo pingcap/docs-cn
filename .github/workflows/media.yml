@@ -5,37 +5,10 @@ on:
       - master
       # Keep this list explicit. Before adding a branch, make sure that direct
       # pushes to it are restricted because this workflow uses cloud credentials.
-      - release-1.0
-      - release-2.0
-      - release-2.1-legacy
-      - release-2.1
-      - release-3.0
-      - release-3.1
-      - release-4.0
-      - release-5.0
-      - release-5.1
-      - release-5.2
-      - release-5.3
-      - release-5.4
-      - release-6.0
-      - release-6.1
-      - release-6.2
-      - release-6.3
-      - release-6.4
       - release-6.5
-      - release-6.6
-      - release-7.0
       - release-7.1
-      - release-7.2
-      - release-7.3
-      - release-7.4
       - release-7.5
-      - release-7.6
-      - release-8.0
       - release-8.1
-      - release-8.2
-      - release-8.3
-      - release-8.4
       - release-8.5
     paths:
       - media/**

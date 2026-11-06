@@ -41,10 +41,17 @@ class MediaWorkflowTest(unittest.TestCase):
     def test_credentialed_runs_use_an_explicit_branch_allowlist(self):
         trigger = self.workflow.get("on", self.workflow.get(True))
         branches = trigger["push"]["branches"]
-        self.assertIn("master", branches)
-        self.assertNotIn("release-*", branches)
-        self.assertNotIn("release-8.5-temp", branches)
-        self.assertFalse(any("*" in branch for branch in branches))
+        self.assertEqual(
+            branches,
+            [
+                "master",
+                "release-6.5",
+                "release-7.1",
+                "release-7.5",
+                "release-8.1",
+                "release-8.5",
+            ],
+        )
 
     def test_only_publishable_media_is_staged(self):
         stage = self.stage_step["run"]
