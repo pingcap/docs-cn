@@ -3,7 +3,40 @@ on:
   push:
     branches:
       - master
-      - release-*
+      # Keep this list explicit. Before adding a branch, make sure that direct
+      # pushes to it are restricted because this workflow uses cloud credentials.
+      - release-1.0
+      - release-2.0
+      - release-2.1-legacy
+      - release-2.1
+      - release-3.0
+      - release-3.1
+      - release-4.0
+      - release-5.0
+      - release-5.1
+      - release-5.2
+      - release-5.3
+      - release-5.4
+      - release-6.0
+      - release-6.1
+      - release-6.2
+      - release-6.3
+      - release-6.4
+      - release-6.5
+      - release-6.6
+      - release-7.0
+      - release-7.1
+      - release-7.2
+      - release-7.3
+      - release-7.4
+      - release-7.5
+      - release-7.6
+      - release-8.0
+      - release-8.1
+      - release-8.2
+      - release-8.3
+      - release-8.4
+      - release-8.5
     paths:
       - media/**
 
@@ -36,9 +69,26 @@ jobs:
           chmod 755 "$COSCLI_PATH"
           "$COSCLI_PATH" --version
 
+      - name: Stage publishable media
+        env:
+          MEDIA_UPLOAD_DIR: ${{ runner.temp }}/media-upload
+        run: |
+          set -euo pipefail
+          mkdir -p "$MEDIA_UPLOAD_DIR"
+          find media -type f \
+            \( -iname '*.gif' -o -iname '*.jpeg' -o -iname '*.jpg' -o -iname '*.png' -o -iname '*.svg' \) \
+            -print0 | while IFS= read -r -d '' media_file; do
+              relative_path="${media_file#media/}"
+              destination="$MEDIA_UPLOAD_DIR/$relative_path"
+              mkdir -p "$(dirname "$destination")"
+              cp "$media_file" "$destination"
+              chmod 0644 "$destination"
+            done
+
       - name: Upload to COS
         env:
           COSCLI_PATH: ${{ runner.temp }}/coscli
+          MEDIA_UPLOAD_DIR: ${{ runner.temp }}/media-upload
           TENCENTCLOUD_BUCKET_ID: ${{ secrets.TENCENTCLOUD_BUCKET_ID }}
           TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
           TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
@@ -67,7 +117,7 @@ jobs:
           os.chmod(os.environ["COSCLI_CONFIG"], 0o600)
           PY
 
-          "$COSCLI_PATH" sync media/ "cos://${TENCENTCLOUD_BUCKET_ID}/media/images/docs-cn" \
+          "$COSCLI_PATH" sync "$MEDIA_UPLOAD_DIR/" "cos://${TENCENTCLOUD_BUCKET_ID}/media/images/docs-cn" \
             --config-path "$COSCLI_CONFIG" \
             --recursive \
             --routines 16 \

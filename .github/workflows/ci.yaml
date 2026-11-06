@@ -29,7 +29,7 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
       - name: Install Node dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts --include=dev
       - name: Verify internal links (full repo) - files
         run: ./scripts/verify-links.sh
 
@@ -44,7 +44,7 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
       - name: Install Node dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts --include=dev
       - name: Verify internal links (full repo) - anchors
         run: ./scripts/verify-link-anchors.sh
 
@@ -59,6 +59,6 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
       - name: Install Node dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts --include=dev
       - name: Verify internal links (full repo) - TOC membership
         run: node ./scripts/verify-internal-links-in-toc.js

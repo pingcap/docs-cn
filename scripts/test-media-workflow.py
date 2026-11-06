@@ -21,6 +21,11 @@ class MediaWorkflowTest(unittest.TestCase):
         cls.install_step = next(
             step for step in cls.upload_job["steps"] if step.get("name") == "Install coscli"
         )
+        cls.stage_step = next(
+            step
+            for step in cls.upload_job["steps"]
+            if step.get("name") == "Stage publishable media"
+        )
         cls.upload_step = next(
             step for step in cls.upload_job["steps"] if step.get("name") == "Upload to COS"
         )
@@ -32,6 +37,48 @@ class MediaWorkflowTest(unittest.TestCase):
 
     def test_workflow_has_read_only_repository_access(self):
         self.assertEqual(self.workflow["permissions"], {"contents": "read"})
+
+    def test_credentialed_runs_use_an_explicit_branch_allowlist(self):
+        trigger = self.workflow.get("on", self.workflow.get(True))
+        branches = trigger["push"]["branches"]
+        self.assertIn("master", branches)
+        self.assertNotIn("release-*", branches)
+        self.assertNotIn("release-8.5-temp", branches)
+        self.assertFalse(any("*" in branch for branch in branches))
+
+    def test_only_publishable_media_is_staged(self):
+        stage = self.stage_step["run"]
+        for extension in ["gif", "jpeg", "jpg", "png", "svg"]:
+            self.assertIn(f"*.{extension}", stage)
+        self.assertIn('cp "$media_file" "$destination"', stage)
+        self.assertNotIn("TENCENTCLOUD_SECRET", self.stage_step.get("env", {}))
+        self.assertIn('sync "$MEDIA_UPLOAD_DIR/"', self.upload_step["run"])
+        self.assertNotIn("sync media/", self.upload_step["run"])
+
+    def test_staging_excludes_unsupported_files(self):
+        with tempfile.TemporaryDirectory(prefix="media-stage-test-") as directory:
+            workdir = Path(directory)
+            source = workdir / "media" / "nested"
+            destination = workdir / "staged"
+            source.mkdir(parents=True)
+            (source / "image.PNG").write_bytes(b"image")
+            (source / "backup.png.bak").write_bytes(b"backup")
+
+            result = subprocess.run(
+                [
+                    "bash", "--noprofile", "--norc", "-eo", "pipefail", "-c",
+                    self.stage_step["run"],
+                ],
+                cwd=workdir,
+                env={**os.environ, "MEDIA_UPLOAD_DIR": str(destination)},
+                capture_output=True,
+                text=True,
+                timeout=5,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertTrue((destination / "nested" / "image.PNG").is_file())
+            self.assertFalse((destination / "nested" / "backup.png.bak").exists())
 
     def test_actions_are_pinned_to_commits(self):
         for job in self.workflow["jobs"].values():
@@ -108,6 +155,7 @@ Path(os.environ["MOCK_RESULT"]).write_text(str(config_path))
                 env={
                     **os.environ,
                     "COSCLI_PATH": str(mock_coscli),
+                    "MEDIA_UPLOAD_DIR": str(temp_dir / "media-upload"),
                     "MOCK_RESULT": str(result_file),
                     "RUNNER_TEMP": str(temp_dir),
                     "TENCENTCLOUD_BUCKET_ID": "dummy-bucket",

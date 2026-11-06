@@ -125,7 +125,7 @@ TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
 from sentence_transformers import SentenceTransformer
 
 print("Downloading and loading the embedding model...")
-embed_model = SentenceTransformer("sentence-transformers/msmarco-MiniLM-L12-cos-v5", trust_remote_code=True)
+embed_model = SentenceTransformer("sentence-transformers/msmarco-MiniLM-L12-cos-v5", trust_remote_code=False)
 embed_model_dims = embed_model.get_sentence_embedding_dimension()
 
 def text_to_embedding(text):
@@ -133,6 +133,8 @@ def text_to_embedding(text):
     embedding = embed_model.encode(text)
     return embedding.tolist()
 ```
+
+`trust_remote_code=False` 可避免在加载模型时执行模型仓库提供的自定义代码。如果需要使用依赖自定义代码的其他模型，请先审查并固定模型版本，再决定是否启用远程代码。
 
 ### 第 5 步：连接到 TiDB {#step-5-connect-to-tidb}
 
