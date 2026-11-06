@@ -50,6 +50,8 @@ TiDB 的事务的实现采用了 MVCC（多版本并发控制）机制，当新�
 
 TiDB 还提供了一个系统变量来限制单条 SQL 语句的执行时间，仅对 `SELECT` 语句（包括 `SELECT ... FOR UPDATE`）生效：`max_execution_time`，它的默认值为 0，表示无限制。`max_execution_time` 的单位为 ms，但实际精度在 100ms 级别，而非更准确的毫秒级别。
 
+从 v8.5.9 和 v9.0.0 起，如需限制事务型 `INSERT`、`REPLACE`、`UPDATE`、`DELETE` 语句以及 `COMMIT` 语句的执行时间，可以使用 [`tidb_dml_max_execution_time`](/system-variables.md#tidb_dml_max_execution_time-从-v859-和-v900-版本开始引入)。该变量的默认值为 `0`，表示无限制，单位为毫秒。对于自动提交的 DML 语句，该限制包含提交阶段的耗时。该限制不适用于非事务 DML、Pipelined DML 和部分批处理操作，完整的适用范围和限制请参考该变量的说明。
+
 ## JDBC 查询超时
 
 从 v6.1.0 起，当 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入) 配置项为默认值 `true` 时，你可以使用 MySQL JDBC 提供的 `setQueryTimeout()` 方法来控制查询的超时时间。
