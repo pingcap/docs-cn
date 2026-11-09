@@ -70,3 +70,13 @@ PD 侧的日志脱敏需要将 [`security.redact-info-log`](/pd-configuration-fi
 ## TiFlash 组件日志脱敏
 
 TiFlash 侧的日志脱敏需要将 tiflash-server 中 [`security.redact_info_log`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) 配置项的值以及 tiflash-learner 中 [`security.redact-info-log`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) 配置项的值均设为 `true` 或者 `"marker"`。两配置项默认值均为 `false`，即关闭脱敏。
+
+## TiCDC 组件日志脱敏
+
+> **注意：**
+>
+> 从 TiCDC v8.5.6 开始，仅 [TiCDC 新架构](/ticdc/ticdc-architecture.md)支持日志脱敏。
+
+要在 TiCDC 中启用日志脱敏，请在 TiCDC server 配置文件中将 [`security.redact-info-log`](/ticdc/ticdc-server-config.md#redact-info-log-从-v856-版本开始引入) 设置为 `true`。该参数默认值为 `false`，表示日志脱敏处于禁用状态。设置为 `true` 后，TiCDC 会将日志中的敏感值替换为 `?`。你也可以将其设置为 `"marker"`，此时 TiCDC 会使用 `‹` 和 `›` 包裹敏感值，同时保留其原始值。
+
+该配置不会对所有日志内容进行脱敏。例如，DDL 查询及其默认值、库名、表名和列名仍可能包含敏感信息。对于严格合规场景，请结合额外的日志过滤策略。
