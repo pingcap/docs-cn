@@ -173,6 +173,7 @@ TiDB 中的 `ALTER TABLE` 语法主要存在以下限制：
 - 不支持主键列上 [Reorg-Data](/sql-statements/sql-statement-modify-column.md#reorg-data-change) 类型的变更。
 - 不支持分区表上的列类型变更。
 - 不支持生成列上的列类型变更。
+- 不支持修改索引覆盖的列的排序规则 (collation)。
 - 不支持部分数据类型（例如，部分时间类型、Bit、Set、Enum、JSON 等）的变更，因为 TiDB 中的 `CAST` 函数与 MySQL 的行为存在兼容性问题。
 - `AFFINITY` 选项为 TiDB 扩展语法。开启 `AFFINITY` 后，不支持变更该表的分区方案（如添加、删除、重组或交换分区），需要先移除 `AFFINITY`。
 - 不支持空间数据类型。
