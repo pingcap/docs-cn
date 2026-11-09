@@ -4,5 +4,6 @@ options:
 approvers:
   - lilin90
   - qiancai
+  - shhdgit
 reviewers:
   - sig-community-reviewers

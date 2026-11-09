@@ -9,16 +9,27 @@ permissions:
 jobs:
   linkChecker:
     runs-on: ubuntu-latest
+    env:
+      LYCHEE_SHA256: 1f4e0ef7f6554a6ed33dd7ac144fb2e1bbed98598e7af973042fc5cd43951c9a
+      LYCHEE_VERSION: 0.24.2
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           fetch-depth: 2
 
-      - name: 'Get a list of changed markdown files to process'
-        id: changed-files
+      - name: Install lychee
+        env:
+          LYCHEE_PATH: ${{ runner.temp }}/lychee
         run: |
-          CHANGED_FILES=$(git diff-tree --name-only --diff-filter 'AM' -r HEAD^1 HEAD -- "*.md" | sed -z "s/\n$//;s/\n/' '/g")
-          echo "all_changed_files=${CHANGED_FILES}" >> $GITHUB_OUTPUT
+          archive="${RUNNER_TEMP}/lychee.tar.gz"
+          curl --fail --location --silent --show-error \
+            --output "$archive" \
+            "https://github.com/lycheeverse/lychee/releases/download/lychee-v${LYCHEE_VERSION}/lychee-x86_64-unknown-linux-gnu.tar.gz"
+          echo "${LYCHEE_SHA256}  ${archive}" | sha256sum --check -
+          tar -xzf "$archive" -C "$RUNNER_TEMP" \
+            --strip-components=1 lychee-x86_64-unknown-linux-gnu/lychee
+          chmod 755 "$LYCHEE_PATH"
+          "$LYCHEE_PATH" --version
 
       - name: Restore lychee cache
         uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
@@ -28,11 +39,31 @@ jobs:
           restore-keys: cache-lychee-
 
       - name: Link Checker
-        if: ${{ steps.changed-files.outputs.all_changed_files }}
-        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2
-        with:
-          fail: true
-          failIfEmpty: false
-          args: --root-dir $(pwd) --cache --max-cache-age 1d -E -i -n -t 45 -- '${{ steps.changed-files.outputs.all_changed_files }}'
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LYCHEE_PATH: ${{ runner.temp }}/lychee
+        run: |
+          set -euo pipefail
+
+          changed_files_list="$(mktemp "${RUNNER_TEMP}/changed-markdown.XXXXXX")"
+          trap 'rm -f "$changed_files_list"' EXIT
+          git diff-tree --no-commit-id --name-only --diff-filter=AM -r -z \
+            HEAD^1 HEAD -- '*.md' > "$changed_files_list"
+
+          # NUL delimiters and a Bash array preserve every filename literally.
+          changed_files=()
+          while IFS= read -r -d '' changed_file; do
+            changed_files+=("$changed_file")
+          done < "$changed_files_list"
+
+          if (( ${#changed_files[@]} == 0 )); then
+            echo "No changed Markdown files to check."
+            exit 0
+          fi
+
+          "$LYCHEE_PATH" \
+            --root-dir "$GITHUB_WORKSPACE" \
+            --cache \
+            --max-cache-age 1d \
+            -E -i -n -t 45 \
+            -- "${changed_files[@]}"
