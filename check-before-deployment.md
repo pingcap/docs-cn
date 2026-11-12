@@ -155,7 +155,9 @@ TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运
     >
     > 如果业务中可能存在针对大对象的 DDL 操作，推荐为 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 配置独立文件系统及更大的临时空间。
 
-    以下示例假设 TiDB 以 `tidb` 用户和用户组运行。如果使用其他账户，请相应替换命令中的用户和用户组。
+    以下示例假设 TiDB 以 `tidb` 用户和用户组运行，且该用户和用户组已在各 TiDB 目标节点上存在。如果使用其他账户，请相应替换命令中的用户和用户组，并与拓扑配置中的 `global.user` 和 `global.group` 保持一致。
+
+    如果依赖 TiUP 自动创建运行账户，请在 `tiup cluster deploy` 完成后、首次执行 `tiup cluster start` 前执行以下目录创建和权限设置命令。
 
     ```shell
     sudo install -d -o tidb -g tidb -m 700 /data/tidb-deploy/tempdir
