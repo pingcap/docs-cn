@@ -48,12 +48,43 @@ assert '--web.listen-address="127.0.0.1:9090"' in GRAFANA
 assert "--web.enable-admin-api" not in GRAFANA
 assert "不启用 Prometheus 管理 API" in GRAFANA
 assert "将 `--web.external-url` 设置为" in GRAFANA
+assert "`http://127.0.0.1:9090`" in GRAFANA
+assert "在 **Access** 处，选择 **Server**" in GRAFANA
 
 assert not re.search(r"systemctl\s+(?:stop|disable)\b[^\n]*\bfirewalld\b", FIREWALL)
 assert not re.search(r"--set-default-zone(?:=|\s+)trusted\b", FIREWALL)
 assert "仅允许可信来源访问必需端口" in FIREWALL
 assert "--add-rich-rule" in FIREWALL
 assert "<management-network-cidr>" in FIREWALL
+assert "<prometheus-ip>/32" in FIREWALL
+assert all(
+    f'port port="{port}"' in FIREWALL
+    for port in (
+        "2379",
+        "2380",
+        "8300",
+        "9094",
+        "10080",
+        "20180",
+    )
+)
+assert all(
+    port in FIREWALL
+    for port in (
+        "3000",
+        "3930",
+        "8234",
+        "9000",
+        "9090",
+        "9093",
+        "9100",
+        "9115",
+        "12020",
+        "20170",
+        "20292",
+    )
+)
+assert "NgMonitoring" in FIREWALL
 assert "firewall-cmd --reload" in FIREWALL
 
 print("admin credential guidance checks passed")

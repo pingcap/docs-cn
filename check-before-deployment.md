@@ -186,45 +186,88 @@ sudo systemctl status firewalld.service
 sudo systemctl enable --now firewalld.service
 ```
 
-使用以下命令为 TiDB 集群组件配置防火墙。这些 IPv4 示例使用 rich rules 限制来源地址。执行前，必须将 `<application-network-cidr>`、`<cluster-network-cidr>` 和 `<management-network-cidr>` 替换为实际的可信网段；如果使用 IPv6，请配置等效的 IPv6 规则。
+使用以下命令为 TiDB 集群组件配置防火墙。这些 IPv4 示例使用 rich rules 限制来源地址。执行前，必须将 `<application-network-cidr>`、`<cluster-network-cidr>`、`<management-network-cidr>` 和 `<prometheus-ip>` 替换为实际的可信网段或 IP 地址；如果使用 IPv6，请配置等效的 IPv6 规则。
 
-允许应用网络访问 TiDB SQL 端口，并仅允许管理网络访问 TiDB 状态端口：
+以下示例覆盖[网络端口表](/hardware-and-software-requirements.md#网络要求)中列出的默认组件。实际部署可能仅包含其中一部分组件，也可能修改默认端口。请根据实际拓扑，为每个已部署组件开放对应端口，并确保 Prometheus 所在机器能够访问各节点的 metrics 端口。
+
+允许应用网络访问 TiDB SQL 端口，并允许管理网络和 Prometheus 所在机器访问 TiDB 状态端口：
 
 ```bash
 sudo firewall-cmd --permanent --zone=public \
   --add-rich-rule='rule family="ipv4" source address="<application-network-cidr>" port port="4000" protocol="tcp" accept'
 sudo firewall-cmd --permanent --zone=public \
   --add-rich-rule='rule family="ipv4" source address="<management-network-cidr>" port port="10080" protocol="tcp" accept'
+sudo firewall-cmd --permanent --zone=public \
+  --add-rich-rule='rule family="ipv4" source address="<prometheus-ip>/32" port port="10080" protocol="tcp" accept'
 ```
 
-允许集群网络访问 TiKV 服务端口，并仅允许管理网络访问 TiKV 状态端口：
+允许集群网络访问 TiKV 服务端口，并允许管理网络和 Prometheus 所在机器访问 TiKV 状态端口：
 
 ```bash
 sudo firewall-cmd --permanent --zone=public \
   --add-rich-rule='rule family="ipv4" source address="<cluster-network-cidr>" port port="20160" protocol="tcp" accept'
 sudo firewall-cmd --permanent --zone=public \
   --add-rich-rule='rule family="ipv4" source address="<management-network-cidr>" port port="20180" protocol="tcp" accept'
+sudo firewall-cmd --permanent --zone=public \
+  --add-rich-rule='rule family="ipv4" source address="<prometheus-ip>/32" port port="20180" protocol="tcp" accept'
 ```
 
-仅允许集群网络访问 PD 客户端和节点通信端口：
+允许集群网络访问 PD 客户端端口和节点通信端口，并允许管理网络通过 PD 客户端端口访问 TiDB Dashboard：
 
 ```bash
 sudo firewall-cmd --permanent --zone=public \
-  --add-rich-rule='rule family="ipv4" source address="<cluster-network-cidr>" port port="2379-2380" protocol="tcp" accept'
+  --add-rich-rule='rule family="ipv4" source address="<cluster-network-cidr>" port port="2379" protocol="tcp" accept'
+sudo firewall-cmd --permanent --zone=public \
+  --add-rich-rule='rule family="ipv4" source address="<cluster-network-cidr>" port port="2380" protocol="tcp" accept'
+sudo firewall-cmd --permanent --zone=public \
+  --add-rich-rule='rule family="ipv4" source address="<management-network-cidr>" port port="2379" protocol="tcp" accept'
 ```
 
-仅允许管理网络访问 Prometheus：
+允许集群网络访问 TiFlash 服务端口，并允许 Prometheus 所在机器访问 TiFlash metrics 端口：
+
+```bash
+for port in 9000 3930 20170; do
+  sudo firewall-cmd --permanent --zone=public \
+    --add-rich-rule="rule family=\"ipv4\" source address=\"<cluster-network-cidr>\" port port=\"${port}\" protocol=\"tcp\" accept"
+done
+for port in 20292 8234; do
+  sudo firewall-cmd --permanent --zone=public \
+    --add-rich-rule="rule family=\"ipv4\" source address=\"<prometheus-ip>/32\" port port=\"${port}\" protocol=\"tcp\" accept"
+done
+```
+
+允许集群网络访问 TiCDC 通信端口，并允许 Prometheus 所在机器通过同一端口拉取 TiCDC metrics：
 
 ```bash
 sudo firewall-cmd --permanent --zone=public \
-  --add-rich-rule='rule family="ipv4" source address="<management-network-cidr>" port port="12020" protocol="tcp" accept'
+  --add-rich-rule='rule family="ipv4" source address="<cluster-network-cidr>" port port="8300" protocol="tcp" accept'
+sudo firewall-cmd --permanent --zone=public \
+  --add-rich-rule='rule family="ipv4" source address="<prometheus-ip>/32" port port="8300" protocol="tcp" accept'
 ```
 
-仅允许管理网络访问 Grafana：
+允许 Prometheus 所在机器访问各节点的 Node Exporter 和 Blackbox Exporter 端口：
+
+```bash
+for port in 9100 9115; do
+  sudo firewall-cmd --permanent --zone=public \
+    --add-rich-rule="rule family=\"ipv4\" source address=\"<prometheus-ip>/32\" port port=\"${port}\" protocol=\"tcp\" accept"
+done
+```
+
+仅允许管理网络访问 Prometheus、Alertmanager、NgMonitoring 和 Grafana 的 Web 端口：
+
+```bash
+for port in 9090 9093 12020 3000; do
+  sudo firewall-cmd --permanent --zone=public \
+    --add-rich-rule="rule family=\"ipv4\" source address=\"<management-network-cidr>\" port port=\"${port}\" protocol=\"tcp\" accept"
+done
+```
+
+如果部署了多个 Alertmanager 实例，仅允许这些实例所在的集群网络通过 `9094` 端口互相通信：
 
 ```bash
 sudo firewall-cmd --permanent --zone=public \
-  --add-rich-rule='rule family="ipv4" source address="<management-network-cidr>" port port="3000" protocol="tcp" accept'
+  --add-rich-rule='rule family="ipv4" source address="<cluster-network-cidr>" port port="9094" protocol="tcp" accept'
 ```
 
 添加所有永久规则后，重新加载 `firewalld` 使规则立即生效：

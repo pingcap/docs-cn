@@ -243,7 +243,8 @@ url = https://grafana.net
 
     - 在 **Name** 处，为数据源指定一个名称。
     - 在 **Type** 处，选择 **Prometheus**。
-    - 在 **URL** 处，指定 Prometheus 的 IP 地址。
+    - 在 **URL** 处，填写 `http://127.0.0.1:9090`。
+    - 在 **Access** 处，选择 **Server**，由与 Prometheus 同机部署的 Grafana 服务端通过本机地址访问 Prometheus。
     - 根据需求指定其它字段。
 
 5. 点击 **Add** 保存新的数据源。
