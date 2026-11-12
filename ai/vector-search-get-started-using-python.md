@@ -125,7 +125,7 @@ TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
 from sentence_transformers import SentenceTransformer
 
 print("Downloading and loading the embedding model...")
-embed_model = SentenceTransformer("sentence-transformers/msmarco-MiniLM-L12-cos-v5", trust_remote_code=True)
+embed_model = SentenceTransformer("sentence-transformers/msmarco-MiniLM-L12-cos-v5", trust_remote_code=False)
 embed_model_dims = embed_model.get_sentence_embedding_dimension()
 
 def text_to_embedding(text):
@@ -133,6 +133,8 @@ def text_to_embedding(text):
     embedding = embed_model.encode(text)
     return embedding.tolist()
 ```
+
+使用 Hugging Face Hub 模型 ID 时，`trust_remote_code=False` 可避免从 Hub 动态加载模型仓库提供的自定义代码。此设置不能替代对本地模型目录的审查；如果改用本地目录或需要自定义代码的其他模型，请先检查其中的配置和代码文件并固定模型版本，再决定是否启用远程代码。
 
 ### 第 5 步：连接到 TiDB {#step-5-connect-to-tidb}
 
