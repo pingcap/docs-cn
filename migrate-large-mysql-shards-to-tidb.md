@@ -129,7 +129,7 @@ CREATE TABLE `my_db`.`table5` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 ```
 
-> **注意：**
+> **警告：**
 >
 > 如果 `my_db.table5` 有 checkpoint 错误，请运行 ``tidb-lightning-ctl --config tidb-lightning.toml --checkpoint-error-destroy='`my_db`.`table5`'``。TiDB Lightning 随后会删除 `my_db.table5` 并重置其 checkpoint。如果你需要在本教程中保留下游手动调整过的表结构，请在重试导入前重新创建该表定义。
 
