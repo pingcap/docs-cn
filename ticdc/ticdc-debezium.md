@@ -25,7 +25,52 @@ cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-
 
 Debezium 输出格式中包含当前行的 Schema 信息，以便下游消费者更好地理解当前行的数据结构。对于不需要输出 Schema 信息的场景，也可以通过在 changefeed 的配置文件或者 `sink-uri` 中将 `debezium-disable-schema` 参数设置为 `true` 来关闭 Schema 信息的输出。
 
-此外，Debezium 原有格式中并不包含 TiDB 专有的 `CommitTS` 事务唯一标识等重要字段。为了保证数据的完整性，TiCDC 在 Debezium 格式中增加了 `CommitTs` 和 `ClusterID` 两个字段，用于标识 TiDB 数据变更的相关信息。
+TiCDC 在 Debezium 的 `source` 元数据中增加了 `commit_ts` 和 `cluster_id` 字段，分别表示每条变更的提交时间戳和来源集群。
+
+### 包含事务开始 TSO
+
+该选项需要使用 [TiCDC 新架构](/ticdc/ticdc-architecture.md)。
+
+默认情况下，Debezium JSON DML 消息包含 `source.commit_ts`，但不包含事务开始 TSO。你可以选择仅在 DML 行事件中包含 `source.start_ts`（源事务开始时的原始 PD TSO）。该选项默认关闭。
+
+你可以通过以下任一方式开启该选项：
+
+- 在 `sink-uri` 中：
+
+    ```text
+    kafka://127.0.0.1:9092/topic-name?protocol=debezium&debezium-include-start-ts=true
+    ```
+
+- 在 changefeed 配置文件中：
+
+    ```toml
+    [sink.debezium]
+    include-start-ts = true
+    ```
+
+显式指定的 URI 参数优先于配置文件，包括使用 `debezium-include-start-ts=false` 覆盖 `include-start-ts = true`。
+
+开启该选项后：
+
+- DML 消息的 Value 会增加 JSON 整数字段 `source.start_ts`，与 `source.commit_ts` 同级。启用 schema 输出时，JSON schema 将 `source.start_ts` 声明为 `int64`。
+- DDL 事件、WATERMARK 事件和 Key 消息不包含 `start_ts`。在 `debezium` 以外的协议（包括 `debezium-avro`）中开启该选项会被拒绝。
+- 如需停止输出 `start_ts`，关闭该选项即可。关闭后产生的消息不再包含该字段及其 schema 声明。
+
+> **注意：**
+>
+> `start_ts` 是以 JSON 整数编码的原始 PD TSO，不是毫秒时间戳。TiCDC 使用 `uint64` 存储 TSO，而 Debezium schema 将该字段声明为 `int64`，因此遵循该 schema 的消费者受有符号 64 位整数范围限制（最大值为 `9223372036854775807`）。请使用能够保留整数精度的解析器直接解析 JSON 整数，或将其原始十进制数字保留为字符串。不要先转换为 JavaScript `Number` 或 IEEE 754 `float64`：大于 `2^53 - 1` 的整数可能丢失精度。
+
+开启该选项后，`source` 字段类似如下：
+
+```json
+{
+    "source": {
+        "commit_ts": 447507027004751877,
+        "start_ts": 447507027004751800,
+        "cluster_id": "default"
+    }
+}
+```
 
 ## 消息格式定义
 
@@ -570,6 +615,7 @@ Key 中的字段只包含主键或唯一索引列。字段解释如下：
 | `payload.before`    | JSON   | 这条事件语句变更前的数据值。对于 `"c"` 事件，`before` 字段的值为 `null`。  |
 | `payload.after`     | JSON   | 这条事件语句变更后的数据值。对于 `"d"` 事件，`after` 字段的值为 `null`。   |
 | `payload.source.commit_ts`     | 数值  | 该事件的 `CommitTs` 值。                    |
+| `payload.source.start_ts` | JSON 整数（schema 中为 `int64`） | 源事务的原始 PD TSO。仅在启用 `debezium-include-start-ts` 或 `[sink.debezium] include-start-ts` 时出现。解析时需要保留整数精度，详见[包含事务开始 TSO](#包含事务开始-tso)。 |
 | `payload.source.db`     | 字符串   | 事件发生的数据库的名称。                    |
 | `payload.source.table`     | 字符串  |  事件发生的数据表的名称。                   |
 | `schema.fields`     | JSON   |  `payload` 中各个字段的类型信息，包括对应行数据变更前后 schema 的信息。      |
