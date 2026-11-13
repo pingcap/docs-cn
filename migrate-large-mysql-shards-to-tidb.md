@@ -105,7 +105,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
 若 TiDB Lightning 因不可恢复的错误而退出，例如数据出错，在重启时不会使用断点，而是直接报错离开。为保证已导入的数据安全，必须先解决掉这些错误才能继续。你可以使用 `tidb-lightning-ctl` 命令控制导入出错后的行为。该命令的选项有：
 
-* --checkpoint-error-destroy：出现错误后，让失败的表从头开始整个导入过程。
+* --checkpoint-error-destroy：出现错误后，通过删除这些表并重置其 checkpoint，让失败的目标表从头开始重新导入数据。
 * --checkpoint-error-ignore：如果导入表曾经出错，该命令会清除出错状态，如同错误没有发生过一样。
 * --checkpoint-remove：无论是否有出错，把表的断点清除。
 
@@ -128,6 +128,10 @@ CREATE TABLE `my_db`.`table5` (
   UNIQUE KEY `sid` (`sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 ```
+
+> **警告：**
+>
+> 如果 `my_db.table5` 有 checkpoint 错误，请运行 ``tidb-lightning-ctl --config tidb-lightning.toml --checkpoint-error-destroy='`my_db`.`table5`'``。TiDB Lightning 随后会删除 `my_db.table5` 并重置其 checkpoint。如果你需要在本教程中保留下游手动调整过的表结构，请在重试导入前重新创建该表定义。
 
 ### 执行导入操作
 
@@ -220,8 +224,8 @@ CREATE TABLE `my_db`.`table5` (
 # 唯一命名，不可重复。
 source-id: "mysql-01"
 
-# DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
-enable-gtid: true
+# DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。仅当上游 MySQL 已启用 GTID 且你希望从某个 GTID 集开始复制时，才将此选项设置为 `true`。若上游存在主从自动切换，则必须使用 GTID 模式。
+enable-gtid: false
 
 from:
   host: "${host}"           # 例如：172.16.10.81
@@ -269,12 +273,18 @@ target-database:              # 下游数据库实例配置。
   user: "root"
   password: "${password}"     # 推荐使用经过 dmctl 加密的密文。
 
-##  使用黑白名单配置需要同步的表
+##  使用黑白名单配置仅导出的需要同步的表
 block-allow-list:             # 数据源数据库实例匹配的表的 block-allow-list 过滤规则集，如果 DM 版本早于 v2.0.0-beta.2 则使用 black-white-list。
   bw-rule-1:                  # 黑白名单配置项 ID。
-    do-dbs: ["my_db1"]        # 迁移哪些库。这里将实例 1 的 my_db1 和实例 2 的 my_db2 分别配置为两条 rule，以示例如何避免实例 1 的 my_db2 被同步。
+    do-dbs: ["my_db1"]
+    do-tables:
+    - db-name: "my_db1"
+      tbl-name: "table[1-2]"  # 仅同步 `my_db1` 中的 `table1` 和 `table2`。
   bw-rule-2:
     do-dbs: ["my_db2"]
+    do-tables:
+    - db-name: "my_db2"
+      tbl-name: "table[3-4]"  # 仅同步 `my_db2` 中的 `table3` 和 `table4`。
 
 routes:                               # 上游和下游表之间的路由 table routing 规则集
   route-rule-1:                       # 配置名称。将 my_db1 中的 table1 和 table2 合并导入下游 my_db.table5
@@ -295,18 +305,18 @@ mysql-instances:
     route-rules: ["route-rule-1"]     # 引入上面表合并配置。
 #       syncer-config-name: "global"  # 引用后面的 syncers 增量数据配置。
     meta:                             # `task-mode` 为 `incremental` 且下游数据库的 `checkpoint` 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 `checkpoint` 为准。如果 `meta` 项和下游数据库的 `checkpoint` 都不存在，则从上游当前最新的 binlog 位置开始迁移。
-      binlog-name: "${binlog-name}"   # 第 1 步中 ${data-path}/my_db1/metadata 记录的日志位置，当上游存在主从切换时，必须使用 gtid。
+      binlog-name: "${binlog-name}"   # 第 1 步中 `${data-path}/my_db1/metadata` 记录的日志位置；当该上游未启用 GTID 时，使用 `binlog-name` + `binlog-pos`。
       binlog-pos: ${binlog-position}
-      # binlog-gtid:                  " 例如：09bec856-ba95-11ea-850a-58f2b4af5188:1-9"
+      # binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"  # 如果该上游使用 GTID 模式，则改用 `binlog-gtid`。
   - source-id: "mysql-02"             # 数据源 ID，即 source1.yaml 中的 source-id
     block-allow-list: "bw-rule-2"     # 引入上面黑白名单配置。实例2的 my_db2
     route-rules: ["route-rule-2"]     # 引入上面表合并配置。
 
 #       syncer-config-name: "global"  # 引用后面的 syncers 增量数据配置。
     meta:                             # task-mode 为 incremental 且下游数据库的 checkpoint 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 checkpoint 为准。
-      # binlog-name: "${binlog-name}"   # 第 1 步中 ${data-path}/my_db2/metadata 记录的日志位置，当上游存在主从切换时，必须使用 gtid。
-      # binlog-pos: ${binlog-position}
-      binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"
+      binlog-name: "${binlog-name}"   # 第 1 步中 `${data-path}/my_db2/metadata` 记录的日志位置；当该上游未启用 GTID 时，使用 `binlog-name` + `binlog-pos`。
+      binlog-pos: ${binlog-position}
+      # binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"  # 如果该上游使用 GTID 模式，则改用 `binlog-gtid`。
 
 ## 【可选配置】 如果增量数据迁移需要重复迁移已经在全量数据迁移中完成迁移的数据，则需要开启 safe mode 避免增量数据迁移报错。
 ##  该场景多见于以下情况：全量迁移的数据不属于数据源的一个一致性快照，随后从一个早于全量迁移数据之前的位置开始同步增量数据。
@@ -315,6 +325,8 @@ mysql-instances:
 #    safe-mode: true # 设置为 true，会将来自数据源的 INSERT 改写为 REPLACE，将 UPDATE 改写为 DELETE 与 REPLACE，从而保证在表结构中存在主键或唯一索引的条件下迁移数据时可以重复导入 DML。在启动或恢复增量复制任务的前 1 分钟内 TiDB DM 会自动启动 safe mode。
 
 ```
+
+如果某个上游 MySQL 实例已启用 GTID，并且该数据源需要使用 GTID 模式（例如需要进行主从切换），请将该数据源的 `enable-gtid` 设置为 `true`，注释掉 `binlog-name` 和 `binlog-pos`，并改为配置 `binlog-gtid`。
 
 关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)。
 
