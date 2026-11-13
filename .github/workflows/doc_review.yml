@@ -7,24 +7,27 @@ on:
     types:
       - created
 
-permissions:
-  contents: read
-  pull-requests: write
-  issues: write
+permissions: {}
 
 jobs:
+  authorize:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request &&
+      startsWith(github.event.comment.body, '/bot-review'))
+    uses: ./.github/workflows/authorize-privileged-workflow.yml
+    permissions:
+      actions: read
+
   review:
+    needs: authorize
+    # A partial rerun can reuse a successful gate from an earlier attempt.
+    if: needs.authorize.outputs.attempt == github.run_attempt
     runs-on: ubuntu-latest
-    if: >
-      contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.triggering_actor) &&
-      (
-        github.event_name == 'workflow_dispatch' ||
-        (
-          github.event_name == 'issue_comment' &&
-          contains(github.event.comment.body, '/bot-review') &&
-          contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.event.comment.user.login)
-        )
-      )
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
     steps:
 
       - name: Checkout Repo

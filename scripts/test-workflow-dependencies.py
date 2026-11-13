@@ -35,7 +35,7 @@ class WorkflowDependencyTest(unittest.TestCase):
     def test_actions_are_pinned_to_commits(self):
         for name, workflow in self.workflows.items():
             for job in workflow["jobs"].values():
-                for step in job["steps"]:
+                for step in job.get("steps", []):
                     if "uses" in step:
                         with self.subTest(workflow=name, action=step["uses"]):
                             reference = step["uses"].rsplit("@", 1)[-1]

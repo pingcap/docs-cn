@@ -1,0 +1,84 @@
+name: Authorize privileged workflow
+
+on:
+  workflow_call:
+    outputs:
+      attempt:
+        description: Run attempt that passed authorization
+        value: ${{ jobs.authorize.outputs.attempt }}
+
+permissions:
+  actions: read
+
+jobs:
+  authorize:
+    runs-on: ubuntu-latest
+    outputs:
+      attempt: ${{ steps.authorize.outputs.attempt }}
+    steps:
+      - name: Check repository, account and current permissions
+        id: authorize
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ACTOR_ID: ${{ github.actor_id }}
+          COMMENT_AUTHOR_ID: ${{ github.event.comment.user.id }}
+        run: |
+          set -euo pipefail
+
+          if [[ "$GITHUB_REPOSITORY" != pingcap/docs-cn || "$GITHUB_REF" != refs/heads/master ]]; then
+            echo "::error::Privileged workflows require pingcap/docs-cn master."
+            exit 1
+          fi
+
+          # Scheduled first attempts do not have a human requester.
+          if [[ "$GITHUB_EVENT_NAME" == schedule && "$GITHUB_RUN_ATTEMPT" == 1 ]]; then
+            echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          check_permission() {
+            local login="$1" account_id="$2"
+            # GitHub account IDs for lilin90, qiancai, and seominjea1942.
+            case "$account_id" in
+              30922556|79440533|47792576) ;;
+              *)
+                echo "::error::The account is outside the privileged workflow allowlist."
+                return 1
+                ;;
+            esac
+
+            # Verify the login still belongs to that account and still has write access.
+            gh api "repos/${GITHUB_REPOSITORY}/collaborators/${login}/permission" |
+              jq -e --arg id "$account_id" '
+                (.user.id | tostring) == $id and
+                (.permission == "write" or .permission == "maintain" or .permission == "admin")
+              ' > /dev/null
+          }
+
+          case "$GITHUB_EVENT_NAME" in
+            issue_comment)
+              if [[ "$COMMENT_AUTHOR_ID" != "$ACTOR_ID" ]]; then
+                echo "::error::The PR comment author must match the original actor."
+                exit 1
+              fi
+              check_permission "$GITHUB_ACTOR" "$ACTOR_ID"
+              ;;
+            workflow_dispatch)
+              check_permission "$GITHUB_ACTOR" "$ACTOR_ID"
+              ;;
+            schedule)
+              ;;
+            *)
+              exit 1
+              ;;
+          esac
+
+          if [[ "$GITHUB_RUN_ATTEMPT" != 1 ]]; then
+            # The workflow context exposes only the rerun initiator's login.
+            attempt=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/attempts/${GITHUB_RUN_ATTEMPT}")
+            login=$(jq -er '.triggering_actor.login | select(type == "string" and length > 0)' <<< "$attempt")
+            account_id=$(jq -er '.triggering_actor.id | select(type == "number")' <<< "$attempt")
+            check_permission "$login" "$account_id"
+          fi
+
+          echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
