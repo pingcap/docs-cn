@@ -298,10 +298,21 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
     ]
     ```
 
-2. 创建下游到上游集群的 changefeed。由于此时上下游数据是一致的，且没有新数据写入，因此可以不指定 start-ts，默认为当前时间：
+2. 在切换写流量前，清理下游集群的自增 ID 缓存。
+
+    TiCDC 在完成增量同步后不会自动清理自增 ID 缓存。如果不先清理缓存就把写流量切到下游集群，隐式分配的 ID 可能与增量同步阶段写入的 ID 冲突，从而导致重复键错误。
+
+    清理自增 ID 缓存时，可以使用以下任一方法：
+
+    - 重启下游集群中的所有 TiDB 节点。
+    - 对每张受影响的表，在下游集群执行 `ALTER TABLE ... AUTO_INCREMENT = 0`。
+
+    更多信息，请参阅[清理自增 ID 缓存](/auto-increment.md#清理自增-id-缓存)。
+
+3. 创建下游到上游集群的 changefeed。由于此时上下游数据是一致的，且没有新数据写入，因此可以不指定 `start-ts`，默认为当前时间：
 
     ```shell
     tiup cdc cli changefeed create --server=http://172.16.6.125:8300 --sink-uri="mysql://root:@172.16.6.122:4000" --changefeed-id="downstream-to-upstream"
     ```
 
-3. 将写业务迁移到下游集群，观察一段时间后，等新集群表现稳定，便可以弃用原集群。
+4. 将写业务迁移到下游集群，观察一段时间后，等新集群表现稳定，便可以弃用原集群。
