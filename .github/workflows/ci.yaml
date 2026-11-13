@@ -19,10 +19,25 @@ jobs:
         run: ./scripts/verify-duplicated-file-name.sh
       - name: Verify safer defaults
         run: python3 scripts/test-safer-defaults.py
-      - name: Verify privileged workflow authorization
+
+  security-regression-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Run security regression tests
         run: |
-          python3 -m pip install PyYAML==6.0.3
-          python3 scripts/test-privileged-workflow-actors.py
+          python3 -m venv "$RUNNER_TEMP/security-tests"
+          "$RUNNER_TEMP/security-tests/bin/python" -m pip install --no-deps --only-binary=:all: PyYAML==6.0.3
+          "$RUNNER_TEMP/security-tests/bin/python" scripts/test-dispatch-workflow.py
+          "$RUNNER_TEMP/security-tests/bin/python" scripts/test-doc-review-workflow.py
+          "$RUNNER_TEMP/security-tests/bin/python" scripts/test-flush-version-workflow.py
+          "$RUNNER_TEMP/security-tests/bin/python" scripts/test-install-scripts.py
+          "$RUNNER_TEMP/security-tests/bin/python" scripts/test-media-workflow.py
+          "$RUNNER_TEMP/security-tests/bin/python" scripts/test-privileged-workflow-actors.py
+          "$RUNNER_TEMP/security-tests/bin/python" scripts/test-workflow-dependencies.py
 
   internal-links-files:
     runs-on: ubuntu-latest

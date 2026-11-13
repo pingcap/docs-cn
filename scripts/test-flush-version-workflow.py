@@ -33,15 +33,6 @@ class FlushVersionWorkflowTest(unittest.TestCase):
     def test_workflow_has_no_token_permissions(self):
         self.assertEqual(self.workflow["permissions"], {})
 
-    def test_actor_allowlist_contains_only_active_maintainers(self):
-        condition = self.job["if"]
-        for login in ["lilin90", "qiancai", "seominjea1942"]:
-            self.assertIn(login, condition)
-        for former_login in ["hfxsd", "likidu", "Oreoxmt"]:
-            self.assertNotIn(former_login, condition)
-        self.assertIn("github.triggering_actor", condition)
-        self.assertNotIn("github.actor", condition)
-
     def test_version_is_passed_as_data(self):
         for step in self.job["steps"]:
             self.assertNotIn("${{ inputs.version }}", step.get("run", ""))
