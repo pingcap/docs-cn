@@ -250,7 +250,7 @@ Golang 自 Go 1.19 版本开始引入 [`GOMEMLIMIT`](https://pkg.go.dev/runtime@
 
 - `standard` 或 `priority`：表示启用内存仲裁模式。启用后：
     - 内存资源的使用按照先订阅后分配的机制，由每个 TiDB 实例内的内存仲裁者统一调度。
-    - 预期 TiDB 实例的整体内存使用量不会超过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的限制，且[内存占用过高时的报警](#tidb-server-内存占用过高时的报警)不再生效。
+    - 预期 TiDB 实例的整体内存使用量不会超过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 的限制，且[内存占用过高时的报警](#tidb-server-内存占用过高时的报警)不再生效，TiDB 会自动采集 heap profile 辅助诊断。
     - 以下系统变量的控制行为依旧有效：
         - [`tidb_mem_oom_action`](/system-variables.md#tidb_mem_oom_action-从-v610-版本开始引入)
         - [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)
@@ -317,7 +317,7 @@ TiDB 内部会缓存部分 SQL 的历史最大内存使用量，并在 SQL 下�
 
 - `Work Mode`：TiDB 实例的内存管理模式
 - `Arbitration Exec`：仲裁处理各类请求的统计
-- `Events`：仲裁模式下各类事件的统计。需要重点关注 `mem-risk`（内存风险）和`oom-risk`（`OOM` 风险）
+- `Events`：仲裁模式下各类事件的统计。需要重点关注 `mem-risk`（处理内存风险的次数）和`oom-risk`（处理 `OOM` 风险的次数）
 - `Mem Quota Stats`：各类内存份额占用。需要重点关注 `out-of-control`、`wait-alloc`（等待分配的总内存份额）、`mem-inuse`（实际内存使用量）
 - `Mem Quota Arbitration`：内存资源订阅请求处理耗时
 - `Mem Pool Stats`：各类内存池的数量
@@ -340,6 +340,12 @@ TiDB 内部会缓存部分 SQL 的历史最大内存使用量，并在 SQL 下�
 
 - `AVG_MEM_ARBITRATION`：SQL 等待内存资源的平均耗时
 - `MAX_MEM_ARBITRATION`：SQL 等待内存资源的最大耗时
+
+启用内存仲裁模式后，TiDB 会自动采集 Go heap profile（`.pprof`）辅助诊断内存使用。
+
+- 常规抓取阈值为实例内存使用量达到 `tidb_server_memory_limit` 的 `70%`、`80%` 和 `85%`；达到 `90%` 后停止常规抓取。
+- 如果 TiDB 实例进入 OOM 风险、且仲裁器已分配的内存份额为 `0`，则紧急抓取 profile。
+- `.pprof` 文件及其 `.meta.json` 元数据保存在 TiDB 日志目录下的 `mem_arbitrator/heap_profiles/`，最多保留最近 `10` 组。
 
 ### 最佳实践
 
