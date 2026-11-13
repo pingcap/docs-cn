@@ -14,18 +14,25 @@ on:
         type: string
         default: ''
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 env:
   PRODUCT: TiDB
 
 jobs:
+  authorize:
+    uses: ./.github/workflows/authorize-privileged-workflow.yml
+    permissions:
+      actions: read
+
   sync-docs:
+    needs: authorize
+    # A partial rerun can reuse a successful gate from an earlier attempt.
+    if: needs.authorize.outputs.attempt == github.run_attempt
     runs-on: ubuntu-latest
-    # Check the rerun initiator, not the actor that started the original run.
-    if: contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.triggering_actor)
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout current repository

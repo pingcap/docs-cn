@@ -9,24 +9,16 @@ permissions:
   contents: read
 
 jobs:
+  authorize:
+    uses: ./.github/workflows/authorize-privileged-workflow.yml
+    permissions:
+      actions: read
+
   flush-pdf:
+    needs: authorize
+    # A partial rerun can reuse a successful gate from an earlier attempt.
+    if: needs.authorize.outputs.attempt == github.run_attempt
     name: Flush PDF
-    if: >
-      github.repository == 'pingcap/docs-cn' &&
-      (
-        (
-          github.event_name == 'schedule' &&
-          (
-            github.run_attempt == 1 ||
-            contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.triggering_actor)
-          )
-        ) ||
-        (
-          github.event_name == 'workflow_dispatch' &&
-          github.ref == 'refs/heads/master' &&
-          contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.triggering_actor)
-        )
-      )
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

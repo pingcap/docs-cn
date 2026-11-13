@@ -23,10 +23,17 @@ on:
 permissions: {}
 
 jobs:
+  authorize:
+    uses: ./.github/workflows/authorize-privileged-workflow.yml
+    permissions:
+      actions: read
+
   flush-pdf:
+    needs: authorize
+    # A partial rerun can reuse a successful gate from an earlier attempt.
+    if: needs.authorize.outputs.attempt == github.run_attempt
     name: Flush PDF by Version
     runs-on: ubuntu-latest
-    if: contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.triggering_actor)
     env:
       CDN_BASE_URL: "https://docs-download.pingcap.com/pdf"
     steps:

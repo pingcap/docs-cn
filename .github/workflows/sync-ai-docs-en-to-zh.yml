@@ -40,26 +40,18 @@ env:
   COMMIT_SYNC_RUN_TYPE: ${{ (github.event_name == 'schedule' || inputs.translation_scope == 'Translate all updated files') && 'schedule' || 'workflow_dispatch' }}
 
 jobs:
+  authorize:
+    uses: ./.github/workflows/authorize-privileged-workflow.yml
+    permissions:
+      actions: read
+
   translate:
+    needs: authorize
+    # A partial rerun can reuse a successful gate from an earlier attempt.
+    if: needs.authorize.outputs.attempt == github.run_attempt
     concurrency:
       group: sync-ai-docs-en-to-zh
       cancel-in-progress: true
-    # Scheduled first attempts run automatically; reruns and manual runs require an active maintainer.
-    if: >
-      github.repository == 'pingcap/docs-cn' &&
-      (
-        (
-          github.event_name == 'schedule' &&
-          (
-            github.run_attempt == 1 ||
-            contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.triggering_actor)
-          )
-        ) ||
-        (
-          github.event_name == 'workflow_dispatch' &&
-          contains(fromJson('["lilin90","qiancai","seominjea1942"]'), github.triggering_actor)
-        )
-      )
     runs-on: ubuntu-latest
 
     permissions:
