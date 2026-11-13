@@ -354,7 +354,7 @@ WAL 属于顺序写，目前我们并没有单独对他进行配置，建议 SSD
 
 ### 有没有类似 MySQL 的 InnoDB Memcached plugin，可以直接使用 KV 接口，可以不需要独立的 Cache？
 
-TiKV 支持单独进行接口调用，理论上也可以起个实例做为 Cache，但 TiDB 最大的价值是分布式关系型数据库，我们原则上不对 TiKV 单独进行支持。
+TiKV 支持单独进行接口调用，理论上也可以起个实例作为 Cache，但 TiDB 最大的价值是分布式关系型数据库，我们原则上不对 TiKV 单独进行支持。
 
 ### Coprocessor 组件的主要作用？
 
