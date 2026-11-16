@@ -11,6 +11,12 @@ TiDB 版本：8.5.8
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v8.5/production-deployment-using-tiup) | [下载离线包](https://pingkai.cn/download#tidb-community)
 
+## 升级注意事项
+
+- 如果你在 Google Cloud Storage (GCS) 中存储了数据备份，并且需要在升级到 v8.5.9 后使用 SQL `RESTORE` 恢复这些备份，请在升级前检查备份元数据文件 `backupmeta` 的实际对象名。
+
+  从 v8.5.9 开始，TiDB 只会查找对象名为 `<prefix>/backupmeta` 的文件，不再查找对象名为 `<prefix>backupmeta` 的文件。如果 `backupmeta` 文件的实际对象名为 `<prefix>backupmeta`，请在升级前将其复制到 `<prefix>/backupmeta`，否则升级后恢复备份时会因找不到该文件而失败，并报错 `ERROR 8125`。 [#73047](https://github.com/pingcap/tidb/issues/73047)
+
 ## 改进提升
 
 + TiDB
