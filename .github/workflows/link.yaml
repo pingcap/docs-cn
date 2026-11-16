@@ -10,7 +10,15 @@ permissions:
   contents: read
 
 jobs:
+  authorize:
+    uses: ./.github/workflows/authorize-privileged-workflow.yml
+    permissions:
+      actions: read
+
   linkChecker:
+    needs: authorize
+    # A partial rerun must pass authorization for the current attempt.
+    if: needs.authorize.outputs.attempt == github.run_attempt
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -52,8 +60,8 @@ jobs:
         run: exit "${{ steps.lychee.outputs.exit_code }}"
 
   createIssue:
-    needs: linkChecker
-    if: ${{ always() && needs.linkChecker.result == 'failure' && needs.linkChecker.outputs.report_artifact_id != '' }}
+    needs: [authorize, linkChecker]
+    if: ${{ always() && needs.authorize.result == 'success' && needs.authorize.outputs.attempt == github.run_attempt && needs.linkChecker.result == 'failure' && needs.linkChecker.outputs.report_artifact_id != '' }}
     runs-on: ubuntu-latest
     permissions:
       actions: read
