@@ -51,6 +51,26 @@ gh() {
 """
         cases = (
             ("authorized renamed commenter", {}, True),
+            ("authorized manual dispatch", {"GITHUB_EVENT_NAME": "workflow_dispatch"}, True),
+            ("authorized repository dispatch", {"GITHUB_EVENT_NAME": "repository_dispatch"}, True),
+            ("unauthorized manual dispatch", {
+                "GITHUB_EVENT_NAME": "workflow_dispatch", "ACTOR_ID": "42",
+            }, False),
+            ("unauthorized repository dispatch", {
+                "GITHUB_EVENT_NAME": "repository_dispatch", "ACTOR_ID": "42",
+            }, False),
+            ("read-only repository dispatcher", {
+                "GITHUB_EVENT_NAME": "repository_dispatch", "ROLE": "read",
+            }, False),
+            ("fork manual dispatch", {
+                "GITHUB_EVENT_NAME": "workflow_dispatch", "GITHUB_REPOSITORY": "fork/docs-cn",
+            }, False),
+            ("fork repository dispatch", {
+                "GITHUB_EVENT_NAME": "repository_dispatch", "GITHUB_REPOSITORY": "fork/docs-cn",
+            }, False),
+            ("fork scheduled run", {
+                "GITHUB_EVENT_NAME": "schedule", "GITHUB_REPOSITORY": "fork/docs-cn",
+            }, False),
             ("public commenter", {"ACTOR_ID": "42", "COMMENT_AUTHOR_ID": "42"}, False),
             ("read-only allowlisted account", {
                 "ACTOR_ID": "47792576", "COMMENT_AUTHOR_ID": "47792576",
@@ -62,9 +82,26 @@ gh() {
                 "GITHUB_EVENT_NAME": "workflow_dispatch", "GITHUB_REF": "refs/heads/test",
             }, False),
             ("first scheduled run", {"GITHUB_EVENT_NAME": "schedule", "ACTOR_ID": "42"}, True),
+            ("non-master scheduled run", {
+                "GITHUB_EVENT_NAME": "schedule", "GITHUB_REF": "refs/heads/test",
+            }, False),
+            ("non-master repository dispatch", {
+                "GITHUB_EVENT_NAME": "repository_dispatch", "GITHUB_REF": "refs/heads/test",
+            }, False),
+            ("tag dispatch", {
+                "GITHUB_EVENT_NAME": "workflow_dispatch", "GITHUB_REF": "refs/tags/master",
+            }, False),
+            ("unexpected event", {"GITHUB_EVENT_NAME": "push"}, False),
             ("authorized rerun", {"GITHUB_RUN_ATTEMPT": "2"}, True),
             ("unauthorized rerun", {"GITHUB_RUN_ATTEMPT": "2", "RERUN_ROLE": "read"}, False),
             ("original actor loses access", {"GITHUB_RUN_ATTEMPT": "2", "ROLE": "read"}, False),
+            ("unauthorized scheduled rerun", {
+                "GITHUB_EVENT_NAME": "schedule", "GITHUB_RUN_ATTEMPT": "2", "RERUN_ID": "42",
+            }, False),
+            ("unauthorized repository dispatch rerun", {
+                "GITHUB_EVENT_NAME": "repository_dispatch", "GITHUB_RUN_ATTEMPT": "2",
+                "RERUN_ID": "42",
+            }, False),
         )
         with TemporaryDirectory() as directory:
             output = Path(directory) / "output"
@@ -93,6 +130,7 @@ gh() {
                         env=env,
                         capture_output=True,
                         text=True,
+                        timeout=5,
                     )
                     self.assertEqual(result.returncode == 0, allowed, result.stderr)
                     expected = f"attempt={env['GITHUB_RUN_ATTEMPT']}\n" if allowed else ""
@@ -105,6 +143,7 @@ gh() {
             ("sync-doc-pr-en-to-zh.yml", "sync-docs"),
             ("flush.yaml", "flush-pdf"),
             ("flush-version.yaml", "flush-pdf"),
+            ("link.yaml", "linkChecker"),
         ):
             with self.subTest(workflow=filename):
                 workflow = load_workflow(filename)
@@ -120,6 +159,24 @@ gh() {
                     workflow["jobs"][job_name]["if"],
                     "needs.authorize.outputs.attempt == github.run_attempt",
                 )
+
+    def test_link_issue_creation_requires_current_authorization_and_a_failed_scan(self):
+        job = load_job("link.yaml", "createIssue")
+        self.assertCountEqual(job["needs"], ["authorize", "linkChecker"])
+        self.assertEqual(
+            job["if"],
+            "${{ always() && needs.authorize.result == 'success' && "
+            "needs.authorize.outputs.attempt == github.run_attempt && "
+            "needs.linkChecker.result == 'failure' && "
+            "needs.linkChecker.outputs.report_artifact_id != '' }}",
+        )
+
+    def test_keywords_requires_upstream_master(self):
+        job = load_job("keywords.yaml", "check-keywords")
+        self.assertEqual(
+            job["if"],
+            "github.repository == 'pingcap/docs-cn' && github.ref == 'refs/heads/master'",
+        )
 
     def test_ai_sync_keeps_concurrency_scoped_to_translation(self):
         workflow = load_workflow("sync-ai-docs-en-to-zh.yml")

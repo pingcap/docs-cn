@@ -63,7 +63,7 @@ jobs:
               fi
               check_permission "$GITHUB_ACTOR" "$ACTOR_ID"
               ;;
-            workflow_dispatch)
+            workflow_dispatch|repository_dispatch)
               check_permission "$GITHUB_ACTOR" "$ACTOR_ID"
               ;;
             schedule)
