@@ -150,7 +150,10 @@ gh() {
                 gate = workflow["jobs"]["authorize"]
                 self.assertEqual(
                     gate["uses"],
-                    "./.github/workflows/authorize-privileged-workflow.yml",
+                    "./.github/workflows/authorize-privileged-workflow.yml"
+                    if filename == "link.yaml"
+                    else "pingcap/docs-cn/.github/workflows/"
+                    "authorize-privileged-workflow.yml@69ec491f6526c3b4d1c4d31228bd651bd855b5ba",
                 )
                 self.assertEqual(gate["permissions"], {"actions": "read"})
                 self.assertNotIn("secrets", gate)
