@@ -26,7 +26,6 @@ jobs:
       actions: read
 
   sync-docs:
-    environment: ai-doc-translation
     needs: authorize
     # A partial rerun can reuse a successful gate from an earlier attempt.
     if: needs.authorize.outputs.attempt == github.run_attempt

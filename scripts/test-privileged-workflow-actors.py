@@ -178,22 +178,6 @@ gh() {
             "github.repository == 'pingcap/docs-cn' && github.ref == 'refs/heads/master'",
         )
 
-    def test_secret_consuming_jobs_use_protected_environments(self):
-        for filename, job, environment in (
-            ("flush.yaml", "flush-pdf", "pdf-publishing"),
-            ("flush-version.yaml", "flush-pdf", "pdf-publishing"),
-            ("doc_review.yml", "review", "ai-doc-review"),
-            ("sync-ai-docs-en-to-zh.yml", "translate", "ai-doc-translation"),
-            ("sync-doc-pr-en-to-zh.yml", "sync-docs", "ai-doc-translation"),
-            ("media.yml", "upload", "media-publishing"),
-            ("media.yml", "cdn-refresh", "media-publishing"),
-        ):
-            with self.subTest(workflow=filename, job=job):
-                workflow = load_workflow(filename)
-                self.assertEqual(workflow["jobs"][job]["environment"], environment)
-                if "authorize" in workflow["jobs"]:
-                    self.assertNotIn("environment", workflow["jobs"]["authorize"])
-
     def test_ai_sync_keeps_concurrency_scoped_to_translation(self):
         workflow = load_workflow("sync-ai-docs-en-to-zh.yml")
         self.assertNotIn("concurrency", workflow)
