@@ -173,7 +173,7 @@ tiup br restore full \
 
 **不能恢复以下系统表**：
 
-- 统计信息表 (`mysql.stat_*`) (但可以恢复统计信息，详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))
+- 统计信息表 (`mysql.stats_*`)。但统计信息仍可单独恢复：仅在 `--ignore-stats=false` 时备份，并根据 `--load-stats` 决定是否恢复。详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息)
 - 系统变量表 (`mysql.tidb`、`mysql.global_variables`)
 - 其他系统表
 
