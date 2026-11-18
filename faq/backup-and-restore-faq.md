@@ -283,7 +283,7 @@ br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage
 br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 ```
 
-统计信息的恢复由 `--load-stats` 控制，与 `--with-sys-table` 无关。具体恢复方式参见[备份统计信息](/br/br-snapshot-manual.md#备份统计信息)。
+是否恢复备份中的统计信息由 `--load-stats` 控制，与 `--with-sys-table` 无关。采用逻辑导入方式时，需要在备份时设置 `--ignore-stats=false`；满足条件时，也可以物理恢复备份中的统计信息表。具体恢复方式参见[备份统计信息](/br/br-snapshot-manual.md#备份统计信息)。
 
 此外请注意，即使设置了 [table filter](/table-filter.md#表库过滤语法)，**BR 也不会恢复以下系统表**：
 
