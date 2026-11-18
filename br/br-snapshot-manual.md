@@ -180,7 +180,7 @@ tiup br restore full \
 
 以上命令中，
 
-- `--with-sys-table`：恢复集群数据的同时恢复**部分系统表**的数据，包括账号权限数据和 SQL Binding 信息。统计信息由其他参数单独控制：仅在 `--ignore-stats=false` 时备份，并根据 `--load-stats` 决定是否恢复。`--with-sys-table` 本身不会恢复统计信息表 (`mysql.stats_*`) 和系统变量表 (`mysql.tidb`、`mysql.global_variables`)。更多信息详见[恢复 `mysql` 数据库下的表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)。
+- `--with-sys-table`：恢复集群数据的同时恢复**部分系统表**的数据，包括账号权限数据和 SQL Binding 信息，但不包括系统变量表（`mysql.tidb`、`mysql.global_variables`）。是否恢复统计信息由 `--load-stats` 控制（默认为 `true`），与 `--with-sys-table` 无关。详情参见[备份统计信息](#备份统计信息)和[恢复 `mysql` 数据库下的表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)。
 - `--ratelimit`：**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）。
 - `--log-file`：备份日志写入的目标文件。
 
