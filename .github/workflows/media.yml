@@ -70,25 +70,8 @@ jobs:
           export COSCLI_CONFIG
           trap 'rm -f "$COSCLI_CONFIG"' EXIT
 
-          python3 <<'PY'
-          import json
-          import os
-
-          config = {
-              "cos": {
-                  "base": {
-                      "disableencryption": "true",
-                      "mode": "SecretKey",
-                      "protocol": "https",
-                      "secretid": os.environ["TENCENTCLOUD_SECRET_ID"],
-                      "secretkey": os.environ["TENCENTCLOUD_SECRET_KEY"],
-                  }
-              }
-          }
-          with open(os.environ["COSCLI_CONFIG"], "w", encoding="utf-8") as config_file:
-              json.dump(config, config_file)
-          os.chmod(os.environ["COSCLI_CONFIG"], 0o600)
-          PY
+          # Keep checkout paths and PYTHON* settings out of Python imports.
+          python3 -I "$GITHUB_WORKSPACE/scripts/write-media-cos-config.py"
 
           "$COSCLI_PATH" sync "$MEDIA_UPLOAD_DIR/" "cos://${TENCENTCLOUD_BUCKET_ID}/media/images/docs-cn" \
             --config-path "$COSCLI_CONFIG" \
