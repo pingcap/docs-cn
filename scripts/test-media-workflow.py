@@ -9,7 +9,8 @@ import unittest
 import yaml
 
 
-WORKFLOW = Path(__file__).resolve().parents[1] / ".github/workflows/media.yml"
+REPO_ROOT = Path(__file__).resolve().parents[1]
+WORKFLOW = REPO_ROOT / ".github/workflows/media.yml"
 
 
 class MediaWorkflowTest(unittest.TestCase):
@@ -126,7 +127,7 @@ class MediaWorkflowTest(unittest.TestCase):
         self.assertNotIn("--secret-id", upload)
         self.assertNotIn("--secret-key", upload)
         self.assertIn('--config-path "$COSCLI_CONFIG"', upload)
-        self.assertIn("0o600", upload)
+        self.assertIn('python3 -I "$GITHUB_WORKSPACE/scripts/write-media-cos-config.py"', upload)
         self.assertIn("trap 'rm -f", upload)
 
     def test_upload_uses_and_removes_private_config(self):
@@ -163,6 +164,7 @@ Path(os.environ["MOCK_RESULT"]).write_text(str(config_path))
                 env={
                     **os.environ,
                     "COSCLI_PATH": str(mock_coscli),
+                    "GITHUB_WORKSPACE": str(REPO_ROOT),
                     "MEDIA_UPLOAD_DIR": str(temp_dir / "media-upload"),
                     "MOCK_RESULT": str(result_file),
                     "RUNNER_TEMP": str(temp_dir),
