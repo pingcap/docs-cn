@@ -40,7 +40,7 @@ tiup cluster detach-grafana <cluster-name> [flags]
 
 - 如果目标 Grafana 的目录（包括 Grafana 配置中的 `paths.data`、`paths.logs`、`paths.plugins`、`paths.provisioning`）与同一管理主机上仍受管理组件或 exporter 的目录存在重叠（相同、包含或被包含），命令会报错退出，metadata 保持不变。
 - 检查范围包括当前 cluster profile（`TIUP_HOME`）内所有集群的记录目录，以及 monitored 组件的 deploy、data、log 目录。同一台主机被多个集群管理时，任意一个集群的清理操作都可能影响目标目录。
-- 记录路径必须是绝对的字面量路径。相对路径以及包含空白或 shell 元字符的路径无法在本地可靠判断，会被拒绝；可先通过 `tiup cluster edit-config` 修正后重试。本命令不提供 `--force` 绕过选项。
+- 记录路径必须是绝对的字面量路径。相对路径以及包含空白或 shell 元字符的路径无法在本地可靠判断，会被拒绝。注意 `tiup cluster edit-config` 只修改本地拓扑，不会修改远端配置；请先核对远端实际路径，使登记的配置与实际路径一致后再重试。本命令不提供 `--force` 绕过选项。
 - 检查只基于本地 metadata，无法感知远端 symlink、挂载点、环境变量展开、修改过的启动脚本或未记录的自定义配置。检查通过不代表实际目录布局一定安全，仍需人工确认。
 
 ## 移交后的维护
@@ -52,7 +52,7 @@ tiup cluster detach-grafana <cluster-name> [flags]
 
 ### TiDB Dashboard 监控入口
 
-detach 本身不修改 metadata 中的 Grafana 发现记录。如果集群中不再有受管理的 Grafana 实例，后续拓扑刷新会保留已有记录，不补建也不校验；如果仍有其他受管理的 Grafana 实例，后续刷新会改用它们的入口。之后再新增受管理的 Grafana 会覆盖该记录；正常 scale-in 最后一个受管理的 Grafana 时会删除记录，不会自动恢复到先前移交的实例。
+detach 本身不修改 PD 中的 Grafana 发现记录。如果集群中不再有受管理的 Grafana 实例，后续拓扑刷新会保留已有记录，不补建也不校验；如果仍有其他受管理的 Grafana 实例，后续刷新会改用它们的入口。之后再新增受管理的 Grafana 会覆盖该记录；正常 scale-in 最后一个受管理的 Grafana 时会删除记录，不会自动恢复到先前移交的实例。
 
 ## 输出
 
