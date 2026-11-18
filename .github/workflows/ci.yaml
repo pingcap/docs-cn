@@ -15,10 +15,10 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Verify duplicated file names
         run: ./scripts/verify-duplicated-file-name.sh
-      - name: Verify safer defaults
-        run: python3 scripts/test-safer-defaults.py
 
   security-regression-tests:
     runs-on: ubuntu-latest
@@ -31,6 +31,7 @@ jobs:
         run: |
           python3 -m venv "$RUNNER_TEMP/security-tests"
           "$RUNNER_TEMP/security-tests/bin/python" -m pip install --no-deps --only-binary=:all: PyYAML==6.0.3
+          "$RUNNER_TEMP/security-tests/bin/python" scripts/test-safer-defaults.py
           "$RUNNER_TEMP/security-tests/bin/python" scripts/test-dispatch-workflow.py
           "$RUNNER_TEMP/security-tests/bin/python" scripts/test-doc-review-workflow.py
           "$RUNNER_TEMP/security-tests/bin/python" scripts/test-flush-version-workflow.py
@@ -44,6 +45,8 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v6
         with:
           node-version: "18"
@@ -59,6 +62,8 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v6
         with:
           node-version: "18"
@@ -74,6 +79,8 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v6
         with:
           node-version: "18"
