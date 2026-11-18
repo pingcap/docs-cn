@@ -40,7 +40,7 @@ tiup cluster detach-grafana <cluster-name> [flags]
 
 - 如果目标 Grafana 的目录（包括 Grafana 配置中的 `paths.data`、`paths.logs`、`paths.plugins`、`paths.provisioning`）与同一管理主机上仍受管理组件或 exporter 的目录存在重叠（相同、包含或被包含），命令会报错退出，metadata 保持不变。检查按 metadata 中记录的管理主机字符串匹配主机；如果同一台机器在不同集群中记录为不同的地址（例如域名和 IP），这些目录不会被互相比较。
 - 检查范围包括当前 cluster profile（`TIUP_HOME`）内所有集群的记录目录，以及 monitored 组件的 deploy、data、log 目录。同一台主机被多个集群管理时，任意一个集群的清理操作都可能影响目标目录。
-- 路径检查基于解析后的结果：`deploy_dir`、`log_dir`、`data_dir` 中的相对值会先相对 `deploy_dir` 解析，解析后仍不是绝对路径，或路径中包含空白、shell 元字符时，会被拒绝；Grafana 的 `paths.*`、TiFlash 远程缓存和 monitored 组件的目录按记录值直接检查，必须是绝对路径。注意 `tiup cluster edit-config` 只修改本地拓扑，不会修改远端配置；请先核对远端实际路径，使登记的配置与实际路径一致后再重试。本命令不提供 `--force` 绕过选项。
+- 路径检查基于解析后的结果：`log_dir`、`data_dir` 中的相对值会先相对 `deploy_dir` 解析，解析后仍不是绝对路径，或路径中包含空白、shell 元字符时，会被拒绝；`deploy_dir` 本身必须是绝对路径。Grafana 的 `paths.*`（实例配置优先，其次 `server_configs`）、TiFlash 实例配置中的 `storage.remote.cache.dir` 和 monitored 组件的目录按记录值直接检查，也必须是绝对路径。注意 `tiup cluster edit-config` 只修改本地拓扑，不会修改远端配置；请先核对远端实际路径，使登记的配置与实际路径一致后再重试。本命令不提供 `--force` 绕过选项。
 - 检查只基于本地 metadata，无法感知远端 symlink、挂载点、环境变量展开、修改过的启动脚本或未记录的自定义配置。检查通过不代表实际目录布局一定安全，仍需人工确认。
 
 ## 移交后的维护
