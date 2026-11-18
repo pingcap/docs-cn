@@ -10,22 +10,17 @@
 # - When a file was moved, all other references are required to be updated for now, even if alias are given
 #   - This is recommended because of less redirects and better anchors support.
 #
-# See https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally if you meet permission problems when executing npm install.
+# Install the pinned local tools with `npm ci --ignore-scripts --include=dev`.
 
-ROOT=$(unset CDPATH && cd $(dirname "${BASH_SOURCE[0]}")/.. && pwd)
-cd $ROOT
+ROOT=$(unset CDPATH && cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+cd "$ROOT" || exit 1
 
-MLC_CMD=()
-if [ -x "$ROOT/node_modules/.bin/markdown-link-check" ]; then
-    # Prefer the repo-local pinned version (installed by `npm ci`).
-    MLC_CMD=("$ROOT/node_modules/.bin/markdown-link-check")
-elif command -v markdown-link-check >/dev/null 2>&1; then
-    # Fall back to a globally-installed version (less reproducible).
-    MLC_CMD=(markdown-link-check)
-else
-    # As a last resort, rely on `npx` without installing.
-    MLC_CMD=(npx --no-install markdown-link-check)
+# Require the repo-local version installed from package-lock.json.
+if [ ! -x "$ROOT/node_modules/.bin/markdown-link-check" ]; then
+    echo "error: local markdown-link-check is missing or not executable. Run npm ci --ignore-scripts --include=dev." >&2
+    exit 1
 fi
+MLC_CMD=("$ROOT/node_modules/.bin/markdown-link-check")
 
 VERBOSE=${VERBOSE:-}
 CONFIG_TMP=$(mktemp)

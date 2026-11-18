@@ -1,13 +1,34 @@
 """Regression checks for repository and documentation defaults."""
 
+import os
 from pathlib import Path
 import re
+import shutil
+import subprocess
+import tempfile
+
+import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 ci_workflow = (ROOT / ".github/workflows/ci.yaml").read_text()
+assert "on: [pull_request]" in ci_workflow
+assert "permissions:\n  contents: read\n" in ci_workflow
+workflow = yaml.safe_load(ci_workflow)
+checkout_steps = [
+    step
+    for job in workflow["jobs"].values()
+    for step in job.get("steps", [])
+    if step.get("uses", "").startswith("actions/checkout@")
+]
+assert checkout_steps
+assert all(
+    step.get("with", {}).get("persist-credentials") is False
+    for step in checkout_steps
+)
+
 install_commands = [
     line.split("#", 1)[0]
     for line in ci_workflow.splitlines()
@@ -19,6 +40,62 @@ assert all(
     for command in install_commands
 )
 assert all("--include=dev" in command for command in install_commands)
+
+# Exercise tool selection in an isolated fixture, without running npm or network calls.
+with tempfile.TemporaryDirectory(prefix="docs-tool-check-") as directory:
+    fixture = Path(directory) / "repo with spaces"
+    scripts = fixture / "scripts"
+    scripts.mkdir(parents=True)
+    local_bin = fixture / "node_modules/.bin"
+    local_bin.mkdir(parents=True)
+    (fixture / "test.md").write_text("# Test\n")
+    (scripts / "markdown-link-check.tpl").write_text("{}\n")
+
+    global_bin = Path(directory) / "bin"
+    global_bin.mkdir()
+    forbidden_marker = Path(directory) / "global-tool-ran"
+    local_marker = Path(directory) / "local-tool-ran"
+    env = dict(os.environ, PATH=f"{global_bin}{os.pathsep}{os.environ['PATH']}")
+    env["FORBIDDEN_TOOL_MARKER"] = str(forbidden_marker)
+    env["LOCAL_TOOL_MARKER"] = str(local_marker)
+    for binary in ("markdown-link-check", "remark", "npx"):
+        tool = global_bin / binary
+        tool.write_text('#!/bin/sh\nprintf ran > "$FORBIDDEN_TOOL_MARKER"\nexit 99\n')
+        tool.chmod(0o755)
+
+    for filename, binary in (
+        ("verify-links.sh", "markdown-link-check"),
+        ("verify-link-anchors.sh", "remark"),
+    ):
+        script = scripts / filename
+        shutil.copyfile(ROOT / "scripts" / filename, script)
+        tool = local_bin / binary
+
+        def run_check():
+            return subprocess.run(
+                ["bash", str(script)], cwd=directory, env=env,
+                capture_output=True, text=True, timeout=30,
+            )
+
+        # Neither a missing nor a non-executable local tool may trigger a fallback.
+        for state in ("missing", "not executable"):
+            if state == "not executable":
+                tool.write_text('#!/bin/sh\nexit 0\n')
+                tool.chmod(0o644)
+            result = run_check()
+            assert result.returncode != 0, (filename, state, result)
+            assert "npm ci --ignore-scripts --include=dev" in result.stderr
+            assert not forbidden_marker.exists(), (filename, state)
+
+        tool.write_text('#!/bin/sh\nprintf "%s\\n" "$@" > "$LOCAL_TOOL_MARKER"\n')
+        tool.chmod(0o755)
+        result = run_check()
+        assert result.returncode == 0, (filename, result)
+        assert local_marker.exists(), filename
+        arguments = local_marker.read_text().splitlines()
+        assert ("./test.md" if binary == "markdown-link-check" else "--frail") in arguments
+        assert not forbidden_marker.exists(), filename
+        local_marker.unlink()
 
 deployment = (ROOT / "check-before-deployment.md").read_text()
 permission_commands = [

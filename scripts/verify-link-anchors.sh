@@ -2,21 +2,17 @@
 #
 # In addition to verify-links.sh, this script additionally check anchors.
 #
-# See https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally if you meet permission problems when executing npm install.
+# Install the pinned local tools with `npm ci --ignore-scripts --include=dev`.
 
-ROOT=$(unset CDPATH && cd $(dirname "${BASH_SOURCE[0]}")/.. && pwd)
-cd $ROOT
+ROOT=$(unset CDPATH && cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+cd "$ROOT" || exit 1
 
-REMARK_CMD=()
-if [ -x "$ROOT/node_modules/.bin/remark" ]; then
-  # Prefer the repo-local pinned version (installed by `npm ci`).
-  REMARK_CMD=("$ROOT/node_modules/.bin/remark")
-elif command -v remark >/dev/null 2>&1; then
-  # Fall back to a globally-installed version (less reproducible).
-  REMARK_CMD=(remark)
-else
-  REMARK_CMD=(npx --no-install remark)
+# Require the repo-local version installed from package-lock.json.
+if [ ! -x "$ROOT/node_modules/.bin/remark" ]; then
+    echo "error: local remark is missing or not executable. Run npm ci --ignore-scripts --include=dev." >&2
+    exit 1
 fi
+REMARK_CMD=("$ROOT/node_modules/.bin/remark")
 
 echo "info: checking links anchors under $ROOT directory..."
 
