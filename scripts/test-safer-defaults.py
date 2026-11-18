@@ -13,10 +13,34 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def check_ci_security(content):
+    workflow = yaml.safe_load(content)
+    # PyYAML treats the unquoted "on" key as True under YAML 1.1.
+    trigger = workflow.get("on", workflow.get(True))
+    assert trigger == ["pull_request"], trigger
+    assert workflow.get("permissions") == {"contents": "read"}
+    return workflow
+
+
 ci_workflow = (ROOT / ".github/workflows/ci.yaml").read_text()
-assert "on: [pull_request]" in ci_workflow
-assert "permissions:\n  contents: read\n" in ci_workflow
-workflow = yaml.safe_load(ci_workflow)
+workflow = check_ci_security(ci_workflow)
+
+# Comments must not hide changes to the active trigger or permissions.
+for unsafe_workflow in (
+    ci_workflow.replace(
+        "on: [pull_request]",
+        "# on: [pull_request]\non: [pull_request_target]",
+        1,
+    ),
+    ci_workflow.replace("contents: read", "contents: write", 1),
+):
+    try:
+        check_ci_security(unsafe_workflow)
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError("Unsafe CI configuration was accepted")
+
 checkout_steps = [
     step
     for job in workflow["jobs"].values()
