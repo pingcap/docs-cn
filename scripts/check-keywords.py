@@ -17,6 +17,7 @@ aparser.add_argument(
     help="URL to parser.y",
 )
 aparser.add_argument("--download_from_url", action="store_true")
+aparser.add_argument("--keywords-file", type=Path, default=Path("keywords.md"))
 args = aparser.parse_args()
 
 if args.download_from_url:
@@ -41,11 +42,11 @@ else:
         sys.exit(f"{parser} doesn't exist")
     lines = parser.read_text(encoding="utf-8").splitlines()
 
-kwdocs = Path("keywords.md")
+kwdocs = args.keywords_file
 if not kwdocs.exists():
     sys.exit(f"{kwdocs} doesn't exist")
 
-keywords = kwdocs.read_text()
+keywords = kwdocs.read_text(encoding="utf-8")
 
 errors = 0
 section = "Unknown"

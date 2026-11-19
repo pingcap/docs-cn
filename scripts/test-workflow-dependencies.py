@@ -99,6 +99,20 @@ class WorkflowDependencyTest(unittest.TestCase):
         self.assertIn('blob/${parser_sha}/pkg/parser/parser.y', scripts)
         self.assertNotIn('git checkout "$branch"', scripts)
 
+    def test_keywords_disables_checkout_credentials_and_uses_temporary_input(self):
+        steps = self.workflows["keywords.yaml"]["jobs"]["check-keywords"]["steps"]
+        checkout = next(
+            step for step in steps if step.get("uses", "").startswith("actions/checkout@")
+        )
+        self.assertIs(checkout["with"]["persist-credentials"], False)
+        check = next(step["run"] for step in steps if step.get("id") == "check")
+        self.assertIn('mktemp "${RUNNER_TEMP}/keywords.XXXXXX"', check)
+        self.assertIn(
+            'git show "refs/remotes/origin/${branch}:keywords.md" > "$keywords_file"', check
+        )
+        self.assertIn("python3 -I ./scripts/check-keywords.py", check)
+        self.assertIn('--keywords-file "$keywords_file"', check)
+
     def run_keyword_download_with_response(self, response):
         original_directory = Path.cwd()
         with tempfile.TemporaryDirectory(prefix="keyword-charset-test-") as directory:
@@ -156,22 +170,19 @@ class WorkflowDependencyTest(unittest.TestCase):
             parser_file.write_text(
                 'The following tokens belong to ReservedKeyword\n\tselect "SELECT"\n'
             )
-            (workdir / "keywords.md").write_text("- SELECT (R)\n")
-            result = subprocess.run(
-                [
-                    "python3",
-                    str(ROOT / "scripts/check-keywords.py"),
-                    "--download_from_url",
-                    "--parser_url",
-                    parser_file.as_uri(),
-                ],
-                cwd=workdir,
-                env=os.environ.copy(),
-                capture_output=True,
-                text=True,
-                timeout=5,
-            )
-            self.assertEqual(result.returncode, 0, result.stderr)
+            branch_keywords = workdir / "release-keywords.md"
+            branch_keywords.write_text("- SELECT (R)\n")
+            (workdir / "keywords.md").write_text("- SELECT\n")
+            command = [
+                "python3", "-I", str(ROOT / "scripts/check-keywords.py"),
+                "--download_from_url", "--parser_url", parser_file.as_uri(),
+            ]
+            for args, expected in (([], 1), (["--keywords-file", str(branch_keywords)], 0)):
+                with self.subTest(args=args):
+                    result = subprocess.run(
+                        command + args, cwd=workdir, capture_output=True, text=True, timeout=5,
+                    )
+                    self.assertEqual(result.returncode, expected, result.stdout + result.stderr)
 
 
 if __name__ == "__main__":
