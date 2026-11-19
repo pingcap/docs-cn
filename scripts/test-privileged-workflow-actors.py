@@ -30,7 +30,7 @@ class PrivilegedWorkflowActorTest(unittest.TestCase):
         # Bash removes backslash-newline pairs before parsing the case pattern.
         run = step["run"].replace("\\\n", "")
         allowed_ids = re.findall(
-            r"^\s+([0-9]+(?:\s*\|\s*[0-9]+)*)\)\s*;;$", run, re.MULTILINE,
+            r'\bcase\s+"\$account_id"\s+in\s+([0-9]+(?:\s*\|\s*[0-9]+)*)\)\s*;;', run,
         )
         self.assertEqual(len(allowed_ids), 1)
         self.assertCountEqual(re.findall(r"[0-9]+", allowed_ids[0]), ["30922556", "79440533", "47792576"])
