@@ -5,6 +5,7 @@ from http.client import IncompleteRead
 from pathlib import Path
 import re
 import runpy
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -45,6 +46,44 @@ class WorkflowDependencyTest(unittest.TestCase):
                         self.assertIn("@", action)
                         reference = action.rsplit("@", 1)[-1]
                         self.assertRegex(reference, r"^[0-9a-f]{40}$")
+
+    def test_sync_and_review_checkouts_do_not_persist_credentials(self):
+        for name, job_name in (
+            ("sync-ai-docs-en-to-zh.yml", "translate"),
+            ("doc_review.yml", "review"),
+        ):
+            steps = self.workflows[name]["jobs"][job_name]["steps"]
+            checkouts = [
+                step for step in steps
+                if step.get("uses", "").startswith("actions/checkout@")
+            ]
+            self.assertTrue(checkouts, name)
+            for step in checkouts:
+                with self.subTest(workflow=name, step=step.get("name")):
+                    self.assertIs(step.get("with", {}).get("persist-credentials"), False)
+
+    def test_scheduled_sync_reads_lock_from_workflow_commit(self):
+        steps = self.workflows["sync-ai-docs-en-to-zh.yml"]["jobs"]["translate"]["steps"]
+        lock_file = "scripts/ai-translator-requirements.lock"
+        lock_checkout = next(
+            step for step in steps if step.get("name") == "Checkout translation dependency lock"
+        )
+        checkout = lock_checkout["with"]
+        self.assertTrue(lock_checkout["uses"].startswith("actions/checkout@"))
+        self.assertNotIn("repository", checkout)
+        self.assertEqual(checkout["ref"], "${{ github.sha }}")
+        self.assertEqual(checkout["path"], "workflow-dependencies")
+        self.assertEqual(checkout["sparse-checkout"], lock_file)
+        self.assertIs(checkout["sparse-checkout-cone-mode"], False)
+
+        lock_path = f"{checkout['path']}/{lock_file}"
+        setup = next(step for step in steps if step.get("name") == "Setup Python")
+        install = next(step for step in steps if step.get("name") == "Install dependencies")
+        self.assertLess(steps.index(lock_checkout), steps.index(setup))
+        self.assertLess(steps.index(setup), steps.index(install))
+        self.assertEqual(setup["with"]["cache-dependency-path"], lock_path)
+        install_args = shlex.split(install["run"].replace("\\\n", " "))
+        self.assertEqual(install_args[install_args.index("-r") + 1], lock_path)
 
     def test_translation_dependencies_are_locked_and_hashed(self):
         lock_path = ROOT / "scripts/ai-translator-requirements.lock"

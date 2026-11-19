@@ -93,6 +93,7 @@ jobs:
           ref: ${{ env.DOCS_CN_BASE }}
           path: docs-cn
           fetch-depth: 0
+          persist-credentials: false
 
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         name: Checkout docs-cn tools from master
@@ -129,12 +130,21 @@ jobs:
           path: ai-markdown-translator
           persist-credentials: false
 
+      - name: Checkout translation dependency lock
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.sha }}
+          path: workflow-dependencies
+          sparse-checkout: scripts/ai-translator-requirements.lock
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         name: Setup Python
         with:
           python-version: "3.9.25"
           cache: pip
-          cache-dependency-path: docs-cn/scripts/ai-translator-requirements.lock
+          cache-dependency-path: workflow-dependencies/scripts/ai-translator-requirements.lock
 
       - name: Install dependencies
         shell: bash
@@ -143,7 +153,7 @@ jobs:
           python -m pip install \
             --require-hashes \
             --only-binary=:all: \
-            -r docs-cn/scripts/ai-translator-requirements.lock
+            -r workflow-dependencies/scripts/ai-translator-requirements.lock
 
       - name: Resolve commit range
         id: commits
