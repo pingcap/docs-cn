@@ -1,4 +1,4 @@
-"""Test actor guards on write-privileged workflows that consume secrets."""
+"""Test authorization guards on privileged workflows."""
 
 import os
 import re
@@ -144,6 +144,7 @@ gh() {
             ("flush.yaml", "flush-pdf"),
             ("flush-version.yaml", "flush-pdf"),
             ("link.yaml", "linkChecker"),
+            ("keywords.yaml", "check-keywords"),
         ):
             with self.subTest(workflow=filename):
                 workflow = load_workflow(filename)
@@ -171,11 +172,13 @@ gh() {
             "needs.linkChecker.outputs.report_artifact_id != '' }}",
         )
 
-    def test_keywords_requires_upstream_master(self):
+    def test_keywords_issue_write_permission_requires_authorization(self):
+        workflow = load_workflow("keywords.yaml")
+        self.assertEqual(workflow["permissions"], {"contents": "read"})
         job = load_job("keywords.yaml", "check-keywords")
         self.assertEqual(
-            job["if"],
-            "github.repository == 'pingcap/docs-cn' && github.ref == 'refs/heads/master'",
+            job["permissions"],
+            {"contents": "read", "issues": "write"},
         )
 
     def test_ai_sync_keeps_concurrency_scoped_to_translation(self):
