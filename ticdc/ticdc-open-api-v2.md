@@ -752,7 +752,15 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds?state=normal
 |:----------------|:----------------------------|
 | `changefeed_id` | 需要查询的同步任务 (changefeed) 的 ID |
 
+#### 请求头
+
+| 请求头名称 | 说明 |
+|:----------|:-----|
+| `Accept` | 响应格式。将该请求头设置为 `application/toml` 时，接口返回 TOML 格式的响应。如果不设置该请求头或将其设置为 `application/json`，接口返回 JSON 格式的响应。（可选） |
+
 ### 使用样例
+
+#### 返回 JSON
 
 以下请求会查询 ID 为 `test1` 的同步任务的详细信息。
 
@@ -761,6 +769,21 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds/test1
 ```
 
 响应的 JSON 格式以及字段含义与[创建同步任务](#创建同步任务)中的响应参数相同，此处不再赘述。
+
+#### 返回 TOML
+
+如需以 TOML 格式返回详细信息，请将 `Accept` 请求头设置为 `application/toml`：
+
+```shell
+curl -X GET -H "Accept: application/toml" http://127.0.0.1:8300/api/v2/changefeeds/test1
+```
+
+如果请求成功，响应头为 `Content-Type: application/toml; charset=utf-8`。TOML 响应包含与 JSON 响应相同的 changefeed 信息，但存在以下格式差异：
+
+- 字段名采用 kebab-case，而非 snake_case。
+- changefeed 配置位于 `[config]` 表及其嵌套表中。
+- 时长和时间戳格式化为便于阅读的字符串。
+- 省略内部运行时字段 `gid`。
 
 ## 查询特定同步任务是否完成
 
