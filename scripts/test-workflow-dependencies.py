@@ -3,6 +3,7 @@
 import os
 from http.client import IncompleteRead
 from pathlib import Path
+import re
 import runpy
 import subprocess
 import sys
@@ -14,32 +15,76 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
-# media.yml is covered by the separate media workflow hardening change.
-WORKFLOW_NAMES = [
-    "flush.yaml",
-    "flush-version.yaml",
-    "link.yaml",
-    "link-fail-fast.yaml",
-    "keywords.yaml",
-]
+WORKFLOW_DIRECTORY = ROOT / ".github/workflows"
+WORKFLOW_NAMES = sorted(
+    path.name
+    for pattern in ("*.yml", "*.yaml")
+    for path in WORKFLOW_DIRECTORY.glob(pattern)
+)
 
 
 class WorkflowDependencyTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.workflows = {
-            name: yaml.safe_load((ROOT / ".github/workflows" / name).read_text())
+            name: yaml.safe_load((WORKFLOW_DIRECTORY / name).read_text())
             for name in WORKFLOW_NAMES
         }
 
     def test_actions_are_pinned_to_commits(self):
         for name, workflow in self.workflows.items():
             for job in workflow["jobs"].values():
-                for step in job.get("steps", []):
-                    if "uses" in step:
-                        with self.subTest(workflow=name, action=step["uses"]):
-                            reference = step["uses"].rsplit("@", 1)[-1]
-                            self.assertRegex(reference, r"^[0-9a-f]{40}$")
+                references = [job["uses"]] if "uses" in job else []
+                references.extend(
+                    step["uses"] for step in job.get("steps", []) if "uses" in step
+                )
+                for action in references:
+                    if action.startswith("./"):
+                        continue
+                    with self.subTest(workflow=name, action=action):
+                        self.assertIn("@", action)
+                        reference = action.rsplit("@", 1)[-1]
+                        self.assertRegex(reference, r"^[0-9a-f]{40}$")
+
+    def test_translation_dependencies_are_locked_and_hashed(self):
+        lock_path = ROOT / "scripts/ai-translator-requirements.lock"
+        lock_content = lock_path.read_text()
+        requirement_lines = [
+            line for line in lock_content.splitlines()
+            if line and not line.startswith(("#", " "))
+        ]
+        hash_lines = [
+            line.strip() for line in lock_content.splitlines()
+            if line.startswith("    --hash=")
+        ]
+        self.assertTrue(requirement_lines)
+        self.assertEqual(len(requirement_lines), len(hash_lines))
+        self.assertTrue(
+            all(
+                "==" in line and line.endswith(" \\")
+                for line in requirement_lines
+            )
+        )
+        self.assertTrue(
+            all(
+                re.fullmatch(r"--hash=sha256:[0-9a-f]{64}", line)
+                for line in hash_lines
+            )
+        )
+
+        for name, job_name in (
+            ("sync-ai-docs-en-to-zh.yml", "translate"),
+            ("sync-doc-pr-en-to-zh.yml", "sync-docs"),
+        ):
+            install = next(
+                step for step in self.workflows[name]["jobs"][job_name]["steps"]
+                if step.get("name") == "Install dependencies"
+            )["run"]
+            self.assertIn("ai-translator-requirements.lock", install)
+            self.assertIn("--require-hashes", install)
+            self.assertIn("--only-binary=:all:", install)
+            self.assertNotIn("pip install --upgrade pip", install)
+            self.assertNotIn("ai-markdown-translator/scripts/requirements.txt", install)
 
     def test_flush_uses_reviewed_repository_list(self):
         workflow = self.workflows["flush.yaml"]
