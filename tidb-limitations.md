@@ -68,9 +68,9 @@ summary: TiDB 中的使用限制包括标识符长度限制、数据库、表、
 > **注意：**
 >
 > - `TEXT` 和 `BLOB` 的大小限制与 MySQL 中对应数据类型的限制一致。如需存储超过 65,535 字节的值，请使用 `MEDIUMTEXT`、`LONGTEXT`、`MEDIUMBLOB` 或 `LONGBLOB`。
-> - 单行大小限制适用于整行数据，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 配置项进行调整。
+> - 每个值的大小不能超过其数据类型的大小限制，同时整行数据的大小不能超过单行大小限制。你可以通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 配置项进行调整。
 
-| 类型       | 单个值的最大大小 | 单行大小限制 |
+| 类型       | 数据类型大小限制 | 单行大小限制 |
 |:-----------|:----------------|:-------------|
 | CHAR       | 255 个字符                    | 默认为 6 MiB，最大可调整至 120 MiB |
 | BINARY     | 255 字节                      | 默认为 6 MiB，最大可调整至 120 MiB |
