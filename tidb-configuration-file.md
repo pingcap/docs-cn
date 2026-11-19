@@ -998,6 +998,11 @@ TiDB 服务状态相关配置。
 + 可选值：`true`、`false`
 + 该值作为系统变量 [`tidb_enable_stats_owner`](/system-variables.md#tidb_enable_stats_owner-从-v840-版本开始引入) 的初始值。
 
+### `tidb_service_scope` <span class="version-mark">从 v7.4.0 版本开始引入</span>
+
++ 用于指定当前 TiDB 实例的系统变量 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 的初始值。
++ 默认值：`""`
+
 ### `tidb_stmt_summary_enable_persistent` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 > **警告：**
