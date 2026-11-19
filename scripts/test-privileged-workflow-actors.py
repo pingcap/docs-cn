@@ -27,8 +27,10 @@ def load_job(workflow_name, job_name):
 class PrivilegedWorkflowActorTest(unittest.TestCase):
     def test_shared_authorization_allowlists_exactly_the_expected_accounts(self):
         step = load_job("authorize-privileged-workflow.yml", "authorize")["steps"][0]
+        # Bash removes backslash-newline pairs before parsing the case pattern.
+        run = step["run"].replace("\\\n", "")
         allowed_ids = re.findall(
-            r"^\s+([0-9]+(?:\s*\|\s*[0-9]+)*)\)\s*;;$", step["run"], re.MULTILINE,
+            r"^\s+([0-9]+(?:\s*\|\s*[0-9]+)*)\)\s*;;$", run, re.MULTILINE,
         )
         self.assertEqual(len(allowed_ids), 1)
         self.assertCountEqual(re.findall(r"[0-9]+", allowed_ids[0]), ["30922556", "79440533", "47792576"])
