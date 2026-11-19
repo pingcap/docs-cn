@@ -756,7 +756,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds?state=normal
 
 | 请求头名称 | 说明 |
 |:----------|:-----|
-| `Accept` | 响应格式。从 v8.5.9 开始，将该请求头设置为 `application/toml` 时，接口返回 TOML 格式的响应。如果不设置该请求头或将其设置为 `application/json`，接口返回 JSON 格式的响应。（可选） |
+| `Accept` | 响应格式。从 v8.5.9 开始，该接口支持返回 TOML 格式的响应。将该请求头设置为 `application/toml` 时，接口返回 TOML 格式的响应。如果不设置该请求头或将其设置为 `application/json`，接口返回 JSON 格式的响应。（可选） |
 
 ### 使用样例
 
