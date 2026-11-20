@@ -82,48 +82,62 @@ class WorkflowDependencyTest(unittest.TestCase):
         self.assertLess(steps.index(lock_checkout), steps.index(setup))
         self.assertLess(steps.index(setup), steps.index(install))
         self.assertEqual(setup["with"]["cache-dependency-path"], lock_path)
-        install_args = shlex.split(install["run"].replace("\\\n", " "))
-        self.assertEqual(install_args[install_args.index("-r") + 1], lock_path)
+        self.assert_lock_install_command(install["run"], lock_path)
+
+    def assert_lock_install_command(self, script, lock_path):
+        commands = [
+            tokens
+            for line in script.replace("\\\n", "").splitlines()
+            if (tokens := shlex.split(line, comments=True))
+        ]
+        if commands and commands[0] == ["set", "-euo", "pipefail"]:
+            commands = commands[1:]
+        self.assertEqual(commands, [[
+            "python", "-m", "pip", "install", "--require-hashes",
+            "--only-binary=:all:", "-r", lock_path,
+        ]])
+
+    def assert_hash_locked_requirements(self, content):
+        entries = [
+            line.strip()
+            for line in content.replace("\\\n", "").splitlines()
+            if line.strip() and not line.lstrip().startswith("#")
+        ]
+        self.assertTrue(entries)
+        for entry in entries:
+            self.assertRegex(
+                entry,
+                r"^[A-Za-z0-9][A-Za-z0-9._-]*==[0-9][A-Za-z0-9.!+_-]*"
+                r"(?:\s+--hash=sha256:[0-9a-f]{64})+$",
+            )
 
     def test_translation_dependencies_are_locked_and_hashed(self):
-        lock_path = ROOT / "scripts/ai-translator-requirements.lock"
-        lock_content = lock_path.read_text()
-        requirement_lines = [
-            line for line in lock_content.splitlines()
-            if line and not line.startswith(("#", " "))
-        ]
-        hash_lines = [
-            line.strip() for line in lock_content.splitlines()
-            if line.startswith("    --hash=")
-        ]
-        self.assertTrue(requirement_lines)
-        self.assertEqual(len(requirement_lines), len(hash_lines))
-        self.assertTrue(
-            all(
-                "==" in line and line.endswith(" \\")
-                for line in requirement_lines
-            )
-        )
-        self.assertTrue(
-            all(
-                re.fullmatch(r"--hash=sha256:[0-9a-f]{64}", line)
-                for line in hash_lines
-            )
-        )
+        lock_path = "scripts/ai-translator-requirements.lock"
+        self.assert_hash_locked_requirements((ROOT / lock_path).read_text())
 
-        for name, job_name in (
-            ("sync-ai-docs-en-to-zh.yml", "translate"),
-            ("sync-doc-pr-en-to-zh.yml", "sync-docs"),
+        name = "sync-doc-pr-en-to-zh.yml"
+        steps = self.workflows[name]["jobs"]["sync-docs"]["steps"]
+        install = next(step for step in steps if step.get("name") == "Install dependencies")
+        self.assert_lock_install_command(install["run"], lock_path)
+
+    def test_requirements_reject_unattached_hashes_and_wildcard_versions(self):
+        digest = "--hash=sha256:" + "a" * 64
+        for content in (
+            f"first==1.0 \\\nsecond==2.0 \\\n    {digest}\n    {digest}\n",
+            f"first==1.* \\\n    {digest}\n",
         ):
-            install = next(
-                step for step in self.workflows[name]["jobs"][job_name]["steps"]
-                if step.get("name") == "Install dependencies"
-            )["run"]
-            self.assertIn("ai-translator-requirements.lock", install)
-            self.assertIn("--require-hashes", install)
-            self.assertIn("--only-binary=:all:", install)
-            self.assertNotIn("pip install --upgrade pip", install)
-            self.assertNotIn("ai-markdown-translator/scripts/requirements.txt", install)
+            with self.subTest(content=content), self.assertRaises(AssertionError):
+                self.assert_hash_locked_requirements(content)
+
+    def test_install_rejects_security_flags_only_in_comments(self):
+        lock_path = "scripts/ai-translator-requirements.lock"
+        script = f"python -m pip install -r {lock_path} # --require-hashes --only-binary=:all:"
+        with self.assertRaises(AssertionError):
+            self.assert_lock_install_command(script, lock_path)
+
+    def test_scheduled_sync_declares_no_default_token_permissions(self):
+        workflow = self.workflows["sync-ai-docs-en-to-zh.yml"]
+        self.assertEqual(workflow["permissions"], {})
 
     def test_flush_uses_reviewed_repository_list(self):
         workflow = self.workflows["flush.yaml"]

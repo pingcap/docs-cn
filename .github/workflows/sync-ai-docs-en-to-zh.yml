@@ -26,6 +26,8 @@ on:
           - incremental
           - full
 
+permissions: {}
+
 env:
   PRODUCT: TiDB
   DOCS_CN_BASE: release-8.5
