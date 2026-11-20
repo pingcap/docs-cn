@@ -16,7 +16,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 - [安装 Dumpling 和 TiDB Lightning](/migration-tools.md)。如果你要在目标端手动创建相应的表，则无需安装 Dumpling。
 - [获取 Dumpling 所需上游数据库权限](/dumpling-overview.md#需要的权限)。
 - [获取 TiDB Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
-- 如果你想使用 DM 同步增量数据，请在创建迁移快照前为 Aurora 集群启用 binary logging，并设置 `binlog_format=ROW` 和 `binlog_row_image=FULL`。对于 Aurora MySQL 3，还需要设置 `binlog_transaction_compression=OFF`。请保留所需 binlog，直到 DM 追平上游。详情参见 [Setting up binary log replication for Aurora MySQL](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Replication.MySQL.SettingUp.html) 和 [DM precheck](/dm/dm-precheck.md)。
+- 如果你想使用 DM 同步增量数据，请在创建迁移快照前为 Aurora 集群启用 binary logging，并设置 `binlog_format=ROW` 和 `binlog_row_image=FULL`。对于 Aurora MySQL 3，还需要设置 `binlog_transaction_compression=OFF`。请保留所需 binlog，直到 DM 追平上游。详情参见 [为 Aurora MySQL 设置二进制日志复制](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Replication.MySQL.SettingUp.html) 和 [TiDB Data Migration 任务前置检查](/dm/dm-precheck.md)。
 
 ## 导入全量数据到 TiDB
 
