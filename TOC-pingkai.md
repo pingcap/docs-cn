@@ -489,6 +489,7 @@
         - [tiup cluster clean](/tiup/tiup-component-cluster-clean.md)
         - [tiup cluster deploy](/tiup/tiup-component-cluster-deploy.md)
         - [tiup cluster destroy](/tiup/tiup-component-cluster-destroy.md)
+        - [tiup cluster detach-grafana](/tiup/tiup-component-cluster-detach-grafana.md)
         - [tiup cluster disable](/tiup/tiup-component-cluster-disable.md)
         - [tiup cluster display](/tiup/tiup-component-cluster-display.md)
         - [tiup cluster edit-config](/tiup/tiup-component-cluster-edit-config.md)
