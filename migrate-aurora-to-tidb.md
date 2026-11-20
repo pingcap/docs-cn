@@ -16,7 +16,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 - [安装 Dumpling 和 TiDB Lightning](/migration-tools.md)。如果你要在目标端手动创建相应的表，则无需安装 Dumpling。
 - [获取 Dumpling 所需上游数据库权限](/dumpling-overview.md#需要的权限)。
 - [获取 TiDB Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
-- 如果你想使用 DM 复制增量数据，请在创建迁移快照前为 Aurora 集群启用 binary logging，并设置 `binlog_format=ROW` 和 `binlog_row_image=FULL`。对于 Aurora MySQL 3，还需要设置 `binlog_transaction_compression=OFF`。请保留所需 binlog，直到 DM 追平上游。详情参见 [Setting up binary log replication for Aurora MySQL](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Replication.MySQL.SettingUp.html) 和 [DM precheck](/dm/dm-precheck.md)。
+- 如果你想使用 DM 同步增量数据，请在创建迁移快照前为 Aurora 集群启用 binary logging，并设置 `binlog_format=ROW` 和 `binlog_row_image=FULL`。对于 Aurora MySQL 3，还需要设置 `binlog_transaction_compression=OFF`。请保留所需 binlog，直到 DM 追平上游。详情参见 [Setting up binary log replication for Aurora MySQL](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Replication.MySQL.SettingUp.html) 和 [DM precheck](/dm/dm-precheck.md)。
 
 ## 导入全量数据到 TiDB
 
@@ -89,7 +89,7 @@ nohup tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
 
 #### 2.1 导出 Amazon Aurora 快照文件到 Amazon S3
 
-1. 如果你计划使用 DM 进行增量复制，请在创建快照前完成[前提条件](#前提条件)中的 binlog 配置。请使用自定义 DB cluster parameter group，并按需重启 writer instance 以使配置生效。详情参见 [Configuring Aurora MySQL binary logging](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_LogAccess.MySQL.BinaryFormat.html)。
+1. 如果你计划使用 DM 进行增量同步，请在创建快照前完成[前提条件](#前提条件)中的 binlog 配置。请使用自定义 DB cluster parameter group，并按需重启 writer instance 以使配置生效。详情参见 [Configuring Aurora MySQL binary logging](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_LogAccess.MySQL.BinaryFormat.html)。
 
     如果你计划在 DM 中设置 `enable-gtid: true`，还需要在创建快照前在原始源端启用 GTID 模式。设置方法请参见 [Enabling GTID-based replication for an Aurora MySQL cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/mysql-replication-gtid.configuring-aurora.html)。
 
@@ -104,7 +104,7 @@ nohup tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
 
 2. 创建或选定要导出的 Aurora DB cluster snapshot。如果你计划使用 DM，请获取与该快照对应的 binlog 文件名和位置：将该快照恢复到一个临时 Aurora 集群，并使用与源集群相同的 parameter group；然后在恢复后的 writer instance 的 **Recent Events** 中找到 `Binlog position from crash recovery is <binlog-file-name> <binlog-position>` 消息。详细步骤请参见 [Setting up binary log replication for Aurora MySQL](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Replication.MySQL.SettingUp.html)。请记录这些值，供 DM 任务使用；DM 任务仍需连接到原始源端 Aurora 集群。只有在记录好该位置并完成第 1 步中所需的 schema 导出后，才能删除这个临时集群。
 
-    对于增量复制，创建快照时必须已经启用了所需的 binlog 配置。在原始源端上，使用 `SHOW BINARY LOGS;` 确认所需的 binlog 文件仍然可用，并从该位置开始保留全部 binlog，直到 DM 处理完成。如果现有快照不满足这些条件，请在完成本节步骤 1 中的 binlog 配置后重新创建快照。每当你选择不同的快照时，都要确认[第 1 步](#第-1-步导出和导入-schema-文件)中准备的 schema 与该快照一致。如果不一致，请从新快照恢复出的临时集群重新导出 schema，并在导入快照数据前更新目标表定义。不要使用 `SHOW MASTER STATUS` 返回的当前位点代替快照位点，否则可能导致部分变更被重复回放或被跳过。
+    对于增量同步，创建快照时必须已经启用了所需的 binlog 配置。在原始源端上，使用 `SHOW BINARY LOGS;` 确认所需的 binlog 文件仍然可用，并从该位置开始保留全部 binlog，直到 DM 处理完成。如果现有快照不满足这些条件，请在完成本节步骤 1 中的 binlog 配置后重新创建快照。每当你选择不同的快照时，都要确认[第 1 步](#第-1-步导出和导入-schema-文件)中准备的 schema 与该快照一致。如果不一致，请从新快照恢复出的临时集群重新导出 schema，并在导入快照数据前更新目标表定义。不要使用 `SHOW MASTER STATUS` 返回的当前位点代替快照位点，否则可能导致部分变更被重复回放或被跳过。
 
     如果源集群启用了 enhanced binlog（`aurora_enhanced_binlog=1`），且运行的是早于 3.14.0 的 Aurora MySQL 3 版本，那么在存在回滚事务时，快照恢复得到的 binlog 坐标可能不正确。在使用此流程前，请先将源集群升级到 3.14.0 或更高版本，并重新创建快照。详情参见 [Aurora MySQL 3.14.0 release notes](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraMySQLReleaseNotes/AuroraMySQL.Updates.3140.html)。
 
@@ -251,11 +251,11 @@ mysql-instances:
       binlog-pos: 52806 # 仅为示例值。请替换为所选快照对应的 binlog 位置。
       # binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"
 
-# 【可选配置】 如果增量数据迁移需要重复迁移已经在全量数据迁移中完成迁移的数据，则需要开启 safe mode 避免增量数据迁移报错。
+# 【可选配置】 如果增量数据同步需要重复同步已经在全量数据迁移中完成迁移的数据，则需要开启 safe mode，避免增量数据同步报错。
    ##  该场景多见于以下情况：全量迁移的数据不属于数据源的一个一致性快照，随后从一个早于全量迁移数据之前的位置开始同步增量数据。
    # syncers:            # sync 处理单元的运行配置参数。
    #  global:           # 配置名称。
-   #    safe-mode: true # 设置为 true，会将来自数据源的 INSERT 改写为 REPLACE，将 UPDATE 改写为 DELETE 与 REPLACE，从而保证在表结构中存在主键或唯一索引的条件下迁移数据时可以重复导入 DML。在启动或恢复增量复制任务的前 1 分钟内 TiDB DM 会自动启动 safe mode。
+   #    safe-mode: true # 设置为 true，会将来自数据源的 INSERT 改写为 REPLACE，将 UPDATE 改写为 DELETE 与 REPLACE，从而保证在表结构中存在主键或唯一索引的条件下迁移数据时可以重复导入 DML。在启动或恢复增量同步任务的前 1 分钟内 TiDB DM 会自动启动 safe mode。
 ```
 
 以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)
