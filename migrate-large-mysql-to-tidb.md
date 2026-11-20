@@ -26,7 +26,7 @@ summary: 介绍如何从大数据量 MySQL 迁移数据到 TiDB。
 **磁盘空间**：
 
 - Dumpling 需要能够储存整个数据源的存储空间，即可以容纳要导出的所有上游表的空间。计算方式参考[下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#目标数据库所需空间)。
-- TiDB Lightning 导入期间，需要临时空间来存储排序键值对，磁盘空间需要至少能存储数据源的最大单表。
+- TiDB Lightning 导入期间，需要临时空间来存储排序键值对，可用空间应大于待导入数据的大小。
 - 若全量数据量较大，可适当加长上游 binlog 保存时间，以避免增量同步时缺必要 binlog 导致重做。
 
 **说明**：目前无法精确计算 Dumpling 从 MySQL 导出的数据大小，但你可以用下面 SQL 语句统计信息表的 `DATA_LENGTH` 字段估算数据量：
@@ -174,8 +174,10 @@ LIMIT
     # 唯一命名，不可重复。
     source-id: "mysql-01"
 
-    # DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
-    enable-gtid: true
+    # 配置 DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。
+    # 仅当上游 MySQL 已启用 GTID 且你希望从某个 GTID 集合开始复制时，才将此选项设置为 `true`。
+    # 若上游 MySQL 服务配置为在不同节点之间自动切换主库，则必须使用 GTID 模式。
+    enable-gtid: false
 
     from:
       host: "${host}"           # 例如：172.16.10.81
@@ -215,7 +217,12 @@ LIMIT
     #  使用黑白名单配置需要同步的表
     block-allow-list:                    # 数据源数据库实例匹配的表的 block-allow-list 过滤规则集，如果 DM 版本早于 v2.0.0-beta.2 则使用 black-white-list。
       bw-rule-1:                         # 黑白名单配置项 ID。
-        do-dbs: ["${db-name}"]           # 迁移哪些库。
+        do-dbs: ["my_db1"]
+        do-tables:                       # 需要复制的表。
+        - db-name: "my_db1"
+          tbl-name: "table1"
+        - db-name: "my_db1"
+          tbl-name: "table2"
 
     # 配置数据源
     mysql-instances:
@@ -223,9 +230,9 @@ LIMIT
         block-allow-list: "bw-rule-1"    # 引入上面黑白名单配置。
         # syncer-config-name: "global"    # 引用下面的 syncers 增量数据配置。
         meta:                            # `task-mode` 为 `incremental` 且下游数据库的 `checkpoint` 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 `checkpoint` 为准。如果 `meta` 项和下游数据库的 `checkpoint` 都不存在，则从上游当前最新的 binlog 位置开始迁移。
-          # binlog-name: "mysql-bin.000004"  # 第 1 步中记录的日志位置，当上游存在主从切换时，必须使用 gtid。
-          # binlog-pos: 109227
-          binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"
+          binlog-name: "mysql-bin.000004"  # 第 1 步“从 MySQL 导出所有数据”中记录的 binlog 文件。上游未启用 GTID 时，使用 `binlog-name` + `binlog-pos`。
+          binlog-pos: 109227
+          # binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"  # 如果上游使用 GTID 模式，则改用 `binlog-gtid`。
 
     # 【可选配置】 如果增量数据迁移需要重复迁移已经在全量数据迁移中完成迁移的数据，则需要开启 safe mode 避免增量数据迁移报错。
     #  该场景多见于以下情况：全量迁移的数据不属于数据源的一个一致性快照，随后从一个早于全量迁移数据之前的位置开始同步增量数据。
@@ -233,6 +240,8 @@ LIMIT
     #  global:           # 配置名称。
     #    safe-mode: true # 设置为 true，会将来自数据源的 INSERT 改写为 REPLACE，将 UPDATE 改写为 DELETE 与 REPLACE，从而保证在表结构中存在主键或唯一索引的条件下迁移数据时可以重复导入 DML。在启动或恢复增量复制任务的前 1 分钟内 TiDB DM 会自动启动 safe mode。
     ```
+
+    上述示例使用了第 1 步中记录的 binlog 文件和位置，因为 `metadata` 文件中的 `GTID` 字段为空。如果上游 MySQL 已启用 GTID 且你需要使用 GTID 模式（例如需要进行主从切换），请将 `enable-gtid` 设置为 `true`，注释掉 `binlog-name` 和 `binlog-pos`，并改为配置 `binlog-gtid`。
 
     以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考[DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)。
 
