@@ -26,6 +26,8 @@ on:
           - incremental
           - full
 
+permissions: {}
+
 env:
   PRODUCT: TiDB
   DOCS_CN_BASE: release-8.5
@@ -87,14 +89,15 @@ jobs:
               ;;
           esac
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         name: Checkout docs-cn
         with:
           ref: ${{ env.DOCS_CN_BASE }}
           path: docs-cn
           fetch-depth: 0
+          persist-credentials: false
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         name: Checkout docs-cn tools from master
         with:
           repository: pingcap/docs-cn
@@ -104,7 +107,7 @@ jobs:
           sparse-checkout: scripts/resolve-ai-docs-source-files.py
           sparse-checkout-cone-mode: false
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         name: Checkout docs source branch
         with:
           repository: ${{ env.SOURCE_REPO }}
@@ -113,7 +116,7 @@ jobs:
           fetch-depth: 500
           persist-credentials: false
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         name: Checkout docs terms branch
         with:
           repository: ${{ env.SOURCE_REPO }}
@@ -121,7 +124,7 @@ jobs:
           path: docs-terms
           persist-credentials: false
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         name: Checkout ai-markdown-translator
         with:
           repository: ${{ env.AI_TRANSLATOR_REPO }}
@@ -129,19 +132,30 @@ jobs:
           path: ai-markdown-translator
           persist-credentials: false
 
-      - uses: actions/setup-python@v6
+      - name: Checkout translation dependency lock
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.sha }}
+          path: workflow-dependencies
+          sparse-checkout: scripts/ai-translator-requirements.lock
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         name: Setup Python
         with:
-          python-version: "3.9"
+          python-version: "3.9.25"
           cache: pip
-          cache-dependency-path: ai-markdown-translator/scripts/requirements.txt
+          cache-dependency-path: workflow-dependencies/scripts/ai-translator-requirements.lock
 
       - name: Install dependencies
         shell: bash
         run: |
           set -euo pipefail
-          python -m pip install --upgrade pip
-          pip install -r ai-markdown-translator/scripts/requirements.txt
+          python -m pip install \
+            --require-hashes \
+            --only-binary=:all: \
+            -r workflow-dependencies/scripts/ai-translator-requirements.lock
 
       - name: Resolve commit range
         id: commits
@@ -321,7 +335,7 @@ jobs:
 
       - name: Create PR
         if: always() && steps.changes.outputs.has_changes == 'true'
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8
         with:
           path: docs-cn
           token: ${{ github.token }}
