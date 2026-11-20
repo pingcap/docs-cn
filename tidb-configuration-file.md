@@ -908,6 +908,12 @@ TiDB 服务状态相关配置。
 + 默认值：true
 + 在 v6.1.0 之前，该功能通过配置项 `enable-collect-execution-info` 进行设置。
 
+### `tidb_general_log`
+
++ 用于指定当前 TiDB 实例的系统变量 [`tidb_general_log`](/system-variables.md#tidb_general_log) 的初始值。
++ 默认值：`false`
++ 可选值：`true` 或 `false`
+
 ### `tidb_enable_slow_log`
 
 + 是否开启慢查询日志。

@@ -2886,8 +2886,8 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 如果指定了 [`log.general-log-file`](/tidb-configuration-file.md#general-log-file-从-v800-版本开始引入) 配置项，general log 将被单独写入到指定的文件中。
 - 通过 [`log.format`](/tidb-configuration-file.md#format) 配置项可以配置日志消息的格式，无论 general log 是在单独的文件中还是合并在其它日志文件中。
 - 通过 [`tidb_redact_log`](#tidb_redact_log) 变量可以对 general log 中记录的 SQL 语句进行脱敏处理。
-- 只有执行成功的语句才会被记录在 general log 中。失败的语句不会记录在 general log 中，而是以 `command dispatched failed` 消息的形式记录在 TiDB 日志中。
-- 在 TiDB 配置项 [`log.level`](/tidb-configuration-file.md#level) 为 `"info"` 或 `"debug"` 时，通过查询 `"GENERAL_LOG"` 字符串可以定位到该功能在日志中的所有记录。日志会记录以下内容：
+- general log 在 SQL 语句通过编译后、执行前写入，因此执行时报错的语句也可能被记录。解析或编译失败的语句不会记录在 general log 中。
+- general log 以 info 级别写入，不受 TiDB 配置项 [`log.level`](/tidb-configuration-file.md#level) 的限制。通过查询 `"GENERAL_LOG"` 字符串可以定位日志记录。日志会记录以下内容：
     - `time`：事件发生时间
     - `conn`：当前会话对应的 ID
     - `user`：当前会话用户
