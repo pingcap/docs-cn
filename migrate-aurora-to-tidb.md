@@ -89,7 +89,7 @@ nohup tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
 
 #### 2.1 导出 Amazon Aurora 快照文件到 Amazon S3
 
-1. 如果你计划使用 DM 进行增量同步，请在创建快照前完成[前提条件](#前提条件)中的 binlog 配置。请使用自定义 DB cluster parameter group，并按需重启 writer instance 以使配置生效。详情参见 [Configuring Aurora MySQL binary logging](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_LogAccess.MySQL.BinaryFormat.html)。
+1. 如果你只需要全量数据迁移，可以跳过此步骤。如果你需要使用 DM 进行增量同步，请在创建快照前完成[前提条件](#前提条件)中的 binlog 配置。请使用自定义 DB cluster parameter group，并按需重启 writer instance 以使配置生效。详情参见[配置 Aurora MySQL 二进制日志记录](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/USER_LogAccess.MySQL.BinaryFormat.html)。
 
     如果你计划在 DM 中设置 `enable-gtid: true`，还需要在创建快照前在原始源端启用 GTID 模式。设置方法请参见 [Enabling GTID-based replication for an Aurora MySQL cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/mysql-replication-gtid.configuring-aurora.html)。
 
@@ -100,9 +100,7 @@ nohup tiup tidb-lightning -config tidb-lightning-schema.toml > nohup.out 2>&1 &
     CALL mysql.rds_show_configuration;
     ```
 
-    如果你只需要全量数据迁移，则可以跳过此步骤。
-
-2. 创建或选定要导出的 Aurora DB cluster snapshot。如果你计划使用 DM，请获取与该快照对应的 binlog 文件名和位置：将该快照恢复到一个临时 Aurora 集群，并使用与源集群相同的 parameter group；然后在恢复后的 writer instance 的 **Recent Events** 中找到 `Binlog position from crash recovery is <binlog-file-name> <binlog-position>` 消息。详细步骤请参见 [Setting up binary log replication for Aurora MySQL](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Replication.MySQL.SettingUp.html)。请记录这些值，供 DM 任务使用；DM 任务仍需连接到原始源端 Aurora 集群。只有在记录好该位置并完成第 1 步中所需的 schema 导出后，才能删除这个临时集群。
+2. 创建或选定要导出的 Aurora DB cluster snapshot。如果你计划使用 DM，请获取与该快照对应的 binlog 文件名和位置：将该快照恢复到一个临时 Aurora 集群，并使用与源集群相同的 parameter group；然后在恢复后的 writer instance 的 **Recent Events** 中找到 `Binlog position from crash recovery is <binlog-file-name> <binlog-position>` 消息。详细步骤请参见 [为 Aurora MySQL 设置二进制日志复制](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Replication.MySQL.SettingUp.html)。请记录这些值，供 DM 任务使用；DM 任务仍需连接到原始源端 Aurora 集群。只有在记录好该位置并完成第 1 步中所需的 schema 导出后，才能删除这个临时集群。
 
     对于增量同步，创建快照时必须已经启用了所需的 binlog 配置。在原始源端上，使用 `SHOW BINARY LOGS;` 确认所需的 binlog 文件仍然可用，并从该位置开始保留全部 binlog，直到 DM 处理完成。如果现有快照不满足这些条件，请在完成本节步骤 1 中的 binlog 配置后重新创建快照。每当你选择不同的快照时，都要确认[第 1 步](#第-1-步导出和导入-schema-文件)中准备的 schema 与该快照一致。如果不一致，请从新快照恢复出的临时集群重新导出 schema，并在导入快照数据前更新目标表定义。不要使用 `SHOW MASTER STATUS` 返回的当前位点代替快照位点，否则可能导致部分变更被重复回放或被跳过。
 
