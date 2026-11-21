@@ -23,7 +23,7 @@ DTFile（即 DeltaTree File）是 TiFlash 落盘数据的存储文件。TiFlash 
 | V2 | v6.0.0 之前的默认校验机制 | 在数据文件中内嵌哈希值 | 在 V1 的基础上增加了列数据的统计信息 |
 | V3 | v6.0.0 及之后的默认校验机制 | 包含元数据，标记数据校验，支持多种哈希算法 | 于 v5.4 版本引入 |
 
->**注意：**
+> **注意：**
 >
 > 上表中的 V1、V2、V3 指 TiFlash 对 DTFile 数据进行校验时采用的校验机制版本，并非 DTFile 存储格式配置项 [`storage.format_version`](/tiflash/tiflash-configuration.md#format_version) 的取值。
 
@@ -35,16 +35,18 @@ TiFlash 支持自动和手动进行数据校验：
 
 - 自动数据校验：
 
-    针对不同的 [`storage.format_version`](/tiflash/tiflash-configuration.md#format_version) 的 DTFile，TiFlash 采用的数据校验机制版本可能不同：
+    TiFlash 在读写 DTFile 数据时，会自动进行数据校验。针对不同的 [`storage.format_version`](/tiflash/tiflash-configuration.md#format_version) 的 DTFile，TiFlash 采用的数据校验机制版本不同：
 
-    - 对于 `storage.format_version` 为 `2` 的 DTFile，TiFlash 使用 V2 校验机制。在 TiFlash v6.0.0 之前，`storage.format_version` 的默认值为 `2`，因此 TiFlash 默认使用 V2 校验机制。
-    - 对于 `storage.format_version` 为 `3` 或更高值的 DTFile，TiFlash 使用 V3 校验机制。从 TiFlash v6.0.0 开始，`storage.format_version` 的默认值为 `3` 或更高，因此 TiFlash 默认使用 V3 校验机制。
+    - 在 TiFlash v6.0.0 之前，`storage.format_version` 的默认值为 `2`，TiFlash 默认使用 V2 校验机制。
+    - 从 TiFlash v6.0.0 开始，`storage.format_version` 的默认值为 `3` 或更高，TiFlash 默认使用 V3 校验机制。
     - 如需查看当前 TiFlash 版本中 `storage.format_version` 的默认值和可选值，参见 [TiFlash 配置文件](/tiflash/tiflash-configuration.md#format_version)。默认配置经过大量测试，不推荐修改。
-- 手动数据校验，参见 [DTTool 使用文档](/tiflash/tiflash-command-line-flags.md#dttool-inspect)。
+- 手动数据校验：
+
+    使用 `dttool inspect` 检查 DTFile 的完整性。详请参见 [DTTool 文档](/tiflash/tiflash-command-line-flags.md#dttool-inspect)。
 
 > **警告：**
 >
-> 设置使用 V3 校验机制后，新生成的 DTFile 将无法被 v5.4.0 以前 TiFlash 直接正常读取。v5.4.0 后 TiFlash 同时支持 V2 和 V3 校验机制，不会主动进行版本的升降级。如果需要迁移到新的版本，或者需要回退到旧的版本，需要手动使用 DTTool 进行[版本切换](/tiflash/tiflash-command-line-flags.md#dttool-migrate)。
+> 当设置 `storage.format_version` 为 `3` 或更高时，新生成的 DTFile 将使用 V3 校验机制，无法被 v5.4.0 以前的 TiFlash 直接正常读取。从 v5.4.0 开始，TiFlash 可以读取和校验采用 V2 或 V3 校验机制的 DTFile，并根据 DTFile 自身的格式使用相应的校验机制，但不会自动转换已有 DTFile 的文件格式。如需升级或降级 DTFile 的文件格式，需要使用 DTTool 手动迁移，参见 [DTTool migrate](/tiflash/tiflash-command-line-flags.md#dttool-migrate)。
 
 ### 校验工具
 
