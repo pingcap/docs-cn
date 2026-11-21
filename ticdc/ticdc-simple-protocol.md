@@ -46,6 +46,54 @@ send-bootstrap-to-all-partition = true
 encoding-format = "json"
 ```
 
+### 包含事务开始 TSO
+
+使用 [TiCDC 新架构](/ticdc/ticdc-architecture.md)时，你可以在 Simple JSON DML 消息中包含源事务的原始开始 TSO。该选项默认关闭，可以通过以下任一方式开启：
+
+- 在 `sink-uri` 中：
+
+    ```text
+    kafka://127.0.0.1:9092/topic-name?protocol=simple&encoding-format=json&simple-include-start-ts=true
+    ```
+
+- 在 changefeed 配置文件中：
+
+    ```toml
+    [sink]
+    protocol = "simple"
+
+    [sink.simple]
+    include-start-ts = true
+    ```
+
+显式指定的 URI 参数优先于配置文件。例如，`simple-include-start-ts=false` 会覆盖 `[sink.simple] include-start-ts = true`。
+
+开启后，`INSERT`、`UPDATE` 和 `DELETE` 消息会包含顶层 JSON 整数字段 `startTs`。DDL、`BOOTSTRAP` 和 `WATERMARK` 消息不包含该字段。在其他协议或 `encoding-format=avro` 下开启该选项会被拒绝。关闭该选项后，后续消息不再包含 `startTs`。
+
+以下是开启该选项后的 `INSERT` 消息示例：
+
+```json
+{
+   "version":1,
+   "database":"simple",
+   "table":"user",
+   "tableID":148,
+   "type":"INSERT",
+   "commitTs":447984084414103554,
+   "startTs":447984084414103550,
+   "buildTs":1708923662983,
+   "schemaVersion":447984074911121426,
+   "data":{
+      "id":"1",
+      "name":"John Doe"
+   }
+}
+```
+
+> **注意：**
+>
+> `startTs` 是原始 `uint64` PD TSO，不是毫秒时间戳。请使用能够保留整数精度的 JSON 解析器直接解析，或将原始十进制数字保留为字符串。不要先解析为 JavaScript `Number` 或 IEEE 754 `float64`：大于 `2^53 - 1` 的整数可能丢失精度。
+
 ## Message 类型
 
 TiCDC Simple Protocol 支持如下 Message 类型：
@@ -74,7 +122,7 @@ DML：
 
 ## Message 格式
 
-在 Simple Protocol 中，每一个 Message 都只会包含一个事件。当前 Simple Protocol 支持把消息编码为 JSON 格式和 Avro 格式。本文将以 JSON 格式为例进行说明。对于 Avro 格式的消息，其字段和含义与 JSON 格式的消息一致，只是编码格式不同，格式详见 [Simple Protocol Avro Schema](https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/simple/message.json)。
+在 Simple Protocol 中，每一个 Message 都只会包含一个事件。当前 Simple Protocol 支持把消息编码为 JSON 格式和 Avro 格式。本文将以 JSON 格式为例进行说明。除仅用于 JSON 的可选字段 `startTs` 外，Avro 消息的字段和含义与 JSON 消息一致，只是编码格式不同，格式详见 [Simple Protocol Avro Schema](https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/simple/message.json)。
 
 ### DDL
 
@@ -241,6 +289,8 @@ TiCDC 会把一个 DDL 事件编码成如下的 JSON 格式：
 
 ### DML
 
+以下示例使用默认配置，不包含 `startTs`。如需在 JSON DML 消息中输出该字段，详见[包含事务开始 TSO](#包含事务开始-tso)。
+
 #### INSERT
 
 TiCDC 会把一个 `INSERT` 事件编码成如下的 JSON 格式：
@@ -274,6 +324,7 @@ TiCDC 会把一个 `INSERT` 事件编码成如下的 JSON 格式：
 | `tableID`       | Number    | 表的 ID。                                                                  |
 | `type`          | String | DML 事件类型，包括 `INSERT`、`UPDATE` 和 `DELETE`。                              |
 | `commitTs`      | Number    | 该 DML 在上游执行结束时的 `commitTs`。                              |
+| `startTs` | JSON 整数 (`uint64`) | 可选，源事务的原始 PD TSO。仅在启用[事务开始 TSO 输出](#包含事务开始-tso)时出现；解析时需要保留整数精度。 |
 | `buildTs`       | Number    | 该消息在 TiCDC 内部被编码成功时的 UNIX 时间戳。                            |
 | `schemaVersion` | Number    | 编码该 DML 消息时所使用表的 schema 版本号。                                |
 | `data`          | Object | 插入的数据，字段名为列名，字段值为列值。                                   |
@@ -319,6 +370,7 @@ TiCDC 会把一个 `UPDATE` 事件编码成如下的 JSON 格式：
 | `tableID`       | Number    | 表的 ID。                                                                  |
 | `type`          | String | DML 事件类型，包括 `INSERT`、`UPDATE` 和 `DELETE`。                              |
 | `commitTs`      | Number    | 该 DML 在上游执行结束时的 `commitTs`。                         |
+| `startTs` | JSON 整数 (`uint64`) | 可选，源事务的原始 PD TSO。仅在启用[事务开始 TSO 输出](#包含事务开始-tso)时出现；解析时需要保留整数精度。 |
 | `buildTs`       | Number    | 该消息在 TiCDC 内部被编码成功时的 UNIX 时间戳。                            |
 | `schemaVersion` | Number    | 编码该 DML 消息时所使用表的 schema 版本号。                                |
 | `data`          | Object | 更新后的数据，字段名为列名，字段值为列值。                                 |
@@ -359,6 +411,7 @@ TiCDC 会把一个 `DELETE` 事件编码成如下的 JSON 格式：
 | `tableID`       | Number    | 表的 ID。                                                                  |
 | `type`          | String | DML 事件类型，包括 `INSERT`、`UPDATE` 和 `DELETE`。                              |
 | `commitTs`      | Number    | 该 DML 在上游执行结束的 `commitTs`。                                         |
+| `startTs` | JSON 整数 (`uint64`) | 可选，源事务的原始 PD TSO。仅在启用[事务开始 TSO 输出](#包含事务开始-tso)时出现；解析时需要保留整数精度。 |
 | `buildTs`       | Number    | 该消息在 TiCDC 内部被编码成功时的 UNIX 时间戳。                            |
 | `schemaVersion` | Number    | 编码该 DML 消息时所使用表的 schema 版本号。                                  |
 | `old`           | Object | 删除的数据，字段名为列名，字段值为列值。                                   |
