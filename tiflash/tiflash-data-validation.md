@@ -37,8 +37,8 @@ TiFlash 支持自动和手动进行数据校验：
 
     TiFlash 在读写 DTFile 数据时，会自动进行数据校验。针对不同的 [`storage.format_version`](/tiflash/tiflash-configuration.md#format_version) 的 DTFile，TiFlash 采用的数据校验机制版本不同：
 
-    - 在 TiFlash v6.0.0 之前，`storage.format_version` 的默认值为 `2`，TiFlash 默认使用 V2 校验机制。
-    - 从 TiFlash v6.0.0 开始，`storage.format_version` 的默认值为 `3` 或更高，TiFlash 默认使用 V3 校验机制。
+    - 当 `storage.format_version` 为 `2` 时，新生成的 DTFile 使用 V2 校验机制。在 TiFlash v6.0.0 之前，该配置项的默认值为 `2`。
+    - 当 `storage.format_version` 为 `3` 或更高时，新生成的 DTFile 使用 V3 校验机制。从 TiFlash v6.0.0 开始，该配置项的默认值为 `3` 或更高，具体取决于 TiFlash 版本。
     - 如需查看当前 TiFlash 版本中 `storage.format_version` 的默认值和可选值，参见 [TiFlash 配置文件](/tiflash/tiflash-configuration.md#format_version)。默认配置经过大量测试，不推荐修改。
 - 手动数据校验：
 
