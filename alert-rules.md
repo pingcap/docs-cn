@@ -242,7 +242,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 如果确定 TiKV/TiFlash 无法恢复，可做下线处理。
     * 如果确定 TiKV/TiFlash 可以恢复，但在短时间内还无法恢复，可以考虑延长 `max-down-time` 配置，防止超时后 TiKV/TiFlash 被判定为无法恢复并开始搬移数据。
 
-#### `PD_cluster_unhealthy_tikv_nums`
+#### `PD_cluster_unhealthy_store_nums`
 
 * 报警规则：
 
@@ -254,7 +254,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 处理方法：
 
-    检查 TiKV Store 的状态。
+    检查 TiKV/TiFlash 的状态。
 
 #### `PD_cluster_low_space`
 
@@ -353,7 +353,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 检查网络状况和系统负载情况。
     * 如果由于环境原因无法恢复，可将有问题的 PD 下线替换。
 
-#### `TiKV_space_used_more_than_80%`
+#### `PD_cluster_store_space_used_more_than_80%`
 
 * 报警规则：
 
@@ -381,21 +381,6 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 * 处理方法：
 
     检查系统时间设置是否正确。
-
-#### `PD_no_store_for_making_replica`
-
-* 报警规则：
-
-    `increase(pd_checker_event_count{type="replica_checker", name="no_target_store"}[1m]) > 0`
-
-* 规则描述：
-
-    没有合适的 store 用来补副本。
-
-* 处理方法：
-
-    * 检查 store 是否空间不足。
-    * 根据 label 配置（如果有这个配置的话）来检查是否有可以补副本的 store。
 
 #### `PD_cluster_slow_tikv_nums`
 
