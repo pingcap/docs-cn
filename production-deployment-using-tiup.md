@@ -370,6 +370,19 @@ tiup cluster display tidb-test
 
 预期结果输出：各节点 Status 状态信息为 `Up` 说明集群状态正常。
 
+## 第 9 步：备份集群部署和运维所需的 meta 文件
+
+如果运维所需的 meta 文件丢失，会导致无法继续使用 TiUP 管理集群，建议通过以下方式定期备份 meta 文件：
+
+```bash
+tiup cluster meta backup ${cluster_name}
+```
+如果 meta 文件丢失，可以使用以下方法恢复 meta 文件：
+
+```bash
+tiup cluster meta restore ${cluster_name} ${backup_file}
+```
+
 ## 探索更多
 
 如果你已同时部署了 [TiFlash](/tiflash/tiflash-overview.md)，接下来可参阅以下文档：
