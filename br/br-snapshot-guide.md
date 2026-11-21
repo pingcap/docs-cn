@@ -155,7 +155,7 @@ tiup br restore full \
 - `br` v7.6.0 开始，恢复参数 `--with-sys-table` 默认开启，即默认支持恢复数据的同时恢复**部分系统表相关数据**。
 - `br` v8.5.5 和 v9.0.0 开始，增加恢复参数 `--fast-load-sys-tables` 支持物理恢复系统表。通过 `RENAME TABLE` DDL 将 `__TiDB_BR_Temporary_mysql` 下的系统表和 `mysql` 库下的系统表进行原子交换。与通过 `REPLACE INTO` SQL 写入的逻辑恢复系统表方式不同，物理恢复系统表将会完全覆盖系统表中原有的数据。
 
-**可恢复的部分系统表**：
+**可通过 `--with-sys-table` 恢复的部分系统表**：
 
 ```
 +----------------------------------+
@@ -171,9 +171,8 @@ tiup br restore full \
 +----------------------------------+
 ```
 
-**不能恢复以下系统表**：
+**`--with-sys-table` 不能恢复的系统表**：
 
-- 统计信息表 (`mysql.stat_*`) (但可以恢复统计信息，详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))
 - 系统变量表 (`mysql.tidb`、`mysql.global_variables`)
 - 其他系统表
 
@@ -232,6 +231,12 @@ tiup br restore full \
 - 目标集群需要存在备份中的系统权限表。
 - 目标集群系统权限表**列数**需要与备份数据中一致，列的顺序可以有差异。
 - 目标集群系统权限表的列需要与备份数据兼容。如果为带长度类型（包括整型、字符串等类型），前者长度需大于或等于后者，如果为 `ENUM` 类型，则应该为后者超集。
+
+**恢复统计信息**
+
+统计信息是查询优化器用于估算行数和选择执行计划的数据，存储在统计信息表（例如 `mysql.stats_histograms`、`mysql.stats_buckets`）中。统计信息的恢复由 `--load-stats` 控制，与上述 `--with-sys-table` 的系统表恢复范围无关。
+
+采用逻辑导入方式恢复统计信息时，需要在备份时设置 `--ignore-stats=false`，将统计信息导出为 JSON 并写入备份。在满足物理恢复条件时，BR 也可以通过 `--fast-load-sys-tables` 恢复备份中的相关统计信息表，该方式不要求备份时设置 `--ignore-stats=false`。具体条件和恢复方式参见[备份统计信息](/br/br-snapshot-manual.md#备份统计信息)。
 
 ## 性能与影响
 
