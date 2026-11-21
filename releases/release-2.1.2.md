@@ -36,4 +36,4 @@ aliases: ['/zh/tidb/dev/release-2.1.2/','/zh/tidb/v2.1/release-2.1.2','/docs-cn/
     - 修复使用 checkpoint 重启后 `Too many open engines` 错误
 + TiDB Binlog
     - 消除了 Drainer 往 Kafka 写数据的一些瓶颈点
-    - TiDB 支持写 [Kafka 版本的 TiDB Binlog](https://docs-archive.pingcap.com/zh/tidb/v2.1/tidb-binlog-kafka-deployment/)
+    - TiDB 支持写 Kafka 版本的 TiDB Binlog
