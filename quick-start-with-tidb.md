@@ -284,7 +284,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 开始部署 TiDB 集群前，准备一台部署主机，确保其软件满足需求：
 
-- 推荐安装 CentOS 7.3 及以上版本
+- 安装 TiDB 支持的 Linux 发行版。当前操作系统建议，请参见[TiDB 软件和硬件环境需求](/hardware-and-software-requirements.md#操作系统及平台要求)。
 - 运行环境可以支持互联网访问，用于下载 TiDB 及相关软件安装包
 
 最小规模的 TiDB 集群拓扑包含以下实例：
@@ -305,9 +305,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 - 部署需要使用部署主机的 root 用户及密码
 - 部署主机[关闭防火墙](/check-before-deployment.md#检测目标部署机器的防火墙)或者开放 TiDB 集群的节点间所需端口
-- 目前 TiUP Cluster 支持在 x86_64（AMD64）和 ARM 架构上部署 TiDB 集群
-    - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
-    - 在 ARM 架构下，建议使用 CentOS 7.6 (1810) 版本 Linux 操作系统
+- 目前 TiUP Cluster 支持在 x86_64（AMD64）和 ARM 架构上部署 TiDB 集群。支持的操作系统与 CPU 架构组合，请参见[操作系统及平台要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
 
 ### 实施部署
 
@@ -505,12 +503,16 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 11. 测试完成之后，可以通过执行以下步骤来清理集群：
 
-    1. 按下 <kbd>Control</kbd>+<kbd>C</kbd> 键停掉上述启用的 TiDB 服务。
-
-    2. 等待服务退出操作完成后，执行以下命令：
+    1. 停止集群：
 
         ```shell
-        tiup clean --all
+        tiup cluster stop <cluster-name>
+        ```
+
+    2. 集群停止后，销毁集群：
+
+        ```shell
+        tiup cluster destroy <cluster-name>
         ```
 
 ## 探索更多
