@@ -826,6 +826,12 @@ opentracing.reporter 相关的设置。
 + 用于控制给 TiKV 发送 RPC 请求时，是否使用新版本的 Region 副本选择器。
 + 默认值：true
 
+### `resolve-lock-lite-threshold` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+
++ 根据单个 Region 内一次 prewrite 请求涉及的 key 数量，控制 TiDB 解决锁冲突的方式。当涉及的 key 数量小于该阈值时，TiDB 仅处理受影响 key 上的锁，从而避免扫描整个 Region；否则，TiDB 会扫描整个 Region 以处理相关锁。
+
++ 默认值：`512`。在 v9.0.0 之前的版本中，默认值为 `16`。
+
 ### tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
 本部分介绍 [Coprocessor Cache](/coprocessor-cache.md) 相关的配置项。
