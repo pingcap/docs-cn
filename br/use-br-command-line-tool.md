@@ -63,6 +63,7 @@ tiup br backup full --pd "${PD_IP}:2379" \
 * `--compression`：备份生成文件的压缩算法，支持 `lz4`、`snappy`、`zstd`，默认 `zstd`（多数情况下无须修改）。如何选择不同的压缩算法，可以参考[文档](https://github.com/EighteenZi/rocksdb_wiki/blob/master/Compression.md)。
 * `--compression-level`：备份选择的压缩算法对应的压缩级别，`zstd` 默认为 3。大多数情况下无需设置。
 * `--checksum`：在备份和恢复期间是否执行表级别的校验和验证。默认值为 `false`，表示不启用校验和验证。详细信息参见[校验和](/br/br-snapshot-manual.md#校验和)。
+* `--rename`：恢复时把备份数据中的库表映射到不同的目标库表名，格式为 `源库名:目标库名` 或 `源库名.源表名:目标库名.目标表名`，可指定多个，表级规则优先于库级规则，且库表名匹配不区分大小写。`restore raw` 和 `restore txn` 不支持该参数，增量快照恢复也不支持该参数。目前该功能为实验特性，不建议在生产环境中使用，详情参见[恢复到不同的库表名](/br/br-snapshot-manual.md#恢复到不同的库表名)。
 
 ## 全量备份命令行
 
@@ -94,4 +95,5 @@ tiup br backup full --pd "${PD_IP}:2379" \
 - [恢复单个数据库的快照备份数据](/br/br-snapshot-manual.md#恢复单个数据库的数据)
 - [恢复单张表的快照备份数据](/br/br-snapshot-manual.md#恢复单张表的数据)
 - [使用表库功能过滤恢复快照数据](/br/br-snapshot-manual.md#使用表库功能过滤恢复数据)
+- [恢复到不同的库表名](/br/br-snapshot-manual.md#恢复到不同的库表名)
 - [恢复加密的快照备份数据](/br/br-snapshot-manual.md#恢复加密的快照备份数据)
