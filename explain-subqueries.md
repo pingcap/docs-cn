@@ -256,6 +256,85 @@ tidb> EXPLAIN SELECT * FROM t WHERE (a, b) NOT IN (SELECT * FROM s);
 >
 > `Not Exists` 操作符也会被转成 Anti Semi Join，但是 `Not Exists` 符号本身不具有集合运算 Null-Aware 的性质。
 
+## `... < ALL (SELECT ... FROM ...)` 或者 `... > ANY (SELECT ... FROM ...)`
+
+对于这种情况，可以将 `ALL` 或者 `ANY` 用 `MAX` 以及 `MIN` 来代替。不过由于在表为空时，`MAX(EXPR)` 以及 `MIN(EXPR)` 的结果会为 `NULL`，其表现形式和 `EXPR` 有 `NULL` 值的结果一样。同时，外部表达式结果为 `NULL` 时也会影响表达式的最终结果，因此完整的改写为如下形式：
+
+- `t.id < all(select s.id from s)` 会被改写为 `t.id < min(s.id) and if(sum(s.id is null) != 0, null, true)`。
+- `t.id > any (select s.id from s)` 会被改写为 `t.id > max(s.id) or if(sum(s.id is null) != 0, null, false)`。
+
+示例如下：
+
+```
+CREATE TABLE products (
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(100),
+    unit_price DECIMAL(10, 2)
+);
+
+CREATE TABLE order_details (
+    order_id INT,
+    product_id INT,
+    quantity INT,
+    discount_price DECIMAL(10, 2)
+);
+```
+
+```
+tidb> EXPLAIN SELECT product_id, product_name, unit_price FROM products WHERE unit_price < ALL (SELECT DISTINCT discount_price FROM order_details  ); 
++------------------------------+----------+-----------+---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                           | estRows  | task      | access object       | operator info                                                                                                                                                                        |
++------------------------------+----------+-----------+---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| HashJoin_27                  | 10000.00 | root      |                     | CARTESIAN inner join, other cond:or(and(lt(test.products.unit_price, Column#9), if(ne(Column#10, 0), NULL, 1)), or(eq(Column#11, 0), if(isnull(test.products.unit_price), NULL, 0))) |
+| ├─HashAgg_55(Build)          | 1.00     | root      |                     | funcs:min(Column#16)->Column#9, funcs:sum(Column#17)->Column#10, funcs:count(1)->Column#11                                                                                           |
+| │ └─Projection_82            | 8000.00  | root      |                     | test.order_details.discount_price->Column#16, cast(isnull(test.order_details.discount_price), decimal(20,0) BINARY)->Column#17                                                       |
+| │   └─HashAgg_66             | 8000.00  | root      |                     | group by:test.order_details.discount_price, funcs:firstrow(test.order_details.discount_price)->test.order_details.discount_price                                                     |
+| │     └─TableReader_67       | 8000.00  | root      |                     | data:HashAgg_59                                                                                                                                                                      |
+| │       └─HashAgg_59         | 8000.00  | cop[tikv] |                     | group by:test.order_details.discount_price,                                                                                                                                          |
+| │         └─TableFullScan_65 | 10000.00 | cop[tikv] | table:order_details | keep order:false, stats:pseudo                                                                                                                                                       |
+| └─TableReader_30(Probe)      | 10000.00 | root      |                     | data:TableFullScan_29                                                                                                                                                                |
+|   └─TableFullScan_29         | 10000.00 | cop[tikv] | table:products      | keep order:false, stats:pseudo                                                                                                                                                       |
++------------------------------+----------+-----------+---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+tidb> EXPLAIN SELECT product_id, product_name, unit_price FROM products WHERE unit_price > ALL (SELECT DISTINCT discount_price FROM order_details  ); 
++------------------------------+----------+-----------+---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                           | estRows  | task      | access object       | operator info                                                                                                                                                                        |
++------------------------------+----------+-----------+---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| HashJoin_27                  | 10000.00 | root      |                     | CARTESIAN inner join, other cond:or(and(gt(test.products.unit_price, Column#9), if(ne(Column#10, 0), NULL, 1)), or(eq(Column#11, 0), if(isnull(test.products.unit_price), NULL, 0))) |
+| ├─HashAgg_55(Build)          | 1.00     | root      |                     | funcs:max(Column#16)->Column#9, funcs:sum(Column#17)->Column#10, funcs:count(1)->Column#11                                                                                           |
+| │ └─Projection_82            | 8000.00  | root      |                     | test.order_details.discount_price->Column#16, cast(isnull(test.order_details.discount_price), decimal(20,0) BINARY)->Column#17                                                       |
+| │   └─HashAgg_66             | 8000.00  | root      |                     | group by:test.order_details.discount_price, funcs:firstrow(test.order_details.discount_price)->test.order_details.discount_price                                                     |
+| │     └─TableReader_67       | 8000.00  | root      |                     | data:HashAgg_59                                                                                                                                                                      |
+| │       └─HashAgg_59         | 8000.00  | cop[tikv] |                     | group by:test.order_details.discount_price,                                                                                                                                          |
+| │         └─TableFullScan_65 | 10000.00 | cop[tikv] | table:order_details | keep order:false, stats:pseudo                                                                                                                                                       |
+| └─TableReader_30(Probe)      | 10000.00 | root      |                     | data:TableFullScan_29                                                                                                                                                                |
+|   └─TableFullScan_29         | 10000.00 | cop[tikv] | table:products      | keep order:false, stats:pseudo                                                                                                                                                       |
++------------------------------+----------+-----------+---------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+```
+
+## `... IN (SELECT ... FROM ...)`
+
+对于这种情况，TiDB 会将其 `IN` 的子查询改写为 `SELECT ... FROM ... GROUP ...` 的形式，然后将 `IN` 改写为普通的 `JOIN` 的形式。如 `SELECT * FROM t1 WHERE t1.a IN (SELECT t2.a FROM t2)` 会被改写为 `SELECT t1.* FROM t1, (SELECT DISTINCT a AS a FROM t2) t2 WHERE t1.a = t2.a` 的形式。同时这里的 `DISTINCT` 可以在 `t2.a` 具有 `UNIQUE` 属性时被自动消去。
+
+```sql
+EXPLAIN SELECT * FROM t1 WHERE t1.a IN (SELECT t2.a FROM t2);
+```
+
+```sql
++------------------------------+---------+-----------+------------------------+----------------------------------------------------------------------------+
+| id                           | estRows | task      | access object          | operator info                                                              |
++------------------------------+---------+-----------+------------------------+----------------------------------------------------------------------------+
+| IndexJoin_12                 | 9990.00 | root      |                        | inner join, inner:TableReader_11, outer key:test.t2.a, inner key:test.t1.a |
+| ├─HashAgg_21(Build)          | 7992.00 | root      |                        | group by:test.t2.a, funcs:firstrow(test.t2.a)->test.t2.a                   |
+| │ └─IndexReader_28           | 9990.00 | root      |                        | index:IndexFullScan_27                                                     |
+| │   └─IndexFullScan_27       | 9990.00 | cop[tikv] | table:t2, index:idx(a) | keep order:false, stats:pseudo                                             |
+| └─TableReader_11(Probe)      | 7992.00 | root      |                        | data:TableRangeScan_10                                                     |
+|   └─TableRangeScan_10        | 7992.00 | cop[tikv] | table:t1               | range: decided by [test.t2.a], keep order:false, stats:pseudo              |
++------------------------------+---------+-----------+------------------------+----------------------------------------------------------------------------+
+```
+
+这个改写会在 `IN` 子查询相对较小、而外部查询相对较大时产生更好的执行性能。因为不经过改写的情况下，TiDB 无法使用以 `t2` 为驱动表的 `index join`。需要注意，当改写生成的聚合无法被自动消去且 `t2` 表比较大时，反而会影响查询的性能。你可以使用 [`tidb_opt_insubq_to_join_and_agg`](/system-variables.md#tidb_opt_insubq_to_join_and_agg) 变量来控制该优化。当遇到适用的情况，可以手动关闭。
+
 ## 其他类型查询的执行计划
 
 + [MPP 模式查询的执行计划](/explain-mpp.md)
