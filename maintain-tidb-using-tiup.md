@@ -404,10 +404,10 @@ grafana_servers:
         use_vm_as_datasource: true
     ```
 
-3. 重新加载配置使其生效：
+3. 重新加载配置，使 Prometheus 和 Grafana 上的变更生效：
 
     ```bash
-    tiup cluster reload ${cluster-name} -R prometheus
+    tiup cluster reload ${cluster-name} -R prometheus,grafana
     ```
 
 #### 删除 Prometheus 旧数据目录
