@@ -274,14 +274,17 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 通过 TiCDC 创建上下游的同步链路后，原集群的写入数据会以非常低的延迟同步到新集群，此时可以逐步将读流量迁移到新集群了。观察一段时间，如果新集群表现稳定，就可以将写流量接入新集群，步骤如下：
 
-1. 停止上游集群的写业务。确认上游数据已全部同步到下游后，停止上游到下游集群的 changefeed。
+1. 停止上游集群的写业务。停写后，先查看 changefeed 状态，确认 `checkpoint` 时间晚于停写时间，再停止上游到下游集群的 changefeed。
 
     ```shell
+    # 查看 changefeed 状态，并确认 checkpoint 时间晚于停写时间
+    tiup cdc cli changefeed list --server=http://172.16.6.122:8300
+
     # 停止旧集群到新集群的 changefeed
     tiup cdc cli changefeed pause -c "upstream-to-downstream" --server=http://172.16.6.122:8300
 
-    # 查看 changefeed 状态
-    tiup cdc cli changefeed list
+    # 再次查看 changefeed 状态
+    tiup cdc cli changefeed list --server=http://172.16.6.122:8300
     ```
 
     ```
