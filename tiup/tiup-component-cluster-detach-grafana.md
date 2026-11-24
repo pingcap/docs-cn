@@ -52,7 +52,7 @@ tiup cluster detach-grafana <cluster-name> [flags]
 
 ### TiDB Dashboard 监控入口
 
-detach 本身不修改 PD 中的 Grafana 发现记录（discovery record），只会在本地 metadata 的 topology 中登记 `detached_grafanas` 记录（仅含被移出实例的地址，可在 `tiup cluster edit-config` 中查看或删除）。如果集群中不再有受管理的 Grafana 实例，后续拓扑刷新保留已有发现记录，不补建也不校验；如果仍有其他受管理的 Grafana 实例，后续刷新改用它们的入口。新增受管理的 Grafana 会覆盖发现记录并清除 `detached_grafanas` 记录；scale-in 最后一个受管理的 Grafana 时，该记录在案则保留发现记录，不在案则照常删除，且不会自动改回被移出的实例。旧版本 TiUP 不识别该记录，拓扑刷新时可能删除发现记录。
+detach 本身不修改 PD 中的 Grafana 发现记录（discovery record），只会在本地 metadata 的 topology 中登记 `detached_grafanas` 记录（仅含被移出实例的地址，可在 `tiup cluster edit-config` 中查看或删除）。此后，拓扑刷新只在发现记录仍指向被移出实例的地址时保留它，其余情况照常维护：跟随现存的受管 Grafana 实例，最后一个受管实例被移除时删除，缺失时不补建，也不会恢复为被移出实例的地址。新增受管的 Grafana 会同时清除 `detached_grafanas` 记录。旧版本 TiUP 不识别该记录，拓扑刷新时可能删除发现记录。
 
 ## 输出
 
