@@ -6,10 +6,6 @@ aliases: ['/docs-cn/dev/tidb-architecture/','/docs-cn/dev/architecture/']
 
 # TiDB 整体架构
 
-推荐先观看以下视频（时长约 14 分钟），快速了解 TiDB 的整体架构。
-
-<video src="https://docs-download.pingcap.com/media/videos/docs-cn/tidb_architecture.mp4" width="100%" height="100%" controls="controls" poster="https://docs-download.pingcap.com/media/videos/docs-cn/poster_tidb_architecture.png"></video>
-
 与传统的单机数据库相比，TiDB 具有以下优势：
 
 * 纯分布式架构，拥有良好的扩展性，支持弹性的扩缩容
