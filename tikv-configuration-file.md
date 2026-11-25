@@ -1147,7 +1147,8 @@ raftstore 相关的配置项。
 ### `inspect-interval`
 
 + TiKV 每隔一段时间会检测 Raftstore 组件的延迟情况，该配置项设置检测的时间间隔。当检测的延迟超过该时间，该检测会被记为超时。
-+ 根据超时的检测延迟的比例计算判断 TiKV 是否为慢节点。
++ 根据超时的检测延迟的比例计算判断 TiKV 是否为慢节点。`raftstore.inspect-interval` 同时影响检测频率和超时判定阈值：TiKV 会每隔约 `raftstore.inspect-interval` 触发一次检测，并在单次检测延迟超过该值时将本次检测计为超时。
++ 在 v7.5.1 之前，默认值为 `500ms`；从 v7.5.1 开始，默认值调整为 `100ms`。如果升级到 v7.5.1 或更高版本后未显式配置该参数，TiKV 会使用新的默认值。此时检测频率会从每秒约 2 次提高到每秒约 10 次，原先超过 `100ms` 但未超过 `500ms` 的检测延迟也会被计入超时统计。因此，在磁盘性能较差或 Raftstore 排队较多的节点上，更容易导致 `SlowScore` 升高。更多说明请参阅[TiKV 节点故障处理策略](/best-practices/pd-scheduling-best-practices.md#tikv-节点故障处理策略)。
 + 默认值：100ms
 + 最小值：1ms
 
