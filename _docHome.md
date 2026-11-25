@@ -81,13 +81,13 @@ TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产�
 
 </DocHomeCard>
 
-<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/dev-guide-sample-application-java" icon="java" label="Java">
+<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/dev-guide-sample-application-java-jdbc" icon="java" label="Java">
 
 使用 TiDB 和 Java 来构造一个简单的 CRUD 应用程序
 
 </DocHomeCard>
 
-<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/dev-guide-sample-application-golang" icon="go" label="Golang">
+<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/dev-guide-sample-application-golang-sql-driver" icon="go" label="Golang">
 
 使用 TiDB 和 Golang 来构造一个简单的 CRUD 应用程序
 
