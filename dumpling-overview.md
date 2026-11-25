@@ -250,6 +250,44 @@ tiup dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test -r 200000 --filter "empl
 
 上述命令将会导出 `employees` 数据库的所有表，以及所有数据库中的 `WorkOrder` 表。
 
+#### 使用 `--column-filter` 选项筛选列
+
+Dumpling 支持通过 `--column-filter` 或 `--column-filter-file` 指定列过滤规则，只导出表中的部分列。每条规则由 `matcher` 和 `columns` 两部分组成：`matcher` 指定规则作用的库表，语法与 `--filter` 相同，参考[表库过滤](/table-filter.md)；`columns` 指定要导出的列，沿用同一套匹配语法（支持通配符和以 `!` 开头的排除规则），但匹配的是单个列名而非 `库名.表名`。
+
+`--column-filter` 接受内联 TOML 规则，可以多次指定：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test \
+  --column-filter '{ matcher = ["app.orders", "app.customers"], columns = ["id", "customer_id", "amount"] }' \
+  --column-filter '{ matcher = ["app.audit_*"], columns = ["*", "!phone_number", "!id_number"] }'
+```
+
+`--column-filter-file` 接受 TOML 文件，内容与内联规则等价：
+
+```toml
+[[filters]]
+matcher = ["app.orders", "app.customers"]
+columns = ["id", "customer_id", "amount"]
+
+[[filters]]
+matcher = ["app.audit_*"]
+columns = ["*", "!phone_number", "!id_number"]
+```
+
+使用列过滤时，注意以下行为：
+
+- 列过滤同时作用于数据文件和表结构文件。导出表结构时，Dumpling 会输出裁剪后的建表语句：随被删除列一起移除相应的索引、约束和依赖该列的生成列，并保留分区和 TTL 定义。
+- 未被 `matcher` 匹配的表导出全部列。
+- 一张表一旦被某条规则匹配，未命中任何正向规则的列都不会被导出。因此只想排除个别列时，需要写成 `columns = ["*", "!col_to_skip"]`。
+- 多条规则匹配同一张表时，规则按列合并、后指定的规则优先，而不是后者整体覆盖前者。例如前一条规则中的 `"*"`，对后一条规则未显式声明的列仍然生效。
+- 列名规则不区分大小写。表名匹配是否区分大小写由 `--case-sensitive` 控制。
+- 规则中写入表中不存在的列名不会报错，该列名会被忽略。
+- 如果裁剪后的表结构无法还原成合法的建表语句，Dumpling 会在写出任何文件之前报错退出。例如分区列、TTL 列被排除，外键引用的父表列或其索引被排除，或 `AUTO_INCREMENT` 列失去索引。
+- 导出内容包含视图时，列过滤不支持同时导出表结构，需要配合 `-m`/`--no-schemas` 使用。
+- `--column-filter` 与 `--column-filter-file` 不能同时使用，且都不能与 `--sql` 同时使用。
+
 #### 使用 `-B` 或 `-T` 选项筛选数据
 
 Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表。
@@ -358,6 +396,8 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | -T 或 --tables-list | 导出指定数据表 |
 | -f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md) | `[\*.\*,!/^(mysql&#124;sys&#124;INFORMATION_SCHEMA&#124;PERFORMANCE_SCHEMA&#124;METRICS_SCHEMA&#124;INSPECTION_SCHEMA)$/.\*]`（导出除系统库外的所有库表） |
 | --case-sensitive | table-filter 是否大小写敏感 | false，大小写不敏感 |
+| --column-filter | 以内联 TOML 指定列过滤规则，只导出匹配表的部分列，可多次指定。不能与 `--column-filter-file`、`--sql` 同时使用 |
+| --column-filter-file | 指定列过滤规则的 TOML 文件路径。不能与 `--column-filter`、`--sql` 同时使用 |
 | -h 或 --host| 连接的数据库主机的地址 | "127.0.0.1" |
 | -t 或 --threads | 备份并发线程数| 4 |
 | -r 或 --rows | 用于开启表内并发加速导出。默认值是 `0`，表示不开启。取值大于 0 表示开启，取值是 INT 类型。当数据源为 TiDB 时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分区间，同时减少内存使用。具体取值不影响划分算法。对数据源为 MySQL 且表的主键或复合主键首列是 INT 的场景，该参数也有表内并发效果。 |
