@@ -11,6 +11,14 @@ TiDB 版本：8.5.8
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v8.5/production-deployment-using-tiup) | [下载离线包](https://pingkai.cn/download#tidb-community)
 
+## 升级注意事项
+
+- BR v4.0.8 及更早版本曾存在 GCS path 问题：当备份地址为 `gcs://bucket/prefix`（末尾没有 `/`）时，`backupmeta` 会被写入 `gcs://bucket/prefixbackupmeta`，而 SST 文件位于 `gcs://bucket/prefix/` 下。该问题通过 [BR #647](https://github.com/pingcap/br/pull/647) 修复后，BR 又通过 [BR #677](https://github.com/pingcap/br/pull/677) 增加了兼容旧备份的 workaround，在恢复时回退查找旧路径。详细背景见 [BR #675](https://github.com/pingcap/br/issues/675)。
+
+  从 v8.5.9 开始，我们将移除该 workaround，恢复时只查找 `<prefix>/backupmeta`。如果旧备份中的对象名为 `<prefix>backupmeta`，通过 SQL `RESTORE` 恢复时会因找不到 `backupmeta` 而报错 `ERROR 8125`。其中，`<prefix>` 指 bucket 内的对象前缀，例如上述地址中的 `prefix`。相关问题见 [TiDB #73047](https://github.com/pingcap/tidb/issues/73047)。
+
+  如果需要恢复此类旧备份，建议使用保留该 workaround 且与目标 TiDB 版本兼容的较低版本 BR 完成恢复；也可以使用已修复上述 GCS path 问题的 BR，从源集群重新生成备份，再使用新版本恢复。如果只有旧备份，可以先使用兼容的 BR 将其恢复到兼容的 TiDB 集群，再使用已修复 GCS path 问题的 BR 重新备份。
+
 ## 改进提升
 
 + TiDB
