@@ -84,7 +84,7 @@ ti db list-db-clusters --db-cluster-type starter
 ti db list-db-clusters --db-cluster-type starter --output text
 ```
 
-`ti exec` 会原样流式传输远程 stdout 和 stderr，并且不支持 `--output`、`--query` 或 `--dry-run`。
+`ti exec` 会原样流式传输远程标准输出（stdout）和标准错误（stderr），并且不支持 `--output`、`--query` 或 `--dry-run`。
 
 像 `ti fs read-file` 和 `ti fs copy-file --to-stdout` 这样的原始字节导向命令会直接写出文件内容。
 
