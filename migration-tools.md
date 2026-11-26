@@ -38,7 +38,7 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 
 ## [TiCDC](/ticdc/ticdc-overview.md)
 
-| 使用场景 | <span style="font-weight:normal">通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，具有将数据还原到与上游任意 TSO 一致状态的能力，支持其他系统订阅数据变更</span> |
+| 使用场景 | <span style="font-weight:normal">通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，支持其他系统订阅数据变更。启用 Syncpoint 后，可以建立上下游 TSO 映射，用于一致性快照读取和数据一致性校验</span> |
 |---|---|
 | **上游** | TiDB |
 | **下游** | TiDB，MySQL，Kafka，MQ，Confluent，存储服务（如 Amazon S3、GCS、Azure Blob Storage 和 NFS） |

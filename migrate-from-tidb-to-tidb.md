@@ -304,4 +304,8 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
     tiup cdc cli changefeed create --server=http://172.16.6.125:8300 --sink-uri="mysql://root:@172.16.6.122:4000" --changefeed-id="downstream-to-upstream"
     ```
 
-3. 将写业务迁移到下游集群，观察一段时间后，等新集群表现稳定，便可以弃用原集群。
+3. 将写业务迁移到下游集群后，观察一段时间。如果新集群表现稳定且不再需要回滚，则删除反向 changefeed，再弃用原集群。
+
+    ```shell
+    tiup cdc cli changefeed remove --server=http://172.16.6.125:8300 --changefeed-id="downstream-to-upstream"
+    ```

@@ -229,7 +229,7 @@ summary: 了解如何将数据从 TiDB 集群迁移至与 MySQL 兼容的数据�
 
     ```shell
     # 停止旧集群到新集群的 changefeed
-    tiup cdc cli changefeed pause -c "upstream-to-downstream" --pd=http://172.16.6.122:2379
+    tiup cdc cli changefeed pause -c "upstream-to-downstream" --server=http://127.0.0.1:8300
 
     # 查看 changefeed 状态
     tiup cdc cli changefeed list
