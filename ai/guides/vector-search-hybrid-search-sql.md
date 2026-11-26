@@ -11,13 +11,11 @@ summary: 了解如何在 TiDB 中通过一条 SQL 查询结合全文搜索和向
 
 ## 前提条件 {#prerequisites}
 
-全文搜索仍处于早期阶段，正在逐步向更多用户开放。目前，全文搜索仅在以下区域的 {{{ .starter }}} 上可用：
-
-- AWS: `Oregon (us-west-2)`, `N. Virginia (us-east-1)`, `Tokyo (ap-northeast-1)`, `Frankfurt (eu-central-1)`, and `Singapore (ap-southeast-1)`
+目前，全文搜索处于公测阶段，仅在 {{{ .starter }}} 上可用。
 
 Auto Embedding 仅在部署于 AWS 上的 {{{ .starter }}} 实例中可用。
 
-要完成本教程，请确保你拥有一个位于上述区域之一的 {{{ .starter }}} 实例，并已使用 MySQL 客户端连接到该实例。如果你还没有实例，请按照[创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)进行创建。
+要完成本教程，请确保你拥有一个部署于 AWS 上的 {{{ .starter }}} 实例，并已使用 MySQL 客户端连接到该实例。如果你还没有实例，请按照[创建 {{{ .starter }}} 实例](/develop/dev-guide-build-cluster-in-cloud.md)进行创建。
 
 ## 步骤 1. 创建表 {#step-1-create-a-table}
 
