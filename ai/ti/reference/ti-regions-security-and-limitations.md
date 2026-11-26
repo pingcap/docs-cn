@@ -3,7 +3,7 @@ title: TiDB Cloud CLI 区域、安全性与限制
 summary: 参考支持的区域、认证边界、安全最佳实践以及当前 TiDB Cloud CLI 限制。
 ---
 
-# TiDB Cloud CLI 区域、安全性与限制
+# TiDB Cloud CLI 区域、安全性与限制 <!--Corresponding EN commit: 3c4b2ba9808bc99ad09a2c8355fe16365bfa72b9-->
 
 本文档介绍 TiDB Cloud CLI 当前的区域、认证、平台和预览边界。有关文件系统区域和限制，请参见 [TiDB Cloud Filesystem 区域和限制](https://docs.pingcap.com/tidbcloud-filesystem/filesystem-regions-and-limitations/)。
 
@@ -25,8 +25,6 @@ summary: 参考支持的区域、认证边界、安全最佳实践以及当前 T
 | AWS | 法兰克福 | `aws-eu-central-1` | 支持 | 不支持 |
 | AWS | 东京 | `aws-ap-northeast-1` | 支持 | 不支持 |
 | Alibaba Cloud | 新加坡 | `alicloud-ap-southeast-1` | 支持 | 支持 |
-| Google Cloud | 南卡罗来纳 | `gcp-us-east1` | 不支持 | 支持 |
-| Microsoft Azure | 美国中部 | `azure-centralus` | 不支持 | 支持 |
 
 如果你配置的区域支持 TiDB Cloud Starter 但不支持 TiDB Cloud Filesystem，则你仍然可以在该区域管理 Starter 实例。文件系统命令会因 `unsupported endpoint` 错误而失败。
 
