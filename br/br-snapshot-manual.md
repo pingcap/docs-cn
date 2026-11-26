@@ -110,7 +110,7 @@ tiup br backup full \
 
 从 TiDB v7.5.0 开始，br 命令行工具引入参数 `--ignore-stats`。当指定该参数值为 `false` 时，br 命令行工具支持备份数据库的列、索引、和表级别的统计信息，因此从备份中恢复的 TiDB 数据库不再需要手动运行统计信息收集任务，也无需等待自动收集任务的完成，从而简化了数据库维护工作，并提升了查询性能。
 
-当未指定该参数值为 `false` 时，br 命令行工具默认 `--ignore-stats=true`，即在备份数据时不备份统计信息。
+`--ignore-stats` 默认为 `true`，即默认不将统计信息导出为 JSON。该参数不控制全量备份中统计信息表的数据备份；满足下文所述条件时，BR 可以物理恢复这些表。
 
 下面是备份集群快照数据并备份表统计信息的示例，需要设置 `--ignore-stats=false`：
 
@@ -131,7 +131,7 @@ tiup br restore full \
 >
 > 从 v8.5.5 和 v9.0.0 开始，当参数 `--load-stats` 设置为 `false` 时，br 不再向 `mysql.stats_meta` 表写入恢复表的统计信息。你可以在恢复完成后手动执行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)，以更新相关统计信息。
 
-备份恢复功能在备份时，将统计信息通过 JSON 格式存储在 `backupmeta` 文件中。在恢复时，将 JSON 格式的统计信息导入到集群中。详情请参考 [LOAD STATS](/sql-statements/sql-statement-load-stats.md)。
+采用逻辑导入方式时，BR 在备份时通过 `--ignore-stats=false` 将统计信息以 JSON 格式存入备份，在恢复时将备份中的 JSON 格式统计信息导入到集群中。详情请参考 [LOAD STATS](/sql-statements/sql-statement-load-stats.md)。
 
 从 v8.5.5 和 v9.0.0 开始，BR 引入参数 `--fast-load-sys-tables`，该参数默认开启。在使用 br 命令行工具将数据恢复到一个全新集群，且上下游的表和分区 ID 能够复用的前提下（否则会自动回退为逻辑导入统计信息），开启 `--fast-load-sys-tables` 后，br 会先将统计信息相关表恢复至临时系统库 `__TiDB_BR_Temporary_mysql` 中，再通过 `RENAME TABLE` 语句将这些表与 `mysql` 库下的原有表进行原子性替换。使用示例如下：
 
@@ -180,7 +180,7 @@ tiup br restore full \
 
 以上命令中，
 
-- `--with-sys-table`：恢复集群数据的同时恢复**部分系统表**的数据，包括恢复账号权限数据、 SQL Binding 信息和统计信息数据(详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))，但暂不支持恢复统计信息表 (`mysql.stat_*`) 和系统参数 (`mysql.tidb`, `mysql.global_variables`) 等信息，更多信息详见[恢复 `mysql` 数据库下的表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)。
+- `--with-sys-table`：恢复集群数据的同时恢复**部分系统表**的数据，包括账号权限数据和 SQL Binding 信息，但不包括系统变量表（`mysql.tidb`、`mysql.global_variables`）。是否恢复备份中的统计信息由 `--load-stats` 控制（默认为 `true`），与 `--with-sys-table` 无关。采用逻辑导入方式时，需要在备份时设置 `--ignore-stats=false`。详情参见[备份统计信息](#备份统计信息)和[恢复 `mysql` 数据库下的表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)。
 - `--ratelimit`：**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）。
 - `--log-file`：备份日志写入的目标文件。
 
