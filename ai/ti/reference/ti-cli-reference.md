@@ -25,7 +25,7 @@ ti configure --profile staging
 ti db list-db-clusters --db-cluster-type starter
 ```
 
-`ti` 可执行文件仅接受长选项。像 `-p` 这样的单字母选项会被拒绝。
+大多数命令仅接受长选项。[`ti exec`](/ai/ti/reference/ti-exec.md) 也接受其文档中说明的短选项，例如 `-w` 和 `-t`。像 `-p` 这样的单字母选项仍不受支持。
 
 在生成的用法说明中，必需选项应写在可选选项之前，并使用方括号括起可选选项：
 
@@ -51,6 +51,7 @@ ti db describe-db-cluster
 | --- | --- | --- |
 | `configure` | 配置本地配置（Profile）、API key 和默认 Region。 | [`ti configure`](/ai/ti/reference/ti-configure.md) |
 | `update` | 检查并安装 TiDB Cloud CLI 更新。 | [`ti update`](/ai/ti/reference/ti-update.md) |
+| `exec` | 针对 Filesystem 运行远程命令。 | [`ti exec`](/ai/ti/reference/ti-exec.md) |
 | `db` | 管理 TiDB Cloud Starter 实例、分支、SQL 用户、连接和 SQL 语句。 | [`ti db` 命令](/ai/ti/reference/ti-starter-database.md) |
 | `fs` | 管理文件系统资源、AI provider、token、数据、层和挂载。 | [`ti fs` 命令](/ai/ti/reference/ti-filesystem.md) |
 | `fs-git` | 管理已挂载文件系统上的 Git workspace。 | [`ti fs-git` 命令](/ai/ti/reference/ti-filesystem-git.md) |
@@ -82,6 +83,8 @@ ti db list-db-clusters --db-cluster-type starter
 ```bash
 ti db list-db-clusters --db-cluster-type starter --output text
 ```
+
+`ti exec` 会原样流式传输远程标准输出（stdout）和标准错误（stderr），并且不支持 `--output`、`--query` 或 `--dry-run`。
 
 像 `ti fs read-file` 和 `ti fs copy-file --to-stdout` 这样的原始字节导向命令会直接写出文件内容。
 

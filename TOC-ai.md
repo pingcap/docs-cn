@@ -62,6 +62,7 @@
   - 命令参考
     - [概览](/ai/ti/reference/ti-cli-reference.md)
     - [configure](/ai/ti/reference/ti-configure.md)
+    - [exec](/ai/ti/reference/ti-exec.md)
     - [update](/ai/ti/reference/ti-update.md)
     - 用于管理 TiDB Cloud Starter 实例的 `ti db` 命令
       - [概览](/ai/ti/reference/ti-starter-database.md)

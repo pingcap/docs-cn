@@ -185,7 +185,9 @@ ti update
 ti update --target-version <version>
 ```
 
-`update` 命令会替换用户拥有安装中的 `ti` 和 `ti-drive9`。它不会修改位于受保护位置或由包管理器管理的位置中的安装。要将旧的 `/usr/local/bin` 安装迁移到 `~/.ti/bin`，请运行一次安装程序。
+当 `update` 命令安装不同版本的 `ti` 时，它会替换当前用户的安装目录中的 `ti` 和 `ti-drive9`。如果 `ti` 已经是所请求的版本，该命令不会更新 `ti-drive9`。要更新过时的配套运行时，请重新运行[适用于你的操作系统的安装程序](/ai/ti/reference/ti-install-configure-update.md#install-tidb-cloud-cli)。在 macOS 或 Linux 上，使用 `--install-dir` 以保留自定义安装目录。
+
+`update` 命令不会修改位于受保护位置或由包管理器管理的位置中的安装。要将旧的 `/usr/local/bin` 安装迁移到 `~/.ti/bin`，请运行一次安装程序。
 
 ## 从 tdc v0.1.x 迁移 {#migrate-from-tdc-v01-x}
 
