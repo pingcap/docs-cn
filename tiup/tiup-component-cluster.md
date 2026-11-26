@@ -1,6 +1,6 @@
 ---
 title: TiUP Cluster
-summary: TiUP Cluster 是使用 Golang 编写的集群管理组件，可进行部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群、管理参数。支持的命令有 import、template、check、deploy、list、display、start、stop、restart、scale-in、scale-out、upgrade、prune、edit-config、reload、patch、rename、clean、destroy、audit、replay、enable、disable、meta backup、meta restore、help。
+summary: TiUP Cluster 是使用 Golang 编写的集群管理组件，可进行部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群、管理参数。支持的命令有 import、template、check、deploy、list、display、start、stop、restart、scale-in、scale-out、upgrade、prune、edit-config、reload、patch、rename、clean、destroy、detach-grafana、audit、replay、enable、disable、meta backup、meta restore、help。
 ---
 
 # TiUP Cluster
@@ -72,6 +72,7 @@ tiup cluster [command] [flags]
 - [rename](/tiup/tiup-component-cluster-rename.md)：重命名集群
 - [clean](/tiup/tiup-component-cluster-clean.md)：删除指定集群数据
 - [destroy](/tiup/tiup-component-cluster-destroy.md)：销毁指定集群
+- [detach-grafana](/tiup/tiup-component-cluster-detach-grafana.md)：将指定 Grafana 实例移出 TiUP 管理，保留其运行状态和文件
 - [audit](/tiup/tiup-component-cluster-audit.md)：查询集群操作审计日志
 - [replay](/tiup/tiup-component-cluster-replay.md)：重试指定命令
 - [enable](/tiup/tiup-component-cluster-enable.md)：开启指定集群或服务开机自启动
