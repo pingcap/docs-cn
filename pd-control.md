@@ -1192,9 +1192,9 @@ pd-ctl resource-manager config controller set ltb-max-wait-duration 30m
 
 #### 磁盘慢节点
 
-从 v6.2.0 开始，TiKV 会在 store 心跳中向 PD 上报 `SlowScore`，该分值基于磁盘 I/O 情况计算得出。分值范围为 1～100，数值越大表示该节点越可能存在磁盘性能异常。
+从 v5.2.0 开始，TiKV 会在 store 心跳中向 PD 上报 `SlowScore`，该分值基于磁盘 I/O 情况计算得出。分值范围为 1～100，数值越大表示该节点越可能存在磁盘性能异常。`SlowScore` 的计算会受到 [`raftstore.inspect-interval`](/tikv-configuration-file.md#inspect-interval) 的影响。
 
-对于磁盘慢节点，TiKV 侧的探测以及 PD 侧基于 `evict-slow-store-scheduler` 的调度处理默认开启，无需额外配置。
+在 v5.2.0 到 v7.5.x 之间，如需针对磁盘慢节点进行 Leader 驱逐，你需要手动添加 `evict-slow-store-scheduler`。从 v7.6.0 开始，PD 会将该调度器加入默认调度器列表，无需额外配置。
 
 #### 网络慢节点
 
