@@ -78,7 +78,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 - 在生成文件时，在单个文件内尽量按照主键排序；如果表定义没有主键，可以添加一个自增主键，此时对文件内容顺序无要求。
 - 在给多个 TiDB Lightning 实例分配要导入的源文件时，尽量避免多个源文件之间存在重叠的主键或非空唯一索引的情况。如果生成文件是全局有序，可以按照范围划分不同的文件给不同 TiDB Lightning 实例进行导入，达到最佳导入效果。
 - 在生成文件时，每个文件尽量控制在 96 MiB 以下。
-- 如果文件特别大，超过 256 MiB，需要开启 [`strict-format`](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)。
+- 如果文件特别大，超过 256 MiB，且 CSV 字段中不包含嵌入式换行符（包括被引号包裹的值），需要开启 [`strict-format`](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)。
 
 ## 预估存储空间
 
@@ -106,7 +106,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 1. 排查源数据是否有主键、唯一键冲突，解决冲突后再重新导入。根据以往经验，主键和唯一键冲突是导致该报错的主要原因。
 2. 表的主键、唯一键定义是否合理。如果不合理，更改表定义后重新导入。
-3. 如果按上述两个步骤操作后仍未解决问题，需要进一步判断源数据中是否有少量（低于 10%）不可预期的冲突数据。如果需要 TiDB Lightning 帮助检测、解决冲突数据，需要开启[冲突检测功能](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)。
+3. 如果按上述两个步骤操作后仍未解决问题，需要进一步判断源数据中是否有少量（低于 10%）不可预期的冲突数据。如果需要 TiDB Lightning 帮助检测、解决冲突数据，需要开启[冲突检测功能](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)。当 `conflict.strategy` 为 `"replace"` 或 `"ignore"` 时，[`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 的默认值为 `10000`。如果预计冲突数会超过该值，需要显式设置 `conflict.threshold`。取值大于 `10000` 可能会降低导入性能。
 
 ## 开启断点续传
 
@@ -125,7 +125,7 @@ TiDB Lightning（[物理导入模式](/tidb-lightning/tidb-lightning-physical-im
 
 ### 生成源文件
 
-根据上述[准备源文件的步骤](#准备源文件)生成源文件，对于大单表，如果不能做到全局有序，但是可以做到文件内按主键有序，且是标准的 CSV 文件，可以尽量生成单个大文件（例如每个 20 GiB），然后开启 [`strict-format`](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)，既可以降低 TiDB Lightning 实例之间导入的数据文件中存在主键和唯一键的重叠，又能在导入前由 TiDB Lightning 实例对大文件进行切分，达到最佳的导入速度。
+根据上述[准备源文件的步骤](#准备源文件)生成源文件，对于大单表，如果不能做到全局有序，但是可以做到文件内按主键有序，且是标准的 CSV 文件，可以尽量生成单个大文件（例如每个 20 GiB）。如果 CSV 字段中不包含嵌入式换行符（包括被引号包裹的值），则可以开启 [`strict-format`](/migrate-from-csv-files-to-tidb.md#第-4-步导入性能优化可选)，既可以降低 TiDB Lightning 实例之间导入的数据文件中存在主键和唯一键的重叠，又能在导入前由 TiDB Lightning 实例对大文件进行切分，达到最佳的导入速度。
 
 ### 规划集群拓扑
 
