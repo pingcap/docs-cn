@@ -160,7 +160,9 @@ Create Table: CREATE TABLE `child` (
 
 ## 外键约束检查
 
-TiDB 支持是否开启外键约束检查，由系统变量 [`foreign_key_checks`](/system-variables.md#foreign_key_checks) 控制，其默认值是 `ON`，即开启外键约束检查，它有 `GLOBAL` 和 `SESSION` 两种作用域。在一般的操作中保持该变量开启可以保证外键引用关系的完整性。
+要在 TiDB 中使用外键，首先需要开启全局系统变量 [`tidb_enable_foreign_key`](/system-variables.md#tidb_enable_foreign_key-从-v630-版本开始引入)。开启 `FOREIGN KEY` 特性后，系统变量 [`foreign_key_checks`](/system-variables.md#foreign_key_checks) 用于控制 TiDB 是否执行外键约束检查和引用操作。默认情况下，`foreign_key_checks` 的值为 `ON`。该变量有 `GLOBAL` 和 `SESSION` 两种作用域。在一般操作中保持该变量开启，可以保证外键引用关系的完整性。
+
+将 `foreign_key_checks` 设置为 `OFF` 还可以放宽部分 DDL 阶段的检查，例如允许在被引用表尚不存在时创建外键。不过，TiDB 仍然会校验外键定义本身，例如列兼容性和所需索引。
 
 关闭外键约束检查的作用如下：
 
