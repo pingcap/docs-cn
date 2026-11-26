@@ -40,6 +40,8 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 ## 启用前提
 
+在所有有资格运行 DXF 任务的 TiDB 节点上使用相同数量的 CPU 核心和相同大小的内存。这是因为 DXF 调度器假设所有有资格的节点都具有相同的资源容量。
+
 如需使用分布式执行框架执行 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 任务，需要先开启 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 模式。
 
 1. 调整 Fast Online DDL 相关的系统变量：
