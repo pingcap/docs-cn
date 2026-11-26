@@ -14,7 +14,7 @@ summary: 介绍如何过滤 binlog 事件。
 
 ## 配置方式
 
-配置 DM 的任务配置文件时，增加如下`filter`，具体配置示例如下图：
+配置 DM 的任务配置文件时，增加如下 `filters`，具体配置示例如下：
 
 ```yaml
 filters:
@@ -25,40 +25,81 @@ filters:
     action: Ignore
 ```
 
-- `schema-pattern`/`table-pattern`：对匹配上的 schema 或 table 进行过滤
-- `events`：binlog events，支持的 Event 如下表所示:
+定义过滤规则后，还需要在对应的 `mysql-instances` 项下通过 `filter-rules` 引用该规则，否则 DM 不会将该规则应用到对应的数据源。
 
-| Event           | 分类 | 说明                       |
-| --------------- | ---- | --------------------------|
-| all             |      | 匹配所有 events            |
-| all dml         |      | 匹配所有 DML events        |
-| all ddl         |      | 匹配所有 DDL events        |
-| none            |      | 不匹配任何 events          |
-| none ddl        |      | 不包含任何 DDL events      |
-| none dml        |      | 不包含任何 DML events      |
-| insert          | DML  | 匹配 insert DML event      |
-| update          | DML  | 匹配 update DML event      |
-| delete          | DML  | 匹配 delete DML event      |
-| create database | DDL  | 匹配 create database event |
-| drop database   | DDL  | 匹配 drop database event   |
-| create table    | DDL  | 匹配 create table event    |
-| create index    | DDL  | 匹配 create index event    |
-| drop table      | DDL  | 匹配 drop table event      |
-| truncate table  | DDL  | 匹配 truncate table event  |
-| rename table    | DDL  | 匹配 rename table event    |
-| drop index      | DDL  | 匹配 drop index event      |
-| alter table     | DDL  | 匹配 alter table event     |
+```yaml
+mysql-instances:
+  - source-id: "mysql-replica-01"
+    filter-rules: ["rule-1"]
+```
+
+更多信息，请参阅[DM 任务配置指南](/dm/dm-task-configuration-guide.md#配置需要迁移的-binlog-events)。
+
+- `schema-pattern`/`table-pattern`：对匹配上的 schema 或 table 进行过滤。
+- `events`：binlog event。支持的 Event 如下表所示：
+
+  | Event | 分类 | 说明 |
+  | --- | --- | --- |
+  | `all` |  | 匹配所有 event。 |
+  | `all dml` |  | 匹配所有 DML event。 |
+  | `all ddl` |  | 匹配所有 DDL event。 |
+  | `incompatible ddl changes` |  | 匹配所有可能导致数据丢失的不兼容 DDL event。 |
+  | `none` |  | 不匹配任何 event。 |
+  | `none ddl` |  | 不包含任何 DDL event。 |
+  | `none dml` |  | 不包含任何 DML event。 |
+  | `insert` | DML | 匹配 `INSERT` DML event。 |
+  | `update` | DML | 匹配 `UPDATE` DML event。 |
+  | `delete` | DML | 匹配 `DELETE` DML event。 |
+  | `create database` | DDL | 匹配 `CREATE DATABASE` DDL event。 |
+  | `drop database` | 不兼容 DDL | 匹配 `DROP DATABASE` DDL event。 |
+  | `create table` | DDL | 匹配 `CREATE TABLE` DDL event。 |
+  | `create index` | DDL | 匹配 `CREATE INDEX` DDL event。 |
+  | `drop table` | 不兼容 DDL | 匹配 `DROP TABLE` DDL event。 |
+  | `truncate table` | 不兼容 DDL | 匹配 `TRUNCATE TABLE` DDL event。 |
+  | `rename table` | 不兼容 DDL | 匹配 `RENAME TABLE` DDL event。 |
+  | `drop index` | 不兼容 DDL | 匹配 `DROP INDEX` DDL event。 |
+  | `alter table` | DDL | 匹配 `ALTER TABLE` DDL event。 |
+  | `value range decrease` | 不兼容 DDL | 匹配缩小列值范围的 DDL。 |
+  | `precision decrease` | 不兼容 DDL | 匹配降低列精度的 DDL。 |
+  | `modify column` | 不兼容 DDL | 匹配修改列类型的 DDL。 |
+  | `rename column` | 不兼容 DDL | 匹配修改列名的 DDL。 |
+  | `rename index` | 不兼容 DDL | 匹配修改索引名的 DDL。 |
+  | `drop column` | 不兼容 DDL | 匹配删除列的 DDL。 |
+  | `truncate table partition` | 不兼容 DDL | 匹配清空指定分区数据的 DDL。 |
+  | `drop primary key` | 不兼容 DDL | 匹配删除主键的 DDL。 |
+  | `drop unique key` | 不兼容 DDL | 匹配删除唯一键的 DDL。 |
+  | `modify default value` | 不兼容 DDL | 匹配修改列默认值的 DDL。 |
+  | `modify constraint` | 不兼容 DDL | 匹配修改约束的 DDL。 |
+  | `modify columns order` | 不兼容 DDL | 匹配修改列顺序的 DDL。 |
+  | `modify charset` | 不兼容 DDL | 匹配修改列字符集的 DDL。 |
+  | `modify collation` | 不兼容 DDL | 匹配修改列排序规则的 DDL。 |
+  | `remove auto increment` | 不兼容 DDL | 匹配移除自增属性的 DDL。 |
+  | `modify storage engine` | 不兼容 DDL | 匹配修改表存储引擎的 DDL。 |
+  | `reorganize table partition` | 不兼容 DDL | 匹配重组表分区的 DDL。 |
+  | `rebuild table partition` | 不兼容 DDL | 匹配重建表分区的 DDL。 |
+  | `exchange table partition` | 不兼容 DDL | 匹配在两张表之间交换分区的 DDL。 |
+  | `coalesce table partition` | 不兼容 DDL | 匹配减少表分区数量的 DDL。 |
 
 - `sql-pattern`：匹配指定的 DDL SQL 语句，支持正则表达式匹配。
-- `action`：可取值 Do 或 Ignore。
-    - `Do`：白名单。binlog event 如果满足下面两个条件之一将会被同步：
-        - 符合 events 条件；
-        - sql-pattern 不为空，且对应的 SQL 可以匹配上 sql-pattern 中任意一项。
-    - `Ignore`：黑名单。如果满足下面两个条件之一就会被过滤掉：
-        - 符合 events 条件；
-        - sql-pattern 不为空，且对应的 SQL 可以匹配上 sql-pattern 中任意一项
+- `action`：可取值 `Do`、`Ignore` 或 `Error`。
 
-注意：如果同时配置 `Do/Ignore`，则 `Ignore` 优先级更高。`binlog event` 不匹配白名单或者匹配黑名单都将被直接过滤。
+    - `Do`：白名单。
+
+        - 如果只配置 `events`，DM 只会同步事件类型匹配 `events` 的 binlog event。
+        - 如果只配置 `sql-pattern`，DM 只会同步 SQL 文本匹配 `sql-pattern` 的 DDL 语句。
+        - 如果同时为某个 DDL 语句配置 `events` 和 `sql-pattern`，只有当事件类型和 SQL 文本都匹配规则时，DM 才会同步该语句。
+
+    - `Ignore`：黑名单。只要满足以下任一条件，DM 就会过滤掉该 binlog event：
+
+        - 事件类型匹配 `events`。
+        - 配置了 `sql-pattern`，且 SQL 语句匹配 `sql-pattern` 中的任意一项。
+
+    - `Error`：报错列表。只要满足以下任一条件，DM 就会报错：
+
+        - 事件类型匹配 `events`。
+        - 配置了 `sql-pattern`，且 SQL 语句匹配 `sql-pattern` 中的任意一项。
+
+    当同一张表同时命中多条规则时，`Ignore` 的优先级高于 `Error`，`Error` 的优先级高于 `Do`。
 
 ## 使用场景举例
 
