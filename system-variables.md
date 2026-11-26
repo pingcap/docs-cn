@@ -489,7 +489,7 @@ mysql> SELECT * FROM t1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：在 v6.6.0 之前版本中为 `OFF`，在 v6.6.0 及之后的版本中为 `ON`。
-- 表示是否开启外键约束检查。
+- 表示对于由 `tidb_enable_foreign_key` 启用的外键，TiDB 是否执行外键约束检查和引用操作。将该变量设置为 `OFF` 还可以放宽部分 DDL 阶段的检查，例如允许在被引用表尚不存在时创建外键。不过，TiDB 仍然会校验外键定义本身。
 
 ### `group_concat_max_len`
 
@@ -2064,7 +2064,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：在 v6.6.0 之前版本中为 `OFF`，在 v6.6.0 及之后的版本中为 `ON`。
-- 这个变量用于控制是否开启 `FOREIGN KEY` 特性。
+- 这个变量用于控制是否开启 `FOREIGN KEY` 特性。它是外键元数据和外键强制执行逻辑的全局开关。开启该变量后，`foreign_key_checks` 用于控制 TiDB 是否执行外键检查和引用操作。
 
 ### `tidb_enable_gc_aware_memory_track`
 
