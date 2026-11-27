@@ -646,6 +646,7 @@
         - [AUTO_INCREMENT](/auto-increment.md)
         - [AUTO_RANDOM](/auto-random.md)
         - [_tidb_rowid](/tidb-rowid.md)
+        - [_tidb_commit_ts](/tidb-commit-ts.md)
         - [SHARD_ROW_ID_BITS](/shard-row-id-bits.md)
       - [字面值](/literal-values.md)
       - [Schema 对象名](/schema-object-names.md)
