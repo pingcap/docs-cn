@@ -125,14 +125,18 @@ TiDB 中，所有支持的 DDL 变更操作都是在线执行的。与 MySQL 相
 * 不支持添加或删除 `CLUSTERED` 类型的主键。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 * 不支持指定不同类型的索引 (`HASH|BTREE|RTREE|FULLTEXT`)。若指定了不同类型的索引，TiDB 会解析并忽略这些索引。
 * 分区表支持 `HASH`、`RANGE`、`LIST` 和 `KEY` 分区类型。对于不支持的分区类型，TiDB 会报 `Warning: Unsupported partition type %s, treat as normal table` 错误，其中 `%s` 为不支持的具体分区类型。
-* Range、Range COLUMNS、List、List COLUMNS 分区表支持 `ADD`、`DROP`、`TRUNCATE`、`REORGANIZE` 操作，其他分区操作会被忽略。
-* Hash 和 Key 分区表支持 `ADD`、`COALESCE`、`TRUNCATE` 操作，其他分区操作会被忽略。
-* TiDB 不支持以下分区表语法：
+* TiDB 不支持以下分区操作，执行时会报错：
 
-    + `SUBPARTITION`
-    + `{CHECK|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD} PARTITION`
+    - 对 `HASH` 或 `KEY` 分区表执行 `REORGANIZE PARTITION`
+    - 对 `KEY` 分区表或包含[全局索引](/global-indexes.md#使用限制)的分区表执行 `EXCHANGE PARTITION`
+    - `{CHECK|OPTIMIZE|REPAIR|REBUILD} PARTITION`
+    - `{DISCARD|IMPORT} PARTITION ... TABLESPACE`
+    - 在同一条 `ALTER TABLE` 语句中将 `PARTITION BY` 或 `REMOVE PARTITIONING` 与其他变更一起执行
 
   更多详情，请参考[分区表文档](/partitioned-table.md)。
+
+* TiDB 会忽略 `SUBPARTITION` 定义并返回警告。
+* TiDB 会忽略 `LINEAR HASH` 和 `LINEAR KEY` 分区语法中的 `LINEAR` 关键字并返回警告。此外，TiDB 的 `KEY` 分区使用的哈希算法与 MySQL 不同。因此，同一行数据在 TiDB 和 MySQL 中可能落入不同的分区，从而影响分区选择、`TRUNCATE PARTITION` 和 `EXCHANGE PARTITION` 的结果。更多信息，请参见 [Key 分区](/partitioned-table.md#key-分区)和 [TiDB 对 Linear Hash 分区的处理](/partitioned-table.md#tidb-对-linear-hash-分区的处理)。
 
 ### `ANALYZE TABLE`
 
